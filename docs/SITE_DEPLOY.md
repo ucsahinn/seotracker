@@ -206,11 +206,11 @@ Yayın sonrası:
    geçici olarak Test durumuna alın ve sonra geri açın.
 3. Reddeden veya henüz seçim yapmayan ziyaretçi için Google etiketi isteği
    olmamalı; yerel önizleme adreslerinde de etiket yüklenmemelidir.
-Gizlilik sayfası dile özgü adrestedir: `/gizlilik/`, `/en/privacy/`,
-`/de/datenschutz/`, `/fr/confidentialite/`, `/it/privacy/` ve
-`/pt/privacidade/`. Eski Türkçe, Almanca, Fransızca ve Portekizce `/privacy/`
-adresleri nginx'te 301 ile yönlendirilir (sunucu bloğunda); `site/` içindeki
-noindex yönlendirme sayfaları başka barındırmalar için durur.
+   Gizlilik sayfası dile özgü adrestedir: `/gizlilik/`, `/en/privacy/`,
+   `/de/datenschutz/`, `/fr/confidentialite/`, `/it/privacy/` ve
+   `/pt/privacidade/`. Eski Türkçe, Almanca, Fransızca ve Portekizce `/privacy/`
+   adresleri nginx'te 301 ile yönlendirilir (sunucu bloğunda); `site/` içindeki
+   noindex yönlendirme sayfaları başka barındırmalar için durur.
 
 CSP, Google etiketi için yalnızca şu adreslere izin verir:
 `script-src https://www.googletagmanager.com`; `connect-src` ve `img-src`

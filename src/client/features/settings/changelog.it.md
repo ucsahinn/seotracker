@@ -7,6 +7,7 @@ Funzionalità, correzioni e altre modifiche, dalla versione più recente.
 ### Correzioni
 
 - **Annunci:** il feed aggiunge un testo inglese di riserva per gli altri campi di lingua richiesti dalla versione 0.7.0.
+- **Notifiche:** i popup di sistema di Windows e del browser sono disattivati. Gli annunci compaiono nel popup dell’app quando è visibile e restano nella cronologia delle notifiche in background. Gli avvisi importanti possono riprodurre il suono dell’app.
 - **Aiuto · Diagnostica:** le verifiche non riuscite mostrano la fase d’interruzione, un messaggio ripulito e gli errori PageSpeed più frequenti. Gli URL delle pagine vengono rimossi dai riepiloghi esportati.
 
 ## [0.7.0] Alpha — 2026-10-25

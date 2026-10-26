@@ -131,9 +131,6 @@ body::after {
     display: none;
   }
 }
-[data-still] .dots::before {
-  display: none;
-}
 img {
   display: block;
   max-width: 100%;
@@ -360,24 +357,6 @@ h3.hx.in::after {
     display: none;
   }
 }
-/* "Hareketi durdur": every heading is simply there. */
-html[data-still] [data-words].split .w,
-html[data-still].js .reveal:not(.in),
-html[data-still] .reveal,
-html[data-still].js h2.reveal:not(.in),
-html[data-still] h2.reveal,
-html[data-still] .hx {
-  opacity: 1;
-  transform: none;
-  filter: none;
-  clip-path: none;
-  transition: none;
-  animation: none;
-}
-html[data-still] h3.hx::after {
-  display: none;
-}
-
 /* Buttons: a lit primary, a glass secondary; the arrow sits in its own island. */
 .btn {
   position: relative;
@@ -1959,34 +1938,6 @@ footer .bottom .cookie-footer button {
   min-height: 44px;
   display: inline-flex;
   align-items: center;
-}
-.still {
-  font: inherit;
-  color: inherit;
-  background: none;
-  border: 0;
-  padding: 10px 0;
-  min-height: 44px;
-  cursor: pointer;
-}
-.still:hover {
-  color: var(--fg);
-}
-html[data-still] *,
-html[data-still] *::before,
-html[data-still] *::after {
-  animation-play-state: paused !important;
-  transition-duration: 0s !important;
-  transition-delay: 0s !important;
-}
-html[data-still] .hero-copy,
-html[data-still] .stage .frame {
-  animation: none;
-  opacity: 1;
-  translate: none;
-}
-html[data-still] .hero-copy {
-  transform: none;
 }
 @media (max-width: 760px) {
   footer .top {

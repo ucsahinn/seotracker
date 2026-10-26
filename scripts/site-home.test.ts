@@ -43,3 +43,29 @@ test.each(homepages)(
     });
   },
 );
+
+test.each(homepages)(
+  "%s homepage shows the current 201-rule audit count",
+  (_language, path) => {
+    const html = readFileSync(new URL(path, import.meta.url), "utf8");
+    expect(html).toMatch(/data-count="201">201<\/b>/);
+    expect(html).not.toMatch(/data-count="95">95<\/b>/);
+  },
+);
+
+test("the published quick facts use the current audit rule count", () => {
+  const llms = readFileSync(
+    new URL("../site/llms.txt", import.meta.url),
+    "utf8",
+  );
+  expect(llms).toContain("201 audit rules");
+  expect(llms).not.toContain("95 audit rules");
+});
+
+test.each(homepages)(
+  "%s homepage has no manual motion-stop control",
+  (_language, path) => {
+    const html = readFileSync(new URL(path, import.meta.url), "utf8");
+    expect(html).not.toMatch(/Hareketi durdur|Pause motion|data-still/i);
+  },
+);

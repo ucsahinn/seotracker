@@ -7,6 +7,7 @@ Funcionalidades, correções e outras alterações, da versão mais recente para
 ### Correções
 
 - **Avisos:** o feed inclui texto alternativo em inglês para os restantes campos de idioma esperados pela versão 0.7.0.
+- **Notificações:** os pop-ups de sistema do Windows e do navegador foram desativados. Os avisos aparecem no pop-up da própria aplicação enquanto ela está visível e ficam no histórico de notificações em segundo plano. Alertas importantes podem tocar o som da aplicação.
 - **Ajuda · Diagnóstico:** as auditorias falhadas indicam a etapa, uma mensagem sem dados sensíveis e os erros PageSpeed mais comuns. Os URLs das páginas são removidos dos resumos exportados.
 
 ## [0.7.0] Alpha — 2026-10-25

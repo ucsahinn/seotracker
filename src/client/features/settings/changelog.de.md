@@ -7,6 +7,7 @@ Funktionen, Fehlerbehebungen und weitere Änderungen, neueste Version zuerst.
 ### Fehlerbehebungen
 
 - **Ankündigungen:** Der Feed ergänzt die zusätzlichen Sprachfelder, die Version 0.7.0 erwartet, mit englischem Ersatztext.
+- **Benachrichtigungen:** System-Popups von Windows und Browser sind abgeschaltet. Ankündigungen erscheinen im eigenen Popup der App, solange sie sichtbar ist, und bleiben im Hintergrund im Benachrichtigungsverlauf. Wichtige Hinweise können den App-Ton abspielen.
 - **Hilfe · Diagnosepaket:** Fehlgeschlagene Audits zeigen jetzt die Abbruchphase, eine bereinigte Fehlermeldung und die häufigsten PageSpeed-Messfehler. Seiten-URLs werden aus exportierten Zusammenfassungen entfernt.
 
 ## [0.7.0] Alpha — 2026-10-25

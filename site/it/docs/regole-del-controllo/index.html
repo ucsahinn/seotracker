@@ -9,7 +9,7 @@
     <title>Regole del controllo | guida di seowatcher</title>
     <meta
       name="description"
-      content="L'elenco completo delle 95 regole che il controllo del sito verifica. Qui si legge che cosa significa ogni regola e come correggerla."
+      content="L'elenco completo delle 201 regole che il controllo del sito verifica. Qui si legge che cosa significa ogni regola e come correggerla."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -89,7 +89,7 @@
     />
     <meta
       property="og:description"
-      content="L'elenco completo delle 95 regole che il controllo del sito verifica. Qui si legge che cosa significa ogni regola e come correggerla."
+      content="L'elenco completo delle 201 regole che il controllo del sito verifica. Qui si legge che cosa significa ogni regola e come correggerla."
     />
     <meta
       property="og:image"
@@ -102,7 +102,7 @@
       property="og:image:alt"
       content="Scheda di seowatcher: la dashboard dell’app con i dati di Search Console, Analytics 4 e dell’audit del sito, e un pulsante per scaricarla su Windows"
     />
-    <meta property="article:modified_time" content="2026-10-23" />
+    <meta property="article:modified_time" content="2026-10-26" />
     <meta
       property="og:url"
       content="https://seowatcher.io/it/docs/regole-del-controllo/"
@@ -120,7 +120,7 @@
     />
     <meta
       name="twitter:description"
-      content="L'elenco completo delle 95 regole che il controllo del sito verifica. Qui si legge che cosa significa ogni regola e come correggerla."
+      content="L'elenco completo delle 201 regole che il controllo del sito verifica. Qui si legge che cosa significa ogni regola e come correggerla."
     />
     <meta
       name="twitter:image"
@@ -161,10 +161,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/it/docs/regole-del-controllo/#article",
             "headline": "Regole del controllo",
-            "description": "L'elenco completo delle 95 regole che il controllo del sito verifica. Qui si legge che cosa significa ogni regola e come correggerla.",
+            "description": "L'elenco completo delle 201 regole che il controllo del sito verifica. Qui si legge che cosa significa ogni regola e come correggerla.",
             "url": "https://seowatcher.io/it/docs/regole-del-controllo/",
             "inLanguage": "it",
-            "dateModified": "2026-10-23",
+            "dateModified": "2026-10-26",
             "articleSection": "Aiuto e riferimento",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -1550,19 +1550,21 @@
       <article id="icerik" data-page="denetim-kurallari">
         <h1>Regole del controllo</h1>
         <p class="lede">
-          L'elenco completo delle 95 regole che il controllo del sito verifica.
+          L'elenco completo delle 201 regole che il controllo del sito verifica.
           Qui si legge che cosa significa ogni regola e come correggerla.
         </p>
         <p>
           Il controllo del sito esamina ogni pagina e il sito nel suo insieme
-          con 95 regole. Le regole si dividono in tre gruppi.
-          <strong>Kritik</strong> (Critico, 10 regole): Google non riesce a
-          vedere o a capire la pagina, da correggere per primi.
-          <strong>Uyarı</strong> (Avviso, 48 regole): fanno calare a poco a poco
-          posizioni e clic. <strong>Bilgi</strong> (Informazione, 37 regole):
-          piccole occasioni di miglioramento. Nel punteggio il peso è 40 per le
-          regole critiche, 15 per gli avvisi, 3 per le informazioni. Conta anche
-          quante pagine una regola interessa.
+          con 201 regole: 13 critiche, 92 avvisi e 96 informative. È il numero
+          degli identificativi nell'elenco dell'app, e ognuno occupa una riga
+          delle tabelle qui sotto. Le regole si dividono in tre gruppi.
+          <strong>Critiche</strong> (13 regole): Google non riesce a vedere o
+          capire la pagina, quindi vanno corrette per prime.
+          <strong>Avvisi</strong> (92 regole): possono ridurre gradualmente
+          posizioni e clic. <strong>Informazioni</strong> (96 regole): piccole
+          opportunità di miglioramento. Nel punteggio le regole critiche pesano
+          40, gli avvisi 15 e le informazioni 3. Conta anche quante pagine sono
+          interessate.
         </p>
         <p>
           Nella tabella si vedono, per ogni regola, il nome mostrato nella
@@ -1764,6 +1766,43 @@
                   comprende questo indirizzo ed eliminarla.
                 </td>
                 <td>google-blocked-by-robots</td>
+              </tr>
+              <tr>
+                <td>robots.txt chiude a Google l'intero sito</td>
+                <td>
+                  robots.txt vieta a Google di scansionare la home page (di
+                  solito una riga &quot;Disallow: /&quot;). Google non scansiona
+                  il sito.
+                </td>
+                <td>
+                  Eliminate la riga &quot;Disallow: /&quot; o limitatela alle
+                  cartelle che devono restare nascoste.
+                </td>
+                <td>robots-disallow-all</td>
+              </tr>
+              <tr>
+                <td>L'indirizzo http non reindirizza a https</td>
+                <td>
+                  L'indirizzo http del sito si apre senza passare alla versione
+                  sicura. I browser mostrano &quot;Non sicuro&quot;.
+                </td>
+                <td>
+                  Attivate &quot;Forza HTTPS&quot; nel pannello dell'hosting o
+                  aggiungete un reindirizzamento permanente (301).
+                </td>
+                <td>no-https-redirect</td>
+              </tr>
+              <tr>
+                <td>Il certificato SSL sta per scadere</td>
+                <td>
+                  Il certificato scade tra meno di 14 giorni. Dopo, i browser
+                  aprono il sito dietro un avviso a tutta pagina.
+                </td>
+                <td>
+                  Rinnovate subito il certificato. Se il rinnovo è automatico,
+                  verificate perché non è avvenuto.
+                </td>
+                <td>ssl-expiring-very-soon</td>
               </tr>
             </tbody>
           </table>
@@ -2297,6 +2336,386 @@
                 </td>
                 <td>lighthouse-seo-low</td>
               </tr>
+              <tr>
+                <td>Il sito si apre sia con sia senza www</td>
+                <td>
+                  Entrambi gli indirizzi aprono la pagina e nessuno reindirizza
+                  all'altro. Google vede due copie dello stesso contenuto.
+                </td>
+                <td>
+                  Scegliete un indirizzo principale e reindirizzate l'altro su
+                  di esso in modo permanente (301).
+                </td>
+                <td>www-and-apex-both-serve</td>
+              </tr>
+              <tr>
+                <td>Una pagina inesistente risponde 200 invece di 404</td>
+                <td>
+                  Un indirizzo che non esiste risponde &quot;OK&quot; (200).
+                  Google lo considera un soft 404.
+                </td>
+                <td>
+                  Fate restituire alla pagina di errore il codice 404. Il
+                  contenuto può restare uguale.
+                </td>
+                <td>soft-404-on-missing-page</td>
+              </tr>
+              <tr>
+                <td>L'HTML della pagina iniziale supera i 2 MB</td>
+                <td>
+                  Google elabora solo i primi 2 MB di HTML e ignora il resto.
+                </td>
+                <td>
+                  Spostate i grandi dati incorporati in file separati. Dividete
+                  gli elenchi lunghi in più pagine.
+                </td>
+                <td>html-too-large</td>
+              </tr>
+              <tr>
+                <td>Il server risponde tardi (TTFB)</td>
+                <td>
+                  Il primo byte della pagina iniziale è arrivato dopo più di 800
+                  millisecondi.
+                </td>
+                <td>
+                  Attivate la cache delle pagine, trovate i plugin lenti e usate
+                  una CDN vicina ai visitatori.
+                </td>
+                <td>slow-ttfb</td>
+              </tr>
+              <tr>
+                <td>La pagina blocca lo zoom</td>
+                <td>
+                  Il tag viewport disattiva lo zoom sul telefono. Chi vede poco
+                  non può ingrandire il testo.
+                </td>
+                <td>
+                  Togliete user-scalable=no e maximum-scale dal tag viewport.
+                </td>
+                <td>viewport-zoom-disabled</td>
+              </tr>
+              <tr>
+                <td>Link con indirizzo &quot;javascript:&quot;</td>
+                <td>
+                  Google non può seguire questi link e quindi non trova le loro
+                  pagine per questa via.
+                </td>
+                <td>
+                  Se il link porta a una pagina, scrivete il suo vero indirizzo.
+                  Se esegue un'azione, usate un pulsante (button).
+                </td>
+                <td>javascript-href-links</td>
+              </tr>
+              <tr>
+                <td>Campi del modulo senza etichetta</td>
+                <td>
+                  Un lettore di schermo non sa dire che cosa va scritto nel
+                  campo.
+                </td>
+                <td>
+                  Date a ogni campo un'etichetta visibile (label) o un
+                  aria-label.
+                </td>
+                <td>form-input-without-label</td>
+              </tr>
+              <tr>
+                <td>La struttura HTML della pagina è troppo grande</td>
+                <td>
+                  La pagina ha più di 1.500 elementi HTML. Rallenta, soprattutto
+                  sul telefono.
+                </td>
+                <td>
+                  Caricate il contenuto nascosto solo quando serve. Riducete gli
+                  strati di contenitori inutili.
+                </td>
+                <td>dom-too-large</td>
+              </tr>
+              <tr>
+                <td>Contenuto quasi identico</td>
+                <td>
+                  Il contenuto principale di queste pagine differisce solo per
+                  poche parole. Google potrebbe mostrarne una sola.
+                </td>
+                <td>
+                  Date a ogni pagina un contenuto proprio, oppure unite le
+                  pagine e aggiungete un canonical.
+                </td>
+                <td>near-duplicate-content</td>
+              </tr>
+              <tr>
+                <td>Nei dati strutturati mancano proprietà obbligatorie</td>
+                <td>
+                  Mancano campi che Google richiede per questo tipo (per esempio
+                  Product o FAQPage). Non compare alcun risultato avanzato.
+                </td>
+                <td>
+                  Aggiungete i campi mancanti e verificate il risultato con il
+                  Test dei risultati avanzati di Google.
+                </td>
+                <td>structured-data-required-props-missing</td>
+              </tr>
+              <tr>
+                <td>
+                  L'ID Analytics delle pagine non corrisponde alla proprietà
+                  collegata
+                </td>
+                <td>
+                  I dati dei visitatori finiscono molto probabilmente in
+                  un'altra proprietà Analytics.
+                </td>
+                <td>
+                  Sostituite il tag delle pagine con l'ID giusto oppure
+                  collegate la proprietà giusta nelle Impostazioni.
+                </td>
+                <td>analytics-id-mismatch</td>
+              </tr>
+              <tr>
+                <td>Manca l'intestazione HSTS</td>
+                <td>
+                  L'intestazione che dice ai browser &quot;usa sempre https per
+                  questo sito&quot; non viene inviata.
+                </td>
+                <td>
+                  Aggiungete l'intestazione Strict-Transport-Security alla
+                  risposta del server.
+                </td>
+                <td>missing-hsts</td>
+              </tr>
+              <tr>
+                <td>Il certificato SSL scade tra meno di 30 giorni</td>
+                <td>
+                  Secondo i registri pubblici dei certificati, il certificato
+                  scade entro 30 giorni.
+                </td>
+                <td>
+                  Controllate nel pannello dell'hosting che il rinnovo
+                  automatico sia attivo.
+                </td>
+                <td>ssl-expiring-soon</td>
+              </tr>
+              <tr>
+                <td>Il dominio scade tra meno di 30 giorni</td>
+                <td>
+                  Se non viene rinnovato, sito ed e-mail si fermano. Qualcun
+                  altro potrebbe registrare il dominio.
+                </td>
+                <td>Rinnovate il dominio e attivate il rinnovo automatico.</td>
+                <td>domain-expiring-soon</td>
+              </tr>
+              <tr>
+                <td>
+                  Alcuni file bloccano la prima visualizzazione della pagina
+                </td>
+                <td>CSS e script ritardano la prima visualizzazione.</td>
+                <td>
+                  Aggiungete defer agli script che non servono al primo schermo.
+                </td>
+                <td>lh-render-blocking</td>
+              </tr>
+              <tr>
+                <td>La pagina carica JavaScript che non usa</td>
+                <td>Viene scaricato JavaScript che non viene mai eseguito.</td>
+                <td>Togliete i plugin e i tag inutilizzati.</td>
+                <td>lh-unused-javascript</td>
+              </tr>
+              <tr>
+                <td>Le immagini vengono scaricate più grandi del necessario</td>
+                <td>
+                  Le immagini pesano più di quanto serve per la loro
+                  visualizzazione.
+                </td>
+                <td>Convertite in WebP/AVIF, comprimete e ridimensionate.</td>
+                <td>lh-image-delivery</td>
+              </tr>
+              <tr>
+                <td>La pagina reindirizza prima di aprirsi</td>
+                <td>Ci sono reindirizzamenti prima che la pagina si apra.</td>
+                <td>Fate puntare i link all'indirizzo finale.</td>
+                <td>lh-document-redirects</td>
+              </tr>
+              <tr>
+                <td>La pagina viene inviata senza compressione</td>
+                <td>L'HTML viene inviato senza compressione.</td>
+                <td>Attivate la compressione gzip o Brotli.</td>
+                <td>lh-text-compression</td>
+              </tr>
+              <tr>
+                <td>
+                  L'immagine principale è segnata per il caricamento differito
+                </td>
+                <td>L'immagine principale ha loading=&quot;lazy&quot;.</td>
+                <td>
+                  Togliete lazy dall'immagine principale del primo schermo.
+                </td>
+                <td>lh-lcp-lazy-loaded</td>
+              </tr>
+              <tr>
+                <td>Alcuni testi hanno un contrasto di colore insufficiente</td>
+                <td>Il testo non si distingue abbastanza dallo sfondo.</td>
+                <td>Garantite un contrasto di almeno 4,5:1.</td>
+                <td>lh-a11y-color-contrast</td>
+              </tr>
+              <tr>
+                <td>Alle immagini manca il testo alternativo (Lighthouse)</td>
+                <td>Nel browser ci sono immagini senza testo alt.</td>
+                <td>Scrivete un testo alt per le immagini significative.</td>
+                <td>lh-a11y-image-alt</td>
+              </tr>
+              <tr>
+                <td>I campi del modulo non hanno etichetta (Lighthouse)</td>
+                <td>I campi del modulo non hanno etichetta.</td>
+                <td>Collegate un elemento label a ogni campo.</td>
+                <td>lh-a11y-label</td>
+              </tr>
+              <tr>
+                <td>Alcuni link non hanno un nome leggibile</td>
+                <td>Alcuni link non hanno un nome leggibile.</td>
+                <td>Aggiungete un testo o un aria-label.</td>
+                <td>lh-a11y-link-name</td>
+              </tr>
+              <tr>
+                <td>Alcuni pulsanti non hanno un nome leggibile</td>
+                <td>Alcuni pulsanti non hanno un nome leggibile.</td>
+                <td>Aggiungete un testo o un aria-label.</td>
+                <td>lh-a11y-button-name</td>
+              </tr>
+              <tr>
+                <td>La pagina non ha un titolo nel browser (Lighthouse)</td>
+                <td>Nel browser non c'è un elemento title.</td>
+                <td>Aggiungete un titolo all'HTML inviato dal server.</td>
+                <td>lh-a11y-document-title</td>
+              </tr>
+              <tr>
+                <td>Lo zoom è bloccato sul telefono (Lighthouse)</td>
+                <td>L'impostazione viewport impedisce lo zoom.</td>
+                <td>Togliete user-scalable=no e maximum-scale.</td>
+                <td>lh-a11y-meta-viewport</td>
+              </tr>
+              <tr>
+                <td>La pagina fa richieste non sicure (http)</td>
+                <td>La pagina carica elementi via http.</td>
+                <td>Servite tutti i file via https.</td>
+                <td>lh-is-on-https</td>
+              </tr>
+              <tr>
+                <td>Alcuni link non sono scansionabili (Lighthouse)</td>
+                <td>Ci sono link che Google non può seguire.</td>
+                <td>Date a ogni link un href vero.</td>
+                <td>lh-crawlable-anchors</td>
+              </tr>
+              <tr>
+                <td>Google non può indicizzare la pagina (Lighthouse)</td>
+                <td>Lighthouse ha trovato la pagina non indicizzabile.</td>
+                <td>Controllate robots.txt e le regole noindex.</td>
+                <td>lh-is-crawlable</td>
+              </tr>
+              <tr>
+                <td>Il file robots.txt contiene righe non valide</td>
+                <td>In robots.txt ci sono righe non valide.</td>
+                <td>
+                  Correggete le righe nel formato &quot;Campo: valore&quot;.
+                </td>
+                <td>lh-robots-txt</td>
+              </tr>
+              <tr>
+                <td>I tag hreflang non sono validi (Lighthouse)</td>
+                <td>I tag hreflang non sono validi.</td>
+                <td>Usate codici lingua validi e indirizzi completi.</td>
+                <td>lh-hreflang</td>
+              </tr>
+              <tr>
+                <td>Il tag canonical non è valido (Lighthouse)</td>
+                <td>Il tag canonical non è valido.</td>
+                <td>
+                  Lasciate un solo canonical che punti all'indirizzo della
+                  pagina stessa.
+                </td>
+                <td>lh-canonical</td>
+              </tr>
+              <tr>
+                <td>Immagine, video o frame non sicuro su una pagina sicura</td>
+                <td>
+                  Una pagina https carica immagini, video o frame via http.
+                </td>
+                <td>Fate iniziare gli indirizzi con https.</td>
+                <td>mixed-content-media</td>
+              </tr>
+              <tr>
+                <td>I dati del modulo vengono inviati senza cifratura</td>
+                <td>Il modulo invia i dati a un indirizzo http.</td>
+                <td>Portate a https l'indirizzo action del modulo.</td>
+                <td>form-action-http</td>
+              </tr>
+              <tr>
+                <td>Il tag canonical è nel corpo della pagina</td>
+                <td>Il canonical è nel body; Google non lo legge.</td>
+                <td>Spostate il tag nel head.</td>
+                <td>canonical-outside-head</td>
+              </tr>
+              <tr>
+                <td>I tag robots si contraddicono</td>
+                <td>I tag robots della pagina si contraddicono.</td>
+                <td>Lasciate un solo tag robots.</td>
+                <td>robots-meta-conflict</td>
+              </tr>
+              <tr>
+                <td>
+                  La pagina dice &quot;non trovata&quot; ma risponde con
+                  successo
+                </td>
+                <td>
+                  La pagina dice &quot;non trovata&quot; ma restituisce 200.
+                </td>
+                <td>Se la pagina non esiste, restituite 404 o 410.</td>
+                <td>page-says-not-found</td>
+              </tr>
+              <tr>
+                <td>Sulla pagina è rimasto testo segnaposto (lorem ipsum)</td>
+                <td>La pagina contiene testo segnaposto lorem ipsum.</td>
+                <td>Sostituitelo con contenuto vero.</td>
+                <td>lorem-ipsum-text</td>
+              </tr>
+              <tr>
+                <td>
+                  Una pagina successiva di un elenco è nascosta dalla ricerca
+                </td>
+                <td>Le pagine 2 e seguenti di un elenco sono noindex.</td>
+                <td>Togliete noindex e date a ogni pagina il suo canonical.</td>
+                <td>paginated-page-noindex</td>
+              </tr>
+              <tr>
+                <td>
+                  Su un sito sicuro i link interni portano a indirizzi http
+                </td>
+                <td>Su un sito https i link interni puntano a http.</td>
+                <td>Scrivete i link interni con https o in forma relativa.</td>
+                <td>internal-http-links</td>
+              </tr>
+              <tr>
+                <td>Un link verso un altro sito non funziona</td>
+                <td>Un link verso un altro sito non si apre.</td>
+                <td>Aggiornate o eliminate il link.</td>
+                <td>broken-external-link</td>
+              </tr>
+              <tr>
+                <td>Il file dell'immagine è troppo grande</td>
+                <td>Un file immagine supera i 200 KB.</td>
+                <td>Ridimensionate, comprimete, convertite in WebP/AVIF.</td>
+                <td>image-file-too-large</td>
+              </tr>
+              <tr>
+                <td>La mappa del sito elenca indirizzi di un altro sito</td>
+                <td>
+                  La mappa del sito contiene indirizzi di un altro dominio. Di
+                  solito Google li ignora.
+                </td>
+                <td>
+                  Pubblicate la mappa sul sito a cui appartengono gli indirizzi,
+                  oppure correggete l'indirizzo del sito nell'impostazione che
+                  la genera.
+                </td>
+                <td>sitemap-off-host-urls</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -2661,6 +3080,547 @@
                 </td>
                 <td>google-crawl-stale</td>
               </tr>
+              <tr>
+                <td>Le pagine inesistenti reindirizzano alla home page</td>
+                <td>
+                  Un indirizzo che non esiste porta alla home page. Google di
+                  solito lo considera un soft 404.
+                </td>
+                <td>
+                  Mostrate una pagina di errore che restituisce 404.
+                  Reindirizzate solo le pagine spostate.
+                </td>
+                <td>not-found-redirects-home</td>
+              </tr>
+              <tr>
+                <td>Icona del sito (favicon) non trovata</td>
+                <td>
+                  Nella ricerca da mobile accanto al nome del sito compare
+                  un'icona generica.
+                </td>
+                <td>
+                  Caricate un'icona quadrata di almeno 48x48 pixel e
+                  dichiaratela nel head.
+                </td>
+                <td>missing-favicon</td>
+              </tr>
+              <tr>
+                <td>robots.txt non indica la mappa del sito</td>
+                <td>
+                  In robots.txt manca la riga &quot;Sitemap:&quot;. Bing e altri
+                  crawler trovano lì la mappa.
+                </td>
+                <td>
+                  Aggiungete in fondo al file una riga &quot;Sitemap:&quot; con
+                  l'indirizzo completo della mappa.
+                </td>
+                <td>robots-missing-sitemap-line</td>
+              </tr>
+              <tr>
+                <td>Alcuni crawler di IA sono bloccati da robots.txt</td>
+                <td>
+                  Bot come GPTBot e ClaudeBot sono esclusi. È una scelta; la
+                  ricerca Google non ne risente.
+                </td>
+                <td>
+                  Se è voluto, lasciate così. Per comparire nelle risposte
+                  dell'IA, consentite i bot di ricerca.
+                </td>
+                <td>ai-crawlers-blocked</td>
+              </tr>
+              <tr>
+                <td>Manca il file llms.txt (facoltativo)</td>
+                <td>
+                  Manca il file proposto per gli assistenti IA. Non è uno
+                  standard e Google non lo usa.
+                </td>
+                <td>
+                  Se volete, mettete nella radice un /llms.txt con le pagine
+                  principali.
+                </td>
+                <td>missing-llms-txt</td>
+              </tr>
+              <tr>
+                <td>La pagina iniziale è arrivata senza compressione</td>
+                <td>La pagina è arrivata senza compressione gzip o brotli.</td>
+                <td>Attivate la compressione sul server o sulla CDN.</td>
+                <td>no-compression</td>
+              </tr>
+              <tr>
+                <td>Tag Open Graph incompleti</td>
+                <td>
+                  Manca il titolo, la descrizione o l'immagine della scheda di
+                  condivisione.
+                </td>
+                <td>Aggiungete insieme og:title, og:description e og:image.</td>
+                <td>og-incomplete</td>
+              </tr>
+              <tr>
+                <td>Manca il tag della card di X (Twitter)</td>
+                <td>
+                  Su X il link può comparire come semplice indirizzo, senza
+                  scheda.
+                </td>
+                <td>
+                  Aggiungete nel head un tag twitter:card (summary_large_image).
+                </td>
+                <td>twitter-card-missing</td>
+              </tr>
+              <tr>
+                <td>Il tag title e l'H1 sono identici</td>
+                <td>
+                  Non è un errore, ma una delle due occasioni va sprecata.
+                </td>
+                <td>
+                  Scrivete il title per il risultato di ricerca e l'H1 per chi
+                  legge la pagina.
+                </td>
+                <td>title-equals-h1</td>
+              </tr>
+              <tr>
+                <td>Il titolo potrebbe essere tagliato nei risultati</td>
+                <td>
+                  Il titolo è breve, ma le lettere larghe lo portano oltre circa
+                  580 pixel.
+                </td>
+                <td>
+                  Accorciate il titolo o scrivete in minuscolo le parole tutte
+                  maiuscole.
+                </td>
+                <td>title-pixel-too-wide</td>
+              </tr>
+              <tr>
+                <td>Tag meta keywords superfluo</td>
+                <td>Google non usa affatto questo tag.</td>
+                <td>
+                  Toglietelo dal modello o dalle impostazioni del plugin SEO.
+                </td>
+                <td>meta-keywords-present</td>
+              </tr>
+              <tr>
+                <td>
+                  Link esterni si aprono in una nuova scheda senza noopener
+                </td>
+                <td>
+                  Una nota di buona pratica. I browser attuali lo fanno già da
+                  soli.
+                </td>
+                <td>Aggiungete rel=&quot;noopener&quot; a questi link.</td>
+                <td>blank-target-without-noopener</td>
+              </tr>
+              <tr>
+                <td>Le immagini più in basso si caricano subito</td>
+                <td>
+                  Più di sei immagini sotto il primo schermo si caricano appena
+                  la pagina si apre.
+                </td>
+                <td>
+                  Aggiungete loading=&quot;lazy&quot;. Non sull'immagine
+                  principale del primo schermo.
+                </td>
+                <td>images-not-lazy</td>
+              </tr>
+              <tr>
+                <td>Immagini in formati vecchi</td>
+                <td>
+                  Tre o più immagini sono JPEG, PNG o GIF senza alternativa in
+                  un formato più recente.
+                </td>
+                <td>Convertite le immagini in WebP o AVIF.</td>
+                <td>images-legacy-format</td>
+              </tr>
+              <tr>
+                <td>Lo stesso id su più elementi</td>
+                <td>
+                  Etichette dei moduli e link interni alla pagina possono
+                  puntare all'elemento sbagliato.
+                </td>
+                <td>
+                  Rendete unico ogni id. Se serve solo allo stile, usate una
+                  class.
+                </td>
+                <td>duplicate-ids</td>
+              </tr>
+              <tr>
+                <td>Elementi HTML annidati troppo in profondità</td>
+                <td>La pagina ha elementi annidati oltre 32 livelli.</td>
+                <td>Togliete dal modello gli strati di contenitori inutili.</td>
+                <td>dom-too-deep</td>
+              </tr>
+              <tr>
+                <td>Pochissimo testo visibile rispetto al codice</td>
+                <td>Il testo visibile è meno di un decimo dell'HTML.</td>
+                <td>
+                  Spostate il codice incorporato in file separati. Verificate
+                  che il testo sia nel sorgente della pagina.
+                </td>
+                <td>low-text-ratio</td>
+              </tr>
+              <tr>
+                <td>Nei dati strutturati mancano proprietà consigliate</td>
+                <td>
+                  Nel markup Article o Organization mancano campi consigliati da
+                  Google. I risultati avanzati non sono bloccati.
+                </td>
+                <td>
+                  Aggiungete i campi mancanti con informazioni visibili sulla
+                  pagina. Non è urgente.
+                </td>
+                <td>structured-data-recommended-props-missing</td>
+              </tr>
+              <tr>
+                <td>Nessun tag Google Analytics trovato nelle pagine</td>
+                <td>
+                  Nell'HTML non c'è alcun ID G-, GTM- o UA-. Se il tag viene
+                  caricato dopo, ignorate questo problema.
+                </td>
+                <td>
+                  Aggiungete il codice di Analytics o di Tag Manager nel head di
+                  ogni pagina.
+                </td>
+                <td>analytics-tag-missing</td>
+              </tr>
+              <tr>
+                <td>Manca l'intestazione X-Content-Type-Options</td>
+                <td>
+                  Il browser può indovinare il tipo dei file. Non incide sul
+                  posizionamento.
+                </td>
+                <td>
+                  Aggiungete &quot;X-Content-Type-Options: nosniff&quot; alle
+                  risposte del server.
+                </td>
+                <td>missing-x-content-type-options</td>
+              </tr>
+              <tr>
+                <td>
+                  La pagina può essere incorporata nei frame di altri siti
+                </td>
+                <td>
+                  Un altro sito può mettere la vostra pagina in un frame
+                  invisibile (clickjacking).
+                </td>
+                <td>
+                  Aggiungete l'intestazione &quot;frame-ancestors 'self'&quot; o
+                  &quot;X-Frame-Options: SAMEORIGIN&quot;.
+                </td>
+                <td>missing-clickjacking-protection</td>
+              </tr>
+              <tr>
+                <td>Manca l'intestazione Referrer-Policy</td>
+                <td>
+                  Non è urgente. L'intestazione decide quanta parte del vostro
+                  indirizzo viene condivisa quando un visitatore passa a un
+                  altro sito.
+                </td>
+                <td>
+                  Aggiungete l'intestazione &quot;Referrer-Policy:
+                  strict-origin-when-cross-origin&quot;.
+                </td>
+                <td>missing-referrer-policy</td>
+              </tr>
+              <tr>
+                <td>Il dominio non ha un record SPF</td>
+                <td>
+                  Altri possono inviare e-mail false a vostro nome. Non incide
+                  direttamente sulla SEO.
+                </td>
+                <td>
+                  Aggiungete nel DNS, come TXT, il record SPF consigliato dal
+                  vostro servizio di posta.
+                </td>
+                <td>missing-spf</td>
+              </tr>
+              <tr>
+                <td>Il dominio non ha un record DMARC</td>
+                <td>
+                  Nulla dice che cosa fare delle e-mail che non superano la
+                  verifica. Non incide direttamente sulla SEO.
+                </td>
+                <td>
+                  Aggiungete nel DNS un record TXT chiamato \_dmarc. Iniziate
+                  con p=none.
+                </td>
+                <td>missing-dmarc</td>
+              </tr>
+              <tr>
+                <td>La pagina carica CSS che non usa</td>
+                <td>Vengono scaricate regole di stile inutilizzate.</td>
+                <td>Disattivate i fogli di stile inutilizzati.</td>
+                <td>lh-unused-css</td>
+              </tr>
+              <tr>
+                <td>I file JavaScript non sono minimizzati</td>
+                <td>I file JavaScript non sono minimizzati.</td>
+                <td>
+                  Attivate la minimizzazione nello strumento di build o nella
+                  CDN.
+                </td>
+                <td>lh-unminified-javascript</td>
+              </tr>
+              <tr>
+                <td>I file CSS non sono minimizzati</td>
+                <td>I file CSS non sono minimizzati.</td>
+                <td>
+                  Attivate la minimizzazione nello strumento di build o nella
+                  CDN.
+                </td>
+                <td>lh-unminified-css</td>
+              </tr>
+              <tr>
+                <td>I file non restano abbastanza a lungo nel browser</td>
+                <td>I file hanno una durata di cache del browser breve.</td>
+                <td>Date ai file che non cambiano un Cache-Control lungo.</td>
+                <td>lh-cache-policy</td>
+              </tr>
+              <tr>
+                <td>Il peso totale della pagina è molto alto</td>
+                <td>La pagina supera in totale i 2,5 MB.</td>
+                <td>
+                  Alleggerite le immagini, i video e gli script più grandi.
+                </td>
+                <td>lh-total-byte-weight</td>
+              </tr>
+              <tr>
+                <td>
+                  La struttura della pagina creata nel browser è molto grande
+                </td>
+                <td>
+                  La struttura della pagina creata nel browser è molto grande.
+                </td>
+                <td>Create il contenuto nascosto solo quando serve.</td>
+                <td>lh-dom-size</td>
+              </tr>
+              <tr>
+                <td>Il server risponde lentamente (Lighthouse)</td>
+                <td>Il primo byte del server arriva dopo più di 600 ms.</td>
+                <td>Attivate la cache delle pagine.</td>
+                <td>lh-slow-server-response</td>
+              </tr>
+              <tr>
+                <td>Il testo è invisibile mentre si caricano i font</td>
+                <td>
+                  Il testo resta invisibile finché i font non sono caricati.
+                </td>
+                <td>Aggiungete font-display: swap.</td>
+                <td>lh-font-display</td>
+              </tr>
+              <tr>
+                <td>L'immagine principale non viene richiesta con priorità</td>
+                <td>
+                  L'immagine principale viene scoperta tardi o senza priorità.
+                </td>
+                <td>
+                  Inseritela nell'HTML come img con
+                  fetchpriority=&quot;high&quot;.
+                </td>
+                <td>lh-lcp-not-prioritized</td>
+              </tr>
+              <tr>
+                <td>I file sono serviti con il vecchio HTTP/1.1</td>
+                <td>I file arrivano via HTTP/1.1.</td>
+                <td>Attivate HTTP/2 sul server o sulla CDN.</td>
+                <td>lh-modern-http</td>
+              </tr>
+              <tr>
+                <td>Viene inviato JavaScript inutile per i browser vecchi</td>
+                <td>Viene inviato codice per browser vecchi che non serve.</td>
+                <td>Aggiornate l'impostazione dei browser di destinazione.</td>
+                <td>lh-legacy-javascript</td>
+              </tr>
+              <tr>
+                <td>Codice di terze parti tiene occupato a lungo il browser</td>
+                <td>
+                  Il codice di terze parti occupa il thread principale per oltre
+                  0,5 s.
+                </td>
+                <td>Togliete i tag inutili e rimandate gli altri.</td>
+                <td>lh-third-parties</td>
+              </tr>
+              <tr>
+                <td>
+                  Il caricamento del contenuto principale potrebbe essere più
+                  rapido (LCP)
+                </td>
+                <td>L'LCP è tra 2,5 e 4 secondi.</td>
+                <td>
+                  Alleggerite l'immagine principale e disattivatene il
+                  caricamento differito.
+                </td>
+                <td>cwv-lcp-needs-improvement</td>
+              </tr>
+              <tr>
+                <td>
+                  Il contenuto si sposta un po' durante il caricamento (CLS)
+                </td>
+                <td>Il CLS è tra 0,1 e 0,25.</td>
+                <td>
+                  Date le dimensioni alle immagini e riservate lo spazio per gli
+                  annunci.
+                </td>
+                <td>cwv-cls-needs-improvement</td>
+              </tr>
+              <tr>
+                <td>Le risposte ai clic potrebbero essere più rapide (INP)</td>
+                <td>L'INP è tra 200 e 500 ms (dati sul campo).</td>
+                <td>Spezzate gli script lunghi che girano al clic.</td>
+                <td>cwv-inp-needs-improvement</td>
+              </tr>
+              <tr>
+                <td>
+                  La lingua della pagina non è dichiarata nel browser
+                  (Lighthouse)
+                </td>
+                <td>L'elemento html non ha l'attributo lang.</td>
+                <td>
+                  Dichiarate una lingua, per esempio lang=&quot;it&quot;
+                  sull'elemento html.
+                </td>
+                <td>lh-a11y-html-has-lang</td>
+              </tr>
+              <tr>
+                <td>Le aree da toccare sono troppo piccole o troppo vicine</td>
+                <td>Le aree da toccare sono piccole o troppo ravvicinate.</td>
+                <td>Date alle aree almeno 24×24 pixel.</td>
+                <td>lh-a11y-target-size</td>
+              </tr>
+              <tr>
+                <td>
+                  L'ordine dei titoli salta livelli nel browser (Lighthouse)
+                </td>
+                <td>Nel browser alcuni livelli di titolo vengono saltati.</td>
+                <td>Usate i titoli in ordine.</td>
+                <td>lh-a11y-heading-order</td>
+              </tr>
+              <tr>
+                <td>Il browser registra errori all'apertura della pagina</td>
+                <td>Al caricamento compaiono errori nella console.</td>
+                <td>Guardate la scheda Console di Chrome.</td>
+                <td>lh-errors-in-console</td>
+              </tr>
+              <tr>
+                <td>La pagina usa funzioni che i browser stanno eliminando</td>
+                <td>Vengono usate funzioni del browser deprecate.</td>
+                <td>Aggiornate il vecchio plugin o la vecchia libreria.</td>
+                <td>lh-deprecations</td>
+              </tr>
+              <tr>
+                <td>Il browser segnala problemi nella pagina</td>
+                <td>
+                  Il pannello &quot;Issues&quot; di Chrome registra delle voci.
+                </td>
+                <td>
+                  Guardate la scheda Issues degli strumenti per sviluppatori.
+                </td>
+                <td>lh-inspector-issues</td>
+              </tr>
+              <tr>
+                <td>Alcune immagini sono mostrate con proporzioni errate</td>
+                <td>Le immagini sono mostrate con proporzioni errate.</td>
+                <td>Usate width/height corretti o object-fit.</td>
+                <td>lh-image-aspect-ratio</td>
+              </tr>
+              <tr>
+                <td>
+                  Alcune immagini hanno una risoluzione bassa per lo schermo
+                </td>
+                <td>
+                  Le immagini hanno una risoluzione troppo bassa per lo schermo.
+                </td>
+                <td>Offrite versioni più grandi con srcset.</td>
+                <td>lh-image-size-responsive</td>
+              </tr>
+              <tr>
+                <td>I testi dei link non sono descrittivi (Lighthouse)</td>
+                <td>I testi dei link non dicono nulla della destinazione.</td>
+                <td>
+                  Scrivete il testo in base all'argomento della destinazione.
+                </td>
+                <td>lh-link-text</td>
+              </tr>
+              <tr>
+                <td>La pagina reindirizza con meta refresh</td>
+                <td>La pagina reindirizza con meta refresh.</td>
+                <td>Fate il reindirizzamento sul server (301).</td>
+                <td>meta-refresh-redirect</td>
+              </tr>
+              <tr>
+                <td>L'indirizzo canonical è scritto in forma relativa</td>
+                <td>Il canonical è un percorso relativo.</td>
+                <td>Scrivete l'indirizzo completo (https://...).</td>
+                <td>canonical-relative</td>
+              </tr>
+              <tr>
+                <td>L'indirizzo canonical contiene un frammento #</td>
+                <td>Il canonical contiene un frammento #.</td>
+                <td>Togliete il # e ciò che segue.</td>
+                <td>canonical-with-fragment</td>
+              </tr>
+              <tr>
+                <td>La ricerca non mostra lo snippet della pagina</td>
+                <td>nosnippet o max-snippet:0 nascondono lo snippet.</td>
+                <td>Togliete la regola se non è voluta.</td>
+                <td>snippet-blocked</td>
+              </tr>
+              <tr>
+                <td>Un indirizzo e-mail è esposto in chiaro</td>
+                <td>
+                  Un indirizzo e-mail compare come testo semplice nella pagina.
+                </td>
+                <td>Valutate un modulo di contatto.</td>
+                <td>exposed-email-address</td>
+              </tr>
+              <tr>
+                <td>Le parole del titolo non compaiono nel contenuto</td>
+                <td>Le parole del titolo non compaiono nel contenuto.</td>
+                <td>Scrivete il titolo intorno all'argomento della pagina.</td>
+                <td>title-content-mismatch</td>
+              </tr>
+              <tr>
+                <td>I dati Organization non elencano profili social</td>
+                <td>Nei dati Organization manca sameAs.</td>
+                <td>
+                  Aggiungete in sameAs gli indirizzi dei profili ufficiali.
+                </td>
+                <td>organization-missing-sameas</td>
+              </tr>
+              <tr>
+                <td>
+                  Una pagina profonda non ha il percorso di navigazione
+                  (breadcrumb)
+                </td>
+                <td>Una pagina profonda non ha il percorso di navigazione.</td>
+                <td>Aggiungete il percorso di navigazione e BreadcrumbList.</td>
+                <td>missing-breadcrumbs</td>
+              </tr>
+              <tr>
+                <td>Il codice incorporato nella pagina è molto grande</td>
+                <td>Script e stili incorporati superano i 100 KB.</td>
+                <td>
+                  Spostate il codice incorporato più grande in file separati.
+                </td>
+                <td>large-inline-code</td>
+              </tr>
+              <tr>
+                <td>C'è un blog ma nessun feed RSS/Atom dichiarato</td>
+                <td>C'è un blog ma nessun feed RSS/Atom è dichiarato.</td>
+                <td>
+                  Dichiarate il feed con un tag link rel=&quot;alternate&quot;.
+                </td>
+                <td>missing-feed</td>
+              </tr>
+              <tr>
+                <td>robots.txt apre alcuni percorsi solo a Googlebot</td>
+                <td>
+                  Questi percorsi sono chiusi agli altri bot, quindi il
+                  controllo non li ha scansionati. Google invece può farlo.
+                </td>
+                <td>
+                  Non serve fare nulla. Se non c'è un motivo, rendete la regola
+                  uguale per tutti i bot.
+                </td>
+                <td>robots-googlebot-only-paths</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -2681,6 +3641,41 @@
           &quot;Sayfa hızını da ölç&quot; (Misura anche la velocità delle
           pagine) è attivo, e in base alla misurazione su telefono.
         </p>
+        <p>
+          Le regole il cui identificativo inizia con &quot;lh-&quot;, e le
+          regole &quot;da migliorare&quot; per LCP, CLS e INP, vengono lette dal
+          rapporto Lighthouse che PageSpeed Insights invia già per ogni pagina.
+          Anche queste agiscono solo quando &quot;Sayfa hızını da ölç&quot; è
+          attivo, e in base alla misurazione su telefono. Un controllo
+          Lighthouse che su una pagina non è stato eseguito o è fallito non
+          conta né come problema né come superato. &quot;Un link verso un altro
+          sito non funziona&quot; e &quot;Il file dell'immagine è troppo
+          grande&quot; agiscono solo se all'avvio è attivo &quot;Dış
+          bağlantıları ve görsel boyutlarını da kontrol et&quot; (Controlla
+          anche i link in uscita e le dimensioni delle immagini): finita la
+          scansione, vengono interrogati al massimo 300 indirizzi. I siti che
+          bloccano i bot, come i social network, e gli indirizzi che non
+          rispondono non contano mai come non funzionanti. Una regola che un
+          controllo non ha misurato compare come &quot;sconosciuta&quot; nella
+          scheda Kontroller, anche per i controlli fatti prima che queste regole
+          esistessero.
+        </p>
+        <p>
+          Alcune regole non guardano le pagine una per una: sondano il sito una
+          volta all'inizio del controllo e producono un solo problema.
+          Riguardano gli indirizzi con e senza www, il reindirizzamento da http
+          a https, la risposta a un indirizzo inesistente scelto a caso, un
+          robots.txt che chiude l'intero sito, la sua riga Sitemap e i bot di
+          IA, l'icona del sito, llms.txt, le intestazioni di sicurezza (HSTS,
+          X-Content-Type-Options, protezione dai frame, Referrer-Policy) e la
+          dimensione, la compressione e il tempo della prima risposta della
+          pagina iniziale. La scadenza del certificato SSL viene letta dai
+          registri pubblici dei certificati (Certificate Transparency), quella
+          del dominio dai dati di registrazione (RDAP), i record SPF e DMARC dal
+          DNS. &quot;L'ID Analytics delle pagine non corrisponde alla proprietà
+          collegata&quot; confronta l'ID di misurazione trovato nelle pagine con
+          quelli della proprietà Google Analytics collegata al progetto.
+        </p>
         <nav class="pager" aria-label="Pagina precedente e successiva">
           <a class="pager-prev" rel="prev" href="/it/docs/aiuto/"
             ><span>Precedente</span><strong>Aiuto</strong></a
@@ -2693,7 +3688,7 @@
           >
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 23 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 26 ottobre 2026. Se si nota un errore,
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

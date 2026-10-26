@@ -3,8 +3,8 @@
 > seowatcher (GitHub ve uygulama içi adı: seotracker), Google Search Console, Google Analytics 4, kendi site tarayıcısı ve PageSpeed Insights verisini tek panelde toplayan ücretsiz, açık kaynaklı (MIT) bir SEO uygulamasıdır. Windows 10/11 (64 bit) için tek kurulum dosyası vardır; Mac ve Linux'ta Docker ile çalışır. Tek kullanıcılıdır, yalnızca kullanıcının kendi bilgisayarından erişilir, veri o bilgisayarda saklanır. Google, denetlenen siteler ve GitHub ile bağlantı kurar; isteğe bağlı yapay zekâ bağlantısı seçilen sağlayıcıya veri gönderebilir. Abonelik ve hesap yoktur.
 > English: seowatcher (also named seotracker) is a free, MIT-licensed, self-hosted SEO app that reads Google Search Console, Google Analytics 4, its own crawler and PageSpeed Insights. Windows 10/11 installer; Docker on macOS/Linux. Single user, localhost only, data is stored on your machine. It connects to Google, audited sites and GitHub; optional AI integrations may send data to the selected provider. Derived from open-seo. The app's interface is available in Turkish and English; the website and this guide exist in Türkçe, English, Deutsch, Français, Italiano, Português.
 
-Hızlı bilgiler: sürüm 0.7.1 Alpha, 95 denetim kuralı, yapay zekâ asistanları için 33 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 86 MB, kurulu hali 313 MB; Visual C++ çalışma zamanı pakete dahildir.
-Quick facts: version 0.7.1 Alpha, 95 audit rules, 33 MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 86 MB, installed 313 MB; the Visual C++ runtime is bundled.
+Hızlı bilgiler: sürüm 0.7.1 Alpha, 201 denetim kuralı, yapay zekâ asistanları için 33 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 86 MB, kurulu hali 313 MB; Visual C++ çalışma zamanı pakete dahildir.
+Quick facts: version 0.7.1 Alpha, 201 audit rules, 33 MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 86 MB, installed 313 MB; the Visual C++ runtime is bundled.
 
 ## Ana bağlantılar / Main links
 - [seowatcher (Türkçe)](https://seowatcher.io/): Search Console, Analytics 4 ve site denetimi tek uygulamada. Ücretsiz ve açık kaynak. Yerel veri saklama; yapay zekâ bağlantısı isteğe bağlı.
@@ -36,7 +36,7 @@ Quick facts: version 0.7.1 Alpha, 95 audit rules, 33 MCP tools and 6 ready-made 
 - [Fırsatlar](https://seowatcher.io/docs/firsatlar/): Bu hafta hangi sayfanıza el atmanız gerektiğini söyler. Sayfaları dört gruba ayırır, puan verir ve her biri için ne yapacağınızı yazar.
 - [Kayıtlı kelimeler](https://seowatcher.io/docs/kayitli-kelimeler/): Önemsediğiniz aramaları buraya kaydeder, etiketler, son 90 günlük ortalama sıralarına bakarsınız. İsterseniz CSV ya da E-Tablolar'a aktarırsınız.
 - [Analytics](https://seowatcher.io/docs/analytics/): Aramadan gelenlerin sitede ne yaptığını görürsünüz: Google Analytics 4 raporları, anahtar olaylar ve ölçümün sağlam çalışıp çalışmadığı.
-- [Site denetimi](https://seowatcher.io/docs/site-denetimi/): Uygulama sitenizi sayfa sayfa gezer, 95 kurala göre kontrol eder ve sorunları önem sırasına dizer. Her sorunun yanında ne yapmanız gerektiği yazar.
+- [Site denetimi](https://seowatcher.io/docs/site-denetimi/): Uygulama sitenizi sayfa sayfa gezer, 201 kurala göre kontrol eder ve sorunları önem sırasına dizer. Her sorunun yanında ne yapmanız gerektiği yazar.
 - [Dizin durumu](https://seowatcher.io/docs/dizin-durumu/): Google her sayfanızı aramaya almış mı, almadıysa neden, en son ne zaman uğramış? Günde en çok 2.000 sorgu sorabilirsiniz.
 - [Raporlar ve şablonlar](https://seowatcher.io/docs/raporlar/): Denetimden indirdiğiniz ya da asistanınıza yazdırdığınız her rapor tek bir HTML dosyasıdır. Telefonda açarsınız, yazdırırsınız, e-postayla gönderirsiniz.
 - [Proje bilgisi](https://seowatcher.io/docs/proje-bilgisi/): Uygulamanın kendi başına bilemeyeceğini buraya yazarsınız: işiniz, hedefiniz, rakipleriniz, önemli sayfalarınız. Asistanınız önce burayı okur.
@@ -44,7 +44,7 @@ Quick facts: version 0.7.1 Alpha, 95 audit rules, 33 MCP tools and 6 ready-made 
 
 ## Kılavuz: Yardım ve başvuru
 - [Yardım](https://seowatcher.io/docs/yardim/): Bir şey ters giderse önce buraya bakın. Kurulumunuzu kontrol eder, sık sorunların çözümünü gösterir ve sorun bildirirken göndereceğiniz dosyayı hazırlar.
-- [Denetim kuralları](https://seowatcher.io/docs/denetim-kurallari/): Site denetiminin baktığı 95 kuralın tam listesi. Her kuralın ne demek olduğunu ve nasıl düzelteceğinizi buradan okursunuz.
+- [Denetim kuralları](https://seowatcher.io/docs/denetim-kurallari/): Site denetiminin baktığı 201 kuralın tam listesi. Her kuralın ne demek olduğunu ve nasıl düzelteceğinizi buradan okursunuz.
 - [Ajan kurulumu](https://seowatcher.io/docs/ajan-kurulumu/): Claude Code, Codex ya da Cursor'ı uygulamaya bağlarsınız: adres, parola, 33 araç, 6 hazır görev ve hangisinin Google kotasını harcadığı.
 - [Sorun giderme](https://seowatcher.io/docs/sorun-giderme/): Sık görülen sorunlar belirti, sebep ve çözümle: dolu adres numarası, Windows uyarısı, Google hataları, kota, takılan denetim, boş grafik, 401.
 - [Sürüm notları](https://seowatcher.io/docs/surum-notlari/): seowatcher 0.7.1 Alpha — duyuru uyumluluğu ve daha açıklayıcı tanılama paketleri.
@@ -63,7 +63,7 @@ Quick facts: version 0.7.1 Alpha, 95 audit rules, 33 MCP tools and 6 ready-made 
 - [Opportunities](https://seowatcher.io/en/docs/opportunities/): Tells you which of your pages to touch this week. It splits pages into four groups, scores them and writes the job to do for each.
 - [Saved keywords](https://seowatcher.io/en/docs/saved-keywords/): Tag the searches you have saved here, follow their average position over the last 90 days, and export to CSV or Sheets.
 - [Analytics](https://seowatcher.io/en/docs/analytics/): See what visitors from search do next. Google Analytics 4 reports, key events and whether your measurement is working properly.
-- [Site audit](https://seowatcher.io/en/docs/site-audit/): The app walks your site page by page, checks it against 95 rules and ranks the problems by importance, each with what to do about it.
+- [Site audit](https://seowatcher.io/en/docs/site-audit/): The app walks your site page by page, checks it against 201 rules and ranks the problems by importance, each with what to do about it.
 - [Index status](https://seowatcher.io/en/docs/index-status/): Google's answer for each of your pages: is it in search, if not why, and when it last visited. You can ask at most 2,000 queries a day.
 - [Reports and templates](https://seowatcher.io/en/docs/reports/): The reports you download from an audit or have your assistant write are a single HTML file. It opens on a phone, can be printed and can be shared.
 - [Project info](https://seowatcher.io/en/docs/project-context/): Write what the app cannot know about your site: the business, the goal, competitors, key pages. Your assistant reads it before it starts work.
@@ -71,7 +71,7 @@ Quick facts: version 0.7.1 Alpha, 95 audit rules, 33 MCP tools and 6 ready-made 
 
 ## Guide: Help and reference
 - [Help](https://seowatcher.io/en/docs/help/): The setup status card, quick actions, common problems and the diagnostics package you send when you report a problem.
-- [Audit rules](https://seowatcher.io/en/docs/audit-rules/): The list of 95 rules the site audit checks. For each rule you find what it means and how to fix it.
+- [Audit rules](https://seowatcher.io/en/docs/audit-rules/): The list of 201 rules the site audit checks. For each rule you find what it means and how to fix it.
 - [Agent setup](https://seowatcher.io/en/docs/agent-setup/): Connect Claude Code, Codex or Cursor to the app. The address, the password, the 33 tools and 6 ready-made task templates, and which ones use up Google quota.
 - [Troubleshooting](https://seowatcher.io/en/docs/troubleshooting/): The most common problems: symptom, cause and fix. Port in use, the Windows warning, Google errors, quota, a stuck audit, empty charts, assistant 401.
 - [Release notes](https://seowatcher.io/en/docs/release-notes/): seowatcher 0.7.1 Alpha — announcement compatibility and clearer diagnostic reports.
@@ -90,7 +90,7 @@ Quick facts: version 0.7.1 Alpha, 95 audit rules, 33 MCP tools and 6 ready-made 
 - [Chancen](https://seowatcher.io/de/docs/chancen/): Welche Ihrer Seiten Sie diese Woche anpacken sollten: vier Gruppen, ein Punktwert und zu jeder Seite die nächste Aufgabe.
 - [Gespeicherte Suchbegriffe](https://seowatcher.io/de/docs/gespeicherte-suchbegriffe/): Wichtige Suchanfragen speichern, mit Etiketten versehen und ihre Durchschnittsposition der letzten 90 Tage sehen. Export als CSV oder an Google Tabellen.
 - [Analytics](https://seowatcher.io/de/docs/analytics/): Was Besucher aus der Suche danach auf der Website tun: Berichte aus Google Analytics 4, Schlüsselereignisse und die Prüfung der Messung.
-- [Website-Audit](https://seowatcher.io/de/docs/website-audit/): Die App prüft Ihre Website Seite für Seite anhand von 95 Regeln und sortiert die Probleme nach Wichtigkeit. Zu jedem steht, was zu tun ist.
+- [Website-Audit](https://seowatcher.io/de/docs/website-audit/): Die App prüft Ihre Website Seite für Seite anhand von 201 Regeln und sortiert die Probleme nach Wichtigkeit. Zu jedem steht, was zu tun ist.
 - [Indexstatus](https://seowatcher.io/de/docs/indexstatus/): Ob Google Ihre Seiten in die Suche aufgenommen hat, warum nicht und wann es zuletzt vorbeikam. Höchstens 2.000 Abfragen pro Tag.
 - [Berichte und Vorlagen](https://seowatcher.io/de/docs/berichte/): Jeder Bericht ist eine einzelne HTML-Datei: auf dem Smartphone öffnen, drucken oder per E-Mail senden. Mit Vorlagen wiederholen Sie ihn.
 - [Projektinfo](https://seowatcher.io/de/docs/projektinfo/): Was die App nicht von allein wissen kann: Ihr Geschäft, Ihr Ziel, Ihre Wettbewerber, Ihre wichtigen Seiten. Ihr Assistent liest es, bevor er arbeitet.
@@ -98,7 +98,7 @@ Quick facts: version 0.7.1 Alpha, 95 audit rules, 33 MCP tools and 6 ready-made 
 
 ## Anleitung: Hilfe und Nachschlagen
 - [Hilfe](https://seowatcher.io/de/docs/hilfe/): Der Bildschirm prüft Ihre Installation, zeigt Lösungen für häufige Probleme und bereitet die Datei für eine Problemmeldung vor.
-- [Audit-Regeln](https://seowatcher.io/de/docs/audit-regeln/): Die vollständige Liste der 95 Regeln, die das Website-Audit prüft. Hier lesen Sie zu jeder Regel, was sie bedeutet und wie Sie sie beheben.
+- [Audit-Regeln](https://seowatcher.io/de/docs/audit-regeln/): Die vollständige Liste der 201 Regeln, die das Website-Audit prüft. Hier lesen Sie zu jeder Regel, was sie bedeutet und wie Sie sie beheben.
 - [Assistent einrichten](https://seowatcher.io/de/docs/assistent-einrichten/): Claude Code, Codex oder Cursor mit der App verbinden: Adresse, Passwort, 33 Werkzeuge, 6 fertige Aufgabenvorlagen und Google-Kontingent.
 - [Fehlerbehebung](https://seowatcher.io/de/docs/fehlerbehebung/): Häufige Probleme mit Symptom, Ursache und Lösung: Port, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme, Assistent 401.
 - [Versionshinweise](https://seowatcher.io/de/docs/versionshinweise/): seowatcher 0.7.1 Alpha — kompatible Ankündigungen und aussagekräftigere Diagnoseberichte.
@@ -117,7 +117,7 @@ Quick facts: version 0.7.1 Alpha, 95 audit rules, 33 MCP tools and 6 ready-made 
 - [Opportunités](https://seowatcher.io/fr/docs/opportunites/): L'écran désigne la page à travailler cette semaine. Il classe les pages en quatre groupes, leur donne un score et dit quoi faire pour chacune.
 - [Mots-clés enregistrés](https://seowatcher.io/fr/docs/mots-cles-enregistres/): Enregistrez les recherches qui comptent, étiquetez-les et suivez leur position moyenne sur 90 jours, avec un export en CSV ou vers Google Sheets.
 - [Analytics](https://seowatcher.io/fr/docs/analytics/): Ce que font sur le site les visiteurs venus de la recherche : rapports Google Analytics 4, événements clés et vérification que la mesure fonctionne.
-- [Audit du site](https://seowatcher.io/fr/docs/audit-du-site/): L'application parcourt votre site page par page, applique 95 règles et classe les problèmes par importance, chacun avec ce qu'il faut faire.
+- [Audit du site](https://seowatcher.io/fr/docs/audit-du-site/): L'application parcourt votre site page par page, applique 201 règles et classe les problèmes par importance, chacun avec ce qu'il faut faire.
 - [État de l'index](https://seowatcher.io/fr/docs/etat-de-l-index/): Google a-t-il indexé chacune de vos pages, sinon pourquoi, et quand l'a-t-il explorée pour la dernière fois ? Jusqu'à 2 000 pages vérifiées par jour.
 - [Rapports et modèles](https://seowatcher.io/fr/docs/rapports/): Chaque rapport, téléchargé depuis un audit ou rédigé par votre assistant, tient dans un seul fichier HTML à ouvrir sur mobile, imprimer ou envoyer.
 - [Infos du projet](https://seowatcher.io/fr/docs/infos-du-projet/): Écrivez ici ce que l'application ne peut pas deviner : activité, objectif, concurrents, pages importantes. Votre assistant le lit avant de commencer.
@@ -125,7 +125,7 @@ Quick facts: version 0.7.1 Alpha, 95 audit rules, 33 MCP tools and 6 ready-made 
 
 ## Guide: Aide et référence
 - [Aide](https://seowatcher.io/fr/docs/aide/): En cas de souci, commencez ici : l'écran vérifie l'installation, donne la solution aux problèmes courants et prépare le fichier à joindre au signalement.
-- [Règles d'audit](https://seowatcher.io/fr/docs/regles-d-audit/): La liste complète des 95 règles de l'audit du site. Pour chacune : ce qu'elle signifie et comment la corriger.
+- [Règles d'audit](https://seowatcher.io/fr/docs/regles-d-audit/): La liste complète des 201 règles de l'audit du site. Pour chacune : ce qu'elle signifie et comment la corriger.
 - [Installation de l'assistant](https://seowatcher.io/fr/docs/installation-assistant/): Connectez Claude Code, Codex ou Cursor à l'application : adresse, mot de passe, 33 outils, 6 modèles de tâches et ceux qui consomment le quota Google.
 - [Dépannage](https://seowatcher.io/fr/docs/depannage/): Problèmes fréquents par symptôme, cause et solution : port occupé, alerte Windows, erreurs Google, quota, audit bloqué, graphiques vides, assistant 401.
 - [Notes de version](https://seowatcher.io/fr/docs/notes-de-version/): seowatcher 0.7.1 Alpha — compatibilité des annonces et diagnostics plus précis.
@@ -144,7 +144,7 @@ Quick facts: version 0.7.1 Alpha, 95 audit rules, 33 MCP tools and 6 ready-made 
 - [Opportunità](https://seowatcher.io/it/docs/opportunita/): Indica su quale pagina conviene intervenire questa settimana. Divide le pagine in quattro gruppi, assegna un punteggio e scrive che cosa fare per ciascuna.
 - [Parole chiave salvate](https://seowatcher.io/it/docs/parole-chiave-salvate/): Si salvano le ricerche che contano, le si etichetta e si guarda la loro posizione media negli ultimi 90 giorni. Esportazione in CSV.
 - [Analytics](https://seowatcher.io/it/docs/analytics/): Che cosa fanno sul sito le persone arrivate dalla ricerca: rapporti di Google Analytics 4, eventi chiave e stato della misurazione.
-- [Controllo del sito](https://seowatcher.io/it/docs/controllo-del-sito/): L'app visita il sito pagina per pagina, lo controlla con 95 regole e ordina i problemi per gravità. Accanto a ogni problema è scritto che cosa fare.
+- [Controllo del sito](https://seowatcher.io/it/docs/controllo-del-sito/): L'app visita il sito pagina per pagina, lo controlla con 201 regole e ordina i problemi per gravità. Accanto a ogni problema è scritto che cosa fare.
 - [Stato dell'indice](https://seowatcher.io/it/docs/stato-indice/): Google ha incluso ogni pagina nella ricerca? Se no, perché, e quando l'ha visitata l'ultima volta? Si possono fare al massimo 2.000 richieste al giorno.
 - [Report e modelli](https://seowatcher.io/it/docs/report/): Ogni report scaricato dal controllo o fatto scrivere all'assistente è un solo file HTML. Si apre sul telefono, si stampa, si invia per e-mail.
 - [Informazioni sul progetto](https://seowatcher.io/it/docs/informazioni-progetto/): Qui si scrive ciò che l'app non può sapere: attività, obiettivo, concorrenti, pagine importanti. L'assistente la legge prima di lavorare.
@@ -152,7 +152,7 @@ Quick facts: version 0.7.1 Alpha, 95 audit rules, 33 MCP tools and 6 ready-made 
 
 ## Guida: Aiuto e riferimento
 - [Aiuto](https://seowatcher.io/it/docs/aiuto/): Se qualcosa va storto, guardare prima qui: controlla l'installazione, propone soluzioni ai problemi comuni e prepara il file per la segnalazione.
-- [Regole del controllo](https://seowatcher.io/it/docs/regole-del-controllo/): L'elenco completo delle 95 regole che il controllo del sito verifica. Qui si legge che cosa significa ogni regola e come correggerla.
+- [Regole del controllo](https://seowatcher.io/it/docs/regole-del-controllo/): L'elenco completo delle 201 regole che il controllo del sito verifica. Qui si legge che cosa significa ogni regola e come correggerla.
 - [Configurazione dell'assistente](https://seowatcher.io/it/docs/configurazione-assistente/): Si collega Claude Code, Codex o Cursor all'app: indirizzo, password, 33 strumenti, 6 attività pronte e quali consumano il limite di Google.
 - [Risoluzione dei problemi](https://seowatcher.io/it/docs/risoluzione-problemi/): I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, assistente 401.
 - [Note di versione](https://seowatcher.io/it/docs/note-di-rilascio/): seowatcher 0.7.1 Alpha — annunci compatibili e diagnostica più chiara.
@@ -171,7 +171,7 @@ Quick facts: version 0.7.1 Alpha, 95 audit rules, 33 MCP tools and 6 ready-made 
 - [Oportunidades](https://seowatcher.io/pt/docs/oportunidades/): Mostra em quais das suas páginas você deve mexer esta semana. Divide as páginas em quatro grupos, dá uma pontuação a cada uma e escreve o trabalho a fazer.
 - [Palavras-chave salvas](https://seowatcher.io/pt/docs/palavras-chave-salvas/): Organize com etiquetas as buscas que você salvou, acompanhe a posição média delas nos últimos 90 dias e exporte para CSV ou Planilhas.
 - [Analytics](https://seowatcher.io/pt/docs/analytics/): Veja o que os visitantes que vêm da busca fazem depois. Relatórios do Google Analytics 4, eventos-chave e se a sua medição está funcionando direito.
-- [Auditoria do site](https://seowatcher.io/pt/docs/auditoria-do-site/): O aplicativo percorre o seu site página por página, confere 95 regras e ordena os problemas por importância, cada um com o que fazer a respeito.
+- [Auditoria do site](https://seowatcher.io/pt/docs/auditoria-do-site/): O aplicativo percorre o seu site página por página, confere 201 regras e ordena os problemas por importância, cada um com o que fazer a respeito.
 - [Status de indexação](https://seowatcher.io/pt/docs/status-de-indexacao/): A resposta do Google para cada página: se está indexada, por que não está e quando foi visitada pela última vez. Até 2.000 consultas por dia.
 - [Relatórios e modelos](https://seowatcher.io/pt/docs/relatorios/): Os relatórios que você baixa de uma auditoria ou pede ao seu assistente são um único arquivo HTML. Abre no celular, pode ser impresso e pode ser compartilhado.
 - [Informações do projeto](https://seowatcher.io/pt/docs/informacoes-do-projeto/): Escreva aqui o que o aplicativo não tem como saber: o seu negócio, o objetivo, os concorrentes e as páginas-chave. O assistente lê isso antes de começar.
@@ -179,7 +179,7 @@ Quick facts: version 0.7.1 Alpha, 95 audit rules, 33 MCP tools and 6 ready-made 
 
 ## Guia: Ajuda e referência
 - [Ajuda](https://seowatcher.io/pt/docs/ajuda/): O cartão de estado da instalação, as ações rápidas, os problemas comuns e o pacote de diagnóstico que você envia ao relatar um problema.
-- [Regras de auditoria](https://seowatcher.io/pt/docs/regras-de-auditoria/): A lista das 95 regras que a auditoria do site confere. Para cada regra, você encontra o que ela significa e como corrigir.
+- [Regras de auditoria](https://seowatcher.io/pt/docs/regras-de-auditoria/): A lista das 201 regras que a auditoria do site confere. Para cada regra, você encontra o que ela significa e como corrigir.
 - [Configurar o agente](https://seowatcher.io/pt/docs/configurar-agente/): Conecte o Claude Code, o Codex ou o Cursor ao aplicativo: endereço, senha, as 33 ferramentas, os 6 modelos de tarefa e quais deles gastam a cota do Google.
 - [Solução de problemas](https://seowatcher.io/pt/docs/solucao-de-problemas/): Problemas mais comuns, com sintoma, causa e solução: porta em uso, aviso do Windows, erros do Google, cota, auditoria travada, gráficos vazios, erro 401.
 - [Notas da versão](https://seowatcher.io/pt/docs/notas-da-versao/): seowatcher 0.7.1 Alpha — compatibilidade dos avisos e diagnósticos mais claros.

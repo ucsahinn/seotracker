@@ -7,6 +7,7 @@ Fonctionnalités, corrections et autres changements, de la version la plus réce
 ### Corrections
 
 - **Annonces :** le flux fournit désormais un texte anglais de remplacement pour les champs de langue supplémentaires attendus par la version 0.7.0.
+- **Notifications :** les fenêtres système de Windows et du navigateur sont désactivées. Les annonces s’affichent dans la fenêtre de l’application tant qu’elle est visible et restent dans l’historique des notifications en arrière-plan. Les alertes importantes peuvent jouer le son de l’application.
 - **Aide · Diagnostic :** les audits échoués indiquent leur étape d’arrêt, un message expurgé et les erreurs PageSpeed les plus fréquentes. Les URL des pages sont retirées des résumés exportés.
 
 ## [0.7.0] Alpha — 2026-10-25

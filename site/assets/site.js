@@ -16,10 +16,6 @@
   var $$ = function (s, root) {
     return Array.prototype.slice.call((root || document).querySelectorAll(s));
   };
-  function motionStopped() {
-    return reduce || document.documentElement.hasAttribute("data-still");
-  }
-
   // 1. Headlines enter word by word on every device. The animation uses only
   // opacity and transform; it does not measure or rewrite layout on resize.
   $$("[data-words]").forEach(function (el) {
@@ -98,7 +94,7 @@
       return;
     }
     function step(t) {
-      if (motionStopped()) {
+      if (reduce) {
         el.textContent = fmt(num) + suffix;
         return;
       }
@@ -303,7 +299,7 @@
       cy = ty,
       raf = 0;
     var tick = function () {
-      if (motionStopped()) {
+      if (reduce) {
         raf = 0;
         return;
       }
@@ -319,7 +315,7 @@
     document.addEventListener(
       "pointermove",
       function (e) {
-        if (motionStopped()) return;
+        if (reduce) return;
         tx = e.clientX;
         ty = e.clientY;
         dots.classList.add("live");
@@ -449,7 +445,7 @@
     var running = null;
     summary.addEventListener("click", function (e) {
       if (running) running.cancel();
-      if (motionStopped()) {
+      if (reduce) {
         running = null;
         body.style.height = "";
         return;
@@ -511,7 +507,7 @@
   var magnets = $$("[data-magnet]");
   function frame() {
     raf = null;
-    if (motionStopped()) return;
+    if (reduce) return;
     tilts.forEach(function (el) {
       var r = el.getBoundingClientRect();
       if (r.bottom < 0 || r.top > window.innerHeight) return;
@@ -554,7 +550,7 @@
   window.addEventListener(
     "pointermove",
     function (e) {
-      if (motionStopped()) return;
+      if (reduce) return;
       px = e.clientX;
       py = e.clientY;
       if (!raf) raf = requestAnimationFrame(frame);
