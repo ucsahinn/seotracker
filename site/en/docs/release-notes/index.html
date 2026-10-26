@@ -7,7 +7,7 @@
     <script src="/assets/consent.js?v=3" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Release notes | seowatcher guide</title>
-    <meta name="description" content="seowatcher 0.7.1 Alpha — announcement compatibility and clearer diagnostic reports." />
+    <meta name="description" content="seowatcher 0.8.0 Alpha — a rebuilt 201-rule site audit, honest results, a to-do list ranked by traffic and the interface in six languages." />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/en/docs/release-notes/" />
     <link rel="alternate" hreflang="tr" href="https://seowatcher.io/docs/surum-notlari/" />
@@ -50,7 +50,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="seowatcher" />
     <meta property="og:title" content="Release notes | seowatcher guide" />
-    <meta property="og:description" content="seowatcher 0.7.1 Alpha — announcement compatibility and clearer diagnostic reports." />
+    <meta property="og:description" content="seowatcher 0.8.0 Alpha — a rebuilt 201-rule site audit, honest results, a to-do list ranked by traffic and the interface in six languages." />
     <meta property="og:image" content="https://seowatcher.io/assets/og-en.png" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
@@ -66,12 +66,12 @@
     <meta property="og:locale:alternate" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Release notes | seowatcher guide" />
-    <meta name="twitter:description" content="seowatcher 0.7.1 Alpha — announcement compatibility and clearer diagnostic reports." />
+    <meta name="twitter:description" content="seowatcher 0.8.0 Alpha — a rebuilt 201-rule site audit, honest results, a to-do list ranked by traffic and the interface in six languages." />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og-en.png" />
     <meta name="twitter:image:alt" content="seowatcher card: the app's dashboard with Search Console, Analytics 4 and site audit data, and a download button for Windows" />
     <meta name="color-scheme" content="dark" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/release-notes/#article","headline":"Release notes","description":"seowatcher 0.7.1 Alpha — announcement compatibility and clearer diagnostic reports.","url":"https://seowatcher.io/en/docs/release-notes/","inLanguage":"en","dateModified":"2026-10-26","articleSection":"Help and reference","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/release-notes/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/release-notes/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Release notes","item":"https://seowatcher.io/en/docs/release-notes/"}]}]}</script>
-    <script src="/assets/docs.js?v=0.7.1" defer></script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/release-notes/#article","headline":"Release notes","description":"seowatcher 0.8.0 Alpha — a rebuilt 201-rule site audit, honest results, a to-do list ranked by traffic and the interface in six languages.","url":"https://seowatcher.io/en/docs/release-notes/","inLanguage":"en","dateModified":"2026-10-26","articleSection":"Help and reference","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/release-notes/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/release-notes/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Release notes","item":"https://seowatcher.io/en/docs/release-notes/"}]}]}</script>
+    <script src="/assets/docs.js?v=0.8.0" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -168,6 +168,9 @@
         .dots::before {
           display: none;
         }
+      }
+      [data-still] .dots::before {
+        display: none;
       }
       * {
         box-sizing: border-box;
@@ -740,6 +743,15 @@
           transition: none;
         }
       }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
+
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
         html {
@@ -1216,10 +1228,9 @@
         </details>
       </aside>
       <article id="icerik" data-page="surum-notlari">
-        <h1>Release notes</h1><p class="lede">seowatcher 0.7.1 Alpha — announcement compatibility and clearer diagnostic reports.</p><p>The latest release is <strong>0.7.1 Alpha</strong>, October 26, 2026. Your data is kept when you update.</p>
+        <h1>Release notes</h1><p class="lede">seowatcher 0.8.0 Alpha — a rebuilt 201-rule site audit, honest results, a to-do list ranked by traffic and the interface in six languages.</p><p>The latest release is <strong>0.8.0 Alpha</strong>, October 26, 2026. Your data is kept when you update.</p>
 <p>For the first move from 2.x to 0.x.x Alpha, run the new installer manually; the old updater does not recognize the lower number as newer.</p>
-<p>Changes that are not released yet appear in a separate section at the top.</p>
-<h2 id="unreleased-0-8-0-alpha">Unreleased — 0.8.0 Alpha</h2>
+<h2 id="0-8-0-alpha-2026-10-26">0.8.0 Alpha — 2026-10-26</h2>
 <ul><li><strong>Site audit rebuilt:</strong> 201 rules look at pages and at the site as a whole, including security headers, email and domain records, SSL and domain expiry, AI crawler access and Lighthouse findings.</li><li><strong>Honest results:</strong> A check that could not be measured is no longer counted as &quot;passed&quot;, and a probe that could not run produces no finding. When data is missing, the screen says so.</li><li><strong>To-do order:</strong> Fixes are ranked by your Search Console traffic, and the score is weighted by category.</li><li><strong>New screen and report:</strong> Checks and Instant data tabs, search and share previews, score history and a redesigned downloadable report.</li><li><strong>Interface in six languages:</strong> German, French, Italian and Portuguese (Brazil) were added, so the whole app is available in six languages together with Turkish and English.</li></ul>
 <h3 id="site-audit">Site audit</h3>
 <ul><li><strong>Site-wide checks:</strong> Security headers (such as HSTS), redirects, the response to a page that does not exist, robots.txt, SPF and DMARC records, and the expiry dates of the SSL certificate and the domain are checked once at the start of the audit. Each produces a single finding.</li><li><strong>AI crawlers:</strong> The audit checks whether your robots.txt blocks AI crawlers such as GPTBot, ClaudeBot and PerplexityBot, and whether you have an llms.txt file.</li><li><strong>Lighthouse findings:</strong> With speed testing on, Lighthouse audits are listed as issues, each with its estimated savings.</li><li><strong>External links and images:</strong> Optionally, the audit checks whether external links open and whether images are larger than they need to be.</li><li><strong>More rules:</strong> 201 rules in total, with page signals and more than 20 new findings. What each rule means and how to fix it is explained in the Audit rules guide.</li><li><strong>Score:</strong> The score is calculated with weights per category.</li><li><strong>To-do:</strong> Things to fix are ranked by Search Console traffic. If Search Console is not connected, they are ranked by score impact only.</li><li><strong>Checks and Instant data:</strong> The Checks tab also lists the checks that passed and the ones that could not be measured. The Instant data tab shows the site information measured during the audit and, when available, Core Web Vitals.</li><li><strong>Previews:</strong> Google search result, share card (Open Graph) and mobile preview.</li><li><strong>History and report:</strong> Score history shows how the score changed between audits. The downloadable report was redesigned.</li></ul>
@@ -1258,7 +1269,7 @@
           >.
         </p>
       </article>
-      <nav class="toc" aria-label="On this page"><p class="toc-label">On this page</p><ol><li><a href="#unreleased-0-8-0-alpha">Unreleased — 0.8.0 Alpha</a></li><li><a href="#0-7-1-alpha-2026-10-26">0.7.1 Alpha — 2026-10-26</a></li><li><a href="#0-7-0-alpha-2026-10-25">0.7.0 Alpha — 2026-10-25</a></li><li><a href="#0-6-0-alpha-2026-10-24">0.6.0 Alpha — 2026-10-24</a></li><li><a href="#0-5-0-alpha-2026-10-23">0.5.0 Alpha — 2026-10-23</a></li><li><a href="#0-4-3-alpha-2026-10-22">0.4.3 Alpha — 2026-10-22</a></li><li><a href="#0-3-0-alpha-2026-10-21">0.3.0 Alpha — 2026-10-21</a></li><li><a href="#0-2-1-alpha-2026-10-04">0.2.1 Alpha — 2026-10-04</a></li><li><a href="#0-1-0-alpha-2026-10-02">0.1.0 Alpha — 2026-10-02</a></li><li><a href="#version-numbers">Version numbers</a></li></ol></nav>
+      <nav class="toc" aria-label="On this page"><p class="toc-label">On this page</p><ol><li><a href="#0-8-0-alpha-2026-10-26">0.8.0 Alpha — 2026-10-26</a></li><li><a href="#0-7-1-alpha-2026-10-26">0.7.1 Alpha — 2026-10-26</a></li><li><a href="#0-7-0-alpha-2026-10-25">0.7.0 Alpha — 2026-10-25</a></li><li><a href="#0-6-0-alpha-2026-10-24">0.6.0 Alpha — 2026-10-24</a></li><li><a href="#0-5-0-alpha-2026-10-23">0.5.0 Alpha — 2026-10-23</a></li><li><a href="#0-4-3-alpha-2026-10-22">0.4.3 Alpha — 2026-10-22</a></li><li><a href="#0-3-0-alpha-2026-10-21">0.3.0 Alpha — 2026-10-21</a></li><li><a href="#0-2-1-alpha-2026-10-04">0.2.1 Alpha — 2026-10-04</a></li><li><a href="#0-1-0-alpha-2026-10-02">0.1.0 Alpha — 2026-10-02</a></li><li><a href="#version-numbers">Version numbers</a></li></ol></nav>
     </main>
     <footer>
       <div class="wrap">

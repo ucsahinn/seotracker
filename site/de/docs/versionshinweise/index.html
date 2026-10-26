@@ -9,7 +9,7 @@
     <title>Versionshinweise | seowatcher-Anleitung</title>
     <meta
       name="description"
-      content="seowatcher 0.7.1 Alpha — kompatible Ankündigungen und aussagekräftigere Diagnoseberichte."
+      content="seowatcher 0.8.0 Alpha — neues Website-Audit mit 201 Regeln, ehrliche Ergebnisse, Aufgaben nach Traffic sortiert und die Oberfläche in sechs Sprachen."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -89,7 +89,7 @@
     />
     <meta
       property="og:description"
-      content="seowatcher 0.7.1 Alpha — kompatible Ankündigungen und aussagekräftigere Diagnoseberichte."
+      content="seowatcher 0.8.0 Alpha — neues Website-Audit mit 201 Regeln, ehrliche Ergebnisse, Aufgaben nach Traffic sortiert und die Oberfläche in sechs Sprachen."
     />
     <meta
       property="og:image"
@@ -120,7 +120,7 @@
     />
     <meta
       name="twitter:description"
-      content="seowatcher 0.7.1 Alpha — kompatible Ankündigungen und aussagekräftigere Diagnoseberichte."
+      content="seowatcher 0.8.0 Alpha — neues Website-Audit mit 201 Regeln, ehrliche Ergebnisse, Aufgaben nach Traffic sortiert und die Oberfläche in sechs Sprachen."
     />
     <meta
       name="twitter:image"
@@ -161,7 +161,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/de/docs/versionshinweise/#article",
             "headline": "Versionshinweise",
-            "description": "seowatcher 0.7.1 Alpha — kompatible Ankündigungen und aussagekräftigere Diagnoseberichte.",
+            "description": "seowatcher 0.8.0 Alpha — neues Website-Audit mit 201 Regeln, ehrliche Ergebnisse, Aufgaben nach Traffic sortiert und die Oberfläche in sechs Sprachen.",
             "url": "https://seowatcher.io/de/docs/versionshinweise/",
             "inLanguage": "de",
             "dateModified": "2026-10-26",
@@ -199,7 +199,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.7.1" defer></script>
+    <script src="/assets/docs.js?v=0.8.0" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -296,6 +296,9 @@
         .dots::before {
           display: none;
         }
+      }
+      [data-still] .dots::before {
+        display: none;
       }
       * {
         box-sizing: border-box;
@@ -868,6 +871,15 @@
           transition: none;
         }
       }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
+
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
         html {
@@ -1520,11 +1532,12 @@
       <article id="icerik" data-page="surum-notlari">
         <h1>Versionshinweise</h1>
         <p class="lede">
-          seowatcher 0.7.1 Alpha — kompatible Ankündigungen und
-          aussagekräftigere Diagnoseberichte.
+          seowatcher 0.8.0 Alpha — neues Website-Audit mit 201 Regeln, ehrliche
+          Ergebnisse, Aufgaben nach Traffic sortiert und die Oberfläche in sechs
+          Sprachen.
         </p>
         <p>
-          Die neueste Version ist <strong>0.7.1 Alpha</strong> vom 26. Oktober
+          Die neueste Version ist <strong>0.8.0 Alpha</strong> vom 26. Oktober
           2026. Ihre Daten bleiben beim Aktualisieren erhalten.
         </p>
         <p>
@@ -1532,13 +1545,7 @@
           Installationsprogramm manuell starten; der alte Updater erkennt die
           kleinere Nummer nicht als neuer.
         </p>
-        <p>
-          Noch nicht veröffentlichte Änderungen stehen oben in einem eigenen
-          Abschnitt.
-        </p>
-        <h2 id="unveroffentlicht-0-8-0-alpha">
-          Unveröffentlicht — 0.8.0 Alpha
-        </h2>
+        <h2 id="0-8-0-alpha-2026-10-26">0.8.0 Alpha — 2026-10-26</h2>
         <ul>
           <li>
             <strong>Website-Audit neu gebaut:</strong> 201 Regeln prüfen Seiten
@@ -2107,9 +2114,7 @@
         <p class="toc-label">Auf dieser Seite</p>
         <ol>
           <li>
-            <a href="#unveroffentlicht-0-8-0-alpha"
-              >Unveröffentlicht — 0.8.0 Alpha</a
-            >
+            <a href="#0-8-0-alpha-2026-10-26">0.8.0 Alpha — 2026-10-26</a>
           </li>
           <li>
             <a href="#0-7-1-alpha-2026-10-26">0.7.1 Alpha — 2026-10-26</a>

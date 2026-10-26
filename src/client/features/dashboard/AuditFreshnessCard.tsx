@@ -6,6 +6,12 @@ import { getIssueDescriptor } from "@/shared/audit-issues";
 import { formatCount } from "@/client/lib/format";
 import { t } from "@/shared/i18n";
 
+// Registry titles are Turkish source strings; translate at render time.
+function issueLabel(issueType: string): string {
+  const title = getIssueDescriptor(issueType)?.title;
+  return title ? t(title) : issueType;
+}
+
 /**
  * Two things the dashboard can say about the audit that a single crawl cannot:
  * that it has gone stale, and what changed since the crawl before it. The
@@ -126,9 +132,7 @@ function IssueDeltaList({
           {items.slice(0, 4).map((item) => {
             const label = (
               <>
-                <span className="truncate">
-                  {getIssueDescriptor(item.issueType)?.title ?? item.issueType}
-                </span>
+                <span className="truncate">{issueLabel(item.issueType)}</span>
                 <span
                   className={`inline-flex shrink-0 items-center gap-1 tabular-nums ${
                     tone === "new"

@@ -1,16 +1,14 @@
 ---
 title: Notas da versão
-description: seowatcher 0.7.1 Alpha — compatibilidade dos avisos e diagnósticos mais claros.
+description: seowatcher 0.8.0 Alpha — auditoria do site refeita com 201 regras, resultados honestos, tarefas ordenadas por tráfego e a interface em seis idiomas.
 updated: 2026-10-26
 ---
 
-A versão mais recente é a **0.7.1 Alpha**, de 26 de outubro de 2026. Os dados são mantidos na atualização.
+A versão mais recente é a **0.8.0 Alpha**, de 26 de outubro de 2026. Os dados são mantidos na atualização.
 
 Para passar de 2.x para 0.x.x Alpha, execute o novo instalador manualmente; o atualizador antigo não reconhece o número menor como mais recente.
 
-As mudanças ainda não lançadas ficam em uma seção separada, no topo.
-
-## Não lançado — 0.8.0 Alpha
+## 0.8.0 Alpha — 2026-10-26
 
 - **Auditoria do site reconstruída:** 201 regras examinam as páginas e o site como um todo, incluindo cabeçalhos de segurança, registros de e-mail e de domínio, vencimento do SSL e do domínio, acesso de rastreadores de IA e resultados do Lighthouse.
 - **Resultados honestos:** uma verificação impossível de medir deixa de contar como "aprovada", e uma consulta que não pôde ser feita não gera achado. Quando faltam dados, a tela diz isso com clareza.
@@ -38,7 +36,6 @@ As mudanças ainda não lançadas ficam em uma seção separada, no topo.
 - **Ferramentas para agentes:** a nova ferramenta `get_audit_summary` devolve, em uma única chamada, a pontuação do site, as pontuações por categoria, a lista ordenada de tarefas e os dados instantâneos do site.
 - **Guia:** a página Regras de auditoria explica as 201 regras uma a uma; o guia e as notas de versão estão disponíveis em seis idiomas.
 - **seowatcher.io · privacidade:** no site, o Google Analytics 4 só funciona se houver um ID de medição definido e você escolher Aceitar; nada é enviado ao Google antes do seu consentimento. A página de privacidade está disponível em seis idiomas.
-- **Notificações:** os pop-ups de sistema do Windows e do navegador foram desativados. Os avisos aparecem no pop-up do próprio aplicativo enquanto ele está visível e ficam no histórico de notificações em segundo plano. Alertas importantes podem tocar o som do aplicativo.
 
 ### Correções
 

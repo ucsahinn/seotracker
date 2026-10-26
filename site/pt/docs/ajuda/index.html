@@ -187,7 +187,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.7.1" defer></script>
+    <script src="/assets/docs.js?v=0.8.0" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -284,6 +284,9 @@
         .dots::before {
           display: none;
         }
+      }
+      [data-still] .dots::before {
+        display: none;
       }
       * {
         box-sizing: border-box;
@@ -856,6 +859,15 @@
           transition: none;
         }
       }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
+
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
         html {

@@ -76,7 +76,7 @@ export function MetricTile({
       {value === null ? (
         <p className="text-2xl font-semibold text-subtle">–</p>
       ) : (
-        <div className="flex items-baseline gap-2">
+        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
           {/* Remounted by the key when a refetch changes the number, so the
               tint plays then and not on first paint. */}
           <p

@@ -27,9 +27,7 @@ Her sürümde eklenen özellikler ve düzeltilen sorunlar, en yeni sürümden ba
 
 **v2.4.3 veya daha eski bir Windows kurulumunuz varsa:** Eski güncelleyici 0.x numarasını daha küçük sayıp yeni sürüm olarak görmez, bu yüzden kendiliğinden güncellenmez. En son sürümün kurulum dosyasını GitHub sürüm sayfasından bir kez elle çalıştırın. Verileriniz ve Google bağlantılarınız korunur. Sonraki güncellemeler her zamanki gibi gelir.
 
-## [Yayınlanmamış] — 0.8.0 Alpha olarak yayımlanacak
-
-0.7.1'den bu yana hazırlanan, henüz yayımlanmamış değişiklikler. Yayın gününde bu başlık sürüm numarası ve tarihle değiştirilir.
+## [0.8.0] Alpha — 2026-10-26
 
 ### Öne çıkanlar
 
@@ -59,7 +57,6 @@ Her sürümde eklenen özellikler ve düzeltilen sorunlar, en yeni sürümden ba
 - **Ajan araçları:** Yeni `get_audit_summary` aracı site puanını, kategori puanlarını, sıralı yapılacaklar listesini ve sitenin anlık verisini tek çağrıda verir.
 - **Kılavuz:** Denetim kuralları sayfası 201 kuralı tek tek anlatır; kılavuz ve sürüm notları altı dilde sunulur.
 - **seowatcher.io · gizlilik:** Sitede Google Analytics 4 yalnızca ölçüm kimliği tanımlıysa ve Kabul et derseniz çalışır; kabul etmeden Google'a hiçbir veri gitmez. Gizlilik sayfası altı dilde sunulur.
-- **Bildirimler:** Windows ve tarayıcı sistem popup'ları kaldırıldı. Duyurular, uygulama görünürken kendi popup'ında; arka plandayken uygulama içi bildirim geçmişinde gösterilir. Önemli bildirimlerde uygulama sesi kullanılabilir.
 
 ### Düzeltmeler
 

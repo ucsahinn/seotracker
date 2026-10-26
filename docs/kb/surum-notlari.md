@@ -1,16 +1,14 @@
 ---
 title: Sürüm notları
-description: seowatcher 0.7.1 Alpha — duyuru uyumluluğu ve daha açıklayıcı tanılama paketleri.
+description: seowatcher 0.8.0 Alpha — 201 kurallı yeni site denetimi, dürüst sonuçlar, trafiğe göre yapılacaklar ve altı dilde arayüz.
 updated: 2026-10-26
 ---
 
-Son sürüm **0.7.1 Alpha**, 26 Ekim 2026. Güncellerken veriniz korunur.
+Son sürüm **0.8.0 Alpha**, 26 Ekim 2026. Güncellerken veriniz korunur.
 
 2.x serisinden 0.x.x Alpha serisine ilk geçiş için yeni kurulum dosyasını elle çalıştırın; eski otomatik güncelleyici küçük numarayı yeni sürüm olarak tanımaz.
 
-Henüz yayımlanmamış değişiklikler en üstte ayrı bir bölümde durur.
-
-## Yayınlanmamış — 0.8.0 Alpha
+## 0.8.0 Alpha — 2026-10-26
 
 - **Site denetimi yeniden yazıldı:** 201 kural sayfalara ve sitenin bütününe bakar; güvenlik başlıkları, e-posta ve alan adı kayıtları, SSL ve alan adı süreleri, yapay zekâ botlarının erişimi ve Lighthouse bulguları da içindedir.
 - **Dürüst sonuç:** Ölçülemeyen bir kontrol artık "geçti" sayılmaz ve ölçemeyen bir yoklama bulgu üretmez. Veri yoksa ekran bunu açıkça söyler.
@@ -38,7 +36,6 @@ Henüz yayımlanmamış değişiklikler en üstte ayrı bir bölümde durur.
 - **Ajan araçları:** Yeni `get_audit_summary` aracı site puanını, kategori puanlarını, sıralı yapılacaklar listesini ve sitenin anlık verisini tek çağrıda verir.
 - **Kılavuz:** Denetim kuralları sayfası 201 kuralı tek tek anlatır; kılavuz ve sürüm notları altı dilde sunulur.
 - **seowatcher.io · gizlilik:** Sitede Google Analytics 4 yalnızca ölçüm kimliği tanımlıysa ve Kabul et derseniz çalışır; kabul etmeden Google'a hiçbir veri gitmez. Gizlilik sayfası altı dilde sunulur.
-- **Bildirimler:** Windows ve tarayıcı sistem popup'ları kaldırıldı. Duyurular, uygulama görünürken kendi popup'ında; arka plandayken uygulama içi bildirim geçmişinde gösterilir. Önemli bildirimlerde uygulama sesi kullanılabilir.
 
 ### Düzeltmeler
 

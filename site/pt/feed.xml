@@ -11,10 +11,10 @@
   </author>
   <icon>https://seowatcher.io/assets/icon-256.png</icon>
   <entry>
-    <id>https://seowatcher.io/pt/docs/notas-da-versao/#0.7.1</id>
-    <title>Notas da versão: seowatcher 0.7.1</title>
+    <id>https://seowatcher.io/pt/docs/notas-da-versao/#0.8.0</id>
+    <title>Notas da versão: seowatcher 0.8.0</title>
     <updated>2026-10-26T00:00:00Z</updated>
     <link rel="alternate" type="text/html" href="https://seowatcher.io/pt/docs/notas-da-versao/" />
-    <summary>seowatcher 0.7.1 Alpha — compatibilidade dos avisos e diagnósticos mais claros.</summary>
+    <summary>seowatcher 0.8.0 Alpha — auditoria do site refeita com 201 regras, resultados honestos, tarefas ordenadas por tráfego e a interface em seis idiomas.</summary>
   </entry>
 </feed>

@@ -9,7 +9,7 @@
     <title>Note di versione | guida di seowatcher</title>
     <meta
       name="description"
-      content="seowatcher 0.7.1 Alpha — annunci compatibili e diagnostica più chiara."
+      content="seowatcher 0.8.0 Alpha — controllo del sito rifatto con 201 regole, risultati onesti, attività ordinate per traffico e interfaccia in sei lingue."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -89,7 +89,7 @@
     />
     <meta
       property="og:description"
-      content="seowatcher 0.7.1 Alpha — annunci compatibili e diagnostica più chiara."
+      content="seowatcher 0.8.0 Alpha — controllo del sito rifatto con 201 regole, risultati onesti, attività ordinate per traffico e interfaccia in sei lingue."
     />
     <meta
       property="og:image"
@@ -120,7 +120,7 @@
     />
     <meta
       name="twitter:description"
-      content="seowatcher 0.7.1 Alpha — annunci compatibili e diagnostica più chiara."
+      content="seowatcher 0.8.0 Alpha — controllo del sito rifatto con 201 regole, risultati onesti, attività ordinate per traffico e interfaccia in sei lingue."
     />
     <meta
       name="twitter:image"
@@ -161,7 +161,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/it/docs/note-di-rilascio/#article",
             "headline": "Note di versione",
-            "description": "seowatcher 0.7.1 Alpha — annunci compatibili e diagnostica più chiara.",
+            "description": "seowatcher 0.8.0 Alpha — controllo del sito rifatto con 201 regole, risultati onesti, attività ordinate per traffico e interfaccia in sei lingue.",
             "url": "https://seowatcher.io/it/docs/note-di-rilascio/",
             "inLanguage": "it",
             "dateModified": "2026-10-26",
@@ -199,7 +199,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.7.1" defer></script>
+    <script src="/assets/docs.js?v=0.8.0" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -296,6 +296,9 @@
         .dots::before {
           display: none;
         }
+      }
+      [data-still] .dots::before {
+        display: none;
       }
       * {
         box-sizing: border-box;
@@ -868,6 +871,15 @@
           transition: none;
         }
       }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
+
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
         html {
@@ -1540,10 +1552,12 @@
       <article id="icerik" data-page="surum-notlari">
         <h1>Note di versione</h1>
         <p class="lede">
-          seowatcher 0.7.1 Alpha — annunci compatibili e diagnostica più chiara.
+          seowatcher 0.8.0 Alpha — controllo del sito rifatto con 201 regole,
+          risultati onesti, attività ordinate per traffico e interfaccia in sei
+          lingue.
         </p>
         <p>
-          L’ultima versione è la <strong>0.7.1 Alpha</strong>, del 26 ottobre
+          L’ultima versione è la <strong>0.8.0 Alpha</strong>, del 26 ottobre
           2026. I dati restano intatti durante l’aggiornamento.
         </p>
         <p>
@@ -1551,11 +1565,7 @@
           programma di installazione; il vecchio aggiornamento non riconosce il
           numero inferiore come più recente.
         </p>
-        <p>
-          Le modifiche non ancora rilasciate si trovano in una sezione separata
-          in alto.
-        </p>
-        <h2 id="non-rilasciato-0-8-0-alpha">Non rilasciato — 0.8.0 Alpha</h2>
+        <h2 id="0-8-0-alpha-2026-10-26">0.8.0 Alpha — 2026-10-26</h2>
         <ul>
           <li>
             <strong>Verifica del sito riscritta:</strong> 201 regole esaminano
@@ -2120,9 +2130,7 @@
         <p class="toc-label">In questa pagina</p>
         <ol>
           <li>
-            <a href="#non-rilasciato-0-8-0-alpha"
-              >Non rilasciato — 0.8.0 Alpha</a
-            >
+            <a href="#0-8-0-alpha-2026-10-26">0.8.0 Alpha — 2026-10-26</a>
           </li>
           <li>
             <a href="#0-7-1-alpha-2026-10-26">0.7.1 Alpha — 2026-10-26</a>

@@ -1,16 +1,14 @@
 ---
 title: Notes de version
-description: seowatcher 0.7.1 Alpha — compatibilité des annonces et diagnostics plus précis.
+description: seowatcher 0.8.0 Alpha — un audit du site refait avec 201 règles, des résultats honnêtes, des tâches classées par trafic et l’interface en six langues.
 updated: 2026-10-26
 ---
 
-La dernière version est la **0.7.1 Alpha**, du 26 octobre 2026. Vos données sont conservées lors de la mise à jour.
+La dernière version est la **0.8.0 Alpha**, du 26 octobre 2026. Vos données sont conservées lors de la mise à jour.
 
 Pour passer de 2.x à 0.x.x Alpha, lancez le nouvel installateur manuellement ; l’ancien outil ne reconnaît pas le numéro inférieur comme plus récent.
 
-Les changements pas encore publiés figurent dans une section séparée, en haut.
-
-## Non publié — 0.8.0 Alpha
+## 0.8.0 Alpha — 2026-10-26
 
 - **Audit du site entièrement refait:** 201 règles examinent les pages et le site dans son ensemble, avec notamment les en-têtes de sécurité, les enregistrements d’e-mail et de domaine, l’expiration du SSL et du domaine, l’accès des robots d’IA et les résultats de Lighthouse.
 - **Des résultats honnêtes:** une vérification impossible à mesurer n’est plus comptée comme « réussie », et un sondage qui n’a pas pu s’exécuter ne produit aucun constat. Quand les données manquent, l’écran le dit clairement.
@@ -38,7 +36,6 @@ Les changements pas encore publiés figurent dans une section séparée, en haut
 - **Outils pour agents:** le nouvel outil `get_audit_summary` renvoie en un seul appel le score du site, les scores par catégorie, la liste ordonnée des tâches et l’instantané du site.
 - **Guide:** la page Règles d’audit décrit les 201 règles une par une; le guide et les notes de version sont disponibles en six langues.
 - **seowatcher.io · confidentialité:** sur le site web, Google Analytics 4 ne fonctionne que si un identifiant de mesure est défini et que vous choisissez Accepter; rien n’est envoyé à Google avant votre accord. La page de confidentialité existe en six langues.
-- **Notifications :** les fenêtres système de Windows et du navigateur sont désactivées. Les annonces s’affichent dans la fenêtre de l’application tant qu’elle est visible et restent dans l’historique des notifications en arrière-plan. Les alertes importantes peuvent jouer le son de l’application.
 
 ### Corrections
 

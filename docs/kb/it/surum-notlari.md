@@ -1,16 +1,14 @@
 ---
 title: Note di versione
-description: seowatcher 0.7.1 Alpha — annunci compatibili e diagnostica più chiara.
+description: seowatcher 0.8.0 Alpha — controllo del sito rifatto con 201 regole, risultati onesti, attività ordinate per traffico e interfaccia in sei lingue.
 updated: 2026-10-26
 ---
 
-L’ultima versione è la **0.7.1 Alpha**, del 26 ottobre 2026. I dati restano intatti durante l’aggiornamento.
+L’ultima versione è la **0.8.0 Alpha**, del 26 ottobre 2026. I dati restano intatti durante l’aggiornamento.
 
 Per passare da 2.x a 0.x.x Alpha, avviare manualmente il nuovo programma di installazione; il vecchio aggiornamento non riconosce il numero inferiore come più recente.
 
-Le modifiche non ancora rilasciate si trovano in una sezione separata in alto.
-
-## Non rilasciato — 0.8.0 Alpha
+## 0.8.0 Alpha — 2026-10-26
 
 - **Verifica del sito riscritta:** 201 regole esaminano le pagine e il sito nel suo insieme, tra cui intestazioni di sicurezza, record di e-mail e dominio, scadenza di SSL e dominio, accesso dei crawler IA e risultati di Lighthouse.
 - **Risultati onesti:** un controllo non misurabile non conta più come «superato» e un sondaggio che non ha potuto girare non produce segnalazioni. Se mancano i dati, la schermata lo dice chiaramente.
@@ -38,7 +36,6 @@ Le modifiche non ancora rilasciate si trovano in una sezione separata in alto.
 - **Strumenti per gli agenti:** il nuovo strumento `get_audit_summary` restituisce in una sola chiamata il punteggio del sito, i punteggi per categoria, l’elenco ordinato delle attività e i dati immediati del sito.
 - **Guida:** la pagina Regole di verifica descrive una per una tutte le 201 regole; la guida e le note di rilascio sono disponibili in sei lingue.
 - **seowatcher.io · privacy:** sul sito web Google Analytics 4 funziona solo se è impostato un ID di misurazione e scegli Accetta; prima del tuo consenso non viene inviato nulla a Google. La pagina sulla privacy è disponibile in sei lingue.
-- **Notifiche:** i popup di sistema di Windows e del browser sono disattivati. Gli annunci compaiono nel popup dell’app quando è visibile e restano nella cronologia delle notifiche in background. Gli avvisi importanti possono riprodurre il suono dell’app.
 
 ### Correzioni
 

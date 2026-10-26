@@ -2,9 +2,7 @@
 
 Funzionalità, correzioni e altre modifiche, dalla versione più recente.
 
-## [Yayınlanmamış] — uscirà come 0.8.0 Alpha
-
-Modifiche preparate dopo la versione 0.7.1 e non ancora pubblicate. Il giorno del rilascio questo titolo viene sostituito dal numero di versione e dalla data.
+## [0.8.0] Alpha — 2026-10-26
 
 ### In evidenza
 
@@ -34,7 +32,6 @@ Modifiche preparate dopo la versione 0.7.1 e non ancora pubblicate. Il giorno de
 - **Strumenti per gli agenti:** il nuovo strumento `get_audit_summary` restituisce in una sola chiamata il punteggio del sito, i punteggi per categoria, l’elenco ordinato delle attività e i dati immediati del sito.
 - **Guida:** la pagina Regole di verifica descrive una per una tutte le 201 regole; la guida e le note di rilascio sono disponibili in sei lingue.
 - **seowatcher.io · privacy:** sul sito web Google Analytics 4 funziona solo se è impostato un ID di misurazione e scegli Accetta; prima del tuo consenso non viene inviato nulla a Google. La pagina sulla privacy è disponibile in sei lingue.
-- **Notifiche:** i popup di sistema di Windows e del browser sono disattivati. Gli annunci compaiono nel popup dell’app quando è visibile e restano nella cronologia delle notifiche in background. Gli avvisi importanti possono riprodurre il suono dell’app.
 
 ### Correzioni
 

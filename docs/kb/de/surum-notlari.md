@@ -1,16 +1,14 @@
 ---
 title: Versionshinweise
-description: seowatcher 0.7.1 Alpha — kompatible Ankündigungen und aussagekräftigere Diagnoseberichte.
+description: seowatcher 0.8.0 Alpha — neues Website-Audit mit 201 Regeln, ehrliche Ergebnisse, Aufgaben nach Traffic sortiert und die Oberfläche in sechs Sprachen.
 updated: 2026-10-26
 ---
 
-Die neueste Version ist **0.7.1 Alpha** vom 26. Oktober 2026. Ihre Daten bleiben beim Aktualisieren erhalten.
+Die neueste Version ist **0.8.0 Alpha** vom 26. Oktober 2026. Ihre Daten bleiben beim Aktualisieren erhalten.
 
 Für den ersten Wechsel von 2.x zu 0.x.x Alpha das neue Installationsprogramm manuell starten; der alte Updater erkennt die kleinere Nummer nicht als neuer.
 
-Noch nicht veröffentlichte Änderungen stehen oben in einem eigenen Abschnitt.
-
-## Unveröffentlicht — 0.8.0 Alpha
+## 0.8.0 Alpha — 2026-10-26
 
 - **Website-Audit neu gebaut:** 201 Regeln prüfen Seiten und die gesamte Website, darunter Sicherheits-Header, E-Mail- und Domain-Einträge, SSL- und Domain-Ablauf, den Zugriff von KI-Crawlern und Lighthouse-Ergebnisse.
 - **Ehrliche Ergebnisse:** Eine nicht messbare Prüfung zählt nicht mehr als „bestanden“, und eine Abfrage, die nicht laufen konnte, erzeugt kein Ergebnis. Fehlen Daten, sagt die Anzeige das deutlich.
@@ -38,7 +36,6 @@ Noch nicht veröffentlichte Änderungen stehen oben in einem eigenen Abschnitt.
 - **Agent-Werkzeuge:** Das neue Werkzeug `get_audit_summary` liefert Website-Score, Kategorie-Scores, die sortierte Aufgabenliste und die Momentaufnahme der Website in einem Aufruf.
 - **Anleitung:** Die Seite „Audit-Regeln“ erklärt alle 201 Regeln einzeln; Anleitung und Versionshinweise gibt es in sechs Sprachen.
 - **seowatcher.io · Datenschutz:** Auf der Website läuft Google Analytics 4 nur, wenn eine Mess-ID gesetzt ist und Sie „Akzeptieren“ wählen; vor Ihrer Zustimmung geht nichts an Google. Die Datenschutzseite gibt es in sechs Sprachen.
-- **Benachrichtigungen:** System-Popups von Windows und Browser sind abgeschaltet. Ankündigungen erscheinen im eigenen Popup der App, solange sie sichtbar ist, und bleiben im Hintergrund im Benachrichtigungsverlauf. Wichtige Hinweise können den App-Ton abspielen.
 
 ### Fehlerbehebungen
 

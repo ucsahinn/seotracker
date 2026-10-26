@@ -2,9 +2,7 @@
 
 Features, fixes and other changes, newest release first.
 
-## [Yayınlanmamış] — to be released as 0.8.0 Alpha
-
-Changes prepared since 0.7.1 that are not released yet. On release day this heading is replaced with the version number and date.
+## [0.8.0] Alpha — 2026-10-26
 
 ### Highlights
 
@@ -34,7 +32,6 @@ Changes prepared since 0.7.1 that are not released yet. On release day this head
 - **Agent tools:** The new `get_audit_summary` tool returns the site score, category scores, the ranked to-do list and the site's instant data in a single call.
 - **Guide:** The Audit rules page explains all 201 rules one by one; the guide and the release notes are available in six languages.
 - **seowatcher.io · privacy:** On the website, Google Analytics 4 runs only if a measurement ID is set and you choose Accept; nothing is sent to Google before you accept. The privacy page is available in six languages.
-- **Notifications:** Windows and browser system popups are disabled. Announcements use the app's own popup while it is visible and stay in its notification history in the background. Important alerts can play the app's sound.
 
 ### Fixes
 

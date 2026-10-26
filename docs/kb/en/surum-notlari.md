@@ -1,16 +1,14 @@
 ---
 title: Release notes
-description: seowatcher 0.7.1 Alpha — announcement compatibility and clearer diagnostic reports.
+description: seowatcher 0.8.0 Alpha — a rebuilt 201-rule site audit, honest results, a to-do list ranked by traffic and the interface in six languages.
 updated: 2026-10-26
 ---
 
-The latest release is **0.7.1 Alpha**, October 26, 2026. Your data is kept when you update.
+The latest release is **0.8.0 Alpha**, October 26, 2026. Your data is kept when you update.
 
 For the first move from 2.x to 0.x.x Alpha, run the new installer manually; the old updater does not recognize the lower number as newer.
 
-Changes that are not released yet appear in a separate section at the top.
-
-## Unreleased — 0.8.0 Alpha
+## 0.8.0 Alpha — 2026-10-26
 
 - **Site audit rebuilt:** 201 rules look at pages and at the site as a whole, including security headers, email and domain records, SSL and domain expiry, AI crawler access and Lighthouse findings.
 - **Honest results:** A check that could not be measured is no longer counted as "passed", and a probe that could not run produces no finding. When data is missing, the screen says so.
@@ -38,7 +36,6 @@ Changes that are not released yet appear in a separate section at the top.
 - **Agent tools:** The new `get_audit_summary` tool returns the site score, category scores, the ranked to-do list and the site's instant data in a single call.
 - **Guide:** The Audit rules page explains all 201 rules one by one; the guide and the release notes are available in six languages.
 - **seowatcher.io · privacy:** On the website, Google Analytics 4 runs only if a measurement ID is set and you choose Accept; nothing is sent to Google before you accept. The privacy page is available in six languages.
-- **Notifications:** Windows and browser system popups are disabled. Announcements use the app's own popup while it is visible and stay in its notification history in the background. Important alerts can play the app's sound.
 
 ### Fixes
 
