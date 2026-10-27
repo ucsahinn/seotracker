@@ -1,5 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { GscHistoryRepository } from "./GscHistoryRepository";
+import {
+  readRankingArchive,
+  readRankingQueryArchive,
+} from "../services/rankingArchiveRead";
 
 const testDb = await vi.hoisted(async () =>
   (await import("@/server/test-support/sqlite-test-db")).createTestDb(),
@@ -33,6 +37,7 @@ function count(table: string) {
 
 beforeEach(() => {
   for (const table of [
+    "gsc_archive_coverage",
     "gsc_connections",
     "gsc_query_daily",
     "gsc_archive_state",
@@ -74,5 +79,94 @@ describe("GscHistoryRepository property fence", () => {
 
     expect(count("gsc_query_daily")).toBe(0);
     expect(count("gsc_archive_state")).toBe(0);
+  });
+});
+
+describe("bounded ranking reads and coverage", () => {
+  it("reconciles table and detail means for the same query and exact dates", async () => {
+    await GscHistoryRepository.upsertDailyRows("p1", "sc-domain:new.test", [
+      { ...day, date: "2025-12-31", position: 5 },
+      { ...day, date: "2026-01-01", position: 3 },
+      { ...day, date: "2026-01-02", position: 30 },
+    ]);
+    const scope = {
+      projectId: "p1",
+      days: 7,
+      startDate: "2026-01-01",
+      endDate: "2026-01-01",
+    };
+    const table = await readRankingArchive({ ...scope, limit: 25, offset: 0 });
+    const detail = await readRankingQueryArchive({ ...scope, query: "q" });
+    expect(detail.comparison).toMatchObject({
+      position: table.rows[0]?.position,
+      delta: 2,
+    });
+    expect(table.rows[0]?.impressions).toBe(
+      detail.rows.reduce((sum, row) => sum + row.impressions, 0),
+    );
+    expect(table.coverage).toEqual({
+      complete: 0,
+      limited: 0,
+      failed: 0,
+      unknown: 1,
+    });
+  });
+  it("excludes after-end observations from aggregates, daily history and weekly lines", async () => {
+    await GscHistoryRepository.upsertDailyRows("p1", "sc-domain:new.test", [
+      { ...day, date: "2026-01-01", position: 3 },
+      { ...day, date: "2026-01-02", position: 30, impressions: 100 },
+    ]);
+    const span = { projectId: "p1", since: "2026-01-01", until: "2026-01-01" };
+    const [aggregate] = await GscHistoryRepository.getTrackedQueries(span);
+    const history = await GscHistoryRepository.getQueryHistory({
+      ...span,
+      query: "q",
+    });
+    const [weekly] = await GscHistoryRepository.getWeeklyPositions({
+      ...span,
+      queries: ["q"],
+    });
+    expect(aggregate).toMatchObject({ position: 3, impressions: 2, days: 1 });
+    expect(history.map((row) => row.date)).toEqual(["2026-01-01"]);
+    expect(weekly?.position).toBe(3);
+  });
+
+  it("does not invent coverage for old rows and retains an overflowing day after cursor advancement", async () => {
+    const scope = { projectId: "p1", since: "2026-01-01", until: "2026-01-02" };
+    await GscHistoryRepository.upsertDailyRows("p1", "sc-domain:new.test", [
+      day,
+    ]);
+    expect(await GscHistoryRepository.getCoverage(scope)).toEqual([]);
+    await GscHistoryRepository.markCoverage({
+      ...scope,
+      until: scope.since,
+      siteUrl: "sc-domain:new.test",
+      status: "own-cap-limited",
+    });
+    await GscHistoryRepository.markRun({
+      ...run,
+      incomplete: null,
+      siteUrl: "sc-domain:new.test",
+    });
+    expect(await GscHistoryRepository.getCoverage(scope)).toEqual([
+      { date: "2026-01-01", status: "own-cap-limited" },
+    ]);
+  });
+
+  it("fences coverage writes against a property switch", async () => {
+    await GscHistoryRepository.markCoverage({
+      projectId: "p1",
+      siteUrl: "sc-domain:old.test",
+      since: day.date,
+      until: day.date,
+      status: "complete-response",
+    });
+    expect(
+      await GscHistoryRepository.getCoverage({
+        projectId: "p1",
+        since: day.date,
+        until: day.date,
+      }),
+    ).toEqual([]);
   });
 });

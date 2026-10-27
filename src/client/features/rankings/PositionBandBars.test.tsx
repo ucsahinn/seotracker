@@ -49,3 +49,18 @@ describe("PositionBandBars", () => {
     ).toEqual({ top3: 1, top10: 0, top20: 0, beyond: -1 });
   });
 });
+
+it("distinguishes no paired cohort from measured net zero", () => {
+  expect(bandChanges([{ position: 3 }])).toEqual({
+    top3: null,
+    top10: null,
+    top20: null,
+    beyond: null,
+  });
+  expect(
+    bandChanges([
+      { position: 3, previousPosition: 4 },
+      { position: 4, previousPosition: 3 },
+    ]),
+  ).toEqual({ top3: 0, top10: 0, top20: 0, beyond: 0 });
+});

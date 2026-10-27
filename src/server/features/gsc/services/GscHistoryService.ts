@@ -1,10 +1,14 @@
 import { GscHistoryRepository } from "@/server/features/gsc/repositories/GscHistoryRepository";
 import type { GscDailyRow } from "@/server/features/gsc/repositories/GscHistoryRepository";
 import { GSC_MAX_ROW_LIMIT } from "@/server/features/gsc/searchAnalytics";
-import { GscNotConnectedError } from "@/server/lib/gscErrors";
+import { GscApiError, GscNotConnectedError } from "@/server/lib/gscErrors";
 import { GscService } from "@/server/features/gsc/services/GscService";
 import { isExpectedGrantFailure } from "@/server/features/gsc/services/GscService";
-import { GSC_DATA_LAG_DAYS } from "@/shared/dataFreshness";
+import {
+  gscHistoryWindow,
+  gscToday,
+  GSC_DATA_LAG_DAYS,
+} from "@/shared/dataFreshness";
 import { t } from "@/shared/i18n";
 
 /**
@@ -58,17 +62,9 @@ function addDays(date: string, days: number): string {
   return isoDate(next);
 }
 
-/*
- * `today` is a UTC date and Search Console's day rolls over on Pacific time,
- * so for the seven or eight hours between the two midnights this reads one
- * day ahead of Google's calendar. The lag absorbs it: three days back from a
- * date that is at most one day optimistic is still inside the finalized
- * window, and `resolveStart` re-fetches that whole window anyway.
- */
+/** Pacific-calendar lag assumption; archive acquisition has separate coverage. */
 function latestAvailableDate(today: Date): string {
-  const end = new Date(today);
-  end.setUTCDate(end.getUTCDate() - GSC_DATA_LAG_DAYS);
-  return isoDate(end);
+  return gscHistoryWindow(1, today).endDate;
 }
 
 /**
@@ -85,7 +81,7 @@ function latestAvailableDate(today: Date): string {
  * The upsert makes re-fetching the window free.
  */
 function resolveStart(lastDate: string | null, today: Date): string {
-  const floor = new Date(today);
+  const floor = new Date(`${gscToday(today)}T12:00:00Z`);
   floor.setUTCDate(floor.getUTCDate() - MAX_HISTORY_DAYS);
   const earliest = isoDate(floor);
   if (!lastDate) return earliest;
@@ -125,6 +121,7 @@ type BackfillOutcome = {
    */
   truncatedChunks: number;
   error: string | null;
+  errorCode: "auth" | "quota" | "network" | "unknown" | null;
 };
 
 /**
@@ -205,9 +202,11 @@ function resolveCursor(
   const scanCursor = state?.scannedThrough
     ? addDays(state.scannedThrough, 1)
     : null;
-  return scanCursor && scanCursor > dataCursor && state?.lastDate === null
-    ? scanCursor
-    : dataCursor;
+  if (!scanCursor || scanCursor <= dataCursor) return dataCursor;
+  const latest = latestAvailableDate(today);
+  // Once the sweep catches up, refresh the source tail even when its newest
+  // observation was weeks ago. An empty tail must not restart an old sweep.
+  return scanCursor > latest ? addDays(latest, -GSC_DATA_LAG_DAYS) : scanCursor;
 }
 
 /** Fold one fetched window into the run's totals. */
@@ -221,7 +220,7 @@ function recordWindow(
     previousLastDate: string | null;
   },
 ): void {
-  const { rows, rangeEnd, previousLastDate } = window;
+  const { rows, previousLastDate } = window;
   if (window.truncated) outcome.truncatedChunks += 1;
   outcome.rowsWritten += rows.length;
   const dates = new Set(rows.map((row) => row.date));
@@ -244,10 +243,13 @@ function recordWindow(
   ) {
     outcome.earliestDate = firstRowDate;
   }
-  outcome.lastDate =
-    outcome.lastDate && outcome.lastDate > rangeEnd
-      ? outcome.lastDate
-      : rangeEnd;
+  const lastRowDate = [...dates].reduce<string | null>(
+    (latest, date) => (latest === null || date > latest ? date : latest),
+    null,
+  );
+  if (lastRowDate && (!outcome.lastDate || lastRowDate > outcome.lastDate)) {
+    outcome.lastDate = lastRowDate;
+  }
 }
 
 /**
@@ -277,13 +279,24 @@ function remainingAfterRetry(
 function describeFailure(error: unknown): {
   notConnected: boolean;
   error: string | null;
+  errorCode: BackfillOutcome["errorCode"];
 } {
   if (error instanceof GscNotConnectedError) {
-    return { notConnected: true, error: null };
+    return { notConnected: true, error: null, errorCode: null };
   }
+  const auth =
+    isExpectedGrantFailure(error) ||
+    (error instanceof GscApiError && error.status === 401);
   return {
     notConnected: false,
-    error: isExpectedGrantFailure(error)
+    errorCode: auth
+      ? "auth"
+      : error instanceof GscApiError && error.status === 429
+        ? "quota"
+        : error instanceof TypeError
+          ? "network"
+          : "unknown",
+    error: auth
       ? t("Search Console bağlantısının yenilenmesi gerekiyor.")
       : t("Search Console isteği başarısız oldu."),
   };
@@ -325,7 +338,9 @@ async function backfill(input: {
       ? { from: state.incompleteFrom, through: state.incompleteThrough }
       : null;
   /** The property every page of this run came from; null until Google answers. */
-  let siteUrl: string | null = null;
+  let siteUrl: string | null = await GscHistoryRepository.getProperty(
+    input.projectId,
+  );
   const outcome: BackfillOutcome = {
     daysFetched: 0,
     newDays: 0,
@@ -337,6 +352,7 @@ async function backfill(input: {
     notConnected: false,
     truncatedChunks: 0,
     error: null,
+    errorCode: null,
   };
 
   // Only reachable if the clock went backwards, since `lastDate <= endDate`.
@@ -368,6 +384,13 @@ async function backfill(input: {
           siteUrl,
           rows,
         );
+        await GscHistoryRepository.markCoverage({
+          projectId: input.projectId,
+          siteUrl,
+          since: start,
+          until: rangeEnd,
+          status: truncated ? "own-cap-limited" : "complete-response",
+        });
       }
 
       recordWindow(outcome, {
@@ -390,6 +413,14 @@ async function backfill(input: {
         cursor = addDays(rangeEnd, 1);
       }
     } catch (error) {
+      if (siteUrl)
+        await GscHistoryRepository.markCoverage({
+          projectId: input.projectId,
+          siteUrl,
+          since: start,
+          until: rangeEnd,
+          status: "failed",
+        });
       Object.assign(outcome, describeFailure(error));
       break;
     }
@@ -442,7 +473,7 @@ async function backfill(input: {
 
 /** What the UI needs to describe the archive without reading every row. */
 async function getStatus(projectId: string) {
-  const [state, { rowCount, firstDate }] = await Promise.all([
+  const [state, { rowCount, firstDate, lastDate }] = await Promise.all([
     GscHistoryRepository.getArchiveState(projectId),
     GscHistoryRepository.getArchiveSpan(projectId),
   ]);
@@ -451,7 +482,7 @@ async function getStatus(projectId: string) {
     // Read from the stored rows: older archives kept a
     // window start in gsc_archive_state.earliest_date, not a data day.
     earliestDate: firstDate,
-    lastDate: state?.lastDate ?? null,
+    lastDate: lastDate ?? null,
     lastRunAt: state?.lastRunAt ?? null,
     lastError: state?.lastError ?? null,
     /** How far the sweep has looked, so an empty archive can say so. */
@@ -466,6 +497,7 @@ async function getStatus(projectId: string) {
 export const GscHistoryService = {
   backfill,
   getStatus,
+  getCoverage: GscHistoryRepository.getCoverage,
   getQueryHistory: GscHistoryRepository.getQueryHistory,
   getTrackedQueries: GscHistoryRepository.getTrackedQueries,
   getWeeklyPositions: GscHistoryRepository.getWeeklyPositions,

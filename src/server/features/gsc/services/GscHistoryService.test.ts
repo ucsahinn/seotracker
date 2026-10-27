@@ -4,6 +4,9 @@ import type { GscPerformanceInput } from "@/server/features/gsc/searchAnalytics"
 
 const mocks = vi.hoisted(() => ({
   getArchiveState: vi.fn(),
+  getProperty: vi.fn(),
+  markCoverage: vi.fn(),
+  getCoverage: vi.fn(),
   upsertDailyRows: vi.fn(),
   markRun:
     vi.fn<
@@ -62,8 +65,10 @@ function performanceRow(date: string, query: string, position: number) {
 
 beforeEach(() => {
   mocks.getArchiveState.mockResolvedValue(null);
+  mocks.getProperty.mockResolvedValue(SITE);
   mocks.upsertDailyRows.mockResolvedValue(undefined);
   mocks.markRun.mockResolvedValue(undefined);
+  mocks.markCoverage.mockResolvedValue(undefined);
   mocks.isExpectedGrantFailure.mockReturnValue(false);
   mocks.getPerformance.mockResolvedValue({ siteUrl: SITE, rows: [] });
 });

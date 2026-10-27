@@ -1490,4 +1490,78 @@ export const enSearch: Catalog = {
   Sırala: "Sort",
   "Bazı sorgular veya hedef oranları eksik. Mülkü Arama performansında kontrol edin veya dönemi 90 güne genişletin.":
     "Some queries or target rates are missing. Check the property in Search performance or widen the period to 90 days.",
+
+  // Rankings archive scope and comparison evidence.
+  "Son 5 yıllık arşiv": "Last 5 years of archive",
+  "Daha fazla hareket göster": "Show more movements",
+  "Kayıtlı geçmiş korunur. Bağlantıyı ve kotayı kontrol edin, sonra yeniden deneyin.":
+    "Stored history is retained. Check the connection and quota, then retry.",
+  "Kalan günler için devam edin; birden fazla çalıştırma gerekebilir.":
+    "Continue to fetch the remaining days; several runs may be needed.",
+  "Google taranan tarihler için sorgu satırı döndürmedi. Bu, arama yapılmadığını kanıtlamaz. Kalan tarihler varsa arşivi doldurmaya devam edin; toplam trafik için Arama performansını açın.":
+    "Google returned no query rows for the scanned dates. This does not prove there were no searches. Continue filling any remaining dates; open Search performance for total traffic.",
+  "Öncelik: mutlak sıra değişimi × kayıtlı gösterim. Bu bir inceleme sırasıdır, kayıp tıklama tahmini değildir.":
+    "Priority: absolute position change × recorded impressions. This orders investigations; it does not estimate lost clicks.",
+  "{count} sorgu; aynı {paired} sorguda net değişim. Çubuklar en büyük gruba görelidir.":
+    "{count} queries; net change across the same {paired} queries. Bars are relative to the largest group.",
+  "Aynı sorgu kümesinde net değişim; giriş veya çıkış sayısı değildir.":
+    "Net change in the same query cohort, not the count of entries or exits.",
+  "Bu gün sorgu gözlenmedi; API yanıtı tamamlandı.":
+    "No query observation this day; the API response completed.",
+  "Bu gün arşiv kapsamı eksik veya bilinmiyor.":
+    "Archive coverage for this day is incomplete or unknown.",
+  "Boşluklar doldurulmaz; sıra sıfır kabul edilmez. Ok tuşlarıyla günleri inceleyin.":
+    "Gaps stay empty; position is never assumed to be zero. Use arrow keys to inspect days.",
+  "Gözlenen gün": "Observed days",
+  "Dönem ortalaması": "Period average",
+  "İlk/son kayıtlı gün": "First/last recorded day",
+  "Günlük değerler": "Daily values",
+  "Arama performansında metin ara (tarih ve birebir sorgu korunmaz)":
+    "Search text in Search performance (dates and exact query are not preserved)",
+  "GSC Web · Ortalama sıra, sabit bir Google sırası değildir. Konum ve cihazla değişebilir.":
+    "GSC Web · Average position is not a fixed Google rank. It can vary by location and device.",
+  "Karşılaştırılabilen {count} sorguda {up} yükseldi, {down} geriledi.":
+    "Of {count} comparable queries, {up} rose and {down} fell.",
+  "Önce {query} sorgusunu inceleyin.": "Investigate {query} first.",
+  "Karşılaştırılabilen sorgularda belirgin düşüş yok.":
+    "No significant decline among comparable queries.",
+  "Karşılaştırması bilinmeyen: {count}. Belirgin hareket eşiği: 0,5 sıra.":
+    "Unknown comparisons: {count}. Significant movement threshold: 0.5 places.",
+  "Arşiv kapsamı kısmi veya bilinmiyor. Hareketler yalnızca kayıtlı gözlemleri karşılaştırır; sitenin tamamını temsil etmez.":
+    "Archive coverage is partial or unknown. Movements compare recorded observations only and do not represent the whole site.",
+  "Tarih sonu üç günlük gecikme varsayımıdır; canlı tamlık doğrulaması değildir. Google gizli sorguları ve bazı üst sınır dışı satırları döndürmez.":
+    "The end date assumes a three-day delay; it is not a live completeness check. Google omits hidden queries and some rows beyond its limits.",
+  "API yanıtı tamamlanan / sınırlı / başarısız / bilinmeyen gün: {complete} / {limited} / {failed} / {unknown}":
+    "Days with complete / limited / failed / unknown API responses: {complete} / {limited} / {failed} / {unknown}",
+  "Önceki dönem API yanıtı tamamlanan gün: {complete} / {days}":
+    "Previous-period days with complete API responses: {complete} / {days}",
+  "Haftalık çizgilerde uç haftalar kısmi olabilir. Gün sayısı yalnızca sorgunun gözlendiği günleri sayar.":
+    "Edge weeks may be partial. Day counts include only days when the query was observed.",
+  "Arşivi doldurmaya devam et": "Continue filling archive",
+  "Arşivde sorgu ara": "Search archived queries",
+  "Tüm filtreleri kaldır": "Clear all filters",
+  "Dönem ortalaması ilk 10": "Period average in top 10",
+  "Yalnızca iki dönemde de gözlenen sorgular.":
+    "Only queries observed in both periods.",
+  "Gösterime göre üst çeyrek eşiği; eşitlikler dahil: {count}":
+    "Top quartile impression threshold, including ties: {count}",
+  "{matching} / {total} sorgu filtreyle eşleşiyor.":
+    "{matching} / {total} queries match the filters.",
+  "Filtreleri kaldırın, dönemi genişletin veya arşivi doldurmaya devam edin.":
+    "Clear filters, widen the period or continue filling the archive.",
+  "Bu dönemde gözlenmeyen: {count}. Bu, sıra kaybı anlamına gelmez.":
+    "Not observed this period: {count}. This does not mean a ranking loss.",
+  "En çok gösterim alan ilk 25 kayıt; arama kutusu bu listede de geçerlidir.":
+    "First 25 records by impressions; the search box also filters this list.",
+  "Google kotası doldu. Kota yenilendiğinde yeniden deneyin.":
+    "Google quota is exhausted. Retry after it resets.",
+  "Ağ bağlantısı kurulamadı. İnternet bağlantınızı kontrol edip yeniden deneyin.":
+    "The network connection failed. Check your internet connection and retry.",
+  "Taranan son gün: {date}": "Scanned through: {date}",
+  "Karşılaştırması bilinmeyen: {count}. Belirgin hareket eşiği: {threshold} sıra.":
+    "Unknown comparisons: {count}. Significant movement threshold: {threshold} places.",
+  "En çok gösterim alan ilk {count} kayıt; arama kutusu bu listede de geçerlidir.":
+    "First {count} records by impressions; the search box also filters this list.",
+  "Bağlantı yok; gösterilen özet kayıtlı tarihsel gözlemlerdir.":
+    "Disconnected; the summary shows stored historical observations.",
 };

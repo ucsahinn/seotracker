@@ -40,7 +40,9 @@ describe("QueryHistoryCard", () => {
     ).toBeDefined();
     expect(
       screen
-        .getByRole("link", { name: "Arama performansında aç" })
+        .getByRole("link", {
+          name: "Arama performansında metin ara (tarih ve birebir sorgu korunmaz)",
+        })
         .getAttribute("href"),
     ).toContain("q=kedi maması");
   });

@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
+import { gscHistoryWindow, isoDaysInclusive } from "@/shared/dataFreshness";
 import {
   RANKING_WINDOWS,
   RankingsPage,
@@ -12,14 +13,29 @@ import {
  * than throwing.
  */
 const DEFAULT_DAYS = 90;
-const searchSchema = z.object({
-  days: z
-    .number()
-    .int()
-    .refine((value) => RANKING_WINDOWS.some((option) => option.days === value))
-    .catch(DEFAULT_DAYS)
-    .default(DEFAULT_DAYS),
-});
+const searchSchema = z
+  .object({
+    startDate: z.iso.date().optional(),
+    endDate: z.iso.date().optional(),
+    days: z
+      .number()
+      .int()
+      .refine((value) =>
+        RANKING_WINDOWS.some((option) => option.days === value),
+      )
+      .catch(DEFAULT_DAYS)
+      .default(DEFAULT_DAYS),
+  })
+  .refine(
+    (input) =>
+      (!input.startDate && !input.endDate) ||
+      (!!input.startDate &&
+        !!input.endDate &&
+        isoDaysInclusive(input.startDate, input.endDate) >= 1 &&
+        isoDaysInclusive(input.startDate, input.endDate) <= 1825 &&
+        input.endDate <= gscHistoryWindow(1).endDate),
+    "Invalid archive window",
+  );
 
 export const Route = createFileRoute("/_project/p/$projectId/rankings")({
   component: RankingsRoute,
@@ -28,15 +44,24 @@ export const Route = createFileRoute("/_project/p/$projectId/rankings")({
 
 function RankingsRoute() {
   const { projectId } = Route.useParams();
-  const { days } = Route.useSearch();
+  const { days, startDate, endDate } = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
 
   return (
     <RankingsPage
       projectId={projectId}
       days={days}
+      startDate={startDate}
+      endDate={endDate}
       onDaysChange={(next) => {
-        void navigate({ search: (prev) => ({ ...prev, days: next }) });
+        void navigate({
+          search: (prev) => ({
+            ...prev,
+            days: next,
+            startDate: undefined,
+            endDate: undefined,
+          }),
+        });
       }}
     />
   );

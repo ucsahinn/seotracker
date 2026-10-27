@@ -10,10 +10,13 @@ import { t } from "@/shared/i18n";
 import { AlertCircle } from "lucide-react";
 import { formatDate, formatNumber } from "@/client/lib/format";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
+import { Link } from "@tanstack/react-router";
 
 export function ArchiveStatus({
   sync,
+  projectId,
 }: {
+  projectId: string;
   sync: {
     isLoading: boolean;
     // `data.error` is a sync outcome the service reports; `isError` is the
@@ -31,6 +34,7 @@ export function ArchiveStatus({
       hasMore: boolean;
       notConnected: boolean;
       error: string | null;
+      errorCode?: "auth" | "quota" | "network" | "unknown" | null;
     };
   };
 }) {
@@ -76,7 +80,36 @@ export function ArchiveStatus({
     return (
       <div className="alert alert-warning text-sm">
         <AlertCircle className="size-4 shrink-0" />
-        <span>{t("Arşiv güncellenemedi: {error}", { error: data.error })}</span>
+        <span>
+          {t("Arşiv güncellenemedi: {error}", { error: data.error })}{" "}
+          {t(
+            "Kayıtlı geçmiş korunur. Bağlantıyı ve kotayı kontrol edin, sonra yeniden deneyin.",
+          )}
+          {data.errorCode === "quota"
+            ? t("Google kotası doldu. Kota yenilendiğinde yeniden deneyin.")
+            : data.errorCode === "network"
+              ? t(
+                  "Ağ bağlantısı kurulamadı. İnternet bağlantınızı kontrol edip yeniden deneyin.",
+                )
+              : null}
+          {data.lastDate ? ` ${formatDate(data.lastDate)}` : ""}
+        </span>
+        {data.errorCode === "auth" ? (
+          <Link
+            className="btn btn-outline min-h-11"
+            to="/p/$projectId/settings/integrations"
+            params={{ projectId }}
+          >
+            {t("Search Console'u bağla")}
+          </Link>
+        ) : (
+          <button
+            className="btn btn-outline min-h-11"
+            onClick={() => void sync.refetch()}
+          >
+            {t("Yeniden dene")}
+          </button>
+        )}
       </div>
     );
   }
@@ -123,16 +156,19 @@ export function ArchiveStatus({
   return (
     <p className="text-xs text-muted">
       {summary}
+      {data.scannedThrough
+        ? ` ${t("Taranan son gün: {date}", { date: formatDate(data.scannedThrough) })}`
+        : ""}
       {/* `newDays`, not the days written. A caught-up archive re-reads the
           three days Search Console is still revising on every open, and
           reporting that as days added claimed growth that never happened. */}
       {data.newDays > 0
-        ? ` ${t("Bu açılışta {count} gün eklendi.", { count: data.newDays })}`
+        ? ` ${t("Bu açılışta {count} gün eklendi.", { count: formatNumber(data.newDays) })}`
         : ""}
       {/* The backfill walks oldest to newest, so what is left is the recent
           end, not the old one. */}
       {data.hasMore
-        ? ` ${t("Kalan günler sonraki açılışta tamamlanacak.")}`
+        ? ` ${t("Kalan günler için devam edin; birden fazla çalıştırma gerekebilir.")}`
         : ""}
     </p>
   );

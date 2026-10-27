@@ -729,4 +729,78 @@ export const frSearch: Catalog = {
   Sırala: "Trier",
   "Bazı sorgular veya hedef oranları eksik. Mülkü Arama performansında kontrol edin veya dönemi 90 güne genişletin.":
     "Certaines requêtes ou certains taux cibles manquent. Vérifiez la propriété dans Performance de recherche ou élargissez la période à 90 jours.",
+
+  // Rankings archive scope and comparison evidence.
+  "Son 5 yıllık arşiv": "Les 5 dernières années d’archive",
+  "Daha fazla hareket göster": "Afficher plus de variations",
+  "Kayıtlı geçmiş korunur. Bağlantıyı ve kotayı kontrol edin, sonra yeniden deneyin.":
+    "L’historique enregistré est conservé. Vérifiez la connexion et le quota, puis réessayez.",
+  "Kalan günler için devam edin; birden fazla çalıştırma gerekebilir.":
+    "Continuez pour récupérer les jours restants ; plusieurs passages peuvent être nécessaires.",
+  "Google taranan tarihler için sorgu satırı döndürmedi. Bu, arama yapılmadığını kanıtlamaz. Kalan tarihler varsa arşivi doldurmaya devam edin; toplam trafik için Arama performansını açın.":
+    "Google n’a renvoyé aucune ligne de requête pour les dates analysées. Cela ne prouve pas l’absence de recherches. Continuez pour les dates restantes ; consultez Performance de recherche pour le trafic total.",
+  "Öncelik: mutlak sıra değişimi × kayıtlı gösterim. Bu bir inceleme sırasıdır, kayıp tıklama tahmini değildir.":
+    "Priorité : variation absolue de position × impressions enregistrées. Ce classement guide l’analyse et n’estime pas les clics perdus.",
+  "{count} sorgu; aynı {paired} sorguda net değişim. Çubuklar en büyük gruba görelidir.":
+    "{count} requêtes ; variation nette sur les mêmes {paired} requêtes. Les barres sont relatives au plus grand groupe.",
+  "Aynı sorgu kümesinde net değişim; giriş veya çıkış sayısı değildir.":
+    "Variation nette du même ensemble de requêtes, pas le nombre d’entrées ou de sorties.",
+  "Bu gün sorgu gözlenmedi; API yanıtı tamamlandı.":
+    "Aucune observation de cette requête ce jour ; réponse API entièrement reçue.",
+  "Bu gün arşiv kapsamı eksik veya bilinmiyor.":
+    "La couverture de l’archive est incomplète ou inconnue pour ce jour.",
+  "Boşluklar doldurulmaz; sıra sıfır kabul edilmez. Ok tuşlarıyla günleri inceleyin.":
+    "Les lacunes restent vides ; la position n’est jamais supposée nulle. Parcourez les jours avec les flèches.",
+  "Gözlenen gün": "Jours observés",
+  "Dönem ortalaması": "Moyenne de la période",
+  "İlk/son kayıtlı gün": "Premier/dernier jour enregistré",
+  "Günlük değerler": "Valeurs quotidiennes",
+  "Arama performansında metin ara (tarih ve birebir sorgu korunmaz)":
+    "Rechercher le texte dans Performance de recherche (dates et requête exacte non conservées)",
+  "GSC Web · Ortalama sıra, sabit bir Google sırası değildir. Konum ve cihazla değişebilir.":
+    "GSC Web · La position moyenne n’est pas un rang Google fixe. Elle varie selon le lieu et l’appareil.",
+  "Karşılaştırılabilen {count} sorguda {up} yükseldi, {down} geriledi.":
+    "Sur {count} requêtes comparables, {up} progressent et {down} reculent.",
+  "Önce {query} sorgusunu inceleyin.": "Examinez d’abord {query}.",
+  "Karşılaştırılabilen sorgularda belirgin düşüş yok.":
+    "Aucun recul notable parmi les requêtes comparables.",
+  "Karşılaştırması bilinmeyen: {count}. Belirgin hareket eşiği: 0,5 sıra.":
+    "Comparaisons inconnues : {count}. Seuil de variation notable : 0,5 position.",
+  "Arşiv kapsamı kısmi veya bilinmiyor. Hareketler yalnızca kayıtlı gözlemleri karşılaştırır; sitenin tamamını temsil etmez.":
+    "La couverture de l’archive est partielle ou inconnue. Les variations comparent uniquement les observations enregistrées, sans représenter tout le site.",
+  "Tarih sonu üç günlük gecikme varsayımıdır; canlı tamlık doğrulaması değildir. Google gizli sorguları ve bazı üst sınır dışı satırları döndürmez.":
+    "La date de fin suppose un délai de trois jours ; ce n’est pas une vérification de complétude en direct. Google omet les requêtes masquées et certaines lignes au-delà de ses limites.",
+  "API yanıtı tamamlanan / sınırlı / başarısız / bilinmeyen gün: {complete} / {limited} / {failed} / {unknown}":
+    "Jours avec réponse API complète / limitée / échouée / inconnue : {complete} / {limited} / {failed} / {unknown}",
+  "Önceki dönem API yanıtı tamamlanan gün: {complete} / {days}":
+    "Jours avec réponse API complète sur la période précédente : {complete} / {days}",
+  "Haftalık çizgilerde uç haftalar kısmi olabilir. Gün sayısı yalnızca sorgunun gözlendiği günleri sayar.":
+    "Les semaines aux extrémités peuvent être partielles. Seuls les jours où la requête est observée sont comptés.",
+  "Arşivi doldurmaya devam et": "Continuer à remplir l’archive",
+  "Arşivde sorgu ara": "Rechercher dans les requêtes archivées",
+  "Tüm filtreleri kaldır": "Effacer tous les filtres",
+  "Dönem ortalaması ilk 10": "Moyenne de la période dans le top 10",
+  "Yalnızca iki dönemde de gözlenen sorgular.":
+    "Uniquement les requêtes observées sur les deux périodes.",
+  "Gösterime göre üst çeyrek eşiği; eşitlikler dahil: {count}":
+    "Seuil du quart supérieur des impressions, égalités incluses : {count}",
+  "{matching} / {total} sorgu filtreyle eşleşiyor.":
+    "{matching} / {total} requêtes correspondent aux filtres.",
+  "Filtreleri kaldırın, dönemi genişletin veya arşivi doldurmaya devam edin.":
+    "Effacez les filtres, élargissez la période ou continuez à remplir l’archive.",
+  "Bu dönemde gözlenmeyen: {count}. Bu, sıra kaybı anlamına gelmez.":
+    "Non observées sur cette période : {count}. Cela ne signifie pas une perte de position.",
+  "En çok gösterim alan ilk 25 kayıt; arama kutusu bu listede de geçerlidir.":
+    "Les 25 premiers enregistrements par impressions ; le champ de recherche filtre aussi cette liste.",
+  "Google kotası doldu. Kota yenilendiğinde yeniden deneyin.":
+    "Le quota Google est épuisé. Réessayez après sa réinitialisation.",
+  "Ağ bağlantısı kurulamadı. İnternet bağlantınızı kontrol edip yeniden deneyin.":
+    "La connexion réseau a échoué. Vérifiez votre connexion Internet et réessayez.",
+  "Taranan son gün: {date}": "Analyse jusqu’au : {date}",
+  "Karşılaştırması bilinmeyen: {count}. Belirgin hareket eşiği: {threshold} sıra.":
+    "Comparaisons inconnues : {count}. Seuil de variation notable : {threshold} position.",
+  "En çok gösterim alan ilk {count} kayıt; arama kutusu bu listede de geçerlidir.":
+    "Les {count} premiers enregistrements par impressions ; le champ de recherche filtre aussi cette liste.",
+  "Bağlantı yok; gösterilen özet kayıtlı tarihsel gözlemlerdir.":
+    "Connexion absente ; le résumé montre les observations historiques enregistrées.",
 };

@@ -4,7 +4,8 @@ import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { Link } from "@tanstack/react-router";
 import { formatCount, formatDate, formatDecimal } from "@/client/lib/format";
 import { PositionSparkline } from "@/client/features/rankings/PositionSparkline";
-import { DeltaBadge } from "@/client/components/MetricTile";
+import { PositionChange } from "./PositionChange";
+import { isoDaysInclusive } from "@/shared/dataFreshness";
 
 /**
  * One query's history, opened from the table beside it.
@@ -21,6 +22,9 @@ export function QueryHistoryCard({
   loading,
   error,
   onRetry,
+  range,
+  comparison,
+  coverage,
 }: {
   /*
    * So the page can scroll the card into view and move focus to it when a
@@ -44,6 +48,16 @@ export function QueryHistoryCard({
    */
   error: unknown;
   onRetry: () => void;
+  range?: { startDate: string; endDate: string };
+  comparison?: {
+    position: number | null;
+    previousPosition: number | null;
+    delta: number | null;
+  };
+  coverage?: {
+    date: string;
+    status: "complete-response" | "own-cap-limited" | "failed";
+  }[];
 }) {
   if (loading) {
     /*
@@ -93,7 +107,16 @@ export function QueryHistoryCard({
         tabIndex={-1}
         className="rounded-box border border-base-300 bg-base-100 p-4 text-sm text-muted"
       >
-        {t("Bu sorgu için kayıtlı gün yok.")}
+        <h2 className="break-all font-semibold">{query}</h2>
+        {range ? (
+          <p>
+            {formatDate(range.startDate)} – {formatDate(range.endDate)}
+          </p>
+        ) : null}
+        <p>
+          {t("Bu sorgu için kayıtlı gün yok.")}{" "}
+          {t("Daha geniş bir dönem seçmeyi deneyin.")}
+        </p>
       </div>
     );
   }
@@ -104,7 +127,7 @@ export function QueryHistoryCard({
   // Lower position numbers are better, so a drop in the number is an
   // improvement. The arrow follows the ranking, not the arithmetic.
   const delta = first.position - last.position;
-  const improved = delta > 0;
+
   const totalClicks = rows.reduce((sum, row) => sum + row.clicks, 0);
   const totalImpressions = rows.reduce((sum, row) => sum + row.impressions, 0);
 
@@ -115,35 +138,51 @@ export function QueryHistoryCard({
       className="enter space-y-3 rounded-box border border-base-300 bg-base-100 p-4"
     >
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-sm font-semibold">{query}</h2>
-        {/*
-         * `DeltaBadge`, not a fourth copy of the pattern it retired. The
-         * hand-rolled version painted direction with `text-success` /
-         * `text-error` -- the fill colours, which land near 3.3:1 on a
-         * base-100 surface -- and gave its arrows no `aria-hidden` and no
-         * spoken direction, so a screen reader heard "12,4 → 8,1" with the
-         * improvement carried in colour alone.
-         */}
-        {Math.abs(delta) < 0.1 ? (
-          <span className="text-sm font-semibold text-muted">
-            {formatDecimal(first.position)} → {formatDecimal(last.position)}
-          </span>
-        ) : (
-          <DeltaBadge
-            value={{
-              text: `${formatDecimal(first.position)} → ${formatDecimal(last.position)}`,
-              improved,
-            }}
-          />
-        )}
+        <h2 className="min-w-0 break-all text-sm font-semibold">{query}</h2>
+        <PositionChange delta={comparison?.delta ?? null} />
       </div>
-      <PositionSparkline rows={rows} />
+      {range ? (
+        <p className="text-xs text-muted">
+          {formatDate(range.startDate)} – {formatDate(range.endDate)} ·{" "}
+          {formatCount(rows.length)} /{" "}
+          {formatCount(isoDaysInclusive(range.startDate, range.endDate))}{" "}
+          {t("Gözlenen gün")}
+        </p>
+      ) : null}
+      {comparison?.position != null ? (
+        <p className="text-sm">
+          {t("Dönem ortalaması")}:{" "}
+          {comparison.previousPosition == null
+            ? t("Karşılaştırma yok")
+            : formatDecimal(comparison.previousPosition)}{" "}
+          → {formatDecimal(comparison.position)}
+        </p>
+      ) : null}
+      <PositionSparkline rows={rows} range={range} coverage={coverage} />
+      <p className="text-xs text-muted">
+        {t("İlk/son kayıtlı gün")}: {formatDate(first.date)} ·{" "}
+        {formatDecimal(first.position)} → {formatDate(last.date)} ·{" "}
+        {formatDecimal(last.position)} <PositionChange delta={delta} />
+      </p>
+      <details className="text-xs">
+        <summary className="min-h-11 cursor-pointer">
+          {t("Günlük değerler")}
+        </summary>
+        <ul>
+          {rows.map((row) => (
+            <li key={row.date}>
+              {formatDate(row.date)} · {formatDecimal(row.position)} ·{" "}
+              {formatCount(row.clicks)} / {formatCount(row.impressions)}
+            </li>
+          ))}
+        </ul>
+      </details>
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-xs text-muted">
         <p>
           {t("{start} – {end} · {count} gün kayıtlı", {
             start: formatDate(first.date),
             end: formatDate(last.date),
-            count: rows.length,
+            count: formatCount(rows.length),
           })}
         </p>
         <p>
@@ -159,7 +198,7 @@ export function QueryHistoryCard({
         search={{ tab: "queries" as const, q: query }}
         className="link link-primary text-xs"
       >
-        {t("Arama performansında aç")}
+        {t("Arama performansında metin ara (tarih ve birebir sorgu korunmaz)")}
       </Link>
     </div>
   );

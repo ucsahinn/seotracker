@@ -740,4 +740,78 @@ export const deSearch: Catalog = {
   Sırala: "Sortieren",
   "Bazı sorgular veya hedef oranları eksik. Mülkü Arama performansında kontrol edin veya dönemi 90 güne genişletin.":
     "Einige Suchanfragen oder Zielraten fehlen. Prüfen Sie die Property unter Suchleistung oder erweitern Sie den Zeitraum auf 90 Tage.",
+
+  // Rankings archive scope and comparison evidence.
+  "Son 5 yıllık arşiv": "Letzte 5 Archivjahre",
+  "Daha fazla hareket göster": "Weitere Bewegungen anzeigen",
+  "Kayıtlı geçmiş korunur. Bağlantıyı ve kotayı kontrol edin, sonra yeniden deneyin.":
+    "Der gespeicherte Verlauf bleibt erhalten. Verbindung und Kontingent prüfen, dann erneut versuchen.",
+  "Kalan günler için devam edin; birden fazla çalıştırma gerekebilir.":
+    "Für die übrigen Tage fortsetzen; mehrere Durchläufe können nötig sein.",
+  "Google taranan tarihler için sorgu satırı döndürmedi. Bu, arama yapılmadığını kanıtlamaz. Kalan tarihler varsa arşivi doldurmaya devam edin; toplam trafik için Arama performansını açın.":
+    "Google hat für die geprüften Tage keine Suchanfragen geliefert. Das beweist nicht, dass keine Suchen stattfanden. Übrige Tage weiter laden; den Gesamtverkehr zeigt Suchleistung.",
+  "Öncelik: mutlak sıra değişimi × kayıtlı gösterim. Bu bir inceleme sırasıdır, kayıp tıklama tahmini değildir.":
+    "Priorität: absolute Positionsänderung × erfasste Impressionen. Das legt die Prüfreihenfolge fest, schätzt aber keine verlorenen Klicks.",
+  "{count} sorgu; aynı {paired} sorguda net değişim. Çubuklar en büyük gruba görelidir.":
+    "{count} Suchanfragen; Nettoänderung derselben {paired} Suchanfragen. Balken relativ zur größten Gruppe.",
+  "Aynı sorgu kümesinde net değişim; giriş veya çıkış sayısı değildir.":
+    "Nettoänderung derselben Suchanfragen, keine Anzahl von Ein- oder Austritten.",
+  "Bu gün sorgu gözlenmedi; API yanıtı tamamlandı.":
+    "An diesem Tag keine Suchanfrage erfasst; API-Antwort vollständig abgerufen.",
+  "Bu gün arşiv kapsamı eksik veya bilinmiyor.":
+    "Archivabdeckung für diesen Tag unvollständig oder unbekannt.",
+  "Boşluklar doldurulmaz; sıra sıfır kabul edilmez. Ok tuşlarıyla günleri inceleyin.":
+    "Lücken bleiben leer; Position null wird nie angenommen. Mit Pfeiltasten Tage prüfen.",
+  "Gözlenen gün": "Beobachtete Tage",
+  "Dönem ortalaması": "Zeitraummittelwert",
+  "İlk/son kayıtlı gün": "Erster/letzter erfasster Tag",
+  "Günlük değerler": "Tageswerte",
+  "Arama performansında metin ara (tarih ve birebir sorgu korunmaz)":
+    "Text in Suchleistung suchen (Datum und exakte Suchanfrage werden nicht übernommen)",
+  "GSC Web · Ortalama sıra, sabit bir Google sırası değildir. Konum ve cihazla değişebilir.":
+    "GSC Web · Die Durchschnittsposition ist kein fester Google-Rang. Sie kann je nach Ort und Gerät variieren.",
+  "Karşılaştırılabilen {count} sorguda {up} yükseldi, {down} geriledi.":
+    "Von {count} vergleichbaren Suchanfragen stiegen {up}, {down} fielen.",
+  "Önce {query} sorgusunu inceleyin.": "Zuerst {query} prüfen.",
+  "Karşılaştırılabilen sorgularda belirgin düşüş yok.":
+    "Kein deutlicher Rückgang bei vergleichbaren Suchanfragen.",
+  "Karşılaştırması bilinmeyen: {count}. Belirgin hareket eşiği: 0,5 sıra.":
+    "Unbekannte Vergleiche: {count}. Schwelle für deutliche Bewegung: 0,5 Plätze.",
+  "Arşiv kapsamı kısmi veya bilinmiyor. Hareketler yalnızca kayıtlı gözlemleri karşılaştırır; sitenin tamamını temsil etmez.":
+    "Archivabdeckung teilweise oder unbekannt. Bewegungen vergleichen nur erfasste Beobachtungen, nicht die gesamte Website.",
+  "Tarih sonu üç günlük gecikme varsayımıdır; canlı tamlık doğrulaması değildir. Google gizli sorguları ve bazı üst sınır dışı satırları döndürmez.":
+    "Das Enddatum nimmt drei Tage Verzögerung an; keine Live-Vollständigkeitsprüfung. Google lässt verborgene Suchanfragen und manche Zeilen über seinen Grenzen aus.",
+  "API yanıtı tamamlanan / sınırlı / başarısız / bilinmeyen gün: {complete} / {limited} / {failed} / {unknown}":
+    "Tage mit vollständiger / begrenzter / fehlgeschlagener / unbekannter API-Antwort: {complete} / {limited} / {failed} / {unknown}",
+  "Önceki dönem API yanıtı tamamlanan gün: {complete} / {days}":
+    "Tage mit vollständiger API-Antwort im Vorzeitraum: {complete} / {days}",
+  "Haftalık çizgilerde uç haftalar kısmi olabilir. Gün sayısı yalnızca sorgunun gözlendiği günleri sayar.":
+    "Randwochen können unvollständig sein. Gezählt werden nur Tage mit beobachteter Suchanfrage.",
+  "Arşivi doldurmaya devam et": "Archiv weiter füllen",
+  "Arşivde sorgu ara": "Archivierte Suchanfragen durchsuchen",
+  "Tüm filtreleri kaldır": "Alle Filter entfernen",
+  "Dönem ortalaması ilk 10": "Zeitraummittelwert in Top 10",
+  "Yalnızca iki dönemde de gözlenen sorgular.":
+    "Nur in beiden Zeiträumen beobachtete Suchanfragen.",
+  "Gösterime göre üst çeyrek eşiği; eşitlikler dahil: {count}":
+    "Impressionsschwelle des oberen Viertels, Gleichstände eingeschlossen: {count}",
+  "{matching} / {total} sorgu filtreyle eşleşiyor.":
+    "{matching} / {total} Suchanfragen entsprechen den Filtern.",
+  "Filtreleri kaldırın, dönemi genişletin veya arşivi doldurmaya devam edin.":
+    "Filter entfernen, Zeitraum erweitern oder Archiv weiter füllen.",
+  "Bu dönemde gözlenmeyen: {count}. Bu, sıra kaybı anlamına gelmez.":
+    "In diesem Zeitraum nicht beobachtet: {count}. Das bedeutet keinen Rangverlust.",
+  "En çok gösterim alan ilk 25 kayıt; arama kutusu bu listede de geçerlidir.":
+    "Erste 25 Einträge nach Impressionen; das Suchfeld filtert auch diese Liste.",
+  "Google kotası doldu. Kota yenilendiğinde yeniden deneyin.":
+    "Das Google-Kontingent ist aufgebraucht. Nach der Erneuerung erneut versuchen.",
+  "Ağ bağlantısı kurulamadı. İnternet bağlantınızı kontrol edip yeniden deneyin.":
+    "Die Netzwerkverbindung ist fehlgeschlagen. Internetverbindung prüfen und erneut versuchen.",
+  "Taranan son gün: {date}": "Geprüft bis: {date}",
+  "Karşılaştırması bilinmeyen: {count}. Belirgin hareket eşiği: {threshold} sıra.":
+    "Unbekannte Vergleiche: {count}. Schwelle für deutliche Bewegung: {threshold} Plätze.",
+  "En çok gösterim alan ilk {count} kayıt; arama kutusu bu listede de geçerlidir.":
+    "Erste {count} Einträge nach Impressionen; das Suchfeld filtert auch diese Liste.",
+  "Bağlantı yok; gösterilen özet kayıtlı tarihsel gözlemlerdir.":
+    "Keine Verbindung; die Zusammenfassung zeigt gespeicherte historische Beobachtungen.",
 };

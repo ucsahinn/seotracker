@@ -6,13 +6,25 @@
  * Sibling imports stay relative, like the rest of `shared/`.
  */
 import { sort } from "remeda";
+import { addIsoDays } from "./dataFreshness";
 
 export function weeklyTrends(
   rows: ReadonlyArray<{ query: string; weekStart: string; position: number }>,
+  range?: { startDate: string; endDate: string },
 ): Map<string, (number | null)[]> {
-  const weeks = sort([...new Set(rows.map((row) => row.weekStart))], (a, b) =>
+  let weeks = sort([...new Set(rows.map((row) => row.weekStart))], (a, b) =>
     a.localeCompare(b),
   );
+  if (range) {
+    weeks = [];
+    const weekday = new Date(`${range.startDate}T00:00:00Z`).getUTCDay();
+    for (
+      let date = addIsoDays(range.startDate, -((weekday + 6) % 7));
+      date <= range.endDate;
+      date = addIsoDays(date, 7)
+    )
+      weeks.push(date);
+  }
   const index = new Map(weeks.map((week, i) => [week, i]));
   const out = new Map<string, (number | null)[]>();
   for (const row of rows) {

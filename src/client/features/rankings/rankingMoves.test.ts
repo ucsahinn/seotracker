@@ -25,11 +25,11 @@ const rows = [
 ];
 
 describe("quick filters", () => {
-  it("counts moves and ignores queries without a previous reading", () => {
+  it("counts significant moves separately from all current top-ten observations", () => {
     expect(countMoves(rows)).toEqual({
       risers: 1,
       fallers: 1,
-      top10: 2,
+      top10: 3,
       lost: 1,
     });
     expect(applyMove(rows, "lost").map((r) => r.query)).toEqual(["slipper"]);

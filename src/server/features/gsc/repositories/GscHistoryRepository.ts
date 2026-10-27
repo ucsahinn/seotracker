@@ -12,6 +12,8 @@ import {
 import { db } from "@/db";
 import { executeInBatches, runBatch } from "@/db/runBatch";
 import { gscArchiveState, gscConnections, gscQueryDaily } from "@/db/schema";
+import { archiveCoverage } from "./archiveCoverage";
+import { addIsoDays } from "@/shared/dataFreshness";
 
 export type GscDailyRow = {
   date: string;
@@ -171,12 +173,14 @@ async function getQueryHistory(input: {
   projectId: string;
   query: string;
   since?: string;
+  until?: string;
 }): Promise<GscDailyRow[]> {
   const clauses = [
     eq(gscQueryDaily.projectId, input.projectId),
     eq(gscQueryDaily.query, input.query),
   ];
   if (input.since) clauses.push(gte(gscQueryDaily.date, input.since));
+  if (input.until) clauses.push(lte(gscQueryDaily.date, input.until));
 
   return db
     .select({
@@ -201,7 +205,7 @@ async function getTrackedQueries(input: {
   since: string;
   /** Inclusive upper bound; omitted means "through the newest day". */
   until?: string;
-  limit: number;
+  limit?: number;
 }) {
   return db
     .select({
@@ -224,8 +228,11 @@ async function getTrackedQueries(input: {
       ),
     )
     .groupBy(gscQueryDaily.query)
-    .orderBy(desc(sql`sum(${gscQueryDaily.impressions})`))
-    .limit(input.limit);
+    .orderBy(
+      desc(sql`sum(${gscQueryDaily.impressions})`),
+      asc(gscQueryDaily.query),
+    )
+    .limit(input.limit ?? -1);
 }
 
 /**
@@ -291,17 +298,24 @@ async function getWeeklyPositionBuckets(input: {
  * much history exists. The first day comes from the rows themselves:
  * gsc_archive_state.earliest_date used to be a window start.
  */
-async function getArchiveSpan(
-  projectId: string,
-): Promise<{ rowCount: number; firstDate: string | null }> {
+async function getArchiveSpan(projectId: string): Promise<{
+  rowCount: number;
+  firstDate: string | null;
+  lastDate: string | null;
+}> {
   const [row] = await db
     .select({
       rowCount: sql<number>`count(*)`,
       firstDate: sql<string | null>`min(${gscQueryDaily.date})`,
+      lastDate: sql<string | null>`max(${gscQueryDaily.date})`,
     })
     .from(gscQueryDaily)
     .where(eq(gscQueryDaily.projectId, projectId));
-  return { rowCount: row?.rowCount ?? 0, firstDate: row?.firstDate ?? null };
+  return {
+    rowCount: row?.rowCount ?? 0,
+    firstDate: row?.firstDate ?? null,
+    lastDate: row?.lastDate ?? null,
+  };
 }
 
 /**
@@ -312,6 +326,7 @@ async function getArchiveSpan(
 async function getWeeklyPositions(input: {
   projectId: string;
   since: string;
+  until?: string;
   queries: string[];
 }): Promise<Array<{ query: string; weekStart: string; position: number }>> {
   // D1 binds at most 100 parameters per statement; two go to project and date.
@@ -330,6 +345,7 @@ async function getWeeklyPositions(input: {
 async function weeklyPositionsChunk(input: {
   projectId: string;
   since: string;
+  until?: string;
   queries: string[];
 }) {
   const weekStart = sql<string>`date(${gscQueryDaily.date}, 'weekday 0', '-6 days')`;
@@ -345,6 +361,7 @@ async function weeklyPositionsChunk(input: {
         eq(gscQueryDaily.projectId, input.projectId),
         gte(gscQueryDaily.date, input.since),
         inArray(gscQueryDaily.query, input.queries),
+        input.until ? lte(gscQueryDaily.date, input.until) : undefined,
       ),
     )
     .groupBy(gscQueryDaily.query, weekStart)
@@ -352,7 +369,78 @@ async function weeklyPositionsChunk(input: {
   return rows.filter((row) => row.position !== null);
 }
 
+async function markCoverage(input: {
+  projectId: string;
+  siteUrl: string;
+  since: string;
+  until: string;
+  status: "complete-response" | "own-cap-limited" | "failed";
+}) {
+  const dates: string[] = [];
+  for (let day = input.since; day <= input.until; day = addIsoDays(day, 1))
+    dates.push(day);
+  const fetchedAt = new Date().toISOString();
+  await executeInBatches(dates, (tx, day) =>
+    tx
+      .insert(archiveCoverage)
+      .select(
+        stillConnectedTo(
+          tx,
+          {
+            projectId: sql<string>`${input.projectId}`.as("project_id"),
+            date: sql<string>`${day}`.as("date"),
+            siteUrl: sql<string>`${input.siteUrl}`.as("site_url"),
+            status: sql<string>`${input.status}`.as("status"),
+            fetchedAt: sql<string>`${fetchedAt}`.as("fetched_at"),
+          },
+          input.projectId,
+          input.siteUrl,
+        ),
+      )
+      .onConflictDoUpdate({
+        target: [archiveCoverage.projectId, archiveCoverage.date],
+        set: { status: input.status, fetchedAt, siteUrl: input.siteUrl },
+      }),
+  );
+}
+
+async function getProperty(projectId: string) {
+  const [connection] = await db
+    .select({ siteUrl: gscConnections.siteUrl })
+    .from(gscConnections)
+    .where(eq(gscConnections.projectId, projectId));
+  return connection?.siteUrl ?? null;
+}
+
+async function getCoverage(input: {
+  projectId: string;
+  since: string;
+  until: string;
+}) {
+  return db
+    .select({ date: archiveCoverage.date, status: archiveCoverage.status })
+    .from(archiveCoverage)
+    .innerJoin(
+      gscConnections,
+      and(
+        eq(archiveCoverage.projectId, gscConnections.projectId),
+        eq(archiveCoverage.siteUrl, gscConnections.siteUrl),
+      ),
+    )
+    .where(
+      and(
+        eq(archiveCoverage.projectId, input.projectId),
+        gte(archiveCoverage.date, input.since),
+        lte(archiveCoverage.date, input.until),
+      ),
+    )
+    .orderBy(archiveCoverage.date);
+}
+
 export const GscHistoryRepository = {
+  markCoverage,
+  getCoverage,
+  getProperty,
   getWeeklyPositions,
   getArchiveState,
   upsertDailyRows,

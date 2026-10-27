@@ -12,3 +12,14 @@ describe("weeklyTrends", () => {
     expect(trends.get("b")).toEqual([null, 9]);
   });
 });
+
+it("keeps weeks with no observations anywhere as gaps on the bounded calendar", () => {
+  const result = weeklyTrends(
+    [
+      { query: "q", weekStart: "2026-01-05", position: 2 },
+      { query: "q", weekStart: "2026-01-26", position: 4 },
+    ],
+    { startDate: "2026-01-05", endDate: "2026-01-31" },
+  );
+  expect(result.get("q")).toEqual([2, null, null, 4]);
+});

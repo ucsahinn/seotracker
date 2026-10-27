@@ -1,6 +1,7 @@
 import { t } from "@/shared/i18n";
 import * as React from "react";
 import { formatCount, formatDate, formatDecimal } from "@/client/lib/format";
+import { addIsoDays, isoDaysInclusive } from "@/shared/dataFreshness";
 
 type Day = {
   date: string;
@@ -8,64 +9,85 @@ type Day = {
   clicks: number;
   impressions: number;
 };
+type Coverage = {
+  date: string;
+  status: "complete-response" | "own-cap-limited" | "failed";
+};
 
-const WIDTH = 600;
-const HEIGHT = 120;
-
-/**
- * Position over time. Drawn with the y axis inverted, because position 1 is the
- * top of the page: a line going up has to mean the ranking improved.
- *
- * Hovering (or touching) the chart reads out that day's numbers below it; the
- * first and last day are marked so the line has visible ends.
- */
-export function PositionSparkline({ rows }: { rows: Day[] }) {
+/** The calendar, including absent observations, is the horizontal axis. */
+export function PositionSparkline({
+  rows,
+  range,
+  coverage = [],
+}: {
+  rows: Day[];
+  range?: { startDate: string; endDate: string };
+  coverage?: Coverage[];
+}) {
   const [hovered, setHovered] = React.useState<number | null>(null);
-  if (rows.length < 2) return null;
-
-  const positions = rows.map((row) => row.position);
-  const best = Math.min(...positions);
-  const worst = Math.max(...positions);
-  const span = Math.max(worst - best, 1);
-  const lastIndex = rows.length - 1;
-
-  const xOf = (index: number) => (index / lastIndex) * WIDTH;
+  if (!rows.length) return null;
+  const start = range?.startDate ?? rows[0].date;
+  const end = range?.endDate ?? rows.at(-1)!.date;
+  const count = isoDaysInclusive(start, end);
+  const byDate = new Map(rows.map((row) => [row.date, row]));
+  const coverageByDate = new Map(coverage.map((day) => [day.date, day.status]));
+  const dates = Array.from({ length: count }, (_, i) => addIsoDays(start, i));
+  const best = Math.min(...rows.map((row) => row.position));
+  const worst = Math.max(...rows.map((row) => row.position));
+  const lastIndex = count - 1;
+  const xOf = (i: number) => (count === 1 ? 300 : (i / lastIndex) * 600);
   const yOf = (position: number) =>
-    ((position - best) / span) * (HEIGHT - 16) + 8;
-
-  // SVG path geometry, not a number anyone reads. A decimal comma
-  // here would be a second coordinate.
-  const points = rows
-    .map(
-      (row, index) =>
-        `${xOf(index).toFixed(1)},${yOf(row.position).toFixed(1)}`,
-    )
-    .join(" ");
-
-  const onMove = (event: React.PointerEvent<SVGSVGElement>) => {
-    const box = event.currentTarget.getBoundingClientRect();
-    if (box.width === 0) return;
-    const ratio = (event.clientX - box.left) / box.width;
-    setHovered(Math.min(lastIndex, Math.max(0, Math.round(ratio * lastIndex))));
-  };
-
+    ((position - best) / Math.max(worst - best, 1)) * 104 + 8;
+  let path = "";
+  let connected = false;
+  dates.forEach((date, i) => {
+    const row = byDate.get(date);
+    if (!row) {
+      connected = false;
+      return;
+    }
+    path +=
+      (connected ? " L " : " M ") +
+      xOf(i).toFixed(1) +
+      "," +
+      yOf(row.position).toFixed(1);
+    connected = true;
+  });
+  const at = Math.min(lastIndex, Math.max(0, hovered ?? lastIndex));
+  const date = dates[at];
+  const day = byDate.get(date);
+  const missing =
+    coverageByDate.get(date) === "complete-response"
+      ? t("Bu gün sorgu gözlenmedi; API yanıtı tamamlandı.")
+      : t("Bu gün arşiv kapsamı eksik veya bilinmiyor.");
+  const readout = day
+    ? t(
+        "{date} · Sıra {position} · {clicks} tıklama · {impressions} gösterim",
+        {
+          date: formatDate(date),
+          position: formatDecimal(day.position),
+          clicks: formatCount(day.clicks),
+          impressions: formatCount(day.impressions),
+        },
+      )
+    : formatDate(date) + " · " + missing;
   const onKey = (event: React.KeyboardEvent<SVGSVGElement>) => {
     const step =
       event.key === "ArrowLeft" ? -1 : event.key === "ArrowRight" ? 1 : 0;
-    if (step === 0) return;
+    if (!step && event.key !== "Home" && event.key !== "End") return;
     event.preventDefault();
-    setHovered((current) =>
-      Math.min(lastIndex, Math.max(0, (current ?? lastIndex) + step)),
+    setHovered(
+      event.key === "Home"
+        ? 0
+        : event.key === "End"
+          ? lastIndex
+          : Math.min(lastIndex, Math.max(0, at + step)),
     );
   };
-
-  const day = hovered === null ? undefined : rows[hovered];
-  const marked = [...new Set([0, lastIndex, hovered ?? 0])];
-
   return (
     <div>
       <svg
-        viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+        viewBox="0 0 600 120"
         className="h-28 w-full touch-pan-y"
         role="slider"
         tabIndex={0}
@@ -75,56 +97,58 @@ export function PositionSparkline({ rows }: { rows: Day[] }) {
         })}
         aria-valuemin={0}
         aria-valuemax={lastIndex}
-        aria-valuenow={hovered ?? lastIndex}
-        aria-valuetext={formatDate(rows[hovered ?? lastIndex]?.date ?? "")}
-        onPointerMove={onMove}
+        aria-valuenow={at}
+        aria-valuetext={readout}
+        onPointerMove={(event) => {
+          const box = event.currentTarget.getBoundingClientRect();
+          if (box.width)
+            setHovered(
+              Math.min(
+                lastIndex,
+                Math.max(
+                  0,
+                  Math.round(
+                    ((event.clientX - box.left) / box.width) * lastIndex,
+                  ),
+                ),
+              ),
+            );
+        }}
         onPointerLeave={() => setHovered(null)}
         onKeyDown={onKey}
         onBlur={() => setHovered(null)}
       >
-        <polyline
-          points={points}
+        <path
+          d={path}
           fill="none"
-          className="stroke-primary"
+          stroke="var(--ink-primary)"
           strokeWidth={2}
           strokeLinejoin="round"
           strokeLinecap="round"
         />
-        {marked.map((index) => {
-          const row = rows[index];
-          if (!row) return null;
-          return (
+        {dates.map((pointDate, i) => {
+          const row = byDate.get(pointDate);
+          return row ? (
             <circle
-              key={index}
-              cx={xOf(index)}
+              key={pointDate}
+              cx={xOf(i)}
               cy={yOf(row.position)}
-              r={index === hovered ? 5 : 3.5}
-              className="fill-primary"
+              r={i === at ? 4 : 2}
+              fill="var(--ink-primary)"
             />
-          );
+          ) : null;
         })}
       </svg>
       <div className="flex justify-between text-xs text-muted">
-        <span>{t("En iyi {value}", { value: formatDecimal(best) })}</span>
-        <span>{t("En kötü {value}", { value: formatDecimal(worst) })}</span>
+        <span>{formatDate(start)}</span>
+        <span>{formatDate(end)}</span>
       </div>
       <p className="mt-1 min-h-4 text-xs tabular-nums" aria-live="polite">
-        {day ? (
-          t(
-            "{date} · Sıra {position} · {clicks} tıklama · {impressions} gösterim",
-            {
-              date: formatDate(day.date),
-              position: formatDecimal(day.position),
-              clicks: formatCount(day.clicks),
-              impressions: formatCount(day.impressions),
-            },
-          )
-        ) : (
-          <span className="text-subtle">
-            {t(
-              "Günlük değeri görmek için grafiğin üzerine gelin ya da grafiğe odaklanıp sol ve sağ ok tuşlarını kullanın.",
-            )}
-          </span>
+        {readout}
+      </p>
+      <p className="text-xs text-subtle">
+        {t(
+          "Boşluklar doldurulmaz; sıra sıfır kabul edilmez. Ok tuşlarıyla günleri inceleyin.",
         )}
       </p>
     </div>

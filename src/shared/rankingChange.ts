@@ -7,7 +7,7 @@
  */
 
 /** Smaller than this many positions is noise in an impression-weighted mean. */
-const STABLE_THRESHOLD = 0.5;
+const STABLE_THRESHOLD = 0.05;
 
 type Direction = "up" | "down" | "flat";
 

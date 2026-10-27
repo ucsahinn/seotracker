@@ -4,7 +4,6 @@
  * Every filter here needs a change value, so a query with no reading in the
  * preceding window matches none of them -- it is unknown, not stable.
  */
-import { directionOf } from "@/shared/rankingChange";
 
 export const MOVE_IDS = ["risers", "fallers", "top10", "lost"] as const;
 export type MoveId = (typeof MOVE_IDS)[number];
@@ -19,16 +18,13 @@ export type MoveRow = {
 const onFirstPage = (position: number) => Math.round(position) <= 10;
 
 function matchesMove(id: MoveId, row: MoveRow): boolean {
+  if (id === "top10") return onFirstPage(row.position);
   if (row.delta === null || row.previousPosition === null) return false;
   switch (id) {
     case "risers":
-      return directionOf(row.delta) === "up";
+      return row.delta >= 0.5;
     case "fallers":
-      return directionOf(row.delta) === "down";
-    case "top10":
-      // Anything on page one now that also has a previous reading, including
-      // queries that have just risen in.
-      return onFirstPage(row.position);
+      return row.delta <= -0.5;
     case "lost":
       // On page one before, not any more.
       return onFirstPage(row.previousPosition) && !onFirstPage(row.position);
@@ -71,11 +67,13 @@ export function topMovers<Row extends MoveRow & { impressions: number }>(
 ): { risers: Row[]; fallers: Row[] } {
   const moved = rows.filter(
     (row): row is Row & { delta: number } =>
-      row.delta !== null && directionOf(row.delta) !== "flat",
+      row.delta !== null && Math.abs(row.delta) >= 0.5,
   );
   const risers = moved.filter((row) => row.delta > 0);
   const fallers = moved.filter((row) => row.delta < 0);
-  risers.sort((a, b) => impact(b) - impact(a));
+  risers.sort(
+    (a, b) => impact(b) - impact(a) || a.query.localeCompare(b.query),
+  );
   fallers.sort((a, b) => impact(b) - impact(a));
   return { risers: risers.slice(0, size), fallers: fallers.slice(0, size) };
 }

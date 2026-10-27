@@ -12,7 +12,6 @@
  * harness reaches this directory by relative path and its tsconfig declares
  * no `@/` alias.
  */
-import { t } from "./i18n";
 
 /**
  * Search Console finalises a day about two to three days late, and keeps
@@ -31,39 +30,17 @@ export const GA4_DATA_LAG_DAYS = 1;
 /** The window every screen opens on, when the operator has not chosen one. */
 export const DEFAULT_WINDOW_DAYS = 28;
 
-/** One sentence naming the window and why it stops short of today. */
-export function describeWindow(
-  startDate: string,
-  endDate: string,
-  formatDate: (value: string) => string,
-): string {
-  return t(
-    "{start} – {end}. Search Console verisi {count} gün geriden gelir, bu yüzden son gün bugün olmaz.",
-    {
-      start: formatDate(startDate),
-      end: formatDate(endDate),
-      count: GSC_DATA_LAG_DAYS,
-    },
-  );
-}
-
 /**
- * The inclusive window of `days` days that ends on the newest day Search
- * Console has finalised. Start and end come from one clock reading, so a call
- * straddling UTC midnight cannot produce a window of the wrong length.
+ * Inclusive archive span using a Pacific-calendar three-day lag assumption.
+ * This does not verify Google's live incomplete-day metadata or acquisition
+ * coverage. Start and end come from one clock reading, including across DST.
  */
 export function gscHistoryWindow(
   days: number,
   now: Date = new Date(),
 ): { startDate: string; endDate: string } {
-  const end = new Date(now);
-  end.setUTCDate(end.getUTCDate() - GSC_DATA_LAG_DAYS);
-  const start = new Date(end);
-  start.setUTCDate(start.getUTCDate() - (days - 1));
-  return {
-    startDate: start.toISOString().slice(0, 10),
-    endDate: end.toISOString().slice(0, 10),
-  };
+  const endDate = addIsoDays(gscToday(now), -GSC_DATA_LAG_DAYS);
+  return { startDate: addIsoDays(endDate, -(days - 1)), endDate };
 }
 
 /**

@@ -6,13 +6,13 @@ afterEach(() => {
 });
 
 describe("gscHistoryWindow", () => {
-  it("gives a 30-day inclusive window ending three days back, just after UTC midnight", () => {
+  it("gives a 30-day inclusive window ending three Pacific days back, just after UTC midnight", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-10-01T00:30:00Z"));
 
     expect(gscHistoryWindow(30)).toEqual({
-      startDate: "2026-08-30",
-      endDate: "2026-09-28",
+      startDate: "2026-08-29",
+      endDate: "2026-09-27",
     });
   });
 });

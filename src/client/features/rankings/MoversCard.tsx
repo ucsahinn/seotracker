@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { t } from "@/shared/i18n";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -42,11 +43,11 @@ function MoverList({
             <li key={row.query}>
               <button
                 type="button"
-                className="flex w-full items-center justify-between gap-3 py-1.5 text-left text-sm hover:bg-base-200/50"
+                className="flex min-h-11 w-full flex-wrap items-center justify-between gap-3 py-1.5 text-left text-sm hover:bg-base-200/50"
                 onClick={() => onPick(row.query)}
               >
                 <span className="min-w-0">
-                  <span className="block truncate">{row.query}</span>
+                  <span className="block break-words">{row.query}</span>
                   <span className="block text-xs text-muted tabular-nums">
                     {t("{from} → {to}. sıra · {impressions} gösterim", {
                       from: formatDecimal(row.previousPosition ?? 0),
@@ -84,7 +85,8 @@ export function MoversCard({
   rows: Row[];
   onPick: (query: string) => void;
 }) {
-  const { risers, fallers } = topMovers(rows);
+  const [expanded, setExpanded] = useState(false);
+  const { risers, fallers } = topMovers(rows, expanded ? 5 : 3);
   return (
     <section
       aria-label={t("Yükselenler ve düşenler")}
@@ -93,7 +95,7 @@ export function MoversCard({
       <h2 className="text-sm font-semibold">{t("Yükselenler ve düşenler")}</h2>
       <p className="mt-0.5 text-xs text-muted">
         {t(
-          "Önceki aynı uzunluktaki döneme göre, gösterimle tartılarak: çok aranan bir sorgunun küçük hareketi az arananın büyük hareketinden önce gelir.",
+          "Öncelik: mutlak sıra değişimi × kayıtlı gösterim. Bu bir inceleme sırasıdır, kayıp tıklama tahmini değildir.",
         )}
       </p>
       <div className="mt-3 flex flex-col gap-6 md:flex-row">
@@ -116,6 +118,12 @@ export function MoversCard({
           onPick={onPick}
         />
       </div>
+      <button
+        className="btn btn-ghost min-h-11"
+        onClick={() => setExpanded(!expanded)}
+      >
+        {t(expanded ? "Daha az göster" : "Daha fazla hareket göster")}
+      </button>
     </section>
   );
 }

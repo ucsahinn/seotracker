@@ -16,7 +16,7 @@ export function EmptyArchivePanel({ projectId }: { projectId: string }) {
         icon={TrendingUp}
         title={t("Hangi kelimelerle arandığınız henüz görünmüyor")}
         description={t(
-          "Sitenizin hangi aramalarda kaçıncı sırada çıktığını burada izlersiniz. Search Console kelime bazında veri verdikçe birikir. Az ziyaretçisi olan sitelerde birkaç hafta sürebilir. O zamana kadar toplam tıklama ve gösterime Arama performansı'ndan bakın.",
+          "Google taranan tarihler için sorgu satırı döndürmedi. Bu, arama yapılmadığını kanıtlamaz. Kalan tarihler varsa arşivi doldurmaya devam edin; toplam trafik için Arama performansını açın.",
         )}
         action={
           <Link

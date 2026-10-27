@@ -24,9 +24,11 @@ describe("attachChange", () => {
 });
 
 describe("directionOf", () => {
-  it("treats sub-half-position moves as unchanged", () => {
-    expect(directionOf(0.4)).toBe("flat");
-    expect(directionOf(-0.4)).toBe("flat");
+  it("uses the same neutral threshold as worded position deltas", () => {
+    expect(directionOf(0.04)).toBe("flat");
+    expect(directionOf(0.2)).toBe("up");
+    expect(directionOf(-0.04)).toBe("flat");
+    expect(directionOf(-0.2)).toBe("down");
     expect(directionOf(0.5)).toBe("up");
     expect(directionOf(-3)).toBe("down");
   });
