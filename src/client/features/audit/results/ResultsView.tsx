@@ -51,6 +51,8 @@ export function ResultsView({
   onTabChange,
   tab,
   severity,
+  pageUrl,
+  onPageUrlChange,
   justCompleted = false,
   onSeverityChange,
   onNewAudit,
@@ -59,6 +61,8 @@ export function ResultsView({
   data: AuditResultsData;
   tab: ResultsTab;
   severity?: IssueSeverity;
+  pageUrl?: string;
+  onPageUrlChange?: (url: string | undefined) => void;
   /** This screen watched the audit finish; the score marks the moment once. */
   justCompleted?: boolean;
   onTabChange: (tab: ResultsTab, options?: { replace?: boolean }) => void;
@@ -122,7 +126,10 @@ export function ResultsView({
   const [performanceFilters, setPerformanceFilters] =
     useState<PerformanceFilters>(EMPTY_PERFORMANCE_FILTERS);
   const [performanceIds, setPerformanceIds] = useState<string[] | null>(null);
-  const [issueFocusUrl, setIssueFocusUrl] = useState<string | undefined>();
+  const [issueFocusUrl, setIssueFocusUrl] = useState<string | undefined>(
+    pageUrl,
+  );
+  useEffect(() => setIssueFocusUrl(pageUrl), [pageUrl]);
   /*
    * Set from a problem card on Sorunlar: the Sayfalar table then shows only
    * that problem's pages. Kept beside the filters rather than inside them
@@ -356,7 +363,10 @@ export function ResultsView({
                   initialSeverity={severity}
                   onSeverityChange={onSeverityChange}
                   focusUrl={issueFocusUrl}
-                  onClearFocus={() => setIssueFocusUrl(undefined)}
+                  onClearFocus={() => {
+                    setIssueFocusUrl(undefined);
+                    onPageUrlChange?.(undefined);
+                  }}
                   onShowPages={(urls, label) => {
                     setPagesFilters(EMPTY_PAGES_FILTERS);
                     setPageScope({ label, urls });
@@ -376,6 +386,7 @@ export function ResultsView({
                   onClearScope={() => setPageScope(null)}
                   onShowIssues={(url) => {
                     setIssueFocusUrl(url);
+                    onPageUrlChange?.(url);
                     onTabChange("issues");
                   }}
                 />

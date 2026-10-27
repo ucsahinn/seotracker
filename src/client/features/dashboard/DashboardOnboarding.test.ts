@@ -60,13 +60,13 @@ describe("dashboard onboarding visibility", () => {
     expect(markup).toContain('id="setup-gsc" hidden=""');
   });
 
-  it("renders nothing once every step is completed or skipped", () => {
+  it("keeps deferred restoration reachable even when no active setup tasks remain", () => {
     expect(
       renderChecklist({
         ...fresh,
         domain: "example.com",
         dismissedSteps: setupSteps.map((step) => step.id),
       }),
-    ).toBe("");
+    ).toContain("Geri al");
   });
 });

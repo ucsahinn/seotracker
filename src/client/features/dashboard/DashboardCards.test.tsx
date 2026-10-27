@@ -9,8 +9,21 @@ import type { DashboardAuditSummary } from "@/types/schemas/dashboard";
  * failing for a reason that has nothing to do with the assertion.
  */
 vi.mock("@tanstack/react-router", () => ({
-  Link: ({ children, ...props }: { children: React.ReactNode }) => (
-    <a {...props}>{children}</a>
+  Link: ({
+    children,
+    search,
+    ...props
+  }: {
+    children: React.ReactNode;
+    search?: { auditId?: string; pageUrl?: string };
+  }) => (
+    <a
+      {...props}
+      data-audit-id={search?.auditId}
+      data-page-url={search?.pageUrl}
+    >
+      {children}
+    </a>
   ),
 }));
 
@@ -25,13 +38,23 @@ const audit = (
   totalIssueTypes: 0,
   severityTotals: { critical: 0, warning: 0, info: 0 },
   topPages: [],
+  coverage: { measured: 201, total: 201 },
+  standing: {
+    kind: "scored",
+    score: 100,
+    coverage: { measured: 201, total: 201, ratio: 1 },
+    provisional: false,
+    thinCategories: [],
+    tier: null,
+    cappedBy: null,
+  },
   ...overrides,
 });
 
-const HEALTHY = /siteniz sağlıklı görünüyor/i;
+const HEALTHY = /Taranan kapsamda sorun bulunamadı/i;
 
 describe("AuditHealthCard", () => {
-  it("calls a finished audit with no issues healthy", () => {
+  it("qualifies a fully measured no-findings verdict by its crawled scope", () => {
     render(<AuditHealthCard projectId="p1" audit={audit()} />);
 
     expect(screen.getByText(HEALTHY)).toBeDefined();
@@ -110,7 +133,7 @@ describe("severity is not carried by colour alone", () => {
  * worst of it one line below.
  */
 describe("what the card points at", () => {
-  it("names the pages with the most wrong with them", () => {
+  it("opens the worst page in the matching audit without dropping its URL scope", () => {
     render(
       <AuditHealthCard
         projectId="p1"
@@ -128,7 +151,12 @@ describe("what the card points at", () => {
     );
 
     expect(screen.getByText("En çok sorunu olan sayfalar")).toBeDefined();
-    expect(screen.getByText("/worst")).toBeDefined();
+    expect(
+      screen.getByText("/worst").closest("a")?.getAttribute("data-page-url"),
+    ).toBe("https://example.com/worst");
+    expect(
+      screen.getByText("/worst").closest("a")?.getAttribute("data-audit-id"),
+    ).toBe("audit-1");
     expect(screen.getByText("7 sorun")).toBeDefined();
   });
 
@@ -149,4 +177,18 @@ describe("what the card points at", () => {
     // The listed issue is a warning; the criticals are in the overflow.
     expect(screen.getByText(/6 kritik/)).toBeDefined();
   });
+});
+
+it("does not turn a partial or capped no-findings crawl into unconditional health", () => {
+  render(
+    <AuditHealthCard
+      projectId="p1"
+      audit={audit({
+        limitNote: "Tarama sınırlı",
+        coverage: { measured: 10, total: 201 },
+      })}
+    />,
+  );
+  expect(screen.queryByText(HEALTHY)).toBeNull();
+  expect(screen.getByText(/Ölçülmeyen kontroller var/)).toBeDefined();
 });

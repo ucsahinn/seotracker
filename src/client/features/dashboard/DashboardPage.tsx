@@ -1,31 +1,29 @@
-import { Fragment } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { sort } from "remeda";
-import { AuditFreshnessCard } from "./AuditFreshnessCard";
-import { DashboardOnboarding } from "./DashboardOnboarding";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
-import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
-import { Reveal } from "@/client/components/Reveal";
-import { useDashboardRefresh } from "@/client/features/dashboard/useDashboardRefresh";
-import {
-  AuditHealthCard,
-  GscCard,
-} from "@/client/features/dashboard/DashboardCards";
-import { DashboardMetrics } from "@/client/features/dashboard/DashboardMetrics";
-import { useGoogleClientConfigured } from "@/client/features/dashboard/GoogleSetupBanner";
-import { Ga4Card } from "@/client/features/dashboard/Ga4Card";
+import { PageActions } from "@/client/components/RefreshButton";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
-import { SearchInsights } from "@/client/features/dashboard/SearchInsights";
-import { NextStepsCard } from "@/client/features/dashboard/NextStepsCard";
 import {
   getDashboardActivation,
   getDashboardOverview,
 } from "@/serverFunctions/dashboard";
-import { t } from "@/shared/i18n";
+import { getAuditStatus } from "@/serverFunctions/audit";
 import { projectSetupOptions } from "@/client/features/projects/projectSetupQuery";
-
+import { t } from "@/shared/i18n";
+import { DashboardVerdict } from "./DashboardVerdict";
+import { DashboardMetrics } from "./DashboardMetrics";
+import { NextStepsCard, buildPanelActions } from "./NextStepsCard";
+import { SearchInsights } from "./SearchInsights";
+import { GscCard } from "./DashboardCards";
+import { DashboardAuditPanel } from "./DashboardAuditPanel";
+import { Ga4Card } from "./Ga4Card";
+import { DashboardOnboarding } from "./DashboardOnboarding";
+import { PanelRefreshButton } from "./PanelRefreshButton";
+import { useGoogleConfiguration } from "./GoogleSetupBanner";
+import { dashboardSearchViewQuery } from "./dashboardGscReport";
 export function DashboardPage({ projectId }: { projectId: string }) {
+  const client = useQueryClient();
   const activationQuery = useQuery({
     queryKey: ["dashboardActivation", projectId],
     queryFn: () => getDashboardActivation({ data: { projectId } }),
@@ -34,22 +32,38 @@ export function DashboardPage({ projectId }: { projectId: string }) {
   const overviewQuery = useQuery({
     queryKey: ["dashboardOverview", projectId],
     queryFn: () => getDashboardOverview({ data: { projectId } }),
-    /*
-     * The audit card promises "sonuçlar bittiğinde görünecek" while a crawl
-     * runs. Nothing refetched it, so the promise needed a reload to come
-     * true. Polls only while there is a crawl to wait for.
-     */
-    refetchInterval: (query) =>
-      query.state.data?.audit?.status === "running" ? 5_000 : false,
   });
-  const googleConfigured = useGoogleClientConfigured();
-  const refresh = useDashboardRefresh(projectId);
-
+  const configured = useGoogleConfiguration();
   const activation = activationQuery.data;
   const overview = overviewQuery.data;
-
-  // Only when nothing is cached: a failed refetch keeps the dashboard.
-  if (activationQuery.isError && !activation) {
+  const searchQuery = useQuery(
+    dashboardSearchViewQuery(projectId, activation?.gsc.connected === true),
+  );
+  const attempt = overview?.latestAttempt;
+  const progress = useQuery({
+    queryKey: ["audit-status", projectId, attempt?.auditId],
+    queryFn: () =>
+      getAuditStatus({ data: { projectId, auditId: attempt!.auditId } }),
+    enabled: attempt?.status === "running",
+    refetchInterval: (q) => (q.state.data?.status === "running" ? 5000 : false),
+  });
+  const wasRunning = useRef(false);
+  const running = progress.data
+    ? progress.data.status === "running"
+    : attempt?.status === "running";
+  useEffect(() => {
+    if (wasRunning.current && !running) {
+      void client.invalidateQueries({ queryKey: ["projectSetup", projectId] });
+      void client.invalidateQueries({
+        queryKey: ["dashboardOverview", projectId],
+      });
+      void client.invalidateQueries({
+        queryKey: ["auditFreshness", projectId],
+      });
+    }
+    wasRunning.current = running;
+  }, [running, client, projectId]);
+  if (activationQuery.isError && !activation)
     return (
       <PageShell>
         <QueryErrorState
@@ -59,88 +73,35 @@ export function DashboardPage({ projectId }: { projectId: string }) {
         />
       </PageShell>
     );
-  }
-
-  // Wait for the overview too: rendering cards from `overview === undefined`
-  // flashes their empty states (and reshuffles the data-first sort) once the
-  // real data lands. An overview error falls through so the page still loads.
-  if (!activation || overviewQuery.isPending) {
+  if (!activation || overviewQuery.isPending)
     return (
       <PageShell>
-        <div className="flex flex-col gap-6" aria-busy>
+        <div className="space-y-6" aria-busy>
           <div className="skeleton h-9 w-56" />
-          <div className="skeleton h-[104px]" />
+          <div className="skeleton h-20" />
+          <div className="skeleton h-28" />
           <div className="grid gap-5 lg:grid-cols-2">
-            <div className="skeleton h-52" />
-            <div className="skeleton h-52" />
+            <div className="skeleton h-64" />
+            <div className="skeleton h-64" />
           </div>
         </div>
       </PageShell>
     );
-  }
-
-  const gscConnected = activation.gsc.connected;
-  const ga4Connected = activation.ga4.connected;
-  const hasAudit = overview?.audit != null;
-  const googleMissing = googleConfigured === false;
-
-  const cards = [
-    // Without an audit the card was a third "Denetimi başlat": "Sıradaki
-    // adımlar" already carries that one ask. A failed overview still gets its
-    // error card, so the failure is not mistaken for "no audit yet".
-    ...(hasAudit || overviewQuery.isError
-      ? [
-          {
-            key: "audit",
-            hasData: hasAudit,
-            /*
-             * A failed overview is not an operator who has never run an audit.
-             * `overview` is undefined on error just as it is before the first
-             * audit, so this card used to answer a 500 with "tarayın" and a
-             * button -- inviting someone with a week of audits to spend a
-             * fresh crawl.
-             */
-            node: overviewQuery.isError ? (
-              <div className="rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
-                <QueryErrorState
-                  error={overviewQuery.error}
-                  onRetry={() => void overviewQuery.refetch()}
-                  title={t("Denetim özeti yüklenemedi")}
-                />
-              </div>
-            ) : (
-              <AuditHealthCard
-                projectId={projectId}
-                audit={overview?.audit ?? null}
-              />
-            ),
-          },
-        ]
-      : []),
-    // Connected, the Search Console numbers are already in the metric row, so
-    // the card would only repeat them. Disconnected, it is the thing that runs
-    // the whole OAuth flow, so it has to be on the page - unless Google setup
-    // is incomplete, in which case the recommendation panel handles that step.
-    ...(gscConnected || googleMissing
-      ? []
-      : [
-          {
-            key: "gsc",
-            hasData: false,
-            node: <GscCard projectId={projectId} />,
-          },
-        ]),
-    ...((ga4Connected || !activation.ga4.cardDismissedAt) && !googleMissing
-      ? [
-          {
-            key: "ga4",
-            hasData: ga4Connected,
-            node: <Ga4Card projectId={projectId} connected={ga4Connected} />,
-          },
-        ]
-      : []),
-  ];
-
+  const view = searchQuery.data?.connected ? searchQuery.data : null;
+  const audit = overview?.audit ?? null;
+  const siteSelected = overviewQuery.isError || !!overview?.domain;
+  const now = Date.now();
+  const actions = buildPanelActions({
+    projectId,
+    gscConnected: activation.gsc.connected,
+    googleMissing: configured === "missing",
+    audit,
+    overviewUnavailable: overviewQuery.isError,
+    siteSelected,
+    searchUnavailable: searchQuery.isError,
+    searchTodo: view?.todo ?? [],
+    now,
+  });
   return (
     <PageShell>
       <PageHeader
@@ -148,72 +109,101 @@ export function DashboardPage({ projectId }: { projectId: string }) {
         description={activation.domain ?? undefined}
         actions={
           <PageActions>
-            <RefreshButton
-              {...refresh}
-              // "Güncellendi" is a claim about data; with no Search Console and
-              // no audit there is nothing on the page that could be current.
-              dataUpdatedAt={
-                gscConnected || hasAudit ? refresh.dataUpdatedAt : 0
-              }
-              shortcut
-            />
-            {hasAudit ? (
-              <Link
-                to="/p/$projectId/audit"
-                params={{ projectId }}
-                className="btn btn-primary btn-sm"
-              >
-                {t("Denetimi başlat")}
-              </Link>
-            ) : null}
+            <PanelRefreshButton projectId={projectId} />
+            <Link
+              to="/p/$projectId/audit"
+              params={{ projectId }}
+              className="btn btn-primary btn-sm min-h-11"
+            >
+              {t("Denetimler")}
+            </Link>
           </PageActions>
         }
       />
-
-      <DashboardMetrics projectId={projectId} connected={gscConnected} />
-
-      {/*
-       * Above the cards on purpose: everything below is "how is the site",
-       * and this is "so what do I do" -- which is the question an operator
-       * opens the dashboard with. Built from the data the two queries above
-       * already fetched, so it costs no extra request.
-       */}
-      <NextStepsCard
+      <DashboardVerdict
+        action={actions[0]}
         projectId={projectId}
-        gscConnected={gscConnected}
-        setup={setupQuery.data}
-        googleMissing={googleMissing}
-        audit={overview?.audit ?? null}
+        connected={activation.gsc.connected}
       />
-
-      <AuditFreshnessCard projectId={projectId} />
-
-      <SearchInsights projectId={projectId} connected={gscConnected} />
-
-      {/* Cards with data sort before setup pitches and empty states. A lone
-          card takes the full width rather than leaving half the row empty. */}
-      {cards.length > 0 ? (
-        <Reveal
-          className={`grid items-start gap-5 ${
-            cards.length > 1 ? "lg:grid-cols-2" : ""
-          }`}
-          stepMs={60}
-        >
-          {sort(cards, (a, b) => Number(b.hasData) - Number(a.hasData)).map(
-            (card) => (
-              <Fragment key={card.key}>{card.node}</Fragment>
-            ),
-          )}
-        </Reveal>
+      <DashboardMetrics
+        projectId={projectId}
+        connected={activation.gsc.connected}
+      />
+      {activationQuery.isError ? (
+        <QueryErrorState
+          compact
+          error={activationQuery.error}
+          onRetry={() => void activationQuery.refetch()}
+          title={t("Bağlantı durumu yenilenemedi")}
+        />
       ) : null}
-
-      {/* Setup last. It is the one thing on this page you finish and never
-          look at again, so it does not get the top of the screen. */}
+      {configured === "error" ? (
+        <p role="status" className="text-sm text-muted">
+          {t("Google yapılandırması okunamadı. Yenile ile tekrar deneyin.")}
+        </p>
+      ) : null}
+      {configured === "pending" ? (
+        <div className="skeleton h-8" aria-busy />
+      ) : null}
+      <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+        <div className="min-w-0 lg:col-start-2 lg:row-start-1">
+          <NextStepsCard
+            now={now}
+            projectId={projectId}
+            gscConnected={activation.gsc.connected}
+            googleMissing={configured === "missing"}
+            setup={setupQuery.data}
+            audit={audit}
+            overviewUnavailable={overviewQuery.isError}
+            siteSelected={siteSelected}
+            searchUnavailable={searchQuery.isError}
+            searchTodo={view?.todo ?? []}
+          />
+        </div>
+        <div className="min-w-0 lg:col-start-1 lg:row-start-1">
+          <SearchInsights
+            projectId={projectId}
+            connected={activation.gsc.connected}
+          />
+        </div>
+      </div>
+      <div className="grid items-start gap-5 lg:grid-cols-2">
+        <DashboardAuditPanel
+          projectId={projectId}
+          overview={overview}
+          isError={overviewQuery.isError}
+          error={overviewQuery.error}
+          onRetry={() => void overviewQuery.refetch()}
+          progressPages={progress.data?.pagesCrawled}
+        />
+        <div className="min-w-0">
+          {(activation.ga4.connected || !activation.ga4.cardDismissedAt) &&
+          configured !== "missing" ? (
+            <Ga4Card
+              projectId={projectId}
+              connected={activation.ga4.connected}
+            />
+          ) : null}
+        </div>
+      </div>
+      {!activation.gsc.connected && configured === "ready" ? (
+        <GscCard projectId={projectId} />
+      ) : null}
+      {setupQuery.isError ? (
+        <QueryErrorState
+          compact
+          error={setupQuery.error}
+          onRetry={() => void setupQuery.refetch()}
+          title={t("Kurulum durumu okunamadı")}
+        />
+      ) : null}
       <DashboardOnboarding
         key={projectId}
         projectId={projectId}
-        activation={activation}
-        firstStepsDone={gscConnected && hasAudit}
+        activation={{
+          ...activation,
+          hasProjectContext: setupQuery.data?.projectInfo === true,
+        }}
       />
     </PageShell>
   );

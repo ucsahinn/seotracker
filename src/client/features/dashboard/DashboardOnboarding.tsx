@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Check, ChevronRight, RotateCcw } from "lucide-react";
+import { ChevronRight, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { captureClientEvent } from "@/client/lib/observability";
@@ -12,12 +12,12 @@ import type {
 } from "@/types/schemas/dashboard";
 import { getStepStatus, setupSteps } from "./dashboardSteps";
 import { DashboardSetupAction } from "./DashboardSetupAction";
+import { formatCount } from "@/shared/format";
 import { t } from "@/shared/i18n";
 
 export function DashboardOnboarding({
   projectId,
   activation,
-  firstStepsDone = false,
 }: {
   projectId: string;
   activation: DashboardActivation;
@@ -35,7 +35,7 @@ export function DashboardOnboarding({
       ? "gsc"
       : null,
   );
-  const [open, setOpen] = useState(firstStepsDone || selected !== null);
+  const [open, setOpen] = useState(selected !== null);
   const dismiss = useMutation({
     mutationFn: ({
       step,
@@ -63,14 +63,12 @@ export function DashboardOnboarding({
   const remaining = steps.filter(
     (step) => getStepStatus(activation, step.id) === "todo",
   );
-  const completed = steps.filter(
-    (step) => getStepStatus(activation, step.id) === "done",
-  );
+
   const deferred = steps.filter(
     (step) => getStepStatus(activation, step.id) === "skipped",
   );
 
-  if (remaining.length === 0) return null;
+  if (remaining.length === 0 && deferred.length === 0) return null;
 
   return (
     <details
@@ -79,10 +77,10 @@ export function DashboardOnboarding({
       onToggle={(event) => setOpen(event.currentTarget.open)}
       className="group/setup overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]"
     >
-      <summary className="flex cursor-pointer list-none items-center gap-3 px-5 py-3.5 [&::-webkit-details-marker]:hidden">
+      <summary className="min-h-11 focus-visible:outline-offset-[-2px] flex cursor-pointer list-none items-center gap-3 px-5 py-3.5 [&::-webkit-details-marker]:hidden">
         <span className="min-w-0 flex-1">
           <h2 className="text-sm font-semibold leading-tight">
-            {t("Çalışma alanınızı kurun")}
+            {t("Kurulum tercihleri")}
           </h2>
           {/* Describes what is left, not a fixed script: the old copy named
             two steps that were already done and one ("ilk denetimi
@@ -90,11 +88,13 @@ export function DashboardOnboarding({
           <span className="mt-0.5 block text-xs text-muted">
             {remaining.length === 1
               ? t("Bir adım kaldı.")
-              : t("{count} adım kaldı.", { count: remaining.length })}{" "}
+              : t("{count} adım kaldı.", {
+                  count: formatCount(remaining.length),
+                })}{" "}
             {t("Hepsi isteğe bağlı, istediğiniz zaman dönebilirsiniz.")}
           </span>
         </span>
-        <ChevronRight className="size-4 shrink-0 text-muted transition-transform group-open/setup:rotate-90" />
+        <ChevronRight className="size-4 shrink-0 text-muted transition-transform motion-reduce:transition-none group-open/setup:rotate-90" />
       </summary>
       {remaining.map((item) => {
         const active = selected === item.id;
@@ -126,7 +126,7 @@ export function DashboardOnboarding({
                 </span>
               </span>
               <ChevronRight
-                className={`size-4 shrink-0 text-muted transition-transform ${active ? "rotate-90" : ""}`}
+                className={`size-4 shrink-0 text-muted transition-transform motion-reduce:transition-none ${active ? "rotate-90" : ""}`}
               />
             </button>
             <div id={`setup-${item.id}`} hidden={!active}>
@@ -160,8 +160,10 @@ export function DashboardOnboarding({
       {deferred.length > 0 && (
         <details className="group border-t border-base-300">
           <summary className="flex cursor-pointer list-none items-center gap-2 px-5 py-3.5 text-sm text-muted [&::-webkit-details-marker]:hidden">
-            <ChevronRight className="size-4 transition-transform group-open:rotate-90" />
-            {t("{count} adım sonraya bırakıldı", { count: deferred.length })}
+            <ChevronRight className="size-4 transition-transform motion-reduce:transition-none group-open:rotate-90" />
+            {t("{count} adım sonraya bırakıldı", {
+              count: formatCount(deferred.length),
+            })}
           </summary>
           <ul className="space-y-1 px-5 pb-4">
             {deferred.map((item) => (
@@ -183,26 +185,6 @@ export function DashboardOnboarding({
                 >
                   <RotateCcw className="size-3.5" /> {t("Geri al")}
                 </button>
-              </li>
-            ))}
-          </ul>
-        </details>
-      )}
-      {completed.length > 0 && (
-        <details className="group border-t border-base-300">
-          <summary className="flex cursor-pointer list-none items-center gap-2 px-5 py-3.5 text-sm [&::-webkit-details-marker]:hidden">
-            <Check className="size-4 text-success" />
-            {t("{count} tamamlandı", { count: completed.length })}
-            <ChevronRight className="ml-auto size-4 text-muted transition-transform group-open:rotate-90" />
-          </summary>
-          <ul className="space-y-3 px-5 pb-5">
-            {completed.map((item) => (
-              <li
-                key={item.id}
-                className="flex items-center gap-3 text-sm text-muted"
-              >
-                <Check className="size-4 shrink-0 text-success" />
-                {t(item.label)}
               </li>
             ))}
           </ul>

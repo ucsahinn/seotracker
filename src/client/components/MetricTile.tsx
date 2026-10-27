@@ -28,7 +28,7 @@ type MetricDelta =
   | undefined;
 
 /** Where a tile leads. Every target takes only the project. */
-export type MetricTileHref = {
+type MetricTileHref = {
   to:
     | "/p/$projectId/rankings"
     | "/p/$projectId/search-performance"

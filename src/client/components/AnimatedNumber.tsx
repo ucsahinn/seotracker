@@ -21,10 +21,13 @@ export function AnimatedNumber({
   value,
   format = formatCount,
   durationMs = 700,
+  accessibleText,
 }: {
   value: number;
   format?: (n: number) => string;
   durationMs?: number;
+  /** A localized final value with its metric name, independent of animation. */
+  accessibleText?: string;
 }) {
   const reduced = useReducedMotion();
   const [shown, setShown] = React.useState(0);
@@ -53,7 +56,7 @@ export function AnimatedNumber({
 
   return (
     <>
-      <span className="sr-only">{format(value)}</span>
+      <span className="sr-only">{accessibleText ?? format(value)}</span>
       <span aria-hidden className="tabular-nums">
         {format(reduced ? value : shown)}
       </span>

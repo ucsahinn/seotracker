@@ -226,4 +226,104 @@ export const ptCards: Catalog = {
   "Ortalama sırası 4 ile 20 arasında, en az {impressions} gösterim alan {count} sorgu. Olası kazanç, sorgu bir basamak yükselirse (6-10'dan 4-5'e, 4-5'ten 2-3'e, 11-20'den ilk sayfaya) beklenen en fazla ek tıklamadır.":
     "{count} consultas com posição média entre 4 e 20 e pelo menos {impressions} impressões. O ganho possível é o máximo de cliques extra esperado se uma consulta subir um degrau (6-10 para 4-5, 4-5 para 2-3, 11-20 para a primeira página).",
   "{title} · {kind} · aç": "{title} · {kind} · abrir",
+  "Karşılaştırma yapılamadı: tarama kapsamları farklı veya bilinmiyor.":
+    "Não é possível comparar: os âmbitos dos rastreios diferem ou são desconhecidos.",
+  "{measured} / {total} kontrol ölçüldü.":
+    "{measured} / {total} verificações medidas.",
+  "{types} kontrol türünde {pages} sayfa etkileniyor.":
+    "{pages} páginas afetadas em {types} tipos de verificação.",
+  "Taranan kapsamda sorun bulunamadı.":
+    "Não foram encontrados problemas no âmbito rastreado.",
+  "Ölçülmeyen kontroller var; tüm site için sağlıklı sonucu çıkarılamaz. Ayrıntılarda kapsamı kontrol edin.":
+    "Algumas verificações não foram medidas; não é possível confirmar o estado de todo o site. Consulte a cobertura nos detalhes.",
+  "+ {count} kontrol türü daha": "+ {count} outros tipos de verificação",
+  "Google aramasından sitenize gelen tıklamalar.":
+    "Cliques para o seu site a partir da Pesquisa Google.",
+  "Sitenizin Google sonuçlarında gösterilme sayısı.":
+    "Número de vezes que o seu site apareceu nos resultados do Google.",
+  "Kurulum tercihleri": "Preferências de configuração",
+  Denetimler: "Auditorias",
+  "Bağlantı durumu yenilenemedi":
+    "Não foi possível atualizar o estado da ligação",
+  "Google yapılandırması okunamadı. Yenile ile tekrar deneyin.":
+    "Não foi possível ler a configuração do Google. Tente novamente com Atualizar.",
+  "Site seçilmedi": "Nenhum site selecionado",
+  "Kendi sitenizin denetimini göstermek için proje ayarlarına alan adını girin.":
+    "Introduza o domínio nas definições do projeto para mostrar a auditoria do seu site.",
+  "Son denetim başarısız": "A última auditoria falhou",
+  "Arama verisi için Search Console bağlantısını kontrol edin.":
+    "Verifique a ligação ao Search Console para ver os dados de pesquisa.",
+  "Arama verisi şu an okunamadı. Yenile ile tekrar deneyin.":
+    "Não foi possível ler os dados de pesquisa agora. Tente novamente com Atualizar.",
+  "Arama özeti": "Resumo de pesquisa",
+  "Son {days} günde Google aramalarından {clicks} tıklama aldınız.":
+    "Recebeu {clicks} cliques da Pesquisa Google em {days} dias.",
+  "Son yenileme başarısız; önbellekteki veriler gösteriliyor.":
+    "A última atualização falhou; são apresentados os dados em cache.",
+  "Önceki dönem: {start} – {end}.": "Período anterior: {start} – {end}.",
+  "Son veri günü: {date}. Son {count} gün toplamlara dahil değil.":
+    "Último dia com dados: {date}. Os últimos {count} dias estão excluídos dos totais.",
+  "Google tarih bildirmedi; son günler dışarıda.":
+    "O Google não indicou uma data de completude; os dias recentes estão excluídos.",
+  "Sorgu listesi satır sınırında kesildi; tahminler yalnızca alınan sorguları kapsar.":
+    "A lista atingiu o limite de linhas; as estimativas abrangem apenas as consultas obtidas.",
+  "Google bazı sorguları gizler; sorgu listesi site toplamının tamamı değildir.":
+    "O Google oculta algumas consultas; a lista não representa o total completo do site.",
+  "{value} (para birimi bilinmiyor)": "{value} (moeda desconhecida)",
+  "Satış ölçümü doğrulanmadı; sıfır satış, mağaza olmadığı anlamına gelmez.":
+    "A medição de vendas não está confirmada; zero vendas não significa que não exista uma loja.",
+  "Analytics verisi sınırlı veya eksik. Bilinmeyen değerler çizilmez; dönem karşılaştırması gösterilmez.":
+    "Os dados do Analytics são limitados ou incompletos. Os valores desconhecidos ficam em branco; as comparações entre períodos são omitidas.",
+  "Saat dilimi bilinmiyor": "Fuso horário desconhecido",
+  "Google arama tıklamaları ile organik oturumlar farklı ölçümlerdir; Analytics diğer arama motorlarını da kapsar.":
+    "Os cliques da Pesquisa Google e as sessões orgânicas medem coisas diferentes; o Analytics também inclui outros motores de pesquisa.",
+  "Google gizlilik eşiği nedeniyle bazı verileri göstermiyor.":
+    "O Google oculta alguns dados devido a limiares de privacidade.",
+  "Google bu raporu örneklenmiş veriden hesapladı.":
+    "O Google calculou este relatório com dados de amostragem.",
+  "Bazı ölçümler hesap erişim kısıtı nedeniyle okunamadı. Analytics mülkündeki yetkinizi kontrol edin.":
+    "Algumas métricas não puderam ser lidas devido a restrições de acesso. Verifique as suas permissões na propriedade do Analytics.",
+  "Bazı satırlar Google tarafından birleştirildi; ayrıntılar eksik olabilir.":
+    "O Google agrupou algumas linhas; podem faltar detalhes.",
+  "Ölçülen bulgulara göre önce şu işleri değerlendirin.":
+    "Considere primeiro estas tarefas, com base nos resultados medidos.",
+  "Kurulum durumu okunamayanlar: {items}. Yenile ile tekrar deneyin.":
+    "Não foi possível ler o estado de configuração de: {items}. Tente novamente com Atualizar.",
+  "Ölçülen kapsamda öncelikli iş bulunmadı.":
+    "Não foram encontradas tarefas prioritárias no âmbito medido.",
+  "Denetim özeti okunamadı": "Não foi possível ler o resumo da auditoria",
+  "İlk denetim olup olmadığı bilinmiyor. Denetim geçmişini açın veya Yenile ile tekrar deneyin.":
+    "Não se sabe se já existe uma auditoria. Abra o histórico ou tente novamente com Atualizar.",
+  "Son denetim {when}. Denetim bulguları yalnızca bu taramaya dayanır.":
+    "Última auditoria: {when}. Os resultados baseiam-se apenas nesse rastreio.",
+  "Bazı veriler yenilenemedi; önbellekteki tarihleri kontrol edin.":
+    "Não foi possível atualizar alguns dados; verifique as datas dos dados em cache.",
+  Yenilendi: "Atualizado",
+  "Veri alındı: {time}": "Dados recebidos: {time}",
+  "Günlük tıklamalar; soluk çizgi önceki dönemi gösterir.":
+    "Cliques diários; a linha esbatida mostra o período anterior.",
+  "Bir üst sıra bandına çıkabilecek sorgular":
+    "Consultas que podem subir uma faixa de posições",
+  "Marka adları onaylandı.": "Termos da marca confirmados.",
+  "Marka adları öneriye göre ayrıldı.":
+    "As consultas de marca foram separadas pelos termos sugeridos.",
+  "Marka ayrımı yapılmadı.": "As consultas de marca não foram separadas.",
+  "Bu kapsamda uygun sorgu bulunmadı.":
+    "Não há consultas elegíveis neste âmbito.",
+  "{count} sorgu bir üst sıra bandı için değerlendirildi.":
+    "{count} consultas avaliadas para a faixa de posições seguinte.",
+  "Yeterli örnek yok; ek tıklama üst sınırı hesaplanamadı.":
+    "Não há observações suficientes para calcular um limite superior de cliques adicionais.",
+  "Hesaplanabilen {known} sorguda en fazla {clicks} ek tıklama (üst sınır); {unknown} sorguda hesaplanamadı.":
+    "No máximo {clicks} cliques adicionais em {known} consultas estimáveis (limite superior); {unknown} consultas sem estimativa.",
+  "Bu bir tahmindir; sayfa bazlı Fırsatlar toplamına eklenmez.":
+    "É uma estimativa; não a some ao total de oportunidades por página.",
+  "Birim: sayfa ve kontrol türü çifti; benzersiz sayfa sayısı değildir.":
+    "Unidade: par de página e tipo de verificação, não contagem de páginas únicas.",
+  "{count} kritik kontrol türü": "{count} tipos de verificação críticos",
+  "{count} uyarı kontrol türü": "{count} tipos de verificação com avisos",
+  "Site geneli": "Todo o site",
+  "Sorgu arşivi": "Arquivo de consultas",
+  "Karşılaştırma yalnızca iki taramada da ölçülen kontrolleri kapsar; diğer kontroller için değişim bilinmiyor.":
+    "A comparação abrange apenas verificações medidas nos dois rastreios; as outras alterações são desconhecidas.",
 };

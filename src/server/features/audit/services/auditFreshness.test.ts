@@ -2,16 +2,21 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   getAuditsByProject: vi.fn(),
-  getIssueTypePageCountsForAudit: vi.fn(),
+  getProjectById: vi.fn(),
+  loadSnapshot: vi.fn(),
+}));
+
+vi.mock("@/server/features/projects/repositories/ProjectRepository", () => ({
+  ProjectRepository: { getProjectById: mocks.getProjectById },
 }));
 
 vi.mock("@/server/features/audit/repositories/AuditRepository", () => ({
   AuditRepository: { getAuditsByProject: mocks.getAuditsByProject },
 }));
-vi.mock("@/server/features/audit/repositories/auditSummaryQueries", () => ({
-  getIssueTypePageCountsForAudit: mocks.getIssueTypePageCountsForAudit,
-}));
 
+vi.mock("./panelAuditSnapshot", () => ({
+  loadPanelAuditSnapshot: mocks.loadSnapshot,
+}));
 import { getAuditFreshness } from "./auditFreshness";
 
 const NOW = new Date("2026-06-30T12:00:00.000Z");
@@ -27,8 +32,16 @@ function audit(
 }
 
 beforeEach(() => {
+  mocks.loadSnapshot.mockResolvedValue({
+    completed: true,
+    startUrl: "https://example.com/",
+    config: { maxPages: 100, lighthouseStrategy: "none" },
+    pages: [],
+    measuredChecks: [],
+    counts: [],
+  });
+  mocks.getProjectById.mockResolvedValue({ domain: "example.com" });
   mocks.getAuditsByProject.mockResolvedValue([]);
-  mocks.getIssueTypePageCountsForAudit.mockResolvedValue([]);
 });
 
 describe("getAuditFreshness", () => {
@@ -73,48 +86,14 @@ describe("getAuditFreshness", () => {
     expect(result.isStale).toBe(true);
   });
 
-  it("reports which issues appeared and which cleared up", async () => {
+  it("withholds resolution claims when per-URL measured scope is unknown (counts alone previously claimed fixes)", async () => {
     mocks.getAuditsByProject.mockResolvedValue([
       audit("a2", "2026-06-29 09:00:00"),
       audit("a1", "2026-06-22 09:00:00"),
     ]);
-    mocks.getIssueTypePageCountsForAudit
-      .mockResolvedValueOnce([
-        { issueType: "broken-internal-link", severity: "critical", pages: 4 },
-        {
-          issueType: "missing-meta-description",
-          severity: "warning",
-          pages: 2,
-        },
-      ])
-      .mockResolvedValueOnce([
-        {
-          issueType: "missing-meta-description",
-          severity: "warning",
-          pages: 5,
-        },
-        { issueType: "thin-content", severity: "warning", pages: 3 },
-      ]);
-
     const result = await getAuditFreshness({ projectId: "p1", now: NOW });
-
-    // Appeared since last time, and sorted with the critical one first.
-    expect(result.newIssues[0]).toMatchObject({
-      issueType: "broken-internal-link",
-      count: 4,
-      previousCount: null,
-    });
-    // Gone entirely, plus one that now affects fewer pages.
-    expect(result.resolvedIssues).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ issueType: "thin-content", count: 0 }),
-        expect.objectContaining({
-          issueType: "missing-meta-description",
-          previousCount: 5,
-          count: 2,
-        }),
-      ]),
-    );
+    expect(result.comparisonUnavailable).toBe(true);
+    expect(result.resolvedIssues).toEqual([]);
   });
 
   it("has nothing to compare when only one audit ever completed", async () => {
@@ -125,24 +104,46 @@ describe("getAuditFreshness", () => {
     const result = await getAuditFreshness({ projectId: "p1", now: NOW });
 
     expect(result.newIssues).toEqual([]);
-    expect(mocks.getIssueTypePageCountsForAudit).not.toHaveBeenCalled();
+    expect(mocks.loadSnapshot).not.toHaveBeenCalled();
   });
 
-  it("compares against the previous audit of the same site only", async () => {
+  it("selects the project host even when a foreign completed audit is newest", async () => {
     mocks.getAuditsByProject.mockResolvedValue([
-      audit("now", "2026-06-29 10:00:00"),
-      audit(
-        "other-site",
-        "2026-06-28 10:00:00",
-        "completed",
-        "https://npr.org/",
-      ),
-      audit("before", "2026-06-20 10:00:00"),
+      audit("foreign", "2026-06-29 10:00:00", "completed", "https://npr.org"),
+      audit("own", "2026-06-20 10:00:00"),
     ]);
-    await getAuditFreshness({ projectId: "p1", now: NOW });
-    expect(mocks.getIssueTypePageCountsForAudit).toHaveBeenCalledWith("before");
-    expect(mocks.getIssueTypePageCountsForAudit).not.toHaveBeenCalledWith(
-      "other-site",
-    );
+    const result = await getAuditFreshness({ projectId: "p1", now: NOW });
+    expect(result.auditId).toBe("own");
   });
+});
+
+it("returns measured changes for identical own-site scopes instead of suppressing every comparison", async () => {
+  mocks.getAuditsByProject.mockResolvedValue([
+    audit("new", "2026-06-29 10:00:00"),
+    audit("old", "2026-06-20 10:00:00"),
+  ]);
+  const common = {
+    completed: true,
+    startUrl: "https://example.com/",
+    config: { maxPages: 100, lighthouseStrategy: "none" },
+    pages: [{ url: "https://example.com/", fetchClass: "ok" }],
+    measuredChecks: ["missing-title"],
+  };
+  mocks.loadSnapshot
+    .mockResolvedValueOnce({ ...common, counts: [] })
+    .mockResolvedValueOnce({
+      ...common,
+      counts: [{ issueType: "missing-title", severity: "critical", pages: 1 }],
+    });
+  const result = await getAuditFreshness({ projectId: "p1", now: NOW });
+  expect(result.comparisonUnavailable).toBe(false);
+  expect(result.previousAuditId).toBe("old");
+  expect(result.resolvedIssues).toEqual([
+    {
+      issueType: "missing-title",
+      severity: "critical",
+      count: 0,
+      previousCount: 1,
+    },
+  ]);
 });

@@ -31,9 +31,8 @@ describe("SeverityBar", () => {
     const critical = screen.getByRole("link", { name: /3 kritik/ });
     expect(critical.getAttribute("data-tab")).toBe("issues");
     expect(screen.queryByRole("link", { name: /uyarı/ })).toBeNull();
-    expect(
-      screen.getByRole("link", { name: /1 bilgi/ }).getAttribute("data-tab"),
-    ).toBe("issues");
+    expect(screen.getByText("1 bilgi")).toBeDefined();
+    expect(screen.queryByRole("link", { name: /1 bilgi/ })).toBeNull();
   });
 
   it("draws nothing for an audit with no findings", () => {

@@ -240,8 +240,8 @@ function legacyRow(row: SearchMetrics & { key: string }): LegacyRow {
  * The view in the shape the current screen and dashboard cards read, until
  * they move onto the view itself. The numbers are the view's (complete-day
  * window, all countries, Google's own totals); only the shape is old:
- * an unknown current CTR and position read as 0, which `describeTotals`
- * already shows as absent. The previous period keeps its nulls.
+ * an unknown current CTR and position read as 0. The previous period
+ * keeps its nulls.
  */
 export function toLegacyReport(view: SearchPerformanceView) {
   const windowDays = view.series.daily.filter(

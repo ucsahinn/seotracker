@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import * as React from "react";
+import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { HelpTip } from "@/client/components/HelpTip";
-import { formatPercent } from "@/client/lib/format";
+import { formatCount, formatPercent } from "@/client/lib/format";
 import { t } from "@/shared/i18n";
 
 type Severity = "critical" | "warning" | "info";
@@ -26,7 +27,7 @@ const SEGMENTS: {
     key: "warning",
     label: "Uyarı",
     legend: "{count} uyarı",
-    fill: "bg-warning",
+    fill: "bg-[var(--mark-warning)]",
     hint: "Sıralamayı zamanla aşındıran, ama acil olmayan sorunlar.",
   },
   {
@@ -51,26 +52,31 @@ export function SeverityBar({
   projectId,
   auditId,
   totals,
+  siteTotals,
 }: {
   projectId: string;
   auditId: string;
   totals: Record<Severity, number>;
+  siteTotals?: Record<Severity, number>;
 }) {
-  const total = totals.critical + totals.warning + totals.info;
+  const total = totals.critical + totals.warning;
+  const reduced = useReducedMotion();
   const [drawn, setDrawn] = React.useState(false);
   React.useEffect(() => {
     const frame = requestAnimationFrame(() => setDrawn(true));
     return () => cancelAnimationFrame(frame);
   }, []);
 
-  if (total === 0) return null;
-  const present = SEGMENTS.filter((segment) => totals[segment.key] > 0);
+  if (total === 0 && totals.info === 0 && !siteTotals) return null;
+  const present = SEGMENTS.filter(
+    (segment) => segment.key !== "info" && totals[segment.key] > 0,
+  );
 
   return (
     <div className="pt-1">
       <div
         className="flex h-2 origin-left gap-0.5 overflow-hidden rounded-full transition-transform duration-700 ease-out motion-reduce:transition-none"
-        style={{ transform: drawn ? "scaleX(1)" : "scaleX(0)" }}
+        style={{ transform: drawn || reduced ? "scaleX(1)" : "scaleX(0)" }}
       >
         {present.map((segment) => (
           <Link
@@ -82,7 +88,7 @@ export function SeverityBar({
             style={{ flexGrow: totals[segment.key] }}
             title={t("{severity}: {count} bulgu. {hint}", {
               severity: t(segment.label),
-              count: totals[segment.key],
+              count: formatCount(totals[segment.key]),
               hint: t(segment.hint),
             })}
             // The legend below carries the same links with a readable hit
@@ -92,6 +98,24 @@ export function SeverityBar({
           />
         ))}
       </div>
+      <p className="mt-2 text-xs text-muted">
+        {t(
+          "Birim: sayfa ve kontrol türü çifti; benzersiz sayfa sayısı değildir.",
+        )}
+      </p>
+      {siteTotals ? (
+        <p className="mt-2 text-xs text-muted">
+          {t("Site geneli")}:{" "}
+          {t("{count} kritik", { count: formatCount(siteTotals.critical) })} ·{" "}
+          {t("{count} uyarı", { count: formatCount(siteTotals.warning) })} ·{" "}
+          {t("{count} bilgi", { count: formatCount(siteTotals.info) })}
+        </p>
+      ) : null}
+      {totals.info > 0 ? (
+        <p className="mt-2 text-xs text-muted">
+          {t("{count} bilgi", { count: formatCount(totals.info) })}
+        </p>
+      ) : null}
       <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
         {present.map((segment) => (
           <li key={segment.key}>

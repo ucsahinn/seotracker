@@ -1,3 +1,4 @@
+import { EmptyState } from "@/client/components/EmptyState";
 import { AnimatedNumber } from "@/client/components/AnimatedNumber";
 import { HeaderHelpLabel } from "@/client/features/saved-keywords/components/HeaderHelpLabel";
 // Shared building blocks for the dashboard cards. Same visual language as the
@@ -18,13 +19,13 @@ export function CardShell({
 }) {
   return (
     <div className="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
-      <div className="flex items-center justify-between gap-4 px-5 py-3.5">
+      <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3.5">
         <h2 className="text-sm font-semibold leading-tight">{title}</h2>
         {action}
       </div>
       <div className="border-t border-base-300 p-5">
         {children}
-        {stamp ? <p className="mt-4 text-[11px] text-subtle">{stamp}</p> : null}
+        {stamp ? <p className="mt-4 text-xs text-subtle">{stamp}</p> : null}
       </div>
     </div>
   );
@@ -37,12 +38,7 @@ export function EmptyCardBody({
   message: string;
   cta: React.ReactNode;
 }) {
-  return (
-    <div className="flex flex-col items-start gap-3">
-      <p className="text-sm text-muted">{message}</p>
-      {cta}
-    </div>
-  );
+  return <EmptyState compact title={message} action={cta} />;
 }
 
 export function Stat({
@@ -81,7 +77,11 @@ export function Stat({
       </p>
       <p className={`text-2xl font-semibold tabular-nums ${toneClass}`}>
         {animateTo ? (
-          <AnimatedNumber value={animateTo.value} format={animateTo.format} />
+          <AnimatedNumber
+            value={animateTo.value}
+            format={animateTo.format}
+            accessibleText={`${value} ${label}`}
+          />
         ) : (
           value
         )}

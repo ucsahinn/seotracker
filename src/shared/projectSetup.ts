@@ -13,7 +13,7 @@
  *
  * Sibling imports stay relative, like the rest of `shared/`.
  */
-import { siteKey } from "./auditTodo";
+import { selectPanelAudits, auditIsStale } from "./panelAudit";
 
 export const SETUP_ITEMS = [
   "searchConsole",
@@ -27,9 +27,6 @@ export type SetupItem = (typeof SETUP_ITEMS)[number];
 
 /** True done, false missing, null not known (a read failed). */
 export type SetupSignals = Record<SetupItem, boolean | null>;
-
-/** A completed audit older than this describes a site that has since changed. */
-const AUDIT_FRESH_DAYS = 7;
 
 type SetupVerdict = {
   done: number;
@@ -57,19 +54,6 @@ export function setupVerdict(signals: SetupSignals): SetupVerdict {
  * compared without "www." and the start path is ignored, so a crawl of
  * /blog still belongs to the site; a crawl of another domain does not.
  */
-const hostOf = (key: string) => key.split("/")[0] ?? key;
-
-function isProjectSite(
-  startUrl: string,
-  projectDomain: string | null,
-): boolean {
-  if (!projectDomain) return true;
-  const domain = projectDomain.includes("://")
-    ? projectDomain
-    : `https://${projectDomain}`;
-  return hostOf(siteKey(startUrl)) === hostOf(siteKey(domain));
-}
-
 /** A completed audit of the project's own site, started within the fresh window. */
 export function hasFreshOwnAudit(
   audits: ReadonlyArray<{
@@ -83,8 +67,8 @@ export function hasFreshOwnAudit(
   return audits.some(
     (audit) =>
       audit.status === "completed" &&
-      isProjectSite(audit.startUrl, projectDomain) &&
+      selectPanelAudits([audit], projectDomain).snapshot !== null &&
       Number.isFinite(audit.startedAt) &&
-      now - audit.startedAt <= AUDIT_FRESH_DAYS * 86_400_000,
+      !auditIsStale(audit.startedAt, now),
   );
 }

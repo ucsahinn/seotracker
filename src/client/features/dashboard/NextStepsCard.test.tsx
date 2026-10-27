@@ -153,7 +153,7 @@ describe("NextStepsCard", () => {
     );
 
     const items = screen.getAllByRole("listitem");
-    expect(items[0]?.textContent).toContain("3 kritik sorun");
+    expect(items[0]?.textContent).toContain("3 kritik kontrol türü");
   });
 
   /*
@@ -207,4 +207,21 @@ describe("NextStepsCard", () => {
 
     expect(screen.getAllByRole("listitem").length).toBeLessThanOrEqual(3);
   });
+});
+
+it("does not prescribe first use after a failed overview (previously null meant never audited)", () => {
+  render(
+    <NextStepsCard
+      projectId="p1"
+      gscConnected
+      audit={null}
+      overviewUnavailable
+    />,
+  );
+  expect(screen.queryByText("İlk denetimi başlatın")).toBeNull();
+  expect(screen.getByText(/Denetim özeti okunamadı/)).toBeDefined();
+});
+it("does not manufacture an opportunities task on a fresh clean site", () => {
+  render(<NextStepsCard projectId="p1" gscConnected audit={audit()} />);
+  expect(screen.queryByText("Fırsatlara bakın")).toBeNull();
 });

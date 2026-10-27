@@ -1,3 +1,7 @@
+import {
+  strikingEstimateText,
+  strikingMethodText,
+} from "@/shared/strikingEstimateCopy";
 import { t } from "@/shared/i18n";
 import * as React from "react";
 import { Target } from "lucide-react";
@@ -109,7 +113,6 @@ export function OpportunitiesTab({
 }) {
   const { striking, snippets, zeroClickPages, thresholds } = view.insights;
   // Over every striking query, not only the rows listed below.
-  const strikingGain = striking.totalGain;
   // Gains are clicks over this window, the same window the dashboard and
   // the report state; Opportunities scales its own to a month and says so.
   const windowNote = t("Dönem: {start} – {end}.", {
@@ -125,17 +128,17 @@ export function OpportunitiesTab({
   return (
     <div className="flex flex-col divide-y divide-[var(--hairline)]">
       <Section
-        title={t("İlk üçe yakın sorgular")}
+        title={t("Bir üst sıra bandına çıkabilecek sorgular")}
         description={
           striking.total > 0
-            ? t(
-                "Ortalama sırası 4 ile 20 arasında, en az {impressions} gösterim alan {count} sorgu. Her biri bir basamak yükselirse (6-10'dan 4-5'e, 4-5'ten 2-3'e, 11-20'den ilk sayfaya) birlikte en fazla {clicks} ek tıklama getirebilir (üst sınır).",
-                {
-                  impressions: formatCount(thresholds.strikingMinImpressions),
-                  count: formatCount(striking.total),
-                  clicks: formatCount(Math.round(strikingGain)),
-                },
-              ) + ` ${windowNote}`
+            ? [
+                strikingEstimateText(striking.estimate),
+                windowNote,
+                strikingMethodText(
+                  view.insights.brandState.source,
+                  view.coverage.queries.truncated,
+                ),
+              ].join(" ")
             : undefined
         }
         note={

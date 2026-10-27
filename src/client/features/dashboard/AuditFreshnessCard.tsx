@@ -46,7 +46,13 @@ export function AuditFreshnessCard({ projectId }: { projectId: string }) {
 
   const hasChanges =
     data.newIssues.length > 0 || data.resolvedIssues.length > 0;
-  if (!data.isStale && !hasChanges) return null;
+  if (
+    !data.isStale &&
+    !hasChanges &&
+    !data.comparisonUnavailable &&
+    !data.comparisonPartial
+  )
+    return null;
 
   return (
     <div className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4 shadow-[var(--shadow-raise)] sm:p-5">
@@ -57,7 +63,7 @@ export function AuditFreshnessCard({ projectId }: { projectId: string }) {
             <span>
               {t(
                 "Son denetimin üzerinden {count} gün geçti. Sitede değişiklik yaptıysanız yeni bir denetim başlatmak iyi olur.",
-                { count: data.daysSince ?? 0 },
+                { count: formatCount(data.daysSince ?? 0) },
               )}
             </span>
           </div>
@@ -72,6 +78,30 @@ export function AuditFreshnessCard({ projectId }: { projectId: string }) {
         </div>
       ) : null}
 
+      {data.comparisonUnavailable ? (
+        <p className="text-sm text-muted">
+          {t(
+            "Karşılaştırma yapılamadı: tarama kapsamları farklı veya bilinmiyor.",
+          )}
+        </p>
+      ) : null}
+      {data.comparisonPartial ? (
+        <p className="text-sm text-muted">
+          {t(
+            "Karşılaştırma yalnızca iki taramada da ölçülen kontrolleri kapsar; diğer kontroller için değişim bilinmiyor.",
+          )}
+        </p>
+      ) : null}
+      {data.previousAuditId ? (
+        <details className="text-xs text-muted">
+          <summary className="min-h-11 cursor-pointer py-3">
+            {t("Veri hakkında")}
+          </summary>
+          <p>
+            {data.previousAuditId} → {data.auditId}
+          </p>
+        </details>
+      ) : null}
       {hasChanges ? (
         <div className="grid gap-4 sm:grid-cols-2">
           <IssueDeltaList
@@ -146,7 +176,7 @@ function IssueDeltaList({
                     <ArrowDown className="size-3.5" />
                   )}
                   {item.previousCount === null
-                    ? t("{count} sayfa", { count: item.count })
+                    ? t("{count} sayfa", { count: formatCount(item.count) })
                     : `${formatCount(item.previousCount)} → ${formatCount(item.count)}`}
                 </span>
               </>
@@ -158,7 +188,7 @@ function IssueDeltaList({
                     to="/p/$projectId/audit"
                     params={{ projectId }}
                     search={{ auditId, tab: "issues" as const }}
-                    className="flex items-baseline justify-between gap-2 rounded-field px-1 py-0.5 text-sm transition-colors hover:bg-base-200/60"
+                    className="flex items-baseline justify-between gap-2 rounded-field min-h-11 px-1 py-2 text-sm focus-visible:outline-offset-[-2px] transition-colors hover:bg-base-200/60"
                   >
                     {label}
                   </Link>
@@ -170,6 +200,13 @@ function IssueDeltaList({
               </li>
             );
           })}
+          {items.length > 4 ? (
+            <li className="text-xs text-muted">
+              {t("+ {count} kontrol türü daha", {
+                count: formatCount(items.length - 4),
+              })}
+            </li>
+          ) : null}
         </ul>
       )}
     </div>

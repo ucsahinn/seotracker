@@ -474,6 +474,12 @@ describe("to-do list", () => {
         },
       ],
       striking: {
+        estimate: {
+          knownGainCount: 1,
+          unknownGainCount: 0,
+          knownGainSum: 10,
+          complete: true,
+        },
         rows: [
           {
             query: "q",
@@ -499,4 +505,38 @@ describe("to-do list", () => {
       ["setBrandTerms", null],
     ]);
   });
+});
+
+it("counts unknown striking gains before slicing so an absent curve never becomes a known zero upper bound", () => {
+  const result = strikingDistance(
+    Array.from({ length: 40 }, (_, i) => row("query" + i, 0, 100, 8)),
+    [],
+    [],
+    50,
+  );
+  expect(result.estimate).toEqual({
+    knownGainCount: 0,
+    unknownGainCount: 40,
+    knownGainSum: null,
+    complete: false,
+  });
+});
+
+it("distinguishes mixed unknowns from a genuine known zero gain", () => {
+  const curve = ctrCurve(healthyCurveRows(), 500);
+  const mixed = strikingDistance(
+    [row("known", 100, 100, 8), row("unknown", 0, 100, 20)],
+    [],
+    curve.filter((p) => p.band !== "6-10"),
+    50,
+  );
+  expect(mixed.estimate).toEqual({
+    knownGainCount: 1,
+    unknownGainCount: 1,
+    knownGainSum: 0,
+    complete: false,
+  });
+  const zero = strikingDistance([row("zero", 100, 100, 8)], [], curve, 50);
+  expect(zero.estimate.knownGainSum).toBe(0);
+  expect(zero.estimate.knownGainCount).toBe(1);
 });

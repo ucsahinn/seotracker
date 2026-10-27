@@ -38,7 +38,7 @@ export const Route = createFileRoute<"/_project/p/$projectId/audit/">(
 
 function SiteAuditPage() {
   const { projectId } = Route.useParams();
-  const { auditId, tab, severity } = Route.useSearch();
+  const { auditId, tab, severity, pageUrl } = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
 
   /*
@@ -76,7 +76,11 @@ function SiteAuditPage() {
       auditId={auditId}
       tab={tab}
       severity={severity}
-      onBack={() => setSearchParams({ auditId: undefined })}
+      pageUrl={pageUrl}
+      onPageUrlChange={(url) =>
+        setSearchParams({ pageUrl: url }, { replace: true })
+      }
+      onBack={() => setSearchParams({ auditId: undefined, pageUrl: undefined })}
       onTabChange={(nextTab, options) =>
         setSearchParams({ tab: nextTab }, options)
       }
@@ -94,6 +98,8 @@ function AuditDetail({
   auditId,
   tab,
   severity,
+  pageUrl,
+  onPageUrlChange,
   onBack,
   onTabChange,
   onSeverityChange,
@@ -102,6 +108,8 @@ function AuditDetail({
   auditId: string;
   tab: AuditTab;
   severity: IssueSeverity | undefined;
+  pageUrl?: string;
+  onPageUrlChange: (url: string | undefined) => void;
   onBack: () => void;
   onTabChange: (tab: AuditTab, options?: { replace?: boolean }) => void;
   onSeverityChange: (severity: IssueSeverity | null) => void;
@@ -283,6 +291,8 @@ function AuditDetail({
           data={resultsQuery.data}
           tab={tab}
           severity={severity}
+          pageUrl={pageUrl}
+          onPageUrlChange={onPageUrlChange}
           justCompleted={justCompleted}
           onTabChange={onTabChange}
           onSeverityChange={onSeverityChange}

@@ -1,6 +1,8 @@
-import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
-import { getIssueTypePageCountsForAudit } from "@/server/features/audit/repositories/auditSummaryQueries";
-import { siteKey } from "@/shared/auditTodo";
+import { comparePanelAudits } from "@/shared/panelAuditComparison";
+import { loadPanelAuditSnapshot } from "./panelAuditSnapshot";
+import { getPanelAuditSelection } from "./panelAuditSelection";
+import { auditIsStale } from "@/shared/panelAudit";
+import { parseTimestamp } from "@/shared/format";
 
 /**
  * Is this project's audit stale, and what changed since the one before it?
@@ -13,9 +15,6 @@ import { siteKey } from "@/shared/auditTodo";
  * behind their back would be a surprise, not a convenience.
  */
 
-/** A site left uncrawled for this long is worth looking at again. */
-const STALE_AFTER_DAYS = 7;
-
 type IssueDelta = {
   issueType: string;
   severity: "critical" | "warning" | "info";
@@ -27,6 +26,9 @@ type IssueDelta = {
 
 type AuditFreshness = {
   hasAudit: boolean;
+  comparisonUnavailable?: boolean;
+  comparisonPartial?: boolean;
+  previousAuditId?: string;
   /** The audit these deltas were computed against, so the card can link. */
   auditId: string | null;
   lastCompletedAt: string | null;
@@ -41,7 +43,7 @@ type AuditFreshness = {
 function daysBetween(from: string, to: Date): number | null {
   // Audit timestamps are SQLite's "YYYY-MM-DD HH:MM:SS"; ISO parses once the
   // space becomes a T.
-  const started = Date.parse(from.replace(" ", "T") + "Z");
+  const started = parseTimestamp(from);
   if (Number.isNaN(started)) return null;
   return Math.floor((to.getTime() - started) / 86_400_000);
 }
@@ -56,22 +58,8 @@ export async function getAuditFreshness(input: {
   now?: Date;
 }): Promise<AuditFreshness> {
   const now = input.now ?? new Date();
-  const audits = await AuditRepository.getAuditsByProject(input.projectId);
-  const completed = audits.filter((audit) => audit.status === "completed");
-  const [latest] = completed;
-  /*
-   * The audit before it *of the same site*. A project can hold crawls of
-   * several addresses, and "new since last time" against another site's
-   * crawl listed that site's problems as this one's.
-   */
-  const previous = latest
-    ? completed.find(
-        (audit) =>
-          audit.id !== latest.id &&
-          siteKey(audit.startUrl) === siteKey(latest.startUrl),
-      )
-    : undefined;
-
+  const selection = await getPanelAuditSelection(input.projectId);
+  const latest = selection.snapshot;
   if (!latest) {
     return {
       hasAudit: false,
@@ -90,65 +78,27 @@ export async function getAuditFreshness(input: {
     auditId: latest.id,
     lastCompletedAt: latest.startedAt,
     daysSince,
-    isStale: daysSince !== null && daysSince >= STALE_AFTER_DAYS,
+    isStale: auditIsStale(parseTimestamp(latest.startedAt), now.getTime()),
   };
 
-  if (!previous) {
-    return { ...base, newIssues: [], resolvedIssues: [] };
-  }
-
-  const [latestCounts, previousCounts] = await Promise.all([
-    getIssueTypePageCountsForAudit(latest.id),
-    getIssueTypePageCountsForAudit(previous.id),
+  if (!selection.previous)
+    return {
+      ...base,
+      comparisonUnavailable: false,
+      newIssues: [],
+      resolvedIssues: [],
+    };
+  const [current, previous] = await Promise.all([
+    loadPanelAuditSnapshot(input.projectId, latest.id),
+    loadPanelAuditSnapshot(input.projectId, selection.previous.id),
   ]);
-
-  const beforeByType = new Map(
-    previousCounts.map((row) => [row.issueType, row.pages]),
-  );
-  const currentByType = new Map(
-    latestCounts.map((row) => [row.issueType, row]),
-  );
-
-  const newIssues: IssueDelta[] = [];
-  for (const row of latestCounts) {
-    const previousCount = beforeByType.get(row.issueType) ?? null;
-    if (previousCount === null || row.pages > previousCount) {
-      newIssues.push({
-        issueType: row.issueType,
-        severity: row.severity,
-        count: row.pages,
-        previousCount,
-      });
-    }
-  }
-
-  const resolvedIssues: IssueDelta[] = [];
-  for (const row of previousCounts) {
-    const current = currentByType.get(row.issueType);
-    if (!current) {
-      resolvedIssues.push({
-        issueType: row.issueType,
-        severity: row.severity,
-        count: 0,
-        previousCount: row.pages,
-      });
-    } else if (current.pages < row.pages) {
-      resolvedIssues.push({
-        issueType: row.issueType,
-        severity: current.severity,
-        count: current.pages,
-        previousCount: row.pages,
-      });
-    }
-  }
-
-  const bySeverity = { critical: 0, warning: 1, info: 2 } as const;
-  const rank = (delta: IssueDelta) => bySeverity[delta.severity];
-  newIssues.sort((a, b) => rank(a) - rank(b) || b.count - a.count);
-  resolvedIssues.sort(
-    (a, b) =>
-      rank(a) - rank(b) || (b.previousCount ?? 0) - (a.previousCount ?? 0),
-  );
-
-  return { ...base, newIssues, resolvedIssues };
+  const comparison = comparePanelAudits(current, previous);
+  return {
+    ...base,
+    previousAuditId: selection.previous.id,
+    comparisonUnavailable: comparison === null,
+    comparisonPartial: comparison?.partial ?? false,
+    newIssues: comparison?.newIssues ?? [],
+    resolvedIssues: comparison?.resolvedIssues ?? [],
+  };
 }

@@ -582,4 +582,102 @@ export const enAnalytics: Catalog = {
   // Cards and stats review (Opportunities, rankings, setup verdict).
   "Ortalama sırası 4–20 olan {count} sorgu; her biri bir basamak yükselirse en fazla {clicks} ek tıklama (üst sınır).":
     "{count} queries averaging positions 4–20; if each moves up one step, at most {clicks} extra clicks (upper bound).",
+  "Karşılaştırma yapılamadı: tarama kapsamları farklı veya bilinmiyor.":
+    "Cannot compare: crawl scopes differ or are unknown.",
+  "{measured} / {total} kontrol ölçüldü.":
+    "{measured} / {total} checks measured.",
+  "{types} kontrol türünde {pages} sayfa etkileniyor.":
+    "{pages} pages affected across {types} check types.",
+  "Taranan kapsamda sorun bulunamadı.":
+    "No issues found within the crawled scope.",
+  "Ölçülmeyen kontroller var; tüm site için sağlıklı sonucu çıkarılamaz. Ayrıntılarda kapsamı kontrol edin.":
+    "Some checks were not measured; site-wide health cannot be established. Check coverage in the details.",
+  "+ {count} kontrol türü daha": "+ {count} more check types",
+  "Google aramasından sitenize gelen tıklamalar.":
+    "Clicks to your site from Google Search.",
+  "Sitenizin Google sonuçlarında gösterilme sayısı.":
+    "How often your site appeared in Google results.",
+  "Kurulum tercihleri": "Setup preferences",
+  Denetimler: "Audits",
+  "Bağlantı durumu yenilenemedi": "Connection status could not be refreshed",
+  "Google yapılandırması okunamadı. Yenile ile tekrar deneyin.":
+    "Google configuration could not be read. Try Refresh again.",
+  "Site seçilmedi": "No site selected",
+  "Kendi sitenizin denetimini göstermek için proje ayarlarına alan adını girin.":
+    "Enter the domain in project settings to show your own site’s audit.",
+  "Son denetim başarısız": "Latest audit failed",
+  "Arama verisi için Search Console bağlantısını kontrol edin.":
+    "Check the Search Console connection to see search data.",
+  "Arama verisi şu an okunamadı. Yenile ile tekrar deneyin.":
+    "Search data could not be read right now. Try Refresh again.",
+  "Arama özeti": "Search summary",
+  "Son {days} günde Google aramalarından {clicks} tıklama aldınız.":
+    "You received {clicks} clicks from Google Search over {days} days.",
+  "Son yenileme başarısız; önbellekteki veriler gösteriliyor.":
+    "The latest refresh failed; cached data is shown.",
+  "Önceki dönem: {start} – {end}.": "Previous period: {start} – {end}.",
+  "Son veri günü: {date}. Son {count} gün toplamlara dahil değil.":
+    "Latest data day: {date}. The last {count} days are excluded from totals.",
+  "Google tarih bildirmedi; son günler dışarıda.":
+    "Google did not report a completeness date; recent days are excluded.",
+  "Sorgu listesi satır sınırında kesildi; tahminler yalnızca alınan sorguları kapsar.":
+    "The query list reached its row limit; estimates cover only the fetched queries.",
+  "Google bazı sorguları gizler; sorgu listesi site toplamının tamamı değildir.":
+    "Google hides some queries; the query list does not represent the entire site total.",
+  "{value} (para birimi bilinmiyor)": "{value} (currency unknown)",
+  "Satış ölçümü doğrulanmadı; sıfır satış, mağaza olmadığı anlamına gelmez.":
+    "Sales measurement is unverified; zero sales does not mean there is no shop.",
+  "Analytics verisi sınırlı veya eksik. Bilinmeyen değerler çizilmez; dönem karşılaştırması gösterilmez.":
+    "Analytics data is limited or incomplete. Unknown values are left as gaps; period comparisons are withheld.",
+  "Saat dilimi bilinmiyor": "Time zone unknown",
+  "Google arama tıklamaları ile organik oturumlar farklı ölçümlerdir; Analytics diğer arama motorlarını da kapsar.":
+    "Google Search clicks and organic sessions measure different things; Analytics also includes other search engines.",
+  "Google gizlilik eşiği nedeniyle bazı verileri göstermiyor.":
+    "Google is withholding some data because of privacy thresholds.",
+  "Google bu raporu örneklenmiş veriden hesapladı.":
+    "Google calculated this report from sampled data.",
+  "Bazı ölçümler hesap erişim kısıtı nedeniyle okunamadı. Analytics mülkündeki yetkinizi kontrol edin.":
+    "Some metrics could not be read due to account restrictions. Check your permissions on the Analytics property.",
+  "Bazı satırlar Google tarafından birleştirildi; ayrıntılar eksik olabilir.":
+    "Google combined some rows; details may be missing.",
+  "Ölçülen bulgulara göre önce şu işleri değerlendirin.":
+    "Consider these tasks first, based on measured findings.",
+  "Kurulum durumu okunamayanlar: {items}. Yenile ile tekrar deneyin.":
+    "Setup status could not be read for: {items}. Try Refresh again.",
+  "Ölçülen kapsamda öncelikli iş bulunmadı.":
+    "No priority task was found within the measured scope.",
+  "Denetim özeti okunamadı": "Audit summary could not be read",
+  "İlk denetim olup olmadığı bilinmiyor. Denetim geçmişini açın veya Yenile ile tekrar deneyin.":
+    "It is unknown whether an audit already exists. Open audit history or try Refresh again.",
+  "Son denetim {when}. Denetim bulguları yalnızca bu taramaya dayanır.":
+    "Latest audit: {when}. Audit findings reflect only that crawl.",
+  "Bazı veriler yenilenemedi; önbellekteki tarihleri kontrol edin.":
+    "Some data could not be refreshed; check the cached dates.",
+  Yenilendi: "Refreshed",
+  "Veri alındı: {time}": "Data retrieved: {time}",
+  "Günlük tıklamalar; soluk çizgi önceki dönemi gösterir.":
+    "Daily clicks; the faded line shows the previous period.",
+  "Bir üst sıra bandına çıkabilecek sorgular":
+    "Queries that could move up one position band",
+  "Marka adları onaylandı.": "Brand terms confirmed.",
+  "Marka adları öneriye göre ayrıldı.":
+    "Brand queries were separated using suggested terms.",
+  "Marka ayrımı yapılmadı.": "Brand queries were not separated.",
+  "Bu kapsamda uygun sorgu bulunmadı.": "No eligible queries in this scope.",
+  "{count} sorgu bir üst sıra bandı için değerlendirildi.":
+    "{count} queries evaluated for the next position band.",
+  "Yeterli örnek yok; ek tıklama üst sınırı hesaplanamadı.":
+    "Not enough observations to calculate an upper bound for extra clicks.",
+  "Hesaplanabilen {known} sorguda en fazla {clicks} ek tıklama (üst sınır); {unknown} sorguda hesaplanamadı.":
+    "At most {clicks} extra clicks across {known} estimable queries (upper bound); {unknown} queries could not be estimated.",
+  "Bu bir tahmindir; sayfa bazlı Fırsatlar toplamına eklenmez.":
+    "This is an estimate; do not add it to the page-based Opportunities total.",
+  "Birim: sayfa ve kontrol türü çifti; benzersiz sayfa sayısı değildir.":
+    "Unit: page and check-type pair; this is not a unique-page count.",
+  "{count} kritik kontrol türü": "{count} critical check types",
+  "{count} uyarı kontrol türü": "{count} warning check types",
+  "Site geneli": "Site-wide",
+  "Sorgu arşivi": "Query archive",
+  "Karşılaştırma yalnızca iki taramada da ölçülen kontrolleri kapsar; diğer kontroller için değişim bilinmiyor.":
+    "The comparison covers only checks measured in both crawls; changes in other checks are unknown.",
 };

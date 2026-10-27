@@ -53,3 +53,13 @@ describe("setupVerdict", () => {
     });
   });
 });
+
+it("does not count an unknown domain or an exactly seven-day-old audit as ready", () => {
+  const a = {
+    status: "completed",
+    startUrl: "https://example.com/",
+    startedAt: NOW - 7 * DAY,
+  };
+  expect(hasFreshOwnAudit([a], "example.com", NOW)).toBe(false);
+  expect(hasFreshOwnAudit([{ ...a, startedAt: NOW }], null, NOW)).toBe(false);
+});

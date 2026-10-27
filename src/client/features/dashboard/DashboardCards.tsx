@@ -13,6 +13,8 @@ import { useFlashOnChange } from "@/client/components/useFlashOnChange";
 import { extractPathname } from "@/client/features/audit/shared";
 import { SEVERITY_LABEL } from "@/client/features/audit/results/IssuesView";
 import type { DashboardAuditSummary } from "@/types/schemas/dashboard";
+import { formatCount } from "@/shared/format";
+import { describeAuditFailure } from "@/client/features/audit/results/auditFailureCopy";
 import { t } from "@/shared/i18n";
 
 // Plain string-keyed view of the registry: issue types from the DB are not
@@ -100,7 +102,7 @@ function RunningAuditCard({
       stamp={
         audit.status === "completed"
           ? t("{count} sayfa tarandı · {date}", {
-              count: audit.pagesCrawled,
+              count: formatCount(audit.pagesCrawled),
               date: formatDay(audit.startedAt),
             })
           : audit.status === "running"
@@ -122,6 +124,30 @@ function RunningAuditCard({
       }
     >
       <div key={flash.key} className={flash.className}>
+        <p className="mb-3 break-words text-xs text-muted">
+          {audit.startUrl} · {audit.auditId}
+        </p>
+        {audit.coverage ? (
+          <p className="mb-3 text-sm text-muted">
+            {t("{measured} / {total} kontrol ölçüldü.", {
+              measured: formatCount(audit.coverage.measured),
+              total: formatCount(audit.coverage.total),
+            })}
+          </p>
+        ) : null}
+        {audit.affectedPages !== undefined ? (
+          <p className="mb-3 text-sm">
+            {t("{types} kontrol türünde {pages} sayfa etkileniyor.", {
+              types: formatCount(audit.totalIssueTypes),
+              pages: formatCount(audit.affectedPages),
+            })}
+          </p>
+        ) : null}
+        {audit.limitNote ? (
+          <p className="mb-3 text-sm text-[var(--ink-warning)]">
+            {audit.limitNote}
+          </p>
+        ) : null}
         {/* An empty issue list only means "healthy" for an audit that finished.
           A crawl still running has not looked yet, and one that failed at
           discovery never looked at all -- both used to get the green check,
@@ -142,12 +168,24 @@ function RunningAuditCard({
              * token is 8.49:1 and costs nothing.
              */}
             <AlertCircle className="size-4 text-[var(--ink-warning)]" />
-            {t("Son denetim tamamlanamadı, bu yüzden sonuç yok.")}
+            {audit.errorCode
+              ? t(describeAuditFailure(audit).cause) +
+                " " +
+                t(describeAuditFailure(audit).action)
+              : t("Son denetim tamamlanamadı, bu yüzden sonuç yok.")}
           </div>
         ) : audit.topIssues.length === 0 ? (
           <div className="flex items-center gap-2 text-sm text-muted">
-            <Check className="size-4 text-success" />
-            {t("Sorun bulunamadı, siteniz sağlıklı görünüyor.")}
+            <Check className="size-4 text-[var(--ink-success)]" />
+            {audit.coverage &&
+            audit.coverage.measured === audit.coverage.total &&
+            !audit.limitNote &&
+            audit.standing?.kind === "scored" &&
+            !audit.standing.provisional
+              ? t("Taranan kapsamda sorun bulunamadı.")
+              : t(
+                  "Ölçülmeyen kontroller var; tüm site için sağlıklı sonucu çıkarılamaz. Ayrıntılarda kapsamı kontrol edin.",
+                )}
           </div>
         ) : (
           <ul className="space-y-2">
@@ -157,7 +195,7 @@ function RunningAuditCard({
                   to="/p/$projectId/audit"
                   params={{ projectId }}
                   search={{ auditId: audit.auditId, tab: "issues" as const }}
-                  className="flex items-center justify-between gap-2 rounded-field px-1 py-0.5 text-sm transition-colors hover:bg-base-200/60"
+                  className="flex items-center justify-between gap-2 rounded-field min-h-11 px-1 py-2 text-sm focus-visible:outline-offset-[-2px] transition-colors hover:bg-base-200/60"
                 >
                   <span className="flex min-w-0 items-center gap-2">
                     <span
@@ -165,7 +203,7 @@ function RunningAuditCard({
                         issue.severity === "critical"
                           ? "bg-error"
                           : issue.severity === "warning"
-                            ? "bg-warning"
+                            ? "bg-[var(--mark-warning)]"
                             : "bg-base-content/30"
                       }`}
                       aria-hidden
@@ -181,7 +219,9 @@ function RunningAuditCard({
                     </span>
                   </span>
                   <span className="shrink-0 tabular-nums text-muted">
-                    {t("{count} sayfa", { count: issue.count })}
+                    {issue.siteLevel
+                      ? t("Site geneli")
+                      : t("{count} sayfa", { count: formatCount(issue.count) })}
                   </span>
                 </Link>
               </li>
@@ -196,8 +236,10 @@ function RunningAuditCard({
                   search={{ auditId: audit.auditId, tab: "issues" as const }}
                   className="text-xs text-muted underline decoration-base-content/25 underline-offset-4 hover:text-base-content"
                 >
-                  {t("+ {count} sorun daha", {
-                    count: audit.totalIssueTypes - audit.topIssues.length,
+                  {t("+ {count} kontrol türü daha", {
+                    count: formatCount(
+                      audit.totalIssueTypes - audit.topIssues.length,
+                    ),
                   })}
                 </Link>
               </li>
@@ -207,6 +249,7 @@ function RunningAuditCard({
                 projectId={projectId}
                 auditId={audit.auditId}
                 totals={audit.severityTotals}
+                siteTotals={audit.siteSeverityTotals}
               />
             </li>
           </ul>
@@ -225,15 +268,21 @@ function RunningAuditCard({
                   <Link
                     to="/p/$projectId/audit"
                     params={{ projectId }}
-                    search={{ auditId: audit.auditId, tab: "pages" as const }}
-                    className="flex items-center justify-between gap-2 rounded-field px-1 py-0.5 text-sm transition-colors hover:bg-base-200/60"
+                    search={{
+                      auditId: audit.auditId,
+                      tab: "issues" as const,
+                      pageUrl: page.pageUrl,
+                    }}
+                    className="flex items-center justify-between gap-2 rounded-field min-h-11 px-1 py-2 text-sm focus-visible:outline-offset-[-2px] transition-colors hover:bg-base-200/60"
                     title={page.pageUrl}
                   >
                     <span className="min-w-0 truncate text-muted">
                       {extractPathname(page.pageUrl)}
                     </span>
                     <span className="shrink-0 tabular-nums text-muted">
-                      {t("{count} sorun", { count: page.issueCount })}
+                      {t("{count} sorun", {
+                        count: formatCount(page.issueCount),
+                      })}
                     </span>
                   </Link>
                 </li>

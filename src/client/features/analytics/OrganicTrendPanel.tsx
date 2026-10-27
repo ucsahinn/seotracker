@@ -25,13 +25,15 @@ import {
   formatDate,
   formatDay,
   formatMoney,
+  formatDecimal,
   formatPercent,
 } from "@/client/lib/format";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
-import { getGa4DashboardReport } from "@/serverFunctions/ga4";
+import { ga4OverviewQuery } from "@/client/features/dashboard/ga4OverviewQuery";
+import { Ga4Provenance } from "@/client/features/dashboard/Ga4Provenance";
 import { t } from "@/shared/i18n";
 
-type TrendRow = { date: string; sessions: number };
+type TrendRow = { date: string; sessions: number | null };
 
 /**
  * The shape of the window, above the table that lists it.
@@ -48,10 +50,7 @@ export function OrganicTrendPanel({
   projectId: string;
   windowDays: number;
 }) {
-  const query = useQuery({
-    queryKey: ["ga4Overview", projectId, windowDays],
-    queryFn: () => getGa4DashboardReport({ data: { projectId, windowDays } }),
-  });
+  const query = useQuery(ga4OverviewQuery(projectId, windowDays));
 
   if (query.isPending) return <div className="skeleton h-40" aria-busy />;
   // A failure is said here too: the tables below read other queries, and can
@@ -78,7 +77,9 @@ export function OrganicTrendPanel({
     end: formatDate(previousDateRange.endDate),
   });
   const rows: TrendRow[] = trend;
-  const hasSessions = rows.some((row) => row.sessions > 0);
+  const limited =
+    query.data.reportMetadata.hasLimitedData || query.data.warnings.length > 0;
+  const hasSessions = rows.some((row) => row.sessions !== null);
 
   return (
     <section className="overflow-hidden rounded-box border border-base-300 bg-base-100">
@@ -93,7 +94,7 @@ export function OrganicTrendPanel({
           <Total
             label={t("Oturum")}
             value={totals.sessions}
-            previous={prevTotals.sessions}
+            previous={limited ? null : prevTotals.sessions}
             deltaTitle={deltaTitle}
             format={formatCount}
           />
@@ -118,13 +119,20 @@ export function OrganicTrendPanel({
               previous={prevTotals.purchaseRevenue}
               deltaTitle={deltaTitle}
               format={(value) =>
-                formatMoney(value, query.data.currencyCode ?? null)
+                query.data.currencyCode
+                  ? formatMoney(value, query.data.currencyCode)
+                  : t("{value} (para birimi bilinmiyor)", {
+                      value: formatDecimal(value),
+                    })
               }
             />
           ) : null}
         </div>
       </div>
 
+      <div className="px-4 py-3">
+        <Ga4Provenance report={query.data} />
+      </div>
       {hasSessions ? (
         <div className="px-2 py-3">
           <TrendChart rows={rows} />
@@ -132,7 +140,7 @@ export function OrganicTrendPanel({
       ) : (
         /* A flat line along zero is a shape that looks like an answer. */
         <p className="px-4 py-6 text-sm text-muted">
-          {t("Bu aralıkta organik oturum yok, grafik boş.")}
+          {t("Gösterilecek oturum verisi yok.")}
         </p>
       )}
     </section>
@@ -185,23 +193,29 @@ function Total({
 
 function TrendChart({ rows }: { rows: TrendRow[] }) {
   const reduced = useReducedMotion();
-  const total = rows.reduce((sum, row) => sum + row.sessions, 0);
+  const total = rows.reduce((sum, row) => sum + (row.sessions ?? 0), 0);
   const peak = rows.reduce((best, row) =>
-    row.sessions > best.sessions ? row : best,
+    (row.sessions ?? 0) > (best.sessions ?? 0) ? row : best,
   );
 
   return (
     <Chart
       height={180}
-      summary={t(
-        "{days} günde toplam {total} organik oturum. En yüksek gün {day}, {peak} oturum.",
-        {
-          days: formatCount(rows.length),
-          total: formatCount(total),
-          day: formatDay(peak.date),
-          peak: formatCount(peak.sessions),
-        },
-      )}
+      summary={
+        rows.some((row) => row.sessions === null)
+          ? t(
+              "Analytics verisi sınırlı veya eksik. Bilinmeyen değerler çizilmez; dönem karşılaştırması gösterilmez.",
+            )
+          : t(
+              "{days} günde toplam {total} organik oturum. En yüksek gün {day}, {peak} oturum.",
+              {
+                days: formatCount(rows.length),
+                total: formatCount(total),
+                day: formatDay(peak.date),
+                peak: formatCount(peak.sessions ?? 0),
+              },
+            )
+      }
     >
       <AreaChart data={rows} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
         <CartesianGrid {...CHART_GRID} />
@@ -229,7 +243,8 @@ function TrendChart({ rows }: { rows: TrendRow[] }) {
                 rows={[
                   {
                     label: t("oturum"),
-                    value: formatCount(row.sessions),
+                    value:
+                      row.sessions === null ? "–" : formatCount(row.sessions),
                     color: CHART_SERIES.primary,
                   },
                 ]}

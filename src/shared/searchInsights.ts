@@ -527,6 +527,12 @@ export type StrikingResult = {
   total: number;
   /** Summed known gain over every striking query, not only the rows listed. */
   totalGain: number;
+  estimate: {
+    knownGainCount: number;
+    unknownGainCount: number;
+    knownGainSum: number | null;
+    complete: boolean;
+  };
 };
 
 export function strikingDistance(
@@ -569,6 +575,15 @@ export function strikingDistance(
   return {
     rows: rows.slice(0, INSIGHT_RULES.listLimit),
     total: rows.length,
+    estimate: {
+      knownGainCount: rows.filter((row) => row.potentialClicks !== null).length,
+      unknownGainCount: rows.filter((row) => row.potentialClicks === null)
+        .length,
+      knownGainSum: rows.some((row) => row.potentialClicks !== null)
+        ? rows.reduce((sum, row) => sum + (row.potentialClicks ?? 0), 0)
+        : null,
+      complete: rows.every((row) => row.potentialClicks !== null),
+    },
     totalGain: rows.reduce((sum, row) => sum + (row.potentialClicks ?? 0), 0),
   };
 }

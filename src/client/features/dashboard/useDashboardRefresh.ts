@@ -1,39 +1,58 @@
+import { useState } from "react";
 import {
   useIsFetching,
   useQueryClient,
   type Query,
 } from "@tanstack/react-query";
-
-/** Every query the Panel's cards and metric row read, keyed by project at [1]. */
-const DASHBOARD_QUERIES = [
+const PROJECT_QUERIES = [
   "dashboardActivation",
   "dashboardOverview",
   "searchPerformanceView",
-  "dashboardGa4Report",
+  "ga4Overview",
   "auditFreshness",
+  "projectSetup",
+  "audit-status",
 ];
-
-/**
- * One refresh for the whole Panel. The cards own their queries, so this goes
- * through the query cache instead of threading each result up: refetch every
- * active dashboard query of this project, busy while any is fetching, and
- * report the oldest load.
- */
+const GLOBAL_QUERIES = [
+  "googleOAuthClientStatus",
+  "googleServiceAccountStatus",
+];
 export function useDashboardRefresh(projectId: string) {
-  const queryClient = useQueryClient();
-  const predicate = (query: Query) =>
-    query.queryKey[1] === projectId &&
-    DASHBOARD_QUERIES.includes(String(query.queryKey[0]));
+  const client = useQueryClient();
+  const predicate = (q: Query) =>
+    GLOBAL_QUERIES.includes(String(q.queryKey[0])) ||
+    (q.queryKey[1] === projectId &&
+      PROJECT_QUERIES.includes(String(q.queryKey[0])));
   const isFetching = useIsFetching({ predicate }) > 0;
-  const loaded = queryClient
+  const [outcome, setOutcome] = useState<"success" | "partial" | null>(null);
+  const queries = client
     .getQueryCache()
     .findAll({ predicate })
-    .map((query) => query.state.dataUpdatedAt)
-    .filter((at) => at > 0);
+    .filter((q) => q.isActive());
+  const timestamps = queries
+    .filter((q) => q.state.dataUpdatedAt > 0)
+    .map((q) => q.state.dataUpdatedAt);
   return {
     isFetching,
-    dataUpdatedAt: loaded.length > 0 ? Math.min(...loaded) : 0,
-    onRefresh: () =>
-      void queryClient.refetchQueries({ predicate, type: "active" }),
+    outcome,
+    sources: queries.map((q) => ({
+      key: JSON.stringify(q.queryKey),
+      source: String(q.queryKey[0]),
+      updatedAt: q.state.dataUpdatedAt,
+      failed: q.state.status === "error",
+    })),
+    dataUpdatedAt: timestamps.length ? Math.min(...timestamps) : 0,
+    onRefresh: async () => {
+      setOutcome(null);
+      await client.refetchQueries({ predicate, type: "active" });
+      setOutcome(
+        client
+          .getQueryCache()
+          .findAll({ predicate })
+          .some((q) => q.isActive() && q.state.status === "error")
+          ? "partial"
+          : "success",
+      );
+    },
   };
 }

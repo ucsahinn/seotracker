@@ -1,3 +1,11 @@
+import {
+  strikingEstimateText,
+  strikingMethodText,
+} from "@/shared/strikingEstimateCopy";
+import type {
+  toLegacyReport,
+  SearchPerformanceView,
+} from "@/shared/searchPerformanceView";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { Area, AreaChart, Tooltip, XAxis } from "recharts";
@@ -15,11 +23,11 @@ import {
   dashboardGscReportQuery,
   dashboardSearchViewQuery,
 } from "@/client/features/dashboard/dashboardGscReport";
-import { gainText } from "@/shared/searchTodoCopy";
+import { gainText, countDelta } from "@/shared/searchTodoCopy";
 import { describeClickTrend } from "@/client/features/dashboard/clickTrend";
 import { DeltaBadge } from "@/client/components/MetricTile";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
-import { DEFAULT_WINDOW_DAYS } from "@/shared/dataFreshness";
+import { EmptyState } from "@/client/components/EmptyState";
 import {
   formatCount,
   formatDate,
@@ -62,7 +70,9 @@ export function SearchInsights({
     );
   }
 
-  const report = query.data.connected ? query.data : null;
+  const report: ReturnType<typeof toLegacyReport> | null = query.data.connected
+    ? query.data
+    : null;
   if (!report) return null;
 
   const trend = describeClickTrend(report.daily);
@@ -75,16 +85,23 @@ export function SearchInsights({
       ? (report.totals.clicks - report.prevTotals.clicks) /
         report.prevTotals.clicks
       : null;
-  const view = viewQuery.data?.connected ? viewQuery.data : null;
+  const view: SearchPerformanceView | null = viewQuery.data?.connected
+    ? viewQuery.data
+    : null;
+  const delta = countDelta(view?.totals.vsPrevious?.clicks);
   const striking = (view?.insights.striking.rows ?? []).slice(0, TOP_QUERIES);
   const strikingTotal = view?.insights.striking.total ?? 0;
   // Over every striking query, not only the rows the view lists.
-  const strikingGain = view?.insights.striking.totalGain ?? 0;
+  const estimate = view?.insights.striking.estimate;
+  const points = report.daily.map((row, i) => ({
+    ...row,
+    previousClicks: view?.series.previousDaily?.[i]?.clicks ?? null,
+  }));
 
   return (
-    <div className="stagger grid gap-5 lg:grid-cols-2">
+    <div className="space-y-5">
       {trend ? (
-        <div style={{ animationDelay: "0ms" }}>
+        <div>
           <CardShell
             title={t("Tıklama eğilimi")}
             action={
@@ -99,15 +116,18 @@ export function SearchInsights({
             }
           >
             <div className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <p className="text-2xl font-semibold tabular-nums">
-                {formatCount(trend.total)}
+              <p className="text-sm font-medium tabular-nums">
+                {formatDate(report.range.startDate)} –{" "}
+                {formatDate(report.range.endDate)}
               </p>
               <p className="text-sm text-muted">
-                {t("tıklama, son {days} gün", { days: DEFAULT_WINDOW_DAYS })}
+                {view?.series.previousDaily
+                  ? t("Günlük tıklamalar; soluk çizgi önceki dönemi gösterir.")
+                  : t("Karşılaştırma yok")}
               </p>
-              {change !== null ? (
+              {delta !== null ? (
                 <span className="inline-flex items-center gap-1 text-sm tabular-nums">
-                  <DeltaBadge value={change} />
+                  <DeltaBadge value={delta} />
                   <span className="text-muted"> {t("önceki döneme göre")}</span>
                 </span>
               ) : null}
@@ -136,7 +156,7 @@ export function SearchInsights({
                 .join(" ")}
             >
               <AreaChart
-                data={report.daily}
+                data={points}
                 margin={{ top: 4, right: 4, bottom: 0, left: 4 }}
               >
                 <XAxis
@@ -167,6 +187,15 @@ export function SearchInsights({
                 />
                 <Area
                   type="monotone"
+                  dataKey="previousClicks"
+                  name={t("Önceki dönem")}
+                  stroke={CHART_SERIES.comparison}
+                  strokeDasharray="4 4"
+                  fillOpacity={0}
+                  isAnimationActive={false}
+                />
+                <Area
+                  type="monotone"
                   dataKey="clicks"
                   stroke={CHART_SERIES.primary}
                   strokeWidth={2}
@@ -180,9 +209,9 @@ export function SearchInsights({
         </div>
       ) : null}
 
-      <div style={{ animationDelay: "60ms" }}>
+      <div>
         <CardShell
-          title={t("İlk üçe yakın sorgular")}
+          title={t("Bir üst sıra bandına çıkabilecek sorgular")}
           action={
             <Link
               to="/p/$projectId/search-performance"
@@ -194,28 +223,38 @@ export function SearchInsights({
             </Link>
           }
         >
+          <p className="mb-2 text-xs text-muted">
+            {strikingMethodText(
+              view?.insights.brandState.source ?? "none",
+              view?.coverage.queries.truncated ?? false,
+            )}
+          </p>
           {striking.length === 0 ? (
-            <p className="text-sm text-muted">
-              {t(
+            <EmptyState
+              compact
+              title={
+                view?.totals.current.impressions === 0
+                  ? t("Bu dönemde gösterim yok")
+                  : t("Bu kapsamda uygun sorgu bulunmadı.")
+              }
+              description={t(
                 "Şu an 4. ile 20. sıra arasında yeterli gösterimi olan sorgu yok. Sorgular bu aralığa girdikçe burada listelenir.",
               )}
-            </p>
+            />
           ) : (
             <>
               <p className="mb-2 text-sm text-muted">
+                {t("{count} sorgu bir üst sıra bandı için değerlendirildi.", {
+                  count: formatCount(strikingTotal),
+                })}
+              </p>
+              <p className="mb-3 text-sm text-muted">
+                {strikingEstimateText(estimate)}
+              </p>
+              <p className="mb-3 text-xs text-subtle">
                 {t(
-                  "Ortalama sırası 4–20 olan {count} sorgu; her biri bir basamak yükselirse en fazla {clicks} ek tıklama (üst sınır).",
-                  {
-                    count: formatCount(strikingTotal),
-                    clicks: formatCount(Math.round(strikingGain)),
-                  },
+                  "Bu bir tahmindir; sayfa bazlı Fırsatlar toplamına eklenmez.",
                 )}
-                {view
-                  ? ` ${t("Dönem: {start} – {end}.", {
-                      start: formatDate(view.window.startDate),
-                      end: formatDate(view.window.endDate),
-                    })}`
-                  : null}
               </p>
               <ul className="space-y-1">
                 {striking.map((row) => (
@@ -224,10 +263,12 @@ export function SearchInsights({
                       to="/p/$projectId/search-performance"
                       params={{ projectId }}
                       search={{ tab: "queries", q: row.query }}
-                      className="flex items-center justify-between gap-3 rounded-field px-1 py-1 text-sm transition-colors hover:bg-base-200/60"
+                      className="flex min-h-11 flex-wrap items-center justify-between gap-x-3 gap-y-1 rounded-field px-2 py-2 text-sm transition-colors hover:bg-base-200/60 focus-visible:outline-offset-[-2px]"
                     >
-                      <span className="min-w-0 truncate">{row.query}</span>
-                      <span className="shrink-0 text-right tabular-nums text-muted">
+                      <span className="min-w-0 break-words [overflow-wrap:anywhere]">
+                        {row.query}
+                      </span>
+                      <span className="flex flex-wrap gap-x-2 tabular-nums text-muted">
                         {t("sıra {position}", {
                           position: formatDecimal(row.position),
                         })}

@@ -23,12 +23,14 @@ import { t } from "@/shared/i18n";
  * Asking only about the OAuth client told a service-account install that its
  * key was missing while Search Console was working.
  */
-export function useGoogleClientConfigured(): boolean | undefined {
+export function useGoogleConfiguration() {
   const oauth = useQuery(googleOAuthClientStatusOptions());
-  const serviceAccount = useQuery(googleServiceAccountStatusOptions());
-  if (oauth.data?.source != null) return true;
-  if (serviceAccount.data?.clientEmail != null) return true;
-  return oauth.data && serviceAccount.data ? false : undefined;
+  const account = useQuery(googleServiceAccountStatusOptions());
+  if (oauth.data?.source != null || account.data?.clientEmail != null)
+    return "ready" as const;
+  if (oauth.isError || account.isError) return "error" as const;
+  if (oauth.isPending || account.isPending) return "pending" as const;
+  return "missing" as const;
 }
 
 export function GoogleSetupBanner() {

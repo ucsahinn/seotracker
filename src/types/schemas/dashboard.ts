@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { AuditStanding } from "@/shared/auditStanding";
 
 export const dashboardProjectInputSchema = z.object({
   projectId: z.string().min(1),
@@ -50,6 +51,13 @@ export type DashboardAuditSummary = {
    * tarandı · 3 kritik" and clicked through landed on a form asking them to
    * start a new crawl.
    */
+  startUrl?: string;
+  standing?: AuditStanding;
+  coverage?: { measured: number; total: number };
+  limitNote?: string | null;
+  affectedPages?: number;
+  siteSeverityTotals?: { critical: number; warning: number; info: number };
+  severityCheckTypes?: { critical: number; warning: number; info: number };
   auditId: string;
   status: "running" | "completed" | "failed";
   pagesCrawled: number;
@@ -59,6 +67,7 @@ export type DashboardAuditSummary = {
   failedPhase?: string | null;
   // Top issue types by severity then affected-page count, for the card's list.
   topIssues: {
+    siteLevel?: boolean;
     issueType: string;
     severity: "critical" | "warning" | "info";
     count: number;

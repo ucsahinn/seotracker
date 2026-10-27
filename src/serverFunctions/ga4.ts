@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
 import { waitUntil } from "cloudflare:workers";
 import { z } from "zod";
-import { shiftGa4Date } from "@/server/features/ga4/services/Ga4Dates";
+import { dailySessions } from "@/shared/ga4Trend";
 import { Ga4OrganicOverviewService } from "@/server/features/ga4/services/Ga4OrganicOverviewService";
 import { Ga4Service } from "@/server/features/ga4/services/Ga4Service";
 import { Ga4ReportError } from "@/server/lib/ga4Errors";
@@ -70,32 +70,6 @@ function overviewMetric(
   return typeof value === "number" ? value : null;
 }
 
-/** Zero-fill the daily trend across the resolved range: GA4 omits days with
- *  no organic sessions, which would silently shrink the chart's x-axis. */
-function fillDailySessions(
-  rows: Array<Record<string, string | number | null>>,
-  range: { startDate: string; endDate: string },
-): Array<{ date: string; sessions: number }> {
-  const sessionsByDate = new Map<string, number>();
-  for (const row of rows) {
-    // GA4's `date` dimension is YYYYMMDD; the range dates are YYYY-MM-DD.
-    if (typeof row.date !== "string" || typeof row.sessions !== "number") {
-      continue;
-    }
-    const iso = `${row.date.slice(0, 4)}-${row.date.slice(4, 6)}-${row.date.slice(6, 8)}`;
-    sessionsByDate.set(iso, row.sessions);
-  }
-  const days: Array<{ date: string; sessions: number }> = [];
-  for (
-    let date = range.startDate;
-    date <= range.endDate;
-    date = shiftGa4Date(date, 1)
-  ) {
-    days.push({ date, sessions: sessionsByDate.get(date) ?? 0 });
-  }
-  return days;
-}
-
 /**
  * Organic totals against the previous period, plus a daily sessions trend.
  *
@@ -144,11 +118,18 @@ export const getGa4DashboardReport = createServerFn({ method: "POST" })
         // Revenue with no unit is a bare number. The property's currency was
         // already read from the Admin API and carried this far.
         currencyCode: overview.request.currencyCode,
+        propertyTimeZone: overview.request.propertyTimeZone,
+        reportMetadata: overview.reportMetadata,
+        warnings: overview.warnings,
         totals: totals(overview.current),
         prevTotals: totals(overview.previous),
-        trend: fillDailySessions(
+        trend: dailySessions(
           overview.trend,
           overview.request.resolvedDateRange,
+          !overview.reportMetadata.hasLimitedData &&
+            overview.warnings.length === 0 &&
+            overview.current !== null &&
+            overview.current.sessions !== null,
         ),
       };
     } catch (error) {

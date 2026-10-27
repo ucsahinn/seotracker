@@ -32,6 +32,20 @@ describe("AnimatedNumber", () => {
     expect(screen.getByText("1500 tık", { selector: ".sr-only" })).toBeTruthy();
   });
 
+  it("exposes a descriptive final value once while the animated copy stays hidden", () => {
+    // Before this fix callers could only expose a bare formatted number.
+    mockReduced(true);
+    const { container } = render(
+      <AnimatedNumber value={7} accessibleText="7 Anahtar olay" />,
+    );
+    const spoken = screen.getByText("7 Anahtar olay");
+    expect(spoken.closest("[aria-hidden]")).toBeNull();
+    expect(container.querySelectorAll(".sr-only")).toHaveLength(1);
+    expect(container.querySelector("[aria-hidden=true]")?.textContent).toBe(
+      "7",
+    );
+  });
+
   it("counts up and lands on the final value", () => {
     mockReduced(false);
     vi.useFakeTimers();

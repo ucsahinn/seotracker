@@ -7,8 +7,11 @@ import {
   Search,
   TriangleAlert,
 } from "lucide-react";
+import { auditIsStale } from "@/shared/panelAudit";
+import { describeTodo } from "@/shared/searchTodoCopy";
+import type { TodoItem } from "@/shared/searchInsights";
 import { formatCount } from "@/shared/format";
-import { formatRelativeTime, parseTimestamp } from "@/client/lib/format";
+import { formatDate, parseTimestamp } from "@/client/lib/format";
 import { describeAuditFailure } from "@/client/features/audit/results/auditFailureCopy";
 import { t } from "@/shared/i18n";
 import { setupVerdict, type SetupSignals } from "@/shared/projectSetup";
@@ -30,10 +33,10 @@ import { GoogleSetupBanner } from "./GoogleSetupBanner";
  */
 
 /** Past this a crawl describes a site that has since changed. */
-const STALE_AFTER_DAYS = 7;
+
 const SHOWN = 3;
 
-type Step = {
+export type PanelAction = {
   key: string;
   icon: typeof Radar;
   title: string;
@@ -51,9 +54,19 @@ export function NextStepsCard({
   setup,
   googleMissing = false,
   audit,
+  overviewUnavailable = false,
+  siteSelected = true,
+  searchUnavailable = false,
+  searchTodo = [],
+  now = Date.now(),
 }: {
   projectId: string;
   gscConnected: boolean;
+  overviewUnavailable?: boolean;
+  siteSelected?: boolean;
+  searchUnavailable?: boolean;
+  searchTodo?: TodoItem[];
+  now?: number;
   /** The shared setup checklist (shared/projectSetup); undefined while it loads. */
   setup?: SetupSignals;
   /**
@@ -68,13 +81,19 @@ export function NextStepsCard({
     errorCode?: string | null;
     failedPhase?: string | null;
     severityTotals: { critical: number; warning: number; info: number };
+    severityCheckTypes?: { critical: number; warning: number; info: number };
   } | null;
 }) {
-  const steps = buildSteps({
+  const steps = buildPanelActions({
     projectId,
     gscConnected,
     googleMissing,
     audit,
+    overviewUnavailable,
+    searchTodo,
+    now,
+    siteSelected,
+    searchUnavailable,
   }).slice(0, SHOWN);
   const verdict = setup ? setupVerdict(setup) : null;
   return (
@@ -110,7 +129,7 @@ export function NextStepsCard({
           ) : null}
         </div>
         <p className="mt-1 text-sm text-muted">
-          {t("En hızlı kazandıracak işten başlayın.")}
+          {t("Ölçülen bulgulara göre önce şu işleri değerlendirin.")}
         </p>
         {verdict && verdict.missing.length > 0 ? (
           <p className="mt-2 text-xs text-muted">
@@ -128,6 +147,18 @@ export function NextStepsCard({
             </Link>
           </p>
         ) : null}
+        {verdict && verdict.unknown.length > 0 ? (
+          <p className="mt-2 text-xs text-muted">
+            {t(
+              "Kurulum durumu okunamayanlar: {items}. Yenile ile tekrar deneyin.",
+              {
+                items: verdict.unknown
+                  .map((item) => t(SETUP_LABELS[item]))
+                  .join(", "),
+              },
+            )}
+          </p>
+        ) : null}
       </div>
 
       {googleMissing ? (
@@ -143,13 +174,13 @@ export function NextStepsCard({
               aria-hidden
               className="size-4 text-[var(--ink-success)]"
             />
-            {t("Acil bir iş görünmüyor. Denetim güncel ve kritik sorun yok.")}
+            {t("Ölçülen kapsamda öncelikli iş bulunmadı.")}
           </p>
         )
       ) : (
-        <ul className="stagger divide-y divide-base-300">
+        <ul className="divide-y divide-base-300">
           {steps.map((step, index) => (
-            <li key={step.key} style={{ animationDelay: `${index * 60}ms` }}>
+            <li key={step.key}>
               <Link
                 to={step.to}
                 params={step.params}
@@ -159,7 +190,7 @@ export function NextStepsCard({
                  * this is the one list on the dashboard whose entire purpose
                  * is to be clicked.
                  */
-                className="group flex items-center gap-3 px-5 py-3.5 transition-colors hover:bg-base-200/40"
+                className="group min-h-11 focus-visible:outline-offset-[-2px] flex items-center gap-3 px-5 py-3.5 transition-colors hover:bg-base-200/40"
               >
                 <span
                   aria-hidden
@@ -177,18 +208,18 @@ export function NextStepsCard({
                   <step.icon className="size-4" />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-medium">
+                  <span className="block break-words text-sm font-medium [overflow-wrap:anywhere]">
                     {step.title}
                   </span>
                   <span className="block text-xs text-muted">
                     {step.detail}
                   </span>
                 </span>
-                <span className="flex shrink-0 items-center gap-1 text-sm text-muted transition-colors group-hover:text-base-content">
+                <span className="flex max-w-24 shrink-0 flex-wrap items-center gap-1 text-sm text-muted transition-colors group-hover:text-base-content">
                   {step.cta}
                   <ArrowRight
                     aria-hidden
-                    className="size-3.5 transition-transform group-hover:translate-x-0.5"
+                    className="size-3.5 transition-transform motion-reduce:transition-none group-hover:translate-x-0.5"
                   />
                 </span>
               </Link>
@@ -200,15 +231,25 @@ export function NextStepsCard({
   );
 }
 
-function buildSteps({
+export function buildPanelActions({
   projectId,
   gscConnected,
   googleMissing,
   audit,
+  overviewUnavailable,
+  searchTodo,
+  now,
+  siteSelected,
+  searchUnavailable,
 }: {
   projectId: string;
   gscConnected: boolean;
   googleMissing: boolean;
+  overviewUnavailable: boolean;
+  siteSelected: boolean;
+  searchUnavailable: boolean;
+  searchTodo: TodoItem[];
+  now: number;
   audit: {
     auditId: string;
     status: "running" | "completed" | "failed";
@@ -216,9 +257,10 @@ function buildSteps({
     errorCode?: string | null;
     failedPhase?: string | null;
     severityTotals: { critical: number; warning: number; info: number };
+    severityCheckTypes?: { critical: number; warning: number; info: number };
   } | null;
-}): Step[] {
-  const steps: Step[] = [];
+}): PanelAction[] {
+  const steps: PanelAction[] = [];
   const params = { projectId };
 
   /*
@@ -240,7 +282,42 @@ function buildSteps({
     });
   }
 
-  if (!audit) {
+  if (searchUnavailable)
+    steps.push({
+      key: "search-unavailable",
+      icon: Search,
+      title: t("Search Console verisi alınamadı"),
+      detail: t("Arama verisi şu an okunamadı. Yenile ile tekrar deneyin."),
+      to: "/p/$projectId/search-performance",
+      params,
+      cta: t("Gör"),
+    });
+  if (!siteSelected)
+    steps.push({
+      key: "site-unselected",
+      icon: Radar,
+      title: t("Site seçilmedi"),
+      detail: t(
+        "Kendi sitenizin denetimini göstermek için proje ayarlarına alan adını girin.",
+      ),
+      to: "/p/$projectId/settings",
+      params,
+      cta: t("Ayarlar"),
+    });
+  if (overviewUnavailable) {
+    steps.push({
+      key: "audit-unavailable",
+      icon: Radar,
+      title: t("Denetim özeti okunamadı"),
+      detail: t(
+        "İlk denetim olup olmadığı bilinmiyor. Denetim geçmişini açın veya Yenile ile tekrar deneyin.",
+      ),
+      to: "/p/$projectId/audit",
+      params,
+      cta: t("Gör"),
+    });
+  }
+  if (!audit && !overviewUnavailable && siteSelected) {
     steps.push({
       key: "first-audit",
       icon: Radar,
@@ -252,9 +329,11 @@ function buildSteps({
       params,
       cta: t("Başlat"),
     });
-    return steps;
   }
 
+  if (!audit) return steps;
+
+  const findingTypes = audit.severityCheckTypes ?? audit.severityTotals;
   if (audit.status === "failed") {
     steps.push({
       key: "retry-audit",
@@ -273,54 +352,63 @@ function buildSteps({
       detail: t("İlerlemeyi ve bitiş özetini denetim ekranında izleyin."),
       to: "/p/$projectId/audit",
       params,
+      search: { auditId: audit.auditId },
       cta: t("İlerlemeyi gör"),
     });
   }
 
-  if (audit.status === "completed" && audit.severityTotals.critical > 0) {
+  if (audit.status === "completed" && findingTypes.critical > 0) {
     steps.push({
       key: "critical",
       icon: TriangleAlert,
-      title: t("{count} kritik sorun var", {
-        count: audit.severityTotals.critical,
+      title: t("{count} kritik kontrol türü", {
+        count: formatCount(findingTypes.critical),
       }),
       detail: t(
         "Kritik sorunlar Google'ın sayfayı taramasını ya da dizine almasını engelleyebilir.",
       ),
       to: "/p/$projectId/audit",
       params,
-      search: { auditId: audit.auditId, tab: "issues" },
+      search: { auditId: audit.auditId, tab: "issues", severity: "critical" },
       cta: t("Gör"),
     });
   }
 
-  if (gscConnected) {
+  for (const item of searchTodo.slice(0, 1)) {
+    const copy = describeTodo(item);
     steps.push({
-      key: "opportunities",
+      key: item.id,
       icon: Search,
-      title: t("Fırsatlara bakın"),
-      detail: t(
-        "Sayfalarınız, sıralarına göre değil, üzerinde çalışmaya ne kadar değdiğine göre sıralı.",
-      ),
-      to: "/p/$projectId/opportunities",
+      title: copy.title,
+      detail: copy.evidence,
+      to: "/p/$projectId/search-performance",
       params,
+      search:
+        copy.target?.kind === "drill"
+          ? {
+              tab: copy.target.dimension === "query" ? "queries" : "pages",
+              q: copy.target.key,
+            }
+          : { tab: "todo" },
       cta: t("Aç"),
     });
   }
 
   /*
    * A crawl older than a week describes a site that has since changed, and
-   * every number on this screen comes from it.
+   * audit findings only describe the measured snapshot.
    */
-  const ageDays = (Date.now() - parseTimestamp(audit.startedAt)) / 86_400_000;
-  if (audit.status === "completed" && ageDays > STALE_AFTER_DAYS) {
+  if (
+    audit.status === "completed" &&
+    auditIsStale(parseTimestamp(audit.startedAt), now)
+  ) {
     steps.push({
       key: "rescan",
       icon: Radar,
       title: t("Denetimi tazeleyin"),
       detail: t(
-        "Son denetim {when}. Bu ekrandaki sayılar o denetimden geliyor.",
-        { when: formatRelativeTime(audit.startedAt) },
+        "Son denetim {when}. Denetim bulguları yalnızca bu taramaya dayanır.",
+        { when: formatDate(audit.startedAt) },
       ),
       to: "/p/$projectId/audit",
       params,
@@ -328,15 +416,17 @@ function buildSteps({
     });
   }
 
-  if (audit.status === "completed" && audit.severityTotals.warning > 0) {
+  if (audit.status === "completed" && findingTypes.warning > 0) {
     steps.push({
       key: "warnings",
       icon: TriangleAlert,
-      title: t("{count} uyarı var", { count: audit.severityTotals.warning }),
+      title: t("{count} uyarı kontrol türü", {
+        count: formatCount(findingTypes.warning),
+      }),
       detail: t("Kritik değil ama Google'ın sayfayı anlamasını zorlaştırıyor."),
       to: "/p/$projectId/audit",
       params,
-      search: { auditId: audit.auditId, tab: "issues" },
+      search: { auditId: audit.auditId, tab: "issues", severity: "warning" },
       cta: t("Gör"),
     });
   }

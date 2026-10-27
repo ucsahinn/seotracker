@@ -4,9 +4,15 @@ import type {
 } from "@/types/schemas/dashboard";
 import { reconcileStaleAudits } from "@/server/features/audit/services/auditReconciler";
 import { ProjectRepository } from "@/server/features/projects/repositories/ProjectRepository";
+import { panelFindingCounts } from "@/shared/panelAudit";
 import { sort } from "remeda";
 import { ActivationRepository } from "@/server/features/activation/repositories/ActivationRepository";
-import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
+import { getPanelAuditSelection } from "@/server/features/audit/services/panelAuditSelection";
+import { AuditService } from "@/server/features/audit/services/AuditService";
+import { buildAuditBreakdown } from "@/shared/auditBreakdown";
+import { findingsFromIssues } from "@/shared/auditScore";
+import { auditStanding, crawlLimitNote } from "@/shared/auditStanding";
+import { getIndexCoverage } from "@/server/features/gsc/services/GscIndexCoverageService";
 import {
   getIssueTypePageCountsForAudit,
   getTopAffectedPagesForAudit,
@@ -21,6 +27,16 @@ import { storedAuditErrorCode } from "@/server/lib/audit/audit-errors";
 
 type DashboardOverview = {
   audit: DashboardAuditSummary | null;
+  latestAttempt: {
+    auditId: string;
+    status: string;
+    startUrl: string;
+    startedAt: string;
+    pagesCrawled: number;
+    errorCode: string | null;
+    failedPhase: string | null;
+  } | null;
+  domain: string | null;
 };
 
 async function getActivation(input: {
@@ -67,24 +83,46 @@ async function getActivation(input: {
 async function getOverview(input: {
   projectId: string;
 }): Promise<DashboardOverview> {
-  return { audit: await getAuditSummary(input.projectId) };
+  await reconcileStaleAudits();
+  const selection = await getPanelAuditSelection(input.projectId);
+  const attempt = selection.latestAttempt;
+  return {
+    domain: selection.domain,
+    audit: await getAuditSummary(
+      input.projectId,
+      selection.snapshot ?? attempt,
+    ),
+    latestAttempt: attempt
+      ? {
+          auditId: attempt.id,
+          status: attempt.status,
+          startUrl: attempt.startUrl,
+          startedAt: attempt.startedAt,
+          pagesCrawled: attempt.pagesCrawled,
+          errorCode: storedAuditErrorCode(attempt),
+          failedPhase: attempt.failedPhase,
+        }
+      : null,
+  };
 }
 
 async function getAuditSummary(
   projectId: string,
+  audit: Awaited<ReturnType<typeof getPanelAuditSelection>>["snapshot"],
 ): Promise<DashboardAuditSummary | null> {
   // The dashboard can be the only screen an operator opens, and this card
   // rendered "tarama sürüyor" indefinitely for an audit whose workflow died.
   // See the note in `AuditService.getHistory`: the scheduled sweep does not
   // run under Docker.
-  await reconcileStaleAudits();
-
-  const audit = await AuditRepository.getLatestAuditForProject(projectId);
   if (!audit) return null;
 
-  const [typeRows, topPages] = await Promise.all([
+  const [typeRows, topPages, results, insights] = await Promise.all([
     getIssueTypePageCountsForAudit(audit.id),
     getTopAffectedPagesForAudit(audit.id, TOP_PAGES),
+    AuditService.getResults(audit.id, projectId),
+    getIndexCoverage({ projectId, auditId: audit.id })
+      .then((coverage) => coverage.asked > 0)
+      .catch(() => null),
   ]);
 
   const severityRank = { critical: 0, warning: 1, info: 2 };
@@ -93,15 +131,49 @@ async function getAuditSummary(
       issueType: row.issueType,
       severity: row.severity,
       count: row.pages,
+      siteLevel: !results.issues.some(
+        (issue) => issue.issueType === row.issueType && issue.pageId !== null,
+      ),
     })),
     (a, b) =>
       severityRank[a.severity] - severityRank[b.severity] || b.count - a.count,
   );
 
-  const severityTotals = { critical: 0, warning: 0, info: 0 };
-  for (const row of sorted) severityTotals[row.severity] += row.count;
+  const counts = panelFindingCounts(results.issues);
 
+  const breakdown = buildAuditBreakdown(
+    findingsFromIssues(results.issues, audit.pagesCrawled),
+    {
+      pagesCrawled: audit.pagesCrawled,
+      hasLighthouse: results.lighthouse.some(
+        (row) => row.performanceScore !== null,
+      ),
+      siteFacts: results.siteFacts,
+      googleInspected: insights,
+      analyticsCompared: results.audit.analyticsCompared,
+    },
+  );
   return {
+    startUrl: results.audit.startUrl,
+    standing: auditStanding(breakdown, audit.status),
+    coverage: {
+      measured: breakdown.categories.reduce(
+        (n, c) => n + c.passed + c.failed,
+        0,
+      ),
+      total: breakdown.checks.length,
+    },
+    limitNote: crawlLimitNote({
+      pagesCrawled: audit.pagesCrawled,
+      maxPages: results.audit.config.maxPages,
+      urlsDiscovered: audit.urlsDiscovered,
+      sitemapUrls:
+        results.siteFacts?.sitemap.onHostUrlCount ??
+        results.siteFacts?.sitemap.urlCount,
+    }),
+    affectedPages: counts.affectedPages,
+    siteSeverityTotals: counts.siteSeverityTotals,
+    severityCheckTypes: counts.severityCheckTypes,
     auditId: audit.id,
     status: audit.status,
     pagesCrawled: audit.pagesCrawled,
@@ -110,7 +182,7 @@ async function getAuditSummary(
     failedPhase: audit.failedPhase,
     topIssues: sorted.slice(0, 3),
     totalIssueTypes: sorted.length,
-    severityTotals,
+    severityTotals: counts.severityTotals,
     topPages: topPages.map((row) => ({
       pageUrl: row.pageUrl,
       issueCount: row.issueCount,

@@ -225,4 +225,105 @@ export const deCards: Catalog = {
   "Ortalama sırası 4 ile 20 arasında, en az {impressions} gösterim alan {count} sorgu. Olası kazanç, sorgu bir basamak yükselirse (6-10'dan 4-5'e, 4-5'ten 2-3'e, 11-20'den ilk sayfaya) beklenen en fazla ek tıklamadır.":
     "{count} Suchanfragen mit durchschnittlicher Position 4 bis 20 und mindestens {impressions} Impressionen. Der mögliche Gewinn sind die höchstens zu erwartenden Zusatzklicks, wenn eine Suchanfrage eine Stufe steigt (6-10 auf 4-5, 4-5 auf 2-3, 11-20 auf Seite eins).",
   "{title} · {kind} · aç": "{title} · {kind} · öffnen",
+  "Karşılaştırma yapılamadı: tarama kapsamları farklı veya bilinmiyor.":
+    "Kein Vergleich möglich: Der Umfang der Crawls ist unterschiedlich oder unbekannt.",
+  "{measured} / {total} kontrol ölçüldü.":
+    "{measured} / {total} Prüfungen gemessen.",
+  "{types} kontrol türünde {pages} sayfa etkileniyor.":
+    "{pages} Seiten in {types} Prüfungsarten betroffen.",
+  "Taranan kapsamda sorun bulunamadı.":
+    "Im gecrawlten Bereich wurden keine Probleme gefunden.",
+  "Ölçülmeyen kontroller var; tüm site için sağlıklı sonucu çıkarılamaz. Ayrıntılarda kapsamı kontrol edin.":
+    "Einige Prüfungen wurden nicht gemessen. Eine Aussage zum Zustand der gesamten Website ist daher nicht möglich. Prüfen Sie den Umfang in den Details.",
+  "+ {count} kontrol türü daha": "+ {count} weitere Prüfungsarten",
+  "Google aramasından sitenize gelen tıklamalar.":
+    "Klicks von der Google-Suche auf Ihre Website.",
+  "Sitenizin Google sonuçlarında gösterilme sayısı.":
+    "Wie oft Ihre Website in den Google-Ergebnissen angezeigt wurde.",
+  "Kurulum tercihleri": "Einrichtungseinstellungen",
+  Denetimler: "Audits",
+  "Bağlantı durumu yenilenemedi":
+    "Verbindungsstatus konnte nicht aktualisiert werden",
+  "Google yapılandırması okunamadı. Yenile ile tekrar deneyin.":
+    "Die Google-Konfiguration konnte nicht gelesen werden. Versuchen Sie es mit Aktualisieren erneut.",
+  "Site seçilmedi": "Keine Website ausgewählt",
+  "Kendi sitenizin denetimini göstermek için proje ayarlarına alan adını girin.":
+    "Geben Sie die Domain in den Projekteinstellungen ein, um das Audit Ihrer Website zu sehen.",
+  "Son denetim başarısız": "Letztes Audit fehlgeschlagen",
+  "Arama verisi için Search Console bağlantısını kontrol edin.":
+    "Prüfen Sie die Search Console-Verbindung, um Suchdaten zu sehen.",
+  "Arama verisi şu an okunamadı. Yenile ile tekrar deneyin.":
+    "Suchdaten können gerade nicht gelesen werden. Versuchen Sie es mit Aktualisieren erneut.",
+  "Arama özeti": "Suchübersicht",
+  "Son {days} günde Google aramalarından {clicks} tıklama aldınız.":
+    "Sie haben in {days} Tagen {clicks} Klicks aus der Google-Suche erhalten.",
+  "Son yenileme başarısız; önbellekteki veriler gösteriliyor.":
+    "Die letzte Aktualisierung ist fehlgeschlagen. Gespeicherte Daten werden angezeigt.",
+  "Önceki dönem: {start} – {end}.": "Vorheriger Zeitraum: {start} – {end}.",
+  "Son veri günü: {date}. Son {count} gün toplamlara dahil değil.":
+    "Letzter Datentag: {date}. Die letzten {count} Tage sind nicht in den Summen enthalten.",
+  "Google tarih bildirmedi; son günler dışarıda.":
+    "Google hat kein Datum zur Vollständigkeit gemeldet. Die letzten Tage sind ausgeschlossen.",
+  "Sorgu listesi satır sınırında kesildi; tahminler yalnızca alınan sorguları kapsar.":
+    "Die Suchanfragenliste hat das Zeilenlimit erreicht. Schätzungen gelten nur für abgerufene Suchanfragen.",
+  "Google bazı sorguları gizler; sorgu listesi site toplamının tamamı değildir.":
+    "Google blendet einige Suchanfragen aus. Die Liste bildet nicht die gesamte Website-Summe ab.",
+  "{value} (para birimi bilinmiyor)": "{value} (Währung unbekannt)",
+  "Satış ölçümü doğrulanmadı; sıfır satış, mağaza olmadığı anlamına gelmez.":
+    "Die Umsatzmessung ist nicht bestätigt. Null Verkäufe bedeuten nicht, dass es keinen Shop gibt.",
+  "Analytics verisi sınırlı veya eksik. Bilinmeyen değerler çizilmez; dönem karşılaştırması gösterilmez.":
+    "Analytics-Daten sind eingeschränkt oder unvollständig. Unbekannte Werte bleiben Lücken; Zeiträume werden nicht verglichen.",
+  "Saat dilimi bilinmiyor": "Zeitzone unbekannt",
+  "Google arama tıklamaları ile organik oturumlar farklı ölçümlerdir; Analytics diğer arama motorlarını da kapsar.":
+    "Klicks aus der Google-Suche und organische Sitzungen messen Verschiedenes. Analytics umfasst auch andere Suchmaschinen.",
+  "Google gizlilik eşiği nedeniyle bazı verileri göstermiyor.":
+    "Google hält einige Daten aufgrund von Datenschutzschwellen zurück.",
+  "Google bu raporu örneklenmiş veriden hesapladı.":
+    "Google hat diesen Bericht aus Stichprobendaten berechnet.",
+  "Bazı ölçümler hesap erişim kısıtı nedeniyle okunamadı. Analytics mülkündeki yetkinizi kontrol edin.":
+    "Einige Messwerte konnten wegen Zugriffsbeschränkungen nicht gelesen werden. Prüfen Sie Ihre Berechtigungen in der Analytics-Property.",
+  "Bazı satırlar Google tarafından birleştirildi; ayrıntılar eksik olabilir.":
+    "Google hat einige Zeilen zusammengefasst. Details können fehlen.",
+  "Ölçülen bulgulara göre önce şu işleri değerlendirin.":
+    "Prüfen Sie anhand der gemessenen Befunde zuerst diese Aufgaben.",
+  "Kurulum durumu okunamayanlar: {items}. Yenile ile tekrar deneyin.":
+    "Einrichtungsstatus nicht lesbar für: {items}. Versuchen Sie es mit Aktualisieren erneut.",
+  "Ölçülen kapsamda öncelikli iş bulunmadı.":
+    "Im gemessenen Bereich wurde keine vorrangige Aufgabe gefunden.",
+  "Denetim özeti okunamadı":
+    "Audit-Zusammenfassung konnte nicht gelesen werden",
+  "İlk denetim olup olmadığı bilinmiyor. Denetim geçmişini açın veya Yenile ile tekrar deneyin.":
+    "Es ist unbekannt, ob bereits ein Audit existiert. Öffnen Sie den Audit-Verlauf oder versuchen Sie es mit Aktualisieren erneut.",
+  "Son denetim {when}. Denetim bulguları yalnızca bu taramaya dayanır.":
+    "Letztes Audit: {when}. Die Befunde beziehen sich nur auf diesen Crawl.",
+  "Bazı veriler yenilenemedi; önbellekteki tarihleri kontrol edin.":
+    "Einige Daten konnten nicht aktualisiert werden. Prüfen Sie die gespeicherten Zeitangaben.",
+  Yenilendi: "Aktualisiert",
+  "Veri alındı: {time}": "Daten abgerufen: {time}",
+  "Günlük tıklamalar; soluk çizgi önceki dönemi gösterir.":
+    "Tägliche Klicks; die blasse Linie zeigt den vorherigen Zeitraum.",
+  "Bir üst sıra bandına çıkabilecek sorgular":
+    "Suchanfragen mit Potenzial für das nächsthöhere Rangband",
+  "Marka adları onaylandı.": "Markenbegriffe bestätigt.",
+  "Marka adları öneriye göre ayrıldı.":
+    "Markensuchanfragen wurden anhand vorgeschlagener Begriffe getrennt.",
+  "Marka ayrımı yapılmadı.": "Markensuchanfragen wurden nicht getrennt.",
+  "Bu kapsamda uygun sorgu bulunmadı.":
+    "Keine passenden Suchanfragen in diesem Bereich.",
+  "{count} sorgu bir üst sıra bandı için değerlendirildi.":
+    "{count} Suchanfragen für das nächsthöhere Rangband bewertet.",
+  "Yeterli örnek yok; ek tıklama üst sınırı hesaplanamadı.":
+    "Zu wenige Beobachtungen, um eine Obergrenze für zusätzliche Klicks zu berechnen.",
+  "Hesaplanabilen {known} sorguda en fazla {clicks} ek tıklama (üst sınır); {unknown} sorguda hesaplanamadı.":
+    "Höchstens {clicks} zusätzliche Klicks aus {known} schätzbaren Suchanfragen (Obergrenze); {unknown} Suchanfragen nicht schätzbar.",
+  "Bu bir tahmindir; sayfa bazlı Fırsatlar toplamına eklenmez.":
+    "Dies ist eine Schätzung. Sie wird nicht zur seitenbasierten Chancensumme addiert.",
+  "Birim: sayfa ve kontrol türü çifti; benzersiz sayfa sayısı değildir.":
+    "Einheit: Paar aus Seite und Prüfungsart, nicht die Anzahl eindeutiger Seiten.",
+  "{count} kritik kontrol türü": "{count} kritische Prüfungsarten",
+  "{count} uyarı kontrol türü": "{count} Prüfungsarten mit Warnungen",
+  "Site geneli": "Websiteweit",
+  "Sorgu arşivi": "Suchanfragenarchiv",
+  "Karşılaştırma yalnızca iki taramada da ölçülen kontrolleri kapsar; diğer kontroller için değişim bilinmiyor.":
+    "Der Vergleich umfasst nur Prüfungen, die in beiden Crawls gemessen wurden. Änderungen bei anderen Prüfungen sind unbekannt.",
 };
