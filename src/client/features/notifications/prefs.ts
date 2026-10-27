@@ -4,7 +4,7 @@ import { useSyncExternalStore } from "react";
 interface NotificationPrefs {
   /** Short tones for important events. On unless turned off. */
   sound: boolean;
-  /** A system notification while the tab is in the background. */
+  /** Legacy preference retained for stored settings; system popups are disabled. */
   desktop: boolean;
 }
 

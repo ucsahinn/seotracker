@@ -22,6 +22,7 @@ export async function getLiveAnnouncements(
   else signal?.addEventListener("abort", onAbort, { once: true });
   try {
     const response = await fetch(FEED_URL, {
+      cache: "no-store",
       headers: { Accept: "application/json" },
       signal: controller.signal,
     });

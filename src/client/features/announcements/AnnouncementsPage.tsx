@@ -7,6 +7,7 @@ import { formatDateTime } from "@/shared/format";
 import { t, useLocale, type Locale } from "@/shared/i18n";
 import {
   getAnnouncementText,
+  getPollOptionPercentages,
   type PublicAnnouncement,
 } from "@/shared/announcement";
 import { useLiveAnnouncements } from "./useLiveAnnouncements";
@@ -137,6 +138,7 @@ function AnnouncementCard({
   const { title, body } = getAnnouncementText(announcement, locale);
   const prompt =
     locale === "tr" ? announcement.prompt_tr : announcement.prompt_en;
+  const optionPercentages = getPollOptionPercentages(announcement.options);
   async function respond(input: { optionId?: string; answer?: string }) {
     setPending(true);
     setError("");
@@ -193,10 +195,7 @@ function AnnouncementCard({
             {prompt}
           </legend>
           {announcement.options.map((option) => {
-            const count = announcement.response_count;
-            const percent = count
-              ? Math.round((option.count / count) * 100)
-              : 0;
+            const percent = optionPercentages[option.id];
             return (
               <div key={option.id}>
                 <button
@@ -208,31 +207,17 @@ function AnnouncementCard({
                   <span>
                     {locale === "tr" ? option.label_tr : option.label_en}
                   </span>
-                  {count > 0 ? (
-                    <span>
-                      {percent}% · {option.count}
-                    </span>
-                  ) : null}
+                  <span>{percent}%</span>
                 </button>
-                {count > 0 ? (
-                  <progress
-                    className="progress progress-primary mt-1 h-1.5 w-full"
-                    value={percent}
-                    max={100}
-                    aria-label={`${locale === "tr" ? option.label_tr : option.label_en}: ${percent}%`}
-                  />
-                ) : null}
+                <progress
+                  className="progress progress-primary mt-1 h-1.5 w-full"
+                  value={percent}
+                  max={100}
+                  aria-label={`${locale === "tr" ? option.label_tr : option.label_en}: ${percent}%`}
+                />
               </div>
             );
           })}
-          <p className="text-xs text-muted">
-            {t("{count} yanıt", { count: announcement.response_count })}
-          </p>
-          {answered ? (
-            <p role="status" className="text-sm text-success">
-              {t("Yanıtınız alındı")}
-            </p>
-          ) : null}
         </fieldset>
       ) : announcement.interaction_type === "question" ? (
         <form
@@ -264,11 +249,7 @@ function AnnouncementCard({
                 "Adınız veya hesabınız alınmaz. Aynı tarayıcıda saklanan katılımcı anahtarıyla bir kez yanıt verilebilir; bu, kişi başına tek yanıt garantisi değildir. Yanıtınız yöneticiler tarafından görülebilir. Kişisel bilgi yazmayın.",
               )}
             </span>
-            {answered ? (
-              <span role="status" className="text-sm text-success">
-                {t("Yanıtınız alındı")}
-              </span>
-            ) : (
+            {!answered ? (
               <button
                 className="btn btn-primary btn-sm"
                 type="submit"
@@ -276,7 +257,7 @@ function AnnouncementCard({
               >
                 {pending ? t("Gönderiliyor…") : t("Yanıtla")}
               </button>
-            )}
+            ) : null}
           </div>
         </form>
       ) : null}

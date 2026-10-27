@@ -39,6 +39,39 @@ export const announcementFeedSchema = z.object({
 
 export type PublicAnnouncement = z.infer<typeof publicAnnouncementSchema>;
 
+/** Return stable whole percentages whose sum is exactly 100 when votes exist. */
+export function getPollOptionPercentages(
+  options: readonly { id: string; count: number }[],
+): Record<string, number> {
+  const total = options.reduce((sum, option) => sum + option.count, 0);
+  if (total === 0) return Object.fromEntries(options.map(({ id }) => [id, 0]));
+
+  const shares = options.map((option) => {
+    const exact = (option.count / total) * 100;
+    const base = Math.floor(exact);
+    return { id: option.id, base, remainder: exact - base };
+  });
+  let remaining = 100 - shares.reduce((sum, share) => sum + share.base, 0);
+  const awarded = new Set<number>();
+  while (remaining > 0) {
+    let bestIndex = -1;
+    for (let index = 0; index < shares.length; index++) {
+      if (awarded.has(index)) continue;
+      if (
+        bestIndex === -1 ||
+        shares[index].remainder > shares[bestIndex].remainder
+      ) {
+        bestIndex = index;
+      }
+    }
+    if (bestIndex === -1) break;
+    shares[bestIndex].base++;
+    awarded.add(bestIndex);
+    remaining--;
+  }
+  return Object.fromEntries(shares.map(({ id, base }) => [id, base]));
+}
+
 export function getAnnouncementText(
   announcement: PublicAnnouncement,
   locale: Locale,

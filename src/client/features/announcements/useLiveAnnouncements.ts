@@ -12,8 +12,8 @@ export function useLiveAnnouncements() {
     staleTime: 60_000,
     gcTime: 30 * 60_000,
     refetchInterval: ANNOUNCEMENTS_REFRESH_MS,
-    // Announcements should still reach the Windows notification center while
-    // the operator has this app in a background browser tab.
+    // Keep the bell history current when this tab is in the background. The
+    // in-app popup appears when the interface is visible.
     refetchIntervalInBackground: true,
     retry: false,
   });

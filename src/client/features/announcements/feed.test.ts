@@ -21,7 +21,10 @@ it("reads live notices from the configured workers.dev endpoint", async () => {
 
   expect(fetchMock).toHaveBeenCalledWith(
     "https://seowatcher-announcements.vitalikai07.workers.dev/api/announcements",
-    expect.objectContaining({ headers: { Accept: "application/json" } }),
+    expect.objectContaining({
+      cache: "no-store",
+      headers: { Accept: "application/json" },
+    }),
   );
 });
 

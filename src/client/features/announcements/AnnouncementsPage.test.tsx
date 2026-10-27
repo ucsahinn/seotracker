@@ -75,7 +75,7 @@ it("lets an active user submit a poll response and updates the live results", as
   fetchAnnouncements.mockResolvedValue([announcement]);
   renderPage([announcement]);
 
-  fireEvent.click(screen.getByRole("button", { name: "Mobil" }));
+  fireEvent.click(screen.getByRole("button", { name: "Mobil 0%" }));
 
   await waitFor(() =>
     expect(submitResponse).toHaveBeenCalledWith({
@@ -83,7 +83,7 @@ it("lets an active user submit a poll response and updates the live results", as
       optionId: announcement.options[0].id,
     }),
   );
-  expect(await screen.findByText("Yanıtınız alındı")).toBeTruthy();
+  expect(screen.queryByText("Yanıtınız alındı")).toBeNull();
 });
 
 it("labels poll result bars with their option for assistive technology", () => {
@@ -155,7 +155,7 @@ it("submits a written answer and explains the saved browser key", async () => {
   expect(
     screen.getByText(/bu, kişi başına tek yanıt garantisi değildir/i),
   ).toBeTruthy();
-  expect(await screen.findByText("Yanıtınız alındı")).toBeTruthy();
+  expect(screen.queryByText("Yanıtınız alındı")).toBeNull();
 });
 
 it("shows a retry state instead of presenting a feed failure as empty", async () => {

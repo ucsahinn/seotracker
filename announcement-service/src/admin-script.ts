@@ -145,17 +145,53 @@ export const adminScript = String.raw`
       responseStatus.setAttribute('role', 'status');
       responseItems.setAttribute('aria-busy', 'true');
       responseItems.replaceChildren();
-      document.querySelector('#responses-title').textContent = 'Yanıtlar · ' + item.title_tr + ' (' + (item.response_count || 0) + ')';
+      document.querySelector('#responses-title').textContent = (item.interaction_type === 'poll' ? 'Anket sonuçları · ' : 'Yazılı yanıtlar · ') + item.title_tr;
       document.querySelector('#responses-title').focus();
       try {
       const result = await request('/api/admin/announcements/' + encodeURIComponent(item.id) + '/responses?page=' + responsePage + '&limit=50');
+      if (result.interaction_type === 'poll') {
+        previousResponsePage.hidden = true;
+        nextResponsePage.hidden = true;
+        responsePageLabel.hidden = true;
+        const total = (result.options || []).reduce((sum, option) => sum + option.count, 0);
+        const shares = (result.options || []).map((option) => {
+          const exact = total ? option.count * 100 / total : 0;
+          return { option, percent: Math.floor(exact), remainder: exact - Math.floor(exact) };
+        });
+        let remaining = total ? 100 - shares.reduce((sum, share) => sum + share.percent, 0) : 0;
+        const awarded = new Set();
+        while (remaining > 0) {
+          let bestIndex = -1;
+          for (let index = 0; index < shares.length; index++) {
+            if (awarded.has(index)) continue;
+            if (bestIndex === -1 || shares[index].remainder > shares[bestIndex].remainder) bestIndex = index;
+          }
+          if (bestIndex === -1) break;
+          shares[bestIndex].percent++;
+          awarded.add(bestIndex);
+          remaining--;
+        }
+        responseStatus.textContent = total ? 'Oy dağılımı · ' + total + ' oy' : 'Henüz oy yok.';
+        for (const share of shares) {
+          const row = document.createElement('div'); row.className = 'response-row';
+          const copy = document.createElement('div');
+          const label = document.createElement('p'); label.textContent = share.option.label_tr + ' / ' + share.option.label_en + ' · ' + share.percent + '%';
+          const bar = document.createElement('progress'); bar.className = 'progress progress-primary'; bar.max = 100; bar.value = share.percent; bar.setAttribute('aria-label', label.textContent);
+          copy.append(label, bar); row.append(copy); responseItems.append(row);
+        }
+        responseHasMore = false;
+        return;
+      }
+      previousResponsePage.hidden = false;
+      nextResponsePage.hidden = false;
+      responsePageLabel.hidden = false;
       responseHasMore = result.hasMore;
       responsePageLabel.textContent = responsePage + '. sayfa';
       previousResponsePage.disabled = responsePage <= 1;
       nextResponsePage.disabled = !responseHasMore;
       responseStatus.textContent = '';
       responseItems.replaceChildren();
-      if (!result.responses.length) { const empty = document.createElement('p'); empty.className = 'empty'; empty.textContent = 'Henüz yanıt yok.'; responseItems.append(empty); }
+      if (!result.responses.length) { const empty = document.createElement('p'); empty.className = 'empty'; empty.textContent = 'Henüz yazılı yanıt yok.'; responseItems.append(empty); }
       for (const response of result.responses) {
         const row = document.createElement('article'); row.className = 'response-row';
         const copy = document.createElement('div'); const text = document.createElement('p');
@@ -220,7 +256,7 @@ export const adminScript = String.raw`
           edit.addEventListener('click', () => editAnnouncement(item));
         }
         actions.append(edit);
-        if (item.interaction_type !== 'none') { const view = document.createElement('button'); view.type = 'button'; view.textContent = 'Yanıtları gör (' + (item.response_count || 0) + ')'; view.addEventListener('click', async () => { responseTrigger = view; responseAnnouncement = item; responsePage = 1; view.disabled = true; try { await showResponses(item); } catch (error) { responseStatus.setAttribute('role', 'alert'); responseStatus.textContent = error.message; } finally { view.disabled = false; } }); actions.append(view); }
+        if (item.interaction_type !== 'none') { const view = document.createElement('button'); view.type = 'button'; view.textContent = item.interaction_type === 'poll' ? 'Sonuçları gör' : 'Yazılı yanıtları gör'; view.addEventListener('click', async () => { responseTrigger = view; responseAnnouncement = item; responsePage = 1; view.disabled = true; try { await showResponses(item); } catch (error) { responseStatus.setAttribute('role', 'alert'); responseStatus.textContent = error.message; } finally { view.disabled = false; } }); actions.append(view); }
         const clone = document.createElement('button'); clone.type = 'button'; clone.textContent = 'Yeni taslak olarak kopyala';
         clone.addEventListener('click', async () => { try { const result = await request('/api/admin/announcements/' + encodeURIComponent(item.id) + '/clone', { method: 'POST' }); editAnnouncement(result.announcement); await load(); notice.textContent = 'Yanıt geçmişi olmadan yeni bir taslak açıldı.'; } catch (error) { notice.textContent = error.message; } });
         actions.append(clone);

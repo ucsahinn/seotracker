@@ -185,4 +185,50 @@ describe("announcement service", () => {
       responses: [{ answer: "Second page answer" }],
     });
   });
+
+  it("returns aggregate poll results without exposing individual poll responses", async () => {
+    const item = makeAnnouncement({
+      interaction_type: "poll",
+      response_count: 3,
+      options: [
+        {
+          id: "58d6baaa-f9b2-4f8b-b2ec-f60c93041b4a",
+          label_tr: "Evet",
+          label_en: "Yes",
+          count: 2,
+        },
+        {
+          id: "f66ab1a3-b0d3-498d-bc8d-d0bf46332aef",
+          label_tr: "Hayır",
+          label_en: "No",
+          count: 1,
+        },
+      ],
+    });
+    const listResponses = vi.fn(async () => [
+      {
+        id: "ec030f51-80bc-4679-841b-a1d9b79ab42e",
+        option_id: "58d6baaa-f9b2-4f8b-b2ec-f60c93041b4a",
+        answer: null,
+        created_at: NOW,
+      },
+    ]);
+    const handler = createAnnouncementHandler(
+      repository({ get: vi.fn(async () => item), listResponses }),
+      { adminToken: TOKEN },
+    );
+    const response = await handler(
+      request(`/api/admin/announcements/${item.id}/responses`, {
+        headers: { authorization: `Bearer ${TOKEN}` },
+      }),
+    );
+
+    expect(listResponses).not.toHaveBeenCalled();
+    expect(await response.json()).toMatchObject({
+      interaction_type: "poll",
+      response_count: 3,
+      responses: [],
+      options: item.options,
+    });
+  });
 });

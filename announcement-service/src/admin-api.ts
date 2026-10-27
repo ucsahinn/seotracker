@@ -156,12 +156,24 @@ async function listResponses(
 ) {
   const announcement = await repository.get(announcementId);
   if (!announcement) return json({ error: "Announcement not found" }, 404);
+  if (announcement.interaction_type === "poll")
+    return json({
+      interaction_type: "poll",
+      response_count: announcement.response_count ?? 0,
+      responses: [],
+      options: announcement.options ?? [],
+      page: 1,
+      limit: 0,
+      hasMore: false,
+    });
   const { page, limit } = pagination(request);
   const responses = await repository.listResponses(announcement.id, {
     limit: limit + 1,
     offset: (page - 1) * limit,
   });
   return json({
+    interaction_type: announcement.interaction_type ?? "none",
+    response_count: announcement.response_count ?? 0,
     responses: responses.slice(0, limit),
     page,
     limit,

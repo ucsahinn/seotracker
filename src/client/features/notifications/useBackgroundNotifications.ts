@@ -107,7 +107,7 @@ export function useBackgroundNotifications(): void {
    * The same query the audit screen uses, so starting an audit there (which
    * invalidates this key) is noticed at once. Polls fast only while
    * something runs, and keeps polling in a background tab: that is when a
-   * desktop notification is worth having.
+   * the app's own notification history remains current while it is hidden.
    */
   const histories = useQueries({
     queries: projects.map((project) => ({
@@ -136,24 +136,33 @@ export function useBackgroundNotifications(): void {
       for (const { audit, outcome } of transitions) {
         const issues =
           audit.issues.critical + audit.issues.warning + audit.issues.info;
-        notify({
-          kind: outcome === "completed" ? "audit-completed" : "audit-failed",
-          title:
-            outcome === "completed"
-              ? t("Denetim bitti: {pages} sayfa, {issues} bulgu", {
-                  pages: formatNumber(audit.pagesCrawled),
-                  issues: formatNumber(issues),
-                })
-              : t("Denetim tamamlanamadı"),
-          body: project.name,
-          href: `/p/${project.id}/audit?auditId=${encodeURIComponent(audit.id)}`,
-          importance: "high",
-          projectId: project.id,
-          dedupeKey: `audit:${audit.id}:${outcome}`,
-        });
+        // The audit screen shows its own completion moment; a popup on top of
+        // it would say the same thing twice.
+        const { pathname, search } = router.state.location;
+        const watching =
+          pathname === `/p/${project.id}/audit` &&
+          (search as { auditId?: unknown }).auditId === audit.id;
+        notify(
+          {
+            kind: outcome === "completed" ? "audit-completed" : "audit-failed",
+            title:
+              outcome === "completed"
+                ? t("Denetim bitti: {pages} sayfa, {issues} bulgu", {
+                    pages: formatNumber(audit.pagesCrawled),
+                    issues: formatNumber(issues),
+                  })
+                : t("Denetim tamamlanamadı"),
+            body: project.name,
+            href: `/p/${project.id}/audit?auditId=${encodeURIComponent(audit.id)}`,
+            importance: "high",
+            projectId: project.id,
+            dedupeKey: `audit:${audit.id}:${outcome}`,
+          },
+          { toast: !watching },
+        );
       }
     });
-  }, [projects, histories]);
+  }, [projects, histories, router]);
 
   const updateQuery = useQuery({
     ...updateStatusOptions(),

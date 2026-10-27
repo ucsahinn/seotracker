@@ -50,6 +50,11 @@ describe("announcement admin page", () => {
     expect(adminPage).toContain('id="previous-response-page"');
     expect(adminPage).toContain('id="next-response-page"');
     expect(adminPage).toContain("responsePage + '&limit=50'");
+    expect(adminPage).toContain("Anket sonuçları");
+    expect(adminPage).toContain("Oy dağılımı");
+    expect(adminPage).toContain("Sonuçları gör");
+    expect(adminPage).toContain("Yazılı yanıtları gör");
+    expect(adminPage).toContain("option.count * 100 / total");
     expect(adminPage).toContain(
       "edit.disabled = hasResponses || immutablePublishedInteraction",
     );
