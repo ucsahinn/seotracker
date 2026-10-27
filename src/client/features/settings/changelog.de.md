@@ -2,9 +2,9 @@
 
 Neuheiten und Korrekturen, neueste Version zuerst.
 
-## [0.8.0] Alpha — 2026-10-26
+## [0.8.1] Alpha — 2026-10-27
 
-Diese Version fasst alles von 0.5.0 bis 0.8.0 zusammen: ein klügeres Website-Audit, eine neue Übersicht, Benachrichtigungen und sechs Sprachen.
+Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.1: Website-Audit, Übersicht, Benachrichtigungen und sechs Sprachen sowie genauere Daten und besser lesbare Bildschirme.
 
 ### ✨ Höhepunkte
 
@@ -28,6 +28,9 @@ Diese Version fasst alles von 0.5.0 bis 0.8.0 zusammen: ein klügeres Website-Au
 - **Nächste Schritte:** Die Übersicht zeigt eine kurze Aufgabenliste und einen Bereitschafts-Score für Ihre Einrichtung. Dieser Score ist kein SEO-Ergebnis.
 - **Fertige Berichte:** Ihr KI-Assistent erstellt aus Audit-, Such- und Analytics-Daten einen Verbesserungsbericht.
 - **Audit-Fortschritt:** Während eines Audits sehen Sie die verstrichene Zeit und den Fortschritt, am Ende eine kurze Zusammenfassung.
+- **Berichtsarten:** Suchberichte und Website-Audits werden getrennt angezeigt; ältere Berichte ohne bekannte Art sind klar gekennzeichnet.
+- **Berichtszeitraum:** Suchberichte behalten die gewählten Daten bei und erklären fehlende sowie später noch veränderliche Messwerte.
+- **Audit-Quellen:** Audit-Berichte nennen die tatsächlich verwendeten Besucher- und Geschwindigkeitsdaten.
 
 ### 🔔 Benachrichtigungen und Ankündigungen
 
@@ -47,6 +50,19 @@ Diese Version fasst alles von 0.5.0 bis 0.8.0 zusammen: ein klügeres Website-Au
 - **Sprachwahl:** Wählen Sie Ihre Sprache unter Einstellungen → Darstellung → Sprache; Zahlen und Datumsangaben folgen ihr.
 - **Anleitung:** Anleitung, Audit-Regeln und Versionshinweise gibt es in sechs Sprachen.
 - **Datenschutz:** Auf seowatcher.io läuft die Messung nur, wenn Sie zustimmen.
+- **Überarbeitete Übersetzungen:** Bildschirmtexte und Anleitungen wurden in allen sechs Sprachen an die überarbeiteten Ansichten angepasst.
+
+### 🎨 Darstellung und Hilfe
+
+- **Helles Design:** Ein dunklerer Hintergrund, hellere Karten und deutlichere orange Akzente erleichtern das Lesen.
+- **Karten und Zahlen:** Übersichtskarten sind einfacher; wechselnde Zahlen beachten Ihre Einstellung für reduzierte Bewegung.
+- **Hilfe und Versionshinweise:** Die gesuchten Informationen sind in Hilfe und Versionshinweisen leichter zu finden.
+
+### 🗂️ Projekte und gespeicherte Suchbegriffe
+
+- **Gespeicherte Suchbegriffe:** Positionen werden für Ihre gespeicherte Liste berechnet; Schreibvarianten überschreiben keine Messwerte, unbekannte Positionen sind klar markiert.
+- **Projektübersicht:** Fehlende Archivtage zählen nicht mehr als Besucherrückgang; die Audit-Zusammenfassung zeigt nur die Website Ihres Projekts.
+- **Projektinfo:** Bei widersprüchlichen Änderungen können Sie Ihren Entwurf behalten und mit dem aktuellen Text vergleichen.
 
 ### 🛠️ Fehlerbehebungen
 
@@ -54,10 +70,15 @@ Diese Version fasst alles von 0.5.0 bis 0.8.0 zusammen: ein klügeres Website-Au
 - **Gut auf dem Handy:** Audit-Ansicht und heruntergeladener Bericht laufen auf dem Handy nicht mehr über.
 - **Neues Projekt:** Die Länderliste wird auf dem Handy nicht mehr abgeschnitten; Esc schließt die Liste, Ihre Eingaben bleiben.
 - **Problemmeldungen:** Das Diagnosepaket in der Hilfe beschreibt das Problem besser und enthält Ihre Seitenadressen nicht.
+- **Suchleistung:** Vorrangige Aufgaben, gewählte Daten und die Grenzen geschätzter Zugewinne sind verständlicher.
+- **Genauere Zahlen:** Übersicht, Chancen, Rankings und Analytics unterscheiden fehlende Messungen von null und nennen den Umfang der Vergleiche.
+- **Verbindungsstatus:** Die Einstellungen unterscheiden eine ausgewählte Property von bestätigtem Datenzugriff; nach einem Kontowechsel gelten alte Ergebnisse nicht als aktuell.
 
 ### 🔒 Sicherheit
 
 - **Aktuelle Komponenten:** Sicherheitslücken in den von der App verwendeten Komponenten wurden geschlossen.
+- **Geheime Schlüssel:** Speichern Sie Ihre Google-Verbindungsdatei, ohne ihren Inhalt auf dem Bildschirm anzuzeigen.
+- **Assistent einrichten:** Die Anleitung verlangt nicht, Ihren Zugriffsschlüssel auf dem Bildschirm auszugeben oder in einen Chat einzufügen.
 
 ## [0.4.3] Alpha — 2026-10-23
 

@@ -2,9 +2,9 @@
 
 Yenilikler ve düzeltmeler, en yeni sürümden başlayarak listelenir.
 
-## [0.8.0] Alpha — 2026-10-26
+## [0.8.1] Alpha — 2026-10-27
 
-Bu sürüm 0.5.0'dan 0.8.0'a kadar gelen her yeniliği bir araya getirir: daha akıllı site denetimi, yeni pano, bildirimler ve altı dil.
+Bu giriş 0.5.0'dan 0.8.1'e kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
 
 ### ✨ Öne çıkanlar
 
@@ -28,6 +28,9 @@ Bu sürüm 0.5.0'dan 0.8.0'a kadar gelen her yeniliği bir araya getirir: daha a
 - **Sıradaki adımlar:** Panoda kurulumu tamamlamanız için kısa bir görev listesi ve hazırlık puanı bulunur. Bu puan SEO başarısı değildir.
 - **Hazır raporlar:** Yapay zekâ asistanınız denetim, arama ve Analytics verilerinizden iyileştirme raporu hazırlar.
 - **Denetim ilerlemesi:** Denetim sürerken geçen süreyi ve ilerlemeyi, bitince kısa bir özeti görürsünüz.
+- **Rapor türleri:** Arama raporları ile site denetimi raporları ayrı gösterilir; türü bilinmeyen eski raporlar açıkça belirtilir.
+- **Rapor tarihleri:** Arama raporu seçtiğiniz tarihleri korur; eksik verileri ve sonradan değişebilecek ölçümleri açıklar.
+- **Denetim kaynakları:** Denetim raporu hangi trafik ve hız verilerinin gerçekten kullanıldığını söyler.
 
 ### 🔔 Bildirimler ve duyurular
 
@@ -47,6 +50,19 @@ Bu sürüm 0.5.0'dan 0.8.0'a kadar gelen her yeniliği bir araya getirir: daha a
 - **Dil seçimi:** Ayarlar → Görünüm → Dil bölümünden dilinizi seçersiniz; sayı ve tarihler de ona uyar.
 - **Kılavuz:** Kullanım kılavuzu, denetim kuralları ve sürüm notları altı dilde okunur.
 - **Gizlilik:** seowatcher.io'da ölçüm yalnızca siz kabul ederseniz çalışır.
+- **Gözden geçirilen çeviriler:** Ekran metinleri ve kılavuzlar altı dilde yeni ekranlara uyarlandı.
+
+### 🎨 Görünüm ve yardım
+
+- **Açık tema:** Daha koyu zemin, daha açık kartlar ve daha belirgin turuncu vurgular okumayı kolaylaştırır.
+- **Kartlar ve sayılar:** Özet kartları sadeleştirildi; değişen sayılar hareketi azaltma tercihinize uyar.
+- **Yardım ve notlar:** Yardım ve sürüm notları ekranlarında aradığınız bilgiyi bulmak kolaylaştı.
+
+### 🗂️ Projeler ve kayıtlar
+
+- **Kayıtlı aramalar:** Sıralamalar kayıtlı listeniz üzerinden hesaplanır; yazım farkları ölçümleri ezmez, bilinmeyen sıra açıkça belirtilir.
+- **Proje özeti:** Eksik arşiv günleri trafik kaybı sayılmaz; denetim özeti yalnızca projenizin sitesini gösterir.
+- **Proje bilgisi:** Çakışan düzenlemelerde taslağınızı koruyup güncel metinle karşılaştırabilirsiniz.
 
 ### 🛠️ Düzeltmeler
 
@@ -54,10 +70,15 @@ Bu sürüm 0.5.0'dan 0.8.0'a kadar gelen her yeniliği bir araya getirir: daha a
 - **Telefonda düzgün:** Denetim ekranı ve indirilen rapor telefonda artık taşmaz.
 - **Yeni proje:** Telefonda ülke listesi kesilmez; Esc tuşu listeyi kapatır, yazdıklarınız silinmez.
 - **Sorun bildirme:** Yardım'daki tanılama paketi sorunu daha iyi anlatır ve sayfa adreslerinizi içermez.
+- **Arama performansı:** Öncelikli işler, seçilen tarihler ve kazanç tahminlerinin sınırları daha açık gösterilir.
+- **Daha doğru sayılar:** Panel, Fırsatlar, Sıralamalar ve Analytics eksik ölçümü sıfır saymaz; karşılaştırmalar veri kapsamını belirtir.
+- **Bağlantı durumu:** Ayarlar'da mülk seçmek ile veri erişiminin doğrulanması ayrı gösterilir; hesap değişince eski sonuçlar güncel sayılmaz.
 
 ### 🔒 Güvenlik
 
 - **Güncel bileşenler:** Uygulamanın kullandığı bileşenlerdeki güvenlik açıkları kapatıldı.
+- **Gizli anahtarlar:** Google bağlantı dosyanızı içeriği ekranda görünmeden kaydedebilirsiniz.
+- **Asistan kurulumu:** Kurulum yönergeleri erişim anahtarınızı ekrana veya sohbete yazdırmanızı istemez.
 
 ## [0.4.3] Alpha — 2026-10-23
 

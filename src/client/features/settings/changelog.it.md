@@ -2,9 +2,9 @@
 
 Novità e correzioni, dalla versione più recente.
 
-## [0.8.0] Alpha — 2026-10-26
+## [0.8.1] Alpha — 2026-10-27
 
-Questa versione riunisce tutto ciò che è arrivato dalla 0.5.0 alla 0.8.0: una verifica del sito più intelligente, una nuova dashboard, notifiche e sei lingue.
+Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.1: verifica del sito, dashboard, notifiche e sei lingue, con dati più precisi e schermate più leggibili.
 
 ### ✨ In evidenza
 
@@ -28,6 +28,9 @@ Questa versione riunisce tutto ciò che è arrivato dalla 0.5.0 alla 0.8.0: una 
 - **Prossimi passi:** La dashboard offre un breve elenco di attività e un punteggio di preparazione per completare la configurazione. Il punteggio non è un risultato SEO.
 - **Report pronti:** Il tuo assistente IA prepara un report di miglioramento dai dati di verifica, ricerca e Analytics.
 - **Avanzamento della verifica:** Durante una verifica vedi il tempo trascorso e l'avanzamento, e alla fine un breve riepilogo.
+- **Tipi di report:** I report di ricerca e di verifica del sito sono distinti; i vecchi report di tipo sconosciuto sono indicati chiaramente.
+- **Date dei report:** I report di ricerca mantengono le date scelte e spiegano i dati mancanti e le misure che possono ancora cambiare.
+- **Fonti della verifica:** I report di verifica indicano quali dati di traffico e velocità sono stati realmente usati.
 
 ### 🔔 Notifiche e annunci
 
@@ -47,6 +50,19 @@ Questa versione riunisce tutto ciò che è arrivato dalla 0.5.0 alla 0.8.0: una 
 - **Scelta della lingua:** Scegli la lingua in Impostazioni → Aspetto → Lingua; numeri e date la seguono.
 - **Guida:** La guida d'uso, le regole di verifica e le note di rilascio sono disponibili in sei lingue.
 - **Privacy:** Su seowatcher.io la misurazione parte solo se la accetti.
+- **Traduzioni riviste:** Testi e guide sono stati aggiornati nelle sei lingue per seguire le schermate riviste.
+
+### 🎨 Aspetto e aiuto
+
+- **Tema chiaro:** Uno sfondo più scuro, schede più chiare e accenti arancioni più visibili facilitano la lettura.
+- **Schede e numeri:** Le schede riepilogative sono più semplici; i numeri animati rispettano la preferenza per il movimento ridotto.
+- **Aiuto e versioni:** Nelle schermate di aiuto e delle note di versione è più facile trovare le informazioni desiderate.
+
+### 🗂️ Progetti e ricerche salvate
+
+- **Ricerche salvate:** Le posizioni sono calcolate per la lista salvata; le varianti di scrittura non sovrascrivono le misure e le posizioni sconosciute sono segnalate.
+- **Riepilogo del progetto:** I giorni mancanti nell’archivio non contano più come traffico perso; il riepilogo della verifica mostra solo il sito del progetto.
+- **Informazioni del progetto:** Se le modifiche sono in conflitto, puoi conservare la bozza e confrontarla con il testo attuale.
 
 ### 🛠️ Correzioni
 
@@ -54,10 +70,15 @@ Questa versione riunisce tutto ciò che è arrivato dalla 0.5.0 alla 0.8.0: una 
 - **Bene sul telefono:** La schermata di verifica e il report scaricato non vanno più fuori schermo sul telefono.
 - **Nuovo progetto:** L'elenco dei paesi non viene più tagliato sul telefono; Esc chiude l'elenco e conserva ciò che hai scritto.
 - **Segnalazione problemi:** Il pacchetto diagnostico nell'Aiuto descrive meglio il problema e non include gli indirizzi delle tue pagine.
+- **Rendimento di ricerca:** Attività prioritarie, date scelte e limiti dei guadagni stimati sono più chiari.
+- **Numeri più precisi:** Dashboard, Opportunità, Posizioni e Analytics distinguono le misure mancanti dallo zero e indicano la copertura dei confronti.
+- **Stato della connessione:** Le impostazioni distinguono la scelta di una proprietà dall’accesso verificato ai dati; dopo un cambio di account i vecchi risultati non sono considerati attuali.
 
 ### 🔒 Sicurezza
 
 - **Componenti aggiornati:** Sono state chiuse falle di sicurezza nei componenti usati dall'app.
+- **Chiavi segrete:** Salva il file di connessione Google senza mostrarne il contenuto sullo schermo.
+- **Configurazione dell’assistente:** Le istruzioni non chiedono di mostrare la chiave di accesso sullo schermo o di incollarla in una chat.
 
 ## [0.4.3] Alpha — 2026-10-23
 

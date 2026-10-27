@@ -43,7 +43,7 @@ describe("changelog", () => {
       );
     }
     expect(
-      CHANGELOG_ENTRIES_EN.find((entry) => entry.version === "0.8.0")
+      CHANGELOG_ENTRIES_EN.find((entry) => entry.version === "0.8.1")
         ?.sections[0]?.heading,
     ).toBe("✨ Highlights");
   });
@@ -69,7 +69,7 @@ describe("changelog", () => {
   // date, so each entry maps to a real tag.
   it("keeps exactly three releases, each dated by its highest published version", () => {
     const dates = {
-      "0.8.0": "2026-10-26",
+      "0.8.1": "2026-10-27",
       "0.4.3": "2026-10-23",
       "0.2.1": "2026-10-04",
     };
@@ -126,10 +126,10 @@ describe("changelog", () => {
 
   it("keeps each published change in its own readable list item", () => {
     const release = CHANGELOG_ENTRIES.find(
-      (entry) => entry.version === "0.8.0",
+      (entry) => entry.version === "0.8.1",
     );
     expect(release?.sections.map((section) => section.items.length)).toEqual([
-      5, 6, 3, 4, 3, 3, 4, 1,
+      5, 6, 6, 4, 3, 4, 3, 3, 7, 3,
     ]);
     expect(
       release?.sections
@@ -140,7 +140,7 @@ describe("changelog", () => {
 
   it("starts every bullet with a bold label in every release and locale", () => {
     for (const locale of ["tr", "en", "de", "fr", "it", "pt"] as const) {
-      for (const version of ["0.8.0", "0.4.3", "0.2.1"]) {
+      for (const version of ["0.8.1", "0.4.3", "0.2.1"]) {
         const release = CHANGELOG_ENTRIES_BY_LOCALE[locale].find(
           (entry) => entry.version === version,
         );

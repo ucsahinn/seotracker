@@ -1,16 +1,16 @@
 ---
 title: Notes de version
-description: seowatcher 0.8.0 Alpha — un nouvel audit du site, un tableau de bord et des notifications, l’application en six langues ; ainsi que l’installation Windows en un clic et la première version.
-updated: 2026-10-26
+description: seowatcher 0.8.1 Alpha — des mesures plus justes, des écrans plus lisibles et des vues de projets, de recherches enregistrées et de rapports revues.
+updated: 2026-10-27
 ---
 
-La dernière version est la **0.8.0 Alpha**, du 26 octobre 2026. Vos données sont conservées lors de la mise à jour.
+La dernière version est la **0.8.1 Alpha**, du 27 octobre 2026. Vos données sont conservées lors de la mise à jour.
 
 Pour passer de 2.x à 0.x.x Alpha, lancez le nouvel installateur manuellement ; l’ancien outil ne reconnaît pas le numéro inférieur comme plus récent.
 
-## 0.8.0 Alpha — 2026-10-26
+## 0.8.1 Alpha — 2026-10-27
 
-Cette version réunit tout ce qui est arrivé de la 0.5.0 à la 0.8.0 : un audit du site plus malin, un nouveau tableau de bord, des notifications et six langues.
+Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.1 : audit du site, tableau de bord, notifications et six langues, avec des données plus justes et des écrans plus lisibles.
 
 ### ✨ Points forts
 
@@ -34,6 +34,9 @@ Cette version réunit tout ce qui est arrivé de la 0.5.0 à la 0.8.0 : un audit
 - **Prochaines étapes:** Le tableau de bord propose une courte liste de tâches et un score de préparation pour terminer votre configuration. Ce score n'est pas un résultat SEO.
 - **Rapports prêts à l'emploi:** Votre assistant IA prépare un rapport d'amélioration à partir de vos données d'audit, de recherche et d'Analytics.
 - **Avancement de l'audit:** Pendant un audit, vous voyez le temps écoulé et l'avancement, puis un court résumé à la fin.
+- **Types de rapports :** Les rapports de recherche et d’audit du site sont séparés ; les anciens rapports de type inconnu sont signalés.
+- **Dates des rapports :** Les rapports de recherche conservent les dates choisies et expliquent les données manquantes et les mesures encore susceptibles de changer.
+- **Sources utilisées :** Les rapports d’audit précisent les données de trafic et de vitesse réellement utilisées.
 
 ### 🔔 Notifications et annonces
 
@@ -53,6 +56,19 @@ Cette version réunit tout ce qui est arrivé de la 0.5.0 à la 0.8.0 : un audit
 - **Choix de la langue:** Choisissez votre langue dans Réglages → Apparence → Langue ; les nombres et les dates la suivent.
 - **Guide:** Le guide d'utilisation, les règles d'audit et les notes de version existent en six langues.
 - **Confidentialité:** Sur seowatcher.io, la mesure d'audience ne démarre que si vous l'acceptez.
+- **Traductions revues :** Les textes et les guides ont été adaptés aux écrans révisés dans les six langues.
+
+### 🎨 Apparence et aide
+
+- **Thème clair :** Un fond plus sombre, des cartes plus claires et des accents orange plus visibles facilitent la lecture.
+- **Cartes et chiffres :** Les cartes récapitulatives sont simplifiées ; les chiffres animés respectent votre préférence de réduction des mouvements.
+- **Aide et versions :** Les écrans d’aide et de notes de version facilitent la recherche d’informations.
+
+### 🗂️ Projets et recherches enregistrées
+
+- **Recherches enregistrées :** Les positions sont calculées pour votre liste ; les variantes d’écriture n’écrasent plus les mesures et les positions inconnues sont signalées.
+- **Résumé du projet :** Les jours absents des archives ne comptent plus comme une perte de trafic ; le résumé d’audit concerne uniquement le site du projet.
+- **Infos du projet :** En cas de modifications concurrentes, vous pouvez conserver votre brouillon et le comparer au texte actuel.
 
 ### 🛠️ Corrections
 
@@ -60,10 +76,15 @@ Cette version réunit tout ce qui est arrivé de la 0.5.0 à la 0.8.0 : un audit
 - **Bien sur téléphone:** L'écran d'audit et le rapport téléchargé ne débordent plus sur un téléphone.
 - **Nouveau projet:** La liste des pays n'est plus coupée sur un téléphone ; Échap ferme la liste et garde votre saisie.
 - **Signalement de problème:** Le paquet de diagnostic de l'Aide décrit mieux le problème et ne contient pas les adresses de vos pages.
+- **Performances de recherche :** Les tâches prioritaires, les dates choisies et les limites des gains estimés sont plus claires.
+- **Chiffres plus justes :** Tableau de bord, Opportunités, Classements et Analytics distinguent les mesures absentes de zéro et précisent la couverture des comparaisons.
+- **État de connexion :** Les paramètres distinguent la sélection d’une propriété d’un accès aux données vérifié ; après un changement de compte, les anciens résultats ne sont plus considérés comme actuels.
 
 ### 🔒 Sécurité
 
 - **Composants à jour:** Des failles de sécurité dans les composants utilisés par l'application ont été corrigées.
+- **Clés secrètes :** Enregistrez votre fichier de connexion Google sans afficher son contenu à l’écran.
+- **Installation de l’assistant :** Les instructions ne demandent pas d’afficher votre clé d’accès à l’écran ni de la coller dans une conversation.
 
 ## 0.4.3 Alpha — 2026-10-23
 

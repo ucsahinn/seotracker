@@ -2,9 +2,9 @@
 
 New features and fixes, newest release first.
 
-## [0.8.0] Alpha — 2026-10-26
+## [0.8.1] Alpha — 2026-10-27
 
-This release brings together everything from 0.5.0 to 0.8.0: a smarter site audit, a new dashboard, notifications and six languages.
+This entry brings together features and fixes from 0.5.0 to 0.8.1: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
 
 ### ✨ Highlights
 
@@ -28,6 +28,9 @@ This release brings together everything from 0.5.0 to 0.8.0: a smarter site audi
 - **Next steps:** The dashboard has a short task list and a readiness score to help you finish your setup. The score is not an SEO result.
 - **Ready-made reports:** Your AI assistant prepares an improvement report from your audit, search and Analytics data.
 - **Audit progress:** While an audit runs you see the time spent and the progress, and a short summary at the end.
+- **Report types:** Search reports and site audit reports are shown separately; older reports with no known type are clearly marked.
+- **Report dates:** Search reports keep your selected dates and explain missing data and measurements that may change later.
+- **Audit sources:** Audit reports say which traffic and speed measurements were actually used.
 
 ### 🔔 Notifications and announcements
 
@@ -47,6 +50,19 @@ This release brings together everything from 0.5.0 to 0.8.0: a smarter site audi
 - **Language choice:** Pick your language under Settings → Appearance → Language; numbers and dates follow it.
 - **Guide:** The user guide, audit rules and release notes are available in six languages.
 - **Privacy:** On seowatcher.io, measurement runs only if you accept it.
+- **Reviewed translations:** Screen text and guides in all six languages were updated to match the revised screens.
+
+### 🎨 Appearance and help
+
+- **Light theme:** A darker background, lighter cards and stronger orange accents make reading easier.
+- **Cards and numbers:** Summary cards are simpler, and changing numbers respect your reduced-motion preference.
+- **Help and notes:** Help and release notes make it easier to find the information you need.
+
+### 🗂️ Projects and saved searches
+
+- **Saved searches:** Rankings are calculated for your saved list; spelling variants no longer overwrite measurements, and unknown rankings are clearly marked.
+- **Project summary:** Missing archive days no longer count as lost traffic; the audit summary only shows your project's site.
+- **Project info:** When edits conflict, you can keep your draft and compare it with the latest text.
 
 ### 🛠️ Fixes
 
@@ -54,10 +70,15 @@ This release brings together everything from 0.5.0 to 0.8.0: a smarter site audi
 - **Works on phones:** The audit screen and the downloaded report no longer overflow on a phone.
 - **New project:** The country list is no longer cut off on a phone; Esc closes the list and keeps what you typed.
 - **Problem reports:** The diagnostics package in Help describes the problem better and leaves out your page addresses.
+- **Search performance:** Priority tasks, selected dates and the limits of estimated gains are clearer.
+- **More accurate numbers:** Dashboard, Opportunities, Rankings and Analytics keep missing measurements separate from zero and explain comparison coverage.
+- **Connection status:** Settings distinguish selecting a property from verified data access; after an account change, old results are no longer treated as current.
 
 ### 🔒 Security
 
 - **Up-to-date components:** Security holes in the components the app uses were closed.
+- **Secret keys:** Save your Google connection file without showing its contents on screen.
+- **Assistant setup:** Setup instructions do not ask you to print your access key on screen or paste it into a chat.
 
 ## [0.4.3] Alpha — 2026-10-23
 
