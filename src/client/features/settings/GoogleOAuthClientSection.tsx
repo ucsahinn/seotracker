@@ -1,3 +1,5 @@
+import { invalidateGoogleCredentials } from "@/client/features/integrations/invalidateGoogleCredentials";
+import { formatDateTime } from "@/client/lib/format";
 import { Skeleton } from "@/client/components/Skeleton";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, ExternalLink } from "lucide-react";
@@ -27,7 +29,6 @@ import { useOrigin } from "./useOrigin";
 import { CLIENT_ID_SUFFIX, clientIdProblem } from "./googleClientId";
 
 const CONSOLE_URL = "https://console.cloud.google.com/apis/credentials";
-const STATUS_KEY = googleOAuthClientStatusOptions().queryKey;
 
 /**
  * Where the Google OAuth client is entered.
@@ -51,12 +52,7 @@ export function GoogleOAuthClientSection() {
   const status = statusQuery.data;
   const serviceAccountQuery = useQuery(googleServiceAccountStatusOptions());
 
-  const invalidate = async () => {
-    await queryClient.invalidateQueries({ queryKey: STATUS_KEY });
-    // Every Google connection card reads whether an OAuth client exists.
-    await queryClient.invalidateQueries({ queryKey: ["gscConnection"] });
-    await queryClient.invalidateQueries({ queryKey: ["ga4Connection"] });
-  };
+  const invalidate = () => invalidateGoogleCredentials(queryClient);
 
   const save = useMutation({
     mutationFn: () =>
@@ -126,23 +122,32 @@ export function GoogleOAuthClientSection() {
    * "buraya bir değer kaydederseniz o kullanılır": a promise with no field to
    * keep it in. Only the loading state hides it now.
    */
-  const credentialNote =
-    status?.source && !serviceAccountQuery.isPending
+  const credentialNote = serviceAccountQuery.isError
+    ? t("Kullanılan kimlik okunamadı. Google kimlik durumunu yeniden yükleyin.")
+    : status?.source && serviceAccountQuery.isSuccess && !statusQuery.isError
       ? activeCredentialNote(
           "oauth",
           activeGoogleCredential(status, serviceAccountQuery.data),
         )
       : null;
-  const showForm = !statusQuery.isPending && (editing || !stored);
+  const showForm =
+    !statusQuery.isPending && (editing || (!statusQuery.isError && !stored));
   const idProblem = clientIdProblem(clientId);
   const canSave =
     clientId.trim() !== "" && idProblem === null && clientSecret.trim() !== "";
 
   return (
     <section id="google" className="scroll-mt-16 space-y-3">
+      {status?.updatedAt ? (
+        <p className="text-xs text-muted">
+          {t("Kimlik kayıt tarihi: {date}", {
+            date: formatDateTime(status.updatedAt),
+          })}
+        </p>
+      ) : null}
       <SectionHeaderRow
         badge={
-          statusQuery.isError
+          statusQuery.isError || serviceAccountQuery.isError
             ? unreadableBadge()
             : oauthClientBadge(status, serviceAccountQuery.data)
         }
@@ -159,74 +164,7 @@ export function GoogleOAuthClientSection() {
         )}
       </p>
 
-      <ol className="list-decimal space-y-4 pl-5 text-sm marker:text-subtle">
-        <li className="pl-1">
-          {fillParts(
-            t("{console}'da bir OAuth client oluşturun (tür: {type})."),
-            {
-              console: (
-                <a
-                  href={CONSOLE_URL}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
-                >
-                  <span lang="en">Google Cloud Console</span>
-                  <ExternalLink className="size-3" />
-                </a>
-              ),
-              type: <span lang="en">Web application</span>,
-            },
-          )}
-        </li>
-        <li className="space-y-2 pl-1">
-          <p>
-            {fillParts(t("Şu iki adresi {field} alanına ekleyin."), {
-              // Turkish adds Google's English name, which is what the
-              // console shows; in English that name is the field itself.
-              field:
-                getLocale() === "en" ? (
-                  <strong lang="en">Authorized redirect URIs</strong>
-                ) : (
-                  <>
-                    {/* i18n-ignore: the Turkish branch of a locale switch */}
-                    <strong>Yetkili yönlendirme adresleri</strong> (
-                    <span lang="en">Authorized redirect URIs</span>)
-                  </>
-                ),
-            })}
-          </p>
-          <p className="text-xs text-muted">
-            {fillParts(
-              t(
-                "Adresler harfi harfine aynı olmalı, aksi halde Google {code} hatası verir. İkisini de ekleyin: biri Search Console, biri Analytics için.",
-              ),
-              { code: <code>redirect_uri_mismatch</code> },
-            )}
-          </p>
-          <div className="space-y-2 rounded-box border border-base-300 bg-base-200/40 p-3">
-            {redirectUris.map((uri) => (
-              <div
-                key={uri.value}
-                className="flex flex-wrap items-center justify-between gap-2"
-              >
-                <code className="min-w-0 truncate font-mono text-sm text-muted">
-                  {uri.value}
-                </code>
-                <CopyButton
-                  value={uri.value}
-                  successMessage={t("{service} yönlendirme adresi kopyalandı", {
-                    service: uri.label,
-                  })}
-                />
-              </div>
-            ))}
-          </div>
-        </li>
-        <li className="pl-1">
-          {t("Kimliği ve gizli anahtarı aşağıya yazın.")}
-        </li>
-      </ol>
+      <OAuthSetupInstructions stored={stored} redirectUris={redirectUris} />
 
       {statusQuery.isPending ? <Skeleton variant="form" rows={2} /> : null}
 
@@ -396,5 +334,92 @@ export function GoogleOAuthClientSection() {
         />
       ) : null}
     </section>
+  );
+}
+
+function OAuthSetupInstructions({
+  stored,
+  redirectUris,
+}: {
+  stored: boolean;
+  redirectUris: { label: string; value: string }[];
+}) {
+  return (
+    <details open={!stored}>
+      <summary className="min-h-11 cursor-pointer py-3 text-sm">
+        {t("Google kurulum adımları")}
+      </summary>
+      <ol className="list-decimal space-y-4 pl-5 text-sm marker:text-subtle">
+        <li className="pl-1">
+          {fillParts(
+            t("{console}'da bir OAuth client oluşturun (tür: {type})."),
+            {
+              console: (
+                <a
+                  href={CONSOLE_URL}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
+                >
+                  <span lang="en">Google Cloud Console</span>
+                  <ExternalLink className="size-3" />
+                </a>
+              ),
+              type: <span lang="en">Web application</span>,
+            },
+          )}
+        </li>
+        <li className="space-y-2 pl-1">
+          <p>
+            {fillParts(t("Şu iki adresi {field} alanına ekleyin."), {
+              // Turkish adds Google's English name, which is what the
+              // console shows; in English that name is the field itself.
+              field:
+                getLocale() === "en" ? (
+                  <strong lang="en">Authorized redirect URIs</strong>
+                ) : (
+                  <>
+                    {/* i18n-ignore: the Turkish branch of a locale switch */}
+                    <strong>Yetkili yönlendirme adresleri</strong> (
+                    <span lang="en">Authorized redirect URIs</span>)
+                  </>
+                ),
+            })}
+          </p>
+          <p className="text-xs text-muted">
+            {fillParts(
+              t(
+                "Adresler harfi harfine aynı olmalı, aksi halde Google {code} hatası verir. İkisini de ekleyin: biri Search Console, biri Analytics için.",
+              ),
+              { code: <code>redirect_uri_mismatch</code> },
+            )}
+          </p>
+          <div className="space-y-2 rounded-box border border-base-300 bg-base-200/40 p-3">
+            {redirectUris.map((uri) => (
+              <div
+                key={uri.value}
+                className="flex flex-wrap items-center justify-between gap-2"
+              >
+                <code className="min-w-0 break-all whitespace-pre-wrap font-mono text-sm text-muted">
+                  {uri.value}
+                </code>
+                <CopyButton
+                  value={uri.value}
+                  label={t("{service} yönlendirme adresini kopyala", {
+                    service: uri.label,
+                  })}
+                  successMessage={t("{service} yönlendirme adresi kopyalandı", {
+                    service: uri.label,
+                  })}
+                />
+              </div>
+            ))}
+          </div>
+        </li>
+        <li className="pl-1">
+          {t("Kimliği ve gizli anahtarı aşağıya yazın.")}
+        </li>
+      </ol>
+    </details>
   );
 }

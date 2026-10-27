@@ -1,360 +1,291 @@
-import { Link, useNavigate } from "@tanstack/react-router";
-import {
-  Clock,
-  FileText,
-  LayoutTemplate,
-  List,
-  Search,
-  Sparkles,
-  Trash2,
-  type LucideIcon,
-  ClipboardCheck,
-} from "lucide-react";
-import { useRef, useState } from "react";
-import { CopyButton } from "@/client/components/CopyButton";
+import { Link } from "@tanstack/react-router";
+import { FileText, Trash2 } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { RowActions } from "@/client/components/table/RowActions";
-import { SortableHeader } from "@/client/components/table/SortableHeader";
-import { TablePagination } from "@/client/components/table/TablePagination";
+import { ReportDownloadButton } from "./ReportDownloadButton";
+import { ReportKindChip } from "./ReportKindChip";
+import { hasTemplate, kindLabel, reportKind } from "./reportStats";
+import { formatCreatedBy } from "./shared";
+import { formatBytes, formatCount, formatDateTime } from "@/client/lib/format";
+import type {
+  ReportInventory,
+  ReportListItem,
+} from "@/serverFunctions/reports";
 import {
-  compareText,
-  useLocalSort,
-} from "@/client/components/table/useLocalSort";
-import { ReportDownloadButton } from "@/client/features/reports/ReportDownloadButton";
-import { ReportKindChip } from "@/client/features/reports/ReportKindChip";
-import { reportRequestPrompt } from "@/client/features/reports/reportRequestPrompt";
-import { ReportsSummary } from "@/client/features/reports/ReportsSummary";
-import {
-  filterCounts,
-  hasTemplate,
-  isInteractiveTarget,
-  matchesFilter,
-  kindLabel,
-  reportKind,
-  type ReportFilter,
-} from "@/client/features/reports/reportStats";
-import { formatCreatedBy } from "@/client/features/reports/shared";
-import { formatBytes, formatDateTime } from "@/client/lib/format";
-import type { ReportListItem } from "@/serverFunctions/reports";
-import { REPORT_APP_LIST_LIMIT } from "@/types/schemas/reports";
+  type ReportInventoryInput,
+  REPORT_INVENTORY_PAGE_SIZE,
+  reportInventorySchema,
+} from "@/shared/reportInventory";
 import { t } from "@/shared/i18n";
 
-const PAGE_SIZES = [25, 50, 100] as const;
-
-type SortKey = "title" | "kind" | "createdAt" | "sizeBytes";
-
-// Labels are Turkish source text, translated where they render.
-const FILTERS: { key: ReportFilter; label: string; icon: LucideIcon }[] = [
-  { key: "all", label: "Tümü", icon: List },
-  { key: "recent", label: "Son 7 gün", icon: Clock },
-  { key: "template", label: "Şablonla yazılan", icon: LayoutTemplate },
-  { key: "skill", label: "Beceriyle yazılan", icon: Sparkles },
-  { key: "audit", label: "Denetim raporu", icon: ClipboardCheck },
-];
-
-function compareReports(
-  a: ReportListItem,
-  b: ReportListItem,
-  key: SortKey,
-): number {
-  switch (key) {
-    case "title":
-      return compareText(a.title, b.title);
-    case "kind":
-      return compareText(kindLabel(reportKind(a)), kindLabel(reportKind(b)));
-    case "createdAt":
-      return Date.parse(a.createdAt) - Date.parse(b.createdAt);
-    case "sizeBytes":
-      return a.sizeBytes - b.sizeBytes;
-  }
-}
-
+type Filters = Omit<ReportInventoryInput, "projectId">;
 export function ReportsList({
   projectId,
-  reports,
+  inventory,
+  pending = false,
+  filters,
+  onChange,
   onDelete,
 }: {
   projectId: string;
-  reports: ReportListItem[];
+  inventory: ReportInventory;
+  pending?: boolean;
+  filters: Filters;
+  onChange: (filters: Filters) => void;
   onDelete: (report: ReportListItem) => void;
 }) {
-  const [filter, setFilter] = useState<ReportFilter>("all");
-  const [kind, setKind] = useState<string | null>(null);
-  const [query, setQuery] = useState("");
-  const filtersRef = useRef<HTMLDivElement>(null);
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState<(typeof PAGE_SIZES)[number]>(25);
-  const sorting = useLocalSort<SortKey>({ key: "createdAt", desc: true });
-  const navigate = useNavigate();
-
-  if (reports.length === 0) {
-    return (
-      <EmptyState
-        icon={FileText}
-        title={t("Henüz rapor yok")}
-        description={t(
-          "Rapor iki yoldan alınır: ajanınıza yazdırın ya da Site denetimi ekranından indirin.",
-        )}
-        action={
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <CopyButton
-              primary
-              value={reportRequestPrompt(projectId)}
-              label={t("Rapor komutunu kopyala")}
-              successMessage={t("Komut kopyalandı. Ajanınıza yapıştırın")}
-            />
-            <Link to="/ai" className="link text-sm">
-              {t("Ajan kurulumunu aç")}
-            </Link>
-          </div>
-        }
-      />
-    );
-  }
-
-  const now = Date.now();
-  const counts = filterCounts(reports, now);
-  // The summary reads this set, so its tiles and ring agree with the table;
-  // only the kind ring is left out, because it is the control that narrows
-  // by kind and must keep showing every kind in the set.
-  const chipFiltered = reports.filter((report) =>
-    matchesFilter(report, filter, now),
-  );
-  // A kind whose last report was deleted would otherwise keep filtering to an
-  // empty table with no ring segment left to deselect.
-  const activeKind =
-    kind !== null && chipFiltered.some((report) => reportKind(report) === kind)
-      ? kind
-      : null;
-  const needle = query.trim().toLocaleLowerCase("tr");
-  const visible = sorting.apply(
-    chipFiltered.filter(
-      (report) =>
-        (activeKind === null || reportKind(report) === activeKind) &&
-        (needle === "" ||
-          `${report.title} ${formatCreatedBy(report)} ${kindLabel(reportKind(report))}`
-            .toLocaleLowerCase("tr")
-            .includes(needle)),
-    ),
-    compareReports,
-  );
-  const pageCount = Math.max(1, Math.ceil(visible.length / pageSize));
-  const currentPage = Math.min(page, pageCount);
-  const rows = visible.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize,
-  );
-  const header = (key: SortKey, label: string, hide = "") => (
-    <th aria-sort={sorting.ariaSort(key)} className={hide}>
-      <SortableHeader
-        column={sorting.column(key, key === "createdAt" || key === "sizeBytes")}
-        label={label}
-      />
-    </th>
-  );
-  const clearAll = () => {
-    // The button unmounts once the list is back; keep focus in the filters.
-    filtersRef.current?.focus();
-    setFilter("all");
-    setKind(null);
-    setQuery("");
-  };
-
+  const update = (patch: Partial<Filters>) =>
+    onChange({ ...filters, ...patch, page: 1 });
+  const clear = () =>
+    onChange({
+      query: "",
+      kind: "",
+      recent: false,
+      sort: "updatedAt",
+      page: 1,
+    });
   return (
-    <div className="enter space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div
-          ref={filtersRef}
-          tabIndex={-1}
-          className="flex flex-wrap gap-2"
-          role="group"
-          aria-label={t("Filtre")}
-        >
-          {FILTERS.map(({ key, label, icon: Icon }) => (
-            <button
-              key={key}
-              type="button"
-              aria-pressed={filter === key}
-              className={`inline-flex min-h-10 items-center gap-1.5 rounded-full border px-3 py-1 text-sm transition-all duration-150 sm:min-h-8 ${
-                filter === key
-                  ? "border-primary bg-primary/10 text-primary"
-                  : "border-[var(--control-border)] hover:border-primary/50 hover:bg-primary/5"
-              }`}
-              onClick={() => {
-                setFilter(key);
-                setKind(null);
-                setPage(1);
-              }}
-            >
-              <Icon aria-hidden className="size-4" />
-              {t(label)}
-              <span className="tabular-nums opacity-70">{counts[key]}</span>
-            </button>
-          ))}
-        </div>
-        <label className="relative block w-full sm:w-64">
-          <Search
-            aria-hidden
-            className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted"
-          />
+    <div className="space-y-4" aria-busy={pending}>
+      <div className="flex flex-wrap items-end gap-3">
+        <label className="flex min-w-0 flex-1 flex-col gap-1 text-sm">
+          {t("Raporlarda ara")}
           <input
             type="search"
-            className="input input-bordered input-sm w-full pl-8"
-            placeholder={t("Raporlarda ara")}
-            aria-label={t("Raporlarda ara")}
-            value={query}
-            onChange={(event) => {
-              setQuery(event.target.value);
-              setPage(1);
-            }}
+            className="input input-bordered min-h-11 w-full"
+            maxLength={200}
+            value={filters.query}
+            onChange={(event) => update({ query: event.target.value })}
           />
         </label>
+        <label className="flex flex-col gap-1 text-sm">
+          {t("Sıralama")}
+          <select
+            className="select select-bordered min-h-11"
+            value={filters.sort}
+            onChange={(event) =>
+              update({
+                sort: reportInventorySchema.shape.sort.parse(
+                  event.target.value,
+                ),
+              })
+            }
+          >
+            <option value="updatedAt">{t("Son güncelleme")}</option>
+            <option value="createdAt">{t("Oluşturulma zamanı")}</option>
+            <option value="title">{t("Başlık")}</option>
+          </select>
+        </label>
+        <button
+          type="button"
+          className="btn min-h-11"
+          aria-pressed={filters.recent}
+          onClick={() => update({ recent: !filters.recent })}
+        >
+          {t("Son 7 gün")}
+        </button>
+        {filters.query || filters.kind || filters.recent ? (
+          <button
+            type="button"
+            className="btn btn-ghost min-h-11"
+            onClick={clear}
+          >
+            {t("Filtreleri temizle")}
+          </button>
+        ) : null}
       </div>
-
-      <div className="overflow-hidden rounded-box border border-base-300">
-        {rows.length === 0 ? (
-          <EmptyState
-            compact
-            icon={FileText}
-            title={t("Aramanıza uyan rapor yok")}
-            description={t(
-              "Aramayı, filtreyi ya da seçili türü kaldırarak tüm raporları görün.",
-            )}
-            action={
-              <button
-                type="button"
-                className="btn btn-ghost btn-sm"
-                onClick={clearAll}
-              >
+      <p className="text-sm text-muted">
+        {t("{matching} sonuç / projedeki {total} rapor", {
+          matching: formatCount(inventory.totalMatching),
+          total: formatCount(inventory.totalProject),
+        })}
+      </p>
+      <p className="text-xs text-subtle">
+        {t(
+          "Son 7 gün, bu sürede kaydedilen veya güncellenen ayrı dosyaları süzer; kaynak verinin güncelliğini göstermez. Arama başlık ve kayıtlı özeti tarar.",
+        )}
+      </p>
+      <div
+        className="flex flex-wrap gap-2"
+        role="group"
+        aria-label={t("Türe göre raporlar")}
+      >
+        <button
+          type="button"
+          className="btn btn-sm min-h-11"
+          aria-pressed={!filters.kind}
+          onClick={() => update({ kind: "" })}
+        >
+          {t("Tümü")}
+        </button>
+        {inventory.facets.map((facet) => (
+          <button
+            key={facet.key}
+            type="button"
+            aria-pressed={filters.kind === facet.key}
+            className={
+              "btn btn-sm min-h-11 " +
+              (filters.kind === facet.key ? "btn-primary" : "btn-ghost")
+            }
+            onClick={() =>
+              update({ kind: filters.kind === facet.key ? "" : facet.key })
+            }
+          >
+            {facet.name ?? kindLabel(facet.key)} ({formatCount(facet.value)})
+          </button>
+        ))}
+      </div>
+      <p className="text-xs text-subtle">
+        {t(
+          "Tür sayıları arama ve Son 7 gün süzgecine göredir; seçili türden önce hesaplanır.",
+        )}
+      </p>
+      {inventory.reports.length === 0 ? (
+        <EmptyState
+          compact
+          icon={FileText}
+          title={
+            inventory.totalProject
+              ? t("Aramanıza uyan rapor yok")
+              : t("Henüz rapor yok")
+          }
+          description={
+            inventory.totalProject
+              ? t("Aramayı veya türü temizleyerek kayıtlı raporları görün.")
+              : t(
+                  "Arama performansı veya Site denetimi ekranından rapor hazırlayın ya da rapor komutunu ajanınıza yapıştırın.",
+                )
+          }
+          action={
+            inventory.totalProject ? (
+              <button type="button" className="btn min-h-11" onClick={clear}>
                 {t("Filtreleri temizle")}
               </button>
-            }
-          />
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="table">
-              <thead>
-                <tr>
-                  {header("title", t("Rapor"))}
-                  {header("kind", t("Tür"), "hidden md:table-cell")}
-                  {header(
-                    "createdAt",
-                    t("Oluşturuldu"),
-                    "hidden md:table-cell",
-                  )}
-                  {header("sizeBytes", t("Boyut"), "hidden lg:table-cell")}
-                  <th>
-                    <span className="sr-only">{t("İşlemler")}</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((report) => {
-                  const chip = (
+            ) : undefined
+          }
+        />
+      ) : (
+        <div className="overflow-x-auto rounded-box border border-[var(--hairline)]">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>{t("Rapor")}</th>
+                <th className="hidden md:table-cell">{t("Tür")}</th>
+                <th
+                  className="hidden md:table-cell"
+                  aria-sort={
+                    filters.sort === "updatedAt" ? "descending" : undefined
+                  }
+                >
+                  {t("Güncellendi")}
+                </th>
+                <th className="hidden lg:table-cell">{t("Boyut")}</th>
+                <th>
+                  <span className="sr-only">{t("İşlemler")}</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {inventory.reports.map((report) => (
+                <tr key={report.id}>
+                  <td className="max-w-[420px]">
+                    <Link
+                      to="/p/$projectId/reports/$reportId"
+                      params={{ projectId, reportId: report.id }}
+                      className="link link-hover break-words font-medium"
+                    >
+                      {report.title}
+                    </Link>
+                    <div className="mt-1 text-xs text-muted">
+                      {formatCreatedBy(report)}
+                    </div>
+                    <div className="mt-1 text-xs text-subtle">
+                      {t("Veri dönemi: raporun içinde kontrol edin.")}
+                    </div>
+                    <div className="mt-1 text-xs text-muted md:hidden">
+                      {formatDateTime(report.updatedAt)}
+                    </div>
+                    {report.templateName ? (
+                      <div className="mt-1 text-xs text-muted">
+                        {t("Şablon")}: {report.templateName}
+                      </div>
+                    ) : null}
+                  </td>
+                  <td className="hidden md:table-cell">
                     <ReportKindChip
                       kind={reportKind(report)}
                       isTemplate={hasTemplate(report)}
                     />
-                  );
-                  return (
-                    <tr
-                      key={report.id}
-                      className="cursor-pointer hover:bg-base-200"
-                      onClick={(event) => {
-                        if (isInteractiveTarget(event.target)) return;
-                        void navigate({
-                          to: "/p/$projectId/reports/$reportId",
-                          params: { projectId, reportId: report.id },
-                        });
-                      }}
-                    >
-                      <td className="max-w-[420px]">
-                        <Link
-                          to="/p/$projectId/reports/$reportId"
-                          params={{ projectId, reportId: report.id }}
-                          className="link link-hover font-medium"
-                        >
-                          {report.title}
-                        </Link>
-                        <div className="mt-1 text-xs text-muted">
-                          {formatCreatedBy(report)}
-                        </div>
-                        <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted md:hidden">
-                          {chip}
-                          <span>{formatDateTime(report.createdAt)}</span>
-                        </div>
-                      </td>
-                      <td className="hidden md:table-cell">{chip}</td>
-                      <td className="hidden whitespace-nowrap text-muted md:table-cell">
-                        {formatDateTime(report.createdAt)}
-                      </td>
-                      <td className="hidden whitespace-nowrap text-muted lg:table-cell">
-                        {formatBytes(report.sizeBytes)}
-                      </td>
-                      <td className="w-px whitespace-nowrap">
-                        <div className="flex items-center justify-end gap-1">
-                          <ReportDownloadButton
-                            reportId={report.id}
-                            title={report.title}
-                          />
-                          <RowActions
-                            triggerClassName="btn btn-ghost btn-sm btn-square"
-                            label={t("{title} için işlemler", {
-                              title: report.title,
-                            })}
-                            actions={[
-                              {
-                                label: t("Sil"),
-                                icon: Trash2,
-                                destructive: true,
-                                onSelect: () => onDelete(report),
-                              },
-                            ]}
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
-        {visible.length > PAGE_SIZES[0] ? (
-          <TablePagination
-            page={currentPage}
-            pageSize={pageSize}
-            pageSizes={PAGE_SIZES}
-            totalCount={visible.length}
-            hasNextPage={currentPage < pageCount}
-            isLoading={false}
-            onPageChange={setPage}
-            onPageSizeChange={(size) => {
-              setPageSize(size);
-              setPage(1);
-            }}
-          />
-        ) : null}
-      </div>
-      {reports.length === REPORT_APP_LIST_LIMIT ? (
-        <p className="text-xs text-muted">
-          {t("En son {count} rapor gösteriliyor.", {
-            count: REPORT_APP_LIST_LIMIT,
+                  </td>
+                  <td className="hidden whitespace-nowrap text-muted md:table-cell">
+                    {formatDateTime(report.updatedAt)}
+                  </td>
+                  <td className="hidden text-muted lg:table-cell">
+                    {formatBytes(report.sizeBytes)}
+                  </td>
+                  <td>
+                    <div className="flex flex-wrap items-center justify-end gap-1">
+                      <ReportDownloadButton
+                        reportId={report.id}
+                        title={report.title}
+                      />
+                      <RowActions
+                        label={t("{title} için işlemler", {
+                          title: report.title,
+                        })}
+                        actions={[
+                          {
+                            label: t("Sil"),
+                            icon: Trash2,
+                            destructive: true,
+                            onSelect: () => onDelete(report),
+                          },
+                        ]}
+                      />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      <nav
+        aria-label={t("Rapor sayfaları")}
+        className="flex flex-wrap items-center justify-between gap-2"
+      >
+        <button
+          type="button"
+          className="btn min-h-11"
+          disabled={pending || inventory.page <= 1}
+          onClick={() => onChange({ ...filters, page: inventory.page - 1 })}
+        >
+          {t("Önceki")}
+        </button>
+        <span className="text-sm text-muted">
+          {t("{start}–{end} / {total}", {
+            start: formatCount(
+              inventory.totalMatching
+                ? (inventory.page - 1) * REPORT_INVENTORY_PAGE_SIZE + 1
+                : 0,
+            ),
+            end: formatCount(
+              Math.min(
+                inventory.page * REPORT_INVENTORY_PAGE_SIZE,
+                inventory.totalMatching,
+              ),
+            ),
+            total: formatCount(inventory.totalMatching),
           })}
-        </p>
-      ) : null}
-
-      <ReportsSummary
-        projectId={projectId}
-        reports={chipFiltered}
-        visibleReports={visible}
-        now={now}
-        selectedKind={activeKind}
-        onSelectKind={(next) => {
-          setKind(next);
-          setPage(1);
-        }}
-      />
+        </span>
+        <button
+          type="button"
+          className="btn min-h-11"
+          disabled={pending || inventory.page >= inventory.pageCount}
+          onClick={() => onChange({ ...filters, page: inventory.page + 1 })}
+        >
+          {t("Sonraki")}
+        </button>
+      </nav>
     </div>
   );
 }

@@ -161,18 +161,11 @@ export const itCards: Catalog = {
   Tamamla: "Completa",
   "Güncel denetim": "Controllo recente",
   "Yapay zeka ajanı": "Agente IA",
-  "Sitenizin son 7 gün içinde tamamlanmış bir denetimi var.":
-    "Il tuo sito ha un controllo completato negli ultimi 7 giorni.",
-  "Son 7 günde bu sitenin tamamlanmış denetimi yok. Başka bir adresin denetimi sayılmaz.":
-    "Nessun controllo completato di questo sito negli ultimi 7 giorni. Il controllo di un altro indirizzo non conta.",
+
   Denetle: "Esegui controllo",
-  "Bir ajan bağlandı ve en az bir araç çağırdı.":
-    "Un agente si è collegato e ha chiamato almeno uno strumento.",
-  "Henüz hiçbir ajan bağlanmadı.": "Nessun agente si è ancora collegato.",
+
   "öneri, sayılmaz": "consiglio, non conteggiato",
-  "Önceki {days} güne göre:": "Rispetto ai {days} giorni precedenti:",
-  "{count} kelime yükseldi": "{count} parole chiave in salita",
-  "{count} kelime geriledi": "{count} parole chiave in discesa",
+
   "Kullanılmıyor, hizmet hesabı bağlı":
     "Non usato, è collegato un account di servizio",
   "Uygulamanın durumu": "Stato dell'app",
@@ -193,17 +186,7 @@ export const itCards: Catalog = {
   "Aramaların toplamı daha büyük; sayfanın tamamı hedef orana ulaşsa alacağı kadarla sınırlandı.":
     "La somma delle ricerche è maggiore; il valore è limitato a quanto otterrebbe l'intera pagina al tasso obiettivo.",
   "2. sayfa, 11-20. sıra": "seconda pagina, posizioni 11-20",
-  "Son rapor": "Ultimo report",
-  "Son 7 günde": "Negli ultimi 7 giorni",
-  "yazılan ya da güncellenen rapor": "report scritti o aggiornati",
-  Toplam: "Totale",
-  "{audit} denetim raporu · {skill} beceriyle · {template} şablonla":
-    "{audit} report di controllo · {skill} da skill · {template} da modello",
-  "Denetim raporu": "Report di controllo",
-  "{count} tıklama / 28 gün": "{count} clic / 28 giorni",
-  "Önceki 28 güne göre": "Rispetto ai 28 giorni precedenti",
-  "Arama verisi arşivde yok": "Nessun dato di ricerca nell'archivio",
-  "Son denetim {when}": "Ultimo controllo {when}",
+
   "Trafiği yüksek, dönüşümü düşük sayfa":
     "pagine con traffico alto e conversione bassa",
   "Listede gösteriliyor": "Mostrato nell'elenco",
@@ -212,8 +195,7 @@ export const itCards: Catalog = {
     "Occasione di far salire “{query}” di un gradino",
   "ilk {count} iş birlikte {days} günde en fazla {clicks} ek tıklama getirebilir (üst sınır).":
     "insieme, le prime {count} attività potrebbero portare al massimo {clicks} clic in più in {days} giorni (limite superiore).",
-  "İlk {count} iş birlikte {days} günde en fazla {clicks} ek tıklama getirebilir (üst sınır).":
-    "Insieme, le prime {count} attività potrebbero portare al massimo {clicks} clic in più in {days} giorni (limite superiore).",
+
   "Ortalama sırası 4–20 olan {count} sorgu; her biri bir basamak yükselirse en fazla {clicks} ek tıklama (üst sınır).":
     "{count} query con posizione media 4–20; se ognuna sale di un gradino, al massimo {clicks} clic in più (limite superiore).",
   "İlk sayfada ama ilk üçün altında. Bir basamak yükselmek (6-10'dan 4-5'e, 4-5'ten 2-3'e) tıklamayı belirgin artırır.":
@@ -225,7 +207,7 @@ export const itCards: Catalog = {
     "{count} query con posizione media tra 4 e 20 e almeno {impressions} impressioni. Se ognuna sale di un gradino (da 6-10 a 4-5, da 4-5 a 2-3, da 11-20 alla prima pagina), insieme potrebbero portare al massimo {clicks} clic in più (limite superiore).",
   "Ortalama sırası 4 ile 20 arasında, en az {impressions} gösterim alan {count} sorgu. Olası kazanç, sorgu bir basamak yükselirse (6-10'dan 4-5'e, 4-5'ten 2-3'e, 11-20'den ilk sayfaya) beklenen en fazla ek tıklamadır.":
     "{count} query con posizione media tra 4 e 20 e almeno {impressions} impressioni. Il guadagno possibile è il massimo di clic in più atteso se una query sale di un gradino (da 6-10 a 4-5, da 4-5 a 2-3, da 11-20 alla prima pagina).",
-  "{title} · {kind} · aç": "{title} · {kind} · apri",
+
   "Karşılaştırma yapılamadı: tarama kapsamları farklı veya bilinmiyor.":
     "Confronto non disponibile: gli ambiti delle scansioni sono diversi o sconosciuti.",
   "{measured} / {total} kontrol ölçüldü.":

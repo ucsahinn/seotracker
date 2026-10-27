@@ -1,12 +1,14 @@
+import { createPortal } from "react-dom";
+import { formatCount } from "@/shared/format";
+import { SAVED_TAG_LIMIT } from "@/shared/savedWatchlist";
 import {
-  Check,
   ChevronDown,
   MoreHorizontal,
   Search,
   Tag as TagIcon,
   X,
 } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import {
   resolveTagColor,
   tagDotClass,
@@ -41,6 +43,15 @@ export function SavedKeywordsTagFilter({
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [managingTagId, setManagingTagId] = useState<string | null>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const popupRef = useRef<HTMLDivElement>(null);
+  const popupId = useId();
+  const [placement, setPlacement] = useState({ left: 16, top: 16 });
+  const close = () => {
+    setOpen(false);
+    setManagingTagId(null);
+    triggerRef.current?.focus();
+  };
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -50,7 +61,8 @@ export function SavedKeywordsTagFilter({
       if (
         target instanceof Node &&
         containerRef.current &&
-        containerRef.current.contains(target)
+        (containerRef.current.contains(target) ||
+          popupRef.current?.contains(target))
       ) {
         return;
       }
@@ -61,11 +73,20 @@ export function SavedKeywordsTagFilter({
       if (event.key === "Escape") {
         setOpen(false);
         setManagingTagId(null);
+        triggerRef.current?.focus();
       }
     };
+    const dismissForViewport = () => {
+      if (popupRef.current?.contains(document.activeElement))
+        triggerRef.current?.focus();
+      setOpen(false);
+      setManagingTagId(null);
+    };
+    window.addEventListener("resize", dismissForViewport);
     document.addEventListener("mousedown", handleClick);
     document.addEventListener("keydown", handleKey);
     return () => {
+      window.removeEventListener("resize", dismissForViewport);
       document.removeEventListener("mousedown", handleClick);
       document.removeEventListener("keydown", handleKey);
     };
@@ -86,18 +107,39 @@ export function SavedKeywordsTagFilter({
     <div ref={containerRef} className="relative">
       <button
         type="button"
-        className={`inline-flex h-9 items-center gap-2 rounded-field border px-3 text-sm transition ${
+        ref={triggerRef}
+        aria-expanded={open}
+        aria-controls={popupId}
+        className={`inline-flex min-h-11 items-center gap-2 rounded-field border px-3 text-sm transition ${
           hasSelection
             ? "border-primary/50 bg-primary/10 text-base-content"
             : "border-base-300 bg-base-100 hover:border-base-content/30"
         }`}
-        onClick={() => setOpen((v) => !v)}
+        onClick={(event) => {
+          if (open) {
+            close();
+            return;
+          }
+          const rect = event.currentTarget.getBoundingClientRect();
+          setPlacement({
+            left: Math.max(16, Math.min(rect.left, window.innerWidth - 336)),
+            top: Math.max(
+              16,
+              Math.min(rect.bottom + 8, window.innerHeight - 380),
+            ),
+          });
+          setOpen(true);
+          if (event.detail === 0)
+            requestAnimationFrame(() =>
+              popupRef.current?.querySelector("input")?.focus(),
+            );
+        }}
       >
         <TagIcon className="size-3.5 opacity-70" />
         <span className="font-medium">{t("Etiketler")}</span>
         {hasSelection ? (
           <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[11px] font-semibold text-primary-content">
-            {selectedTags.length}
+            {formatCount(selectedTagIds.length)}
           </span>
         ) : null}
         <ChevronDown className="size-3.5 opacity-60" />
@@ -111,7 +153,10 @@ export function SavedKeywordsTagFilter({
               tag={tag}
               size="sm"
               selected
-              onClick={() => onToggleTagFilter(tag.id)}
+              onClick={() => {
+                onToggleTagFilter(tag.id);
+                triggerRef.current?.focus();
+              }}
               trailing={<X className="size-3 opacity-70" />}
               title={t("Filtreyi kaldır")}
             />
@@ -119,35 +164,61 @@ export function SavedKeywordsTagFilter({
           <button
             type="button"
             className="text-xs text-muted underline-offset-2 hover:text-base-content hover:underline"
-            onClick={onClearSelection}
+            onClick={() => {
+              onClearSelection();
+              triggerRef.current?.focus();
+            }}
           >
             {t("Temizle")}
           </button>
         </div>
       ) : null}
 
-      {open ? (
-        <TagFilterPopover
-          availableTags={availableTags}
-          filteredTags={filteredTags}
-          selectedTagIds={selectedTagIds}
-          query={query}
-          managingTagId={managingTagId}
-          busyTagIds={busyTagIds}
-          onQueryChange={setQuery}
-          onToggleTagFilter={onToggleTagFilter}
-          onStartManaging={setManagingTagId}
-          onUpdateTag={(tagId, input) => {
-            onUpdateTag({ tagId, ...input });
-            setManagingTagId(null);
-          }}
-          onDeleteTag={(tagId) => {
-            onDeleteTag(tagId);
-            setManagingTagId(null);
-          }}
-          onClearSelection={onClearSelection}
-        />
-      ) : null}
+      {open
+        ? createPortal(
+            <div
+              ref={popupRef}
+              id={popupId}
+              role="region"
+              aria-label={t("Etiketler")}
+              className="fixed z-50 max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-box border border-[var(--control-border)] bg-base-100 shadow-xl"
+              style={{
+                left: placement.left,
+                top: placement.top,
+                width: "min(20rem, calc(100vw - 2rem))",
+              }}
+            >
+              <button className="btn btn-ghost min-h-11" onClick={close}>
+                {t("Kapat")}
+              </button>
+              <TagFilterPopover
+                availableTags={availableTags}
+                filteredTags={filteredTags}
+                selectedTagIds={selectedTagIds}
+                query={query}
+                managingTagId={managingTagId}
+                busyTagIds={busyTagIds}
+                onQueryChange={setQuery}
+                onToggleTagFilter={onToggleTagFilter}
+                onStartManaging={setManagingTagId}
+                onUpdateTag={(tagId, input) => {
+                  onUpdateTag({ tagId, ...input });
+                  setManagingTagId(null);
+                  triggerRef.current?.focus();
+                }}
+                onDeleteTag={(tagId) => {
+                  onDeleteTag(tagId);
+                  setManagingTagId(null);
+                }}
+                onClearSelection={() => {
+                  onClearSelection();
+                  triggerRef.current?.focus();
+                }}
+              />
+            </div>,
+            document.body,
+          )
+        : null}
     </div>
   );
 }
@@ -183,12 +254,19 @@ function TagFilterPopover({
   onClearSelection: () => void;
 }) {
   return (
-    <div className="absolute right-0 top-full z-20 mt-2 w-80 max-w-[calc(100vw-2rem)] overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-2xl">
+    <div>
+      <p className="px-3 text-xs text-muted">
+        {t(
+          "Seçilen etiketlerden herhangi biri; sayılar tüm kayıtlı kelimelerdeki etiket atamalarıdır.",
+        )}
+      </p>
+      <p className="px-3 text-xs text-muted">
+        {t("En fazla {count} etiket seçin.", { count: SAVED_TAG_LIMIT })}
+      </p>
       <div className="border-b border-base-300 p-2">
         <label className="flex items-center gap-2 rounded-field border border-base-300 bg-base-200/50 px-2 py-1.5 focus-within:border-primary">
           <Search className="size-3.5 opacity-50" />
           <input
-            autoFocus
             aria-label={t("Etiket ara")}
             value={query}
             onChange={(event) => onQueryChange(event.target.value)}
@@ -208,7 +286,11 @@ function TagFilterPopover({
         </label>
       </div>
 
-      <div className="max-h-72 overflow-y-auto py-1">
+      <div
+        className="max-h-72 overflow-y-auto py-1"
+        role="group"
+        aria-label={t("Etiketler")}
+      >
         {filteredTags.length === 0 ? (
           <div className="px-3 py-6 text-center text-xs text-muted">
             {availableTags.length === 0
@@ -224,6 +306,10 @@ function TagFilterPopover({
             checked={selectedTagIds.includes(tag.id)}
             isManaging={managingTagId === tag.id}
             isBusy={busyTagIds.has(tag.id)}
+            disabled={
+              !selectedTagIds.includes(tag.id) &&
+              selectedTagIds.length >= SAVED_TAG_LIMIT
+            }
             onToggle={() => onToggleTagFilter(tag.id)}
             onStartManaging={onStartManaging}
             onUpdate={(input) => onUpdateTag(tag.id, input)}
@@ -255,6 +341,7 @@ function TagFilterRow({
   checked,
   isManaging,
   isBusy,
+  disabled,
   onToggle,
   onStartManaging,
   onUpdate,
@@ -264,6 +351,7 @@ function TagFilterRow({
   checked: boolean;
   isManaging: boolean;
   isBusy: boolean;
+  disabled: boolean;
   onToggle: () => void;
   onStartManaging: (tagId: string | null) => void;
   onUpdate: (input: { name?: string; color?: TagColorKey | null }) => void;
@@ -273,28 +361,22 @@ function TagFilterRow({
   return (
     <div>
       <div className="group flex items-center gap-2 px-2 py-1.5 hover:bg-base-200">
-        <button
-          type="button"
-          className="flex min-w-0 flex-1 items-center gap-2 text-left"
-          onClick={onToggle}
-        >
-          <span
-            className={`flex size-4 shrink-0 items-center justify-center rounded-field border ${
-              checked
-                ? "border-primary bg-primary text-primary-content"
-                : "border-base-300"
-            }`}
-          >
-            {checked ? <Check className="size-3" /> : null}
-          </span>
+        <label className="flex min-h-11 min-w-0 flex-1 items-center gap-2 text-left">
+          <input
+            type="checkbox"
+            className="checkbox checkbox-sm"
+            checked={checked}
+            disabled={disabled || isBusy}
+            onChange={onToggle}
+          />
           <span
             className={`size-2 shrink-0 rounded-full ${tagDotClass(color)}`}
           />
-          <span className="min-w-0 flex-1 truncate text-sm">{tag.name}</span>
+          <span className="min-w-0 flex-1 break-words text-sm">{tag.name}</span>
           <span className="shrink-0 text-[11px] tabular-nums text-muted">
-            {tag.keywordCount}
+            {formatCount(tag.keywordCount)}
           </span>
-        </button>
+        </label>
         <button
           type="button"
           className={`rounded-field p-1 text-muted hover:bg-base-300 hover:text-base-content ${

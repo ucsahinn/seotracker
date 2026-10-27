@@ -4,18 +4,21 @@ import {
   LEGACY_APP_REPORT_CREATOR,
 } from "@/shared/report-creator";
 import type { ReportListItem } from "@/serverFunctions/reports";
-import { t } from "@/shared/i18n";
+import { getLocale, t } from "@/shared/i18n";
 
 /** Reports with no template and no skill share this one label. */
 export const OTHER_KIND = "Belirtilmemiş";
 
 /** The kind of the report the Site denetimi screen saves from its download button. */
 export const AUDIT_EXPORT_KIND = "site-audit-export";
+export const UNKNOWN_APP_KIND = "app-kind-unknown";
 
 /** The skill names agents write, said the way the rest of the screen speaks. */
 // Turkish source text, translated where it renders (kindLabel).
 const KIND_LABELS: Record<string, string> = {
   [AUDIT_EXPORT_KIND]: "Site denetimi raporu",
+  [UNKNOWN_APP_KIND]: "Uygulama raporu, tür kaydedilmemiş",
+  __other: "Diğer türler",
   "seo-audit": "SEO denetimi",
   "seo-check-in": "Dönem karşılaştırması",
   "seo-triage": "Trafik düşüşü incelemesi",
@@ -32,7 +35,7 @@ export function kindLabel(kind: string): string {
 
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
-export type ReportFilter = "all" | "recent" | "template" | "skill" | "audit";
+type ReportFilter = "all" | "recent" | "template" | "skill" | "audit";
 
 type ReportLike = Pick<
   ReportListItem,
@@ -57,14 +60,13 @@ export function hasTemplate(report: Pick<ReportLike, "templateName">): boolean {
 }
 
 /**
- * What tells two reports on one site apart: the template, else the skill. A
- * report with neither that the app itself saved (not an agent)
- * is the audit download.
+ * Legacy native reports share a creator marker across Search and Audit.
+ * Without explicit source metadata their type must remain unknown.
  */
 export function reportKind(report: ReportLike): string {
   const named = present(report.templateName) ?? present(report.skill);
   if (named !== null) return named;
-  return isAppCreator(report.createdBy) ? AUDIT_EXPORT_KIND : OTHER_KIND;
+  return isAppCreator(report.createdBy) ? UNKNOWN_APP_KIND : OTHER_KIND;
 }
 
 export function matchesFilter(
@@ -116,7 +118,7 @@ export function kindSegments(
   }
   const sorted = sort(
     [...counts.entries()],
-    (a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "tr"),
+    (a, b) => b[1] - a[1] || a[0].localeCompare(b[0], getLocale()),
   );
   const head = sorted.slice(0, max).map(([key, value]) => ({
     key,

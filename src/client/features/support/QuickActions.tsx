@@ -18,7 +18,7 @@ export function QuickActions() {
 
   return (
     <div
-      role="toolbar"
+      role="group"
       aria-label={t("Hızlı işlemler")}
       className="flex flex-wrap items-center gap-2"
     >

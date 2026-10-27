@@ -29,8 +29,6 @@ export const REPORT_MAX_BYTES_PER_ORG = 5_000_000_000;
 export const REPORT_DEFAULT_LIST_LIMIT = 20;
 /** Ceiling on a single list page, for the MCP tool's payload budget. */
 export const REPORT_MAX_LIST_LIMIT = 50;
-/** The Reports page shows the most recent 100. */
-export const REPORT_APP_LIST_LIMIT = 100;
 export const REPORT_MAX_TITLE_CHARS = 120;
 /** A skill slug is a directory name; anything longer is not one. */
 export const REPORT_MAX_SKILL_CHARS = 60;

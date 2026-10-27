@@ -30,6 +30,7 @@ export function ReportDownloadButton({
   label?: string;
 }) {
   const [ok, setOk] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const flash = useDoneFlash(pending, ok);
   const visible = flash === "done" ? t("İndirildi") : label;
@@ -38,39 +39,54 @@ export function ReportDownloadButton({
     if (pending) return;
     setPending(true);
     setOk(false);
+    setErrorMessage(null);
     downloadReport(reportId, reportFilename(title))
       .then(() => {
         setOk(true);
         toast.success(t("Rapor indirildi"));
       })
-      .catch((error: unknown) =>
-        toast.error(
-          error instanceof TypeError
-            ? t("Rapor indirilemedi.")
-            : getStandardErrorMessage(error, t("Rapor indirilemedi.")),
-        ),
-      )
+      .catch((error: unknown) => {
+        const message = getStandardErrorMessage(
+          error,
+          t("Rapor indirilemedi."),
+        );
+        setErrorMessage(message);
+        toast.error(message);
+      })
       .finally(() => setPending(false));
   };
 
   return (
-    <button
-      type="button"
-      className={`btn btn-sm min-h-10 gap-1.5 sm:min-h-8 ${primary ? "btn-primary" : ""} ${pending ? "opacity-70" : ""}`}
-      aria-disabled={pending}
-      aria-busy={pending}
-      aria-label={`${visible}: ${title}`}
-      title={t("HTML olarak indir")}
-      onClick={download}
-    >
-      {pending ? (
-        <Loader2 aria-hidden className="size-4 animate-spin" />
-      ) : flash === "done" ? (
-        <CheckCircle2 aria-hidden className="enter size-4 text-success" />
-      ) : (
-        <Download aria-hidden className="size-4" />
-      )}
-      {visible}
-    </button>
+    <span className="inline-flex flex-col items-start gap-1">
+      <button
+        type="button"
+        className={`btn btn-sm min-h-11 gap-1.5 ${primary ? "btn-primary" : ""} ${pending ? "opacity-70" : ""}`}
+        aria-disabled={pending}
+        aria-busy={pending}
+        aria-label={`${visible}: ${title}`}
+        title={t("HTML olarak indir")}
+        onClick={download}
+      >
+        {pending ? (
+          <Loader2 aria-hidden className="size-4 animate-spin" />
+        ) : flash === "done" ? (
+          <CheckCircle2
+            aria-hidden
+            className="enter size-4 text-[var(--ink-success)]"
+          />
+        ) : (
+          <Download aria-hidden className="size-4" />
+        )}
+        {visible}
+      </button>
+      {errorMessage ? (
+        <span
+          role="alert"
+          className="max-w-prose text-xs text-[var(--ink-error)]"
+        >
+          {errorMessage}
+        </span>
+      ) : null}
+    </span>
   );
 }

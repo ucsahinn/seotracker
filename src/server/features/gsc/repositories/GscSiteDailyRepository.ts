@@ -10,6 +10,8 @@ type GscSiteDay = {
   impressions: number;
   ctr: number;
   position: number;
+  fetchedAt?: string;
+  dataState?: string;
 };
 
 type Segment = { projectId: string; searchType: string; device: string };
@@ -21,6 +23,8 @@ async function getDays(
   return db
     .select({
       date: gscSiteDaily.date,
+      fetchedAt: gscSiteDaily.fetchedAt,
+      dataState: gscSiteDaily.dataState,
       clicks: gscSiteDaily.clicks,
       impressions: gscSiteDaily.impressions,
       ctr: gscSiteDaily.ctr,

@@ -1,7 +1,10 @@
 import { Sparkles } from "lucide-react";
 import { CopyButton } from "@/client/components/CopyButton";
 import { buildFillContextPrompt } from "./fillContextPrompt";
-import type { ProjectContextSectionKey } from "@/types/schemas/projectContext";
+import {
+  PROJECT_CONTEXT_SECTION_KEYS,
+  type ProjectContextSectionKey,
+} from "@/types/schemas/projectContext";
 import { t } from "@/shared/i18n";
 
 /**
@@ -28,7 +31,8 @@ export function FillWithAgentCard({
   competitorCount: number;
   keyPageCount: number;
 }) {
-  const isEmpty = missingSections.length === 4;
+  const isEmpty =
+    missingSections.length === PROJECT_CONTEXT_SECTION_KEYS.length;
   const prompt = buildFillContextPrompt({
     projectName,
     projectId,
@@ -52,10 +56,10 @@ export function FillWithAgentCard({
             <p className="max-w-prose text-sm text-muted">
               {isEmpty
                 ? t(
-                    "İstemi kopyalayıp Claude Code ya da Codex'e yapıştırın. Ajan sitenizi ve ölçümleri okuyup taslak hazırlar; siz onaylamadan hiçbir şey kaydetmez ve sitedeki metinleri talimat saymaz.",
+                    "İstemi kopyalayıp Claude Code ya da Codex'e yapıştırın. Bu istem ajandan kaydetmeden önce onayınızı istemesini ister. Araç çağrıları bilgiyi hemen kaydedebilir; onay davranışı ajanınıza bağlıdır.",
                   )
                 : t(
-                    "İstemi kopyalayıp ajana yapıştırın. Yazılı olanı sitenin bugünkü haliyle karşılaştırır, yalnızca yanlış olanı düzeltir ve kaydetmeden önce size sorar; sitedeki metinleri talimat saymaz.",
+                    "İstemi kopyalayıp ajana yapıştırın. Bu istem ajandan mevcut notları gözden geçirmesini ve kaydetmeden önce onayınızı istemesini ister. Uygulama araçları ayrıca bir onay kapısı uygulamaz.",
                   )}
             </p>
           </div>

@@ -30,8 +30,10 @@ export function TrayItem({ name }: { name: keyof typeof TRAY }) {
 export function Command({ value }: { value: string }) {
   return (
     // One unit, so the copy button never lands on a line of its own.
-    <span className="inline-flex items-center gap-1 whitespace-nowrap align-middle">
-      <code className="text-xs">{value}</code>
+    <span className="inline-flex max-w-full items-start gap-1 align-middle">
+      <code className="min-w-0 break-all whitespace-pre-wrap text-xs">
+        {value}
+      </code>
       <CopyButton
         iconOnly
         value={value}

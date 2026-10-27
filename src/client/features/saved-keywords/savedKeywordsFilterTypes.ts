@@ -21,7 +21,7 @@ export const EMPTY_SAVED_KEYWORDS_FILTERS: SavedKeywordsFilterValues = {
   maxKd: "",
 };
 
-export type AppliedSavedKeywordsFilters = {
+type AppliedSavedKeywordsFilters = {
   includeTerms?: string[];
   excludeTerms?: string[];
   minVolume?: number | null;

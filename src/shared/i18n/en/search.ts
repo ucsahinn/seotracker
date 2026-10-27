@@ -380,7 +380,7 @@ export const enSearch: Catalog = {
     "Compared with the previous period of the same length. If the position number got smaller (say from 12 to 8), the keyword moved up and shows a green “Up”. If it got bigger, it shows a red “Down”.",
   "Sorgular yüklenemedi": "Couldn't load queries",
   "Kayıtlı kelimelere ekle": "Add to saved keywords",
-  "Arama performansında ara": "Search in Search performance",
+
   // rankings/RankingsPage.tsx
   "30 gün": "30 days",
   "90 gün": "90 days",
@@ -813,7 +813,7 @@ export const enSearch: Catalog = {
   "Önceki dönem karşılaştırılamıyor: Google bu günleri vermiyor.":
     "Can't compare with the previous period: Google doesn't serve those days.",
   "Verinin durumu": "Data status",
-  "Kesin günler": "Final days",
+
   "Kesinleşmemiş gün yok.": "No days still being counted.",
   "Son veri: {date}.": "Latest data: {date}.",
   "Bu dönem için Google'dan hiç satır gelmedi.":
@@ -1105,10 +1105,7 @@ export const enSearch: Catalog = {
     "The latest days are still being counted ({clicks} clicks); left out of totals and comparisons.",
   "Google'ın gizlediği sorgulardan gelen tıklama: {share}. Bu yüzden sorgu tablolarının toplamı site toplamından küçüktür.":
     "Clicks from queries Google hides: {share}. That is why the query tables add up to less than the site total.",
-  "Google'ın satır sınırına ulaşıldı; en az tıklanan sorgu ve sayfalar listelerde eksik.":
-    "Google's row limit was reached; the least-clicked queries and pages are missing from the lists.",
-  "Günler Google'ın kullandığı Pasifik saatine göredir; veriler {date} gününe kadar kesindir.":
-    "Days follow Google's Pacific time; data is final through {date}.",
+
   Yapılacaklar: "To do",
   "Search Console verisinde eşiği aşan bir fırsat ya da düşüş bulunmadı.":
     "No opportunity or drop above the thresholds in the Search Console data.",
@@ -1129,17 +1126,16 @@ export const enSearch: Catalog = {
   "Ortalama sırası 4 ile 20 arasında, en az {impressions} gösterim alan {count} sorgu. Olası kazanç, ilk üçe çıkarsa beklenen ek tıklamadır.":
     "{count} queries with an average position between 4 and 20 and at least {impressions} impressions. Possible gain is the extra clicks expected if they reach the top three.",
   "Bu aralıkta sorgu yok.": "No queries in this range.",
-  "İlk 20 / {total} sorgu": "First 20 of {total} queries",
+
   "Belirgin biçimde az tıklanan sonuç yok.":
     "No result is clearly under-clicked.",
   "Beklenen oran: sitenizde aynı sıradaki sonuçların tıklama oranı.":
     "Expected rate: the CTR of your results at the same position.",
-  "İlk 10 / {total} sayfa": "First 10 of {total} pages",
+
   "En az {queries} sorgu ve {impressions} gösterim olmayan sıralar için oran hesaplanmaz.":
     "Positions without at least {queries} queries and {impressions} impressions get no rate.",
   Önceki: "Before",
-  Şimdi: "Now",
-  "Yok.": "None.",
+
   "Önceki dönem: {start} – {end}. Tıklama sayıları.":
     "Previous period: {start} – {end}. Click counts.",
   "Tıklaması düşen sorgular": "Queries with falling clicks",
@@ -1147,26 +1143,16 @@ export const enSearch: Catalog = {
   "Tıklaması artan sorgular": "Queries with rising clicks",
   "Tıklaması artan sayfalar": "Pages with rising clicks",
   "Yeni görünen sorgular": "Newly showing queries",
-  "Önceki dönemin tablosu kesildiği için bilinemiyor.":
-    "Unknown: the previous period's table was cut.",
+
   "Kaybolan sorgular (önceki dönemdeki değerleriyle)":
     "Lost queries (with their previous-period numbers)",
-  "Bu dönemin tablosu kesildiği için bilinemiyor.":
-    "Unknown: this period's table was cut.",
-  "Bu karşılaştırma için bir yılı aşkın veri gerekir.":
-    "This comparison needs more than a year of data.",
+
   "Çeyrek: 91 gün.": "Quarter: 91 days.",
   "Son çeyrek": "Last quarter",
   "En iyi çeyrek": "Best quarter",
-  "Çakışma analizi bu rapor için alınamadı.":
-    "The overlap analysis couldn't be loaded for this report.",
-  "Hiçbir sorguda iki sayfanız birbiriyle yarışmıyor.":
-    "None of your pages compete with each other on a query.",
-  "{queries} sorguda birden fazla sayfanız yarışıyor; {impressions} gösterim ana sayfa dışındaki sayfalara gitti. Dönem: {start} – {end}.":
-    "More than one of your pages competes on {queries} queries; {impressions} impressions went to pages other than the main one. Period: {start} – {end}.",
+
   "Google'ın tercih ettiği sayfa": "Page Google prefers",
-  "Yarışan sayfa": "Competing pages",
-  "Bölünen pay": "Split share",
+
   "Paylar sitenin toplamına göre.": "Shares are of the site total.",
   "Paylar satırların toplamına göre.": "Shares are of the rows' total.",
   "İlk {limit} / {total}.": "First {limit} of {total}.",
@@ -1174,26 +1160,22 @@ export const enSearch: Catalog = {
   "Marka adları: {terms}.": "Brand names: {terms}.",
   "Okunan sorguların ortalama sırasına göre.":
     "By the average position of the queries read.",
-  "Google bu dönem için özel bir sonuç biçimi bildirmedi.":
-    "Google reported no special result format for this period.",
+
   "Paylar okunan sorguların tıklamasına göre.":
     "Shares are of the clicks of the queries read.",
   "{words}+ kelimeli aramalar": "Searches of {words}+ words",
   "Google Search Console API, bu mülk için. Başka bir veri kaynağı, tahmini hacim ya da rakip verisi kullanılmadı.":
     "The Google Search Console API, for this property. No other data source, estimated volume or competitor data was used.",
-  "Toplamlar ve karşılaştırmalar yalnızca Google'ın saymayı bitirdiği günleri kapsar. Günler Pasifik saatine göredir.":
-    "Totals and comparisons cover only days Google has finished counting. Days follow Pacific time.",
+
   "Site toplamları": "Site totals",
   "Site toplamı tarihe göre istenen toplamdan gelir, sorgu ya da sayfa satırlarının toplamından değil. Ortalama sıra gösterime göre ağırlıklıdır; tıklama oranı tıklama bölü gösterimdir.":
     "The site total comes from the request grouped by date, not from adding up query or page rows. Average position is weighted by impressions; CTR is clicks divided by impressions.",
-  "Google az aranan sorguları listelemez ama site toplamına katar; sorgu tabloları bu yüzden site toplamından küçüktür.":
-    "Google doesn't list rarely searched queries but counts them in the site total, so the query tables add up to less than the site total.",
+
   "Kazanç tahminleri": "Gain estimates",
   "Sitenizin kendi sıra-tıklama oranı eğrisinden hesaplanır; yeterli veri olmayan sıralar için tahmin yapılmaz.":
     "Taken from your site's own position-to-CTR curve; positions without enough data get no estimate.",
   "Google istekleri": "Google requests",
-  "Bu rapor {count} Google isteğiyle hazırlandı.":
-    "This report was built with {count} Google requests.",
+
   "Yöntem ve sınırlar": "Method and limits",
   "{host} arama performansı, {start} – {end}{filters}":
     "{host} search performance, {start} – {end}{filters}",

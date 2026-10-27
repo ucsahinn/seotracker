@@ -39,7 +39,7 @@ export const deSettings: Catalog = {
   Açık: "Hell",
   Koyu: "Dunkel",
   Dil: "Sprache",
-  "Dil tercihi": "Spracheinstellung",
+
   "Ayar bölümleri": "Einstellungsbereiche",
   Google: "Google",
   "Hizmet hesabı": "Dienstkonto",
@@ -70,7 +70,7 @@ export const deSettings: Catalog = {
   "Kimlik {suffix} ile bitmeli. Gizli anahtarı değil, OAuth client ID'yi yapıştırın.":
     "Die Client-ID muss auf {suffix} enden. Fügen Sie die OAuth-Client-ID ein, nicht das Client-Secret.",
   "Anahtarı test et": "Schlüssel testen",
-  "1 ölçüm harcar": "Verbraucht 1 Messung",
+
   "Google erişim anahtarı kaydedildi": "Google-Zugriffsschlüssel gespeichert",
   "Google erişim anahtarı kaydedilemedi. Değerleri kontrol edip tekrar deneyin.":
     "Google-Zugriffsschlüssel konnte nicht gespeichert werden. Prüfen Sie die Werte und versuchen Sie es erneut.",
@@ -118,8 +118,7 @@ export const deSettings: Catalog = {
   "Hizmet hesabı silinemedi. Tekrar deneyin.":
     "Dienstkonto konnte nicht gelöscht werden. Versuchen Sie es erneut.",
   "Hizmet hesabı (daha kısa yol)": "Dienstkonto (der einfachere Weg)",
-  "Yukarıdaki Google erişim anahtarı yerine bunu kullanabilirsiniz. Hizmet hesabında izin ekranı, test kullanıcısı ve yönlendirme adresi adımları yok. Google Cloud'da hesabı açıp JSON dosyasını indirin ve buraya yapıştırın, sonra hesabın e-posta adresini Search Console'da mülkünüze, bir meslektaşınızı eklermiş gibi kullanıcı olarak ekleyin.":
-    "Sie können dies anstelle des Google-Zugriffsschlüssels oben verwenden. Bei einem Dienstkonto entfallen Zustimmungsbildschirm, Testnutzer und Weiterleitungs-URI. Erstellen Sie das Konto in Google Cloud, laden Sie die JSON-Datei herunter und fügen Sie sie hier ein. Fügen Sie anschließend die E-Mail-Adresse des Kontos in Search Console wie einen Kollegen als Nutzer Ihrer Property hinzu.",
+
   "Hizmet hesapları": "Dienstkonten",
   "Hizmet hesabı durumu okunamadı.":
     "Status des Dienstkontos konnte nicht gelesen werden.",
@@ -143,8 +142,7 @@ export const deSettings: Catalog = {
   "PageSpeed anahtarı silindi": "PageSpeed-Schlüssel gelöscht",
   "PageSpeed anahtarı silinemedi. Tekrar deneyin.":
     "PageSpeed-Schlüssel konnte nicht gelöscht werden. Versuchen Sie es erneut.",
-  "Denetimin Lighthouse aşaması Google PageSpeed Insights'ı kullanır. Anahtarsız da çalışır, ama Google'ın anahtarsız kotası birkaç sayfadan sonra \"çok fazla istek\" (429) hatası verir. Gerçek bir sitede hız ölçümünün büyük kısmı boş kalır. Anahtar ücretsiz.":
-    "Der Lighthouse-Schritt des Audits verwendet Google PageSpeed Insights. Er funktioniert auch ohne Schlüssel, aber Googles kontingentfreie Nutzung meldet nach wenigen Seiten „zu viele Anfragen“ (429). Bei einer echten Website bleiben dann die meisten Geschwindigkeitsmessungen leer. Der Schlüssel ist kostenlos.",
+
   "Anahtar durumu okunamadı.": "Schlüsselstatus konnte nicht gelesen werden.",
   "Ortam değişkeninden geliyor": "Aus einer Umgebungsvariablen übernommen",
   "{name} ayarlanmış. Buraya bir değer kaydederseniz o kullanılır.":
@@ -153,10 +151,7 @@ export const deSettings: Catalog = {
   "Google Cloud Console → Credentials → Create credentials → API key. Önce aynı projede PageSpeed Insights API'sini etkinleştirin, yoksa anahtar 403 hatası verir.":
     "Google Cloud Console → Credentials → Create credentials → API key. Aktivieren Sie zuerst im selben Projekt die PageSpeed Insights API, sonst meldet der Schlüssel den Fehler 403.",
   "PageSpeed anahtarı silinsin mi?": "PageSpeed-Schlüssel löschen?",
-  "Anahtar bu kurulumdan silinir; hız ölçümü anahtarsız sınıra döner ve gerçek bir sitede çoğu zaman yarım kalır (429, çok fazla istek). İstediğiniz zaman yeniden girebilirsiniz.":
-    "Der Schlüssel wird aus dieser Installation entfernt. Geschwindigkeitsmessungen fallen auf das Limit ohne Schlüssel zurück und brechen bei echten Websites oft ab (429, zu viele Anfragen). Sie können den Schlüssel jederzeit erneut eingeben.",
-  "GitHub'a ulaşılamadı. İnternet bağlantınızı kontrol edip tekrar deneyin.":
-    "GitHub ist nicht erreichbar. Prüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.",
+
   "GitHub'a ulaşılamadı; son bilinen sürüm {version}":
     "GitHub ist nicht erreichbar; die letzte bekannte Version ist {version}",
   "En güncel sürümü kullanıyorsunuz": "Sie verwenden die neueste Version",
@@ -180,17 +175,14 @@ export const deSettings: Catalog = {
   "Proje klasöründe çalıştırın. Verileriniz Docker biriminde ({volume}) kalır, güncelleme onu silmez.":
     "Führen Sie den Befehl im Projektordner aus. Ihre Daten bleiben im Docker-Volume ({volume}); das Update löscht sie nicht.",
   "En güncel sürümü kullanıyorsunuz.": "Sie verwenden die neueste Version.",
-  "Güncelleme kontrolü kapalı; GitHub'a istek gitmiyor. Yeni sürümleri depodaki yayınlardan kendiniz takip edebilirsiniz.":
-    "Die Updateprüfung ist deaktiviert; es werden keine Anfragen an GitHub gesendet. Neue Versionen können Sie selbst auf der Release-Seite des Repositorys verfolgen.",
+
   "Son kontrol başarısız oldu: GitHub'a ulaşılamadı. Son bilinen sürüm {version} (son başarılı kontrol: {date}); güncel olup olmadığı doğrulanamadı.":
     "Die letzte Prüfung ist fehlgeschlagen: GitHub ist nicht erreichbar. Die letzte bekannte Version ist {version} (letzte erfolgreiche Prüfung: {date}); ob Sie aktuell sind, konnte nicht bestätigt werden.",
   "Son kontrol başarısız oldu: GitHub'a ulaşılamadı. Son bilinen sürüm {version}; güncel olup olmadığı doğrulanamadı.":
     "Die letzte Prüfung ist fehlgeschlagen: GitHub ist nicht erreichbar. Die letzte bekannte Version ist {version}; ob Sie aktuell sind, konnte nicht bestätigt werden.",
   "Son kontrolde GitHub'a ulaşılamadı.":
     "GitHub war bei der letzten Prüfung nicht erreichbar.",
-  "Güncellemeleri kontrol et": "Nach Updates suchen",
-  "Açıkken altı saatte bir GitHub'daki sürüm listesine bakar, başka hiçbir şey göndermez. Kapatırsanız dışarıya hiç istek gitmez ve sürümü kendiniz takip edersiniz.":
-    "Ist die Option aktiviert, wird alle sechs Stunden die Versionsliste auf GitHub abgerufen. Weitere Daten werden nicht gesendet. Wenn Sie sie deaktivieren, werden keine Anfragen mehr gesendet und Sie verfolgen neue Versionen selbst.",
+
   "Şimdi kontrol et": "Jetzt prüfen",
   "Kontrol açıkken uygulama, bir sekmede açık olduğu sürece en çok altı saatte bir GitHub'a bağlanıp en son sürümü sorar. GitHub bu istekte yalnızca genel IP adresinizi, uygulama adını ve sürümü görür; siteleriniz, Google hesabınız ya da denetimleriniz gönderilmez.":
     "Ist die Prüfung eingeschaltet, fragt die App GitHub höchstens alle sechs Stunden nach der neuesten Version, solange sie in einem Browser-Tab geöffnet ist. GitHub sieht dabei nur Ihre öffentliche IP-Adresse, den App-Namen und die Version; Ihre Websites, Ihr Google-Konto und Ihre Audits werden nie übertragen.",
@@ -212,8 +204,7 @@ export const deSettings: Catalog = {
     "Es wurde noch kein Google-Zugriffsschlüssel und kein Dienstkonto eingetragen. Ohne eines davon können Search Console und Analytics nicht verbunden werden.",
   "Google erişim anahtarı ortam değişkenlerinden geliyor.":
     "Der Google-Zugriffsschlüssel stammt aus Umgebungsvariablen.",
-  "Google bağlantı ayarı okunuyor.":
-    "Google-Verbindungseinstellung wird gelesen.",
+
   "Google erişimi hazır.": "Google-Zugriff ist bereit.",
   "PageSpeed anahtarı kontrol edilemedi. {logs}":
     "PageSpeed-Schlüssel konnte nicht geprüft werden. {logs}",

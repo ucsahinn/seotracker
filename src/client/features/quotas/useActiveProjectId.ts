@@ -19,5 +19,10 @@ export function useActiveProjectId() {
     projects.find((project) => project.id === remembered)?.id ??
     projects[0]?.id ??
     null;
-  return { projectId, isPending: query.isPending, isError: query.isError };
+  return {
+    projects,
+    projectId,
+    isPending: query.isPending,
+    isError: query.isError,
+  };
 }

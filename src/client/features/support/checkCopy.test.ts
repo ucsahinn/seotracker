@@ -2,6 +2,11 @@ import { describe, expect, it } from "vitest";
 import { describeCheck } from "./checkCopy";
 
 describe("describeCheck", () => {
+  it("does not report an unread Google configuration as successful", () => {
+    const result = describeCheck("gsc", { status: "ok" }, null);
+    expect(result.status).toBe("warn");
+    expect(result.text).toContain("henüz doğrulanamadı");
+  });
   it("turns the English keyless PageSpeed warning into Turkish advice", () => {
     const result = describeCheck(
       "pagespeed",

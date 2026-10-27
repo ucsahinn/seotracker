@@ -160,18 +160,11 @@ export const deCards: Catalog = {
   Tamamla: "Vervollständigen",
   "Güncel denetim": "Aktuelles Audit",
   "Yapay zeka ajanı": "KI-Agent",
-  "Sitenizin son 7 gün içinde tamamlanmış bir denetimi var.":
-    "Für Ihre Website gibt es ein in den letzten 7 Tagen abgeschlossenes Audit.",
-  "Son 7 günde bu sitenin tamamlanmış denetimi yok. Başka bir adresin denetimi sayılmaz.":
-    "Kein abgeschlossenes Audit dieser Website in den letzten 7 Tagen. Ein Audit einer anderen Adresse zählt nicht.",
+
   Denetle: "Prüfen",
-  "Bir ajan bağlandı ve en az bir araç çağırdı.":
-    "Ein Agent hat sich verbunden und mindestens ein Werkzeug aufgerufen.",
-  "Henüz hiçbir ajan bağlanmadı.": "Noch hat sich kein Agent verbunden.",
+
   "öneri, sayılmaz": "Empfehlung, nicht gezählt",
-  "Önceki {days} güne göre:": "Gegenüber den vorherigen {days} Tagen:",
-  "{count} kelime yükseldi": "{count} Keywords gestiegen",
-  "{count} kelime geriledi": "{count} Keywords gefallen",
+
   "Kullanılmıyor, hizmet hesabı bağlı":
     "Nicht verwendet, ein Dienstkonto ist verbunden",
   "Uygulamanın durumu": "Zustand der App",
@@ -192,17 +185,7 @@ export const deCards: Catalog = {
   "Aramaların toplamı daha büyük; sayfanın tamamı hedef orana ulaşsa alacağı kadarla sınırlandı.":
     "Die Suchen ergeben zusammen mehr; begrenzt auf das, was die ganze Seite bei der Zielrate bekäme.",
   "2. sayfa, 11-20. sıra": "Seite zwei, Positionen 11-20",
-  "Son rapor": "Letzter Bericht",
-  "Son 7 günde": "In den letzten 7 Tagen",
-  "yazılan ya da güncellenen rapor": "geschriebene oder aktualisierte Berichte",
-  Toplam: "Gesamt",
-  "{audit} denetim raporu · {skill} beceriyle · {template} şablonla":
-    "{audit} Audit-Berichte · {skill} per Skill · {template} per Vorlage",
-  "Denetim raporu": "Audit-Bericht",
-  "{count} tıklama / 28 gün": "{count} Klicks / 28 Tage",
-  "Önceki 28 güne göre": "Gegenüber den vorherigen 28 Tagen",
-  "Arama verisi arşivde yok": "Keine Suchdaten im Archiv",
-  "Son denetim {when}": "Letztes Audit {when}",
+
   "Trafiği yüksek, dönüşümü düşük sayfa":
     "Seiten mit viel Traffic und wenig Conversions",
   "Listede gösteriliyor": "In der Liste gezeigt",
@@ -211,8 +194,7 @@ export const deCards: Catalog = {
     "Chance, „{query}“ eine Stufe nach oben zu bringen",
   "ilk {count} iş birlikte {days} günde en fazla {clicks} ek tıklama getirebilir (üst sınır).":
     "zusammen könnten die ersten {count} Aufgaben in {days} Tagen höchstens {clicks} Zusatzklicks bringen (Obergrenze).",
-  "İlk {count} iş birlikte {days} günde en fazla {clicks} ek tıklama getirebilir (üst sınır).":
-    "Zusammen könnten die ersten {count} Aufgaben in {days} Tagen höchstens {clicks} Zusatzklicks bringen (Obergrenze).",
+
   "Ortalama sırası 4–20 olan {count} sorgu; her biri bir basamak yükselirse en fazla {clicks} ek tıklama (üst sınır).":
     "{count} Suchanfragen mit durchschnittlicher Position 4–20; steigt jede eine Stufe, höchstens {clicks} Zusatzklicks (Obergrenze).",
   "İlk sayfada ama ilk üçün altında. Bir basamak yükselmek (6-10'dan 4-5'e, 4-5'ten 2-3'e) tıklamayı belirgin artırır.":
@@ -224,7 +206,7 @@ export const deCards: Catalog = {
     "{count} Suchanfragen mit durchschnittlicher Position 4 bis 20 und mindestens {impressions} Impressionen. Steigt jede eine Stufe (6-10 auf 4-5, 4-5 auf 2-3, 11-20 auf Seite eins), bringen sie zusammen höchstens {clicks} Zusatzklicks (Obergrenze).",
   "Ortalama sırası 4 ile 20 arasında, en az {impressions} gösterim alan {count} sorgu. Olası kazanç, sorgu bir basamak yükselirse (6-10'dan 4-5'e, 4-5'ten 2-3'e, 11-20'den ilk sayfaya) beklenen en fazla ek tıklamadır.":
     "{count} Suchanfragen mit durchschnittlicher Position 4 bis 20 und mindestens {impressions} Impressionen. Der mögliche Gewinn sind die höchstens zu erwartenden Zusatzklicks, wenn eine Suchanfrage eine Stufe steigt (6-10 auf 4-5, 4-5 auf 2-3, 11-20 auf Seite eins).",
-  "{title} · {kind} · aç": "{title} · {kind} · öffnen",
+
   "Karşılaştırma yapılamadı: tarama kapsamları farklı veya bilinmiyor.":
     "Kein Vergleich möglich: Der Umfang der Crawls ist unterschiedlich oder unbekannt.",
   "{measured} / {total} kontrol ölçüldü.":

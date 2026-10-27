@@ -152,15 +152,13 @@ export const ptApp: Catalog = {
   "Proje güncellenemedi": "Não foi possível atualizar o projeto",
   "Proje adı gerekli": "O nome do projeto é obrigatório",
   "Temel bilgiler": "Informações básicas",
-  "Site adresi, denetimin nereden başlayacağını belirler. Ülke ve dil, Search Console verisinin hangi pazar için okunacağını belirler. Yanlış seçerseniz sayılar doğru olur ama sizinle ilgisiz kalır.":
-    "O endereço do site define o ponto de partida da auditoria. O país e o idioma definem para qual mercado os dados do Search Console são lidos. Se escolher errado, os números continuam corretos, mas não dizem nada sobre você.",
+
   Ad: "Nome",
   "Yalnızca sizin içindir. Proje değiştiricide ve raporların başlığında görünür, Google'a gitmez.":
     "Visível só para você. Aparece no seletor de projetos e nos títulos dos relatórios e nunca é enviado ao Google.",
   "Alan adı": "Domínio",
   "(isteğe bağlı)": "(opcional)",
-  "Denetim bu adresten başlar, Search Console mülkü de bununla eşleştirilir. https:// olmadan yazın, örneğin example.com.":
-    "A auditoria começa neste endereço e a propriedade do Search Console é associada a ele. Insira-o sem https://, por exemplo example.com.",
+
   "Kaydettiğiniz anahtar kelimeler bu ülke ve dile göre saklanır.":
     "As palavras-chave salvas são associadas a este país e idioma.",
   "Kaydediliyor…": "Salvando…",
@@ -211,31 +209,22 @@ export const ptApp: Catalog = {
     one: "{count} concorrente salvo.",
     other: "{count} concorrentes salvos.",
   },
-  "Rakip yok. Ajan, kimle yarıştığınızı bilmeden öneri yapar.":
-    "Não há concorrentes. O agente fará sugestões sem saber com quem você compete.",
+
   "Rakip ekle": "Adicionar concorrente",
   "Önemli sayfalar": "Páginas importantes",
   "{count} önemli sayfa kayıtlı.": {
     one: "{count} página importante salva.",
     other: "{count} páginas importantes salvas.",
   },
-  "Önemli sayfa işaretlenmemiş. Hangi sayfaların kazanç getirdiği belli değil.":
-    "Nenhuma página importante marcada. Não está claro quais páginas geram receita.",
+
   "Sayfa ekle": "Adicionar página",
-  "Bağlı. Tıklama, gösterim ve sıra verisi okunuyor.":
-    "Conectado. Carregando dados de cliques, impressões e posição.",
+
   "Bağlı değil. Sıralama, arama performansı ve fırsatlar bu bağlantıya dayanır.":
     "Não conectado. O acompanhamento de posições, o desempenho da pesquisa e as oportunidades dependem desta conexão.",
   Bağla: "Conectar",
-  "Bağlı. Organik oturumlar okunuyor.":
-    "Conectado. Carregando sessões orgânicas.",
-  "Bağlı değil. Ziyaret ve dönüşüm verisi olmadan trafik düşüşleri yorumlanamaz.":
-    "Não conectado. Sem dados de visitas e conversões, não é possível interpretar as quedas de tráfego.",
+
   "PageSpeed anahtarı": "Chave do PageSpeed",
-  "Anahtar tanımlı. Hız ölçümleri kota sorunu olmadan çalışır.":
-    "Chave configurada. As medições de velocidade funcionam sem problemas de cota.",
-  "Anahtar yok. Hız ölçümü Google'ın ortak kotasına takılıyor ve çoğu zaman yarıda kalır.":
-    "Sem chave. A medição de velocidade esbarra na cota compartilhada do Google e muitas vezes fica incompleta.",
+
   "Anahtar gir": "Inserir chave",
   "İşin özeti": "Visão geral do negócio",
   "Şu anki hedef": "Objetivo atual",
@@ -257,8 +246,7 @@ export const ptApp: Catalog = {
     "ex.: A única ferramenta de reservas que se configura em uma tarde. Mais barata do que as opções estabelecidas e mais simples do que soluções faça-você-mesmo.",
   "örn. Sade ve doğrudan, abartı yok. “Kusursuz” ya da “devrim niteliğinde” yazmayın. Rakip fiyatlarına girmeyin.":
     "ex.: Simples e direto, sem exageros. Não use “perfeito” nem “revolucionário”. Não fale dos preços dos concorrentes.",
-  "Ajanınızın bu proje hakkında bildikleri. Ajan işe başlamadan önce burayı okur, öğrendiklerini buraya yazar. Yanlış bir şey görürseniz düzeltin.":
-    "O que o agente sabe sobre este projeto. Lê esta seção antes de começar e registra aqui o que aprende. Corrija qualquer informação incorreta.",
+
   "Proje bilgisi yüklenemedi":
     "Não foi possível carregar o contexto do projeto",
   "Henüz boş. Kendiniz doldurabilir ya da ajanınıza sitenizden taslak çıkarttırıp onaylayabilirsiniz.":
@@ -316,22 +304,16 @@ export const ptApp: Catalog = {
   Kaydet: "Salvar",
   "Ajanınıza doldurtabilirsiniz": "Peça ao agente para preencher",
   "Ajanınıza gözden geçirtin": "Peça ao agente para revisar",
-  "İstemi kopyalayıp Claude Code ya da Codex'e yapıştırın. Ajan sitenizi ve ölçümleri okuyup taslak hazırlar; siz onaylamadan hiçbir şey kaydetmez ve sitedeki metinleri talimat saymaz.":
-    "Copie o prompt e cole no Claude Code ou no Codex. O agente analisa o site e as métricas e prepara um rascunho; não salva nada sem a sua aprovação e não trata o texto do site como instruções.",
-  "İstemi kopyalayıp ajana yapıştırın. Yazılı olanı sitenin bugünkü haliyle karşılaştırır, yalnızca yanlış olanı düzeltir ve kaydetmeden önce size sorar; sitedeki metinleri talimat saymaz.":
-    "Copie o prompt e cole no seu agente. Ele compara o que está escrito com o site como está hoje, corrige apenas o que estiver errado e pede sua autorização antes de salvar; não trata o texto do site como instruções.",
+
   "İstemi kopyala": "Copiar prompt",
   "İstem kopyalandı": "Prompt copiado",
   "Araştırma günlüğü": "Registro de pesquisa",
-  "Neye bakıldığının kaydı. Aynı araştırma iki kez yapılmasın diye tutulur.":
-    "Registro do que foi investigado, para evitar repetir a mesma pesquisa.",
+
   "Henüz kayıt yok. Bağladığınız ajan bir araştırma yaptıkça buraya yazar.":
     "Ainda não há registros. O agente conectado escreve aqui à medida que faz pesquisas.",
   "{date} tarihli kaydı sil": "Excluir registro de {date}",
   "Kurulum durumu": "Status da configuração",
-  "Ajanların ve uygulamanın düzgün çalışması için gerekenler. Eksik satırın yanındaki düğme sizi düzeltebileceğiniz yere götürür.":
-    "O que é necessário para os agentes e o app funcionarem corretamente. O botão ao lado de um item faltando leva você ao local onde pode corrigi-lo.",
-  "{done} / {total} tamam": "{done} de {total} concluídos",
+
   Tamam: "Concluído",
   Eksik: "Faltando",
   "Kontrol ediliyor": "Verificando",
@@ -352,16 +334,4 @@ export const ptApp: Catalog = {
   "Şablonu düzenle": "Editar modelo",
   "Yeni şablon": "Novo modelo",
   "Aylık müşteri değerlendirmesi": "Revisão mensal do cliente",
-  Açıklama: "Descrição",
-  "Ne zaman kullanılacağını anlatan tek cümle. Bir ajan kararını buna bakarak verir.":
-    "Uma frase que explica quando deve ser usado. O agente decide com base nela.",
-  "Sürekli çalıştığımız müşterilere gönderdiğimiz aylık güncelleme.":
-    "A atualização mensal que enviamos aos nossos clientes fixos.",
-  Yönerge: "Instruções",
-  "Projenin geneline ait marka dili Proje bilgisi › Yazım tercihleri altında tutulur.":
-    "O tom de voz da marca para todo o projeto está em Contexto do projeto › Preferências de escrita.",
-  "Şablon oluştur": "Criar modelo",
-  Rapor: "Relatórios",
-  "Yanıtınız alındı": "Sua resposta foi registrada",
-  "{count} yanıt": { one: "{count} resposta", other: "{count} respostas" },
 };

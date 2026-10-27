@@ -7,8 +7,7 @@ export const ptAppContinued: Catalog = {
   "Son güncelleme": "Última atualização",
   "{date} · raporu aç": "{date} · abrir relatório",
   "Türe göre raporlar": "Relatórios por tipo",
-  "Bir türe tıklayarak listeyi o türdeki raporlarla sınırlayın.":
-    "Clique em um tipo para limitar a lista aos relatórios desse tipo.",
+
   rapor: "relatórios",
   Belirtilmemiş: "Não especificado",
   "Site denetimi raporu": "Relatório de auditoria do site",
@@ -20,20 +19,16 @@ export const ptAppContinued: Catalog = {
   "Proje kurulumu": "Configuração do projeto",
   "Diğer türler": "Outros tipos",
   Tümü: "Todos",
-  "Şablonla yazılan": "Criado com modelo",
-  "Beceriyle yazılan": "Criado com uma skill",
+
   "Henüz rapor yok": "Ainda não há relatórios",
-  "Rapor iki yoldan alınır: ajanınıza yazdırın ya da Site denetimi ekranından indirin.":
-    "Há duas formas de obter um relatório: pedir ao agente que escreva um ou baixá-lo na tela Auditoria do site.",
+
   "Rapor komutunu kopyala": "Copiar prompt do relatório",
   "Komut kopyalandı. Ajanınıza yapıştırın":
     "Prompt copiado. Cole no seu agente",
-  "Ajan kurulumunu aç": "Abrir configuração do agente",
-  Filtre: "Filtro",
+
   "Raporlarda ara": "Pesquisar relatórios",
   "Aramanıza uyan rapor yok": "Nenhum relatório corresponde à pesquisa",
-  "Aramayı, filtreyi ya da seçili türü kaldırarak tüm raporları görün.":
-    "Limpe a pesquisa, o filtro ou o tipo selecionado para ver todos os relatórios.",
+
   "Filtreleri temizle": "Limpar filtros",
   Tür: "Tipo",
   Oluşturuldu: "Criado",
@@ -41,10 +36,7 @@ export const ptAppContinued: Catalog = {
   İşlemler: "Ações",
   "{title} için işlemler": "Ações para {title}",
   Sil: "Excluir",
-  "En son {count} rapor gösteriliyor.": {
-    one: "Mostrando o relatório mais recente ({count}).",
-    other: "Mostrando os {count} relatórios mais recentes.",
-  },
+
   "Henüz şablon yok": "Ainda não há modelos",
   "Şablon olmadan da rapor alabilirsiniz. Her seferinde aynı biçimde rapor istiyorsanız (örneğin yöneticiye aylık özet) sağ üstteki düğmeyle ilk şablonunuzu oluşturun.":
     "Você pode obter relatórios sem um modelo. Se quiser sempre o mesmo formato (por exemplo, um resumo mensal para o seu gestor), crie seu primeiro modelo com o botão no canto superior direito.",
@@ -72,23 +64,9 @@ export const ptAppContinued: Catalog = {
   "“{title}” silinsin mi?": "Excluir “{title}”?",
   "Bu geri alınamaz.": "Esta ação não pode ser desfeita.",
   "Raporu sil": "Excluir relatório",
-  "Sıra bilgisi yüklenemedi": "Não foi possível carregar os dados de posição",
-  "Bilinmiyor (arşiv kesildi)": "Desconhecido (arquivo truncado)",
-  "Verisi yok": "Sem dados",
-  "Okunan arşiv kesildiği için bu kelimelerin sırası bilinmiyor; Search Console'da sırası olabilir.":
-    "A posição destas palavras-chave é desconhecida porque a leitura do arquivo foi interrompida; podem ter posições no Search Console.",
-  "Search Console arşivinde bu kelimeyle eşleşen sorgu olmayanlar.":
-    "Palavras-chave sem consultas correspondentes no arquivo do Search Console.",
+
   "Sıra {band}": "Posição {band}",
-  "{total} kelimenin {ranked} tanesi Search Console arşivinde var; sıralar son {days} günün ortalaması.":
-    "{ranked} de {total} palavras-chave estão no arquivo do Search Console; as posições são a média dos últimos {days} dias.",
-  "Arşivden en çok {limit} sorgu okunuyor; bu yüzden bazı kelimelerin sırası eksik görünebilir.":
-    "São lidas no máximo {limit} consultas do arquivo, por isso algumas palavras-chave podem aparecer sem posição.",
-  "Kelimelerinizin sırası henüz yok":
-    "Suas palavras-chave ainda não têm posições",
-  "Sıralar, Search Console'un hangi kelimeyle arandığınızı paylaşmasına bağlı. Az ziyaretçisi olan sitelerde bu normaldir; veri gelince sıralar kendiliğinden dolar. Toplam rakamlara {searchPerformance}'ndan, bağlantı durumuna {integrations} bakabilirsiniz.":
-    "As posições dependem de o Search Console indicar as palavras-chave usadas para encontrar o site. É normal em sites com poucas visitas; as posições aparecem automaticamente quando houver dados. Consulte os totais em {searchPerformance} e o status da conexão em {integrations}.",
-  "Bağlantılar sekmesinden": "aba Conexões",
+
   "Sıraya göre hızlı filtreler": "Filtros rápidos por posição",
   "İlk 10": "Top 10",
   "Ortalama sırası 10 veya daha iyi olan kelimeler; yani Google'ın ilk sayfası.":
@@ -96,8 +74,7 @@ export const ptAppContinued: Catalog = {
   "Ortalama sırası 11 ile 20 arasında olanlar, yani ikinci sayfadakiler. Küçük bir iyileştirme ilk sayfaya taşıyabilir.":
     "Palavras-chave com posição média entre 11 e 20, ou seja, na segunda página. Uma pequena melhoria pode levá-las à primeira página.",
   "Sıra dağılımı": "Distribuição de posições",
-  "Bir gruba tıklayınca tablo yalnızca o gruptaki kelimeleri gösterir.":
-    "Clique em um grupo para mostrar na tabela apenas as palavras-chave desse grupo.",
+
   kelime: "palavras-chave",
   Bilgi: "Informacional",
   Ticari: "Comercial",
@@ -145,16 +122,15 @@ export const ptAppContinued: Catalog = {
   },
   Uygula: "Aplicar",
   Kelime: "Palavra-chave",
-  "Arama performansında göster": "Mostrar em Desempenho da pesquisa",
+
   "Ortalama sıra": "Posição média",
-  "Search Console bu kelime için sıra kaydetmemiş":
-    "O Search Console não registrou uma posição para esta palavra-chave",
+
   Amaç: "Intenção",
   Etiketler: "Etiquetas",
   Eklenme: "Adicionada",
   "Kelimeyi kopyala": "Copiar palavra-chave",
   "Kelime kopyalandı": "Palavra-chave copiada",
-  "Arama performansında ara": "Pesquisar em Desempenho da pesquisa",
+
   "Kelimeyi sil": "Excluir palavra-chave",
   "Bu filtrelere uyan kelime yok":
     "Nenhuma palavra-chave corresponde a estes filtros",
@@ -229,12 +205,7 @@ export const ptAppContinued: Catalog = {
     one: "Excluir {count} palavra-chave",
     other: "Excluir {count} palavras-chave",
   },
-  "{count} kayıtlı kelime": {
-    one: "{count} palavra-chave salva",
-    other: "{count} palavras-chave salvas",
-  },
-  "Etiketleyin, Search Console'daki ortalama sıralarına bakın, CSV ya da E-Tablolar olarak dışa aktarın.":
-    "Adicione etiquetas, consulte a posição média no Search Console e exporte para CSV ou Google Sheets.",
+
   "E-Tablolar'a aktar": "Exportar para Sheets",
   "CSV indir": "Baixar CSV",
   "Tablo filtrelerini aç/kapat": "Mostrar ou ocultar filtros da tabela",
@@ -282,8 +253,7 @@ export const ptAppContinued: Catalog = {
     "Para copiar para a área de transferência, use PowerShell (o valor não aparece na tela):",
   "Değeri sohbete ya da ekrana yazmayın. Yapıştırdıktan sonra panoyu temizleyin (Win+V, Tümünü temizle).":
     "Não digite o valor em uma conversa nem na tela. Depois de colar, limpe a área de transferência (Win+V, Limpar tudo).",
-  "Kendiniz belirlemediyseniz uygulama ilk açılışta bir parola üretir. Okumak için (PowerShell ve cmd):":
-    "Se você não definiu uma, o app gera uma senha na primeira inicialização. Para consultá-la (PowerShell e cmd):",
+
   "Windows'ta Git Bash için komutun başına {prefix} ekleyin, yoksa parola boş çıkar (PowerShell'de bu önek hata verir).":
     "No Git Bash do Windows, acrescente {prefix} antes do comando; caso contrário, a senha ficará vazia (no PowerShell, este prefixo dá erro).",
   "Bu adres parola istemez. Bilgisayarınızdaki başka bir programın araçları çalıştırmasını önlemek için {token} adıyla bir parola ayarlayın ve aracınıza şu başlığı ekletin:":
@@ -318,12 +288,11 @@ export const ptAppContinued: Catalog = {
   "Tanılama paketi indir": "Baixar pacote de diagnóstico",
   "Özeti kopyala": "Copiar resumo",
   "Proje GitHub'da": "Projeto no GitHub",
-  "Her projenin kendi Search Console bağlantısı, arama verisi ve site denetimleri vardır.":
-    "Cada projeto tem sua própria conexão com o Search Console, seus dados de pesquisa e suas auditorias do site.",
+
   "Henüz proje yok": "Ainda não há projetos",
   "Bir proje oluşturun, sonra sitesini ekleyin.":
     "Crie um projeto e, em seguida, adicione o site.",
-  Etkin: "Ativo",
+
   "Site eklenmedi": "Nenhum site adicionado",
   "Site ekle": "Adicionar site",
   "Proje geri alındı": "Projeto restaurado",
@@ -388,10 +357,7 @@ export const ptAppContinued: Catalog = {
     one: "{count} palavra-chave copiada",
     other: "{count} palavras-chave copiadas",
   },
-  "Önce Ayarlar'da Google erişim anahtarını ya da hizmet hesabını girin. Sonra izleyeceğiniz siteyi seçin. Google buna mülk der. Siteyi yeni doğruladıysanız Google'ın veri vermesi birkaç gün sürebilir.":
-    "Insira primeiro a chave de acesso do Google ou a conta de serviço nas Configurações. Depois escolha o site a acompanhar; o Google chama isso de propriedade. Se você verificou o site há pouco tempo, o Google pode levar alguns dias para disponibilizar dados.",
-  "Search Console'daki Google erişim anahtarını kullanır, ayrı kurulum istemez. Bağlandıktan sonra Analytics'teki sitenizi (Analytics mülkü) seçin. Organik ziyaretler Panel'de ve Analytics ekranında görünür.":
-    "Usa a mesma chave de acesso do Google que o Search Console, sem configuração separada. Depois de conectar, selecione seu site no Analytics (a propriedade do Analytics). As visitas orgânicas aparecem no Painel e na tela Analytics.",
+
   Genel: "Geral",
   Bağlantılar: "Conexões",
   "Ayar bölümleri": "Seções das configurações",

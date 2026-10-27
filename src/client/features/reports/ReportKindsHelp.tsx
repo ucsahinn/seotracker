@@ -19,6 +19,16 @@ export function ReportKindsHelp() {
       <div className="mt-3 grid gap-4 sm:grid-cols-2">
         <div className="space-y-1">
           <h2 className="text-sm font-semibold">
+            {t("Arama performansı raporu")}
+          </h2>
+          <p className="text-sm text-muted">
+            {t(
+              "Arama performansı ekranında dönem ve süzgeçleri seçip Raporu indir düğmesini kullanın. Kaydedilmiş raporlar kaynak bağlantısı kesilse de okunabilir.",
+            )}
+          </p>
+        </div>
+        <div className="space-y-1">
+          <h2 className="text-sm font-semibold">
             {t("Ajanın yazdığı raporlar")}
           </h2>
           <p className="text-sm text-muted">

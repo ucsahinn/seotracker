@@ -1,21 +1,20 @@
-import { getLocale } from "@/shared/i18n";
-import { SITE_URL } from "./links";
+import { guideUrl } from "./links";
 
-const GUIDES: Record<string, [string, string]> = {
-  projects: ["projeler", "projects"],
-  settings: ["ayarlar", "settings"],
-  "release-notes": ["surum-notlari", "release-notes"],
-  support: ["yardim", "help"],
-  announcements: ["yardim", "help"],
-  ai: ["ajan-kurulumu", "agent-setup"],
-  audit: ["site-denetimi", "site-audit"],
-  "search-performance": ["arama-performansi", "search-performance"],
-  rankings: ["siralama-takibi", "rank-tracking"],
-  opportunities: ["firsatlar", "opportunities"],
-  saved: ["kayitli-kelimeler", "saved-keywords"],
-  analytics: ["analytics", "analytics"],
-  reports: ["raporlar", "reports"],
-  context: ["proje-bilgisi", "project-context"],
+const GUIDES: Record<string, string> = {
+  projects: "projeler",
+  settings: "ayarlar",
+  "release-notes": "surum-notlari",
+  support: "yardim",
+  announcements: "yardim",
+  ai: "ajan-kurulumu",
+  audit: "site-denetimi",
+  "search-performance": "arama-performansi",
+  rankings: "siralama-takibi",
+  opportunities: "firsatlar",
+  saved: "kayitli-kelimeler",
+  analytics: "analytics",
+  reports: "raporlar",
+  context: "proje-bilgisi",
 };
 
 export function pageGuideUrl(pathname: string): string {
@@ -25,11 +24,10 @@ export function pageGuideUrl(pathname: string): string {
   const guide =
     project && screen === "settings"
       ? segments[3] === "integrations"
-        ? ["google-baglantisi", "google-connection"]
+        ? "google-baglantisi"
         : segments[3] === "context"
-          ? ["proje-bilgisi", "project-context"]
-          : ["projeler", "projects"]
-      : (GUIDES[screen ?? ""] ?? ["panel", "dashboard"]);
-  const english = getLocale() === "en";
-  return `${SITE_URL}${english ? "/en" : ""}/docs/${guide[english ? 1 : 0]}/`;
+          ? "proje-bilgisi"
+          : "projeler"
+      : (GUIDES[screen ?? ""] ?? "panel");
+  return guideUrl(guide);
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CopyButton } from "@/client/components/CopyButton";
 import { captureClientEvent } from "@/client/lib/observability";
 import {
@@ -47,13 +47,16 @@ export function ConnectAgentCard({
   connection,
   connected,
   origin,
+  onVerify,
 }: {
+  onVerify?: () => void;
   lead: boolean;
   /** Undefined until the first read answers; the copy button waits for it. */
   connection: ConnectionFacts | undefined;
   connected: boolean;
   origin: string;
 }) {
+  const buttons = useRef<(HTMLButtonElement | null)[]>([]);
   const [agent, setAgent] = useState<AgentChoice>("claude");
   const facts = {
     tokenConfigured: connection?.tokenConfigured,
@@ -88,13 +91,42 @@ export function ConnectAgentCard({
         role="radiogroup"
         aria-label={t("Hangi ajanı kullanıyorsunuz?")}
       >
-        {AGENT_CHOICES.map((item) => (
+        {AGENT_CHOICES.map((item, index) => (
           <button
+            ref={(element) => {
+              buttons.current[index] = element;
+            }}
+            tabIndex={item.id === agent ? 0 : -1}
+            onKeyDown={(event) => {
+              const steps: Record<string, number> = {
+                ArrowRight: 1,
+                ArrowDown: 1,
+                ArrowLeft: -1,
+                ArrowUp: -1,
+              };
+              const step = steps[event.key];
+              if (
+                step === undefined &&
+                event.key !== "Home" &&
+                event.key !== "End"
+              )
+                return;
+              event.preventDefault();
+              const next =
+                event.key === "Home"
+                  ? 0
+                  : event.key === "End"
+                    ? AGENT_CHOICES.length - 1
+                    : (index + step + AGENT_CHOICES.length) %
+                      AGENT_CHOICES.length;
+              setAgent(AGENT_CHOICES[next].id);
+              buttons.current[next]?.focus();
+            }}
             key={item.id}
             type="button"
             role="radio"
             aria-checked={item.id === agent}
-            className={`btn join-item btn-sm ${
+            className={`btn min-h-11 join-item btn-sm ${
               item.id === agent ? "btn-active" : ""
             }`}
             onClick={() => setAgent(item.id)}
@@ -123,11 +155,12 @@ export function ConnectAgentCard({
           value={isCodex ? codexPrompt : prompt}
           label={t("Kurulum komutunu kopyala")}
           successMessage={t("Kurulum komutu kopyalandı")}
-          onCopy={() =>
+          onCopy={() => {
+            onVerify?.();
             captureClientEvent(
               isCodex ? "mcp:codex_prompt_copy" : "mcp:setup_prompt_copy",
-            )
-          }
+            );
+          }}
         />
       </div>
       <p className="mt-5 border-t border-base-300 pt-4 text-sm leading-relaxed text-muted">

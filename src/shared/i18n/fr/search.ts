@@ -68,7 +68,7 @@ export const frSearch: Catalog = {
   "Önceki dönem karşılaştırılamıyor: Google bu günleri vermiyor.":
     "Comparaison avec la période précédente impossible : Google ne fournit pas ces jours.",
   "Verinin durumu": "État des données",
-  "Kesin günler": "Jours définitifs",
+
   "Kesinleşmemiş gün yok.": "Aucun jour encore en cours de comptage.",
   "Son veri: {date}.": "Dernières données : {date}.",
   "Bu dönem için Google'dan hiç satır gelmedi.":
@@ -360,10 +360,7 @@ export const frSearch: Catalog = {
     "Les derniers jours sont encore en cours de comptage ({clicks} clics) ; exclus des totaux et des comparaisons.",
   "Google'ın gizlediği sorgulardan gelen tıklama: {share}. Bu yüzden sorgu tablolarının toplamı site toplamından küçüktür.":
     "Clics issus des requêtes masquées par Google : {share}. C'est pourquoi les tableaux de requêtes totalisent moins que le site.",
-  "Google'ın satır sınırına ulaşıldı; en az tıklanan sorgu ve sayfalar listelerde eksik.":
-    "La limite de lignes de Google a été atteinte ; les requêtes et pages les moins cliquées manquent dans les listes.",
-  "Günler Google'ın kullandığı Pasifik saatine göredir; veriler {date} gününe kadar kesindir.":
-    "Les jours suivent l'heure du Pacifique de Google ; les données sont définitives jusqu'au {date}.",
+
   Yapılacaklar: "À faire",
   "Search Console verisinde eşiği aşan bir fırsat ya da düşüş bulunmadı.":
     "Aucune opportunité ni baisse au-dessus des seuils dans les données Search Console.",
@@ -384,17 +381,16 @@ export const frSearch: Catalog = {
   "Ortalama sırası 4 ile 20 arasında, en az {impressions} gösterim alan {count} sorgu. Olası kazanç, ilk üçe çıkarsa beklenen ek tıklamadır.":
     "{count} requêtes avec une position moyenne entre 4 et 20 et au moins {impressions} impressions. Le gain possible correspond aux clics supplémentaires attendus si elles atteignent le top trois.",
   "Bu aralıkta sorgu yok.": "Aucune requête dans cette tranche.",
-  "İlk 20 / {total} sorgu": "20 premières requêtes sur {total}",
+
   "Belirgin biçimde az tıklanan sonuç yok.":
     "Aucun résultat n'est nettement sous-cliqué.",
   "Beklenen oran: sitenizde aynı sıradaki sonuçların tıklama oranı.":
     "Taux attendu : le CTR de vos résultats à la même position.",
-  "İlk 10 / {total} sayfa": "10 premières pages sur {total}",
+
   "En az {queries} sorgu ve {impressions} gösterim olmayan sıralar için oran hesaplanmaz.":
     "Les positions sans au moins {queries} requêtes et {impressions} impressions n'ont pas de taux.",
   Önceki: "Avant",
-  Şimdi: "Maintenant",
-  "Yok.": "Aucune.",
+
   "Önceki dönem: {start} – {end}. Tıklama sayıları.":
     "Période précédente : {start} – {end}. Nombre de clics.",
   "Tıklaması düşen sorgular": "Requêtes aux clics en baisse",
@@ -402,26 +398,16 @@ export const frSearch: Catalog = {
   "Tıklaması artan sorgular": "Requêtes aux clics en hausse",
   "Tıklaması artan sayfalar": "Pages aux clics en hausse",
   "Yeni görünen sorgular": "Requêtes nouvellement visibles",
-  "Önceki dönemin tablosu kesildiği için bilinemiyor.":
-    "Inconnu : le tableau de la période précédente a été coupé.",
+
   "Kaybolan sorgular (önceki dönemdeki değerleriyle)":
     "Requêtes perdues (avec leurs chiffres de la période précédente)",
-  "Bu dönemin tablosu kesildiği için bilinemiyor.":
-    "Inconnu : le tableau de cette période a été coupé.",
-  "Bu karşılaştırma için bir yılı aşkın veri gerekir.":
-    "Cette comparaison demande plus d'un an de données.",
+
   "Çeyrek: 91 gün.": "Trimestre : 91 jours.",
   "Son çeyrek": "Dernier trimestre",
   "En iyi çeyrek": "Meilleur trimestre",
-  "Çakışma analizi bu rapor için alınamadı.":
-    "L'analyse des chevauchements n'a pas pu être chargée pour ce rapport.",
-  "Hiçbir sorguda iki sayfanız birbiriyle yarışmıyor.":
-    "Aucune de vos pages ne se concurrence sur une requête.",
-  "{queries} sorguda birden fazla sayfanız yarışıyor; {impressions} gösterim ana sayfa dışındaki sayfalara gitti. Dönem: {start} – {end}.":
-    "Plusieurs de vos pages se concurrencent sur {queries} requêtes ; {impressions} impressions sont allées à d'autres pages que la principale. Période : {start} – {end}.",
+
   "Google'ın tercih ettiği sayfa": "Page préférée par Google",
-  "Yarışan sayfa": "Pages concurrentes",
-  "Bölünen pay": "Part partagée",
+
   "Paylar sitenin toplamına göre.": "Parts du total du site.",
   "Paylar satırların toplamına göre.": "Parts du total des lignes.",
   "İlk {limit} / {total}.": "{limit} premiers sur {total}.",
@@ -430,26 +416,22 @@ export const frSearch: Catalog = {
   "Marka adları: {terms}.": "Noms de marque : {terms}.",
   "Okunan sorguların ortalama sırasına göre.":
     "Selon la position moyenne des requêtes lues.",
-  "Google bu dönem için özel bir sonuç biçimi bildirmedi.":
-    "Google n'a signalé aucun format de résultat spécial pour cette période.",
+
   "Paylar okunan sorguların tıklamasına göre.":
     "Parts des clics des requêtes lues.",
   "{words}+ kelimeli aramalar": "Recherches de {words}+ mots",
   "Google Search Console API, bu mülk için. Başka bir veri kaynağı, tahmini hacim ya da rakip verisi kullanılmadı.":
     "L'API Google Search Console, pour cette propriété. Aucune autre source de données, aucun volume estimé ni donnée de concurrents.",
-  "Toplamlar ve karşılaştırmalar yalnızca Google'ın saymayı bitirdiği günleri kapsar. Günler Pasifik saatine göredir.":
-    "Les totaux et comparaisons ne couvrent que les jours que Google a fini de compter. Les jours suivent l'heure du Pacifique.",
+
   "Site toplamları": "Totaux du site",
   "Site toplamı tarihe göre istenen toplamdan gelir, sorgu ya da sayfa satırlarının toplamından değil. Ortalama sıra gösterime göre ağırlıklıdır; tıklama oranı tıklama bölü gösterimdir.":
     "Le total du site vient de la requête groupée par date, pas de l'addition des lignes de requêtes ou de pages. La position moyenne est pondérée par les impressions ; le CTR est clics divisés par impressions.",
-  "Google az aranan sorguları listelemez ama site toplamına katar; sorgu tabloları bu yüzden site toplamından küçüktür.":
-    "Google ne liste pas les requêtes rarement recherchées mais les compte dans le total du site ; les tableaux de requêtes totalisent donc moins que le site.",
+
   "Kazanç tahminleri": "Estimations de gain",
   "Sitenizin kendi sıra-tıklama oranı eğrisinden hesaplanır; yeterli veri olmayan sıralar için tahmin yapılmaz.":
     "Tirées de la courbe position-CTR propre à votre site ; les positions sans assez de données n'ont pas d'estimation.",
   "Google istekleri": "Requêtes Google",
-  "Bu rapor {count} Google isteğiyle hazırlandı.":
-    "Ce rapport a été créé avec {count} requêtes Google.",
+
   "Yöntem ve sınırlar": "Méthode et limites",
   "{host} arama performansı, {start} – {end}{filters}":
     "Performances de recherche de {host}, {start} – {end}{filters}",

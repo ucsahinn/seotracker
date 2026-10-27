@@ -51,6 +51,7 @@ export function TagChip({
       <button
         type="button"
         title={title}
+        aria-pressed={selected}
         className={`${base} ${interactive} ${ring}`}
         onClick={onClick}
       >

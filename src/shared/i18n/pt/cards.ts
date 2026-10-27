@@ -161,18 +161,11 @@ export const ptCards: Catalog = {
   Tamamla: "Concluir",
   "Güncel denetim": "Auditoria recente",
   "Yapay zeka ajanı": "Agente de IA",
-  "Sitenizin son 7 gün içinde tamamlanmış bir denetimi var.":
-    "O seu site tem uma auditoria concluída nos últimos 7 dias.",
-  "Son 7 günde bu sitenin tamamlanmış denetimi yok. Başka bir adresin denetimi sayılmaz.":
-    "Nenhuma auditoria concluída deste site nos últimos 7 dias. A auditoria de outro endereço não conta.",
+
   Denetle: "Auditar",
-  "Bir ajan bağlandı ve en az bir araç çağırdı.":
-    "Um agente se conectou e chamou pelo menos uma ferramenta.",
-  "Henüz hiçbir ajan bağlanmadı.": "Nenhum agente se conectou ainda.",
+
   "öneri, sayılmaz": "sugestão, não contada",
-  "Önceki {days} güne göre:": "Em relação aos {days} dias anteriores:",
-  "{count} kelime yükseldi": "{count} palavras-chave subiram",
-  "{count} kelime geriledi": "{count} palavras-chave desceram",
+
   "Kullanılmıyor, hizmet hesabı bağlı":
     "Não usado, há uma conta de serviço conectada",
   "Uygulamanın durumu": "Status do app",
@@ -193,17 +186,7 @@ export const ptCards: Catalog = {
   "Aramaların toplamı daha büyük; sayfanın tamamı hedef orana ulaşsa alacağı kadarla sınırlandı.":
     "As pesquisas somam mais; o valor é limitado ao que a página inteira teria com a taxa-alvo.",
   "2. sayfa, 11-20. sıra": "segunda página, posições 11-20",
-  "Son rapor": "Último relatório",
-  "Son 7 günde": "Nos últimos 7 dias",
-  "yazılan ya da güncellenen rapor": "relatórios escritos ou atualizados",
-  Toplam: "Total",
-  "{audit} denetim raporu · {skill} beceriyle · {template} şablonla":
-    "{audit} relatórios de auditoria · {skill} por skill · {template} por modelo",
-  "Denetim raporu": "Relatório de auditoria",
-  "{count} tıklama / 28 gün": "{count} cliques / 28 dias",
-  "Önceki 28 güne göre": "Em relação aos 28 dias anteriores",
-  "Arama verisi arşivde yok": "Sem dados de pesquisa no arquivo",
-  "Son denetim {when}": "Última auditoria {when}",
+
   "Trafiği yüksek, dönüşümü düşük sayfa":
     "páginas com muito tráfego e pouca conversão",
   "Listede gösteriliyor": "Mostrado na lista",
@@ -212,8 +195,7 @@ export const ptCards: Catalog = {
     "Oportunidade de subir “{query}” um degrau",
   "ilk {count} iş birlikte {days} günde en fazla {clicks} ek tıklama getirebilir (üst sınır).":
     "em conjunto, as primeiras {count} tarefas poderiam trazer no máximo {clicks} cliques extra em {days} dias (limite superior).",
-  "İlk {count} iş birlikte {days} günde en fazla {clicks} ek tıklama getirebilir (üst sınır).":
-    "Em conjunto, as primeiras {count} tarefas poderiam trazer no máximo {clicks} cliques extra em {days} dias (limite superior).",
+
   "Ortalama sırası 4–20 olan {count} sorgu; her biri bir basamak yükselirse en fazla {clicks} ek tıklama (üst sınır).":
     "{count} consultas com posição média 4–20; se cada uma subir um degrau, no máximo {clicks} cliques extra (limite superior).",
   "İlk sayfada ama ilk üçün altında. Bir basamak yükselmek (6-10'dan 4-5'e, 4-5'ten 2-3'e) tıklamayı belirgin artırır.":
@@ -225,7 +207,7 @@ export const ptCards: Catalog = {
     "{count} consultas com posição média entre 4 e 20 e pelo menos {impressions} impressões. Se cada uma subir um degrau (6-10 para 4-5, 4-5 para 2-3, 11-20 para a primeira página), juntas poderiam trazer no máximo {clicks} cliques extra (limite superior).",
   "Ortalama sırası 4 ile 20 arasında, en az {impressions} gösterim alan {count} sorgu. Olası kazanç, sorgu bir basamak yükselirse (6-10'dan 4-5'e, 4-5'ten 2-3'e, 11-20'den ilk sayfaya) beklenen en fazla ek tıklamadır.":
     "{count} consultas com posição média entre 4 e 20 e pelo menos {impressions} impressões. O ganho possível é o máximo de cliques extra esperado se uma consulta subir um degrau (6-10 para 4-5, 4-5 para 2-3, 11-20 para a primeira página).",
-  "{title} · {kind} · aç": "{title} · {kind} · abrir",
+
   "Karşılaştırma yapılamadı: tarama kapsamları farklı veya bilinmiyor.":
     "Não é possível comparar: os âmbitos dos rastreios diferem ou são desconhecidos.",
   "{measured} / {total} kontrol ölçüldü.":

@@ -1,3 +1,5 @@
+import { invalidateGoogleCredentials } from "@/client/features/integrations/invalidateGoogleCredentials";
+import { formatDateTime } from "@/client/lib/format";
 import { Skeleton } from "@/client/components/Skeleton";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, ExternalLink } from "lucide-react";
@@ -26,7 +28,6 @@ import {
 
 const SERVICE_ACCOUNT_URL =
   "https://console.cloud.google.com/iam-admin/serviceaccounts";
-const STATUS_KEY = googleServiceAccountStatusOptions().queryKey;
 
 /**
  * The shorter way to connect Google.
@@ -41,6 +42,17 @@ const STATUS_KEY = googleServiceAccountStatusOptions().queryKey;
 export function GoogleServiceAccountSection() {
   const queryClient = useQueryClient();
   const [keyJson, setKeyJson] = React.useState("");
+  const fileInput = React.useRef<HTMLInputElement>(null);
+  const secret = React.useRef("");
+  const fileGeneration = React.useRef(0);
+  const [hasFile, setHasFile] = React.useState(false);
+  React.useEffect(
+    () => () => {
+      secret.current = "";
+      fileGeneration.current++;
+    },
+    [],
+  );
   const [editing, setEditing] = React.useState(false);
   const [confirmingClear, setConfirmingClear] = React.useState(false);
   const [keyError, setKeyError] = React.useState<string | null>(null);
@@ -50,24 +62,26 @@ export function GoogleServiceAccountSection() {
   const stored = Boolean(status?.clientEmail);
   const oauthQuery = useQuery(googleOAuthClientStatusOptions());
 
-  const invalidate = async () => {
-    await queryClient.invalidateQueries({ queryKey: STATUS_KEY });
-    // Both connection cards read which credential the install has.
-    await queryClient.invalidateQueries({ queryKey: ["gscConnection"] });
-    await queryClient.invalidateQueries({ queryKey: ["ga4Connection"] });
-  };
+  const invalidate = () => invalidateGoogleCredentials(queryClient);
 
   const save = useMutation({
-    mutationFn: () => saveGoogleServiceAccount({ data: { keyJson } }),
+    mutationFn: () =>
+      saveGoogleServiceAccount({
+        data: { keyJson: secret.current || keyJson },
+      }),
     onSuccess: async (result) => {
       // A malformed key comes back as a value so the reason survives the trip.
-      // Shown under the textarea, not toasted: the reason names what is
+      // Shown under the secret field, not toasted: the reason names what is
       // wrong with the pasted file, and it should stay beside it.
       if (!result.ok) {
         setKeyError(result.reason);
         return;
       }
       setKeyJson("");
+      secret.current = "";
+      fileGeneration.current++;
+      setHasFile(false);
+      if (fileInput.current) fileInput.current.value = "";
       setEditing(false);
       await invalidate();
       toast.success(t("Hizmet hesabı kaydedildi"));
@@ -85,6 +99,10 @@ export function GoogleServiceAccountSection() {
     mutationFn: () => clearGoogleServiceAccount(),
     onSuccess: async () => {
       setKeyJson("");
+      secret.current = "";
+      fileGeneration.current++;
+      setHasFile(false);
+      if (fileInput.current) fileInput.current.value = "";
       setEditing(false);
       setConfirmingClear(false);
       await invalidate();
@@ -116,10 +134,18 @@ export function GoogleServiceAccountSection() {
 
   // Not while loading: the empty form flashed up before a stored account
   // replaced it.
-  const showForm = !statusQuery.isPending && (editing || !stored);
+  const showForm =
+    !statusQuery.isPending && (editing || (!statusQuery.isError && !stored));
 
   return (
     <section id="hizmet-hesabi" className="scroll-mt-16 space-y-3">
+      {status?.updatedAt ? (
+        <p className="text-xs text-muted">
+          {t("Kimlik kayıt tarihi: {date}", {
+            date: formatDateTime(status.updatedAt),
+          })}
+        </p>
+      ) : null}
       <SectionHeaderRow
         badge={
           statusQuery.isError ? unreadableBadge() : serviceAccountBadge(status)
@@ -131,27 +157,18 @@ export function GoogleServiceAccountSection() {
       </SectionHeaderRow>
       {stored ? (
         <p className="text-xs font-medium text-muted">
-          {activeCredentialNote(
-            "service_account",
-            activeGoogleCredential(oauthQuery.data, status),
-          )}
+          {statusQuery.isError
+            ? t(
+                "Kullanılan kimlik okunamadı. Google kimlik durumunu yeniden yükleyin.",
+              )
+            : activeCredentialNote(
+                "service_account",
+                activeGoogleCredential(oauthQuery.data, status),
+              )}
         </p>
       ) : null}
 
-      <p className="text-sm text-muted">
-        {t(
-          "Yukarıdaki Google erişim anahtarı yerine bunu kullanabilirsiniz. Hizmet hesabında izin ekranı, test kullanıcısı ve yönlendirme adresi adımları yok. Google Cloud'da hesabı açıp JSON dosyasını indirin ve buraya yapıştırın, sonra hesabın e-posta adresini Search Console'da mülkünüze, bir meslektaşınızı eklermiş gibi kullanıcı olarak ekleyin.",
-        )}{" "}
-        <a
-          href={SERVICE_ACCOUNT_URL}
-          target="_blank"
-          rel="noreferrer noopener"
-          className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
-        >
-          {t("Hizmet hesapları")}
-          <ExternalLink className="size-3" />
-        </a>
-      </p>
+      <ServiceAccountInstructions stored={stored} />
 
       {statusQuery.isPending ? <Skeleton variant="form" rows={1} /> : null}
 
@@ -201,7 +218,10 @@ export function GoogleServiceAccountSection() {
 
           {/* The step people forget: a stored key alone reaches nothing until
               the account is a user on the property. */}
-          <div className="rounded-box border border-base-300 bg-base-200/40 p-3">
+          <details className="rounded-box border border-base-300 bg-base-200/40 p-3">
+            <summary className="min-h-11 cursor-pointer py-3 text-sm">
+              {t("Mülk izinlerini ayarla")}
+            </summary>
             <p className="text-sm text-muted">
               {fillParts(
                 t(
@@ -227,7 +247,7 @@ export function GoogleServiceAccountSection() {
                 successMessage={t("Hizmet hesabı adresi kopyalandı")}
               />
             </div>
-          </div>
+          </details>
         </div>
       ) : null}
 
@@ -239,18 +259,58 @@ export function GoogleServiceAccountSection() {
           >
             {t("Hizmet hesabı dosyası (JSON)")}
           </label>
-          <textarea
+          <input
+            ref={fileInput}
+            type="file"
+            accept=".json,application/json"
+            className="file-input w-full"
+            disabled={save.isPending}
+            aria-label={t("Hizmet hesabı dosyası (JSON)")}
+            onChange={async (event) => {
+              const file = event.target.files?.[0];
+              const generation = ++fileGeneration.current;
+              secret.current = "";
+              setHasFile(false);
+              setKeyJson("");
+              setKeyError(null);
+              if (!file) return;
+              if (file.size > 100_000) {
+                setKeyError(
+                  t(
+                    "JSON dosyası çok büyük. Google Cloud'dan indirdiğiniz hizmet hesabı anahtarını seçin.",
+                  ),
+                );
+                return;
+              }
+              try {
+                const text = await file.text();
+                if (generation !== fileGeneration.current) return;
+                secret.current = text;
+                setHasFile(true);
+              } catch {
+                if (generation === fileGeneration.current)
+                  setKeyError(t("Dosya okunamadı. Dosyayı yeniden seçin."));
+              }
+            }}
+          />
+          <input
             id="service-account-key"
+            type="password"
             autoComplete="off"
             spellCheck={false}
-            className={`textarea textarea-bordered h-32 w-full font-mono text-xs ${keyError ? "textarea-error" : ""}`}
-            placeholder='{ "type": "service_account", "project_id": "...", ... }'
+            className="input input-bordered w-full"
+            disabled={save.isPending}
             value={keyJson}
+            aria-label={t("JSON içeriğini gizli yapıştır")}
+            placeholder={t("JSON içeriğini gizli yapıştır")}
             onChange={(event) => {
               setKeyJson(event.target.value);
+              fileGeneration.current++;
+              secret.current = "";
+              setHasFile(false);
               setKeyError(null);
             }}
-            aria-invalid={keyError ? true : undefined}
+            aria-invalid={!!keyError}
             aria-describedby={
               keyError ? "service-account-key-error" : undefined
             }
@@ -268,17 +328,21 @@ export function GoogleServiceAccountSection() {
             <button
               type="button"
               className="btn btn-primary btn-sm"
-              disabled={keyJson.trim() === "" || save.isPending}
+              disabled={(!hasFile && keyJson.trim() === "") || save.isPending}
               onClick={() => save.mutate()}
             >
               {t("Kaydet")}
             </button>
-            {stored ? (
+            {stored || hasFile || keyJson ? (
               <button
                 type="button"
                 className="btn btn-sm btn-ghost"
                 onClick={() => {
                   setKeyJson("");
+                  secret.current = "";
+                  fileGeneration.current++;
+                  setHasFile(false);
+                  if (fileInput.current) fileInput.current.value = "";
                   setEditing(false);
                   setKeyError(null);
                 }}
@@ -307,5 +371,29 @@ export function GoogleServiceAccountSection() {
         />
       ) : null}
     </section>
+  );
+}
+
+function ServiceAccountInstructions({ stored }: { stored: boolean }) {
+  return (
+    <details open={!stored}>
+      <summary className="min-h-11 cursor-pointer py-3 text-sm">
+        {t("Hizmet hesabı kurulum adımları")}
+      </summary>
+      <p className="text-sm text-muted">
+        {t(
+          "Yukarıdaki Google erişim anahtarı yerine bunu kullanabilirsiniz. Hizmet hesabında izin ekranı, test kullanıcısı ve yönlendirme adresi adımları yok. Google Cloud'da hesabı açıp JSON dosyasını indirin ve burada seçin, sonra hesabın e-posta adresini Search Console'da mülkünüze, bir meslektaşınızı eklermiş gibi kullanıcı olarak ekleyin.",
+        )}{" "}
+        <a
+          href={SERVICE_ACCOUNT_URL}
+          target="_blank"
+          rel="noreferrer noopener"
+          className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
+        >
+          {t("Hizmet hesapları")}
+          <ExternalLink className="size-3" />
+        </a>
+      </p>
+    </details>
   );
 }

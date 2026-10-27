@@ -1,3 +1,4 @@
+import { getPanelAuditSelection } from "@/server/features/audit/services/panelAuditSelection";
 import { count, desc, eq, max, sql, and } from "drizzle-orm";
 import { db } from "@/db";
 import {
@@ -72,16 +73,26 @@ async function pageSpeedUsageSince(
   };
 }
 
-async function latestAuditPages(
-  projectId: string,
-): Promise<{ pages: number; startedAt: string } | null> {
-  const [row] = await db
-    .select({ pages: audits.pagesCrawled, startedAt: audits.startedAt })
-    .from(audits)
-    .where(eq(audits.projectId, projectId))
-    .orderBy(desc(audits.startedAt))
-    .limit(1);
-  return row ?? null;
+async function latestAuditPages(projectId: string) {
+  const { snapshot, latestAttempt } = await getPanelAuditSelection(projectId);
+  return {
+    snapshot: snapshot
+      ? {
+          pages: snapshot.pagesCrawled,
+          startedAt: snapshot.startedAt,
+          auditId: snapshot.id,
+          startUrl: snapshot.startUrl,
+          status: snapshot.status,
+        }
+      : null,
+    latestAttempt: latestAttempt
+      ? {
+          auditId: latestAttempt.id,
+          startedAt: latestAttempt.startedAt,
+          status: latestAttempt.status,
+        }
+      : null,
+  };
 }
 
 async function reportFigures(projectId: string): Promise<{

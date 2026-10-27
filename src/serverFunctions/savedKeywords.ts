@@ -1,3 +1,9 @@
+import { z } from "zod";
+import { savedWatchlistSchema } from "@/shared/savedWatchlist";
+import {
+  readSavedWatchlist,
+  readSavedHistory,
+} from "@/server/features/keywords/services/SavedWatchlistService";
 import { createServerFn } from "@tanstack/react-start";
 import {
   deleteSavedKeywordTagSchema,
@@ -33,6 +39,7 @@ export const getSavedKeywords = createServerFn({ method: "POST" })
     });
   });
 
+/** @public Inventory-only RPC retained for compatibility with existing consumers. */
 export const exportSavedKeywords = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)
   .validator(exportSavedKeywordsSchema)
@@ -81,3 +88,17 @@ export const removeSavedKeywords = createServerFn({
   .handler(async ({ data, context }) => {
     return KeywordResearchService.removeSavedKeywords(context.projectId, data);
   });
+
+export const getSavedWatchlist = createServerFn({ method: "POST" })
+  .middleware(requireProjectContext)
+  .validator(savedWatchlistSchema)
+  .handler(({ data, context }) =>
+    readSavedWatchlist({ ...data, projectId: context.projectId }),
+  );
+
+export const getSavedHistory = createServerFn({ method: "POST" })
+  .middleware(requireProjectContext)
+  .validator(savedWatchlistSchema.extend({ savedId: z.string().min(1) }))
+  .handler(({ data, context }) =>
+    readSavedHistory({ ...data, projectId: context.projectId }),
+  );

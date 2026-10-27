@@ -1,64 +1,27 @@
 ---
 title: Proje bilgisi
-description: Uygulamanın kendi başına bilemeyeceğini buraya yazarsınız: işiniz, hedefiniz, rakipleriniz, önemli sayfalarınız. Asistanınız önce burayı okur.
+description: Proje bilgisi, sizin ve bağladığınız ajanın kullanabileceği yerel notlardır. Her ajanın bunları okuduğu veya metnin doğrulandığı varsayılmaz.
 screen: Proje bilgisi
 route: /p/<proje>/context
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
-Sitenizi asistanınıza bir kez anlatırsınız, sonra bir daha anlatmazsınız.
+Proje bilgisi, sizin ve bağladığınız ajanın kullanabileceği yerel notlardır. Her ajanın bunları okuduğu veya metnin doğrulandığı varsayılmaz.
 
-Google'ın bilmediği şeyleri **Proje bilgisi** ekranına yazarsınız. Ne sattığınızı, şimdi neyi hedeflediğinizi, rakibinizin kim olduğunu, hangi sayfaların para kazandırdığını ve nasıl yazılmasını istediğinizi anlatırsınız. Ekranı siz doldurabilirsiniz, yapay zekâ asistanınız da doldurabilir (ekranda "ajan" yazar). Asistan işe başlamadan önce burayı okur, öğrendiklerini de buraya yazar. Yanlış bir şey görürseniz kendiniz düzeltin. Asistan kullanmasanız da işinize yarar. Altı ay sonra "neden bu sayfaya odaklanmıştık" diye sorarsanız, cevap burada olur.
+## Önce hedefinizi yazın
 
-## Ekranda neler var
+Üstte dolu ana bölüm sayısı ve kayıtlı hedef görünür. İlk boş bölüme bağlantı veya **Bölüme git** seçimiyle ilerleyin. İşin özeti, şu anki hedef, konumlandırma ve yazım tercihleri en fazla 4.000 karakterdir. Son yazan ve mutlak güncelleme zamanı her bölümde görünür. **Değişiklikleri kaydet** yalnızca değişen ana bölümleri kaydeder.
 
-**Dört ana bölüm.** Bunlar **İşin özeti**, **Şu anki hedef**, **Konumlandırma** (kendinizi pazarda nasıl anlattığınız) ve **Yazım tercihleri**. Hepsine serbestçe yazarsınız, her biri en çok 4.000 karakter alır. Altında kimin ne zaman güncellediği görünür.
+Rakipler ve önemli sayfalar isteğe bağlı kısa listelerdir; sıralama veya dönüşüm ölçümü değildir. Her listede en fazla 100 kayıt olabilir. Rakip alan adı 255, ad 120, not 500 karakterdir. Sayfa adresi 2.048, hedef konu 200, not 500 karakterdir. Roller sizin verdiğiniz etiketlerdir. Özel bölümleri ajan ekler; siz düzenleyip kaldırabilirsiniz. En fazla 20 özel bölüm, 120 karakter başlık ve 4.000 karakter içerik saklanır.
 
-**Özel bölümler.** Dört bölüme sığmayan bir konu varsa kendi başlığınızı açarsınız. En çok 20 özel bölüm açabilirsiniz, başlık en çok 120 karakter olur.
+## Kaydetme ve yenileme
 
-**Rakipler.** Alan adını yazmak zorunludur. Ad ve not isteğe bağlıdır. En çok 100 rakip ekleyebilirsiniz, not en çok 500 karakter olur. Uygulama rakibin verisini çekmez. Liste sizin ve asistanınızın hatırlaması için var.
+Yenileme notları ve kurulum durumunu yeniden okur. Yenileme hatasında kayıtlı bilgi ve taslaklar korunur, uyarı görünür. Kaydedilmemiş ana veya satır içi değişiklik varken sayfadan ayrılma uyarısı çıkar. Aynı bölümü eşzamanlı düzenleyen bir ajanla kayıt çakışmasını sunucu henüz engellemez; birlikte düzenliyorsanız kaydetmeden önce son metni karşılaştırın.
 
-**Önemli sayfalar.** Her sayfa için adres, rol, konu ve not yazarsınız. Roller şunlar:
+**Ajanla taslak hazırla** altındaki istem, ajandan kaydetmeden önce onay istemesini ister. Uygulama araçları ayrıca onay beklemeden hemen yazabilir. Proje kimliği okunamazsa istem hazırlanmaz.
 
-- **Merkez sayfa**: bir konunun giriş sayfası.
-- **Destek sayfası**: merkez sayfayı besleyen alt sayfa.
-- **Dönüşüm sayfası**: para kazandıran ya da form olan sayfa.
-- **Diğer**.
+**Araştırma günlüğü** en yeni 20 kaydı gösterir. Not tarihi sunucunun UTC günüdür; not en fazla 1.000 karakterdir. Doksan günlük temizleme yeni not eklenirken yapılır, bu nedenle yeni kayıt yoksa eski notlar kalabilir. Görünen liste tüm geçmiş değildir.
 
-En çok 100 sayfa ekleyebilirsiniz. Adresler https ile başlayacak şekilde düzeltilir.
+**Kaynak ve kurulum** altı ortak yapılandırma sinyalini sayar. Eksik ve okunamayan ayrı gösterilir; rakipler ve önemli sayfalar sayılmaz. Bağlantı kaydı canlı veri testi, PageSpeed anahtarı kota garantisi, ajan araç çağrısı bu projeyi okuduğunun kanıtı değildir. Bu bir SEO başarı puanı değildir.
 
-**Araştırma günlüğü.** Asistan "şunu araştırdım, şu çıktı" diye tarihli notlar bırakır. Bu notları yalnızca asistan yazar, her not en çok 1.000 karakter olur. İsterseniz siz silebilirsiniz. Notlar 90 gün sonra kendiliğinden silinir. Ekranda en yeni 20 not görünür.
-
-**Ajan kartı.** Kartta iki hazır metin var: "Ajanınıza doldurtun" ve "Ajanınıza gözden geçirtin". **İstemi kopyala**'ya basıp metni asistanınıza yapıştırırsınız. Proje boşsa ilk metin asistandan size birkaç soru sormasını, sonra bölümleri doldurmasını ister.
-
-## Nasıl kullanılır
-
-1. Projeyi açar açmaz **İşin özeti**'ne üç beş cümle yazın. Ne sattığınızı, kime sattığınızı, sitenizin hangi dillerde olduğunu ve dönüşüm sayfanızı söyleyin. Asistan her raporu bu paragrafa göre hazırlar.
-2. **Şu anki hedef**'i somut yazın. "Trafik" yazmayın. "Ürün sayfalarının dizine (Google'ın sayfa listesine) girmesi" ya da "demo formundan ayda beş talep" yazın. Asistan önerilerini buna göre sıralar.
-3. **Önemli sayfalar**'a önce dönüşüm sayfalarını, sonra merkez sayfaları ekleyin. Asistan neye öncelik vereceğini buradan anlar.
-4. **Yazım tercihleri**'ne kullanılmasını istemediğiniz kelimeleri ve tonu yazın. Örneğin "sektör lideri deme", "siz dili", "sürüm numarası ver". Asistanın raporları bu kurallara uyar.
-5. Asistan kullanıyorsanız ilk gün **Ajanınıza doldurtun** metnini kopyalayıp yapıştırın. Asistan bölümleri sizinle konuşarak doldurur. Ayda bir araştırma günlüğünü okuyun, yanlış gördüklerinizi düzeltin.
-
-## Sayılar nasıl hesaplanır
-
-Bu ekranda hesaplanan bir sayı yok, yalnızca sınırlar var. Sınırlar yukarıda yazıyor.
-
-Asistan tek seferde en çok 50 değişiklik yapabilir. Her değişiklik hemen yazılır, size onay sorulmaz. Bu yüzden asistanınıza "yazmadan önce bana sor" demeyi alışkanlık edinin. İyi kurulmuş asistan becerileri zaten sorar.
-
-Önemli sayfa adresi en çok 2.048 karakter olabilir. Rakip alan adı en çok 255, ad en çok 120 karakterdir. Günlük notlarının tarihini uygulama yazar, asistan tarih uyduramaz.
-
-## Sık sorulanlar
-
-**Asistan yanlış bir şey yazmış, ne yapayım?** Bölümü açıp düzeltin. Son güncelleyen olarak sizin adınız görünür. Asistan bir sonraki okuyuşta sizin düzeltmenizi görür.
-
-**Rakip ekledim, verisi gelmedi.** Gelmez. Uygulama rakip verisi çekmez. Liste, asistanın web araması yaparken nelere bakacağını bilmesi için var.
-
-**Günlükteki not kayboldu.** 90 günden eski notlar silinir. Kalıcı bilgiyi bölümlere taşıyın. Günlük geçici bir defterdir.
-
-**Bu bilgiler Google'a gider mi?** Hayır. Bilgiler bu bilgisayarda kalır. Yalnızca bağladığınız asistan okur.
-
-## Sınırlar
-
-Ekran serbest yazıdır. Yazdıklarınızın birbiriyle tutarlı olup olmadığına bakmaz. Çelişkili yazarsanız asistan bunu fark etmeyebilir. Rakipler ve önemli sayfalar bir hatırlatma listesidir, izleme aracı değildir. Araştırma günlüğüne yalnızca asistan yazar. Kendi notlarınızı bölümlere yazın.
-
-<!-- Kaynaklar: src/routes/_project/p/$projectId/context.tsx; src/routes/_project/p/$projectId/settings/context.tsx; src/client/features/projects/context/sectionCopy.ts; src/server/features/project-context/*; src/types/schemas/projectContext.ts; src/server/mcp/server.ts (update_project_context) -->
+<!-- Sources: src/routes/_app/projects.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/project-context/; src/server/features/projects/services/ProjectOverviewService.ts; src/server/features/project-context/ -->

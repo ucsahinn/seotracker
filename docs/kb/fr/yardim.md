@@ -18,11 +18,10 @@ Si quelque chose ne va pas, regardez d'abord ici. Cet écran contrôle votre ins
 - **Télécharger le paquet de diagnostic** : télécharge le fichier à joindre quand vous signalez un problème. Il ne contient aucune valeur secrète.
 - **Ouvrir le guide** : ouvre le guide sur seowatcher.io.
 - **seowatcher.io** : ouvre le site de l'application ; la page de téléchargement et le guide s'y trouvent.
-- **Notes de version** : mène aux notes de version dans Paramètres.
-- **Copier l'invite de configuration** : copie le texte d'installation à coller dans votre assistant IA (« l'agent » dans l'application).
+- **Notes de version** : ouvre l’écran dédié aux notes de version (`/release-notes`).
 - **Configuration de l'agent** : mène à l'écran de connexion de l'assistant.
 
-**État de l'application.** La carte regarde cette installation elle-même. La liste de configuration d'un projet se trouve dans le Tableau de bord et dans les Infos du projet, pas ici. La carte vérifie quatre choses : **Connexion et accès**, **Connexion Google**, **Clé PageSpeed**, **Base de données**. En haut, elle indique « Tout est en ordre. » ou « N éléments nécessitent votre attention. ». En dessous, on voit la ligne de version (« Sürüm X, güncel. » (Version X, à jour.) ou « yeni sürüm Y var » (une nouvelle version Y existe)) et l'heure de la dernière vérification. Le bouton à côté d'une ligne en difficulté vous mène au réglage concerné : **Ouvrir les Paramètres** ou **Saisir la clé**. **Copier le résumé** copie le texte de la carte dans le presse-papiers.
+**État de l’application.** La carte vérifie l’accès, les paramètres de connexion Google, la clé PageSpeed, l’environnement d’exécution et la base de données de cette installation. Un contrôle réussi ne garantit ni un site sans erreur ni des données Google à jour. Un réglage non lu ne vaut pas un contrôle réussi. Lisez l’avertissement puis utilisez **Revérifier l’état**. La version et l’heure du contrôle situent le résultat. **Copier le résumé** copie cet état ; **Ouvrir les connexions** mène aux connexions du projet.
 
 **Avertissement sur le numéro de port.** Si le paquet Windows s'ouvre sur un autre numéro de port parce qu'un autre programme occupe 3001 (par exemple une ancienne copie Docker), une bande jaune apparaît en haut de chaque écran de l'application : « seowatcher tourne cette fois sur 3002, car un autre programme utilise 3001 (par exemple une ancienne copie Docker). La connexion Google est configurée pour 3001 ; fermez ce programme et redémarrez seowatcher. » La bande est là au cas où vous auriez manqué la notification de la barre des tâches. La connexion Google revient à l'adresse 3001 et échoue si vous avez ouvert l'application sur 3002. Le bouton de fermeture à droite de la bande la masque pour cet onglet. La même phrase est aussi écrite dans la carte **État de l'application**. Pour résoudre, fermez le programme qui occupe 3001, puis choisissez **Yeniden başlat** (Redémarrer) dans le menu de la zone de notification. L'application revient sur 3001 et la bande disparaît. Si aucun autre programme ne l'utilise, l'application revient de toute façon sur 3001 au prochain démarrage.
 
@@ -38,7 +37,7 @@ Si quelque chose ne va pas, regardez d'abord ici. Cet écran contrôle votre ins
 
 1. Si quelque chose ne fonctionne pas, ouvrez d'abord cet écran et lisez l'avertissement de la carte.
 2. Cliquez sur le bouton à côté de l'avertissement, il vous mène au bon réglage. Faites le réglage, revenez et cliquez sur **Revérifier l'état**.
-3. Si la carte dit « Tout est en ordre. » mais que le problème persiste, regardez les rubriques **Problèmes courants**.
+3. Si les contrôles d’installation réussissent mais que le problème persiste, consultez **Problèmes courants** et l’écran du projet concerné.
 4. Si le problème n'est toujours pas résolu, cliquez sur **Télécharger le paquet de diagnostic** et joignez le fichier au signalement sur GitHub. Avec le paquet Windows, **Sorunu bildir (GitHub)** (Signaler un problème (GitHub)), dans le menu de la barre des tâches, fait la même chose en un clic.
 
 ## Questions fréquentes
@@ -53,4 +52,8 @@ Si quelque chose ne va pas, regardez d'abord ici. Cet écran contrôle votre ins
 
 Cet écran ne contrôle que l'installation elle-même. Pour trouver un problème sur votre site, regardez l'écran Audit du site ; pour voir un problème du côté de Google, regardez l'écran État de l'indexation.
 
-<!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/support/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->
+## Quel écran utiliser ?
+
+Le [Tableau de bord](/docs/panel/) résume la configuration et les données du projet sélectionné. Les [Opportunités](/docs/firsatlar/) aident à choisir des actions à partir des données Search Console. Le [Suivi du classement](/docs/siralama-takibi/) suit la position moyenne des mots-clés enregistrés dans les données Google, pas les résultats de recherche en direct. Si des données manquent, vérifiez les connexions du projet, la période et les avertissements de couverture. L’état de l’installation ne valide pas ces rapports.
+
+<!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/quotas/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->

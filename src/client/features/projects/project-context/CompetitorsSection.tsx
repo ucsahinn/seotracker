@@ -3,6 +3,7 @@ import { Pencil, Plus } from "lucide-react";
 import type { ProjectContextUpdate } from "@/types/schemas/projectContext";
 import {
   ConfirmDeleteButton,
+  ContextSaveError,
   EmptyListNote,
   FormActions,
   listClass,
@@ -12,6 +13,7 @@ import {
   useContextUpdate,
   type ContextCompetitor,
 } from "./shared";
+import { useDirtyDraft } from "./DraftGuard";
 import { t } from "@/shared/i18n";
 
 export function CompetitorsSection({
@@ -48,6 +50,9 @@ export function CompetitorsSection({
       onSuccess: () => {
         setAdding(false);
         setEditingId(null);
+        requestAnimationFrame(() =>
+          document.getElementById("context-competitors")?.focus(),
+        );
       },
     });
   };
@@ -56,7 +61,7 @@ export function CompetitorsSection({
     <section
       id="context-competitors"
       tabIndex={-1}
-      className="scroll-mt-6 space-y-3 outline-none"
+      className="scroll-mt-6 space-y-3 focus-visible:outline-2 focus-visible:outline-primary"
     >
       <SectionHeader
         title={t("Rakipler")}
@@ -64,7 +69,7 @@ export function CompetitorsSection({
         action={
           <button
             type="button"
-            className="btn btn-ghost btn-xs"
+            className="btn btn-ghost btn-xs min-h-11 min-w-11"
             onClick={() => setAdding(true)}
           >
             <Plus className="size-3.5" />
@@ -73,11 +78,15 @@ export function CompetitorsSection({
         }
       />
 
+      <ContextSaveError error={update.error} />
       {adding ? (
         <div className={listClass}>
           <CompetitorForm
             pending={update.isPending}
-            onCancel={() => setAdding(false)}
+            onCancel={() => {
+              setAdding(false);
+              document.getElementById("context-competitors")?.focus();
+            }}
             onSave={(draft) => save(null, draft)}
           />
         </div>
@@ -99,26 +108,26 @@ export function CompetitorsSection({
                 <CompetitorForm
                   initial={competitor}
                   pending={update.isPending}
-                  onCancel={() => setEditingId(null)}
+                  onCancel={() => {
+                    setEditingId(null);
+                    document.getElementById("context-competitors")?.focus();
+                  }}
                   onSave={(draft) => save(competitor.domain, draft)}
                 />
               </li>
             ) : (
-              <li
-                key={competitor.id}
-                className="flex items-start justify-between gap-3 p-3"
-              >
+              <li key={competitor.id} className="flex flex-col gap-3 p-3">
                 <div className="min-w-0 space-y-0.5">
                   <div className="flex flex-wrap items-baseline gap-x-2">
                     <span
-                      className="truncate text-sm font-medium"
+                      className="break-all text-sm font-medium"
                       title={competitor.domain}
                     >
                       {competitor.domain}
                     </span>
                     {competitor.name ? (
                       <span
-                        className="truncate text-xs text-muted"
+                        className="break-all text-xs text-muted"
                         title={competitor.name}
                       >
                         {competitor.name}
@@ -126,7 +135,9 @@ export function CompetitorsSection({
                     ) : null}
                   </div>
                   {competitor.notes ? (
-                    <p className="text-sm text-muted">{competitor.notes}</p>
+                    <p className="break-words text-sm text-muted">
+                      {competitor.notes}
+                    </p>
                   ) : null}
                   <Provenance
                     by={competitor.updatedBy}
@@ -136,7 +147,7 @@ export function CompetitorsSection({
                 <RowActions>
                   <button
                     type="button"
-                    className="btn btn-ghost btn-xs"
+                    className="btn btn-ghost btn-xs min-h-11 min-w-11"
                     aria-label={t("{domain} rakibini düzenle", {
                       domain: competitor.domain,
                     })}
@@ -184,6 +195,12 @@ function CompetitorForm({
     notes: initial?.notes ?? "",
   });
 
+  useDirtyDraft(
+    draft.domain !== (initial?.domain ?? "") ||
+      draft.name !== (initial?.name ?? "") ||
+      draft.notes !== (initial?.notes ?? ""),
+  );
+
   return (
     <form
       className="space-y-2 bg-base-200/40 p-3"
@@ -194,39 +211,61 @@ function CompetitorForm({
       }}
     >
       <div className="grid gap-2 sm:grid-cols-2">
-        <input
-          autoFocus
-          type="text"
-          value={draft.domain}
-          onChange={(event) =>
-            setDraft({ ...draft, domain: event.target.value })
-          }
-          placeholder="competitor.com"
-          maxLength={255}
-          className="input input-bordered input-sm w-full"
-          aria-label={t("Rakip alan adı")}
-        />
-        <input
-          type="text"
-          value={draft.name}
-          onChange={(event) => setDraft({ ...draft, name: event.target.value })}
-          placeholder={t("Ad (isteğe bağlı)")}
-          maxLength={120}
-          className="input input-bordered input-sm w-full"
-          aria-label={t("Rakip adı")}
-        />
+        <label className="block space-y-1 text-xs text-muted">
+          <span>{t("Rakip alan adı")}</span>
+          <input
+            autoFocus
+            type="text"
+            value={draft.domain}
+            onChange={(event) =>
+              setDraft({ ...draft, domain: event.target.value })
+            }
+            placeholder="competitor.com"
+            maxLength={255}
+            className="input input-bordered input-sm w-full"
+            aria-label={t("Rakip alan adı")}
+          />
+          <span className="block text-xs text-muted">
+            {t("En fazla {count} karakter", { count: 255 })}
+          </span>
+        </label>
+        <label className="block space-y-1 text-xs text-muted">
+          <span>{t("Rakip adı")}</span>
+          <input
+            type="text"
+            value={draft.name}
+            onChange={(event) =>
+              setDraft({ ...draft, name: event.target.value })
+            }
+            placeholder={t("Ad (isteğe bağlı)")}
+            maxLength={120}
+            className="input input-bordered input-sm w-full"
+            aria-label={t("Rakip adı")}
+          />
+          <span className="block text-xs text-muted">
+            {t("En fazla {count} karakter", { count: 120 })}
+          </span>
+        </label>
       </div>
-      <input
-        type="text"
-        value={draft.notes}
-        onChange={(event) => setDraft({ ...draft, notes: event.target.value })}
-        placeholder={t(
-          "Neden önemliler? Örn. her karşılaştırma aramasında önde (isteğe bağlı)",
-        )}
-        maxLength={500}
-        className="input input-bordered input-sm w-full"
-        aria-label={t("Rakip notları")}
-      />
+      <label className="block space-y-1 text-xs text-muted">
+        <span>{t("Rakip notları")}</span>
+        <input
+          type="text"
+          value={draft.notes}
+          onChange={(event) =>
+            setDraft({ ...draft, notes: event.target.value })
+          }
+          placeholder={t(
+            "Neden önemliler? Örn. her karşılaştırma aramasında önde (isteğe bağlı)",
+          )}
+          maxLength={500}
+          className="input input-bordered input-sm w-full"
+          aria-label={t("Rakip notları")}
+        />
+        <span className="block text-xs text-muted">
+          {t("En fazla {count} karakter", { count: 500 })}
+        </span>
+      </label>
       <FormActions
         pending={pending}
         disabled={!draft.domain.trim()}

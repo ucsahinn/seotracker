@@ -25,11 +25,7 @@ export const deSettingsContinued: Catalog = {
   "Sürümünüz v{version}. Güncelleme kontrolü kapalı.":
     "Ihre Version: v{version}. Die Updateprüfung ist deaktiviert.",
   "Kurulumunuzun durumu": "Status Ihrer Installation",
-  "Her şey yolunda.": "Alles ist in Ordnung.",
-  "{count} şey dikkat istiyor.": {
-    one: "{count} Punkt erfordert Ihre Aufmerksamkeit.",
-    other: "{count} Punkte erfordern Ihre Aufmerksamkeit.",
-  },
+
   "Son kontrol: {date}": "Zuletzt geprüft: {date}",
   "Özeti kopyala": "Zusammenfassung kopieren",
   "Özet kopyalandı. İçinde gizli değer yok.":
@@ -42,7 +38,7 @@ export const deSettingsContinued: Catalog = {
   bağlı: "verbunden",
   "bağlı değil": "nicht verbunden",
   "Bağlantıları aç": "Verbindungen öffnen",
-  "Kurulum türü belirleniyor…": "Installationstyp wird ermittelt …",
+
   "Sık sorunlar": "Häufige Probleme",
   "Sayfa açılmıyor ya da uygulama kapalı":
     "Die Seite öffnet sich nicht oder die App läuft nicht",

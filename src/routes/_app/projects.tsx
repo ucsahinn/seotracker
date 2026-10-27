@@ -1,3 +1,4 @@
+import { sort as sortProjects } from "remeda";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { Skeleton } from "@/client/components/Skeleton";
 import { Spinner } from "@/client/components/Spinner";
@@ -20,6 +21,7 @@ import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { getLastProjectId } from "@/client/lib/active-project";
 import { CreateProjectModal } from "@/client/features/projects/CreateProjectModal";
 import { ProjectFacts } from "@/client/features/projects/ProjectFacts";
+import { invalidateProjectLists } from "@/client/features/projects/projectQueries";
 import { t } from "@/shared/i18n";
 
 export const Route = createFileRoute("/_app/projects")({
@@ -27,6 +29,8 @@ export const Route = createFileRoute("/_app/projects")({
 });
 
 function ProjectsPage() {
+  const [search, setSearch] = React.useState("");
+  const [sort, setSort] = React.useState("name");
   const [creating, setCreating] = React.useState(false);
   // Read after mount to keep SSR/first render stable.
   const [currentProjectId, setCurrentProjectId] = React.useState<string | null>(
@@ -45,26 +49,40 @@ function ProjectsPage() {
     queryKey: ["projectsOverview"],
     queryFn: () => getProjectsOverview(),
   });
-  const overviewOf = (id: string) =>
-    overviewQuery.data?.find((row) => row.projectId === id);
+  const overviewById = new Map(
+    overviewQuery.data?.map((row) => [row.projectId, row]),
+  );
+  const visible = sortProjects(
+    projects.filter((project) =>
+      (project.name + " " + (project.domain ?? ""))
+        .toLowerCase()
+        .includes(search.toLowerCase()),
+    ),
+    (a, b) =>
+      (sort === "domain" ? (a.domain ?? "") : a.name).localeCompare(
+        sort === "domain" ? (b.domain ?? "") : b.name,
+      ),
+  );
+  const refresh = async () => {
+    await Promise.all([projectsQuery.refetch(), overviewQuery.refetch()]);
+  };
 
   return (
     <PageShell width="reading">
       <PageHeader
         title={t("Projeler")}
         description={t(
-          "Her projenin kendi Search Console bağlantısı, arama verisi ve site denetimleri vardır.",
+          "Sitelerinizi açın; arşiv verisini, son denetimi ve eksik bağlantıları burada görün.",
         )}
         actions={
           <PageActions>
             <RefreshButton
-              onRefresh={() => void projectsQuery.refetch()}
-              isFetching={projectsQuery.isFetching}
-              dataUpdatedAt={projectsQuery.dataUpdatedAt}
+              onRefresh={() => void refresh()}
+              isFetching={projectsQuery.isFetching || overviewQuery.isFetching}
             />
             <button
               type="button"
-              className="btn btn-primary btn-sm shrink-0"
+              className="btn btn-primary btn-sm min-h-11 shrink-0"
               onClick={() => setCreating(true)}
             >
               <Plus className="size-4" />
@@ -74,9 +92,48 @@ function ProjectsPage() {
         }
       />
 
+      {projects.length > 1 ? (
+        <div className="mb-4 grid gap-3 sm:grid-cols-2">
+          <label className="space-y-1 text-sm">
+            <span>{t("Proje ara")}</span>
+            <input
+              type="search"
+              className="input input-bordered w-full"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder={t("Ad veya alan adı")}
+            />
+          </label>
+          <label className="space-y-1 text-sm">
+            <span>{t("Sırala")}</span>
+            <select
+              className="select select-bordered w-full"
+              value={sort}
+              onChange={(event) => setSort(event.target.value)}
+            >
+              <option value="name">{t("Ad")}</option>
+              <option value="domain">{t("Alan adı")}</option>
+            </select>
+          </label>
+        </div>
+      ) : null}
+      {projectsQuery.isError && projectsQuery.data ? (
+        <p role="status" className="text-sm text-muted">
+          {t(
+            "Liste yenilenemedi; son alınan projeler gösteriliyor. Yeniden deneyin.",
+          )}
+        </p>
+      ) : null}
+      {overviewQuery.isError ? (
+        <p role="status" className="text-sm text-muted">
+          {t(
+            "Proje verileri yenilenemedi. Listeyi yenileyerek yeniden deneyin.",
+          )}
+        </p>
+      ) : null}
       {projectsQuery.isLoading ? (
         <Skeleton variant="list" rows={4} />
-      ) : projectsQuery.isError ? (
+      ) : projectsQuery.isError && !projectsQuery.data ? (
         <QueryErrorState
           error={projectsQuery.error}
           onRetry={() => void projectsQuery.refetch()}
@@ -91,42 +148,91 @@ function ProjectsPage() {
           description={t("Bir proje oluşturun, sonra sitesini ekleyin.")}
         />
       ) : (
-        <ul className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
-          {projects.map((project) => (
-            <li
-              key={project.id}
-              className="flex items-center gap-3 transition-colors hover:bg-base-200/40"
-            >
-              {/* The row opens the project; the action on the right is the
-                  one thing worth doing from this list, kept as a sibling
-                  because a link cannot sit inside a link. */}
-              <Link
-                to="/p/$projectId"
-                params={{ projectId: project.id }}
-                className="flex min-w-0 flex-1 flex-col p-3"
-              >
-                <span className="flex items-center gap-2">
-                  <span className="truncate font-medium">{project.name}</span>
-                  {/* With one project "active" is not information. */}
-                  {projects.length > 1 && project.id === currentProjectId ? (
-                    <StatusPill tone="neutral" label={t("Etkin")} />
-                  ) : null}
-                </span>
-                <span className="truncate text-xs text-muted">
-                  {project.domain ?? t("Site eklenmedi")}
-                </span>
-                <ProjectFacts overview={overviewOf(project.id)} />
-              </Link>
-              <Link
-                to="/p/$projectId/settings"
-                params={{ projectId: project.id }}
-                className="btn btn-ghost btn-sm mr-2 shrink-0"
-              >
-                {project.domain ? t("Ayarlar") : t("Site ekle")}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className="space-y-4">
+          {visible.length === 0 ? (
+            <p role="status" className="text-sm text-muted">
+              {t("Bu aramayla eşleşen proje yok. Aramayı değiştirin.")}
+            </p>
+          ) : null}
+          <ul className="space-y-4">
+            {visible.map((project) => {
+              const overview = overviewById.get(project.id);
+              return (
+                <li
+                  key={project.id}
+                  className="space-y-4 rounded-box border border-[var(--hairline)] bg-base-100 p-4"
+                >
+                  <div className="flex flex-wrap items-start justify-between gap-2">
+                    <div className="min-w-0 flex-1">
+                      <Link
+                        to="/p/$projectId"
+                        params={{ projectId: project.id }}
+                        className="block break-all font-semibold focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary"
+                      >
+                        {project.name}
+                      </Link>
+                      <p className="break-all text-sm text-muted">
+                        {project.domain ??
+                          t("Site eklenmedi. Bu proje için bir site seçin.")}
+                      </p>
+                    </div>
+                    {projects.length > 1 && project.id === currentProjectId ? (
+                      <StatusPill tone="neutral" label={t("Son açılan")} />
+                    ) : null}
+                  </div>
+                  <ProjectFacts
+                    overview={overview}
+                    loading={overviewQuery.isPending}
+                    failed={overviewQuery.isError}
+                    onRetry={() => void overviewQuery.refetch()}
+                  />
+                  <div className="flex flex-wrap items-center gap-2 border-t border-[var(--hairline)] pt-3">
+                    {!project.domain ? (
+                      <Link
+                        to="/p/$projectId/settings"
+                        params={{ projectId: project.id }}
+                        className="btn btn-primary btn-sm min-h-11"
+                      >
+                        {t("Site ekle")}
+                      </Link>
+                    ) : overview?.searchConsole === false ? (
+                      <Link
+                        to="/p/$projectId/settings/integrations"
+                        params={{ projectId: project.id }}
+                        hash="search-console"
+                        className="btn btn-primary btn-sm min-h-11"
+                      >
+                        {t("Search Console bağla")}
+                      </Link>
+                    ) : (
+                      <Link
+                        to="/p/$projectId"
+                        params={{ projectId: project.id }}
+                        className="btn btn-primary btn-sm min-h-11"
+                      >
+                        {t("Paneli aç")}
+                      </Link>
+                    )}
+                    <Link
+                      to="/p/$projectId/context"
+                      params={{ projectId: project.id }}
+                      className="btn btn-ghost btn-sm min-h-11"
+                    >
+                      {t("Proje bilgisi")}
+                    </Link>
+                    <Link
+                      to="/p/$projectId/settings"
+                      params={{ projectId: project.id }}
+                      className="btn btn-ghost btn-sm min-h-11"
+                    >
+                      {t("Ayarlar")}
+                    </Link>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       )}
 
       <ArchivedProjects />
@@ -151,7 +257,7 @@ function ArchivedProjects() {
       restoreProject({ data: { archivedProjectId: projectId } }),
     onSuccess: async () => {
       // Prefix match invalidates both the active and archived lists.
-      await queryClient.invalidateQueries({ queryKey: ["projects"] });
+      await invalidateProjectLists(queryClient);
       toast.success(t("Proje geri alındı"));
     },
     onError: (error) =>
@@ -180,6 +286,16 @@ function ArchivedProjects() {
   return (
     <section className="space-y-3">
       <h2 className="text-sm font-medium text-muted">{t("Arşivlendi")}</h2>
+      {archivedQuery.isError ? (
+        <QueryErrorState
+          compact
+          title={t(
+            "Arşivlenen liste yenilenemedi; son alınan liste gösteriliyor",
+          )}
+          error={archivedQuery.error}
+          onRetry={() => void archivedQuery.refetch()}
+        />
+      ) : null}
       <ul className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
         {archived.map((project) => (
           <li
@@ -187,16 +303,16 @@ function ArchivedProjects() {
             className="flex items-center justify-between gap-3 p-3"
           >
             <span className="flex min-w-0 flex-col">
-              <span className="truncate font-medium text-muted">
+              <span className="break-all font-medium text-muted">
                 {project.name}
               </span>
-              <span className="truncate text-xs text-muted">
+              <span className="break-all text-xs text-muted">
                 {project.domain ?? t("Site eklenmedi")}
               </span>
             </span>
             <button
               type="button"
-              className="btn btn-ghost btn-sm shrink-0"
+              className="btn btn-ghost btn-sm min-h-11 shrink-0"
               onClick={() => restoreMutation.mutate(project.id)}
               disabled={restoreMutation.isPending}
             >

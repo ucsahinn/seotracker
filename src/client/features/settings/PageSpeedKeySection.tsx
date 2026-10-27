@@ -1,3 +1,4 @@
+import { UNKEYED_LIGHTHOUSE_PAGE_CAP } from "@/shared/audit-limits";
 import { Skeleton } from "@/client/components/Skeleton";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, ExternalLink } from "lucide-react";
@@ -30,6 +31,7 @@ const STATUS_KEY = pageSpeedKeyStatusOptions().queryKey;
  */
 export function PageSpeedKeySection() {
   const queryClient = useQueryClient();
+  const [keyRevision, setKeyRevision] = React.useState(0);
   const [key, setKey] = React.useState("");
   const [editing, setEditing] = React.useState(false);
   const [confirmingClear, setConfirmingClear] = React.useState(false);
@@ -38,12 +40,14 @@ export function PageSpeedKeySection() {
   const status = statusQuery.data;
   const stored = status?.source === "settings";
   const fromEnvironment = status?.source === "environment";
-  const showForm = !stored || editing;
+  const showForm =
+    !statusQuery.isPending && (editing || (!statusQuery.isError && !stored));
 
   const save = useMutation({
     mutationFn: () => savePageSpeedKey({ data: { key } }),
     onSuccess: async () => {
       setKey("");
+      setKeyRevision((value) => value + 1);
       setEditing(false);
       await queryClient.invalidateQueries({ queryKey: STATUS_KEY });
       toast.success(t("PageSpeed anahtarı kaydedildi"));
@@ -63,6 +67,7 @@ export function PageSpeedKeySection() {
     mutationFn: () => clearPageSpeedKey(),
     onSuccess: async () => {
       setKey("");
+      setKeyRevision((value) => value + 1);
       setEditing(false);
       setConfirmingClear(false);
       await queryClient.invalidateQueries({ queryKey: STATUS_KEY });
@@ -91,7 +96,8 @@ export function PageSpeedKeySection() {
 
       <p className="text-sm text-muted">
         {t(
-          "Denetimin Lighthouse aşaması Google PageSpeed Insights'ı kullanır. Anahtarsız da çalışır, ama Google'ın anahtarsız kotası birkaç sayfadan sonra \"çok fazla istek\" (429) hatası verir. Gerçek bir sitede hız ölçümünün büyük kısmı boş kalır. Anahtar ücretsiz.",
+          "Anahtarsız ölçüm sınırlıdır; bu uygulama denetim başına en fazla {count} sayfayı dener. Google daha önce sınır koyabilir. Anahtar başarı garantisi vermez.",
+          { count: UNKEYED_LIGHTHOUSE_PAGE_CAP },
         )}{" "}
         <a
           href={KEY_URL}
@@ -135,7 +141,11 @@ export function PageSpeedKeySection() {
         </div>
       ) : null}
 
-      {(stored && !editing) || fromEnvironment ? <PageSpeedKeyTest /> : null}
+      {(stored && !editing) || fromEnvironment ? (
+        <PageSpeedKeyTest
+          key={`${keyRevision}:${status?.updatedAt ?? status?.source}`}
+        />
+      ) : null}
 
       {stored && !editing ? (
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-box border border-base-300 p-3">
@@ -206,6 +216,7 @@ export function PageSpeedKeySection() {
                 className="btn btn-ghost btn-sm"
                 onClick={() => {
                   setKey("");
+                  setKeyRevision((value) => value + 1);
                   setEditing(false);
                 }}
               >
@@ -219,7 +230,7 @@ export function PageSpeedKeySection() {
         <ConfirmDeleteModal
           title={t("PageSpeed anahtarı silinsin mi?")}
           detail={t(
-            "Anahtar bu kurulumdan silinir; hız ölçümü anahtarsız sınıra döner ve gerçek bir sitede çoğu zaman yarım kalır (429, çok fazla istek). İstediğiniz zaman yeniden girebilirsiniz.",
+            "Anahtar bu kurulumdan silinir; hız ölçümü denetim başına uygulamanın anahtarsız sayfa sınırına döner. Google daha erken sınır koyabilir. İstediğiniz zaman yeniden girebilirsiniz.",
           )}
           confirmLabel={t("Anahtarı sil")}
           isPending={clear.isPending}

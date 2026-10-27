@@ -15,13 +15,19 @@ import { stateFromUsage } from "./quotaTypes";
 
 // Real in-memory SQLite: the window and marker counts are SQL, and a mocked
 // builder chain cannot see them.
-const mocks = vi.hoisted(() => ({ getByProjectId: vi.fn() }));
+const mocks = vi.hoisted(() => ({
+  getByProjectId: vi.fn(),
+  auditSelection: vi.fn(),
+}));
 const state = await vi.hoisted(async () => {
   const { createClient } = await import("@libsql/client");
   return { client: createClient({ url: "file::memory:" }) };
 });
 const client: Client = state.client;
 
+vi.mock("@/server/features/audit/services/panelAuditSelection", () => ({
+  getPanelAuditSelection: mocks.auditSelection,
+}));
 vi.mock("cloudflare:workers", () => ({ env: {} }));
 vi.mock("@/server/features/ga4/repositories/Ga4ConnectionRepository", () => ({
   Ga4ConnectionRepository: { getByProjectId: mocks.getByProjectId },
@@ -87,6 +93,16 @@ beforeAll(async () => {
 
 beforeEach(() => {
   mocks.getByProjectId.mockResolvedValue(owner);
+  mocks.auditSelection.mockResolvedValue({
+    snapshot: {
+      id: "a-new",
+      pagesCrawled: 120,
+      startedAt: "2026-10-02 08:00:00",
+      startUrl: "https://a.test",
+      status: "completed",
+    },
+    latestAttempt: null,
+  });
 });
 
 afterAll(() => client.close());
@@ -186,11 +202,59 @@ describe("getQuotaStatus", () => {
     expect((await byId(["ga4"])).get("ga4_daily")?.state).toBe("unknown");
   });
 
+  it("keeps the completed snapshot count separate from a later failed attempt", async () => {
+    mocks.auditSelection.mockResolvedValue({
+      snapshot: {
+        id: "a-new",
+        pagesCrawled: 120,
+        startedAt: "2026-10-02 08:00:00",
+        startUrl: "https://a.test",
+        status: "completed",
+      },
+      latestAttempt: {
+        id: "failed",
+        status: "failed",
+        startedAt: NOW.toISOString(),
+      },
+    });
+    const items = await byId(["audit"]);
+    expect(items.get("audit_pages")?.used).toBe(120);
+    expect(items.get("audit_latest_attempt")).toMatchObject({
+      used: null,
+      state: "unknown",
+    });
+  });
+  it("does not invent own-site coverage when the shared selector has no snapshot", async () => {
+    mocks.auditSelection.mockResolvedValue({
+      snapshot: null,
+      latestAttempt: null,
+    });
+    expect((await byId(["audit"])).get("audit_pages")?.used).toBeNull();
+  });
   it("returns only the requested kinds", async () => {
     const items = await byId(["audit"]);
     expect([...items.keys()]).toEqual(["audit_pages"]);
     expect(items.get("audit_pages")?.used).toBe(120);
   });
+});
+
+it("retains expired quota as historical remaining without a current green bar", async () => {
+  recordGa4Quota(
+    owner,
+    {
+      tokensPerDay: { consumed: 1, remaining: 199999 },
+      tokensPerHour: { consumed: 1, remaining: 39999 },
+    },
+    new Date("2026-10-01T23:59:00Z"),
+  );
+  const items = await byId(["ga4"]);
+  expect(items.get("ga4_daily")).toMatchObject({
+    used: null,
+    limit: null,
+    remaining: 199999,
+    state: "unknown",
+  });
+  expect(items.get("ga4_hourly")?.state).toBe("unknown");
 });
 
 describe("stateFromUsage", () => {

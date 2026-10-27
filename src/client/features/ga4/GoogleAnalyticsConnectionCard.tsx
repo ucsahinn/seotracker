@@ -1,3 +1,5 @@
+import { ConnectionRefreshWarning } from "@/client/features/integrations/ConnectionRefreshWarning";
+import { formatDateTime } from "@/client/lib/format";
 import { ga4ConnectionOptions } from "@/client/features/integrations/googleConnectionQueries";
 import * as React from "react";
 import { invalidatePropertyDependents } from "@/client/features/gsc/invalidatePropertyDependents";
@@ -91,7 +93,7 @@ export function GoogleAnalyticsConnectionCard({
         current ? { ...current, ...saved } : current,
       );
       captureClientEvent("ga4:property_select");
-      toast.success(t("Google Analytics bağlandı"));
+      toast.success(t("Google Analytics mülkü seçildi"));
       queryClient.removeQueries({ queryKey: ["ga4Properties", projectId] });
       void queryClient.invalidateQueries({ queryKey: connectionKey });
       setPicking(false);
@@ -121,6 +123,7 @@ export function GoogleAnalyticsConnectionCard({
     <>
       {heading}
       <IntegrationConnectionCard
+        managingProperty={Boolean(showPicker)}
         title="Google Analytics"
         icon={<GoogleAnalyticsLogo className="size-5" />}
         status={
@@ -133,6 +136,11 @@ export function GoogleAnalyticsConnectionCard({
                 : "disconnected"
         }
       >
+        <ConnectionRefreshWarning
+          isError={connectionQuery.isError}
+          hasCached={Boolean(connection)}
+          onRetry={() => void connectionQuery.refetch()}
+        />
         <GoogleLinkErrorAlert provider="ga4" className="mb-4" />
         {connectionQuery.isPending ? (
           <div
@@ -168,6 +176,7 @@ export function GoogleAnalyticsConnectionCard({
           <GoogleConnectedState
             property={connection?.propertyDisplayName ?? ""}
             detail={connection?.propertyId}
+            metadata={<PropertyMetadata connection={connection} />}
             canManageAccounts={hasGrant}
             email={connection?.connectedByEmail}
             onChange={() => {
@@ -265,5 +274,43 @@ function DismissButton({
     >
       {t("Gizle")}
     </button>
+  );
+}
+
+function PropertyMetadata({
+  connection,
+}: {
+  connection:
+    | {
+        propertyTimeZone: string | null;
+        propertyCurrencyCode: string | null;
+        connectedAt: string | null;
+        usesServiceAccount: boolean;
+      }
+    | undefined;
+}) {
+  return (
+    <div className="space-y-1 text-xs text-muted">
+      {connection?.connectedAt ? (
+        <p>
+          {t("Mülk seçim tarihi: {date}", {
+            date: formatDateTime(connection.connectedAt),
+          })}
+        </p>
+      ) : null}
+      {connection ? (
+        <p>
+          {connection.usesServiceAccount
+            ? t("Kimlik yöntemi: hizmet hesabı")
+            : t("Kimlik yöntemi: Google OAuth")}
+        </p>
+      ) : null}
+      <p>
+        {t("Saat dilimi: {timezone} · Para birimi: {currency}", {
+          timezone: connection?.propertyTimeZone ?? t("Bilinmiyor"),
+          currency: connection?.propertyCurrencyCode ?? t("Bilinmiyor"),
+        })}
+      </p>
+    </div>
   );
 }

@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SystemLimitsSection } from "@/client/features/quotas/SystemLimitsSection";
-import { GoogleOAuthClientSection } from "@/client/features/settings/GoogleOAuthClientSection";
-import { GoogleServiceAccountSection } from "@/client/features/settings/GoogleServiceAccountSection";
+import { GoogleCredentialMethods } from "@/client/features/settings/GoogleCredentialMethods";
 import { PageSpeedKeySection } from "@/client/features/settings/PageSpeedKeySection";
 import { SettingsIndex } from "@/client/features/settings/SettingsIndex";
 import { NotificationSettings } from "@/client/features/notifications/NotificationSettings";
@@ -26,9 +25,7 @@ function PersonalSettings() {
         <NotificationSettings />
         <WindowsSection />
 
-        <GoogleOAuthClientSection />
-
-        <GoogleServiceAccountSection />
+        <GoogleCredentialMethods />
 
         <PageSpeedKeySection />
 

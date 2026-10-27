@@ -16,11 +16,10 @@ Bir şey ters giderse ilk buraya bakın. Bu ekran kurulumunuzu kontrol eder, eks
 - **Tanılama paketi indir**: sorun bildirirken göndereceğiniz dosyayı indirir. İçinde gizli değer yoktur.
 - **Kılavuzu aç**: seowatcher.io'daki kılavuzu açar.
 - **seowatcher.io**: uygulamanın sitesini açar. İndirme sayfası ve kılavuz oradadır.
-- **Sürüm notları**: Ayarlar'daki sürüm notlarına gider.
-- **Kurulum istemini kopyala**: yapay zekâ asistanınıza (uygulamada "ajan") yapıştıracağınız kurulum metnini kopyalar.
+- **Sürüm notları**: ayrı Sürüm notları ekranını açar (`/release-notes`).
 - **Ajan kurulumu**: asistan bağlantısı ekranına gider.
 
-**Uygulamanın durumu.** Kart bu kurulumun kendisine bakar. Bir projenin kurulum listesi Panel'de ve Proje bilgisi'ndedir, burada değil. Kart dört şeye bakar: **Giriş ve erişim**, **Google girişi**, **PageSpeed anahtarı**, **Veritabanı**. Üstte "Her şey yolunda." ya da "N şey dikkat istiyor." yazar. Altında sürüm satırı ("Sürüm X, güncel." ya da "yeni sürüm Y var") ve son kontrol zamanı görünür. Sorunlu satırın yanındaki düğme sizi ilgili ayara götürür: **Ayarları aç** ya da **Anahtar gir**. **Özeti kopyala** kartın metnini panoya alır.
+**Uygulamanın durumu.** Kart yalnızca bu kurulumun erişim, Google bağlantı ayarı, PageSpeed anahtarı, çalışma ortamı ve veritabanı kontrollerini gösterir. Başarılı sonuç sitenizin hatasız olduğunu veya Google verisinin güncel olduğunu kanıtlamaz. Okunamayan bir ayar başarı sayılmaz; uyarıyı okuyup **Durumu yeniden kontrol et** deyin. Sürüm satırı ve son kontrol zamanı sonuçların ne zaman alındığını gösterir. **Özeti kopyala** bu durumu metin olarak kopyalar. Proje bağlantıları **Bağlantıları aç** ile yönetilir.
 
 **Adres numarası (port) uyarısı.** Windows paketi 3001 numarasını başka bir program tutarken başka bir numarada açılırsa (örneğin eski bir Docker kopyası 3001'i kullanıyorsa), uygulamanın her ekranında üstte sarı bir şerit çıkar: "seowatcher bu sefer 3002 numarasında çalışıyor çünkü 3001 başka bir program tarafından kullanılıyor (ör. eski bir Docker kopyası). Google bağlantısı 3001 için ayarlandı; o programı kapatıp seowatcher'ı yeniden başlatın." Şerit, görev çubuğundaki bildirimi kaçırmış olabilirsiniz diye vardır. Google ile giriş 3001 adresine döner ve uygulamayı 3002'de açtıysanız hata verir. Şeridin sağındaki kapat düğmesi onu bu sekme için gizler. Aynı cümle **Uygulamanın durumu** kartında da yazar. Çözmek için 3001'i tutan programı kapatın, sonra görev çubuğu menüsünden **Yeniden başlat** deyin. Uygulama 3001'e döner ve şerit kaybolur. Başka bir program kullanmıyorsanız bir sonraki açılışta zaten 3001'e döner.
 
@@ -36,7 +35,7 @@ Bir şey ters giderse ilk buraya bakın. Bu ekran kurulumunuzu kontrol eder, eks
 
 1. Bir şey çalışmıyorsa önce bu ekranı açın ve karttaki uyarıyı okuyun.
 2. Uyarının yanındaki düğmeye basın, sizi doğru ayara götürür. Ayarı yapın, geri dönüp **Durumu yeniden kontrol et** deyin.
-3. Kart "Her şey yolunda." diyor ama sorun sürüyorsa **Sık sorunlar** başlıklarına bakın.
+3. Kurulum kontrolleri başarılı olduğu halde sorun sürüyorsa **Sık sorunlar** başlıklarına ve ilgili proje ekranına bakın.
 4. Yine çözülmezse **Tanılama paketi indir** deyin ve dosyayı GitHub'daki sorun kaydına ekleyin. Windows paketinde görev çubuğu menüsündeki **Sorunu bildir (GitHub)** aynı işi tek tıkla yapar.
 
 ## Sık sorulanlar
@@ -51,4 +50,8 @@ Bir şey ters giderse ilk buraya bakın. Bu ekran kurulumunuzu kontrol eder, eks
 
 Bu ekran yalnızca kurulumun kendisini kontrol eder. Sitenizdeki bir sorunu bulmak için Site denetimi, Google tarafındaki bir sorunu görmek için Dizin durumu ekranına bakın.
 
-<!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/support/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->
+## Hangi ekrana gitmeli?
+
+[Panel](/docs/panel/) seçili projenin veri ve kurulum özetini gösterir. [Fırsatlar](/docs/firsatlar/) Search Console verisinden yapılacak işleri seçmenize yardımcı olur. [Sıralama takibi](/docs/siralama-takibi/) kaydedilen kelimelerin Google verisindeki ortalama konumunu izler; canlı arama sonucu değildir. Veri eksikse önce proje bağlantılarını, tarih aralığını ve ekrandaki veri kapsamı uyarısını kontrol edin. Yardım ekranındaki kurulum sonucu bu raporları doğrulamaz.
+
+<!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/quotas/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->

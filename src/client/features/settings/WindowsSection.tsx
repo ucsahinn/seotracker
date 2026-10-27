@@ -28,7 +28,12 @@ export function WindowsSection() {
     },
   });
   const state = status.data?.status === "ready" ? status.data.settings : null;
-  const disabled = !state || status.isFetching || save.isPending;
+  const disabled =
+    !state ||
+    status.isFetching ||
+    save.isPending ||
+    status.isError ||
+    save.isError;
   return (
     <section
       id="windows"
@@ -42,9 +47,14 @@ export function WindowsSection() {
         )}
       </p>
       {status.isPending ? (
-        <p role="status" className="text-sm text-muted">
-          {t("Windows ayarları okunuyor…")}
-        </p>
+        <div
+          role="status"
+          aria-label={t("Windows ayarları okunuyor…")}
+          className="space-y-3"
+        >
+          <div className="skeleton h-12 w-full" />
+          <div className="skeleton h-12 w-full" />
+        </div>
       ) : null}
       {status.data?.status === "unsupported" ? (
         <p className="text-sm text-muted">
@@ -70,48 +80,61 @@ export function WindowsSection() {
           )}
         </p>
       ) : null}
-      <div className="divide-y divide-[var(--hairline)]">
-        <WindowsToggle
-          label={t("Windows açılınca başlat")}
-          description={t(
-            "Windows oturumu açıldığında arka planda başlar. Kapalıyken uygulamayı kendiniz açarsınız.",
+      {state ? (
+        <div className="divide-y divide-[var(--hairline)]">
+          <WindowsToggle
+            label={t("Windows açılınca başlat")}
+            description={t(
+              "Windows oturumu açıldığında arka planda başlar. Kapalıyken uygulamayı kendiniz açarsınız.",
+            )}
+            checked={state?.autostart ?? false}
+            disabled={disabled || Boolean(state?.autostartManaged)}
+            note={
+              state?.autostartManaged
+                ? t(
+                    "Bu ayar yönetici tarafından tüm kullanıcılar için açılmış. Yalnızca yönetici kapatabilir.",
+                  )
+                : undefined
+            }
+            onChange={(enabled) =>
+              save.mutate({ setting: "autostart", enabled })
+            }
+          />
+          <WindowsToggle
+            label={t("Otomatik güncelleme kurulumu")}
+            description={t(
+              "Yeni sürümü indirir, doğrular ve kurar. Kapalıyken tepsi menüsünden Güncelle seçeneğiyle kurabilirsiniz.",
+            )}
+            checked={state?.autoUpdate ?? false}
+            disabled={disabled || Boolean(state?.autoUpdateManaged)}
+            note={
+              state?.autoUpdateManaged
+                ? t(
+                    "Tüm kullanıcılar için kurulumda güncellemeyi yönetici kurar. Uygulama yeni sürümü haber verir.",
+                  )
+                : undefined
+            }
+            onChange={(enabled) =>
+              save.mutate({ setting: "auto-update", enabled })
+            }
+          />
+        </div>
+      ) : null}
+      {state && (status.isError || status.isFetching) ? (
+        <p className="text-sm text-muted">
+          {t(
+            "Son doğrulanan Windows ayarları gösteriliyor; yeniden okunana kadar değiştirilemez.",
           )}
-          checked={state?.autostart ?? false}
-          disabled={disabled || Boolean(state?.autostartManaged)}
-          note={
-            state?.autostartManaged
-              ? t(
-                  "Bu ayar yönetici tarafından tüm kullanıcılar için açılmış. Yalnızca yönetici kapatabilir.",
-                )
-              : undefined
-          }
-          onChange={(enabled) => save.mutate({ setting: "autostart", enabled })}
-        />
-        <WindowsToggle
-          label={t("Otomatik güncelleme kurulumu")}
-          description={t(
-            "Yeni sürümü indirir, doğrular ve kurar. Kapalıyken tepsi menüsünden Güncelle seçeneğiyle kurabilirsiniz.",
-          )}
-          checked={state?.autoUpdate ?? false}
-          disabled={disabled || Boolean(state?.autoUpdateManaged)}
-          note={
-            state?.autoUpdateManaged
-              ? t(
-                  "Tüm kullanıcılar için kurulumda güncellemeyi yönetici kurar. Uygulama yeni sürümü haber verir.",
-                )
-              : undefined
-          }
-          onChange={(enabled) =>
-            save.mutate({ setting: "auto-update", enabled })
-          }
-        />
-      </div>
+        </p>
+      ) : null}
       {save.isPending ? (
         <p role="status" className="text-sm text-muted">
           {t("Kaydediliyor…")}
         </p>
       ) : null}
-      {status.isError || status.data?.status === "unavailable" ? (
+      {status.isError ||
+      save.isError ||
+      status.data?.status === "unavailable" ? (
         <button
           type="button"
           className="btn btn-sm"

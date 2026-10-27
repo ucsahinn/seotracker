@@ -14,9 +14,9 @@ import { t } from "@/shared/i18n";
 /**
  * Turns the Search performance view on screen into a saved, printable report.
  *
- * The same view call the screen makes (same filters, same window, served
- * from the server's short cache when the screen just asked), so the report's
- * numbers are the screen's numbers. Nothing leaves the machine: the document
+ * Re-reads the canonical server view with the same requested filters. The
+ * resolved period and revised Google measurements may differ from a previously
+ * displayed view; the document discloses that limitation. The document
  * is built here and stored in the local reports table.
  */
 export const createSearchReport = createServerFn({ method: "POST" })
@@ -43,7 +43,29 @@ export const createSearchReport = createServerFn({ method: "POST" })
       searchType: data.searchType,
     }).catch(() => null);
 
-    const document = buildSearchReportHtml({ view, overlaps });
+    const sourceKey = JSON.stringify([
+      "native-search-v1",
+      context.projectId,
+      view.siteUrl,
+      view.window.startDate,
+      view.window.endDate,
+      view.filters.searchType,
+      view.filters.device,
+      view.filters.country,
+    ]);
+    const digest = await crypto.subtle.digest(
+      "SHA-256",
+      new TextEncoder().encode(sourceKey),
+    );
+    const discriminator = Array.from(new Uint8Array(digest))
+      .slice(0, 16)
+      .map((byte) => byte.toString(16).padStart(2, "0"))
+      .join("");
+    const document = buildSearchReportHtml({
+      view,
+      overlaps,
+      titleDiscriminator: discriminator,
+    });
     if (
       new TextEncoder().encode(document.html).length > REPORT_MAX_HTML_BYTES
     ) {

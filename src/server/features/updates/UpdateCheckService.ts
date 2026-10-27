@@ -10,14 +10,14 @@
  * GitHub allows an anonymous caller 60 requests an hour, counted against the
  * operator's public IP and shared with everything else on their network. One
  * check every six hours is a rounding error of that, and keeps this screen
- * within hours of the tray launcher, which asks the same endpoint hourly. The conditional request carries the stored
+ * within hours of the tray launcher, which asks the same endpoint daily. The conditional request carries the stored
  * ETag, which saves the body but *not* the quota — GitHub only exempts
  * conditional requests that are authorized, and this one deliberately is not.
  */
 import { z } from "zod";
 import { UpdateCheckRepository } from "@/server/features/updates/UpdateCheckRepository";
 import { version as currentVersion } from "../../../../package.json";
-import { isNewerVersion } from "@/shared/version";
+import { compareVersions, isNewerVersion } from "@/shared/version";
 
 const RELEASES_URL =
   "https://api.github.com/repos/ucsahinn/seotracker/releases/latest";
@@ -25,7 +25,7 @@ const REPO_RELEASES_PAGE = "https://github.com/ucsahinn/seotracker/releases";
 
 /**
  * Six hours, answered or not. It was a day, and the Settings screen then
- * lagged the tray launcher's hourly check by up to a day after a release.
+ * lagged the tray launcher's daily check by up to a day after a release.
  */
 const TTL_MS = 6 * 60 * 60 * 1000;
 /** GitHub terminates its own requests at ten seconds; do not wait that long. */
@@ -55,6 +55,14 @@ type UpdateStatus = {
    * failed but an older answer is cached: `latestVersion` is then only the
    * last known one, as of `lastSuccessAt`.
    */
+  reason:
+    | "rate_limited"
+    | "source_missing"
+    | "invalid_release"
+    | "timeout"
+    | "network"
+    | "upstream"
+    | null;
   outcome:
     | "ok"
     | "error"
@@ -105,6 +113,20 @@ function statusFrom(row: {
     checkedAt: row.checkedAt,
     lastSuccessAt: row.lastSuccessAt,
     outcome,
+    reason:
+      row.lastStatus === 403 || row.lastStatus === 429
+        ? "rate_limited"
+        : row.lastStatus === 404
+          ? "source_missing"
+          : row.lastStatus === -2
+            ? "invalid_release"
+            : row.lastStatus === -1
+              ? "timeout"
+              : row.lastStatus === 0
+                ? "network"
+                : isFailedAttempt(row.lastStatus)
+                  ? "upstream"
+                  : null,
   };
 }
 
@@ -119,7 +141,7 @@ function isDue(checkedAt: string | null): boolean {
 /**
  * A cached "latest" older than the version that is running was written
  * before this install was upgraded, so it says nothing about what is out now.
- * The tray launcher asks the same GitHub endpoint every hour; without this the
+ * The tray launcher asks the same GitHub endpoint daily; without this the
  * Settings screen kept showing v0.7.0 as the newest release for up to a day
  * after 0.8.0 was installed and announced.
  */
@@ -150,10 +172,20 @@ async function fetchLatest(etag: string | null) {
     return { status: response.status, release: null, etag: null };
   }
 
-  const parsed = releaseSchema.safeParse(await response.json());
+  let body: unknown;
+  try {
+    body = await response.json();
+  } catch {
+    return { status: 200 as const, release: null, etag: null };
+  }
+  const parsed = releaseSchema.safeParse(body);
   return {
     status: 200 as const,
-    release: parsed.success ? parsed.data : null,
+    release:
+      parsed.success &&
+      compareVersions(parsed.data.tag_name, currentVersion) !== null
+        ? parsed.data
+        : null,
     etag: response.headers.get("etag"),
   };
 }
@@ -200,7 +232,7 @@ async function getStatus(options?: { force?: boolean }): Promise<UpdateStatus> {
     return statusFrom(
       await UpdateCheckRepository.save({
         checkedAt,
-        lastStatus: result.status === 200 ? 0 : result.status,
+        lastStatus: result.status === 200 ? -2 : result.status,
       }),
     );
   } catch (error) {
@@ -211,7 +243,14 @@ async function getStatus(options?: { force?: boolean }): Promise<UpdateStatus> {
       `Update check: GitHub could not be reached: ${error instanceof Error ? `${error.name}: ${error.message}` : String(error)}`,
     );
     return statusFrom(
-      await UpdateCheckRepository.save({ checkedAt, lastStatus: 0 }),
+      await UpdateCheckRepository.save({
+        checkedAt,
+        lastStatus:
+          error instanceof Error &&
+          (error.name === "TimeoutError" || error.name === "AbortError")
+            ? -1
+            : 0,
+      }),
     );
   }
 }

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Gauge } from "lucide-react";
 import { HelpTip } from "@/client/components/HelpTip";
 import { EmptyState } from "@/client/components/EmptyState";
@@ -14,7 +15,16 @@ import { useQuotaStatus } from "./useQuotaStatus";
  * and a tight one is visible without opening anything.
  */
 export function SystemLimitsSection({ id }: { id?: string }) {
-  const { projectId, isPending, isError } = useActiveProjectId();
+  const {
+    projectId: fallbackId,
+    projects,
+    isPending,
+    isError,
+  } = useActiveProjectId();
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const projectId = projects.some((project) => project.id === selectedId)
+    ? selectedId
+    : fallbackId;
 
   return (
     <section id={id} className="scroll-mt-16 space-y-3">
@@ -29,6 +39,22 @@ export function SystemLimitsSection({ id }: { id?: string }) {
         </h2>
         {projectId ? <WorstStateBadge projectId={projectId} /> : null}
       </div>
+      {projectId ? (
+        <label className="flex flex-wrap items-center gap-3 text-sm">
+          {t("Sınırları gösterilen proje")}
+          <select
+            className="select min-h-11 w-full sm:w-auto"
+            value={projectId}
+            onChange={(event) => setSelectedId(event.target.value)}
+          >
+            {projects.map((project) => (
+              <option key={project.id} value={project.id}>
+                {project.name}
+              </option>
+            ))}
+          </select>
+        </label>
+      ) : null}
       {isPending ? <div className="skeleton h-10 w-full" /> : null}
       {!isPending && !projectId ? (
         <EmptyState
@@ -68,12 +94,31 @@ function WorstStateBadge({ projectId }: { projectId: string }) {
   const query = useQuotaStatus(projectId, "all");
   if (!query.data) return null;
   const state = worstQuotaState(query.data.items);
+  const unknownCount = query.data.items.filter(
+    (item) => item.state === "unknown",
+  ).length;
   return (
     <StatusPill
       tone={
-        state === "ok" ? "success" : state === "unknown" ? "neutral" : "warning"
+        state === "ok" && !unknownCount && !query.isError
+          ? "success"
+          : state === "unknown"
+            ? "neutral"
+            : "warning"
       }
-      label={t(STATE_META[state].label)}
+      label={
+        query.isError
+          ? t("Sınırlar yenilenemedi; son kayıt gösteriliyor")
+          : unknownCount
+            ? t("{state} · {count} kaynak bilinmiyor", {
+                state:
+                  state === "ok"
+                    ? t("Bilinen sınırlarda sorun yok")
+                    : t(STATE_META[state].label),
+                count: unknownCount,
+              })
+            : t(STATE_META[state].label)
+      }
     />
   );
 }

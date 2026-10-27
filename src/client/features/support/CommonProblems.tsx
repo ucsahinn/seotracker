@@ -30,7 +30,11 @@ export function CommonProblems({
   const windows = installKind === "windows";
   const pending = installKind === null;
   const pendingNote = (
-    <p className="text-muted">{t("Kurulum türü belirleniyor…")}</p>
+    <p className="text-muted">
+      {t(
+        "Kurulum türü henüz doğrulanamadı. Üstteki durumu kontrol edin ve gerekirse yeniden deneyin.",
+      )}
+    </p>
   );
 
   return (
@@ -307,7 +311,13 @@ export function CommonProblems({
 }
 
 function PendingNote() {
-  return <p className="text-muted">{t("Kurulum türü belirleniyor…")}</p>;
+  return (
+    <p className="text-muted">
+      {t(
+        "Kurulum türü henüz doğrulanamadı. Üstteki durumu kontrol edin ve gerekirse yeniden deneyin.",
+      )}
+    </p>
+  );
 }
 
 /*

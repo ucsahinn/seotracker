@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_app/support")({
 function SupportPage() {
   const { diagnostics, installKind } = useSetupSnapshot();
   const windows = installKind === "windows";
-  const pending = installKind === null;
+  const pending = installKind === null && diagnostics.isPending;
   const projectId =
     diagnostics.data?.projects.find((project) => !project.archivedAt)?.id ??
     null;
@@ -48,6 +48,10 @@ function SupportPage() {
           {pending ? (
             t(
               "Kurulum türü anlaşılıyor. Günlüklerin yeri birazdan burada görünür.",
+            )
+          ) : installKind === null ? (
+            t(
+              "Kurulum türü okunamadı. Durumu yeniden kontrol edin; günlük konumu kurulum türü belirlendiğinde gösterilir.",
             )
           ) : windows ? (
             fillParts(

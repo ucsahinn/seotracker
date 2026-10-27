@@ -44,10 +44,16 @@ export function UpdateSection({ version }: { version: string }) {
     mutationFn: () => checkForUpdateNow(),
     onSuccess: (result) => {
       queryClient.setQueryData(STATUS_KEY, result);
-      if (result.outcome === "unreachable") {
+      if (result.reason === "rate_limited") {
         toast.error(
           t(
-            "GitHub'a ulaşılamadı. İnternet bağlantınızı kontrol edip tekrar deneyin.",
+            "GitHub istek sınırı veya erişim kısıtı bildirdi. Bir süre bekleyip tekrar deneyin; Yardım tanılamasını kontrol edin.",
+          ),
+        );
+      } else if (result.outcome === "unreachable") {
+        toast.error(
+          t(
+            "GitHub sürüm bilgisi okunamadı. Biraz bekleyip yeniden deneyin; sürerse Yardım ekranından tanılama alın.",
           ),
         );
       } else if (result.outcome === "error") {
@@ -169,7 +175,7 @@ export function UpdateSection({ version }: { version: string }) {
             <>
               {/* The whole update, in one line they can paste. */}
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <code className="min-w-0 truncate font-mono text-sm text-muted">
+                <code className="min-w-0 break-all whitespace-pre-wrap font-mono text-sm text-muted">
                   {UPDATE_COMMAND}
                 </code>
                 <CopyButton
@@ -208,12 +214,12 @@ export function UpdateSection({ version }: { version: string }) {
       {status && !status.enabled ? (
         <p className="text-sm text-muted">
           {t(
-            "Güncelleme kontrolü kapalı; GitHub'a istek gitmiyor. Yeni sürümleri depodaki yayınlardan kendiniz takip edebilirsiniz.",
+            "Uygulama içi sürüm kontrolü kapalı. Windows tepsisi bağımsız olarak günlük sürüm kontrolü yapabilir.",
           )}
         </p>
       ) : null}
 
-      {status?.outcome === "error" ? (
+      {status?.outcome === "error" && status.reason !== "rate_limited" ? (
         <p role="alert" className="text-sm text-[var(--ink-warning)]">
           {status.lastSuccessAt
             ? t(
@@ -230,26 +236,63 @@ export function UpdateSection({ version }: { version: string }) {
         </p>
       ) : null}
 
-      {status?.outcome === "unreachable" ? (
+      {status?.outcome === "unreachable" && status.reason !== "rate_limited" ? (
         <p className="text-sm text-muted">
           {t("Son kontrolde GitHub'a ulaşılamadı.")}
         </p>
       ) : null}
 
+      {statusQuery.isError ? (
+        <p role="alert" className="text-sm text-[var(--ink-warning)]">
+          {t("Sürüm kontrolü ayarı okunamadı. Son kayıt güncel olmayabilir.")}{" "}
+          <button
+            type="button"
+            className="link min-h-11"
+            onClick={() => void statusQuery.refetch()}
+          >
+            {t("Tekrar dene")}
+          </button>
+        </p>
+      ) : null}
+      {status?.reason === "rate_limited" ? (
+        <p role="alert" className="text-sm text-[var(--ink-warning)]">
+          {t(
+            "GitHub istek sınırı veya erişim kısıtı bildirdi. Bir süre bekleyip tekrar deneyin; Yardım tanılamasını kontrol edin.",
+          )}
+        </p>
+      ) : null}
+      {status?.lastSuccessAt ? (
+        <p className="text-xs text-muted">
+          {t("Son başarılı sürüm kontrolü: {date}", {
+            date: formatDateTime(status.lastSuccessAt),
+          })}
+        </p>
+      ) : null}
+      <a
+        href="#windows"
+        className="link inline-flex min-h-11 items-center text-sm"
+      >
+        {t("Windows otomatik kurulum ayarları")}
+      </a>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <label className="flex cursor-pointer items-center gap-2 text-sm">
           <input
             type="checkbox"
             className="toggle toggle-sm"
             checked={status?.enabled ?? false}
-            disabled={statusQuery.isPending || toggle.isPending}
+            disabled={
+              !status ||
+              statusQuery.isError ||
+              statusQuery.isPending ||
+              toggle.isPending
+            }
             onChange={(event) => toggle.mutate(event.target.checked)}
           />
           <span className="flex items-center gap-1.5">
-            {t("Güncellemeleri kontrol et")}
-            <HelpTip label={t("Güncellemeleri kontrol et")}>
+            {t("Uygulama içi sürüm kontrolü")}
+            <HelpTip label={t("Uygulama içi sürüm kontrolü")}>
               {t(
-                "Açıkken altı saatte bir GitHub'daki sürüm listesine bakar, başka hiçbir şey göndermez. Kapatırsanız dışarıya hiç istek gitmez ve sürümü kendiniz takip edersiniz.",
+                "Açıkken uygulama içi kontrol en çok altı saatte bir GitHub sürüm listesine bakar. Bu tercih Windows tepsisinin günlük kontrolünü ve otomatik kurulum tercihini değiştirmez.",
               )}
             </HelpTip>
           </span>

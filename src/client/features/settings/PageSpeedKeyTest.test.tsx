@@ -30,7 +30,11 @@ describe("PageSpeedKeyTest", () => {
 
     renderTest();
 
-    expect(screen.getByText("1 ölçüm harcar")).toBeTruthy();
+    expect(
+      screen.getByText(
+        "example.com için 1 mobil istek; denetim ölçüm sayacına eklenmez.",
+      ),
+    ).toBeTruthy();
     expect(await screen.findByText("Anahtar çalışıyor.")).toBeTruthy();
   });
 

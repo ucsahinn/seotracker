@@ -44,6 +44,7 @@ function switchLocale(locale: Locale) {
 export function ThemeSection() {
   const { themePreference, setThemePreference } = useThemePreference();
   const locale = useLocale();
+  const [selectedLocale, setSelectedLocale] = React.useState(locale);
 
   return (
     <section id="gorunum" className="scroll-mt-16 space-y-3">
@@ -72,21 +73,49 @@ export function ThemeSection() {
           })}
         />
       </div>
-      <div className="flex items-center justify-between gap-6">
-        <span className="text-sm">{t("Dil")}</span>
-        <SegmentedRadio
-          label={t("Dil tercihi")}
-          value={locale}
-          onChange={(next) => {
-            if (next !== locale) switchLocale(next);
-          }}
-          options={LANGUAGE_OPTIONS.map((option) => ({
-            value: option.value,
-            label: option.label,
-            content: <span className="text-sm">{option.label}</span>,
-          }))}
-        />
-      </div>
+      <form
+        className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+        onSubmit={(event) => {
+          event.preventDefault();
+          if (selectedLocale !== locale) switchLocale(selectedLocale);
+        }}
+      >
+        <label htmlFor="settings-language" className="text-sm">
+          {t("Dil")}
+        </label>
+        <div className="flex flex-wrap gap-2">
+          <select
+            id="settings-language"
+            className="select min-h-11 w-full sm:w-auto"
+            value={selectedLocale}
+            onChange={(event) =>
+              setSelectedLocale(
+                LANGUAGE_OPTIONS.find(
+                  (option) => option.value === event.target.value,
+                )?.value ?? locale,
+              )
+            }
+          >
+            {LANGUAGE_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <button
+            type="submit"
+            className="btn min-h-11"
+            disabled={selectedLocale === locale}
+          >
+            {t("Dili uygula")}
+          </button>
+        </div>
+      </form>
+      <p className="text-xs text-muted">
+        {t(
+          "Arayüz dili bu tarayıcıda saklanır; projenin varsayılan pazar dilini değiştirmez.",
+        )}
+      </p>
     </section>
   );
 }
@@ -139,14 +168,22 @@ function SegmentedRadio<T extends string>({
             aria-label={option.label}
             title={option.label}
             tabIndex={isActive ? 0 : -1}
-            className={`flex cursor-pointer items-center justify-center rounded-field px-3 py-1.5 transition-colors ${
+            className={`flex cursor-pointer items-center justify-center min-h-11 min-w-11 rounded-field px-3 py-1.5 transition-colors ${
               isActive
                 ? "bg-base-100 text-base-content shadow-[var(--shadow-raise)] ring-1 ring-[var(--control-border)]"
                 : "text-muted hover:text-base-content"
             }`}
             onClick={() => onChange(option.value)}
             onKeyDown={(event) => {
-              if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+              if (event.key === "Home" || event.key === "End") {
+                event.preventDefault();
+                const next = event.key === "Home" ? 0 : options.length - 1;
+                onChange(options[next].value);
+                buttons.current[next]?.focus();
+              } else if (
+                event.key === "ArrowRight" ||
+                event.key === "ArrowDown"
+              ) {
                 event.preventDefault();
                 move(index, 1);
               } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {

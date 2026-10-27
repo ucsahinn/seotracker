@@ -1,3 +1,4 @@
+import { invalidateProjectLists } from "./projectQueries";
 import * as React from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -43,7 +44,7 @@ export function CreateProjectModal({
       }),
     onSuccess: async (created) => {
       setLastProjectId(created.id);
-      await queryClient.invalidateQueries({ queryKey: ["projects"] });
+      await invalidateProjectLists(queryClient);
       await queryClient.invalidateQueries({
         queryKey: ["dashboardActivation"],
       });

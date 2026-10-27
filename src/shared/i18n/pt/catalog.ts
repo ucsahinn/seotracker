@@ -791,15 +791,13 @@ export const ptCatalog = {
   "Proje güncellenemedi": "Não foi possível atualizar o projeto",
   "Proje adı gerekli": "O nome do projeto é obrigatório",
   "Temel bilgiler": "Informações básicas",
-  "Site adresi, denetimin nereden başlayacağını belirler. Ülke ve dil, Search Console verisinin hangi pazar için okunacağını belirler. Yanlış seçerseniz sayılar doğru olur ama sizinle ilgisiz kalır.":
-    "O endereço do site define o ponto de partida da auditoria. O país e o idioma definem para qual mercado os dados do Search Console são lidos. Se escolher errado, os números continuam corretos, mas não dizem nada sobre você.",
+
   Ad: "Nome",
   "Yalnızca sizin içindir. Proje değiştiricide ve raporların başlığında görünür, Google'a gitmez.":
     "Visível só para você. Aparece no seletor de projetos e nos títulos dos relatórios e nunca é enviado ao Google.",
   "Alan adı": "Domínio",
   "(isteğe bağlı)": "(opcional)",
-  "Denetim bu adresten başlar, Search Console mülkü de bununla eşleştirilir. https:// olmadan yazın, örneğin example.com.":
-    "A auditoria começa neste endereço e a propriedade do Search Console é associada a ele. Insira-o sem https://, por exemplo example.com.",
+
   "Kaydettiğiniz anahtar kelimeler bu ülke ve dile göre saklanır.":
     "As palavras-chave salvas são associadas a este país e idioma.",
   "Değişiklikleri kaydet": "Salvar alterações",
@@ -849,30 +847,21 @@ export const ptCatalog = {
     one: "{count} concorrente salvo.",
     other: "{count} concorrentes salvos.",
   },
-  "Rakip yok. Ajan, kimle yarıştığınızı bilmeden öneri yapar.":
-    "Não há concorrentes. O agente fará sugestões sem saber com quem você compete.",
+
   "Rakip ekle": "Adicionar concorrente",
   "Önemli sayfalar": "Páginas importantes",
   "{count} önemli sayfa kayıtlı.": {
     one: "{count} página importante salva.",
     other: "{count} páginas importantes salvas.",
   },
-  "Önemli sayfa işaretlenmemiş. Hangi sayfaların kazanç getirdiği belli değil.":
-    "Nenhuma página importante marcada. Não está claro quais páginas geram receita.",
+
   "Sayfa ekle": "Adicionar página",
-  "Bağlı. Tıklama, gösterim ve sıra verisi okunuyor.":
-    "Conectado. Carregando dados de cliques, impressões e posição.",
+
   "Bağlı değil. Sıralama, arama performansı ve fırsatlar bu bağlantıya dayanır.":
     "Não conectado. O acompanhamento de posições, o desempenho da pesquisa e as oportunidades dependem desta conexão.",
-  "Bağlı. Organik oturumlar okunuyor.":
-    "Conectado. Carregando sessões orgânicas.",
-  "Bağlı değil. Ziyaret ve dönüşüm verisi olmadan trafik düşüşleri yorumlanamaz.":
-    "Não conectado. Sem dados de visitas e conversões, não é possível interpretar as quedas de tráfego.",
+
   "PageSpeed anahtarı": "Chave do PageSpeed",
-  "Anahtar tanımlı. Hız ölçümleri kota sorunu olmadan çalışır.":
-    "Chave configurada. As medições de velocidade funcionam sem problemas de cota.",
-  "Anahtar yok. Hız ölçümü Google'ın ortak kotasına takılıyor ve çoğu zaman yarıda kalır.":
-    "Sem chave. A medição de velocidade esbarra na cota compartilhada do Google e muitas vezes fica incompleta.",
+
   "Anahtar gir": "Inserir chave",
   "İşin özeti": "Visão geral do negócio",
   "Şu anki hedef": "Objetivo atual",
@@ -894,8 +883,7 @@ export const ptCatalog = {
     "ex.: A única ferramenta de reservas que se configura em uma tarde. Mais barata do que as opções estabelecidas e mais simples do que soluções faça-você-mesmo.",
   "örn. Sade ve doğrudan, abartı yok. “Kusursuz” ya da “devrim niteliğinde” yazmayın. Rakip fiyatlarına girmeyin.":
     "ex.: Simples e direto, sem exageros. Não use “perfeito” nem “revolucionário”. Não fale dos preços dos concorrentes.",
-  "Ajanınızın bu proje hakkında bildikleri. Ajan işe başlamadan önce burayı okur, öğrendiklerini buraya yazar. Yanlış bir şey görürseniz düzeltin.":
-    "O que o agente sabe sobre este projeto. Lê esta seção antes de começar e registra aqui o que aprende. Corrija qualquer informação incorreta.",
+
   "Proje bilgisi yüklenemedi":
     "Não foi possível carregar o contexto do projeto",
   "Henüz boş. Kendiniz doldurabilir ya da ajanınıza sitenizden taslak çıkarttırıp onaylayabilirsiniz.":
@@ -952,22 +940,16 @@ export const ptCatalog = {
   Kaydet: "Salvar",
   "Ajanınıza doldurtabilirsiniz": "Peça ao agente para preencher",
   "Ajanınıza gözden geçirtin": "Peça ao agente para revisar",
-  "İstemi kopyalayıp Claude Code ya da Codex'e yapıştırın. Ajan sitenizi ve ölçümleri okuyup taslak hazırlar; siz onaylamadan hiçbir şey kaydetmez ve sitedeki metinleri talimat saymaz.":
-    "Copie o prompt e cole no Claude Code ou no Codex. O agente analisa o site e as métricas e prepara um rascunho; não salva nada sem a sua aprovação e não trata o texto do site como instruções.",
-  "İstemi kopyalayıp ajana yapıştırın. Yazılı olanı sitenin bugünkü haliyle karşılaştırır, yalnızca yanlış olanı düzeltir ve kaydetmeden önce size sorar; sitedeki metinleri talimat saymaz.":
-    "Copie o prompt e cole no seu agente. Ele compara o que está escrito com o site como está hoje, corrige apenas o que estiver errado e pede sua autorização antes de salvar; não trata o texto do site como instruções.",
+
   "İstemi kopyala": "Copiar prompt",
   "İstem kopyalandı": "Prompt copiado",
   "Araştırma günlüğü": "Registro de pesquisa",
-  "Neye bakıldığının kaydı. Aynı araştırma iki kez yapılmasın diye tutulur.":
-    "Registro do que foi investigado, para evitar repetir a mesma pesquisa.",
+
   "Henüz kayıt yok. Bağladığınız ajan bir araştırma yaptıkça buraya yazar.":
     "Ainda não há registros. O agente conectado escreve aqui à medida que faz pesquisas.",
   "{date} tarihli kaydı sil": "Excluir registro de {date}",
   "Kurulum durumu": "Status da configuração",
-  "Ajanların ve uygulamanın düzgün çalışması için gerekenler. Eksik satırın yanındaki düğme sizi düzeltebileceğiniz yere götürür.":
-    "O que é necessário para os agentes e o app funcionarem corretamente. O botão ao lado de um item faltando leva você ao local onde pode corrigi-lo.",
-  "{done} / {total} tamam": "{done} de {total} concluídos",
+
   Tamam: "Concluído",
   Eksik: "Faltando",
   "Kontrol ediliyor": "Verificando",
@@ -1003,8 +985,7 @@ export const ptCatalog = {
   "Son güncelleme": "Última atualização",
   "{date} · raporu aç": "{date} · abrir relatório",
   "Türe göre raporlar": "Relatórios por tipo",
-  "Bir türe tıklayarak listeyi o türdeki raporlarla sınırlayın.":
-    "Clique em um tipo para limitar a lista aos relatórios desse tipo.",
+
   rapor: "relatórios",
   Belirtilmemiş: "Não especificado",
   "Site denetimi raporu": "Relatório de auditoria do site",
@@ -1016,30 +997,23 @@ export const ptCatalog = {
   "Proje kurulumu": "Configuração do projeto",
   "Diğer türler": "Outros tipos",
   Tümü: "Todos",
-  "Şablonla yazılan": "Criado com modelo",
-  "Beceriyle yazılan": "Criado com uma skill",
+
   "Henüz rapor yok": "Ainda não há relatórios",
-  "Rapor iki yoldan alınır: ajanınıza yazdırın ya da Site denetimi ekranından indirin.":
-    "Há duas formas de obter um relatório: pedir ao agente que escreva um ou baixá-lo na tela Auditoria do site.",
+
   "Rapor komutunu kopyala": "Copiar prompt do relatório",
   "Komut kopyalandı. Ajanınıza yapıştırın":
     "Prompt copiado. Cole no seu agente",
-  "Ajan kurulumunu aç": "Abrir configuração do agente",
-  Filtre: "Filtro",
+
   "Raporlarda ara": "Pesquisar relatórios",
   "Aramanıza uyan rapor yok": "Nenhum relatório corresponde à pesquisa",
-  "Aramayı, filtreyi ya da seçili türü kaldırarak tüm raporları görün.":
-    "Limpe a pesquisa, o filtro ou o tipo selecionado para ver todos os relatórios.",
+
   Tür: "Tipo",
   Oluşturuldu: "Criado",
   Boyut: "Tamanho",
   İşlemler: "Ações",
   "{title} için işlemler": "Ações para {title}",
   Sil: "Excluir",
-  "En son {count} rapor gösteriliyor.": {
-    one: "Mostrando o relatório mais recente ({count}).",
-    other: "Mostrando os {count} relatórios mais recentes.",
-  },
+
   "Henüz şablon yok": "Ainda não há modelos",
   "Şablon olmadan da rapor alabilirsiniz. Her seferinde aynı biçimde rapor istiyorsanız (örneğin yöneticiye aylık özet) sağ üstteki düğmeyle ilk şablonunuzu oluşturun.":
     "Você pode obter relatórios sem um modelo. Se quiser sempre o mesmo formato (por exemplo, um resumo mensal para o seu gestor), crie seu primeiro modelo com o botão no canto superior direito.",
@@ -1070,23 +1044,9 @@ export const ptCatalog = {
   "“{title}” silinsin mi?": "Excluir “{title}”?",
   "Bu geri alınamaz.": "Esta ação não pode ser desfeita.",
   "Raporu sil": "Excluir relatório",
-  "Sıra bilgisi yüklenemedi": "Não foi possível carregar os dados de posição",
-  "Bilinmiyor (arşiv kesildi)": "Desconhecido (arquivo truncado)",
-  "Verisi yok": "Sem dados",
-  "Okunan arşiv kesildiği için bu kelimelerin sırası bilinmiyor; Search Console'da sırası olabilir.":
-    "A posição destas palavras-chave é desconhecida porque a leitura do arquivo foi interrompida; podem ter posições no Search Console.",
-  "Search Console arşivinde bu kelimeyle eşleşen sorgu olmayanlar.":
-    "Palavras-chave sem consultas correspondentes no arquivo do Search Console.",
+
   "Sıra {band}": "Posição {band}",
-  "{total} kelimenin {ranked} tanesi Search Console arşivinde var; sıralar son {days} günün ortalaması.":
-    "{ranked} de {total} palavras-chave estão no arquivo do Search Console; as posições são a média dos últimos {days} dias.",
-  "Arşivden en çok {limit} sorgu okunuyor; bu yüzden bazı kelimelerin sırası eksik görünebilir.":
-    "São lidas no máximo {limit} consultas do arquivo, por isso algumas palavras-chave podem aparecer sem posição.",
-  "Kelimelerinizin sırası henüz yok":
-    "Suas palavras-chave ainda não têm posições",
-  "Sıralar, Search Console'un hangi kelimeyle arandığınızı paylaşmasına bağlı. Az ziyaretçisi olan sitelerde bu normaldir; veri gelince sıralar kendiliğinden dolar. Toplam rakamlara {searchPerformance}'ndan, bağlantı durumuna {integrations} bakabilirsiniz.":
-    "As posições dependem de o Search Console indicar as palavras-chave usadas para encontrar o site. É normal em sites com poucas visitas; as posições aparecem automaticamente quando houver dados. Consulte os totais em {searchPerformance} e o status da conexão em {integrations}.",
-  "Bağlantılar sekmesinden": "aba Conexões",
+
   "Sıraya göre hızlı filtreler": "Filtros rápidos por posição",
   "İlk 10": "Top 10",
   "Ortalama sırası 10 veya daha iyi olan kelimeler; yani Google'ın ilk sayfası.":
@@ -1094,8 +1054,7 @@ export const ptCatalog = {
   "Ortalama sırası 11 ile 20 arasında olanlar, yani ikinci sayfadakiler. Küçük bir iyileştirme ilk sayfaya taşıyabilir.":
     "Palavras-chave com posição média entre 11 e 20, ou seja, na segunda página. Uma pequena melhoria pode levá-las à primeira página.",
   "Sıra dağılımı": "Distribuição de posições",
-  "Bir gruba tıklayınca tablo yalnızca o gruptaki kelimeleri gösterir.":
-    "Clique em um grupo para mostrar na tabela apenas as palavras-chave desse grupo.",
+
   kelime: "palavras-chave",
   Bilgi: "Informacional",
   Ticari: "Comercial",
@@ -1143,15 +1102,13 @@ export const ptCatalog = {
   },
   Uygula: "Aplicar",
   Kelime: "Palavra-chave",
-  "Arama performansında göster": "Mostrar em Desempenho da pesquisa",
-  "Search Console bu kelime için sıra kaydetmemiş":
-    "O Search Console não registrou uma posição para esta palavra-chave",
+
   Amaç: "Intenção",
   Etiketler: "Etiquetas",
   Eklenme: "Adicionada",
   "Kelimeyi kopyala": "Copiar palavra-chave",
   "Kelime kopyalandı": "Palavra-chave copiada",
-  "Arama performansında ara": "Pesquisar em Desempenho da pesquisa",
+
   "Kelimeyi sil": "Excluir palavra-chave",
   "Bu filtrelere uyan kelime yok":
     "Nenhuma palavra-chave corresponde a estes filtros",
@@ -1226,12 +1183,7 @@ export const ptCatalog = {
     one: "Excluir {count} palavra-chave",
     other: "Excluir {count} palavras-chave",
   },
-  "{count} kayıtlı kelime": {
-    one: "{count} palavra-chave salva",
-    other: "{count} palavras-chave salvas",
-  },
-  "Etiketleyin, Search Console'daki ortalama sıralarına bakın, CSV ya da E-Tablolar olarak dışa aktarın.":
-    "Adicione etiquetas, consulte a posição média no Search Console e exporte para CSV ou Google Sheets.",
+
   "E-Tablolar'a aktar": "Exportar para Sheets",
   "CSV indir": "Baixar CSV",
   "Tablo filtrelerini aç/kapat": "Mostrar ou ocultar filtros da tabela",
@@ -1279,8 +1231,7 @@ export const ptCatalog = {
     "Para copiar para a área de transferência, use PowerShell (o valor não aparece na tela):",
   "Değeri sohbete ya da ekrana yazmayın. Yapıştırdıktan sonra panoyu temizleyin (Win+V, Tümünü temizle).":
     "Não digite o valor em uma conversa nem na tela. Depois de colar, limpe a área de transferência (Win+V, Limpar tudo).",
-  "Kendiniz belirlemediyseniz uygulama ilk açılışta bir parola üretir. Okumak için (PowerShell ve cmd):":
-    "Se você não definiu uma, o app gera uma senha na primeira inicialização. Para consultá-la (PowerShell e cmd):",
+
   "Windows'ta Git Bash için komutun başına {prefix} ekleyin, yoksa parola boş çıkar (PowerShell'de bu önek hata verir).":
     "No Git Bash do Windows, acrescente {prefix} antes do comando; caso contrário, a senha ficará vazia (no PowerShell, este prefixo dá erro).",
   "Bu adres parola istemez. Bilgisayarınızdaki başka bir programın araçları çalıştırmasını önlemek için {token} adıyla bir parola ayarlayın ve aracınıza şu başlığı ekletin:":
@@ -1315,12 +1266,11 @@ export const ptCatalog = {
   "Tanılama paketi indir": "Baixar pacote de diagnóstico",
   "Özeti kopyala": "Copiar resumo",
   "Proje GitHub'da": "Projeto no GitHub",
-  "Her projenin kendi Search Console bağlantısı, arama verisi ve site denetimleri vardır.":
-    "Cada projeto tem sua própria conexão com o Search Console, seus dados de pesquisa e suas auditorias do site.",
+
   "Henüz proje yok": "Ainda não há projetos",
   "Bir proje oluşturun, sonra sitesini ekleyin.":
     "Crie um projeto e, em seguida, adicione o site.",
-  Etkin: "Ativo",
+
   "Site eklenmedi": "Nenhum site adicionado",
   "Site ekle": "Adicionar site",
   "Proje geri alındı": "Projeto restaurado",
@@ -1384,10 +1334,7 @@ export const ptCatalog = {
     one: "{count} palavra-chave copiada",
     other: "{count} palavras-chave copiadas",
   },
-  "Önce Ayarlar'da Google erişim anahtarını ya da hizmet hesabını girin. Sonra izleyeceğiniz siteyi seçin. Google buna mülk der. Siteyi yeni doğruladıysanız Google'ın veri vermesi birkaç gün sürebilir.":
-    "Insira primeiro a chave de acesso do Google ou a conta de serviço nas Configurações. Depois escolha o site a acompanhar; o Google chama isso de propriedade. Se você verificou o site há pouco tempo, o Google pode levar alguns dias para disponibilizar dados.",
-  "Search Console'daki Google erişim anahtarını kullanır, ayrı kurulum istemez. Bağlandıktan sonra Analytics'teki sitenizi (Analytics mülkü) seçin. Organik ziyaretler Panel'de ve Analytics ekranında görünür.":
-    "Usa a mesma chave de acesso do Google que o Search Console, sem configuração separada. Depois de conectar, selecione seu site no Analytics (a propriedade do Analytics). As visitas orgânicas aparecem no Painel e na tela Analytics.",
+
   Genel: "Geral",
   "Ayar bölümleri": "Seções das configurações",
   "Projeler yüklenemedi": "Não foi possível carregar os projetos",
@@ -3238,13 +3185,7 @@ export const ptCatalog = {
   "Analytics (GA4) saatlik kota puanı":
     "Pontos de cota por hora do Analytics (GA4)",
   "Denetim sayfa sınırı": "Limite de páginas por auditoria",
-  "Bir denetim en çok {count} sayfa tarar; gösterilen sayı son denetimin taranan sayfa sayısıdır.":
-    {
-      one: "Uma auditoria rastreia no máximo {count} página; o número mostrado é o número de páginas rastreadas pela última auditoria.",
-      other:
-        "Uma auditoria rastreia no máximo {count} páginas; o número mostrado é o número de páginas rastreadas pela última auditoria.",
-    },
-  "Son denetim kaydı": "Registro da última auditoria",
+
   "Uygulamanın veritabanı": "Banco de dados do aplicativo",
   "Proje başına rapor": "Relatórios por projeto",
   "Takılan bir döngüye karşı koruma; gerçek bir iş akışı buna yaklaşmaz.":
@@ -3637,7 +3578,7 @@ export const ptCatalog = {
   Sistem: "Sistema",
   Açık: "Claro",
   Koyu: "Escuro",
-  "Dil tercihi": "Preferência de idioma",
+
   Google: "Google",
   "Hizmet hesabı": "Conta de serviço",
   Sınırlar: "Limites",
@@ -3664,7 +3605,7 @@ export const ptCatalog = {
   "Kimlik {suffix} ile bitmeli. Gizli anahtarı değil, OAuth client ID'yi yapıştırın.":
     "O ID do cliente deve terminar em {suffix}. Cole o ID do cliente OAuth, não o segredo do cliente.",
   "Anahtarı test et": "Testar chave",
-  "1 ölçüm harcar": "Usa 1 medição",
+
   "Google erişim anahtarı kaydedildi": "Chave de acesso do Google salva",
   "Google erişim anahtarı kaydedilemedi. Değerleri kontrol edip tekrar deneyin.":
     "Não foi possível salvar a chave de acesso do Google. Verifique os valores e tente novamente.",
@@ -3708,8 +3649,7 @@ export const ptCatalog = {
   "Hizmet hesabı silinemedi. Tekrar deneyin.":
     "Não foi possível excluir a conta de serviço. Tente novamente.",
   "Hizmet hesabı (daha kısa yol)": "Conta de serviço (o caminho mais rápido)",
-  "Yukarıdaki Google erişim anahtarı yerine bunu kullanabilirsiniz. Hizmet hesabında izin ekranı, test kullanıcısı ve yönlendirme adresi adımları yok. Google Cloud'da hesabı açıp JSON dosyasını indirin ve buraya yapıştırın, sonra hesabın e-posta adresini Search Console'da mülkünüze, bir meslektaşınızı eklermiş gibi kullanıcı olarak ekleyin.":
-    "Você pode usar isto em vez da chave de acesso do Google acima. Uma conta de serviço dispensa as etapas da tela de consentimento, do usuário de teste e dos URIs de redirecionamento. Crie a conta no Google Cloud, baixe o arquivo de chave JSON e cole-o aqui. Em seguida, adicione o endereço de e-mail da conta como usuário na sua propriedade do Search Console, como faria com um colega.",
+
   "Hizmet hesapları": "Contas de serviço",
   "Hizmet hesabı durumu okunamadı.":
     "Não foi possível ler o status da conta de serviço.",
@@ -3733,8 +3673,7 @@ export const ptCatalog = {
   "PageSpeed anahtarı silindi": "Chave do PageSpeed excluída",
   "PageSpeed anahtarı silinemedi. Tekrar deneyin.":
     "Não foi possível excluir a chave do PageSpeed. Tente novamente.",
-  "Denetimin Lighthouse aşaması Google PageSpeed Insights'ı kullanır. Anahtarsız da çalışır, ama Google'ın anahtarsız kotası birkaç sayfadan sonra \"çok fazla istek\" (429) hatası verir. Gerçek bir sitede hız ölçümünün büyük kısmı boş kalır. Anahtar ücretsiz.":
-    'A etapa Lighthouse da auditoria usa o Google PageSpeed Insights. Funciona sem chave, mas a cota sem chave do Google retorna "muitas solicitações" (429) após algumas páginas, portanto, em um site real, a maioria das medições de velocidade fica vazia. A chave é gratuita.',
+
   "Anahtar durumu okunamadı.": "Não foi possível ler o status da chave.",
   "Ortam değişkeninden geliyor": "Proveniente de uma variável de ambiente",
   "{name} ayarlanmış. Buraya bir değer kaydederseniz o kullanılır.":
@@ -3743,10 +3682,7 @@ export const ptCatalog = {
   "Google Cloud Console → Credentials → Create credentials → API key. Önce aynı projede PageSpeed Insights API'sini etkinleştirin, yoksa anahtar 403 hatası verir.":
     "Google Cloud Console → Credenciais → Criar credenciais → Chave de API. Ative primeiro a API PageSpeed Insights no mesmo projeto, ou a chave retornará um erro 403.",
   "PageSpeed anahtarı silinsin mi?": "Excluir a chave do PageSpeed?",
-  "Anahtar bu kurulumdan silinir; hız ölçümü anahtarsız sınıra döner ve gerçek bir sitede çoğu zaman yarım kalır (429, çok fazla istek). İstediğiniz zaman yeniden girebilirsiniz.":
-    "A chave será removida desta instalação. A medição de velocidade volta ao limite sem chave e, em um site real, geralmente para no meio do caminho (429, muitas solicitações). Você pode inseri-la novamente a qualquer momento.",
-  "GitHub'a ulaşılamadı. İnternet bağlantınızı kontrol edip tekrar deneyin.":
-    "Não foi possível acessar o GitHub. Verifique sua conexão com a Internet e tente novamente.",
+
   "GitHub'a ulaşılamadı; son bilinen sürüm {version}":
     "Não foi possível conectar ao GitHub; a última versão conhecida é {version}",
   "En güncel sürümü kullanıyorsunuz": "Você está na versão mais recente",
@@ -3769,17 +3705,14 @@ export const ptCatalog = {
   "Proje klasöründe çalıştırın. Verileriniz Docker biriminde ({volume}) kalır, güncelleme onu silmez.":
     "Execute-o na pasta do projeto. Seus dados permanecem no volume do Docker ({volume}); a atualização não os exclui.",
   "En güncel sürümü kullanıyorsunuz.": "Você está na versão mais recente.",
-  "Güncelleme kontrolü kapalı; GitHub'a istek gitmiyor. Yeni sürümleri depodaki yayınlardan kendiniz takip edebilirsiniz.":
-    "As verificações de atualização estão desativadas, portanto, nenhuma solicitação vai para o GitHub. Você mesmo pode acompanhar as novas versões na página de lançamentos do repositório.",
+
   "Son kontrol başarısız oldu: GitHub'a ulaşılamadı. Son bilinen sürüm {version} (son başarılı kontrol: {date}); güncel olup olmadığı doğrulanamadı.":
     "A última verificação falhou: não foi possível conectar ao GitHub. A última versão conhecida é {version} (última verificação bem-sucedida: {date}), por isso não foi possível confirmar se você está atualizado.",
   "Son kontrol başarısız oldu: GitHub'a ulaşılamadı. Son bilinen sürüm {version}; güncel olup olmadığı doğrulanamadı.":
     "A última verificação falhou: não foi possível conectar ao GitHub. A última versão conhecida é {version}, por isso não foi possível confirmar se você está atualizado.",
   "Son kontrolde GitHub'a ulaşılamadı.":
     "Não foi possível acessar o GitHub na última verificação.",
-  "Güncellemeleri kontrol et": "Verificar atualizações",
-  "Açıkken altı saatte bir GitHub'daki sürüm listesine bakar, başka hiçbir şey göndermez. Kapatırsanız dışarıya hiç istek gitmez ve sürümü kendiniz takip edersiniz.":
-    "Quando ativado, ele consulta a lista de versões no GitHub a cada seis horas e não envia mais nada. Desative e nenhuma solicitação será enviada; você mesmo acompanha as versões.",
+
   "Şimdi kontrol et": "Verificar agora",
   "Kontrol açıkken uygulama, bir sekmede açık olduğu sürece en çok altı saatte bir GitHub'a bağlanıp en son sürümü sorar. GitHub bu istekte yalnızca genel IP adresinizi, uygulama adını ve sürümü görür; siteleriniz, Google hesabınız ya da denetimleriniz gönderilmez.":
     "Com a verificação ativada, o aplicativo pergunta ao GitHub qual é a versão mais recente no máximo a cada seis horas, enquanto estiver aberto em uma aba do navegador. O GitHub vê apenas seu endereço IP público, o nome do aplicativo e a versão; seus sites, sua conta do Google e suas auditorias nunca são enviados.",
@@ -3799,8 +3732,7 @@ export const ptCatalog = {
     "Nenhuma chave de acesso do Google ou conta de serviço foi inserida ainda. O Search Console e o Analytics não podem se conectar sem uma delas.",
   "Google erişim anahtarı ortam değişkenlerinden geliyor.":
     "A chave de acesso do Google vem de variáveis de ambiente.",
-  "Google bağlantı ayarı okunuyor.":
-    "Lendo a configuração de conexão do Google.",
+
   "Google erişimi hazır.": "O acesso ao Google está pronto.",
   "PageSpeed anahtarı kontrol edilemedi. {logs}":
     "Não foi possível verificar a chave do PageSpeed. {logs}",
@@ -3837,11 +3769,7 @@ export const ptCatalog = {
   "Sürümünüz v{version}. Güncelleme kontrolü kapalı.":
     "Você está na v{version}. As verificações de atualização estão desativadas.",
   "Kurulumunuzun durumu": "Seu status de configuração",
-  "Her şey yolunda.": "Tudo parece bem.",
-  "{count} şey dikkat istiyor.": {
-    one: "{count} item precisa de atenção.",
-    other: "{count} itens precisam de atenção.",
-  },
+
   "Son kontrol: {date}": "Última verificação: {date}",
   "Özet kopyalandı. İçinde gizli değer yok.":
     "Resumo copiado. Ele não contém segredos.",
@@ -3852,7 +3780,7 @@ export const ptCatalog = {
   bağlı: "conectado",
   "bağlı değil": "não conectado",
   "Bağlantıları aç": "Abrir conexões",
-  "Kurulum türü belirleniyor…": "Detectando o tipo de instalação…",
+
   "Sık sorunlar": "Problemas comuns",
   "Sayfa açılmıyor ya da uygulama kapalı":
     "A página não abre ou o aplicativo não está em execução",

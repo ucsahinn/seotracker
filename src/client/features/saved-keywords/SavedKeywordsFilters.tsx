@@ -1,3 +1,4 @@
+import { formatCount } from "@/shared/format";
 import { SlidersHorizontal } from "lucide-react";
 import { SavedKeywordsFilterPanel } from "./SavedKeywordsFilterPanel";
 import { SavedKeywordsTagFilter } from "./SavedKeywordsTagFilter";
@@ -42,15 +43,17 @@ export function SavedKeywordsFilters({
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-base-300 px-4 py-2.5">
         <button
           type="button"
-          className={`btn btn-ghost btn-sm gap-1.5 ${showFilters ? "btn-active" : ""}`}
+          className={`btn btn-ghost btn-sm min-h-11 gap-1.5 ${showFilters ? "btn-active" : ""}`}
           onClick={onToggleFilters}
           title={t("Tablo filtrelerini aç/kapat")}
+          aria-expanded={showFilters}
+          aria-controls="saved-advanced-filters"
         >
           <SlidersHorizontal className="size-3.5" />
           {t("Filtreler")}
           {activeFilterCount > 0 ? (
             <span className="badge badge-xs badge-primary border-0 text-primary-content">
-              {activeFilterCount}
+              {formatCount(activeFilterCount)}
             </span>
           ) : null}
         </button>
@@ -66,11 +69,13 @@ export function SavedKeywordsFilters({
       </div>
 
       {showFilters ? (
-        <SavedKeywordsFilterPanel
-          form={filtersForm}
-          activeFilterCount={activeFilterCount}
-          onReset={onResetAllFilters}
-        />
+        <div id="saved-advanced-filters">
+          <SavedKeywordsFilterPanel
+            form={filtersForm}
+            activeFilterCount={activeFilterCount}
+            onReset={onResetAllFilters}
+          />
+        </div>
       ) : null}
     </>
   );

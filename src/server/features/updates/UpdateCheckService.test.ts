@@ -125,6 +125,25 @@ describe("UpdateCheckService", () => {
     });
   });
 
+  it.each([403, 429])(
+    "reports HTTP %s as rate/access restriction, not offline",
+    async (status) => {
+      mocks.fetch.mockResolvedValue(new Response("", { status }));
+      expect(await UpdateCheckService.getStatus()).toMatchObject({
+        reason: "rate_limited",
+      });
+    },
+  );
+  it("distinguishes timeout and malformed successful responses", async () => {
+    mocks.fetch.mockRejectedValue(
+      new DOMException("timed out", "TimeoutError"),
+    );
+    expect((await UpdateCheckService.getStatus()).reason).toBe("timeout");
+    mocks.fetch.mockResolvedValue(Response.json({ message: "not a release" }));
+    expect((await UpdateCheckService.getStatus()).reason).toBe(
+      "invalid_release",
+    );
+  });
   it("degrades to 'unreachable' rather than throwing when the call fails", async () => {
     mocks.fetch.mockRejectedValue(new Error("getaddrinfo ENOTFOUND"));
 

@@ -20,6 +20,7 @@ import { deNotifications } from "@/shared/i18n/de/notifications";
 import { deCatalog } from "@/shared/i18n/de/catalog";
 import { deAudit } from "@/shared/i18n/de/audit";
 import { deApp } from "@/shared/i18n/de/app";
+import { deAppAdditional } from "@/shared/i18n/de/app-additional";
 import { deSearch } from "@/shared/i18n/de/search";
 import { deAnalytics } from "@/shared/i18n/de/analytics";
 import { deCards } from "@/shared/i18n/de/cards";
@@ -34,8 +35,11 @@ import { frShared } from "@/shared/i18n/fr/shared";
 import { frCatalog } from "@/shared/i18n/fr/catalog";
 import { frAudit } from "@/shared/i18n/fr/audit";
 import { frApp } from "@/shared/i18n/fr/app";
+import { frAppAdditional } from "@/shared/i18n/fr/app-additional";
 import { frSearch } from "@/shared/i18n/fr/search";
 import { itApp } from "@/shared/i18n/it/app";
+import { itAppSupplemental } from "@/shared/i18n/it/app-supplemental";
+import { itAppAdditional } from "@/shared/i18n/it/app-additional";
 import { itAppContinued } from "@/shared/i18n/it/app-continued";
 import { itNotifications } from "@/shared/i18n/it/notifications";
 import { itShared } from "@/shared/i18n/it/shared";
@@ -45,6 +49,8 @@ import { itSearch } from "@/shared/i18n/it/search";
 import { ptNotifications } from "@/shared/i18n/pt/notifications";
 import { ptShared } from "@/shared/i18n/pt/shared";
 import { ptApp } from "@/shared/i18n/pt/app";
+import { ptAppSupplemental } from "@/shared/i18n/pt/app-supplemental";
+import { ptAppAdditional } from "@/shared/i18n/pt/app-additional";
 import { ptAppContinued } from "@/shared/i18n/pt/app-continued";
 import { ptCatalog } from "@/shared/i18n/pt/catalog";
 import { ptCatalogContinued } from "@/shared/i18n/pt/catalog-continued";
@@ -72,6 +78,7 @@ const catalogs: Partial<Record<Locale, Catalog>> = {
     ...deCatalog,
     ...deAudit,
     ...deApp,
+    ...deAppAdditional,
     ...deSearch,
   },
   fr: {
@@ -82,6 +89,7 @@ const catalogs: Partial<Record<Locale, Catalog>> = {
     ...frCatalog,
     ...frAudit,
     ...frApp,
+    ...frAppAdditional,
     ...frSearch,
   },
   it: {
@@ -89,6 +97,8 @@ const catalogs: Partial<Record<Locale, Catalog>> = {
     ...itAnalytics,
     ...itShared,
     ...itApp,
+    ...itAppSupplemental,
+    ...itAppAdditional,
     ...itAppContinued,
     ...itNotifications,
     ...itCatalog,
@@ -101,6 +111,8 @@ const catalogs: Partial<Record<Locale, Catalog>> = {
     ...ptShared,
     ...ptNotifications,
     ...ptApp,
+    ...ptAppSupplemental,
+    ...ptAppAdditional,
     ...ptAppContinued,
     ...ptCatalog,
     ...ptCatalogContinued,

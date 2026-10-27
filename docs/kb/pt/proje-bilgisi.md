@@ -1,64 +1,27 @@
 ---
 title: Informações do projeto
-description: Escreva aqui o que o aplicativo não tem como saber: o seu negócio, o objetivo, os concorrentes e as páginas-chave. O assistente lê isso antes de começar.
+description: Informações do projeto guarda notas locais para você e seu assistente conectado. Texto preenchido não é verificado e nem todo assistente o lê automaticamente.
 screen: Proje bilgisi
 route: /p/<proje>/context
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
-Esta página explica como contar ao seu assistente sobre o seu site uma única vez.
+Informações do projeto guarda notas locais para você e seu assistente conectado. Texto preenchido não é verificado e nem todo assistente o lê automaticamente.
 
-A tela **Contexto do projeto** é onde você escreve o que o Google não sabe. Você escreve o que vende, qual é o objetivo agora, quem é o seu concorrente, quais páginas dão dinheiro e como você quer que as coisas sejam escritas. Você ou o seu assistente de IA (a tela diz "o agente", agente) preenchem a tela. O assistente a lê antes de começar o trabalho e escreve aqui o que aprende. Se você vir algo errado, corrija você mesmo. Ela é útil mesmo que você não use um assistente. Daqui a seis meses, a resposta para "por que nos concentramos nesta página" estará aqui.
+## Comece pela meta
 
-## O que há na tela
+O topo mostra quantas seções principais estão preenchidas e a meta salva. Abra a primeira seção vazia ou use o seletor. Resumo do negócio, meta atual, posicionamento e preferências de escrita permitem 4.000 caracteres cada. Autor e horário absoluto aparecem em cada seção. Salvar alterações envia somente as seções principais modificadas.
 
-**Quatro seções principais.** **Visão geral do negócio**, **Objetivo atual**, **Posicionamento** (como você se descreve no mercado) e **Preferências de escrita**. Cada uma é texto livre, com no máximo 4.000 caracteres. Abaixo, aparece quem a atualizou e quando.
+Concorrentes e páginas importantes são listas opcionais, não medições de posição ou conversão. Cada uma permite 100 registros. Domínio/nome/nota: 255/120/500 caracteres; endereço/tema/nota: 2.048/200/500. Os papéis são rótulos seus. Assistentes criam seções personalizadas; você pode editá-las ou removê-las. Limites: 20 seções, título de 120 caracteres e conteúdo de 4.000.
 
-**Seções personalizadas.** Para assuntos que não cabem nas quatro seções, você abre o seu próprio título. Pode haver no máximo 20 seções personalizadas, e um título tem no máximo 120 caracteres.
+## Salve e atualize
 
-**Concorrentes.** O nome de domínio é obrigatório. Escrever um nome e uma nota é opcional. Você pode adicionar no máximo 100 concorrentes, e uma nota tem no máximo 500 caracteres. O aplicativo não puxa os dados do concorrente. A lista serve para você e o seu assistente se lembrarem.
+Atualizar relê notas e configuração. Falhas em segundo plano preservam informações e rascunhos com um aviso. Sair com alterações principais ou em formulários em linha não salvas gera um aviso. O servidor ainda não impede sobrescritas simultâneas da mesma seção: compare o texto mais recente antes de salvar.
 
-**Páginas-chave.** Você escreve o endereço, a função, o assunto e uma nota. As funções são:
+O prompt para o assistente pede sua aprovação antes de gravar. As ferramentas do aplicativo podem gravar imediatamente e não impõem outra confirmação. O prompt fica indisponível até a identidade do projeto ser lida.
 
-- **Página central**: a página de entrada de um assunto.
-- **Página de apoio**: uma subpágina que alimenta a página central.
-- **Página de conversão**: uma página que dá dinheiro ou tem um formulário.
-- **Outro**.
+O diário de pesquisa mostra no máximo as 20 notas mais recentes, de até 1.000 caracteres. A data segue o dia UTC do servidor. A limpeza de registros com mais de 90 dias acontece ao adicionar uma nota; sem novos registros, notas antigas podem permanecer. A lista não é o histórico completo.
 
-Você pode adicionar no máximo 100 páginas. Os endereços são corrigidos para começar com https.
+Fontes e configuração conta seis sinais compartilhados e distingue ausência de leitura impossível. As listas opcionais não contam. Conexão salva não é teste ao vivo, chave PageSpeed não garante cota e chamada de ferramenta da instalação não prova leitura deste projeto. Não é uma pontuação SEO.
 
-**Registro de pesquisas.** São notas datadas que o assistente deixa, dizendo "pesquisei isto, e deu isto". Só o assistente as escreve, e cada nota tem no máximo 1.000 caracteres. Você pode excluí-las. As notas são excluídas sozinhas depois de 90 dias. A tela mostra as 20 notas mais recentes.
-
-**Cartão do agente.** Oferece dois textos prontos: "Peça ao agente para preencher" e "Peça ao agente para revisar". Você o copia com **Copiar prompt** e o cola para o seu assistente. Em um projeto vazio, o primeiro texto faz o assistente lhe fazer algumas perguntas e preencher as seções.
-
-## Como usar
-
-1. Assim que abrir o projeto, escreva três ou cinco frases em **Visão geral do negócio**. Escreva o que você vende, para quem vende, os idiomas do seu site e a sua página de conversão. Todo relatório do assistente se baseia nesse parágrafo.
-2. Escreva **Objetivo atual** de forma concreta. Não escreva "tráfego". Escreva "páginas de produto entrando no índice (a lista de páginas do Google)" ou "cinco pedidos por mês pelo formulário de demonstração". O assistente ordena as sugestões por isso.
-3. Em **Páginas importantes**, adicione primeiro as páginas de conversão e depois as páginas centrais. O assistente entende por aqui qual trabalho colocar primeiro.
-4. Em **Preferências de escrita**, escreva as palavras que não devem ser usadas e o tom. Exemplos: "não diga líder do setor", "trate por você", "informe o número da versão". Os relatórios do assistente seguem essas regras.
-5. Se você usa um assistente, copie e cole o texto **Peça ao agente para preencher** no primeiro dia. O assistente preenche as seções conversando com você. Uma vez por mês, leia o registro de pesquisas e corrija o que estiver errado.
-
-## Como os números são calculados
-
-Não há números calculados nesta tela, apenas limites. Eles estão escritos acima.
-
-O assistente pode fazer no máximo 50 alterações por vez. Cada alteração é gravada imediatamente, e nenhuma aprovação é pedida. Por isso, adquira o hábito de dizer ao seu assistente "pergunte-me antes de gravar". As skills bem construídas de assistentes já perguntam.
-
-O endereço de uma página-chave tem no máximo 2.048 caracteres. O nome de domínio de um concorrente tem no máximo 255 caracteres, e um nome tem no máximo 120. O aplicativo grava a data das notas do registro, e o assistente não pode inventar uma data.
-
-## Perguntas frequentes
-
-**O assistente escreveu algo errado. O que faço?** Abra a seção e corrija. Quem atualizou por último passa a ser "você" ("siz"). O assistente vê a sua versão na próxima vez que ler.
-
-**Adicionei um concorrente, mas não vieram dados.** Não virão. O aplicativo não puxa dados de concorrentes. A lista existe para que o assistente saiba o que olhar quando pesquisa na web.
-
-**Uma nota do registro sumiu.** As notas com mais de 90 dias são excluídas. Passe as informações duradouras para as seções. O registro é um caderno temporário.
-
-**Estas informações vão para o Google?** Não. Elas ficam guardadas neste computador. Só o assistente que você conectou as lê.
-
-## Limites
-
-A tela é texto livre. Ela não confere se o que você escreve é coerente. Se você escrever algo contraditório, o assistente pode não notar a contradição. Concorrentes e páginas-chave são uma lista de lembrete, não uma ferramenta de acompanhamento. Só o assistente escreve o registro de pesquisas. Escreva as suas próprias notas nas seções.
-
-<!-- Kaynaklar: src/routes/_project/p/$projectId/context.tsx; src/routes/_project/p/$projectId/settings/context.tsx; src/client/features/projects/context/sectionCopy.ts; src/server/features/project-context/*; src/types/schemas/projectContext.ts; src/server/mcp/server.ts (update_project_context) -->
+<!-- Sources: src/routes/_app/projects.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/project-context/; src/server/features/projects/services/ProjectOverviewService.ts; src/server/features/project-context/ -->

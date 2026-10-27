@@ -1,0 +1,34 @@
+import { useQuery } from "@tanstack/react-query";
+import { t } from "@/shared/i18n";
+import { GoogleOAuthClientSection } from "./GoogleOAuthClientSection";
+import { GoogleServiceAccountSection } from "./GoogleServiceAccountSection";
+import {
+  googleOAuthClientStatusOptions,
+  googleServiceAccountStatusOptions,
+} from "./settingsQueries";
+/** Installation scope; retain method anchors while putting the active method first. */
+export function GoogleCredentialMethods() {
+  const oauth = useQuery(googleOAuthClientStatusOptions());
+  const service = useQuery(googleServiceAccountStatusOptions());
+  const oauthFirst = oauth.data?.source && !service.data?.clientEmail;
+  return (
+    <section className="space-y-6">
+      <p className="text-sm text-muted">
+        {t(
+          "Google kimlikleri bu kurulumdaki tüm projelerde kullanılır. Hizmet hesabı kayıtlıysa önceliklidir. Projenizin mülkünü Proje ayarları → Bağlantılar bölümünden seçin.",
+        )}
+      </p>
+      {oauthFirst ? (
+        <>
+          <GoogleOAuthClientSection />
+          <GoogleServiceAccountSection />
+        </>
+      ) : (
+        <>
+          <GoogleServiceAccountSection />
+          <GoogleOAuthClientSection />
+        </>
+      )}
+    </section>
+  );
+}

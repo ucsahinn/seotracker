@@ -33,7 +33,7 @@ import {
 import { getErrorCode } from "@/client/lib/error-messages";
 import { captureClientEvent } from "@/client/lib/observability";
 import { booleanSearchParamSchema } from "@/types/schemas/search-params";
-import { getReport } from "@/serverFunctions/reports";
+import { getReport, getReportAvailability } from "@/serverFunctions/reports";
 import { backLinkClass, BackLinkLabel } from "@/client/components/BackLink";
 import { t } from "@/shared/i18n";
 
@@ -168,12 +168,28 @@ function ReportDetailPage() {
       project_id: projectId,
       report_id: report.id,
     });
-    window.open(`/r/${report.id}?print=1`, "_blank", "noopener");
+    const popup = window.open("about:blank", "_blank");
+    if (!popup) {
+      toast.error(
+        t(
+          "Yazdırma sekmesi tarayıcı tarafından engellendi. Bu site için açılır pencerelere izin verin veya raporu yeni sekmede açıp Yazdır kullanın.",
+        ),
+      );
+      return;
+    }
+    popup.opener = null;
+    popup.location.replace("/r/" + encodeURIComponent(report.id) + "?print=1");
   };
 
   if (full) {
     return (
-      <ReportFullscreen report={report} onExit={() => setExpanded(false)} />
+      <ReportFullscreen
+        report={report}
+        checkAvailability={() =>
+          getReportAvailability({ data: { projectId, reportId: report.id } })
+        }
+        onExit={() => setExpanded(false)}
+      />
     );
   }
 
@@ -204,39 +220,49 @@ function ReportDetailPage() {
               >
                 {report.title}
               </h1>
-              <dl className="mt-1.5 flex flex-wrap items-baseline gap-x-6 gap-y-1 text-sm">
-                <div className="flex items-baseline gap-1.5">
-                  <dt className="text-muted">{t("Oluşturan")}</dt>
-                  <dd>{formatCreatedBy(report)}</dd>
-                </div>
-                <div className="flex items-baseline gap-1.5">
-                  <dt className="text-muted">{t("Tür")}</dt>
-                  {/* As in the list's Type column: the template name when the
+              <p className="mt-2 text-sm text-muted">
+                {t(
+                  "Bu raporun veri dönemi yapılandırılmış olarak kaydedilmemiş. Dönemi ve veri sınırlarını raporun içinde kontrol edin.",
+                )}
+              </p>
+              <details className="mt-2">
+                <summary className="cursor-pointer text-sm">
+                  {t("Kaynak ve kayıt bilgileri")}
+                </summary>
+                <dl className="mt-1.5 flex flex-wrap items-baseline gap-x-6 gap-y-1 text-sm">
+                  <div className="flex items-baseline gap-1.5">
+                    <dt className="text-muted">{t("Oluşturan")}</dt>
+                    <dd>{formatCreatedBy(report)}</dd>
+                  </div>
+                  <div className="flex items-baseline gap-1.5">
+                    <dt className="text-muted">{t("Tür")}</dt>
+                    {/* As in the list's Type column: the template name when the
                     report followed one, else the skill, else an em dash. */}
-                  <dd>
-                    <ReportKindChip
-                      kind={reportKind(report)}
-                      isTemplate={hasTemplate(report)}
-                    />
-                  </dd>
-                </div>
-                <div className="flex items-baseline gap-1.5">
-                  <dt className="text-muted">{t("Oluşturuldu")}</dt>
-                  <dd title={formatRelativeTime(report.createdAt)}>
-                    {formatDateTime(report.createdAt)}
-                  </dd>
-                </div>
-                <div className="flex items-baseline gap-1.5">
-                  <dt className="text-muted">{t("Boyut")}</dt>
-                  <dd>{formatBytes(report.sizeBytes)}</dd>
-                </div>
-                <div className="flex items-baseline gap-1.5">
-                  <dt className="text-muted">{t("Güncellendi")}</dt>
-                  <dd title={formatDateTime(report.updatedAt)}>
-                    {formatRelativeTime(report.updatedAt)}
-                  </dd>
-                </div>
-              </dl>
+                    <dd>
+                      <ReportKindChip
+                        kind={reportKind(report)}
+                        isTemplate={hasTemplate(report)}
+                      />
+                    </dd>
+                  </div>
+                  <div className="flex items-baseline gap-1.5">
+                    <dt className="text-muted">{t("Oluşturuldu")}</dt>
+                    <dd title={formatRelativeTime(report.createdAt)}>
+                      {formatDateTime(report.createdAt)}
+                    </dd>
+                  </div>
+                  <div className="flex items-baseline gap-1.5">
+                    <dt className="text-muted">{t("Boyut")}</dt>
+                    <dd>{formatBytes(report.sizeBytes)}</dd>
+                  </div>
+                  <div className="flex items-baseline gap-1.5">
+                    <dt className="text-muted">{t("Güncellendi")}</dt>
+                    <dd title={formatDateTime(report.updatedAt)}>
+                      {formatRelativeTime(report.updatedAt)}
+                    </dd>
+                  </div>
+                </dl>
+              </details>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <ReportDownloadButton
@@ -340,8 +366,28 @@ function ReportDetailPage() {
           </div>
         </div>
 
+        {reportQuery.isError ? (
+          <div role="alert" className="text-sm text-[var(--ink-warning)]">
+            {t(
+              "Rapor bilgileri yenilenemedi. Son alınan kayıt gösteriliyor; sayfayı yenileyerek tekrar deneyin.",
+            )}
+          </div>
+        ) : null}
+        <p className="text-sm text-subtle">
+          {t(
+            "Rapor kaydedildiği dilde ve verilerle açılır. Güncel veri veya başka dil için kaynak ekrandan bilinçli olarak yeniden hazırlayın.",
+          )}
+        </p>
         <div className="min-h-[70vh] flex-1">
-          <ReportViewer src={`/r/${report.id}`} title={report.title} />
+          <ReportViewer
+            src={`/r/${report.id}?v=${encodeURIComponent(report.updatedAt)}`}
+            title={report.title}
+            checkAvailability={() =>
+              getReportAvailability({
+                data: { projectId, reportId: report.id },
+              })
+            }
+          />
         </div>
 
         {showDelete ? (

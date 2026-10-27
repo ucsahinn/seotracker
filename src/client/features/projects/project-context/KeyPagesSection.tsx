@@ -7,6 +7,7 @@ import {
 } from "@/types/schemas/projectContext";
 import {
   ConfirmDeleteButton,
+  ContextSaveError,
   EmptyListNote,
   FormActions,
   listClass,
@@ -16,6 +17,7 @@ import {
   useContextUpdate,
   type ContextKeyPage,
 } from "./shared";
+import { useDirtyDraft } from "./DraftGuard";
 import { t } from "@/shared/i18n";
 
 // Turkish source text, translated where it renders.
@@ -61,6 +63,9 @@ export function KeyPagesSection({
       onSuccess: () => {
         setAdding(false);
         setEditingId(null);
+        requestAnimationFrame(() =>
+          document.getElementById("context-key-pages")?.focus(),
+        );
       },
     });
   };
@@ -69,7 +74,7 @@ export function KeyPagesSection({
     <section
       id="context-key-pages"
       tabIndex={-1}
-      className="scroll-mt-6 space-y-3 outline-none"
+      className="scroll-mt-6 space-y-3 focus-visible:outline-2 focus-visible:outline-primary"
     >
       <SectionHeader
         title={t("Önemli sayfalar")}
@@ -77,7 +82,7 @@ export function KeyPagesSection({
         action={
           <button
             type="button"
-            className="btn btn-ghost btn-xs"
+            className="btn btn-ghost btn-xs min-h-11 min-w-11"
             onClick={() => setAdding(true)}
           >
             <Plus className="size-3.5" />
@@ -86,11 +91,15 @@ export function KeyPagesSection({
         }
       />
 
+      <ContextSaveError error={update.error} />
       {adding ? (
         <div className={listClass}>
           <KeyPageForm
             pending={update.isPending}
-            onCancel={() => setAdding(false)}
+            onCancel={() => {
+              setAdding(false);
+              document.getElementById("context-key-pages")?.focus();
+            }}
             onSave={(draft) => save(null, draft)}
           />
         </div>
@@ -112,19 +121,19 @@ export function KeyPagesSection({
                 <KeyPageForm
                   initial={page}
                   pending={update.isPending}
-                  onCancel={() => setEditingId(null)}
+                  onCancel={() => {
+                    setEditingId(null);
+                    document.getElementById("context-key-pages")?.focus();
+                  }}
                   onSave={(draft) => save(page.url, draft)}
                 />
               </li>
             ) : (
-              <li
-                key={page.id}
-                className="flex items-start justify-between gap-3 p-3"
-              >
+              <li key={page.id} className="flex flex-col gap-3 p-3">
                 <div className="min-w-0 space-y-0.5">
                   <div className="flex flex-wrap items-baseline gap-x-2">
                     <span
-                      className="truncate text-sm font-medium"
+                      className="break-all text-sm font-medium"
                       title={page.url}
                     >
                       {page.url}
@@ -134,19 +143,21 @@ export function KeyPagesSection({
                     </span>
                   </div>
                   {page.topic ? (
-                    <p className="text-sm text-muted">
+                    <p className="break-words text-sm text-muted">
                       {t("Hedef: {topic}", { topic: page.topic })}
                     </p>
                   ) : null}
                   {page.notes ? (
-                    <p className="text-sm text-muted">{page.notes}</p>
+                    <p className="break-words text-sm text-muted">
+                      {page.notes}
+                    </p>
                   ) : null}
                   <Provenance by={page.updatedBy} at={page.updatedAt} />
                 </div>
                 <RowActions>
                   <button
                     type="button"
-                    className="btn btn-ghost btn-xs"
+                    className="btn btn-ghost btn-xs min-h-11 min-w-11"
                     aria-label={t("{url} sayfasını düzenle", { url: page.url })}
                     onClick={() => setEditingId(page.id)}
                   >
@@ -194,6 +205,13 @@ function KeyPageForm({
     notes: initial?.notes ?? "",
   });
 
+  useDirtyDraft(
+    draft.url !== (initial?.url ?? "") ||
+      draft.role !== (initial?.role ?? "other") ||
+      draft.topic !== (initial?.topic ?? "") ||
+      draft.notes !== (initial?.notes ?? ""),
+  );
+
   return (
     <form
       className="space-y-2 bg-base-200/40 p-3"
@@ -203,57 +221,80 @@ function KeyPageForm({
         onSave(draft);
       }}
     >
-      <input
-        autoFocus
-        type="text"
-        value={draft.url}
-        onChange={(event) => setDraft({ ...draft, url: event.target.value })}
-        placeholder="example.com/pricing"
-        maxLength={2048}
-        className="input input-bordered input-sm w-full"
-        aria-label={t("Sayfa adresi")}
-      />
+      <label className="block space-y-1 text-xs text-muted">
+        <span>{t("Sayfa adresi")}</span>
+        <input
+          autoFocus
+          type="text"
+          value={draft.url}
+          onChange={(event) => setDraft({ ...draft, url: event.target.value })}
+          placeholder="example.com/pricing"
+          maxLength={2048}
+          className="input input-bordered input-sm w-full"
+          aria-label={t("Sayfa adresi")}
+        />
+        <span className="block text-xs text-muted">
+          {t("En fazla {count} karakter", { count: 2048 })}
+        </span>
+      </label>
       <div className="grid gap-2 sm:grid-cols-2">
-        <select
-          value={draft.role}
-          onChange={(event) =>
-            setDraft({
-              ...draft,
-              role:
-                KEY_PAGE_ROLES.find((role) => role === event.target.value) ??
-                draft.role,
-            })
-          }
-          className="select select-bordered select-sm w-full"
-          aria-label={t("Sayfa rolü")}
-        >
-          {KEY_PAGE_ROLES.map((role) => (
-            <option key={role} value={role}>
-              {t(ROLE_LABELS[role])}
-            </option>
-          ))}
-        </select>
+        <label className="block space-y-1 text-xs text-muted">
+          <span>{t("Sayfa rolü")}</span>
+          <select
+            value={draft.role}
+            onChange={(event) =>
+              setDraft({
+                ...draft,
+                role:
+                  KEY_PAGE_ROLES.find((role) => role === event.target.value) ??
+                  draft.role,
+              })
+            }
+            className="select select-bordered select-sm w-full"
+            aria-label={t("Sayfa rolü")}
+          >
+            {KEY_PAGE_ROLES.map((role) => (
+              <option key={role} value={role}>
+                {t(ROLE_LABELS[role])}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="block space-y-1 text-xs text-muted">
+          <span>{t("Hedef konu")}</span>
+          <input
+            type="text"
+            value={draft.topic}
+            onChange={(event) =>
+              setDraft({ ...draft, topic: event.target.value })
+            }
+            placeholder={t("Hedef konu (isteğe bağlı)")}
+            maxLength={200}
+            className="input input-bordered input-sm w-full"
+            aria-label={t("Hedef konu")}
+          />
+          <span className="block text-xs text-muted">
+            {t("En fazla {count} karakter", { count: 200 })}
+          </span>
+        </label>
+      </div>
+      <label className="block space-y-1 text-xs text-muted">
+        <span>{t("Sayfa notları")}</span>
         <input
           type="text"
-          value={draft.topic}
+          value={draft.notes}
           onChange={(event) =>
-            setDraft({ ...draft, topic: event.target.value })
+            setDraft({ ...draft, notes: event.target.value })
           }
-          placeholder={t("Hedef konu (isteğe bağlı)")}
-          maxLength={200}
+          placeholder={t("Notlar (isteğe bağlı)")}
+          maxLength={500}
           className="input input-bordered input-sm w-full"
-          aria-label={t("Hedef konu")}
+          aria-label={t("Sayfa notları")}
         />
-      </div>
-      <input
-        type="text"
-        value={draft.notes}
-        onChange={(event) => setDraft({ ...draft, notes: event.target.value })}
-        placeholder={t("Notlar (isteğe bağlı)")}
-        maxLength={500}
-        className="input input-bordered input-sm w-full"
-        aria-label={t("Sayfa notları")}
-      />
+        <span className="block text-xs text-muted">
+          {t("En fazla {count} karakter", { count: 500 })}
+        </span>
+      </label>
       <FormActions
         pending={pending}
         disabled={!draft.url.trim()}

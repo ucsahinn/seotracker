@@ -489,7 +489,14 @@ function notFound(reportId: string) {
   );
 }
 
+async function reportAvailability(projectId: string, reportId: string) {
+  return {
+    available: await ReportRepository.hasReportDocument(projectId, reportId),
+  };
+}
+
 export const ReportService = {
+  reportAvailability,
   saveReport,
   listReports,
   getReport,

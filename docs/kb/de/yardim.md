@@ -18,11 +18,10 @@ Wenn etwas schiefgeht, sehen Sie zuerst hier nach. Dieser Bildschirm prüft Ihre
 - **Diagnosepaket herunterladen**: lädt die Datei herunter, die Sie bei einer Problemmeldung senden. Sie enthält keine geheimen Werte.
 - **Anleitung öffnen**: öffnet die Anleitung auf seowatcher.io.
 - **seowatcher.io**: öffnet die Website der App; dort liegen die Download-Seite und die Anleitung.
-- **Versionshinweise**: führt zu den Versionshinweisen in den Einstellungen (Einstellungen).
-- **Einrichtungs-Prompt kopieren**: kopiert den Text, den Sie in Ihren KI-Assistenten (in der App „der Agent“, Agent) einfügen.
+- **Versionshinweise**: öffnet den eigenen Bildschirm für Versionshinweise (`/release-notes`).
 - **Agent-Einrichtung**: führt zum Bildschirm für die Assistenten-Verbindung.
 
-**Zustand der App.** Die Karte betrachtet diese Installation selbst. Die Einrichtungsliste eines Projekts steht in der Übersicht und in den Projektinfos, nicht hier. Die Karte prüft vier Dinge: **Anmeldung und Zugriff**, **Google-Anmeldung**, **PageSpeed-Schlüssel**, **Datenbank**. Oben steht „Alles ist in Ordnung.“ oder „N Punkte erfordern Ihre Aufmerksamkeit.“. Darunter sehen Sie die Versionszeile („Sürüm X, güncel.“ (Version X, aktuell.) oder „yeni sürüm Y var“ (neue Version Y verfügbar)) und die Zeit der letzten Prüfung. Die Schaltfläche neben einer auffälligen Zeile führt Sie zur passenden Einstellung: **Einstellungen öffnen** oder **Schlüssel eingeben**. **Zusammenfassung kopieren** legt den Text der Karte in die Zwischenablage.
+**Zustand der App.** Die Karte prüft Zugriff, Google-Verbindungseinstellungen, PageSpeed-Schlüssel, Laufzeitumgebung und Datenbank dieser Installation. Erfolgreiche Prüfungen bestätigen weder eine fehlerfreie Website noch aktuelle Google-Daten. Nicht gelesene Einstellungen gelten nicht als erfolgreich geprüft. Lesen Sie die Warnung und wählen Sie **Status erneut prüfen**. Version und Prüfzeit ordnen das Ergebnis ein. **Zusammenfassung kopieren** kopiert den Status als Text; **Verbindungen öffnen** führt zu den Projektverbindungen.
 
 **Hinweis zur Portnummer.** Öffnet sich das Windows-Paket auf einer anderen Portnummer, weil ein anderes Programm 3001 belegt (zum Beispiel eine alte Docker-Kopie), erscheint oben auf jedem Bildschirm der App ein gelber Streifen: „seowatcher läuft diesmal auf 3002, weil ein anderes Programm 3001 belegt (z. B. eine alte Docker-Kopie). Die Google-Anmeldung ist für 3001 eingerichtet; schließen Sie dieses Programm und starten Sie seowatcher neu.“ Der Streifen ist da, falls Sie die Meldung in der Taskleiste übersehen haben. Die Google-Anmeldung kehrt zur Adresse 3001 zurück und schlägt fehl, wenn Sie die App auf 3002 geöffnet haben. Die Schließen-Schaltfläche rechts im Streifen blendet ihn für diesen Reiter aus. Derselbe Satz steht auch in der Karte **Zustand der App**. Zur Lösung schließen Sie das Programm, das 3001 belegt, und wählen dann im Tray-Menü **Yeniden başlat** (Neu starten). Die App kehrt zu 3001 zurück und der Streifen verschwindet. Nutzt kein anderes Programm den Port, kehrt die App beim nächsten Start ohnehin zu 3001 zurück.
 
@@ -38,7 +37,7 @@ Wenn etwas schiefgeht, sehen Sie zuerst hier nach. Dieser Bildschirm prüft Ihre
 
 1. Funktioniert etwas nicht, öffnen Sie zuerst diesen Bildschirm und lesen Sie die Warnung auf der Karte.
 2. Klicken Sie auf die Schaltfläche neben der Warnung, sie führt Sie zur richtigen Einstellung. Nehmen Sie die Einstellung vor, kehren Sie zurück und klicken Sie auf **Status erneut prüfen**.
-3. Sagt die Karte „Alles ist in Ordnung.“, das Problem besteht aber weiter, sehen Sie in die Überschriften unter **Häufige Probleme**.
+3. Bestehen die Installationsprüfungen, das Problem bleibt aber bestehen, lesen Sie **Häufige Probleme** und öffnen Sie den betreffenden Projektbildschirm.
 4. Ist es immer noch nicht gelöst, klicken Sie auf **Diagnosepaket herunterladen** und hängen Sie die Datei an den Fehlerbericht auf GitHub. Beim Windows-Paket erledigt **Sorunu bildir (GitHub)** (Problem melden (GitHub)) im Menü der Taskleiste dasselbe mit einem Klick.
 
 ## Häufige Fragen
@@ -53,4 +52,8 @@ Wenn etwas schiefgeht, sehen Sie zuerst hier nach. Dieser Bildschirm prüft Ihre
 
 Dieser Bildschirm prüft nur die Installation selbst. Ein Problem auf Ihrer Website finden Sie mit dem Bildschirm **Website-Audit**, ein Problem auf Googles Seite mit dem Bildschirm **Indexstatus**.
 
-<!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/support/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->
+## Welcher Bildschirm hilft?
+
+Die [Übersicht](/docs/panel/) fasst Einrichtung und Daten des ausgewählten Projekts zusammen. [Chancen](/docs/firsatlar/) hilft bei der Auswahl von Aufgaben anhand von Search-Console-Daten. Die [Ranking-Verfolgung](/docs/siralama-takibi/) zeigt die durchschnittlichen Positionen gespeicherter Suchbegriffe in Google-Daten, keine Live-Suchergebnisse. Bei fehlenden Daten prüfen Sie Projektverbindungen, Zeitraum und Hinweise zur Datenabdeckung. Der Installationsstatus bestätigt diese Berichte nicht.
+
+<!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/quotas/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->

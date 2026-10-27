@@ -79,6 +79,7 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
   const [name, setName] = React.useState(project.name);
   const [nameError, setNameError] = React.useState<string | null>(null);
   const nameInput = React.useRef<HTMLInputElement>(null);
+  const [domainConfirmed, setDomainConfirmed] = React.useState(false);
   const [domain, setDomain] = React.useState(project.domain ?? "");
   const [market, setMarket] = React.useState({
     locationCode: project.locationCode,
@@ -102,6 +103,9 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
       setDomain(saved.domain ?? "");
       // Domain and market feed the dashboard's setup state and overview too.
       await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ["projectSetup", project.id],
+        }),
         queryClient.invalidateQueries({ queryKey: ["projects"] }),
         queryClient.invalidateQueries({
           queryKey: ["dashboardActivation", project.id],
@@ -132,6 +136,8 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
       nameInput.current?.focus();
       return;
     }
+    if ((domain.trim() || "") !== (project.domain ?? "") && !domainConfirmed)
+      return;
     updateMutation.mutate();
   };
 
@@ -140,7 +146,7 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
       <SettingsHeading
         title={t("Temel bilgiler")}
         help={t(
-          "Site adresi, denetimin nereden başlayacağını belirler. Ülke ve dil, Search Console verisinin hangi pazar için okunacağını belirler. Yanlış seçerseniz sayılar doğru olur ama sizinle ilgisiz kalır.",
+          "Ülke ve dil, kaydettiğiniz kelimelerin varsayılan pazarıdır. Arama performansında ülkeyi filtrelerden seçersiniz; bu ayar geçmiş veriyi değiştirmez.",
         )}
       />
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -186,14 +192,17 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
             <span className="text-muted">{t("(isteğe bağlı)")}</span>
             <HelpTip label={t("Alan adı")}>
               {t(
-                "Denetim bu adresten başlar, Search Console mülkü de bununla eşleştirilir. https:// olmadan yazın, örneğin example.com.",
+                "Denetim bu adresten başlar. Google mülkünü Bağlantılar bölümünden ayrıca seçersiniz. https:// olmadan yazın, örneğin example.com.",
               )}
             </HelpTip>
           </span>
           <input
             type="text"
             value={domain}
-            onChange={(event) => setDomain(event.target.value)}
+            onChange={(event) => {
+              setDomain(event.target.value);
+              setDomainConfirmed(false);
+            }}
             placeholder="example.com"
             aria-label={t("Alan adı")}
             maxLength={255}
@@ -210,11 +219,50 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
           </span>
         </div>
 
+        {(domain.trim() || "") !== (project.domain ?? "") ? (
+          <p className="text-sm text-[var(--ink-warning)]">
+            {t(
+              "Alan adı değişikliği Google mülk seçimini ve geçmiş kayıtları değiştirmez. Kaydetmeden önce Bağlantılar bölümündeki mülkün bu siteye ait olduğunu kontrol edin.",
+            )}
+          </p>
+        ) : null}
+        <div className="flex flex-wrap gap-3 text-sm">
+          <a
+            className="link min-h-11 inline-flex items-center"
+            href={`/p/${project.id}/settings/context`}
+          >
+            {t("Proje bilgisi")}
+          </a>
+          <a
+            className="link min-h-11 inline-flex items-center"
+            href={`/p/${project.id}/search-performance`}
+          >
+            {t("Marka terimlerini Arama performansında düzenleyin")}
+          </a>
+        </div>
+        {(domain.trim() || "") !== (project.domain ?? "") ? (
+          <label className="flex min-h-11 items-center gap-3 text-sm">
+            <input
+              type="checkbox"
+              className="checkbox"
+              checked={domainConfirmed}
+              onChange={(event) => setDomainConfirmed(event.target.checked)}
+            />
+            {t(
+              "Google mülk seçimi ve geçmiş korunarak alan adının değiştirilmesini onaylıyorum.",
+            )}
+          </label>
+        ) : null}
         <div className="flex justify-end">
           <button
             type="submit"
             className="btn btn-primary btn-sm gap-1.5"
-            disabled={updateMutation.isPending || !isDirty}
+            disabled={
+              updateMutation.isPending ||
+              !isDirty ||
+              ((domain.trim() || "") !== (project.domain ?? "") &&
+                !domainConfirmed)
+            }
           >
             {updateMutation.isPending ? <Spinner delay={false} /> : null}
             {updateMutation.isPending

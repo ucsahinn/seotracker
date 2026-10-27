@@ -167,15 +167,13 @@ export const enApp: Catalog = {
   "Proje güncellenemedi": "Could not update the project",
   "Proje adı gerekli": "A project name is required",
   "Temel bilgiler": "Basics",
-  "Site adresi, denetimin nereden başlayacağını belirler. Ülke ve dil, Search Console verisinin hangi pazar için okunacağını belirler. Yanlış seçerseniz sayılar doğru olur ama sizinle ilgisiz kalır.":
-    "The site address sets where the audit starts. Country and language set which market Search Console data is read for. Choose wrong and the numbers stay correct but say nothing about you.",
+
   Ad: "Name",
   "Yalnızca sizin içindir. Proje değiştiricide ve raporların başlığında görünür, Google'a gitmez.":
     "Just for you. It appears in the project switcher and report titles, and is never sent to Google.",
   "Alan adı": "Domain",
   "(isteğe bağlı)": "(optional)",
-  "Denetim bu adresten başlar, Search Console mülkü de bununla eşleştirilir. https:// olmadan yazın, örneğin example.com.":
-    "The audit starts from this address, and the Search Console property is matched to it. Enter it without https://, for example example.com.",
+
   "Kaydettiğiniz anahtar kelimeler bu ülke ve dile göre saklanır.":
     "Keywords you save are stored for this country and language.",
   "Kaydediliyor…": "Saving…",
@@ -226,31 +224,22 @@ export const enApp: Catalog = {
     one: "{count} competitor saved.",
     other: "{count} competitors saved.",
   },
-  "Rakip yok. Ajan, kimle yarıştığınızı bilmeden öneri yapar.":
-    "No competitors. The agent makes suggestions without knowing who you compete with.",
+
   "Rakip ekle": "Add competitor",
   "Önemli sayfalar": "Key pages",
   "{count} önemli sayfa kayıtlı.": {
     one: "{count} key page saved.",
     other: "{count} key pages saved.",
   },
-  "Önemli sayfa işaretlenmemiş. Hangi sayfaların kazanç getirdiği belli değil.":
-    "No key pages marked. It is not clear which pages bring in revenue.",
+
   "Sayfa ekle": "Add page",
-  "Bağlı. Tıklama, gösterim ve sıra verisi okunuyor.":
-    "Connected. Clicks, impressions and position data are being read.",
+
   "Bağlı değil. Sıralama, arama performansı ve fırsatlar bu bağlantıya dayanır.":
     "Not connected. Rank tracking, search performance and opportunities depend on this connection.",
   Bağla: "Connect",
-  "Bağlı. Organik oturumlar okunuyor.":
-    "Connected. Organic sessions are being read.",
-  "Bağlı değil. Ziyaret ve dönüşüm verisi olmadan trafik düşüşleri yorumlanamaz.":
-    "Not connected. Without visit and conversion data, traffic drops cannot be interpreted.",
+
   "PageSpeed anahtarı": "PageSpeed key",
-  "Anahtar tanımlı. Hız ölçümleri kota sorunu olmadan çalışır.":
-    "Key set. Speed measurements run without quota problems.",
-  "Anahtar yok. Hız ölçümü Google'ın ortak kotasına takılıyor ve çoğu zaman yarıda kalır.":
-    "No key. Speed measurement hits Google's shared quota and often stops partway.",
+
   "Anahtar gir": "Enter key",
   // project context section labels (src/types/schemas/projectContext.ts) and sectionCopy.ts
   "İşin özeti": "Business overview",
@@ -273,8 +262,7 @@ export const enApp: Catalog = {
     "e.g. The only booking tool you can set up in an afternoon. Cheaper than incumbents, simpler than DIY.",
   "örn. Sade ve doğrudan, abartı yok. “Kusursuz” ya da “devrim niteliğinde” yazmayın. Rakip fiyatlarına girmeyin.":
     "e.g. Plain and direct, no hype. Do not write “seamless” or “revolutionary”. Do not get into competitor pricing.",
-  "Ajanınızın bu proje hakkında bildikleri. Ajan işe başlamadan önce burayı okur, öğrendiklerini buraya yazar. Yanlış bir şey görürseniz düzeltin.":
-    "What your agent knows about this project. The agent reads this before it starts and writes what it learns here. If you see something wrong, fix it.",
+
   "Proje bilgisi yüklenemedi": "Could not load the project context",
   "Henüz boş. Kendiniz doldurabilir ya da ajanınıza sitenizden taslak çıkarttırıp onaylayabilirsiniz.":
     "Empty for now. Fill it in yourself, or have your agent draft it from your site and approve it.",
@@ -331,22 +319,16 @@ export const enApp: Catalog = {
   Kaydet: "Save",
   "Ajanınıza doldurtabilirsiniz": "Let your agent fill it in",
   "Ajanınıza gözden geçirtin": "Have your agent review it",
-  "İstemi kopyalayıp Claude Code ya da Codex'e yapıştırın. Ajan sitenizi ve ölçümleri okuyup taslak hazırlar; siz onaylamadan hiçbir şey kaydetmez ve sitedeki metinleri talimat saymaz.":
-    "Copy the prompt and paste it into Claude Code or Codex. The agent reads your site and metrics and prepares a draft; it saves nothing until you approve, and does not treat text on the site as instructions.",
-  "İstemi kopyalayıp ajana yapıştırın. Yazılı olanı sitenin bugünkü haliyle karşılaştırır, yalnızca yanlış olanı düzeltir ve kaydetmeden önce size sorar; sitedeki metinleri talimat saymaz.":
-    "Copy the prompt and paste it into your agent. It compares what is written with the site as it is today, fixes only what is wrong, and asks you before saving; it does not treat text on the site as instructions.",
+
   "İstemi kopyala": "Copy prompt",
   "İstem kopyalandı": "Prompt copied",
   "Araştırma günlüğü": "Research log",
-  "Neye bakıldığının kaydı. Aynı araştırma iki kez yapılmasın diye tutulur.":
-    "A record of what has been looked into, kept so the same research is not done twice.",
+
   "Henüz kayıt yok. Bağladığınız ajan bir araştırma yaptıkça buraya yazar.":
     "No entries yet. Your connected agent writes here as it does research.",
   "{date} tarihli kaydı sil": "Delete the entry from {date}",
   "Kurulum durumu": "Setup status",
-  "Ajanların ve uygulamanın düzgün çalışması için gerekenler. Eksik satırın yanındaki düğme sizi düzeltebileceğiniz yere götürür.":
-    "What agents and the app need to work properly. The button beside a missing item takes you to where you can fix it.",
-  "{done} / {total} tamam": "{done} of {total} done",
+
   Tamam: "Done",
   Eksik: "Missing",
   "Kontrol ediliyor": "Checking",
@@ -382,8 +364,7 @@ export const enApp: Catalog = {
   "Son güncelleme": "Last update",
   "{date} · raporu aç": "{date} · open report",
   "Türe göre raporlar": "Reports by type",
-  "Bir türe tıklayarak listeyi o türdeki raporlarla sınırlayın.":
-    "Click a type to limit the list to reports of that type.",
+
   rapor: "reports",
   Belirtilmemiş: "Unspecified",
   "Site denetimi raporu": "Site audit report",
@@ -395,20 +376,16 @@ export const enApp: Catalog = {
   "Proje kurulumu": "Project setup",
   "Diğer türler": "Other types",
   Tümü: "All",
-  "Şablonla yazılan": "Written with a template",
-  "Beceriyle yazılan": "Written with a skill",
+
   "Henüz rapor yok": "No reports yet",
-  "Rapor iki yoldan alınır: ajanınıza yazdırın ya da Site denetimi ekranından indirin.":
-    "There are two ways to get a report: have your agent write one, or download one from the Site audit screen.",
+
   "Rapor komutunu kopyala": "Copy report prompt",
   "Komut kopyalandı. Ajanınıza yapıştırın":
     "Prompt copied. Paste it into your agent",
-  "Ajan kurulumunu aç": "Open Agent setup",
-  Filtre: "Filter",
+
   "Raporlarda ara": "Search reports",
   "Aramanıza uyan rapor yok": "No reports match your search",
-  "Aramayı, filtreyi ya da seçili türü kaldırarak tüm raporları görün.":
-    "Clear the search, the filter or the selected type to see all reports.",
+
   "Filtreleri temizle": "Clear filters",
   Tür: "Type",
   Oluşturuldu: "Created",
@@ -416,10 +393,7 @@ export const enApp: Catalog = {
   İşlemler: "Actions",
   "{title} için işlemler": "Actions for {title}",
   Sil: "Delete",
-  "En son {count} rapor gösteriliyor.": {
-    one: "Showing the latest {count} report.",
-    other: "Showing the latest {count} reports.",
-  },
+
   "Henüz şablon yok": "No templates yet",
   "Şablon olmadan da rapor alabilirsiniz. Her seferinde aynı biçimde rapor istiyorsanız (örneğin yöneticiye aylık özet) sağ üstteki düğmeyle ilk şablonunuzu oluşturun.":
     "You can get reports without a template. If you want the same format every time (for example a monthly summary for your manager), create your first template with the button at the top right.",
@@ -448,22 +422,9 @@ export const enApp: Catalog = {
   "Bu geri alınamaz.": "This cannot be undone.",
   "Raporu sil": "Delete report",
   // features/saved-keywords
-  "Sıra bilgisi yüklenemedi": "Could not load position data",
-  "Bilinmiyor (arşiv kesildi)": "Unknown (archive cut off)",
-  "Verisi yok": "No data",
-  "Okunan arşiv kesildiği için bu kelimelerin sırası bilinmiyor; Search Console'da sırası olabilir.":
-    "The archive read was cut off, so these keywords' positions are unknown; they may have a position in Search Console.",
-  "Search Console arşivinde bu kelimeyle eşleşen sorgu olmayanlar.":
-    "Keywords with no matching query in the Search Console archive.",
+
   "Sıra {band}": "Position {band}",
-  "{total} kelimenin {ranked} tanesi Search Console arşivinde var; sıralar son {days} günün ortalaması.":
-    "{ranked} of {total} keywords are in the Search Console archive; positions are the average of the last {days} days.",
-  "Arşivden en çok {limit} sorgu okunuyor; bu yüzden bazı kelimelerin sırası eksik görünebilir.":
-    "At most {limit} queries are read from the archive, so some keywords may appear without a position.",
-  "Kelimelerinizin sırası henüz yok": "Your keywords have no positions yet",
-  "Sıralar, Search Console'un hangi kelimeyle arandığınızı paylaşmasına bağlı. Az ziyaretçisi olan sitelerde bu normaldir; veri gelince sıralar kendiliğinden dolar. Toplam rakamlara {searchPerformance}'ndan, bağlantı durumuna {integrations} bakabilirsiniz.":
-    "Positions depend on Search Console sharing which keywords people searched to find you. This is normal for sites with few visitors; positions fill in on their own once data arrives. See the totals in {searchPerformance}, and the connection status in the {integrations}.",
-  "Bağlantılar sekmesinden": "Connections tab",
+
   "Sıraya göre hızlı filtreler": "Quick filters by position",
   "İlk 10": "Top 10",
   "Ortalama sırası 10 veya daha iyi olan kelimeler; yani Google'ın ilk sayfası.":
@@ -471,8 +432,7 @@ export const enApp: Catalog = {
   "Ortalama sırası 11 ile 20 arasında olanlar, yani ikinci sayfadakiler. Küçük bir iyileştirme ilk sayfaya taşıyabilir.":
     "Keywords with an average position between 11 and 20, that is, on the second page. A small improvement can move them to the first page.",
   "Sıra dağılımı": "Position distribution",
-  "Bir gruba tıklayınca tablo yalnızca o gruptaki kelimeleri gösterir.":
-    "Click a group to show only that group's keywords in the table.",
+
   kelime: "keywords",
   Bilgi: "Info",
   Ticari: "Commercial",
@@ -520,16 +480,15 @@ export const enApp: Catalog = {
   },
   Uygula: "Apply",
   Kelime: "Keyword",
-  "Arama performansında göster": "Show in Search performance",
+
   "Ortalama sıra": "Average position",
-  "Search Console bu kelime için sıra kaydetmemiş":
-    "Search Console has recorded no position for this keyword",
+
   Amaç: "Intent",
   Etiketler: "Tags",
   Eklenme: "Added",
   "Kelimeyi kopyala": "Copy keyword",
   "Kelime kopyalandı": "Keyword copied",
-  "Arama performansında ara": "Search in Search performance",
+
   "Kelimeyi sil": "Delete keyword",
   "Bu filtrelere uyan kelime yok": "No keywords match these filters",
   "Filtreleri gevşetin ya da temizleyin.": "Loosen or clear the filters.",
@@ -603,12 +562,7 @@ export const enApp: Catalog = {
     one: "Delete {count} keyword",
     other: "Delete {count} keywords",
   },
-  "{count} kayıtlı kelime": {
-    one: "{count} saved keyword",
-    other: "{count} saved keywords",
-  },
-  "Etiketleyin, Search Console'daki ortalama sıralarına bakın, CSV ya da E-Tablolar olarak dışa aktarın.":
-    "Tag them, see their average position in Search Console, and export to CSV or Google Sheets.",
+
   "E-Tablolar'a aktar": "Export to Sheets",
   "CSV indir": "Download CSV",
   "Tablo filtrelerini aç/kapat": "Show or hide table filters",
@@ -657,8 +611,7 @@ export const enApp: Catalog = {
     "To copy it to the clipboard, in PowerShell (the value is not printed):",
   "Değeri sohbete ya da ekrana yazmayın. Yapıştırdıktan sonra panoyu temizleyin (Win+V, Tümünü temizle).":
     "Do not type the value into a chat or onto the screen. Clear the clipboard after pasting (Win+V, Clear all).",
-  "Kendiniz belirlemediyseniz uygulama ilk açılışta bir parola üretir. Okumak için (PowerShell ve cmd):":
-    "If you did not set one yourself, the app generates a password on first start. To read it (PowerShell and cmd):",
+
   "Windows'ta Git Bash için komutun başına {prefix} ekleyin, yoksa parola boş çıkar (PowerShell'de bu önek hata verir).":
     "In Git Bash on Windows, put {prefix} in front of the command, or the password comes out empty (in PowerShell this prefix is an error).",
   "Bu adres parola istemez. Bilgisayarınızdaki başka bir programın araçları çalıştırmasını önlemek için {token} adıyla bir parola ayarlayın ve aracınıza şu başlığı ekletin:":
@@ -695,12 +648,11 @@ export const enApp: Catalog = {
   "Özeti kopyala": "Copy summary",
   "Proje GitHub'da": "Project on GitHub",
   // routes/_app/projects.tsx
-  "Her projenin kendi Search Console bağlantısı, arama verisi ve site denetimleri vardır.":
-    "Each project has its own Search Console connection, search data and site audits.",
+
   "Henüz proje yok": "No projects yet",
   "Bir proje oluşturun, sonra sitesini ekleyin.":
     "Create a project, then add its site.",
-  Etkin: "Active",
+
   "Site eklenmedi": "No site added",
   "Site ekle": "Add site",
   "Proje geri alındı": "Project restored",
@@ -765,10 +717,7 @@ export const enApp: Catalog = {
     one: "{count} keyword copied",
     other: "{count} keywords copied",
   },
-  "Önce Ayarlar'da Google erişim anahtarını ya da hizmet hesabını girin. Sonra izleyeceğiniz siteyi seçin. Google buna mülk der. Siteyi yeni doğruladıysanız Google'ın veri vermesi birkaç gün sürebilir.":
-    "First enter the Google access key or service account in Settings. Then choose the site to track; Google calls it a property. If you only just verified the site, Google may take a few days to share data.",
-  "Search Console'daki Google erişim anahtarını kullanır, ayrı kurulum istemez. Bağlandıktan sonra Analytics'teki sitenizi (Analytics mülkü) seçin. Organik ziyaretler Panel'de ve Analytics ekranında görünür.":
-    "Uses the same Google access key as Search Console; no separate setup. Once connected, choose your site in Analytics (the Analytics property). Organic visits appear on the Dashboard and the Analytics screen.",
+
   Genel: "General",
   Bağlantılar: "Connections",
   "Ayar bölümleri": "Settings sections",
@@ -783,31 +732,342 @@ export const enApp: Catalog = {
   // Cards and stats review (Opportunities, rankings, setup verdict).
   "Güncel denetim": "Recent audit",
   "Yapay zeka ajanı": "AI agent",
-  "Sitenizin son 7 gün içinde tamamlanmış bir denetimi var.":
-    "Your site has an audit completed in the last 7 days.",
-  "Son 7 günde bu sitenin tamamlanmış denetimi yok. Başka bir adresin denetimi sayılmaz.":
-    "No completed audit of this site in the last 7 days. An audit of another address does not count.",
+
   Denetle: "Audit",
-  "Bir ajan bağlandı ve en az bir araç çağırdı.":
-    "An agent connected and called at least one tool.",
-  "Henüz hiçbir ajan bağlanmadı.": "No agent has connected yet.",
+
   "öneri, sayılmaz": "advice, not counted",
-  "Önceki {days} güne göre:": "Against the previous {days} days:",
-  "{count} kelime yükseldi": "{count} keywords up",
-  "{count} kelime geriledi": "{count} keywords down",
+
   // Cards and stats review (Opportunities, rankings, setup verdict).
-  "Son rapor": "Latest report",
-  "Son 7 günde": "In the last 7 days",
-  "yazılan ya da güncellenen rapor": "reports written or updated",
-  Toplam: "Total",
-  "{audit} denetim raporu · {skill} beceriyle · {template} şablonla":
-    "{audit} audit reports · {skill} by skill · {template} from templates",
-  "Denetim raporu": "Audit report",
-  "{count} tıklama / 28 gün": "{count} clicks / 28 days",
-  "Önceki 28 güne göre": "Against the previous 28 days",
-  "Arama verisi arşivde yok": "No search data in the archive",
-  "Son denetim {when}": "Last audit {when}",
+
   "{start} – {end}": "{start} – {end}",
   // Cards and stats review (Opportunities, rankings, setup verdict).
-  "{title} · {kind} · aç": "{title} · {kind} · open",
+
+  // Translation pass for project, report, saved keyword, settings and help updates.
+  "En fazla {count} karakter": "Up to {count} characters",
+  "İsteğe bağlı rakip notu eklenmemiş. Bu liste rakip sıralaması ölçmez.":
+    "No optional competitor notes have been added. This list does not measure competitor rankings.",
+  "İsteğe bağlı sayfa listesi boş. Sayfa rolleri sizin notlarınızdır; ölçülen dönüşüm değildir.":
+    "The optional page list is empty. Page roles are your notes, not measured conversions.",
+  "Search Console bağlantısı kayıtlı. Veri durumunu Arama performansında görün.":
+    "The Search Console connection is saved. Check data status in Search performance.",
+  "Analytics bağlantısı kayıtlı. Veri durumunu Analytics ekranında görün.":
+    "The Analytics connection is saved. Check data status in Analytics.",
+  "Bağlı değil. Oturum ve dönüşüm analizi için Analytics bağlayın; arama tıklamalarını Search Console ile inceleyebilirsiniz.":
+    "Not connected. Connect Analytics to analyze sessions and conversions; you can use Search Console to review search clicks.",
+  "Anahtar kayıtlı. Google kotası veya hizmet hatası hız ölçümünü yine engelleyebilir.":
+    "Key saved. Google quotas or service errors can still prevent speed tests.",
+  "Anahtar yok. Ortak Google kotası hız ölçümünü sınırlayabilir; Ayarlar’dan kendi anahtarınızı ekleyin.":
+    "No key. Google's shared quota may limit speed tests; add your own key in Settings.",
+  "Son yedi günde başlatılıp tamamlanmış bu siteye ait denetim var.":
+    "An audit of this site was started and completed within the last seven days.",
+  "Son yedi günde başlatılıp tamamlanmış bu-site denetimi yok. Site denetiminden yeni bir denetim başlatın.":
+    "No audit of this site was started and completed within the last seven days. Start a new audit from Site audit.",
+  "Bu kurulumda bir ajan en az bir araç kullandı.":
+    "An agent has used at least one tool in this installation.",
+  "Bu kurulumda kayıtlı araç çağrısı yok. Ajan kurulumu adımlarını izleyin.":
+    "No tool calls are recorded in this installation. Follow the Agent setup steps.",
+  "Kayıtlı bağlantılar ve proje notları. Bu liste bir SEO başarı puanı veya canlı bağlantı testi değildir.":
+    "Saved connections and project notes. This list is not an SEO success score or a live connection test.",
+  "Kurulum ve proje notları farklı anlarda okundu. Tutarlı durum için bilgiyi yenileyin.":
+    "Installation status and project notes were read at different times. Refresh for a consistent view.",
+  "{done}/{total} kayıtlı · {missing} eksik · {unknown} okunamadı":
+    "{done}/{total} saved · {missing} missing · {unknown} unreadable",
+  "Kurulum yenilenemedi; son alınan durum gösteriliyor. Yeniden deneyin.":
+    "Could not refresh installation status; showing the last result. Try again.",
+  "Kaydedilmemiş değişiklikleriniz var. Bu sayfadan ayrılmak istiyor musunuz?":
+    "You have unsaved changes. Do you want to leave this page?",
+  "İstemi kopyalayıp Claude Code ya da Codex'e yapıştırın. Bu istem ajandan kaydetmeden önce onayınızı istemesini ister. Araç çağrıları bilgiyi hemen kaydedebilir; onay davranışı ajanınıza bağlıdır.":
+    "Copy the prompt and paste it into Claude Code or Codex. It asks the agent to seek your approval before saving. Tool calls can save information immediately; approval behavior depends on your agent.",
+  "İstemi kopyalayıp ajana yapıştırın. Bu istem ajandan mevcut notları gözden geçirmesini ve kaydetmeden önce onayınızı istemesini ister. Uygulama araçları ayrıca bir onay kapısı uygulamaz.":
+    "Copy the prompt and paste it into your agent. It asks the agent to review existing notes and seek your approval before saving. The application tools do not enforce an additional approval step.",
+  "Ajanın kullanabileceği kayıtlı proje notları. Kaydedilen bilgiyi, son yazanı ve eksikleri gözden geçirin.":
+    "Saved project notes available to the agent. Review saved information, who last edited it, and what is missing.",
+  "Son kayıtlı bilgi gösteriliyor; yenileme başarısız. Taslaklarınız korunuyor.":
+    "Showing the last saved information; refresh failed. Your drafts are preserved.",
+  "{filled}/{total} bölüm dolu": "{filled}/{total} sections filled",
+  "Şu anki hedef kayıtlı değil. Hedef bölümüne bu dönem başarmak istediğinizi yazın.":
+    "No current goal is saved. In the Goal section, describe what you want to achieve this period.",
+  "İlk boş bölümü doldur": "Fill the first empty section",
+  "Bölüme git": "Go to section",
+  "Bölüm seçin": "Choose a section",
+  "Ajanla taslak hazırla": "Draft with an agent",
+  "Proje kimliği okunmadan istem hazırlanamaz. Proje listesini yeniden yükleyin.":
+    "The project ID must be loaded before preparing a prompt. Reload the project list.",
+  "Kaynak ve kurulum": "Source and setup",
+  "En yeni en fazla yirmi kayıt gösterilir. Tarihi sunucu UTC gününe göre belirler. Doksan günden eski kayıtlar yeni kayıt eklenirken temizlenir; bu liste eksiksiz geçmiş değildir.":
+    "Shows up to twenty most recent entries. Dates use the server's UTC day. Entries older than ninety days are removed when a new entry is added; this is not a complete history.",
+  "Bilgi kaydedilemedi. Taslağınız korunuyor; alanları kontrol edip yeniden kaydedin.":
+    "Could not save the information. Your draft is preserved; check the fields and save again.",
+  "Proje verileri okunamadı. Listeyi yenileyerek yeniden deneyin.":
+    "Could not read project data. Refresh the list and try again.",
+  "Bazı kaynaklar okunamadı; gösterilen diğer bilgiler korunuyor.":
+    "Some sources could not be read; other displayed information is preserved.",
+  "Arama arşivi · Web · tüm cihazlar ve ülkeler":
+    "Search archive · Web · all devices and countries",
+  "{observed}/{total} gün kayıtlı; toplam yalnızca kayıtlı günleri içerir.":
+    "{observed}/{total} days saved; totals include only saved days.",
+  "Kayıtlı günlerde ölçülen tıklama sayısı sıfır.":
+    "Measured clicks on saved days total zero.",
+  "Önceki dönem: {start} – {end} · {observed}/{total} gün kayıtlı":
+    "Previous period: {start} – {end} · {observed}/{total} days saved",
+  "İki dönemin de tüm günleri kayıtlı olmadığı için değişim hesaplanmadı.":
+    "Change was not calculated because one or both periods have missing days.",
+  "Arşiv kaynağı": "Archive source",
+  "Son kayıtlı gün: {date}": "Last saved day: {date}",
+  "Son arşiv okuması: {date}": "Last archive read: {date}",
+  "Kesinleşme kaynağı arşivde kayıtlı değil":
+    "The source of data finalization is not recorded in the archive",
+  "Bu kurulumda henüz arama arşivi yok. Arama performansını açarak veriyi okuyun.":
+    "This installation has no search archive yet. Open Search performance to load data.",
+  "Son tamamlanan bu-site denetimi": "Last completed audit of this site",
+  "Başlangıç: {date}": "Started: {date}",
+  "Tamamlanma: {date}": "Completed: {date}",
+  "Bu denetim en az yedi gün önce başlatıldı. Güncel durum için yeni denetim başlatın.":
+    "This audit was started at least seven days ago. Start a new audit for the current status.",
+  "Denetimi aç": "Open audit",
+  "Bu site için tamamlanmış denetim yok. Siteyi seçip denetim başlatın.":
+    "No completed audit for this site. Select the site and start an audit.",
+  "Son deneme başarısız": "Last attempt failed",
+  "Son denetim sürüyor": "Latest audit in progress",
+  "Son deneme tamamlanmadı": "Last attempt did not complete",
+  "Bağlantı kaydı, verinin başarıyla okunduğunu göstermez.":
+    "A saved connection does not prove that data was read successfully.",
+  "Bağlantı kayıtlı": "Connection saved",
+  "Ülke ve dil, kaydettiğiniz kelimelerin varsayılan pazarıdır. Arama performansında ülkeyi filtrelerden seçersiniz; bu ayar geçmiş veriyi değiştirmez.":
+    "Country and language define the default market for your saved keywords. In Search performance, choose the country in the filters; this setting does not change historical data.",
+  "Denetim bu adresten başlar. Google mülkünü Bağlantılar bölümünden ayrıca seçersiniz. https:// olmadan yazın, örneğin example.com.":
+    "The audit starts at this address. Select the Google property separately in Connections. Omit https://, for example example.com.",
+  "Alan adı değişikliği Google mülk seçimini ve geçmiş kayıtları değiştirmez. Kaydetmeden önce Bağlantılar bölümündeki mülkün bu siteye ait olduğunu kontrol edin.":
+    "Changing the domain does not change your Google property selection or historical records. Before saving, check that the property in Connections belongs to this site.",
+  "Marka terimlerini Arama performansında düzenleyin":
+    "Edit brand terms in Search performance",
+  "Google mülk seçimi ve geçmiş korunarak alan adının değiştirilmesini onaylıyorum.":
+    "I confirm the domain change while preserving the Google property selection and history.",
+  "Rapor indirmesi bağlantı hatası veya zaman aşımı nedeniyle tamamlanamadı. Bağlantınızı kontrol edip yeniden indirin.":
+    "The report download failed because of a connection error or timeout. Check your connection and download again.",
+  "Rapor indirmesi başka bir sayfaya yönlendirildi. Uygulamayı yenileyip erişiminizi kontrol edin.":
+    "The report download was redirected to another page. Refresh the application and check your access.",
+  "Rapor bulunamadı veya erişiminiz yok. Listeyi yenileyip raporu yeniden seçin.":
+    "Report not found or access denied. Refresh the list and select the report again.",
+  "Rapor erişimi doğrulanamadı. Uygulamayı yenileyip yeniden indirin.":
+    "Report access could not be verified. Refresh the application and download again.",
+  "Rapor sunucusu indirmeyi tamamlayamadı. Biraz sonra yeniden indirin.":
+    "The report server could not complete the download. Download again shortly.",
+  "Kaydedildi: {date}": "Saved: {date}",
+  "Arama performansı ekranında dönem ve süzgeçleri seçip Raporu indir düğmesini kullanın. Kaydedilmiş raporlar kaynak bağlantısı kesilse de okunabilir.":
+    "Select the period and filters in Search performance, then use Download report. Saved reports remain readable even if the source connection is lost.",
+  Sıralama: "Sort order",
+  "Oluşturulma zamanı": "Created at",
+  "{matching} sonuç / projedeki {total} rapor":
+    "{matching} results / {total} reports in the project",
+  "Son 7 gün, bu sürede kaydedilen veya güncellenen ayrı dosyaları süzer; kaynak verinin güncelliğini göstermez. Arama başlık ve kayıtlı özeti tarar.":
+    "Last 7 days filters distinct files saved or updated during that time; it does not indicate how current the source data is. Search covers titles and saved summaries.",
+  "Tür sayıları arama ve Son 7 gün süzgecine göredir; seçili türden önce hesaplanır.":
+    "Type counts reflect the search and Last 7 days filters, before the selected type is applied.",
+  "Aramayı veya türü temizleyerek kayıtlı raporları görün.":
+    "Clear the search or type filter to see saved reports.",
+  "Arama performansı veya Site denetimi ekranından rapor hazırlayın ya da rapor komutunu ajanınıza yapıştırın.":
+    "Create a report from Search performance or Site audit, or paste the report command into your agent.",
+  "Veri dönemi: raporun içinde kontrol edin.":
+    "Data period: check inside the report.",
+  Şablon: "Template",
+  "{start}–{end} / {total}": "{start}–{end} / {total}",
+  Sonraki: "Next",
+  "Saklama durumu": "Storage status",
+  "Saklama bilgileri alınamadı. Bu durum boş alan olduğunu göstermez; bağlantıyı kontrol edip yeniden deneyin.":
+    "Could not load storage information. This does not mean space is available; check your connection and try again.",
+  "Son güncellenen rapor": "Most recently updated report",
+  "Bu rapora özet kaydedilmemiş. Bulguları ve ilk adımı raporun içinde kontrol edin.":
+    "No summary was saved for this report. Check the findings and first step inside the report.",
+  "Kaydedildi: {date}. Bu zaman, kaynak verinin ölçüm tarihi değildir.":
+    "Saved: {date}. This is not the date when the source data was measured.",
+  "Bu raporun veri dönemi yapılandırılmış olarak kaydedilmemiş. Dönemi ve veri sınırlarını raporun içinde kontrol edin.":
+    "This report's data period was not saved in structured form. Check the period and data limitations inside the report.",
+  "Raporu aç": "Open report",
+  "Rapor belgesi bulunamadı veya erişiminiz yok. Listeyi yenileyip raporu yeniden seçin.":
+    "Report document not found or access denied. Refresh the list and select the report again.",
+  "Raporun kullanılabilirliği doğrulanamadı. Sunucuya veya bağlantınıza erişilemiyor; yeniden deneyin.":
+    "Could not verify report availability. The server or your connection is unavailable; try again.",
+  "Rapor önizlemesi zamanında açılmadı. Bağlantıyı kontrol edin; yeniden deneyin veya yeni sekmede açın.":
+    "The report preview did not open in time. Check your connection; try again or open it in a new tab.",
+  "Arşiv ayrıntısı": "Archive details",
+  "Dönem: {start} – {end}": "Period: {start} – {end}",
+  "Sıra bilinmiyor": "Position unknown",
+  "Önceki dönem: {start} – {end}": "Previous period: {start} – {end}",
+  "Önceki ortalama sıra": "Previous average position",
+  Gösterimler: "Impressions",
+  "Sıra arşivi okunamadı. Liste kayıtlı; sıra bilgisi için yeniden deneyin.":
+    "Could not read the position archive. Your list is saved; try again for position data.",
+  "Eksik arşiv nedeniyle gözlem yokluğu doğrulanamaz":
+    "Missing archive data prevents verification that no observations exist",
+  "Okunan arşivde eşleşen gözlem yok":
+    "No matching observations in the archive data read",
+  "Eşleşen ham sorgular; gösterimle ağırlıklandırılır":
+    "Matching raw queries; weighted by impressions",
+  "Önceki dönemin ham sorguları": "Raw queries from the previous period",
+  "Gözlem yok": "No observations",
+  "Konum ve dil kayıt bilgisi olarak korunur. Arşiv tüm ülkeleri ve cihazları kapsar. Türkçe büyük/küçük harf ve birden fazla boşluk eşleştirilir; ham sorgular gösterimle ağırlıklandırılır. Google bazı nadir sorguları döndürmeyebilir.":
+    "Location and language are preserved as saved information. The archive covers all countries and devices. Matching handles Turkish letter case and repeated spaces; raw queries are weighted by impressions. Google may omit some rare queries.",
+  "Kayıtlı pazar (arşiv filtresi değil)":
+    "Saved market (not an archive filter)",
+  "Eski kayıt bilgisi: {intent}; tarih: {date}":
+    "Legacy record: {intent}; date: {date}",
+  "Arama amacı ölçülmedi": "Search intent not measured",
+  "Canlı arama son 28 günü ve metni içeren sorguları açar; bu arşiv ortalamasıyla aynı dönem veya tam eşleşme değildir.":
+    "Live search opens the last 28 days and queries containing the text; its period and matching differ from this archive average.",
+  "Arama performansında ara (canlı dönem)":
+    "Search in Search performance (live period)",
+  "Günlük arşiv gözlemlerini göster": "Show daily archive observations",
+  "Günlük arşiv okunamadı veya liste değişti. Ayrıntıyı kapatıp listeyi yenileyin; ardından yeniden açın.":
+    "Could not read the daily archive, or the list changed. Close the details, refresh the list, then reopen them.",
+  "Bu tarihlerde eşleşen günlük gözlem yok; eksik günler sıfır sayılmaz.":
+    "No matching daily observations on these dates; missing days are not counted as zero.",
+  "Eklenen terimlerin tümü eşleşmelidir.": "All added terms must match.",
+  "Eklenen terimlerden hiçbiri bulunmamalıdır.":
+    "None of the added terms may appear.",
+  "En fazla {count} terim.": "Up to {count} terms.",
+  "Terim sınırı aşıldı. Eklemek için önce bir terimi kaldırın.":
+    "Term limit exceeded. Remove a term before adding another.",
+  "Seçtiğiniz kelimelerin arşiv gözlemlerini, karşılaştırılabilir hareketlerini ve eksik kanıtlarını inceleyin.":
+    "Review archive observations, comparable movements, and gaps in the evidence for your selected keywords.",
+  "Liste yanıtı: {date}": "List response: {date}",
+  "Arşiv dönemi": "Archive period",
+  "{count} gün": "{count} days",
+  "Listeyi yenile": "Refresh list",
+  "Filtrelenen {count} kelimeyi aktar": "Export {count} filtered keywords",
+  "Kelime ara; tüm terimler eşleşir": "Search keywords; all terms must match",
+  "Terimleri virgülle ayırın": "Separate terms with commas",
+  "Filtre uygulanıyor…": "Applying filter…",
+  "En fazla {count} terim girin; fazla terimleri kaldırın.":
+    "Enter no more than {count} terms; remove the extra terms.",
+  "Etkin sıra grubu: {band}": "Active position band: {band}",
+  "Belirgin gerileyenler": "Significant declines",
+  "Sıra özeti okunamadı; kayıtlı liste kullanılabilir":
+    "Could not read the position summary; the saved list is available",
+  "Sıra grubu uygulanamadı; sıra arşivi okunamadı. Yeniden deneyin veya grubu temizleyin.":
+    "Could not apply the position band because the position archive could not be read. Try again or clear the band.",
+  "Sıra 1–3": "Positions 1–3",
+  "Sıra 4–10": "Positions 4–10",
+  "Sıra 11–20": "Positions 11–20",
+  "Sıra 21+": "Positions 21+",
+  "Gözlenen kelimeler": "Observed keywords",
+  "{shown} / {total} kayıtlı kelime; seçim yalnızca bu sayfada":
+    "{shown} / {total} saved keywords; selection applies to this page only",
+  "Kayıtlı kelimelerin arşiv özeti": "Archive summary of saved keywords",
+  "Kelimeler kayıtlı; sıra karşılaştırması şu anda kullanılamıyor.":
+    "Your keywords are saved; position comparison is currently unavailable.",
+  "Kaydettiğiniz {saved} kelimenin {observed} tanesi bu aralıkta arşivde gözlendi.":
+    "Of your {saved} saved keywords, {observed} were observed in the archive during this period.",
+  "Google Web · tüm ülkeler ve cihazlar · {zone}":
+    "Google Web · all countries and devices · {zone}",
+  "Eşleşen kelimelerde gözlenen gün: {observed} / {requested}":
+    "Observed days for matching keywords: {observed} / {requested}",
+  "Son doğrulanmış yanıt gösteriliyor; liste yenilenirken işlem yapmayın.":
+    "Showing the last verified response; do not perform actions while the list is refreshing.",
+  "Sıralamalar'da arşivi güncelle": "Update the archive in Rank tracking",
+  "Gerileyenleri incele": "Review declines",
+  "Metin ve etiket filtresine uyan kayıtlar":
+    "Records matching the text and tag filters",
+  "{count} kayıtlı kelime içinde": "Among {count} saved keywords",
+  "Belirgin hareket ≥{value} sıra": "Significant movement ≥{value} positions",
+  "↑ {up} · ↓ {down}": "↑ {up} · ↓ {down}",
+  "Karşılaştırılabilen: {comparable} / {total}":
+    "Comparable: {comparable} / {total}",
+  "Önceki dönem okunamadı; karşılaştırma için yeniden deneyin.":
+    "Could not read the previous period; try again to compare.",
+  "Belirgin değişmedi: {stable}; önceki gözlem yok: {previous}; güncel gözlem yok: {current}.":
+    "No significant change: {stable}; no previous observation: {previous}; no current observation: {current}.",
+  "Sıra gruplarının tabanı: {count} kayıtlı kelime (sıra grubu uygulanmadan önce).":
+    "Position bands are based on {count} saved keywords (before applying the position band filter).",
+  "Sıra grupları; metin ve etiket filtresi sonrası tüm kayıtlar":
+    "Position bands; all records after text and tag filtering",
+  "Veri kapsamı ve hesaplama": "Data coverage and calculation",
+  "Son arşiv aktarımı: {date}": "Last archive import: {date}",
+  "Tam yanıt: {complete}; sınırlı: {limited}; başarısız: {failed}; doğrulanmamış gün: {unknown}.":
+    "Complete responses: {complete}; limited: {limited}; failed: {failed}; unverified days: {unknown}.",
+  "Önceki dönemde tam yanıt: {complete} / {days}; eşleşen gözlem günü: {observed}.":
+    "Complete responses in the previous period: {complete} / {days}; days with matching observations: {observed}.",
+  "Listeyi yenile yalnızca yerel veritabanını okur; Google'dan yeni veri almaz. Tarihler Pasifik takviminde üç günlük gecikme varsayımıyla seçilir; bu, tam arşiv kanıtı değildir.":
+    "Refresh list only reads the local database; it does not fetch new data from Google. Dates use the Pacific calendar with an assumed three-day delay; this does not prove archive completeness.",
+  "Arşiv aktarım durumu okunamadı. Son aktarım bilgisi için yeniden deneyin.":
+    "Could not read archive import status. Try again for the latest import information.",
+  "Search Console bağlantısı okunamadı. Bağlantıyı denetleyin veya yeniden deneyin.":
+    "Could not read the Search Console connection. Check the connection or try again.",
+  "Kelimeleriniz kayıtlı. Güncel sıra verisi için Search Console bağlantısı gerekiyor.":
+    "Your keywords are saved. A Search Console connection is required for current position data.",
+  "Search Console bağlı; bu aralık henüz arşive alınmadı. Sıralamalar'dan arşivi güncelleyin.":
+    "Search Console is connected; this period has not been archived yet. Update the archive in Rank tracking.",
+  "Son arşiv aktarımı tamamlanamadı. Sıralamalar ekranında hatayı inceleyip yeniden deneyin.":
+    "The latest archive import could not complete. Review the error in Rank tracking and try again.",
+  "Arşiv bu tarihlerin tümünü doğrulamıyor. Eksik veya sınırlı günler için Sıralamalar'dan arşivi güncelleyin.":
+    "The archive does not verify all these dates. Update the archive in Rank tracking for missing or limited days.",
+  "Arşiv seçilen dönemin sonuna ulaşmadı. Sıralamalar'dan arşivi güncelleyin.":
+    "The archive has not reached the end of the selected period. Update the archive in Rank tracking.",
+  "Bu tarihlerde okunan arşivde eşleşen sorgu yok. Bu, Google'da görünmediğiniz anlamına gelmez.":
+    "No matching queries were found in the archive data read for these dates. This does not mean you did not appear on Google.",
+  "Sıralar, kaydedilen nihai Google yanıtlarından hesaplanan ortalamalardır; bugünkü sabit sıranız değildir.":
+    "Positions are averages calculated from saved final Google responses; they are not your fixed position today.",
+  "Bağlantı okunamadı; yeniden dene": "Could not read connection; retry",
+  "Seçilen etiketlerden herhangi biri; sayılar tüm kayıtlı kelimelerdeki etiket atamalarıdır.":
+    "Any of the selected tags; counts are tag assignments across all saved keywords.",
+  "En fazla {count} etiket seçin.": "Select up to {count} tags.",
+  "Liste veya arşiv değişti. Listeyi yenileyip aktarımı yeniden başlatın.":
+    "The list or archive changed. Refresh the list and start the export again.",
+  "Ajan araçları bu kurulumdaki projelere erişir. Son çağrı geçmiş kullanım kaydıdır; sürekli çevrimiçi bağlantı anlamına gelmez.":
+    "Agent tools can access projects in this installation. The last call is a record of past use; it does not mean a continuous online connection.",
+  "Durumu yeniden oku": "Reload status",
+  "Bağlantıyı doğrula": "Verify connection",
+  "Durum okunamadı. Yeniden deneyin; bağlantının başarısız olduğu sonucuna varılamaz.":
+    "Could not read status. Try again; this does not establish that the connection failed.",
+  "Yeni araç çağrısı doğrulandı.": "A new tool call was verified.",
+  "Yeni araç çağrısı görülmedi. Ajanınızın MCP durumunu kontrol edip bir araç çağrısı yapın, sonra yeniden doğrulayın.":
+    "No new tool call was detected. Check your agent's MCP status and make a tool call, then verify again.",
+  "Yeni araç çağrısı bekleniyor. Ajanınızdan seowatcher araçlarını kullanmasını isteyin.":
+    "Waiting for a new tool call. Ask your agent to use the seowatcher tools.",
+  "Sitelerinizi açın; arşiv verisini, son denetimi ve eksik bağlantıları burada görün.":
+    "Open your sites; see archive data, the latest audit, and missing connections here.",
+  "Proje ara": "Search projects",
+  "Ad veya alan adı": "Name or domain",
+  "Liste yenilenemedi; son alınan projeler gösteriliyor. Yeniden deneyin.":
+    "Could not refresh the list; showing the last loaded projects. Try again.",
+  "Proje verileri yenilenemedi. Listeyi yenileyerek yeniden deneyin.":
+    "Could not refresh project data. Refresh the list and try again.",
+  "Bu aramayla eşleşen proje yok. Aramayı değiştirin.":
+    "No projects match this search. Change your search.",
+  "Site eklenmedi. Bu proje için bir site seçin.":
+    "No site added. Select a site for this project.",
+  "Son açılan": "Last opened",
+  "Search Console bağla": "Connect Search Console",
+  "Paneli aç": "Open dashboard",
+  "Arşivlenen liste yenilenemedi; son alınan liste gösteriliyor":
+    "Could not refresh the archived list; showing the last loaded list",
+  "Görünüm ve dil bu tarayıcıya, Google kimlikleri bu kurulumdaki tüm projelere, Windows tercihleri başlatıcıya uygulanır. Önce kullanacağınız Google kimliğini seçin, sonra proje bağlantılarından mülkünüzü belirleyin.":
+    "Appearance and language apply to this browser, Google credentials to all projects in this installation, and Windows preferences to the launcher. First choose the Google credentials to use, then select your property in project connections.",
+  "Kurulum türü okunamadı. Durumu yeniden kontrol edin; günlük konumu kurulum türü belirlendiğinde gösterilir.":
+    "Could not read the installation type. Check the status again; the log location appears once the installation type is known.",
+  "Proje kimliği okunuyor…": "Loading project ID…",
+  "Proje kimliği okunamadı. Proje listesini yeniden yükleyin.":
+    "Could not read the project ID. Reload the project list.",
+  "Yazdırma sekmesi tarayıcı tarafından engellendi. Bu site için açılır pencerelere izin verin veya raporu yeni sekmede açıp Yazdır kullanın.":
+    "The browser blocked the print tab. Allow pop-ups for this site, or open the report in a new tab and use Print.",
+  "Kaynak ve kayıt bilgileri": "Source and saved record details",
+  "Rapor bilgileri yenilenemedi. Son alınan kayıt gösteriliyor; sayfayı yenileyerek tekrar deneyin.":
+    "Could not refresh report information. Showing the last loaded record; refresh the page to try again.",
+  "Rapor kaydedildiği dilde ve verilerle açılır. Güncel veri veya başka dil için kaynak ekrandan bilinçli olarak yeniden hazırlayın.":
+    "The report opens with its saved language and data. To use current data or another language, deliberately generate it again from the source screen.",
+  "Arama raporu hazırla": "Create search report",
+  "Denetim raporu hazırla": "Create audit report",
+  "Liste yenilenemedi. Son alınan kayıtlar gösteriliyor; Yenile ile tekrar deneyin.":
+    "Could not refresh the list. Showing the last loaded records; use Refresh to try again.",
+  "Filtreler uygulanıyor. Yeni sonuçlar gelene kadar önceki liste gösteriliyor.":
+    "Applying filters. Showing the previous list until new results arrive.",
+  "Proje alan adı: {domain} · Search Console mülkü: {property}":
+    "Project domain: {domain} · Search Console property: {property}",
+  "Alan adı belirtilmedi": "No domain specified",
+  "Mülk seçilmedi": "No property selected",
+  "Seçilen Search Console mülkü proje alan adını kapsamıyor. Ayrı bir mülkü bilerek seçtiyseniz koruyabilirsiniz; değiştirmek için aşağıdaki mülk seçimini kullanın.":
+    "The selected Search Console property does not cover the project domain. You can keep it if you deliberately selected a separate property; use the property selector below to change it.",
+  "{name} · {domain}. Değişiklikler yalnızca bu projeye uygulanır.":
+    "{name} · {domain}. Changes apply only to this project.",
+  "Uygulama raporu, tür kaydedilmemiş": "Application report, type not recorded",
 };

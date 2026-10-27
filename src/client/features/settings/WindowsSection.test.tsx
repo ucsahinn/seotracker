@@ -75,3 +75,21 @@ it("does not turn on a preference when the native save fails", async () => {
   await screen.findByRole("alert");
   expect(control.checked).toBe(false);
 });
+
+it("does not invent unchecked preferences on Docker or unavailable Windows", async () => {
+  native.get.mockResolvedValue({ status: "unsupported" });
+  mount();
+  await screen.findByText(/Bu seçenekler Windows paketinde/);
+  expect(screen.queryAllByRole("checkbox")).toHaveLength(0);
+});
+it("offers retry after a save error and reads confirmed state again", async () => {
+  native.set.mockRejectedValue(new Error("Native unavailable"));
+  mount();
+  const control = await screen.findByRole("checkbox", {
+    name: "Windows açılınca başlat",
+  });
+  fireEvent.click(control);
+  await screen.findByRole("alert");
+  fireEvent.click(screen.getByRole("button", { name: "Tekrar dene" }));
+  await waitFor(() => expect(control.hasAttribute("disabled")).toBe(false));
+});

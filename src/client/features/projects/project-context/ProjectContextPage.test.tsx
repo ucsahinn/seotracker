@@ -6,6 +6,8 @@ import {
   PROJECT_CONTEXT_SECTION_LABELS,
 } from "@/types/schemas/projectContext";
 
+vi.mock("@tanstack/react-router", () => ({ useBlocker: vi.fn() }));
+
 const getProjectContext = vi.hoisted(() => vi.fn());
 vi.mock("@/serverFunctions/projectContext", () => ({
   getProjectContext,
@@ -51,5 +53,10 @@ describe("ProjectContextPage", () => {
     );
 
     expect(screen.getByLabelText(label)).toHaveProperty("value", "taslak");
+    expect(
+      screen.getByText(
+        "Son kayıtlı bilgi gösteriliyor; yenileme başarısız. Taslaklarınız korunuyor.",
+      ),
+    ).toBeDefined();
   });
 });

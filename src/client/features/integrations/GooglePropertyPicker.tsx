@@ -103,6 +103,7 @@ export function GooglePropertyPicker({
   };
   return (
     <div className="space-y-4">
+      {error ? <PropertyReadError onRetry={onRetry} /> : null}
       {removing ? (
         <GoogleAccountRemovalDialog
           provider={provider}
@@ -166,20 +167,7 @@ export function GooglePropertyPicker({
             <div className="max-h-72 overflow-y-auto overscroll-contain p-1.5">
               {loading ? (
                 <Skeleton variant="list" rows={3} className="p-1.5" />
-              ) : error ? (
-                <div role="alert" className="p-3 text-sm">
-                  <p className="text-[var(--ink-error)]">
-                    {t("Mülkler yüklenemedi.")}
-                  </p>
-                  <button
-                    type="button"
-                    className="btn btn-ghost btn-sm mt-1"
-                    onClick={onRetry}
-                  >
-                    {t("Tekrar dene")}
-                  </button>
-                </div>
-              ) : (
+              ) : error && accounts.length === 0 ? null : (
                 <>
                   {filtered.map((account) => (
                     <div
@@ -194,7 +182,7 @@ export function GooglePropertyPicker({
                         </span>
                         <button
                           type="button"
-                          className="btn btn-ghost btn-xs shrink-0 text-[var(--ink-error)]"
+                          className="btn btn-ghost min-h-11 btn-xs shrink-0 text-[var(--ink-error)]"
                           disabled={saving}
                           onClick={() => setRemoving(account)}
                           aria-label={t("{account} hesabını kaldır", {
@@ -211,7 +199,7 @@ export function GooglePropertyPicker({
                           </span>
                           <button
                             type="button"
-                            className="btn btn-ghost btn-xs"
+                            className="btn btn-ghost min-h-11 btn-xs"
                             onClick={onReconnect}
                             aria-label={t("{account} hesabını yeniden bağla", {
                               account: accountLabel(account),
@@ -235,7 +223,7 @@ export function GooglePropertyPicker({
                           </p>
                           <button
                             type="button"
-                            className="btn btn-ghost btn-xs"
+                            className="btn btn-ghost min-h-11 btn-xs"
                             onClick={onRetry}
                           >
                             {t("Tekrar dene")}
@@ -384,4 +372,20 @@ function handlePropertyKeyDown(
       : (index + (event.key === "ArrowDown" ? 1 : buttons.length - 1)) %
         buttons.length;
   buttons[nextIndex]?.focus();
+}
+
+function PropertyReadError({ onRetry }: { onRetry: () => void }) {
+  return (
+    <p role="alert" className="text-sm text-[var(--ink-warning)]">
+      {t(
+        "Google mülk listesi okunamadı. Bu durum erişiminiz olmadığı anlamına gelmez. Son liste korunur; yeniden deneyin veya Yardım tanılamasını kontrol edin.",
+      )}{" "}
+      <button type="button" className="link min-h-11" onClick={onRetry}>
+        {t("Tekrar dene")}
+      </button>{" "}
+      <a href="/help" className="link">
+        {t("Yardım")}
+      </a>
+    </p>
+  );
 }

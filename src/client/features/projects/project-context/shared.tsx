@@ -1,5 +1,5 @@
-import { formatRelativeTime } from "@/client/lib/format";
-import { useState, type ReactNode } from "react";
+import { formatDateTime } from "@/client/lib/format";
+import { useRef, useState, type ReactNode } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
@@ -10,6 +10,7 @@ import type {
   ContextAuthor,
   ProjectContextUpdate,
 } from "@/types/schemas/projectContext";
+import { projectSetupOptions } from "../projectSetupQuery";
 import { t } from "@/shared/i18n";
 
 export type ProjectContextData = Awaited<ReturnType<typeof getProjectContext>>;
@@ -47,7 +48,13 @@ export function useContextUpdate(projectId: string) {
     // patches can settle out of order and the slower (earlier-snapshotted)
     // response can land in the cache last; a settle-time refetch converges
     // the page back onto the server's state.
-    onSettled: () => queryClient.invalidateQueries({ queryKey }),
+    onSettled: () =>
+      Promise.all([
+        queryClient.invalidateQueries({ queryKey }),
+        queryClient.invalidateQueries({
+          queryKey: projectSetupOptions(projectId).queryKey,
+        }),
+      ]),
   });
 }
 
@@ -65,7 +72,7 @@ export function Provenance({ by, at }: { by: ContextAuthor; at?: string }) {
       {at
         ? t("{author} güncelledi · {time}", {
             author: t(AUTHOR_LABELS[by]),
-            time: formatRelativeTime(at),
+            time: formatDateTime(at),
           })
         : t("{author} ekledi", { author: t(AUTHOR_LABELS[by]) })}
     </span>
@@ -132,16 +139,23 @@ export function ConfirmDeleteButton({
   onConfirm: () => void;
 }) {
   const [confirming, setConfirming] = useState(false);
+  const trigger = useRef<HTMLButtonElement>(null);
+  const returnSection = useRef<HTMLElement | null>(null);
 
   if (confirming) {
     return (
       <>
         <button
           type="button"
-          className="btn btn-error btn-xs"
+          className="btn btn-error btn-xs min-h-11 min-w-11"
           disabled={pending}
           onClick={() => {
             setConfirming(false);
+            const section = returnSection.current;
+            if (section) {
+              section.tabIndex = -1;
+              section.focus();
+            }
             onConfirm();
           }}
         >
@@ -149,8 +163,11 @@ export function ConfirmDeleteButton({
         </button>
         <button
           type="button"
-          className="btn btn-ghost btn-xs"
-          onClick={() => setConfirming(false)}
+          className="btn btn-ghost btn-xs min-h-11 min-w-11"
+          onClick={() => {
+            setConfirming(false);
+            requestAnimationFrame(() => trigger.current?.focus());
+          }}
         >
           {t("Vazgeç")}
         </button>
@@ -161,10 +178,14 @@ export function ConfirmDeleteButton({
   return (
     <button
       type="button"
-      className="btn btn-ghost btn-xs text-[var(--ink-error)]"
+      className="btn btn-ghost btn-xs min-h-11 min-w-11 text-[var(--ink-error)]"
+      ref={trigger}
       aria-label={label}
       disabled={pending}
-      onClick={() => setConfirming(true)}
+      onClick={() => {
+        returnSection.current = trigger.current?.closest("section") ?? null;
+        setConfirming(true);
+      }}
     >
       <Trash2 className="size-3.5" />
     </button>
@@ -184,7 +205,7 @@ export function FormActions({
     <div className="flex justify-end gap-2">
       <button
         type="button"
-        className="btn btn-ghost btn-xs"
+        className="btn btn-ghost btn-xs min-h-11 min-w-11"
         onClick={onCancel}
         disabled={pending}
       >
@@ -192,11 +213,25 @@ export function FormActions({
       </button>
       <button
         type="submit"
-        className="btn btn-primary btn-xs"
+        className="btn btn-primary btn-xs min-h-11 min-w-11"
         disabled={disabled || pending}
       >
         {t("Kaydet")}
       </button>
     </div>
   );
+}
+
+/** Keep save failures next to the preserved draft, as well as the toast. */
+export function ContextSaveError({ error }: { error: unknown }) {
+  return error ? (
+    <p role="alert" className="text-sm text-[var(--ink-error)]">
+      {getStandardErrorMessage(
+        error,
+        t(
+          "Bilgi kaydedilemedi. Taslağınız korunuyor; alanları kontrol edip yeniden kaydedin.",
+        ),
+      )}
+    </p>
+  ) : null;
 }

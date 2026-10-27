@@ -1,59 +1,25 @@
 ---
 title: Projeler
-description: Yeni proje açar, siteyi ve ülkeyi seçer, adı değiştirir, Google bağlantısını yönetirsiniz. Projeyi arşivleyip geri de alabilirsiniz.
+description: Projeler, hangi siteyi açacağınızı ve hangi bağlantıyı tamamlayacağınızı gösterir. Her sitenin Search Console, Analytics, denetim ve raporları kendi projesindedir.
 screen: Projeler, Proje ayarları
 route: /projects, /p/{proje}/settings
 updated: 2026-10-27
 ---
 
-Proje açar, ayarlarını değiştirir, gerekirse arşivlersiniz. Her site bir projedir. Her projenin kendi Google bağlantısı, kendi denetimleri ve kendi raporları olur.
+Projeler, hangi siteyi açacağınızı ve hangi bağlantıyı tamamlayacağınızı gösterir. Her sitenin Search Console, Analytics, denetim ve raporları kendi projesindedir.
 
-## Ekranda neler var
+## Ekranı okuyun
 
-**Proje seçici.** Sol üstteki proje adına tıklayınca projeleriniz açılır. Altta **Yeni proje** ve **Projeleri yönet** durur. Yanındaki dişli simgesi **Proje ayarları**'nı açar. Sekiz ya da daha fazla projeniz olursa listede bir arama kutusu çıkar.
+Birden fazla proje varsa ad veya alan adıyla arayın, ada veya alan adına göre sıralayın. **Son açılan**, bu tarayıcıda hatırlanan son projedir; SEO durumu değildir. Site yoksa **Site ekle**, Search Console bağlantısı yoksa **Search Console bağla**, diğer durumlarda **Paneli aç** ile devam edin. **Proje bilgisi** kayıtlı notları, **Ayarlar** proje yapılandırmasını açar.
 
-**Projeler sayfası.** Her satırda projenin adı ve sitesi görünür. Sitesi olmayan proje "Site eklenmedi" der. Birden çok projeniz varsa açık olanda **Etkin** etiketi durur. Satırın altında projenin kısa özeti yer alır: son 28 günün tıklaması ve önceki 28 güne göre değişimi (küçük bir çizgiyle), son denetimin zamanı ("Son denetim 3 gün önce" ya da "Henüz denetim yok") ve Search Console ile Analytics'in bağlı olup olmadığı. Dolu nokta bağlı, boş nokta bağlı değil demektir. Tıklama rakamı bu bilgisayardaki arşivden gelir. Arşivde arama verisi yoksa "Arama verisi arşivde yok" yazar. Rakamın üstüne gelirseniz hangi tarihler olduğunu görürsünüz. Satıra tıklayınca proje açılır. Sağdaki **Ayarlar** düğmesi proje ayarlarını açar. Sitesi olmayan projede bu düğme **Site ekle** der. Arşivlediğiniz projeler en altta **Arşivlendi** bölümünde durur. **Geri al** deyince listeye döner.
+**Arama arşivi**, bu kurulumda kayıtlı Web aramalarını, tüm cihazları ve ülkeleri kapsar. Tarihler ekranda görünür. Pencere en yeni kayıtlı günde biter; bugüne kadar güncel olduğu varsayılmaz. Kayıtlı gün sayısı eksikse tıklama sayısı yalnızca bu günlerin toplamıdır. Eksik gün sıfır değildir; grafikte boşluk kalır. İki dönemin de tüm günleri kayıtlıysa değişim hesaplanır. Eşit toplamlar “Değişmedi”, sıfır tabanlı değişimler açık önceki/yeni sayılarla gösterilir. Arşiv kaynağı ayrıntılarında son kayıtlı gün ve varsa okuma zamanı vardır; kesinleşmenin hangi kanıta dayandığı eski arşivde tutulmamıştır.
 
-**Yeni proje penceresi.** Dört alan var:
+Denetim, seçilen sitenin kendi alan adına aittir. Son tamamlanan denetim ile son başarısız veya süren deneme ayrı gösterilir. Bağlantının kayıtlı olması, Google verisinin başarıyla okunduğunu kanıtlamaz. Okunamayan kaynak “bağlı değil” veya sıfır sayılmaz; **Yeniden dene** kullanın. Listeyi yenilemek kimliği ve yerel verileri birlikte okur; Google çağrısı veya denetim başlatmaz.
 
-- **Ad** zorunludur. Yalnızca siz görürsünüz, raporların başlığında ve proje seçicide çıkar. Google'a gitmez.
-- **Alan adı (isteğe bağlı)** sitenizin adresidir, örneğin `example.com`. Başındaki `https://` ve `www.` kendiliğinden atılır. Alt alan adları ana alan adına bağlanır, yani `blog.example.com` ile `example.com` aynı projedir.
-- **Ülke** ve **Dil**, kaydettiğiniz kelimelerin hangi pazara göre izleneceğini belirler. Ülkeyi değiştirince dil o ülkenin diline döner. İkisini de sonra değiştirebilirsiniz.
+## Proje oluşturun ve yönetin
 
-**Proje ayarları.** İki sekme var. **Genel** sekmesinde ad, alan adı, ülke ve dil ile **Projeyi arşivle** bölümü durur. **Bağlantılar** sekmesinde Search Console ve Analytics kartları durur.
+**Yeni proje** ile ad, isteğe bağlı alan adı, ülke ve dil girin. Oluşturmak veri toplamaz. Google bağlantılarını **Ayarlar → Bağlantılar** üzerinden seçin. Genel ayarlarda adı, siteyi ve pazarı değiştirebilirsiniz. Bir projede bir Search Console ve bir Analytics mülkü bulunur.
 
-## Nasıl kullanılır
+Arşivlemek verileri silmez. **Arşivlendi → Geri al** projeyi geri getirir. Tek kalan proje arşivlenemez. Arama tıklamaları GA4 oturumları veya sorgu arşivi toplamıyla aynı ölçü değildir; farklı tarihli projeler toplanmaz.
 
-1. Proje seçicide **Yeni proje** deyin.
-2. Bir ad yazın, sitenizin adresini girin, ülke ve dili seçin, **Proje oluştur** deyin. Proje açılır ve Panel gelir. Henüz hiçbir veri çekilmez.
-3. **Proje ayarları → Bağlantılar** sekmesine geçin ve Search Console'u bağlayın. Adımlar Google'a bağlanma kılavuzunda. Bağlanınca Panel, Arama performansı, Fırsatlar ve Dizin durumu dolmaya başlar.
-4. Analytics'i de bağlamak isterseniz aynı sekmedeki **Analytics** kartını kullanın. Ayrı bir Google anahtarı gerekmez.
-5. Adı ya da siteyi değiştirmek için **Genel** sekmesinde alanı düzeltin, **Değişiklikleri kaydet** deyin. Düğme ancak bir şey değişince açılır.
-
-### Google bağlantısını değiştirme
-
-**Bağlantılar** sekmesindeki kartta **Mülkü veya hesabı değiştir**'e basın. Başka bir site (Google'ın deyişiyle "mülk") ya da başka bir Google hesabı seçebilirsiniz. **Bağlantıyı kes** yalnızca bu projenin bağlantısını kaldırır. Google hesabınız kayıtlı kalır, onay da sorulmaz. Bir Google hesabını tamamen kaldırmak için seçim penceresindeki **Hesabı kaldır**'ı kullanın. Pencere hangi projelerin etkileneceğini gösterir.
-
-### Projeyi arşivleme
-
-Projeler silinmez, arşivlenir. **Genel** sekmesinin altındaki **Projeyi arşivle** düğmesi projeyi listeden kaldırır. Denetimler, kelimeler ve raporlar olduğu gibi durur. Projeler sayfasındaki **Geri al** projeyi aynen geri getirir. Tek projeniz varsa arşivleyemezsiniz.
-
-## Sayılar nasıl hesaplanır
-
-Bu ekranda sayı yok. Alan adı kaydedilirken şu kurallar geçerlidir: boşluklar ve büyük harfler temizlenir, adres gerçek bir alan adı olmalıdır (IP adresi, `localhost` ya da uydurma uzantı kabul edilmez). Hatalı girerseniz "Geçerli bir alan adı girin, örneğin acme.com." uyarısı çıkar.
-
-## Sık sorulanlar
-
-**Projeyi tamamen silebilir miyim?** Hayır, yalnızca arşivlersiniz. Verisi durur, istediğiniz zaman geri alırsınız.
-
-**Bir projeye iki site bağlayabilir miyim?** Hayır. Bir projede bir Search Console mülkü ve bir Analytics mülkü olur. İkinci site için ikinci bir proje açın.
-
-**"Default" adında bir proje var, nedir?** Uygulama ekranlar açılabilsin diye ilk açılışta boş bir proje oluşturur. Adını değiştirip kullanabilirsiniz. İsterseniz yeni proje açıp onu arşivleyin.
-
-**Yanlış ülke seçtim.** Genel sekmesinden değiştirin. Kaydettiğiniz kelimelerin sıraları o andan sonra yeni ülkeye göre izlenir.
-
-## Sınırlar
-
-Proje sayısında sınır yok. Proje oluşturmak hiçbir şeyi başlatmaz. Veri ancak Google bağlanınca gelir. Alan adı girmediyseniz denetim başlatırken adresi elle yazarsınız.
-
-<!-- Kaynaklar: src/routes/_app/projects.tsx; src/routes/_app/index.tsx; src/client/features/projects/CreateProjectModal.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/ProjectGeneralSettings.tsx; src/client/features/projects/ProjectSwitcher.tsx; src/routes/_project/p/$projectId/settings.tsx; src/routes/_project/p/$projectId/settings/integrations.tsx; src/client/features/integrations/*; src/server/lib/domainUtils.ts; src/server/features/projects/services/projects.ts -->
+<!-- Sources: src/routes/_app/projects.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/project-context/; src/server/features/projects/services/ProjectOverviewService.ts; src/server/features/project-context/ -->

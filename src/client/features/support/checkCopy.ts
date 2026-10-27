@@ -64,7 +64,12 @@ export function describeCheck(
     }
     if (check.status === "ok" && googleReady !== false) {
       if (googleReady === null)
-        return say(t("Google bağlantı ayarı okunuyor."));
+        return say(
+          t(
+            "Google bağlantı ayarı henüz doğrulanamadı. Okuma tamamlanmazsa durumu yeniden kontrol edin.",
+          ),
+          "warn",
+        );
       // The server names the credential in use, already in the interface
       // language. Only the env-only preflight sentences are English: one
       // means an environment client, the other could not see the database.

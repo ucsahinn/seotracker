@@ -3,6 +3,7 @@ import {
   PROJECT_CONTEXT_SECTION_LABELS,
   type ProjectContextSectionKey,
 } from "@/types/schemas/projectContext";
+import { formatCount } from "@/shared/format";
 import { t } from "@/shared/i18n";
 
 /** What a piece of the setup is doing right now. */
@@ -42,6 +43,7 @@ export type HealthItem = {
 
 type HealthInput = {
   missingSections: ProjectContextSectionKey[];
+  projectInfo?: HealthState;
   competitorCount: number;
   keyPageCount: number;
   searchConsole: HealthState;
@@ -60,13 +62,14 @@ export function buildContextHealth(input: HealthInput): HealthItem[] {
     {
       id: "sections",
       label: t("Proje tanımı"),
-      state: firstMissing === undefined ? "done" : "todo",
+      state:
+        input.projectInfo ?? (firstMissing === undefined ? "done" : "todo"),
       detail:
         firstMissing === undefined
           ? t("{count} bölümün hepsi dolu.", { count: total })
           : t("{total} bölümün {filled} tanesi dolu. Boş olan: {missing}.", {
-              total,
-              filled,
+              total: formatCount(total),
+              filled: formatCount(filled),
               missing: t(PROJECT_CONTEXT_SECTION_LABELS[firstMissing]),
             }),
       target: {
@@ -82,7 +85,9 @@ export function buildContextHealth(input: HealthInput): HealthItem[] {
       detail:
         input.competitorCount > 0
           ? t("{count} rakip kayıtlı.", { count: input.competitorCount })
-          : t("Rakip yok. Ajan, kimle yarıştığınızı bilmeden öneri yapar."),
+          : t(
+              "İsteğe bağlı rakip notu eklenmemiş. Bu liste rakip sıralaması ölçmez.",
+            ),
       target: { kind: "anchor", id: "context-competitors" },
       actionLabel: t("Rakip ekle"),
       optional: true,
@@ -95,7 +100,7 @@ export function buildContextHealth(input: HealthInput): HealthItem[] {
         input.keyPageCount > 0
           ? t("{count} önemli sayfa kayıtlı.", { count: input.keyPageCount })
           : t(
-              "Önemli sayfa işaretlenmemiş. Hangi sayfaların kazanç getirdiği belli değil.",
+              "İsteğe bağlı sayfa listesi boş. Sayfa rolleri sizin notlarınızdır; ölçülen dönüşüm değildir.",
             ),
       target: { kind: "anchor", id: "context-key-pages" },
       actionLabel: t("Sayfa ekle"),
@@ -107,7 +112,9 @@ export function buildContextHealth(input: HealthInput): HealthItem[] {
       state: input.searchConsole,
       detail:
         input.searchConsole === "done"
-          ? t("Bağlı. Tıklama, gösterim ve sıra verisi okunuyor.")
+          ? t(
+              "Search Console bağlantısı kayıtlı. Veri durumunu Arama performansında görün.",
+            )
           : t(
               "Bağlı değil. Sıralama, arama performansı ve fırsatlar bu bağlantıya dayanır.",
             ),
@@ -120,9 +127,11 @@ export function buildContextHealth(input: HealthInput): HealthItem[] {
       state: input.analytics,
       detail:
         input.analytics === "done"
-          ? t("Bağlı. Organik oturumlar okunuyor.")
+          ? t(
+              "Analytics bağlantısı kayıtlı. Veri durumunu Analytics ekranında görün.",
+            )
           : t(
-              "Bağlı değil. Ziyaret ve dönüşüm verisi olmadan trafik düşüşleri yorumlanamaz.",
+              "Bağlı değil. Oturum ve dönüşüm analizi için Analytics bağlayın; arama tıklamalarını Search Console ile inceleyebilirsiniz.",
             ),
       target: { kind: "integrations", hash: "google-analytics" },
       actionLabel: t("Bağla"),
@@ -133,9 +142,11 @@ export function buildContextHealth(input: HealthInput): HealthItem[] {
       state: input.pageSpeed,
       detail:
         input.pageSpeed === "done"
-          ? t("Anahtar tanımlı. Hız ölçümleri kota sorunu olmadan çalışır.")
+          ? t(
+              "Anahtar kayıtlı. Google kotası veya hizmet hatası hız ölçümünü yine engelleyebilir.",
+            )
           : t(
-              "Anahtar yok. Hız ölçümü Google'ın ortak kotasına takılıyor ve çoğu zaman yarıda kalır.",
+              "Anahtar yok. Ortak Google kotası hız ölçümünü sınırlayabilir; Ayarlar’dan kendi anahtarınızı ekleyin.",
             ),
       target: { kind: "settings" },
       actionLabel: t("Anahtar gir"),
@@ -146,9 +157,11 @@ export function buildContextHealth(input: HealthInput): HealthItem[] {
       state: input.audit,
       detail:
         input.audit === "done"
-          ? t("Sitenizin son 7 gün içinde tamamlanmış bir denetimi var.")
+          ? t(
+              "Son yedi günde başlatılıp tamamlanmış bu siteye ait denetim var.",
+            )
           : t(
-              "Son 7 günde bu sitenin tamamlanmış denetimi yok. Başka bir adresin denetimi sayılmaz.",
+              "Son yedi günde başlatılıp tamamlanmış bu-site denetimi yok. Site denetiminden yeni bir denetim başlatın.",
             ),
       target: { kind: "audit" },
       actionLabel: t("Denetle"),
@@ -159,8 +172,10 @@ export function buildContextHealth(input: HealthInput): HealthItem[] {
       state: input.agent,
       detail:
         input.agent === "done"
-          ? t("Bir ajan bağlandı ve en az bir araç çağırdı.")
-          : t("Henüz hiçbir ajan bağlanmadı."),
+          ? t("Bu kurulumda bir ajan en az bir araç kullandı.")
+          : t(
+              "Bu kurulumda kayıtlı araç çağrısı yok. Ajan kurulumu adımlarını izleyin.",
+            ),
       target: { kind: "agent" },
       actionLabel: t("Bağla"),
     },

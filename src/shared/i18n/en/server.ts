@@ -245,13 +245,7 @@ export const enServer: Catalog = {
   "Analytics (GA4) günlük kota puanı": "Analytics (GA4) daily quota points",
   "Analytics (GA4) saatlik kota puanı": "Analytics (GA4) hourly quota points",
   "Denetim sayfa sınırı": "Audit page limit",
-  "Bir denetim en çok {count} sayfa tarar; gösterilen sayı son denetimin taranan sayfa sayısıdır.":
-    {
-      one: "An audit crawls at most {count} page; the figure shown is the number of pages the last audit crawled.",
-      other:
-        "An audit crawls at most {count} pages; the figure shown is the number of pages the last audit crawled.",
-    },
-  "Son denetim kaydı": "Last audit record",
+
   "Uygulamanın veritabanı": "The app's database",
   "Proje başına rapor": "Reports per project",
   "Takılan bir döngüye karşı koruma; gerçek bir iş akışı buna yaklaşmaz.":
@@ -673,9 +667,80 @@ export const enServer: Catalog = {
     "The site is on a subdomain of a hosting platform; its registration and DNS belong to the platform, so the domain and DNS checks were skipped.",
   "sayı alınamadı (tarama sınırı)": "count not read (crawl limit)",
   // Cards and stats review (Opportunities, rankings, setup verdict).
-  "İlk {count} iş birlikte {days} günde en fazla {clicks} ek tıklama getirebilir (üst sınır).":
-    "Together, the first {count} tasks could bring at most {clicks} extra clicks in {days} days (upper bound).",
+
   // Cards and stats review (Opportunities, rankings, setup verdict).
   "Ortalama sırası 4 ile 20 arasında, en az {impressions} gösterim alan {count} sorgu. Olası kazanç, sorgu bir basamak yükselirse (6-10'dan 4-5'e, 4-5'ten 2-3'e, 11-20'den ilk sayfaya) beklenen en fazla ek tıklamadır.":
     "{count} queries averaging positions 4 to 20 with at least {impressions} impressions. The possible gain is the most extra clicks expected if a query moves up one step (6-10 to 4-5, 4-5 to 2-3, 11-20 to page one).",
+  // Translation pass for project, report, saved keyword, settings and help updates.
+  "PageSpeed Insights · yalnızca denetimler":
+    "PageSpeed Insights · audits only",
+  "Standart mülk sınırı varsayımı": "Assumed standard property limit",
+  "Son gözlenen kalan gösteriliyor; kota penceresi güncelliği doğrulanamadı. Yeni rapor yanıtı gelene kadar güncel kapasite bilinmiyor.":
+    "Showing the last observed remaining quota; the quota window's freshness could not be verified. Current capacity is unknown until a new report response arrives.",
+  "Bir denetim en çok {count} sayfa tarar; gösterilen sayı proje alan adındaki son tamamlanan denetime aittir. Tarih denetimin başlangıcıdır.":
+    "An audit crawls up to {count} pages; the displayed count is from the last completed audit of the project domain. The date is the audit's start time.",
+  "Proje alan adındaki son tamamlanan denetim":
+    "Last completed audit of the project domain",
+  "Son denetim girişimi": "Latest audit attempt",
+  "Proje alan adındaki son denetim girişimi":
+    "Latest audit attempt for the project domain",
+  "Son denetim sürüyor. Sayfa sınırı için son tamamlanan denetim ayrı gösterilir.":
+    "The latest audit is in progress. The last completed audit is shown separately for the page limit.",
+  "Son denetim tamamlanamadı. Son tamamlanan denetimin sayfa sayısı korunur; ayrıntıyı Denetim ekranından kontrol edin.":
+    "The latest audit could not complete. The last completed audit's page count is preserved; check the details on the Audit screen.",
+  "Rapor dönemi": "Report period",
+  "Google'ın tamamlandığını bildirdiği günler kullanıldı. Dönem sonu: {date}. Günler Pasifik saatine göredir.":
+    "Used days that Google reported as complete. Period end: {date}. Days follow Pacific time.",
+  "Son günler gecikme varsayımıyla dışarıda bırakıldı; Google kesinleşme sınırı bildirmedi. Günler Pasifik saatine göredir.":
+    "Recent days were excluded using an assumed delay; Google did not report a data finalization boundary. Days follow Pacific time.",
+  "Gösterilen: {shown} / {observed} gözlenen kayıt. Kaynak satır sınırları nedeniyle tüm siteyi temsil etmeyebilir.":
+    "Showing {shown} / {observed} observed records. Source row limits mean these may not represent the entire site.",
+  "Okunan satırlar: {queries} sorgu, {pages} sayfa, {pairs} sorgu×sayfa. Listelerden türetilen fırsatlar bu kapsamla sınırlıdır.":
+    "Rows read: {queries} queries, {pages} pages, {pairs} query×page pairs. Opportunities derived from these lists are limited to this coverage.",
+  "Listelenmeyen sorguların tıklama payı: {share}. Gizlenen ve satır sınırı dışında kalan sorgular birlikte hesaplanır.":
+    "Click share of unlisted queries: {share}. Hidden queries and queries beyond the row limit are counted together.",
+  "Google'ın satır sınırına ulaşıldı; sorgu, sayfa veya sorgu×sayfa listeleri eksik olabilir. Bu listelerden üretilen fırsatlar tam site envanteri değildir.":
+    "Google's row limit was reached; query, page, or query×page lists may be incomplete. Opportunities derived from these lists are not a full site inventory.",
+  "İlk {count} işin {known} tanesinde kazanç hesaplanabildi; {unknown} tanesinde bilinmiyor. Hesaplanabilen işler için {days} günde en fazla {clicks} ek tıklama (üst sınır).":
+    "Gains could be calculated for {known} of the first {count} tasks; they are unknown for {unknown}. For calculable tasks, up to {clicks} additional clicks in {days} days (upper bound).",
+  "Okunan sayfalarda eşiği aşan, gösterim alıp hiç tıklanmayan sayfa bulunmadı.":
+    "No pages in the data read exceeded the threshold for impressions without clicks.",
+  "Önceki tıklama": "Previous clicks",
+  "Şimdiki tıklama": "Current clicks",
+  "Okunan sorgularda bu koşulu sağlayan kayıt bulunmadı.":
+    "No queries in the data read met this condition.",
+  "Önceki dönem karşılaştırması mevcut değil veya satır kapsamı eksik. Yeni sorgu sayısı bu veriden belirlenemez.":
+    "The previous period comparison is unavailable or row coverage is incomplete. The number of new queries cannot be determined from this data.",
+  "Dönem karşılaştırması mevcut değil veya satır kapsamı eksik. Kaybolan sorgu sayısı bu veriden belirlenemez.":
+    "The period comparison is unavailable or row coverage is incomplete. The number of lost queries cannot be determined from this data.",
+  "Uzun dönem karşılaştırması alınamadı. Yeterli geçmiş olmayabilir veya kaynak isteği başarısız olmuş olabilir; geçmiş veriyi kontrol edip raporu yeniden hazırlayın.":
+    "Could not retrieve the long-term comparison. There may be insufficient history or a failed source request; check historical data and generate the report again.",
+  "Çakışma analizi alınamadı. Diğer bölümler kullanılabilir; Arama performansında çakışmaları kontrol edip raporu yeniden hazırlayın.":
+    "Could not retrieve overlap analysis. Other sections are available; check overlaps in Search performance and generate the report again.",
+  "Çakışma dönemi: {start} – {end}. İncelenen: {count} sorgu. Eşik: sorguda 100 gösterim; sayfada 10 gösterim ve yüzde 20 pay. Bu dönem ana rapordan farklı olabilir.":
+    "Overlap period: {start} – {end}. Analyzed: {count} queries. Thresholds: 100 impressions per query; 10 impressions and a 20 percent share per page. This period may differ from the main report.",
+  "Kaynak satır sınırına ulaştı. Okunmayan sorgularda başka çok sayfalı sonuçlar olabilir.":
+    "The source row limit was reached. Unread queries may contain other results with multiple pages.",
+  "Sonuçlar yalnızca okunan ve eşikleri geçen sorguları kapsar.":
+    "Results cover only the queries read that exceeded the thresholds.",
+  "Okunan sorgularda eşiği aşan çok sayfalı sonuç bulunmadı.":
+    "No queries in the data read exceeded the thresholds for results with multiple pages.",
+  "Diğer sayfa sayısı": "Number of other pages",
+  "Bölünen gösterim payı": "Split impression share",
+  "Bir sorguda birden çok sayfanın görünmesi kayıp tıklama veya SEO zararı kanıtı değildir. Sayfaların aynı ihtiyacı karşılayıp karşılamadığını inceleyin.":
+    "Multiple pages appearing for a query do not prove lost clicks or SEO harm. Review whether the pages serve the same need.",
+  "Kaynak satır sınırına ulaştı; dağılım eksik olabilir.":
+    "The source row limit was reached; the distribution may be incomplete.",
+  "Özel sonuç görünümü verisi alınamadı veya kayıt dönmedi. Kaynak bu iki durumu ayırmadığı için yokluk sonucu çıkarılamaz; Arama performansını kontrol edin.":
+    "Special search appearance data could not be retrieved or returned no records. The source does not distinguish these cases, so absence cannot be established; check Search performance.",
+  "Okunan görünüm tablosunda bu döneme ait kayıt bulunmadı.":
+    "No records for this period were found in the appearance table read.",
+  "Kaydedilmiş belge": "Saved document",
+  "Rapor hazırlanırken veriler sunucudan yeniden okundu; Google geçmiş değerleri düzeltebilir. Aynı dönem etiketi önceki ekran görüntüsüyle birebir ölçüm eşitliğini garanti etmez. Başlık dili değiştiğinde ayrı bir belge oluşabilir.":
+    "Data was read again from the server when preparing this report; Google may revise historical values. The same period label does not guarantee identical measurements to a previous screenshot. Changing the title language may create a separate document.",
+  "Sorgu tabloları gizlilik nedeniyle gizlenen satırları içermez. Satır sınırı varsa listelenmeyen pay, sınır dışında kalan sorguları da içerir.":
+    "Query tables exclude rows hidden for privacy. When a row limit applies, the unlisted share also includes queries beyond that limit.",
+  "Arama görünümünün istek bütçesi: {count}. Ek çakışma analizi dahil değildir; önbellek kullanımı gerçek ağ isteği sayısını değiştirir.":
+    "Request budget for the search view: {count}. Additional overlap analysis is excluded; caching changes the actual number of network requests.",
+  Özet: "Summary",
 };

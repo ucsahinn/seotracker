@@ -1,15 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
-import { omit } from "remeda";
 import { z } from "zod";
+import { reportInventorySchema } from "@/shared/reportInventory";
 import { AuthRepository } from "@/server/auth/repositories/AuthRepository";
+import { ReportInventoryService } from "@/server/features/reports/services/ReportInventoryService";
 import { ReportService } from "@/server/features/reports/services/ReportService";
 import { ReportTemplateService } from "@/server/features/reports/services/ReportTemplateService";
 import { requireProjectContext } from "@/serverFunctions/middleware";
-import {
-  REPORT_APP_LIST_LIMIT,
-  REPORT_DEFAULT_LIST_LIMIT,
-  type ReportMetadata,
-} from "@/types/schemas/reports";
+import type { ReportMetadata } from "@/types/schemas/reports";
 
 // Reports read path for the app. The `projectId` field in each validator is
 // what triggers project authorization (ADR 0001); the service never authorizes.
@@ -17,23 +14,13 @@ import {
 // route is its only reader, so no server function can pull documents into the
 // app worker's heap.
 
-const listReportsSchema = z.object({
-  projectId: z.string().min(1),
-  limit: z.number().int().min(1).max(REPORT_APP_LIST_LIMIT).optional(),
-  offset: z.number().int().min(0).optional(),
-});
-
 const reportRefSchema = z.object({
   projectId: z.string().min(1),
   reportId: z.string().min(1),
 });
 
-/**
- * `summary` is dropped on the way out: it is written for agents, the app never
- * renders it, and it is the one field here big enough to matter on the wire.
- * MCP still reads it.
- */
-export type ReportListItem = Omit<ReportMetadata, "summary"> & {
+/** Bounded summary previews are plain text; HTML stays in the render route. */
+export type ReportListItem = ReportMetadata & {
   /**
    * Display name behind `createdByUserId`, or null when the user is gone
    * (GDPR re-attribution) or has no name. The UI falls back to the client
@@ -58,30 +45,14 @@ async function withDisplayNames(
   const names = new Map(users.map((user) => [user.id, user.name]));
   const templateNames = new Map(templates.map((t) => [t.id, t.name]));
   return reports.map((report) => ({
-    ...omit(report, ["summary"]),
+    ...report,
+    summary: report.summary.slice(0, 600),
     createdByName: names.get(report.createdByUserId) ?? null,
     templateName: report.templateId
       ? (templateNames.get(report.templateId) ?? null)
       : null,
   }));
 }
-
-export const listReports = createServerFn({ method: "POST" })
-  .middleware(requireProjectContext)
-  .validator(listReportsSchema)
-  .handler(async ({ data, context }) => {
-    const result = await ReportService.listReports({
-      projectId: context.projectId,
-      limit: data.limit ?? REPORT_DEFAULT_LIST_LIMIT,
-      offset: data.offset ?? 0,
-    });
-    // Neither `remaining` nor `totalCount` is returned: the page shows the
-    // most recent REPORT_APP_LIST_LIMIT reports and says so when it is full,
-    // and the caps are runaway guards nobody needs a running tally against.
-    return {
-      reports: await withDisplayNames(result.reports, context.projectId),
-    };
-  });
 
 /** Metadata only. The document itself is served by /r/<reportId>. */
 export const getReport = createServerFn({ method: "POST" })
@@ -103,3 +74,31 @@ export const deleteReport = createServerFn({ method: "POST" })
     await ReportService.deleteReport(context.projectId, data.reportId);
     return { reportId: data.reportId };
   });
+
+export const listReportInventory = createServerFn({ method: "POST" })
+  .middleware(requireProjectContext)
+  .validator(reportInventorySchema)
+  .handler(async ({ data, context }) => {
+    const result = await ReportInventoryService.listReportInventory({
+      ...data,
+      projectId: context.projectId,
+    });
+    const named = await withDisplayNames(
+      [...result.reports, ...(result.latest ? [result.latest] : [])],
+      context.projectId,
+    );
+    return {
+      ...result,
+      reports: named.slice(0, result.reports.length),
+      latest: result.latest ? named[named.length - 1] : null,
+    };
+  });
+export type ReportInventory = Awaited<ReturnType<typeof listReportInventory>>;
+
+/** Authorization is identical to the metadata read; no document is transferred. */
+export const getReportAvailability = createServerFn({ method: "POST" })
+  .middleware(requireProjectContext)
+  .validator(reportRefSchema)
+  .handler(async ({ data, context }) =>
+    ReportService.reportAvailability(context.projectId, data.reportId),
+  );

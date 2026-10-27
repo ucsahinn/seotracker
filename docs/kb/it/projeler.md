@@ -1,59 +1,25 @@
 ---
 title: Progetti
-description: Si crea un progetto, si sceglie sito e paese, si cambia il nome e si gestisce il collegamento con Google. Un progetto si può archiviare e ripristinare.
+description: Progetti aiuta a scegliere un sito e completare le connessioni. Ogni progetto conserva le proprie proprietà Google, verifiche e rapporti.
 screen: Projeler, Proje ayarları
 route: /projects, /p/{proje}/settings
 updated: 2026-10-27
 ---
 
-Si apre un progetto, se ne cambiano le impostazioni e, se serve, lo si rimuove. Ogni sito è un progetto. Ogni progetto ha il proprio collegamento con Google, i propri controlli e i propri report.
+Progetti aiuta a scegliere un sito e completare le connessioni. Ogni progetto conserva le proprie proprietà Google, verifiche e rapporti.
 
-## Cosa c'è nella schermata
+## Leggere la schermata
 
-**Selettore dei progetti.** Facendo clic sul nome del progetto in alto a sinistra si apre l'elenco dei progetti. In fondo ci sono **Nuovo progetto** e **Gestisci progetti**. L'icona a forma di ingranaggio accanto apre **Impostazioni progetto**. Con otto o più progetti compare nell'elenco una casella di ricerca.
+Con più progetti puoi cercare e ordinare per nome o dominio. **Ultimo aperto** indica il progetto ricordato dal browser, non uno stato SEO. L’azione principale permette di aggiungere il sito, collegare Search Console o aprire la panoramica secondo la configurazione nota. Le informazioni del progetto aprono le note; le impostazioni aprono la configurazione.
 
-**Pagina dei progetti.** Ogni riga mostra il nome del progetto e il suo sito. Un progetto senza sito dice "Nessun sito aggiunto". Se i progetti sono più di uno, quello aperto ha l'etichetta **Attivo**. Sotto ogni riga c'è un breve riepilogo del progetto: i clic degli ultimi 28 giorni e la variazione rispetto ai 28 precedenti (con una piccola linea), il momento dell'ultimo controllo ("Ultimo audit 3 giorni fa" oppure "Ancora nessun controllo") e se Search Console e Analytics sono collegati. Un punto pieno significa collegato, un punto vuoto non collegato. Il numero di clic viene dall'archivio di questo computer. Se l'archivio non ha dati di ricerca, c'è scritto "Nessun dato di ricerca nell'archivio". Passando sopra il numero si vedono le date che copre. Un clic sulla riga apre il progetto. Il pulsante **Impostazioni** a destra apre le impostazioni del progetto. Per un progetto senza sito il pulsante dice **Aggiungi sito**. I progetti archiviati stanno in fondo, nella sezione **Archiviato**. Con **Ripristina** tornano nell'elenco.
+L’archivio di ricerca contiene dati Web locali per tutti i dispositivi e paesi. Le date sono visibili. La finestra termina all’ultimo giorno registrato, che può essere vecchio. Se mancano giorni, i clic sono il subtotale delle sole osservazioni presenti. Un giorno mancante è uno spazio nel grafico, non zero. Il confronto richiede due periodi completi. Totali uguali sono indicati come invariati; partendo da zero compaiono i conteggi precedenti e attuali. I dettagli mostrano ultimo giorno e orario di lettura disponibile. I vecchi record non conservano la prova della definitività.
 
-**Finestra del nuovo progetto.** Ha quattro campi:
+La verifica riguarda l’host del sito scelto. L’ultima completata è distinta da un tentativo più recente fallito o in corso. Una connessione salvata non dimostra una lettura Google riuscita. Una fonte illeggibile non è né scollegata né uno zero misurato: riprova. Aggiornare rilegge identità e dati locali senza chiamare Google o avviare verifiche.
 
-- **Nome** è obbligatorio. Lo vede solo l'utente: compare nel titolo dei report e nel selettore dei progetti. Non va a Google.
-- **Dominio, facoltativo** è l'indirizzo del sito, per esempio `example.com`. Il `https://` e il `www.` iniziali vengono tolti da soli. I sottodomini sono ricondotti al dominio principale: `blog.example.com` ed `example.com` sono lo stesso progetto.
-- **Paese** e **Lingua** stabiliscono per quale mercato vengono monitorate le parole chiave salvate. Quando si cambia il paese, la lingua passa a quella del paese. Entrambi si possono cambiare in seguito.
+## Creare e gestire
 
-**Impostazioni del progetto.** Ci sono due schede. La scheda **Generale** contiene nome, dominio, paese e lingua, e la sezione **Archivia progetto**. La scheda **Connessioni** contiene le schede di Search Console e di Analytics.
+Nuovo progetto richiede nome, dominio facoltativo, paese e lingua. Crearlo non raccoglie dati. Scegli le proprietà Google in Impostazioni → Connessioni. Le impostazioni generali cambiano identità e mercato. Ogni progetto ha una proprietà Search Console e una Analytics.
 
-## Come si usa
+Archiviare conserva i dati; Ripristina rende nuovamente visibile il progetto. L’ultimo progetto non può essere archiviato. I clic differiscono da sessioni GA4 e totali dell’archivio delle query. Periodi diversi non vengono sommati.
 
-1. Nel selettore dei progetti scegliere **Nuovo progetto**.
-2. Scrivere un nome, inserire l'indirizzo del sito, scegliere paese e lingua e premere **Crea progetto**. Il progetto si apre e compare il Panel (Pannello). Non viene ancora scaricato alcun dato.
-3. Passare a **Impostazioni progetto → Connessioni** e collegare Search Console. I passaggi sono nella guida al collegamento con Google. Una volta collegato, Panel, Rendimento della ricerca, Opportunità e Stato dell'indicizzazione cominciano a riempirsi.
-4. Per collegare anche Analytics, usare la scheda **Analytics** nella stessa pagina. Non serve un'altra chiave di Google.
-5. Per cambiare il nome o il sito, correggere il campo nella scheda **Generale** e premere **Salva modifiche**. Il pulsante si attiva solo quando qualcosa è cambiato.
-
-### Cambiare il collegamento con Google
-
-Nella scheda della pagina **Connessioni** premere **Cambia proprietà o account**. Si può scegliere un altro sito (per Google, una "proprietà") o un altro account Google. **Disconnetti** rimuove solo il collegamento di questo progetto. L'account Google resta registrato e non viene chiesta alcuna conferma. Per rimuovere del tutto un account Google, usare **Rimuovi account** nella finestra di scelta. La finestra indica quali progetti saranno interessati.
-
-### Archiviare un progetto
-
-I progetti non si eliminano, si archiviano. Il pulsante **Archivia progetto** in fondo alla scheda **Generale** toglie il progetto dall'elenco. Controlli, parole chiave e report restano come sono. **Ripristina** nella pagina dei progetti riporta il progetto esattamente com'era. Se si ha un solo progetto, non si può archiviare.
-
-## Come si calcolano i numeri
-
-In questa schermata non ci sono numeri. Quando si salva il dominio valgono queste regole: spazi e lettere maiuscole vengono ripuliti e l'indirizzo deve essere un vero nome di dominio (non sono accettati indirizzi IP, `localhost` o estensioni inventate). Se si inserisce un valore errato, compare l'avviso "Inserisci un dominio valido, ad esempio acme.com.".
-
-## Domande frequenti
-
-**Si può eliminare del tutto un progetto?** No, lo si può solo archiviare. I dati restano e lo si può ripristinare quando si vuole.
-
-**Si possono collegare due siti a un progetto?** No. In un progetto c'è una proprietà di Search Console e una di Analytics. Per un secondo sito, aprire un secondo progetto.
-
-**C'è un progetto di nome "Default". Che cos'è?** Al primo avvio l'app crea un progetto vuoto, perché le schermate possano aprirsi. Lo si può rinominare e usare. Se si preferisce, creare un nuovo progetto e archiviare quello.
-
-**È stato scelto il paese sbagliato.** Cambiarlo nella scheda Genel. Le posizioni delle parole chiave salvate sono monitorate secondo il nuovo paese da quel momento in poi.
-
-## Limiti
-
-Il numero di progetti non ha limiti. Creare un progetto non avvia nulla. I dati arrivano solo quando Google è collegato. Se non è stato inserito il dominio, l'indirizzo si scrive a mano quando si avvia un controllo.
-
-<!-- Kaynaklar: src/routes/_app/projects.tsx; src/routes/_app/index.tsx; src/client/features/projects/CreateProjectModal.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/ProjectGeneralSettings.tsx; src/client/features/projects/ProjectSwitcher.tsx; src/routes/_project/p/$projectId/settings.tsx; src/routes/_project/p/$projectId/settings/integrations.tsx; src/client/features/integrations/*; src/server/lib/domainUtils.ts; src/server/features/projects/services/projects.ts -->
+<!-- Sources: src/routes/_app/projects.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/project-context/; src/server/features/projects/services/ProjectOverviewService.ts; src/server/features/project-context/ -->

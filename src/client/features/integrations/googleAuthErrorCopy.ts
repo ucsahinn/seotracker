@@ -48,11 +48,46 @@ export function googleAuthErrorCopy(
               "Bu Google hesabı zaten başka bir kayıtta bağlı görünüyor. Ayarlar'daki mülk seçicisinden hesabı kaldırıp yeniden bağlayın.",
             ),
       };
+    case "invalid_grant":
+      return {
+        title: notCompleted,
+        description: t(
+          "Google izni geçersiz veya süresi dolmuş. İlgili Google hesabını yeniden bağlayın.",
+        ),
+      };
+    case "permission_denied":
+      return {
+        title: notCompleted,
+        description: t(
+          "Google bu mülke erişimi reddetti. Seçilen hesabın mülk izinlerini kontrol edin.",
+        ),
+      };
+    case "api_disabled":
+      return {
+        title: notCompleted,
+        description: t(
+          "Google API etkin değil. Google Cloud projesinde ilgili API'yi etkinleştirip yeniden deneyin.",
+        ),
+      };
+    case "quota_exceeded":
+      return {
+        title: notCompleted,
+        description: t(
+          "Google istek sınırına ulaşıldı. Bir süre bekleyin ve Google Cloud kota ekranını kontrol edin.",
+        ),
+      };
+    case "timeout":
+      return {
+        title: notCompleted,
+        description: t(
+          "Google zamanında yanıt vermedi. Bağlantıyı kontrol edip yeniden deneyin; mevcut mülk seçimi korunur.",
+        ),
+      };
     default:
       return {
         title: notCompleted,
         description: t(
-          "Google ile konuşurken bir şeyler ters gitti. Yeniden deneyin. Sürerse hatanın ayrıntısı Yardım ekranındaki günlüklerde.",
+          "Google bağlantı yanıtı okunamadı; erişiminizin olmadığı sonucu çıkarılamaz. Yeniden deneyin. Sürerse Yardım ekranından tanılama paketini alıp sorunu bildirin.",
         ),
       };
   }

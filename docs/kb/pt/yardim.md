@@ -18,11 +18,10 @@ Este é o primeiro lugar a olhar quando algo dá errado. A tela confere a sua in
 - **Baixar pacote de diagnóstico**: baixa o arquivo que você envia ao relatar um problema. Ele não contém nenhum valor secreto.
 - **Abrir guia**: abre o guia no seowatcher.io.
 - **seowatcher.io**: abre o site do aplicativo, onde ficam a página de download e o guia.
-- **Notas de versão**: vai às notas de versão em Configurações.
-- **Copiar prompt de configuração**: copia o texto de configuração que você cola no seu assistente de IA (chamado de "agente" no aplicativo).
+- **Notas de versão**: abre a tela dedicada às notas de versão (`/release-notes`).
 - **Configuração do agente**: vai à tela de conexão do assistente.
 
-**Status do app.** O cartão olha esta instalação em si. A lista de configuração de um projeto fica no Painel e nas Informações do projeto, não aqui. O cartão confere quatro coisas: **Login e acesso**, **Login no Google**, **Chave do PageSpeed** e **Banco de dados**. No alto, diz "Tudo parece bem." ou "N itens precisam de atenção.". Abaixo você vê a linha da versão ("Sürüm X, güncel." (Versão X, atualizada.) ou "yeni sürüm Y var" (há uma versão nova, Y)) e a hora da última verificação. Ao lado de uma linha com problema, aparece um botão que leva à configuração certa: **Abrir Configurações** ou **Inserir chave**. **Copiar resumo** coloca o texto do cartão na área de transferência.
+**Status do app.** O cartão verifica acesso, configurações da conexão Google, chave do PageSpeed, ambiente de execução e banco de dados desta instalação. Uma verificação bem-sucedida não garante um site sem erros nem dados Google atualizados. Configurações não lidas não são consideradas verificadas. Leia o aviso e use **Verificar o status novamente**. A versão e a hora da verificação identificam o resultado. **Copiar resumo** copia esse estado como texto; **Abrir conexões** leva às conexões do projeto.
 
 **Aviso sobre o número da porta.** Se o pacote do Windows abrir em outro número de porta porque outro programa ocupa a 3001 (por exemplo, uma cópia antiga do Docker), aparece uma faixa amarela no alto de todas as telas do aplicativo: "Desta vez o seowatcher está rodando em 3002 porque outro programa está usando 3001 (por exemplo, uma cópia antiga do Docker). O login do Google está configurado para 3001; feche esse programa e reinicie o seowatcher." A faixa existe caso você tenha perdido a notificação da barra de tarefas. O login do Google volta ao endereço 3001 e falha se você abriu o aplicativo em 3002. O botão de fechar à direita da faixa a esconde nesta aba. A mesma frase também está escrita no cartão **Status do app**. Para resolver, feche o programa que ocupa a 3001 e escolha **Yeniden başlat** (Reiniciar) no menu da bandeja. O aplicativo volta para a 3001 e a faixa some. Se nenhum outro programa a usa, o aplicativo volta para a 3001 na próxima abertura de qualquer jeito.
 
@@ -38,7 +37,7 @@ Este é o primeiro lugar a olhar quando algo dá errado. A tela confere a sua in
 
 1. Se algo não funciona, abra esta tela primeiro e leia o aviso do cartão.
 2. Clique no botão ao lado do aviso. Ele leva você à configuração certa. Faça a mudança, volte e clique em **Verificar o status novamente**.
-3. Se o cartão disser "Tudo parece bem." mas o problema continuar, olhe os títulos de **Problemas comuns**.
+3. Se as verificações da instalação passarem, mas o problema continuar, consulte **Problemas comuns** e a tela do projeto correspondente.
 4. Se ainda não resolver, clique em **Baixar pacote de diagnóstico** e anexe o arquivo ao relato no GitHub. No pacote Windows, **Sorunu bildir (GitHub)** (Relatar um problema no GitHub), no menu da barra de tarefas, faz o mesmo com um clique.
 
 ## Perguntas frequentes
@@ -53,4 +52,8 @@ Este é o primeiro lugar a olhar quando algo dá errado. A tela confere a sua in
 
 A tela confere apenas a própria instalação. Para encontrar um problema no seu site, use Auditoria do site. Para ver um problema do lado do Google, use a tela Status de indexação.
 
-<!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/support/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->
+## Qual tela usar?
+
+O [Painel](/docs/panel/) resume a configuração e os dados do projeto selecionado. [Oportunidades](/docs/firsatlar/) ajuda a escolher ações a partir dos dados do Search Console. O [Acompanhamento de posições](/docs/siralama-takibi/) acompanha a posição média das palavras-chave salvas nos dados Google, não resultados de busca ao vivo. Se faltarem dados, confira as conexões do projeto, o período e os avisos de cobertura. O estado da instalação não valida esses relatórios.
+
+<!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/quotas/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->

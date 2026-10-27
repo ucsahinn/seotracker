@@ -68,7 +68,7 @@ export const deSearch: Catalog = {
   "Önceki dönem karşılaştırılamıyor: Google bu günleri vermiyor.":
     "Kein Vergleich mit dem Vorzeitraum möglich: Google liefert diese Tage nicht.",
   "Verinin durumu": "Datenstand",
-  "Kesin günler": "Endgültige Tage",
+
   "Kesinleşmemiş gün yok.": "Keine Tage, die noch gezählt werden.",
   "Son veri: {date}.": "Neueste Daten: {date}.",
   "Bu dönem için Google'dan hiç satır gelmedi.":
@@ -365,10 +365,7 @@ export const deSearch: Catalog = {
     "Die letzten Tage werden noch gezählt ({clicks} Klicks); nicht in Summen und Vergleichen.",
   "Google'ın gizlediği sorgulardan gelen tıklama: {share}. Bu yüzden sorgu tablolarının toplamı site toplamından küçüktür.":
     "Klicks aus von Google verborgenen Suchanfragen: {share}. Deshalb ergeben die Suchanfragentabellen weniger als die Website-Summe.",
-  "Google'ın satır sınırına ulaşıldı; en az tıklanan sorgu ve sayfalar listelerde eksik.":
-    "Googles Zeilenlimit wurde erreicht; die am wenigsten geklickten Suchanfragen und Seiten fehlen in den Listen.",
-  "Günler Google'ın kullandığı Pasifik saatine göredir; veriler {date} gününe kadar kesindir.":
-    "Tage folgen Googles pazifischer Zeit; Daten sind bis {date} endgültig.",
+
   Yapılacaklar: "Aufgaben",
   "Search Console verisinde eşiği aşan bir fırsat ya da düşüş bulunmadı.":
     "In den Search-Console-Daten gibt es keine Chance oder keinen Rückgang über den Schwellenwerten.",
@@ -389,17 +386,16 @@ export const deSearch: Catalog = {
   "Ortalama sırası 4 ile 20 arasında, en az {impressions} gösterim alan {count} sorgu. Olası kazanç, ilk üçe çıkarsa beklenen ek tıklamadır.":
     "{count} Suchanfragen mit durchschnittlicher Position zwischen 4 und 20 und mindestens {impressions} Impressionen. Möglicher Gewinn sind die zusätzlichen Klicks, wenn sie die Top drei erreichen.",
   "Bu aralıkta sorgu yok.": "Keine Suchanfragen in diesem Bereich.",
-  "İlk 20 / {total} sorgu": "Erste 20 von {total} Suchanfragen",
+
   "Belirgin biçimde az tıklanan sonuç yok.":
     "Kein Ergebnis wird deutlich zu wenig geklickt.",
   "Beklenen oran: sitenizde aynı sıradaki sonuçların tıklama oranı.":
     "Erwartete Rate: die CTR Ihrer Ergebnisse auf derselben Position.",
-  "İlk 10 / {total} sayfa": "Erste 10 von {total} Seiten",
+
   "En az {queries} sorgu ve {impressions} gösterim olmayan sıralar için oran hesaplanmaz.":
     "Positionen ohne mindestens {queries} Suchanfragen und {impressions} Impressionen erhalten keine Rate.",
   Önceki: "Vorher",
-  Şimdi: "Jetzt",
-  "Yok.": "Keine.",
+
   "Önceki dönem: {start} – {end}. Tıklama sayıları.":
     "Vorzeitraum: {start} – {end}. Klickzahlen.",
   "Tıklaması düşen sorgular": "Suchanfragen mit sinkenden Klicks",
@@ -407,26 +403,16 @@ export const deSearch: Catalog = {
   "Tıklaması artan sorgular": "Suchanfragen mit steigenden Klicks",
   "Tıklaması artan sayfalar": "Seiten mit steigenden Klicks",
   "Yeni görünen sorgular": "Neu sichtbare Suchanfragen",
-  "Önceki dönemin tablosu kesildiği için bilinemiyor.":
-    "Unbekannt: Die Tabelle des Vorzeitraums wurde abgeschnitten.",
+
   "Kaybolan sorgular (önceki dönemdeki değerleriyle)":
     "Verlorene Suchanfragen (mit Werten aus dem Vorzeitraum)",
-  "Bu dönemin tablosu kesildiği için bilinemiyor.":
-    "Unbekannt: Die Tabelle dieses Zeitraums wurde abgeschnitten.",
-  "Bu karşılaştırma için bir yılı aşkın veri gerekir.":
-    "Dieser Vergleich braucht mehr als ein Jahr Daten.",
+
   "Çeyrek: 91 gün.": "Quartal: 91 Tage.",
   "Son çeyrek": "Letztes Quartal",
   "En iyi çeyrek": "Bestes Quartal",
-  "Çakışma analizi bu rapor için alınamadı.":
-    "Die Überschneidungsanalyse konnte für diesen Bericht nicht geladen werden.",
-  "Hiçbir sorguda iki sayfanız birbiriyle yarışmıyor.":
-    "Keine Ihrer Seiten konkurrieren bei einer Suchanfrage miteinander.",
-  "{queries} sorguda birden fazla sayfanız yarışıyor; {impressions} gösterim ana sayfa dışındaki sayfalara gitti. Dönem: {start} – {end}.":
-    "Bei {queries} Suchanfragen konkurriert mehr als eine Ihrer Seiten; {impressions} Impressionen gingen an andere als die Hauptseite. Zeitraum: {start} – {end}.",
+
   "Google'ın tercih ettiği sayfa": "Von Google bevorzugte Seite",
-  "Yarışan sayfa": "Konkurrierende Seiten",
-  "Bölünen pay": "Geteilter Anteil",
+
   "Paylar sitenin toplamına göre.": "Anteile an der Website-Summe.",
   "Paylar satırların toplamına göre.": "Anteile an der Zeilensumme.",
   "İlk {limit} / {total}.": "Erste {limit} von {total}.",
@@ -435,26 +421,22 @@ export const deSearch: Catalog = {
   "Marka adları: {terms}.": "Markennamen: {terms}.",
   "Okunan sorguların ortalama sırasına göre.":
     "Nach der durchschnittlichen Position der gelesenen Suchanfragen.",
-  "Google bu dönem için özel bir sonuç biçimi bildirmedi.":
-    "Google meldete für diesen Zeitraum kein besonderes Ergebnisformat.",
+
   "Paylar okunan sorguların tıklamasına göre.":
     "Anteile an den Klicks der gelesenen Suchanfragen.",
   "{words}+ kelimeli aramalar": "Suchen mit {words}+ Wörtern",
   "Google Search Console API, bu mülk için. Başka bir veri kaynağı, tahmini hacim ya da rakip verisi kullanılmadı.":
     "Die Google Search Console API für diese Property. Keine andere Datenquelle, kein geschätztes Suchvolumen und keine Wettbewerberdaten.",
-  "Toplamlar ve karşılaştırmalar yalnızca Google'ın saymayı bitirdiği günleri kapsar. Günler Pasifik saatine göredir.":
-    "Summen und Vergleiche umfassen nur Tage, die Google fertig gezählt hat. Tage folgen der pazifischen Zeit.",
+
   "Site toplamları": "Website-Summen",
   "Site toplamı tarihe göre istenen toplamdan gelir, sorgu ya da sayfa satırlarının toplamından değil. Ortalama sıra gösterime göre ağırlıklıdır; tıklama oranı tıklama bölü gösterimdir.":
     "Die Website-Summe stammt aus der nach Datum gruppierten Abfrage, nicht aus der Addition von Suchanfragen- oder Seitenzeilen. Die durchschnittliche Position ist nach Impressionen gewichtet; CTR ist Klicks geteilt durch Impressionen.",
-  "Google az aranan sorguları listelemez ama site toplamına katar; sorgu tabloları bu yüzden site toplamından küçüktür.":
-    "Google listet selten gesuchte Suchanfragen nicht auf, zählt sie aber zur Website-Summe; daher ergeben die Suchanfragentabellen weniger als die Website-Summe.",
+
   "Kazanç tahminleri": "Gewinnschätzungen",
   "Sitenizin kendi sıra-tıklama oranı eğrisinden hesaplanır; yeterli veri olmayan sıralar için tahmin yapılmaz.":
     "Aus der eigenen Positions-CTR-Kurve Ihrer Website; Positionen ohne genug Daten erhalten keine Schätzung.",
   "Google istekleri": "Google-Anfragen",
-  "Bu rapor {count} Google isteğiyle hazırlandı.":
-    "Dieser Bericht wurde mit {count} Google-Anfragen erstellt.",
+
   "Yöntem ve sınırlar": "Methode und Grenzen",
   "{host} arama performansı, {start} – {end}{filters}":
     "Suchleistung von {host}, {start} – {end}{filters}",

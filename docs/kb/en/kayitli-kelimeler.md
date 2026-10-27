@@ -1,66 +1,35 @@
 ---
 title: Saved keywords
-description: Tag the searches you have saved here, follow their average position over the last 90 days, and export to CSV or Sheets.
+description: Inspect saved keywords with dated, scoped archive observations.
 screen: Kayıtlı kelimeler
 route: /p/<proje>/saved
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
-This screen holds the searches you care about, with their tags and positions.
+Save important queries from Search performance or Rankings. Saving does not start a new Google tracker: this screen matches your chosen records to observations already stored locally.
 
-The app does not suggest keywords. On the **Search performance** or **Rank tracking** screen, choose **Save as keyword** from a row's menu, and the keyword appears here with its average position over the last 90 days. The position comes from the Rank tracking archive. Saving does not start a new tracking job at Google; it filters data that has already been collected for these keywords.
+## Dates and counts
 
-## What is on the screen
+Choose 30, 90 or 180 days; the default is 90. Exact current and equally long previous dates are shown. Dates use Google's Pacific calendar and an assumed three-day lag, which does not prove archive completeness.
 
-**Top bar.** A description line, **Export to Sheets**, **Download CSV** and **Refresh**. A line below shows the count: "{n} saved keywords".
+Cards show saved records matching text and tags, observed records, comparable significant movements and unknown rank evidence. Band bars use this same base; selecting one narrows the table. These are records, not all site queries or search volume. Separate saved market records retain their IDs and counts, while archive observations cover all countries and devices.
 
-**Position distribution card.** Bars show how many of your keywords are in positions 1-3, 4-10, 11-20 and 21+. A note below says "positions are the average of the last 90 days". A keyword with no record in the archive counts as "No data". If the archive is incomplete, you see "Unknown (archive cut off)". The **Top 10** and **Position 11-20** buttons narrow the table to that slice.
+Position is impression weighted. Matching compacts whitespace and uses Turkish case rules, preserving I/ı versus İ/i. Raw variants are combined by impressions. Missing evidence is never rank zero or a proven loss. Significant movement means at least half a place; a smaller change may still appear in row detail. No comparison differs from unchanged.
 
-**Filter panel.** Under **Filter results** there are the **Contains** and **Does not contain** boxes. These match text inside the keyword. **Search tags** filters by tag. **Clear all** resets everything. A project can have at most 50 tags.
+## Investigate a record
 
-**Table.** Columns: **Keyword**, **Avg. position**, **Intent**, **Tags**, **Added**. If the position is empty, hovering over it shows "Search Console has recorded no position for this keyword". The **Intent** column shows what the person searching for the keyword wants:
+The table shows the word, average position, change, impressions and tags. On phones, key metrics sit under the word. Open Archive details for the same dates, raw variants, previous mean, observed days and saved market. Creation date and any legacy intent remain in detail; intent is not newly measured. The secondary Search performance link searches containing text over its live last-28-day view, so it is not an exact archive reconciliation.
 
-- Informational: wants to learn.
-- Commercial research: will compare and choose.
-- Transactional: ready to buy.
-- Navigational: looking for a specific site.
-- Bilinmiyor (Unknown): not clear.
+Every include term must match; none of the exclude terms may match. Each box accepts at most 20 terms. Any selected tag matches, up to 50 selected tags; this is not a limit on tags stored in the project. Tag counts are project-wide assignments. Filters, band, period, sort and page persist in the URL. Clear all also clears an empty active band.
 
-In the table, intent appears as a short badge: Info, Commercial, Transactional, Navigational or a question mark. The row menu: **Copy keyword**, **Search in Search performance**, **Delete keyword**.
+## Repair missing evidence
 
-**Bulk actions.** When you select rows, **Copy keywords**, **Update tags** and a delete button appear at the top. Before deleting, a warning appears: "kalıcı olarak silinecek. Bu geri alınamaz." (will be permanently deleted. This cannot be undone.)
+Disconnected, never imported, partial archive and failed reads have separate explanations. Refresh list only rereads local storage. Use the Rankings archive update action for newer Google observations; connect Search Console first if needed. Google may omit rare queries, so absence from the archive does not prove absence from search.
 
-**Empty states.** If there are no keywords at all, the screen says "No saved keywords yet" and offers one shortcut: **Browse queries**, or **Connect Search Console** if Search Console is not connected yet. If no keyword matches the filters, it says "No keywords match these filters".
+## Exports and bulk actions
 
-## How to use it
+CSV and Sheets use the same filtered population and evidence fields. Existing word, intent, tags and creation columns stay first; appended fields include current/prior position, delta, status, observed days, exact dates, coverage, variants, scope, market, record ID and snapshot. Unknown measurements are blank. If the underlying snapshot changes during export, restart it.
 
-1. In **Search performance**, open the **Positions 5-20** tab. Save five or ten important searches with **Save as keyword**. Include searches for the pages that earn you money; they matter as much as the most shown ones.
-2. Come here and select the keywords. With **Update tags**, add tags such as "product", "blog" and "brand". Tags make next month's comparison easier.
-3. Once a month, check the **Position distribution** card. The keywords in the 11-20 slice are the closest to the first page. Find the pages for those keywords on the **Opportunities** screen.
-4. For a report, choose **Download CSV** or **Export to Sheets**. The file respects the filters you applied.
+Selection covers this page only. Pending filters or refresh disable actions on stale rows. Removal asks for confirmation; editing a tag does not remove words. Creation time remains the default ordering; position, movement, impressions and word can also be sorted. Inspect declines orders significant paired declines for investigation and does not establish their cause.
 
-## How the numbers are calculated
-
-Keywords and tags are stored in the database on this computer. **Avg. position** is calculated from the Rank tracking archive for the last 90 days. Days with many impressions affect the average more. Upper and lower case are treated as the same.
-
-The 500 most shown searches are pulled from the archive. If your saved keyword is outside these 500, its position shows as "bilinmiyor" (unknown).
-
-Intent is stored only if it was available when the keyword was saved; it is not calculated afterwards. The list is split into pages of 50, 100 or 250.
-
-## Frequently asked questions
-
-**Why is the position empty for a keyword I just saved?** The archive may not have collected days for that keyword yet. Open the **Rank tracking** screen and wait for the archive to fill, then choose **Refresh** here.
-
-**My position is different when I search in Google.** The position here is a 90-day average, so it cannot be compared with a single search.
-
-**Where is the search volume column?** There is none, because the app does not estimate volume. Impression counts are on the **Search performance** screen.
-
-**Can I save the same keyword twice?** No. The same text becomes one record.
-
-**If I delete a tag, are the keywords deleted?** No. Only the tag is removed; the keywords stay.
-
-## Limits
-
-This screen is not a keyword research tool: it makes no suggestions and shows no volume or difficulty. Position information is limited to the archive, and positions of rare searches that Google hides never arrive. The data is in this installation's database, and backing it up is up to you.
-
-<!-- Kaynaklar: src/routes/_project/p/$projectId/saved.tsx; src/client/features/saved-keywords/SavedKeywordsHeader.tsx; SavedKeywordsTable.tsx; SavedKeywordsFilterPanel.tsx; SavedKeywordsTagFilter.tsx; SavedKeywordsSummary.tsx; SavedKeywordsModals.tsx; useSavedKeywordPositions.ts; savedKeywordPositions.ts; src/client/components/IntentBadge.tsx; src/server/features/keywords/repositories/KeywordResearchRepository.ts; src/server/features/keywords/services/research/saved-keywords.ts -->
+**Daily observations.** Request daily history explicitly inside Archive details. It uses the same dates and matching rule, leaves missing days as gaps, supports keyboard date inspection and includes a text list of daily values.

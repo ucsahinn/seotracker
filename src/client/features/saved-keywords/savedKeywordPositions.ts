@@ -1,3 +1,4 @@
+import { savedMatchKey } from "@/shared/savedWatchlist";
 import { bandOf, type BandId } from "@/shared/positionBands";
 
 /**
@@ -9,33 +10,29 @@ import { bandOf, type BandId } from "@/shared/positionBands";
  * rank 0 or "21+".
  */
 
-export type PositionFilter = BandId | "none" | "firstPage";
+type PositionFilter = BandId | "none" | "firstPage";
 
-/** Narrows a chart segment key to a filter, without a type assertion. */
-export function toPositionFilter(key: string): PositionFilter | null {
-  switch (key) {
-    case "top3":
-    case "top10":
-    case "top20":
-    case "beyond":
-    case "none":
-    case "firstPage":
-      return key;
-    default:
-      return null;
-  }
-}
-
-type Tracked = { query: string; position: number };
+type Tracked = { query: string; position: number; impressions?: number };
 
 /** Turkish-aware, so "ISPARTA" and "ısparta" are the same query. */
 function normalizeKeyword(value: string): string {
-  return value.trim().toLocaleLowerCase("tr");
+  return savedMatchKey(value);
 }
 
 export function indexPositions(tracked: Tracked[]): Map<string, number> {
+  const weighted = new Map<string, { sum: number; impressions: number }>();
+  for (const row of tracked) {
+    const key = normalizeKeyword(row.query);
+    const weight = row.impressions ?? 1;
+    if (!Number.isFinite(row.position) || row.position <= 0 || weight <= 0)
+      continue;
+    const previous = weighted.get(key) ?? { sum: 0, impressions: 0 };
+    previous.sum += row.position * weight;
+    previous.impressions += weight;
+    weighted.set(key, previous);
+  }
   return new Map(
-    tracked.map((row) => [normalizeKeyword(row.query), row.position]),
+    [...weighted].map(([key, row]) => [key, row.sum / row.impressions]),
   );
 }
 
@@ -63,7 +60,7 @@ export function countMoves(
   return { up, down };
 }
 
-export function positionOf(
+function positionOf(
   keyword: string,
   positions: Map<string, number>,
 ): number | null {

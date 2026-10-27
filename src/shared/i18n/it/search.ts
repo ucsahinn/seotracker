@@ -68,7 +68,7 @@ export const itSearch: Catalog = {
   "Önceki dönem karşılaştırılamıyor: Google bu günleri vermiyor.":
     "Impossibile confrontare con il periodo precedente: Google non fornisce quei giorni.",
   "Verinin durumu": "Stato dei dati",
-  "Kesin günler": "Giorni definitivi",
+
   "Kesinleşmemiş gün yok.": "Nessun giorno ancora in conteggio.",
   "Son veri: {date}.": "Ultimi dati: {date}.",
   "Bu dönem için Google'dan hiç satır gelmedi.":
@@ -359,10 +359,7 @@ export const itSearch: Catalog = {
     "Gli ultimi giorni sono ancora in conteggio ({clicks} clic); esclusi da totali e confronti.",
   "Google'ın gizlediği sorgulardan gelen tıklama: {share}. Bu yüzden sorgu tablolarının toplamı site toplamından küçüktür.":
     "Clic da query nascoste da Google: {share}. Per questo le tabelle delle query sommano meno del totale del sito.",
-  "Google'ın satır sınırına ulaşıldı; en az tıklanan sorgu ve sayfalar listelerde eksik.":
-    "Raggiunto il limite di righe di Google; le query e le pagine meno cliccate mancano dagli elenchi.",
-  "Günler Google'ın kullandığı Pasifik saatine göredir; veriler {date} gününe kadar kesindir.":
-    "I giorni seguono l'ora del Pacifico di Google; i dati sono definitivi fino al {date}.",
+
   Yapılacaklar: "Da fare",
   "Search Console verisinde eşiği aşan bir fırsat ya da düşüş bulunmadı.":
     "Nei dati di Search Console non c'è nessuna opportunità o calo sopra le soglie.",
@@ -383,17 +380,16 @@ export const itSearch: Catalog = {
   "Ortalama sırası 4 ile 20 arasında, en az {impressions} gösterim alan {count} sorgu. Olası kazanç, ilk üçe çıkarsa beklenen ek tıklamadır.":
     "{count} query con posizione media tra 4 e 20 e almeno {impressions} impressioni. Il guadagno possibile sono i clic in più attesi se arrivano tra i primi tre.",
   "Bu aralıkta sorgu yok.": "Nessuna query in questa fascia.",
-  "İlk 20 / {total} sorgu": "Prime 20 di {total} query",
+
   "Belirgin biçimde az tıklanan sonuç yok.":
     "Nessun risultato è chiaramente poco cliccato.",
   "Beklenen oran: sitenizde aynı sıradaki sonuçların tıklama oranı.":
     "Tasso atteso: il CTR dei tuoi risultati nella stessa posizione.",
-  "İlk 10 / {total} sayfa": "Prime 10 di {total} pagine",
+
   "En az {queries} sorgu ve {impressions} gösterim olmayan sıralar için oran hesaplanmaz.":
     "Le posizioni senza almeno {queries} query e {impressions} impressioni non hanno un tasso.",
   Önceki: "Prima",
-  Şimdi: "Ora",
-  "Yok.": "Nessuna.",
+
   "Önceki dönem: {start} – {end}. Tıklama sayıları.":
     "Periodo precedente: {start} – {end}. Numero di clic.",
   "Tıklaması düşen sorgular": "Query con clic in calo",
@@ -401,26 +397,16 @@ export const itSearch: Catalog = {
   "Tıklaması artan sorgular": "Query con clic in crescita",
   "Tıklaması artan sayfalar": "Pagine con clic in crescita",
   "Yeni görünen sorgular": "Nuove query",
-  "Önceki dönemin tablosu kesildiği için bilinemiyor.":
-    "Sconosciuto: la tabella del periodo precedente è stata troncata.",
+
   "Kaybolan sorgular (önceki dönemdeki değerleriyle)":
     "Query perse (con i valori del periodo precedente)",
-  "Bu dönemin tablosu kesildiği için bilinemiyor.":
-    "Sconosciuto: la tabella di questo periodo è stata troncata.",
-  "Bu karşılaştırma için bir yılı aşkın veri gerekir.":
-    "Questo confronto richiede più di un anno di dati.",
+
   "Çeyrek: 91 gün.": "Trimestre: 91 giorni.",
   "Son çeyrek": "Ultimo trimestre",
   "En iyi çeyrek": "Trimestre migliore",
-  "Çakışma analizi bu rapor için alınamadı.":
-    "Impossibile caricare l'analisi delle sovrapposizioni per questo report.",
-  "Hiçbir sorguda iki sayfanız birbiriyle yarışmıyor.":
-    "Nessuna delle tue pagine si fa concorrenza su una query.",
-  "{queries} sorguda birden fazla sayfanız yarışıyor; {impressions} gösterim ana sayfa dışındaki sayfalara gitti. Dönem: {start} – {end}.":
-    "Più di una delle tue pagine compete su {queries} query; {impressions} impressioni sono andate a pagine diverse da quella principale. Periodo: {start} – {end}.",
+
   "Google'ın tercih ettiği sayfa": "Pagina preferita da Google",
-  "Yarışan sayfa": "Pagine concorrenti",
-  "Bölünen pay": "Quota divisa",
+
   "Paylar sitenin toplamına göre.": "Quote sul totale del sito.",
   "Paylar satırların toplamına göre.": "Quote sul totale delle righe.",
   "İlk {limit} / {total}.": "Prime {limit} di {total}.",
@@ -429,26 +415,22 @@ export const itSearch: Catalog = {
   "Marka adları: {terms}.": "Nomi del brand: {terms}.",
   "Okunan sorguların ortalama sırasına göre.":
     "In base alla posizione media delle query lette.",
-  "Google bu dönem için özel bir sonuç biçimi bildirmedi.":
-    "Google non ha segnalato formati di risultato speciali per questo periodo.",
+
   "Paylar okunan sorguların tıklamasına göre.":
     "Quote sui clic delle query lette.",
   "{words}+ kelimeli aramalar": "Ricerche di {words}+ parole",
   "Google Search Console API, bu mülk için. Başka bir veri kaynağı, tahmini hacim ya da rakip verisi kullanılmadı.":
     "L'API di Google Search Console, per questa proprietà. Nessun'altra fonte di dati, nessun volume stimato né dato sui concorrenti.",
-  "Toplamlar ve karşılaştırmalar yalnızca Google'ın saymayı bitirdiği günleri kapsar. Günler Pasifik saatine göredir.":
-    "Totali e confronti coprono solo i giorni che Google ha finito di contare. I giorni seguono l'ora del Pacifico.",
+
   "Site toplamları": "Totali del sito",
   "Site toplamı tarihe göre istenen toplamdan gelir, sorgu ya da sayfa satırlarının toplamından değil. Ortalama sıra gösterime göre ağırlıklıdır; tıklama oranı tıklama bölü gösterimdir.":
     "Il totale del sito viene dalla richiesta raggruppata per data, non dalla somma delle righe di query o pagine. La posizione media è ponderata per impressioni; il CTR è clic diviso impressioni.",
-  "Google az aranan sorguları listelemez ama site toplamına katar; sorgu tabloları bu yüzden site toplamından küçüktür.":
-    "Google non elenca le query cercate di rado ma le conta nel totale del sito, quindi le tabelle delle query sommano meno del totale del sito.",
+
   "Kazanç tahminleri": "Stime di guadagno",
   "Sitenizin kendi sıra-tıklama oranı eğrisinden hesaplanır; yeterli veri olmayan sıralar için tahmin yapılmaz.":
     "Ricavate dalla curva posizione-CTR del tuo sito; le posizioni senza dati sufficienti non hanno stima.",
   "Google istekleri": "Richieste a Google",
-  "Bu rapor {count} Google isteğiyle hazırlandı.":
-    "Questo report è stato creato con {count} richieste a Google.",
+
   "Yöntem ve sınırlar": "Metodo e limiti",
   "{host} arama performansı, {start} – {end}{filters}":
     "Rendimento della ricerca di {host}, {start} – {end}{filters}",

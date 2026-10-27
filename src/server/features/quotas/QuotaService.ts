@@ -100,7 +100,7 @@ function pageSpeedItem(
   return {
     id: "pagespeed",
     kind: "pagespeed",
-    label: "PageSpeed Insights",
+    label: t("PageSpeed Insights · yalnızca denetimler"),
     used: usage.measured,
     limit: null,
     unit: "ölçüm", // i18n-ignore: QuotaUnit code, worded by the client
@@ -124,12 +124,13 @@ function ga4Item(input: {
   ceiling: number;
   pair: { consumed: number; remaining: number } | null;
   seenAt: string | null;
+  now: Date;
 }): QuotaItem {
   const { id, label, windowLabel, ceiling, pair, seenAt } = input;
   const base = {
     id,
     kind: "ga4" as const,
-    label: t(label),
+    label: `${t(label)} · ${t("Standart mülk sınırı varsayımı")}`,
     unit: "puan" as const, // i18n-ignore: QuotaUnit code, worded by the client
     source: t("Google yanıtındaki son kota bilgisi"),
     updatedAt: seenAt,
@@ -145,6 +146,23 @@ function ga4Item(input: {
       ),
     };
   }
+  const age = seenAt ? input.now.getTime() - Date.parse(seenAt) : Infinity;
+  const expired =
+    !Number.isFinite(age) ||
+    age < 0 ||
+    age >= (id === "ga4_hourly" ? 3_600_000 : DAY_MS) ||
+    seenAt?.slice(0, 10) !== input.now.toISOString().slice(0, 10);
+  if (expired)
+    return {
+      ...base,
+      used: null,
+      limit: null,
+      remaining: pair.remaining,
+      state: "unknown",
+      detail: t(
+        "Son gözlenen kalan gösteriliyor; kota penceresi güncelliği doğrulanamadı. Yeni rapor yanıtı gelene kadar güncel kapasite bilinmiyor.",
+      ),
+    };
   const lastCost = t("Son istek: {count} puan.", { count: pair.consumed });
   const limit = t(windowLabel, { count: ceiling });
   // Above the assumed ceiling this is not a standard property: show what is
@@ -175,7 +193,7 @@ function ga4Item(input: {
   };
 }
 
-function ga4Items(snapshot: Ga4QuotaSnapshot | null): QuotaItem[] {
+function ga4Items(snapshot: Ga4QuotaSnapshot | null, now: Date): QuotaItem[] {
   return [
     ga4Item({
       id: "ga4_daily",
@@ -184,6 +202,7 @@ function ga4Items(snapshot: Ga4QuotaSnapshot | null): QuotaItem[] {
       ceiling: GA4_STANDARD_CEILING.daily,
       pair: snapshot?.tokensPerDay ?? null,
       seenAt: snapshot?.seenAt ?? null,
+      now,
     }),
     ga4Item({
       id: "ga4_hourly",
@@ -192,6 +211,7 @@ function ga4Items(snapshot: Ga4QuotaSnapshot | null): QuotaItem[] {
       ceiling: GA4_STANDARD_CEILING.hourly,
       pair: snapshot?.tokensPerHour ?? null,
       seenAt: snapshot?.seenAt ?? null,
+      now,
     }),
   ];
 }
@@ -208,10 +228,10 @@ function auditItem(
     unit: "sayfa", // i18n-ignore: QuotaUnit code, worded by the client
     state: stateFromUsage(latest?.pages ?? null, MAX_AUDIT_PAGES),
     detail: t(
-      "Bir denetim en çok {count} sayfa tarar; gösterilen sayı son denetimin taranan sayfa sayısıdır.",
+      "Bir denetim en çok {count} sayfa tarar; gösterilen sayı proje alan adındaki son tamamlanan denetime aittir. Tarih denetimin başlangıcıdır.",
       { count: MAX_AUDIT_PAGES },
     ),
-    source: t("Son denetim kaydı"),
+    source: t("Proje alan adındaki son tamamlanan denetim"),
     updatedAt: latest?.startedAt ?? null,
   };
 }
@@ -302,12 +322,33 @@ export async function getQuotaStatus(input: {
       input.projectId,
     );
     // Only a reading from the project's current connection counts.
-    items.push(...ga4Items(connection ? readGa4Quota(connection) : null));
+    items.push(...ga4Items(connection ? readGa4Quota(connection) : null, now));
   }
   if (wanted.has("audit")) {
-    items.push(
-      auditItem(await QuotaRepository.latestAuditPages(input.projectId)),
-    );
+    const selection = await QuotaRepository.latestAuditPages(input.projectId);
+    items.push(auditItem(selection.snapshot));
+    const attempt = selection.latestAttempt;
+    if (attempt && attempt.auditId !== selection.snapshot?.auditId) {
+      items.push({
+        id: "audit_latest_attempt",
+        kind: "audit",
+        label: t("Son denetim girişimi"),
+        used: null,
+        limit: null,
+        unit: "sayfa",
+        state: "unknown",
+        source: t("Proje alan adındaki son denetim girişimi"),
+        updatedAt: attempt.startedAt,
+        detail:
+          attempt.status === "running"
+            ? t(
+                "Son denetim sürüyor. Sayfa sınırı için son tamamlanan denetim ayrı gösterilir.",
+              )
+            : t(
+                "Son denetim tamamlanamadı. Son tamamlanan denetimin sayfa sayısı korunur; ayrıntıyı Denetim ekranından kontrol edin.",
+              ),
+      });
+    }
   }
   if (wanted.has("reports")) {
     items.push(

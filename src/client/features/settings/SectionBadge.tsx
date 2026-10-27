@@ -12,12 +12,6 @@ function SectionBadge({ badge }: { badge: Badge | null }) {
   return (
     <span className="relative inline-flex shrink-0">
       <StatusPill tone={badge.tone} label={badge.label} />
-      {badge.live ? (
-        <span
-          aria-hidden
-          className="pointer-events-none absolute top-1/2 left-2.5 -mt-[3px] size-1.5 rounded-full bg-success opacity-60 motion-safe:animate-ping"
-        />
-      ) : null}
     </span>
   );
 }

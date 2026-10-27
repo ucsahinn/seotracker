@@ -63,16 +63,25 @@ export function SettingsIndex() {
   return (
     <nav
       aria-label={t("Ayar bölümleri")}
-      className="sticky top-0 z-10 -mx-1 mb-6 overflow-x-auto bg-base-100/95 px-1 py-2 backdrop-blur-sm [scrollbar-width:none]"
+      className="sticky top-0 z-10 -mx-1 mb-6 overflow-x-auto bg-base-100/95 px-1 py-2 backdrop-blur-sm"
     >
+      <p className="mb-1 text-xs text-muted sm:hidden">
+        {t("Diğer ayar bölümleri için yana kaydırın.")}
+      </p>
       <ul className="flex w-max gap-1 text-sm">
         {SETTINGS_SECTIONS.map((section) => (
           <li key={section.id}>
             <a
               href={`#${section.id}`}
               aria-current={active === section.id ? "location" : undefined}
+              onFocus={(event) =>
+                event.currentTarget.scrollIntoView({
+                  block: "nearest",
+                  inline: "nearest",
+                })
+              }
               onClick={() => setActive(section.id)}
-              className={`block rounded-full px-3 py-1.5 transition-colors ${
+              className={`flex min-h-11 items-center rounded-full px-3 py-1.5 transition-colors ${
                 active === section.id
                   ? "bg-base-200 font-medium text-base-content"
                   : "text-muted hover:text-base-content"

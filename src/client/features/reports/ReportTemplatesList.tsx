@@ -12,6 +12,7 @@ import { FileText } from "lucide-react";
 import { useState } from "react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { t } from "@/shared/i18n";
+import { reportSearchText } from "@/shared/reportInventory";
 
 export function ReportTemplatesList({
   templates,
@@ -43,14 +44,14 @@ export function ReportTemplatesList({
   const showSearch = templates.length > 5;
   // Only a visible search box may filter: a leftover query with no input to
   // clear it would hide rows for no visible reason.
-  const needle = showSearch ? query.trim().toLocaleLowerCase("tr") : "";
+  const needle = showSearch ? reportSearchText(query.trim()) : "";
   const visible = sorting.apply(
     templates.filter(
       (template) =>
         needle === "" ||
-        `${template.name} ${template.description}`
-          .toLocaleLowerCase("tr")
-          .includes(needle),
+        reportSearchText(`${template.name} ${template.description}`).includes(
+          needle,
+        ),
     ),
     (a, b, key) =>
       key === "name"
@@ -165,6 +166,15 @@ export function ReportTemplatesList({
             icon={FileText}
             title={t("Aramanıza uyan şablon yok")}
             description={t("Başka bir sözcükle deneyin.")}
+            action={
+              <button
+                type="button"
+                className="btn min-h-11"
+                onClick={() => setQuery("")}
+              >
+                {t("Aramayı temizle")}
+              </button>
+            }
           />
         ) : null}
       </div>

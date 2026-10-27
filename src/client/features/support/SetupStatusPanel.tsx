@@ -8,7 +8,7 @@ import {
 import { CopyButton } from "@/client/components/CopyButton";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { readClientLog } from "@/client/lib/clientLog";
-import { formatDateTime } from "@/client/lib/format";
+import { formatCount, formatDateTime } from "@/client/lib/format";
 import type { getDiagnostics } from "@/serverFunctions/diagnostics";
 import { t } from "@/shared/i18n";
 import { fillParts } from "@/client/features/settings/fillParts";
@@ -113,7 +113,6 @@ export function SetupStatusPanel() {
 }
 
 function VersionLine({ version, update }: { version: string; update: Update }) {
-  version = `${version} Alpha`;
   if (update?.updateAvailable) {
     return (
       <>
@@ -134,10 +133,15 @@ function VersionLine({ version, update }: { version: string; update: Update }) {
   if (update?.enabled && update.outcome === "error") {
     return (
       <>
-        {t(
-          "Sürümünüz v{version}. Güncelleme kontrolü başarısız oldu; son bilinen sürüm {latest}.",
-          { version, latest: update.latestVersion ?? "" },
-        )}
+        {update.latestVersion
+          ? t(
+              "Sürümünüz v{version}. Güncelleme kontrolü başarısız oldu; son bilinen sürüm {latest}.",
+              { version, latest: update.latestVersion },
+            )
+          : t(
+              "Sürümünüz v{version}. Güncelleme kontrolü başarısız oldu; yeni sürüm olup olmadığı doğrulanamadı. Ayarlar'daki güncelleme bölümünden yeniden deneyin.",
+              { version },
+            )}
       </>
     );
   }
@@ -170,7 +174,7 @@ function StatusBody({
   ).length;
   const worst: CheckStatus = checks.some((c) => c.described.status === "error")
     ? "error"
-    : problems > 0
+    : problems > 0 || checks.length === 0
       ? "warn"
       : "ok";
   const projects = data.projects.filter((project) => !project.archivedAt);
@@ -204,9 +208,15 @@ function StatusBody({
               )}
             </p>
             <p className="mt-0.5 text-sm" aria-live="polite">
-              {problems === 0
-                ? t("Her şey yolunda.")
-                : t("{count} şey dikkat istiyor.", { count: problems })}
+              {checks.length === 0
+                ? t(
+                    "Kurulum kontrolü sonucu alınamadı. Durumu yeniden kontrol edin.",
+                  )
+                : problems === 0
+                  ? t("Kurulum kontrollerinde sorun bulunmadı.")
+                  : t("{count} kurulum kontrolü dikkat istiyor.", {
+                      count: formatCount(problems),
+                    })}
             </p>
             <p className="mt-1 text-sm">
               <VersionLine version={data.version} update={update} />

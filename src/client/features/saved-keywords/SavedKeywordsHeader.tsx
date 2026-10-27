@@ -1,4 +1,5 @@
-import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
+import { formatDateTime } from "@/shared/format";
+import { PageActions } from "@/client/components/RefreshButton";
 import { PageHeader } from "@/client/components/PageShell";
 import { TableExportMenu } from "@/client/components/table/TableBulkActionBar";
 import type { refreshState } from "@/client/lib/refreshState";
@@ -7,6 +8,9 @@ import { CheckCircle2, Download, FileDown, Loader2, Sheet } from "lucide-react";
 import { t } from "@/shared/i18n";
 
 export function SavedKeywordsHeader({
+  blocked,
+  days,
+  onDaysChange,
   refresh,
   totalCount,
   exporting,
@@ -14,6 +18,9 @@ export function SavedKeywordsHeader({
   onExportCsv,
   onExportSheets,
 }: {
+  blocked: boolean;
+  days: 30 | 90 | 180;
+  onDaysChange: (days: 30 | 90 | 180) => void;
   refresh: ReturnType<typeof refreshState>;
   totalCount: number;
   exporting: "csv" | "sheets" | null;
@@ -21,7 +28,7 @@ export function SavedKeywordsHeader({
   onExportCsv: () => void;
   onExportSheets: () => void;
 }) {
-  const disabled = exporting != null;
+  const disabled = blocked || exporting != null;
   // Only the CSV lands in Downloads; a Sheets export opens its own tab.
   const flash = useDoneFlash(exporting === "csv", csvDownloaded);
 
@@ -29,16 +36,49 @@ export function SavedKeywordsHeader({
     <PageHeader
       title={t("Kayıtlı kelimeler")}
       description={t(
-        "Etiketleyin, Search Console'daki ortalama sıralarına bakın, CSV ya da E-Tablolar olarak dışa aktarın.",
+        "Seçtiğiniz kelimelerin arşiv gözlemlerini, karşılaştırılabilir hareketlerini ve eksik kanıtlarını inceleyin.",
       )}
       actions={
         <PageActions>
-          <RefreshButton
-            onRefresh={refresh.onRefresh}
-            isFetching={refresh.isFetching}
-            dataUpdatedAt={refresh.dataUpdatedAt}
-            shortcut
-          />
+          {refresh.dataUpdatedAt > 0 ? (
+            <span className="text-xs text-muted">
+              {t("Liste yanıtı: {date}", {
+                date: formatDateTime(
+                  new Date(refresh.dataUpdatedAt).toISOString(),
+                ),
+              })}
+            </span>
+          ) : null}
+          <label className="flex items-center gap-2 text-sm">
+            {t("Arşiv dönemi")}
+            <select
+              aria-label={t("Arşiv dönemi")}
+              className="select min-h-11"
+              value={days}
+              onChange={(event) =>
+                onDaysChange(
+                  Number(event.target.value) === 30
+                    ? 30
+                    : Number(event.target.value) === 180
+                      ? 180
+                      : 90,
+                )
+              }
+            >
+              {([30, 90, 180] as const).map((n) => (
+                <option key={n} value={n}>
+                  {t("{count} gün", { count: n })}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button
+            className="btn btn-outline min-h-11"
+            onClick={refresh.onRefresh}
+            disabled={refresh.isFetching}
+          >
+            {t("Listeyi yenile")}
+          </button>
           {/*
            * The shared menu, not a third copy of the same dropdown. The inline
            * one had no `aria-expanded`, no Escape handler, and could be clipped
@@ -47,7 +87,7 @@ export function SavedKeywordsHeader({
            */}
           {totalCount === 0 ? null : (
             <TableExportMenu
-              buttonClassName={`btn btn-outline btn-sm gap-1.5 ${
+              buttonClassName={`btn btn-outline btn-sm min-h-11 gap-1.5 ${
                 disabled ? "btn-disabled" : ""
               }`}
               triggerIcon={
@@ -59,7 +99,13 @@ export function SavedKeywordsHeader({
                   <Download className="size-4" />
                 )
               }
-              triggerLabel={flash === "done" ? t("İndirildi") : undefined}
+              triggerLabel={
+                flash === "done"
+                  ? t("İndirildi")
+                  : t("Filtrelenen {count} kelimeyi aktar", {
+                      count: totalCount,
+                    })
+              }
               actions={[
                 {
                   label: t("E-Tablolar'a aktar"),

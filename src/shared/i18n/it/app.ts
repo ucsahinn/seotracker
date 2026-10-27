@@ -150,15 +150,13 @@ export const itApp: Catalog = {
   "Proje güncellenemedi": "Impossibile aggiornare il progetto",
   "Proje adı gerekli": "Il nome del progetto è obbligatorio",
   "Temel bilgiler": "Informazioni di base",
-  "Site adresi, denetimin nereden başlayacağını belirler. Ülke ve dil, Search Console verisinin hangi pazar için okunacağını belirler. Yanlış seçerseniz sayılar doğru olur ama sizinle ilgisiz kalır.":
-    "L’indirizzo del sito stabilisce da dove inizia il controllo. Paese e lingua indicano per quale mercato leggere i dati di Search Console. Con una scelta errata, i numeri saranno corretti ma irrilevanti per te.",
+
   Ad: "Nome",
   "Yalnızca sizin içindir. Proje değiştiricide ve raporların başlığında görünür, Google'a gitmez.":
     "È solo per te. Compare nel selettore dei progetti e nei titoli dei report, ma non viene inviato a Google.",
   "Alan adı": "Dominio",
   "(isteğe bağlı)": "(facoltativo)",
-  "Denetim bu adresten başlar, Search Console mülkü de bununla eşleştirilir. https:// olmadan yazın, örneğin example.com.":
-    "Il controllo parte da questo indirizzo, che serve anche a trovare la proprietà di Search Console. Inseriscilo senza https://, ad esempio example.com.",
+
   "Kaydettiğiniz anahtar kelimeler bu ülke ve dile göre saklanır.":
     "Le parole chiave salvate vengono associate a questo paese e a questa lingua.",
   "Kaydediliyor…": "Salvataggio…",
@@ -209,31 +207,22 @@ export const itApp: Catalog = {
     one: "{count} concorrente salvato.",
     other: "{count} concorrenti salvati.",
   },
-  "Rakip yok. Ajan, kimle yarıştığınızı bilmeden öneri yapar.":
-    "Nessun concorrente. L’agente darà suggerimenti senza sapere con chi competi.",
+
   "Rakip ekle": "Aggiungi concorrente",
   "Önemli sayfalar": "Pagine importanti",
   "{count} önemli sayfa kayıtlı.": {
     one: "{count} pagina importante salvata.",
     other: "{count} pagine importanti salvate.",
   },
-  "Önemli sayfa işaretlenmemiş. Hangi sayfaların kazanç getirdiği belli değil.":
-    "Nessuna pagina importante contrassegnata. Non è chiaro quali pagine generino ricavi.",
+
   "Sayfa ekle": "Aggiungi pagina",
-  "Bağlı. Tıklama, gösterim ve sıra verisi okunuyor.":
-    "Connesso. Vengono letti i dati su clic, impressioni e posizione.",
+
   "Bağlı değil. Sıralama, arama performansı ve fırsatlar bu bağlantıya dayanır.":
     "Non connesso. Monitoraggio del posizionamento, rendimento della ricerca e opportunità dipendono da questa connessione.",
   Bağla: "Connetti",
-  "Bağlı. Organik oturumlar okunuyor.":
-    "Connesso. Lettura delle sessioni organiche.",
-  "Bağlı değil. Ziyaret ve dönüşüm verisi olmadan trafik düşüşleri yorumlanamaz.":
-    "Non connesso. Senza dati su visite e conversioni non è possibile interpretare i cali di traffico.",
+
   "PageSpeed anahtarı": "Chiave PageSpeed",
-  "Anahtar tanımlı. Hız ölçümleri kota sorunu olmadan çalışır.":
-    "Chiave configurata. Le misurazioni della velocità funzionano senza problemi di quota.",
-  "Anahtar yok. Hız ölçümü Google'ın ortak kotasına takılıyor ve çoğu zaman yarıda kalır.":
-    "Nessuna chiave. Le misurazioni della velocità raggiungono la quota condivisa di Google e spesso si interrompono a metà.",
+
   "Anahtar gir": "Inserisci chiave",
   "İşin özeti": "Panoramica dell’attività",
   "Şu anki hedef": "Obiettivo attuale",
@@ -254,8 +243,7 @@ export const itApp: Catalog = {
     "es. L’unico strumento di prenotazione che configuri in un pomeriggio. Più economico dei concorrenti tradizionali e più semplice delle soluzioni fai-da-te.",
   "örn. Sade ve doğrudan, abartı yok. “Kusursuz” ya da “devrim niteliğinde” yazmayın. Rakip fiyatlarına girmeyin.":
     "es. Semplice e diretto, senza esagerazioni. Non usare “impeccabile” o “rivoluzionario”. Non parlare dei prezzi dei concorrenti.",
-  "Ajanınızın bu proje hakkında bildikleri. Ajan işe başlamadan önce burayı okur, öğrendiklerini buraya yazar. Yanlış bir şey görürseniz düzeltin.":
-    "Ciò che l’agente sa del progetto. Lo legge prima di iniziare e annota qui ciò che apprende. Correggi eventuali informazioni errate.",
+
   "Proje bilgisi yüklenemedi": "Impossibile caricare il contesto del progetto",
   "Henüz boş. Kendiniz doldurabilir ya da ajanınıza sitenizden taslak çıkarttırıp onaylayabilirsiniz.":
     "È ancora vuoto. Puoi compilarlo oppure chiedere all’agente di preparare una bozza dal tuo sito e approvarla.",
@@ -312,22 +300,16 @@ export const itApp: Catalog = {
   Kaydet: "Salva",
   "Ajanınıza doldurtabilirsiniz": "Fallo compilare all’agente",
   "Ajanınıza gözden geçirtin": "Chiedi al tuo agente di rivederlo",
-  "İstemi kopyalayıp Claude Code ya da Codex'e yapıştırın. Ajan sitenizi ve ölçümleri okuyup taslak hazırlar; siz onaylamadan hiçbir şey kaydetmez ve sitedeki metinleri talimat saymaz.":
-    "Copia il prompt e incollalo in Claude Code o Codex. L’agente legge il sito e i dati e prepara una bozza; non salva nulla senza la tua approvazione e non considera istruzioni i testi presenti sul sito.",
-  "İstemi kopyalayıp ajana yapıştırın. Yazılı olanı sitenin bugünkü haliyle karşılaştırır, yalnızca yanlış olanı düzeltir ve kaydetmeden önce size sorar; sitedeki metinleri talimat saymaz.":
-    "Copia il prompt e incollalo nell’agente. Confronta le informazioni scritte con il sito attuale, corregge solo quelle errate e ti chiede prima di salvare; non considera istruzioni i testi presenti sul sito.",
+
   "İstemi kopyala": "Copia prompt",
   "İstem kopyalandı": "Prompt copiato",
   "Araştırma günlüğü": "Registro delle ricerche",
-  "Neye bakıldığının kaydı. Aynı araştırma iki kez yapılmasın diye tutulur.":
-    "Registro degli argomenti esaminati, per evitare di ripetere la stessa ricerca.",
+
   "Henüz kayıt yok. Bağladığınız ajan bir araştırma yaptıkça buraya yazar.":
     "Non ci sono ancora voci. L’agente collegato annota qui le ricerche che svolge.",
   "{date} tarihli kaydı sil": "Elimina la voce del {date}",
   "Kurulum durumu": "Stato della configurazione",
-  "Ajanların ve uygulamanın düzgün çalışması için gerekenler. Eksik satırın yanındaki düğme sizi düzeltebileceğiniz yere götürür.":
-    "Requisiti per il corretto funzionamento degli agenti e dell’app. Il pulsante accanto a una voce mancante ti porta al punto in cui puoi risolverla.",
-  "{done} / {total} tamam": "{done} di {total} completati",
+
   Tamam: "Completato",
   Eksik: "Mancante",
   "Kontrol ediliyor": "Verifica in corso",
@@ -352,12 +334,4 @@ export const itApp: Catalog = {
     "Una frase che spiega quando usarlo. L’agente decide in base a questa descrizione.",
   "Sürekli çalıştığımız müşterilere gönderdiğimiz aylık güncelleme.":
     "L’aggiornamento mensile che inviamo ai clienti continuativi.",
-  Yönerge: "Istruzioni",
-  "Projenin geneline ait marka dili Proje bilgisi › Yazım tercihleri altında tutulur.":
-    "La voce del marchio per l’intero progetto si trova in Contesto del progetto › Preferenze di scrittura.",
-  "Şablon oluştur": "Crea modello",
-  Rapor: "Report",
-  "Son 7 gün": "Ultimi 7 giorni",
-  "Yanıtınız alındı": "La tua risposta è stata registrata",
-  "{count} yanıt": { one: "{count} risposta", other: "{count} risposte" },
 };

@@ -18,11 +18,10 @@ This is the first place to look when something goes wrong. The screen checks you
 - **Download diagnostics bundle**: downloads the file you send when you report a problem. It contains no secret values.
 - **Open the guide**: opens the guide on seowatcher.io.
 - **seowatcher.io**: opens the app's website, where the download page and the guide live.
-- **Release notes**: goes to the release notes in Ayarlar (Settings).
-- **Copy setup prompt**: copies the setup text you paste into your AI assistant (called an "agent" in the app).
+- **Release notes**: opens the dedicated Release notes screen (`/release-notes`).
 - **Agent setup**: goes to the assistant connection screen.
 
-**App health**. The card looks at this installation itself. A project's setup checklist is on the Dashboard and in Project context, not here. The card checks four things: **Sign-in and access**, **Google sign-in**, **PageSpeed key** and **Database**. At the top it says "Everything looks good." or "N things need attention.". Below that you see the version line ("You're on vX, the latest." or "Version Y is out") and the time of the last check. Next to a row with a problem, a button appears that takes you to the right setting: **Open Settings** or **Enter key**. **Copy summary** puts the card's text on the clipboard.
+**App health.** This card checks this installation’s access, Google connection settings, PageSpeed key, runtime and database. A successful setup check does not prove that your site is healthy or that Google data is current. Unread settings are not treated as successful checks. Read the warning and use **Check status again**. The version and last-check time identify the result. **Copy summary** copies this status as text. Manage project connections with **Open connections**.
 
 **Port number warning.** If the Windows package opens on another port because a different program holds 3001 (for example an old Docker copy using 3001), a yellow strip appears at the top of every screen in the app: "seowatcher is running on 3002 this time because another program is using 3001 (for example an old Docker copy). Google sign-in is set up for 3001; close that program and restart seowatcher." The strip is there in case you missed the notification in the taskbar. Google sign-in goes back to address 3001 and fails if you opened the app on 3002. The close button on the right of the strip hides it for this tab. The same sentence is also written in the **App health** card. To fix it, close the program that holds 3001, then choose **Yeniden başlat** (Restart) in the tray menu. The app goes back to 3001 and the strip disappears. If no other program is using it, the app goes back to 3001 on the next start anyway.
 
@@ -37,8 +36,8 @@ This is the first place to look when something goes wrong. The screen checks you
 ## How to use it
 
 1. If something does not work, open this screen first and read the warning on the card.
-2. Press the button next to the warning. It takes you to the right setting. Make the change, come back and click **Durumu yeniden kontrol et**.
-3. If the card says "Everything looks good." but the problem continues, check the **Common problems** items.
+2. Press the button next to the warning. It takes you to the right setting. Make the change, come back and click **Check status again**.
+3. If setup checks pass but the problem continues, check **Common problems** and the relevant project screen.
 4. If it is still not solved, click **Download diagnostics bundle** and attach the file to the issue on GitHub. In the Windows package, **Sorunu bildir (GitHub)** (Report a problem (GitHub)) in the taskbar menu does the same in one click.
 
 ## Frequently asked questions
@@ -53,4 +52,8 @@ This is the first place to look when something goes wrong. The screen checks you
 
 The screen checks only the setup itself. To find a problem on your site, use Site denetimi (Site audit). To see a problem on Google's side, use the Dizin durumu (Index status) screen.
 
-<!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/support/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->
+## Which screen should I use?
+
+[Dashboard](/docs/panel/) summarizes the selected project’s setup and data. [Opportunities](/docs/firsatlar/) helps you choose work from Search Console data. [Rank tracking](/docs/siralama-takibi/) follows saved keywords’ average positions in Google data; it is not a live search result. If data is missing, check project connections, the date range and the coverage warning on that screen. Help’s setup result does not validate those reports.
+
+<!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/quotas/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->

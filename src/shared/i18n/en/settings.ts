@@ -47,7 +47,7 @@ export const enSettings: Catalog = {
   Açık: "Light",
   Koyu: "Dark",
   Dil: "Language",
-  "Dil tercihi": "Language preference",
+
   // settings/SettingsIndex.tsx
   "Ayar bölümleri": "Settings sections",
   Google: "Google",
@@ -81,7 +81,7 @@ export const enSettings: Catalog = {
     "The client ID must end in {suffix}. Paste the OAuth client ID, not the client secret.",
   // settings/PageSpeedKeyTest.tsx
   "Anahtarı test et": "Test key",
-  "1 ölçüm harcar": "Uses 1 measurement",
+
   // settings/GoogleOAuthClientSection.tsx
   "Google erişim anahtarı kaydedildi": "Google access key saved",
   "Google erişim anahtarı kaydedilemedi. Değerleri kontrol edip tekrar deneyin.":
@@ -130,8 +130,7 @@ export const enSettings: Catalog = {
   "Hizmet hesabı silinemedi. Tekrar deneyin.":
     "Couldn't delete the service account. Try again.",
   "Hizmet hesabı (daha kısa yol)": "Service account (the shorter way)",
-  "Yukarıdaki Google erişim anahtarı yerine bunu kullanabilirsiniz. Hizmet hesabında izin ekranı, test kullanıcısı ve yönlendirme adresi adımları yok. Google Cloud'da hesabı açıp JSON dosyasını indirin ve buraya yapıştırın, sonra hesabın e-posta adresini Search Console'da mülkünüze, bir meslektaşınızı eklermiş gibi kullanıcı olarak ekleyin.":
-    "You can use this instead of the Google access key above. A service account skips the consent screen, test user and redirect URI steps. Create the account in Google Cloud, download its JSON key file and paste it here, then add the account's email address as a user on your Search Console property, the way you would add a colleague.",
+
   "Hizmet hesapları": "Service accounts",
   "Hizmet hesabı durumu okunamadı.":
     "Couldn't read the service account status.",
@@ -156,8 +155,7 @@ export const enSettings: Catalog = {
   "PageSpeed anahtarı silindi": "PageSpeed key deleted",
   "PageSpeed anahtarı silinemedi. Tekrar deneyin.":
     "Couldn't delete the PageSpeed key. Try again.",
-  "Denetimin Lighthouse aşaması Google PageSpeed Insights'ı kullanır. Anahtarsız da çalışır, ama Google'ın anahtarsız kotası birkaç sayfadan sonra \"çok fazla istek\" (429) hatası verir. Gerçek bir sitede hız ölçümünün büyük kısmı boş kalır. Anahtar ücretsiz.":
-    "The audit's Lighthouse step uses Google PageSpeed Insights. It works without a key, but Google's keyless quota returns \"too many requests\" (429) after a few pages, so on a real site most speed measurements stay empty. The key is free.",
+
   "Anahtar durumu okunamadı.": "Couldn't read the key status.",
   "Ortam değişkeninden geliyor": "Coming from an environment variable",
   "{name} ayarlanmış. Buraya bir değer kaydederseniz o kullanılır.":
@@ -166,11 +164,9 @@ export const enSettings: Catalog = {
   "Google Cloud Console → Credentials → Create credentials → API key. Önce aynı projede PageSpeed Insights API'sini etkinleştirin, yoksa anahtar 403 hatası verir.":
     "Google Cloud Console → Credentials → Create credentials → API key. Enable the PageSpeed Insights API in the same project first, or the key returns a 403 error.",
   "PageSpeed anahtarı silinsin mi?": "Delete the PageSpeed key?",
-  "Anahtar bu kurulumdan silinir; hız ölçümü anahtarsız sınıra döner ve gerçek bir sitede çoğu zaman yarım kalır (429, çok fazla istek). İstediğiniz zaman yeniden girebilirsiniz.":
-    "The key is removed from this install. Speed measurement falls back to the keyless limit and, on a real site, usually stops partway (429, too many requests). You can enter it again at any time.",
+
   // settings/UpdateSection.tsx
-  "GitHub'a ulaşılamadı. İnternet bağlantınızı kontrol edip tekrar deneyin.":
-    "Couldn't reach GitHub. Check your internet connection and try again.",
+
   "GitHub'a ulaşılamadı; son bilinen sürüm {version}":
     "Couldn't reach GitHub; the last known version is {version}",
   "En güncel sürümü kullanıyorsunuz": "You're on the latest version",
@@ -195,17 +191,14 @@ export const enSettings: Catalog = {
   "Proje klasöründe çalıştırın. Verileriniz Docker biriminde ({volume}) kalır, güncelleme onu silmez.":
     "Run it in the project folder. Your data stays in the Docker volume ({volume}); updating does not delete it.",
   "En güncel sürümü kullanıyorsunuz.": "You're on the latest version.",
-  "Güncelleme kontrolü kapalı; GitHub'a istek gitmiyor. Yeni sürümleri depodaki yayınlardan kendiniz takip edebilirsiniz.":
-    "Update checks are off, so no requests go to GitHub. You can follow new versions yourself on the repository's releases page.",
+
   "Son kontrol başarısız oldu: GitHub'a ulaşılamadı. Son bilinen sürüm {version} (son başarılı kontrol: {date}); güncel olup olmadığı doğrulanamadı.":
     "The last check failed: GitHub couldn't be reached. The last known version is {version} (last successful check: {date}), so it couldn't be confirmed whether you're up to date.",
   "Son kontrol başarısız oldu: GitHub'a ulaşılamadı. Son bilinen sürüm {version}; güncel olup olmadığı doğrulanamadı.":
     "The last check failed: GitHub couldn't be reached. The last known version is {version}, so it couldn't be confirmed whether you're up to date.",
   "Son kontrolde GitHub'a ulaşılamadı.":
     "GitHub couldn't be reached on the last check.",
-  "Güncellemeleri kontrol et": "Check for updates",
-  "Açıkken altı saatte bir GitHub'daki sürüm listesine bakar, başka hiçbir şey göndermez. Kapatırsanız dışarıya hiç istek gitmez ve sürümü kendiniz takip edersiniz.":
-    "When on, it looks at the release list on GitHub every six hours and sends nothing else. Turn it off and no requests go out at all; you keep track of versions yourself.",
+
   "Şimdi kontrol et": "Check now",
   "Kontrol açıkken uygulama, bir sekmede açık olduğu sürece en çok altı saatte bir GitHub'a bağlanıp en son sürümü sorar. GitHub bu istekte yalnızca genel IP adresinizi, uygulama adını ve sürümü görür; siteleriniz, Google hesabınız ya da denetimleriniz gönderilmez.":
     "With checks on, the app asks GitHub for the latest version at most every six hours while it is open in a browser tab. GitHub sees only your public IP address, the app name and its version; your sites, Google account and audits are never sent.",
@@ -229,7 +222,7 @@ export const enSettings: Catalog = {
     "No Google access key or service account has been entered yet. Search Console and Analytics can't connect without one.",
   "Google erişim anahtarı ortam değişkenlerinden geliyor.":
     "The Google access key comes from environment variables.",
-  "Google bağlantı ayarı okunuyor.": "Reading the Google connection setting.",
+
   "Google erişimi hazır.": "Google access is ready.",
   "PageSpeed anahtarı kontrol edilemedi. {logs}":
     "Couldn't check the PageSpeed key. {logs}",
@@ -275,11 +268,7 @@ export const enSettings: Catalog = {
   "Sürümünüz v{version}. Güncelleme kontrolü kapalı.":
     "You're on v{version}. Update checks are off.",
   "Kurulumunuzun durumu": "Your setup status",
-  "Her şey yolunda.": "Everything looks good.",
-  "{count} şey dikkat istiyor.": {
-    one: "{count} thing needs attention.",
-    other: "{count} things need attention.",
-  },
+
   "Son kontrol: {date}": "Last checked: {date}",
   "Özeti kopyala": "Copy summary",
   "Özet kopyalandı. İçinde gizli değer yok.":
@@ -293,7 +282,7 @@ export const enSettings: Catalog = {
   "bağlı değil": "not connected",
   "Bağlantıları aç": "Open connections",
   // support/CommonProblems.tsx (tray menu items stay Turkish; the English adds their meaning)
-  "Kurulum türü belirleniyor…": "Detecting the install type…",
+
   "Sık sorunlar": "Common problems",
   "Sayfa açılmıyor ya da uygulama kapalı":
     "The page won't open, or the app isn't running",
@@ -510,4 +499,74 @@ export const enSettings: Catalog = {
   "Uygulamanın durumu": "App health",
   "Bu kurulumun kendisi. Bir projenin kurulum listesi Panel'de ve Proje bilgisi'nde.":
     "This install itself. A project's setup checklist is on the Dashboard and in Project info.",
+  // Translation pass for project, report, saved keyword, settings and help updates.
+  "PowerShell: parolayı ekrana yazdırmadan panoya kopyalayın. Yalnızca MCP istemcinizin yerel gizli başlık alanına yapıştırın, ardından panoyu temizleyin. Sohbete yapıştırmayın.":
+    "PowerShell: copy the password to the clipboard without displaying it. Paste it only into your MCP client's local secret header field, then clear the clipboard. Do not paste it into chat.",
+  "Sınırları gösterilen proje": "Project whose limits are shown",
+  "Sınırlar yenilenemedi; son kayıt gösteriliyor":
+    "Could not refresh limits; showing the last record",
+  "{state} · {count} kaynak bilinmiyor": "{state} · {count} sources unknown",
+  "Bilinen sınırlarda sorun yok": "No issues with known limits",
+  "Google kimlikleri bu kurulumdaki tüm projelerde kullanılır. Hizmet hesabı kayıtlıysa önceliklidir. Projenizin mülkünü Proje ayarları → Bağlantılar bölümünden seçin.":
+    "Google credentials apply to all projects in this installation. A saved service account takes priority. Select your project's property in Project settings → Connections.",
+  "Kullanılan kimlik okunamadı. Google kimlik durumunu yeniden yükleyin.":
+    "Could not read the credentials in use. Reload Google credential status.",
+  "Kimlik kayıt tarihi: {date}": "Credentials saved on: {date}",
+  "Google kurulum adımları": "Google setup steps",
+  "{service} yönlendirme adresini kopyala": "Copy {service} redirect address",
+  "Mülk izinlerini ayarla": "Configure property permissions",
+  "JSON dosyası çok büyük. Google Cloud'dan indirdiğiniz hizmet hesabı anahtarını seçin.":
+    "The JSON file is too large. Select the service account key you downloaded from Google Cloud.",
+  "Dosya okunamadı. Dosyayı yeniden seçin.":
+    "Could not read the file. Select it again.",
+  "JSON içeriğini gizli yapıştır": "Paste JSON content (hidden)",
+  "Hizmet hesabı kurulum adımları": "Service account setup steps",
+  "Yukarıdaki Google erişim anahtarı yerine bunu kullanabilirsiniz. Hizmet hesabında izin ekranı, test kullanıcısı ve yönlendirme adresi adımları yok. Google Cloud'da hesabı açıp JSON dosyasını indirin ve burada seçin, sonra hesabın e-posta adresini Search Console'da mülkünüze, bir meslektaşınızı eklermiş gibi kullanıcı olarak ekleyin.":
+    "You can use this instead of the Google access key above. A service account does not require consent screen, test user, or redirect address setup. Create the account in Google Cloud, download its JSON file and select it here, then add the account's email address as a user to your Search Console property, as you would a colleague.",
+  "Anahtarsız ölçüm sınırlıdır; bu uygulama denetim başına en fazla {count} sayfayı dener. Google daha önce sınır koyabilir. Anahtar başarı garantisi vermez.":
+    "Testing without a key is limited; this application tries up to {count} pages per audit. Google may impose a lower limit. A key does not guarantee success.",
+  "Anahtar bu kurulumdan silinir; hız ölçümü denetim başına uygulamanın anahtarsız sayfa sınırına döner. Google daha erken sınır koyabilir. İstediğiniz zaman yeniden girebilirsiniz.":
+    "The key will be deleted from this installation; speed tests will return to the application's per-audit page limit without a key. Google may impose a lower limit. You can enter a key again at any time.",
+  "example.com için 1 mobil istek; denetim ölçüm sayacına eklenmez.":
+    "1 mobile request for example.com; not added to the audit measurement counter.",
+  "Test tarihi: {date}": "Test date: {date}",
+  "Diğer ayar bölümleri için yana kaydırın.":
+    "Scroll sideways for other settings sections.",
+  "Dili uygula": "Apply language",
+  "Arayüz dili bu tarayıcıda saklanır; projenin varsayılan pazar dilini değiştirmez.":
+    "The interface language is saved in this browser; it does not change the project's default market language.",
+  "GitHub istek sınırı veya erişim kısıtı bildirdi. Bir süre bekleyip tekrar deneyin; Yardım tanılamasını kontrol edin.":
+    "GitHub reported a request limit or access restriction. Wait a while and try again; check diagnostics in Help.",
+  "GitHub sürüm bilgisi okunamadı. Biraz bekleyip yeniden deneyin; sürerse Yardım ekranından tanılama alın.":
+    "Could not read GitHub release information. Wait a moment and try again; if it persists, collect diagnostics from Help.",
+  "Uygulama içi sürüm kontrolü kapalı. Windows tepsisi bağımsız olarak günlük sürüm kontrolü yapabilir.":
+    "In-app update checks are off. The Windows tray may independently check for updates daily.",
+  "Sürüm kontrolü ayarı okunamadı. Son kayıt güncel olmayabilir.":
+    "Could not read the update check setting. The last saved record may be out of date.",
+  "Son başarılı sürüm kontrolü: {date}": "Last successful update check: {date}",
+  "Windows otomatik kurulum ayarları":
+    "Windows automatic installation settings",
+  "Uygulama içi sürüm kontrolü": "In-app update checks",
+  "Açıkken uygulama içi kontrol en çok altı saatte bir GitHub sürüm listesine bakar. Bu tercih Windows tepsisinin günlük kontrolünü ve otomatik kurulum tercihini değiştirmez.":
+    "When enabled, the in-app check reads GitHub's release list at most once every six hours. This preference does not change the Windows tray's daily check or automatic installation preference.",
+  "Bu pakette sürüm notu bulunmuyor.":
+    "This package contains no release notes.",
+  "Notlar uygulama paketiyle birlikte gelir. Yayınlanan notları kılavuzdan kontrol edebilirsiniz; bu durum kurulum kontrolü değildir.":
+    "Release notes are included in the application package. You can check published notes in the guide; this is not an installation check.",
+  "Bu kurulu sürüm için sürüm notu bulunmuyor. Aşağıda bu paketle gelen son notlar var.":
+    "No release notes were found for this installed version. The latest notes included in this package are shown below.",
+  "Son doğrulanan Windows ayarları gösteriliyor; yeniden okunana kadar değiştirilemez.":
+    "Showing the last verified Windows settings; they cannot be changed until reloaded.",
+  "Google bağlantı ayarı henüz doğrulanamadı. Okuma tamamlanmazsa durumu yeniden kontrol edin.":
+    "The Google connection setting has not been verified yet. If loading does not complete, check the status again.",
+  "Kurulum türü henüz doğrulanamadı. Üstteki durumu kontrol edin ve gerekirse yeniden deneyin.":
+    "The installation type has not been verified yet. Check the status above and try again if needed.",
+  "Sürümünüz v{version}. Güncelleme kontrolü başarısız oldu; yeni sürüm olup olmadığı doğrulanamadı. Ayarlar'daki güncelleme bölümünden yeniden deneyin.":
+    "Your version is v{version}. The update check failed; availability of a newer version could not be verified. Try again in the update section of Settings.",
+  "Kurulum kontrolü sonucu alınamadı. Durumu yeniden kontrol edin.":
+    "Could not retrieve the installation check result. Check the status again.",
+  "Kurulum kontrollerinde sorun bulunmadı.":
+    "No issues found in installation checks.",
+  "{count} kurulum kontrolü dikkat istiyor.":
+    "{count} installation checks need attention.",
 };

@@ -1,8 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { CheckCircle2, Loader2, XCircle } from "lucide-react";
 import * as React from "react";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { testPageSpeedKey } from "@/serverFunctions/pagespeedKey";
+import { formatDateTime } from "@/client/lib/format";
 import { t } from "@/shared/i18n";
 
 /** The button stays off this long after a click, whatever the answer was. */
@@ -17,7 +18,7 @@ const COOLDOWN_MS = 10_000;
  * the key itself never comes back.
  */
 export function PageSpeedKeyTest() {
-  const queryClient = useQueryClient();
+  const [testedAt, setTestedAt] = React.useState<string | null>(null);
   const [coolingDown, setCoolingDown] = React.useState(false);
   const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -35,10 +36,7 @@ export function PageSpeedKeyTest() {
       if (timer.current) clearTimeout(timer.current);
       timer.current = setTimeout(() => setCoolingDown(false), COOLDOWN_MS);
     },
-    // Prefix match: every project's quota card re-reads, since the settings
-    // page has no single project.
-    onSettled: () =>
-      queryClient.invalidateQueries({ queryKey: ["quotaStatus"] }),
+    onSettled: () => setTestedAt(new Date().toISOString()),
   });
 
   const result = test.data;
@@ -58,8 +56,17 @@ export function PageSpeedKeyTest() {
           ) : null}
           {t("Anahtarı test et")}
         </button>
-        <span className="text-xs text-subtle">{t("1 ölçüm harcar")}</span>
+        <span className="text-xs text-subtle">
+          {t(
+            "example.com için 1 mobil istek; denetim ölçüm sayacına eklenmez.",
+          )}
+        </span>
       </div>
+      {testedAt ? (
+        <p className="text-xs text-muted">
+          {t("Test tarihi: {date}", { date: formatDateTime(testedAt) })}
+        </p>
+      ) : null}
       <div aria-live="polite">
         {result ? (
           <p

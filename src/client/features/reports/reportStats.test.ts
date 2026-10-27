@@ -7,7 +7,7 @@ import {
   matchesFilter,
   reportKind,
   OTHER_KIND,
-  AUDIT_EXPORT_KIND,
+  UNKNOWN_APP_KIND,
 } from "@/client/features/reports/reportStats";
 
 const NOW = Date.parse("2026-09-30T12:00:00Z");
@@ -32,10 +32,10 @@ describe("report stats", () => {
     expect(matchesFilter(make("", ""), "skill", NOW)).toBe(false);
   });
 
-  it("calls a report the app saved itself the audit export, old marker or new", () => {
+  it("never infers Audit from a creator marker shared by Search and Audit", () => {
     for (const createdBy of ["app:site-audit", "seotracker"]) {
       expect(reportKind({ ...make(null, null), createdBy })).toBe(
-        AUDIT_EXPORT_KIND,
+        UNKNOWN_APP_KIND,
       );
     }
     expect(reportKind({ ...make(null, null), createdBy: "Claude" })).toBe(

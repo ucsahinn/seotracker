@@ -10,6 +10,7 @@ import {
 import {
   AUDIT_EXPORT_KIND,
   OTHER_KIND,
+  UNKNOWN_APP_KIND,
   kindLabel,
 } from "@/client/features/reports/reportStats";
 
@@ -19,6 +20,7 @@ const KIND_ICONS: Record<string, LucideIcon> = {
   "seo-check-in": ArrowLeftRight,
   "seo-triage": TrendingDown,
   [OTHER_KIND]: FileText,
+  [UNKNOWN_APP_KIND]: FileText,
 };
 
 /** A report's kind as a small pill: an icon and its Turkish name. */

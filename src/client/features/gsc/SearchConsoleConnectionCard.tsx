@@ -1,3 +1,4 @@
+import { ConnectionRefreshWarning } from "@/client/features/integrations/ConnectionRefreshWarning";
 import { gscConnectionOptions } from "@/client/features/integrations/googleConnectionQueries";
 import * as React from "react";
 import { GoogleConnectedState } from "@/client/features/integrations/GoogleConnectedState";
@@ -93,7 +94,7 @@ export function SearchConsoleConnectionCard({
         current ? { ...current, ...saved } : current,
       );
       captureClientEvent("gsc:property_select");
-      toast.success(t("Search Console bağlandı"));
+      toast.success(t("Search Console mülkü seçildi"));
       queryClient.removeQueries({ queryKey: ["gscSites", projectId] });
       void queryClient.invalidateQueries({ queryKey: connectionKey });
       setPicking(false);
@@ -127,6 +128,7 @@ export function SearchConsoleConnectionCard({
 
   return (
     <IntegrationConnectionCard
+      managingProperty={Boolean(showPicker)}
       title="Google Search Console"
       icon={<GoogleSearchConsoleLogo className="size-5" />}
       status={
@@ -139,6 +141,11 @@ export function SearchConsoleConnectionCard({
               : "disconnected"
       }
     >
+      <ConnectionRefreshWarning
+        isError={connectionQuery.isError}
+        hasCached={Boolean(connection)}
+        onRetry={() => void connectionQuery.refetch()}
+      />
       <GoogleLinkErrorAlert provider="gsc" className="mb-4" />
       {connectionQuery.isPending ? (
         <div
@@ -167,6 +174,8 @@ export function SearchConsoleConnectionCard({
       ) : connected && !picking ? (
         <GoogleConnectedState
           property={connection?.siteUrl ?? ""}
+          bindingDate={connection?.connectedAt}
+          usesServiceAccount={connection?.usesServiceAccount}
           canManageAccounts={hasGrant}
           email={connection?.connectedByEmail}
           onChange={() => {

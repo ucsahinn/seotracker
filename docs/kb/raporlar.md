@@ -6,79 +6,42 @@ route: /p/<proje>/reports
 updated: 2026-10-27
 ---
 
-Raporu nasıl alacağınızı, kime göndereceğinizi ve şablonla nasıl tekrarlayacağınızı burada bulursunuz.
+Raporlar, bu proje için kaydedilmiş HTML belgeleridir. Uygulama her açışta Google verisini yenilemez. Kaydetme zamanı, kaynak verinin ölçüm tarihi değildir.
 
-Bu proje için hazırlanan her rapor **Raporlar** ekranında tek listede durur. Rapor üç yolla oluşur. Site denetimi ekranındaki **Raporu indir** düğmesi denetimin raporunu, Arama performansı ekranındaki **Raporu indir** düğmesi ekrandaki görünümün raporunu üretir. Yapay zekâ asistanınız da araştırma yapıp bulduklarını rapor olarak kaydeder. Her rapor tek bir HTML dosyasıdır. İçinde betik (sayfada çalışan kod), dış kaynak ya da gömülü yazı tipi yoktur. Bu yüzden telefonda açılır, PDF olarak yazdırılır, e-postayla gönderilir. Uygulamada elle rapor yazabileceğiniz bir editör yok. Raporu ya uygulama ya asistan yazar.
+## Rapor hazırlama
 
-## Ekranda neler var
+**Arama raporu hazırla**, Arama performansı ekranını açar. Dönem, cihaz, ülke ve arama türünü seçip **Raporu indir** kullanın. **Denetim raporu hazırla**, Site denetimi ekranına gider; seçili taramadan rapor alın. **Rapor komutunu kopyala**, asistanınıza yapıştıracağınız isteği kopyalar. Şablonlar, asistana raporun nasıl yazılacağını anlatır; uygulamanın raporlarını otomatik üretmez ve zamanlamaz.
 
-**Üst çubuk.** **Yenile**, **Rapor komutunu kopyala** ve **Şablonlar** düğmeleri. **Rapor komutunu kopyala**, asistanınıza yapıştıracağınız bir metni panoya alır. Henüz rapor yoksa bu düğme boş durum kartının içindedir.
+Rapor önce kaydedilir, sonra indirilir. İndirme başarısız olursa kaydedilen dosyayı listeden tekrar indirebilirsiniz. Kaynak bağlantısı kesilse de kayıtlı raporlar okunabilir.
 
-**Özet kutuları.** Üç kutu var.
+## Listeyi okuma
 
-- **Son rapor**: en son yazılan ya da güncellenen raporun ne kadar önce olduğunu söyler. Altındaki bağlantı raporu açar.
-- **Son 7 günde**: bu sürede yazılan ya da güncellenen rapor sayısı.
-- **Toplam**: tüm raporlar. Altında kaçının denetim raporu, kaçının beceriyle, kaçının şablonla yazıldığı görünür.
+Üstte **Son güncellenen rapor** vardır: başlık, kayıtlı özet, kaydetme zamanı, açma ve HTML indirme düğmeleri. Özet yoksa açıkça belirtilir. Yapılandırılmış veri dönemi eski raporlarda bulunmadığı için dönem ve veri sınırları belgenin içinde kontrol edilir; başlıktan veya HTML'den tahmin edilmez.
 
-**Türe göre raporlar.** Halka grafik raporları türe göre böler. Bir türe tıklayınca liste o türdeki raporlarla sınırlanır. Yeniden tıklarsanız süzgeç kalkar.
+Arama başlık ve kayıtlı özeti tarar. Tür düğmeleri, arama ve Son 7 gün süzgecinden sonraki sayıları gösterir; seçili türden önce hesaplanır. Son 7 gün, o sürede yazılan veya güncellenen ayrı dosyalar demektir, düzenleme sayısı ya da Google verisinin güncelliği değildir. Sonuç sayısı ve projedeki toplam ayrı gösterilir.
 
-**Nasıl çalışır?** Kapalı gelen kısa bir açıklama. Ajanın yazdığı raporlarla Site denetimi raporunun farkını anlatır.
+Liste sunucudan 25 kayıtlık sayfalar alır; 100. rapordan sonrası da aranabilir ve açılabilir. **Önceki** ve **Sonraki** ile ilerleyin. Varsayılan sıra son güncellemedir; eski bir dosya güncellenince yukarı çıkar. Oluşturulma zamanı veya başlığa göre de sıralanır. Arama, tür, Son 7 gün, sıralama ve sayfa URL'de kalır; geri dönme ve yenileme bu seçimi korur.
 
-**Filtreler.** Tümü, Son 7 gün, Şablonla yazılan ve Beceriyle yazılan. Yanında **Raporlarda ara** kutusu vardır.
+Uygulamanın eski Arama ve Denetim belgeleri aynı oluşturucu işaretini taşır. Bu yüzden **Uygulama raporu, tür kaydedilmemiş** yazılır; hepsi Denetim sayılmaz. Asistan becerisi ve şablon adı kayıtlıysa görünür. Dosya sayısı SEO başarısı değildir. Boyut, kayıtlı HTML'nin bayt sayısıdır; indirmedeki güvenlik başlıkları dosyayı biraz büyütebilir.
 
-**Tablo.** Sütunlar **Rapor**, **Tür**, **Oluşturuldu** ve **Boyut**. Başlıklara tıklayarak sıralarsınız. **Tür** sütunu raporu hangi işin ürettiğini söyler. Örneğin "Site denetimi raporu" uygulamanın kendi raporudur. Asistanın yazdıkları "SEO denetimi", "Dönem karşılaştırması", "Trafik düşüşü incelemesi", "SEO raporu", "Koçluk notu" ya da "Proje kurulumu" gibi adlar taşır. Türü belli olmayan rapor "Belirtilmemiş" yazar. Şablonla yazılan raporlarda şablonun adını görürsünüz. Liste en son 100 raporu gösterir. Daha fazlası varsa altında bunu söyleyen bir not çıkar.
+## Açma, indirme ve yazdırma
 
-**Rapor sayfası.** Rapor kendi güvenli çerçevesinde açılır. Düğmeler: **HTML olarak indir**, **PDF olarak kaydet (yazdır)**, **Yeni sekmede aç**. **Diğer işlemler** menüsünde **Bağlantıyı kopyala** vardır. Bağlantı yalnızca bu kurulumda açılır, dışarıdan kimse erişemez. Sayfada raporu kimin oluşturduğu, türü, oluşturulma ve güncellenme zamanı ve boyutu da yazar.
+Rapor güvenli, ağ ve betik yetkisi kapalı bir çerçevede açılır. **Kaynak ve kayıt bilgileri**, oluşturucu, tür, boyut ve kayıt zamanlarını açar. Rapor kaydedildiği dilde kalır. Başka dil veya güncel veri için kaynak ekrandan bilinçli olarak yeniden hazırlayın.
 
-**Rapor şablonları.** **Şablonlar** düğmesinden ulaşırsınız. Şablon, asistanınıza raporu nasıl yazacağını anlatan kayıtlı bir tariftir. Raporu kimin okuyacağını, hangi bölümlerin olacağını ve hangi dille yazılacağını söylersiniz. Üç alan var:
+**HTML olarak indir**, çevrimdışı açılabilen dosyayı kaydeder. **PDF olarak kaydet (yazdır)** tarayıcı yazdırma sekmesini açar. Sekme engellenirse açılır pencerelere izin verin veya **Yeni sekmede aç** ile tarayıcıdan yazdırın. **Tam ekran** arka planı klavye odağından çıkarır; üstte ve altta çıkış düğmesi vardır. Bağlantı aynı kuruluma aittir; başkasına paylaşmak için HTML dosyasını gönderin.
 
-- **Ad** en çok 80 karakter olur ve projede tek olmalıdır.
-- **Açıklama** en çok 200 karakter olur. Şablonun ne zaman kullanılacağını tek cümleyle yazın.
-- **Yönerge** en çok 3.000 karakter olur.
+Önizleme 15 saniyede açılmazsa yeniden deneme ve yeni sekmede açma seçenekleri çıkar. Silinen veya erişilemeyen belge, bağlantı hatası ve indirme sunucu hatası için kurtarma mesajı gösterilir. Liste yenilenemezse son alınan kayıtlar uyarıyla korunur. Saklama bilgisi alınamaması boş alan bulunduğu anlamına gelmez.
 
-Bir projede en çok 10 şablon olabilir. Şablonu silerseniz ondan üretilmiş raporlar silinmez.
+## Arama raporunun sınırları
 
-## Uygulamanın kendi raporları
+Kapak gerçek çözümlenmiş dönemi, önceki dönemi, süzgeçleri ve oluşturulma zamanını gösterir. Günler Pasifik saatine göredir. Google kesinleşme sınırı bildirmediyse son günlerin gecikme varsayımıyla dışarıda bırakıldığı yazılır. Listelenmeyen tıklama payı, satır sınırı varsa gizlenen ve sınır dışındaki sorguları birlikte kapsar. Sorgu, sayfa ve sorgu×sayfa sınırları fırsatları etkileyebilir; site toplamı bu tabloların toplamı değildir.
 
-**Site denetimi raporu.** Denetim ayrıntısındaki **Raporu indir** üretir. Denetim yarım kalmışsa raporun başlığına "(eksik)" eklenir. Örneğin "ornek.com site denetimi (eksik)". Böyle bir raporun kapağında "Rapor eksik olabilir." uyarısı ve nedeni yazar: denetim hata verip durdu, hâlâ çalışıyor ya da hiç sayfa taranamadı. Eksik raporda puan bölümleri yoktur. Tarama sitenin istek sınırı yüzünden erken durduysa kapakta "Eksik denetim, puan verilmedi" yazar. Ölçülen kontroller azsa puan "Kısmi puan" olarak, ölçüm kapsamıyla birlikte yazılır. Raporun özeti de bu durumu belirtir. Asistan raporları listede okurken eksik olduğunu böylece anlar.
+Çakışma analizi kendi dönemini ve eşiklerini sıfır sonuçta bile açıklar. Yedi günlük ana raporda bu analiz 28 gün kullanabilir. Birden çok sayfanın görünmesi kayıp tıklama veya zarar kanıtı değildir. Alınamayan uzun dönem veya görünüm verisi sıfır diye sunulmaz. Kesilen listeler gözlenen kayıt sayısını ve gösterilen kısmı belirtir. İstek bütçesi Arama görünümüne aittir; ek çakışma analizi ve önbellek etkileri toplam ağ isteği sayısını değiştirir.
 
-**Arama performansı raporu.** Arama performansı ekranındaki **Raporu indir** üretir. Rapor, ekranda o anda gördüğünüz görünümü (dönem, cihaz, ülke, arama türü) yazdırılabilir bir belgeye çevirir. Kapakta kesin günler, karşılaştırma, süzgeçler, son veri tarihi ve oluşturulma zamanı yazar. Sonra dört toplam, "Verinin durumu" kutusu, **Önce bunlar** işleri, **Zaman içinde** grafiği (Google güncellemeleri ve notlar işaretli), fırsatlar, değişimler ve aynı sorguda yarışan sayfalar gelir. Rakamlar ekrandakiyle aynıdır. Aynı site, tarih aralığı ve süzgeçlerle yeniden almak yeni bir rapor eklemez. Uygulamanın eski raporunu yeniler. Rapor saklama sınırını aşarsa daha kısa bir dönem ya da süzgeç seçmeniz istenir.
+Veriler rapor hazırlanırken yeniden okunur. Google geçmiş değerleri düzeltebilir ve dönem yeniden çözümlenebilir; önceki ekranla birebir aynı ölçüm garantisi yoktur. Aynı yerelleştirilmiş başlık güncellenebilir; dil değişimi ayrı belge oluşturabilir. Uzun başlıklar saklama sınırına uyar; farklı kaynak ve süzgeçlerin çakışmasını önleyen sunucu damgası taşır.
 
-İki rapor da önce kaydedilir, sonra bilgisayarınıza iner. İndirme bir sebeple başarısız olursa rapor yine **Raporlar** listesindedir. Oradan indirirsiniz.
+## Şablonlar ve saklama
 
-## Nasıl kullanılır
+Şablon adı en çok 80, açıklaması 200, yönergesi 3.000 karakterdir. Projede en çok 10 şablon bulunur. Şablonu silmek raporlarını silmez; arama sonucunu **Aramayı temizle** ile sıfırlayın.
 
-1. İlk rapor için Site denetimi ekranında **Raporu indir**'i tıklayın. Rapor bilgisayarınıza iner ve bu listeye düşer. "Bu hafta yapılacak N şey" bölümüyle başlar.
-2. Arama durumunuzu belgelemek için Arama performansı ekranında dönemi ve süzgeçleri ayarlayın, sonra **Raporu indir**'i tıklayın.
-3. Asistanla çalışıyorsanız **Rapor komutunu kopyala**'yı tıklayın. Kopyalanan metni Claude Code'a, Codex'e ya da Cursor'a yapıştırın. Asistan hangi raporu istediğinizi sorar, veriyi okur, raporu buraya kaydeder.
-4. Her ay aynı raporu istiyorsanız bir şablon yazın. Yönergeye okuyucuyu ("siteyi işleten kişi, SEO bilmiyor"), bölümleri, sırayı ve tonu yazın. Şablonu adıyla istediğinizde asistan onu uygular.
-5. Paylaşmak için **HTML olarak indir**'i tıklayıp dosyayı gönderin. Alan kişi dosyayı tarayıcıda açar. Bağlantıyı kopyalamak yalnızca aynı bilgisayarda işe yarar.
-6. Eski raporları silmeyin. Asistan bir sonraki görüşmede önceki raporun özetini okuyup karşılaştırır.
-
-## Sayılar nasıl hesaplanır
-
-Denetim raporu A4 baskıya göre dizilir. İçindekiler, "Bu hafta yapılacak N şey", sorunlar, hız ölçümü, Google dizin durumu ve site haritası bölümleri var. Dizin durumu bölümü yalnızca kayıtlı cevapları kullanır, Google'a yeni soru sormaz.
-
-Listelerin sınırı var: sorun başına 50 adres, 300 sayfa, 50 hız satırı, ekte 3.000 adres. Dosya 400 KB'yi aşarsa listeler kısalır.
-
-Bir rapor en çok 500.000 bayt olabilir (80 KB altı önerilir). Başlık en çok 120 karakterdir ve projede tektir. Özet en çok 2.500 karakterdir. Aynı başlıkla ikinci rapor kabul edilmez. Projede en çok 10.000 rapor tutulur, kurulumda da toplam 5 GB yer ayrılır.
-
-Güvenlik için, içinde betik, iframe (sayfaya başka sayfa gömen kutu), form, dış stil, olay işleyici (onclick gibi), javascript: bağlantısı ya da otomatik yönlendirme olan dosyalar kaydedilirken reddedilir. Rapor açılırken de kapalı bir kutuda ve ağ erişimi olmadan gösterilir. Yani rapor sizden habersiz dışarıya bir şey gönderemez.
-
-## Sık sorulanlar
-
-**Raporu kim yazdı?** **Tür** sütununa bakın. "Site denetimi raporu" uygulamanındır, diğerlerini asistan yazmıştır. Rapor sayfasında da kimin kaydettiği görünür.
-
-**Başlıkta "(eksik)" yazıyor, ne yapmalıyım?** Denetim yarım kalmıştır. Raporun kapağı nedenini yazar. Denetimi yeniden çalıştırıp raporu yeniden indirin.
-
-**Raporu düzenleyebilir miyim?** Uygulamada düzenleyemezsiniz. Asistana "şu bölümü değiştir" deyin, o raporu günceller.
-
-**Bağlantıyı gönderdim, karşı taraf açamıyor.** Bağlantı yalnızca bu bilgisayarda çalışır. Dosyayı **HTML olarak indir** ile gönderin.
-
-**Şablon yazarken neye dikkat edeyim?** Şablon bir biçim tarifidir, bilgi kaynağı değildir. Bölümleri, tonu ve raporun kime yazıldığını yazın. Sayı ya da iddia yazmayın. Asistan sayıları her seferinde veriden alır.
-
-## Sınırlar
-
-Raporlar dışarıya yayımlanmaz. Paylaşmak için dosyayı gönderirsiniz. Raporun doğruluğu, onu yazanın okuduğu veriye bağlıdır. Asistan raporlarının sonunda "Bu rapor nasıl hazırlandı" bölümü bulunur. Hangi aracın neyi söylediğini orada görürsünüz. Şüphe duyduğunuz bir sayının kaynağını oradan izleyin.
-
-<!-- Kaynaklar: src/routes/_project/p/$projectId/reports/index.tsx; reports/$reportId.tsx; reports/templates.tsx; src/client/features/reports/ReportsList.tsx; ReportsSummary.tsx; ReportKindsHelp.tsx; ReportKindChip.tsx; reportStats.ts; reportRequestPrompt.ts; src/client/features/search-performance/SearchReportButton.tsx; src/serverFunctions/searchReport.ts; src/server/features/search/report/buildSearchReportHtml.ts; src/server/features/reports/services/ReportService.ts; src/types/schemas/reports.ts; src/types/schemas/report-templates.ts; src/routes/r/$reportId.ts; src/shared/report-sandbox.ts; src/server/features/audit/report/buildAuditReportHtml.ts; reportCoverSection.ts -->
+Bir rapor en çok 500.000 bayt, başlık 120 ve özet 2.500 karakterdir. Projede 10.000 rapor ve kurulum genelinde 5 GB koruma sınırı vardır. Bunlar dosya saklama korumalarıdır, SEO kapsamı veya başarı ölçüsü değildir. Denetim raporundaki tarama, hız ve isteğe bağlı Google verisinin tarihlerini belgenin kendi yöntem bölümünden kontrol edin.

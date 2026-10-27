@@ -41,14 +41,53 @@ export async function downloadReport(
   reportId: string,
   filename: string,
 ): Promise<void> {
-  const response = await fetch(`/r/${reportId}`);
+  let response: Response;
+  try {
+    response = await fetch("/r/" + encodeURIComponent(reportId), {
+      signal: AbortSignal.timeout(30000),
+    });
+  } catch {
+    throw new Error(
+      t(
+        "Rapor indirmesi bağlantı hatası veya zaman aşımı nedeniyle tamamlanamadı. Bağlantınızı kontrol edip yeniden indirin.",
+      ),
+    );
+  }
+  if (response.redirected)
+    throw new Error(
+      t(
+        "Rapor indirmesi başka bir sayfaya yönlendirildi. Uygulamayı yenileyip erişiminizi kontrol edin.",
+      ),
+    );
   if (!response.ok) {
     // Surfaced verbatim: getStandardErrorMessage returns error.message, so
     // this string is UI copy rather than a developer note.
-    throw new Error(t("Rapor indirilemedi."));
+    if (response.status === 404)
+      throw new Error(
+        t(
+          "Rapor bulunamadı veya erişiminiz yok. Listeyi yenileyip raporu yeniden seçin.",
+        ),
+      );
+    if (response.status === 401 || response.status === 403)
+      throw new Error(
+        t("Rapor erişimi doğrulanamadı. Uygulamayı yenileyip yeniden indirin."),
+      );
+    throw new Error(
+      t("Rapor sunucusu indirmeyi tamamlayamadı. Biraz sonra yeniden indirin."),
+    );
   }
 
-  const html = withDownloadCsp(await response.text());
+  let storedHtml: string;
+  try {
+    storedHtml = await response.text();
+  } catch {
+    throw new Error(
+      t(
+        "Rapor indirmesi bağlantı hatası veya zaman aşımı nedeniyle tamamlanamadı. Bağlantınızı kontrol edip yeniden indirin.",
+      ),
+    );
+  }
+  const html = withDownloadCsp(storedHtml);
   downloadBlob(new Blob([html], { type: "text/html;charset=utf-8" }), filename);
 }
 

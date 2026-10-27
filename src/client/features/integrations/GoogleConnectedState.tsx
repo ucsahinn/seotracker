@@ -1,5 +1,6 @@
+import { formatDateTime } from "@/client/lib/format";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { t } from "@/shared/i18n";
 
 export function GoogleConnectedState({
@@ -12,7 +13,13 @@ export function GoogleConnectedState({
   canManage,
   canManageAccounts,
   disabled,
+  metadata,
+  bindingDate,
+  usesServiceAccount,
 }: {
+  metadata?: React.ReactNode;
+  bindingDate?: string | null;
+  usesServiceAccount?: boolean;
   property: string;
   detail?: string | null;
   email?: string | null;
@@ -28,6 +35,7 @@ export function GoogleConnectedState({
    * picked again, and it sat one stray click away beside "change". It is
    * undoable, so a second inline click is enough -- not a typed-name modal.
    */
+  const changeButton = useRef<HTMLButtonElement>(null);
   const [confirming, setConfirming] = useState(false);
   /* Search Console's own spelling of a domain property is "sc-domain:host",
      which reads as a typo to anyone who did not pick it from a list. */
@@ -57,6 +65,32 @@ export function GoogleConnectedState({
           <p className="mt-1 break-all text-sm text-muted">{email}</p>
         ) : null}
       </div>
+      {bindingDate ? (
+        <p className="text-xs text-muted">
+          {t("Mülk seçim tarihi: {date}", {
+            date: formatDateTime(bindingDate),
+          })}
+        </p>
+      ) : null}
+      {usesServiceAccount !== undefined ? (
+        <p className="text-xs text-muted">
+          {usesServiceAccount
+            ? t("Kimlik yöntemi: hizmet hesabı")
+            : t("Kimlik yöntemi: Google OAuth")}
+        </p>
+      ) : null}
+      {metadata}
+      <p className="text-sm text-muted">
+        {t(
+          "Mülk seçimi kayıtlıdır. Veri erişimi bu ayar okumasıyla doğrulanmaz; son veri durumunu ilgili rapordan kontrol edin.",
+        )}
+      </p>
+      <a
+        href="/settings#google"
+        className="link inline-flex min-h-11 items-center text-sm"
+      >
+        {t("Kurulumun Google kimlik ayarları")}
+      </a>
       {canManage || canManageAccounts ? (
         <fieldset
           disabled={disconnecting || disabled}
@@ -65,6 +99,8 @@ export function GoogleConnectedState({
           <button
             type="button"
             className="btn btn-outline btn-sm border-base-300"
+            ref={changeButton}
+            data-google-change
             onClick={onChange}
           >
             {canManage
@@ -111,7 +147,10 @@ export function GoogleConnectedState({
               // The button that opened this just unmounted; focus lands on
               // the safe choice rather than falling back to <body>.
               autoFocus
-              onClick={() => setConfirming(false)}
+              onClick={() => {
+                setConfirming(false);
+                changeButton.current?.focus();
+              }}
             >
               {t("Vazgeç")}
             </button>

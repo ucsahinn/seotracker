@@ -1,152 +1,30 @@
 ---
 title: Assistent einrichten
-description: Claude Code, Codex oder Cursor mit der App verbinden: Adresse, Passwort, 35 Werkzeuge, 6 fertige Aufgabenvorlagen und Google-Kontingent.
+description: Agent sicher verbinden, einen neuen Werkzeugaufruf prüfen und SEO-Fähigkeiten nutzen.
 kind: nasil-yapilir
 updated: 2026-10-27
 ---
 
-Am Ende ist Ihr KI-Assistent mit der App verbunden und hat seinen ersten Befehl ausgeführt. Nach dem Verbinden können Sie sagen: „Prüfe die Website und schreibe einen Bericht.“ Der Assistent liest die Daten der Search Console, führt das Audit aus und speichert den Bericht auf dem Bildschirm **Berichte**. Diese Verbindung heißt Assistentenverbindung (MCP). Damit ruft der Assistent die Werkzeuge der App auf (zum Beispiel list_projects). Das Verbinden ist freiwillig; ohne Assistenten fehlt der App nichts.
+## Agent verbinden
 
-## Voraussetzungen
+Öffnen Sie die Agent-Einrichtung. Wählen Sie Claude Code, Codex oder Andere und kopieren Sie den Einrichtungstext. Pfeile, Pos1 und Ende ändern nur die Auswahl. Der Text enthält kein tatsächliches Token; der Agent verwendet das lokale Geheimnis. Eine Neuinstallation ist eine getrennte Option.
 
-- Die laufende App und ein Projekt mit verbundener Search Console.
-- Einer der Assistenten Claude Code, Codex, Cursor, VS Code Copilot oder Gemini CLI. Für die ersten drei liefert die App einen fertigen Einrichtungstext.
-- In der App der Bildschirm **Agent-Einrichtung**. Er steht im linken Menü in der Gruppe **Agent**.
+## Neuen Aufruf prüfen
 
-## Schritte
+Starten Sie die Verbindungsprüfung und bitten Sie den Agenten um einen seowatcher-Werkzeugaufruf. Die Seite prüft den lokalen Verlauf alle fünf Sekunden, höchstens 60 Sekunden lang. Ein alter Aufruf bestätigt keine neue Einrichtung. Ausgeblendeter Tab, Lesefehler oder Abbruch stoppen die Abfrage. Ohne neuen Aufruf prüfen Sie den MCP-Status im Client und versuchen es erneut. Das beweist keinen Verbindungsfehler.
 
-1. Öffnen Sie den Bildschirm **Agent-Einrichtung**. Das Kennzeichen oben lautet **Noch nicht verbunden** oder **Verbunden**. Ist die Verbindung hergestellt, steht daneben ein Text wie „Claude Code · letzter Aufruf vor 2 Min.“. Darunter stehen die Verbindungsadresse und eine Kopierschaltfläche: `http://127.0.0.1:3001/mcp` (bei Docker `localhost`).
-2. Suchen Sie das Passwort. Die App schützt die Verbindung mit einem Passwort gegen unberechtigte Aufrufe und zeigt es nicht auf dem Bildschirm an. Beim Windows-Paket liegt das Passwort in der Datei `mcp-token` im Datenordner. Wählen Sie im Menü der Taskleiste **Veri klasörünü aç** (Datenordner öffnen). Geben Sie bei Docker diesen Befehl ein: `docker compose exec -T seotracker cat /app/.wrangler/mcp-token` (in Git Bash setzen Sie `MSYS_NO_PATHCONV=1` davor).
-3. Folgen Sie dem Abschnitt, der zu Ihrem Assistenten passt.
+Verbunden und letzter Aufruf beschreiben vergangene Nutzung, keine dauerhafte Sitzung. Bei unbekanntem Status erneut lesen. Der Werkzeugzugriff gilt installationsweit.
 
-### Claude Code
+## Token schützen
 
-Geben Sie im Terminal (in der Eingabeaufforderung) Folgendes ein. Ersetzen Sie `<parola>` (Passwort) durch Ihr eigenes Passwort:
+Bevorzugen Sie den Einrichtungstext. Manuell gehört `Authorization: Bearer <token>` nur in das lokale Geheimnisfeld des Clients. PowerShell kopiert ohne Bildschirmausgabe:
 
-```sh
-claude mcp add --transport http --scope user seotracker http://127.0.0.1:3001/mcp --header "Authorization: Bearer <parola>"
-```
+Windows: `(Get-Content "$env:LOCALAPPDATA\seowatcher\mcp-token").Trim() | Set-Clipboard`
 
-Geben Sie dann in Claude Code `/mcp` ein und wählen Sie **Reconnect**. Die fertigen Aufgabenvorlagen rufen Sie mit einem Schrägstrich auf, etwa `/seo-audit`.
+Docker: `(docker compose exec -T seotracker cat /app/.wrangler/mcp-token).Trim() | Set-Clipboard`
 
-### Codex
+Danach in das lokale Feld einfügen und die Zwischenablage löschen. Kein Token in Chat, Terminalausgabe, Screenshots oder Quelltext. Der Tray-Menüpunkt zum Datenordner führt zur Windows-Datei.
 
-Geben Sie diesen Befehl ein:
+## Fähigkeiten und Fehler
 
-```sh
-codex mcp add seotracker --url http://127.0.0.1:3001/mcp --bearer-token-env-var SEOTRACKER_MCP_AUTH
-```
-
-Schreiben Sie dann das Passwort in die Umgebungsvariable (eine Einstellung, die sich der Computer merkt) namens `SEOTRACKER_MCP_AUTH`. Unter Windows mit PowerShell: `[Environment]::SetEnvironmentVariable('SEOTRACKER_MCP_AUTH', '<parola>', 'User')`. Die Vorlagen rufen Sie etwa mit `$seo-audit` auf.
-
-### Cursor
-
-Schreiben Sie in die Datei `.cursor/mcp.json` in Ihrem Projekt Folgendes:
-
-```json
-{
-  "mcpServers": {
-    "seotracker": {
-      "url": "http://127.0.0.1:3001/mcp",
-      "headers": { "Authorization": "Bearer ${env:SEOTRACKER_MCP_AUTH}" }
-    }
-  }
-}
-```
-
-Setzen Sie die Umgebungsvariable wie bei Codex. Diese Einstellung wurde noch nicht in einer Cursor-Installation ausprobiert. Verlangt Ihre Cursor-Version ein anderes Feld, sehen Sie in der Dokumentation von Cursor nach.
-
-### Fertiger Einrichtungstext
-
-Das ist der einfachere Weg. So erhalten Sie den Text:
-
-1. Wählen Sie auf dem Bildschirm den Agenten, den Sie nutzen, und klicken Sie dann auf **Einrichtungsbefehl kopieren**. Ist Codex gewählt, kopiert die Schaltfläche den Text für Codex.
-2. Fügen Sie den Text in Ihren Assistenten ein. Der Assistent richtet die Verbindung ein, probiert sie mit „whoami“ und „list_projects“ aus, prüft mit „whoami“, mit welcher Installation sie spricht, und lädt die Vorlagen.
-
-**Befehl für Neueinrichtung kopieren** auf der Karte **Neueinrichtung** lässt den Assistenten alles erledigen, vom Starten der App bis zur Google-Verbindung. Er kennt sowohl das Windows-Paket als auch die Docker-Installation.
-
-### Die fertigen Aufgabenvorlagen laden
-
-Der Reiter **Skills** listet sechs fertige Aufgabenvorlagen auf. Sagen Sie dem Assistenten „installiere die seotracker-Skills“. Der Einrichtungstext weiß, wohin kopiert wird. Zum Aktualisieren klicken Sie auf **Update-Befehl kopieren**.
-
-## Werkzeuge
-
-Es gibt insgesamt 35 Werkzeuge. Die Spalte „Schreibt“ markiert die, die Daten in der App verändern, die Spalte „Kontingent“ die, die Googles Tageskontingent verbrauchen. Werkzeuge, die schreiben, sollten nicht ohne Ihre Zustimmung aufgerufen werden. Gut eingerichtete Vorlagen fragen, die App fragt nicht.
-
-| Werkzeug                                     | Was es tut                                                                                                                                                                                                                                                                                                          | Schreibt | Kontingent                                     |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ---------------------------------------------- |
-| `whoami`                                     | Nennt das Konto und die Installation, mit der Sie sprechen: Version, Installationsart (Windows, Docker oder Entwicklung), Portnummer und, wenn bekannt, die neueste Version.                                                                                                                                        |          |                                                |
-| `get_diagnostics`                            | Liefert die Version, welche Installation es ist, die Installationsprüfungen, die Tabellenzahlen, die letzten 25 Audits und die Kontingentzähler.                                                                                                                                                                    |          |                                                |
-| `list_projects`                              | Listet Ihre Projekte auf. Jedes Werkzeug verlangt eine Projektnummer.                                                                                                                                                                                                                                               |          |                                                |
-| `create_project`                             | Legt ein neues Projekt an.                                                                                                                                                                                                                                                                                          | Ja       |                                                |
-| `get_project_context`                        | Liest den Bildschirm Projektinfo.                                                                                                                                                                                                                                                                                   |          |                                                |
-| `update_project_context`                     | Ändert die Projektinfo und hinterlässt eine Notiz im Recherchejournal.                                                                                                                                                                                                                                              | Ja       |                                                |
-| `get_search_summary`                         | Liefert den Bildschirm Suchleistung in einem Aufruf: das Fenster der vollständigen Tage, die eigenen Website-Summen der Search Console mit der Veränderung gegenüber dem Vorzeitraum und dem Vorjahr, den Klickanteil verborgener Suchanfragen und eine nach geschätzten Klicks sortierte Aufgabenliste. Kostenlos. |          |                                                |
-| `get_search_console_performance`             | Liefert Klicks, Impressionen, Rate und Position nach Suchanfrage, Seite, Land, Gerät oder Datum.                                                                                                                                                                                                                    |          |                                                |
-| `get_search_opportunities`                   | Erstellt aus Search Console und Analytics eine Liste von Chancen.                                                                                                                                                                                                                                                   |          |                                                |
-| `get_cannibalization`                        | Zeigt Seiten, die bei derselben Suche miteinander konkurrieren.                                                                                                                                                                                                                                                     |          |                                                |
-| `get_ranking_history`                        | Liefert das Ranking-Archiv auf Ihrem Computer; es bewahrt auch Daten auf, die älter sind als Googles 16-Monats-Grenze.                                                                                                                                                                                              |          |                                                |
-| `get_index_coverage`                         | Liefert bereits gespeicherte Index-Antworten von Google, fragt Google nicht.                                                                                                                                                                                                                                        |          |                                                |
-| `inspect_urls`                               | Fragt Google nach dem Status von Seiten, 10 Adressen pro Aufruf.                                                                                                                                                                                                                                                    | Ja       | 2.000 pro Tag, pro Property                    |
-| `get_sitemaps`                               | Zeigt den Status der Sitemap in der Search Console.                                                                                                                                                                                                                                                                 |          |                                                |
-| `run_site_audit`                             | Startet das Website-Audit.                                                                                                                                                                                                                                                                                          | Ja       | PageSpeed, wenn Geschwindigkeitsmessung an ist |
-| `get_audit_status`                           | Nennt die aktuelle Phase des Audits und kann ein hängendes Audit als fehlgeschlagen markieren.                                                                                                                                                                                                                      |          |                                                |
-| `get_audit_summary`                          | Startpunkt: Website-Score, Kategorie-Scores, priorisierte Aufgabenliste und die Sofortdaten der Website.                                                                                                                                                                                                            |          |                                                |
-| `get_audit_issues`                           | Liefert die gefundenen Probleme mit den Schritten zur Behebung.                                                                                                                                                                                                                                                     |          |                                                |
-| `get_audit_pages`                            | Listet die gecrawlten Seiten auf.                                                                                                                                                                                                                                                                                   |          |                                                |
-| `get_google_analytics_organic_overview`      | Liefert eine Zusammenfassung der Besuche aus der Suche und den vorherigen Zeitraum.                                                                                                                                                                                                                                 |          |                                                |
-| `get_google_analytics_organic_landing_pages` | Listet die Seiten auf, auf denen Besucher aus der Suche zuerst ankommen.                                                                                                                                                                                                                                            |          |                                                |
-| `get_google_analytics_page_performance`      | Liefert Aufrufe und Interaktion der Seiten.                                                                                                                                                                                                                                                                         |          |                                                |
-| `get_google_analytics_traffic_acquisition`   | Liefert die Verteilung der Besucher nach Kanal, Quelle und Kampagne.                                                                                                                                                                                                                                                |          |                                                |
-| `get_google_analytics_key_events`            | Liefert die Ereignisse, die in Analytics als Schlüsselereignisse markiert sind.                                                                                                                                                                                                                                     |          |                                                |
-| `get_google_analytics_ecommerce_performance` | Liefert die Produktverkäufe.                                                                                                                                                                                                                                                                                        |          |                                                |
-| `get_google_analytics_site_search`           | Liefert die Begriffe, die Besucher in das Suchfeld Ihrer Website eingeben.                                                                                                                                                                                                                                          |          |                                                |
-| `get_google_analytics_audience_breakdown`    | Teilt die Besucher nach Gerät, Land, neu und wiederkehrend auf.                                                                                                                                                                                                                                                     |          |                                                |
-| `get_google_analytics_measurement_health`    | Prüft die Messungseinrichtung, verbraucht kein Berichtskontingent.                                                                                                                                                                                                                                                  |          |                                                |
-| `list_saved_keywords`                        | Listet die Suchbegriffe auf, die Sie gespeichert haben.                                                                                                                                                                                                                                                             |          |                                                |
-| `save_keywords`                              | Speichert Suchbegriffe.                                                                                                                                                                                                                                                                                             | Ja       |                                                |
-| `list_reports`                               | Listet Ihre Berichte auf.                                                                                                                                                                                                                                                                                           |          |                                                |
-| `get_report`                                 | Liest einen Bericht, auf Wunsch auch seine HTML-Fassung.                                                                                                                                                                                                                                                            |          |                                                |
-| `save_report`                                | Speichert einen Bericht oder aktualisiert einen vorhandenen.                                                                                                                                                                                                                                                        | Ja       |                                                |
-| `list_report_templates`                      | Liest die Berichtsvorlagen.                                                                                                                                                                                                                                                                                         |          |                                                |
-| `save_report_template`                       | Speichert eine Berichtsvorlage.                                                                                                                                                                                                                                                                                     | Ja       |                                                |
-
-Die Analytics-Werkzeuge verbrauchen vom Berichtskontingent von Google Analytics (bei einer Standard-Property 200.000 Einheiten pro Tag). Dieses Kontingent sehen Sie in der App unter **Einstellungen → Limits**.
-
-## Fertige Aufgabenvorlagen (Skills)
-
-| Vorlage             | Wann sie verwendet wird                                                                                                                                  | Was sie erzeugt                                           |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
-| `seo-coach`         | Wenn Sie fragen „Was soll ich tun?“. Sie erklärt den Weg und schlägt den nächsten Schritt vor.                                                           | Gespräch, bei Bedarf eine Coaching-Notiz                  |
-| `seo-project-setup` | In einem neuen Projekt. Sie fragt nach Ihrem Geschäft, Ihrem Ziel, Ihren Wettbewerbern, Ihren wichtigen Seiten und füllt den Bildschirm Projektinfo aus. | Ausgefüllte Projektinfo, gespeicherte Suchbegriffe        |
-| `seo-audit`         | Wenn Sie sagen „Prüfe die Website“. Sie führt das Audit aus, verbindet es mit der Search Console und wählt „die eine Aufgabe für diese Woche“.           | Einseitiger Audit-Bericht                                 |
-| `seo-triage`        | Wenn die Besuche sinken. Sie prüft, ob der Rückgang echt ist, wo und wann er stattfindet.                                                                | Bericht zur Untersuchung des Rückgangs                    |
-| `seo-check-in`      | Einmal im Monat. Sie vergleicht diesen Zeitraum mit dem vorherigen.                                                                                      | Monatlicher Kontrollbericht; jeden Monat kommt einer dazu |
-| `seo-report`        | Wenn die anderen Vorlagen fertig sind. Sie schreibt einen HTML-Bericht in einer einzigen Datei und speichert ihn.                                        | Bericht auf dem Bildschirm **Berichte**                   |
-
-## Kontrolle
-
-- Sagen Sie dem Assistenten „Rufe das Werkzeug whoami auf“. Es sollte das Konto, die Version, die Installationsart und die Portnummer nennen. Ist eines davon nicht das, was Sie erwarten, oder ist die Version älter als die neueste, sollte der Assistent Sie informieren, bevor er Daten verwendet. Unter derselben Adresse antwortet womöglich eine alte Docker-Kopie, und der Assistent würde deren alte Daten mit voller Sicherheit lesen. Belegt ein anderes Programm 3001, weicht das Windows-Paket auf eine andere Nummer aus; whoami nennt auch das.
-- Das Kennzeichen auf dem Bildschirm **Agent-Einrichtung** sollte **Verbunden** zeigen, und die Zeit des letzten Aufrufs sollte sichtbar sein.
-- „list_projects“ sollte Ihre Projekte auflisten.
-
-## Häufige Fragen
-
-**Sendet der Assistent meine Daten nach außen?** Die Daten gehen an das Modell, das der Assistent verwendet; dafür gelten die Datenschutzbedingungen des Assistenten. Die App selbst antwortet nur auf Verbindungen von Ihrem Computer.
-
-**Funktioniert es ohne Passwort?** Bei Docker funktioniert es mit `MCP_TOKEN=off`. Beim Windows-Paket ist das Passwort immer aktiv. Bei einer Verbindung ohne Passwort kann jedes Programm auf demselben Computer die 35 Werkzeuge aufrufen.
-
-**Habe ich mich mit einer alten Kopie verbunden?** `whoami` und `get_diagnostics` sagen, mit welcher Installation gesprochen wird: Version, Installationsart, Portnummer und unter Windows der Grund, falls der Port ausgewichen ist. Ist die Version älter als die neueste oder ist der Port ausgewichen, sollte der Assistent Sie informieren. Stoppen Sie die alte Docker-Kopie und starten Sie die App neu.
-
-**Kann der Assistent mein Google-Kontingent aufbrauchen?** `inspect_urls` und `run_site_audit` verbrauchen es. Die Vorlagen fragen pro Aufgabe höchstens 20 Adressen ab. Sie starten ein Audit nur, wenn Sie es wollen. Nennen Sie diese Grenze auch Ihrem Assistenten.
-
-**Welcher Assistent ist besser?** Das macht keinen Unterschied, die Werkzeuge sind dieselben. Der Einrichtungstext ist für Claude Code, Codex und Cursor fertig. Andere Assistenten funktionieren mit derselben Adresse und demselben Passwort, wenn sie MCP unterstützen.
-
-## Wenn etwas nicht klappt
-
-- **Der Assistent bekommt den Fehler 401.** Das Passwort ist falsch oder wird nicht gesendet. Kopieren Sie den Wert aus der Datei noch einmal. Am Ende darf kein Zeilenumbruch stehen bleiben.
-- **Die Verbindung wird abgelehnt.** Wahrscheinlich ist die App geschlossen. Prüfen Sie das Symbol in der Taskleiste oder die Ausgabe von `docker compose ps`.
-- **Der Assistent meldet „Werkzeug nicht gefunden“.** Laden Sie die Verbindung neu. Geben Sie in Claude Code `/mcp` ein und wählen Sie **Reconnect**.
-- **Die Vorlagen erscheinen nicht.** Fügen Sie den Einrichtungstext erneut ein. Die Vorlagen werden in den eigenen Ordner des Assistenten kopiert (bei Codex `$HOME/.agents/skills`).
-
-<!-- Kaynaklar: src/routes/_app/ai.tsx; src/client/features/ai-mcp/agentInstallPrompt.md; agentSetupPrompt.ts; src/server/mcp/server.ts (35 araç); src/server/mcp/token-auth.ts; transport.ts; .agents/skills/setup-seotracker/SKILL.md; .agents/skills/*/SKILL.md; packaging/windows/launcher/SeoWatcher.cs; docker-entrypoint.sh -->
+Der Fähigkeiten-Tab zeigt SEO-Abläufe. Der Einrichtungstext installiert sie; der Aktualisierungstext erneuert sie. Claude Code: /seo-audit; Codex: $seo-audit. Bei 401 den lokalen Header prüfen, bei Verbindungsablehnung App und Endpunkt prüfen. Danach MCP-Status aktualisieren und einen neuen Aufruf nachweisen.

@@ -8,6 +8,7 @@ import { t } from "@/shared/i18n";
 
 export function SavedKeywordsBulkActionBar({
   selectedCount,
+  exportUnavailable = false,
   onCopy,
   onOpenTags,
   onExportCsv,
@@ -17,6 +18,7 @@ export function SavedKeywordsBulkActionBar({
   exportingSelection,
 }: {
   selectedCount: number;
+  exportUnavailable?: boolean;
   onCopy: () => void;
   onOpenTags: () => void;
   onExportCsv: () => void;
@@ -42,26 +44,35 @@ export function SavedKeywordsBulkActionBar({
               {t("Etiketle")}
             </TableBulkActionButton>
 
-            <TableBulkExportMenu
-              busy={exportBusy}
-              actions={[
-                {
-                  label: t("Kelimeleri kopyala"),
-                  icon: <Copy className="size-4" />,
-                  onClick: onCopy,
-                },
-                {
-                  label: t("E-Tablolar'a aktar"),
-                  icon: <Sheet className="size-4" />,
-                  onClick: onExportSheets,
-                },
-                {
-                  label: t("CSV indir"),
-                  icon: <FileDown className="size-4" />,
-                  onClick: onExportCsv,
-                },
-              ]}
-            />
+            {exportUnavailable ? (
+              <TableBulkActionButton
+                icon={<Copy className="size-3.5" />}
+                onClick={onCopy}
+              >
+                {t("Kelimeleri kopyala")}
+              </TableBulkActionButton>
+            ) : (
+              <TableBulkExportMenu
+                busy={exportBusy}
+                actions={[
+                  {
+                    label: t("Kelimeleri kopyala"),
+                    icon: <Copy className="size-4" />,
+                    onClick: onCopy,
+                  },
+                  {
+                    label: t("E-Tablolar'a aktar"),
+                    icon: <Sheet className="size-4" />,
+                    onClick: onExportSheets,
+                  },
+                  {
+                    label: t("CSV indir"),
+                    icon: <FileDown className="size-4" />,
+                    onClick: onExportCsv,
+                  },
+                ]}
+              />
+            )}
           </div>
 
           <div className="flex items-center border-l border-base-content/10 px-1.5">

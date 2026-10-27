@@ -2,6 +2,8 @@ import { ChevronRight } from "lucide-react";
 import * as React from "react";
 import { formatDate } from "@/client/lib/format";
 import { CopyButton } from "@/client/components/CopyButton";
+import { EmptyState } from "@/client/components/EmptyState";
+import { guideUrl } from "@/client/features/support/links";
 import { getLocale, t } from "@/shared/i18n";
 import {
   getReleaseCategories,
@@ -19,17 +21,20 @@ import {
  *
  * An operator who updates a self-hosted tool has no release page in front of
  * them — they ran a command and the container came back a version newer.
- * This is the same text the repository keeps, read straight out of
- * `CHANGELOG.md`, so it cannot fall behind what was actually shipped.
+ * Localized notes are bundled with the app, so reading them needs no network.
  */
 export function WhatsNewSection({ version }: { version: string }) {
   const locale = getLocale();
   const entries = CHANGELOG_ENTRIES_BY_LOCALE[locale];
-  if (entries.length === 0) return null;
+  const hasRunning = entries.some((entry) => entry.version === version);
 
   return (
     <section id="surum-notlari" className="scroll-mt-16 space-y-3">
       <div className="space-y-1">
+        <p className="flex flex-wrap items-baseline gap-2 text-sm">
+          <span className="text-muted">{t("Kurulu sürüm")}</span>
+          <span className="font-semibold">v{version}</span>
+        </p>
         <p className="text-sm text-muted">
           {t(
             "Her sürümde nelerin eklendiğini ve düzeltildiğini burada bulabilirsiniz.",
@@ -37,15 +42,46 @@ export function WhatsNewSection({ version }: { version: string }) {
         </p>
       </div>
 
-      <div className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
-        {entries.map((entry) => (
-          <ReleaseNotes
-            key={entry.version}
-            entry={entry}
-            isRunning={entry.version === version}
-          />
-        ))}
-      </div>
+      {entries.length === 0 ? (
+        <EmptyState
+          title={t("Bu pakette sürüm notu bulunmuyor.")}
+          description={t(
+            "Notlar uygulama paketiyle birlikte gelir. Yayınlanan notları kılavuzdan kontrol edebilirsiniz; bu durum kurulum kontrolü değildir.",
+          )}
+          action={
+            <a
+              href={guideUrl("surum-notlari")}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="btn btn-sm"
+            >
+              {t("Kılavuzu aç")}
+              <span className="sr-only"> {t("(yeni sekmede açılır)")}</span>
+            </a>
+          }
+        />
+      ) : !hasRunning ? (
+        <p className="text-sm text-muted" role="status">
+          {t(
+            "Bu kurulu sürüm için sürüm notu bulunmuyor. Aşağıda bu paketle gelen son notlar var.",
+          )}
+        </p>
+      ) : null}
+
+      {entries.length > 0 ? (
+        <div className="divide-y divide-base-300 overflow-hidden rounded-box border border-[var(--hairline)]">
+          {entries.map((entry, index) => (
+            <ReleaseNotes
+              key={entry.version}
+              entry={entry}
+              isRunning={entry.version === version}
+              initiallyOpen={
+                entry.version === version || (!hasRunning && index === 0)
+              }
+            />
+          ))}
+        </div>
+      ) : null}
     </section>
   );
 }
@@ -55,7 +91,7 @@ const INLINE = /(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]*\))/g;
 /**
  * The inline markdown these notes use -- bold, code, links -- as elements.
  * Built as React nodes rather than HTML, so a note can never inject markup;
- * a link keeps its words and drops its address, as the plain-text pass did.
+ * links accept web destinations and local paths; other schemes stay text.
  */
 function InlineText({ text }: { text: string }) {
   return (
@@ -75,8 +111,32 @@ function InlineText({ text }: { text: string }) {
             </code>
           );
         }
-        const link = /^\[([^\]]+)\]\([^)]*\)$/.exec(part);
-        return link ? link[1] : part;
+        const link = /^\[([^\]]+)\]\(([^)]*)\)$/.exec(part);
+        if (!link) return part;
+        const href = link[2].trim();
+        const safe =
+          /^(https?:\/\/|\/(?!\/)|#)/i.test(href) &&
+          !/[\s\\]/.test(href) &&
+          !Array.from(href).some((char) => {
+            const code = char.charCodeAt(0);
+            return code <= 31 || code === 127;
+          });
+        if (!safe) return link[1];
+        const external = /^https?:\/\//i.test(href);
+        return (
+          <a
+            key={index}
+            href={href}
+            className="link link-primary break-words"
+            target={external ? "_blank" : undefined}
+            rel={external ? "noreferrer noopener" : undefined}
+          >
+            {link[1]}
+            {external ? (
+              <span className="sr-only"> {t("(yeni sekmede açılır)")}</span>
+            ) : null}
+          </a>
+        );
       })}
     </>
   );
@@ -85,12 +145,14 @@ function InlineText({ text }: { text: string }) {
 function ReleaseNotes({
   entry,
   isRunning,
+  initiallyOpen,
 }: {
   entry: ChangelogEntry;
   isRunning: boolean;
+  initiallyOpen: boolean;
 }) {
-  // The newest opens; the rest are a heading until asked for.
-  const [open, setOpen] = React.useState(isRunning);
+  // Open the installed release, or the newest note if that release is absent.
+  const [open, setOpen] = React.useState(initiallyOpen);
 
   return (
     <div>
@@ -105,7 +167,7 @@ function ReleaseNotes({
           className={`size-4 shrink-0 text-muted transition-transform ${open ? "rotate-90" : ""}`}
           aria-hidden
         />
-        <span className="font-medium tabular-nums">v{entry.version} Alpha</span>
+        <span className="font-medium tabular-nums">v{entry.version}</span>
         {getReleaseCategories(entry).map((category) => (
           <span
             key={category}
@@ -127,7 +189,7 @@ function ReleaseNotes({
       {open ? (
         <div
           id={`release-${entry.version}`}
-          className="space-y-4 px-4 pb-4 pl-11"
+          className="space-y-4 px-4 pb-4 sm:pl-11"
         >
           {entry.intro ? (
             <p className="max-w-prose text-[15px] leading-relaxed text-base-content">
@@ -140,10 +202,6 @@ function ReleaseNotes({
             ) : (
               <div key={section.heading} className="space-y-2">
                 <h3 className="flex items-center gap-2 text-sm font-semibold">
-                  <span
-                    className="h-3.5 w-1 rounded-full bg-accent"
-                    aria-hidden
-                  />
                   {section.heading}
                 </h3>
                 <ul className="list-disc space-y-2 pl-5 text-muted marker:text-subtle">
@@ -200,19 +258,15 @@ const CATEGORY_LABELS: Record<ReleaseCategory, string> = {
 };
 
 /**
- * The summary of a release as a row of small cards: the bold lead of each
- * bullet is the card's title, the sentence after it the card's text.
+ * The summary of a release as a list: each bold lead precedes its explanation.
  */
 function Highlights({ items }: { items: ChangelogItem[] }) {
   return (
-    <ul className="grid gap-2 sm:grid-cols-2">
+    <ul className="divide-y divide-base-300">
       {items.map((item, index) => {
         const lead = /^\*\*([^*]+)\*\*\s*(.*)$/.exec(item.text);
         return (
-          <li
-            key={index}
-            className="rounded-field border border-[var(--hairline)] bg-base-200 px-3.5 py-3"
-          >
+          <li key={index} className="py-3 first:pt-0 last:pb-0">
             <p className="text-sm font-semibold text-base-content">
               {lead ? lead[1] : <InlineText text={item.text} />}
             </p>

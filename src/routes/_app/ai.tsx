@@ -1,11 +1,11 @@
+import { ManualAgentConnection } from "@/client/features/ai-mcp/ManualAgentConnection";
+import { useAgentVerification } from "@/client/features/ai-mcp/useAgentVerification";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { StatusPill } from "@/client/components/StatusPill";
 import { TabPanel, Tabs } from "@/client/components/Tabs";
-import { useQuery } from "@tanstack/react-query";
 import { formatDateTime, formatRelativeTime } from "@/client/lib/format";
-import { getAgentConnection } from "@/serverFunctions/agentConnection";
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
 import { ShieldAlert } from "lucide-react";
 import { getAuthMode } from "@/lib/auth-mode";
 import { captureClientEvent } from "@/client/lib/observability";
@@ -66,51 +66,16 @@ function AiPage() {
    * HTTP with no session, so the only honest claim is that an agent *did*
    * reach us, and when. "Bağlandı", never "Bağlı".
    */
-  const connection = useQuery({
-    queryKey: ["agentConnection"],
-    queryFn: () => getAgentConnection(),
-    /*
-     * The global default is a 5-minute staleTime, and `refetchOnWindowFocus`
-     * only fires on a stale query -- which would have made this pill inert
-     * during the exact minute it exists for: copy the prompt, paste it into
-     * an agent, come back.
-     */
-    staleTime: 0,
-    /*
-     * And while it is still waiting, poll, so the operator who kept this tab
-     * open watches it flip rather than reaching for reload. It stops the
-     * moment it has an answer -- and on an error, or a failing endpoint would
-     * be polled every five seconds for as long as the tab is open. TanStack
-     * pauses it on a hidden tab either way.
-     */
-    refetchInterval: (query) =>
-      query.state.status === "error" || query.state.data?.lastCallAt
-        ? false
-        : 5_000,
-  });
-  const lastCallAt = connection.data?.lastCallAt ?? null;
-  /*
-   * Green forever would be a lie of a different kind. Recency is the only
-   * thing this page actually knows, and spending it on a binary ever/never
-   * puts a success pill beside "8 ay önce", which reads as healthy to the one
-   * operator whose agent has been broken since spring. Thirty days is a
-   * judgement, not a measurement: wider than this tool's own weekly cadence,
-   * narrow enough that a dead install stops claiming to be alive.
-   */
-  const isRecent =
-    lastCallAt !== null &&
-    Date.now() - new Date(lastCallAt).getTime() < 30 * 24 * 60 * 60 * 1000;
-  /*
-   * A failed read is not a verdict of "not connected". Several screens in
-   * this app once rendered a 500 as an empty state, which is what
-   * QueryErrorState was written to stop; the same mistake in a header slot
-   * would send an operator whose agent works fine back through setup.
-   */
-  const statusUnknown = connection.isError || connection.data === undefined;
-  // No agent has called in yet (or the read failed, where the first-time
-  // path is the safer guess): the from-scratch card leads.
-  const leadWithInstall = lastCallAt === null;
-
+  const {
+    connection,
+    lastCallAt,
+    isRecent,
+    statusUnknown,
+    verification,
+    verificationOutcome,
+    startVerification,
+    cancelVerification,
+  } = useAgentVerification();
   return (
     <PageShell width="reading">
       {/* No wrapper div: `PageShell` is `flex flex-col gap-6`, and wrapping
@@ -169,6 +134,56 @@ function AiPage() {
         }
       />
 
+      <p className="text-sm text-muted">
+        {t(
+          "Ajan araçları bu kurulumdaki projelere erişir. Son çağrı geçmiş kullanım kaydıdır; sürekli çevrimiçi bağlantı anlamına gelmez.",
+        )}
+      </p>
+      {statusUnknown && !connection.isPending ? (
+        <button
+          type="button"
+          className="btn min-h-11"
+          onClick={() => void connection.refetch()}
+        >
+          {t("Durumu yeniden oku")}
+        </button>
+      ) : null}
+      <div className="flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          className="btn min-h-11"
+          disabled={statusUnknown || verificationOutcome === "waiting"}
+          onClick={startVerification}
+        >
+          {t("Bağlantıyı doğrula")}
+        </button>
+        {verification ? (
+          <button
+            type="button"
+            className="btn btn-ghost min-h-11"
+            onClick={cancelVerification}
+          >
+            {t("Vazgeç")}
+          </button>
+        ) : null}
+      </div>
+      {verificationOutcome ? (
+        <p role="status" className="text-sm text-muted">
+          {connection.isError
+            ? t(
+                "Durum okunamadı. Yeniden deneyin; bağlantının başarısız olduğu sonucuna varılamaz.",
+              )
+            : verificationOutcome === "verified"
+              ? t("Yeni araç çağrısı doğrulandı.")
+              : verificationOutcome === "timeout"
+                ? t(
+                    "Yeni araç çağrısı görülmedi. Ajanınızın MCP durumunu kontrol edip bir araç çağrısı yapın, sonra yeniden doğrulayın.",
+                  )
+                : t(
+                    "Yeni araç çağrısı bekleniyor. Ajanınızdan seowatcher araçlarını kullanmasını isteyin.",
+                  )}
+        </p>
+      ) : null}
       <Tabs
         group="ai"
         className="w-fit"
@@ -211,27 +226,17 @@ function AiPage() {
             <div className="enter mt-6 space-y-5">
               {/* DOM order, not CSS `order`: keyboard and screen-reader users
                 meet the cards in the same sequence as everyone else. */}
-              {leadWithInstall ? (
-                <>
-                  <InstallCard lead />
-                  <ConnectAgentCard
-                    lead={false}
-                    connection={connection.data}
-                    connected={false}
-                    origin={origin}
-                  />
-                </>
-              ) : (
-                <>
-                  <ConnectAgentCard
-                    lead
-                    connection={connection.data}
-                    connected={lastCallAt !== null}
-                    origin={origin}
-                  />
-                  <InstallCard lead={false} />
-                </>
-              )}
+
+              <>
+                <ConnectAgentCard
+                  lead
+                  onVerify={startVerification}
+                  connection={connection.isError ? undefined : connection.data}
+                  connected={lastCallAt !== null}
+                  origin={origin}
+                />
+                <InstallCard lead={false} />
+              </>
 
               <section className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-box border border-base-300 bg-base-100 p-4">
                 <div className="min-w-0 flex-1 basis-72">
@@ -265,101 +270,10 @@ function AiPage() {
             </div>
           ) : null}
 
-          <details className="mt-8 rounded-box border border-base-300 bg-base-100 text-sm">
-            <summary className="cursor-pointer select-none px-4 py-3 font-medium">
-              {t("Elle bağlamak istiyorsanız")}
-            </summary>
-            <div className="space-y-4 border-t border-base-300 px-4 py-4 text-muted">
-              <div className="space-y-1.5">
-                <p>{t("Bu kurulumun MCP adresi:")}</p>
-                <div className="flex items-center gap-2">
-                  <CodeLine>{mcpUrl}</CodeLine>
-                  <CopyButton
-                    value={mcpUrl}
-                    successMessage={t("MCP adresi kopyalandı")}
-                    onCopy={() => captureClientEvent("mcp:setup_url_copy")}
-                  />
-                </div>
-              </div>
-              {connection.data === undefined ? null : connection.data
-                  .tokenConfigured ? (
-                <div className="space-y-3">
-                  <p>
-                    {fillParts(
-                      t(
-                        "Bu adres {token} ile, yani bir parola (token) ile korunuyor. Aracınıza şu başlığı ekletin:",
-                      ),
-                      { token: <code>MCP_TOKEN</code> },
-                    )}
-                  </p>
-                  <CodeLine>Authorization: Bearer &lt;token&gt;</CodeLine>
-                  {connection.data.installKind === "windows" ? (
-                    <>
-                      <p>
-                        {fillParts(
-                          t(
-                            "Windows paketinde parola bir dosyadır (görev çubuğu menüsünde {menu}):",
-                          ),
-                          { menu: <strong>{t("Veri klasörünü aç")}</strong> },
-                        )}
-                      </p>
-                      <CodeLine>%LOCALAPPDATA%\seowatcher\mcp-token</CodeLine>
-                      <p>
-                        {t(
-                          "Panoya kopyalamak için PowerShell (değer ekrana yazılmaz):",
-                        )}
-                      </p>
-                      <CodeLine>
-                        (Get-Content
-                        &quot;$env:LOCALAPPDATA\seowatcher\mcp-token&quot;).Trim()
-                        | Set-Clipboard
-                      </CodeLine>
-                      <p>
-                        {t(
-                          "Değeri sohbete ya da ekrana yazmayın. Yapıştırdıktan sonra panoyu temizleyin (Win+V, Tümünü temizle).",
-                        )}
-                      </p>
-                    </>
-                  ) : (
-                    <>
-                      {/* Komutla, ekranda değil: parolayı buraya basmak onu
-                        tarayıcı geçmişine, ekran görüntülerine ve bu sayfayı
-                        okuyan bir ajanın dökümüne düşürür. */}
-                      <p>
-                        {t(
-                          "Kendiniz belirlemediyseniz uygulama ilk açılışta bir parola üretir. Okumak için (PowerShell ve cmd):",
-                        )}
-                      </p>
-                      <CodeLine>
-                        docker compose exec -T seotracker cat
-                        /app/.wrangler/mcp-token
-                      </CodeLine>
-                      <p>
-                        {fillParts(
-                          t(
-                            "Windows'ta Git Bash için komutun başına {prefix} ekleyin, yoksa parola boş çıkar (PowerShell'de bu önek hata verir).",
-                          ),
-                          { prefix: <code>MSYS_NO_PATHCONV=1</code> },
-                        )}
-                      </p>
-                    </>
-                  )}
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  <p>
-                    {fillParts(
-                      t(
-                        "Bu adres parola istemez. Bilgisayarınızdaki başka bir programın araçları çalıştırmasını önlemek için {token} adıyla bir parola ayarlayın ve aracınıza şu başlığı ekletin:",
-                      ),
-                      { token: <code>MCP_TOKEN</code> },
-                    )}
-                  </p>
-                  <CodeLine>Authorization: Bearer …</CodeLine>
-                </div>
-              )}
-            </div>
-          </details>
+          <ManualAgentConnection
+            mcpUrl={mcpUrl}
+            connection={connection.isError ? undefined : connection.data}
+          />
         </TabPanel>
       ) : (
         <TabPanel group="ai" value="skills" className="mt-6">
@@ -392,14 +306,5 @@ function AiPage() {
         </TabPanel>
       )}
     </PageShell>
-  );
-}
-
-/** A command or header the operator copies by hand: mono, wraps, never clipped. */
-function CodeLine({ children }: { children: ReactNode }) {
-  return (
-    <code className="block min-w-0 flex-1 whitespace-pre-wrap break-all rounded-field border border-base-300 bg-base-200 px-3 py-2 font-mono text-xs text-base-content">
-      {children}
-    </code>
   );
 }

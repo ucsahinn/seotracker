@@ -772,4 +772,33 @@ export const enAnalytics: Catalog = {
     "Diagnostic coverage: {shown} / {total} rows.",
   "Etkinlik durumu bilinmiyor; rapor sınırlı veya eksik. Dönemi ve ölçüm ayarlarını kontrol edin.":
     "Activity is unknown because the report is limited or incomplete. Check the period and measurement settings.",
+  // Translation pass for project, report, saved keyword, settings and help updates.
+  "Google Analytics mülkü seçildi": "Google Analytics property selected",
+  "Mülk seçim tarihi: {date}": "Property selected on: {date}",
+  "Kimlik yöntemi: hizmet hesabı": "Credential method: service account",
+  "Kimlik yöntemi: Google OAuth": "Credential method: Google OAuth",
+  "Saat dilimi: {timezone} · Para birimi: {currency}":
+    "Time zone: {timezone} · Currency: {currency}",
+  "Search Console mülkü seçildi": "Search Console property selected",
+  "Bağlantı ayarları yenilenemedi. Son kayıt gösteriliyor; erişim durumu bilinmiyor.":
+    "Could not refresh connection settings. Showing the last saved record; access status is unknown.",
+  "Google izni geçersiz veya süresi dolmuş. İlgili Google hesabını yeniden bağlayın.":
+    "Google authorization is invalid or has expired. Reconnect the relevant Google account.",
+  "Google bu mülke erişimi reddetti. Seçilen hesabın mülk izinlerini kontrol edin.":
+    "Google denied access to this property. Check the selected account's property permissions.",
+  "Google API etkin değil. Google Cloud projesinde ilgili API'yi etkinleştirip yeniden deneyin.":
+    "The Google API is not enabled. Enable the relevant API in your Google Cloud project and try again.",
+  "Google istek sınırına ulaşıldı. Bir süre bekleyin ve Google Cloud kota ekranını kontrol edin.":
+    "Google's request limit has been reached. Wait a while and check the Google Cloud quota page.",
+  "Google zamanında yanıt vermedi. Bağlantıyı kontrol edip yeniden deneyin; mevcut mülk seçimi korunur.":
+    "Google did not respond in time. Check your connection and try again; your current property selection is preserved.",
+  "Google bağlantı yanıtı okunamadı; erişiminizin olmadığı sonucu çıkarılamaz. Yeniden deneyin. Sürerse Yardım ekranından tanılama paketini alıp sorunu bildirin.":
+    "Could not read the Google connection response; this does not establish that you lack access. Try again. If it persists, download a diagnostics package from Help and report the issue.",
+  "Mülk seçimi kayıtlıdır. Veri erişimi bu ayar okumasıyla doğrulanmaz; son veri durumunu ilgili rapordan kontrol edin.":
+    "Your property selection is saved. Reading these settings does not verify data access; check the latest data status in the relevant report.",
+  "Kurulumun Google kimlik ayarları":
+    "Google credential settings for this installation",
+  "Google mülk listesi okunamadı. Bu durum erişiminiz olmadığı anlamına gelmez. Son liste korunur; yeniden deneyin veya Yardım tanılamasını kontrol edin.":
+    "Could not read the Google property list. This does not mean you lack access. The last list is preserved; try again or check diagnostics in Help.",
+  "Mülk seçili": "Property selected",
 };

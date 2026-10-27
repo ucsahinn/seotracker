@@ -1,5 +1,9 @@
-import { describe, expect, it } from "vitest";
-import { reportFilename, withDownloadCsp } from "./downloadReport";
+import { describe, expect, it, vi, afterEach } from "vitest";
+import {
+  downloadReport,
+  reportFilename,
+  withDownloadCsp,
+} from "./downloadReport";
 
 describe("withDownloadCsp", () => {
   const prefix = `<!doctype html><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none';`;
@@ -86,5 +90,36 @@ describe("reportFilename", () => {
   it("never produces a nameless file", () => {
     expect(reportFilename("///", date)).toBe("rapor-2026-09-28.html");
     expect(reportFilename("   ", date)).toBe("rapor-2026-09-28.html");
+  });
+});
+
+afterEach(() => vi.unstubAllGlobals());
+describe("download recovery", () => {
+  it.each([
+    [404, "Rapor bulunamadı"],
+    [401, "erişimi doğrulanamadı"],
+    [500, "sunucusu indirmeyi"],
+  ])(
+    "maps HTTP %s to a safe action without reading the response body",
+    async (status, copy) => {
+      const body = vi.fn();
+      vi.stubGlobal(
+        "fetch",
+        vi.fn().mockResolvedValue({ ok: false, status, text: body }),
+      );
+      await expect(downloadReport("id", "report.html")).rejects.toThrow(
+        String(copy),
+      );
+      expect(body).not.toHaveBeenCalled();
+    },
+  );
+  it("offers connection recovery on network failure", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockRejectedValue(new TypeError("private network detail")),
+    );
+    await expect(downloadReport("id", "report.html")).rejects.toThrow(
+      "Bağlantınızı kontrol edip yeniden indirin",
+    );
   });
 });

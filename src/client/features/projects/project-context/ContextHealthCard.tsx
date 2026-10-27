@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { AlertCircle, CheckCircle2, Circle, Loader2 } from "lucide-react";
-import { ProgressBar } from "@/client/components/ProgressBar";
+import { setupVerdict, type SetupSignals } from "@/shared/projectSetup";
+import { formatCount } from "@/shared/format";
 import { projectSetupOptions } from "@/client/features/projects/projectSetupQuery";
 import {
   buildContextHealth,
-  healthProgress,
   type HealthItem,
   type HealthState,
 } from "./contextHealth";
@@ -17,7 +17,7 @@ function stateOf(
   value: boolean | null | undefined,
 ): HealthState {
   if (query.isPending) return "loading";
-  if (query.isError || value === null || value === undefined) return "error";
+  if (value === null || value === undefined) return "error";
   return value ? "done" : "todo";
 }
 
@@ -39,6 +39,7 @@ export function ContextHealthCard({
 
   const items = buildContextHealth({
     missingSections: context.missingSections,
+    projectInfo: stateOf(setup, setup.data?.projectInfo),
     competitorCount: context.competitors.length,
     keyPageCount: context.keyPages.length,
     searchConsole: stateOf(setup, setup.data?.searchConsole),
@@ -47,7 +48,17 @@ export function ContextHealthCard({
     audit: stateOf(setup, setup.data?.audit),
     agent: stateOf(setup, setup.data?.agent),
   });
-  const { done, total } = healthProgress(items);
+  const signals: SetupSignals = setup.data ?? {
+    searchConsole: null,
+    analytics: null,
+    audit: null,
+    projectInfo: null,
+    pageSpeed: null,
+    agent: null,
+  };
+  const verdict = setupVerdict(signals);
+  const mixed =
+    setup.data && setup.data.missingSections !== context.missingSections.length;
   const retry = () => void setup.refetch();
 
   return (
@@ -60,20 +71,31 @@ export function ContextHealthCard({
       </h2>
       <p className="mt-0.5 text-xs text-muted">
         {t(
-          "Ajanların ve uygulamanın düzgün çalışması için gerekenler. Eksik satırın yanındaki düğme sizi düzeltebileceğiniz yere götürür.",
+          "Kayıtlı bağlantılar ve proje notları. Bu liste bir SEO başarı puanı veya canlı bağlantı testi değildir.",
         )}
       </p>
-      <div className="mt-3">
-        {/* The one progress indicator on the page. No state word: "Uyarı" next
-            to a count of what is left to do is not a warning about anything. */}
-        <ProgressBar
-          label={t("{done} / {total} tamam", { done, total })}
-          value={done}
-          max={total}
-          state={done === total ? "done" : "warning"}
-          showState={false}
-        />
-      </div>
+      <p className="mt-3 text-sm" role="status">
+        {setup.isPending || mixed
+          ? t(
+              "Kurulum ve proje notları farklı anlarda okundu. Tutarlı durum için bilgiyi yenileyin.",
+            )
+          : t(
+              "{done}/{total} kayıtlı · {missing} eksik · {unknown} okunamadı",
+              {
+                done: formatCount(verdict.done),
+                total: formatCount(verdict.total),
+                missing: formatCount(verdict.missing.length),
+                unknown: formatCount(verdict.unknown.length),
+              },
+            )}
+      </p>
+      {setup.isError && setup.data ? (
+        <p role="status" className="text-xs text-muted">
+          {t(
+            "Kurulum yenilenemedi; son alınan durum gösteriliyor. Yeniden deneyin.",
+          )}
+        </p>
+      ) : null}
       <ul className="mt-3 divide-y divide-base-300">
         {items.map((item) => (
           <HealthRow
@@ -145,7 +167,7 @@ function HealthRow({
       {item.state === "error" && onRetry ? (
         <button
           type="button"
-          className="btn btn-ghost btn-xs"
+          className="btn btn-ghost btn-xs min-h-11 min-w-11"
           onClick={onRetry}
         >
           {t("Yeniden dene")}
@@ -164,7 +186,7 @@ function HealthAction({
   item: HealthItem;
   projectId: string;
 }) {
-  const className = `btn btn-xs ${item.state === "done" ? "btn-ghost" : ""}`;
+  const className = `btn btn-xs min-h-11 min-w-11 ${item.state === "done" ? "btn-ghost" : ""}`;
   const { target } = item;
   if (target.kind === "anchor") {
     return (
@@ -173,7 +195,13 @@ function HealthAction({
         className={className}
         onClick={() => {
           const node = document.getElementById(target.id);
-          node?.scrollIntoView({ block: "center", behavior: "smooth" });
+          node?.scrollIntoView({
+            block: "center",
+            behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
+              .matches
+              ? "auto"
+              : "smooth",
+          });
           node?.focus({ preventScroll: true });
         }}
       >

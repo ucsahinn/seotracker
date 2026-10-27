@@ -1,52 +1,20 @@
 ---
 title: PageSpeed anahtarı
-description: Sayfa hızını ölçebilmek için ücretsiz bir Google PageSpeed anahtarı alıp uygulamaya girersiniz. Anahtarsız ölçüm 50 sayfada kalır.
+description: PageSpeed anahtarını kaydedin; test isteğinin ve denetim sayacının kapsamını öğrenin.
 kind: nasil-yapilir
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
-Bu sayfayı bitirince ücretsiz PageSpeed anahtarınızı almış, uygulamaya girmiş ve denemiş olursunuz. Beş dakika sürer. Site denetimindeki "Sayfa hızını da ölç" seçeneği her sayfayı Google'ın PageSpeed Insights servisiyle telefonda ve bilgisayarda ölçer. Google bu servisi anahtarsız da verir ama izin verdiği istek sayısı çok azdır. Birkaç sayfadan sonra "429, çok fazla istek" cevabı gelir. Bu yüzden uygulama anahtarsız denetimde ölçümü en fazla 50 sayfayla sınırlar. Ücretsiz anahtar bu sınırı kaldırır.
+## Anahtarı ekleyin
 
-## Gerekenler
+Google Cloud projenizde PageSpeed Insights API'yi etkinleştirin. Kimlik bilgileri bölümünde bir API anahtarı oluşturun; API kısıtını PageSpeed Insights olarak ayarlayın. **Ayarlar → Hız ölçümü** alanına anahtarı girip **Kaydet** deyin. Anahtar şifreli saklanır, ekranda gösterilmez. Docker'da PAGESPEED_API_KEY ortam değeri de kullanılabilir; Ayarlar'daki kayıt önceliklidir.
 
-- Bir Google hesabı ve Google Cloud Console'da (Google'ın geliştirici sayfası) bir proje. Google bağlantısı için proje açtıysanız aynısı olur.
-- Kart ya da ücret gerekmez. PageSpeed Insights API (servise erişim kapısı) ücretsizdir.
+## Testin anlamı
 
-## Adımlar
+**Anahtarı test et**, example.com için bir gerçek mobil istek gönderir. Sitenizin hızını ölçmez ve denetim ölçüm sayacına eklenmez. Sonuç ve test tarihi görünür. Düğme istek boyunca ve tıklamadan itibaren en az 10 saniye kapalıdır. Anahtar değişince önceki test sonucu kaldırılır.
 
-1. `console.cloud.google.com` adresinde projenizi seçin.
-2. **API'ler ve Hizmetler → Kitaplık** sayfasını açın. **PageSpeed Insights API** diye aratın ve **Etkinleştir** deyin. Bu adımı atlarsanız anahtarınız olur ama Google her isteği 403 ile reddeder.
-3. **API'ler ve Hizmetler → Kimlik bilgileri → Kimlik bilgisi oluştur → API anahtarı** deyin. "AIza" ile başlayan anahtar görünür. Kopyalayın.
-4. İsteğe bağlı ama önerilir: **Anahtarı kısıtla** deyin. API kısıtlamasında yalnızca **PageSpeed Insights API**'yi seçin. Yapay zekâ asistanınız gerçek kullanıcı verisinin (CrUX) geçmişine de bakacaksa **Chrome UX Report API**'yi de ekleyin.
-5. Uygulamada **Ayarlar → Hız ölçümü** bölümünü açın. **API anahtarı** alanına anahtarı yapıştırın. **Kaydet** deyin. "PageSpeed anahtarı kaydedildi" bildirimi gelir. Yeniden başlatmak gerekmez.
-6. Aynı bölümde **Anahtarı test et** düğmesine basın. Uygulama example.com için tek bir gerçek ölçüm yapar (1 ölçüm harcar). Şu yanıtı görmelisiniz: "Anahtar çalışıyor: Google PageSpeed Insights ölçümü kabul etti."
+## Sınırlar ve hatalar
 
-Docker kullanıyorsanız anahtarı `.env` dosyasında `PAGESPEED_API_KEY` olarak da verebilirsiniz. Ayarlar ekranı daha kolaydır, üstelik oraya girilen değer önceliklidir.
+Anahtarsız uygulama denetim başına en fazla 50 sayfayı dener. Google daha erken sınır koyabilir; anahtar başarı garantisi vermez. Gerçek kota için Google Cloud kota ekranına bakın. Ayarlar'daki PageSpeed sayacı yalnızca son 24 saatte başlayan denetimlerin kayıtlarını sayar; testleri veya başka programları saymaz.
 
-## Kontrol
-
-- **Ayarlar → Hız ölçümü** rozeti **Anahtar kayıtlı** demeli.
-- Site denetimi başlatma kartında "Sayfa hızını da ölç" açıkken süre tahmini artık "en çok 50 sayfa" sınırından söz etmemeli.
-- **Ayarlar → Sınırlar** bölümündeki "PageSpeed Insights" kartı "Anahtar tanımlı" demeli.
-
-## Sık sorulanlar
-
-**Hak (kota) ne kadar?** Google resmi bir sayı vermez, zamanla da değiştirir. Gerçek değeri Cloud Console'da **API'ler ve Hizmetler → Kotalar** bölümünde görürsünüz. Pratikte dakikalık bir sınır ve günlük bir sınır vardır. Her sayfa iki ölçüm harcar: telefon ve bilgisayar.
-
-**Dakikalık sınıra takılırsam ne olur?** Uygulama bekler ve yeniden dener. Denetim yavaşlar ama sizin bir şey yapmanız gerekmez. Günlük sınır dolarsa ölçüm durur. O ana kadarki sonuçlar kalır. Kalanı ertesi gün yapacağınız yeni denetimde ölçülür.
-
-**İki denetim aynı anda hız ölçerse ne olur?** Dakikalık sınırı paylaşırlar ve ikisi de iki kat yavaşlar. 212 sayfalık bir sitenin hız ölçümü tek başına yaklaşık 24 dakika, başka bir denetimle birlikte 48 dakika sürer. Tarama dahil denetimin tamamı 35 dakikayı bulur.
-
-**Anahtar nerede saklanıyor?** Bu bilgisayardaki veritabanında, şifreli. Tarayıcıya geri gönderilmez. Ayarlar ekranı yalnızca "kayıtlı" bilgisini gösterir.
-
-**Anahtar olmadan hiç ölçüm yapılmaz mı?** Yapılır, 50 sayfaya kadar. Ama çoğu zaman bir kısmı 429 ile başarısız olur. Küçük bir site için yeterli olabilir. 50 sayfadan büyük siteler için anahtar gerekir.
-
-## Sorun çıkarsa
-
-- **Test "restricted" ya da 403 diyor.** 2. adım atlanmış. PageSpeed Insights API etkin değil ya da anahtar başka bir API'ye kısıtlanmış.
-- **Test "invalid_key" diyor.** Anahtarın bir kısmı kopyalanmamış. Cloud Console'dan yeniden kopyalayın. Uygulama anahtarın biçimine bakmaz, yalnızca Google'ın kabul edip etmediğini bildirir.
-- **Test "quota_exhausted" diyor.** Bugünkü hak dolmuş. Yarın tekrar deneyin ya da Cloud Console'da kotaya bakın.
-- **Denetimde hız sütunu boş.** Denetim başlarken "Sayfa hızını da ölç" kapalıydı. Yeni denetimde açın. Eski denetim sonradan ölçülmez.
-- **Kota kartı "Anahtar yok" diyor ama anahtar girdim.** Sayfayı yenileyin. Kart son 24 saatin denetimlerine bakar. Yeni anahtar bir sonraki denetimde devreye girer.
-
-<!-- Kaynaklar: docs/PAGESPEED_API_KEY.md; src/client/features/settings/PageSpeedKeySection.tsx; PageSpeedKeyTest.tsx; src/server/features/lighthouse/pagespeed-config.ts; PageSpeedKeyTestService.ts; src/shared/audit-limits.ts; src/server/features/quotas/QuotaService.ts -->
+Geçersiz anahtarda değeri yeniden kopyalayın. 403/kısıtlı anahtarda API'nin etkin olduğunu ve kısıtları kontrol edin. Günlük kota veya istek sınırında bekleyin ve Cloud kota ekranını inceleyin. Ağ hatasında yeniden deneyin. Kaydedilmiş anahtar erişimin doğrulandığı anlamına gelmez; test yalnızca o isteğin sonucudur.

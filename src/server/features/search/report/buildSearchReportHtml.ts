@@ -7,6 +7,7 @@ import {
   formatDecimal,
   formatPercent,
 } from "@/shared/format";
+import { boundedReportTitle } from "@/shared/reportTitle";
 import { getLocale, t } from "@/shared/i18n";
 import { appearanceLabel } from "@/shared/searchAppearance";
 import { INSIGHT_RULES } from "@/shared/searchInsights";
@@ -53,6 +54,8 @@ type SearchReportInput = {
   overlaps: CannibalizationReport | null;
   /** Fixed in tests; the build time otherwise. */
   now?: Date;
+  /** Server-derived collision guard for the property, period and filters. */
+  titleDiscriminator?: string;
 };
 
 /*
@@ -154,7 +157,7 @@ function coverSection(view: SearchPerformanceView, now: Date): string {
   const changes: MetricChanges | null = totals.vsPrevious;
   const meta: Array<[string, string]> = [
     [
-      t("Kesin günler"),
+      t("Rapor dönemi"),
       t("{start} – {end} ({days} gün)", {
         start: formatDate(window.startDate),
         end: formatDate(window.endDate),
@@ -210,9 +213,39 @@ function coverSection(view: SearchPerformanceView, now: Date): string {
   </section>`;
 }
 
+function finalityText(view: SearchPerformanceView): string {
+  return view.window.incompleteSource === "google"
+    ? t(
+        "Google'ın tamamlandığını bildirdiği günler kullanıldı. Dönem sonu: {date}. Günler Pasifik saatine göredir.",
+        { date: formatDate(view.window.endDate) },
+      )
+    : t(
+        "Son günler gecikme varsayımıyla dışarıda bırakıldı; Google kesinleşme sınırı bildirmedi. Günler Pasifik saatine göredir.",
+      );
+}
+
+function shownCaption(total: number, limit = 10): string {
+  return t(
+    "Gösterilen: {shown} / {observed} gözlenen kayıt. Kaynak satır sınırları nedeniyle tüm siteyi temsil etmeyebilir.",
+    {
+      shown: formatCount(Math.min(total, limit)),
+      observed: formatCount(total),
+    },
+  );
+}
+
 function trustCallout(view: SearchPerformanceView): string {
-  const { window, coverage, totals } = view;
-  const lines: string[] = [];
+  const { coverage, totals } = view;
+  const lines: string[] = [
+    t(
+      "Okunan satırlar: {queries} sorgu, {pages} sayfa, {pairs} sorgu×sayfa. Listelerden türetilen fırsatlar bu kapsamla sınırlıdır.",
+      {
+        queries: formatCount(coverage.queries.rows),
+        pages: formatCount(coverage.pages.rows),
+        pairs: formatCount(coverage.queryPages.rows),
+      },
+    ),
+  ];
   if (totals.provisional) {
     lines.push(
       t(
@@ -223,25 +256,29 @@ function trustCallout(view: SearchPerformanceView): string {
   }
   if (coverage.hiddenQueries.clickShare !== null) {
     lines.push(
-      t(
-        "Google'ın gizlediği sorgulardan gelen tıklama: {share}. Bu yüzden sorgu tablolarının toplamı site toplamından küçüktür.",
-        { share: formatPercent(coverage.hiddenQueries.clickShare) },
-      ),
+      coverage.hiddenQueries.exact
+        ? t(
+            "Google'ın gizlediği sorgulardan gelen tıklama: {share}. Bu yüzden sorgu tablolarının toplamı site toplamından küçüktür.",
+            { share: formatPercent(coverage.hiddenQueries.clickShare) },
+          )
+        : t(
+            "Listelenmeyen sorguların tıklama payı: {share}. Gizlenen ve satır sınırı dışında kalan sorgular birlikte hesaplanır.",
+            { share: formatPercent(coverage.hiddenQueries.clickShare) },
+          ),
     );
   }
-  if (coverage.queries.truncated || coverage.pages.truncated) {
+  if (
+    coverage.queries.truncated ||
+    coverage.pages.truncated ||
+    coverage.queryPages.truncated
+  ) {
     lines.push(
       t(
-        "Google'ın satır sınırına ulaşıldı; en az tıklanan sorgu ve sayfalar listelerde eksik.",
+        "Google'ın satır sınırına ulaşıldı; sorgu, sayfa veya sorgu×sayfa listeleri eksik olabilir. Bu listelerden üretilen fırsatlar tam site envanteri değildir.",
       ),
     );
   }
-  lines.push(
-    t(
-      "Günler Google'ın kullandığı Pasifik saatine göredir; veriler {date} gününe kadar kesindir.",
-      { date: formatDate(window.endDate) },
-    ),
-  );
+  lines.push(finalityText(view));
   return `<div class="callout"><p><strong>${escapeHtml(t("Verinin durumu"))}</strong></p>${lines
     .map((line) => `<p>${escapeHtml(line)}</p>`)
     .join("")}</div>`;
@@ -254,21 +291,26 @@ function todoSection(view: SearchPerformanceView): string {
   }
   const first = items.slice(0, 3);
   const gain = combinedGain(first);
+  const known = first.filter((item) => item.estimatedClicks !== null).length;
+  const unknown = first.length - known;
   return `<h2>${escapeHtml(t("Önce bunlar"))}</h2>
     <p class="note">${escapeHtml(
-      gain === null
+      known === 0
         ? t("İlk {count} iş, kazancı tahmin edilemeyen işler.", {
             count: first.length,
           })
         : t(
-            "İlk {count} iş birlikte {days} günde en fazla {clicks} ek tıklama getirebilir (üst sınır).",
+            "İlk {count} işin {known} tanesinde kazanç hesaplanabildi; {unknown} tanesinde bilinmiyor. Hesaplanabilen işler için {days} günde en fazla {clicks} ek tıklama (üst sınır).",
             {
               count: first.length,
+              known,
+              unknown,
               days: view.window.days,
-              clicks: formatCount(Math.round(gain)),
+              clicks: formatCount(Math.round(gain ?? 0)),
             },
           ),
     )}</p>
+    <p class="note">${escapeHtml(shownCaption(view.todo.length, 10))}</p>
     <ol class="todos">${items
       .map((item) => {
         const copy = describeTodo(item);
@@ -364,11 +406,7 @@ function opportunitiesSection(view: SearchPerformanceView): string {
       striking.rows.length === 0
         ? `<p class="empty">${escapeHtml(t("Bu aralıkta sorgu yok."))}</p>`
         : table(
-            striking.total > 20
-              ? t("İlk 20 / {total} sorgu", {
-                  total: formatCount(striking.total),
-                })
-              : "",
+            shownCaption(striking.total, Math.min(20, striking.rows.length)),
             [
               { label: t("Sorgu") },
               { label: t("Hedef sayfa") },
@@ -394,9 +432,11 @@ function opportunitiesSection(view: SearchPerformanceView): string {
       snippets.length === 0
         ? `<p class="empty">${escapeHtml(t("Belirgin biçimde az tıklanan sonuç yok."))}</p>`
         : table(
-            t(
-              "Beklenen oran: sitenizde aynı sıradaki sonuçların tıklama oranı.",
-            ),
+            shownCaption(snippets.length) +
+              " " +
+              t(
+                "Beklenen oran: sitenizde aynı sıradaki sonuçların tıklama oranı.",
+              ),
             [
               { label: t("Sorgu") },
               { label: t("Sıra"), num: true },
@@ -418,11 +458,12 @@ function opportunitiesSection(view: SearchPerformanceView): string {
     <h3>${escapeHtml(t("Görünen ama hiç tıklanmayan sayfalar"))}</h3>
     ${
       zeroClickPages.rows.length === 0
-        ? `<p class="empty">${escapeHtml(t("Gösterim alıp hiç tıklanmayan sayfa yok."))}</p>`
+        ? `<p class="empty">${escapeHtml(t("Okunan sayfalarda eşiği aşan, gösterim alıp hiç tıklanmayan sayfa bulunmadı."))}</p>`
         : table(
-            zeroClickPages.total > 10
-              ? t("İlk 10 / {total} sayfa", { total: zeroClickPages.total })
-              : "",
+            shownCaption(
+              zeroClickPages.total,
+              Math.min(10, zeroClickPages.rows.length),
+            ),
             [
               { label: t("Sayfa") },
               { label: t("Gösterim"), num: true },
@@ -473,11 +514,11 @@ function changesSection(view: SearchPerformanceView): string {
       rows.length === 0
         ? `<p class="empty">${escapeHtml(t("Eşiği aşan değişim yok."))}</p>`
         : table(
-            "",
+            shownCaption(rows.length),
             [
               { label: page ? t("Sayfa") : t("Sorgu") },
-              { label: t("Önceki"), num: true },
-              { label: t("Şimdi"), num: true },
+              { label: t("Önceki tıklama"), num: true },
+              { label: t("Şimdiki tıklama"), num: true },
               { label: t("Sıra"), num: true },
             ],
             rows
@@ -495,9 +536,9 @@ function changesSection(view: SearchPerformanceView): string {
       rows === null
         ? `<p class="empty">${escapeHtml(unknown)}</p>`
         : rows.length === 0
-          ? `<p class="empty">${escapeHtml(t("Yok."))}</p>`
+          ? `<p class="empty">${escapeHtml(t("Okunan sorgularda bu koşulu sağlayan kayıt bulunmadı."))}</p>`
           : table(
-              "",
+              shownCaption(rows.length),
               [
                 { label: t("Sorgu") },
                 { label: t("Tıklama"), num: true },
@@ -524,16 +565,16 @@ function changesSection(view: SearchPerformanceView): string {
     ${moverTable(t("Tıklaması düşen sayfalar"), movers.pages.declining, true)}
     ${moverTable(t("Tıklaması artan sorgular"), movers.queries.growing, false)}
     ${moverTable(t("Tıklaması artan sayfalar"), movers.pages.growing, true)}
-    ${queryList(t("Yeni görünen sorgular"), newQueries, t("Önceki dönemin tablosu kesildiği için bilinemiyor."))}
-    ${queryList(t("Kaybolan sorgular (önceki dönemdeki değerleriyle)"), lostQueries, t("Bu dönemin tablosu kesildiği için bilinemiyor."))}
+    ${queryList(t("Yeni görünen sorgular"), newQueries, t("Önceki dönem karşılaştırması mevcut değil veya satır kapsamı eksik. Yeni sorgu sayısı bu veriden belirlenemez."))}
+    ${queryList(t("Kaybolan sorgular (önceki dönemdeki değerleriyle)"), lostQueries, t("Dönem karşılaştırması mevcut değil veya satır kapsamı eksik. Kaybolan sorgu sayısı bu veriden belirlenemez."))}
     <h3>${escapeHtml(t("Gücünü kaybeden sayfalar"))}</h3>
     ${
       decay === null
-        ? `<p class="empty">${escapeHtml(t("Bu karşılaştırma için bir yılı aşkın veri gerekir."))}</p>`
+        ? `<p class="empty">${escapeHtml(t("Uzun dönem karşılaştırması alınamadı. Yeterli geçmiş olmayabilir veya kaynak isteği başarısız olmuş olabilir; geçmiş veriyi kontrol edip raporu yeniden hazırlayın."))}</p>`
         : decay.length === 0
           ? `<p class="empty">${escapeHtml(t("Belirgin biçimde gücünü kaybeden sayfa yok."))}</p>`
           : table(
-              t("Çeyrek: 91 gün."),
+              shownCaption(decay.length) + " " + t("Çeyrek: 91 gün."),
               [
                 { label: t("Sayfa") },
                 { label: t("Son çeyrek"), num: true },
@@ -552,39 +593,72 @@ function changesSection(view: SearchPerformanceView): string {
 }
 
 function overlapsSection(overlaps: CannibalizationReport | null): string {
+  if (!overlaps)
+    return (
+      '<section id="cakismalar"><h2>' +
+      escapeHtml(t("Çakışmalar")) +
+      '</h2><p class="empty">' +
+      escapeHtml(
+        t(
+          "Çakışma analizi alınamadı. Diğer bölümler kullanılabilir; Arama performansında çakışmaları kontrol edip raporu yeniden hazırlayın.",
+        ),
+      ) +
+      "</p></section>"
+    );
+  const context = t(
+    "Çakışma dönemi: {start} – {end}. İncelenen: {count} sorgu. Eşik: sorguda 100 gösterim; sayfada 10 gösterim ve yüzde 20 pay. Bu dönem ana rapordan farklı olabilir.",
+    {
+      start: formatDate(overlaps.startDate),
+      end: formatDate(overlaps.endDate),
+      count: formatCount(overlaps.queriesAnalyzed),
+    },
+  );
+  const coverage = overlaps.truncated
+    ? t(
+        "Kaynak satır sınırına ulaştı. Okunmayan sorgularda başka çok sayfalı sonuçlar olabilir.",
+      )
+    : t("Sonuçlar yalnızca okunan ve eşikleri geçen sorguları kapsar.");
   const body =
-    overlaps === null
-      ? `<p class="empty">${escapeHtml(t("Çakışma analizi bu rapor için alınamadı."))}</p>`
-      : overlaps.rows.length === 0
-        ? `<p class="empty">${escapeHtml(t("Hiçbir sorguda iki sayfanız birbiriyle yarışmıyor."))}</p>`
-        : `<p class="note">${escapeHtml(
-            t(
-              "{queries} sorguda birden fazla sayfanız yarışıyor; {impressions} gösterim ana sayfa dışındaki sayfalara gitti. Dönem: {start} – {end}.",
-              {
-                queries: formatCount(overlaps.rows.length),
-                impressions: formatCount(overlaps.splitImpressions),
-                start: formatDate(overlaps.startDate),
-                end: formatDate(overlaps.endDate),
-              },
-            ),
-          )}</p>${table(
-            "",
-            [
-              { label: t("Sorgu") },
-              { label: t("Google'ın tercih ettiği sayfa") },
-              { label: t("Yarışan sayfa"), num: true },
-              { label: t("Bölünen pay"), num: true },
-            ],
-            overlaps.rows
-              .slice(0, 10)
-              .map((r) => [
-                escapeHtml(truncate(r.query, 70)),
-                escapeHtml(truncateUrl(shortPage(r.primary.page), 60)),
-                formatCount(r.competitors.length),
-                formatPercent(r.splitShare),
-              ]),
-          )}`;
-  return `<section id="cakismalar"><h2>${escapeHtml(t("Çakışmalar"))}</h2>${body}</section>`;
+    overlaps.rows.length === 0
+      ? '<p class="empty">' +
+        escapeHtml(
+          t("Okunan sorgularda eşiği aşan çok sayfalı sonuç bulunmadı."),
+        ) +
+        "</p>"
+      : table(
+          shownCaption(overlaps.rows.length),
+          [
+            { label: t("Sorgu") },
+            { label: t("Google'ın tercih ettiği sayfa") },
+            { label: t("Diğer sayfa sayısı"), num: true },
+            { label: t("Bölünen gösterim payı"), num: true },
+          ],
+          overlaps.rows
+            .slice(0, 10)
+            .map((row) => [
+              escapeHtml(truncate(row.query, 70)),
+              escapeHtml(truncateUrl(shortPage(row.primary.page), 60)),
+              formatCount(row.competitors.length),
+              formatPercent(row.splitShare),
+            ]),
+        );
+  return (
+    '<section id="cakismalar"><h2>' +
+    escapeHtml(t("Çakışmalar")) +
+    '</h2><p class="note">' +
+    escapeHtml(context) +
+    '</p><p class="note">' +
+    escapeHtml(coverage) +
+    '</p><p class="note">' +
+    escapeHtml(
+      t(
+        "Bir sorguda birden çok sayfanın görünmesi kayıp tıklama veya SEO zararı kanıtı değildir. Sayfaların aynı ihtiyacı karşılayıp karşılamadığını inceleyin.",
+      ),
+    ) +
+    "</p>" +
+    body +
+    "</section>"
+  );
 }
 
 function breakdownTable(
@@ -594,9 +668,12 @@ function breakdownTable(
   limit: number,
 ): string {
   const base =
-    breakdown.baseKind === "siteTotal"
+    (breakdown.truncated
+      ? t("Kaynak satır sınırına ulaştı; dağılım eksik olabilir.") + " "
+      : "") +
+    (breakdown.baseKind === "siteTotal"
       ? t("Paylar sitenin toplamına göre.")
-      : t("Paylar satırların toplamına göre.");
+      : t("Paylar satırların toplamına göre."));
   return table(
     breakdown.rows.length > limit
       ? `${base} ${t("İlk {limit} / {total}.", { limit, total: breakdown.rows.length })}`
@@ -686,7 +763,7 @@ function distributionSection(view: SearchPerformanceView): string {
     ${
       searchAppearance && searchAppearance.rows.length > 0
         ? breakdownTable(t("Görünüm"), searchAppearance, appearanceLabel, 10)
-        : `<p class="empty">${escapeHtml(t("Google bu dönem için özel bir sonuç biçimi bildirmedi."))}</p>`
+        : `<p class="empty">${escapeHtml(searchAppearance === null ? t("Özel sonuç görünümü verisi alınamadı veya kayıt dönmedi. Kaynak bu iki durumu ayırmadığı için yokluk sonucu çıkarılamaz; Arama performansını kontrol edin.") : t("Okunan görünüm tablosunda bu döneme ait kayıt bulunmadı."))}</p>`
     }
     <h3>${escapeHtml(t("Soru ve uzun aramalar"))}</h3>
     ${table(
@@ -718,17 +795,18 @@ function distributionSection(view: SearchPerformanceView): string {
 function methodSection(view: SearchPerformanceView): string {
   const items: Array<[string, string]> = [
     [
+      t("Kaydedilmiş belge"),
+      t(
+        "Rapor hazırlanırken veriler sunucudan yeniden okundu; Google geçmiş değerleri düzeltebilir. Aynı dönem etiketi önceki ekran görüntüsüyle birebir ölçüm eşitliğini garanti etmez. Başlık dili değiştiğinde ayrı bir belge oluşabilir.",
+      ),
+    ],
+    [
       t("Kaynak"),
       t(
         "Google Search Console API, bu mülk için. Başka bir veri kaynağı, tahmini hacim ya da rakip verisi kullanılmadı.",
       ),
     ],
-    [
-      t("Kesin günler"),
-      t(
-        "Toplamlar ve karşılaştırmalar yalnızca Google'ın saymayı bitirdiği günleri kapsar. Günler Pasifik saatine göredir.",
-      ),
-    ],
+    [t("Rapor dönemi"), finalityText(view)],
     [
       t("Site toplamları"),
       t(
@@ -738,7 +816,7 @@ function methodSection(view: SearchPerformanceView): string {
     [
       t("Gizli sorgular"),
       t(
-        "Google az aranan sorguları listelemez ama site toplamına katar; sorgu tabloları bu yüzden site toplamından küçüktür.",
+        "Sorgu tabloları gizlilik nedeniyle gizlenen satırları içermez. Satır sınırı varsa listelenmeyen pay, sınır dışında kalan sorguları da içerir.",
       ),
     ],
     [
@@ -749,9 +827,12 @@ function methodSection(view: SearchPerformanceView): string {
     ],
     [
       t("Google istekleri"),
-      t("Bu rapor {count} Google isteğiyle hazırlandı.", {
-        count: view.quota.requests,
-      }),
+      t(
+        "Arama görünümünün istek bütçesi: {count}. Ek çakışma analizi dahil değildir; önbellek kullanımı gerçek ağ isteği sayısını değiştirir.",
+        {
+          count: view.quota.requests,
+        },
+      ),
     ],
   ];
   return `<section id="yontem"><h2>${escapeHtml(t("Yöntem ve sınırlar"))}</h2><dl class="method">${items
@@ -780,15 +861,18 @@ export function buildSearchReportHtml(input: SearchReportInput): {
     view.filters.searchType !== "web"
       ? ` (${filtersText(view)})`
       : "";
-  const title = truncate(
+  const titleBase = boundedReportTitle(
     t("{host} arama performansı, {start} – {end}{filters}", {
       host,
       start: formatDate(view.window.startDate),
       end: formatDate(view.window.endDate),
       filters: filterNote,
     }),
-    200,
+    input.titleDiscriminator ? 84 : 120,
   );
+  const title = input.titleDiscriminator
+    ? `${titleBase} [${input.titleDiscriminator}]`
+    : titleBase;
   const c = view.totals.current;
   const summary = [
     t("{days} günde {clicks} tıklama, {impressions} gösterim.", {
@@ -809,24 +893,44 @@ export function buildSearchReportHtml(input: SearchReportInput): {
     .filter(Boolean)
     .join(" ");
 
+  const sections = [
+    trendSection(view),
+    opportunitiesSection(view),
+    changesSection(view),
+    overlapsSection(overlaps),
+    distributionSection(view),
+    methodSection(view),
+  ].join("\n  ");
   const html = `<!doctype html>
 <html lang="${getLocale()}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${escapeHtml(title)}</title>
-<style>${STYLES}${EXTRA_STYLES}</style>
+<style>${STYLES.replace('content:"Sayfa "', 'content:"' + t("Sayfa").replace(/["\\]/g, "") + ' "')}${EXTRA_STYLES}
+@media screen and (min-width:360px) and (max-width:700px){.cards.cards--4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media screen and (max-width:359px){.cards.cards--4{grid-template-columns:minmax(0,1fr)}}
+</style>
 </head>
 <body>
 <div class="running">${escapeHtml(host)} · ${escapeHtml(t("Arama performansı raporu"))} · ${escapeHtml(formatDateTime(now.toISOString()))}</div>
 <main>
   ${coverSection(view, now)}
-  ${trendSection(view)}
-  ${opportunitiesSection(view)}
-  ${changesSection(view)}
-  ${overlapsSection(overlaps)}
-  ${distributionSection(view)}
-  ${methodSection(view)}
+  <nav aria-label="${escapeHtml(t("İçindekiler"))}">${[
+    ["ozet", t("Özet")],
+    ["egilim", t("Zaman içinde")],
+    ["firsatlar", t("Fırsatlar")],
+    ["degisimler", t("Değişimler")],
+    ["cakismalar", t("Çakışmalar")],
+    ["dagilim", t("Dağılım")],
+    ["yontem", t("Yöntem ve sınırlar")],
+  ]
+    // A section that had nothing to draw is left out of the page, so its
+    // link would point nowhere.
+    .filter(([id]) => id === "ozet" || sections.includes('id="' + id + '"'))
+    .map(([id, label]) => '<a href="#' + id + '">' + escapeHtml(label) + "</a>")
+    .join(" · ")}</nav>
+  ${sections}
   <footer>
     <p>${escapeHtml(
       t(

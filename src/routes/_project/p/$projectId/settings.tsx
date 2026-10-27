@@ -37,7 +37,17 @@ function ProjectSettingsLayout() {
             strip below jumped up a line and back. */}
         <PageHeader
           title={t("Proje ayarları")}
-          description={project?.name ?? " "}
+          description={
+            project
+              ? t(
+                  "{name} · {domain}. Değişiklikler yalnızca bu projeye uygulanır.",
+                  {
+                    name: project.name,
+                    domain: project.domain ?? t("Alan adı belirtilmedi"),
+                  },
+                )
+              : " "
+          }
         />
         {/* Navigation, not tabs: each one changes the URL and swaps the
             <Outlet/>. `role="tab"` here announced "tab" instead of "link" and

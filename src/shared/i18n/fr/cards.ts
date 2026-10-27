@@ -161,18 +161,11 @@ export const frCards: Catalog = {
   Tamamla: "Compléter",
   "Güncel denetim": "Audit récent",
   "Yapay zeka ajanı": "Agent IA",
-  "Sitenizin son 7 gün içinde tamamlanmış bir denetimi var.":
-    "Votre site a un audit terminé au cours des 7 derniers jours.",
-  "Son 7 günde bu sitenin tamamlanmış denetimi yok. Başka bir adresin denetimi sayılmaz.":
-    "Aucun audit terminé de ce site au cours des 7 derniers jours. L'audit d'une autre adresse ne compte pas.",
+
   Denetle: "Auditer",
-  "Bir ajan bağlandı ve en az bir araç çağırdı.":
-    "Un agent s'est connecté et a appelé au moins un outil.",
-  "Henüz hiçbir ajan bağlanmadı.": "Aucun agent ne s'est encore connecté.",
+
   "öneri, sayılmaz": "conseil, non compté",
-  "Önceki {days} güne göre:": "Par rapport aux {days} jours précédents :",
-  "{count} kelime yükseldi": "{count} mots-clés en hausse",
-  "{count} kelime geriledi": "{count} mots-clés en baisse",
+
   "Kullanılmıyor, hizmet hesabı bağlı":
     "Non utilisé, un compte de service est connecté",
   "Uygulamanın durumu": "État de l'application",
@@ -193,17 +186,7 @@ export const frCards: Catalog = {
   "Aramaların toplamı daha büyük; sayfanın tamamı hedef orana ulaşsa alacağı kadarla sınırlandı.":
     "Les recherches totalisent davantage ; plafonné à ce que la page entière obtiendrait au taux cible.",
   "2. sayfa, 11-20. sıra": "deuxième page, positions 11-20",
-  "Son rapor": "Dernier rapport",
-  "Son 7 günde": "Ces 7 derniers jours",
-  "yazılan ya da güncellenen rapor": "rapports écrits ou mis à jour",
-  Toplam: "Total",
-  "{audit} denetim raporu · {skill} beceriyle · {template} şablonla":
-    "{audit} rapports d'audit · {skill} par compétence · {template} par modèle",
-  "Denetim raporu": "Rapport d'audit",
-  "{count} tıklama / 28 gün": "{count} clics / 28 jours",
-  "Önceki 28 güne göre": "Par rapport aux 28 jours précédents",
-  "Arama verisi arşivde yok": "Aucune donnée de recherche dans l'archive",
-  "Son denetim {when}": "Dernier audit {when}",
+
   "Trafiği yüksek, dönüşümü düşük sayfa":
     "pages à fort trafic et faible conversion",
   "Listede gösteriliyor": "Affiché dans la liste",
@@ -212,8 +195,7 @@ export const frCards: Catalog = {
     "Occasion de faire monter « {query} » d'un cran",
   "ilk {count} iş birlikte {days} günde en fazla {clicks} ek tıklama getirebilir (üst sınır).":
     "ensemble, les {count} premières tâches pourraient apporter au plus {clicks} clics supplémentaires en {days} jours (plafond).",
-  "İlk {count} iş birlikte {days} günde en fazla {clicks} ek tıklama getirebilir (üst sınır).":
-    "Ensemble, les {count} premières tâches pourraient apporter au plus {clicks} clics supplémentaires en {days} jours (plafond).",
+
   "Ortalama sırası 4–20 olan {count} sorgu; her biri bir basamak yükselirse en fazla {clicks} ek tıklama (üst sınır).":
     "{count} requêtes en position moyenne 4–20 ; si chacune monte d'un cran, au plus {clicks} clics supplémentaires (plafond).",
   "İlk sayfada ama ilk üçün altında. Bir basamak yükselmek (6-10'dan 4-5'e, 4-5'ten 2-3'e) tıklamayı belirgin artırır.":
@@ -225,7 +207,7 @@ export const frCards: Catalog = {
     "{count} requêtes en position moyenne 4 à 20 avec au moins {impressions} impressions. Si chacune monte d'un cran (6-10 vers 4-5, 4-5 vers 2-3, 11-20 vers la première page), elles pourraient apporter ensemble au plus {clicks} clics supplémentaires (plafond).",
   "Ortalama sırası 4 ile 20 arasında, en az {impressions} gösterim alan {count} sorgu. Olası kazanç, sorgu bir basamak yükselirse (6-10'dan 4-5'e, 4-5'ten 2-3'e, 11-20'den ilk sayfaya) beklenen en fazla ek tıklamadır.":
     "{count} requêtes en position moyenne 4 à 20 avec au moins {impressions} impressions. Le gain possible est le maximum de clics supplémentaires attendu si une requête monte d'un cran (6-10 vers 4-5, 4-5 vers 2-3, 11-20 vers la première page).",
-  "{title} · {kind} · aç": "{title} · {kind} · ouvrir",
+
   "Karşılaştırma yapılamadı: tarama kapsamları farklı veya bilinmiyor.":
     "Comparaison impossible : les périmètres des explorations diffèrent ou sont inconnus.",
   "{measured} / {total} kontrol ölçüldü.":

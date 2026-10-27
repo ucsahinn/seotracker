@@ -1,3 +1,4 @@
+import { SAVED_TERM_LIMIT } from "@/shared/savedWatchlist";
 import { Minus, Plus, RotateCcw, X } from "lucide-react";
 import { useState, type KeyboardEvent } from "react";
 import type { SavedKeywordsFilterForm } from "./useSavedKeywordsFilters";
@@ -101,6 +102,7 @@ function TermsTokenInput({
   placeholder: string;
 }) {
   const [draft, setDraft] = useState("");
+  const [limitError, setLimitError] = useState(false);
   const styles = VARIANT_STYLES[variant];
   const Icon = styles.icon;
 
@@ -114,17 +116,34 @@ function TermsTokenInput({
         </span>
         <p className="text-xs font-semibold text-muted">{label}</p>
       </div>
+      <p className="text-xs text-muted">
+        {variant === "include"
+          ? t("Eklenen terimlerin tümü eşleşmelidir.")
+          : t("Eklenen terimlerden hiçbiri bulunmamalıdır.")}{" "}
+        {t("En fazla {count} terim.", { count: SAVED_TERM_LIMIT })}
+      </p>
+      {limitError ? (
+        <p role="alert" className="text-xs text-[var(--ink-error)]">
+          {t("Terim sınırı aşıldı. Eklemek için önce bir terimi kaldırın.")}
+        </p>
+      ) : null}
       <form.Field name={name}>
         {(field) => {
           const terms = splitTerms(field.state.value);
           const commit = (next: string[]) => {
-            field.handleChange(joinTerms([...new Set(next)]));
+            const unique = [...new Set(next)];
+            if (unique.length > SAVED_TERM_LIMIT) {
+              setLimitError(true);
+              return false;
+            }
+            setLimitError(false);
+            field.handleChange(joinTerms(unique));
+            return true;
           };
           const addFromDraft = () => {
             const parsed = splitTerms(draft);
             if (parsed.length > 0) {
-              commit([...terms, ...parsed]);
-              setDraft("");
+              if (commit([...terms, ...parsed])) setDraft("");
             }
           };
           const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {

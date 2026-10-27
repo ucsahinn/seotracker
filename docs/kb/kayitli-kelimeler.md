@@ -1,66 +1,35 @@
 ---
 title: Kayıtlı kelimeler
-description: Önemsediğiniz aramaları buraya kaydeder, etiketler, son 90 günlük ortalama sıralarına bakarsınız. İsterseniz CSV ya da E-Tablolar'a aktarırsınız.
+description: Kayıtlı kelimeleri tarihleri ve kapsamı belli arşiv gözlemleriyle inceleyin.
 screen: Kayıtlı kelimeler
 route: /p/<proje>/saved
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
-Önemsediğiniz aramaları toplar, etiketler ve sıralarını izlersiniz.
+Önemsediğiniz sorguları Arama performansı veya Sıralamalar ekranından kaydedin. Kaydetmek Google'da yeni takip başlatmaz. Bu ekran yalnızca seçtiğiniz kayıtları yerel arşivdeki gözlemlerle eşleştirir.
 
-Uygulama size kelime önermez. Arama performansı ya da Sıralama takibi ekranında bir satırın menüsünden **Kelime olarak kaydet** dersiniz, kelime buraya düşer. Burada her kelimenin son 90 gündeki ortalama sırasını görürsünüz. Sıra, Sıralama takibi arşivinden gelir. Kaydetmek Google'da yeni bir takip başlatmaz. Zaten toplanan veriyi bu kelimeler için süzer.
+## Dönem ve sayıların anlamı
 
-## Ekranda neler var
+30, 90 veya 180 gün seçin; varsayılan 90 gündür. Güncel ve eşit uzunluktaki önceki dönemin tam tarihleri gösterilir. Tarihler Google'ın Pasifik takvimine göre, üç günlük gecikme varsayımıyla belirlenir. Bu varsayım arşivin tam olduğunu kanıtlamaz.
 
-**Üst çubuk.** Bir açıklama satırı, **E-Tablolar'a aktar**, **CSV indir** ve **Yenile** düğmeleri var. Altında "{n} kayıtlı kelime" yazar.
+Kartlar metin ve etiket filtresine uyan kayıtları, gözlenen kayıtları, karşılaştırılabilen belirgin hareketleri ve sıra kanıtı olmayan kayıtları gösterir. Sıra çubukları aynı tabanı kullanır; gruba tıklamak tabloyu daraltır. Toplam site sorgusu veya arama hacmi değildir. İki farklı pazar kaydı iki kayıt sayılır; gözlemler tüm ülkeler ve cihazları kapsar.
 
-**Sıra dağılımı kartı.** Çubuklar kelimelerinizden kaçının 1-3, 4-10, 11-20 ve 21+ sırada olduğunu gösterir. Altında "sıralar son 90 günün ortalaması" notu durur. Arşivde kaydı olmayan kelime "Verisi yok" sayılır. Arşiv eksikse "Bilinmiyor (arşiv kesildi)" görürsünüz. **İlk 10** ve **Sıra 11-20** düğmeleri tabloyu o dilime daraltır.
+Ortalama sıra gösterimle ağırlıklandırılır. Türkçe büyük/küçük harf ve art arda boşluklar eşleştirilir; I/ı ile İ/i ayrımı korunur. Aynı gruptaki ham sorguların ortalamaları gösterimleriyle birleştirilir. Eksik sıra sıfır veya kesin sıralama kaybı sayılmaz. Belirgin yükseliş/gerileme en az 0,5 sıradır; küçük hareketler satır ayrıntısında görülebilir. Karşılaştırma yok ile değişmedi farklıdır.
 
-**Filtre paneli.** **Sonuçları filtrele** altında **İçersin** ve **İçermesin** kutuları var. İkisi de kelimenin içinde metin arar. Etiket aramak için **Etiket ara**'yı kullanın. **Tümünü temizle** hepsini sıfırlar. Bir projede en fazla 50 etiket olabilir.
+## Listeyi inceleyin
 
-**Tablo.** Sütunlar şunlar: **Kelime**, **Ort. sıra**, **Amaç**, **Etiketler**, **Eklenme**. Sıra boşsa üzerine gelince "Search Console bu kelime için sıra kaydetmemiş" yazar. **Amaç** sütunu, kelimeyi arayan kişinin ne istediğini gösterir:
+Tabloda kelime, ortalama sıra, değişim, gösterimler ve etiketler bulunur. Telefonda temel ölçüler kelimenin altında görünür. Kelimeye tıklayın: Arşiv ayrıntısı aynı dönemleri, ham eşleşmeleri, önceki sırayı, gözlenen günleri ve kayıtlı pazar bilgisini açıklar. Eklenme tarihi ve varsa eski amaç bilgisi ayrıntıda korunur; amaç yeni ölçülmez. İkinci bağlantı canlı Arama performansında son 28 günde metni içeren sorguları arar; aynı arşiv ölçümünü açtığı varsayılmamalıdır.
 
-- Bilgi amaçlı: öğrenmek istiyor.
-- Ticari araştırma: karşılaştırıp seçecek.
-- İşlem odaklı: satın almaya hazır.
-- Yönlendirici: belli bir siteyi arıyor.
-- Bilinmiyor: belli değil.
+İçeren terimlerin tümü eşleşmelidir; içermeyen terimlerden hiçbiri bulunmamalıdır. Her kutuda en fazla 20 terim vardır. Seçilen en fazla 50 etiketten herhangi biri yeterlidir; bu, projede yalnızca 50 etiket olabileceği anlamına gelmez. Etiket yanındaki sayılar tüm projedeki atamalardır. Filtreler, sıra grubu, dönem, sıralama ve sayfa URL'de saklanır. Tümünü temizle boş gruptan da çıkmanızı sağlar.
 
-Tabloda bunların kısa halleri görünür: Bilgi, Ticari, İşlem, Gezinme ve soru işareti. Satır menüsünde üç seçenek var: **Kelimeyi kopyala**, **Arama performansında ara**, **Kelimeyi sil**.
+## Eksik veriyi onarın
 
-**Toplu işlemler.** Satırları işaretleyince üstte **Kelimeleri kopyala**, **Etiketleri güncelle** ve silme düğmesi çıkar. Silmeden önce "kalıcı olarak silinecek. Bu geri alınamaz." uyarısı gelir.
+Bağlantı yok, hiç aktarılmamış arşiv, kısmi arşiv ve okuma hatası ayrı açıklanır. Listeyi yenile yalnızca yerel veritabanını okur. Yeni Google verisi için Sıralamalar'da arşivi güncelle yolunu kullanın; bağlantı yoksa önce Search Console'u bağlayın. Google bazı nadir sorguları döndürmez; arşivde gözlem yokluğu Google'da hiç görünmediğinizin kanıtı değildir.
 
-**Boş durumlar.** Hiç kelime yoksa "Henüz kayıtlı kelime yok" yazar. Bir kısayol çıkar: **Sorgulara göz at**; Search Console henüz bağlı değilse bunun yerine **Search Console'u bağla** çıkar. Filtreye uyan kelime yoksa "Bu filtrelere uyan kelime yok" yazar.
+## Dışa aktarım ve toplu işlemler
 
-## Nasıl kullanılır
+CSV ve E-Tablolar aynı filtrelenen kayıtları ve ölçüm alanlarını aktarır. İlk sütunlar kelime, amaç, etiketler ve eklenme olarak korunur; sıra, önceki sıra, değişim, durum, gözlenen günler, tam tarihler, kapsam, ham eşleşmeler, kayıt kimliği ve anlık görüntü bilgisi eklenir. Bilinmeyen ölçüler boş kalır. Veri aktarım sırasında değişirse yeniden başlatmanız gerekir.
 
-1. Arama performansında **Sıra 5-20** sekmesini açın. Önemli bulduğunuz beş on aramayı **Kelime olarak kaydet** ile işaretleyin. Para kazandıran sayfaların aramalarını seçin. Bunlar, en çok gösterilen aramalar kadar işe yarar.
-2. Buraya gelip kelimeleri işaretleyin. **Etiketleri güncelle** ile "ürün", "blog", "marka" gibi etiketler verin. Gelecek ay karşılaştırma yapmak kolaylaşır.
-3. Ayda bir **Sıra dağılımı** kartına bakın. 11-20 dilimindeki kelimeler ilk sayfaya en yakın olanlardır. O kelimelerin sayfalarını Fırsatlar ekranında bulun.
-4. Rapor için **CSV indir** ya da **E-Tablolar'a aktar** deyin. Dosya, uyguladığınız filtrelerle gelir.
+Seçim yalnızca mevcut sayfadadır. Liste yenilenirken veya filtre uygulanırken eski satırlara toplu işlem yapılamaz. Silme onay ister; etiket düzenleme kelimeleri silmez. Varsayılan sıralama eklenme tarihidir; sıra, hareket, gösterim ve kelimeye göre de sıralayabilirsiniz. Gerileyenleri incele yalnızca karşılaştırılabilen belirgin gerilemeleri inceleme sırasına koyar; neden veya sonuç garantisi vermez.
 
-## Sayılar nasıl hesaplanır
-
-Kelimeler ve etiketler bu bilgisayardaki veritabanında durur. **Ort. sıra**, Sıralama takibi arşivinden son 90 gün için hesaplanır. Çok gösterim alınan günler ortalamayı daha çok etkiler. Büyük ve küçük harf farkı sayılmaz.
-
-Arşivden en çok gösterilen 500 arama çekilir. Kayıtlı kelimeniz bu 500'ün dışındaysa sırası "bilinmiyor" görünür.
-
-Amaç bilgisi, kelime kaydedilirken geldiyse yazılır. Sonradan hesaplanmaz. Liste 50, 100 ya da 250'lik sayfalara bölünür.
-
-## Sık sorulanlar
-
-**Kelimeyi kaydettim, sıra neden boş?** Arşiv o kelime için henüz gün toplamamış olabilir. Sıralama takibi ekranını açın ve arşivin dolmasını bekleyin. Sonra burada **Yenile** deyin.
-
-**Google'da aradığımda sıram farklı.** Buradaki sıra 90 günün ortalamasıdır. Tek bir aramayla karşılaştırılamaz.
-
-**Arama hacmi sütunu nerede?** Yok. Uygulama hacim tahmini yapmaz. Gösterim sayısını Arama performansı ekranında görürsünüz.
-
-**Aynı kelimeyi iki kez kaydedebilir miyim?** Hayır. Aynı metin tek kayıt olur.
-
-**Etiketi silince kelimeler silinir mi?** Hayır. Etiket kalkar, kelimeler kalır.
-
-## Sınırlar
-
-Bu ekran kelime araştırma aracı değildir. Kelime önermez, hacim ya da zorluk göstermez. Sıra bilgisi arşivin kapsadığı günlerle sınırlıdır. Google'ın gizlediği nadir aramaların sırası hiç gelmez. Veriler bu kurulumun veritabanında durur. Yedek almak size kalır.
-
-<!-- Kaynaklar: src/routes/_project/p/$projectId/saved.tsx; src/client/features/saved-keywords/SavedKeywordsHeader.tsx; SavedKeywordsTable.tsx; SavedKeywordsFilterPanel.tsx; SavedKeywordsTagFilter.tsx; SavedKeywordsSummary.tsx; SavedKeywordsModals.tsx; useSavedKeywordPositions.ts; savedKeywordPositions.ts; src/client/components/IntentBadge.tsx; src/server/features/keywords/repositories/KeywordResearchRepository.ts; src/server/features/keywords/services/research/saved-keywords.ts -->
+**Günlük gözlemler.** Arşiv ayrıntısında günlük gözlemleri açıkça isteyebilirsiniz. Aynı tarih aralığı ve eşleştirme kullanılır; eksik günler grafikte boş kalır. Tarihleri klavyeyle inceleyebilir, günlük değerleri metin olarak açabilirsiniz.

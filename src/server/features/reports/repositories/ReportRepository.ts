@@ -1,4 +1,4 @@
-import { and, count, desc, eq, sum } from "drizzle-orm";
+import { and, count, desc, eq, sum, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { projects, reports } from "@/db/schema";
 import type { ReportMetadata } from "@/types/schemas/reports";
@@ -10,7 +10,7 @@ import type { ReportMetadata } from "@/types/schemas/reports";
 // `html` is never selected here except by getReportHtml — a list read that
 // pulled documents would put megabytes on the app worker's heap.
 
-const metadataColumns = {
+export const metadataColumns = {
   id: reports.id,
   projectId: reports.projectId,
   title: reports.title,
@@ -206,7 +206,22 @@ async function deleteReport(
   return deleted.length > 0;
 }
 
+async function hasReportDocument(
+  projectId: string,
+  reportId: string,
+): Promise<boolean> {
+  const [row] = await db
+    .select({
+      available: sql<number>`case when length(${reports.html}) > 0 then 1 else 0 end`,
+    })
+    .from(reports)
+    .where(and(eq(reports.id, reportId), eq(reports.projectId, projectId)))
+    .limit(1);
+  return row?.available === 1;
+}
+
 export const ReportRepository = {
+  hasReportDocument,
   listReports,
   getReport,
   getReportProjectId,

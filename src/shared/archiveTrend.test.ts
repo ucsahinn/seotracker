@@ -28,4 +28,39 @@ describe("archiveTrend", () => {
     ).toBeNull();
     expect(archiveTrend([], 7)).toBeNull();
   });
+  it("keeps missing current observations as gaps and suppresses comparison", () => {
+    const trend = archiveTrend(
+      [
+        ...days("2026-08-01", 7, 1),
+        ...days("2026-08-08", 7, 2).filter((d) => d.date !== "2026-08-10"),
+      ],
+      7,
+    );
+    expect(trend).toMatchObject({
+      clicks: 12,
+      observedDays: 6,
+      previousObservedDays: 7,
+      previousClicks: null,
+    });
+    expect(trend?.daily[2]).toBeNull();
+  });
+  it("distinguishes measured zero from missing observations", () => {
+    const trend = archiveTrend(days("2026-08-01", 14, 0), 7);
+    expect(trend).toMatchObject({
+      clicks: 0,
+      previousClicks: 0,
+      observedDays: 7,
+      previousObservedDays: 7,
+    });
+    expect(trend?.daily).toEqual(Array(7).fill(0));
+  });
+  it("prints stale stored spans rather than relabelling them as today", () => {
+    expect(archiveTrend([{ date: "2026-03-08", clicks: 1 }], 7)).toMatchObject({
+      startDate: "2026-03-02",
+      endDate: "2026-03-08",
+      previousStartDate: "2026-02-23",
+      previousEndDate: "2026-03-01",
+      observedDays: 1,
+    });
+  });
 });
