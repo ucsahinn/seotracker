@@ -1,4 +1,5 @@
 import { t } from "@/shared/i18n";
+import { OpportunityAnalyticsLink } from "./OpportunityAnalyticsLink";
 import { copyText } from "@/client/lib/copyText";
 import { Link } from "@tanstack/react-router";
 import { Check, Copy, ExternalLink, Search, X } from "lucide-react";
@@ -237,6 +238,11 @@ export function OpportunityDetail({
       </section>
 
       <div className="flex flex-wrap gap-2">
+        <OpportunityAnalyticsLink
+          row={row}
+          projectId={projectId}
+          dateRange={dateRange}
+        />
         {dateRange ? (
           <Link
             to="/p/$projectId/search-performance"

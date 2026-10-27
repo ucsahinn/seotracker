@@ -71,6 +71,7 @@ export type Scope = {
   startDate?: string;
   endDate?: string;
   host?: string;
+  pageGroup?: string;
   path?: string;
 };
 

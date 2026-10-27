@@ -74,7 +74,14 @@ export function AnalyticsPage({
     acquisition,
   } = scope;
   const setOffset = (next: number) => onScopeChange({ offset: next });
-  const setView = (next: View) => onScopeChange({ view: next, offset: 0 });
+  const setView = (next: View) =>
+    onScopeChange({
+      view: next,
+      offset: 0,
+      pageGroup: undefined,
+      host: undefined,
+      path: undefined,
+    });
   const setChannel = (next: Channel) =>
     onScopeChange({ channel: next, offset: 0 });
   const setRowLimit = (next: 50 | 100 | 200) =>
@@ -110,6 +117,7 @@ export function AnalyticsPage({
       offset,
       scope.startDate ?? null,
       scope.endDate ?? null,
+      scope.pageGroup ?? null,
     ],
     queryFn: () =>
       getGa4Report({
@@ -124,6 +132,7 @@ export function AnalyticsPage({
           offset,
           startDate: scope.startDate,
           endDate: scope.endDate,
+          pageGroup: scope.pageGroup,
         },
       }),
     enabled: view !== HEALTH && connection.data?.connected === true,
@@ -273,7 +282,7 @@ export function AnalyticsPage({
 
             {result?.status === "ok" ? (
               <ReportView
-                key={`${kind}-${effectiveChannel}-${windowDays}-${rowLimit}-${breakdown}-${acquisition}-${offset}-${scope.startDate}-${scope.endDate}`}
+                key={`${kind}-${effectiveChannel}-${windowDays}-${rowLimit}-${breakdown}-${acquisition}-${offset}-${scope.startDate}-${scope.endDate}-${scope.pageGroup}`}
                 kind={kind}
                 result={result}
                 configurationState={
@@ -283,6 +292,9 @@ export function AnalyticsPage({
                   Date.now() - cachedHealth.dataUpdatedAt < 5 * 60 * 1000
                     ? cachedHealth.data.configurationState
                     : "unknown"
+                }
+                onClearPageGroup={() =>
+                  onScopeChange({ pageGroup: undefined, offset: 0 })
                 }
                 organicOnly={effectiveChannel === "organic_search"}
                 exactPage={

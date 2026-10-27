@@ -1,4 +1,5 @@
 import { t } from "@/shared/i18n";
+import { OpportunityAnalyticsLink } from "./OpportunityAnalyticsLink";
 import { copyText } from "@/client/lib/copyText";
 import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { ArrowDown, ArrowUp, Copy, ExternalLink } from "lucide-react";
@@ -52,6 +53,10 @@ const opportunityHelper = createColumnHelper<OpportunityRow>();
 export function buildOpportunityColumns(
   onOpen: (row: OpportunityRow) => void,
   maxGain: number,
+  analyticsScope?: {
+    projectId: string;
+    dateRange?: { startDate: string; endDate: string };
+  },
 ): ColumnDef<OpportunityRow>[] {
   const right = {
     headerClassName: "text-right",
@@ -246,6 +251,12 @@ export function buildOpportunityColumns(
         return (
           <span className="block">
             {formatCount(value)}
+            {analyticsScope ? (
+              <OpportunityAnalyticsLink
+                row={row.original}
+                {...analyticsScope}
+              />
+            ) : null}
             {signal ? (
               <span
                 className={`block text-xs ${

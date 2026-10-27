@@ -1,6 +1,17 @@
 import type { Catalog } from "@/shared/i18n";
 
 export const frAnalytics: Catalog = {
+  "Analytics adres grubu": "Groupe d’adresses Analytics",
+  "Analytics adres grubunu incele": "Examiner le groupe d’adresses Analytics",
+  "Analytics adres grubu birebir eşleştirilemiyor.":
+    "Le groupe d’adresses Analytics ne peut pas être associé exactement.",
+  "Kaynak sınırlıysa Analytics tam eşleşmenin doğrulanamadığını belirtir.":
+    "Si la source est limitée, Analytics indique que la correspondance exacte ne peut pas être vérifiée.",
+  "Adres grubu filtresini kaldır": "Retirer le filtre de groupe d’adresses",
+  "Kaynak sınırlı; adres grubunun tamamı birebir doğrulanamıyor. Yalnızca alınan varyantlar gösteriliyor.":
+    "La source est limitée ; le groupe d’adresses complet ne peut pas être vérifié exactement. Seules les variantes récupérées sont affichées.",
+  "Adres varyantları sunucuda, sayfalamadan önce eşleştirilir. Tarihler Analytics mülkünün saat dilimindedir; Search Console Pasifik takvimini kullanır.":
+    "Les variantes d’adresse sont associées sur le serveur avant la pagination. Les dates suivent le fuseau horaire de la propriété Analytics ; Search Console utilise le calendrier du Pacifique.",
   "Mülk kapsamı: tüm ana makineler ve akışlar. Bu toplam yalnızca projenin sitesine ait olmayabilir.":
     "Périmètre de la propriété : tous les hôtes et flux. Ce total peut inclure d’autres sites.",
   "Son günler yeniden işlenebilir; dün, tamamlanmış bir takvim günüdür, kesinleşmiş veri garantisi değildir.":

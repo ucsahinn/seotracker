@@ -44,6 +44,7 @@ const searchSchema = z
       .regex(/^\d{4}-\d{2}-\d{2}$/)
       .optional(),
     host: z.string().min(1).max(253).optional(),
+    pageGroup: z.string().min(1).max(8192).optional(),
     path: z.string().startsWith("/").max(4096).optional(),
     windowDays: z
       .union([z.literal(7), z.literal(28), z.literal(90)])
@@ -55,6 +56,12 @@ const searchSchema = z
       Boolean(value.startDate) === Boolean(value.endDate) &&
       (!value.startDate || !value.endDate || value.startDate <= value.endDate),
     "Provide both dates in chronological order.",
+  )
+  .refine(
+    (value) =>
+      !value.pageGroup ||
+      (value.view === "landing_pages" && !value.host && !value.path),
+    "A page group requires a landing-page report without a raw page filter.",
   )
   .refine(
     (value) => Boolean(value.host) === Boolean(value.path),

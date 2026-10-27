@@ -1,3 +1,4 @@
+import { COMPLETE_REPORT_LIMIT } from "./Ga4ReportEnhancements";
 import {
   normalizePageKey,
   joinPrecisionFor,
@@ -149,7 +150,7 @@ async function readAnalytics(
       kind: "landing_pages",
       startDate: dates.startDate,
       endDate: dates.endDate,
-      limit: 1_000,
+      limit: COMPLETE_REPORT_LIMIT,
       offset: 0,
       channel: "organic_search",
     });

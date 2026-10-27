@@ -31,6 +31,7 @@ export function buildReportExport(input: {
     },
     warnings: result.warnings ?? [],
     page: result.pageInfo ?? null,
+    pageGroup: result.pageGroup ?? null,
     listedRows: result.rows.length,
     exportedRows: rows.length,
     filters: input.filters,

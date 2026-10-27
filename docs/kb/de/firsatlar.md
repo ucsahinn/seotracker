@@ -6,6 +6,8 @@ route: /p/<proje>/opportunities
 updated: 2026-10-27
 ---
 
+„Analytics-Adressgruppe prüfen“ in der Zeile und Detailansicht öffnet organische Einstiegsseiten mit Quelldaten und normalisierter Adressgruppe. Ohne passende Adresse oder Daten ersetzt eine Erklärung den Link. Die Gruppe wird vor der Seiteneinteilung innerhalb derselben höchstens 1.000 Quellzeilen wie bei Chancen gefiltert. Analytics nennt Quellen- und Qualitätsgrenzen, die eine vollständige Bestätigung verhindern. Neu abgerufene Messwerte können sich ändern; gleiche Datumsangaben können in der GA4-Zeitzone und im pazifischen Kalender der Search Console andere Zeitspannen abdecken.
+
 # Chancen nutzen
 
 **Zuerst hier nachsehen** öffnet die Seite mit der höchsten berechenbaren Obergrenze zusätzlicher Klicks und nennt eine zu prüfende Maßnahme. Wie leicht oder schnell diese Arbeit ist, wird nicht gemessen.

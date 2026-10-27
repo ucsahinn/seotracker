@@ -6,6 +6,8 @@ route: /p/<proje>/opportunities
 updated: 2026-10-27
 ---
 
+« Esamina il gruppo di indirizzi Analytics » nella riga e nei dettagli apre le pagine di destinazione organiche con le date della fonte e il gruppo normalizzato. Senza corrispondenza dell’indirizzo o delle date, una spiegazione sostituisce il link. Il filtro precede la paginazione sulle stesse massimo 1.000 righe della fonte di Opportunità. Analytics segnala i limiti di fonte e qualità che impediscono di verificare l’intero gruppo. Le misure ricaricate possono cambiare; le stesse date possono coprire intervalli diversi nel fuso GA4 e nel calendario del Pacifico di Search Console.
+
 # Usare le opportunità
 
 **Guarda prima qui** apre la pagina con il limite massimo di clic aggiuntivi più alto tra quelle valutabili. L’azione proposta va verificata: facilità e rapidità del lavoro non sono misurate.

@@ -18,6 +18,7 @@ const schema = z.object({
    */
   windowDays: z.union([z.literal(7), z.literal(28), z.literal(90)]).default(28),
   limit: z.number().int().min(1).max(200).default(50),
+  pageGroup: z.string().min(1).max(8192).optional(),
   offset: z.number().int().min(0).max(10000000).default(0),
   comparePreviousPeriod: z.boolean().default(false),
   /*
@@ -66,6 +67,7 @@ export const getGa4Report = createServerFn({ method: "POST" })
         windowDays: data.windowDays,
         limit: data.limit,
         offset: data.offset,
+        pageGroup: data.pageGroup,
         comparePreviousPeriod: data.comparePreviousPeriod,
         audienceBreakdown: data.audienceBreakdown,
         acquisitionBreakdown: data.acquisitionBreakdown,
@@ -89,6 +91,7 @@ export const getGa4Report = createServerFn({ method: "POST" })
         reportMetadata: report.reportMetadata,
         warnings: report.warnings,
         pageInfo: report.pageInfo,
+        pageGroup: report.pageGroup,
         activityStatus:
           "ecommerceActivity" in report
             ? (report.ecommerceActivity?.status ?? null)

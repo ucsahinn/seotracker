@@ -6,6 +6,8 @@ route: /p/<proje>/opportunities
 updated: 2026-10-27
 ---
 
+Satırdaki ve ayrıntıdaki “Analytics adres grubunu incele” bağlantısı organik giriş sayfalarını kaynak tarihleri ve normalleştirilmiş adres grubu ile açar. Adres veya tarih eşleşmesi yoksa bağlantı yerine eşleşmenin doğrulanamadığı yazılır. Grup, Fırsatlar ile aynı en fazla 1.000 kaynak satırında sayfalama öncesi süzülür. Kaynak veya kalite kısıtı varsa Analytics tam grubun doğrulanamadığını belirtir. Yeniden alınan veriler değişebilir; aynı tarih etiketleri GA4 mülk saat dilimi ile Search Console Pasifik takviminde farklı zaman aralıklarını kapsayabilir.
+
 # Fırsatlar nasıl kullanılır?
 
 Bu ekran, önce hangi sayfaya bakacağınızı ve hangi işi inceleyeceğinizi gösterir. **Önce şuna bakın** en yüksek hesaplanabilen ek tıklama sınırına sahip sayfayı açar. Bu, işin kolay veya hızlı olduğunun ölçümü değildir.

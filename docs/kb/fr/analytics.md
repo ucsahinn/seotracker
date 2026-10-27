@@ -6,6 +6,8 @@ route: /p/<proje>/analytics
 updated: 2026-10-27
 ---
 
+Les liens depuis Opportunités ouvrent le même groupe d’adresses normalisées et les dates sources via `pageGroup`. Le serveur filtre les mêmes 1 000 lignes de pages de destination organiques au maximum avant la pagination de 50/100/200 lignes. Les paramètres de requête et barres obliques finales partagent un groupe ; les hôtes différents et chemins sensibles à la casse restent séparés. Une limite de source ou de qualité empêche de confirmer le groupe complet et est signalée. Un résultat vide ne prouve pas l’absence de trafic. La synthèse conserve la portée de la propriété. Le filtre peut être retiré ; l’URL, le retour arrière et les exports préservent sa portée.
+
 Analytics présente les visites, l’engagement et les événements clés mesurés dans votre propriété GA4. Le sélecteur propose les pages de destination, les pages, l’acquisition, les événements clés, l’e-commerce, la recherche interne, l’audience et les paramètres de mesure.
 
 ## Lire le périmètre

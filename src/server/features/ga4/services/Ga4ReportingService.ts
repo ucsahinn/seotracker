@@ -1,4 +1,5 @@
 import { createGa4DataClient } from "@/server/lib/ga4Client";
+import { normalizePageKey } from "@/shared/normalizePageKey";
 import { recordGa4Quota } from "@/server/features/quotas/ga4QuotaSnapshot";
 import {
   Ga4MalformedResponseError,
@@ -33,6 +34,7 @@ export type Ga4ReportInput = {
   endDate?: string;
   limit?: number;
   offset?: number;
+  pageGroup?: string;
   channel?: Ga4Channel;
   includeDate?: boolean;
   breakdown?: "event" | "event_and_landing_page";
@@ -226,7 +228,20 @@ async function runReport(input: Ga4ReportInput, opts: { now?: Date } = {}) {
       "Previous-period comparison is only available for event key events, channel-group acquisition, device audiences, and new-versus-returning audiences.",
     );
   }
-  const fetchCompleteReport = needsCompleteReport(input);
+  if (
+    input.pageGroup !== undefined &&
+    (input.kind !== "landing_pages" ||
+      input.pageGroup !== normalizePageKey(input.pageGroup))
+  ) {
+    throw new Ga4ReportError(
+      "validation_error",
+      "pageGroup must be a canonical landing-page key.",
+    );
+  }
+  // Use the same bounded source universe as Opportunities, then match before
+  // UI pagination. A capped source cannot prove that all variants are present.
+  const fetchCompleteReport =
+    needsCompleteReport(input) || input.pageGroup !== undefined;
   const reportConfiguration = getGa4ReportConfiguration({
     ...input,
     ...dateRange.resolvedDateRange,
@@ -287,7 +302,39 @@ async function runReport(input: Ga4ReportInput, opts: { now?: Date } = {}) {
       trackedClient.runReport(request),
       previousRequest ? trackedClient.runReport(previousRequest) : null,
     ]);
-    const normalized = normalizeGa4Response(response, request);
+    const source = normalizeGa4Response(response, request);
+    const groupRows =
+      input.pageGroup === undefined
+        ? source.rows
+        : source.rows.filter(
+            (row) =>
+              typeof row.hostName === "string" &&
+              typeof row.landingPage === "string" &&
+              normalizePageKey(`${row.hostName}${row.landingPage}`) ===
+                input.pageGroup,
+          );
+    const pageGroup =
+      input.pageGroup === undefined
+        ? null
+        : {
+            key: input.pageGroup,
+            complete:
+              source.totalRowCount <= source.rows.length &&
+              !source.reportMetadata.hasLimitedData,
+            sourceTotalRowCount: source.totalRowCount,
+            sourceFetchedRowCount: source.rows.length,
+          };
+    const normalized = pageGroup
+      ? {
+          ...source,
+          rows: groupRows,
+          totalRowCount: groupRows.length,
+          reportMetadata: {
+            ...source.reportMetadata,
+            hasLimitedData: !pageGroup.complete,
+          },
+        }
+      : source;
     const previousNormalized =
       previousResponse && previousRequest
         ? normalizeGa4Response(previousResponse, previousRequest)
@@ -336,6 +383,7 @@ async function runReport(input: Ga4ReportInput, opts: { now?: Date } = {}) {
         limit,
         offset,
       },
+      pageGroup,
       rowCount,
       totalRowCount: normalized.totalRowCount,
       rows,

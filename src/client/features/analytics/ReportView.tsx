@@ -30,6 +30,7 @@ import { buildReportExport } from "./reportExport";
 import type { Ga4ReportKindName } from "@/shared/ga4-reports";
 import type { Ga4ReportMetadata } from "@/server/features/ga4/services/Ga4ReportNormalization";
 import { AnalyticsEvidence } from "./AnalyticsEvidence";
+import { AnalyticsPageScope } from "./AnalyticsPageScope";
 import { t } from "@/shared/i18n";
 
 export type ReportResult = {
@@ -58,6 +59,12 @@ export type ReportResult = {
   reportMetadata?: Ga4ReportMetadata;
   warnings?: string[];
   requestedDateRange?: { startDate: string; endDate: string } | null;
+  pageGroup?: {
+    key: string;
+    complete: boolean;
+    sourceTotalRowCount: number;
+    sourceFetchedRowCount: number;
+  } | null;
   pageInfo?: {
     offset: number;
     limit: number;
@@ -85,10 +92,12 @@ export function ReportView({
   onOrganicOnlyChange,
   onOpenHealth,
   exactPage,
+  onClearPageGroup,
   configurationState = "unknown",
 }: {
   kind: Ga4ReportKindName;
   exactPage?: { host: string; path: string };
+  onClearPageGroup?: () => void;
   configurationState?: "configured" | "none" | "unknown";
   result: ReportResult;
   organicOnly: boolean;
@@ -215,15 +224,11 @@ export function ReportView({
           count: result.rows.length,
         })}
       </p>
-      {exactPage ? (
-        <p className="break-all text-xs text-muted">
-          {exactPage.host}
-          {exactPage.path} ·{" "}
-          {t(
-            "Birebir sayfa filtresi yalnızca listelenen satırlara uygulanır; diğer sayfalarda da arayın.",
-          )}
-        </p>
-      ) : null}
+      <AnalyticsPageScope
+        pageGroup={result.pageGroup}
+        exactPage={exactPage}
+        onClearPageGroup={onClearPageGroup}
+      />
       <ReportSummary
         plan={plan}
         kpis={kpis}
@@ -370,6 +375,7 @@ export function ReportView({
       {result.rows.length === 0 ? (
         <div className="rounded-box border border-base-300 bg-base-100">
           <ReportEmptyState
+            pageGroup={Boolean(result.pageGroup)}
             kind={kind}
             organicOnly={organicOnly}
             emptyReason={result.emptyReason}

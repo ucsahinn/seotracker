@@ -1,6 +1,17 @@
 import type { Catalog } from "@/shared/i18n";
 
 export const deAnalytics: Catalog = {
+  "Analytics adres grubu": "Analytics-Adressgruppe",
+  "Analytics adres grubunu incele": "Analytics-Adressgruppe prüfen",
+  "Analytics adres grubu birebir eşleştirilemiyor.":
+    "Die Analytics-Adressgruppe kann nicht exakt zugeordnet werden.",
+  "Kaynak sınırlıysa Analytics tam eşleşmenin doğrulanamadığını belirtir.":
+    "Bei eingeschränkter Quelle weist Analytics darauf hin, dass eine exakte Zuordnung nicht bestätigt werden kann.",
+  "Adres grubu filtresini kaldır": "Adressgruppenfilter entfernen",
+  "Kaynak sınırlı; adres grubunun tamamı birebir doğrulanamıyor. Yalnızca alınan varyantlar gösteriliyor.":
+    "Die Quelle ist eingeschränkt; die vollständige Adressgruppe lässt sich nicht exakt bestätigen. Nur abgerufene Varianten werden angezeigt.",
+  "Adres varyantları sunucuda, sayfalamadan önce eşleştirilir. Tarihler Analytics mülkünün saat dilimindedir; Search Console Pasifik takvimini kullanır.":
+    "Adressvarianten werden auf dem Server vor der Seiteneinteilung zugeordnet. Datumsangaben folgen der Zeitzone der Analytics-Property; die Search Console nutzt den pazifischen Kalender.",
   "Mülk kapsamı: tüm ana makineler ve akışlar. Bu toplam yalnızca projenin sitesine ait olmayabilir.":
     "Property-Umfang: alle Hosts und Datenstreams. Diese Summe kann weitere Websites enthalten.",
   "Son günler yeniden işlenebilir; dün, tamamlanmış bir takvim günüdür, kesinleşmiş veri garantisi değildir.":

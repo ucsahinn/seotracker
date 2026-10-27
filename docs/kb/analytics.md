@@ -16,6 +16,8 @@ Son 7, 28 veya 90 gün, mülkün saat diliminde dünle biter. Dün, tamamlanmı�
 
 ## Sonuçları ve satırları inceleyin
 
+Fırsatlar bağlantıları `pageGroup` ile aynı normalleştirilmiş adres grubunu ve kaynak tarihlerini açar. Bu sunucu filtresi, Fırsatlar ile aynı en fazla 1.000 organik giriş sayfası satırını kullanır ve 50/100/200 satırlık sayfalamadan önce uygulanır. Sorgu dizeleri ve sondaki eğik çizgiler aynı grupta, farklı ana makineler ve büyük/küçük harfi farklı yollar ayrı kalır. Kaynak sınırı veya kalite kısıtı varsa grubun tamamının doğrulanamadığı belirtilir; boş sonuç grubun hiç trafiği olmadığını kanıtlamaz. Üst özet tüm mülk kapsamında kalır. Adres grubu filtresi kaldırılabilir; URL, Geri ve dışa aktarma grup kapsamını korur.
+
 Üst özet seçilen kapsamın oturum, etkileşim oranı, anahtar olay ve satın alma gelirini gösterir. Anahtar olay, benzersiz müşteri değildir. Sıfır gelir mağaza olmadığı anlamına gelmez. Para birimi bilinmiyorsa tutarın yanında belirtilir. Etkileşim süresi toplam süredir, kullanıcı başına ortalama değildir. Günlük değerler açılır bölümünde bilinmeyen günler sıfırdan ayrılır. Örnekleme, gizlilik eşiği ve erişim kısıtları varsa karşılaştırma veya güçlü öneri gösterilmez.
 
 Sayfa boyutu 50, 100 veya 200 satırdır; Önceki/Sonraki sayfa kalan satırlara ulaştırır. Filtreler, sıralama, özetler ve dışa aktarma yalnızca listelenen sayfayı kapsar. Çubuk seçimi tabloyu daraltır; özetin tabanı değişmez. Kullanıcılar farklı kategorilerde tekrar sayılabilir: satırları toplayıp benzersiz kullanıcı toplamı çıkarmayın. Aynı yolun farklı ana makineleri ve aynı adlı farklı ürünler ayrı tutulur. Negatif veya bilinmeyen gelir için pay grafiği çizilmez.

@@ -6,6 +6,8 @@ route: /p/<proje>/opportunities
 updated: 2026-10-27
 ---
 
+“Inspect Analytics address group” in a row or its detail opens organic landing pages with the source dates and normalized address group. When the address or dates cannot be matched, an explanation replaces the link. The group is filtered before pagination within the same source of up to 1,000 rows used by Opportunities. Analytics discloses source or quality limits that prevent verification of the complete group. Refetched measurements may change; matching date labels can cover different time spans in the GA4 property timezone and Search Console Pacific calendar.
+
 # How to use Opportunities
 
 Start with **Look here first**. It opens the page with the highest estimable additional-click upper bound and suggests work to investigate. It does not measure how easy or fast the work will be.

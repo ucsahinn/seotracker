@@ -164,7 +164,7 @@ function BandChange({ band, change }: { band: BandId; change: number | null }) {
     );
   if (change === 0) {
     return (
-      <span className="w-14 shrink-0 text-right text-xs text-subtle">
+      <span className="min-w-14 shrink-0 whitespace-nowrap text-right text-xs text-subtle">
         {t("Değişmedi")}
       </span>
     );
@@ -173,7 +173,7 @@ function BandChange({ band, change }: { band: BandId; change: number | null }) {
   const Icon = change > 0 ? ArrowUp : ArrowDown;
   return (
     <span
-      className={`inline-flex w-14 shrink-0 items-center justify-end gap-0.5 text-xs font-medium tabular-nums ${
+      className={`inline-flex min-w-14 shrink-0 items-center justify-end gap-0.5 text-xs font-medium tabular-nums ${
         good ? "text-[var(--ink-success)]" : "text-[var(--ink-error)]"
       }`}
       title={t(

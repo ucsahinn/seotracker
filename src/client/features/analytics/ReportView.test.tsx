@@ -16,6 +16,65 @@ const base = {
   emptyReason: null,
 } as const;
 
+it("discloses incomplete address groups and offers to remove the server filter", () => {
+  const onClearPageGroup = vi.fn();
+  render(
+    <ReportView
+      kind="landing_pages"
+      organicOnly
+      onOrganicOnlyChange={() => {}}
+      onClearPageGroup={onClearPageGroup}
+      result={{
+        ...base,
+        dimensions: ["hostName", "landingPage"],
+        metrics: ["sessions"],
+        rows: [{ hostName: "example.com", landingPage: "/a/", sessions: 5 }],
+        pageGroup: {
+          key: "example.com/a",
+          complete: false,
+          sourceFetchedRowCount: 1000,
+          sourceTotalRowCount: 1001,
+        },
+      }}
+    />,
+  );
+  expect(
+    screen.getByText(
+      "Kaynak sınırlı; adres grubunun tamamı birebir doğrulanamıyor. Yalnızca alınan varyantlar gösteriliyor.",
+    ),
+  ).toBeTruthy();
+  fireEvent.click(
+    screen.getByRole("button", { name: "Adres grubu filtresini kaldır" }),
+  );
+  expect(onClearPageGroup).toHaveBeenCalledOnce();
+});
+
+it("does not turn an empty bounded group into a claim that Google returned no data", () => {
+  render(
+    <ReportView
+      kind="landing_pages"
+      organicOnly
+      onOrganicOnlyChange={() => {}}
+      result={{
+        ...base,
+        rowCount: 0,
+        totalRowCount: 0,
+        dimensions: ["hostName", "landingPage"],
+        metrics: ["sessions"],
+        rows: [],
+        pageGroup: {
+          key: "example.com/a",
+          complete: false,
+          sourceFetchedRowCount: 1000,
+          sourceTotalRowCount: 1001,
+        },
+      }}
+    />,
+  );
+  expect(screen.getByText("Bu filtrelere uyan satır yok")).toBeTruthy();
+  expect(screen.queryByText("Bu dönemde veri yok")).toBeNull();
+});
+
 const channels: ReportResult = {
   ...base,
   dimensions: ["sessionDefaultChannelGroup"],

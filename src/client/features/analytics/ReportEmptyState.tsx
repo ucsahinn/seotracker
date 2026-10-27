@@ -71,15 +71,27 @@ export function ReportEmptyState({
   emptyReason,
   onShowAllTraffic,
   onOpenHealth,
+  pageGroup = false,
 }: {
   kind: Ga4ReportKindName;
   organicOnly: boolean;
   emptyReason: string | null;
   onShowAllTraffic: () => void;
   onOpenHealth?: () => void;
+  pageGroup?: boolean;
 }) {
   const copy = COPY[kind];
   const narrowedByChannel = organicOnly && !IGNORES_CHANNEL.has(kind);
+
+  if (pageGroup) {
+    return (
+      <EmptyState
+        icon={BarChart3}
+        title={t("Bu filtrelere uyan satır yok")}
+        description={t("Seçtiğiniz filtrelerle hiçbir satır eşleşmiyor.")}
+      />
+    );
+  }
 
   if (!copy) {
     return (

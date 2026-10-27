@@ -5,6 +5,17 @@ import type { Catalog } from "@/shared/i18n";
  * Keys are the Turkish source strings exactly as passed to t().
  */
 export const enAnalytics: Catalog = {
+  "Analytics adres grubu": "Analytics address group",
+  "Analytics adres grubunu incele": "Inspect Analytics address group",
+  "Analytics adres grubu birebir eşleştirilemiyor.":
+    "The Analytics address group cannot be matched exactly.",
+  "Kaynak sınırlıysa Analytics tam eşleşmenin doğrulanamadığını belirtir.":
+    "If the source is limited, Analytics explains that an exact match cannot be verified.",
+  "Adres grubu filtresini kaldır": "Remove address group filter",
+  "Kaynak sınırlı; adres grubunun tamamı birebir doğrulanamıyor. Yalnızca alınan varyantlar gösteriliyor.":
+    "The source is limited; the complete address group cannot be verified exactly. Only fetched variants are shown.",
+  "Adres varyantları sunucuda, sayfalamadan önce eşleştirilir. Tarihler Analytics mülkünün saat dilimindedir; Search Console Pasifik takvimini kullanır.":
+    "Address variants are matched on the server before pagination. Dates use the Analytics property's timezone; Search Console uses the Pacific calendar.",
   "Bağlantıyı düzelt": "Fix the connection",
   "Hazırlık puanı": "Readiness score",
   "{completed} / {total} hazır": "{completed} / {total} ready",

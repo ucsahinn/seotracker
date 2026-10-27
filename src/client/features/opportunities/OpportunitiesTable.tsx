@@ -1,4 +1,5 @@
 import { t } from "@/shared/i18n";
+import { OpportunityAnalyticsLink } from "./OpportunityAnalyticsLink";
 import { useMemo, useState, type MouseEvent } from "react";
 import { Target } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
@@ -67,8 +68,12 @@ export function OpportunitiesTable({
   const setOpenPage = onOpenPageChange ?? setOwnPage;
   const maxGain = rows.reduce((max, row) => Math.max(max, row.gainPerMonth), 0);
   const columns = useMemo(
-    () => buildOpportunityColumns((row) => setOpenPage(row.page), maxGain),
-    [setOpenPage, maxGain],
+    () =>
+      buildOpportunityColumns((row) => setOpenPage(row.page), maxGain, {
+        projectId,
+        dateRange: report?.request.dateRange,
+      }),
+    [setOpenPage, maxGain, projectId, report?.request.dateRange],
   );
   const table = useAppTable({
     data: rows,
@@ -209,6 +214,11 @@ export function OpportunitiesTable({
             >
               {t("Ayrıntı")}
             </button>
+            <OpportunityAnalyticsLink
+              row={row}
+              projectId={projectId}
+              dateRange={report?.request.dateRange}
+            />
           </article>
         ))}
         {rows.length === 0 ? (
