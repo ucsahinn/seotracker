@@ -182,13 +182,13 @@ const pages: ReportResult = {
     {
       hostName: "a.io",
       landingPage: "/c",
-      sessions: 20,
+      sessions: 60,
       sessionKeyEventRate: 0,
     },
     {
       hostName: "a.io",
       landingPage: "/d",
-      sessions: 10,
+      sessions: 40,
       sessionKeyEventRate: 0.2,
     },
   ],
@@ -207,7 +207,7 @@ describe("ReportView per-tab summaries", () => {
   it("flags busy pages that convert poorly", () => {
     mount(pages, "landing_pages");
 
-    // Median sessions 50, median rate 0.05: only /a is busy and below it.
+    // Four eligible pages; median sessions 70 and rate 0.05: only /a matches.
     const quickFilters = within(
       screen.getByRole("group", { name: "Hızlı filtreler" }),
     );

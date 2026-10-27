@@ -1,3 +1,4 @@
+import { recordGa4Quota } from "@/server/features/quotas/ga4QuotaSnapshot";
 import { fractionalChange } from "@/shared/delta";
 import { Ga4ConnectionRepository } from "@/server/features/ga4/repositories/Ga4ConnectionRepository";
 import { createGa4DataClient } from "@/server/lib/ga4Client";
@@ -18,6 +19,7 @@ type Ga4OrganicOverviewInput = {
   /** Days back from the last complete day, when no explicit range is given. */
   windowDays?: number;
   trend?: "daily" | "weekly";
+  channel?: "organic_search" | "all";
 };
 
 function metricComparison(
@@ -55,7 +57,7 @@ function keyEventDiagnostics(
       code: "key_events_sharp_decline",
       severity: "warning",
       message:
-        "Organic key events declined sharply compared with the previous equal-length period.",
+        "Key events declined sharply compared with the previous equal-length period.",
       evidence: {
         current: currentValue,
         previous: previousValue,
@@ -85,14 +87,20 @@ async function getOrganicOverview(
     opts.now,
   );
   const previousDateRange = previousPeriod(dateRange.resolvedDateRange);
-  const currentRequest = buildGa4OverviewRequest(dateRange.resolvedDateRange);
+  const channel = input.channel ?? "organic_search";
+  const currentRequest = buildGa4OverviewRequest({
+    ...dateRange.resolvedDateRange,
+    channel,
+  });
   const previousRequest = buildGa4OverviewRequest({
     ...previousDateRange,
+    channel,
   });
   const trend = input.trend ?? "daily";
   const trendRequest = buildGa4OverviewRequest({
     ...dateRange.resolvedDateRange,
     trend,
+    channel,
   });
   const client = createGa4DataClient({
     userId: connection.connectedByUserId,
@@ -100,12 +108,25 @@ async function getOrganicOverview(
     propertyId: connection.propertyId,
   });
 
+  const trackedReport = async (request: typeof currentRequest) => {
+    const response = await client.runReport(request);
+    recordGa4Quota(
+      {
+        projectId: input.projectId,
+        propertyId: connection.propertyId,
+        ga4AccountId: connection.ga4AccountId,
+        connectedByUserId: connection.connectedByUserId,
+      },
+      response.propertyQuota ?? null,
+    );
+    return response;
+  };
   try {
     const [currentResponse, previousResponse, trendResponse] =
       await Promise.all([
-        client.runReport(currentRequest),
-        client.runReport(previousRequest),
-        client.runReport(trendRequest),
+        trackedReport(currentRequest),
+        trackedReport(previousRequest),
+        trackedReport(trendRequest),
       ]);
     const current = normalizeGa4Response(currentResponse, currentRequest);
     const previous = normalizeGa4Response(previousResponse, previousRequest);
@@ -127,9 +148,12 @@ async function getOrganicOverview(
         requestedDateRange: dateRange.requestedDateRange,
         resolvedDateRange: dateRange.resolvedDateRange,
         previousDateRange,
-        propertyTimeZone: connection.propertyTimeZone,
-        currencyCode: connection.propertyCurrencyCode,
-        channel: "organic_search" as const,
+        propertyTimeZone:
+          currentResponse.metadata?.timeZone ?? connection.propertyTimeZone,
+        currencyCode:
+          currentResponse.metadata?.currencyCode ??
+          connection.propertyCurrencyCode,
+        channel,
         trend,
       },
       current: currentSummary,
@@ -148,6 +172,10 @@ async function getOrganicOverview(
       quota: trendReport.quota ?? current.quota,
       warnings: [
         ...dateRange.warnings,
+        ...(currentResponse.metadata?.timeZone &&
+        currentResponse.metadata.timeZone !== connection.propertyTimeZone
+          ? ["property_time_zone_changed"]
+          : []),
         ...(trendReport.totalRowCount > trendReport.rows.length
           ? ["trend_truncated"]
           : []),

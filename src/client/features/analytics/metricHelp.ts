@@ -6,13 +6,13 @@ import { t } from "@/shared/i18n";
  */
 export const GA4_HELP = {
   keyEvents:
-    "Sizin 'önemli' saydığınız hareket, örneğin form gönderme ya da satın alma. Tanımlı değilse hep 0 görünür.",
+    "Önemli sayılan olayların tetiklenme sayısıdır; benzersiz müşteri sayısı değildir. Sıfır, kurulumun eksik olduğunu kanıtlamaz.",
   keyEventRate:
-    "Oturumların yüzde kaçında önemli saydığınız bir hareket (anahtar olay) gerçekleşti. Anahtar olay tanımlı değilse hep %0 görünür.",
+    "En az bir anahtar olay içeren oturumların payıdır. Olay sayısının oturuma bölünmesiyle hesaplanmaz.",
   engagementRate:
     "Ziyaretçinin sayfada vakit geçirip bir şey yaptığı oturumların yüzdesi.",
   activeUsers:
-    "Seçilen aralıkta siteyle gerçekten etkileşime giren (sayfada vakit geçiren ya da bir şey yapan) kişi sayısı.",
+    "Bu satırdaki aktif kullanıcılardır; aynı kişi farklı sayfa ve kategorilerde tekrar sayılabilir.",
 } as const;
 
 /** Help text for a report column, when it is one beginners tend to trip on. */
@@ -26,6 +26,40 @@ export function ga4ColumnHelp(field: string): string | undefined {
       return t(GA4_HELP.engagementRate);
     case "activeUsers":
       return t(GA4_HELP.activeUsers);
+    case "sessions":
+      return t(
+        "Oturum, bir ziyaret dönemidir; aynı kişi birden fazla oturum başlatabilir.",
+      );
+    case "transactions":
+      return t(
+        "Kaydedilen işlem sayısıdır; satılan ürün adedi ve benzersiz alıcı sayısı farklıdır.",
+      );
+    case "userEngagementDuration":
+      return t(
+        "Bu satırdaki kullanıcıların toplam etkileşim süresidir; kullanıcı başına ortalama değildir.",
+      );
+    case "screenPageViews":
+      return t(
+        "Tekrarlanan görüntülemeler dahildir; benzersiz sayfa veya ziyaretçi sayısı değildir.",
+      );
+    case "itemsViewed":
+    case "itemsAddedToCart":
+    case "itemsPurchased":
+      return t(
+        "Ürün adedidir; sipariş sayısı değildir ve bu sütunlar bir dönüşüm hunisi oluşturmaz.",
+      );
+    case "itemRevenue":
+      return t(
+        "Ürün kapsamlı gelirdir; satın alma geliriyle aynı ölçüm değildir. İadeler negatif olabilir.",
+      );
+    case "purchaseRevenue":
+      return t(
+        "Mülkün para biriminde satın alma geliri; ürün gelirinden farklıdır.",
+      );
+    case "totalUsers":
+      return t(
+        "Bu satırdaki kullanıcılar başka satırlarda tekrar sayılabilir; satırları benzersiz kullanıcı toplamı için toplamayın.",
+      );
     default:
       return undefined;
   }

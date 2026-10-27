@@ -25,6 +25,9 @@ const projectScopedSchema = z.object({ projectId: z.string().min(1) });
 const overviewSchema = projectScopedSchema.extend({
   /** Omitted by the dashboard card, which wants the service's default. */
   windowDays: z.number().int().positive().max(365).optional(),
+  channel: z.enum(["organic_search", "all"]).optional(),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
 });
 const setPropertySchema = projectScopedSchema.extend({
   accountId: z.string().min(1),
@@ -87,6 +90,9 @@ export const getGa4DashboardReport = createServerFn({ method: "POST" })
       const overview = await Ga4OrganicOverviewService.getOrganicOverview({
         projectId: context.projectId,
         windowDays: data.windowDays,
+        channel: data.channel,
+        startDate: data.startDate,
+        endDate: data.endDate,
       });
       /*
        * Every metric the report asked for, not four of seven.
@@ -114,6 +120,10 @@ export const getGa4DashboardReport = createServerFn({ method: "POST" })
         // window comes too: a delta badge that does not say what it is
         // against is "%12 arttı" with an unnamed baseline.
         resolvedDateRange: overview.request.resolvedDateRange,
+        requestedDateRange: overview.request.requestedDateRange,
+        propertyId: overview.source.propertyId,
+        channel: overview.request.channel,
+        diagnostics: overview.diagnostics,
         previousDateRange: overview.request.previousDateRange,
         // Revenue with no unit is a bare number. The property's currency was
         // already read from the Admin API and carried this far.

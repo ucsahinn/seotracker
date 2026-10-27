@@ -92,6 +92,13 @@ async function getMeasurementHealth(projectId: string) {
         issueCount: issues.length,
       },
       issues,
+      fetchedAt: new Date().toISOString(),
+      configurationState:
+        keyEvents.length > 0
+          ? ("configured" as const)
+          : keyEventList.complete
+            ? ("none" as const)
+            : ("unknown" as const),
       incompleteLists,
       webStreams,
       otherStreams: streams

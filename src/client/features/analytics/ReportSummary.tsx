@@ -1,21 +1,10 @@
-import { DonutCard } from "@/client/components/DonutChart";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
-import {
-  DistributionBars,
-  type DistributionRow,
-} from "@/client/features/audit/results/DistributionBars";
-import { OTHER_KEY } from "@/client/features/analytics/reportInsights";
-import type { SummaryPlan } from "@/client/features/analytics/reportBuckets";
-import type { Kpi } from "@/client/features/analytics/reportKpis";
-import { formatGa4Metric } from "@/client/features/analytics/ReportTable";
-import { formatPercent } from "@/client/lib/format";
+import type { SummaryPlan } from "./reportBuckets";
+import type { Kpi } from "./reportKpis";
+import { formatGa4Metric } from "./ReportTable";
 import { t } from "@/shared/i18n";
 
-/**
- * The tab's own summary: a few figures, then the chart that answers the tab's
- * question. Clicking a ring slice or a bar hands its key to the report, which
- * narrows the table below to those rows.
- */
+/** Solid marks preserve category identities and overlapping user counts. */
 export function ReportSummary({
   plan,
   kpis,
@@ -29,99 +18,62 @@ export function ReportSummary({
   onSelect: (key: string | null) => void;
   currencyCode: string | null;
 }) {
-  if (!plan && kpis.length === 0) return null;
+  if (!plan && !kpis.length) return null;
+  const max = Math.max(1, ...(plan?.segments.map((s) => s.value) ?? []));
   return (
-    <div className="enter space-y-3">
-      {kpis.length > 0 ? (
+    <div className="space-y-3">
+      {kpis.length ? (
         <MetricRow>
-          {kpis.map((kpi) => (
+          {kpis.map((k) => (
             <MetricTile
-              key={kpi.label}
-              label={kpi.label}
-              value={kpi.value}
-              hint={kpi.hint}
+              key={k.label}
+              label={k.label}
+              value={k.value}
+              animateTo={k.animateTo}
+              hint={k.hint}
             />
           ))}
         </MetricRow>
       ) : null}
       {plan ? (
-        <SummaryChart
-          plan={plan}
-          selectedKey={selectedKey}
-          onSelect={onSelect}
-          currencyCode={currencyCode}
-        />
+        <section className="rounded-box border border-base-300 bg-base-100 p-4">
+          <h2 className="text-sm font-medium">{plan.title}</h2>
+          <p className="mb-3 text-xs text-muted">
+            {t("Birine tıklayın, aşağıdaki tablo o satırlara daralsın.")}
+          </p>
+          {!plan.showShares ? (
+            <p className="mb-2 text-xs text-muted">
+              {t(
+                "Kullanıcılar kategoriler arasında tekrar sayılabilir; bu değerler benzersiz mülk toplamı değildir.",
+              )}
+            </p>
+          ) : null}
+          <div className="space-y-1">
+            {plan.segments.map((s) => (
+              <button
+                type="button"
+                key={s.key}
+                aria-pressed={s.key === selectedKey}
+                onClick={() => onSelect(s.key === selectedKey ? null : s.key)}
+                className="block min-h-11 w-full rounded-field px-2 py-2 text-left hover:bg-base-200 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary"
+              >
+                <span className="flex min-w-0 flex-wrap justify-between gap-2 text-xs">
+                  <span className="break-all">{s.label}</span>
+                  <span>
+                    {formatGa4Metric(plan.field, s.value, currencyCode)}
+                  </span>
+                </span>
+                <span aria-hidden className="mt-1 block h-1.5 w-full">
+                  <span
+                    className="block h-full origin-left rounded-full bg-primary motion-safe:transition-transform"
+                    style={{ transform: "scaleX(" + s.value / max + ")" }}
+                  />
+                </span>
+              </button>
+            ))}
+          </div>
+        </section>
       ) : null}
     </div>
-  );
-}
-
-function SummaryChart({
-  plan,
-  selectedKey,
-  onSelect,
-  currencyCode,
-}: {
-  plan: SummaryPlan;
-  selectedKey: string | null;
-  onSelect: (key: string | null) => void;
-  currencyCode: string | null;
-}) {
-  const format = (value: number) =>
-    formatGa4Metric(plan.field, value, currencyCode);
-  const total = plan.segments.reduce((sum, segment) => sum + segment.value, 0);
-  const lead = plan.segments[0];
-  const totals = t("{title}: toplam {total} {unit}.", {
-    title: plan.title,
-    total: format(total),
-    unit: plan.unit,
-  });
-  const summary = lead
-    ? `${totals} ${t("En büyük pay {label}, {share}.", {
-        label: lead.label,
-        share: formatPercent(lead.value / total),
-      })}`
-    : totals;
-  const description = t(
-    "Birine tıklayın, aşağıdaki tablo o satırlara daralsın.",
-  );
-
-  if (plan.form === "ring") {
-    return (
-      <DonutCard
-        title={plan.title}
-        description={description}
-        totalLabel={plan.unit}
-        segments={plan.segments}
-        summary={summary}
-        selectedKey={selectedKey}
-        onSelect={onSelect}
-      />
-    );
-  }
-
-  const rows = plan.segments.map(
-    (segment): DistributionRow => ({
-      key: segment.key,
-      label: segment.label,
-      count: segment.value,
-      color:
-        segment.key === OTHER_KEY
-          ? "var(--color-base-300)"
-          : "var(--color-primary)",
-      active: segment.key === selectedKey,
-    }),
-  );
-  return (
-    <section className="rounded-box border border-base-300 bg-base-100 px-3 py-3">
-      <h2 className="px-2 text-sm font-medium">{plan.title}</h2>
-      <p className="mb-2 px-2 text-xs text-muted">{description}</p>
-      <DistributionBars
-        rows={rows}
-        summary={summary}
-        format={format}
-        onSelect={(key) => onSelect(key === selectedKey ? null : key)}
-      />
-    </section>
   );
 }

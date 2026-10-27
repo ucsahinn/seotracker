@@ -1,10 +1,16 @@
+import type {
+  Ga4RunReportRequest,
+  Ga4RunReportResponse,
+} from "@/server/lib/ga4Client";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { makeGa4Connection } from "./ga4-test-fixtures";
+import { readGa4Quota } from "@/server/features/quotas/ga4QuotaSnapshot";
 import { Ga4OrganicOverviewService } from "./Ga4OrganicOverviewService";
 
 const mocks = vi.hoisted(() => ({
   getByProjectId: vi.fn(),
-  runReport: vi.fn(),
+  runReport:
+    vi.fn<(request: Ga4RunReportRequest) => Promise<Ga4RunReportResponse>>(),
 }));
 
 vi.mock("@/server/features/ga4/repositories/Ga4ConnectionRepository", () => ({
@@ -211,5 +217,30 @@ describe("Ga4OrganicOverviewService", () => {
       minimumPreviousKeyEvents: 5,
       percentChange: -0.5,
     });
+  });
+
+  it("uses all traffic for totals, prior period and trend, and records quota without another request", async () => {
+    mocks.runReport.mockResolvedValue({
+      propertyQuota: { tokensPerDay: { consumed: 1, remaining: 199769 } },
+    });
+    const result = await Ga4OrganicOverviewService.getOrganicOverview(
+      { projectId: "all_traffic_test", channel: "all" },
+      { now: new Date("2026-08-06T15:00:00Z") },
+    );
+    expect(result.request.channel).toBe("all");
+    expect(mocks.runReport).toHaveBeenCalledTimes(3);
+    expect(
+      mocks.runReport.mock.calls.every(
+        ([request]) => request.dimensionFilter === undefined,
+      ),
+    ).toBe(true);
+    expect(
+      readGa4Quota({
+        projectId: "all_traffic_test",
+        propertyId: connection.propertyId,
+        ga4AccountId: connection.ga4AccountId,
+        connectedByUserId: connection.connectedByUserId,
+      })?.tokensPerDay,
+    ).toEqual({ consumed: 1, remaining: 199769 });
   });
 });

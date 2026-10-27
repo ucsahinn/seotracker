@@ -36,7 +36,8 @@ export type NormalizedGa4Report = {
   quota: Ga4Quota | null;
 };
 
-function parseFiniteMetric(value: string): number {
+function parseFiniteMetric(value: string | undefined): number | null {
+  if (value === undefined || value.trim() === "") return null;
   const parsed = Number(value);
   if (!Number.isFinite(parsed)) throw new Ga4MalformedResponseError();
   return parsed;
@@ -93,7 +94,7 @@ export function normalizeGa4Response(
     metrics.forEach((name, index) => {
       normalized[name] = restrictedNames.has(name)
         ? null
-        : parseFiniteMetric(row.metricValues?.[index]?.value ?? "");
+        : parseFiniteMetric(row.metricValues?.[index]?.value);
     });
     return normalized;
   });

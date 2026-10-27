@@ -1,3 +1,4 @@
+import { sortBy } from "remeda";
 import { FilterX } from "lucide-react";
 import * as React from "react";
 import { EmptyState } from "@/client/components/EmptyState";
@@ -10,12 +11,12 @@ import {
   columnLabel,
   compareReportCells,
   ReportTable,
-  toCsvRows,
 } from "@/client/features/analytics/ReportTable";
 import {
   applyChips,
   applySegment,
   availableChips,
+  reportIdentity,
   type ChipId,
   type ReportRow,
 } from "@/client/features/analytics/reportInsights";
@@ -24,8 +25,11 @@ import { buildSummary } from "@/client/features/analytics/reportBuckets";
 import { buildCsv, downloadCsv } from "@/client/lib/csv";
 import { exportTableToSheets } from "@/client/lib/exportToSheets";
 import { formatCount, formatDate } from "@/client/lib/format";
-import { AnimatedNumber } from "@/client/components/AnimatedNumber";
+import { WeakConversionTile } from "./WeakConversionTile";
+import { buildReportExport } from "./reportExport";
 import type { Ga4ReportKindName } from "@/shared/ga4-reports";
+import type { Ga4ReportMetadata } from "@/server/features/ga4/services/Ga4ReportNormalization";
+import { AnalyticsEvidence } from "./AnalyticsEvidence";
 import { t } from "@/shared/i18n";
 
 export type ReportResult = {
@@ -41,6 +45,31 @@ export type ReportResult = {
   emptyReason: string | null;
   /** The property's currency; revenue columns are money in it. */
   currencyCode?: string | null;
+  activityStatus?: "detected" | "none" | "unknown" | null;
+  diagnosticCoverage?: {
+    complete: boolean;
+    limitedData: boolean;
+    fetchedRowCount: number;
+    totalRowCount: number;
+  } | null;
+  propertyId?: string;
+  propertyTimeZone?: string | null;
+  channel?: string;
+  reportMetadata?: Ga4ReportMetadata;
+  warnings?: string[];
+  requestedDateRange?: { startDate: string; endDate: string } | null;
+  pageInfo?: {
+    offset: number;
+    limit: number;
+    hasMore: boolean;
+    nextOffset: number | null;
+  };
+  diagnostics?: Array<{
+    code: string;
+    sessions: number | null;
+    share: number | null;
+    totalSessions: number | null;
+  }>;
 };
 
 /**
@@ -55,15 +84,18 @@ export function ReportView({
   organicOnly,
   onOrganicOnlyChange,
   onOpenHealth,
+  exactPage,
+  configurationState = "unknown",
 }: {
   kind: Ga4ReportKindName;
+  exactPage?: { host: string; path: string };
+  configurationState?: "configured" | "none" | "unknown";
   result: ReportResult;
   organicOnly: boolean;
   onOrganicOnlyChange: (next: boolean) => void;
   /** Switches to the setup check; offered where a property setting explains an empty tab. */
   onOpenHealth?: () => void;
 }) {
-  const columns = [...result.dimensions, ...result.metrics];
   /*
    * The host column on every row repeated one site's name. Hidden while the
    * report holds a single host; the CSV keeps every column.
@@ -78,51 +110,120 @@ export function ReportView({
   const sorting = useLocalSort<string>({ key: "", desc: true });
   const [activeChips, setActiveChips] = React.useState<ChipId[]>([]);
   const [segmentKey, setSegmentKey] = React.useState<string | null>(null);
+  const [focusedRowKey, setFocusedRowKey] = React.useState<string | null>(null);
   const filtersRef = React.useRef<HTMLDivElement>(null);
 
   const plan = buildSummary(kind, result.dimensions, result.rows, columnLabel);
   const segment =
     plan?.segments.find((item) => item.key === segmentKey) ?? null;
-  const chips = availableChips(result.metrics, result.rows);
+  const chips = availableChips(result.metrics, result.rows, {
+    limited:
+      result.reportMetadata?.hasLimitedData ||
+      result.warnings?.includes("property_time_zone_changed") ||
+      result.sampled ||
+      result.thresholded,
+    configurationState,
+  });
+  const scope = t("Listelenen {count} satırda", {
+    count: result.rows.length,
+  });
+  const weakChip = chips.find(
+    (chip) => chip.id === "weakConversion" && !chip.disabledReason,
+  );
+  const candidate = sortBy(
+    result.rows.filter((row) => weakChip?.test(row)),
+    [(row) => Number(row.sessions), "desc"],
+    [(row) => Number(row.sessionKeyEventRate), "asc"],
+    (row) => reportIdentity(row, "landingPage"),
+  )[0];
   const kpis = buildKpis(
     kind,
     result.rows,
-    result.rowCount < result.totalRowCount
-      ? t("Listelenen {count} satırdan", { count: result.rowCount })
-      : "",
+    scope,
     result.currencyCode ?? null,
-  );
+  ).map((kpi) => ({
+    ...kpi,
+    hint: [scope, kpi.hint && kpi.hint !== scope ? kpi.hint : null]
+      .filter(Boolean)
+      .join(" · "),
+  }));
 
   // A chip the data no longer offers must neither narrow nor count.
   const appliedChips = activeChips.filter((id) =>
     chips.some((chip) => chip.id === id),
   );
   const filtered = applyChips(
-    plan ? applySegment(result.rows, plan.dimension, segment) : result.rows,
+    (plan
+      ? applySegment(result.rows, plan.dimension, segment)
+      : result.rows
+    ).filter(
+      (row) =>
+        !exactPage ||
+        (row.hostName === exactPage.host && row.landingPage === exactPage.path),
+    ),
     chips,
     appliedChips,
   );
+  const focused = focusedRowKey
+    ? filtered.filter(
+        (row) => reportIdentity(row, "landingPage") === focusedRowKey,
+      )
+    : filtered;
   const rows = sorting.sort.key
-    ? sorting.apply(filtered, (a, b, key) =>
+    ? sorting.apply(focused, (a, b, key) =>
         compareReportCells(
           a[key] ?? null,
           b[key] ?? null,
           result.dimensions.includes(key),
+          sorting.sort.desc,
         ),
       )
     : // Google's own ordering when nothing is chosen.
-      filtered;
-  const isFiltered = appliedChips.length > 0 || segment !== null;
+      focused;
+  const isFiltered =
+    appliedChips.length > 0 || segment !== null || focusedRowKey !== null;
 
   const clearFilters = () => {
     // The clicked button unmounts with the filters; keep focus in the group.
     filtersRef.current?.focus();
     setActiveChips([]);
     setSegmentKey(null);
+    setFocusedRowKey(null);
   };
 
+  const { headers: exportHeaders, rows: exportRows } = buildReportExport({
+    result,
+    kind,
+    organicOnly,
+    rows,
+    filters: appliedChips,
+    segmentKey: segment?.key ?? null,
+    exactPage,
+    focusedRowKey,
+    sort: sorting.sort,
+  });
   return (
-    <div className="space-y-3">
+    <div className="space-y-3" id="analytics-report">
+      <AnalyticsEvidence result={result} onOpenHealth={onOpenHealth} />
+      <p role="status" className="text-xs text-muted">
+        {scope} ·{" "}
+        {t(
+          "Filtreleme, sıralama ve dışa aktarma bu sayfadaki satırları kapsar.",
+        )}{" "}
+        {t("{shown} / {count} satır", {
+          shown: formatCount(rows.length),
+          count: result.rows.length,
+        })}
+      </p>
+      {exactPage ? (
+        <p className="break-all text-xs text-muted">
+          {exactPage.host}
+          {exactPage.path} ·{" "}
+          {t(
+            "Birebir sayfa filtresi yalnızca listelenen satırlara uygulanır; diğer sayfalarda da arayın.",
+          )}
+        </p>
+      ) : null}
       <ReportSummary
         plan={plan}
         kpis={kpis}
@@ -137,13 +238,16 @@ export function ReportView({
             chip.id === "weakConversion" && chip.disabledReason === null,
         )}
         active={activeChips.includes("weakConversion")}
-        onShow={() =>
+        candidate={candidate}
+        onShow={() => {
+          if (candidate)
+            setFocusedRowKey(reportIdentity(candidate, "landingPage"));
           setActiveChips((current) =>
             current.includes("weakConversion")
               ? current
               : [...current, "weakConversion"],
-          )
-        }
+          );
+        }}
       />
 
       <p className="text-xs text-muted">
@@ -164,21 +268,23 @@ export function ReportView({
         <div
           ref={filtersRef}
           tabIndex={-1}
-          className="flex flex-wrap items-center gap-2"
+          className="flex flex-wrap items-center gap-2 focus-visible:outline-2 focus-visible:outline-primary"
           role="group"
           aria-label={t("Hızlı filtreler")}
         >
-          <button
-            type="button"
-            aria-pressed={organicOnly}
-            title={t(
-              "Yalnızca Google organik aramadan gelen ziyaretleri gösterir.",
-            )}
-            className={`btn btn-xs rounded-full ${organicOnly ? "btn-neutral" : "btn-ghost border-base-300"}`}
-            onClick={() => onOrganicOnlyChange(!organicOnly)}
-          >
-            {t("Sadece organik")}
-          </button>
+          {kind !== "site_search" ? (
+            <button
+              type="button"
+              aria-pressed={organicOnly}
+              title={t(
+                "Organik arama motorlarından gelen ziyaretleri gösterir.",
+              )}
+              className={`btn btn-sm min-h-11 sm:min-h-0 rounded-full ${organicOnly ? "btn-neutral" : "btn-ghost border-base-300"}`}
+              onClick={() => onOrganicOnlyChange(!organicOnly)}
+            >
+              {t("Sadece organik")}
+            </button>
+          ) : null}
           {chips.map((chip) => {
             const on = activeChips.includes(chip.id);
             return (
@@ -188,7 +294,7 @@ export function ReportView({
                 aria-pressed={on}
                 disabled={chip.disabledReason !== null}
                 title={chip.hint}
-                className={`btn btn-xs gap-1.5 rounded-full ${on ? "btn-neutral" : "btn-ghost border-base-300"}`}
+                className={`btn btn-sm min-h-11 sm:min-h-0 gap-1.5 rounded-full ${on ? "btn-neutral" : "btn-ghost border-base-300"}`}
                 onClick={() =>
                   setActiveChips((current) =>
                     on
@@ -198,7 +304,7 @@ export function ReportView({
                 }
               >
                 {chip.label}
-                <span className="tabular-nums opacity-70">
+                <span className="tabular-nums text-muted">
                   {formatCount(chip.count)}
                 </span>
               </button>
@@ -214,7 +320,7 @@ export function ReportView({
           {isFiltered ? (
             <button
               type="button"
-              className="btn btn-ghost btn-xs gap-1"
+              className="btn btn-ghost btn-sm min-h-11 sm:min-h-0 gap-1"
               onClick={clearFilters}
             >
               <FilterX aria-hidden className="size-3.5" />
@@ -225,7 +331,7 @@ export function ReportView({
 
         {result.rows.length > 0 ? (
           <TableExportMenu
-            buttonClassName="btn btn-ghost btn-sm gap-1"
+            buttonClassName="btn btn-ghost btn-sm min-h-11 gap-1"
             actions={[
               {
                 label: t("E-Tablolar'a aktar ({count} satır)", {
@@ -233,26 +339,33 @@ export function ReportView({
                 }),
                 onClick: () =>
                   void exportTableToSheets({
-                    headers: columns.map(columnLabel),
-                    rows: toCsvRows(rows, columns),
+                    headers: exportHeaders,
+                    rows: exportRows,
                     feature: "ga4_report",
                   }),
               },
               {
-                label: t("CSV ({count} satır)", { count: rows.length }),
+                label: t("CSV ({count} satır)", {
+                  count: rows.length,
+                }),
                 onClick: () =>
                   downloadCsv(
                     "analytics.csv",
-                    buildCsv(
-                      columns.map(columnLabel),
-                      toCsvRows(rows, columns),
-                    ),
+                    buildCsv(exportHeaders, exportRows),
                   ),
               },
             ]}
           />
         ) : null}
       </div>
+
+      {chips
+        .filter((chip) => chip.disabledReason)
+        .map((chip) => (
+          <p key={chip.id} className="text-xs text-muted">
+            {chip.disabledReason}
+          </p>
+        ))}
 
       {result.rows.length === 0 ? (
         <div className="rounded-box border border-base-300 bg-base-100">
@@ -291,47 +404,5 @@ export function ReportView({
         />
       )}
     </div>
-  );
-}
-
-/**
- * The one finding on this screen worth acting on first: busy pages that
- * convert below the report's median. It used to be one chip among four; as a
- * tile it says how many and opens the list.
- */
-function WeakConversionTile({
-  chip,
-  active,
-  onShow,
-}: {
-  chip: { count: number; hint: string } | undefined;
-  active: boolean;
-  onShow: () => void;
-}) {
-  if (!chip || chip.count === 0) return null;
-  return (
-    <button
-      type="button"
-      aria-pressed={active}
-      onClick={onShow}
-      className={`flex w-full flex-wrap items-center gap-x-4 gap-y-1 rounded-box border px-4 py-3 text-left transition-colors ${
-        active
-          ? "border-primary bg-primary/5"
-          : "border-base-300 bg-base-100 hover:border-primary/40"
-      }`}
-    >
-      <span className="text-2xl font-semibold tabular-nums">
-        <AnimatedNumber value={chip.count} format={formatCount} />
-      </span>
-      <span className="min-w-0 flex-1">
-        <span className="block text-sm font-medium">
-          {t("Trafiği yüksek, dönüşümü düşük sayfa")}
-        </span>
-        <span className="block text-xs text-muted">{chip.hint}</span>
-      </span>
-      <span className="text-sm text-muted">
-        {active ? t("Listede gösteriliyor") : t("Listele")}
-      </span>
-    </button>
   );
 }

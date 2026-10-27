@@ -30,14 +30,22 @@ type ChipRule = {
 };
 
 const NO_KEY_EVENT_REASON =
-  "Dönüşüm (anahtar olay) tanımlı olmadığı için bu filtre kullanılamıyor";
+  "Bu listede anahtar olay görülmedi; kurulum doğrulanmadı.";
 
 /* Labels and fixed hints are Turkish source strings, translated when built. */
+type ConversionEvidence = {
+  limited?: boolean;
+  configurationState?: "configured" | "none" | "unknown";
+};
 type ChipDef = {
   id: ChipId;
   label: string;
   /** Null when the report lacks the columns, or has too few rows to judge. */
-  build: (metrics: readonly string[], rows: ReportRow[]) => ChipRule | null;
+  build: (
+    metrics: readonly string[],
+    rows: ReportRow[],
+    evidence: ConversionEvidence,
+  ) => ChipRule | null;
 };
 
 /** Below this share of engaged sessions a page is bouncing more than holding. */
@@ -45,6 +53,8 @@ const LOW_ENGAGEMENT_RATE = 0.5;
 
 /** A median over fewer rows than this is noise, so a median-based chip hides. */
 const MIN_ROWS_FOR_MEDIAN = 4;
+// A sample floor for investigation, never a significance or sales forecast.
+const MIN_CONVERSION_SESSIONS = 30;
 
 export function numeric(row: ReportRow, field: string): number | null {
   const value = row[field];
@@ -151,13 +161,18 @@ const CHIP_DEFS: ChipDef[] = [
     // High traffic: sessions at or above the report's median. Low conversion:
     // key-event rate below the report's median rate, or exactly zero (which
     // matters when most pages convert nothing and the median is itself zero).
-    build: (metrics, rows) => {
+    build: (metrics, rows, evidence) => {
       if (
         !metrics.includes("sessions") ||
         !metrics.includes("sessionKeyEventRate")
       ) {
         return null;
       }
+      rows = rows.filter(
+        (row) =>
+          (numeric(row, "sessions") ?? 0) >= MIN_CONVERSION_SESSIONS &&
+          numeric(row, "sessionKeyEventRate") !== null,
+      );
       const midSessions = medianOf(rows.map((row) => numeric(row, "sessions")));
       const midRate = medianOf(
         rows.map((row) => numeric(row, "sessionKeyEventRate")),
@@ -170,15 +185,23 @@ const CHIP_DEFS: ChipDef[] = [
         (row) => (numeric(row, "sessionKeyEventRate") ?? 0) > 0,
       );
       if (!anyKeyEvent) {
+        const reason =
+          evidence.configurationState === "none"
+            ? t("Anahtar olay tanımlı değil")
+            : evidence.configurationState === "configured"
+              ? t(
+                  "Anahtar olay tanımlı, ancak bu listede tetiklenme görülmedi.",
+                )
+              : t(NO_KEY_EVENT_REASON);
         return {
-          hint: t(NO_KEY_EVENT_REASON),
-          disabledReason: t(NO_KEY_EVENT_REASON),
+          hint: reason,
+          disabledReason: reason,
           test: () => false,
         };
       }
       return {
         hint: t(
-          "Oturumu ortancanın ({sessions}) üstünde ama oturum başına anahtar olay oranı ortancanın ({rate}) altında kalan sayfalar, bir de hiç olay getirmeyenler.",
+          "En az 30 oturumlu listelenen sayfalarda bir inceleme ipucu: oturum ≥ {sessions}, anahtar olay oranı < {rate} veya sıfır. Bu bir satış kaybı tahmini değildir.",
           { sessions: formatCount(midSessions), rate: formatPercent(midRate) },
         ),
         test: (row) => {
@@ -187,6 +210,7 @@ const CHIP_DEFS: ChipDef[] = [
           return (
             sessions !== null &&
             rate !== null &&
+            sessions >= MIN_CONVERSION_SESSIONS &&
             sessions >= midSessions &&
             (rate === 0 || rate < midRate)
           );
@@ -211,9 +235,11 @@ type ChipState = {
 export function availableChips(
   metrics: readonly string[],
   rows: ReportRow[],
+  evidence: ConversionEvidence = {},
 ): ChipState[] {
   return CHIP_DEFS.flatMap((def) => {
-    const rule = def.build(metrics, rows);
+    if (evidence.limited && def.id === "weakConversion") return [];
+    const rule = def.build(metrics, rows, evidence);
     /*
      * A chip that holds every row narrows nothing: "Dönüşümü olan 45" over a
      * table of 45 rows was noise.
@@ -264,7 +290,7 @@ export type ShareSegment = {
 };
 
 /** A ring holds this many arcs at most; past it, bars read better. */
-export const MAX_RING_SEGMENTS = 6;
+const MAX_RING_SEGMENTS = 6;
 /** Bars: seven named rows and one pooled "Diğer". */
 export const MAX_BAR_ROWS = 8;
 
@@ -274,25 +300,55 @@ export const OTHER_KEY = "__other__";
  * Biggest first; the tail past `max` folds into one "Diğer" segment. Rows
  * sharing a label (the same path on two hosts) add up instead of colliding.
  */
+export function reportIdentity(row: ReportRow, dimension: string): string {
+  const qualifier =
+    dimension === "landingPage" || dimension === "pagePath"
+      ? row.hostName
+      : dimension === "itemName"
+        ? row.itemId
+        : null;
+  return typeof qualifier === "string"
+    ? JSON.stringify([qualifier, row[dimension]])
+    : String(row[dimension] ?? "");
+}
+
 export function buildShareSegments(
   rows: ReportRow[],
   dimension: string,
   metric: string,
   max = MAX_RING_SEGMENTS,
 ): ShareSegment[] {
+  if (
+    rows.some(
+      (row) => numeric(row, metric) === null || numeric(row, metric)! < 0,
+    )
+  )
+    return [];
   const totals = new Map<string, number>();
+  const labels = new Map<string, string>();
   for (const row of rows) {
     const label = row[dimension];
     const value = numeric(row, metric);
     if (typeof label !== "string" || value === null || value <= 0) continue;
-    totals.set(label, (totals.get(label) ?? 0) + value);
+    const key = reportIdentity(row, dimension);
+    totals.set(key, (totals.get(key) ?? 0) + value);
+    const duplicate = rows.some(
+      (other) =>
+        other[dimension] === label && reportIdentity(other, dimension) !== key,
+    );
+    labels.set(
+      key,
+      duplicate
+        ? `${label} (${row.hostName ?? row.itemId})`
+        : ga4ValueLabel(dimension, label),
+    );
   }
   const all = sortBy(
     // The key stays GA4's own value, which the table filters on; only the
     // label is translated.
     [...totals].map(([key, value]) => ({
       key,
-      label: ga4ValueLabel(dimension, key),
+      label: labels.get(key) ?? key,
       value,
       members: [key],
     })),
@@ -320,6 +376,9 @@ export function applySegment(
   if (!segment) return rows;
   return rows.filter((row) => {
     const value = row[dimension];
-    return typeof value === "string" && segment.members.includes(value);
+    return (
+      typeof value === "string" &&
+      segment.members.includes(reportIdentity(row, dimension))
+    );
   });
 }

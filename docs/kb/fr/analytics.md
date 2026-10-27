@@ -1,58 +1,31 @@
 ---
 title: Analytics
-description: Ce que font sur le site les visiteurs venus de la recherche : rapports Google Analytics 4, événements clés et vérification que la mesure fonctionne.
+description: Analytics présente les visites, l’engagement et les événements clés mesurés dans votre propriété GA4.
 screen: Analytics
 route: /p/<proje>/analytics
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
-Vous voyez ici ce que font ensuite les personnes qui arrivent sur le site. Search Console vous dit ce qui se passe sur Google. Analytics vous dit ce que fait le visiteur sur le site.
+Analytics présente les visites, l’engagement et les événements clés mesurés dans votre propriété GA4. Le sélecteur propose les pages de destination, les pages, l’acquisition, les événements clés, l’e-commerce, la recherche interne, l’audience et les paramètres de mesure.
 
-Vous voyez sept rapports de votre compte Google Analytics 4. Par défaut, l'écran n'affiche que les visiteurs venus de la recherche (recherche organique). Le huitième onglet vérifie la mesure elle-même : le compteur fonctionne-t-il, un événement clé est-il défini.
+## Lire le périmètre
 
-## Ce que l'écran affiche
+La recherche naturelle inclut les moteurs autres que Google. Tout le trafic modifie ensemble la synthèse et le rapport. La recherche interne couvre toujours les événements de résultats mesurés sur tous les canaux, sans sélecteur de canal. Tous les hôtes et flux de la propriété sont inclus. D’autres sites ou applications peuvent contribuer aux totaux.
 
-**Onglets.** **Pages de destination**, **Pages et écrans**, **Acquisition du trafic**, **Événements clés**, **E-commerce**, **Recherche sur le site**, **Audience** et **État des mesures**. Une courte question est écrite sous chaque onglet. Une page d'entrée est la première page où le visiteur arrive sur le site. Un événement clé est une action que vous jugez importante.
+Les périodes de 7, 28 et 90 jours se terminent hier dans le fuseau de la propriété. Hier est un jour calendaire écoulé, sans garantie de données définitives. Les jours récents peuvent être retraités. Les dates courantes, la période précédente de même durée et le fuseau sont affichés. Les liens acceptent startDate/endDate ensemble ; une fin future est ramenée à hier avec un avertissement. GA4 et Search Console utilisent des calendriers et mesures différents. Des dates identiques ne garantissent pas le même intervalle temporel.
 
-**Commandes.** Pour **Période**, on choisit 7 derniers jours, 28 derniers jours ou 3 derniers mois. Pour **Canal**, on choisit Organik arama (Recherche organique, par défaut) ou Tüm trafik (Tout le trafic). **Lignes** vaut 50, 100 ou 200. Dans l'onglet Audience, on choisit **Appareil**, **Pays** et **Nouveaux / connus**. Dans l'onglet Trafic, on choisit **Groupe de canaux**, **Source / support** et **Campagne**. Vos choix sont inscrits dans la barre d'adresse.
+## Examiner résultats et lignes
 
-**Panneau des sessions organiques.** Dans l'onglet Pages d'entrée, il se trouve au-dessus du tableau. Une session est une visite entière. Le panneau comporte la courbe des sessions quotidiennes et les cartes **Sessions** et **Taux d'engagement**. Si le revenu est mesuré, **Revenus organiques** apparaît aussi. Toutes montrent aussi la variation par rapport à la période précédente.
+La synthèse suit le périmètre choisi : sessions, taux d’engagement, événements clés et revenu d’achat. Les événements clés ne sont pas des clients uniques. Un revenu nul ne prouve pas l’absence de boutique. Une devise inconnue est signalée à côté du montant. La durée d’engagement est totale, pas une moyenne par utilisateur. Les valeurs quotidiennes distinguent les jours inconnus de zéro. Les restrictions de qualité empêchent les comparaisons ou conseils affirmatifs.
 
-**Tableau.** Les colonnes changent selon le rapport. Par exemple **Domaine**, **Page de destination**, **Page**, **Nom de l'événement**, **Canal**, **Appareil**, **Pays**, **Article**, **Terme de recherche**. Les mesures sont : **Sessions**, **Utilisateurs actifs**, **Taux d'engagement**, **Événements clés**, **Revenus**, **Vues**. Si aucun événement clé n'est défini, la valeur reste toujours à 0.
+Choisissez 50, 100 ou 200 lignes par page et utilisez Précédent/Suivant. Filtres, tri, synthèses et exports couvrent uniquement la page affichée. Choisir une barre filtre le tableau sans changer la base de la synthèse. Un utilisateur peut appartenir à plusieurs catégories : ne les additionnez pas pour obtenir des utilisateurs uniques. Les chemins identiques d’hôtes distincts et les produits homonymes d’identifiants distincts restent séparés. Aucun graphique de parts de revenu n’est tracé pour des valeurs négatives ou inconnues.
 
-**Ligne sous le tableau.** Elle indique combien de lignes sont affichées. Si Google a échantillonné les données, « échantillonné » est ajouté ; s'il a masqué des lignes pour des raisons de confidentialité, « lignes inférieures aux seuils masquées » est ajouté.
+Le filtre de faible conversion est une piste d’analyse sur au moins quatre pages admissibles affichées avec au moins 30 sessions chacune. Il n’estime pas des ventes perdues. Aucun événement observé ne prouve une configuration manquante. Une recherche interne fréquente ne prouve pas un manque de contenu.
 
-**Filtres rapides.** **Organique uniquement**, **Engagement faible** (sous 50 pour cent), **Qui convertissent**, **Avec revenus**, **Durée d'engagement faible**, **Trafic élevé, faible conversion**.
+## Partage, mesure et quota
 
-**Cartes de synthèse.** Les onglets Événements clés, E-commerce et Recherche interne ont chacun leurs cartes de synthèse.
+Rapport, canal, dates, ventilation, taille et position de page restent dans l’URL. Le filtre exact host/path couvre seulement les lignes affichées, sans fusion de variantes d’URL. CSV et Sheets exportent les lignes filtrées avec des nombres bruts. ga4_scope_json conserve source, propriété, dates, fuseau, devise, qualité, page et filtres.
 
-**Onglet État de la mesure.** Il comporte quatre cartes : **Flux de données Web**, **Événements clés**, **Dimensions personnalisées**, **Constats**. Le constat peut être l'un de ceux-ci : « Aucun flux de données Web », « Mesure améliorée désactivée », « La recherche sur site n'est pas mesurée », « Aucun événement clé configuré », « L'inventaire est peut-être incomplet ». Les sept options de la mesure améliorée apparaissent une à une : Défilements, Clics sortants, Recherche sur le site, Vidéo, Téléchargements de fichiers, Form, Changements de page. S'il n'y a aucun problème, l'écran indique « Rien ne manque dans la configuration de mesure. ».
+L’état de mesure lit uniquement les paramètres Admin. L’absence de lacune ne prouve pas que la balise envoie des données ; suivez les vérifications de collecte proposées. Les inventaires partiels sont précédés d’au moins. Si la mesure améliorée est désactivée, aucune sous-fonction n’est effectivement active. Aucun paramètre de compte n’est modifié.
 
-**États vides.** S'il n'y a pas de données, l'écran indique « Aucune donnée au cours de cette période » et deux raccourcis apparaissent : **Afficher tout le trafic**, **Vérifier l'état des mesures**. Si Analytics n'est pas connecté, il indique « Google Analytics n'est pas connecté ».
-
-## Comment l'utiliser
-
-1. Regardez d'abord l'onglet **État des mesures**. S'il indique « Aucun événement clé configuré », les colonnes de conversion restent toujours à zéro. Définissez d'abord un événement clé dans Analytics.
-2. Dans l'onglet **Pages de destination**, regardez la colonne **Domaine**. Si vous voyez localhost ou 127.0.0.1, c'est qu'un site de test sur votre propre ordinateur envoie des données. Ces lignes ne sont pas de vraies visites. L'application ne les écarte pas à votre place.
-3. Si le trafic a baissé, ouvrez l'onglet **Acquisition du trafic** avec **Groupe de canaux**. Si la baisse ne concerne que la recherche, le problème est dans la recherche. Si elle touche tous les canaux, le problème est dans la mesure ou dans le site.
-4. Le bouton **Trafic élevé, faible conversion** montre les endroits où Google envoie des visiteurs mais où la page ne parvient pas à les retenir. Le travail à faire se trouve dans l'écran Opportunités.
-
-## Comment les chiffres sont calculés
-
-La plage se termine hier, dans le fuseau horaire du compte. Analytics fournit les données avec un jour de retard. Quand « Recherche organique » est choisi, seules les visites venues de Google ou d'un autre moteur de recherche sont comptées.
-
-Chaque rapport demande 200 lignes au maximum. L'état de la mesure lit les réglages d'Analytics et ne consomme rien du quota de rapports. Si le quota de rapports est épuisé, vous voyez l'erreur « Google Analytics reporting quota is exhausted. » (le quota de rapports d'Analytics est épuisé). Vous suivez votre quota dans la section des limites de **Paramètres**.
-
-## Questions fréquentes
-
-**Pourquoi le nombre de sessions diffère-t-il des clics de Search Console ?** Les deux ne comptent pas la même chose. Search Console compte les clics sur Google. Analytics compte les sessions qui arrivent sur le site. Un visiteur qui n'accepte pas les cookies n'apparaît jamais dans Analytics.
-
-**Le nombre de lignes reste bloqué à 200.** On demande au plus 200 lignes à la fois. Raccourcissez la période ou changez la ventilation.
-
-**Pourquoi le quota est-il épuisé ?** Un compte standard reçoit 200 000 jetons (l'unité de quota) par jour et 40 000 par heure. Chaque rapport consomme quelques jetons. Appuyer sans arrêt sur **Actualiser** épuise le quota.
-
-## Limites
-
-Ce qu'Analytics ne mesure pas, cet écran ne peut pas l'afficher non plus. Cela inclut les visites sans accord pour les cookies, les événements clés non définis et la mesure améliorée désactivée. L'écran n'écarte pas tout seul le trafic localhost. Analytics et Search Console rapportent dans des fuseaux horaires différents. Les correspondances quotidiennes peuvent se décaler d'un jour.
-
-<!-- Kaynaklar: src/routes/_project/p/$projectId/analytics.tsx; src/client/features/analytics/AnalyticsPage.tsx; ReportView.tsx; ReportTable.tsx; ReportEmptyState.tsx; OrganicTrendPanel.tsx; MeasurementHealthPanel.tsx; metricHelp.ts; reportInsights.ts; reportKpis.ts; src/shared/ga4-reports.ts; src/server/features/ga4/services/Ga4ReportDefinitions.ts; Ga4ReportingService.ts; Ga4ReportEnhancements.ts; src/serverFunctions/ga4Reports.ts; src/serverFunctions/ga4MeasurementHealth.ts -->
+Le quota replié présente un instantané local de la dernière réponse de rapport, pas l’usage de la période de trafic. Le plafond standard est une hypothèse. Actualiser redemande les rapports visibles et peut consommer des jetons.

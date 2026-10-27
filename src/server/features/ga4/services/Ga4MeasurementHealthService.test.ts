@@ -80,6 +80,7 @@ describe("Ga4MeasurementHealthService", () => {
       issueCount: 1,
     });
     expect(result.issues).toEqual(["site_search_measurement_disabled"]);
+    expect(result.configurationState).toBe("configured");
     expect(result.webStreams[0]).toMatchObject({
       streamId: "456",
       measurementId: "G-ABC123",
@@ -92,6 +93,7 @@ describe("Ga4MeasurementHealthService", () => {
     const result =
       await Ga4MeasurementHealthService.getMeasurementHealth("project_1");
     expect(result.incompleteLists).toEqual(["key_events"]);
+    expect(result.configurationState).toBe("unknown");
     expect(result.issues).toContain("inventory_incomplete");
     expect(result.issues).not.toContain("no_key_events_configured");
   });
@@ -102,5 +104,12 @@ describe("Ga4MeasurementHealthService", () => {
       Ga4MeasurementHealthService.getMeasurementHealth("project_1"),
     ).rejects.toMatchObject({ code: "ga4_not_connected" });
     expect(mocks.listDataStreams).not.toHaveBeenCalled();
+  });
+  it("only confirms absent configuration from a complete inventory", async () => {
+    mocks.listKeyEvents.mockResolvedValue({ complete: true, items: [] });
+    const result =
+      await Ga4MeasurementHealthService.getMeasurementHealth("project_1");
+    expect(result.configurationState).toBe("none");
+    expect(result.issues).toContain("no_key_events_configured");
   });
 });

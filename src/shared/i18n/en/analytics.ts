@@ -680,4 +680,96 @@ export const enAnalytics: Catalog = {
   "Sorgu arşivi": "Query archive",
   "Karşılaştırma yalnızca iki taramada da ölçülen kontrolleri kapsar; diğer kontroller için değişim bilinmiyor.":
     "The comparison covers only checks measured in both crawls; changes in other checks are unknown.",
+  "Mülk kapsamı: tüm ana makineler ve akışlar. Bu toplam yalnızca projenin sitesine ait olmayabilir.":
+    "Property scope: all hosts and streams. This total may include more than this project’s site.",
+  "Son günler yeniden işlenebilir; dün, tamamlanmış bir takvim günüdür, kesinleşmiş veri garantisi değildir.":
+    "Recent days may be reprocessed. Yesterday is an elapsed calendar day, not a guarantee of final data.",
+  "Organik arama motorları": "Organic search engines",
+  "Bitiş tarihi, mülkün saat diliminde düne çekildi; gösterilen tarihleri kullanın.":
+    "The end date was moved to yesterday in the property’s time zone. Use the displayed dates.",
+  "Veri ayrıntıları": "Data details",
+  "Özel tarih aralığı": "Custom date range",
+  "Tüm trafik · ölçülmüş arama sonuçları":
+    "All traffic · measured search results",
+  "Bu kontrol yalnızca mülk ayarlarını okur; etiketin veri gönderdiğini doğrulamaz.":
+    "This check reads property settings only. It does not verify that the tag sends data.",
+  "Rapor sayfaları": "Report pages",
+  "En az {count}": "At least {count}",
+  "Etiket veri toplamayı doğrulama adımları":
+    "Steps to verify tag data collection",
+  "Tanımlanmış olay sayısıdır; bu dönemde tetiklenen olay sayısı veya veri toplama kanıtı değildir.":
+    "Configured event definitions, not events triggered in this period or proof of collection.",
+  "Kontrol edilen ayarlarda eksik bulunmadı":
+    "No gaps found in the settings checked",
+  "GA4 yönetiminde akış ve anahtar olay ayarlarını aç":
+    "Open stream and key event settings in GA4 Admin",
+  "Oturum, bir ziyaret dönemidir; aynı kişi birden fazla oturum başlatabilir.":
+    "A session is a visit period. The same person can start several sessions.",
+  "Kaydedilen işlem sayısıdır; satılan ürün adedi ve benzersiz alıcı sayısı farklıdır.":
+    "Recorded transactions. Item quantities and unique buyers are different measures.",
+  "Bu satırdaki kullanıcıların toplam etkileşim süresidir; kullanıcı başına ortalama değildir.":
+    "Total engagement time for users in this row, not an average per user.",
+  "Tekrarlanan görüntülemeler dahildir; benzersiz sayfa veya ziyaretçi sayısı değildir.":
+    "Includes repeat views. This is not a unique page or visitor count.",
+  "Ürün adedidir; sipariş sayısı değildir ve bu sütunlar bir dönüşüm hunisi oluşturmaz.":
+    "Item quantities, not orders. These columns do not form a conversion funnel.",
+  "Ürün kapsamlı gelirdir; satın alma geliriyle aynı ölçüm değildir. İadeler negatif olabilir.":
+    "Item-scoped revenue differs from purchase revenue. Refunds can be negative.",
+  "Mülkün para biriminde satın alma geliri; ürün gelirinden farklıdır.":
+    "Purchase revenue in the property currency, distinct from item revenue.",
+  "Bu satırdaki kullanıcılar başka satırlarda tekrar sayılabilir; satırları benzersiz kullanıcı toplamı için toplamayın.":
+    "Users in this row can recur in other rows. Do not add rows to get unique users.",
+  "Trafik veya sonuç ölçümü okunamadı; dönüşüm yorumu yapılamıyor.":
+    "Traffic or outcome measurements could not be read. Conversion cannot be assessed.",
+  "Bu dönemde {sessions} oturum ve {events} anahtar olay kaydedildi.":
+    "{sessions} sessions and {events} key events were recorded in this period.",
+  "Anahtar olaylar önceki döneme göre en az yarıya düştü. Bu bir gözlemdir; nedenini belirlemek için olayları ve ölçüm ayarlarını inceleyin.":
+    "Key events fell by at least half compared with the previous period. This is an observation. Review events and measurement settings to investigate the cause.",
+  "Karşılaştırma yok; önceki değer okunamadı veya veri sınırlı.":
+    "No comparison: the previous value could not be read or data is limited.",
+  "Önceki dönem sıfır, şimdi {value}.": "Previous period zero; now {value}.",
+  "Şu an organik arama motorlarından gelen ziyaretler sayılıyor; tüm trafiğe bakmak sonucu değiştirebilir.":
+    "Only organic search engine visits are counted. Viewing all traffic may change the result.",
+  "Anahtar olay tanımlı, ancak bu listede tetiklenme görülmedi.":
+    "Key events are configured, but none were observed in this list.",
+  "Bu listede anahtar olay görülmedi; kurulum doğrulanmadı.":
+    "No key events observed in this list; setup has not been verified.",
+  "Kullanıcılar kategoriler arasında tekrar sayılabilir; bu değerler benzersiz mülk toplamı değildir.":
+    "Users may recur across categories. These counts are not a unique property total.",
+  "Toplam etkileşim süresi": "Total engagement time",
+  "Diğer ölçümler": "Other metrics",
+  "Listelenen {count} satırda": "Across the {count} listed rows",
+  "Filtreleme, sıralama ve dışa aktarma bu sayfadaki satırları kapsar.":
+    "Filtering, sorting and exports cover rows on this page only.",
+  "Birebir sayfa filtresi yalnızca listelenen satırlara uygulanır; diğer sayfalarda da arayın.":
+    "The exact page filter applies only to listed rows. Check other report pages too.",
+  "Organik arama motorlarından gelen ziyaretleri gösterir.":
+    "Shows visits from organic search engines.",
+  "Ziyaretçiler hangi konuları aradı? Sonuçları inceleyin; arama sıklığı, eksik içerik kanıtı değildir.":
+    "What topics did visitors search for? Inspect the results; search frequency does not prove missing content.",
+  "Önemli sayılan olayların tetiklenme sayısıdır; benzersiz müşteri sayısı değildir. Sıfır, kurulumun eksik olduğunu kanıtlamaz.":
+    "Triggers of events considered important, not unique customers. Zero does not prove missing setup.",
+  "En az bir anahtar olay içeren oturumların payıdır. Olay sayısının oturuma bölünmesiyle hesaplanmaz.":
+    "Share of sessions containing at least one key event, not event count divided by sessions.",
+  "Bu satırdaki aktif kullanıcılardır; aynı kişi farklı sayfa ve kategorilerde tekrar sayılabilir.":
+    "Active users in this row. The same person can recur on other pages and categories.",
+  "{dimension} bazında kullanıcı": "Users by {dimension}",
+  "En az 30 oturumlu listelenen sayfalarda bir inceleme ipucu: oturum ≥ {sessions}, anahtar olay oranı < {rate} veya sıfır. Bu bir satış kaybı tahmini değildir.":
+    "Investigation heuristic for listed pages with at least 30 sessions: sessions ≥ {sessions}, key event rate < {rate} or zero. This is not a lost-sales estimate.",
+  "Kaynak / ortam bilgisi olmayan oturumlar var; bağlantı etiketlerini inceleyin. Bu, tek başına ölçüm hatası kanıtı değildir.":
+    "Some sessions have no source/medium attribution. Review link tags; this alone does not prove a measurement fault.",
+  "Yerel ağ kaynaklı yönlendirmeler kaydedildi; kaynak / ortam satırlarını inceleyin.":
+    "Local-network referrals were recorded. Inspect the source/medium rows.",
+  "Kaynak / ortam adlarının büyük ve küçük harfli çeşitleri var; kampanya etiketlerini tutarlı kullanın.":
+    "Source/medium names have case variants. Use consistent campaign tags.",
+  "Bu dönem ve kanalda eşleşen e-ticaret etkinliği ölçülmedi; bu, mağaza olmadığı anlamına gelmez.":
+    "No matching ecommerce activity was measured in this period and channel. This does not mean there is no shop.",
+  "Bu dönemde ölçülmüş arama sonucu olayı yok; arama ölçüm ayarlarını kontrol edin.":
+    "No measured search-result events in this period. Check search measurement settings.",
+  "Mülkün saat dilimi değişmiş; bağlantı ayarlarını yenileyip tarihleri yeniden kontrol edin.":
+    "The property time zone has changed. Refresh connection settings and check the dates again.",
+  "İnceleme kapsamı: {shown} / {total} satır.":
+    "Diagnostic coverage: {shown} / {total} rows.",
+  "Etkinlik durumu bilinmiyor; rapor sınırlı veya eksik. Dönemi ve ölçüm ayarlarını kontrol edin.":
+    "Activity is unknown because the report is limited or incomplete. Check the period and measurement settings.",
 };

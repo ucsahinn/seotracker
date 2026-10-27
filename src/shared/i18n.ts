@@ -21,9 +21,13 @@ import { deCatalog } from "@/shared/i18n/de/catalog";
 import { deAudit } from "@/shared/i18n/de/audit";
 import { deApp } from "@/shared/i18n/de/app";
 import { deSearch } from "@/shared/i18n/de/search";
+import { deAnalytics } from "@/shared/i18n/de/analytics";
 import { deCards } from "@/shared/i18n/de/cards";
+import { frAnalytics } from "@/shared/i18n/fr/analytics";
 import { frCards } from "@/shared/i18n/fr/cards";
+import { itAnalytics } from "@/shared/i18n/it/analytics";
 import { itCards } from "@/shared/i18n/it/cards";
+import { ptAnalytics } from "@/shared/i18n/pt/analytics";
 import { ptCards } from "@/shared/i18n/pt/cards";
 import { frNotifications } from "@/shared/i18n/fr/notifications";
 import { frShared } from "@/shared/i18n/fr/shared";
@@ -60,6 +64,7 @@ const catalogs: Partial<Record<Locale, Catalog>> = {
   en,
   de: {
     ...deCards,
+    ...deAnalytics,
     ...deShared,
     ...deSettings,
     ...deSettingsContinued,
@@ -71,6 +76,7 @@ const catalogs: Partial<Record<Locale, Catalog>> = {
   },
   fr: {
     ...frCards,
+    ...frAnalytics,
     ...frShared,
     ...frNotifications,
     ...frCatalog,
@@ -80,6 +86,7 @@ const catalogs: Partial<Record<Locale, Catalog>> = {
   },
   it: {
     ...itCards,
+    ...itAnalytics,
     ...itShared,
     ...itApp,
     ...itAppContinued,
@@ -90,6 +97,7 @@ const catalogs: Partial<Record<Locale, Catalog>> = {
   },
   pt: {
     ...ptCards,
+    ...ptAnalytics,
     ...ptShared,
     ...ptNotifications,
     ...ptApp,

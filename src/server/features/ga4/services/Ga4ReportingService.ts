@@ -155,6 +155,7 @@ async function resolveReportPage(input: {
   let rows = fetchCompleteReport
     ? normalized.rows.slice(offset, offset + limit)
     : normalized.rows;
+  let reportMetadata = normalized.reportMetadata;
 
   if (fetchCompleteReport && !requestedPageIsBuffered) {
     const pageRequest = {
@@ -163,7 +164,24 @@ async function resolveReportPage(input: {
       limit: String(limit),
     };
     const pageResponse = await client.runReport(pageRequest);
-    rows = normalizeGa4Response(pageResponse, pageRequest).rows;
+    const page = normalizeGa4Response(pageResponse, pageRequest);
+    rows = page.rows;
+    reportMetadata = {
+      ...page.reportMetadata,
+      hasLimitedData:
+        reportMetadata.hasLimitedData || page.reportMetadata.hasLimitedData,
+      dataLossFromOtherRow:
+        reportMetadata.dataLossFromOtherRow ||
+        page.reportMetadata.dataLossFromOtherRow,
+      subjectToThresholding:
+        reportMetadata.subjectToThresholding ||
+        page.reportMetadata.subjectToThresholding,
+      restrictedMetrics: [
+        ...reportMetadata.restrictedMetrics,
+        ...page.reportMetadata.restrictedMetrics,
+      ],
+      sampling: [...reportMetadata.sampling, ...page.reportMetadata.sampling],
+    };
   }
 
   const rowCount = rows.length;
@@ -176,6 +194,7 @@ async function resolveReportPage(input: {
     rowCount,
     hasMore: nextOffset < normalized.totalRowCount,
     nextOffset,
+    reportMetadata,
   };
 }
 
@@ -263,14 +282,15 @@ async function runReport(input: Ga4ReportInput, opts: { now?: Date } = {}) {
       previousResponse && previousRequest
         ? normalizeGa4Response(previousResponse, previousRequest)
         : null;
-    const { rows, rowCount, hasMore, nextOffset } = await resolveReportPage({
-      client: trackedClient,
-      normalized,
-      request,
-      fetchCompleteReport,
-      offset,
-      limit,
-    });
+    const { rows, rowCount, hasMore, nextOffset, reportMetadata } =
+      await resolveReportPage({
+        client: trackedClient,
+        normalized,
+        request,
+        fetchCompleteReport,
+        offset,
+        limit,
+      });
     const comparison =
       previousNormalized && previousDateRange
         ? buildReportComparison({
@@ -297,8 +317,10 @@ async function runReport(input: Ga4ReportInput, opts: { now?: Date } = {}) {
       request: {
         requestedDateRange: dateRange.requestedDateRange,
         resolvedDateRange: dateRange.resolvedDateRange,
-        propertyTimeZone: connection.propertyTimeZone,
-        currencyCode: connection.propertyCurrencyCode,
+        propertyTimeZone:
+          response.metadata?.timeZone ?? connection.propertyTimeZone,
+        currencyCode:
+          response.metadata?.currencyCode ?? connection.propertyCurrencyCode,
         channel,
         ...reportConfiguration,
         limit,
@@ -313,10 +335,14 @@ async function runReport(input: Ga4ReportInput, opts: { now?: Date } = {}) {
         hasMore,
         nextOffset: hasMore ? nextOffset : null,
       },
-      reportMetadata: normalized.reportMetadata,
+      reportMetadata,
       quota: normalized.quota,
       warnings: [
         ...dateRange.warnings,
+        ...(response.metadata?.timeZone &&
+        response.metadata.timeZone !== connection.propertyTimeZone
+          ? ["property_time_zone_changed"]
+          : []),
         ...(comparisonIncomplete ? ["comparison_incomplete"] : []),
       ],
       ...enhancements,

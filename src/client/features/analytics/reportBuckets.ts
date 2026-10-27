@@ -1,7 +1,6 @@
 import {
   buildShareSegments,
   MAX_BAR_ROWS,
-  MAX_RING_SEGMENTS,
   type ReportRow,
   type ShareSegment,
 } from "@/client/features/analytics/reportInsights";
@@ -23,7 +22,7 @@ const SHARE_REPORTS: Partial<Record<Ga4ReportKindName, Measure>> = {
   },
   audience_breakdown: {
     field: "activeUsers",
-    title: "{dimension} bazında kullanıcı payı",
+    title: "{dimension} bazında kullanıcı",
     unit: "kullanıcı",
   },
 };
@@ -100,6 +99,7 @@ export type SummaryPlan = {
   /** The column the table filters on when a segment is chosen. */
   dimension: string;
   segments: ShareSegment[];
+  showShares: boolean;
 };
 
 /**
@@ -121,25 +121,28 @@ export function buildSummary(
   if (share && dimension) {
     const whole = buildShareSegments(rows, dimension, share.field, Infinity);
     if (whole.length < 2) return null;
-    const form = whole.length <= MAX_RING_SEGMENTS ? "ring" : "bars";
+    const form = "bars";
     return {
       form,
+      showShares: kind !== "audience_breakdown",
       title: t(share.title, { dimension: labelOf(dimension) }),
       unit: t(share.unit),
       field: share.field,
       dimension,
-      segments: buildShareSegments(
-        rows,
-        dimension,
-        share.field,
-        form === "ring" ? MAX_RING_SEGMENTS : MAX_BAR_ROWS,
-      ),
+      segments: buildShareSegments(rows, dimension, share.field, MAX_BAR_ROWS),
     };
   }
 
   const ranked = RANKED_REPORTS[kind];
   if (!ranked || !dimensions.includes(ranked.dimension)) return null;
   for (const measure of ranked.measures) {
+    if (
+      measure.field === "itemRevenue" &&
+      rows.some(
+        (row) => typeof row.itemRevenue !== "number" || row.itemRevenue < 0,
+      )
+    )
+      return null;
     const segments = buildShareSegments(
       rows,
       ranked.dimension,
@@ -149,6 +152,7 @@ export function buildSummary(
     if (segments.length < 2) continue;
     return {
       form: "bars",
+      showShares: true,
       title: t(measure.title),
       unit: t(measure.unit),
       field: measure.field,

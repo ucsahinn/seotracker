@@ -390,3 +390,27 @@ describe("Ga4ReportingService", () => {
     );
   });
 });
+
+it("retains quality restrictions from a separately fetched later page", async () => {
+  mocks.getByProjectId.mockResolvedValue(connection);
+  mocks.runReport
+    .mockResolvedValueOnce(acquisitionResponse(0, 1000))
+    .mockResolvedValueOnce({
+      ...acquisitionResponse(1000, 100),
+      metadata: { subjectToThresholding: true },
+    });
+  const result = await Ga4ReportingService.runReport(
+    {
+      projectId: "project_1",
+      kind: "traffic_acquisition",
+      acquisitionBreakdown: "source_medium",
+      offset: 1000,
+      limit: 100,
+    },
+    { now: new Date("2026-08-06T15:00:00Z") },
+  );
+  expect(result.reportMetadata).toMatchObject({
+    subjectToThresholding: true,
+    hasLimitedData: true,
+  });
+});

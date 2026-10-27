@@ -1,58 +1,31 @@
 ---
 title: Analytics
-description: Aramadan gelenlerin sitede ne yaptığını görürsünüz: Google Analytics 4 raporları, anahtar olaylar ve ölçümün sağlam çalışıp çalışmadığı.
+description: Bu ekran GA4 mülkünde ölçülen ziyaretleri, etkileşimi ve anahtar olayları gösterir.
 screen: Analytics
 route: /p/<proje>/analytics
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
-Siteye gelen kişilerin sonra ne yaptığını burada görürsünüz. Search Console size Google'da ne olduğunu anlatır. Analytics ise ziyaretçinin sitede ne yaptığını anlatır.
+Bu ekran GA4 mülkünde ölçülen ziyaretleri, etkileşimi ve anahtar olayları gösterir. Rapor seçicisinden Giriş sayfaları, Sayfa performansı, Trafik kaynakları, Anahtar olaylar, E-ticaret, Site içi arama, Kitle dağılımı veya Ölçüm durumu açılır.
 
-Google Analytics 4 hesabınızdaki yedi raporu görürsünüz. Ekran varsayılan olarak yalnızca aramadan gelenleri (organik arama) gösterir. Sekizinci sekme ölçümün kendisini denetler: sayaç çalışıyor mu, anahtar olay tanımlı mı.
+## Önce kapsamı okuyun
 
-## Ekranda neler var
+Organik arama, Google dışındaki arama motorlarını da içerir. Tüm trafik seçimi özet ve rapor kapsamını birlikte değiştirir. Site içi arama her zaman tüm trafikte ölçülen arama sonucu olaylarını gösterir; burada kanal düğmesi yoktur. Sayılar tüm mülkü, ana makineleri ve akışları kapsar. Uygulama veya başka siteler aynı mülke veri gönderiyorsa toplam yalnızca bu projenin sitesine ait değildir.
 
-**Sekmeler.** **Giriş sayfaları**, **Sayfa performansı**, **Trafik kaynakları**, **Anahtar olaylar**, **E-ticaret**, **Site içi arama**, **Kitle dağılımı** ve **Ölçüm durumu**. Her sekmenin altında kısa bir soru durur. Giriş sayfası, ziyaretçinin siteye ilk girdiği sayfadır. Anahtar olay, sizin önemli saydığınız harekettir.
+Son 7, 28 veya 90 gün, mülkün saat diliminde dünle biter. Dün, tamamlanmış bir takvim günüdür; verinin kesinleştiğini garanti etmez. Güncel veriler yeniden işlenebilir. Ekran gerçek tarihleri, önceki eşit uzunluktaki dönemi ve saat dilimini gösterir. Bağlantılarda birlikte verilen startDate/endDate kabul edilir; ileri bitiş tarihi düne çekilirse açıklanır. GA4 ve Search Console farklı takvimler ve ölçümler kullanır. Aynı tarih etiketleri bile aynı zaman aralığını garanti etmez.
 
-**Kontroller.** **Dönem** için Son 7 gün, Son 28 gün ya da Son 3 ay seçilir. **Kanal** için Organik arama (varsayılan) ya da Tüm trafik seçilir. **Satır** 50, 100 ya da 200'dür. Kitle sekmesinde **Cihaz**, **Ülke** ve **Yeni / geri dönen** seçilir. Trafik sekmesinde **Kanal grubu**, **Kaynak / ortam** ve **Kampanya** seçilir. Seçimler adres çubuğuna yazılır.
+## Sonuçları ve satırları inceleyin
 
-**Organik oturumlar paneli.** Giriş sayfaları sekmesinde tablonun üstündedir. Oturum, bir ziyaretin tamamıdır. Panelde günlük oturum çizgisi, **Oturum** ve **Etkileşim oranı** kartları var. Gelir ölçülüyorsa **Organik gelir** de görünür. Hepsi önceki döneme göre değişimi de gösterir.
+Üst özet seçilen kapsamın oturum, etkileşim oranı, anahtar olay ve satın alma gelirini gösterir. Anahtar olay, benzersiz müşteri değildir. Sıfır gelir mağaza olmadığı anlamına gelmez. Para birimi bilinmiyorsa tutarın yanında belirtilir. Etkileşim süresi toplam süredir, kullanıcı başına ortalama değildir. Günlük değerler açılır bölümünde bilinmeyen günler sıfırdan ayrılır. Örnekleme, gizlilik eşiği ve erişim kısıtları varsa karşılaştırma veya güçlü öneri gösterilmez.
 
-**Tablo.** Sütunlar rapora göre değişir. Örneğin **Alan adı**, **Giriş sayfası**, **Sayfa**, **Olay**, **Kanal**, **Cihaz**, **Ülke**, **Ürün**, **Arama terimi**. Ölçüler de şunlar: **Oturum**, **Aktif kullanıcı**, **Etkileşim oranı**, **Anahtar olay**, **Gelir**, **Görüntülenme**. Anahtar olay tanımlı değilse hep 0 görünür.
+Sayfa boyutu 50, 100 veya 200 satırdır; Önceki/Sonraki sayfa kalan satırlara ulaştırır. Filtreler, sıralama, özetler ve dışa aktarma yalnızca listelenen sayfayı kapsar. Çubuk seçimi tabloyu daraltır; özetin tabanı değişmez. Kullanıcılar farklı kategorilerde tekrar sayılabilir: satırları toplayıp benzersiz kullanıcı toplamı çıkarmayın. Aynı yolun farklı ana makineleri ve aynı adlı farklı ürünler ayrı tutulur. Negatif veya bilinmeyen gelir için pay grafiği çizilmez.
 
-**Tablo altı satırı.** Kaç satır gösterildiğini yazar. Google veriyi örneklediyse "örneklenmiş", gizlilik nedeniyle satır sakladıysa "eşik altı satırlar gizlendi" eklenir.
+Düşük dönüşüm filtresi en az 30 oturumlu en az dört uygun satırın ortancasına dayanan bir inceleme ipucudur; satış kaybı tahmini değildir. Sıfır olay, anahtar olayın tanımsız olduğunu kanıtlamaz. Kurulum kanıtı yoksa kontrol etmeniz istenir. Site arama sıklığı da eksik içerik kanıtı değildir.
 
-**Hızlı filtreler.** **Sadece organik**, **Etkileşimi düşük** (yüzde 50'nin altı), **Dönüşümü olan**, **Geliri olan**, **Etkileşim süresi düşük**, **Trafiği yüksek, dönüşümü düşük**.
+## Paylaşım, ölçüm ve kota
 
-**Özet kartları.** Anahtar olaylar, e-ticaret ve site içi arama sekmelerinin kendi özet kartları vardır.
+Rapor, kanal, tarihler, kırılım, satır boyutu ve sayfalama URL'de korunur. host/path bağlantı filtresi birebir, yalnızca listelenen satırlarda çalışır; URL çeşitlerini birleştirmez. CSV ve E-Tablolar aynı filtrelenmiş satırları ham sayılarla aktarır. ga4_scope_json sütunu kaynak, mülk, tarihler, saat dilimi, para birimi, kalite, sayfa ve filtre bilgisini taşır.
 
-**Ölçüm durumu sekmesi.** Dört kart var: **Web veri akışı**, **Anahtar olay**, **Özel boyut**, **Bulgu**. Bulgu şunlardan biri olabilir: "Web veri akışı yok", "Gelişmiş ölçüm kapalı", "Site içi arama ölçülmüyor", "Anahtar olay tanımlı değil", "Envanter eksik olabilir". Gelişmiş ölçümün yedi seçeneği tek tek görünür: Kaydırma, Dış bağlantı, Site içi arama, Video, Dosya indirme, Form, Sayfa geçişleri. Sorun yoksa "Ölçüm kurulumunda eksik bulunamadı." yazar.
+Ölçüm durumu yalnızca GA4 yönetim ayarlarını okur. “Kontrol edilen ayarlarda eksik bulunmadı” etiketin veri gönderdiğini kanıtlamaz; bağlantılı doğrulama adımlarını izleyin. Eksik envanterde sayılar en az olarak gösterilir. Gelişmiş ölçümün ana anahtarı kapalıysa etkin alt seçenek sayısı sıfırdır. Kontrol, hesap ayarlarını değiştirmez.
 
-**Boş durumlar.** Veri yoksa "Bu dönemde veri yok" yazar ve iki kısayol çıkar: **Tüm trafiğe bak**, **Ölçüm durumunu kontrol et**. Analytics bağlı değilse "Google Analytics bağlı değil" yazar.
-
-## Nasıl kullanılır
-
-1. Önce **Ölçüm durumu** sekmesine bakın. "Anahtar olay tanımlı değil" yazıyorsa dönüşüm sütunları hep sıfır kalır. Önce Analytics'te bir anahtar olay tanımlayın.
-2. **Giriş sayfaları** sekmesinde **Alan adı** sütununa bakın. localhost ya da 127.0.0.1 görürseniz, kendi bilgisayarınızdaki deneme sitesi veri gönderiyor demektir. O satırlar gerçek ziyaret değildir. Uygulama bunu sizin yerinize ayıklamaz.
-3. Trafik düştüyse **Trafik kaynakları** sekmesini **Kanal grubu** ile açın. Düşüş yalnızca aramadaysa sorun aramadadır. Her kanalda düştüyse ölçümde ya da sitede sorun vardır.
-4. **Trafiği yüksek, dönüşümü düşük** düğmesi, Google'ın ziyaretçi gönderdiği ama sayfanın onları tutamadığı yerleri gösterir. Yapılacak işi Fırsatlar ekranında bulursunuz.
-
-## Sayılar nasıl hesaplanır
-
-Aralık, hesabın saat diliminde dünle biter. Analytics veriyi bir gün geç verir. "Organik arama" seçiliyse yalnızca Google ya da başka bir arama motorundan gelen ziyaretler sayılır.
-
-Her rapor en fazla 200 satır ister. Ölçüm durumu Analytics ayarlarını okur ve rapor kotasından harcamaz. Rapor kotası dolarsa "Google Analytics reporting quota is exhausted." (Analytics rapor hakkı doldu) hatasını görürsünüz. Kotanızı **Ayarlar** ekranındaki sınırlar bölümünden izlersiniz.
-
-## Sık sorulanlar
-
-**Oturum sayısı Search Console'daki tıklamadan neden farklı?** İkisi farklı şey sayar. Search Console Google'daki tıklamayı sayar. Analytics siteye gelen oturumu sayar. Çerez onayı vermeyen ziyaretçi Analytics'e hiç düşmez.
-
-**Satır sayısı 200'de kaldı.** Tek seferde en fazla 200 satır istenir. Dönemi kısaltın ya da kırılımı değiştirin.
-
-**Kota neden doldu?** Standart hesapta günde 200.000, saatte 40.000 belirteç (kota birimi) verilir. Her rapor birkaç belirteç harcar. **Yenile**'ye art arda basmak kotayı tüketir.
-
-## Sınırlar
-
-Analytics'in ölçmediğini bu ekran da gösteremez. Çerez onayı vermeyen ziyaretler, tanımsız anahtar olaylar ve kapalı gelişmiş ölçüm buna girer. Ekran localhost trafiğini kendiliğinden ayıklamaz. Analytics ve Search Console farklı saat dilimlerinde raporlar. Günlük eşleşmeler bir gün kayabilir.
-
-<!-- Kaynaklar: src/routes/_project/p/$projectId/analytics.tsx; src/client/features/analytics/AnalyticsPage.tsx; ReportView.tsx; ReportTable.tsx; ReportEmptyState.tsx; OrganicTrendPanel.tsx; MeasurementHealthPanel.tsx; metricHelp.ts; reportInsights.ts; reportKpis.ts; src/shared/ga4-reports.ts; src/server/features/ga4/services/Ga4ReportDefinitions.ts; Ga4ReportingService.ts; Ga4ReportEnhancements.ts; src/serverFunctions/ga4Reports.ts; src/serverFunctions/ga4MeasurementHealth.ts -->
+Kota ve sınırlar açılır bölümündeki değerler son rapor yanıtının yerel anlık görüntüsüdür; seçilen trafik döneminin toplamı değildir. Standart hesap tavanı bir varsayımdır. Yenile, görünür raporları yeniden ister; raporların belirteç maliyeti vardır.

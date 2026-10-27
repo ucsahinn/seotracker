@@ -45,11 +45,11 @@ describe("buildSummary", () => {
     sessions: 10 - index,
   }));
 
-  it("uses a ring up to six groups and bars past it, following the report's own dimension", () => {
+  it("uses readable ranked bars for category counts", () => {
     expect(
       buildSummary("traffic_acquisition", ["channel"], rows.slice(0, 6), label)
         ?.form,
-    ).toBe("ring");
+    ).toBe("bars");
     expect(
       buildSummary("traffic_acquisition", ["channel"], rows, label)?.form,
     ).toBe("bars");

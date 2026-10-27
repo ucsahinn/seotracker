@@ -33,10 +33,10 @@ export function pointsDelta(
 ): WordedDelta | null {
   if (current == null || previous == null) return null;
   if (!Number.isFinite(current) || !Number.isFinite(previous)) return null;
-  if (previous <= 0 && current <= 0) return null;
   const points = (current - previous) * 100;
   const magnitude = formatDecimal(Math.abs(points));
-  if (magnitude === formatDecimal(0)) return null;
+  if (magnitude === formatDecimal(0))
+    return { text: t("Değişmedi"), improved: false, neutral: true };
   return {
     text: t("{value} puan", { value: `${points > 0 ? "+" : "-"}${magnitude}` }),
     improved: higherIsBetter ? points > 0 : points < 0,

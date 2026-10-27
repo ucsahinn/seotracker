@@ -5,7 +5,7 @@ import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { HelpTip } from "@/client/components/HelpTip";
 import { StatusPill } from "@/client/components/StatusPill";
-import { formatCount } from "@/client/lib/format";
+import { formatCount, formatDateTime } from "@/client/lib/format";
 import { getGa4MeasurementHealth } from "@/serverFunctions/ga4MeasurementHealth";
 import { t } from "@/shared/i18n";
 
@@ -104,47 +104,64 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
   }
 
   const health = query.data;
+  const count = (value: number, list: string) =>
+    health.incompleteLists?.includes(list)
+      ? t("En az {count}", { count: formatCount(value) })
+      : formatCount(value);
 
   return (
     <div className="space-y-4">
+      <p className="text-xs text-muted">
+        {t(
+          "Bu kontrol yalnızca mülk ayarlarını okur; etiketin veri gönderdiğini doğrulamaz.",
+        )}
+      </p>
+      <p className="text-xs text-muted">
+        {t("Veri alındı: {time}", {
+          time: formatDateTime(health.fetchedAt ?? query.dataUpdatedAt),
+        })}
+      </p>
+      <a
+        className="link text-sm"
+        href="https://developers.google.com/analytics/devguides/collection/ga4/troubleshoot"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {t("Etiket veri toplamayı doğrulama adımları")}
+      </a>
       <MetricRow>
         <MetricTile
           label={t("Web veri akışı")}
-          value={formatCount(health.summary.webStreamCount)}
-          animateTo={{
-            value: health.summary.webStreamCount,
-            format: formatCount,
-          }}
+          value={count(health.summary.webStreamCount, "data_streams")}
           hint={
             health.summary.dataStreamCount > health.summary.webStreamCount
               ? t("{count} akıştan web olanlar", {
-                  count: health.summary.dataStreamCount,
+                  count: count(health.summary.dataStreamCount, "data_streams"),
                 })
-              : health.summary.webStreamCount === 0
-                ? t("Web akışı yok")
-                : t("Tüm akışlar web")
+              : health.incompleteLists?.includes("data_streams")
+                ? t("Envanter eksik olabilir")
+                : health.summary.webStreamCount === 0
+                  ? t("Web akışı yok")
+                  : health.incompleteLists?.includes("data_streams")
+                    ? t("Envanter eksik olabilir")
+                    : t("Tüm akışlar web")
           }
         />
         <MetricTile
           label={t("Anahtar olay")}
-          value={formatCount(health.summary.keyEventCount)}
-          animateTo={{
-            value: health.summary.keyEventCount,
-            format: formatCount,
-          }}
+          value={count(health.summary.keyEventCount, "key_events")}
           hint={t(
-            "Önemli saydığınız hareket, örneğin form gönderme ya da satın alma. Tanımlı değilse rapor hep 0 gösterir.",
+            "Tanımlanmış olay sayısıdır; bu dönemde tetiklenen olay sayısı veya veri toplama kanıtı değildir.",
           )}
         />
         <MetricTile
           label={t("Özel boyut")}
-          value={formatCount(health.summary.customDimensionCount)}
-          animateTo={{
-            value: health.summary.customDimensionCount,
-            format: formatCount,
-          }}
+          value={count(
+            health.summary.customDimensionCount,
+            "custom_dimensions",
+          )}
           hint={t("{count} özel metrik", {
-            count: health.summary.customMetricCount,
+            count: count(health.summary.customMetricCount, "custom_metrics"),
           })}
         />
         <MetricTile
@@ -153,7 +170,7 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
           animateTo={{ value: health.summary.issueCount, format: formatCount }}
           hint={
             health.summary.issueCount === 0
-              ? t("Kurulum eksiksiz")
+              ? t("Kontrol edilen ayarlarda eksik bulunmadı")
               : t("Aşağıda açıklanıyor")
           }
         />
@@ -163,8 +180,8 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
           the finding list mean something when it is not empty. */}
       {health.issues.length === 0 ? (
         <div className="flex items-center gap-2 rounded-box border border-base-300 bg-base-100 p-4 text-sm text-muted">
-          <Check className="size-4 text-success" />
-          {t("Ölçüm kurulumunda eksik yok.")}
+          <Check className="size-4 text-[var(--ink-success)]" />
+          {t("Kontrol edilen ayarlarda eksik bulunmadı")}
         </div>
       ) : (
         <ul className="space-y-2">
@@ -181,6 +198,20 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
                 {copy ? (
                   <p className="mt-1 text-sm text-muted">{t(copy.fix)}</p>
                 ) : null}
+                <a
+                  href={
+                    "https://analytics.google.com/analytics/web/#/p" +
+                    encodeURIComponent(
+                      health.propertyId.replace(/^properties\//, ""),
+                    ) +
+                    "/admin"
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link mt-2 inline-flex min-h-11 items-center text-sm"
+                >
+                  {t("GA4 yönetiminde akış ve anahtar olay ayarlarını aç")}
+                </a>
               </li>
             );
           })}
@@ -218,10 +249,12 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
             {t("{on} / {count} otomatik olay açık", {
               on: formatCount(
                 MEASUREMENT_TOGGLES.filter(
-                  ([key]) => stream.enhancedMeasurement[key],
+                  ([key]) =>
+                    stream.enhancedMeasurement.streamEnabled &&
+                    stream.enhancedMeasurement[key],
                 ).length,
               ),
-              count: MEASUREMENT_TOGGLES.length,
+              count: formatCount(MEASUREMENT_TOGGLES.length),
             })}
             <HelpTip label={t("Gelişmiş ölçüm")}>
               {t(
@@ -231,7 +264,9 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
           </p>
           <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1.5">
             {MEASUREMENT_TOGGLES.map(([key, label]) => {
-              const on = stream.enhancedMeasurement[key];
+              const on =
+                stream.enhancedMeasurement.streamEnabled &&
+                stream.enhancedMeasurement[key];
               return (
                 <li
                   key={key}

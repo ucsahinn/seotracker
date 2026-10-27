@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { fractionalChange, placesDelta } from "./delta";
+import { fractionalChange, placesDelta, pointsDelta } from "./delta";
 
 describe("fractionalChange", () => {
   it("is the change relative to the previous value", () => {
@@ -18,4 +18,10 @@ describe("placesDelta", () => {
     expect(placesDelta(8.92, 8.9)).toMatchObject({ neutral: true });
     expect(placesDelta(8.9, null)).toBeNull();
   });
+});
+
+it("distinguishes unchanged rates, including zero, from missing evidence", () => {
+  expect(pointsDelta(0, 0)).toMatchObject({ neutral: true });
+  expect(pointsDelta(0.5, 0.5)).toMatchObject({ neutral: true });
+  expect(pointsDelta(0.5, null)).toBeNull();
 });

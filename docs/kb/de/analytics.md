@@ -1,58 +1,31 @@
 ---
 title: Analytics
-description: Was Besucher aus der Suche danach auf der Website tun: Berichte aus Google Analytics 4, Schlüsselereignisse und die Prüfung der Messung.
+description: Analytics zeigt gemessene Besuche, Interaktionen und Schlüsselereignisse Ihrer GA4-Property.
 screen: Analytics
 route: /p/<proje>/analytics
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
-Hier sehen Sie, was die Personen, die auf Ihre Website kommen, danach tun. Die Search Console zeigt, was bei Google passiert; Analytics zeigt, was Besucher auf der Website tun.
+Analytics zeigt gemessene Besuche, Interaktionen und Schlüsselereignisse Ihrer GA4-Property. Die Berichtsauswahl umfasst Einstiegsseiten, Seiten, Akquisition, Schlüsselereignisse, E-Commerce, interne Suche, Zielgruppen und Messeinstellungen.
 
-Sie sehen sieben Berichte aus Ihrem Google-Analytics-4-Konto. Der Bildschirm zeigt standardmäßig nur Besucher aus der Suche (organische Suche). Ein achter Reiter prüft die Messung selbst. Er prüft, ob der Zähler läuft und ob ein Schlüsselereignis definiert ist.
+## Zuerst den Umfang prüfen
 
-## Was auf dem Bildschirm zu sehen ist
+Organische Suche umfasst auch andere Suchmaschinen als Google. Gesamter Traffic ändert Übersicht und Bericht gemeinsam. Die interne Suche zeigt immer gemessene Suchergebnis-Ereignisse aller Kanäle; hier gibt es keinen Kanalumschalter. Alle Hosts und Streams der Property sind enthalten. Weitere Websites oder Apps können zu den Summen beitragen.
 
-**Reiter.** **Landingpages**, **Seiten und Bildschirme**, **Traffic-Akquisition**, **Schlüsselereignisse**, **E-Commerce**, **Interne Suche**, **Zielgruppe** und **Messzustand**. Unter jedem Reiter steht eine kurze Frage. Eine Einstiegsseite ist die Seite, auf der ein Besucher zuerst auf die Website kommt. Ein Schlüsselereignis ist eine Handlung, die Sie für wichtig erklärt haben.
+Die Zeiträume von 7, 28 und 90 Tagen enden gestern in der Zeitzone der Property. Gestern ist ein abgelaufener Kalendertag, keine Garantie für endgültige Daten. Aktuelle Tage können neu verarbeitet werden. Aktueller Zeitraum, gleich langer Vorzeitraum und Zeitzone werden angezeigt. Links akzeptieren startDate/endDate gemeinsam; ein zukünftiges Enddatum wird mit Hinweis auf gestern begrenzt. GA4 und Search Console verwenden verschiedene Kalender und Messwerte. Gleiche Datumsangaben garantieren keine identischen Zeitspannen.
 
-**Steuerelemente.** Bei **Zeitraum** wählen Sie Letzte 7 Tage, Letzte 28 Tage oder Letzte 3 Monate. Bei **Kanal** wählen Sie Organische Suche (Standard) oder Gesamter Traffic. **Zeilen** steht für 50, 100 oder 200. Im Reiter Zielgruppe wählen Sie **Gerät**, **Land** und **Neu / wiederkehrend**. Im Reiter Traffic wählen Sie **Kanalgruppe**, **Quelle / Medium** und **Kampagne**. Die Auswahl wird in die Adressleiste geschrieben.
+## Ergebnisse und Zeilen untersuchen
 
-**Bereich Organische Sitzungen.** Er steht im Reiter Landingpages über der Tabelle. Eine Sitzung ist ein ganzer Besuch. Der Bereich hat eine Linie der täglichen Sitzungen sowie die Karten **Sitzungen** und **Interaktionsrate**. Wird Umsatz gemessen, erscheint auch **Organischer Umsatz**. Alle zeigen auch die Veränderung gegenüber dem vorherigen Zeitraum.
+Die Übersicht folgt dem gewählten Umfang: Sitzungen, Interaktionsrate, Schlüsselereignisse und Kaufumsatz. Schlüsselereignisse sind keine eindeutigen Kunden. Null Umsatz beweist nicht, dass kein Shop existiert. Eine unbekannte Währung wird am Betrag genannt. Interaktionsdauer ist die Gesamtdauer, kein Durchschnitt pro Nutzer. Die Tageswerte unterscheiden unbekannte Tage von null. Eingeschränkte Daten verhindern sichere Vergleiche und Empfehlungen.
 
-**Tabelle.** Die Spalten hängen vom Bericht ab. Zum Beispiel **Domain**, **Landingpage**, **Seite**, **Ereignisname**, **Kanal**, **Gerät**, **Land**, **Artikel**, **Suchbegriff**. Die Messwerte sind: **Sitzungen**, **Aktive Nutzer**, **Interaktionsrate**, **Schlüsselereignisse**, **Umsatz**, **Aufrufe**. Ist kein Schlüsselereignis definiert, steht dort immer 0.
+Wählen Sie 50, 100 oder 200 Zeilen pro Seite. Zurück/Weiter erschließt weitere Zeilen. Filter, Sortierung, Zusammenfassungen und Exporte gelten nur für die gelistete Seite. Ein Balken filtert die Tabelle, ohne die Basis der Zusammenfassung zu ändern. Nutzer können in mehreren Kategorien vorkommen; addieren Sie sie nicht zu eindeutigen Property-Nutzern. Gleiche Pfade verschiedener Hosts sowie gleichnamige Produkte mit verschiedenen IDs bleiben getrennt. Bei negativen oder unbekannten Umsätzen entfällt das Anteilsdiagramm.
 
-**Zeile unter der Tabelle.** Sie nennt, wie viele Zeilen angezeigt werden. Hat Google die Daten stichprobenartig erhoben, steht dort „Stichprobe“. Wurden Zeilen aus Datenschutzgründen zurückgehalten, kommt „Zeilen unterhalb der Schwellenwerte ausgeblendet“ hinzu.
+Der Filter für geringe Conversion ist ein Prüfhinweis über mindestens vier geeignete gelistete Seiten mit jeweils mindestens 30 Sitzungen. Er schätzt keine entgangenen Verkäufe. Keine beobachteten Schlüsselereignisse beweisen keine fehlende Einrichtung. Häufige interne Suchbegriffe beweisen keine Inhaltslücke.
 
-**Schnellfilter.** **Nur organisch**, **Geringe Interaktion** (unter 50 Prozent), **Mit Conversions**, **Mit Umsatz**, **Kurze Interaktionsdauer**, **Viel Traffic, wenig Conversions**.
+## Teilen, Messung und Kontingent
 
-**Zusammenfassungskarten.** Die Reiter Schlüsselereignisse, E-Commerce und Websitesuche haben jeweils eigene Zusammenfassungskarten.
+Bericht, Kanal, Daten, Aufschlüsselung, Seitengröße und Versatz bleiben in der URL. Der exakte host/path-Filter gilt nur für gelistete Zeilen und fasst URL-Varianten nicht zusammen. CSV und Google Tabellen exportieren die gefilterten Zeilen mit numerischen Rohwerten. ga4_scope_json enthält Quelle, Property, Zeitraum, Zeitzone, Währung, Datenqualität, Seite und Filter.
 
-**Reiter Messungsstatus.** Er hat vier Karten: **Web-Datenstreams**, **Schlüsselereignisse**, **Benutzerdefinierte Dimensionen**, **Befunde**. Ein Befund kann einer von diesen sein: „Kein Web-Datenstream“, „Erweiterte Messung aus“, „Die interne Suche wird nicht gemessen“, „Keine Schlüsselereignisse eingerichtet“, „Das Inventar ist möglicherweise unvollständig“. Die sieben Optionen der erweiterten Messung erscheinen einzeln: Scrolls, Ausgehende Klicks, Interne Suche, Video, Dateidownloads, Form, Seitenänderungen. Gibt es kein Problem, steht dort „Im Messaufbau fehlt nichts.“
+Die Messprüfung liest nur Admin-Einstellungen. Ein Ergebnis ohne Lücken beweist nicht, dass das Tag Daten sendet; folgen Sie den verlinkten Erfassungstests. Teilbestände werden als mindestens angegeben. Ist der Hauptschalter der erweiterten Messung aus, sind effektiv null Unterfunktionen aktiv. Kontoeinstellungen werden nicht verändert.
 
-**Leere Zustände.** Gibt es keine Daten, steht dort „Keine Daten in diesem Zeitraum“, und zwei Abkürzungen erscheinen: **Gesamten Traffic anzeigen**, **Messzustand überprüfen**. Ist Analytics nicht verbunden, steht dort „Google Analytics ist nicht verbunden“.
-
-## So gehen Sie vor
-
-1. Sehen Sie zuerst in den Reiter **Messzustand**. Steht dort „Keine Schlüsselereignisse eingerichtet“, bleiben die Conversion-Spalten immer null. Definieren Sie zuerst in Analytics ein Schlüsselereignis.
-2. Sehen Sie im Reiter **Landingpages** auf die Spalte **Domain**. Sehen Sie localhost oder 127.0.0.1, sendet eine Testwebsite auf Ihrem eigenen Computer Daten. Diese Zeilen sind keine echten Besuche. Die App filtert das nicht für Sie heraus.
-3. Ist der Traffic gesunken, öffnen Sie den Reiter **Traffic-Akquisition** mit **Kanalgruppe**. Ist nur der Suchkanal gesunken, liegt die Ursache bei der Suche. Ist jeder Kanal gesunken, liegt das Problem bei der Messung oder auf der Website.
-4. Die Schaltfläche **Viel Traffic, wenig Conversions** zeigt Stellen, an denen Google Besucher schickt, die Seite sie aber nicht halten kann. Was zu tun ist, steht auf dem Bildschirm **Chancen**.
-
-## Wie die Zahlen berechnet werden
-
-Der Zeitraum endet in der Zeitzone des Kontos gestern. Analytics liefert die Daten einen Tag später. Ist „Organische Suche“ gewählt, werden nur Besuche von Google oder einer anderen Suchmaschine gezählt.
-
-Jeder Bericht fragt höchstens 200 Zeilen an. Der Messungsstatus liest die Analytics-Einstellungen und verbraucht kein Berichtskontingent. Ist das Berichtskontingent aufgebraucht, sehen Sie den Fehler „Google Analytics reporting quota is exhausted.“ (Das Berichtskontingent von Analytics ist aufgebraucht). Ihr Kontingent sehen Sie unter **Einstellungen → Limits**.
-
-## Häufige Fragen
-
-**Warum weicht die Zahl der Sitzungen von den Klicks in der Search Console ab?** Beide zählen Unterschiedliches. Die Search Console zählt Klicks bei Google. Analytics zählt Sitzungen auf der Website. Besucher, die der Cookie-Abfrage nicht zustimmen, tauchen in Analytics gar nicht auf.
-
-**Die Zeilenzahl bleibt bei 200 stehen.** Pro Abruf werden höchstens 200 Zeilen angefordert. Verkürzen Sie den Zeitraum oder ändern Sie die Aufschlüsselung.
-
-**Warum ist das Kontingent aufgebraucht?** Ein Standardkonto erhält 200.000 Tokens (Kontingenteinheiten) pro Tag und 40.000 pro Stunde. Jeder Bericht verbraucht einige Tokens. Wiederholtes Klicken auf **Aktualisieren** verbraucht das Kontingent.
-
-## Grenzen
-
-Was Analytics nicht misst, kann auch dieser Bildschirm nicht zeigen. Dazu gehören Besuche ohne Cookie-Zustimmung, nicht definierte Schlüsselereignisse und eine ausgeschaltete erweiterte Messung. Der Bildschirm filtert Localhost-Traffic nicht von selbst heraus. Analytics und Search Console berichten in unterschiedlichen Zeitzonen. Tägliche Zuordnungen können sich um einen Tag verschieben.
-
-<!-- Kaynaklar: src/routes/_project/p/$projectId/analytics.tsx; src/client/features/analytics/AnalyticsPage.tsx; ReportView.tsx; ReportTable.tsx; ReportEmptyState.tsx; OrganicTrendPanel.tsx; MeasurementHealthPanel.tsx; metricHelp.ts; reportInsights.ts; reportKpis.ts; src/shared/ga4-reports.ts; src/server/features/ga4/services/Ga4ReportDefinitions.ts; Ga4ReportingService.ts; Ga4ReportEnhancements.ts; src/serverFunctions/ga4Reports.ts; src/serverFunctions/ga4MeasurementHealth.ts -->
+Das eingeklappte Kontingent zeigt einen lokalen Stand aus der letzten Berichtsantwort, keine Nutzung des gewählten Traffic-Zeitraums. Die Standardobergrenze ist eine Annahme. Aktualisieren fordert sichtbare Berichte erneut an und kann Berichtstokens verbrauchen.

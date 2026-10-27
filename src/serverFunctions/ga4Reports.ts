@@ -18,6 +18,7 @@ const schema = z.object({
    */
   windowDays: z.union([z.literal(7), z.literal(28), z.literal(90)]).default(28),
   limit: z.number().int().min(1).max(200).default(50),
+  offset: z.number().int().min(0).max(10000000).default(0),
   comparePreviousPeriod: z.boolean().default(false),
   /*
    * What the audience report splits by. The service has supported all three
@@ -64,6 +65,7 @@ export const getGa4Report = createServerFn({ method: "POST" })
         endDate: data.endDate,
         windowDays: data.windowDays,
         limit: data.limit,
+        offset: data.offset,
         comparePreviousPeriod: data.comparePreviousPeriod,
         audienceBreakdown: data.audienceBreakdown,
         acquisitionBreakdown: data.acquisitionBreakdown,
@@ -80,6 +82,39 @@ export const getGa4Report = createServerFn({ method: "POST" })
         status: "ok" as const,
         propertyDisplayName: report.source.propertyDisplayName ?? null,
         dateRange: report.request.resolvedDateRange,
+        requestedDateRange: report.request.requestedDateRange,
+        propertyId: report.source.propertyId,
+        propertyTimeZone: report.request.propertyTimeZone,
+        channel: data.kind === "site_search" ? "all" : report.request.channel,
+        reportMetadata: report.reportMetadata,
+        warnings: report.warnings,
+        pageInfo: report.pageInfo,
+        activityStatus:
+          "ecommerceActivity" in report
+            ? (report.ecommerceActivity?.status ?? null)
+            : "siteSearchActivity" in report
+              ? (report.siteSearchActivity?.status ?? null)
+              : null,
+        diagnosticCoverage:
+          "diagnosticCoverage" in report
+            ? (report.diagnosticCoverage ?? null)
+            : null,
+        diagnostics: report.diagnostics.map((diagnostic) => {
+          const evidence =
+            diagnostic.evidence && typeof diagnostic.evidence === "object"
+              ? diagnostic.evidence
+              : {};
+          const value = (key: string) =>
+            key in evidence && typeof Reflect.get(evidence, key) === "number"
+              ? Number(Reflect.get(evidence, key))
+              : null;
+          return {
+            code: String(diagnostic.code),
+            sessions: value("sessions"),
+            share: value("share"),
+            totalSessions: value("totalSessions"),
+          };
+        }),
         currencyCode: report.request.currencyCode ?? null,
         dimensions: report.request.dimensions,
         metrics: report.request.metrics,

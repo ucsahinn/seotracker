@@ -13,7 +13,7 @@ vi.mock("@tanstack/react-router", () => ({
   ),
 }));
 
-const { MeasurementHealthPanel } = await import("./MeasurementHealthPanel");
+import { MeasurementHealthPanel } from "./MeasurementHealthPanel";
 
 /*
  * The shape this suite exists for.
@@ -83,7 +83,9 @@ describe("MeasurementHealthPanel", () => {
     mount();
 
     expect(
-      await screen.findByText(/Ölçüm kurulumunda eksik yok/i),
+      (
+        await screen.findAllByText(/Kontrol edilen ayarlarda eksik bulunmadı/i)
+      )[0],
     ).toBeDefined();
   });
 
@@ -144,5 +146,53 @@ describe("MeasurementHealthPanel", () => {
     expect(await screen.findByText(/Web veri akışı yok/i)).toBeDefined();
     // Never the raw code: it is the contract with the MCP tool, not copy.
     expect(screen.queryByText("no_web_stream")).toBeNull();
+  });
+
+  it("shows zero effective features when the parent is disabled, and labels partial inventory", async () => {
+    getGa4MeasurementHealth.mockResolvedValue({
+      status: "ok",
+      propertyId: "1",
+      propertyDisplayName: "Site",
+      fetchedAt: "2026-10-27T10:00:00Z",
+      incompleteLists: ["key_events"],
+      issues: ["inventory_incomplete"],
+      summary: {
+        dataStreamCount: 1,
+        webStreamCount: 1,
+        keyEventCount: 0,
+        customDimensionCount: 0,
+        customMetricCount: 0,
+        issueCount: 1,
+      },
+      keyEvents: [],
+      otherStreams: [],
+      webStreams: [
+        {
+          streamId: "1",
+          displayName: "Web",
+          defaultUri: "https://example.com",
+          measurementId: null,
+          enhancedMeasurement: {
+            streamEnabled: false,
+            scrollsEnabled: true,
+            outboundClicksEnabled: true,
+            siteSearchEnabled: true,
+            videoEngagementEnabled: true,
+            fileDownloadsEnabled: true,
+            formInteractionsEnabled: true,
+            pageChangesEnabled: true,
+          },
+        },
+      ],
+    });
+    mount();
+    expect(await screen.findByText("0 / 7 otomatik olay açık")).toBeDefined();
+    expect(screen.getByText("En az 0")).toBeDefined();
+    expect(
+      screen.queryByText("Kontrol edilen ayarlarda eksik bulunmadı"),
+    ).toBeNull();
+    expect(
+      screen.getByText(/etiketin veri gönderdiğini doğrulamaz/),
+    ).toBeDefined();
   });
 });

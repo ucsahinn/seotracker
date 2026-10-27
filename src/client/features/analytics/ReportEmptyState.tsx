@@ -104,7 +104,7 @@ export function ReportEmptyState({
       description={[
         narrowedByChannel
           ? t(
-              "Şu an yalnızca Google organik aramadan gelen ziyaretler sayılıyor; tüm trafiğe bakmak sonucu değiştirebilir.",
+              "Şu an organik arama motorlarından gelen ziyaretler sayılıyor; tüm trafiğe bakmak sonucu değiştirebilir.",
             )
           : null,
         t(copy.because),

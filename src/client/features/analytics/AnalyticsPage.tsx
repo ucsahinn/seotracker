@@ -1,74 +1,30 @@
 import { useIsFetching, useQuery, useQueryClient } from "@tanstack/react-query";
-import * as React from "react";
+import { useAnalyticsQuota } from "./useAnalyticsQuota";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
 import { QuotaCard } from "@/client/features/quotas/QuotaCard";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
-import { TabPanel, Tabs } from "@/client/components/Tabs";
 import { OrganicTrendPanel } from "@/client/features/analytics/OrganicTrendPanel";
 import { ReportView } from "@/client/features/analytics/ReportView";
 import { MeasurementHealthPanel } from "@/client/features/analytics/MeasurementHealthPanel";
 import { AnalyticsNotConnected } from "@/client/features/analytics/AnalyticsNotConnected";
 import { ga4ConnectionOptions } from "@/client/features/integrations/googleConnectionQueries";
 import { getGa4Report } from "@/serverFunctions/ga4Reports";
-import {
-  GA4_REPORT_KINDS,
-  GA4_REPORT_LABELS,
-  type Ga4ReportKindName,
-} from "@/shared/ga4-reports";
+import { getGa4MeasurementHealth } from "@/serverFunctions/ga4MeasurementHealth";
+import { type Ga4ReportKindName } from "@/shared/ga4-reports";
 import { t } from "@/shared/i18n";
-
-/*
- * Option labels and tab questions are Turkish source strings, translated by
- * t() where they render: the locale is not known at import time.
- */
-type Channel = "organic_search" | "all";
-/** Matches the windows Search Performance offers, so the two read alike. */
-type WindowDays = 7 | 28 | 90;
-const WINDOWS: { value: WindowDays; label: string }[] = [
-  { value: 7, label: "Son 7 gün" },
-  { value: 28, label: "Son 28 gün" },
-  { value: 90, label: "Son 3 ay" },
-];
-
-type Breakdown = "device" | "country" | "new_vs_returning";
-const BREAKDOWNS: { value: Breakdown; label: string }[] = [
-  { value: "device", label: "Cihaz" },
-  { value: "country", label: "Ülke" },
-  { value: "new_vs_returning", label: "Yeni / geri dönen" },
-];
-
-type AcquisitionBreakdown = "channel_group" | "source_medium" | "campaign";
-const ACQUISITION_BREAKDOWNS: { value: AcquisitionBreakdown; label: string }[] =
-  [
-    { value: "channel_group", label: "Kanal grubu" },
-    { value: "source_medium", label: "Kaynak / ortam" },
-    { value: "campaign", label: "Kampanya" },
-  ];
-
-/** Matches the ceiling `ga4Reports`' schema enforces. */
-const ROW_LIMITS = [50, 100, 200] as const;
-
-const CHANNELS: { value: Channel; label: string }[] = [
-  { value: "organic_search", label: "Organik arama" },
-  { value: "all", label: "Tüm trafik" },
-];
-
-/**
- * The seven Google Analytics reports.
- *
- * The engine behind these has existed since the fork began and only an agent
- * could reach it — seven MCP tools, no screen. The columns come from the
- * report definition rather than being hard-coded per report, which is why one
- * table serves all seven.
- */
-/*
- * The setup check rides in the same strip as the seven reports rather than
- * taking its own route. It is an Analytics view, one nav entry is enough,
- * and this repo's own trap is a route with no nav entry: `getProjectNavGroups`
- * names paths one by one, so a new page orphans silently.
- */
-const HEALTH = "measurement_health";
+import { formatCount } from "@/shared/format";
+import {
+  AnalyticsControls,
+  AnalyticsBreakdownControls,
+  HEALTH,
+  type Scope,
+  type View,
+  type Channel,
+  type WindowDays,
+  type Breakdown,
+  type AcquisitionBreakdown,
+} from "./AnalyticsControls";
 
 /** The cached answers the visible Analytics screen is made of. */
 const VISIBLE_REPORT_KEYS: readonly string[] = [
@@ -90,84 +46,93 @@ const REPORT_QUESTIONS: Record<Ga4ReportKindName, string> = {
   ecommerce_performance:
     "Hangi ürünler görüntüleniyor, sepete ekleniyor ve gelir getiriyor? Mülkte e-ticaret ölçümü yoksa bu sekme boş kalır.",
   site_search:
-    "Ziyaretçiler sitenizde ne arıyor? Bulamadıkları içerik, yazacağınız yeni sayfaların ipucudur.",
+    "Ziyaretçiler hangi konuları aradı? Sonuçları inceleyin; arama sıklığı, eksik içerik kanıtı değildir.",
   audience_breakdown:
     "Ziyaretçileriniz hangi cihazlardan geliyor ve cihaza göre deneyim nasıl değişiyor?",
 };
-
-type View = Ga4ReportKindName | typeof HEALTH;
 
 export function AnalyticsPage({
   projectId,
   windowDays,
   onWindowChange,
+  scope,
+  onScopeChange,
 }: {
   projectId: string;
   /** Held in the URL by the route, so a reload or a shared link keeps it. */
   windowDays: WindowDays;
   onWindowChange: (days: WindowDays) => void;
+  scope: Scope;
+  onScopeChange: (next: Partial<Scope>) => void;
 }) {
-  const [view, setView] = React.useState<View>("landing_pages");
-  const [channel, setChannel] = React.useState<Channel>("organic_search");
-  /*
-   * The page was pinned to 28 days with no control, while the server
-   * function had accepted a range all along -- so the one question an
-   * Analytics screen exists for, "is this better or worse than before",
-   * could not be asked.
-   */
+  const {
+    view,
+    channel,
+    offset,
+    limit: rowLimit,
+    audience: breakdown,
+    acquisition,
+  } = scope;
+  const setOffset = (next: number) => onScopeChange({ offset: next });
+  const setView = (next: View) => onScopeChange({ view: next, offset: 0 });
+  const setChannel = (next: Channel) =>
+    onScopeChange({ channel: next, offset: 0 });
+  const setRowLimit = (next: 50 | 100 | 200) =>
+    onScopeChange({ limit: next, offset: 0 });
+  const setBreakdown = (next: Breakdown) =>
+    onScopeChange({ audience: next, offset: 0 });
+  const setAcquisition = (next: AcquisitionBreakdown) =>
+    onScopeChange({ acquisition: next, offset: 0 });
   const kind = view === HEALTH ? "landing_pages" : view;
-  /*
-   * The row cap was a literal 50 with no control, over a report that says
-   * "50 / 800 satır" right above the table -- so the screen named 750 rows
-   * the operator had no way to reach. 200 is the server's own ceiling.
-   */
-  const [rowLimit, setRowLimit] = React.useState<(typeof ROW_LIMITS)[number]>(
-    ROW_LIMITS[0],
-  );
-
-  /*
-   * What the audience report splits by. Only that report has one, so it is
-   * only offered there; the service has supported all three since it was
-   * written, and the screen was stuck on device.
-   */
-  const [breakdown, setBreakdown] = React.useState<Breakdown>("device");
-
-  const [acquisition, setAcquisition] =
-    React.useState<AcquisitionBreakdown>("channel_group");
+  const effectiveChannel = kind === "site_search" ? "all" : channel;
 
   // Asked first: with no property there is nothing to filter, tab through or
   // measure, so the whole screen becomes the one connect step.
   const connection = useQuery(ga4ConnectionOptions(projectId));
   const notConnected = connection.data?.connected === false;
+  // Observe previously requested inventory without spending Admin calls on render.
+  const cachedHealth = useQuery({
+    queryKey: ["ga4MeasurementHealth", projectId],
+    queryFn: () => getGa4MeasurementHealth({ data: { projectId } }),
+    enabled: false,
+  });
 
   const reportQuery = useQuery({
     queryKey: [
       "ga4Report",
       projectId,
       kind,
-      channel,
+      effectiveChannel,
       windowDays,
       rowLimit,
       breakdown,
       acquisition,
+      offset,
+      scope.startDate ?? null,
+      scope.endDate ?? null,
     ],
     queryFn: () =>
       getGa4Report({
         data: {
           projectId,
           kind,
-          channel,
+          channel: effectiveChannel,
           windowDays,
           limit: rowLimit,
           audienceBreakdown: breakdown,
           acquisitionBreakdown: acquisition,
+          offset,
+          startDate: scope.startDate,
+          endDate: scope.endDate,
         },
       }),
-    enabled: view !== HEALTH && !notConnected,
+    enabled: view !== HEALTH && connection.data?.connected === true,
+    retry: 1,
   });
   const result = reportQuery.data;
 
   const queryClient = useQueryClient();
+  useAnalyticsQuota(projectId);
   const isRefreshing =
     useIsFetching({
       predicate: (query) =>
@@ -181,12 +146,20 @@ export function AnalyticsPage({
         query.queryKey[1] === projectId &&
         VISIBLE_REPORT_KEYS.includes(String(query.queryKey[0])),
     });
-    // GA4 reports spend the property's token quota.
-    await queryClient.invalidateQueries({
-      queryKey: ["quotaStatus", projectId],
-    });
   };
 
+  if (connection.isError) {
+    return (
+      <PageShell>
+        <PageHeader title="Analytics" />
+        <QueryErrorState
+          error={connection.error}
+          onRetry={() => void connection.refetch()}
+          title={t("Bağlantı yükleniyor")}
+        />
+      </PageShell>
+    );
+  }
   if (notConnected) {
     return (
       <PageShell>
@@ -216,95 +189,38 @@ export function AnalyticsPage({
             <RefreshButton
               onRefresh={() => void refreshVisible()}
               isFetching={isRefreshing}
-              dataUpdatedAt={reportQuery.dataUpdatedAt || undefined}
+              dataUpdatedAt={
+                view === HEALTH
+                  ? undefined
+                  : reportQuery.dataUpdatedAt || undefined
+              }
               shortcut
             />
           </PageActions>
         }
       />
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <Tabs
-          group="ga4-report"
-          value={view}
-          onChange={setView}
-          items={[
-            ...GA4_REPORT_KINDS.map((value) => ({
-              id: value as View,
-              label: GA4_REPORT_LABELS[value].label,
-            })),
-            { id: HEALTH as View, label: t("Ölçüm durumu") },
-          ]}
-        />
+      <AnalyticsControls
+        {...{
+          view,
+          setView,
+          kind,
+          rowLimit,
+          setRowLimit,
+          windowDays,
+          onWindowChange,
+          scope,
+          setOffset,
+          channel,
+          setChannel,
+        }}
+      />
 
-        {/* A pick-one filter, not a second tab strip: it narrows the report
-            the tabs above chose rather than swapping the panel. Gone on the
-            setup-check tab, where it used to flip its own active state and
-            change nothing -- a control that visibly responds and has no
-            effect is worse than a disabled one. */}
-        {view === HEALTH ? null : (
-          <div className="flex flex-wrap items-center gap-2">
-            <label className="flex items-center gap-2 text-xs text-muted">
-              <span className="whitespace-nowrap">{t("Satır sayısı")}</span>
-              <select
-                className="select select-bordered select-sm w-20"
-                value={rowLimit}
-                onChange={(event) => {
-                  const next = ROW_LIMITS.find(
-                    (option) => String(option) === event.target.value,
-                  );
-                  if (next) setRowLimit(next);
-                }}
-              >
-                {ROW_LIMITS.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <select
-              className="select select-bordered select-sm w-32"
-              value={windowDays}
-              onChange={(event) => {
-                const next = WINDOWS.find(
-                  (option) => String(option.value) === event.target.value,
-                );
-                if (next) onWindowChange(next.value);
-              }}
-              aria-label={t("Tarih aralığı")}
-            >
-              {WINDOWS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {t(option.label)}
-                </option>
-              ))}
-            </select>
-            <div className="join" role="radiogroup" aria-label={t("Kanal")}>
-              {CHANNELS.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  role="radio"
-                  aria-checked={option.value === channel}
-                  className={`btn join-item btn-sm ${
-                    option.value === channel ? "btn-active" : ""
-                  }`}
-                  onClick={() => setChannel(option.value)}
-                >
-                  {t(option.label)}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-
-      <TabPanel group="ga4-report" value={view} className="space-y-4">
+      <div className="space-y-4">
         <p className="max-w-[75ch] text-sm text-muted">
           {view === HEALTH
             ? t(
-                "Analytics gerçekten ölçüyor mu? Mülkünüzün kurulum ayarlarını okur, rapor kotanızdan harcamaz.",
+                "Bu kontrol yalnızca mülk ayarlarını okur; etiketin veri gönderdiğini doğrulamaz.",
               )
             : t(REPORT_QUESTIONS[kind])}
         </p>
@@ -315,17 +231,17 @@ export function AnalyticsPage({
           <MeasurementHealthPanel projectId={projectId} />
         ) : (
           <>
-            {/* The window's shape, above whichever report lists it. Its own
-                query, so a slow overview never holds up the table. */}
-            {/* The one chart every tab used to share, now on the first tab
-                only: the others have their own summary, and one line above
-                two different tables read as the answer to both. */}
-            {kind === "landing_pages" ? (
+            {/* Overview and detail share the selected property, channel and dates. */}
+            {
               <OrganicTrendPanel
                 projectId={projectId}
                 windowDays={windowDays}
+                channel={effectiveChannel}
+                startDate={scope.startDate}
+                endDate={scope.endDate}
+                onOpenHealth={() => setView(HEALTH)}
               />
-            ) : null}
+            }
             {reportQuery.isPending ? (
               <div className="space-y-2" aria-busy>
                 <div className="skeleton h-10" />
@@ -333,51 +249,15 @@ export function AnalyticsPage({
               </div>
             ) : null}
 
-            {kind === "audience_breakdown" ? (
-              <div
-                role="radiogroup"
-                aria-label={t("Kitleyi neye göre böl")}
-                className="join"
-              >
-                {BREAKDOWNS.map((option) => (
-                  <button
-                    key={option.value}
-                    type="button"
-                    role="radio"
-                    aria-checked={option.value === breakdown}
-                    onClick={() => setBreakdown(option.value)}
-                    className={`btn btn-sm join-item ${
-                      option.value === breakdown ? "btn-active" : "btn-ghost"
-                    }`}
-                  >
-                    {t(option.label)}
-                  </button>
-                ))}
-              </div>
-            ) : null}
-
-            {kind === "traffic_acquisition" ? (
-              <div
-                role="radiogroup"
-                aria-label={t("Trafiği neye göre böl")}
-                className="join"
-              >
-                {ACQUISITION_BREAKDOWNS.map((option) => (
-                  <button
-                    key={option.value}
-                    type="button"
-                    role="radio"
-                    aria-checked={option.value === acquisition}
-                    onClick={() => setAcquisition(option.value)}
-                    className={`btn btn-sm join-item ${
-                      option.value === acquisition ? "btn-active" : "btn-ghost"
-                    }`}
-                  >
-                    {t(option.label)}
-                  </button>
-                ))}
-              </div>
-            ) : null}
+            <AnalyticsBreakdownControls
+              {...{
+                kind,
+                breakdown,
+                setBreakdown,
+                acquisition,
+                setAcquisition,
+              }}
+            />
 
             {reportQuery.isError ? (
               <QueryErrorState
@@ -393,10 +273,23 @@ export function AnalyticsPage({
 
             {result?.status === "ok" ? (
               <ReportView
-                key={`${kind}-${channel}-${windowDays}-${rowLimit}-${breakdown}-${acquisition}`}
+                key={`${kind}-${effectiveChannel}-${windowDays}-${rowLimit}-${breakdown}-${acquisition}-${offset}-${scope.startDate}-${scope.endDate}`}
                 kind={kind}
                 result={result}
-                organicOnly={channel === "organic_search"}
+                configurationState={
+                  cachedHealth.data?.status === "ok" &&
+                  cachedHealth.data.propertyId ===
+                    connection.data?.propertyId &&
+                  Date.now() - cachedHealth.dataUpdatedAt < 5 * 60 * 1000
+                    ? cachedHealth.data.configurationState
+                    : "unknown"
+                }
+                organicOnly={effectiveChannel === "organic_search"}
+                exactPage={
+                  kind === "landing_pages" && scope.host && scope.path
+                    ? { host: scope.host, path: scope.path }
+                    : undefined
+                }
                 onOrganicOnlyChange={(next) =>
                   setChannel(next ? "organic_search" : "all")
                 }
@@ -405,10 +298,50 @@ export function AnalyticsPage({
             ) : null}
           </>
         )}
-      </TabPanel>
+        {view !== HEALTH && result?.status === "ok" ? (
+          <nav
+            aria-label={t("Rapor sayfaları")}
+            className="flex flex-wrap items-center justify-between gap-3"
+          >
+            <button
+              type="button"
+              className="btn btn-sm min-h-11"
+              disabled={offset === 0 || reportQuery.isFetching}
+              onClick={() => setOffset(Math.max(0, offset - rowLimit))}
+            >
+              {t("Önceki sayfa")}
+            </button>
+            <span role="status" className="text-xs text-muted">
+              {formatCount(offset + (result.rowCount ? 1 : 0))}–
+              {formatCount(offset + result.rowCount)} /{" "}
+              {formatCount(result.totalRowCount)}
+            </span>
+            <button
+              type="button"
+              className="btn btn-sm min-h-11"
+              disabled={!result.pageInfo.hasMore || reportQuery.isFetching}
+              onClick={() => {
+                if (result.pageInfo.nextOffset !== null)
+                  setOffset(result.pageInfo.nextOffset);
+              }}
+            >
+              {t("Sonraki sayfa")}
+            </button>
+          </nav>
+        ) : null}
+      </div>
 
       {connection.data?.connected ? (
-        <QuotaCard projectId={projectId} kinds={["ga4"]} hideWhenUnknown />
+        <details>
+          <summary className="min-h-11 cursor-pointer py-3 text-sm">
+            {t("Kota ve sınırlar")}
+          </summary>
+          <QuotaCard
+            projectId={projectId}
+            kinds={["ga4"]}
+            refreshable={false}
+          />
+        </details>
       ) : null}
     </PageShell>
   );
