@@ -14,6 +14,7 @@ export const PROPERTY_DEPENDENT_QUERY_KEYS = [
   "searchOpportunities",
   "cannibalization",
   "gscHistorySync",
+  "siteDailyHistory",
   "trackedQueries",
   "queryHistory",
   "sitemapReport",

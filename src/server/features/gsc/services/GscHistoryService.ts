@@ -379,11 +379,20 @@ async function backfill(input: {
       siteUrl = fetched.siteUrl;
 
       if (siteUrl) {
-        await GscHistoryRepository.upsertDailyRows(
-          input.projectId,
-          siteUrl,
-          rows,
-        );
+        if (truncated)
+          await GscHistoryRepository.upsertDailyRows(
+            input.projectId,
+            siteUrl,
+            rows,
+          );
+        else
+          await GscHistoryRepository.replaceDailyRows(
+            input.projectId,
+            siteUrl,
+            rows,
+            start,
+            rangeEnd,
+          );
         await GscHistoryRepository.markCoverage({
           projectId: input.projectId,
           siteUrl,

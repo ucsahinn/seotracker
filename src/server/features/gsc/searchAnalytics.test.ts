@@ -3,8 +3,9 @@ import {
   buildSearchAnalyticsRequest,
   resolveDateRange,
 } from "@/server/features/gsc/searchAnalytics";
+import { gscHistoryWindow } from "@/shared/dataFreshness";
 
-const TODAY = new Date("2026-05-28T00:00:00Z");
+const TODAY = new Date("2026-05-28T12:00:00Z");
 
 /** Both ends included, the way Search Console counts a range. */
 function inclusiveDays(startDate: string, endDate: string): number {
@@ -14,6 +15,35 @@ function inclusiveDays(startDate: string, endDate: string): number {
 }
 
 describe("resolveDateRange", () => {
+  it.each(["2026-10-27T01:00:00Z", "2026-01-27T07:00:00Z"])(
+    "P1-3: uses the Pacific acquisition calendar at %s",
+    (instant) => {
+      const now = new Date(instant);
+      const expected = gscHistoryWindow(28, now);
+      expect(
+        resolveDateRange({ dateRange: "last_28_days" }, now),
+      ).toMatchObject({
+        startDate: expected.startDate,
+        endDate: expected.endDate,
+      });
+    },
+  );
+  it("P1-3: preserves the Pacific retention floor in the actual request", () => {
+    expect(
+      buildSearchAnalyticsRequest(
+        { projectId: "p1", startDate: "2025-06-26", endDate: "2026-10-23" },
+        new Date("2026-10-27T01:00:00Z"),
+      ).startDate,
+    ).toBe("2025-06-26");
+  });
+  it("P2-1: refuses a range inverted by retention clamping", () => {
+    expect(() =>
+      resolveDateRange(
+        { startDate: "2025-06-20", endDate: "2025-06-25" },
+        new Date("2026-10-27T01:00:00Z"),
+      ),
+    ).toThrow();
+  });
   it("ends convenience ranges 3 days back for GSC data lag", () => {
     const { endDate } = resolveDateRange({ dateRange: "last_28_days" }, TODAY);
     expect(endDate).toBe("2026-05-25");
@@ -70,7 +100,7 @@ describe("resolveDateRange", () => {
   it("subtracts calendar months without overflowing short months", () => {
     const { startDate, endDate } = resolveDateRange(
       { dateRange: "last_3_months" },
-      new Date("2026-06-03T00:00:00Z"),
+      new Date("2026-06-03T12:00:00Z"),
     );
     expect(startDate).toBe("2026-02-28");
     expect(endDate).toBe("2026-05-31");

@@ -113,4 +113,5 @@ export const ptAnalytics: Catalog = {
     "Última leitura do Google com falha: {date}",
   "Google bu raporun tarih kapsamındaki bazı verileri kesti; toplamlar ve karşılaştırmalar eksik olabilir.":
     "O Google truncou alguns dados no período deste relatório; os totais e as comparações podem estar incompletos.",
+  "Sayfa filtresini kaldır": "Remover filtro de página",
 };

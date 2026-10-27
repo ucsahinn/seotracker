@@ -93,11 +93,13 @@ export function ReportView({
   onOpenHealth,
   exactPage,
   onClearPageGroup,
+  onClearExactPage,
   configurationState = "unknown",
 }: {
   kind: Ga4ReportKindName;
   exactPage?: { host: string; path: string };
   onClearPageGroup?: () => void;
+  onClearExactPage?: () => void;
   configurationState?: "configured" | "none" | "unknown";
   result: ReportResult;
   organicOnly: boolean;
@@ -198,6 +200,7 @@ export function ReportView({
     setActiveChips([]);
     setSegmentKey(null);
     setFocusedRowKey(null);
+    if (exactPage) onClearExactPage?.();
   };
 
   const { headers: exportHeaders, rows: exportRows } = buildReportExport({
@@ -228,6 +231,7 @@ export function ReportView({
         pageGroup={result.pageGroup}
         exactPage={exactPage}
         onClearPageGroup={onClearPageGroup}
+        onClearExactPage={onClearExactPage}
       />
       <ReportSummary
         plan={plan}

@@ -13,6 +13,7 @@ import { db } from "@/db";
 import { executeInBatches, runBatch } from "@/db/runBatch";
 import { gscArchiveState, gscConnections, gscQueryDaily } from "@/db/schema";
 import { archiveCoverage } from "./archiveCoverage";
+import { replaceDailyRows } from "./replaceDailyRows";
 import { addIsoDays } from "@/shared/dataFreshness";
 
 export type GscDailyRow = {
@@ -438,6 +439,7 @@ async function getCoverage(input: {
 }
 
 export const GscHistoryRepository = {
+  replaceDailyRows,
   markCoverage,
   getCoverage,
   getProperty,

@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { GscApiError, GscNotConnectedError } from "@/server/lib/gscErrors";
 import * as searchConsoleTools from "./search-console-tools";
 import { makeToolContext, textContent } from "./tool-test-support";
+import { createGscClient } from "@/server/lib/gscClient";
 
 const mocks = vi.hoisted(() => ({
   getProjectForOrganization: vi.fn(),
@@ -17,6 +18,20 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("cloudflare:workers", () => ({ env: {} }));
+vi.mock("@/lib/auth", () => ({
+  getGoogleGrantAuth: async () => ({
+    api: {
+      getAccessToken: async () => ({ accessToken: "synthetic-test-token" }),
+    },
+  }),
+}));
+// The real client parser is exercised here; access-evidence persistence has
+// its own SQLite-backed tests and this suite has no Cloudflare D1 binding.
+vi.mock("@/server/features/google/GoogleAccessService", () => ({
+  googleAccessScope: async (scope: object) => ({ ...scope, generation: 0 }),
+  observeGoogleAccess: async (_scope: object, read: () => Promise<unknown>) =>
+    read(),
+}));
 vi.mock("@/server/features/google/oauth-config", () => ({
   hasSelfHostedGoogleOAuthConfig: mocks.hasSelfHostedGoogleOAuthConfig,
 }));
@@ -50,6 +65,95 @@ const gscRow = (position: number, impressions = 100) => ({
 });
 
 describe("search console MCP tools", () => {
+  it("P1-3: MCP accepts the first Pacific-readable day before UTC midnight catches up", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-10-27T01:00:00Z"));
+    try {
+      mocks.GscService.getPerformance.mockResolvedValue({
+        siteUrl: "sc-domain:example.com",
+        request: { startDate: "2025-06-26", endDate: "2025-06-26" },
+        rows: [],
+      });
+      const result =
+        await searchConsoleTools.getSearchConsolePerformanceTool.handler(
+          {
+            projectId: "project_1",
+            startDate: "2025-06-26",
+            endDate: "2025-06-26",
+          },
+          toolContext,
+        );
+      expect(result.structuredContent).toMatchObject({
+        ok: true,
+        startDate: "2025-06-26",
+      });
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+  it.each(["discover", "googleNews"] as const)(
+    "BSEC-01: omits parsed unmeasured position before projecting and filtering %s rows",
+    async (type) => {
+      const network = vi
+        .spyOn(globalThis, "fetch")
+        .mockImplementation(async () =>
+          Response.json({
+            rows: [
+              {
+                keys: ["https://example.com/"],
+                clicks: 1,
+                impressions: 10,
+                ctr: 0.1,
+              },
+            ],
+          }),
+        );
+      try {
+        mocks.GscService.getPerformance.mockImplementation(async () => {
+          const request = {
+            startDate: "2026-10-01",
+            endDate: "2026-10-20",
+            dimensions: ["page"],
+            type,
+          };
+          const rows = await createGscClient({
+            userId: "u1",
+          }).querySearchAnalytics("sc-domain:example.com", request);
+          return { siteUrl: "sc-domain:example.com", request, rows };
+        });
+        const args = {
+          projectId: "project_1",
+          dimensions: ["page" as const],
+          type,
+        };
+        const result =
+          await searchConsoleTools.getSearchConsolePerformanceTool.handler(
+            args,
+            toolContext,
+          );
+        expect(result.structuredContent).toMatchObject({
+          rows: [
+            {
+              keys: ["https://example.com/"],
+              clicks: 1,
+              impressions: 10,
+              ctr: 0.1,
+            },
+          ],
+        });
+        expect(textContent(result)).toContain("—");
+        expect(result.structuredContent).not.toHaveProperty("rows.0.position");
+        const filtered =
+          await searchConsoleTools.getSearchConsolePerformanceTool.handler(
+            { ...args, maxPosition: 20 },
+            toolContext,
+          );
+        expect(filtered.structuredContent).toMatchObject({ rows: [] });
+      } finally {
+        network.mockRestore();
+      }
+    },
+  );
   beforeEach(() => {
     mocks.getProjectForOrganization.mockResolvedValue({
       id: "project_1",

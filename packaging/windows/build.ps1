@@ -6,7 +6,7 @@
 
 .DESCRIPTION
   Steps, in order:
-    1. vite build (skippable) with the self-host env baked in
+    1. vite build with the self-host env baked in
     2. stage dist\server, dist\client, dist\seotracker_audit and the drizzle
        migrations under out\stage\app
     3. npm ci the runtime (packaging\windows\runtime: wrangler only)
@@ -18,7 +18,7 @@
   Runs on a developer machine or in GitHub Actions (windows-latest).
 
 .PARAMETER Version
-  Package version. Defaults to the version in package.json.
+  Package version. Must match the version in package.json.
 
 .PARAMETER NodeVersion
   Node.js version to bundle when -NodeExe is not given.
@@ -32,7 +32,7 @@
   Windows has none, so the installer carries it and installs it when missing.
 
 .PARAMETER SkipAppBuild
-  Reuse the existing dist\ instead of running vite build.
+  Unsupported: an existing dist\ has no trustworthy application version provenance.
 
 .PARAMETER NoInstaller
   Stop after staging; do not run Inno Setup.
@@ -83,10 +83,11 @@ function Invoke-Tool([string]$commandLine) {
   if ($code -ne 0) { throw "$commandLine failed (exit $code)" }
 }
 
-if (-not $Version) {
-  $Version = (Get-Content (Join-Path $repo "package.json") -Raw | ConvertFrom-Json).version
-}
+$packageVersion = (Get-Content (Join-Path $repo "package.json") -Raw | ConvertFrom-Json).version
+if (-not $Version) { $Version = $packageVersion }
 $Version = $Version.TrimStart("v")
+if ($Version -ne $packageVersion) { throw "Version $Version does not match package.json version $packageVersion" }
+if ($SkipAppBuild) { throw "SkipAppBuild is unsupported: rebuild the application to establish its version" }
 Write-Host "seowatcher package $Version (repo: $repo)"
 
 # 1. Application build -------------------------------------------------------

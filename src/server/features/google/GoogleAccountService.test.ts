@@ -77,6 +77,7 @@ beforeAll(async () => {
     "0057_gsc_scanned_through",
     "0064_gsc_inspection_attempts",
     "0069_search_performance_archive",
+    "0071_ranking_archive_coverage",
   ]) {
     await client.executeMultiple(
       readFileSync(`drizzle/${file}.sql`, "utf8").replaceAll(
@@ -101,7 +102,7 @@ afterAll(() => {
 });
 beforeEach(async () => {
   await client.executeMultiple(
-    "DROP TRIGGER IF EXISTS fail_remove; DELETE FROM gsc_connections; DELETE FROM gsc_query_daily; DELETE FROM gsc_archive_state; DELETE FROM gsc_site_daily; DELETE FROM gsc_url_inspections; DELETE FROM ga4_connections; DELETE FROM account;",
+    "DROP TRIGGER IF EXISTS fail_remove; DELETE FROM gsc_archive_coverage; DELETE FROM gsc_connections; DELETE FROM gsc_query_daily; DELETE FROM gsc_archive_state; DELETE FROM gsc_site_daily; DELETE FROM gsc_url_inspections; DELETE FROM ga4_connections; DELETE FROM account;",
   );
 });
 
@@ -239,6 +240,7 @@ it("removing a GSC account also drops that account's projects' stored property d
   await client.executeMultiple(`
     INSERT INTO gsc_query_daily VALUES ('p1', '2026-01-01', 'q', 1, 2, 0.5, 3, 'now'), ('p3', '2026-01-01', 'q', 1, 2, 0.5, 3, 'now');
     INSERT INTO gsc_archive_state (project_id, last_date) VALUES ('p1', '2026-01-01'), ('p3', '2026-01-01');
+    INSERT INTO gsc_archive_coverage VALUES ('p1', '2026-01-01', 'https://example.com/', 'complete-response', 'now'), ('p3', '2026-01-01', 'https://example.com/', 'complete-response', 'now');
     INSERT INTO gsc_url_inspections (project_id, url) VALUES ('p1', 'https://a/'), ('p3', 'https://a/');
     INSERT INTO gsc_site_daily VALUES ('p1', '2026-01-01', 'web', 'all', 1, 2, 0.5, 3, 'final', 'now'), ('p3', '2026-01-01', 'web', 'all', 1, 2, 0.5, 3, 'final', 'now');
   `);
@@ -250,6 +252,7 @@ it("removing a GSC account also drops that account's projects' stored property d
   for (const table of [
     "gsc_query_daily",
     "gsc_archive_state",
+    "gsc_archive_coverage",
     "gsc_site_daily",
     "gsc_url_inspections",
   ]) {

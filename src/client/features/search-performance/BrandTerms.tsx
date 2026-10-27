@@ -42,9 +42,14 @@ export function BrandTermsEditor({
     onSuccess: async (result) => {
       queryClient.setQueryData(["brandTerms", projectId], result);
       setDraft(null);
-      await queryClient.invalidateQueries({
-        queryKey: ["searchPerformanceView", projectId],
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ["searchPerformanceView", projectId],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["searchOpportunities", projectId],
+        }),
+      ]);
       toast.success(t("Marka adları kaydedildi"));
       onSaved?.();
     },

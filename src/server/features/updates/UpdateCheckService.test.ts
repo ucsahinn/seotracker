@@ -202,8 +202,7 @@ describe("UpdateCheckService", () => {
       ...BLANK,
       checkedAt: new Date().toISOString(),
       lastStatus: 200,
-      // The running version: a cached tag older than that predates the
-      // install and is re-checked (see the test below).
+      // Cache freshness follows attempt time, independently of the remote tag.
       latestTag: `v${currentVersion}`,
     });
 
@@ -227,14 +226,7 @@ describe("UpdateCheckService", () => {
     expect(mocks.fetch).toHaveBeenCalledOnce();
   });
 
-  // Off has to mean the request is never constructed, not that the answer is
-  // hidden — that is the difference between a setting and a placebo.
-  /*
-   * Installed 0.8.0: the row still said v0.7.0 (checked the day before the
-   * upgrade) while the tray launcher, asking the same endpoint hourly, knew
-   * about 0.8.0.
-   */
-  it("asks again when the cached latest predates the running version", async () => {
+  it("guards bug 1: an older remote tag still honors the six-hour attempt TTL", async () => {
     mocks.get.mockResolvedValue({
       ...BLANK,
       checkedAt: new Date().toISOString(),
@@ -246,9 +238,36 @@ describe("UpdateCheckService", () => {
 
     const status = await UpdateCheckService.getStatus();
 
-    expect(mocks.fetch).toHaveBeenCalledOnce();
-    expect(status.latestVersion).toBe(`v${currentVersion}`);
+    expect(mocks.fetch).not.toHaveBeenCalled();
+    expect(status.latestVersion).toBe("v0.0.1");
   });
+
+  it.each([429, 304, 200])(
+    "guards bug 1: a stale older tag does not retry immediately after HTTP %s",
+    async (httpStatus) => {
+      let row: Record<string, unknown> = {
+        ...BLANK,
+        checkedAt: new Date(Date.now() - 7 * 60 * 60 * 1000).toISOString(),
+        latestTag: "v0.0.1",
+        lastStatus: 200,
+      };
+      mocks.get.mockImplementation(async () => row);
+      mocks.save.mockImplementation(async (values: Record<string, unknown>) => {
+        row = { ...row, ...values };
+        return row;
+      });
+      mocks.fetch.mockResolvedValue(
+        httpStatus === 200
+          ? release("v0.0.1")
+          : new Response(null, { status: httpStatus }),
+      );
+      await UpdateCheckService.getStatus();
+      const cached = await UpdateCheckService.getStatus();
+      expect(mocks.fetch).toHaveBeenCalledOnce();
+      expect(cached.latestVersion).toBe("v0.0.1");
+      expect(cached.reason).toBe(httpStatus === 429 ? "rate_limited" : null);
+    },
+  );
 
   it("never contacts GitHub when checking is switched off", async () => {
     mocks.get.mockResolvedValue({ ...BLANK, enabled: false });

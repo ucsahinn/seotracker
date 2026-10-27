@@ -19,6 +19,7 @@ import {
   GSC_FILTER_OPERATORS,
   GSC_MAX_ROW_LIMIT,
   GSC_SEARCH_TYPES,
+  sixteenMonthFloor,
   type GscPerformanceInput,
 } from "@/server/features/gsc/searchAnalytics";
 import {
@@ -33,6 +34,7 @@ import {
   SEARCH_PERFORMANCE_RANGES,
 } from "@/types/schemas/search-performance";
 import type { SearchInsights, TodoItem } from "@/shared/searchInsights";
+import { gscToday } from "@/shared/dataFreshness";
 
 const TEXT_SUMMARY_ROWS = 15;
 
@@ -106,20 +108,6 @@ function invalidRequest(
     meta,
     structuredContent: { ok: false, reason: "invalid_request" },
   });
-}
-
-/** Calendar date 16 months back, clamped to the target month's last day:
- *  `setUTCMonth` alone turns 31 March into 1 December. */
-function sixteenMonthsAgo(now: Date): string {
-  const day = now.getUTCDate();
-  const floor = new Date(
-    Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 16, 1),
-  );
-  const lastDay = new Date(
-    Date.UTC(floor.getUTCFullYear(), floor.getUTCMonth() + 1, 0),
-  ).getUTCDate();
-  floor.setUTCDate(Math.min(day, lastDay));
-  return floor.toISOString().slice(0, 10);
 }
 
 function describeGscError(error: unknown): string {
@@ -361,7 +349,8 @@ export const getSearchConsolePerformanceTool = {
       if (args.endDate < args.startDate) {
         return invalidRequest(meta, "endDate is before startDate.");
       }
-      const floorDate = sixteenMonthsAgo(new Date());
+      const today = gscToday();
+      const floorDate = sixteenMonthFloor(new Date(`${today}T12:00:00Z`));
       if (args.endDate < floorDate) {
         return invalidRequest(
           meta,
@@ -370,7 +359,6 @@ export const getSearchConsolePerformanceTool = {
       }
       // A future window is not an empty property, and the two were
       // indistinguishable: both came back "0 rows".
-      const today = new Date().toISOString().slice(0, 10);
       if (args.startDate > today) {
         return invalidRequest(
           meta,
@@ -399,7 +387,13 @@ export const getSearchConsolePerformanceTool = {
       } satisfies GscPerformanceInput);
       const dimensions = result.request.dimensions ?? ["query"];
       const startRow = result.request.startRow ?? 0;
-      const fetched = result.rows;
+      // Discover and Google News do not measure position. The shared client
+      // retains a numeric fallback for other consumers; omit it on this surface
+      // before filtering so an unmeasured row cannot satisfy a position bound.
+      const fetched =
+        args.type === "discover" || args.type === "googleNews"
+          ? result.rows.map(({ position: _position, ...row }) => row)
+          : result.rows;
       const kept = metricFilter
         ? fetched.filter((row) => matchesMetricFilter(row, metricFilter))
         : fetched;

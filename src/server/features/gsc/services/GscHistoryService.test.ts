@@ -8,6 +8,7 @@ const mocks = vi.hoisted(() => ({
   markCoverage: vi.fn(),
   getCoverage: vi.fn(),
   upsertDailyRows: vi.fn(),
+  replaceDailyRows: vi.fn(),
   markRun:
     vi.fn<
       (input: {
@@ -67,6 +68,7 @@ beforeEach(() => {
   mocks.getArchiveState.mockResolvedValue(null);
   mocks.getProperty.mockResolvedValue(SITE);
   mocks.upsertDailyRows.mockResolvedValue(undefined);
+  mocks.replaceDailyRows.mockResolvedValue(undefined);
   mocks.markRun.mockResolvedValue(undefined);
   mocks.markCoverage.mockResolvedValue(undefined);
   mocks.isExpectedGrantFailure.mockReturnValue(false);
@@ -102,12 +104,14 @@ describe("backfill", () => {
       today: TODAY,
     });
 
-    expect(mocks.upsertDailyRows).toHaveBeenCalledWith(
+    expect(mocks.replaceDailyRows).toHaveBeenCalledWith(
       "p1",
       SITE,
       expect.arrayContaining([
         expect.objectContaining({ date: "2026-06-01", query: "seo aracı" }),
       ]),
+      expect.any(String),
+      expect.any(String),
     );
     expect(outcome.daysFetched).toBe(2);
     expect(outcome.error).toBeNull();

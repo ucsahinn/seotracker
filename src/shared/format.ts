@@ -96,16 +96,28 @@ export function formatPoints(points: number, signed = true): string {
  * An estimate, so no decimals: "1,4 dk" claimed a precision it never had.
  */
 export function formatRemaining(ms: number): string {
-  const en = getLocale() === "en";
+  const units = DURATION_UNITS[getLocale()];
   const seconds = Math.max(1, Math.round(ms / 1000));
-  if (seconds < 60) return `${seconds} ${en ? "s" : "sn"}`;
+  if (seconds < 60) return `${formatNumber(seconds)} ${units.second}`;
   const minutes = Math.ceil(seconds / 60);
-  if (minutes < 60) return `${minutes} ${en ? "min" : "dk"}`;
+  if (minutes < 60) return `${formatNumber(minutes)} ${units.minute}`;
   const hours = Math.floor(minutes / 60);
   const rest = minutes % 60;
-  const h = `${hours} ${en ? "h" : "sa"}`;
-  return rest === 0 ? h : `${h} ${rest} ${en ? "min" : "dk"}`;
+  const h = `${formatNumber(hours)} ${units.hour}`;
+  return rest === 0 ? h : `${h} ${formatNumber(rest)} ${units.minute}`;
 }
+
+const DURATION_UNITS: Record<
+  Locale,
+  { second: string; minute: string; hour: string }
+> = {
+  tr: { second: "sn", minute: "dk", hour: "sa" },
+  en: { second: "s", minute: "min", hour: "h" },
+  de: { second: "Sek.", minute: "Min.", hour: "Std." },
+  fr: { second: "s", minute: "min", hour: "h" },
+  it: { second: "s", minute: "min", hour: "h" },
+  pt: { second: "s", minute: "min", hour: "h" },
+};
 
 /**
  * A duration a person reads, from milliseconds.
@@ -116,7 +128,7 @@ export function formatRemaining(ms: number): string {
  */
 export function formatDuration(ms: number): string {
   if (ms < 1000) return `${formatNumber(Math.round(ms))} ms`;
-  return `${formatDecimal(ms / 1000)} ${getLocale() === "en" ? "s" : "sn"}`;
+  return `${formatDecimal(ms / 1000)} ${DURATION_UNITS[getLocale()].second}`;
 }
 
 /**

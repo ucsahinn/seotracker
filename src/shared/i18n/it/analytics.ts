@@ -113,4 +113,5 @@ export const itAnalytics: Catalog = {
     "Ultima lettura Google non riuscita: {date}",
   "Google bu raporun tarih kapsamındaki bazı verileri kesti; toplamlar ve karşılaştırmalar eksik olabilir.":
     "Google ha troncato alcuni dati nel periodo di questo report; totali e confronti potrebbero essere incompleti.",
+  "Sayfa filtresini kaldır": "Rimuovi il filtro pagina",
 };

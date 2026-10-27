@@ -29,6 +29,7 @@ beforeEach(() => {
     "gsc_connections",
     "gsc_query_daily",
     "gsc_archive_state",
+    "gsc_archive_coverage",
     "gsc_url_inspections",
   ]) {
     testDb.database.exec(`DELETE FROM ${table}`);
@@ -41,6 +42,22 @@ beforeEach(() => {
 });
 
 describe("GscConnectionRepository property data", () => {
+  it.each(["disconnect", "switch", "same"])(
+    "P1-2: invalidates acquisition coverage on %s and preserves a still-connected property",
+    async (operation) => {
+      await GscConnectionRepository.upsert(connection("sc-domain:a.test"));
+      testDb.database.exec(
+        `INSERT INTO gsc_archive_coverage VALUES ('p1', '2026-01-01', 'sc-domain:a.test', 'complete-response', 'now')`,
+      );
+      if (operation === "disconnect")
+        await GscConnectionRepository.deleteByProjectId("p1");
+      if (operation === "switch")
+        await GscConnectionRepository.upsert(connection("sc-domain:b.test"));
+      await GscConnectionRepository.upsert(connection("sc-domain:a.test"));
+      expect(count("gsc_archive_coverage")).toBe(operation === "same" ? 1 : 0);
+      expect(count("gsc_query_daily")).toBe(operation === "same" ? 1 : 0);
+    },
+  );
   it("drops the archive and ledger when the project switches property", async () => {
     await GscConnectionRepository.upsert(connection("sc-domain:old.test"));
     await GscConnectionRepository.upsert(connection("sc-domain:new.test"));

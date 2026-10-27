@@ -9,6 +9,7 @@ import {
   gscUrlInspections,
 } from "@/db/schema";
 import { runBatch } from "@/db/runBatch";
+import { archiveCoverage } from "./archiveCoverage";
 
 export type GscConnection = typeof gscConnections.$inferSelect;
 
@@ -99,6 +100,7 @@ function propertyDataDeletes(
 ) {
   return [
     tx.delete(gscQueryDaily).where(where(gscQueryDaily.projectId)),
+    tx.delete(archiveCoverage).where(where(archiveCoverage.projectId)),
     tx.delete(gscArchiveState).where(where(gscArchiveState.projectId)),
     tx.delete(gscSiteDaily).where(where(gscSiteDaily.projectId)),
     tx.delete(gscUrlInspections).where(where(gscUrlInspections.projectId)),

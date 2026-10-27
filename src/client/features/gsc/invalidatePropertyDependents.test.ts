@@ -3,6 +3,24 @@ import { describe, expect, it } from "vitest";
 import { invalidatePropertyDependents } from "./invalidatePropertyDependents";
 
 describe("invalidatePropertyDependents", () => {
+  it("guards client-1: reloads monthly history after changing a property without expiring another project", async () => {
+    const client = new QueryClient({
+      defaultOptions: { queries: { staleTime: 600_000 } },
+    });
+    const key = ["siteDailyHistory", "p1", "web", null];
+    const other = ["siteDailyHistory", "p2", "web", null];
+    client.setQueryData(key, { clicks: 10 });
+    client.setQueryData(other, { clicks: 20 });
+    invalidatePropertyDependents(client, "p1");
+    expect(
+      await client.fetchQuery({
+        queryKey: key,
+        queryFn: async () => ({ clicks: 30 }),
+      }),
+    ).toEqual({ clicks: 30 });
+    expect(client.getQueryState(other)?.isInvalidated).toBe(false);
+    client.clear();
+  });
   it("invalidates property-derived queries of this project by prefix, and no other project's", () => {
     const client = new QueryClient();
     const keys = [

@@ -366,8 +366,12 @@ async function getView(input: {
     ask(scope, current, ["query"], gscFilters, ROW_PAGES),
     ask(scope, current, ["page"], gscFilters, ROW_PAGES),
     ask(scope, current, ["query", "page"], gscFilters, ROW_PAGES),
-    ask(scope, previous, ["query"], gscFilters, ROW_PAGES),
-    ask(scope, previous, ["page"], gscFilters, ROW_PAGES),
+    previous.startDate >= window.floorDate
+      ? ask(scope, previous, ["query"], gscFilters, ROW_PAGES)
+      : Promise.resolve(null),
+    previous.startDate >= window.floorDate
+      ? ask(scope, previous, ["page"], gscFilters, ROW_PAGES)
+      : Promise.resolve(null),
     optional(ask(scope, current, ["device"], countryOnly)),
     optional(ask(scope, current, ["country"], deviceFilters)),
     /*
@@ -477,9 +481,9 @@ async function getView(input: {
   const insights = buildInsights({
     days: window.days,
     queries: rowSet(queries),
-    previousQueries: rowSet(previousQueries),
+    previousQueries: previousQueries ? rowSet(previousQueries) : null,
     pages: rowSet(pages),
-    previousPages: rowSet(previousPages),
+    previousPages: previousPages ? rowSet(previousPages) : null,
     queryPages: {
       rows: toQueryPageRows(queryPages),
       truncated: queryPages.truncated,
@@ -632,15 +636,17 @@ async function tableRows(input: TableQuery): Promise<{
   const gscFilters = filterSet(input.filters).filters;
   const [current, previous] = await Promise.all([
     ask(input, window, [input.dimension], gscFilters, ROW_PAGES),
-    ask(input, window.previous, [input.dimension], gscFilters, ROW_PAGES),
+    window.previous.startDate >= window.floorDate
+      ? ask(input, window.previous, [input.dimension], gscFilters, ROW_PAGES)
+      : Promise.resolve(null),
   ]);
   const before = new Map(
-    toMetricRows(previous.rows).map((row) => [row.key, row] as const),
+    toMetricRows(previous?.rows ?? []).map((row) => [row.key, row] as const),
   );
   const rows = toMetricRows(current.rows).map((row): SearchTableRow => {
     const then = before.get(row.key);
     // Absent from a truncated previous table: its clicks are unknown, not 0.
-    const unknown = !then && previous.truncated;
+    const unknown = !previous || (!then && previous.truncated);
     return {
       ...row,
       previousClicks: unknown ? null : (then?.clicks ?? 0),
@@ -661,7 +667,7 @@ async function tableRows(input: TableQuery): Promise<{
     rows,
     matched,
     googleTruncated: current.truncated,
-    previousTruncated: previous.truncated,
+    previousTruncated: previous?.truncated ?? false,
   };
 }
 
@@ -762,7 +768,9 @@ async function getDrilldown(input: {
     ask(input, window, ["date"], keyFilters),
     // The same key the period before, for the panel's changes. Optional: a
     // refusal leaves the panel without deltas, not without numbers.
-    optional(ask(input, window.previous, ["date"], keyFilters)),
+    window.previous.startDate >= window.floorDate
+      ? optional(ask(input, window.previous, ["date"], keyFilters))
+      : Promise.resolve(null),
   ]);
   const other = input.dimension === "query" ? "page" : "query";
   const rows = toQueryPageRows(pairs)

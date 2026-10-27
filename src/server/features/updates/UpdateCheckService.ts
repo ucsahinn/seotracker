@@ -138,17 +138,6 @@ function isDue(checkedAt: string | null): boolean {
   return Number.isNaN(age) || age > TTL_MS;
 }
 
-/**
- * A cached "latest" older than the version that is running was written
- * before this install was upgraded, so it says nothing about what is out now.
- * The tray launcher asks the same GitHub endpoint daily; without this the
- * Settings screen kept showing v0.7.0 as the newest release for up to a day
- * after 0.8.0 was installed and announced.
- */
-function predatesThisVersion(latestTag: string | null): boolean {
-  return latestTag !== null && isNewerVersion(latestTag, currentVersion);
-}
-
 async function fetchLatest(etag: string | null) {
   const response = await fetch(RELEASES_URL, {
     headers: {
@@ -194,11 +183,9 @@ async function fetchLatest(etag: string | null) {
 async function getStatus(options?: { force?: boolean }): Promise<UpdateStatus> {
   const row = await UpdateCheckRepository.get();
   if (!row.enabled) return statusFrom(row);
-  if (
-    !options?.force &&
-    !isDue(row.checkedAt) &&
-    !predatesThisVersion(row.latestTag)
-  ) {
+  // A local build can stay ahead of GitHub indefinitely. Only attempt age,
+  // never the remote tag, determines when the shared quota can be spent again.
+  if (!options?.force && !isDue(row.checkedAt)) {
     return statusFrom(row);
   }
 

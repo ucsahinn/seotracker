@@ -296,6 +296,9 @@ export function AnalyticsPage({
                 onClearPageGroup={() =>
                   onScopeChange({ pageGroup: undefined, offset: 0 })
                 }
+                onClearExactPage={() =>
+                  onScopeChange({ host: undefined, path: undefined, offset: 0 })
+                }
                 organicOnly={effectiveChannel === "organic_search"}
                 exactPage={
                   kind === "landing_pages" && scope.host && scope.path

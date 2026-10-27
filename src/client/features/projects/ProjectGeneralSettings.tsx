@@ -150,126 +150,128 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
         )}
       />
       <form onSubmit={handleSubmit} className="space-y-4">
-        <label className="flex flex-col gap-1.5 text-sm">
-          <span className="flex items-center gap-1.5 font-medium">
-            {t("Ad")}
-            <HelpTip label={t("Ad")}>
-              {t(
-                "Yalnızca sizin içindir. Proje değiştiricide ve raporların başlığında görünür, Google'a gitmez.",
-              )}
-            </HelpTip>
-          </span>
-          <input
-            ref={nameInput}
-            type="text"
-            value={name}
-            onChange={(event) => {
-              setName(event.target.value);
-              setNameError(null);
-            }}
-            aria-label={t("Ad")}
-            maxLength={120}
-            aria-invalid={nameError ? true : undefined}
-            aria-describedby={
-              nameError ? "project-settings-name-error" : undefined
-            }
-            className={`input input-bordered w-full ${nameError ? "input-error" : ""}`}
-          />
-          {nameError ? (
-            <span
-              id="project-settings-name-error"
-              role="alert"
-              className="text-xs text-[var(--ink-error)]"
-            >
-              {nameError}
+        <fieldset disabled={updateMutation.isPending} className="space-y-4">
+          <label className="flex flex-col gap-1.5 text-sm">
+            <span className="flex items-center gap-1.5 font-medium">
+              {t("Ad")}
+              <HelpTip label={t("Ad")}>
+                {t(
+                  "Yalnızca sizin içindir. Proje değiştiricide ve raporların başlığında görünür, Google'a gitmez.",
+                )}
+              </HelpTip>
             </span>
-          ) : null}
-        </label>
-
-        <label className="flex flex-col gap-1.5 text-sm">
-          <span className="flex items-center gap-1.5 font-medium">
-            {t("Alan adı")}{" "}
-            <span className="text-muted">{t("(isteğe bağlı)")}</span>
-            <HelpTip label={t("Alan adı")}>
-              {t(
-                "Denetim bu adresten başlar. Google mülkünü Bağlantılar bölümünden ayrıca seçersiniz. https:// olmadan yazın, örneğin example.com.",
-              )}
-            </HelpTip>
-          </span>
-          <input
-            type="text"
-            value={domain}
-            onChange={(event) => {
-              setDomain(event.target.value);
-              setDomainConfirmed(false);
-            }}
-            placeholder="example.com"
-            aria-label={t("Alan adı")}
-            maxLength={255}
-            className="input input-bordered w-full"
-          />
-        </label>
-
-        <div className="flex flex-col gap-1.5">
-          <ProjectMarketFields value={market} onChange={setMarket} />
-          <span className="text-xs text-muted">
-            {t(
-              "Kaydettiğiniz anahtar kelimeler bu ülke ve dile göre saklanır.",
-            )}
-          </span>
-        </div>
-
-        {(domain.trim() || "") !== (project.domain ?? "") ? (
-          <p className="text-sm text-[var(--ink-warning)]">
-            {t(
-              "Alan adı değişikliği Google mülk seçimini ve geçmiş kayıtları değiştirmez. Kaydetmeden önce Bağlantılar bölümündeki mülkün bu siteye ait olduğunu kontrol edin.",
-            )}
-          </p>
-        ) : null}
-        <div className="flex flex-wrap gap-3 text-sm">
-          <a
-            className="link min-h-11 inline-flex items-center"
-            href={`/p/${project.id}/settings/context`}
-          >
-            {t("Proje bilgisi")}
-          </a>
-          <a
-            className="link min-h-11 inline-flex items-center"
-            href={`/p/${project.id}/search-performance`}
-          >
-            {t("Marka terimlerini Arama performansında düzenleyin")}
-          </a>
-        </div>
-        {(domain.trim() || "") !== (project.domain ?? "") ? (
-          <label className="flex min-h-11 items-center gap-3 text-sm">
             <input
-              type="checkbox"
-              className="checkbox"
-              checked={domainConfirmed}
-              onChange={(event) => setDomainConfirmed(event.target.checked)}
+              ref={nameInput}
+              type="text"
+              value={name}
+              onChange={(event) => {
+                setName(event.target.value);
+                setNameError(null);
+              }}
+              aria-label={t("Ad")}
+              maxLength={120}
+              aria-invalid={nameError ? true : undefined}
+              aria-describedby={
+                nameError ? "project-settings-name-error" : undefined
+              }
+              className={`input input-bordered w-full ${nameError ? "input-error" : ""}`}
             />
-            {t(
-              "Google mülk seçimi ve geçmiş korunarak alan adının değiştirilmesini onaylıyorum.",
-            )}
+            {nameError ? (
+              <span
+                id="project-settings-name-error"
+                role="alert"
+                className="text-xs text-[var(--ink-error)]"
+              >
+                {nameError}
+              </span>
+            ) : null}
           </label>
-        ) : null}
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className="btn btn-primary btn-sm gap-1.5"
-            disabled={
-              updateMutation.isPending ||
-              !isDirty ||
-              ((domain.trim() || "") !== (project.domain ?? "") &&
-                !domainConfirmed)
-            }
-          >
-            {updateMutation.isPending ? <Spinner delay={false} /> : null}
-            {updateMutation.isPending
-              ? t("Kaydediliyor…")
-              : t("Değişiklikleri kaydet")}
-          </button>
-        </div>
+
+          <label className="flex flex-col gap-1.5 text-sm">
+            <span className="flex items-center gap-1.5 font-medium">
+              {t("Alan adı")}{" "}
+              <span className="text-muted">{t("(isteğe bağlı)")}</span>
+              <HelpTip label={t("Alan adı")}>
+                {t(
+                  "Denetim bu adresten başlar. Google mülkünü Bağlantılar bölümünden ayrıca seçersiniz. https:// olmadan yazın, örneğin example.com.",
+                )}
+              </HelpTip>
+            </span>
+            <input
+              type="text"
+              value={domain}
+              onChange={(event) => {
+                setDomain(event.target.value);
+                setDomainConfirmed(false);
+              }}
+              placeholder="example.com"
+              aria-label={t("Alan adı")}
+              maxLength={255}
+              className="input input-bordered w-full"
+            />
+          </label>
+
+          <div className="flex flex-col gap-1.5">
+            <ProjectMarketFields value={market} onChange={setMarket} />
+            <span className="text-xs text-muted">
+              {t(
+                "Kaydettiğiniz anahtar kelimeler bu ülke ve dile göre saklanır.",
+              )}
+            </span>
+          </div>
+
+          {(domain.trim() || "") !== (project.domain ?? "") ? (
+            <p className="text-sm text-[var(--ink-warning)]">
+              {t(
+                "Alan adı değişikliği Google mülk seçimini ve geçmiş kayıtları değiştirmez. Kaydetmeden önce Bağlantılar bölümündeki mülkün bu siteye ait olduğunu kontrol edin.",
+              )}
+            </p>
+          ) : null}
+          <div className="flex flex-wrap gap-3 text-sm">
+            <a
+              className="link min-h-11 inline-flex items-center"
+              href={`/p/${project.id}/settings/context`}
+            >
+              {t("Proje bilgisi")}
+            </a>
+            <a
+              className="link min-h-11 inline-flex items-center"
+              href={`/p/${project.id}/search-performance`}
+            >
+              {t("Marka terimlerini Arama performansında düzenleyin")}
+            </a>
+          </div>
+          {(domain.trim() || "") !== (project.domain ?? "") ? (
+            <label className="flex min-h-11 items-center gap-3 text-sm">
+              <input
+                type="checkbox"
+                className="checkbox"
+                checked={domainConfirmed}
+                onChange={(event) => setDomainConfirmed(event.target.checked)}
+              />
+              {t(
+                "Google mülk seçimi ve geçmiş korunarak alan adının değiştirilmesini onaylıyorum.",
+              )}
+            </label>
+          ) : null}
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="btn btn-primary btn-sm gap-1.5"
+              disabled={
+                updateMutation.isPending ||
+                !isDirty ||
+                ((domain.trim() || "") !== (project.domain ?? "") &&
+                  !domainConfirmed)
+              }
+            >
+              {updateMutation.isPending ? <Spinner delay={false} /> : null}
+              {updateMutation.isPending
+                ? t("Kaydediliyor…")
+                : t("Değişiklikleri kaydet")}
+            </button>
+          </div>
+        </fieldset>
       </form>
     </section>
   );

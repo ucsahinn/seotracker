@@ -10,6 +10,7 @@ import {
   CHART_SERIES,
 } from "@/client/components/Chart";
 import { Skeleton } from "@/client/components/Skeleton";
+import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { formatCount, formatDate, formatMonth } from "@/client/lib/format";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { getSiteDailyHistory } from "@/serverFunctions/searchPerformance";
@@ -86,13 +87,24 @@ export function LongTermTrend({
     staleTime: 10 * 60_000,
   });
   if (history.isPending) return <Skeleton variant="chart" className="px-4" />;
-  if (history.isError || history.data.days.length === 0) {
+  const failure = history.isError ? (
+    <QueryErrorState
+      error={history.error}
+      onRetry={() => void history.refetch()}
+      compact
+    />
+  ) : null;
+  if (!history.data) return failure;
+  if (history.data.days.length === 0) {
     return (
-      <p className="px-4 text-sm text-muted">
-        {t(
-          "Arşivde henüz gün yok. Bu ekran her açıldığında Search Console'dan günlük toplamları alıp bu bilgisayarda saklar; ay ay eğilim birkaç gün içinde burada görünür.",
-        )}
-      </p>
+      <div>
+        {failure}
+        <p className="px-4 text-sm text-muted">
+          {t(
+            "Arşivde henüz gün yok. Bu ekran her açıldığında Search Console'dan günlük toplamları alıp bu bilgisayarda saklar; ay ay eğilim birkaç gün içinde burada görünür.",
+          )}
+        </p>
+      </div>
     );
   }
   const bars = monthBars(history.data.days);
@@ -120,18 +132,22 @@ export function LongTermTrend({
     latest < monthEnd(last.month);
   if (bars.length < 2) {
     return (
-      <p className="px-4 text-sm text-muted">
-        {t(
-          "Arşiv {date} tarihinden başlıyor; iki ay dolunca eğilim burada görünür.",
-          {
-            date: formatDate(history.data.earliestDate ?? history.data.since),
-          },
-        )}
-      </p>
+      <div>
+        {failure}
+        <p className="px-4 text-sm text-muted">
+          {t(
+            "Arşiv {date} tarihinden başlıyor; iki ay dolunca eğilim burada görünür.",
+            {
+              date: formatDate(history.data.earliestDate ?? history.data.since),
+            },
+          )}
+        </p>
+      </div>
     );
   }
   return (
     <div className="px-2">
+      {failure}
       <Chart
         height={180}
         summary={t("{count} aylık tıklama, {start} – {end}.", {

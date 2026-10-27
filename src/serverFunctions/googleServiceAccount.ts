@@ -2,7 +2,11 @@ import { isDemoGoogle } from "@/server/dev/demoGoogle";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { GoogleServiceAccountRepository } from "@/server/features/google/GoogleServiceAccountRepository";
-import { parseServiceAccountKey } from "@/server/lib/googleServiceAccountKey";
+import {
+  parseServiceAccountKey,
+  pemToPkcs8,
+} from "@/server/lib/googleServiceAccountKey";
+import { t } from "@/shared/i18n";
 import { clearServiceAccountTokenCache } from "@/server/lib/googleServiceAccountToken";
 import { requireAuthenticatedContext } from "@/serverFunctions/middleware";
 
@@ -50,6 +54,23 @@ export const saveGoogleServiceAccount = createServerFn({ method: "POST" })
     const parsed = parseServiceAccountKey(data.keyJson);
     if (!parsed.ok) {
       return { ok: false as const, reason: parsed.reason };
+    }
+
+    // Check local signing-key validity before replacing working credentials.
+    // This does not make a Google request or assert provider permissions.
+    try {
+      await crypto.subtle.importKey(
+        "pkcs8",
+        pemToPkcs8(parsed.key.private_key),
+        { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+        false,
+        ["sign"],
+      );
+    } catch {
+      return {
+        ok: false as const,
+        reason: t("private_key alanı eksik ya da bozuk."),
+      };
     }
 
     await GoogleServiceAccountRepository.save({

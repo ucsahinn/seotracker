@@ -1,5 +1,10 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { formatDateTime, formatRelativeTime } from "./format";
+import {
+  formatDateTime,
+  formatDuration,
+  formatRemaining,
+  formatRelativeTime,
+} from "./format";
 import { setLocale, type Locale } from "./i18n";
 
 afterEach(() => {
@@ -7,6 +12,26 @@ afterEach(() => {
   vi.useRealTimers();
 });
 describe("shared time formatting", () => {
+  it.each([
+    ["tr", "1,5 sn", "2 dk", "1 sa 1 dk"],
+    ["en", "1.5 s", "2 min", "1 h 1 min"],
+    ["de", "1,5 Sek.", "2 Min.", "1 Std. 1 Min."],
+    ["fr", "1,5 s", "2 min", "1 h 1 min"],
+    ["it", "1,5 s", "2 min", "1 h 1 min"],
+    ["pt", "1,5 s", "2 min", "1 h 1 min"],
+  ] as const)(
+    "guards bug 5: %s durations use localized units and retain estimate rounding",
+    (locale, duration, minutes, hours) => {
+      setLocale(locale);
+      expect(formatDuration(1500)).toBe(duration);
+      expect(formatRemaining(65000)).toBe(minutes);
+      expect(formatRemaining(3601000)).toBe(hours);
+      expect(formatRemaining(1000)).toBe(
+        locale === "tr" ? "1 sn" : locale === "de" ? "1 Sek." : "1 s",
+      );
+      expect(formatDuration(500)).toBe("500 ms");
+    },
+  );
   it.each(["tr", "en", "de", "fr", "it", "pt"] as Locale[])(
     "uses %s under a minute (previously non-English locales returned Turkish)",
     (locale) => {

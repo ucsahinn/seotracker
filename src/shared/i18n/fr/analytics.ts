@@ -113,4 +113,5 @@ export const frAnalytics: Catalog = {
     "Dernière lecture Google échouée : {date}",
   "Google bu raporun tarih kapsamındaki bazı verileri kesti; toplamlar ve karşılaştırmalar eksik olabilir.":
     "Google a tronqué certaines données de la période de ce rapport ; les totaux et les comparaisons peuvent être incomplets.",
+  "Sayfa filtresini kaldır": "Supprimer le filtre de page",
 };

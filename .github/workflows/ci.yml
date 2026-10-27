@@ -1,6 +1,7 @@
 name: CI
 
 on:
+  workflow_call:
   # Runnable by hand. A fork's workflows stay suspended until someone enables
   # them, and without a manual trigger there is no way to get a first green
   # run except by pushing something you did not otherwise need to push.
@@ -16,7 +17,7 @@ on:
       - "v*"
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:

@@ -47,7 +47,7 @@ export const GSC_MAX_ROW_LIMIT = 1000;
  * GSC_MAX_ROW_LIMIT for the sake of the agent's context window.
  */
 export const GSC_API_MAX_ROW_LIMIT = 25_000;
-import { GSC_DATA_LAG_DAYS } from "@/shared/dataFreshness";
+import { GSC_DATA_LAG_DAYS, gscToday } from "@/shared/dataFreshness";
 export type GscDimension = (typeof GSC_DIMENSIONS)[number];
 type GscFilterOperator = (typeof GSC_FILTER_OPERATORS)[number];
 export type GscSearchType = (typeof GSC_SEARCH_TYPES)[number];
@@ -133,15 +133,18 @@ export function resolveDateRange(
   input: Pick<GscPerformanceInput, "dateRange" | "startDate" | "endDate">,
   today: Date = new Date(),
 ): { startDate: string; endDate: string } {
-  const floor = sixteenMonthFloor(today);
+  const calendarDay = new Date(`${gscToday(today)}T12:00:00Z`);
+  const floor = sixteenMonthFloor(calendarDay);
 
   if (input.startDate && input.endDate) {
     // Clamp the start to GSC's 16-month lower bound.
     const startDate = input.startDate < floor ? floor : input.startDate;
+    if (startDate > input.endDate)
+      throw new Error("Search Console range is outside readable history");
     return { startDate, endDate: input.endDate };
   }
 
-  const end = new Date(today);
+  const end = new Date(calendarDay);
   end.setUTCDate(end.getUTCDate() - GSC_DATA_LAG_DAYS);
   const start = subtractRange(end, input.dateRange ?? "last_28_days");
   const startDate = formatDate(start);

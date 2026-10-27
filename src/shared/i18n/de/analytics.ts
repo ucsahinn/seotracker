@@ -112,4 +112,5 @@ export const deAnalytics: Catalog = {
     "Letzter fehlgeschlagener Google-Abruf: {date}",
   "Google bu raporun tarih kapsamındaki bazı verileri kesti; toplamlar ve karşılaştırmalar eksik olabilir.":
     "Google hat einige Daten im Zeitraum dieses Berichts gekürzt; Summen und Vergleiche können unvollständig sein.",
+  "Sayfa filtresini kaldır": "Seitenfilter entfernen",
 };

@@ -50,6 +50,86 @@ beforeEach(() => {
 });
 
 describe("GscHistoryRepository property fence", () => {
+  it("P1-1: a failed staging batch preserves the published archive", async () => {
+    await GscHistoryRepository.upsertDailyRows("p1", "sc-domain:new.test", [
+      day,
+    ]);
+    await expect(
+      GscHistoryRepository.replaceDailyRows(
+        "p1",
+        "sc-domain:new.test",
+        [day, day],
+        day.date,
+        day.date,
+      ),
+    ).rejects.toThrow();
+    expect(
+      await GscHistoryRepository.getQueryHistory({
+        projectId: "p1",
+        query: day.query,
+      }),
+    ).toEqual([day]);
+    expect(count("gsc_query_daily_stage")).toBe(0);
+  });
+  it("P1-1: publishes a response larger than a D1 staging batch", async () => {
+    const rows = Array.from({ length: 201 }, (_, index) => ({
+      ...day,
+      query: `q${index}`,
+    }));
+    await GscHistoryRepository.replaceDailyRows(
+      "p1",
+      "sc-domain:new.test",
+      rows,
+      day.date,
+      day.date,
+    );
+    expect(count("gsc_query_daily")).toBe(rows.length);
+    expect(count("gsc_query_daily_stage")).toBe(0);
+  });
+  it.each([{ rows: [] }, { rows: [{ ...day, impressions: 12 }] }])(
+    "P1-1: complete refresh removes disappeared queries, including an empty response (%j)",
+    async ({ rows }) => {
+      await GscHistoryRepository.upsertDailyRows("p1", "sc-domain:new.test", [
+        day,
+        { ...day, query: "removed" },
+      ]);
+      await GscHistoryRepository.replaceDailyRows(
+        "p1",
+        "sc-domain:new.test",
+        rows,
+        day.date,
+        day.date,
+      );
+      expect(
+        await GscHistoryRepository.getQueryHistory({
+          projectId: "p1",
+          query: "removed",
+        }),
+      ).toEqual([]);
+      expect(
+        await GscHistoryRepository.getQueryHistory({
+          projectId: "p1",
+          query: "q",
+        }),
+      ).toEqual(rows);
+    },
+  );
+  it("P1-1: partial upserts retain omitted keys and a stale complete response cannot delete current rows", async () => {
+    await GscHistoryRepository.upsertDailyRows("p1", "sc-domain:new.test", [
+      day,
+    ]);
+    await GscHistoryRepository.upsertDailyRows("p1", "sc-domain:new.test", [
+      { ...day, query: "other" },
+    ]);
+    await GscHistoryRepository.replaceDailyRows(
+      "p1",
+      "sc-domain:old.test",
+      [],
+      day.date,
+      day.date,
+    );
+    expect(count("gsc_query_daily")).toBe(2);
+  });
   it("stores rows and the incomplete range for the connected property", async () => {
     await GscHistoryRepository.upsertDailyRows("p1", "sc-domain:new.test", [
       day,

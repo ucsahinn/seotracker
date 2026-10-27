@@ -55,6 +55,12 @@ export async function createTestDb() {
       // Arrays, not objects: a join repeats column names (`id`, `project_id`)
       // and an object per row would keep only the last of each.
       statement.setReturnArrays(true);
+      if (method === "get") {
+        // sqlite-proxy expects one positional row (or undefined), not an array
+        // of rows. Its callback type incorrectly excludes undefined for no match.
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- Node types do not reflect setReturnArrays; preserve the proxy's runtime get contract
+        return { rows: statement.get(...values) as unknown as unknown[] };
+      }
       return { rows: statement.all(...values) };
     },
     { schema: await import("@/db/schema") },

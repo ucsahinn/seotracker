@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { GscAnalyticsResult } from "@/server/features/gsc/services/GscService";
 import type { GscPerformanceInput } from "@/server/features/gsc/searchAnalytics";
+import { buildSearchAnalyticsRequest } from "@/server/features/gsc/searchAnalytics";
+import { GscSiteDailyRepository } from "../repositories/GscSiteDailyRepository";
 import { SearchPerformanceService } from "./SearchPerformanceService";
 
 const testDb = await vi.hoisted(async () =>
@@ -85,6 +87,108 @@ beforeEach(() => {
 });
 
 describe("SearchPerformanceService.getView", () => {
+  it("P1-3: request normalization cannot erase an archived Pacific-floor observation", async () => {
+    vi.setSystemTime(new Date("2026-10-27T01:00:00Z"));
+    const segment = {
+      projectId: "p1",
+      siteUrl: "sc-domain:site.test",
+      searchType: "web",
+      device: "all",
+    };
+    const observation = {
+      date: "2025-06-26",
+      clicks: 100,
+      impressions: 1000,
+      ctr: 0.1,
+      position: 5,
+    };
+    await GscSiteDailyRepository.upsertDays(segment, [observation]);
+    const original = queryAnalytics.getMockImplementation()!;
+    queryAnalytics.mockImplementation((input) => {
+      const request = buildSearchAnalyticsRequest(input);
+      if (input.dimensions?.join() === "date")
+        return Promise.resolve(
+          answer(
+            request.startDate <= observation.date
+              ? [
+                  {
+                    keys: [observation.date],
+                    clicks: 100,
+                    impressions: 1000,
+                    ctr: 0.1,
+                    position: 5,
+                  },
+                ]
+              : [],
+            { request, firstIncompleteDate: "2026-10-24" },
+          ),
+        );
+      return original(input);
+    });
+    await SearchPerformanceService.getView({
+      projectId: "p1",
+      filters: { dateRange: "last_7_days", searchType: "web" },
+    });
+    expect(
+      (
+        await GscSiteDailyRepository.getDays({
+          ...segment,
+          since: observation.date,
+          until: observation.date,
+        })
+      )[0],
+    ).toMatchObject(observation);
+  });
+  it.each(["2025-06-26", "2025-06-29"])(
+    "P2-1: serves historical windows with unavailable comparisons starting %s",
+    async (startDate) => {
+      const original = queryAnalytics.getMockImplementation()!;
+      queryAnalytics.mockImplementation((input) => {
+        if (input.startDate! < "2025-06-26")
+          throw new Error("outside retention");
+        return original(input);
+      });
+      const input = {
+        projectId: "p1",
+        filters: {
+          dateRange: "last_7_days" as const,
+          searchType: "web" as const,
+        },
+        window: { startDate, endDate: "2025-07-02" },
+      };
+      const view = await SearchPerformanceService.getView(input);
+      expect(view.totals.previous).toBeNull();
+      expect(view.insights.newQueries).toBeNull();
+      expect(view.insights.lostQueries).toBeNull();
+      const table = await SearchPerformanceService.getTable({
+        ...input,
+        dimension: "query",
+        offset: 0,
+        limit: 25,
+      });
+      expect(table.rows[0]).toMatchObject({
+        previousClicks: null,
+        previousImpressions: null,
+        clickChange: null,
+      });
+      const exported = await SearchPerformanceService.exportTable({
+        ...input,
+        dimension: "query",
+      });
+      expect(exported.rows[0]?.clickChange).toBeNull();
+      const detail = await SearchPerformanceService.getDrilldown({
+        ...input,
+        dimension: "query",
+        key: "q",
+      });
+      expect(detail.previousTotals).toBeNull();
+      expect(
+        queryAnalytics.mock.calls.every(
+          ([request]) => request.startDate! >= "2025-06-26",
+        ),
+      ).toBe(true);
+    },
+  );
   it.each(["query", "page"] as const)(
     "keeps the literal %s key in exact-date evidence instead of including substring neighbors",
     async (dimension) => {

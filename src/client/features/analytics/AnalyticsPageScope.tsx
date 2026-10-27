@@ -5,10 +5,12 @@ export function AnalyticsPageScope({
   pageGroup,
   exactPage,
   onClearPageGroup,
+  onClearExactPage,
 }: {
   pageGroup: ReportResult["pageGroup"];
   exactPage?: { host: string; path: string };
   onClearPageGroup?: () => void;
+  onClearExactPage?: () => void;
 }) {
   return (
     <>
@@ -41,13 +43,24 @@ export function AnalyticsPageScope({
         </div>
       ) : null}
       {exactPage ? (
-        <p className="break-all text-xs text-muted">
-          {exactPage.host}
-          {exactPage.path} ·{" "}
-          {t(
-            "Birebir sayfa filtresi yalnızca listelenen satırlara uygulanır; diğer sayfalarda da arayın.",
-          )}
-        </p>
+        <div>
+          <p className="break-all text-xs text-muted">
+            {exactPage.host}
+            {exactPage.path} ·{" "}
+            {t(
+              "Birebir sayfa filtresi yalnızca listelenen satırlara uygulanır; diğer sayfalarda da arayın.",
+            )}
+          </p>
+          {onClearExactPage ? (
+            <button
+              type="button"
+              className="btn btn-ghost btn-sm min-h-11"
+              onClick={onClearExactPage}
+            >
+              {t("Sayfa filtresini kaldır")}
+            </button>
+          ) : null}
+        </div>
       ) : null}
     </>
   );

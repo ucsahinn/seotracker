@@ -21,6 +21,11 @@ concurrency:
   cancel-in-progress: ${{ github.ref_type != 'tag' }}
 
 jobs:
+  # A local reusable workflow checks the same event SHA as packaging. A green
+  # run on main or another tag cannot satisfy this dependency.
+  quality:
+    uses: ./.github/workflows/ci.yml
+
   package:
     runs-on: windows-latest
     timeout-minutes: 30
@@ -150,7 +155,7 @@ jobs:
           Write-Host "install, start, health, quit, uninstall: all ok"
 
   release:
-    needs: package
+    needs: [package, quality]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: windows-latest
     timeout-minutes: 15
@@ -177,6 +182,7 @@ jobs:
         run: |
           $tag = $env:REF_NAME
           $file = Get-ChildItem packaging/windows/out -Filter "seowatcher-setup-*.exe" | Select-Object -First 1
+          if (-not $file -or $file.Length -eq 0) { throw "Required installer is missing or empty" }
           # A second copy under a fixed name, so the website can link
           # .../releases/latest/download/seowatcher-setup.exe without knowing
           # the version.
@@ -206,11 +212,18 @@ jobs:
           $latestResult = node scripts/release-latest-policy.mjs $version $current
           if ($LASTEXITCODE -ne 0) { throw "Release latest policy failed" }
           $isLatest = [bool]::Parse($latestResult.Trim())
+          foreach ($asset in @($file.FullName, $stable, (Join-Path $file.DirectoryName "SHA256SUMS.txt"))) {
+            if (-not (Test-Path -LiteralPath $asset -PathType Leaf) -or (Get-Item -LiteralPath $asset).Length -eq 0) { throw "Required release asset is missing or empty: $asset" }
+          }
           gh release view $tag 2>$null
           if ($LASTEXITCODE -ne 0) {
             gh release create $tag --title $releaseTitle --notes-file $notesFile --draft
+            if ($LASTEXITCODE -ne 0) { throw "Could not create draft release" }
           } else {
             gh release edit $tag --title $releaseTitle --notes-file $notesFile
+            if ($LASTEXITCODE -ne 0) { throw "Could not update release metadata" }
           }
           gh release upload $tag $file.FullName $stable (Join-Path $file.DirectoryName "SHA256SUMS.txt") --clobber
+          if ($LASTEXITCODE -ne 0) { throw "Could not upload release assets; publication aborted" }
           gh release edit $tag --draft=false --latest=$($isLatest.ToString().ToLower())
+          if ($LASTEXITCODE -ne 0) { throw "Could not publish release" }

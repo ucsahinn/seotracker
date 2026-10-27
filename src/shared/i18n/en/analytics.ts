@@ -817,4 +817,5 @@ export const enAnalytics: Catalog = {
   "Son başarısız Google okuması: {date}": "Last failed Google read: {date}",
   "Google bu raporun tarih kapsamındaki bazı verileri kesti; toplamlar ve karşılaştırmalar eksik olabilir.":
     "Google truncated some data in this report's date range; totals and comparisons may be incomplete.",
+  "Sayfa filtresini kaldır": "Remove page filter",
 };

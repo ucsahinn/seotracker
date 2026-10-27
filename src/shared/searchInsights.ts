@@ -1312,9 +1312,9 @@ export type SearchInsights = {
 type InsightInput = {
   days: number;
   queries: RowSet<MetricRow>;
-  previousQueries: RowSet<MetricRow>;
+  previousQueries: RowSet<MetricRow> | null;
   pages: RowSet<MetricRow>;
-  previousPages: RowSet<MetricRow>;
+  previousPages: RowSet<MetricRow> | null;
   queryPages: RowSet<QueryPageRow>;
   decayQuarters: DecayQuarter[] | null;
   devices: MetricRow[];
@@ -1368,27 +1368,31 @@ export function buildInsights(input: InsightInput): SearchInsights {
       used.terms,
     ),
     movers: {
-      queries: movers(
-        input.queries,
-        input.previousQueries,
-        thresholds.moverMinClicks,
-      ),
-      pages: movers(
-        input.pages,
-        input.previousPages,
-        thresholds.moverMinClicks,
-      ),
+      queries: input.previousQueries
+        ? movers(
+            input.queries,
+            input.previousQueries,
+            thresholds.moverMinClicks,
+          )
+        : { growing: [], declining: [], complete: false },
+      pages: input.previousPages
+        ? movers(input.pages, input.previousPages, thresholds.moverMinClicks)
+        : { growing: [], declining: [], complete: false },
     },
-    newQueries: appearedOnlyIn(
-      input.queries,
-      input.previousQueries,
-      thresholds.newLostMinImpressions,
-    ),
-    lostQueries: appearedOnlyIn(
-      input.previousQueries,
-      input.queries,
-      thresholds.newLostMinImpressions,
-    ),
+    newQueries: input.previousQueries
+      ? appearedOnlyIn(
+          input.queries,
+          input.previousQueries,
+          thresholds.newLostMinImpressions,
+        )
+      : null,
+    lostQueries: input.previousQueries
+      ? appearedOnlyIn(
+          input.previousQueries,
+          input.queries,
+          thresholds.newLostMinImpressions,
+        )
+      : null,
     decay: input.decayQuarters ? contentDecay(input.decayQuarters) : null,
     zeroClickPages: zeroClickPages(
       input.pages.rows,
