@@ -10,7 +10,7 @@ enabled=/etc/nginx/sites-enabled/seowatcher.io.conf
 available=/etc/nginx/sites-available/seowatcher.io.conf
 cert=/etc/letsencrypt/live/seowatcher.io/fullchain.pem
 key=/etc/letsencrypt/live/seowatcher.io/privkey.pem
-release=$base/releases/20261027-0.8.0-alpha-routes-r5
+release=$base/releases/20261027-0.8.1-alpha
 archive=$bundle/site.tar.gz
 
 for path in "$base" "$current" "$enabled" "$available" "$cert" "$key"; do
