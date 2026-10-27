@@ -10,13 +10,13 @@
     <meta name="description" content="Install with Docker on Mac, Linux and Windows. One command is enough, and no .env file is needed. Your data stays in Docker's data volume." />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/en/docs/install-docker/" />
-    <link rel="alternate" hreflang="tr" href="https://seowatcher.io/docs/kurulum-docker/" />
+    <link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/kurulum-docker/" />
     <link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/install-docker/" />
-    <link rel="alternate" hreflang="de" href="https://seowatcher.io/de/docs/installation-docker/" />
-    <link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/docs/installation-docker/" />
-    <link rel="alternate" hreflang="it" href="https://seowatcher.io/it/docs/installazione-docker/" />
-    <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/docs/instalar-docker/" />
-    <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/kurulum-docker/" />
+    <link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/installation-mit-docker/" />
+    <link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/installation-avec-docker/" />
+    <link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/installazione-con-docker/" />
+    <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/instalar-com-docker/" />
+    <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/kurulum-docker/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
@@ -71,7 +71,7 @@
     <meta name="twitter:image:alt" content="seowatcher card: the app's dashboard with Search Console, Analytics 4 and site audit data, and a download button for Windows" />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/install-docker/#article","headline":"Installing with Docker","description":"Install with Docker on Mac, Linux and Windows. One command is enough, and no .env file is needed. Your data stays in Docker's data volume.","url":"https://seowatcher.io/en/docs/install-docker/","inLanguage":"en","dateModified":"2026-10-26","articleSection":"Getting started","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/install-docker/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/install-docker/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Installing with Docker","item":"https://seowatcher.io/en/docs/install-docker/"}]}]}</script>
-    <script src="/assets/docs.js?v=0.8.0" defer></script>
+    <script src="/assets/docs.js?v=0.8.1" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -168,9 +168,6 @@
         .dots::before {
           display: none;
         }
-      }
-      [data-still] .dots::before {
-        display: none;
       }
       * {
         box-sizing: border-box;
@@ -743,15 +740,6 @@
           transition: none;
         }
       }
-      html[data-still] article .hx,
-      html[data-still] article h2.hx::before {
-        opacity: 1;
-        transform: none;
-        clip-path: none;
-        filter: none;
-        transition: none;
-      }
-
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
         html {
@@ -1202,7 +1190,7 @@
             rel="noopener noreferrer"
             >GitHub</a
           >
-          <details class="langs"><summary aria-label="EN — Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/kurulum-docker/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/install-docker/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/installation-docker/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/installation-docker/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/installazione-docker/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/instalar-docker/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
+          <details class="langs"><summary aria-label="EN — Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/kilavuz/kurulum-docker/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/install-docker/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/dokumentation/installation-mit-docker/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/guides/installation-avec-docker/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/guide/installazione-con-docker/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/guias/instalar-com-docker/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"

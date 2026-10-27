@@ -1,15 +1,15 @@
-# seowatcher.io static site update package
+# seowatcher.io site route update — 0.8.0 Alpha (2026-10-27)
 
-This is an update for the existing Hetzner deployment, prepared from the local `site/` output for seowatcher 0.7.1 Alpha on 2026-10-26. It does not create or edit nginx configuration, certificates, DNS, application data, or other vhosts. It does not deploy anything until you run the script on the server.
+This is a route-localization and social-preview update for the already deployed seowatcher 0.8.0 Alpha site. Guide prefixes and page names use each edition's own language, for example `/kilavuz/analitik/`, `/de/dokumentation/datenanalyse/`, `/fr/guides/statistiques/`, `/it/guide/analisi/`, and `/pt/guias/analise/`. Earlier `/docs/` paths and the previous localized guide slugs remain as noindex refresh aliases to the canonical URLs. Privacy pages now have matching localized Open Graph and Twitter metadata. The updater does not edit nginx configuration, certificates, DNS, application data, or other vhosts.
 
 ## Contents
 
-- `site.tar.gz`: the six-language static website, assets and localized docs.
-- `update-seowatcher-site.sh`: validates the existing installation and archive, installs a versioned release, switches `/var/www/seowatcher/current`, reloads nginx, and rolls back the symlink if its post-switch checks fail. It keeps the prior release for manual rollback.
+- `site.tar.gz`: the six-language static website, assets, localized guides and old-path aliases.
+- `update-seowatcher-site.sh`: validates the existing installation and archive, installs `/var/www/seowatcher/releases/20261027-0.8.0-alpha-routes-r5`, switches `/var/www/seowatcher/current`, reloads nginx, and rolls back the symlink if its post-switch checks fail. It keeps the prior release for manual rollback.
 - `privacy-redirects.conf`: optional HTTP 301 locations for old privacy URLs. Review and apply manually as described below; the updater does not modify nginx configuration.
 - `SHA256SUMS.txt`: hashes for the files in this package.
 
-The site contains 149 HTML files and 144 canonical sitemap URLs. The existing installation script from the older 0.5.0 package is first-install-only and must not be rerun on this server.
+The site contains 287 HTML files, including 138 legacy-route aliases, and 144 canonical sitemap URLs. The six audit guides and 0.8.0 release notes now agree with the app's 202 audit rules. The existing installation script from the older 0.5.0 package is first-install-only and must not be rerun on this server.
 
 ## Upload and verify from Windows PowerShell
 
@@ -18,17 +18,18 @@ bundle manifest checks the site archive and each helper file before the updater
 can switch the live symlink:
 
 ```powershell
-$bundle = "C:\Users\ulasc\Desktop\seotracker\dist\hetzner-site-update-0.7.1-alpha-20261026"
-ssh user@your-server "mkdir -m 700 -p /home/user/seowatcher-update-20261026"
-scp "$bundle\site.tar.gz" "$bundle\README-UPDATE.md" "$bundle\update-seowatcher-site.sh" "$bundle\privacy-redirects.conf" "$bundle\SHA256SUMS.txt" user@your-server:/home/user/seowatcher-update-20261026/
-ssh user@your-server
+$bundle = "C:\Users\ulasc\Desktop\seotracker\dist\hetzner-site-update-0.8.0-alpha-routes-20261027-r5"
+$server = "ulas@94.130.129.213"
+ssh $server "mkdir -m 700 -p /home/ulas/seowatcher-update-080-routes-r5"
+scp "$bundle\site.tar.gz" "$bundle\README-UPDATE.md" "$bundle\update-seowatcher-site.sh" "$bundle\privacy-redirects.conf" "$bundle\SHA256SUMS.txt" "${server}:/home/ulas/seowatcher-update-080-routes-r5/"
+ssh $server
 ```
 
 On the VPS, verify the uploaded bundle and review the updater before running
 anything with sudo:
 
 ```sh
-cd "$HOME/seowatcher-update-20261026"
+cd /home/ulas/seowatcher-update-080-routes-r5
 sha256sum -c SHA256SUMS.txt
 bash -n update-seowatcher-site.sh
 less README-UPDATE.md
@@ -56,4 +57,4 @@ sudo nginx -t
 systemctl is-active nginx
 ```
 
-Expected: HTTPS homepage and Turkish privacy page return 200; sitemap reports 144 `<loc>` entries; nginx is active. Submit the sitemap in Search Console and Bing Webmaster Tools after publication. This local package build does not verify Google/Bing indexing or production performance.
+Expected: HTTPS homepage returns 200; sitemap reports 144 `<loc>` entries; nginx is active. Open one canonical guide path per language and confirm older `/docs/` and former guide-slug addresses forward to it. Submit the sitemap in Search Console and Bing Webmaster Tools after publication. This local package build does not verify Google/Bing indexing or production performance.

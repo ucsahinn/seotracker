@@ -1,0 +1,2604 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <meta name="ga4-id" content="G-DFPDX00V4R" />
+    <script src="/assets/consent.js?v=3" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Risoluzione dei problemi | guida di seowatcher</title>
+    <meta
+      name="description"
+      content="I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, assistente 401."
+    />
+    <meta name="robots" content="max-image-preview:large" />
+    <link
+      rel="canonical"
+      href="https://seowatcher.io/it/guide/risoluzione-problemi/"
+    />
+    <link
+      rel="alternate"
+      hreflang="tr"
+      href="https://seowatcher.io/kilavuz/sorun-giderme/"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://seowatcher.io/en/docs/troubleshooting/"
+    />
+    <link
+      rel="alternate"
+      hreflang="de"
+      href="https://seowatcher.io/de/dokumentation/fehlerbehebung/"
+    />
+    <link
+      rel="alternate"
+      hreflang="fr"
+      href="https://seowatcher.io/fr/guides/depannage/"
+    />
+    <link
+      rel="alternate"
+      hreflang="it"
+      href="https://seowatcher.io/it/guide/risoluzione-problemi/"
+    />
+    <link
+      rel="alternate"
+      hreflang="pt"
+      href="https://seowatcher.io/pt/guias/solucao-de-problemas/"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://seowatcher.io/kilavuz/sorun-giderme/"
+    />
+    <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link
+      rel="icon"
+      href="/assets/favicon-48.png"
+      type="image/png"
+      sizes="48x48"
+    />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      title="seowatcher"
+      href="/it/feed.xml"
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-ext-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="seowatcher" />
+    <meta
+      property="og:title"
+      content="Risoluzione dei problemi | guida di seowatcher"
+    />
+    <meta
+      property="og:description"
+      content="I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, assistente 401."
+    />
+    <meta
+      property="og:image"
+      content="https://seowatcher.io/assets/og-it.png"
+    />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Scheda di seowatcher: la dashboard dell’app con i dati di Search Console, Analytics 4 e dell’audit del sito, e un pulsante per scaricarla su Windows"
+    />
+    <meta property="article:modified_time" content="2026-10-27" />
+    <meta
+      property="og:url"
+      content="https://seowatcher.io/it/guide/risoluzione-problemi/"
+    />
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="pt_BR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Risoluzione dei problemi | guida di seowatcher"
+    />
+    <meta
+      name="twitter:description"
+      content="I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, assistente 401."
+    />
+    <meta
+      name="twitter:image"
+      content="https://seowatcher.io/assets/og-it.png"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="Scheda di seowatcher: la dashboard dell’app con i dati di Search Console, Analytics 4 e dell’audit del sito, e un pulsante per scaricarla su Windows"
+    />
+    <meta name="color-scheme" content="dark" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://seowatcher.io/#website",
+            "url": "https://seowatcher.io/",
+            "name": "seowatcher",
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://seowatcher.io/#app",
+            "name": "seowatcher",
+            "alternateName": "seotracker",
+            "url": "https://seowatcher.io/"
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://seowatcher.io/#author",
+            "name": "seowatcher",
+            "url": "https://seowatcher.io/",
+            "logo": "https://seowatcher.io/assets/icon-256.png",
+            "sameAs": ["https://github.com/ucsahinn/seotracker"]
+          },
+          {
+            "@type": "TechArticle",
+            "@id": "https://seowatcher.io/it/guide/risoluzione-problemi/#article",
+            "headline": "Risoluzione dei problemi",
+            "description": "I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, assistente 401.",
+            "url": "https://seowatcher.io/it/guide/risoluzione-problemi/",
+            "inLanguage": "it",
+            "dateModified": "2026-10-27",
+            "articleSection": "Aiuto e riferimento",
+            "about": { "@id": "https://seowatcher.io/#app" },
+            "author": { "@id": "https://seowatcher.io/#author" },
+            "publisher": { "@id": "https://seowatcher.io/#author" },
+            "isPartOf": { "@id": "https://seowatcher.io/#website" },
+            "mainEntityOfPage": "https://seowatcher.io/it/guide/risoluzione-problemi/"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://seowatcher.io/it/guide/risoluzione-problemi/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "seowatcher",
+                "item": "https://seowatcher.io/it/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Guida",
+                "item": "https://seowatcher.io/it/guide/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Risoluzione dei problemi",
+                "item": "https://seowatcher.io/it/guide/risoluzione-problemi/"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+    <script src="/assets/docs.js?v=0.8.1" defer></script>
+    <meta name="theme-color" content="#0c0b0a" />
+    <style>
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-ext-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --bg: oklch(14% 0.008 60);
+        --bg-2: oklch(18% 0.009 60);
+        --bg-3: oklch(22% 0.01 60);
+        --fg: oklch(97% 0.006 80);
+        --muted: oklch(97% 0.006 80 / 0.78);
+        --subtle: oklch(97% 0.006 80 / 0.66);
+        --hairline: oklch(100% 0 0 / 0.1);
+        --hairline-strong: oklch(100% 0 0 / 0.18);
+        --accent: oklch(72% 0.19 52);
+        --accent-2: oklch(80% 0.15 68);
+        --accent-ink: oklch(16% 0.03 55);
+        --glass: oklch(100% 0 0 / 0.05);
+        --glass-edge: oklch(100% 0 0 / 0.12);
+        --accent-link: oklch(80% 0.15 68);
+        --glow: oklch(72% 0.19 52 / 0.28);
+        --glow-soft: oklch(72% 0.19 52 / 0.12);
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+      }
+      /* Dot field: a quiet grid of points over the whole page, and a soft
+         ember light that follows the pointer. Fixed, never scrolls, never
+         catches the pointer. Two layers: the dim field everyone sees, and the
+         lit field clipped to a circle around the pointer (--mx/--my from
+         site.js, lerped so it trails rather than snaps). Touch devices, the
+         "stop motion" toggle and reduced motion keep only the dim field. */
+      .dots,
+      .dots::before {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background-image: radial-gradient(
+          oklch(100% 0 0 / 0.16) 1px,
+          transparent 1.5px
+        );
+        background-size: 26px 26px;
+        background-position: 13px 13px;
+      }
+      .dots {
+        opacity: 0.4;
+        mask-image: linear-gradient(
+          180deg,
+          oklch(0% 0 0 / 0.9),
+          oklch(0% 0 0 / 0.35) 40%,
+          oklch(0% 0 0 / 0.55)
+        );
+      }
+      .dots::before {
+        content: "";
+        background-image: radial-gradient(
+          var(--accent) 1.5px,
+          transparent 2.1px
+        );
+        opacity: 0;
+        mask-image: radial-gradient(
+          420px circle at var(--mx, 50%) var(--my, 30%),
+          oklch(0% 0 0) 0%,
+          oklch(0% 0 0 / 0.5) 45%,
+          transparent 72%
+        );
+        transition: opacity 600ms var(--ease);
+      }
+      .dots.live::before {
+        opacity: 1;
+      }
+      @media (hover: none), (prefers-reduced-motion: reduce) {
+        .dots::before {
+          display: none;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        scroll-padding-top: 76px;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: Geist, "Segoe UI", system-ui, sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        font-variant-numeric: tabular-nums;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      .skip {
+        position: absolute;
+        left: 16px;
+        top: -48px;
+        z-index: 5;
+        background: var(--accent);
+        color: var(--accent-ink);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+      .skip:focus {
+        top: 12px;
+      }
+      .wrap {
+        width: min(1160px, 100% - 40px);
+        margin-inline: auto;
+      }
+      @media (max-width: 640px) {
+        .wrap {
+          width: calc(100% - 32px);
+        }
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: color-mix(in oklab, var(--bg) 70%, transparent);
+        backdrop-filter: blur(18px) saturate(1.4);
+        -webkit-backdrop-filter: blur(18px) saturate(1.4);
+        border-bottom: 1px solid var(--hairline);
+      }
+      header .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        gap: 16px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        font-size: 17px;
+        letter-spacing: -0.01em;
+      }
+      .brand img {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+        box-shadow: 0 0 16px var(--glow-soft);
+      }
+      .brand span {
+        color: var(--subtle);
+        font-weight: 500;
+      }
+      .topnav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 15px;
+        color: var(--muted);
+      }
+      .topnav a {
+        padding-block: 10px;
+      }
+      /* Language menu: the current flag opens a list of editions. */
+      .langs {
+        position: relative;
+      }
+      .langs summary {
+        list-style: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 5px 10px;
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        color: var(--muted);
+        transition:
+          color 300ms var(--ease),
+          background-color 300ms var(--ease);
+      }
+      .langs summary::-webkit-details-marker {
+        display: none;
+      }
+      .langs summary:hover,
+      .langs[open] summary {
+        color: var(--fg);
+        background: var(--glass);
+      }
+      .langs ul {
+        position: absolute;
+        right: 0;
+        top: calc(100% + 8px);
+        margin: 0;
+        padding: 6px;
+        list-style: none;
+        min-width: 172px;
+        background: var(--bg-2);
+        border: 1px solid var(--hairline-strong);
+        border-radius: 14px;
+        box-shadow: var(--shadow-raise, 0 24px 48px -20px oklch(0% 0 0 / 0.6));
+        z-index: 40;
+      }
+      .langs li a,
+      .langrow a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+        border-radius: 9px;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0;
+        color: var(--muted);
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .langs li a:hover,
+      .langrow a:hover {
+        color: var(--fg);
+        background: var(--glass);
+      }
+      .langs li a[aria-current],
+      .langrow a[aria-current] {
+        color: var(--fg);
+      }
+      .langs li a[aria-current]::after {
+        content: "";
+        margin-left: auto;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+      .flag {
+        display: inline-flex;
+        width: 20px;
+        height: 14px;
+        border-radius: 3px;
+        overflow: hidden;
+        box-shadow: 0 0 0 1px oklch(100% 0 0 / 0.12);
+        flex: none;
+      }
+      .flag svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      .langrow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px 6px;
+      }
+      article h2[tabindex]:focus {
+        outline: none;
+      }
+      .topnav a:hover {
+        color: var(--fg);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: 0 14px;
+        border-radius: 999px;
+        font-weight: 560;
+        font-size: 14px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        white-space: nowrap;
+        transition:
+          transform 320ms var(--ease),
+          filter 320ms var(--ease);
+      }
+      .btn:hover {
+        filter: saturate(1.06) brightness(1.05);
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      @media (max-width: 720px) {
+        .topnav .hide {
+          display: none;
+        }
+        .topnav {
+          gap: 14px;
+        }
+        .brand span {
+          display: none;
+        }
+      }
+      .topnav .btn .short {
+        display: none;
+      }
+      @media (max-width: 520px) {
+        .topnav .btn .short {
+          display: inline;
+        }
+      }
+      @media (max-width: 520px) {
+        /* "Für Windows herunterladen" plus the flag menu does not fit a 390px
+           phone; the flag alone and a tighter button keep the page from
+           scrolling sideways. */
+        .topnav {
+          gap: 8px;
+        }
+        .topnav .btn {
+          padding: 0 10px;
+          font-size: 13px;
+        }
+        .langs summary {
+          padding: 5px 7px;
+        }
+        .langs summary .code {
+          display: none;
+        }
+        .topnav .btn .long {
+          display: none;
+        }
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 252px minmax(0, 1fr) 208px;
+        gap: clamp(32px, 4vw, 64px);
+        padding: 40px 0 96px;
+      }
+      .toc {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 14px;
+      }
+      .toc-label {
+        margin: 0 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .toc ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 6px;
+        border-left: 1px solid var(--hairline);
+      }
+      .toc a {
+        display: block;
+        padding-left: 12px;
+        color: var(--muted);
+      }
+      .toc a:hover {
+        color: var(--fg);
+      }
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 220px minmax(0, 1fr);
+        }
+        .toc {
+          display: none;
+        }
+      }
+      @media (max-width: 800px) {
+        .layout {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 24px;
+        }
+        .side {
+          position: static;
+          border-bottom: 1px solid var(--hairline);
+          padding-bottom: 20px;
+        }
+      }
+
+      article {
+        max-width: 68ch;
+      }
+      article h1 {
+        font-size: clamp(30px, 4vw, 42px);
+        line-height: 1.08;
+        letter-spacing: -0.028em;
+        font-weight: 600;
+        margin: 0 0 14px;
+        text-wrap: balance;
+        width: fit-content;
+        background: linear-gradient(
+          100deg,
+          var(--fg) 0%,
+          oklch(94% 0.03 78) 58%,
+          var(--accent-2) 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      article .lede {
+        font-size: 19px;
+        color: var(--muted);
+        margin: 0 0 32px;
+        text-wrap: pretty;
+      }
+      article h2 {
+        font-size: 24px;
+        letter-spacing: -0.02em;
+        margin: 44px 0 12px;
+        text-wrap: balance;
+      }
+      article h3 {
+        font-size: 18px;
+        letter-spacing: -0.012em;
+        margin: 28px 0 8px;
+      }
+      article p,
+      article li {
+        color: var(--muted);
+      }
+      article p {
+        margin: 0 0 16px;
+        text-wrap: pretty;
+      }
+      article strong {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      article ul,
+      article ol {
+        margin: 0 0 18px;
+        padding-left: 22px;
+      }
+      article li {
+        margin: 0 0 8px;
+      }
+      article li::marker {
+        color: var(--subtle);
+      }
+      article a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      article a:hover {
+        text-decoration-color: var(--accent-link);
+      }
+      article code {
+        font-family: ui-monospace, Consolas, Menlo, monospace;
+        font-size: 0.9em;
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        padding: 1px 6px;
+        border-radius: 6px;
+        color: var(--fg);
+      }
+      article pre {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        margin: 0 0 18px;
+        font-size: 14.5px;
+        line-height: 1.5;
+      }
+      article pre code {
+        background: none;
+        border: 0;
+        padding: 0;
+      }
+      article blockquote {
+        margin: 0 0 18px;
+        padding: 2px 0 2px 18px;
+        border-left: 2px solid var(--accent);
+      }
+      article .tw {
+        overflow-x: auto;
+        margin: 0 0 22px;
+      }
+      article table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 15px;
+        min-width: 480px;
+      }
+      article th {
+        text-align: left;
+        font-weight: 600;
+        color: var(--fg);
+        padding: 0 16px 10px 0;
+        border-bottom: 1px solid var(--hairline-strong);
+        white-space: nowrap;
+      }
+      article td {
+        padding: 10px 16px 10px 0;
+        border-bottom: 1px solid var(--hairline);
+        vertical-align: top;
+        color: var(--muted);
+      }
+      article td:first-child {
+        color: var(--fg);
+      }
+      article .meta {
+        margin-top: 48px;
+        padding-top: 18px;
+        border-top: 1px solid var(--hairline);
+        font-size: 14px;
+        color: var(--subtle);
+      }
+      ul.index {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px;
+        display: grid;
+        gap: 10px;
+      }
+      ul.index li {
+        display: grid;
+        gap: 2px;
+        padding: 12px 0;
+        border-top: 1px solid var(--hairline);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        text-decoration: underline;
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 15.5px;
+      }
+      footer {
+        padding: 32px 0 56px;
+        font-size: 14.5px;
+        color: var(--muted);
+        border-top: 1px solid var(--hairline);
+      }
+      footer .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px 32px;
+      }
+      footer a {
+        display: inline-block;
+        padding-block: 4px;
+      }
+      footer a:hover {
+        color: var(--fg);
+      }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      /* Premium pass: the same motion language as the landing page, restrained. */
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
+        article {
+          animation: rise 700ms var(--ease) both;
+        }
+        .side,
+        .toc {
+          animation: rise 700ms var(--ease) both;
+          animation-delay: 120ms;
+        }
+        @keyframes rise {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: none;
+          }
+        }
+      }
+      a {
+        transition: color 300ms var(--ease);
+      }
+      .btn {
+        background: linear-gradient(180deg, var(--accent-2), var(--accent));
+        color: var(--accent-ink);
+        border: 0;
+        box-shadow:
+          0 0 0 1px oklch(100% 0 0 / 0.1) inset,
+          0 8px 24px var(--glow-soft);
+        transition:
+          transform 400ms var(--spring),
+          box-shadow 400ms var(--ease);
+      }
+      .btn:hover {
+        color: var(--accent-ink);
+        box-shadow:
+          0 0 0 1px oklch(100% 0 0 / 0.14) inset,
+          0 12px 32px var(--glow);
+        transform: translateY(-1px);
+      }
+      ul.index li a {
+        color: var(--accent-link);
+      }
+      article h2 {
+        scroll-margin-top: 90px;
+      }
+
+      /* Light palette pass: the guide index as a card grid, softer tables, code chips. */
+      ul.index {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 14px;
+        padding: 0;
+        margin: 0 0 36px;
+        list-style: none;
+      }
+      ul.index li {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 18px 18px 20px;
+        border: 1px solid var(--hairline);
+        border-radius: 16px;
+        background: var(--bg-2);
+        box-shadow: 0 1px 2px oklch(0% 0 0 / 0.2);
+        transition:
+          transform 500ms var(--spring),
+          box-shadow 400ms var(--ease),
+          border-color 400ms var(--ease);
+      }
+      ul.index li:hover {
+        transform: translateY(-2px);
+        border-color: var(--hairline-strong);
+        box-shadow: 0 14px 34px oklch(0% 0 0 / 0.35);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        color: var(--accent);
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 14.5px;
+        line-height: 1.45;
+      }
+      article table {
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      article th {
+        background: var(--bg-2);
+      }
+      article code {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+      }
+      article h2 {
+        padding-top: 8px;
+        border-top: 1px solid var(--hairline);
+      }
+      article p,
+      article li {
+        font-size: 16px;
+        line-height: 1.65;
+      }
+      article td:has(> :is(strong, b):only-child),
+      article td[align="right"] {
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      /* Release notes: the summary as cards, the lead of every item in amber. */
+      article[data-page="surum-notlari"] li > strong:first-child {
+        color: var(--accent-2);
+      }
+      article[data-page="surum-notlari"] h2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      article[data-page="surum-notlari"] h2::before {
+        content: "";
+        width: 4px;
+        height: 0.9em;
+        border-radius: 999px;
+        background: var(--accent);
+        flex: none;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul li {
+        margin: 0;
+        padding: 16px 18px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
+        line-height: 1.5;
+      }
+      article[data-page="surum-notlari"]
+        h2:first-of-type
+        + ul
+        li
+        > strong:first-child {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.05em;
+      }
+      .callout {
+        position: relative;
+        padding: 12px 16px 12px 18px;
+        margin: 0 0 12px;
+        border-radius: 12px;
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
+        border-left: 3px solid var(--hairline-strong);
+      }
+      .callout-belirti {
+        border-left-color: var(--subtle);
+      }
+      .callout-sebep {
+        border-left-color: var(--accent-2);
+      }
+      .callout-cozum {
+        border-left-color: var(--accent);
+        background: color-mix(in oklab, var(--accent) 10%, transparent);
+      }
+      .pager {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 44px 0 8px;
+      }
+      .pager a,
+      .pager .empty {
+        display: grid;
+        gap: 4px;
+        padding: 14px 16px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        text-decoration: none;
+        color: var(--fg);
+        transition:
+          border-color 300ms var(--ease),
+          background-color 300ms var(--ease),
+          transform 500ms var(--spring);
+      }
+      .pager .empty {
+        border-color: transparent;
+      }
+      .pager a:hover {
+        border-color: var(--hairline-strong);
+        background: var(--glass);
+        transform: translateY(-1px);
+      }
+      .pager span {
+        font-size: 12.5px;
+        color: var(--subtle);
+      }
+      .pager-next {
+        text-align: right;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+      article .code {
+        position: relative;
+      }
+      article .code.has-copy pre {
+        padding-top: 38px;
+      }
+      article .code .copy {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font: inherit;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--muted);
+        background: var(--glass);
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        padding: 4px 10px;
+        cursor: pointer;
+        transition:
+          color 200ms var(--ease),
+          border-color 200ms var(--ease);
+      }
+      article .code .copy:hover,
+      article .code .copy:focus-visible,
+      article .code .copy.done {
+        color: var(--fg);
+        border-color: var(--hairline-strong);
+      }
+      .side-dd > summary {
+        display: none;
+      }
+      .side {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        scrollbar-color: var(--hairline-strong) transparent;
+        padding: 2px 18px 24px 0;
+        border-right: 1px solid var(--hairline);
+        font-size: 14.5px;
+      }
+      .nav-group {
+        margin: 26px 0 8px;
+        padding-left: 12px;
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        color: var(--subtle);
+      }
+      .nav-group:first-child {
+        margin-top: 0;
+      }
+      .side ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 1px;
+      }
+      .side li a {
+        position: relative;
+        display: block;
+        padding: 7px 12px;
+        border-radius: 9px;
+        color: var(--muted);
+        line-height: 1.35;
+        transition:
+          background-color 220ms var(--ease),
+          color 220ms var(--ease);
+      }
+      .side li a::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 9px;
+        bottom: 9px;
+        width: 2px;
+        border-radius: 2px;
+        background: var(--accent);
+        opacity: 0;
+        transition: opacity 220ms var(--ease);
+      }
+      .side li a:hover {
+        color: var(--fg);
+        background: var(--bg-2);
+      }
+      .side li.current a {
+        color: var(--fg);
+        font-weight: 600;
+        background: var(--glass);
+      }
+      .side li.current a::before {
+        opacity: 1;
+      }
+      .side li a:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+      .toc {
+        font-size: 13.5px;
+      }
+      .toc-label {
+        font-size: 12.5px;
+        padding-left: 12px;
+      }
+      .toc ol {
+        gap: 4px;
+      }
+      .toc a {
+        padding: 3px 0 3px 12px;
+        line-height: 1.4;
+        transition: color 220ms var(--ease);
+      }
+      .toc a.current::before {
+        display: none;
+      }
+      .toc a.current {
+        box-shadow: inset 2px 0 0 var(--accent);
+        margin-left: -1px;
+      }
+      .toc a.current {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc a.current::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        margin-right: 8px;
+        vertical-align: middle;
+        box-shadow: 0 0 8px var(--glow);
+      }
+      article .tw {
+        max-height: 70vh;
+        overflow: auto;
+      }
+      article thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+      article tbody tr:nth-child(even) td {
+        background: oklch(100% 0 0 / 0.025);
+      }
+      article td.num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      @media (max-width: 800px) {
+        .side-dd > summary {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          cursor: pointer;
+          list-style: none;
+          padding: 12px 14px;
+          border: 1px solid var(--hairline);
+          border-radius: 12px;
+          font-weight: 600;
+        }
+        .side-dd > summary::-webkit-details-marker {
+          display: none;
+        }
+        .side-dd > summary::after {
+          content: "";
+          width: 9px;
+          height: 9px;
+          border-right: 1.5px solid var(--muted);
+          border-bottom: 1.5px solid var(--muted);
+          transform: rotate(45deg);
+          transition: transform 300ms var(--spring);
+        }
+        .side-dd[open] > summary::after {
+          transform: rotate(225deg);
+        }
+        .side-dd[open] > summary {
+          margin-bottom: 10px;
+        }
+        .side {
+          position: static;
+          max-height: none;
+          overflow: visible;
+          border-right: 0;
+          padding-right: 0;
+        }
+        .pager {
+          grid-template-columns: 1fr;
+        }
+        .pager-next {
+          text-align: left;
+        }
+      }
+      article code {
+        overflow-wrap: anywhere;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dots" aria-hidden="true"></div>
+    <a class="skip" href="#icerik">Vai al contenuto</a>
+    <header>
+      <div class="wrap">
+        <a class="brand" href="/it/"
+          ><img
+            src="/assets/icon.svg"
+            alt=""
+            width="26"
+            height="26"
+          />seowatcher <span>guida</span></a
+        >
+        <nav class="topnav" aria-label="Sito">
+          <a class="hide" href="/it/">Home</a>
+          <a class="hide" href="/it/guide/">Guida</a>
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          <details class="langs">
+            <summary aria-label="IT — Lingua: Italiano">
+              <span class="flag"
+                ><svg viewBox="0 0 20 14" aria-hidden="true">
+                  <rect width="20" height="14" fill="#fff" />
+                  <rect width="6.67" height="14" fill="#009246" />
+                  <rect
+                    x="13.33"
+                    width="6.67"
+                    height="14"
+                    fill="#ce2b37"
+                  /></svg></span
+              ><span class="code">IT</span>
+            </summary>
+            <ul>
+              <li>
+                <a href="/kilavuz/sorun-giderme/" lang="tr" hreflang="tr"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#e30a17" />
+                      <circle cx="7.6" cy="7" r="3.4" fill="#fff" />
+                      <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
+                      <polygon
+                        fill="#fff"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
+                      /></svg></span
+                  >Türkçe</a
+                >
+              </li>
+              <li>
+                <a href="/en/docs/troubleshooting/" lang="en" hreflang="en"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#012169" />
+                      <path
+                        d="M0 0L20 14M20 0L0 14"
+                        stroke="#fff"
+                        stroke-width="2.6"
+                      />
+                      <path
+                        d="M0 0L20 14M20 0L0 14"
+                        stroke="#c8102e"
+                        stroke-width="0.9"
+                      />
+                      <path
+                        d="M10 0V14M0 7H20"
+                        stroke="#fff"
+                        stroke-width="4.2"
+                      />
+                      <path
+                        d="M10 0V14M0 7H20"
+                        stroke="#c8102e"
+                        stroke-width="2.6"
+                      /></svg></span
+                  >English</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/de/dokumentation/fehlerbehebung/"
+                  lang="de"
+                  hreflang="de"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#000" />
+                      <rect y="4.67" width="20" height="4.67" fill="#dd0000" />
+                      <rect
+                        y="9.33"
+                        width="20"
+                        height="4.67"
+                        fill="#ffce00"
+                      /></svg></span
+                  >Deutsch</a
+                >
+              </li>
+              <li>
+                <a href="/fr/guides/depannage/" lang="fr" hreflang="fr"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#fff" />
+                      <rect width="6.67" height="14" fill="#0055a4" />
+                      <rect
+                        x="13.33"
+                        width="6.67"
+                        height="14"
+                        fill="#ef4135"
+                      /></svg></span
+                  >Français</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/it/guide/risoluzione-problemi/"
+                  lang="it"
+                  hreflang="it"
+                  aria-current="page"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#fff" />
+                      <rect width="6.67" height="14" fill="#009246" />
+                      <rect
+                        x="13.33"
+                        width="6.67"
+                        height="14"
+                        fill="#ce2b37"
+                      /></svg></span
+                  >Italiano</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/pt/guias/solucao-de-problemas/"
+                  lang="pt"
+                  hreflang="pt"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#ff0000" />
+                      <rect width="8" height="14" fill="#006600" />
+                      <circle cx="8" cy="7" r="2.6" fill="#ffcc00" />
+                      <circle
+                        cx="8"
+                        cy="7"
+                        r="1.5"
+                        fill="#ff0000"
+                      /></svg></span
+                  >Português</a
+                >
+              </li>
+            </ul>
+          </details>
+          <a
+            class="btn"
+            href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><span class="long">Scarica per Windows</span
+            ><span class="short">Scarica</span></a
+          >
+        </nav>
+      </div>
+    </header>
+    <main
+      class="wrap layout"
+      data-copy="Copia"
+      data-copied="Copiato"
+      data-copy-failed="Copia non riuscita"
+      data-copy-label="Copia il codice"
+    >
+      <aside class="side" aria-label="Guida">
+        <details class="side-dd" open>
+          <summary>Guida</summary>
+          <p class="nav-group">Per iniziare</p>
+          <ul>
+            <li>
+              <a href="/it/guide/installazione-su-windows/"
+                >Installazione su Windows</a
+              >
+            </li>
+            <li>
+              <a href="/it/guide/installazione-con-docker/"
+                >Installazione con Docker</a
+              >
+            </li>
+            <li>
+              <a href="/it/guide/collegamento-google/"
+                >Collegamento con Google</a
+              >
+            </li>
+            <li><a href="/it/guide/chiave-pagespeed/">Chiave PageSpeed</a></li>
+          </ul>
+          <p class="nav-group">Schermate</p>
+          <ul>
+            <li><a href="/it/guide/progetti/">Progetti</a></li>
+            <li><a href="/it/guide/pannello/">Pannello</a></li>
+            <li>
+              <a href="/it/guide/prestazioni-di-ricerca/"
+                >Rendimento della ricerca</a
+              >
+            </li>
+            <li>
+              <a href="/it/guide/monitoraggio-posizioni/"
+                >Monitoraggio del posizionamento</a
+              >
+            </li>
+            <li><a href="/it/guide/opportunita/">Opportunità</a></li>
+            <li>
+              <a href="/it/guide/parole-chiave-salvate/"
+                >Parole chiave salvate</a
+              >
+            </li>
+            <li><a href="/it/guide/analisi/">Analytics</a></li>
+            <li>
+              <a href="/it/guide/controllo-del-sito/">Controllo del sito</a>
+            </li>
+            <li><a href="/it/guide/stato-indice/">Stato dell'indice</a></li>
+            <li><a href="/it/guide/rapporti/">Report e modelli</a></li>
+            <li>
+              <a href="/it/guide/informazioni-progetto/"
+                >Informazioni sul progetto</a
+              >
+            </li>
+            <li><a href="/it/guide/impostazioni/">Impostazioni</a></li>
+          </ul>
+          <p class="nav-group">Aiuto e riferimento</p>
+          <ul>
+            <li><a href="/it/guide/aiuto/">Aiuto</a></li>
+            <li>
+              <a href="/it/guide/regole-del-controllo/">Regole del controllo</a>
+            </li>
+            <li>
+              <a href="/it/guide/configurazione-assistente/"
+                >Configurazione dell'assistente</a
+              >
+            </li>
+            <li class="current" aria-current="page">
+              <a href="/it/guide/risoluzione-problemi/"
+                >Risoluzione dei problemi</a
+              >
+            </li>
+            <li><a href="/it/guide/note-di-rilascio/">Note di versione</a></li>
+          </ul>
+        </details>
+      </aside>
+      <article id="icerik" data-page="sorun-giderme">
+        <h1>Risoluzione dei problemi</h1>
+        <p class="lede">
+          I problemi più comuni, con sintomo, causa e soluzione: porta occupata,
+          avviso di Windows, errori di Google, quota, controllo bloccato,
+          assistente 401.
+        </p>
+        <p>
+          L'interfaccia dell'app esiste in sei lingue: turco, inglese, tedesco,
+          francese, italiano e portoghese. La lingua si sceglie in Impostazioni
+          → Aspetto → Lingua. In questa guida pulsanti e schermate hanno il nome
+          che portano nell'interfaccia in italiano. Il menu dell'area di
+          notifica di Windows esiste solo in turco. Lì il nome turco è seguito
+          dal significato italiano tra parentesi.
+        </p>
+        <p>
+          Se qualcosa non funziona, guardare prima nell'app la scheda
+          &quot;Stato dell'app&quot; della schermata <strong>Aiuto</strong>. La
+          scheda guarda questa installazione in sé e controlla accesso,
+          collegamento con Google, chiave PageSpeed e database. Se dice &quot;N
+          cose richiedono attenzione&quot;, il pulsante accanto porta
+          all'impostazione giusta. I problemi qui sotto sono ordinati dal più
+          frequente al più raro.
+        </p>
+        <h2 id="la-pagina-non-si-apre">La pagina non si apre</h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> Il browser dice &quot;bağlantı
+          reddedildi&quot; (connessione rifiutata).
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> L'app non è in funzione.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> In Windows guardare l'icona nella barra
+          delle applicazioni. Se l'icona non si vede, fare clic sulla freccia ^
+          nella barra delle applicazioni. Se non c'è, aprire seowatcher dal menu
+          Start. Se l'icona dice &quot;Errore&quot;, fare clic con il tasto
+          destro e scegliere <strong>Yeniden başlat</strong> (Riavvia). Con
+          Docker scrivere <code>docker compose ps</code>. Se lo stato non è
+          healthy, scrivere <code>docker compose up -d</code>.
+        </p>
+        <h2 id="il-numero-di-porta-e-occupato">
+          Il numero di porta è occupato
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> In Windows, in alto in ogni schermata
+          dell'app compare una striscia gialla: &quot;Questa volta seowatcher è
+          in esecuzione su 3002 perché un altro programma usa 3001 (ad es. una
+          vecchia copia Docker). L'accesso a Google è configurato per 3001;
+          chiudi quel programma e riavvia seowatcher.&quot; Il collegamento a
+          Google dà un errore. Oppure l'icona dice &quot;3001 ve sonraki 9 adres
+          numarası (port) dolu&quot; (la porta 3001 e le 9 successive sono
+          occupate). La stessa frase è scritta nella scheda &quot;Stato
+          dell'app&quot; della schermata <strong>Aiuto</strong>. Con Docker
+          compare &quot;Bind for 127.0.0.1:3001 failed&quot;.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> Un altro programma usa lo stesso numero di
+          porta. La causa più frequente è una vecchia copia di Docker avviata un
+          tempo. Docker Desktop può riavviarla da solo all'avvio del computer.
+          Gli indirizzi di reindirizzamento di Google riportano la 3001, quindi
+          l'accesso a Google non funziona finché l'app è aperta sulla 3002.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Il pacchetto Windows di norma sceglie un
+          numero libero tra 3002 e 3010, lo comunica con un fumetto e con la
+          striscia in alto, e lo usa solo per quell'avvio. Chiudere prima il
+          programma che occupa la 3001. Se è una vecchia copia di Docker,
+          fermare il contenitore seotracker in Docker Desktop oppure eseguire
+          <code>docker compose stop</code> nella cartella del progetto. Poi
+          scegliere <strong>Yeniden başlat</strong> (Riavvia) nel menu. L'app
+          torna alla 3001 e la striscia scompare. Chiudere la striscia la
+          nasconde solo per quella scheda; non risolve nulla. Se sono tutti
+          occupati, scrivere un altro numero nel file
+          <code>config.json</code> della cartella dei dati. Con Docker mettere
+          un <code>.env</code> con la riga <code>PORT=3002</code> e scrivere
+          <code>docker compose up -d --force-recreate seotracker</code>. Quando
+          il numero cambia, aggiornare anche gli indirizzi di reindirizzamento
+          di Google.
+        </p>
+        <h2 id="l-icona-dice-windows-bileseni-eksik">
+          L'icona dice &quot;Windows bileşeni eksik&quot;
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> L'app non si apre. L'icona dice
+          &quot;Windows bileşeni eksik&quot; (Componente di Windows mancante),
+          oppure nel registro compaiono &quot;Workers runtime failed to
+          start&quot; e &quot;0xc0000005&quot;.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> Il motore dell'app richiede il pacchetto
+          Visual C++ di Microsoft (2015-2022, 64 bit). Su un Windows pulito
+          questo pacchetto manca o è vecchio.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Fare clic sul fumetto che compare oppure
+          fare clic con il tasto destro sull'icona e scegliere
+          <strong>Eksik Windows bileşenini kur</strong> (Installa il componente
+          di Windows mancante). Windows chiede una volta il permesso di
+          amministratore. Al termine dell'installazione l'app si riavvia da
+          sola. Se il pacchetto non c'è, scaricarlo dalla pagina di Microsoft:
+          <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code>
+        </p>
+        <h2 id="il-permesso-di-amministratore-non-e-stato-dato">
+          Il permesso di amministratore non è stato dato
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> Durante l'installazione è stato chiesto il
+          permesso per Visual C++, è stato scelto <strong>No</strong>.
+          L'installazione ha riportato &quot;Microsoft Visual C++ çalışma zamanı
+          kurulamadı&quot; (Non è stato possibile installare il runtime
+          Microsoft Visual C++).
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> Il componente di Windows necessario non è
+          stato installato. Poiché l'app porta con sé una copia dei file che le
+          servono, sulla maggior parte dei computer si avvia comunque.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Se l'app si è avviata, non serve fare
+          nulla. Altrimenti fare clic con il tasto destro sull'icona nella barra
+          delle applicazioni (se non si vede, fare clic sulla freccia ^).
+          Scegliere <strong>Eksik Windows bileşenini kur</strong> e questa volta
+          dare il permesso. Oppure scaricare e installare il componente da
+          <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code>.
+        </p>
+        <h2 id="l-icona-dice-uygulamanin-motoru-coktu">
+          L'icona dice &quot;Uygulamanın motoru çöktü&quot;
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> L'app non si apre. Nel registro ci sono
+          &quot;Workers runtime failed to start&quot; e &quot;0xc0000005&quot;,
+          ma il pacchetto Visual C++ è installato.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> Il motore dell'app (workerd) si blocca su un
+          file di sistema di questo computer. All'avvio l'app prova il motore
+          separatamente. Se dice &quot;Tek başına da başlayamıyor&quot; (Non
+          riesce a partire nemmeno da solo), il problema è nel computer. Se dice
+          &quot;Tek başına çalışıyor&quot; (Da solo funziona), il problema è
+          nella cartella dei dati o nella configurazione.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Per prima cosa scegliere
+          <strong>Kurulumu onar</strong> (Ripara l'installazione). Se non si
+          risolve, fare clic con il tasto destro sull'icona e scegliere
+          <strong>Sorunu bildir (GitHub)</strong> (Segnala un problema su
+          GitHub). Le informazioni diagnostiche (versione di Windows,
+          processore, nome del modulo che ha dato errore, file di dump degli
+          arresti anomali) vengono aggiunte da sole alla segnalazione: basta
+          inviarla. I file di dump sono nella cartella
+          <code>%LOCALAPPDATA%\seowatcher\logs\dumps</code>. Volendo, aggiungere
+          anche quelli alla segnalazione.
+        </p>
+        <h2 id="windows-dice-ha-protetto-il-pc">
+          Windows dice &quot;ha protetto il PC&quot;
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> Il file di installazione non si apre e
+          compare una schermata di avviso blu.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> Il file non è firmato. Windows mostra questa
+          schermata per gli autori che non riconosce.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Fare clic sul testo
+          <strong>Ulteriori informazioni</strong> nella schermata. Compare il
+          pulsante <strong>Esegui comunque</strong>. Se si hanno dubbi,
+          confrontare l'impronta SHA-256 del file con
+          <code>SHA256SUMS.txt</code> nella pagina della versione.
+        </p>
+        <h2 id="google-dice-redirect-uri-mismatch">
+          Google dice &quot;redirect_uri_mismatch&quot;
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> Premendo <strong>Connetti</strong>, Google
+          mostra una pagina di errore.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> L'indirizzo di reindirizzamento in Google
+          Cloud Console non è identico a quello dell'app.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Con il pulsante di copia nella sezione
+          <strong>Impostazioni → Google</strong> prendere i due indirizzi. In
+          Cloud Console incollarli nel campo degli indirizzi della chiave di
+          accesso a Google (il client OAuth). Fanno differenza localhost e
+          127.0.0.1, http e https, oppure la barra finale.
+        </p>
+        <h2 id="chiave-di-accesso-google-mancante">
+          &quot;Chiave di accesso Google mancante&quot;
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> Nelle impostazioni del progetto la scheda
+          Connessioni mostra un avviso giallo.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> In <strong>Impostazioni → Google</strong> non
+          sono stati inseriti l'ID client e la chiave segreta. Oppure, con
+          Docker, la chiave di cifratura è più corta di 32 caratteri.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Eseguire i passaggi 10 e 11 della guida al
+          collegamento con Google. Con Docker, se
+          <code>BETTER_AUTH_SECRET</code> è stata indicata a mano, allungarla.
+          Se la si lascia vuota, l'app la genera da sola.
+        </p>
+        <h2 id="google-dice-access-denied">
+          Google dice &quot;access_denied&quot;
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> Dopo la schermata di consenso compare
+          l'avviso &quot;iptal edildi&quot; (annullato).
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> L'account Google usato per l'accesso non è
+          nell'elenco degli utenti di test della schermata di consenso.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> In Cloud Console, nella sezione
+          <strong>Schermata consenso OAuth → Utenti di test</strong>, aggiungere
+          l'account. Poi scegliere di nuovo <strong>Connetti</strong>.
+        </p>
+        <h2 id="il-collegamento-e-scaduto">Il collegamento è scaduto</h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> Nella scheda dei collegamenti c'è scritto
+          &quot;La connessione è scaduta&quot; e non arrivano dati.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> Nelle app in stato &quot;Test&quot;, Google
+          può ridurre il permesso a sette giorni. Può anche essere cambiata la
+          chiave di cifratura.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Nella scheda scegliere
+          <strong>Riconnetti</strong>. Se si ripete spesso, portare la schermata
+          di consenso in produzione oppure passare all'account di servizio
+          (<strong>Impostazioni → Account di servizio</strong>).
+        </p>
+        <h2 id="nessun-dato-sulle-query-grafici-vuoti">
+          Nessun dato sulle query, grafici vuoti
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> Le schede del Panel (Pannello) sono a zero.
+          Rendimento della ricerca dice &quot;Ancora nessun dato per questo
+          periodo&quot;.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> Ci sono tre possibilità. Il sito è nuovo e
+          Google non dà ancora impressioni. Oppure Search Console ha tre giorni
+          di ritardo e il periodo scelto è troppo breve. Oppure è stata scelta
+          la proprietà sbagliata.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Impostare il periodo su
+          <strong>Ultimi 3 mesi</strong>. Nelle impostazioni del progetto
+          verificare che la proprietà sia il sito giusto. La proprietà di
+          dominio comprende tutti i sottodomini, la proprietà con prefisso URL
+          no. In un sito nuovo le righe delle query possono arrivare dopo
+          settimane. La tabella delle pagine si riempie prima.
+        </p>
+        <h2 id="il-totale-della-tabella-non-corrisponde-alla-scheda">
+          Il totale della tabella non corrisponde alla scheda
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> Sommando le impressioni nella tabella delle
+          pagine si ottiene un numero più grande di quello nella scheda.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> Non è un errore. Google conta separatamente
+          ogni pagina che compare nella stessa ricerca. La scheda è il totale
+          del sito.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Leggere il totale dalla scheda.
+          Interpretare la tabella pagina per pagina.
+        </p>
+        <h2 id="il-controllo-e-bloccato-su-in-corso">
+          Il controllo è bloccato su &quot;In corso&quot;
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> Da mezz'ora non c'è avanzamento.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> L'app può essere stata riavviata oppure
+          l'operazione può essersi interrotta.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Attendere. L'app verifica i controlli che
+          risultano &quot;in corso&quot; da più di 15 minuti. Se non c'è segno
+          di vita, li chiude come &quot;Non riuscito&quot; e ne scrive il
+          motivo. Poi scegliere
+          <strong>Esegui di nuovo con le stesse impostazioni</strong>. Non
+          avviare due controlli con la misurazione della velocità nello stesso
+          momento: si rallentano a vicenda.
+        </p>
+        <h2
+          id="il-controllo-dice-il-controllo-si-e-interrotto-prima-di-terminare"
+        >
+          Il controllo dice &quot;Il controllo si è interrotto prima di
+          terminare&quot;
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> La schermata del controllo dice &quot;La
+          verifica si è interrotta nella fase «scansione».&quot; oppure &quot;Il
+          controllo si è interrotto prima di terminare.&quot; Al posto del
+          punteggio c'è scritto &quot;Controllo incompleto — nessun
+          punteggio&quot;.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> La schermata dice tre cose: che cosa è
+          successo, se il difetto è del sito o dell'app, e che cosa fare. Il
+          titolo indica la fase in cui si è interrotta: individuazione degli
+          URL, scansione, misurazione della velocità o preparazione dei
+          risultati.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Seguire la frase sulla schermata.
+        </p>
+        <ul>
+          <li>
+            <strong>Un passaggio non è terminato in tempo.</strong> Di solito il
+            sito risponde molto lentamente. Riprovare tra qualche minuto. Se si
+            ripete, avviare con meno pagine.
+          </li>
+          <li>
+            <strong>La verifica non è rientrata nella memoria</strong>,
+            <strong>ha superato il tempo di elaborazione</strong> o
+            <strong
+              >il risultato di un passaggio superava le dimensioni che l'app può
+              salvare.</strong
+            >
+            La causa sono pagine molto grandi o complesse. Riavviare con meno
+            pagine.
+          </li>
+          <li>
+            <strong
+              >Si è verificato un errore durante la scrittura dei risultati nel
+              database.</strong
+            >
+            Il disco potrebbe essere pieno o il file dei dati bloccato da un
+            altro programma. Controllare che il disco abbia spazio, riavviare
+            l'app e poi la verifica.
+          </li>
+          <li>
+            <strong
+              >Il motore interno dei controlli dell'app ha segnalato un
+              errore.</strong
+            >
+            Scegliere <strong>Yeniden başlat</strong> (Riavvia) nel menu
+            dell'area di notifica, poi riavviare la verifica.
+          </li>
+          <li>
+            <strong>La verifica è stata interrotta.</strong> L'app potrebbe
+            essere stata chiusa o riavviata a metà. Lasciare l'app aperta e
+            riavviare la verifica.
+          </li>
+          <li>
+            <strong
+              >La chiave di installazione non è arrivata alla parte che esegue
+              le verifiche.</strong
+            >
+            Le chiavi Google e PageSpeed salvate non sono state eliminate.
+            Aggiornare o riavviare l'app, poi riavviare la verifica.
+          </li>
+          <li>
+            <strong>Un errore imprevisto.</strong> Riavviare la verifica. Se si
+            ripete, scaricare il pacchetto diagnostico dalla schermata
+            <strong>Aiuto</strong> e segnalare il problema.
+          </li>
+        </ul>
+        <p>
+          Il testo grezzo dell'errore non arriva sulla schermata. Resta nel
+          pacchetto diagnostico.
+        </p>
+        <h2 id="il-controllo-dice-punteggio-provvisorio">
+          Il controllo dice &quot;Punteggio provvisorio&quot;
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> Accanto al punteggio non c'è nessuna parola
+          di giudizio. C'è una riga come &quot;Punteggio provvisorio — copertura
+          delle misure 62%&quot;.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> Una parte importante dei controlli non è stata
+          misurata (la quota di controlli misurati è sotto il 70 per cento,
+          oppure in Scansione, Indicizzazione, Contenuto o Velocità è stata
+          misurata meno della metà dei controlli). Le righe sotto la scheda ne
+          dicono i motivi: la quota PageSpeed era esaurita, manca la chiave
+          PageSpeed, la misurazione della velocità era disattivata o da Search
+          Console non si sono potuti ottenere i dati dell'indice.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Attivare la misurazione della velocità,
+          aggiungere una chiave PageSpeed o collegare Search Console, poi
+          eseguire di nuovo la verifica. Il punteggio riguarda ciò che è stato
+          misurato. Sul resto non è stato dato alcun giudizio, né buono né
+          cattivo.
+        </p>
+        <h2 id="il-controllo-dice-controllo-incompleto-nessun-punteggio">
+          Il controllo dice &quot;Controllo incompleto — nessun punteggio&quot;
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> Questa frase sta al posto della scheda del
+          punteggio. I risultati restano comunque mostrati sotto.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> La verifica si è interrotta per un errore, è
+          ancora in esecuzione oppure la scansione si è interrotta presto a
+          causa del limite di velocità del sito. L'elenco dei problemi è
+          incompleto, quindi non è stato calcolato alcun punteggio. Se non è
+          stato possibile scansionare nessuna pagina, la scheda del punteggio
+          non compare affatto.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Leggere il motivo nella sezione sopra.
+          Eseguire di nuovo la verifica quando il limite di velocità si è
+          azzerato o il problema è risolto. I risultati valgono per le pagine
+          scansionate.
+        </p>
+        <h2
+          id="il-controllo-e-finito-ma-dice-la-misurazione-della-velocita-e-stata-fatta-senza-chiave"
+        >
+          Il controllo è finito ma dice &quot;la misurazione della velocità è
+          stata fatta senza chiave&quot;
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> La verifica è terminata. Un avviso dice
+          &quot;La chiave PageSpeed salvata non è stata letta; la misurazione
+          della velocità è stata fatta senza chiave.&quot; La scheda Velocità ha
+          al massimo 50 pagine.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> La parte che esegue le verifiche non ha
+          ricevuto la chiave di installazione che apre la chiave salvata, quindi
+          la misurazione della velocità è stata fatta senza. I risultati della
+          scansione non ne risentono.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Aggiornare o riavviare l'app, poi avviare
+          una nuova verifica. Se continua, salvare di nuovo la chiave PageSpeed
+          in <strong>Impostazioni</strong>.
+        </p>
+        <h2 id="il-controllo-dice-engellendik">
+          Il controllo dice &quot;Engellendik&quot;
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> Compare un avviso giallo: &quot;Il controllo
+          non è riuscito a scansionare completamente il sito.&quot; oppure
+          &quot;N sayfada engellendik.&quot; (Siamo stati bloccati in N pagine.)
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> La protezione anti-bot del sito (Cloudflare o
+          un firewall) ha fermato il crawler dell'app.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Nel firewall consentire lo user agent di
+          nome <code>seotracker-audit</code> oppure mettere nell'elenco
+          consentito l'indirizzo di rete (IP) del proprio computer. Se il sito
+          non è dell'utente, non c'è nulla da fare. I risultati restano limitati
+          alle pagine che si sono potute scansionare.
+        </p>
+        <h2 id="la-misurazione-della-velocita-e-incompleta-o-manca">
+          La misurazione della velocità è incompleta o manca
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> La scheda Hız (Velocità) è vuota o ha
+          pochissime righe. La scheda della quota dice &quot;Quota
+          esaurita&quot;, &quot;Dakikalık sınır&quot; (Limite al minuto) o
+          &quot;Anahtar yok&quot; (Nessuna chiave).
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> Manca la chiave PageSpeed (si misurano al
+          massimo 50 pagine). Oppure il limite giornaliero di Google è finito.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Ottenere una chiave gratuita seguendo la
+          guida alla chiave PageSpeed. Se il limite giornaliero è finito, si
+          completa domani con un nuovo controllo. Se all'avvio del controllo la
+          misurazione della velocità era disattivata, quel controllo non può più
+          essere misurato in seguito.
+        </p>
+        <h2 id="il-controllo-url-dice-limite-giornaliero-raggiunto">
+          Il controllo URL dice &quot;limite giornaliero raggiunto&quot;
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> Nella scheda Stato dell'indicizzazione il
+          pulsante non funziona. C'è scritto &quot;Google'ın günlük 2.000 adres
+          sınırına ulaşıldı&quot; (Raggiunto il limite giornaliero di 2.000
+          indirizzi di Google).
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> Per ogni proprietà ci sono 2.000 richieste al
+          giorno. L'app, l'assistente e i controlli fatti a mano in Search
+          Console consumano la stessa riserva.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Continuare domani. L'app richiede di nuovo
+          solo le risposte invecchiate, quindi il limite non va sprecato.
+        </p>
+        <h2 id="la-scheda-o-il-report-di-analytics-mostra-un-errore">
+          La scheda o il report di Analytics mostra un errore
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> La scheda del traffico organico nel
+          Pannello, o la schermata Analytics, mostra una frase al posto dei
+          dati, con i pulsanti <strong>Ripristina la connessione</strong> e
+          <strong>Riprova</strong>.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> La frase indica causa e soluzione. I casi
+          principali sono questi.
+        </p>
+        <ul>
+          <li>
+            <strong>Il collegamento è scaduto o è stato revocato.</strong>
+            Ricollegarlo in <strong>Impostazioni</strong>.
+          </li>
+          <li>
+            <strong
+              >L'accesso a questa proprietà è stato rifiutato (HTTP
+              403).</strong
+            >
+            Dare all'account collegato o all'account di servizio almeno il ruolo
+            Visualizzatore sulla proprietà.
+          </li>
+          <li>
+            <strong>La proprietà non è stata trovata (HTTP 404).</strong> Può
+            essere stata eliminata o spostata. Sceglierla di nuovo in
+            <strong>Impostazioni</strong>.
+          </li>
+          <li>
+            <strong
+              >A questo progetto non è collegata nessuna proprietà.</strong
+            >
+            Sceglierne una in <strong>Impostazioni</strong>.
+          </li>
+          <li>
+            <strong>La quota dei report è esaurita (HTTP 429).</strong> La quota
+            si rinnova ogni ora e ogni giorno. Riprovare più tardi.
+          </li>
+          <li>
+            <strong
+              >La Google Analytics Data API è disattivata nel progetto Google
+              Cloud.</strong
+            >
+            Attivare &quot;Google Analytics Data API&quot; nella Google Cloud
+            Console e riprovare.
+          </li>
+          <li>
+            <strong
+              >Il report non è compatibile con la proprietà scelta (HTTP
+              400).</strong
+            >
+            Controllare la proprietà o sceglierne un'altra.
+          </li>
+          <li>
+            <strong
+              >Google ha restituito una risposta non valida o per ora non
+              risponde.</strong
+            >
+            Riprovare tra poco.
+          </li>
+          <li>
+            <strong>Google non è raggiungibile.</strong> Controllare la
+            connessione a internet di questo computer.
+          </li>
+        </ul>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Fare il passo indicato dalla frase. Di
+          solito <strong>Ripristina la connessione</strong> porta
+          all'impostazione giusta.
+        </p>
+        <h2 id="una-richiesta-a-search-console-mostra-un-errore">
+          Una richiesta a Search Console mostra un errore
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> Rendimento della ricerca, Opportunità o
+          Monitoraggio del posizionamento mostrano un errore di Search Console
+          al posto dei dati.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> La frase di errore indica la causa.
+        </p>
+        <ul>
+          <li>
+            <strong
+              >La richiesta è stata ritenuta non valida (HTTP 400).</strong
+            >
+            Non è un problema di collegamento. La dimensione, il filtro o il
+            tipo di ricerca scelto non si può usare su questa proprietà.
+            Togliere i filtri.
+          </li>
+          <li>
+            <strong
+              >L'accesso alla proprietà è stato rifiutato (HTTP 401 o
+              403).</strong
+            >
+            Controllare che l'account abbia un'autorizzazione verificata sulla
+            proprietà, oppure rinnovare il collegamento in
+            <strong>Impostazioni</strong>.
+          </li>
+          <li>
+            <strong>La proprietà non è stata trovata (HTTP 404).</strong> Può
+            essere stata rimossa da Search Console. Sceglierla di nuovo in
+            <strong>Impostazioni</strong>.
+          </li>
+          <li>
+            <strong>Il limite di richieste è esaurito (HTTP 429).</strong>
+            Riprovare tra qualche minuto.
+          </li>
+          <li>
+            <strong>Nessuna risposta in tempo.</strong> Riprovare tra poco.
+          </li>
+          <li>
+            <strong>Per ora non risponde (altro codice HTTP).</strong> Riprovare
+            tra poco. Se continua, guardare la pagina di stato di Google.
+          </li>
+          <li>
+            <strong>Google non è raggiungibile.</strong> La frase dà un
+            dettaglio nella riga &quot;Motivo&quot;. Se continua, controllare la
+            connessione a internet di questo computer.
+          </li>
+        </ul>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Fare il passo indicato dalla frase. Per i
+          problemi di account e proprietà di solito basta rinnovare il
+          collegamento in <strong>Impostazioni</strong>.
+        </p>
+        <h2 id="in-analytics-compare-il-traffico-di-localhost">
+          In Analytics compare il traffico di localhost
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> Nella tabella delle pagine di ingresso,
+          nella colonna Alan adı (Dominio) c'è scritto localhost o 127.0.0.1.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> Anche la copia di prova del sito carica lo
+          stesso tag di Analytics.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Impostare il tag in modo che si carichi
+          solo sul dominio reale. Nella maggior parte degli strumenti c'è
+          un'opzione di &quot;controllo del dominio&quot;. L'app non filtra da
+          sola queste righe. Nel frattempo, controllare la colonna Alan adı.
+        </p>
+        <h2 id="l-assistente-non-riesce-a-collegarsi-401">
+          L'assistente non riesce a collegarsi (401)
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> Claude Code o Codex dicono
+          &quot;Unauthorized&quot;.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> La password non viene inviata oppure è
+          sbagliata.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Copiare di nuovo la password. In Windows è
+          nel file <code>mcp-token</code> nella cartella dei dati. Con Docker
+          scrivere
+          <code
+            >docker compose exec -T seotracker cat
+            /app/.wrangler/mcp-token</code
+          >. Eliminare il carattere di fine riga alla fine del valore. Per non
+          usare il terminale, aprire il file con il Blocco note, selezionare
+          tutta la riga e copiarla. Non lasciare il fine riga. In Claude Code
+          scrivere <code>/mcp</code> e scegliere
+          <strong>Reconnect</strong> (Ricollega).
+        </p>
+        <h2 id="docker-e-molto-lento-al-primo-avvio-oppure-risulta-unhealthy">
+          Docker è molto lento al primo avvio oppure risulta
+          &quot;unhealthy&quot;
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> <code>docker compose ps</code> non dice
+          healthy nemmeno dopo cinque minuti.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> Al primo avvio l'app viene compilata dentro il
+          container e richiede circa 2 GB di memoria. Se la memoria non basta,
+          la compilazione cade.
+        </p>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Scrivere
+          <code>docker compose logs --tail 50</code> e guardare le ultime righe.
+          Se c'è un errore di memoria, dare più memoria ai container dalle
+          impostazioni di Docker Desktop. Poi scrivere
+          <code>docker compose up -d --build</code>.
+        </p>
+        <h2 id="dove-sono-i-dati-e-i-registri">
+          Dove sono i dati e i registri?
+        </h2>
+        <p>
+          In Windows tutto è nella cartella
+          <code>%LOCALAPPDATA%\seowatcher</code>: <code>data</code> (il
+          database), <code>logs\launcher.log</code>,
+          <code>logs\server.log</code>, <code>logs\migrate.log</code>,
+          <code>instance-secret</code>, <code>mcp-token</code>,
+          <code>config.json</code>. Quando un file di registro diventa troppo
+          grande (<code>server.log</code> 5 MB, gli altri 1 MB), quello vecchio
+          resta accanto con un nome come <code>server.old.log</code> e ne inizia
+          uno nuovo. La cartella <code>logs\wrangler</code> contiene i registri
+          dettagliati del motore; i file più vecchi di 30 giorni vengono
+          eliminati automaticamente. Le voci
+          <strong>Günlükleri aç</strong> (Apri i registri) e
+          <strong>Veri klasörünü aç</strong> (Apri la cartella dei dati) del
+          menu della barra delle applicazioni portano lì.
+        </p>
+        <p>
+          Con Docker i dati stanno nel volume
+          <code>seotracker_data</code> (<code>/app/.wrangler</code>). I registri
+          si vedono con il comando <code>docker compose logs -f</code>.
+        </p>
+        <p>
+          Per segnalare un problema, selezionare
+          <strong>Scarica il pacchetto diagnostico</strong> nella schermata
+          <strong>Aiuto</strong>. Il pacchetto riepiloga fase ed errori degli
+          ultimi 25 controlli; gli URL delle pagine vengono rimossi dai messaggi
+          PageSpeed. Può contenere nomi di progetti e domini. Controllare il
+          file prima di allegarlo a una segnalazione GitHub.
+        </p>
+        <h2 id="un-impostazione-di-windows-non-si-puo-salvare">
+          Un'impostazione di Windows non si può salvare
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Sintomo:</strong> Cambiando un'opzione nella sezione Windows
+          di <strong>Impostazioni</strong> compare un errore, oppure la sezione
+          dice che le preferenze di Windows non sono disponibili.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Causa:</strong> Questa sezione parla con l'app nella barra
+          delle applicazioni. La frase di errore dice quale di questi casi è.
+        </p>
+        <ul>
+          <li>
+            <strong
+              >L'app nell'area di notifica non ha risposto entro 4
+              secondi.</strong
+            >
+            Se il computer si è appena riattivato, premere
+            <strong>Riprova</strong> dopo qualche secondo. Se persiste,
+            scegliere <strong>Çıkış</strong> (Esci) nel menu dell'area di
+            notifica e riaprire l'app.
+          </li>
+          <li>
+            <strong
+              >Impossibile connettersi al servizio impostazioni dell'app
+              nell'area di notifica.</strong
+            >
+            L'app potrebbe essersi chiusa. Riaprire seowatcher dal menu Start.
+          </li>
+          <li>
+            <strong
+              >Questa impostazione è bloccata da un amministratore.</strong
+            >
+            Solo l'amministratore del computer può modificarla.
+          </li>
+          <li>
+            <strong
+              >L'app nell'area di notifica non ha riconosciuto questa
+              richiesta.</strong
+            >
+            Server e app potrebbero provenire da sessioni diverse. Scegliere
+            <strong>Çıkış</strong> (Esci) nel menu e riaprire l'app.
+          </li>
+          <li>
+            <strong
+              >L'app nell'area di notifica ha rifiutato la richiesta.</strong
+            >
+            Riavviare l'app dal menu. Se persiste, aggiornare il pacchetto
+            Windows.
+          </li>
+          <li>
+            <strong
+              >L'app nell'area di notifica ha restituito una risposta non
+              riconosciuta.</strong
+            >
+            Le versioni potrebbero non corrispondere. Aggiornare il pacchetto
+            Windows.
+          </li>
+        </ul>
+        <p class="callout callout-cozum">
+          <strong>Soluzione:</strong> Fare il passo indicato dalla frase. Queste
+          opzioni esistono solo nel pacchetto Windows. Con Docker il
+          comportamento all'avvio si gestisce dal sistema operativo.
+        </p>
+        <h2 id="avvisi-dell-avvio">Avvisi dell'avvio</h2>
+        <p>
+          Gli avvisi che compaiono nell'icona della barra delle applicazioni e
+          che cosa fare:
+        </p>
+        <ul>
+          <li>
+            <strong
+              >&quot;Sunucu 120 saniyede yanıt vermedi&quot; (Il server non ha
+              risposto in 120 secondi).</strong
+            >
+            Dal menu scegliere <strong>Yeniden başlat</strong>. Se non basta,
+            scegliere <strong>Günlükleri aç</strong> e guardare le ultime righe
+            di <code>server.log</code>.
+          </li>
+          <li>
+            <strong
+              >&quot;seowatcher yeniden başlatılıyor&quot; (seowatcher si sta
+              riavviando).</strong
+            >
+            Il server si è chiuso da solo e l'app lo sta riaprendo. Aggiornare
+            la pagina aperta dopo qualche secondo.
+          </li>
+          <li>
+            <strong
+              >&quot;Sunucu 10 dakikada üç kez kapandı&quot; (Il server si è
+              chiuso tre volte in 10 minuti).</strong
+            >
+            L'app ha smesso di riaprirlo. Scegliere
+            <strong>Kurulumu onar</strong> e, se non basta,
+            <strong>Sorunu bildir (GitHub)</strong>.
+          </li>
+          <li>
+            <strong
+              >&quot;Kurulum eksik&quot; (Installazione incompleta).</strong
+            >
+            <strong>Kurulumu onar</strong> rimette i file mancanti scaricando il
+            file di installazione. Se non c'è internet, si apre la pagina delle
+            versioni; scaricare il file di installazione ed eseguirlo.
+          </li>
+          <li>
+            <strong
+              >&quot;3001 numarası dolu, 3002 kullanılıyor&quot; (La porta 3001
+              è occupata, si usa la 3002).</strong
+            >
+            Un altro programma occupa la 3001, spesso una vecchia copia di
+            Docker. Lo stesso avviso compare anche come striscia gialla
+            nell'app. Se si riceve un errore collegandosi a Google, chiudere
+            quel programma e scegliere <strong>Yeniden başlat</strong>. Vedere
+            sopra &quot;Il numero di porta è occupato&quot;.
+          </li>
+          <li>
+            <strong
+              >&quot;Güncelleme denetlenemedi&quot; (Impossibile controllare
+              l'aggiornamento) oppure &quot;Güncelleme yapılamadı&quot;
+              (Aggiornamento non riuscito).</strong
+            >
+            Il fumetto indica il motivo. Se dice &quot;GitHub'a
+            ulaşılamadı&quot; (GitHub non raggiungibile), controllare la
+            connessione a Internet. Se dice &quot;GitHub şu an çok fazla istek
+            alıyor&quot; (GitHub sta ricevendo troppe richieste in questo
+            momento), riprovare tra un'ora. Se l'impronta non corrisponde,
+            scaricare il file di installazione dalla pagina delle versioni. In
+            ogni caso la versione installata continua a funzionare.
+          </li>
+          <li>
+            <strong
+              >&quot;Güncelleme kurulmadı&quot; (Aggiornamento non
+              installato).</strong
+            >
+            La finestra di installazione è stata chiusa oppure non è stato dato
+            il permesso di amministratore. Riprovare dal menu con
+            <strong>Güncelle</strong>.
+          </li>
+          <li>
+            <strong
+              >&quot;Windows bileşeni kurulamadı&quot; (Componente di Windows
+              non installato).</strong
+            >
+            Dal menu scegliere <strong>Eksik Windows bileşenini kur</strong>.
+          </li>
+        </ul>
+        <nav class="pager" aria-label="Pagina precedente e successiva">
+          <a
+            class="pager-prev"
+            rel="prev"
+            href="/it/guide/configurazione-assistente/"
+            ><span>Precedente</span
+            ><strong>Configurazione dell'assistente</strong></a
+          ><a class="pager-next" rel="next" href="/it/guide/note-di-rilascio/"
+            ><span>Successiva</span><strong>Note di versione</strong></a
+          >
+        </nav>
+        <p class="meta">
+          Ultimo aggiornamento: 27 ottobre 2026. Se si nota un errore,
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
+            >segnalarlo su GitHub</a
+          >.
+        </p>
+      </article>
+      <nav class="toc" aria-label="In questa pagina">
+        <p class="toc-label">In questa pagina</p>
+        <ol>
+          <li><a href="#la-pagina-non-si-apre">La pagina non si apre</a></li>
+          <li>
+            <a href="#il-numero-di-porta-e-occupato"
+              >Il numero di porta è occupato</a
+            >
+          </li>
+          <li>
+            <a href="#l-icona-dice-windows-bileseni-eksik"
+              >L'icona dice &quot;Windows bileşeni eksik&quot;</a
+            >
+          </li>
+          <li>
+            <a href="#il-permesso-di-amministratore-non-e-stato-dato"
+              >Il permesso di amministratore non è stato dato</a
+            >
+          </li>
+          <li>
+            <a href="#l-icona-dice-uygulamanin-motoru-coktu"
+              >L'icona dice &quot;Uygulamanın motoru çöktü&quot;</a
+            >
+          </li>
+          <li>
+            <a href="#windows-dice-ha-protetto-il-pc"
+              >Windows dice &quot;ha protetto il PC&quot;</a
+            >
+          </li>
+          <li>
+            <a href="#google-dice-redirect-uri-mismatch"
+              >Google dice &quot;redirect_uri_mismatch&quot;</a
+            >
+          </li>
+          <li>
+            <a href="#chiave-di-accesso-google-mancante"
+              >&quot;Chiave di accesso Google mancante&quot;</a
+            >
+          </li>
+          <li>
+            <a href="#google-dice-access-denied"
+              >Google dice &quot;access_denied&quot;</a
+            >
+          </li>
+          <li>
+            <a href="#il-collegamento-e-scaduto">Il collegamento è scaduto</a>
+          </li>
+          <li>
+            <a href="#nessun-dato-sulle-query-grafici-vuoti"
+              >Nessun dato sulle query, grafici vuoti</a
+            >
+          </li>
+          <li>
+            <a href="#il-totale-della-tabella-non-corrisponde-alla-scheda"
+              >Il totale della tabella non corrisponde alla scheda</a
+            >
+          </li>
+          <li>
+            <a href="#il-controllo-e-bloccato-su-in-corso"
+              >Il controllo è bloccato su &quot;In corso&quot;</a
+            >
+          </li>
+          <li>
+            <a
+              href="#il-controllo-dice-il-controllo-si-e-interrotto-prima-di-terminare"
+              >Il controllo dice &quot;Il controllo si è interrotto prima di
+              terminare&quot;</a
+            >
+          </li>
+          <li>
+            <a href="#il-controllo-dice-punteggio-provvisorio"
+              >Il controllo dice &quot;Punteggio provvisorio&quot;</a
+            >
+          </li>
+          <li>
+            <a href="#il-controllo-dice-controllo-incompleto-nessun-punteggio"
+              >Il controllo dice &quot;Controllo incompleto — nessun
+              punteggio&quot;</a
+            >
+          </li>
+          <li>
+            <a
+              href="#il-controllo-e-finito-ma-dice-la-misurazione-della-velocita-e-stata-fatta-senza-chiave"
+              >Il controllo è finito ma dice &quot;la misurazione della velocità
+              è stata fatta senza chiave&quot;</a
+            >
+          </li>
+          <li>
+            <a href="#il-controllo-dice-engellendik"
+              >Il controllo dice &quot;Engellendik&quot;</a
+            >
+          </li>
+          <li>
+            <a href="#la-misurazione-della-velocita-e-incompleta-o-manca"
+              >La misurazione della velocità è incompleta o manca</a
+            >
+          </li>
+          <li>
+            <a href="#il-controllo-url-dice-limite-giornaliero-raggiunto"
+              >Il controllo URL dice &quot;limite giornaliero raggiunto&quot;</a
+            >
+          </li>
+          <li>
+            <a href="#la-scheda-o-il-report-di-analytics-mostra-un-errore"
+              >La scheda o il report di Analytics mostra un errore</a
+            >
+          </li>
+          <li>
+            <a href="#una-richiesta-a-search-console-mostra-un-errore"
+              >Una richiesta a Search Console mostra un errore</a
+            >
+          </li>
+          <li>
+            <a href="#in-analytics-compare-il-traffico-di-localhost"
+              >In Analytics compare il traffico di localhost</a
+            >
+          </li>
+          <li>
+            <a href="#l-assistente-non-riesce-a-collegarsi-401"
+              >L'assistente non riesce a collegarsi (401)</a
+            >
+          </li>
+          <li>
+            <a
+              href="#docker-e-molto-lento-al-primo-avvio-oppure-risulta-unhealthy"
+              >Docker è molto lento al primo avvio oppure risulta
+              &quot;unhealthy&quot;</a
+            >
+          </li>
+          <li>
+            <a href="#dove-sono-i-dati-e-i-registri"
+              >Dove sono i dati e i registri?</a
+            >
+          </li>
+          <li>
+            <a href="#un-impostazione-di-windows-non-si-puo-salvare"
+              >Un'impostazione di Windows non si può salvare</a
+            >
+          </li>
+          <li><a href="#avvisi-dell-avvio">Avvisi dell'avvio</a></li>
+        </ol>
+      </nav>
+    </main>
+    <footer>
+      <div class="wrap">
+        <p class="star">
+          Una stella aiuta altre persone a trovare uno strumento gratuito.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Aggiungi una stella su GitHub</a
+          >
+        </p>
+        <span>seowatcher, licenza MIT.</span>
+        <span
+          ><a href="/it/">Home</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
+          <a href="/it/guide/note-di-rilascio/">Note di versione</a></span
+        >
+      </div>
+    </footer>
+  </body>
+</html>

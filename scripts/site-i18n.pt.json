@@ -2,6 +2,7 @@
   "lang": "pt",
   "name": "Português",
   "ogLocale": "pt_BR",
+  "docsSlug": "guias",
   "months": [
     "janeiro",
     "fevereiro",
@@ -29,8 +30,8 @@
     "Başvuru": "Ajuda e referência"
   },
   "slugs": {
-    "kurulum-windows": "instalar-windows",
-    "kurulum-docker": "instalar-docker",
+    "kurulum-windows": "instalar-no-windows",
+    "kurulum-docker": "instalar-com-docker",
     "google-baglantisi": "conexao-google",
     "pagespeed-anahtari": "chave-pagespeed",
     "projeler": "projetos",
@@ -39,7 +40,7 @@
     "siralama-takibi": "acompanhamento-de-posicoes",
     "firsatlar": "oportunidades",
     "kayitli-kelimeler": "palavras-chave-salvas",
-    "analytics": "analytics",
+    "analytics": "analise",
     "site-denetimi": "auditoria-do-site",
     "dizin-durumu": "status-de-indexacao",
     "raporlar": "relatorios",
@@ -50,6 +51,11 @@
     "ajan-kurulumu": "configurar-agente",
     "sorun-giderme": "solucao-de-problemas",
     "surum-notlari": "notas-da-versao"
+  },
+  "legacySlugs": {
+    "kurulum-windows": ["instalar-windows"],
+    "kurulum-docker": ["instalar-docker"],
+    "analytics": ["analytics"]
   },
   "t": {
     "guide": "Guia",

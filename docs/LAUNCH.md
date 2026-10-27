@@ -1,17 +1,14 @@
 # seowatcher.io yayın sonrası kontrol listesi
 
-Bu liste, sitenin (`site/` klasörü) seowatcher.io adresinde yayına girmesi için
-**sizin hesaplarınızla** yapılması gereken adımları ve yayın sonrası kontrolleri
-kapsar. Hesap gerektirmeyen teknik işler (robots.txt, site haritası, görseller,
-beslemeler, security.txt, IndexNow anahtarı, manifest, başlıklar) depoda
-hazırdır.
+Bu liste, seowatcher.io için canlı teknik kontrolleri ve Google/Bing hesaplarında
+yapılacak yayın sonrası adımlarını kapsar. Hesap gerektirmeyen işler
+(robots.txt, site haritası, görseller, beslemeler, security.txt, IndexNow
+anahtarı, manifest ve başlıklar) `site/` çıktısında hazırlanır.
 
-Yayın yolu Hetzner VPS (IP `94.130.129.213`) ve nginx'tir; DNS kayıtları bu
-IP'yi gösterir. Site henüz sunucuya yüklenmedi: önce A bölümünü
-[SITE_DEPLOY.md](./SITE_DEPLOY.md) ile tamamlayın, sonra bu listedeki canlı
-kontrollere geçin. `site/` her güncellendiğinde aynı yükleme adımlarını
-tekrarlayıp canlı kontrolleri yeniden yapın. Çalışma dalı `seotracker-fork`'tur
-(`main` geride kalmıştır).
+Site Hetzner VPS ve nginx üzerinde barındırılır. İlk kurulum yalnızca sunucuda
+henüz kurulum yoksa gerekir; mevcut siteyi güncellerken
+[SITE_DEPLOY.md](./SITE_DEPLOY.md) içindeki güncelleme akışını kullanın. Her yeni
+site paketi kurulduktan sonra bu canlı kontrolleri yeniden yapın.
 
 Sırayla gidin. Her adımın sonunda "Kontrol" satırı, adımın işe yarayıp
 yaramadığını nasıl anlayacağınızı söyler.
@@ -30,11 +27,12 @@ nslookup www.seowatcher.io
 
 Kontrol: İkisi de `94.130.129.213` adresini döner.
 
-### 2. Sunucuyu kurun ve siteyi yükleyin
+### 2. Canlı siteyi kurun veya güncelleyin
 
-[SITE_DEPLOY.md](./SITE_DEPLOY.md) içindeki "İlk kurulum" adımlarını (nginx,
-certbot ile `seowatcher.io` ve `www.seowatcher.io` sertifikası, yapılandırma)
-ve ardından "Siteyi güncelleme" adımlarını uygulayın.
+Sunucuda henüz site kurulmadıysa [SITE_DEPLOY.md](./SITE_DEPLOY.md) içindeki
+"İlk kurulum" adımlarını izleyin. Kurulu siteyi güncellemek için yalnızca
+"Siteyi güncelleme" akışını kullanın; ilk kurulum betiğini mevcut sunucuda
+yeniden çalıştırmayın.
 
 Kontrol: `sudo nginx -t` "syntax is ok" ve "test is successful" der;
 `sudo certbot renew --dry-run` başarılı biter.
@@ -118,9 +116,15 @@ adres yeterlidir:
 - Ana sayfalar: `https://seowatcher.io/`, `https://seowatcher.io/en/`,
   `https://seowatcher.io/de/`, `https://seowatcher.io/fr/`,
   `https://seowatcher.io/it/`, `https://seowatcher.io/pt/`
-- Kılavuzlar: `https://seowatcher.io/docs/`, `https://seowatcher.io/en/docs/`,
-  `https://seowatcher.io/de/docs/`, `https://seowatcher.io/fr/docs/`,
-  `https://seowatcher.io/it/docs/`, `https://seowatcher.io/pt/docs/`
+- Kılavuz dizinleri: `https://seowatcher.io/kilavuz/`,
+  `https://seowatcher.io/en/docs/`,
+  `https://seowatcher.io/de/dokumentation/`,
+  `https://seowatcher.io/fr/guides/`, `https://seowatcher.io/it/guide/` ve
+  `https://seowatcher.io/pt/guias/`.
+
+Eski `/docs/` adresleri ve önceki dil kılavuz slug'ları `noindex` yenileme
+sayfalarıdır. URL denetiminde bunları indekslemeye göndermeyin; yeni dile özel
+canonical adresleri kullanın.
 
 Kontrol: Her birinde "Dizine ekleme isteği gönderildi" mesajı. **Canlı URL'yi
 test et** sonucu "URL Google'da kullanılabilir".
@@ -130,12 +134,13 @@ test et** sonucu "URL Google'da kullanılabilir".
 Google eski "Uluslararası hedefleme" raporunu 2022'de kaldırdı; artık ayrı bir
 hreflang raporu yok. Bunun yerine:
 
-1. URL denetiminde `https://seowatcher.io/en/` için **Taranan sayfayı
-   görüntüle → HTML** açın, `hreflang` satırlarının yedi tane olduğunu görün
-   (tr, en, de, fr, it, pt, x-default).
-2. Birkaç gün sonra `https://seowatcher.io/de/` denetiminde **Google
-   tarafından seçilen standart URL** = kullanıcı tarafından belirtilen standart
-   URL olmalı (Almanca sayfa Türkçeye katlanmamış olmalı).
+1. URL denetiminde bir ana sayfa ve bir kılavuz sayfası için **Taranan sayfayı
+   görüntüle → HTML** açın. Her birinde yedi `hreflang` satırı olmalı (tr, en,
+   de, fr, it, pt, x-default); alternate URL'ler birbirine karşılıklı dönmeli.
+2. Birkaç gün sonra
+   `https://seowatcher.io/de/dokumentation/installation-unter-windows/` için
+   **Google tarafından seçilen standart URL**, sayfanın kendi Almanca canonical
+   adresi olmalı; Türkçe veya başka bir dile katlanmamalı.
 
 Kontrol: İki standart URL aynı.
 
@@ -143,11 +148,43 @@ Kontrol: İki standart URL aynı.
 
 1. Soldan **Sayfalar** (Dizine ekleme → Sayfalar).
 
-Kontrol: Site haritasında 144 adres vardır; dizine alınan sayı Google'ın
-kararına bağlıdır ve bu sayıya ulaşması garanti değildir. "Dizine
-eklenmemiş" altında yalnızca `www` ve `http` yönlendirmeleri ile `404`
-görünmeli. "Tarandı - şu anda dizine eklenmiş değil" yeni sitelerde normaldir,
-bekleyin.
+Kontrol: Site haritasında 144 canonical adres vardır; Google'ın dizine aldığı
+sayının 144 olması beklenmez ve garanti edilmez. Eski `/docs/` yolları
+`noindex` yenileme sayfaları olduğundan, Google bunları gördükçe "noindex"
+olarak hariç tutabilir; bu eski adreslerin arama sonuçlarında görünmemesi
+beklenir. Yeni dile özel canonical kılavuz sayfalarının yanlışlıkla
+hariç tutulmadığını ve seçilen canonical adreslerinin doğru olduğunu kontrol
+edin. `www`/`http` yönlendirmeleri ile gerçek `404` adresleri dizine alınmamalı;
+"Tarandı - şu anda dizine eklenmiş değil" yeni sayfalarda bir süre normal
+olabilir.
+
+### Search generative AI görünürlüğü
+
+Google'ın Search Console'daki **Search generative AI** kontrolü 31 Ağustos 2026
+itibarıyla tüm sitelere açıldı. Kontrol; AI Overviews, AI Mode ve Discover'daki
+üretken yapay zekâ özelliklerinde sitenizin bağlantı ve içeriğinin yer almasına
+izin verip vermediğinizi belirler.
+
+1. Search Console'da `seowatcher.io` alan adı mülkünü açın.
+2. **Ayarlar → Search generative AI** bölümüne girin. **Include my site's links
+   and content** seçili olmalı. Mülk **Inherit control from parent** kullanıyorsa,
+   üst mülkün de dahil edildiğini doğrulayın. Google'ın varsayılanı dahil etmektir;
+   yine de bu mülkte veya üst mülkte dışlama seçilmediğini kontrol edin.
+3. **Generative AI performance report** raporunu açın. Search raporu AI Overviews
+   ve AI Mode gösterimlerini sayfa, ülke, tarih ve cihaz boyutlarında gösterir.
+   Discover için ayrı rapor kullanılır. Rapor görünmüyorsa Google'a göre site henüz
+   yeterli gösterim almamış olabilir veya Search generative AI özelliklerinden
+   çıkarılmış olabilir.
+
+Kontrol: Search generative AI ayarı dahil durumunda (veya dahil durumundaki üst
+mülkü miras alıyor) olmalı. Raporun bulunması görünürlüğü garanti etmez; yeni ya
+da düşük trafikli sitelerde yeterli veri oluşana kadar rapor görünmeyebilir.
+
+Google, AI Overviews/AI Mode için `llms.txt`, özel GEO işaretlemesi ya da özel
+schema istemiyor; `llms.txt` Google Search sıralamasına katkı sağlamaz. Sitedeki
+dosya, onu kullanan diğer sistemler için durur. Google görünürlüğünde öncelik;
+indekslenebilir, yararlı ve özgün içerik, açık iç bağlantılar ve iyi sayfa
+deneyimidir.
 
 ## C. Bing ve IndexNow
 
@@ -181,10 +218,20 @@ daha çalıştırın.
 
 ### 12. Yapılandırılmış veri
 
-Her dil için bir ana sayfa ve bir kılavuz sayfası deneyin, ör.
-`https://seowatcher.io/` ve `https://seowatcher.io/docs/kurulum-windows/`,
-`https://seowatcher.io/en/` ve `https://seowatcher.io/en/docs/install-windows/`
-(de, fr, it, pt için de aynı).
+Her dilde bir ana sayfa ve bir kılavuz sayfası deneyin:
+
+- Türkçe: `https://seowatcher.io/` ve
+  `https://seowatcher.io/kilavuz/kurulum-windows/`
+- İngilizce: `https://seowatcher.io/en/` ve
+  `https://seowatcher.io/en/docs/install-windows/`
+- Almanca: `https://seowatcher.io/de/` ve
+  `https://seowatcher.io/de/dokumentation/installation-unter-windows/`
+- Fransızca: `https://seowatcher.io/fr/` ve
+  `https://seowatcher.io/fr/guides/installation-sous-windows/`
+- İtalyanca: `https://seowatcher.io/it/` ve
+  `https://seowatcher.io/it/guide/installazione-su-windows/`
+- Portekizce: `https://seowatcher.io/pt/` ve
+  `https://seowatcher.io/pt/guias/instalar-no-windows/`
 
 1. https://search.google.com/test/rich-results → adresi yapıştırın → **URL'yi
    test et**.

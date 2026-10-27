@@ -42,6 +42,12 @@ export const enSlugs = {
   "surum-notlari": "release-notes",
 };
 
+/** Turkish guide slugs; the Analytics screen uses its Turkish path label. */
+export const trSlugs = Object.fromEntries(
+  Object.keys(enSlugs).map((slug) => [slug, slug]),
+);
+trSlugs.analytics = "analitik";
+
 /** Navigation groups of the guide, in reading order, with their titles per language. */
 export const groups = [
   {
@@ -100,7 +106,8 @@ export const locales = {
     ogLocale: "tr_TR",
     kbSub: "",
     base: "",
-    docsBase: "/docs/",
+    docsSlug: "kilavuz",
+    docsBase: "/kilavuz/",
     privacySlug: "gizlilik",
     dateOrder: "dmy",
     months: [
@@ -118,7 +125,8 @@ export const locales = {
       "Aralık",
     ],
     callouts: { Belirti: "belirti", Sebep: "sebep", Çözüm: "cozum" },
-    slugs: null,
+    slugs: trSlugs,
+    legacySlugs: { analytics: ["analytics"] },
     t: {
       guide: "Kılavuz",
       guideTitle: "seowatcher kılavuzu: kurulum, ekranlar ve sorun giderme",
@@ -160,6 +168,7 @@ export const locales = {
     ogLocale: "en_US",
     kbSub: "en",
     base: "/en",
+    docsSlug: "docs",
     docsBase: "/en/docs/",
     privacySlug: "privacy",
     dateOrder: "mdy",
@@ -242,15 +251,30 @@ for (const file of fs.readdirSync(path.join(root, "scripts"))) {
   );
   const lang = m[1];
   const slugs = data.slugs || {};
+  if (!/^[a-z0-9-]+$/.test(data.docsSlug || ""))
+    throw new Error(`${file}: no valid localized guide path`);
   for (const slug of Object.keys(enSlugs))
     if (!slugs[slug]) throw new Error(`${file}: no slug for ${slug}`);
+  for (const [slug, oldSlugs] of Object.entries(data.legacySlugs || {})) {
+    if (!enSlugs[slug] || !Array.isArray(oldSlugs))
+      throw new Error(`${file}: invalid legacy slug list for ${slug}`);
+    for (const oldSlug of oldSlugs)
+      if (!/^[a-z0-9-]+$/.test(oldSlug))
+        throw new Error(`${file}: invalid legacy slug ${oldSlug}`);
+  }
   for (const g of groups)
     if (!data.groups?.[g.key])
       throw new Error(`${file}: no group title for ${g.key}`);
   if (!/^[a-z0-9-]+$/.test(data.privacySlug || ""))
     throw new Error(`${file}: no valid localized privacy slug`);
-  if (new Set(Object.values(slugs)).size !== Object.keys(slugs).length)
+  const canonicalSlugs = new Set(Object.values(slugs));
+  if (canonicalSlugs.size !== Object.keys(slugs).length)
     throw new Error(`${file}: guide slugs must be unique`);
+  for (const oldSlugs of Object.values(data.legacySlugs || {}))
+    if (oldSlugs.some((slug) => canonicalSlugs.has(slug)))
+      throw new Error(
+        `${file}: legacy guide slugs cannot shadow current slugs`,
+      );
   const t = { ...locales.en.t, ...data.t };
   for (const k of ["switchLabel", "switchTo", "switchHref", "switchShort"])
     delete t[k];
@@ -262,8 +286,10 @@ for (const file of fs.readdirSync(path.join(root, "scripts"))) {
     ogLocale: data.ogLocale || `${lang}_${lang.toUpperCase()}`,
     kbSub: lang,
     base: `/${lang}`,
-    docsBase: `/${lang}/docs/`,
+    docsSlug: data.docsSlug,
+    docsBase: `/${lang}/${data.docsSlug}/`,
     privacySlug: data.privacySlug,
+    legacySlugs: data.legacySlugs || {},
     dateOrder: data.dateOrder in dateFormats ? data.dateOrder : "dmy",
     months: data.months,
     callouts: data.callouts || locales.en.callouts,
@@ -310,25 +336,21 @@ export function privacyUrl(locale) {
 }
 
 /**
- * Rewrites the site-internal links of a Turkish page for another edition:
- * "/" and "/#x" become "/<lang>/" and "/<lang>/#x", "/docs/<tr-slug>/"
- * becomes "/<lang>/docs/<slug>/". Asset and external links are left alone.
+ * Rewrites internal links to the localized homepage, guide prefix, guide slug
+ * and privacy page. Asset and external links are left alone.
  */
 export function rewriteLinks(html, locale) {
   const localizedPrivacy = html.replace(
     /href="\/privacy\/(#[^"]*)?"/g,
     (m, hash) => `href="${privacyUrl(locale)}${hash || ""}"`,
   );
-  if (locale.lang === "tr") return localizedPrivacy;
   return localizedPrivacy
-    .replace(/href="\/docs\/([a-z0-9-]+)\/(#[^"]*)?"/g, (m, slug, hash) =>
-      locale.slugs[slug]
-        ? `href="${locale.docsBase}${locale.slugs[slug]}/${hash || ""}"`
-        : m,
-    )
     .replace(
-      /href="\/docs\/(#[^"]*)?"/g,
-      (m, hash) => `href="${locale.docsBase}${hash || ""}"`,
+      /href="\/docs(?:\/([a-z0-9-]+))?\/?(#[^"]*)?"/g,
+      (m, slug, hash) => {
+        const localizedSlug = slug ? (locale.slugs?.[slug] ?? slug) + "/" : "";
+        return `href="${locale.docsBase}${localizedSlug}${hash || ""}"`;
+      },
     )
     .replace(
       /href="\/(#[^"]*)?"/g,

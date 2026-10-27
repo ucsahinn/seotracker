@@ -4,6 +4,12 @@ import { expect, test } from "vitest";
 const packageVersion = JSON.parse(
   readFileSync(new URL("../package.json", import.meta.url), "utf8"),
 ).version as string;
+const registeredToolCount = [
+  ...readFileSync(
+    new URL("../src/server/mcp/server.ts", import.meta.url),
+    "utf8",
+  ).matchAll(/^\s+register\(\w+Tool\);$/gm),
+].length;
 
 const homepages = [
   ["Turkish source", "./site-home.tr.html"],
@@ -45,11 +51,34 @@ test.each(homepages)(
 );
 
 test.each(homepages)(
-  "%s homepage shows the current 201-rule audit count",
+  "%s homepage shows the current 202-rule audit count",
   (_language, path) => {
     const html = readFileSync(new URL(path, import.meta.url), "utf8");
-    expect(html).toMatch(/data-count="201">201<\/b>/);
+    expect(html).toMatch(/data-count="202">202<\/b>/);
     expect(html).not.toMatch(/data-count="95">95<\/b>/);
+  },
+);
+
+test.each([
+  ["Turkish", "../site/index.html", "MCP aracı"],
+  ["English", "../site/en/index.html", "MCP tools"],
+  ["German", "../site/de/index.html", "MCP-Werkzeuge"],
+  ["French", "../site/fr/index.html", "outils MCP"],
+  ["Italian", "../site/it/index.html", "strumenti MCP"],
+  ["Portuguese", "../site/pt/index.html", "ferramentas MCP"],
+] as const)(
+  "%s homepage advertises the current MCP tool count",
+  (_language, path, label) => {
+    const html = readFileSync(new URL(path, import.meta.url), "utf8");
+    const counters = [
+      ...html.matchAll(/<b data-count="(\d+)">(\d+)<\/b>/g),
+    ].map((match) => [match[1], match[2]]);
+    expect(registeredToolCount).toBeGreaterThan(0);
+    expect(counters).toContainEqual([
+      String(registeredToolCount),
+      String(registeredToolCount),
+    ]);
+    expect(html.includes(`${registeredToolCount} ${label}`)).toBe(true);
   },
 );
 
@@ -58,7 +87,7 @@ test("the published quick facts use the current audit rule count", () => {
     new URL("../site/llms.txt", import.meta.url),
     "utf8",
   );
-  expect(llms).toContain("201 audit rules");
+  expect(llms).toContain("202 audit rules");
   expect(llms).not.toContain("95 audit rules");
 });
 
@@ -69,3 +98,16 @@ test.each(homepages)(
     expect(html).not.toMatch(/Hareketi durdur|Pause motion|data-still/i);
   },
 );
+
+test("docs motion follows the system preference without a saved manual override", () => {
+  const docsScript = readFileSync(
+    new URL("../site/assets/docs.js", import.meta.url),
+    "utf8",
+  );
+  const docsShell = readFileSync(
+    new URL("./site-docs-shell.html", import.meta.url),
+    "utf8",
+  );
+  expect(docsScript).not.toMatch(/seowatcher-still|data-still|\bstill\b/i);
+  expect(docsShell).not.toContain("data-still");
+});

@@ -2,6 +2,7 @@
   "lang": "de",
   "name": "Deutsch",
   "ogLocale": "de_DE",
+  "docsSlug": "dokumentation",
   "months": [
     "Januar",
     "Februar",
@@ -29,8 +30,8 @@
     "Başvuru": "Hilfe und Nachschlagen"
   },
   "slugs": {
-    "kurulum-windows": "installation-windows",
-    "kurulum-docker": "installation-docker",
+    "kurulum-windows": "installation-unter-windows",
+    "kurulum-docker": "installation-mit-docker",
     "google-baglantisi": "google-verbindung",
     "pagespeed-anahtari": "pagespeed-schluessel",
     "projeler": "projekte",
@@ -39,7 +40,7 @@
     "siralama-takibi": "ranking-verfolgung",
     "firsatlar": "chancen",
     "kayitli-kelimeler": "gespeicherte-suchbegriffe",
-    "analytics": "analytics",
+    "analytics": "datenanalyse",
     "site-denetimi": "website-audit",
     "dizin-durumu": "indexstatus",
     "raporlar": "berichte",
@@ -50,6 +51,11 @@
     "ajan-kurulumu": "assistent-einrichten",
     "sorun-giderme": "fehlerbehebung",
     "surum-notlari": "versionshinweise"
+  },
+  "legacySlugs": {
+    "kurulum-windows": ["installation-windows"],
+    "kurulum-docker": ["installation-docker"],
+    "analytics": ["analytics"]
   },
   "t": {
     "guide": "Anleitung",

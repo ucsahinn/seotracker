@@ -158,8 +158,6 @@ const ATTRS = new Set([
   "aria-label",
   "title",
   "placeholder",
-  "data-still-on",
-  "data-still-off",
   "data-suffix",
 ]);
 const META_CONTENT = new Set([
@@ -660,7 +658,7 @@ async function refreshTurkishLangBlocks() {
   if (next !== src) fs.writeFileSync(srcFile, next);
   fs.writeFileSync(
     path.join(root, "site/index.html"),
-    compactSiteHtml(withGa4Meta(homeSource())),
+    compactSiteHtml(withGa4Meta(rewriteLinks(homeSource(), locales.tr))),
   );
   console.log("site/index.html language menu refreshed");
 }

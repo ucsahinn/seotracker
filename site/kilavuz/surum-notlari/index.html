@@ -9,7 +9,7 @@
     <title>Sürüm notları | seowatcher kılavuzu</title>
     <meta
       name="description"
-      content="seowatcher 0.8.0 Alpha — 202 kurallı yeni site denetimi, dürüst sonuçlar, trafiğe göre yapılacaklar ve altı dilde arayüz."
+      content="seowatcher 0.8.1 Alpha — daha doğru ölçümler, daha okunaklı ekranlar ve yenilenen proje, kayıt ve rapor görünümleri."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/kilavuz/surum-notlari/" />
@@ -83,7 +83,7 @@
     <meta property="og:title" content="Sürüm notları | seowatcher kılavuzu" />
     <meta
       property="og:description"
-      content="seowatcher 0.8.0 Alpha — 202 kurallı yeni site denetimi, dürüst sonuçlar, trafiğe göre yapılacaklar ve altı dilde arayüz."
+      content="seowatcher 0.8.1 Alpha — daha doğru ölçümler, daha okunaklı ekranlar ve yenilenen proje, kayıt ve rapor görünümleri."
     />
     <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
     <meta property="og:image:type" content="image/png" />
@@ -93,7 +93,7 @@
       property="og:image:alt"
       content="seowatcher tanıtım kartı: Search Console, Analytics 4 ve site denetimi verilerini gösteren uygulama paneli ve Windows için indirme düğmesi"
     />
-    <meta property="article:modified_time" content="2026-10-26" />
+    <meta property="article:modified_time" content="2026-10-27" />
     <meta
       property="og:url"
       content="https://seowatcher.io/kilavuz/surum-notlari/"
@@ -108,7 +108,7 @@
     <meta name="twitter:title" content="Sürüm notları | seowatcher kılavuzu" />
     <meta
       name="twitter:description"
-      content="seowatcher 0.8.0 Alpha — 202 kurallı yeni site denetimi, dürüst sonuçlar, trafiğe göre yapılacaklar ve altı dilde arayüz."
+      content="seowatcher 0.8.1 Alpha — daha doğru ölçümler, daha okunaklı ekranlar ve yenilenen proje, kayıt ve rapor görünümleri."
     />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta
@@ -146,10 +146,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/kilavuz/surum-notlari/#article",
             "headline": "Sürüm notları",
-            "description": "seowatcher 0.8.0 Alpha — 202 kurallı yeni site denetimi, dürüst sonuçlar, trafiğe göre yapılacaklar ve altı dilde arayüz.",
+            "description": "seowatcher 0.8.1 Alpha — daha doğru ölçümler, daha okunaklı ekranlar ve yenilenen proje, kayıt ve rapor görünümleri.",
             "url": "https://seowatcher.io/kilavuz/surum-notlari/",
             "inLanguage": "tr",
-            "dateModified": "2026-10-26",
+            "dateModified": "2026-10-27",
             "articleSection": "Yardım ve başvuru",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -184,7 +184,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.0" defer></script>
+    <script src="/assets/docs.js?v=0.8.1" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1489,11 +1489,11 @@
       <article id="icerik" data-page="surum-notlari">
         <h1>Sürüm notları</h1>
         <p class="lede">
-          seowatcher 0.8.0 Alpha — 202 kurallı yeni site denetimi, dürüst
-          sonuçlar, trafiğe göre yapılacaklar ve altı dilde arayüz.
+          seowatcher 0.8.1 Alpha — daha doğru ölçümler, daha okunaklı ekranlar
+          ve yenilenen proje, kayıt ve rapor görünümleri.
         </p>
         <p>
-          Son sürüm <strong>0.8.0 Alpha</strong>, 26 Ekim 2026. Güncellerken
+          Son sürüm <strong>0.8.1 Alpha</strong>, 27 Ekim 2026. Güncellerken
           veriniz korunur.
         </p>
         <p>
@@ -1501,328 +1501,430 @@
           dosyasını elle çalıştırın; eski otomatik güncelleyici küçük numarayı
           yeni sürüm olarak tanımaz.
         </p>
-        <h2 id="0-8-0-alpha-2026-10-26">0.8.0 Alpha — 2026-10-26</h2>
+        <h2 id="0-8-1-alpha-2026-10-27">0.8.1 Alpha — 2026-10-27</h2>
+        <p>
+          Bu giriş 0.5.0'dan 0.8.1'e kadar gelen yenilikleri ve düzeltmeleri
+          toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha
+          doğru veriler ve daha okunaklı ekranlar.
+        </p>
+        <h3 id="one-cikanlar">✨ Öne çıkanlar</h3>
         <ul>
           <li>
-            <strong>Site denetimi yeniden yazıldı:</strong> 202 kural sayfalara
-            ve sitenin bütününe bakar; güvenlik başlıkları, e-posta ve alan adı
-            kayıtları, SSL ve alan adı süreleri, yapay zekâ botlarının erişimi
-            ve Lighthouse bulguları da içindedir.
+            <strong>Yeni site denetimi:</strong> 202 kuralla sitenizi sayfa
+            sayfa ve bütün olarak inceler.
           </li>
           <li>
-            <strong>Dürüst sonuç:</strong> Ölçülemeyen bir kontrol artık
-            &quot;geçti&quot; sayılmaz ve ölçemeyen bir yoklama bulgu üretmez.
-            Veri yoksa ekran bunu açıkça söyler.
+            <strong>Dürüst sonuçlar:</strong> Ölçemediği bir şeyi
+            &quot;geçti&quot; saymaz; veri yoksa bunu açıkça söyler.
           </li>
           <li>
-            <strong>Yapılacaklar sırası:</strong> Düzeltmeler Search Console
-            trafiğinize göre sıralanır; puan kategorilere göre
-            ağırlıklandırılır.
+            <strong>Sıralı yapılacaklar:</strong> Google'dan en çok ziyaretçi
+            getiren sayfaların sorunları öne çıkar.
           </li>
           <li>
-            <strong>Yeni ekran ve rapor:</strong> Kontroller ve Anlık veri
-            sekmeleri, arama ve paylaşım önizlemeleri, puan geçmişi ve baştan
-            tasarlanan indirilebilir rapor.
+            <strong>Altı dil:</strong> Uygulamayı Türkçe, İngilizce, Almanca,
+            Fransızca, İtalyanca ve Portekizce kullanabilirsiniz.
           </li>
           <li>
-            <strong>Altı dilde arayüz:</strong> Almanca, Fransızca, İtalyanca ve
-            Portekizce (Brezilya) eklendi; tüm uygulama Türkçe ve İngilizceyle
-            birlikte altı dilde.
+            <strong>Haberler:</strong> Duyurular ve bildirimlerle yeni sürümleri
+            ve önemli gelişmeleri kaçırmazsınız.
           </li>
         </ul>
-        <h3 id="site-denetimi">Site denetimi</h3>
+        <h3 id="site-denetimi">🔎 Site denetimi</h3>
         <ul>
           <li>
-            <strong>Site düzeyi kontroller:</strong> Güvenlik başlıkları (HSTS
-            gibi), yönlendirmeler, var olmayan adrese verilen yanıt, robots.txt,
-            SPF ve DMARC kayıtları, SSL sertifikasının ve alan adının bitiş
-            tarihi denetimin başında bir kez yoklanır; her biri tek bir bulgu
-            üretir.
+            <strong>Güvenlik kontrolleri:</strong> Sitenizin güvenlik ayarları
+            ile SSL sertifikasının ve alan adının bitiş tarihi kontrol edilir.
           </li>
           <li>
-            <strong>Yapay zekâ botları:</strong> robots.txt dosyanızın GPTBot,
-            ClaudeBot ve PerplexityBot gibi yapay zekâ tarayıcılarını engelleyip
-            engellemediği ve llms.txt dosyanızın olup olmadığı kontrol edilir.
+            <strong>E-posta kayıtları:</strong> E-postalarınızın başkaları
+            tarafından sizin adınıza gönderilmesini engelleyen kayıtlar
+            denetlenir.
           </li>
           <li>
-            <strong>Lighthouse bulguları:</strong> Hız ölçümü açıkken
-            Lighthouse'un denetimleri sorun olarak listelenir; her birinin
-            tahmini kazancı yazılır.
+            <strong>Yapay zekâ botları:</strong> Sitenizin ChatGPT ve Claude
+            gibi yapay zekâ botlarına açık olup olmadığını görürsünüz.
           </li>
           <li>
-            <strong>Dış bağlantılar ve görseller:</strong> İsteğe bağlı olarak
-            dış bağlantıların açılıp açılmadığına ve görsellerin gereğinden
-            büyük olup olmadığına bakılır.
+            <strong>Hız bulguları:</strong> Hız ölçümü açıksa sitenizi
+            yavaşlatan sorunlar, tahmini kazançlarıyla listelenir.
           </li>
           <li>
-            <strong>Daha fazla kural:</strong> Sayfa sinyalleri ve 20'den fazla
-            yeni bulguyla toplam 202 kural. Her kuralın ne demek olduğu ve nasıl
-            düzeltileceği Denetim kuralları kılavuzunda anlatılır.
+            <strong>Önizlemeler:</strong> Sayfanızın Google'da, paylaşımlarda ve
+            telefonda nasıl görüneceğini önceden görürsünüz.
           </li>
           <li>
-            <strong>Yapılacaklar:</strong> Düzeltilecek işler Search Console
-            trafiğine göre sıralanır. Search Console bağlı değilse yalnızca
-            puana etkisine göre sıralanır.
-          </li>
-          <li>
-            <strong>Kontroller ve Anlık veri:</strong> Kontroller sekmesi geçen
-            ve ölçülemeyen kontrolleri de listeler. Anlık veri sekmesi denetim
-            sırasında ölçülen site bilgilerini ve varsa Temel Web Verilerini
-            gösterir.
-          </li>
-          <li>
-            <strong>Önizlemeler:</strong> Google arama sonucu, paylaşım kartı
-            (Open Graph) ve mobil görünüm önizlemesi.
-          </li>
-          <li>
-            <strong>Geçmiş ve rapor:</strong> Puan geçmişi, denetimler
-            arasındaki değişimi gösterir. İndirilebilir rapor baştan tasarlandı.
+            <strong>Puan geçmişi:</strong> Denetimler arasında nelerin
+            düzeldiğini izler, yenilenen raporu indirirsiniz.
           </li>
         </ul>
-        <h3 id="diger-yenilikler">Diğer yenilikler</h3>
+        <h3 id="pano-ve-raporlar">📊 Pano ve raporlar</h3>
         <ul>
           <li>
-            <strong>Arayüz dili:</strong> Ayarlar → Görünüm → Dil bölümünden
-            altı dilden birini seçebilirsiniz; sayı ve tarihler de seçtiğiniz
-            dile uyar.
+            <strong>Sıradaki adımlar:</strong> Panoda kurulumu tamamlamanız için
+            kısa bir görev listesi ve hazırlık puanı bulunur. Bu puan SEO
+            başarısı değildir.
           </li>
           <li>
-            <strong>Kurulum yönergeleri:</strong> Windows paketi ile Docker
-            arasındaki farklar, yani ayarların nerede durduğu ve hangilerinin
-            geçerli olduğu, kılavuzda ve Yardım'da açık anlatılır.
+            <strong>Hazır raporlar:</strong> Yapay zekâ asistanınız denetim,
+            arama ve Analytics verilerinizden iyileştirme raporu hazırlar.
           </li>
           <li>
-            <strong>Ajan araçları:</strong> Yeni
-            <code>get_audit_summary</code> aracı site puanını, kategori
-            puanlarını, sıralı yapılacaklar listesini ve sitenin anlık verisini
-            tek çağrıda verir.
+            <strong>Denetim ilerlemesi:</strong> Denetim sürerken geçen süreyi
+            ve ilerlemeyi, bitince kısa bir özeti görürsünüz.
           </li>
           <li>
-            <strong>Kılavuz:</strong> Denetim kuralları sayfası 202 kuralı tek
-            tek anlatır; kılavuz ve sürüm notları altı dilde sunulur.
+            <strong>Rapor türleri:</strong> Arama raporları ile site denetimi
+            raporları ayrı gösterilir; türü bilinmeyen eski raporlar açıkça
+            belirtilir.
           </li>
           <li>
-            <strong>seowatcher.io · gizlilik:</strong> Sitede Google Analytics 4
-            yalnızca ölçüm kimliği tanımlıysa ve Kabul et derseniz çalışır;
-            kabul etmeden Google'a hiçbir veri gitmez. Gizlilik sayfası altı
-            dilde sunulur.
+            <strong>Rapor tarihleri:</strong> Arama raporu seçtiğiniz tarihleri
+            korur; eksik verileri ve sonradan değişebilecek ölçümleri açıklar.
+          </li>
+          <li>
+            <strong>Denetim kaynakları:</strong> Denetim raporu hangi trafik ve
+            hız verilerinin gerçekten kullanıldığını söyler.
           </li>
         </ul>
-        <h3 id="duzeltmeler">Düzeltmeler</h3>
+        <h3 id="bildirimler-ve-duyurular">🔔 Bildirimler ve duyurular</h3>
         <ul>
           <li>
-            <strong>Denetim doğruluğu:</strong> Gerçek siteler üzerinde yapılan
-            ölçümlerle karşılaştırma turunda bulunan dokuz hata nedeni
-            düzeltildi.
+            <strong>Bildirim merkezi:</strong> Denetim sonuçları, yeni sürümler
+            ve Google bağlantı sorunları tek yerde toplanır.
           </li>
           <li>
-            <strong>Denetim · telefon:</strong> Denetim ekranı ve indirilen
-            rapor telefonda taşmaz.
+            <strong>Ses ve masaüstü:</strong> Bildirim sesini ve masaüstü
+            bildirimlerini ayrı ayrı açıp kapatabilirsiniz.
+          </li>
+          <li>
+            <strong>Windows bildirimleri:</strong> Güncellemeler ve duyurular
+            Windows'un bildirim alanında da görünür.
+          </li>
+          <li>
+            <strong>Duyurular:</strong> Yeni haberler uygulamadaki Duyurular
+            ekranında yayımlanır.
           </li>
         </ul>
-        <h2 id="0-7-1-alpha-2026-10-26">0.7.1 Alpha — 2026-10-26</h2>
+        <h3 id="windows">🪟 Windows</h3>
         <ul>
           <li>
-            <strong>Duyurular:</strong> Canlı duyurular uygulamanın Duyurular
-            ekranında görünür. Türkçe ve İngilizce hazırlanır; diğer arayüz
-            dillerinde İngilizce sürüm gösterilir. Metinleri parola korumalı
-            yönetim ekranından hazırlayıp yayımlayabilirsiniz.
+            <strong>Ayarlar:</strong> Windows ile birlikte açılmayı ve otomatik
+            güncellemeyi Ayarlar'dan değiştirirsiniz.
           </li>
           <li>
-            <strong>Pano:</strong> Panodaki Sıradaki adımlar bölümü Google
-            bağlantıları, güncel denetim, proje bilgisi ve ajan kurulumuna göre
-            hazırlık puanı ile yönlendirici görevler sunar. Puan SEO başarısı
-            veya arama sırası değildir.
+            <strong>Açılış ilerlemesi:</strong> Uygulama hazırlanırken ve
+            güncelleme inerken bir pencere yüzdeyi gösterir.
           </li>
           <li>
-            <strong>Ajan raporları:</strong> Raporlar; denetim ve PageSpeed,
-            Search Console, fırsatlar, sıralama geçmişi, kayıtlı kelimeler,
-            Analytics, dizin ve site haritası verilerini kapsayan bir kontrol
-            listesiyle iyileştirme adımları hazırlar.
+            <strong>Net yönergeler:</strong> Windows paketi ile Docker
+            arasındaki farklar kılavuzda ve Yardım'da anlatılır.
+          </li>
+        </ul>
+        <h3 id="diller">🌍 Diller</h3>
+        <ul>
+          <li>
+            <strong>Dil seçimi:</strong> Ayarlar → Görünüm → Dil bölümünden
+            dilinizi seçersiniz; sayı ve tarihler de ona uyar.
           </li>
           <li>
-            <strong>Bildirimler:</strong> Bildirim merkezi denetim sonuçlarını,
-            yeni sürümleri, Google bağlantı sorunlarını ve rapor bildirimlerini
-            bir arada tutar. Bildirim sesi ve masaüstü bildirimleri ayrı ayrı
-            açılıp kapatılabilir.
+            <strong>Kılavuz:</strong> Kullanım kılavuzu, denetim kuralları ve
+            sürüm notları altı dilde okunur.
           </li>
           <li>
-            <strong>Windows bildirimleri:</strong> Uygulama güncellemeleri ve
-            canlı duyurular, izin verildiğinde Windows bildirim merkezinde
-            gösterilir. Ayarlar → Bildirimler bölümünden açılıp kapatılır.
+            <strong>Gizlilik:</strong> seowatcher.io'da ölçüm yalnızca siz kabul
+            ederseniz çalışır.
           </li>
           <li>
-            <strong>Açılış:</strong> Sunucu hazırlığı ve güncelleme indirme
-            yüzdesi görünür ilerleme penceresinde gösterilir.
+            <strong>Gözden geçirilen çeviriler:</strong> Ekran metinleri ve
+            kılavuzlar altı dilde yeni ekranlara uyarlandı.
+          </li>
+        </ul>
+        <h3 id="gorunum-ve-yardim">🎨 Görünüm ve yardım</h3>
+        <ul>
+          <li>
+            <strong>Açık tema:</strong> Daha koyu zemin, daha açık kartlar ve
+            daha belirgin turuncu vurgular okumayı kolaylaştırır.
           </li>
           <li>
-            <strong>Windows ayarları:</strong> Windows'ta başlangıçta çalışma ve
-            otomatik güncelleme kurulumu Ayarlar → Windows bölümünden açılıp
-            kapatılabilir. Yönetici tarafından sınırlandırılan seçeneklerin
-            nedeni ekranda açıklanır.
+            <strong>Kartlar ve sayılar:</strong> Özet kartları sadeleştirildi;
+            değişen sayılar hareketi azaltma tercihinize uyar.
           </li>
           <li>
-            <strong>Denetim:</strong> Denetim sırasında geçen süreyi, ilerlemeyi
-            ve bitiş özetini görebilirsiniz. Rapor hazırlanırken ve güncelleme
-            kontrol edilirken işlemin durumu gösterilir.
+            <strong>Yardım ve notlar:</strong> Yardım ve sürüm notları
+            ekranlarında aradığınız bilgiyi bulmak kolaylaştı.
+          </li>
+        </ul>
+        <h3 id="projeler-ve-kayitlar">🗂️ Projeler ve kayıtlar</h3>
+        <ul>
+          <li>
+            <strong>Kayıtlı aramalar:</strong> Sıralamalar kayıtlı listeniz
+            üzerinden hesaplanır; yazım farkları ölçümleri ezmez, bilinmeyen
+            sıra açıkça belirtilir.
           </li>
           <li>
-            <strong>Yeni proje:</strong> Telefonda yeni proje oluştururken ülke
-            listesi artık pencerenin altında kesilmez. Escape tuşu önce ülke
-            listesini kapatır; yazdığınız form açık kalır.
+            <strong>Proje özeti:</strong> Eksik arşiv günleri trafik kaybı
+            sayılmaz; denetim özeti yalnızca projenizin sitesini gösterir.
           </li>
           <li>
-            <strong>Yardım · Tanılama:</strong> Başarısız denetim kaydı durduğu
-            aşamayı, ayıklanmış hata ayrıntısını ve en sık PageSpeed ölçüm
-            hatalarını gösterir. Sayfa URL'leri dışa aktarılan özetlerden
-            çıkarılır.
+            <strong>Proje bilgisi:</strong> Çakışan düzenlemelerde taslağınızı
+            koruyup güncel metinle karşılaştırabilirsiniz.
+          </li>
+        </ul>
+        <h3 id="duzeltmeler">🛠️ Düzeltmeler</h3>
+        <ul>
+          <li>
+            <strong>Daha doğru denetim:</strong> Gerçek sitelerde bulunan
+            hatalar giderildi; sonuçlar daha güvenilir.
           </li>
           <li>
-            <strong>Güvenlik güncellemeleri:</strong> Uygulamanın kullandığı
-            bileşenlerdeki güvenlik düzeltmeleri eklendi.
+            <strong>Telefonda düzgün:</strong> Denetim ekranı ve indirilen rapor
+            telefonda artık taşmaz.
+          </li>
+          <li>
+            <strong>Yeni proje:</strong> Telefonda ülke listesi kesilmez; Esc
+            tuşu listeyi kapatır, yazdıklarınız silinmez.
+          </li>
+          <li>
+            <strong>Sorun bildirme:</strong> Yardım'daki tanılama paketi sorunu
+            daha iyi anlatır ve sayfa adreslerinizi içermez.
+          </li>
+          <li>
+            <strong>Arama performansı:</strong> Öncelikli işler, seçilen
+            tarihler ve kazanç tahminlerinin sınırları daha açık gösterilir.
+          </li>
+          <li>
+            <strong>Daha doğru sayılar:</strong> Panel, Fırsatlar, Sıralamalar
+            ve Analytics eksik ölçümü sıfır saymaz; karşılaştırmalar veri
+            kapsamını belirtir.
+          </li>
+          <li>
+            <strong>Bağlantı durumu:</strong> Ayarlar'da mülk seçmek ile veri
+            erişiminin doğrulanması ayrı gösterilir; hesap değişince eski
+            sonuçlar güncel sayılmaz.
+          </li>
+        </ul>
+        <h3 id="guvenlik">🔒 Güvenlik</h3>
+        <ul>
+          <li>
+            <strong>Güncel bileşenler:</strong> Uygulamanın kullandığı
+            bileşenlerdeki güvenlik açıkları kapatıldı.
+          </li>
+          <li>
+            <strong>Gizli anahtarlar:</strong> Google bağlantı dosyanızı içeriği
+            ekranda görünmeden kaydedebilirsiniz.
+          </li>
+          <li>
+            <strong>Asistan kurulumu:</strong> Kurulum yönergeleri erişim
+            anahtarınızı ekrana veya sohbete yazdırmanızı istemez.
           </li>
         </ul>
         <h2 id="0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</h2>
+        <p>
+          Windows'a tek tıkla kurulum geldi; seowatcher.io sitesi ve kullanım
+          kılavuzu da yayında.
+        </p>
+        <h3 id="one-cikanlar">✨ Öne çıkanlar</h3>
         <ul>
           <li>
-            <strong>Windows kurulumu:</strong> Windows'a Docker veya terminal
-            kullanmadan tek kurulum dosyasıyla kurabilirsiniz. Dosya eksik
-            bileşenleri beraberinde getirir; uygulama temiz bir bilgisayarda da
-            ilk seferde açılır, gerekli anahtarları üretir, veritabanını
-            hazırlar ve tarayıcıyı açar. Görev çubuğu simgesinden yönetilir;
-            kaldırma verinizi silmez.
+            <strong>Tek tıkla kurulum:</strong> Docker veya terminal olmadan
+            Windows'a tek dosyayla kurarsınız.
           </li>
           <li>
-            <strong>Windows güncellemesi:</strong> Görev çubuğundaki Güncelle
-            seçeneği her zaman durur. Yeni sürümü indirir, doğrular ve kurar;
-            kontrol, indirme yüzdesi ve kurulum aşamasını gösterir. İsterseniz
-            güncellemeleri otomatik kurabilirsiniz.
+            <strong>Kendiliğinden güncelleme:</strong> Uygulama yeni sürümü
+            indirir, doğrular ve kurar.
           </li>
           <li>
-            <strong>Windows · Kendini toparlar:</strong> Sunucu beklenmedik
-            biçimde kapanırsa uygulama kendini yeniden başlatır. Günlük
-            dosyaları büyümez.
+            <strong>Site ve kılavuz:</strong> seowatcher.io ve kullanım kılavuzu
+            altı dilde yayında.
+          </li>
+        </ul>
+        <h3 id="windows">🪟 Windows</h3>
+        <ul>
+          <li>
+            <strong>Kolay kurulum:</strong> Dosyayı çalıştırın; gerekli her şeyi
+            hazırlar ve tarayıcıyı açar. Kaldırırsanız verileriniz silinmez.
           </li>
           <li>
-            <strong>Yardım · Tanılama:</strong> Kurulumu onar seçeneği açılış
-            sorunlarını gidermeye yardımcı olur. Sorunu bildir hazır bir kayıt
-            açar; kullanıcı adı, site adları ve e-postalar tanı raporunda
-            maskelenir.
+            <strong>Görev çubuğu:</strong> Uygulamayı görev çubuğundaki
+            simgesinden yönetirsiniz.
           </li>
           <li>
-            <strong>İlk kurulum:</strong> Ajan kurulumunda Sıfırdan kurulum en
-            üsttedir; Claude Code, Codex ve diğer asistanlar için tek kart ve
-            tek kopyalama düğmesi vardır. Ayarlar'da Google bağlantısı üç adımda
+            <strong>Güncelleme:</strong> Güncelle seçeneği ilerlemeyi gösterir;
+            isterseniz güncellemeler kendiliğinden kurulur.
+          </li>
+          <li>
+            <strong>Kendini toparlar:</strong> Beklenmedik bir kapanmada
+            uygulama yeniden başlar, günlük dosyaları şişmez.
+          </li>
+          <li>
+            <strong>Onar ve bildir:</strong> Yardım'daki Kurulumu onar açılış
+            sorunlarını giderir; Sorunu bildir, kişisel bilgilerinizi gizleyerek
+            hazır bir kayıt açar.
+          </li>
+        </ul>
+        <h3 id="ilk-kurulum">🧭 İlk kurulum</h3>
+        <ul>
+          <li>
+            <strong>Sıfırdan başlayın:</strong> Asistan kurulumunda Sıfırdan
+            kurulum en üsttedir; tek kopyalama düğmesi yeter.
+          </li>
+          <li>
+            <strong>Google bağlantısı:</strong> Ayarlar'da üç kısa adımda
             anlatılır.
           </li>
           <li>
-            <strong>Geri bildirim:</strong> Kaydetme, silme ve bağlantı
-            işlemleri beklerken, bitince ve hata olunca ne olduğunu söyler.
-            Silme ve bağlantıyı kesme önce onay ister.
+            <strong>Net geri bildirim:</strong> Kaydetme, silme ve bağlantı
+            işlemleri ne olduğunu söyler; silmeden önce sorar.
+          </li>
+        </ul>
+        <h3 id="site-ve-kilavuz">🌐 Site ve kılavuz</h3>
+        <ul>
+          <li>
+            <strong>seowatcher.io:</strong> Uygulamanın tanıtım sitesi altı
+            dilde yayında.
           </li>
           <li>
-            <strong>Uygulama görünümü:</strong> Menü, ayarlar ve ilk kurulum
-            ekranları sadeleştirildi; iki yüzden fazla ekran metni doğal
-            Türkçeyle yeniden yazıldı. Koyu tema varsayılandır; açık ve koyu
-            tema siteyle tutarlıdır.
+            <strong>Kullanım kılavuzu:</strong> 20 sayfalık kılavuz altı dilde
+            okunur.
           </li>
           <li>
-            <strong>Kullanım kılavuzu ve site:</strong> seowatcher.io ve 20
-            sayfalık kullanım kılavuzu altı dilde sunulur. Sorun giderme
-            sayfaları Belirti, Sebep ve Çözüm kutularıyla yazılmıştır.
+            <strong>Sorun giderme:</strong> Sayfalar Belirti, Sebep ve Çözüm
+            kutularıyla yazıldı.
           </li>
+        </ul>
+        <h3 id="gorunum">🎨 Görünüm</h3>
+        <ul>
+          <li>
+            <strong>Sade ekranlar:</strong> Menü, ayarlar ve ilk kurulum
+            ekranları sadeleştirildi.
+          </li>
+          <li>
+            <strong>Doğal Türkçe:</strong> İki yüzden fazla ekran metni yeniden
+            yazıldı.
+          </li>
+          <li>
+            <strong>Koyu tema:</strong> Koyu tema varsayılandır; açık ve koyu
+            tema siteyle uyumludur.
+          </li>
+        </ul>
+        <h3 id="duzeltmeler">🛠️ Düzeltmeler</h3>
+        <ul>
           <li>
             <strong>Google bağlantısı:</strong> Yalnızca hizmet hesabıyla bağlı
-            kurulumda gösterilen yanlış &quot;Google erişim anahtarı eksik&quot;
-            uyarısı düzeltildi. Google'dan gelen hatalar artık Google
-            bağlantısını gösterir.
+            kurulumda çıkan yanlış &quot;erişim anahtarı eksik&quot; uyarısı
+            kalktı.
           </li>
           <li>
             <strong>Analytics:</strong> Cihaz, kanal ve ülke adları Türkçe
-            görünür; gelir tutarlarında para birimi gösterilir; değişim
-            yüzdeleri her ekranda aynı biçimdedir.
+            görünür; gelirde para birimi yazar; değişim yüzdeleri her yerde
+            aynıdır.
           </li>
           <li>
-            <strong>Denetim · Fırsatlar:</strong> Telefonda site denetimi ve
-            Fırsatlar ekranlarındaki yatay taşma giderildi.
+            <strong>Telefonda taşma:</strong> Site denetimi ve Fırsatlar
+            ekranları telefonda taşmaz.
           </li>
         </ul>
         <h2 id="0-2-1-alpha-2026-10-04">0.2.1 Alpha — 2026-10-04</h2>
+        <p>
+          seowatcher'ın ilk sürümü: Google verilerinizi, site denetiminizi ve
+          hız ölçümünüzü kendi bilgisayarınızda tek uygulamada toplar.
+        </p>
+        <h3 id="one-cikanlar">✨ Öne çıkanlar</h3>
         <ul>
           <li>
-            <strong>Tek uygulamada veri:</strong> Search Console, Analytics,
-            site denetimi ve PageSpeed verileri kendi bilgisayarınızda tek
-            uygulamada toplanır. Site sorunlarını, etkilenen sayfaları, hız
-            sonuçlarını ve denetim geçmişini inceleyebilirsiniz.
+            <strong>Tek yerde veri:</strong> Search Console, Analytics, site
+            denetimi ve hız ölçümü tek uygulamada buluşur.
           </li>
           <li>
-            <strong>İzleme ve raporlar:</strong> Arama performansını ve kayıtlı
-            kelimelerin sıralamasını izler, iyileştirme fırsatlarını görürsünüz.
-            Denetim raporlarını indirebilir, yazdırabilir ve ajanlarınızın
-            raporlarıyla aynı listede saklayabilirsiniz. Açık ve koyu tema,
-            klavye kullanımı ve ekran okuyucu desteği vardır.
+            <strong>Site denetimi:</strong> Sitenizdeki sorunları, etkilenen
+            sayfaları ve denetim geçmişini görürsünüz.
           </li>
           <li>
-            <strong>Ajan kurulumu:</strong> Depoyu yeni indirdiyseniz Ajan
-            kurulumu ekranındaki kurulum istemini ajanınıza yapıştırın;
-            Docker'ı, Google bağlantısını, PageSpeed anahtarını, projeyi ve ajan
-            bağlantısını sırayla kontrol eder. Gizli bilgileri sohbete
-            yapıştırmanızı istemez. Aynı istem Yardım ekranındaki hızlı
-            eylemlerde de bulunur.
+            <strong>Raporlar:</strong> Denetim raporunu indirir ve
+            yazdırırsınız.
+          </li>
+        </ul>
+        <h3 id="arama-performansi">📈 Arama performansı</h3>
+        <ul>
+          <li>
+            <strong>Arama izleme:</strong> Google'daki performansınızı ve
+            kayıtlı kelimelerinizin sıralamasını izlersiniz.
           </li>
           <li>
-            <strong>Codex desteği:</strong> Ajan kurulumu ekranında Codex için
-            ayrı bir yönerge vardır; tek komutla bağlanır, SEO becerilerini
-            kurar ve gerçek bir çağrıyla doğrular.
+            <strong>Fırsatlar:</strong> Sıralamanızı yükseltebilecek iyileştirme
+            fırsatları listelenir.
           </li>
           <li>
-            <strong>Google ve sistem sınırları:</strong> Günlük URL denetimi
-            hakkınız, Analytics kotanız, bugünkü hız ölçümü sayınız ve rapor
-            sınırlarınız ilgili ekranlarda görünür. Yalnızca gerçekten bilinen
-            sayılar gösterilir; her sayının kaynağı ve zamanı yazar.
+            <strong>Açık sınırlar:</strong> Günlük Google hakkınız ve kalan hız
+            ölçümü sayınız ekranda görünür.
+          </li>
+        </ul>
+        <h3 id="yapay-zeka-asistani">🤖 Yapay zekâ asistanı</h3>
+        <ul>
+          <li>
+            <strong>Kolay kurulum:</strong> Kurulum istemini yapay zekâ
+            asistanınıza yapıştırırsınız; gerisini o kontrol eder.
           </li>
           <li>
-            <strong>Canlı görünüm:</strong> Denetim ilerlemesi taramayı ve hız
-            ölçümünü ayrı çubuklarla, kalan süre tahminiyle gösterir. Hareketi
-            azaltma ayarı açıksa hiçbir animasyon oynamaz.
+            <strong>Gizli bilgi istemez:</strong> Şifrelerinizi sohbete
+            yapıştırmanızı istemez.
           </li>
           <li>
-            <strong>Denetim:</strong> Yarıda kalan denetimler yeni denetim
-            başlatmayı kalıcı olarak engellemez; tamamlanmış denetimler
-            kapasiteyi doldurmaz. Çalışan bir denetimi okuyan ajan &quot;sorun
-            yok&quot; yerine &quot;denetim sürüyor&quot; görür.
+            <strong>Codex desteği:</strong> Codex için ayrı, tek komutluk bir
+            yönerge vardır.
+          </li>
+        </ul>
+        <h3 id="gorunum-ve-erisim">🎨 Görünüm ve erişim</h3>
+        <ul>
+          <li>
+            <strong>Açık ve koyu tema:</strong> Gözünüze uyan temayı seçersiniz.
           </li>
           <li>
-            <strong>Denetim · hesaplar:</strong> Sayfa derinliği, site haritası
-            kapsamı ve bağlantısız sayfa tespiti daha doğru hesaplanır. Aynı
-            görünen ama farklı adresler (http ve https, www, sondaki eğik çizgi)
-            asıl adres karşılaştırmasında artık farklı sayılır; bu, daha önce
-            gizlenen gerçek uyuşmazlıkları gösterebilir.
+            <strong>Erişilebilirlik:</strong> Klavye ve ekran okuyucuyla rahatça
+            kullanılır.
           </li>
           <li>
-            <strong>Projeler · Google:</strong> Google hesabı veya mülkü
-            değiştirildiğinde eski projeye ait verilerin karışması önlendi.
-            Hesabı kaldırmak yalnızca o hesabın projelerinin verisini siler.
+            <strong>Canlı ilerleme:</strong> Denetim ilerlemesi kalan süre
+            tahminiyle görünür; hareketi azaltma açıksa animasyon oynamaz.
+          </li>
+        </ul>
+        <h3 id="duzeltmeler">🛠️ Düzeltmeler</h3>
+        <ul>
+          <li>
+            <strong>Takılan denetimler:</strong> Yarım kalan bir denetim artık
+            yenisini başlatmanızı engellemez.
           </li>
           <li>
-            <strong>Ayarlar · Google:</strong> Ayarlar'dan girilen Google
-            istemcisi yenilemede de kullanılır; yaklaşık bir saat sonra yeniden
-            bağlantı isteme sorunu giderildi. Ayarlar ekranı hangi Google
-            bağlantısının kullanıldığını açıklar.
+            <strong>Daha doğru sonuçlar:</strong> Sayfa derinliği, site haritası
+            ve bağlantısız sayfalar daha doğru hesaplanır; http, https ve www
+            farkları artık görünür.
           </li>
           <li>
-            <strong>Raporlar:</strong> İndirilen rapor her zaman kendi koruma
-            kuralıyla açılır; kötü niyetli yazılmış bir sayfa korumadan önce
-            çalışamaz.
+            <strong>Google hesabı:</strong> Hesap veya mülk değişince eski
+            projenin verileri karışmaz.
+          </li>
+          <li>
+            <strong>Bağlantı süresi:</strong> Yaklaşık bir saat sonra yeniden
+            bağlanma istenmesi sorunu giderildi.
+          </li>
+        </ul>
+        <h3 id="guvenlik">🔒 Güvenlik</h3>
+        <ul>
+          <li>
+            <strong>Güvenli raporlar:</strong> İndirilen rapor, kötü niyetle
+            hazırlanmış sayfalara karşı korunur.
           </li>
         </ul>
         <h2 id="surum-numaralari">Sürüm numaraları</h2>
         <p>
           seowatcher 1.0'a kadar 0.x Alpha numaralarıyla ilerler. Kullanıcının
           fark ettiği yeni özellik ikinci numarayı (0.7.1 → 0.8.0), yalnızca
-          düzeltme üçüncü numarayı (0.7.0 → 0.7.1) artırır. 0.0.0 ile 0.4.3
-          arasındaki sürümler ilk yayımlandığında v2.x etiketleriyle çıktı;
-          karşılıkları
+          düzeltme üçüncü numarayı (0.8.0 → 0.8.1) artırır. Yeni giriş yalnızca
+          kullanıcıların fark edeceği dönüm noktaları için açılır; küçük
+          düzeltmeler mevcut girişe eklenir ve giriş en yeni numarayı alır.
+          0.0.0 ile 0.4.3 arasındaki sürümler ilk yayımlandığında v2.x
+          etiketleriyle çıktı; karşılıkları
           <a
             href="https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md"
             target="_blank"
@@ -1847,7 +1949,7 @@
           ><span class="pager-next empty"></span>
         </nav>
         <p class="meta">
-          Son güncelleme: 26 Ekim 2026. Bir hata görürseniz
+          Son güncelleme: 27 Ekim 2026. Bir hata görürseniz
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1860,10 +1962,7 @@
         <p class="toc-label">Bu sayfada</p>
         <ol>
           <li>
-            <a href="#0-8-0-alpha-2026-10-26">0.8.0 Alpha — 2026-10-26</a>
-          </li>
-          <li>
-            <a href="#0-7-1-alpha-2026-10-26">0.7.1 Alpha — 2026-10-26</a>
+            <a href="#0-8-1-alpha-2026-10-27">0.8.1 Alpha — 2026-10-27</a>
           </li>
           <li>
             <a href="#0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</a>

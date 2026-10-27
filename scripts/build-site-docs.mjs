@@ -5,9 +5,10 @@
  *
  * Reads every `docs/kb/*.md` (Turkish, the primary language) and every
  * `docs/kb/en/*.md` (its English edition, same file names), renders each one
- * to `site/docs/<slug>/index.html` or `site/en/docs/<english-slug>/index.html`
- * with the site's own look, writes the two guide indexes, the entries of both
- * languages into `site/sitemap.xml` (with hreflang alternates and the home
+ * to each language's localized guide prefix and slug, with the site's own
+ * look. Previous `/docs/` routes remain as noindex refresh aliases. It writes
+ * the guide indexes and all editions into `site/sitemap.xml` (with hreflang
+ * alternates and the home
  * pages' screenshots), `site/llms.txt` and one Atom release feed per edition
  * (`site/feed.xml`, `site/<lang>/feed.xml`). The output is committed and the
  * folder is copied to the server as is (docs/SITE_DEPLOY.md), with no build
@@ -45,7 +46,16 @@ const siteDir = process.env.OUT_DIR || path.join(root, "site");
 const siteUrl = "https://seowatcher.io";
 // Keep this aligned with src/shared/audit-issue-table.ts and the localized
 // audit-rules guides. The guides are checked against that inventory in review.
-const AUDIT_RULE_COUNT = 201;
+const AUDIT_RULE_COUNT = 202;
+const MCP_TOOL_COUNT = [
+  ...fs
+    .readFileSync(path.join(root, "src", "server", "mcp", "server.ts"), "utf8")
+    .matchAll(/^\s+register\(\w+Tool\);$/gm),
+].length;
+if (MCP_TOOL_COUNT === 0)
+  throw new Error(
+    "could not find registered MCP tools in src/server/mcp/server.ts",
+  );
 
 function escapeHtml(s) {
   return s
@@ -263,6 +273,57 @@ const shell = fs.readFileSync(
 );
 
 const absolute = (p) => `${siteUrl}${p}`;
+
+function legacyGuideRedirect(locale, target) {
+  const canonical = absolute(target);
+  return `<!doctype html>
+<html lang="${locale.lang}">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="${canonical}">
+<meta http-equiv="refresh" content="0; url=${target}">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${escapeHtml(locale.t.guide)} | seowatcher</title>
+</head>
+<body><p><a href="${target}">${escapeHtml(locale.t.guide)}</a></p></body>
+</html>
+`;
+}
+
+function writeLegacyGuideAliases(locale, docs) {
+  if (locale.docsSlug === "docs") return;
+  const outDir = path.join(siteDir, locale.kbSub, "docs");
+  fs.rmSync(outDir, { recursive: true, force: true });
+  fs.mkdirSync(outDir, { recursive: true });
+  fs.writeFileSync(
+    path.join(outDir, "index.html"),
+    legacyGuideRedirect(locale, docUrl(locale, "")),
+  );
+  for (const slug of docs.keys()) {
+    const canonicalSlug = locale.slugs?.[slug] ?? slug;
+    const oldSlugs = new Set([
+      canonicalSlug,
+      ...(locale.legacySlugs?.[slug] ?? []),
+    ]);
+    for (const oldSlug of oldSlugs) {
+      const redirect = legacyGuideRedirect(locale, docUrl(locale, slug));
+      const oldPrefixDir = path.join(outDir, oldSlug);
+      fs.mkdirSync(oldPrefixDir, { recursive: true });
+      fs.writeFileSync(path.join(oldPrefixDir, "index.html"), redirect);
+      if (oldSlug !== canonicalSlug) {
+        const oldLocalizedDir = path.join(
+          siteDir,
+          locale.kbSub,
+          locale.docsSlug,
+          oldSlug,
+        );
+        fs.mkdirSync(oldLocalizedDir, { recursive: true });
+        fs.writeFileSync(path.join(oldLocalizedDir, "index.html"), redirect);
+      }
+    }
+  }
+}
 
 // Structured data for a guide page: what it is, where it sits, when it changed.
 // Truthful fields only: the author is the maintainer, dates come from front
@@ -585,7 +646,7 @@ function main() {
   const bySlug = new Map();
   for (const locale of editionsOnDisk) {
     const docs = all[locale.lang];
-    const outDir = path.join(siteDir, locale.kbSub, "docs");
+    const outDir = path.join(siteDir, locale.kbSub, locale.docsSlug);
     fs.rmSync(outDir, { recursive: true, force: true });
     fs.mkdirSync(outDir, { recursive: true });
     for (const [slug, d] of docs) {
@@ -666,6 +727,7 @@ function main() {
       urls.unshift(bySlug.get(""));
     }
     bySlug.get("").lastmod[locale.lang] = indexDate;
+    writeLegacyGuideAliases(locale, docs);
   }
 
   const homeDate =
@@ -787,8 +849,8 @@ function main() {
 > seowatcher (GitHub ve uygulama içi adı: seotracker), Google Search Console, Google Analytics 4, kendi site tarayıcısı ve PageSpeed Insights verisini tek panelde toplayan ücretsiz, açık kaynaklı (MIT) bir SEO uygulamasıdır. Windows 10/11 (64 bit) için tek kurulum dosyası vardır; Mac ve Linux'ta Docker ile çalışır. Tek kullanıcılıdır, yalnızca kullanıcının kendi bilgisayarından erişilir, veri o bilgisayarda saklanır. Google, denetlenen siteler ve GitHub ile bağlantı kurar; isteğe bağlı yapay zekâ bağlantısı seçilen sağlayıcıya veri gönderebilir. Abonelik ve hesap yoktur.
 > English: seowatcher (also named seotracker) is a free, MIT-licensed, self-hosted SEO app that reads Google Search Console, Google Analytics 4, its own crawler and PageSpeed Insights. Windows 10/11 installer; Docker on macOS/Linux. Single user, localhost only, data is stored on your machine. It connects to Google, audited sites and GitHub; optional AI integrations may send data to the selected provider. Derived from open-seo. The app's interface is available in Turkish and English; the website and this guide exist in ${editionsOnDisk.map((l) => l.name).join(", ")}.
 
-Hızlı bilgiler: sürüm ${pkg.version} Alpha, ${AUDIT_RULE_COUNT} denetim kuralı, yapay zekâ asistanları için 33 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 86 MB, kurulu hali 313 MB; Visual C++ çalışma zamanı pakete dahildir.
-Quick facts: version ${pkg.version} Alpha, ${AUDIT_RULE_COUNT} audit rules, 33 MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 86 MB, installed 313 MB; the Visual C++ runtime is bundled.
+Hızlı bilgiler: sürüm ${pkg.version} Alpha, ${AUDIT_RULE_COUNT} denetim kuralı, yapay zekâ asistanları için ${MCP_TOOL_COUNT} MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 86 MB, kurulu hali 313 MB; Visual C++ çalışma zamanı pakete dahildir.
+Quick facts: version ${pkg.version} Alpha, ${AUDIT_RULE_COUNT} audit rules, ${MCP_TOOL_COUNT} MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 86 MB, installed 313 MB; the Visual C++ runtime is bundled.
 
 ## Ana bağlantılar / Main links
 ${homes

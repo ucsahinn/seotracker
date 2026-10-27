@@ -44,6 +44,16 @@ for (const [lang, text] of Object.entries(copy)) {
   const locale = locales[lang];
   const localeDir = lang === "tr" ? "" : lang;
   const dir = path.join(site, localeDir, locale.privacySlug);
+  const socialTitle = escape(`${text.title} | seowatcher`);
+  const socialDescription = escape(text.intro);
+  const socialImage = `https://seowatcher.io/assets/${lang === "tr" ? "og.png" : `og-${lang}.png`}`;
+  const otherLocales = Object.values(locales)
+    .filter((other) => other.lang !== lang)
+    .map(
+      (other) =>
+        `<meta property="og:locale:alternate" content="${other.ogLocale}">`,
+    )
+    .join("\n");
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(
     path.join(dir, "index.html"),
@@ -51,6 +61,12 @@ for (const [lang, text] of Object.entries(copy)) {
 <html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${escape(text.title)} | seowatcher</title><meta name="description" content="${escape(text.intro)}">
 <link rel="canonical" href="${url(lang)}">
+<meta property="og:type" content="website"><meta property="og:site_name" content="seowatcher">
+<meta property="og:title" content="${socialTitle}"><meta property="og:description" content="${socialDescription}">
+<meta property="og:url" content="${url(lang)}"><meta property="og:locale" content="${locale.ogLocale}">
+${otherLocales}
+<meta property="og:image" content="${socialImage}"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${socialTitle}"><meta name="twitter:description" content="${socialDescription}"><meta name="twitter:image" content="${socialImage}">
 ${alternates.map(([code, href]) => `<link rel="alternate" hreflang="${code}" href="${href}">`).join("\n")}
 <link rel="icon" href="/assets/icon.svg" type="image/svg+xml"><link rel="manifest" href="/site.webmanifest" />
 <link rel="alternate" type="application/atom+xml" title="seowatcher" href="${locale.base}/feed.xml">
