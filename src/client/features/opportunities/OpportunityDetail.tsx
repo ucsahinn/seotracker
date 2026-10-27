@@ -7,7 +7,6 @@ import { Modal } from "@/client/components/Modal";
 import { getSafeExternalUrl } from "@/client/components/table/url";
 import {
   explainRow,
-  extraConversions,
   monthlyImpressions,
   pathOf,
   valueText,
@@ -15,8 +14,12 @@ import {
   workColor,
   type OpportunityRow,
 } from "@/client/features/opportunities/opportunityLogic";
-import { perMonth } from "@/shared/pageOpportunities";
-import { formatCount, formatDecimal, formatPercent } from "@/client/lib/format";
+import {
+  formatCount,
+  formatDate,
+  formatDecimal,
+  formatPercent,
+} from "@/client/lib/format";
 
 function Fact({ label, value }: { label: string; value: string }) {
   return (
@@ -38,11 +41,13 @@ function Fact({ label, value }: { label: string; value: string }) {
 export function OpportunityDetail({
   row,
   days,
+  dateRange,
   projectId,
   onClose,
 }: {
   row: OpportunityRow;
   days: number;
+  dateRange?: { startDate: string; endDate: string };
   projectId: string;
   onClose: () => void;
 }) {
@@ -51,7 +56,6 @@ export function OpportunityDetail({
   const work = WORK_COPY[row.work];
   const safeUrl = getSafeExternalUrl(row.page);
   const value = valueText(row);
-  const conversions = extraConversions(row);
 
   // Focus goes into the dialog and comes back to whatever opened it.
   useEffect(() => {
@@ -99,9 +103,17 @@ export function OpportunityDetail({
 
       <div className="rounded-box bg-primary/8 px-4 py-3">
         <p className="text-2xl font-semibold tabular-nums">
-          {t("+{gain} tıklama/ay", { gain: formatCount(row.gainPerMonth) })}
+          {t("En fazla +{gain} tıklama / 30 gün (üst sınır)", {
+            gain: formatCount(row.gainPerMonth),
+          })}
         </p>
         <p className="text-sm">{explainRow(row)}</p>
+        {dateRange ? (
+          <p className="text-xs text-muted">
+            {formatDate(dateRange.startDate)} – {formatDate(dateRange.endDate)}{" "}
+            · America/Los_Angeles
+          </p>
+        ) : null}
         {row.capped ? (
           <p className="mt-1 text-xs text-muted">
             {t(
@@ -109,19 +121,11 @@ export function OpportunityDetail({
             )}
           </p>
         ) : null}
-        {conversions !== null && conversions >= 0.5 ? (
-          <p className="mt-1 text-xs text-muted">
-            {t(
-              "Bugünkü dönüşüm oranıyla bu, ayda yaklaşık +{count} anahtar olay eder (tahmin).",
-              { count: formatDecimal(conversions, conversions < 10 ? 1 : 0) },
-            )}
-          </p>
-        ) : null}
       </div>
 
       <dl className="grid grid-cols-1 gap-2 sm:grid-cols-3">
         <Fact
-          label={t("Talep")}
+          label={t("Ölçülen gösterim (30 güne ölçekli)")}
           value={t("ayda {count} gösterim", {
             count: formatCount(monthlyImpressions(row, days)),
           })}
@@ -130,24 +134,37 @@ export function OpportunityDetail({
           label={t("Değer (Analytics)")}
           value={value ?? t("Analytics'te karşılığı yok")}
         />
-        <Fact
-          label={t("Mesafe")}
-          value={t("{position}. sıra → hedef {target}", {
-            position: formatDecimal(row.position),
-            target: t(work.target),
-          })}
-        />
+        <Fact label={t("Ortalama sıra")} value={formatDecimal(row.position)} />
       </dl>
+      {row.joinPrecision && row.joinPrecision !== "exact" ? (
+        <p className="text-xs text-muted">
+          {t(
+            "Analytics bu adres grubunu birlikte ölçüyor; oturumları farklı URL satırları arasında toplamayın.",
+          )}{" "}
+          {row.normalizedPage}
+        </p>
+      ) : null}
 
+      <p className="text-xs text-muted">
+        {t(
+          "Karşılaştırılabilen marka dışı gösterim: {known}; oranı bilinmeyen: {unknown}.",
+          {
+            known: formatCount(row.comparableImpressions ?? 0),
+            unknown: formatCount(row.missingCurveImpressions ?? 0),
+          },
+        )}
+      </p>
       <section aria-labelledby="opportunity-queries" className="space-y-2">
         <h3 id="opportunity-queries" className="text-sm font-medium">
-          {t("Hangi aramalar?")}
+          {t("Hangi aramalar?")} {formatCount(row.queries.length)} /{" "}
+          {formatCount(row.queryCount ?? row.queries.length)}
         </h3>
         <div className="overflow-x-auto">
           <table className="table table-xs">
             <thead>
               <tr>
                 <th>{t("Arama")}</th>
+                <th className="text-right">{t("Gösterim")}</th>
                 <th className="text-right">{t("Sıra")}</th>
                 <th className="text-right">{t("Tıklama oranı")}</th>
                 <th className="text-right">{t("Kazanç/ay")}</th>
@@ -157,7 +174,10 @@ export function OpportunityDetail({
               {row.queries.map((query) => (
                 <tr key={query.query}>
                   <td className="max-w-56">
-                    <span className="block truncate" title={query.query}>
+                    <span
+                      className="block break-words whitespace-normal"
+                      title={query.query}
+                    >
                       {query.query}
                     </span>
                     <span className="block text-xs text-muted">
@@ -165,7 +185,13 @@ export function OpportunityDetail({
                     </span>
                   </td>
                   <td className="text-right tabular-nums">
+                    {formatCount(query.impressions)}
+                  </td>
+                  <td className="text-right tabular-nums">
                     {formatDecimal(query.position)}
+                    <span className="block text-xs text-muted">
+                      {query.targetBand ?? t(WORK_COPY[query.work].target)}
+                    </span>
                   </td>
                   <td className="text-right tabular-nums">
                     {formatPercent(query.ctr)}
@@ -176,10 +202,18 @@ export function OpportunityDetail({
                     </span>
                   </td>
                   <td className="text-right font-medium tabular-nums">
-                    +{formatCount(perMonth(query.gain, days))}
+                    +{formatCount(query.gainPerMonth ?? 0)}
                   </td>
                 </tr>
               ))}
+              {(row.queryCount ?? 0) > row.queries.length ? (
+                <tr>
+                  <td colSpan={4}>{t("Diğer aramalar (dağıtılmış kalan)")}</td>
+                  <td className="text-right">
+                    +{formatCount(row.otherQueryGainPerMonth ?? 0)}
+                  </td>
+                </tr>
+              ) : null}
             </tbody>
           </table>
         </div>
@@ -206,7 +240,16 @@ export function OpportunityDetail({
         <Link
           to="/p/$projectId/search-performance"
           params={{ projectId }}
-          search={{ tab: "pages" as const, q: row.page }}
+          search={{
+            tab: "pages" as const,
+            q: row.page,
+            range:
+              days === 7
+                ? "last_7_days"
+                : days === 90
+                  ? "last_3_months"
+                  : "last_28_days",
+          }}
           className="btn btn-primary btn-sm gap-1.5"
         >
           <Search className="size-4" />

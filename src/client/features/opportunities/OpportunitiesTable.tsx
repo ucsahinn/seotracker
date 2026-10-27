@@ -15,7 +15,13 @@ import {
 } from "@/client/features/opportunities/opportunityLogic";
 import { buildCsv, downloadCsv, type CsvValue } from "@/client/lib/csv";
 import { exportTableToSheets } from "@/client/lib/exportToSheets";
-import { formatNumber } from "@/client/lib/format";
+import {
+  formatNumber,
+  formatCount,
+  formatDecimal,
+  formatPercent,
+} from "@/client/lib/format";
+import type { OpportunityReport } from "./report";
 
 // Turkish, translated with t() when an export is built.
 const OPPORTUNITY_HEADERS = [
@@ -38,6 +44,8 @@ export function OpportunitiesTable({
   projectId,
   days,
   rows,
+  report,
+  recommendation,
   onReset,
   openPage: controlledPage,
   onOpenPageChange,
@@ -46,6 +54,8 @@ export function OpportunitiesTable({
   /** The window the rows cover, for the monthly figures in the panel. */
   days: number;
   rows: OpportunityRow[];
+  report?: OpportunityReport;
+  recommendation?: OpportunityRow | null;
   /** Clears the filters that emptied the table, when there are any. */
   onReset?: () => void;
   /** Lets the page open a row's dialog from outside (the first tile). Uncontrolled when omitted. */
@@ -68,9 +78,25 @@ export function OpportunitiesTable({
     initialState: { sorting: [{ id: "gainPerMonth", desc: true }] },
   });
 
-  const opened = rows.find((row) => row.page === openPage) ?? null;
+  const opened =
+    rows.find((row) => row.page === openPage) ??
+    (recommendation?.page === openPage ? recommendation : null);
 
-  const headers = OPPORTUNITY_HEADERS.map((header) => t(header));
+  const headers = [
+    ...OPPORTUNITY_HEADERS.map((header) => t(header)),
+    "startDate",
+    "endDate",
+    "observedDays",
+    "gainUnit",
+    "model",
+    "property",
+    "searchType",
+    "brandSource",
+    "sourceLimits",
+    "windowGain",
+    "ga4Cohort",
+    "ga4JoinPrecision",
+  ];
   const csvRows = rows.map((row): CsvValue[] => [
     row.gainPerMonth,
     row.page,
@@ -80,11 +106,58 @@ export function OpportunitiesTable({
     row.clicks,
     row.ctr,
     row.ga4?.sessions ?? null,
+    report?.request.dateRange.startDate ?? null,
+    report?.request.dateRange.endDate ?? null,
+    days,
+    "upper bound, scaled to 30 days; observed metrics cover startDate–endDate",
+    "page-query-one-band-cap-v2",
+    report?.source.searchConsoleSiteUrl ?? null,
+    "web",
+    report?.method.brandSource ?? null,
+    report
+      ? JSON.stringify({
+          filters: report.request.filters,
+          displayLimit: report.request.limit,
+          totalCandidatePages: report.totalCandidateRows,
+          matchingPages: report.filteredCount,
+          truncated: report.truncated,
+          unknownPages: report.totals.unknownPages,
+          warnings: report.warnings,
+          anonymousQueries: "unquantified",
+          completeness: report.request.completeness,
+          ga4TimeZone: report.request.googleAnalyticsTimeZone,
+        })
+      : null,
+    row.gain,
+    row.normalizedPage,
+    row.joinPrecision ?? null,
   ]);
 
   return (
     <div className="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
-      <div className="flex items-center justify-between gap-3 border-b border-base-300 px-3 py-2">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-base-300 px-3 py-2">
+        <label className="text-xs text-muted sm:hidden">
+          {t("Sırala")}
+          <select
+            className="select select-sm min-h-11"
+            value={table.getState().sorting[0]?.id ?? "gainPerMonth"}
+            onChange={(event) =>
+              table.setSorting([
+                {
+                  id: event.target.value,
+                  desc: event.target.value !== "position",
+                },
+              ])
+            }
+          >
+            <option value="gainPerMonth">{t("Ek tıklama tahmini")}</option>
+            <option value="position">{t("Sıra")}</option>
+            <option value="impressions">{t("Gösterim")}</option>
+            <option value="clicks">{t("Tıklama")}</option>
+            <option value="ctr">{t("Tıklama oranı")}</option>
+            <option value="sessions">{t("Oturum")}</option>
+          </select>
+        </label>
         <p className="text-xs text-muted">
           {t(
             "Hangi aramaların kazandıracağını görmek için bir satıra tıklayın.",
@@ -114,45 +187,95 @@ export function OpportunitiesTable({
           ]}
         />
       </div>
-      <AppDataTable
-        table={table}
-        caption={t("Fırsatlar")}
-        className="table table-sm"
-        wrapperClassName="overflow-x-auto"
-        getRowProps={(row) => ({
-          className: "cursor-pointer hover:bg-base-200/60",
-          onClick: (event: MouseEvent<HTMLTableRowElement>) => {
-            if (
-              event.target instanceof Element &&
-              event.target.closest("a, button, [role=menu]")
-            ) {
-              return;
-            }
-            setOpenPage(row.original.page);
-          },
-        })}
-        empty={
+      <div className="divide-y divide-base-300 sm:hidden">
+        {table.getRowModel().rows.map(({ original: row }) => (
+          <article key={row.page} className="space-y-2 p-3">
+            <p className="break-all text-sm font-medium">{row.page}</p>
+            <p className="text-sm">
+              {t("En fazla +{gain} tıklama / 30 gün (üst sınır)", {
+                gain: formatCount(row.gainPerMonth),
+              })}{" "}
+              · {t(WORK_COPY[row.work].action)}
+            </p>
+            <p className="text-xs text-muted">
+              {t("Sıra")}: {formatDecimal(row.position)} · {t("Tıklama oranı")}:{" "}
+              {formatPercent(row.ctr)}
+            </p>
+            <button
+              type="button"
+              aria-haspopup="dialog"
+              className="btn btn-sm min-h-11"
+              onClick={() => setOpenPage(row.page)}
+            >
+              {t("Ayrıntı")}
+            </button>
+          </article>
+        ))}
+        {rows.length === 0 ? (
           <EmptyState
             compact
             icon={Target}
             title={t("Bu filtreye uyan sayfa yok")}
-            description={t(
-              "Seçtiğiniz iş türü ya da hızlı filtre bu dönemde hiçbir sayfayla eşleşmedi. Filtreleri kaldırın ya da dönemi genişletin.",
-            )}
             action={
               onReset ? (
-                <button type="button" className="btn btn-sm" onClick={onReset}>
+                <button
+                  type="button"
+                  className="btn min-h-11"
+                  onClick={onReset}
+                >
                   {t("Filtreleri kaldır")}
                 </button>
               ) : undefined
             }
           />
-        }
-      />
+        ) : null}
+      </div>
+      <div className="hidden sm:block">
+        <AppDataTable
+          table={table}
+          caption={t("Fırsatlar")}
+          className="table table-sm"
+          wrapperClassName="overflow-x-auto"
+          getRowProps={(row) => ({
+            className: "cursor-pointer hover:bg-base-200/60",
+            onClick: (event: MouseEvent<HTMLTableRowElement>) => {
+              if (
+                event.target instanceof Element &&
+                event.target.closest("a, button, [role=menu]")
+              ) {
+                return;
+              }
+              setOpenPage(row.original.page);
+            },
+          })}
+          empty={
+            <EmptyState
+              compact
+              icon={Target}
+              title={t("Bu filtreye uyan sayfa yok")}
+              description={t(
+                "Seçtiğiniz iş türü ya da hızlı filtre bu dönemde hiçbir sayfayla eşleşmedi. Filtreleri kaldırın ya da dönemi genişletin.",
+              )}
+              action={
+                onReset ? (
+                  <button
+                    type="button"
+                    className="btn btn-sm"
+                    onClick={onReset}
+                  >
+                    {t("Filtreleri kaldır")}
+                  </button>
+                ) : undefined
+              }
+            />
+          }
+        />
+      </div>
       {opened ? (
         <OpportunityDetail
           row={opened}
           days={days}
+          dateRange={report?.request.dateRange}
           projectId={projectId}
           onClose={() => setOpenPage(null)}
         />

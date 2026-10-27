@@ -74,7 +74,7 @@ export function buildOpportunityColumns(
         return (
           <span className="flex flex-col items-end gap-1">
             <span className="font-semibold">
-              +{formatCount(gain)}
+              {t("En fazla")} +{formatCount(gain)}
               <span className="ml-1 text-xs font-normal text-muted">
                 {t("/ay")}
               </span>
@@ -129,7 +129,7 @@ export function buildOpportunityColumns(
             </span>
             <button
               type="button"
-              className="shrink-0 text-muted hover:text-base-content"
+              className="flex size-11 shrink-0 items-center justify-center text-muted hover:text-base-content"
               aria-label={t("Adresi kopyala")}
               title={t("Adresi kopyala")}
               onClick={() => void copyText(url, t("Adres kopyalandı"))}
@@ -141,7 +141,7 @@ export function buildOpportunityColumns(
                 href={safe}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="shrink-0 text-muted hover:text-base-content"
+                className="flex size-11 shrink-0 items-center justify-center text-muted hover:text-base-content"
                 aria-label={t("Sayfayı yeni sekmede aç")}
                 title={t("Sayfayı yeni sekmede aç")}
               >
@@ -231,7 +231,17 @@ export function buildOpportunityColumns(
       ),
       cell: ({ getValue, row }) => {
         const value = getValue();
-        if (value === null) return <span className="text-subtle">-</span>;
+        if (value === null)
+          return (
+            <span
+              className="text-subtle"
+              title={t(
+                "Analytics değeri bilinmiyor; bağlantı, eşleşme ve kaynak kısıtlarını kontrol edin.",
+              )}
+            >
+              –
+            </span>
+          );
         const signal = row.original.value;
         return (
           <span className="block">

@@ -49,7 +49,11 @@ const CURVE = Array.from({ length: 5 }, (_, i) =>
   row([`curve ${i}`], 2, 1000, 150),
 );
 
-function gsc(queryPages: Row[]) {
+function gsc(
+  queryPages: Row[],
+  firstIncompleteDate: string | null = null,
+  queryTruncated = false,
+) {
   const pages = new Map<string, Row>();
   for (const qp of queryPages) {
     const page = qp.keys[1] ?? "";
@@ -69,13 +73,17 @@ function gsc(queryPages: Row[]) {
   mocks.queryAnalytics.mockImplementation(
     async ({ dimensions }: { dimensions: string[] }) => ({
       siteUrl: "https://example.com/",
-      truncated: false,
+      truncated:
+        queryTruncated && dimensions.length === 1 && dimensions[0] === "query",
+      firstIncompleteDate,
       rows:
-        dimensions.length === 2
-          ? queryPages
-          : dimensions[0] === "page"
-            ? [...pages.values()]
-            : CURVE,
+        dimensions[0] === "date"
+          ? []
+          : dimensions.length === 2
+            ? queryPages
+            : dimensions[0] === "page"
+              ? [...pages.values()]
+              : CURVE,
     }),
   );
 }
@@ -115,6 +123,126 @@ describe("SearchOpportunityService", () => {
     mocks.runGa4Report.mockResolvedValue(ga4Result([]));
   });
 
+  it.each([
+    ["2026-08-01", "2026-07-25", "2026-07-31"],
+    ["2026-08-06", "2026-07-30", "2026-08-05"],
+  ])(
+    "excludes incomplete days when Google reports %s instead of assuming three days",
+    async (boundary, startDate, endDate) => {
+      gsc([row(["q", "https://example.com/a"], 5, 1000, 40)], boundary);
+      const result = await SearchOpportunityService.getOpportunities(
+        { projectId: "p", windowDays: 7 },
+        NOW,
+      );
+      expect(result.request.dateRange).toEqual({ startDate, endDate });
+      expect(result.request.completeness.incompleteSource).toBe("google");
+      expect(mocks.runGa4Report).toHaveBeenCalledWith(
+        expect.objectContaining({ startDate, endDate }),
+      );
+    },
+  );
+
+  it("finds a converting page below rank fifty before applying the display limit", async () => {
+    gsc(
+      Array.from({ length: 55 }, (_, i) =>
+        row([`q ${i}`, `https://example.com/p${i}`], 5, 1000, 40),
+      ),
+    );
+    mocks.runGa4Report.mockResolvedValue(ga4Result([ga4Row("/p54", 200, 5)]));
+    const unfiltered = await SearchOpportunityService.getOpportunities(
+      { projectId: "p", limit: 25 },
+      NOW,
+    );
+    const filtered = await SearchOpportunityService.getOpportunities(
+      { projectId: "p", limit: 25, quick: "converts", work: "page1" },
+      NOW,
+    );
+    expect(filtered.rows.map((r) => r.page)).toEqual([
+      "https://example.com/p54",
+    ]);
+    expect(filtered.filteredCount).toBe(1);
+    expect(filtered.valueCounts).toEqual(unfiltered.valueCounts);
+    expect(filtered.totals).toEqual(unfiltered.totals);
+    expect(
+      Object.values(filtered.totals.byWork).reduce(
+        (sum, work) => sum + work.gainPerMonth,
+        0,
+      ),
+    ).toBe(filtered.totals.gainPerMonth);
+  });
+
+  it("preserves restricted event metrics instead of declaring zero conversions", async () => {
+    gsc([row(["q", "https://example.com/a"], 5, 1000, 40)]);
+    mocks.runGa4Report.mockResolvedValue(
+      makeGa4ReportResult({
+        rows: [
+          {
+            ...ga4Row("/a", 200, 0),
+            keyEvents: null,
+            sessionKeyEventRate: null,
+          },
+        ],
+      }),
+    );
+    const result = await SearchOpportunityService.getOpportunities(
+      { projectId: "p" },
+      NOW,
+    );
+    expect(result.rows[0]).toMatchObject({
+      ga4: { sessions: 200, keyEvents: null, sessionKeyEventRate: null },
+      value: null,
+    });
+  });
+
+  it("does not issue conversion verdicts from thresholded Analytics reports", async () => {
+    gsc([row(["q", "https://example.com/a"], 5, 1000, 40)]);
+    const report = ga4Result([ga4Row("/a", 200, 5)]);
+    report.reportMetadata.hasLimitedData = true;
+    report.reportMetadata.subjectToThresholding = true;
+    mocks.runGa4Report.mockResolvedValue(report);
+    const result = await SearchOpportunityService.getOpportunities(
+      { projectId: "p" },
+      NOW,
+    );
+    expect(result.rows[0]).toMatchObject({
+      ga4: { sessions: 200 },
+      value: null,
+    });
+  });
+
+  it("keeps GSC variants distinct and marks their Analytics cohort as shared", async () => {
+    gsc([
+      row(["q1", "https://example.com/a"], 5, 1000, 40),
+      row(["q2", "https://example.com/a?variant=x"], 5, 1000, 40),
+    ]);
+    mocks.runGa4Report.mockResolvedValue(ga4Result([ga4Row("/a", 200, 5)]));
+    const result = await SearchOpportunityService.getOpportunities(
+      { projectId: "p" },
+      NOW,
+    );
+    expect(result.rows).toHaveLength(2);
+    expect(result.rows.map((r) => r.joinPrecision)).toEqual([
+      "ambiguous",
+      "ambiguous",
+    ]);
+  });
+
+  it("rejects impossible or unfinished explicit days rather than reading a different scope", async () => {
+    gsc([], "2026-08-04");
+    await expect(
+      SearchOpportunityService.getOpportunities(
+        { projectId: "p", startDate: "2026-02-30", endDate: "2026-08-03" },
+        NOW,
+      ),
+    ).rejects.toMatchObject({ code: "validation_error" });
+    await expect(
+      SearchOpportunityService.getOpportunities(
+        { projectId: "p", startDate: "2026-08-01", endDate: "2026-08-05" },
+        NOW,
+      ),
+    ).rejects.toMatchObject({ code: "validation_error" });
+  });
+
   it("reads Search Console's window and lists only pages with a gain", async () => {
     gsc([
       row(["near miss", "https://example.com/a"], 5, 1000, 40),
@@ -145,7 +273,39 @@ describe("SearchOpportunityService", () => {
         gainPerMonth: 118,
       }),
     ]);
-    expect(result.totals).toMatchObject({ noGainPages: 1, gainPerMonth: 118 });
+    expect(result.totals).toMatchObject({
+      noGainPages: 0,
+      unknownPages: 1,
+      gainPerMonth: 118,
+      reasons: { insufficientTargetCurve: 1 },
+    });
+  });
+
+  it("uses the Pacific day and labels missing completeness metadata as assumed", async () => {
+    gsc([row(["q", "https://example.com/a"], 5, 1000, 40)]);
+    const result = await SearchOpportunityService.getOpportunities(
+      { projectId: "p", windowDays: 7 },
+      { now: new Date("2026-08-06T01:00:00Z") },
+    );
+    expect(result.request.dateRange).toEqual({
+      startDate: "2026-07-27",
+      endDate: "2026-08-02",
+    });
+    expect(result.request.completeness.incompleteSource).toBe("assumed");
+  });
+
+  it("surfaces query-only truncation even when page and pair lists are complete", async () => {
+    gsc([row(["q", "https://example.com/a"], 5, 1000, 40)], null, true);
+    const result = await SearchOpportunityService.getOpportunities(
+      { projectId: "p" },
+      NOW,
+    );
+    expect(result.truncated).toMatchObject({
+      gsc: true,
+      queries: true,
+      pages: false,
+      queryPages: false,
+    });
   });
 
   it("works without Analytics, which is only the secondary factor", async () => {

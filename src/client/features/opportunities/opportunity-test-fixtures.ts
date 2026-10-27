@@ -1,3 +1,4 @@
+import { resolveSearchWindow } from "@/server/features/gsc/searchPerformanceReport";
 import type { OpportunityReport } from "./report";
 import type { OpportunityRow } from "./opportunityLogic";
 
@@ -37,6 +38,14 @@ export function makeReport(rows: OpportunityRow[]): OpportunityReport {
       googleAnalyticsPropertyDisplayName: null,
     },
     request: {
+      filters: { work: null, quick: null },
+      completeness: resolveSearchWindow({
+        range: "last_28_days",
+        today: "2026-10-01",
+        floorDate: "2025-06-01",
+        firstIncompleteDate: null,
+        lastDataDate: "2026-09-28",
+      }),
       dateRange: { startDate: "2026-09-01", endDate: "2026-09-28" },
       days: 28,
       limit: 50,
@@ -44,6 +53,12 @@ export function makeReport(rows: OpportunityRow[]): OpportunityReport {
       googleAnalyticsTimeZone: null,
     },
     analytics: { state: "connected", code: null },
+    filteredCount: rows.length,
+    topRecommendation: rows[0] ?? null,
+    valueCounts: {
+      converts: rows.filter((r) => r.value === "converts").length,
+      no_conversions: rows.filter((r) => r.value === "no_conversions").length,
+    },
     rowCount: rows.length,
     totalCandidateRows: rows.length,
     rows,
@@ -58,6 +73,14 @@ export function makeReport(rows: OpportunityRow[]): OpportunityReport {
         deep: byWork,
       },
       noGainPages: 2,
+      unknownPages: 0,
+      reasons: {
+        calculablePositive: rows.length,
+        calculableZero: 2,
+        belowThreshold: 0,
+        insufficientTargetCurve: 0,
+        missingQueryPairs: 0,
+      },
       pagesConsidered: rows.length + 2,
     },
     method: {
@@ -76,7 +99,14 @@ export function makeReport(rows: OpportunityRow[]): OpportunityReport {
       unmatchedGscRows: rows.filter((r) => !r.ga4).length,
       unmatchedGa4Rows: 0,
     },
-    truncated: { gsc: false, ga4: false, candidates: false },
+    truncated: {
+      queries: false,
+      pages: false,
+      queryPages: false,
+      gsc: false,
+      ga4: false,
+      candidates: false,
+    },
     warnings: [],
     reportMetadata: null,
     quota: null,

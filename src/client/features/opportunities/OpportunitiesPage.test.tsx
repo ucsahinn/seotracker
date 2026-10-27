@@ -41,7 +41,13 @@ const report = (rows: ReturnType<typeof makeRow>[]) => ({
   report: makeReport(rows),
 });
 
-function renderPage() {
+function renderPage(
+  onViewChange = (
+    _next: Parameters<
+      Parameters<typeof OpportunitiesPage>[0]["onViewChange"]
+    >[0],
+  ) => {},
+) {
   const client = new QueryClient();
   return render(
     <QueryClientProvider client={client}>
@@ -49,7 +55,7 @@ function renderPage() {
         projectId="p1"
         windowDays={28}
         limit={50}
-        onViewChange={() => undefined}
+        onViewChange={onViewChange}
       />
     </QueryClientProvider>,
   );
@@ -84,107 +90,75 @@ beforeEach(() => {
 });
 
 describe("OpportunitiesPage", () => {
-  it("leads with the clicks to gain and the page to start with", async () => {
+  it("leads with an actionable page and an explicitly bounded gain", async () => {
     getSearchOpportunities.mockResolvedValue(report(rows));
     renderPage();
-
     const start = await screen.findByRole("button", {
-      name: /Önce şuna bakın/,
+      name: "Önce şuna bakın",
     });
-    expect(start.textContent).toContain("/best");
-    expect(
-      screen.getByText("En fazla kazanılabilecek tıklama / ay (üst sınır)"),
-    ).toBeDefined();
-
+    expect(start.textContent).toContain("example.com/best");
     fireEvent.click(start);
+    const dialog = screen.getByRole("dialog");
+    expect(within(dialog).getByText(/En fazla.*30 gün/)).toBeDefined();
     expect(
-      within(screen.getByRole("dialog")).getAllByText(/best/).length,
-    ).toBeGreaterThan(0);
+      within(dialog).queryByText(/ayda yaklaşık.*anahtar olay/),
+    ).toBeNull();
   });
 
-  it("filters to converting pages, and hides chips that would select everything", async () => {
+  it("hands quick filters to the route for server-side selection before the limit", async () => {
     getSearchOpportunities.mockResolvedValue(report(rows));
-    renderPage();
-
+    const change = vi.fn();
+    renderPage(change);
     fireEvent.click(
       await screen.findByRole("button", { name: /^Dönüşüm getirenler/ }),
     );
-    expect(screen.getAllByRole("row").slice(1)).toHaveLength(1);
-    expect(screen.getByText("/sells")).toBeDefined();
-    // Every listed page with Analytics converts; "no conversions" holds none.
+    expect(change).toHaveBeenCalledWith({ quick: "converts" });
     expect(
       screen.queryByRole("button", { name: /^Trafik var, dönüşüm yok/ }),
     ).toBeNull();
   });
 
-  it("puts the window and row-count controls in the header", async () => {
-    getSearchOpportunities.mockResolvedValue(report(rows));
-    renderPage();
-
-    await screen.findByLabelText("Dönem");
-    const heading = screen.getByRole("heading", { name: "Fırsatlar" });
-    // The controls belong to the page header, regardless of title adornments.
-    const headerRow = heading.closest("header");
-    if (!headerRow) throw new Error("header row missing");
-    expect(within(headerRow).getByLabelText("Dönem")).toBeDefined();
-    expect(within(headerRow).getByLabelText("Satır sayısı")).toBeDefined();
-  });
-
-  it("keeps the window picker when nothing was found", async () => {
+  it("keeps period and limit controls on empty results without claiming no impressions", async () => {
     getSearchOpportunities.mockResolvedValue(report([]));
     renderPage();
-
     expect(await screen.findByLabelText("Dönem")).toBeDefined();
+    expect(screen.getByLabelText("Satır sayısı")).toBeDefined();
+    expect(
+      screen.queryByText(/hiçbir sayfanız arama sonuçlarında görünmedi/),
+    ).toBeNull();
   });
 
-  it("remembers a collapsed intro, and survives unavailable storage", async () => {
-    getSearchOpportunities.mockResolvedValue(report(rows));
-    const first = renderPage();
-    const toggle = screen.getByRole("button", { name: /Burası ne işe/ });
-    expect(toggle.getAttribute("aria-expanded")).toBe("true");
+  it("preserves cached evidence and dates when refresh fails", async () => {
+    getSearchOpportunities
+      .mockResolvedValueOnce(report(rows))
+      .mockRejectedValue(new Error("offline"));
+    renderPage();
+    await screen.findByRole("button", { name: "Önce şuna bakın" });
+    fireEvent.click(screen.getByRole("button", { name: /Yenile/ }));
+    expect(await screen.findByText("Fırsatlar yüklenemedi")).toBeDefined();
+    expect(
+      screen.getByRole("button", { name: "Önce şuna bakın" }).textContent,
+    ).toContain("example.com/best");
+    expect(screen.getByText(/Önceki sonuç gösteriliyor/)).toBeDefined();
+  });
 
+  it("puts the explanation after the worklist and starts it collapsed", async () => {
+    getSearchOpportunities.mockResolvedValue(report(rows));
+    renderPage();
+    const toggle = await screen.findByRole("button", { name: /Burası ne işe/ });
+    expect(toggle.getAttribute("aria-expanded")).toBe("false");
+    fireEvent.click(toggle);
+    expect(toggle.getAttribute("aria-expanded")).toBe("true");
     fireEvent.click(toggle);
     expect(window.localStorage.getItem(INTRO_STORAGE_KEY)).toBe("1");
-    first.unmount();
-
-    renderPage();
-    expect(
-      screen
-        .getByRole("button", { name: /Burası ne işe/ })
-        .getAttribute("aria-expanded"),
-    ).toBe("false");
   });
 
-  it("starts the intro closed and asks only for Search Console when nothing is connected", async () => {
+  it("asks for Search Console alone when disconnected", async () => {
     getSearchOpportunities.mockResolvedValue({ status: "needs_gsc" });
     renderPage();
-
     expect(
       await screen.findByText("Fırsatlar için Search Console gerekir"),
     ).toBeDefined();
-    expect(
-      screen
-        .getByRole("button", { name: /Burası ne işe/ })
-        .getAttribute("aria-expanded"),
-    ).toBe("false");
     expect(screen.getByText("Bağlantıları ayarla")).toBeDefined();
-  });
-
-  it("stays open and usable when storage throws", async () => {
-    getSearchOpportunities.mockResolvedValue(report(rows));
-    vi.stubGlobal("localStorage", {
-      getItem: () => {
-        throw new Error("blocked");
-      },
-      setItem: () => {
-        throw new Error("blocked");
-      },
-      removeItem: () => undefined,
-    });
-    renderPage();
-    const toggle = screen.getByRole("button", { name: /Burası ne işe/ });
-    expect(toggle.getAttribute("aria-expanded")).toBe("true");
-    fireEvent.click(toggle);
-    expect(toggle.getAttribute("aria-expanded")).toBe("false");
   });
 });

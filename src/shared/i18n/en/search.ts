@@ -1425,4 +1425,69 @@ export const enSearch: Catalog = {
   "Haftalık dağılım yalnızca Web aramaları için.":
     "The weekly distribution is for Web searches only.",
   "Marka aramaları dahil değildir.": "Brand searches are excluded.",
+  "Tam günler Google tarafından doğrulandı":
+    "Complete days confirmed by Google",
+  "Tam gün sınırı veri gecikmesine göre varsayıldı":
+    "Complete-day boundary assumed from reporting lag",
+  "Önceki sonuç gösteriliyor; seçili dönem henüz yüklenmedi.":
+    "Showing the previous result; the selected period has not loaded yet.",
+  "En fazla +{gain} tıklama / 30 gün (üst sınır)":
+    "Up to +{gain} clicks / 30 days (upper bound)",
+  "{count} sayfada · bu sayfaların tüm tıklamaları 30 güne ölçekli: {clicks}; üst sınırın bu tabana oranı {share}":
+    "Across {count} pages · all clicks on these pages, scaled to 30 days: {clicks}; upper bound relative to that base: {share}",
+  "Eksik sorgu, yetersiz gösterim veya eksik hedef oranı; kazanç yok anlamına gelmez.":
+    "Missing queries, too few impressions or no target rate; this does not mean there is no opportunity.",
+  "Analytics bu kez okunamadı; aşağıdaki kaynak notunu kontrol edin.":
+    "Analytics could not be read this time; check the source note below.",
+  "Analytics verisi sınırlı; eksik ölçümler sıfır değildir ve dönüşüm yorumu yapılamayabilir.":
+    "Analytics data is limited; missing measurements are not zero and may not support a conversion verdict.",
+  "Hesaplanabilen tüm sayfalardaki ölçülmüş dönüşüm sinyali · listele":
+    "Observed conversion signal across all estimable pages · show pages",
+  "İş listesi: {shown} / {total} eşleşen sayfa":
+    "Worklist: {shown} / {total} matching pages",
+  "Analytics değeri bilinmiyor; bağlantı, eşleşme ve kaynak kısıtlarını kontrol edin.":
+    "Analytics value unknown; check the connection, URL match and source limitations.",
+  "Ölçülen gösterim (30 güne ölçekli)":
+    "Observed impressions (scaled to 30 days)",
+  "Analytics bu adres grubunu birlikte ölçüyor; oturumları farklı URL satırları arasında toplamayın.":
+    "Analytics measures this URL group together; do not sum its sessions across separate URL rows.",
+  "Karşılaştırılabilen marka dışı gösterim: {known}; oranı bilinmeyen: {unknown}.":
+    "Comparable non-brand impressions: {known}; impressions without a known rate: {unknown}.",
+  "Diğer aramalar (dağıtılmış kalan)": "Other queries (allocated remainder)",
+  "Değişikliği not edin; aynı kapsamlı dönemlerde ölçülen tıklama, tıklama oranı ve sırayı Arama performansında karşılaştırın.":
+    "Record the change; compare measured clicks, CTR and position for periods with the same scope in Search performance.",
+  "Arama niyetini ve sayfanın kapsamını inceleyin":
+    "Review search intent and page coverage",
+  "Gösterimler ölçüldü; düşük sıra tek başına sayfayı silmek veya birleştirmek için kanıt değildir.":
+    "Impressions were measured; a low position alone does not justify deleting or merging a page.",
+  "Birleştirmeyi yalnızca sayfaların aynı ihtiyacı karşıladığını doğrularsanız değerlendirin.":
+    "Consider merging only after confirming that the pages meet the same need.",
+  "Önceliği ölçülen sorgulara göre belirleyin; düşük tahmin tek başına içerik kaldırma gerekçesi değildir.":
+    "Prioritize using measured queries; a low estimate alone is no reason to remove content.",
+  "Ortalama {position}. sıra; {impressions} gösterim, {clicks} tıklama ölçüldü. Hesaplanabilen aramalarda 30 güne ölçekli en fazla +{gain} tıklama (üst sınır); gerçekleşme sözü değildir.":
+    "Average position {position}; {impressions} impressions and {clicks} clicks measured. Up to +{gain} clicks scaled to 30 days for estimable queries (upper bound); no guarantee of results.",
+  "Hesaplanan kazanç yalnızca alınan ve tanımlanabilen aramaları kapsar; gizli sorguların payı bilinmiyor. Panelin sorgu tahminiyle toplanmaz.":
+    "The estimate covers only fetched, identifiable queries; the share of hidden queries is unknown. Do not add it to the dashboard query estimate.",
+  "Ölçülen sıfır: {zero}; yetersiz gösterim: {small}; eksik hedef oranı: {curve}; eksik sorgu eşleşmesi: {pairs}.":
+    "Measured zero: {zero}; too few impressions: {small}; missing target rate: {curve}; missing query matches: {pairs}.",
+  "Search Console satır sınırına ulaşıldı; toplamlar tüm siteyi kapsamaz.":
+    "Search Console row limit reached; totals do not cover the entire site.",
+  "Aynı takvim günleri farklı saat dilimlerinde aynı an aralığı değildir. Analytics, tüm Organic Search kanalını kapsar.":
+    "The same calendar days in different time zones are not the same time interval. Analytics covers the entire Organic Search channel.",
+  "Analytics kotası doldu. Bir süre bekleyip Yenile’ye basın.":
+    "Analytics quota exhausted. Wait a while, then select Refresh.",
+  "Analytics izni veya mülk erişimi yok. Bağlantıları ayarla ekranında erişimi doğrulayın.":
+    "Analytics permission or property access is missing. Verify access in connection settings.",
+  "Analytics yanıtı okunamadı. İnternet bağlantısını kontrol edip Yenile’ye basın.":
+    "The Analytics response could not be read. Check your internet connection and select Refresh.",
+  "{start} – {end} aralığında bu mülk için sayfa satırı dönmedi. Bu, hiç gösterim olmadığı anlamına gelmez; Arama performansında mülkü kontrol edin veya dönemi genişletin.":
+    "No page rows were returned for this property for {start} – {end}. This does not mean there were no impressions; check the property in Search performance or widen the period.",
+  "{start} – {end} aralığında hesaplanabilen {count} sayfada ek kazanç hesaplanmadı. Bu, yapılacak iş olmadığı anlamına gelmez.":
+    "No additional gain was calculated for {count} estimable pages for {start} – {end}. This does not mean there is no work to do.",
+  "30 güne ölçekli üst sınır; çubuklar en büyük iş türüne göredir. Bir sayfa birden fazla işte sayılabilir. Seçim tüm hesaplanabilir sayfalara uygulanır.":
+    "Upper bound scaled to 30 days; bars compare with the largest work category. A page can count in several categories. Selection applies to all estimable pages.",
+  "Hesaplanamayan kapsam": "Unestimable scope",
+  Sırala: "Sort",
+  "Bazı sorgular veya hedef oranları eksik. Mülkü Arama performansında kontrol edin veya dönemi 90 güne genişletin.":
+    "Some queries or target rates are missing. Check the property in Search performance or widen the period to 90 days.",
 };

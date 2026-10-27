@@ -73,7 +73,7 @@ describe("OpportunitiesTable", () => {
 
     const dialog = screen.getByRole("dialog");
     expect(dialog.textContent).toContain("Ne yapmalı?");
-    expect(dialog.textContent).toContain("+90 tıklama/ay");
+    expect(dialog.textContent).toContain("+90 tıklama / 30 gün");
 
     fireEvent.keyDown(window, { key: "Escape" });
     expect(screen.queryByRole("dialog")).toBeNull();
@@ -98,6 +98,7 @@ describe("OpportunitiesTable", () => {
                 work: "snippet",
                 targetCtr: 0.12,
                 gain: 110,
+                gainPerMonth: 118,
               },
             ],
           }),
@@ -105,11 +106,11 @@ describe("OpportunitiesTable", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "/a" }));
+    fireEvent.click(screen.getByRole("button", { name: "example.com/a" }));
 
     const dialog = screen.getByRole("dialog");
     expect(dialog.textContent).toContain("nevresim nasıl yıkanır");
-    // 110 over 28 days, as a month.
+    // The query's allocated share of the page gain, per month.
     expect(dialog.textContent).toContain("+118");
     expect(dialog.textContent).toContain("Meta açıklamayı");
   });

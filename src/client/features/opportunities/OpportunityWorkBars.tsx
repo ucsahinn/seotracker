@@ -1,5 +1,4 @@
 import { t } from "@/shared/i18n";
-import { useEffect, useState } from "react";
 import { AnimatedNumber } from "@/client/components/AnimatedNumber";
 import { WORK_KINDS, type WorkKind } from "@/shared/pageOpportunities";
 import {
@@ -34,26 +33,16 @@ export function OpportunityWorkBars({
   onSelect: (work: WorkKind | null) => void;
 }) {
   const max = Math.max(...WORK_KINDS.map((id) => byWork[id].gainPerMonth), 1);
-  // Bars grow in after first paint; `motion-reduce` keeps them still.
-  const [drawn, setDrawn] = useState(false);
-  useEffect(() => {
-    const frame = requestAnimationFrame(() => setDrawn(true));
-    return () => cancelAnimationFrame(frame);
-  }, []);
 
   return (
     <section className="rounded-box border border-base-300 bg-base-100 px-4 py-4 shadow-[var(--shadow-raise)]">
       <h2 className="text-sm font-semibold">{t("Kazanç hangi işte?")}</h2>
       <p className="mt-0.5 text-xs text-muted">
         {t(
-          "Her satır, o işle ayda gelebilecek ek tıklama. Bir satıra basınca tablo o işe daralır.",
+          "30 güne ölçekli üst sınır; çubuklar en büyük iş türüne göredir. Bir sayfa birden fazla işte sayılabilir. Seçim tüm hesaplanabilir sayfalara uygulanır.",
         )}
       </p>
-      <div
-        role="group"
-        aria-label={t("İş türleri")}
-        className="stagger mt-3 space-y-1"
-      >
+      <div role="group" aria-label={t("İş türleri")} className="mt-3 space-y-1">
         {WORK_KINDS.map((id) => {
           const entry = byWork[id];
           const copy = WORK_COPY[id];
@@ -66,10 +55,9 @@ export function OpportunityWorkBars({
               aria-pressed={pressed}
               disabled={empty && !pressed}
               onClick={() => onSelect(pressed ? null : id)}
-              className={`grid w-full grid-cols-1 items-center gap-x-4 gap-y-1 rounded-field border-l-4 px-3 py-2 text-left transition-colors enabled:hover:bg-base-200/60 disabled:cursor-default disabled:opacity-60 sm:grid-cols-[minmax(0,15rem)_minmax(0,1fr)_10rem] ${
+              className={`grid w-full grid-cols-1 items-center gap-x-4 gap-y-1 rounded-field px-3 py-2 text-left transition-colors enabled:hover:bg-base-200/60 disabled:cursor-default sm:grid-cols-[minmax(0,15rem)_minmax(0,1fr)_10rem] ${
                 pressed ? "bg-base-200" : ""
               }`}
-              style={{ borderLeftColor: workColor(id) }}
             >
               <span className="min-w-0">
                 <span className="block text-sm font-medium">
@@ -86,11 +74,9 @@ export function OpportunityWorkBars({
                 className="h-2.5 min-w-0 rounded-full bg-base-200"
               >
                 <span
-                  className="block h-full rounded-full transition-[width] duration-700 ease-out motion-reduce:transition-none"
+                  className="block h-full origin-left rounded-full transition-transform duration-200 ease-out motion-reduce:transition-none"
                   style={{
-                    width: drawn
-                      ? `${(entry.gainPerMonth / max) * 100}%`
-                      : "0%",
+                    transform: `scaleX(${entry.gainPerMonth / max})`,
                     backgroundColor: workColor(id),
                   }}
                 />

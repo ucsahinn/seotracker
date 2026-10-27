@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
 import { OpportunitiesPage } from "@/client/features/opportunities/OpportunitiesPage";
 import { DEFAULT_WINDOW_DAYS } from "@/shared/dataFreshness";
+import { WORK_KINDS } from "@/shared/pageOpportunities";
 
 /*
  * Window and row count live in the URL, like the search-performance range
@@ -12,6 +13,8 @@ import { DEFAULT_WINDOW_DAYS } from "@/shared/dataFreshness";
  * `catch` degrades a hand-edited value to the default rather than throwing.
  */
 const searchSchema = z.object({
+  work: z.enum(WORK_KINDS).optional().catch(undefined),
+  quick: z.enum(["converts", "no_conversions"]).optional().catch(undefined),
   windowDays: z
     .union([z.literal(7), z.literal(28), z.literal(90)])
     .catch(DEFAULT_WINDOW_DAYS)
@@ -29,7 +32,7 @@ export const Route = createFileRoute("/_project/p/$projectId/opportunities")({
 
 function OpportunitiesRoute() {
   const { projectId } = Route.useParams();
-  const { windowDays, limit } = Route.useSearch();
+  const { windowDays, limit, work, quick } = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
 
   return (
@@ -37,6 +40,8 @@ function OpportunitiesRoute() {
       projectId={projectId}
       windowDays={windowDays}
       limit={limit}
+      work={work ?? null}
+      quick={quick ?? null}
       onViewChange={(next) => {
         void navigate({ search: (prev) => ({ ...prev, ...next }) });
       }}

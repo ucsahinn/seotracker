@@ -41,9 +41,9 @@
  * `shared/`.
  */
 import { bandOf } from "./positionBands";
+import { allocateGain } from "./opportunityAllocation";
 import {
   clicksAtCtr,
-  combineMetrics,
   ctrBandFor,
   ctrCurve,
   expectedCtr,
@@ -70,6 +70,9 @@ export type QueryUpside = {
   targetCtr: number;
   /** Extra clicks over the window. */
   gain: number;
+  allocatedGain?: number;
+  gainPerMonth?: number;
+  targetBand?: CtrBandId;
 };
 
 export type PageOpportunity = {
@@ -93,12 +96,25 @@ export type PageOpportunity = {
   queries: QueryUpside[];
   /** True when the page cap cut the summed query gains. */
   capped: boolean;
+  queryCount?: number;
+  otherQueryGain?: number;
+  otherQueryGainPerMonth?: number;
+  comparableImpressions?: number;
+  missingCurveImpressions?: number;
 };
 
 type PageOpportunityResult = {
   pages: PageOpportunity[];
   /** Pages Google showed that have nothing to gain (top and clicked). */
   noGainPages: number;
+  reasons: Record<
+    | "calculablePositive"
+    | "calculableZero"
+    | "belowThreshold"
+    | "insufficientTargetCurve"
+    | "missingQueryPairs",
+    number
+  >;
   /** Which curve the expectations were read from. */
   curve: "nonBrand" | "all";
   /** True when no band has enough data for any estimate at all. */
@@ -224,10 +240,37 @@ export function pageOpportunities(input: {
   }
 
   const pages: PageOpportunity[] = [];
+  const reasons = {
+    calculablePositive: 0,
+    calculableZero: 0,
+    belowThreshold: 0,
+    insufficientTargetCurve: 0,
+    missingQueryPairs: 0,
+  };
   let noGainPages = 0;
   for (const pageRow of input.pages) {
     if (pageRow.impressions <= 0) continue;
     const rows = byPage.get(pageRow.key) ?? [];
+    const unknown =
+      rows.length === 0
+        ? "missingQueryPairs"
+        : rows.some(
+              (row) =>
+                row.impressions >= thresholds.strikingMinImpressions &&
+                expectedCtr(curve, capBand(row.position)) === null,
+            )
+          ? "insufficientTargetCurve"
+          : rows.every(
+                (row) =>
+                  row.impressions <
+                  Math.min(
+                    thresholds.snippetMinImpressions,
+                    thresholds.strikingMinImpressions,
+                  ),
+              )
+            ? "belowThreshold"
+            : null;
+    if (unknown) reasons[unknown] += 1;
     const gainByWork = zeroByWork();
     const queries: QueryUpside[] = [];
     for (const row of rows) {
@@ -238,24 +281,67 @@ export function pageOpportunities(input: {
     }
     const raw = WORK_KINDS.reduce((sum, kind) => sum + gainByWork[kind], 0);
     if (raw <= 0) {
-      noGainPages += 1;
+      if (!unknown) {
+        noGainPages += 1;
+        reasons.calculableZero += 1;
+      }
       continue;
     }
     queries.sort((a, b) => b.gain - a.gain);
-    const nonBrand = combineMetrics(rows);
+    const comparable = rows.filter(
+      (row) => expectedCtr(curve, ctrBandFor(row.position)) !== null,
+    );
+    const comparableImpressions = comparable.reduce(
+      (sum, row) => sum + row.impressions,
+      0,
+    );
+    const expectedClicks = comparable.reduce(
+      (sum, row) =>
+        sum +
+        row.impressions * (expectedCtr(curve, ctrBandFor(row.position)) ?? 0),
+      0,
+    );
     const work = WORK_KINDS.reduce((best, kind) =>
       gainByWork[kind] > gainByWork[best] ? kind : best,
     );
     const gain = Math.min(raw, pageCap(rows, queries, curve));
     if (gain <= 0) {
-      noGainPages += 1;
+      if (!unknown) {
+        noGainPages += 1;
+        reasons.calculableZero += 1;
+      }
       continue;
     }
-    if (gain < raw) {
-      for (const kind of WORK_KINDS) {
-        gainByWork[kind] = Math.round((gainByWork[kind] * gain) / raw);
-      }
+    reasons.calculablePositive += 1;
+    const allocation = allocateGain(
+      WORK_KINDS.map((kind) => gainByWork[kind]),
+      gain,
+    );
+    WORK_KINDS.forEach((kind, index) => {
+      gainByWork[kind] = allocation[index];
+    });
+    // Allocate within each work group so query and work contributions agree.
+    for (const kind of WORK_KINDS) {
+      const group = queries.filter((query) => query.work === kind);
+      const values = allocateGain(
+        group.map((query) => query.gain),
+        gainByWork[kind],
+      );
+      group.forEach((query, index) => {
+        query.allocatedGain = values[index];
+        query.targetBand =
+          (query.work === "snippet"
+            ? ctrBandFor(query.position)
+            : capBand(query.position)) ?? undefined;
+      });
     }
+    const monthly = allocateGain(
+      queries.map((query) => query.allocatedGain ?? 0),
+      perMonth(gain, input.days),
+    );
+    queries.forEach((query, index) => {
+      query.gainPerMonth = monthly[index];
+    });
     pages.push({
       page: pageRow.key,
       clicks: pageRow.clicks,
@@ -265,11 +351,26 @@ export function pageOpportunities(input: {
       gain,
       gainByWork,
       work,
-      nonBrandCtr: nonBrand.ctr,
+      nonBrandCtr:
+        comparableImpressions > 0
+          ? comparable.reduce((sum, row) => sum + row.clicks, 0) /
+            comparableImpressions
+          : null,
       siteCtr:
-        nonBrand.position === null
-          ? null
-          : expectedCtr(curve, ctrBandFor(nonBrand.position)),
+        comparableImpressions > 0
+          ? expectedClicks / comparableImpressions
+          : null,
+      comparableImpressions,
+      missingCurveImpressions:
+        rows.reduce((sum, row) => sum + row.impressions, 0) -
+        comparableImpressions,
+      queryCount: queries.length,
+      otherQueryGain: queries
+        .slice(QUERIES_PER_PAGE)
+        .reduce((sum, query) => sum + (query.allocatedGain ?? 0), 0),
+      otherQueryGainPerMonth: queries
+        .slice(QUERIES_PER_PAGE)
+        .reduce((sum, query) => sum + (query.gainPerMonth ?? 0), 0),
       queries: queries.slice(0, QUERIES_PER_PAGE),
       capped: gain < raw,
     });
@@ -278,6 +379,7 @@ export function pageOpportunities(input: {
   return {
     pages,
     noGainPages,
+    reasons,
     curve: branded ? "nonBrand" : "all",
     curveInsufficient: !curve.some((point) => point.sufficient),
   };

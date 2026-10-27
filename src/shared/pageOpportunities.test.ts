@@ -79,6 +79,63 @@ function run(
 }
 
 describe("pageOpportunities", () => {
+  it("keeps mixed target coverage separate from genuine measured zero", () => {
+    const rows = [
+      qp("/known", "supported", 5, 1000, 40),
+      qp("/unknown", "unsupported", 8, 1000, 10),
+    ];
+    const result = pageOpportunities({
+      days: 28,
+      queries: curveQueries([[2, 0.15]]),
+      queryPages: rows,
+      pages: rows.map((row) => pageRow(row.page, [row])),
+      brandTerms: [],
+    });
+    expect(result.pages.map((page) => page.page)).toEqual(["/known"]);
+    expect(result.noGainPages).toBe(0);
+    expect(result.reasons.insufficientTargetCurve).toBe(1);
+  });
+  it("compares mixed positions against their impression-weighted supported curve, not the mean position band", () => {
+    const result = run([
+      qp("/mixed", "head", 2, 1000, 80),
+      qp("/mixed", "tail", 8, 1000, 10),
+    ]);
+    expect(result.pages[0].siteCtr).toBeCloseTo(0.095);
+    expect(result.pages[0].nonBrandCtr).toBeCloseTo(0.045);
+  });
+
+  it("does not call absent query pairs a measured zero opportunity", () => {
+    const result = pageOpportunities({
+      days: 28,
+      queries: SITE,
+      queryPages: [],
+      pages: [pageRow("/missing", [qp("/missing", "hidden", 8, 1000, 10)])],
+      brandTerms: [],
+    });
+    expect(result.noGainPages).toBe(0);
+    expect(result.reasons.missingQueryPairs).toBe(1);
+  });
+
+  it("keeps the top ten allocated queries and the labelled remainder equal to the page cap", () => {
+    const result = run(
+      Array.from({ length: 11 }, (_, i) =>
+        qp("/many", `query ${i}`, 8, 1000, 10),
+      ),
+    );
+    const page = result.pages[0];
+    expect(page.queryCount).toBe(11);
+    expect(
+      page.queries.reduce((sum, query) => sum + (query.allocatedGain ?? 0), 0) +
+        (page.otherQueryGain ?? 0),
+    ).toBe(page.gain);
+    expect(
+      page.queries.reduce((sum, query) => sum + (query.gainPerMonth ?? 0), 0) +
+        (page.otherQueryGainPerMonth ?? 0),
+    ).toBe(perMonth(page.gain, 28));
+    expect(
+      Object.values(page.gainByWork).reduce((sum, gain) => sum + gain, 0),
+    ).toBe(page.gain);
+  });
   it("estimates each kind of work against the site's own curve", () => {
     const result = run([
       // Page one, clicked far below the 15% the site earns at #2: title work.

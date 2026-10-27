@@ -664,4 +664,69 @@ export const frSearch: Catalog = {
   "Haftalık dağılım yalnızca Web aramaları için.":
     "La répartition hebdomadaire ne concerne que la recherche Web.",
   "Marka aramaları dahil değildir.": "Les recherches de marque sont exclues.",
+  "Tam günler Google tarafından doğrulandı":
+    "Jours complets confirmés par Google",
+  "Tam gün sınırı veri gecikmesine göre varsayıldı":
+    "Limite des jours complets estimée selon le délai des données",
+  "Önceki sonuç gösteriliyor; seçili dönem henüz yüklenmedi.":
+    "Le résultat précédent est affiché ; la période choisie n’a pas encore été chargée.",
+  "En fazla +{gain} tıklama / 30 gün (üst sınır)":
+    "Jusqu’à +{gain} clics / 30 jours (limite haute)",
+  "{count} sayfada · bu sayfaların tüm tıklamaları 30 güne ölçekli: {clicks}; üst sınırın bu tabana oranı {share}":
+    "Sur {count} pages · tous les clics de ces pages ramenés à 30 jours : {clicks} ; limite haute rapportée à cette base : {share}",
+  "Eksik sorgu, yetersiz gösterim veya eksik hedef oranı; kazanç yok anlamına gelmez.":
+    "Requêtes manquantes, impressions insuffisantes ou taux cible inconnu : cela ne signifie pas qu’il n’y a aucun potentiel.",
+  "Analytics bu kez okunamadı; aşağıdaki kaynak notunu kontrol edin.":
+    "Analytics n’a pas pu être lu cette fois ; consultez la note sur la source ci-dessous.",
+  "Analytics verisi sınırlı; eksik ölçümler sıfır değildir ve dönüşüm yorumu yapılamayabilir.":
+    "Les données Analytics sont limitées ; les mesures absentes ne sont pas des zéros et ne permettent pas toujours de conclure sur les conversions.",
+  "Hesaplanabilen tüm sayfalardaki ölçülmüş dönüşüm sinyali · listele":
+    "Signal de conversion mesuré sur toutes les pages évaluables · afficher",
+  "İş listesi: {shown} / {total} eşleşen sayfa":
+    "Liste de travail : {shown} / {total} pages correspondantes",
+  "Analytics değeri bilinmiyor; bağlantı, eşleşme ve kaynak kısıtlarını kontrol edin.":
+    "Valeur Analytics inconnue ; vérifiez la connexion, la correspondance des URL et les limites de la source.",
+  "Ölçülen gösterim (30 güne ölçekli)":
+    "Impressions mesurées (ramenées à 30 jours)",
+  "Analytics bu adres grubunu birlikte ölçüyor; oturumları farklı URL satırları arasında toplamayın.":
+    "Analytics mesure ce groupe d’URL ensemble ; ne cumulez pas ses sessions entre les lignes d’URL.",
+  "Karşılaştırılabilen marka dışı gösterim: {known}; oranı bilinmeyen: {unknown}.":
+    "Impressions hors marque comparables : {known} ; impressions sans taux connu : {unknown}.",
+  "Diğer aramalar (dağıtılmış kalan)": "Autres requêtes (solde réparti)",
+  "Değişikliği not edin; aynı kapsamlı dönemlerde ölçülen tıklama, tıklama oranı ve sırayı Arama performansında karşılaştırın.":
+    "Notez la modification ; comparez les clics, le CTR et la position mesurés sur des périodes de même périmètre dans Performance de recherche.",
+  "Arama niyetini ve sayfanın kapsamını inceleyin":
+    "Examinez l’intention de recherche et les sujets couverts par la page",
+  "Gösterimler ölçüldü; düşük sıra tek başına sayfayı silmek veya birleştirmek için kanıt değildir.":
+    "Les impressions ont été mesurées ; une mauvaise position ne suffit pas à justifier la suppression ou la fusion d’une page.",
+  "Birleştirmeyi yalnızca sayfaların aynı ihtiyacı karşıladığını doğrularsanız değerlendirin.":
+    "N’envisagez une fusion qu’après avoir confirmé que les pages répondent au même besoin.",
+  "Önceliği ölçülen sorgulara göre belirleyin; düşük tahmin tek başına içerik kaldırma gerekçesi değildir.":
+    "Priorisez selon les requêtes mesurées ; une estimation faible ne justifie pas à elle seule de supprimer du contenu.",
+  "Ortalama {position}. sıra; {impressions} gösterim, {clicks} tıklama ölçüldü. Hesaplanabilen aramalarda 30 güne ölçekli en fazla +{gain} tıklama (üst sınır); gerçekleşme sözü değildir.":
+    "Position moyenne {position} ; {impressions} impressions et {clicks} clics mesurés. Jusqu’à +{gain} clics ramenés à 30 jours pour les requêtes évaluables (limite haute), sans garantie de résultat.",
+  "Hesaplanan kazanç yalnızca alınan ve tanımlanabilen aramaları kapsar; gizli sorguların payı bilinmiyor. Panelin sorgu tahminiyle toplanmaz.":
+    "L’estimation couvre uniquement les requêtes reçues et identifiables ; la part des requêtes masquées est inconnue. Ne l’ajoutez pas à l’estimation par requête du tableau de bord.",
+  "Ölçülen sıfır: {zero}; yetersiz gösterim: {small}; eksik hedef oranı: {curve}; eksik sorgu eşleşmesi: {pairs}.":
+    "Zéro mesuré : {zero} ; impressions insuffisantes : {small} ; taux cible absent : {curve} ; correspondances de requêtes absentes : {pairs}.",
+  "Search Console satır sınırına ulaşıldı; toplamlar tüm siteyi kapsamaz.":
+    "Limite de lignes Search Console atteinte ; les totaux ne couvrent pas tout le site.",
+  "Aynı takvim günleri farklı saat dilimlerinde aynı an aralığı değildir. Analytics, tüm Organic Search kanalını kapsar.":
+    "Les mêmes jours dans des fuseaux horaires différents ne couvrent pas les mêmes instants. Analytics couvre tout le canal Organic Search.",
+  "Analytics kotası doldu. Bir süre bekleyip Yenile’ye basın.":
+    "Quota Analytics épuisé. Patientez, puis cliquez sur Actualiser.",
+  "Analytics izni veya mülk erişimi yok. Bağlantıları ayarla ekranında erişimi doğrulayın.":
+    "Autorisation Analytics ou accès à la propriété manquant. Vérifiez l’accès dans les paramètres de connexion.",
+  "Analytics yanıtı okunamadı. İnternet bağlantısını kontrol edip Yenile’ye basın.":
+    "La réponse Analytics n’a pas pu être lue. Vérifiez votre connexion Internet et cliquez sur Actualiser.",
+  "{start} – {end} aralığında bu mülk için sayfa satırı dönmedi. Bu, hiç gösterim olmadığı anlamına gelmez; Arama performansında mülkü kontrol edin veya dönemi genişletin.":
+    "Aucune ligne de page reçue pour cette propriété du {start} au {end}. Cela ne signifie pas qu’il n’y a eu aucune impression ; vérifiez la propriété dans Performance de recherche ou élargissez la période.",
+  "{start} – {end} aralığında hesaplanabilen {count} sayfada ek kazanç hesaplanmadı. Bu, yapılacak iş olmadığı anlamına gelmez.":
+    "Aucun gain supplémentaire calculé pour {count} pages évaluables du {start} au {end}. Cela ne signifie pas qu’il n’y a rien à faire.",
+  "30 güne ölçekli üst sınır; çubuklar en büyük iş türüne göredir. Bir sayfa birden fazla işte sayılabilir. Seçim tüm hesaplanabilir sayfalara uygulanır.":
+    "Limite haute ramenée à 30 jours ; les barres sont relatives à la catégorie la plus importante. Une page peut compter dans plusieurs catégories. La sélection s’applique à toutes les pages évaluables.",
+  "Hesaplanamayan kapsam": "Périmètre non calculable",
+  Sırala: "Trier",
+  "Bazı sorgular veya hedef oranları eksik. Mülkü Arama performansında kontrol edin veya dönemi 90 güne genişletin.":
+    "Certaines requêtes ou certains taux cibles manquent. Vérifiez la propriété dans Performance de recherche ou élargissez la période à 90 jours.",
 };

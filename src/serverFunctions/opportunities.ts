@@ -4,9 +4,14 @@ import { SearchOpportunityService } from "@/server/features/ga4/services/SearchO
 import { GscNotConnectedError } from "@/server/lib/gscErrors";
 import { requireProjectContext } from "@/serverFunctions/middleware";
 import { DEFAULT_WINDOW_DAYS } from "@/shared/dataFreshness";
+import { WORK_KINDS } from "@/shared/pageOpportunities";
 
 const schema = z.object({
   projectId: z.string().min(1),
+  work: z.enum(WORK_KINDS).optional(),
+  quick: z.enum(["converts", "no_conversions"]).optional(),
+  startDate: z.iso.date().optional(),
+  endDate: z.iso.date().optional(),
   // Matches the ceiling SearchOpportunityService enforces; 250 here only
   // moved the failure from a validation message to a thrown error.
   limit: z.number().int().min(1).max(100).default(50),
@@ -38,6 +43,10 @@ export const getSearchOpportunities = createServerFn({ method: "POST" })
         projectId: context.projectId,
         limit: data.limit,
         windowDays: data.windowDays,
+        work: data.work,
+        quick: data.quick,
+        startDate: data.startDate,
+        endDate: data.endDate,
       });
       return { status: "ok" as const, report };
     } catch (error) {

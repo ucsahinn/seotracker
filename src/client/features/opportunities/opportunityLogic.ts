@@ -23,7 +23,7 @@ export const WORK_COPY = {
     todo: [
       "Başlığı, aşağıdaki aramaların ilk kelimelerde karşılık bulacağı biçimde yeniden yazın.",
       "Meta açıklamayı, tıklamaya değeceğini gösteren tek bir somut vaatle güncelleyin.",
-      "İki hafta sonra bu ekrana dönüp tahmini kazancın küçülüp küçülmediğine bakın.",
+      "Değişikliği not edin; aynı kapsamlı dönemlerde ölçülen tıklama, tıklama oranı ve sırayı Arama performansında karşılaştırın.",
     ],
   },
   page1: {
@@ -52,14 +52,14 @@ export const WORK_COPY = {
   },
   deep: {
     label: "Derinde, 21. sıradan sonra",
-    action: "Birleştirin ya da bırakın",
-    hint: "Talep var ama sayfa çok geride. Genişletmek mi, başka bir sayfayla birleştirmek mi, bırakmak mı, karar verin.",
+    action: "Arama niyetini ve sayfanın kapsamını inceleyin",
+    hint: "Gösterimler ölçüldü; düşük sıra tek başına sayfayı silmek veya birleştirmek için kanıt değildir.",
     target: "2. sayfa, 11-20. sıra",
     shade: 34,
     todo: [
-      "Aynı konuya değinen başka bir sayfanız varsa ikisini birleştirip eskisinden yönlendirme kurun.",
+      "Birleştirmeyi yalnızca sayfaların aynı ihtiyacı karşıladığını doğrularsanız değerlendirin.",
       "Sayfa bu konunun cevabıysa eksik bölümleri yazın ve iç bağlantı verin.",
-      "Tahmini kazanç küçükse sayfayı bırakın; emeği daha yakın fırsatlara harcayın.",
+      "Önceliği ölçülen sorgulara göre belirleyin; düşük tahmin tek başına içerik kaldırma gerekçesi değildir.",
     ],
   },
 } as const satisfies Record<
@@ -74,8 +74,8 @@ export const WORK_COPY = {
   }
 >;
 
-export function workColor(work: WorkKind): string {
-  return `color-mix(in oklab, var(--color-primary) ${WORK_COPY[work].shade}%, transparent)`;
+export function workColor(_work: WorkKind): string {
+  return "var(--color-primary)";
 }
 
 // Turkish, translated with t() where the chips render.
@@ -86,7 +86,8 @@ export const QUICK_COPY = {
 
 export function pathOf(url: string): string {
   try {
-    return new URL(url).pathname || "/";
+    const parsed = new URL(url);
+    return `${parsed.host}${parsed.pathname}${parsed.search}`;
   } catch {
     return url;
   }
@@ -95,7 +96,7 @@ export function pathOf(url: string): string {
 /** Why this page is on the list and what it is worth, in one sentence. */
 export function explainRow(row: OpportunityRow): string {
   return t(
-    "Ortalama {position}. sırada; {impressions} gösterimden {clicks} tıklama aldı. Aşağıdaki aramalar sitenizin kendi tıklama oranlarına ulaşırsa ayda yaklaşık {gain} tıklama daha gelir.",
+    "Ortalama {position}. sıra; {impressions} gösterim, {clicks} tıklama ölçüldü. Hesaplanabilen aramalarda 30 güne ölçekli en fazla +{gain} tıklama (üst sınır); gerçekleşme sözü değildir.",
     {
       position: formatDecimal(row.position),
       impressions: formatCount(row.impressions),
@@ -108,12 +109,17 @@ export function explainRow(row: OpportunityRow): string {
 /** The Analytics side of a row, worded; null when Analytics has no row for it. */
 export function valueText(row: OpportunityRow): string | null {
   if (!row.ga4) return null;
-  const sessions = formatCount(row.ga4.sessions);
+  const sessions =
+    row.ga4.sessions === null ? "–" : formatCount(row.ga4.sessions);
   switch (row.value) {
     case "converts":
       return t("{events} anahtar olay · dönüşen oturum oranı {rate}", {
-        events: formatCount(row.ga4.keyEvents),
-        rate: formatPercent(row.ga4.sessionKeyEventRate),
+        events:
+          row.ga4.keyEvents === null ? "–" : formatCount(row.ga4.keyEvents),
+        rate:
+          row.ga4.sessionKeyEventRate === null
+            ? "–"
+            : formatPercent(row.ga4.sessionKeyEventRate),
       });
     case "no_conversions":
       return t("{sessions} oturum, hiç dönüşüm yok", { sessions });
@@ -122,16 +128,6 @@ export function valueText(row: OpportunityRow): string | null {
     default:
       return t("{sessions} oturum", { sessions });
   }
-}
-
-/**
- * Extra key events a month if the extra clicks convert like today's organic
- * sessions do. Only for a page that clears the session floor; a click is
- * roughly a session, so it is labelled an estimate where it shows.
- */
-export function extraConversions(row: OpportunityRow): number | null {
-  if (row.value !== "converts" || !row.ga4) return null;
-  return row.gainPerMonth * row.ga4.sessionKeyEventRate;
 }
 
 export function quickCounts(rows: OpportunityRow[]): Record<QuickId, number> {

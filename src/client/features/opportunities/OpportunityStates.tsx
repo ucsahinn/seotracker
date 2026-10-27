@@ -59,7 +59,7 @@ export function Intro({ collapsedByDefault }: { collapsedByDefault: boolean }) {
         {t("Burası ne işe yarar?")}
         <ChevronDown
           aria-hidden
-          className={`size-4 text-muted transition-transform ${open ? "rotate-180" : ""}`}
+          className={`size-4 text-muted transition-transform motion-reduce:transition-none ${open ? "rotate-180" : ""}`}
         />
       </button>
       {open ? (
@@ -108,11 +108,13 @@ export function NoOpportunities({
   dateRange,
   pagesConsidered,
   curveInsufficient,
+  unknownPages = 0,
 }: {
   dateRange: { startDate: string; endDate: string };
   pagesConsidered: number;
   /** The site has too few queries per position band for any estimate. */
   curveInsufficient: boolean;
+  unknownPages?: number;
 }) {
   const period = {
     start: formatDate(dateRange.startDate),
@@ -125,9 +127,19 @@ export function NoOpportunities({
         icon={Target}
         title={t("Search Console bu dönem için veri vermedi")}
         description={t(
-          "{start} – {end} aralığında hiçbir sayfanız arama sonuçlarında görünmedi. Mülkü yeni bağladıysanız Google'ın veriyi doldurması birkaç gün sürer.",
+          "{start} – {end} aralığında bu mülk için sayfa satırı dönmedi. Bu, hiç gösterim olmadığı anlamına gelmez; Arama performansında mülkü kontrol edin veya dönemi genişletin.",
           period,
         )}
+      />
+    );
+  }
+
+  if (unknownPages > 0) {
+    return (
+      <EmptyState
+        icon={Target}
+        title={t("Hesaplanamayan kapsam")}
+        description={`${period.start} – ${period.end}. ${t("Bazı sorgular veya hedef oranları eksik. Mülkü Arama performansında kontrol edin veya dönemi 90 güne genişletin.")}`}
       />
     );
   }
@@ -150,7 +162,7 @@ export function NoOpportunities({
       icon={Target}
       title={t("Bu dönemde kazanç beklenen sayfa yok")}
       description={t(
-        "{start} – {end} aralığında {count} sayfanın hepsi ya zaten iyi sırada ve normal tıklanıyor ya da tahmin için çok az gösterim aldı.",
+        "{start} – {end} aralığında hesaplanabilen {count} sayfada ek kazanç hesaplanmadı. Bu, yapılacak iş olmadığı anlamına gelmez.",
         { ...period, count: pagesConsidered },
       )}
     />

@@ -1,3 +1,4 @@
+import { completeSearchSeries } from "./completeSearchSeries";
 /* eslint-disable max-lines */
 import { sort, sortBy } from "remeda";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
@@ -8,7 +9,6 @@ import {
 import { isExpectedConnectionFailure } from "@/server/features/gsc/connectionFailure";
 import { buildGscFilters } from "@/server/features/gsc/performanceFilters";
 import {
-  sixteenMonthFloor,
   type GscDimension,
   type GscPerformanceFilter,
 } from "@/server/features/gsc/searchAnalytics";
@@ -19,7 +19,6 @@ import {
   dailyPoints,
   hiddenQueries,
   periodPoints,
-  resolveSearchWindow,
   rowsByDate,
   withSpan,
   toMetricRows,
@@ -176,28 +175,14 @@ async function resolveSeries(
   window: DateSpan | undefined,
   fresh?: boolean,
 ): Promise<{ window: Window; series: GscAnalyticsResult }> {
-  const today = gscToday();
-  const floorDate = sixteenMonthFloor(new Date(`${today}T12:00:00Z`));
-  const series = await ask(
-    { projectId, filters, fresh },
-    { startDate: floorDate, endDate: addIsoDays(today, -1) },
-    ["date"],
-    filterSet(filters).filters,
-  );
-  let lastDataDate: string | null = null;
-  for (const row of series.rows) {
-    const date = row.keys?.[0];
-    if (date && (lastDataDate === null || date > lastDataDate)) {
-      lastDataDate = date;
-    }
-  }
-  const resolved = resolveSearchWindow({
+  const { series, window: resolved } = await completeSearchSeries({
+    projectId,
     range: filters.dateRange,
-    today,
-    floorDate,
-    firstIncompleteDate: series.firstIncompleteDate,
-    lastDataDate,
+    filters: filterSet(filters).filters,
+    searchType: filters.searchType,
+    fresh,
   });
+  const floorDate = resolved.floorDate;
   if (!window) return { window: resolved, series };
   /*
    * A window handed back by the view keeps the table on the view's days. It

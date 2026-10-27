@@ -1,19 +1,19 @@
+import { WindowPicker, LimitPicker } from "./OpportunityPickers";
+import { strikingMethodText } from "@/shared/strikingEstimateCopy";
 import { t } from "@/shared/i18n";
 import { useQuery } from "@tanstack/react-query";
-import { useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Intro,
   NoOpportunities,
   NotReady,
 } from "@/client/features/opportunities/OpportunityStates";
-import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
 import { refreshState } from "@/client/lib/refreshState";
 import { OpportunitiesTable } from "@/client/features/opportunities/OpportunitiesTable";
 import type { OpportunityReport } from "@/client/features/opportunities/report";
 import { formatCount, formatDate, formatPercent } from "@/client/lib/format";
-import { GSC_DATA_LAG_DAYS } from "@/shared/dataFreshness";
 import type { WorkKind } from "@/shared/pageOpportunities";
 import { getSearchOpportunities } from "@/serverFunctions/opportunities";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
@@ -21,10 +21,7 @@ import { OpportunityWorkBars } from "@/client/features/opportunities/Opportunity
 import { OpportunityMethod } from "@/client/features/opportunities/OpportunityMethod";
 import { OpportunityQuickFilters } from "@/client/features/opportunities/OpportunityQuickFilters";
 import {
-  applyFilters,
-  extraConversions,
   pathOf,
-  quickCounts,
   usefulChips,
   WORK_COPY,
   type QuickId,
@@ -62,27 +59,62 @@ export function OpportunitiesPage({
   projectId,
   windowDays,
   limit,
+  work = null,
+  quick = null,
   onViewChange,
 }: {
   projectId: string;
   /** Held in the URL by the route, so a reload or a shared link keeps it. */
   windowDays: WindowDays;
   limit: (typeof LIMITS)[number];
+  work?: WorkKind | null;
+  quick?: QuickId | null;
   onViewChange: (next: {
     windowDays?: WindowDays;
     limit?: (typeof LIMITS)[number];
+    work?: WorkKind;
+    quick?: QuickId;
   }) => void;
 }) {
   const query = useQuery({
-    queryKey: ["searchOpportunities", projectId, limit, windowDays],
+    queryKey: [
+      "searchOpportunities",
+      projectId,
+      limit,
+      windowDays,
+      work,
+      quick,
+    ],
     queryFn: () =>
-      getSearchOpportunities({ data: { projectId, limit, windowDays } }),
+      getSearchOpportunities({
+        data: {
+          projectId,
+          limit,
+          windowDays,
+          work: work ?? undefined,
+          quick: quick ?? undefined,
+        },
+      }),
     retry: false,
     // Keep the previous rows (and the pickers mounted) while a new window or
     // limit loads; never across projects.
     placeholderData: (previous, previousQuery) =>
       previousQuery?.queryKey[1] === projectId ? previous : undefined,
   });
+
+  const [previous, setPrevious] = useState<{
+    projectId: string;
+    data: NonNullable<typeof query.data>;
+  } | null>(null);
+  useEffect(() => {
+    if (query.data && !query.isPlaceholderData)
+      setPrevious({ projectId, data: query.data });
+  }, [projectId, query.data, query.isPlaceholderData]);
+  const data =
+    query.data ??
+    (query.isError && previous?.projectId === projectId
+      ? previous.data
+      : undefined);
 
   return (
     <PageShell>
@@ -93,7 +125,7 @@ export function OpportunitiesPage({
         )}
         actions={
           <PageActions>
-            {query.data?.status === "ok" ? (
+            {data?.status === "ok" ? (
               <>
                 <WindowPicker
                   windowDays={windowDays}
@@ -110,19 +142,13 @@ export function OpportunitiesPage({
         }
       />
 
-      <Intro
-        collapsedByDefault={
-          query.data !== undefined && query.data.status !== "ok"
-        }
-      />
-
       {query.isPending ? (
         <div className="space-y-4" aria-busy>
           <div className="skeleton h-[104px]" />
           <div className="skeleton h-48" />
           <div className="skeleton h-96" />
         </div>
-      ) : query.isError ? (
+      ) : query.isError && !data ? (
         <div className="rounded-box border border-base-300 bg-base-100">
           <QueryErrorState
             error={query.error}
@@ -130,100 +156,35 @@ export function OpportunitiesPage({
             title={t("Fırsatlar yüklenemedi")}
           />
         </div>
-      ) : query.data.status === "ok" ? (
-        <Report
-          data={query.data.report}
-          projectId={projectId}
-          stale={query.isPlaceholderData}
-        />
+      ) : data?.status === "ok" ? (
+        <>
+          {query.isError ? (
+            <QueryErrorState
+              error={query.error}
+              onRetry={() => void query.refetch()}
+              title={t("Fırsatlar yüklenemedi")}
+            />
+          ) : null}
+          <Report
+            data={data.report}
+            projectId={projectId}
+            stale={query.isPlaceholderData || query.isError}
+            onResetFilters={() =>
+              onViewChange({ work: undefined, quick: undefined })
+            }
+            work={work}
+            quick={quick}
+            onWorkChange={(next) => onViewChange({ work: next ?? undefined })}
+            onQuickChange={(next) => onViewChange({ quick: next ?? undefined })}
+          />
+        </>
       ) : (
-        <NotReady projectId={projectId} />
+        <>
+          <NotReady projectId={projectId} />
+          <Intro collapsedByDefault />
+        </>
       )}
     </PageShell>
-  );
-}
-
-function WindowPicker({
-  windowDays,
-  onChange,
-}: {
-  windowDays: WindowDays;
-  onChange: (days: WindowDays) => void;
-}) {
-  return (
-    <div className="flex items-center gap-2 text-xs text-muted">
-      <label htmlFor="opportunity-window">{t("Dönem")}</label>
-      <select
-        id="opportunity-window"
-        className="select select-bordered select-sm w-32"
-        value={windowDays}
-        onChange={(event) => {
-          const next = WINDOWS.find(
-            (option) => String(option.days) === event.target.value,
-          );
-          if (next) onChange(next.days);
-        }}
-      >
-        {WINDOWS.map((option) => (
-          <option key={option.days} value={option.days}>
-            {t(option.label)}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-}
-
-function LimitPicker({
-  limit,
-  onChange,
-}: {
-  limit: (typeof LIMITS)[number];
-  onChange: (limit: (typeof LIMITS)[number]) => void;
-}) {
-  return (
-    <div className="flex items-center gap-2 text-xs text-muted">
-      <label htmlFor="opportunity-limit">{t("Satır sayısı")}</label>
-      <select
-        id="opportunity-limit"
-        className="select select-bordered select-sm w-24"
-        value={limit}
-        onChange={(event) => {
-          const next = LIMITS.find(
-            (option) => String(option) === event.target.value,
-          );
-          if (next) onChange(next);
-        }}
-      >
-        {LIMITS.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-}
-
-/** A tile that does something: a button, so keyboard and touch reach it. */
-function TileButton({
-  onClick,
-  disabled,
-  children,
-}: {
-  onClick: () => void;
-  disabled?: boolean;
-  children: ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      className="block h-full w-full text-left transition-colors enabled:hover:bg-base-200/60 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary disabled:cursor-default"
-    >
-      {children}
-    </button>
   );
 }
 
@@ -231,22 +192,30 @@ function Report({
   data,
   projectId,
   stale,
+  work,
+  quick,
+  onResetFilters,
+  onWorkChange: setWork,
+  onQuickChange: setQuick,
 }: {
   data: OpportunityReport;
   projectId: string;
   /** A new window or row count is loading behind these rows. */
   stale: boolean;
+  work: WorkKind | null;
+  quick: QuickId | null;
+  onResetFilters: () => void;
+  onWorkChange: (work: WorkKind | null) => void;
+  onQuickChange: (quick: QuickId | null) => void;
 }) {
-  const [work, setWork] = useState<WorkKind | null>(null);
-  const [quick, setQuick] = useState<QuickId | null>(null);
   const [openPage, setOpenPage] = useState<string | null>(null);
   const filtersRef = useRef<HTMLDivElement>(null);
 
-  const shown = applyFilters(data.rows, work, quick);
+  const shown = data.rows;
   const filtered = work !== null || quick !== null;
-  const counts = quickCounts(data.rows);
-  const chips = usefulChips(counts, data.rows.length);
-  const top = data.rows[0] ?? null;
+  const counts = data.valueCounts;
+  const chips = usefulChips(counts, data.totalCandidateRows);
+  const top = data.topRecommendation;
   const { totals } = data;
   const range = data.request.dateRange;
   const period = t("{start} – {end}", {
@@ -254,119 +223,111 @@ function Report({
     end: formatDate(range.endDate),
   });
   const analyticsOn = data.analytics.state === "connected";
-  const converting = data.rows.filter((row) => row.value === "converts");
-  const conversions = converting.reduce(
-    (sum, row) => sum + (extraConversions(row) ?? 0),
-    0,
-  );
 
-  if (data.rows.length === 0) {
+  if (data.totalCandidateRows === 0) {
     return (
       <div className="rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
         <NoOpportunities
           dateRange={range}
           pagesConsidered={totals.pagesConsidered}
           curveInsufficient={data.method.curveInsufficient}
+          unknownPages={totals.unknownPages}
         />
+        <OpportunityMethod data={data} projectId={projectId} />
       </div>
     );
   }
 
   return (
-    <div
-      className={`flex flex-col gap-6 transition-opacity ${
-        stale ? "opacity-60" : ""
-      }`}
-      aria-busy={stale}
-    >
+    <div className="flex flex-col gap-6" aria-busy={stale}>
       {/* The window, once, above everything it covers. */}
       <p className="text-xs text-muted">
+        {period} · {data.request.searchConsoleTimeZone} ·{" "}
         {t(
-          "Son {days} gün · {period}. Search Console {lag} gün geriden gelir; Analytics oturumları da aynı günlerden okunur. Tahminler 30 güne ölçeklenir.",
-          { days: data.request.days, period, lag: GSC_DATA_LAG_DAYS },
+          data.request.completeness.incompleteSource === "google"
+            ? "Tam günler Google tarafından doğrulandı"
+            : "Tam gün sınırı veri gecikmesine göre varsayıldı",
         )}
+        {stale ? (
+          <span role="status">
+            {" "}
+            · {t("Önceki sonuç gösteriliyor; seçili dönem henüz yüklenmedi.")}
+          </span>
+        ) : null}
       </p>
 
-      <MetricRow>
-        <MetricTile
-          label={t("En fazla kazanılabilecek tıklama / ay (üst sınır)")}
-          value={plusCount(totals.gainPerMonth)}
-          animateTo={{ value: totals.gainPerMonth, format: plusCount }}
-          hint={
-            totals.clicksPerMonth > 0
-              ? t(
-                  "{count} sayfada · bu sayfalar bugün ayda {clicks} tıklama alıyor, kazanç bunun {share} kadarı",
-                  {
-                    count: data.totalCandidateRows,
-                    clicks: formatCount(totals.clicksPerMonth),
-                    share: formatPercent(
+      <section className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4">
+        <h2 className="text-sm font-medium">{t("Önce şuna bakın")}</h2>
+        {top ? (
+          <button
+            type="button"
+            aria-label={t("Önce şuna bakın")}
+            className="block min-h-11 w-full break-all text-left text-lg font-semibold underline decoration-primary underline-offset-4"
+            onClick={() => {
+              onResetFilters();
+              setOpenPage(top.page);
+            }}
+          >
+            {pathOf(top.page)}
+          </button>
+        ) : null}
+        {top ? (
+          <p className="text-sm">
+            {t(WORK_COPY[top.work].action)} ·{" "}
+            {t("En fazla +{gain} tıklama / 30 gün (üst sınır)", {
+              gain: formatCount(top.gainPerMonth),
+            })}
+          </p>
+        ) : null}
+        <p className="text-sm font-semibold">
+          {t("En fazla kazanılabilecek tıklama / ay (üst sınır)")}:{" "}
+          {totals.gainPerMonth === null ? "–" : plusCount(totals.gainPerMonth)}
+        </p>
+        <p className="text-xs text-muted">
+          {t(
+            "{count} sayfada · bu sayfaların tüm tıklamaları 30 güne ölçekli: {clicks}; üst sınırın bu tabana oranı {share}",
+            {
+              count: data.totalCandidateRows,
+              clicks: formatCount(totals.clicksPerMonth),
+              share:
+                totals.clicksPerMonth > 0 && totals.gainPerMonth !== null
+                  ? formatPercent(
                       totals.gainPerMonth / totals.clicksPerMonth,
                       0,
-                    ),
-                  },
-                )
-              : t("{count} sayfada", { count: data.totalCandidateRows })
-          }
-        />
-        <TileButton
-          disabled={top === null}
-          onClick={() => {
-            if (top === null) return;
-            setWork(null);
-            setQuick(null);
-            setOpenPage(top.page);
-          }}
-        >
-          <MetricTile
-            label={t("Önce şuna bakın")}
-            value={top ? pathOf(top.page) : null}
-            hint={
-              top
-                ? t("+{gain} tıklama/ay · {action}", {
-                    gain: formatCount(top.gainPerMonth),
-                    action: t(WORK_COPY[top.work].action),
-                  })
-                : undefined
-            }
-          />
-        </TileButton>
-        <TileButton
-          disabled={!analyticsOn || counts.converts === 0}
-          onClick={() => {
-            setWork(null);
-            setQuick("converts");
-          }}
-        >
-          <MetricTile
-            label={t("Dönüşüm getiren sayfalar")}
-            value={analyticsOn ? formatCount(counts.converts) : null}
-            animateTo={
-              analyticsOn
-                ? { value: counts.converts, format: formatCount }
-                : undefined
-            }
-            hint={
-              !analyticsOn
-                ? t("Analytics bağlanınca görünür")
-                : counts.converts === 0
-                  ? t("Listedeki sayfalardan dönüşüm gelmiyor")
-                  : t(
-                      "Kazanç gelirse ayda yaklaşık +{count} anahtar olay (tahmin) · listele",
-                      { count: Math.round(conversions) },
                     )
-            }
-          />
-        </TileButton>
-        <MetricTile
-          label={t("Kazanç beklenmeyen sayfalar")}
-          value={formatCount(totals.noGainPages)}
-          animateTo={{ value: totals.noGainPages, format: formatCount }}
-          hint={t(
-            "Zaten iyi sıradalar ve normal tıklanıyorlar ya da çok az gösterim aldılar; listede yoklar.",
+                  : "–",
+            },
           )}
-        />
-      </MetricRow>
+        </p>
+        <p className="text-xs text-muted">
+          {strikingMethodText(data.method.brandSource, data.truncated.gsc)}
+        </p>
+        <p className="text-xs text-muted">
+          {t("Hesaplanamayan kapsam")}: {formatCount(totals.unknownPages)}.{" "}
+          {t(
+            "Eksik sorgu, yetersiz gösterim veya eksik hedef oranı; kazanç yok anlamına gelmez.",
+          )}
+        </p>
+        <p className="text-xs text-muted">
+          {t("Dönüşüm getiren sayfalar")}:{" "}
+          {analyticsOn ? formatCount(counts.converts) : "–"} ·{" "}
+          {t(
+            !analyticsOn
+              ? data.analytics.state === "not_connected"
+                ? "Analytics bağlanınca görünür"
+                : "Analytics bu kez okunamadı; aşağıdaki kaynak notunu kontrol edin."
+              : data.reportMetadata?.hasLimitedData
+                ? "Analytics verisi sınırlı; eksik ölçümler sıfır değildir ve dönüşüm yorumu yapılamayabilir."
+                : "Hesaplanabilen tüm sayfalardaki ölçülmüş dönüşüm sinyali · listele",
+          )}
+        </p>
+      </section>
 
+      <p className="text-xs text-muted">
+        {t(
+          "Hesaplanan kazanç yalnızca alınan ve tanımlanabilen aramaları kapsar; gizli sorguların payı bilinmiyor. Panelin sorgu tahminiyle toplanmaz.",
+        )}
+      </p>
       <OpportunityWorkBars
         byWork={totals.byWork}
         selected={work}
@@ -379,14 +340,27 @@ function Report({
           counts={counts}
           selected={quick}
           onSelect={setQuick}
-          ref={filtersRef}
         />
       ) : null}
+
+      <h2
+        ref={filtersRef}
+        tabIndex={-1}
+        className="text-sm font-semibold"
+        aria-live="polite"
+      >
+        {t("İş listesi: {shown} / {total} eşleşen sayfa", {
+          shown: formatCount(data.rowCount),
+          total: formatCount(data.filteredCount),
+        })}
+      </h2>
 
       <OpportunitiesTable
         projectId={projectId}
         days={data.request.days}
         rows={shown}
+        report={data}
+        recommendation={top}
         openPage={openPage}
         onOpenPageChange={setOpenPage}
         onReset={
@@ -394,23 +368,14 @@ function Report({
             ? () => {
                 // The button being clicked is about to unmount.
                 filtersRef.current?.focus();
-                setWork(null);
-                setQuick(null);
+                onResetFilters();
               }
             : undefined
         }
       />
 
-      {data.truncated.candidates ? (
-        <p className="text-xs text-muted">
-          {t(
-            "Kazanç beklenen {total} sayfanın en büyük {count} tanesi listeleniyor; üstteki toplamlar hepsini kapsar.",
-            { total: data.totalCandidateRows, count: data.rowCount },
-          )}
-        </p>
-      ) : null}
-
       <OpportunityMethod data={data} projectId={projectId} />
+      <Intro collapsedByDefault />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   applyFilters,
-  extraConversions,
+  valueText,
   quickCounts,
   usefulChips,
 } from "./opportunityLogic";
@@ -52,15 +52,12 @@ describe("applyFilters", () => {
   });
 });
 
-describe("extraConversions", () => {
-  it("estimates only for a page that clears the session floor", () => {
-    expect(
-      extraConversions(makeRow({ gainPerMonth: 200, value: "converts", ga4 })),
-    ).toBe(10);
-    expect(
-      extraConversions(
-        makeRow({ gainPerMonth: 200, value: "too_little_traffic", ga4 }),
-      ),
-    ).toBeNull();
+describe("observed Analytics value", () => {
+  it("keeps observed events and the converting-session rate without projecting click gains into events", () => {
+    const text = valueText(
+      makeRow({ gainPerMonth: 200, value: "converts", ga4 }),
+    );
+    expect(text).toContain("10");
+    expect(text).not.toContain("tahmin");
   });
 });
