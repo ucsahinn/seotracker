@@ -34,7 +34,7 @@ const routes = [
   ["opportunities", opportunities, { windowDays: 28, limit: 50 }],
   ["rankings", rankings, { days: 90 }],
   ["reports detail", report, {}],
-  ["search-performance", searchPerformance, { tab: "striking" }],
+  ["search-performance", searchPerformance, { tab: "todo" }],
 ] as const;
 
 describe("route search schemas", () => {
@@ -50,4 +50,14 @@ describe("route search schemas", () => {
       expect(parsed).not.toHaveProperty("limit", hostile.limit);
     },
   );
+});
+
+// Links and bookmarks from before the tab redesign still land on the list.
+it("maps old Search performance tabs onto the tabs that hold them now", () => {
+  expect(parseSearch(searchPerformance, { tab: "striking" })).toMatchObject({
+    tab: "opportunities",
+  });
+  expect(
+    parseSearch(searchPerformance, { tab: "cannibalization" }),
+  ).toMatchObject({ tab: "overlaps" });
 });

@@ -5,7 +5,6 @@ import { z } from "zod";
 import { shiftGa4Date } from "@/server/features/ga4/services/Ga4Dates";
 import { Ga4OrganicOverviewService } from "@/server/features/ga4/services/Ga4OrganicOverviewService";
 import { Ga4Service } from "@/server/features/ga4/services/Ga4Service";
-import { AppError } from "@/server/lib/errors";
 import { Ga4ReportError } from "@/server/lib/ga4Errors";
 import { hasSelfHostedGoogleOAuthConfig } from "@/server/features/google/oauth-config";
 import { hasServiceAccount } from "@/server/lib/googleServiceAccountToken";
@@ -153,26 +152,22 @@ export const getGa4DashboardReport = createServerFn({ method: "POST" })
         ),
       };
     } catch (error) {
-      // Not connected, a dead grant, or a lost/deleted property: the dashboard
-      // card falls back to the connect card instead of retrying a report that
-      // can never succeed. Other report errors are real faults.
+      /*
+       * Only "never connected" falls back to the connect card. A dead grant,
+       * a lost property or a missing permission used to do the same, which
+       * showed a sales pitch to someone whose connection had broken and
+       * never said why. Those now reach the card as an error whose sentence
+       * (googleAppError) names the cause and the fix.
+       */
       if (
         error instanceof Ga4ReportError &&
-        (error.code === "ga4_not_connected" ||
-          error.code === "ga4_reconnect_required" ||
-          error.code === "ga4_property_inaccessible")
+        error.code === "ga4_not_connected"
       ) {
         return { connected: false as const };
       }
-      // Google's per-property reporting quota is exhausted: an external,
-      // transient condition, not an app fault. Surface it as RATE_LIMITED so
-      // error tracking skips it — the card keeps its own "try again" copy.
-      if (
-        error instanceof Ga4ReportError &&
-        error.code === "ga4_quota_exhausted"
-      ) {
-        throw new AppError("RATE_LIMITED");
-      }
+      // Everything else (quota, network, a Google 5xx) is mapped by the error
+      // middleware's googleAppError into RATE_LIMITED / UPSTREAM_UNAVAILABLE
+      // with a sentence naming the cause and the fix.
       throw error;
     }
   });

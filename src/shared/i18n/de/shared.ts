@@ -18,8 +18,8 @@ export const deShared: Catalog = {
     "Indexiert, nicht in der Sitemap eingereicht",
   "Dizine alındı, site haritasına eklemeyi düşünün":
     "Indexiert; fügen Sie die Seite gegebenenfalls einer Sitemap hinzu",
-  "Tarandı, şu an dizine alınmadı": "Gecrawlt – derzeit nicht indexiert",
-  "Keşfedildi, henüz taranmadı": "Entdeckt – derzeit nicht gecrawlt",
+  "Tarandı, şu an dizine alınmadı": "Gecrawlt – zurzeit nicht indexiert",
+  "Keşfedildi, henüz taranmadı": "Gefunden – zurzeit nicht indexiert",
   "Yinelenen içerik, canonical belirtilmemiş":
     "Duplikat ohne ausgewählte Canonical-URL",
   "Yinelenen içerik, Google başka bir canonical seçti":
@@ -47,7 +47,7 @@ export const deShared: Catalog = {
     "Aufrufe und Verweildauer auf der Seite.",
   "Trafik kaynakları": "Traffic-Akquisition",
   "Ziyaretçiler nereden geliyor.": "Woher Ihre Besucher kommen.",
-  "Anahtar olaylar": "Wichtige Ereignisse",
+  "Anahtar olaylar": "Schlüsselereignisse",
   "Dönüşüm saydığınız olaylar ve kaç kişi tetikledi.":
     "Die Ereignisse, die als Conversions zählen, und wie oft sie ausgelöst wurden.",
   "E-ticaret": "E-Commerce",
@@ -78,17 +78,17 @@ export const deShared: Catalog = {
   Oturum: "Sitzungen",
   "Aktif kullanıcı": "Aktive Nutzer",
   Kullanıcı: "Nutzer",
-  "Etkileşimli oturum": "Interagierende Sitzungen",
+  "Etkileşimli oturum": "Sitzungen mit Interaktionen",
   "Etkileşim oranı": "Interaktionsrate",
-  "Anahtar olay": "Wichtiges Ereignis",
-  "Olay oranı": "Rate wichtiger Ereignisse",
+  "Anahtar olay": "Schlüsselereignisse",
+  "Olay oranı": "Schlüsselereignisrate",
   "Satın alma işlemleri": "Transaktionen",
   Gelir: "Umsatz",
   Görüntülenme: "Aufrufe",
   "Etkileşim süresi": "Interaktionsdauer",
   "Ürün görüntüleme": "Angesehene Artikel",
   "Sepete eklenen ürün": "In den Warenkorb gelegte Artikel",
-  "Arama sayısı": "Suchanfragen",
+  "Arama sayısı": "Suchvorgänge",
   "Satılan ürün": "Gekaufte Artikel",
   "Ürün geliri": "Artikelumsatz",
 };

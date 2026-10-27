@@ -45,6 +45,8 @@ type Ga4ReportErrorCode =
   | "ga4_report_incompatible"
   | "ga4_quota_exhausted"
   | "ga4_upstream_unavailable"
+  // No HTTP answer at all (connection lost, DNS), after the retries.
+  | "ga4_upstream_unreachable"
   | "ga4_malformed_response";
 
 export class Ga4ReportError extends Error {
@@ -52,6 +54,15 @@ export class Ga4ReportError extends Error {
     public readonly code: Ga4ReportErrorCode,
     message: string,
     public readonly retryAfterSeconds: number | null = null,
+    /**
+     * What Google actually said, kept for the log, the diagnostics bundle and
+     * the user-facing copy: the HTTP status (0 = no answer) and Google's
+     * reason ("SERVICE_DISABLED", "PERMISSION_DENIED"), when there was one.
+     */
+    public readonly upstream: {
+      status: number;
+      reason: string | null;
+    } | null = null,
   ) {
     super(message);
     this.name = "Ga4ReportError";

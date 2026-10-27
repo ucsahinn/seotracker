@@ -5,7 +5,7 @@ kind: nasil-yapilir
 updated: 2026-10-23
 ---
 
-L'interface de l'application est disponible en turc et en anglais. La langue se choisit dans Ayarlar → Görünüm → Dil. Ce guide donne chaque nom de bouton et d'écran en turc, suivi de sa traduction française entre parenthèses.
+L'interface de l'application existe en six langues : turc, anglais, allemand, français, italien et portugais. La langue se choisit dans Paramètres → Apparence → Langue. Ce guide donne les boutons et les écrans sous le nom qu'ils portent dans l'interface en français. L'assistant d'installation n'existe qu'en turc et en anglais, et le menu de la zone de notification qu'en turc. Là, le nom affiché est suivi de sa traduction française entre parenthèses.
 
 À la fin de cette page, l'application sera installée et ouverte dans votre navigateur. Comptez deux minutes. Elle s'installe pour votre seul compte utilisateur, sans droits d'administrateur. Une autorisation n'est demandée qu'une fois, si le composant Visual C++ est absent.
 
@@ -23,13 +23,13 @@ L'interface de l'application est disponible en turc et en anglais. La langue se 
 
 1. Téléchargez le fichier **seowatcher-setup.exe** depuis la page des versions sur GitHub. L'adresse permanente est : `github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe`
 2. Double-cliquez sur le fichier.
-3. Si Windows affiche « Windows a protégé votre ordinateur », cliquez sur **Informations complémentaires**, puis sur **Exécuter quand même** (sur un Windows en turc : « Daha fazla bilgi », « Yine de çalıştır »). Le fichier n'est pas encore signé, donc Windows ne connaît pas l'éditeur. Cet avertissement est normal.
+3. Si Windows affiche « Windows a protégé votre ordinateur », cliquez sur **Informations complémentaires**, puis sur **Exécuter quand même**. Le fichier n'est pas encore signé, donc Windows ne connaît pas l'éditeur. Cet avertissement est normal.
 4. Si vous le souhaitez, comparez le résumé SHA-256 du fichier (son empreinte) avec le fichier `SHA256SUMS.txt` de la page des versions.
-5. Sur la page d'accueil, cliquez sur **Sonraki** (Suivant).
-6. À la question « Pour qui installer ? », choisissez **Yalnızca ben** (Moi seul). C'est le choix recommandé : l'installation se fait uniquement pour votre compte. L'option **Tüm kullanıcılar** (Tous les utilisateurs) demande une autorisation d'administrateur.
-7. Regardez les deux options : **Windows açılınca seowatcher'ı başlat** (Lancer seowatcher au démarrage de Windows) et **Masaüstüne kısayol ekle** (Ajouter un raccourci sur le Bureau). La première est cochée par défaut. Décochez-la si vous ne voulez pas que l'application démarre en arrière-plan. Cliquez ensuite sur **Sonraki** (Suivant).
-8. Cliquez sur **Kur** (Installer).
-9. Sur la dernière page, une case **seowatcher'ı şimdi başlat** (Lancer seowatcher maintenant) est présente. Laissez-la cochée et cliquez sur **Bitti** (Terminé). L'application s'ouvre.
+5. L'assistant d'installation existe en turc et en anglais. S'il demande la langue, choisissez **English** ; les étapes suivantes donnent les noms anglais. Sur la page d'accueil, cliquez sur **Next** (Suivant).
+6. À la question « Pour qui installer ? », choisissez **Install for me only** (Installer pour moi uniquement). C'est le choix recommandé : l'installation se fait uniquement pour votre compte. L'option **Install for all users** (Installer pour tous les utilisateurs) demande une autorisation d'administrateur.
+7. Regardez les deux options : **Start seowatcher when Windows starts** (Lancer seowatcher au démarrage de Windows) et **Create a desktop shortcut** (Créer un raccourci sur le Bureau). La première est cochée par défaut. Décochez-la si vous ne voulez pas que l'application démarre en arrière-plan. Cliquez ensuite sur **Next** (Suivant).
+8. Cliquez sur **Install** (Installer).
+9. Sur la dernière page, une case **Start seowatcher now** (Lancer seowatcher maintenant) est présente. Laissez-la cochée et cliquez sur **Finish** (Terminer). L'application s'ouvre.
 10. Patientez. Le premier lancement dure 20 à 30 secondes. Le texte de l'icône dans la barre des tâches devient tour à tour « Anahtarlar hazırlanıyor » (Préparation des clés), « Veritabanı güncelleniyor » (Mise à jour de la base de données) et « Sunucu başlatılıyor » (Démarrage du serveur). Si l'icône n'est pas visible, cliquez sur la flèche ^ de la barre des tâches. Quand tout est prêt, votre navigateur s'ouvre tout seul. Si l'application démarre automatiquement avec Windows, le navigateur ne s'ouvre pas : une bulle « seowatcher hazır » (seowatcher est prêt) apparaît à la place.
 11. L'adresse `http://127.0.0.1:3001` s'ouvre toute seule dans le navigateur. Dans cette adresse, 127.0.0.1 désigne votre ordinateur lui-même et 3001 est le numéro de port.
 
@@ -42,12 +42,12 @@ Faites un clic droit sur l'icône. Si elle n'est pas visible, cliquez sur la fl�
 - **seowatcher'ı aç** (Ouvrir seowatcher) : ouvre l'application dans le navigateur. Un double-clic sur l'icône fait la même chose. Si l'application est encore en train de démarrer, une bulle « seowatcher açılıyor » (seowatcher démarre) apparaît, et le navigateur s'ouvre tout seul quand elle est prête.
 - Ligne d'état : « Çalışıyor: http://127.0.0.1:3001/ » (En cours : http://127.0.0.1:3001/), « Veritabanı güncelleniyor » (Mise à jour de la base de données) ou un message d'erreur. On ne peut pas cliquer dessus. Si le texte est long, laissez la souris dessus pour le voir en entier.
 - **Eksik Windows bileşenini kur** (Installer le composant Windows manquant) : n'apparaît que si le paquet Visual C++ manque. Un clic installe le paquet et redémarre l'application.
-- **Güncelle** (Mettre à jour) : toujours présent dans le menu. Un clic vérifie tout de suite GitHub. S'il y a une nouvelle version, elle est téléchargée et installée ; sinon le menu affiche « Güncel » (À jour). Pendant la vérification, l'élément affiche « Kontrol ediliyor… » (Vérification…), et pendant le téléchargement « Güncelleme indiriliyor: X.Y.Z (%45) » (Téléchargement de la mise à jour : X.Y.Z (45 %)) ; on ne peut alors pas cliquer dessus. Quand une nouvelle version a déjà été trouvée, l'élément affiche « Güncelle: X.Y.Z sürümü hazır » (Mettre à jour : la version X.Y.Z est prête) ; les numéros de version sont des exemples.
+- **Güncelle** (Mettre à jour) : toujours présent dans le menu. Un clic vérifie tout de suite GitHub. S'il y a une nouvelle version, elle est téléchargée et installée ; sinon le menu affiche « Güncel » (À jour). Pendant la vérification, l'élément affiche « Vérification… », et pendant le téléchargement « Güncelleme indiriliyor: X.Y.Z (%45) » (Téléchargement de la mise à jour : X.Y.Z (45 %)) ; on ne peut alors pas cliquer dessus. Quand une nouvelle version a déjà été trouvée, l'élément affiche « Güncelle: X.Y.Z sürümü hazır » (Mettre à jour : la version X.Y.Z est prête) ; les numéros de version sont des exemples.
 - **Yeniden başlat** (Redémarrer) : ferme l'application et la rouvre. Si quelque chose se bloque, essayez d'abord cet élément.
 - **Windows açılınca başlat** (Démarrer avec Windows) : si l'option est cochée, l'application démarre en arrière-plan à l'allumage de l'ordinateur. Si un administrateur a activé ce réglage lors d'une installation pour tous les utilisateurs de l'ordinateur, l'élément est coché et grisé, et seul un administrateur peut le désactiver.
 - **Güncellemeleri kendiliğinden kur** (Installer les mises à jour automatiquement) : si l'option est cochée, l'application installe elle-même une nouvelle version dès qu'elle en trouve une.
 - **Kurulumu onar** (Réparer l'installation) : nettoie les fichiers temporaires, vérifie que le paquet est complet et rouvre l'application. Pendant la réparation, l'élément affiche « Onarılıyor… » (Réparation…).
-- **Tanı bilgisini kopyala** (Copier les informations de diagnostic) : copie dans le presse-papiers la version de Windows, le processeur, la version de Visual C++, un essai du moteur, le module fautif du journal d'événements Windows, les fichiers de vidage de plantage et les dernières lignes du journal. Les informations sont prêtes en quelques secondes, puis une bulle « Kopyalandı » (Copié) apparaît. C'est utile pour signaler un problème.
+- **Tanı bilgisini kopyala** (Copier les informations de diagnostic) : copie dans le presse-papiers la version de Windows, le processeur, la version de Visual C++, un essai du moteur, le module fautif du journal d'événements Windows, les fichiers de vidage de plantage et les dernières lignes du journal. Les informations sont prêtes en quelques secondes, puis une bulle « Copié » apparaît. C'est utile pour signaler un problème.
 - **Sorunu bildir (GitHub)** (Signaler un problème (GitHub)) : place les mêmes informations dans le presse-papiers et ouvre sur GitHub un signalement prérempli. Ajoutez une phrase sur ce que vous faisiez et envoyez-le.
 - **Günlükleri aç** (Ouvrir les journaux) : ouvre le dossier des journaux. Il contient `launcher.log`, `server.log` et `migrate.log`.
 - **Veri klasörünü aç** (Ouvrir le dossier de données) : ouvre le dossier de la base de données et des clés.
@@ -60,7 +60,7 @@ Si le serveur s'arrête tout seul en cours de fonctionnement, l'application le r
 
 ### Mise à jour
 
-L'application se met à jour toute seule. Deux minutes après son ouverture, puis une fois par jour, elle vérifie sur GitHub la dernière version. S'il y en a une nouvelle, elle la télécharge, compare l'empreinte du fichier (SHA-256) à la valeur de la page des versions, l'installe en silence et se rouvre. Pendant ce temps, le texte de l'icône affiche « Güncelleme indiriliyor » (Téléchargement de la mise à jour) puis « Güncelleme kuruluyor » (Installation de la mise à jour), et une petite fenêtre d'installation apparaît brièvement. Quand l'application se rouvre, une bulle « seowatcher X.Y.Z sürümüne güncellendi » (seowatcher a été mis à jour vers la version X.Y.Z) apparaît ; un clic dessus ouvre la liste des nouveautés. La section **Ayarlar → Hakkında** (Paramètres → À propos) de l'application annonce aussi la nouvelle version et vous renvoie vers **Güncelle** sur l'icône.
+L'application se met à jour toute seule. Deux minutes après son ouverture, puis une fois par jour, elle vérifie sur GitHub la dernière version. S'il y en a une nouvelle, elle la télécharge, compare l'empreinte du fichier (SHA-256) à la valeur de la page des versions, l'installe en silence et se rouvre. Pendant ce temps, le texte de l'icône affiche « Güncelleme indiriliyor » (Téléchargement de la mise à jour) puis « Güncelleme kuruluyor » (Installation de la mise à jour), et une petite fenêtre d'installation apparaît brièvement. Quand l'application se rouvre, une bulle « seowatcher X.Y.Z sürümüne güncellendi » (seowatcher a été mis à jour vers la version X.Y.Z) apparaît ; un clic dessus ouvre la liste des nouveautés. La section **Paramètres → À propos** de l'application annonce aussi la nouvelle version et vous renvoie vers **Güncelle** sur l'icône.
 
 - Si vous ne voulez pas qu'elle s'installe toute seule, décochez **Güncellemeleri kendiliğinden kur** dans le menu. Quand une nouvelle version sort, vous voyez alors une bulle une seule fois, et l'élément du menu affiche « Güncelle: X.Y.Z sürümü hazır » (Mettre à jour : la version X.Y.Z est prête). Cliquez sur la bulle ou sur l'élément pour installer.
 - S'il n'y a pas d'internet, ou si GitHub ne répond pas à ce moment-là, l'application réessaie une heure plus tard. Pour les tentatives automatiques, elle ne prévient qu'une seule fois par version.
@@ -88,8 +88,8 @@ Si un fichier du paquet a été supprimé (par exemple mis en quarantaine par un
 
 ### Désinstallation
 
-1. Dans **Ayarlar → Uygulamalar → Yüklü uygulamalar** (Paramètres → Applications → Applications installées) de Windows, trouvez **seowatcher**.
-2. Cliquez sur **Kaldır** (Désinstaller).
+1. Dans **Paramètres → Applications → Applications installées** de Windows, trouvez **seowatcher**.
+2. Cliquez sur **Désinstaller**.
 
 Le programme de désinstallation supprime le programme, le raccourci du menu Démarrer l'entrée « démarrer avec Windows » (y compris si vous l'avez activée depuis le menu) et les fichiers de mise à jour téléchargés. Il ne touche pas au dossier de données, et la fenêtre de désinstallation le précise aussi. Si vous voulez aussi supprimer votre base de données, votre connexion à Google et vos rapports, supprimez vous-même le dossier de données.
 
@@ -133,7 +133,7 @@ Quand le numéro change, mettez aussi à jour, avec le nouveau numéro, les deux
 
 - Quand vous passez la souris sur l'icône de la barre des tâches, elle doit afficher « seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/ » (seowatcher X.Y.Z : en fonctionnement : http://127.0.0.1:3001/). Le numéro au début est celui de la version que vous avez installée ; 0.5.0 Alpha n'est qu'un exemple.
 - Dans le navigateur, l'adresse `http://127.0.0.1:3001/api/health` doit afficher un texte qui commence par "status":"ok".
-- Sur l'écran **Yardım** (Aide), la carte « Kurulumunuzun durumu » (L'état de votre installation) doit dire « Her şey yolunda. » (Tout va bien.). Avant la connexion à Google, la ligne « Google girişi » (Connexion Google) demande de l'attention. C'est normal.
+- Sur l'écran **Aide**, la carte « L'état de votre configuration » doit dire « Tout est en ordre. ». Avant la connexion à Google, la ligne « Connexion Google » demande de l'attention. C'est normal.
 
 ## Questions fréquentes
 

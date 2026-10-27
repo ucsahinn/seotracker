@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { issueDelta, previousAuditIds, siteKey } from "./auditDelta";
+import {
+  auditSites,
+  issueDelta,
+  previousAuditIds,
+  siteKey,
+} from "./auditDelta";
 
 const row = (
   id: string,
@@ -53,5 +58,21 @@ describe("issueDelta", () => {
 describe("siteKey", () => {
   it("falls back to the trimmed text for an unparseable address", () => {
     expect(siteKey(" Not A Url ")).toBe("not a url");
+  });
+});
+
+describe("auditSites", () => {
+  it("groups by host and puts the project's own site first", () => {
+    const rows = [
+      { startUrl: "https://www.npr.org/" },
+      { startUrl: "https://npr.org/news" },
+      { startUrl: "https://ornek-site.com/" },
+    ];
+    expect(
+      auditSites(rows, "www.ornek-site.com").map((s) => [s.key, s.count]),
+    ).toEqual([
+      ["ornek-site.com", 1],
+      ["npr.org", 2],
+    ]);
   });
 });

@@ -70,6 +70,7 @@ export function LaunchView({ projectId, onAuditStarted }: LaunchViewProps) {
 
       <AuditHistorySection
         projectId={projectId}
+        projectDomain={controller.projectDomain}
         history={history}
         isLoading={controller.historyQuery.isLoading}
         error={controller.historyQuery.error}

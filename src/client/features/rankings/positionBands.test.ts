@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
   applyBandAndChip,
-  bandOf,
-  countBands,
   countChips,
+  highImpressionsThreshold,
   matchesChip,
   positionInk,
 } from "./positionBands";
+import { bandOf, countBands } from "@/shared/positionBands";
 
 const row = (position: number, impressions = 10, clicks = 1) => ({
   position,
@@ -50,17 +50,26 @@ describe("band and chip filters", () => {
   });
 
   it("first-page chip agrees with the 1-3 and 4-10 bands", () => {
-    expect(rows.filter((r) => matchesChip("firstPage", r))).toHaveLength(2);
-    expect(matchesChip("firstPage", row(10))).toBe(true);
-    expect(matchesChip("firstPage", row(11))).toBe(false);
+    expect(rows.filter((r) => matchesChip("firstPage", r, 100))).toHaveLength(
+      2,
+    );
+    expect(matchesChip("firstPage", row(10), 100)).toBe(true);
+    expect(matchesChip("firstPage", row(11), 100)).toBe(false);
   });
 
   it("counts chips", () => {
-    expect(countChips(rows)).toEqual({
+    expect(countChips(rows, 100)).toEqual({
       firstPage: 2,
       highImpressions: 3,
       noClicks: 2,
     });
+  });
+
+  /* A fixed 100 held every row of a 90-day window; a quarter never does. */
+  it("calls the top quarter by impressions high, whatever the window", () => {
+    const set = [10, 20, 30, 40, 50, 60, 70, 80].map((n) => row(5, n * 100));
+    const threshold = highImpressionsThreshold(set);
+    expect(countChips(set, threshold).highImpressions).toBe(2);
   });
 
   it("combines a band with a chip", () => {

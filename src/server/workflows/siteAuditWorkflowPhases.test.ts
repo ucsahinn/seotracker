@@ -166,7 +166,8 @@ describe("runLighthousePhase", () => {
     );
 
     updateAuditProgressMock
-      .mockResolvedValueOnce(undefined)
+      .mockResolvedValueOnce(undefined) // phase marker
+      .mockResolvedValueOnce(undefined) // selection
       .mockRejectedValueOnce(new Error("progress unavailable"))
       .mockResolvedValueOnce(undefined);
 

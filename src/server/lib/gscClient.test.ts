@@ -115,6 +115,38 @@ describe("gscClient", () => {
     expect(init?.headers).toMatchObject({ Authorization: "Bearer tok_123" });
   });
 
+  it("keeps the response's aggregation and first incomplete date", async () => {
+    mocks.fetch.mockResolvedValue(
+      jsonResponse({
+        rows: [{ keys: ["2026-10-24"], clicks: 1, impressions: 2, ctr: 0.5 }],
+        responseAggregationType: "byProperty",
+        metadata: { first_incomplete_date: "2026-10-24" },
+      }),
+    );
+    const { createGscClient } = await import("./gscClient");
+    const page = await createGscClient({
+      userId: "u1",
+    }).querySearchAnalyticsPage("sc-domain:example.com", {
+      startDate: "2026-10-01",
+      endDate: "2026-10-25",
+      dataState: "all",
+    });
+    expect(page).toEqual({
+      // Discover-style rows without a position read as 0 ("absent").
+      rows: [
+        {
+          keys: ["2026-10-24"],
+          clicks: 1,
+          impressions: 2,
+          ctr: 0.5,
+          position: 0,
+        },
+      ],
+      aggregationType: "byProperty",
+      firstIncompleteDate: "2026-10-24",
+    });
+  });
+
   it("encodes the siteUrl in the searchAnalytics path (both property forms)", async () => {
     mocks.fetch.mockImplementation(async () => jsonResponse({ rows: [] }));
     const { createGscClient } = await import("./gscClient");
@@ -199,6 +231,46 @@ describe("gscClient", () => {
       createGscClient({ userId: "u1" }).listSites(),
     ).rejects.toMatchObject({ name: "GscApiError", status: 504 });
     expect(mocks.fetch.mock.calls[0]?.[1]?.signal).toBeInstanceOf(AbortSignal);
+  });
+
+  /*
+   * server.log (installed 2.4.3): one "Network connection lost" from workerd
+   * failed getPerformance outright and reached the screen as INTERNAL_ERROR.
+   */
+  it("retries a dropped connection instead of failing the report", async () => {
+    vi.useFakeTimers();
+    mocks.fetch
+      .mockRejectedValueOnce(new Error("Network connection lost."))
+      .mockResolvedValueOnce(jsonResponse({ rows: [] }));
+    const { createGscClient } = await import("./gscClient");
+
+    const rows = createGscClient({ userId: "u1" }).querySearchAnalytics(
+      "sc-domain:example.com",
+      { startDate: "2026-10-01", endDate: "2026-10-25" },
+    );
+    await vi.runAllTimersAsync();
+
+    expect(await rows).toEqual([]);
+    expect(mocks.fetch).toHaveBeenCalledTimes(2);
+    vi.useRealTimers();
+  });
+
+  it("names the cause when Google stays unreachable", async () => {
+    vi.useFakeTimers();
+    mocks.fetch.mockRejectedValue(new Error("Network connection lost."));
+    const { createGscClient } = await import("./gscClient");
+    const { googleAppError, toClientError } = await import("./errors");
+
+    const failure = createGscClient({ userId: "u1" })
+      .listSites()
+      .catch((error: unknown) => error);
+    await vi.runAllTimersAsync();
+    const clientError = toClientError(googleAppError(await failure));
+    vi.useRealTimers();
+
+    expect(clientError.message).toMatch(/^UPSTREAM_UNAVAILABLE: /);
+    expect(clientError.message).toContain("Google'a bağlanılamadı");
+    expect(clientError.message).toContain("Network connection lost.");
   });
 
   it("throws GscTokenError when no access token can be minted", async () => {

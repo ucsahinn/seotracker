@@ -1,3 +1,4 @@
+import { AnimatedNumber } from "@/client/components/AnimatedNumber";
 import { HeaderHelpLabel } from "@/client/features/saved-keywords/components/HeaderHelpLabel";
 // Shared building blocks for the dashboard cards. Same visual language as the
 // GSC IntegrationCard (rounded-box, hairline, raise shadow) so the embedded
@@ -50,8 +51,11 @@ export function Stat({
   tone,
   sub,
   help,
+  animateTo,
 }: {
   label: string;
+  /** Count up to this number on first load (reduced motion shows it at once). */
+  animateTo?: { value: number; format: (n: number) => string };
   /** A plain-language meaning, shown on hover or focus beside the label. */
   help?: string;
   value: string;
@@ -76,7 +80,11 @@ export function Stat({
         {help ? <HeaderHelpLabel label={label} helpText={help} /> : label}
       </p>
       <p className={`text-2xl font-semibold tabular-nums ${toneClass}`}>
-        {value}
+        {animateTo ? (
+          <AnimatedNumber value={animateTo.value} format={animateTo.format} />
+        ) : (
+          value
+        )}
       </p>
       {sub}
     </div>

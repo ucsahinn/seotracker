@@ -25,7 +25,9 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using System.Security.AccessControl;
 using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -1247,11 +1249,15 @@ namespace SeoWatcher
                 Emit(gen, Status, "Anahtarlar hazırlanıyor");
                 string secret = Secrets.EnsureInstanceSecret();
                 string token = Secrets.EnsureMcpToken();
-                WriteServerEnv(secret, token);
 
                 ConfiguredPort = cfg.Port;
                 Port = ChoosePort(cfg.Port, gen);
                 if (!IsCurrent(gen)) return;
+                // After the port is chosen: server.env says whether this run
+                // moved off the configured port, so the app can tell the
+                // operator why Google sign-in fails. Rewritten on every start,
+                // so a fallback line never outlives the run it describes.
+                WriteServerEnv(secret, token);
 
                 KillOnCloseJob runJob;
                 lock (gate)
@@ -1387,12 +1393,48 @@ namespace SeoWatcher
             // Lets the app tell the Windows package from Docker: Ayarlar > Hakkında
             // then describes the tray updater instead of a docker compose command.
             sb.Append("INSTALL_KIND=windows\n");
+            // Only when the configured port was taken and this run fell back
+            // to another one: the app shows a banner naming both numbers.
+            if (Port != ConfiguredPort)
+            {
+                sb.Append("WINDOWS_PORT_FALLBACK=").Append(ConfiguredPort).Append("->").Append(Port).Append('\n');
+            }
             if (NativeSettings != null)
             {
                 sb.Append("WINDOWS_SETTINGS_PORT=").Append(NativeSettings.Port).Append('\n');
                 sb.Append("WINDOWS_SETTINGS_TOKEN=").Append(NativeSettings.Token).Append('\n');
             }
-            File.WriteAllText(Paths.ServerEnv, sb.ToString(), new UTF8Encoding(false));
+            string env = sb.ToString();
+            File.WriteAllText(Paths.ServerEnv, env, new UTF8Encoding(false));
+            WriteAuditWorkerVars(env);
+        }
+
+        /// <summary>`wrangler dev --env-file` reaches only the primary worker.
+        /// The audit worker is a separate worker with its own bindings, and it
+        /// reads the same instance key (a saved PageSpeed key is sealed with
+        /// it); without a copy next to its config the audit failed at the speed
+        /// phase with "No instance encryption key". Wrangler reads `.dev.vars`
+        /// beside each worker's config, so write one there on every start. The
+        /// file holds the secrets, so it is restricted to the current user,
+        /// and its contents are never logged.</summary>
+        private static void WriteAuditWorkerVars(string env)
+        {
+            string path = Path.Combine(Path.GetDirectoryName(Paths.AuditConfig), ".dev.vars");
+            File.WriteAllText(path, env, new UTF8Encoding(false));
+            try
+            {
+                var security = new FileSecurity();
+                security.SetAccessRuleProtection(true, false);
+                security.AddAccessRule(new FileSystemAccessRule(
+                    WindowsIdentity.GetCurrent().User, FileSystemRights.FullControl, AccessControlType.Allow));
+                new FileInfo(path).SetAccessControl(security);
+            }
+            catch (Exception ex)
+            {
+                // A per-user install is private already; the all-users one is
+                // not, so say so rather than fail the start.
+                LauncherLog.Write("audit worker vars: could not restrict access (" + ex.GetType().Name + ")");
+            }
         }
 
         /// <summary>The configured port, unless another program holds it; then

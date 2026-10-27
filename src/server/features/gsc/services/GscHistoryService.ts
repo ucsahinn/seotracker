@@ -221,7 +221,7 @@ function recordWindow(
     previousLastDate: string | null;
   },
 ): void {
-  const { rows, start, rangeEnd, previousLastDate } = window;
+  const { rows, rangeEnd, previousLastDate } = window;
   if (window.truncated) outcome.truncatedChunks += 1;
   outcome.rowsWritten += rows.length;
   const dates = new Set(rows.map((row) => row.date));
@@ -229,10 +229,21 @@ function recordWindow(
   outcome.newDays += [...dates].filter(
     (date) => !previousLastDate || date > previousLastDate,
   ).length;
-  outcome.earliestDate =
-    outcome.earliestDate && outcome.earliestDate < start
-      ? outcome.earliestDate
-      : start;
+  /*
+   * The first day that holds data, not the window's start: a window that
+   * began on 25 June but only had rows from 1 October made the archive read
+   * "25 Haz ->" (installed 0.8.0). An empty window says nothing about it.
+   */
+  const firstRowDate = [...dates].reduce<string | null>(
+    (first, date) => (first === null || date < first ? date : first),
+    null,
+  );
+  if (
+    firstRowDate &&
+    (!outcome.earliestDate || firstRowDate < outcome.earliestDate)
+  ) {
+    outcome.earliestDate = firstRowDate;
+  }
   outcome.lastDate =
     outcome.lastDate && outcome.lastDate > rangeEnd
       ? outcome.lastDate
@@ -431,13 +442,15 @@ async function backfill(input: {
 
 /** What the UI needs to describe the archive without reading every row. */
 async function getStatus(projectId: string) {
-  const [state, rowCount] = await Promise.all([
+  const [state, { rowCount, firstDate }] = await Promise.all([
     GscHistoryRepository.getArchiveState(projectId),
-    GscHistoryRepository.countRows(projectId),
+    GscHistoryRepository.getArchiveSpan(projectId),
   ]);
 
   return {
-    earliestDate: state?.earliestDate ?? null,
+    // Read from the stored rows: older archives kept a
+    // window start in gsc_archive_state.earliest_date, not a data day.
+    earliestDate: firstDate,
     lastDate: state?.lastDate ?? null,
     lastRunAt: state?.lastRunAt ?? null,
     lastError: state?.lastError ?? null,
@@ -455,4 +468,5 @@ export const GscHistoryService = {
   getStatus,
   getQueryHistory: GscHistoryRepository.getQueryHistory,
   getTrackedQueries: GscHistoryRepository.getTrackedQueries,
+  getWeeklyPositions: GscHistoryRepository.getWeeklyPositions,
 };

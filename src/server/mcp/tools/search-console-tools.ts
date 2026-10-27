@@ -27,6 +27,12 @@ import {
   GscTokenError,
 } from "@/server/lib/gscErrors";
 import { GSC_SELF_HOSTED_SETUP_DOCS_URL } from "@/shared/gsc";
+import { SearchPerformanceService } from "@/server/features/gsc/services/SearchPerformanceService";
+import {
+  GSC_DEVICES,
+  SEARCH_PERFORMANCE_RANGES,
+} from "@/types/schemas/search-performance";
+import type { SearchInsights, TodoItem } from "@/shared/searchInsights";
 
 const TEXT_SUMMARY_ROWS = 15;
 
@@ -239,7 +245,7 @@ const perfInputSchema = {
     .min(1)
     .optional()
     .describe(
-      "Keep rows with average position >= this. For 'striking distance' queries use minPosition 5, maxPosition 20, minImpressions 50.",
+      "Keep rows with average position >= this. For 'striking distance' queries use dimensions ['query'] with minPosition 3.5, maxPosition 20.5 and minImpressions 50 per 28 days: the same rule as the Search performance screen and get_search_summary, which judge the query's own position across all its pages.",
     ),
   maxPosition: z
     .number()
@@ -623,6 +629,184 @@ ${fresh} ${plural(fresh)} skipped, already answered recently. Read those with ge
       const isNotConnected = error instanceof GscNotConnectedError;
       return mcpResponse({
         text: `${describeGscError(error)}${isNotConnected ? ` Connect it here: ${connectUrl}` : ` (reconnect at ${connectUrl})`}`,
+        meta,
+        structuredContent: {
+          ok: false,
+          reason: isNotConnected ? "not_connected" : "api_error",
+          connectUrl,
+        },
+      });
+    }
+  }),
+};
+
+// ---------------------------------------------------------------------------
+// get_search_summary
+// ---------------------------------------------------------------------------
+
+const summaryInputSchema = {
+  projectId: projectIdSchema,
+  dateRange: z
+    .enum(SEARCH_PERFORMANCE_RANGES)
+    .optional()
+    .describe("Window of complete days (default last_28_days)."),
+  device: z.enum(GSC_DEVICES).optional(),
+  country: z
+    .string()
+    .length(3)
+    .optional()
+    .describe("ISO-3166-1 alpha-3, lowercase, as Search Console returns it."),
+} as const;
+
+type SummaryArgs = z.infer<z.ZodObject<typeof summaryInputSchema>>;
+
+/** Rows per list in the structured answer; the screen holds the rest. */
+const SUMMARY_LIST_LIMIT = 20;
+
+const pct = (value: number | null) =>
+  value === null ? "unknown" : `${(value * 100).toFixed(1)}%`;
+const signed = (value: number | null, digits = 0) =>
+  value === null
+    ? "unknown"
+    : `${value > 0 ? "+" : ""}${value.toFixed(digits)}`;
+
+function describeTodo(item: TodoItem): string {
+  const gain =
+    item.estimatedClicks === null
+      ? "gain unknown"
+      : `~${item.estimatedClicks} clicks`;
+  switch (item.kind) {
+    case "striking":
+      return `Striking distance: "${item.query}" at position ${item.position.toFixed(1)} (${item.impressions} impressions)${item.page ? ` -> improve ${item.page}` : ""}; ${gain}.`;
+    case "snippet":
+      return `Low CTR for its position: "${item.query}" ${pct(item.ctr)} vs site ${pct(item.expectedCtr)} at ${item.position.toFixed(1)}${item.page ? ` (${item.page})` : ""}; rewrite title/description; ${gain}.`;
+    case "decliningQuery":
+    case "decliningPage":
+      return `Declining ${item.kind === "decliningQuery" ? "query" : "page"}: ${item.key} ${item.previousClicks} -> ${item.clicks} clicks; ${gain}.`;
+    case "decay":
+      return `Content decay: ${item.page} ${item.clicks} clicks this quarter vs ${item.peakClicks} at its peak (${item.peakStartDate}..${item.peakEndDate}); refresh it; ${gain}.`;
+    case "zeroClickPage":
+      return `Impressions but no clicks: ${item.page} (${item.impressions} impressions, position ${item.position.toFixed(1)}); ${gain}.`;
+    case "lostQuery":
+      return `Lost query: "${item.query}" had ${item.previousClicks} clicks last period and none now; ${gain}.`;
+    case "deviceGap":
+    case "countryGap":
+      return `${item.kind === "deviceGap" ? "Device" : "Country"} gap: ${item.key} CTR ${pct(item.ctr)} vs site ${pct(item.siteCtr)}; ${gain}.`;
+    case "anomaly":
+      return `Unusual drop on ${item.date}: ${item.value} ${item.metric} vs ~${Math.round(item.expected)} expected for that weekday.`;
+    case "setBrandTerms":
+      return item.suggestions.length > 0
+        ? `Confirm the brand terms in the app: the split currently runs on ones suggested from the domain and project name (${item.suggestions.join(", ")}), not confirmed.`
+        : "Set brand terms in the app to split brand from non-brand queries (nothing to suggest from the domain).";
+  }
+}
+
+function describeBrand(state: SearchInsights["brandState"]): string {
+  switch (state.source) {
+    case "confirmed":
+      return `Brand terms (confirmed): ${state.terms.join(", ")}.`;
+    case "suggested":
+      return `Brand terms (suggested from the domain, not confirmed): ${state.terms.join(", ")}.`;
+    case "none":
+      return "Brand terms: none, so brand queries are not split out.";
+  }
+}
+
+export const getSearchSummaryTool = {
+  name: "get_search_summary",
+  config: {
+    title: "Get Search Console summary and to-do list",
+    description:
+      "The Search performance screen in one call: the window of complete days (Pacific dates, ending before the first day Google is still counting), site totals from Search Console's own property aggregate (never summed from query or page rows) with the change against the previous equal-length period and the same weeks a year ago, the share of clicks from anonymized queries, and a to-do list ranked by estimated clicks: striking-distance queries (the query's own position 4-20, brand queries excluded, gain at the site's own non-brand CTR one band up per query: 4-5 -> 2-3, 6-10 -> 4-5, 11-20 -> 6-10), snippets far below the site's CTR for their position, declining queries and pages, content decay against the best of the four previous quarters, pages with impressions and no clicks, lost queries, device/country CTR gaps, and the latest unusual drop. A null or 'unknown' value means Search Console does not say; never read it as zero. Brand queries are split out with the confirmed brand terms, or until some are confirmed, with terms suggested from the domain and project name; brand.source says which (confirmed; suggested = applied but unconfirmed; none = no brand split). Free; about 14 Search Analytics requests on a cold call, cached for minutes after. Read-only.",
+    inputSchema: summaryInputSchema,
+    outputSchema: {
+      ok: z.boolean(),
+      reason: z.string().optional(),
+      connectUrl: z.string().optional(),
+      setupDocsUrl: z.string().optional(),
+      window: z.record(z.string(), z.unknown()).optional(),
+      totals: z.record(z.string(), z.unknown()).optional(),
+      hiddenQueries: z.record(z.string(), z.unknown()).optional(),
+      todo: z.array(z.record(z.string(), z.unknown())).optional(),
+      striking: z.array(z.record(z.string(), z.unknown())).optional(),
+      anomalies: z.array(z.record(z.string(), z.unknown())).optional(),
+      brand: z
+        .object({
+          source: z.enum(["confirmed", "suggested", "none"]),
+          terms: z.array(z.string()),
+        })
+        .optional(),
+      requests: z.number().optional(),
+      ...optionalMetaOutputSchema,
+    },
+    annotations: {
+      readOnlyHint: true,
+      openWorldHint: false,
+      destructiveHint: false,
+    },
+  },
+  handler: withMcpProjectAuth(async (args: SummaryArgs, context) => {
+    const blocked = await missingSelfHostedGoogleClientResponse(
+      context,
+      args.projectId,
+    );
+    if (blocked) return blocked;
+    const connectUrl = connectGscUrl(context.baseUrl, args.projectId);
+    const meta = buildProjectMeta(
+      context,
+      args.projectId,
+      `/p/${args.projectId}/search-performance`,
+    );
+    try {
+      const view = await SearchPerformanceService.getView({
+        projectId: args.projectId,
+        filters: {
+          dateRange: args.dateRange ?? "last_28_days",
+          device: args.device,
+          country: args.country?.toLowerCase(),
+          searchType: "web",
+        },
+      });
+      const { current, vsPrevious, vsYoy, provisional } = view.totals;
+      const hidden = view.coverage.hiddenQueries;
+      const lines = [
+        `${view.siteUrl} · ${view.window.startDate}..${view.window.endDate} (${view.window.days} complete days, Pacific; first incomplete day ${view.window.firstIncompleteDate ?? "none"}, ${view.window.incompleteSource})`,
+        `Clicks ${current.clicks} (${signed(vsPrevious?.clicks.change ?? null)} vs previous, ${signed(vsYoy?.clicks.change ?? null)} vs a year ago) · impressions ${current.impressions} · CTR ${pct(current.ctr)} · position ${current.position?.toFixed(1) ?? "unknown"} (${signed(vsPrevious?.position.change ?? null, 1)} places)`,
+        ...(provisional
+          ? [
+              `Provisional days after the window (still changing): ${provisional.clicks} clicks, ${provisional.impressions} impressions.`,
+            ]
+          : []),
+        `Anonymized queries: ${pct(hidden.clickShare)} of clicks${hidden.exact ? "" : " (includes rows past the row limit)"}.`,
+        describeBrand(view.insights.brandState),
+        "To do, ranked by estimated clicks:",
+        ...view.todo
+          .slice(0, SUMMARY_LIST_LIMIT)
+          .map((item, i) => `${i + 1}. ${describeTodo(item)}`),
+      ];
+      return mcpResponse({
+        text: lines.join("\n"),
+        meta,
+        structuredContent: {
+          ok: true,
+          window: view.window,
+          totals: view.totals,
+          hiddenQueries: hidden,
+          todo: view.todo.slice(0, SUMMARY_LIST_LIMIT),
+          striking: view.insights.striking.rows.slice(0, SUMMARY_LIST_LIMIT),
+          anomalies: view.insights.anomalies.slice(0, SUMMARY_LIST_LIMIT),
+          brand: {
+            source: view.insights.brandState.source,
+            terms: view.insights.brandState.terms,
+          },
+          requests: view.quota.requests,
+        },
+      });
+    } catch (error) {
+      const isNotConnected =
+        error instanceof GscNotConnectedError || error instanceof GscTokenError;
+      return mcpResponse({
+        text: `${describeGscError(error)}${isNotConnected ? ` Connect it here: ${connectUrl}` : ""}`,
         meta,
         structuredContent: {
           ok: false,

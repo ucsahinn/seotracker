@@ -14,3 +14,4 @@ export * from "./google-oauth.schema";
 export * from "./update-check.schema";
 export * from "./gsc-inspection.schema";
 export * from "./pagespeed.schema";
+export * from "./gsc-site.schema";

@@ -23,6 +23,7 @@ import {
 } from "../format";
 import { z } from "zod";
 import { t } from "../i18n";
+import { sitemapUnreadableLines } from "./sitemapUnreadableDetails";
 
 export interface DetailLine {
   /** Null when the line is a whole sentence. */
@@ -376,6 +377,9 @@ function specialLines(
       ];
     }
   }
+  // Null for an unknown reason, which then reads generically.
+  if (issueType === "sitemap-unreadable")
+    return sitemapUnreadableLines(details);
   if (issueType === "missing-feed") {
     const articles = num(details.articlePages);
     if (articles !== null) {

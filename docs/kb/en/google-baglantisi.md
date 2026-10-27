@@ -5,7 +5,7 @@ kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-The app's interface comes in English and Turkish. This guide uses the English names; to switch, go to **Settings → Appearance → Language**.
+The app's interface comes in six languages: Turkish, English, German, French, Italian and Portuguese. This guide uses the English names; to switch, go to **Settings → Appearance → Language**.
 
 This guide connects the app to your Google account so it can read your site's data. For that you create a "Google access key" once; it takes about ten minutes and you never repeat it. There is also a shorter route, a service account, at the end of the guide, and it is the recommended one for most people.
 

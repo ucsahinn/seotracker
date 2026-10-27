@@ -142,7 +142,9 @@ export function GoogleOAuthClientSection() {
     <section id="google" className="scroll-mt-16 space-y-3">
       <SectionHeaderRow
         badge={
-          statusQuery.isError ? unreadableBadge() : oauthClientBadge(status)
+          statusQuery.isError
+            ? unreadableBadge()
+            : oauthClientBadge(status, serviceAccountQuery.data)
         }
       >
         <h2 className="text-base font-semibold">{t("Google bağlantısı")}</h2>

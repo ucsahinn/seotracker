@@ -1,8 +1,11 @@
 import { z } from "zod";
+import { type ToolContext } from "@/server/mcp/context";
 import { collectDiagnostics } from "@/server/features/diagnostics/collectDiagnostics";
 import { getQuotaStatus } from "@/server/features/quotas/QuotaService";
 import { mcpResponse } from "@/server/mcp/formatters";
 import { optionalMetaOutputSchema } from "@/server/mcp/output-schemas";
+import { getInstanceFacts } from "@/server/lib/instance-facts";
+import { instanceOutputSchema } from "@/server/mcp/tools/whoami";
 
 /**
  * The same bundle the Support screen downloads, for an agent helping to
@@ -18,12 +21,13 @@ export const diagnosticsTool = {
   config: {
     title: "Get diagnostics",
     description:
-      "Reads this install's diagnostic snapshot: version, auth mode, setup checks, table row counts, projects, connected Google properties, and the last 25 audits with their status, phase and error code. Start here when the user reports that something is broken, misconfigured, slow, or empty — it answers most of what you would otherwise ask them one question at a time. Also lists each active project's quota meters (URL Inspection, PageSpeed, Analytics, audit) as `diagnostics.quotas`. Contains no secret values: tokens, client secrets and API keys are reported only as configured or not.",
+      "Reads this install's diagnostic snapshot: version, auth mode, setup checks, table row counts, projects, connected Google properties, and the last 25 audits with their status, phase and error code. `instance` says which seotracker this is (version, install kind, port fallback, latest release, stale flag) — the same block as whoami. Start here when the user reports that something is broken, misconfigured, slow, or empty — it answers most of what you would otherwise ask them one question at a time. Also lists each active project's quota meters (URL Inspection, PageSpeed, Analytics, audit) as `diagnostics.quotas`. Contains no secret values: tokens, client secrets and API keys are reported only as configured or not.",
     inputSchema: {} as Record<string, never>,
     outputSchema: {
       version: z.string(),
       authMode: z.string(),
       generatedAt: z.string(),
+      instance: instanceOutputSchema,
       diagnostics: z.looseObject({
         quotas: z
           .array(
@@ -48,8 +52,12 @@ export const diagnosticsTool = {
       destructiveHint: false,
     },
   },
-  handler: async () => {
-    const diagnostics = await collectDiagnostics();
+  handler: async (_args: Record<string, never>, context: ToolContext) => {
+    const baseUrl = context.auth.baseUrl;
+    const [diagnostics, instance] = await Promise.all([
+      collectDiagnostics(new Date(), baseUrl),
+      getInstanceFacts(baseUrl),
+    ]);
     // Quota meters per active project: what is spent and what is left is
     // the usual answer to "inspections stopped working".
     const quotas = (
@@ -77,6 +85,7 @@ export const diagnosticsTool = {
     return mcpResponse({
       text: [
         `seotracker ${diagnostics.version} · auth mode ${diagnostics.authMode}`,
+        instance.agentNote,
         failing.length === 0
           ? "Setup checks: all ok."
           : `Setup checks failing: ${failing
@@ -89,6 +98,7 @@ export const diagnosticsTool = {
         version: diagnostics.version,
         authMode: diagnostics.authMode,
         generatedAt: diagnostics.generatedAt,
+        instance,
         diagnostics: { ...diagnostics, quotas },
       },
     });

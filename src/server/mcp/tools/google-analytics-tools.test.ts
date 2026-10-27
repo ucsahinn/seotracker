@@ -162,7 +162,12 @@ describe("Google Analytics MCP tools", () => {
       status: "ok",
       rowCount: 1,
       totalCandidateRows: 2,
-      rows: [{ page: "https://example.com/a", score: 90 }],
+      rows: [{ page: "https://example.com/a", gainPerMonth: 90 }],
+      request: {
+        dateRange: { startDate: "2026-07-07", endDate: "2026-08-03" },
+      },
+      totals: { gainPerMonth: 90, noGainPages: 1 },
+      analytics: { state: "connected" },
       coverage: { matchedRows: 1 },
     });
     const { getSearchOpportunitiesTool } = tools;

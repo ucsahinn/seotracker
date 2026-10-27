@@ -1,137 +1,99 @@
 import { t } from "@/shared/i18n";
 import { copyText } from "@/client/lib/copyText";
 import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
-import { Copy, ExternalLink } from "lucide-react";
+import { ArrowDown, ArrowUp, Copy, ExternalLink } from "lucide-react";
 import { SortableHeader } from "@/client/components/table/SortableHeader";
 import { getSafeExternalUrl } from "@/client/components/table/url";
 import { nullableNumberSort } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
 import {
-  KIND_COPY,
   pathOf,
+  WORK_COPY,
+  workColor,
   type OpportunityRow,
 } from "@/client/features/opportunities/opportunityLogic";
-import {
-  formatDecimal,
-  formatNumber,
-  formatPercent,
-} from "@/client/lib/format";
+import { formatCount, formatDecimal, formatPercent } from "@/client/lib/format";
+import { BAND_LABELS } from "@/shared/positionBands";
 
-/*
- * The three parts a score is made of, at the weights that make it.
- *
- * The page already explains in prose that the score is 50% demand, 30%
- * business value and 20% reachability. It never showed which of the three a
- * given row's number came from -- and "67, all of it demand" and "67, the
- * page already earns" argue for different weeks of work. The widths are the
- * weighted contributions, so the filled part of the bar is literally the
- * score out of 100.
- */
-// Labels stay Turkish here and go through t() where they render.
-const SCORE_PARTS = [
-  { key: "demand", label: "Talep", weight: 0.5, opacity: 1 },
-  { key: "businessValue", label: "İş değeri", weight: 0.3, opacity: 0.62 },
-  {
-    key: "reachability",
-    label: "Yükselme kolaylığı",
-    weight: 0.2,
-    opacity: 0.34,
-  },
-] as const;
-
-function ScoreBadge({
-  score,
-  components,
-}: {
-  score: number | null | undefined;
-  components?: OpportunityRow["scoreComponents"];
-}) {
-  if (score == null) {
-    return <span className="text-subtle">-</span>;
-  }
-  // One threshold, not a rainbow: above 60 is worth planning work around.
-  const strong = score >= 60;
-
-  const parts = components
-    ? SCORE_PARTS.map((part) => ({
-        ...part,
-        // Already 0-1 from the service; the weight turns it into points.
-        points: (components[part.key] ?? 0) * part.weight * 100,
-      }))
-    : null;
-
+/** The page's non-brand click-through against the site's at that position, in points. */
+function CtrGap({ row }: { row: OpportunityRow }) {
+  if (row.nonBrandCtr === null || row.siteCtr === null) return null;
+  const points = (row.nonBrandCtr - row.siteCtr) * 100;
+  const magnitude = formatDecimal(Math.abs(points));
+  if (magnitude === formatDecimal(0)) return null;
+  const below = points < 0;
+  const Icon = below ? ArrowDown : ArrowUp;
   return (
-    <div className="flex flex-col items-end gap-1">
-      <span
-        className={`badge badge-sm tabular-nums ${
-          strong
-            ? "border-success/30 bg-success/10 text-[var(--ink-success)]"
-            : "border-base-300 bg-base-200 text-muted"
-        }`}
-      >
-        {score}
-      </span>
-      {parts ? (
-        <>
-          {/*
-           * The breakdown was a `title` on an `aria-hidden` element, so it
-           * reached neither keyboard nor screen reader -- the split this
-           * component exists to expose ("67, all of it demand" and "67, the
-           * page already earns" argue for different weeks) was available on
-           * mouse hover only. The bar stays hidden; the sentence gets a
-           * reachable home beside it.
-           */}
-          <span className="sr-only">
-            {parts
-              .map(
-                (part) =>
-                  `${t(part.label)}: ${formatDecimal(part.points)} / ${part.weight * 100}`,
-              )
-              .join(", ")}
-          </span>
-          <span
-            className="flex h-1 w-16 overflow-hidden rounded-full bg-base-200"
-            title={parts
-              .map(
-                (part) =>
-                  `${t(part.label)}: ${formatDecimal(part.points)} / ${part.weight * 100}`,
-              )
-              .join(" · ")}
-            aria-hidden
-          >
-            {parts.map((part) => (
-              <span
-                key={part.key}
-                className="h-full bg-primary"
-                style={{ width: `${part.points}%`, opacity: part.opacity }}
-              />
-            ))}
-          </span>
-        </>
-      ) : null}
-    </div>
+    <span
+      className={`flex items-center justify-end gap-0.5 text-xs ${
+        below ? "text-[var(--ink-error)]" : "text-[var(--ink-success)]"
+      }`}
+      title={t("Sitenizin aynı sıradaki marka dışı aramaları: {ctr}", {
+        ctr: formatPercent(row.siteCtr),
+      })}
+    >
+      <Icon aria-hidden className="size-3" />
+      {t("site {ctr} · {value} puan", {
+        ctr: formatPercent(row.siteCtr),
+        value: `${below ? "-" : "+"}${magnitude}`,
+      })}
+    </span>
   );
 }
+
+// Turkish, translated with t() where it renders.
+const VALUE_SHORT = {
+  converts: "dönüşüyor",
+  no_conversions: "dönüşüm yok",
+  too_little_traffic: "az trafik",
+} as const;
 
 const opportunityHelper = createColumnHelper<OpportunityRow>();
 
 export function buildOpportunityColumns(
   onOpen: (row: OpportunityRow) => void,
+  maxGain: number,
 ): ColumnDef<OpportunityRow>[] {
   const right = {
     headerClassName: "text-right",
     cellClassName: "text-right tabular-nums",
   } as const;
   return [
-    opportunityHelper.accessor("score", {
+    opportunityHelper.accessor("gainPerMonth", {
       header: ({ column }) => (
-        <SortableHeader column={column} label={t("Puan")} align="right" />
-      ),
-      cell: ({ getValue, row }) => (
-        <ScoreBadge
-          score={getValue()}
-          components={row.original.scoreComponents}
+        <SortableHeader
+          column={column}
+          label={t("Ek tıklama tahmini")}
+          align="right"
+          helpText={t(
+            "Bu sayfanın aramaları sitenizin kendi tıklama oranlarına ulaşırsa ayda gelebilecek ek tıklama.",
+          )}
         />
       ),
+      cell: ({ getValue, row }) => {
+        const gain = getValue();
+        return (
+          <span className="flex flex-col items-end gap-1">
+            <span className="font-semibold">
+              +{formatCount(gain)}
+              <span className="ml-1 text-xs font-normal text-muted">
+                {t("/ay")}
+              </span>
+            </span>
+            <span
+              aria-hidden
+              className="block h-1.5 w-16 overflow-hidden rounded-full bg-base-200"
+            >
+              <span
+                className="block h-full rounded-full"
+                style={{
+                  width: `${Math.max(4, (gain / Math.max(maxGain, 1)) * 100)}%`,
+                  backgroundColor: workColor(row.original.work),
+                }}
+              />
+            </span>
+          </span>
+        );
+      },
       meta: right,
     }),
     opportunityHelper.accessor("page", {
@@ -141,6 +103,7 @@ export function buildOpportunityColumns(
       cell: ({ getValue, row }) => {
         const url = getValue();
         const safe = getSafeExternalUrl(url);
+        const work = row.original.work;
         return (
           <span className="flex min-w-0 items-center gap-2">
             <span className="min-w-0">
@@ -155,8 +118,13 @@ export function buildOpportunityColumns(
               >
                 {pathOf(url)}
               </button>
-              <span className="text-xs text-muted">
-                {t(KIND_COPY[row.original.kind].label)}
+              <span className="flex items-center gap-1.5 text-xs text-muted">
+                <span
+                  aria-hidden
+                  className="inline-block size-2 shrink-0 rounded-full"
+                  style={{ backgroundColor: workColor(work) }}
+                />
+                {t(WORK_COPY[work].action)}
               </span>
             </span>
             <button
@@ -196,7 +164,14 @@ export function buildOpportunityColumns(
           )}
         />
       ),
-      cell: ({ getValue }) => formatDecimal(getValue()),
+      cell: ({ getValue, row }) => (
+        <span className="block">
+          {formatDecimal(getValue())}
+          <span className="block text-xs text-muted">
+            {BAND_LABELS[row.original.band]}
+          </span>
+        </span>
+      ),
       meta: right,
     }),
     opportunityHelper.accessor("impressions", {
@@ -208,7 +183,7 @@ export function buildOpportunityColumns(
           helpText={t("Sayfanızın arama sonuçlarında kaç kez göründüğü.")}
         />
       ),
-      cell: ({ getValue }) => formatNumber(getValue()),
+      cell: ({ getValue }) => formatCount(getValue()),
       meta: right,
     }),
     opportunityHelper.accessor("clicks", {
@@ -220,7 +195,7 @@ export function buildOpportunityColumns(
           helpText={t("Aramalardan sayfanıza kaç kez tıklandığı.")}
         />
       ),
-      cell: ({ getValue }) => formatNumber(getValue()),
+      cell: ({ getValue }) => formatCount(getValue()),
       meta: right,
     }),
     opportunityHelper.accessor("ctr", {
@@ -230,36 +205,16 @@ export function buildOpportunityColumns(
           label={t("Tıklama oranı")}
           align="right"
           helpText={t(
-            "Gösterilenlerin yüzde kaçı tıklandı. Altındaki ok, sayfanın sitenizde aynı sıradaki sayfalara göre farkını gösterir.",
+            "Gösterilenlerin yüzde kaçı tıklandı. Altındaki satır, sayfanın marka dışı aramalarını sitenizin aynı sıradaki aramalarıyla yüzde puan olarak karşılaştırır.",
           )}
         />
       ),
-      /*
-       * The gap under the rate, which is the number that makes "Tıklanmıyor"
-       * a finding rather than a label. Measured against this site's own
-       * median for the position band, not a published CTR curve: a brand
-       * term at position 3 behaves nothing like a comparison term at
-       * position 3, so somebody else's average is not a bar.
-       */
-      cell: ({ getValue, row }) => {
-        const gap = row.original.ctrGap;
-        return (
-          <span className="block">
-            {formatPercent(getValue())}
-            {gap !== null && Math.abs(gap) >= 0.005 ? (
-              <span
-                className={`block text-xs ${
-                  gap < 0
-                    ? "text-[var(--ink-error)]"
-                    : "text-[var(--ink-success)]"
-                }`}
-              >
-                {gap < 0 ? "▼" : "▲"} {formatPercent(Math.abs(gap))}
-              </span>
-            ) : null}
-          </span>
-        );
-      },
+      cell: ({ getValue, row }) => (
+        <span className="block">
+          {formatPercent(getValue())}
+          <CtrGap row={row.original} />
+        </span>
+      ),
       meta: right,
     }),
     opportunityHelper.accessor((row) => row.ga4?.sessions ?? null, {
@@ -270,16 +225,29 @@ export function buildOpportunityColumns(
           label={t("Oturum")}
           align="right"
           helpText={t(
-            "Analytics'ten, Search Console ile aynı tarih aralığı için alınır; Analytics ekranındaki aralıktan farklı olabilir.",
+            "Analytics'teki organik oturumlar, Search Console ile aynı günler için. Analytics ekranı dünü de saydığı için sayı orada biraz farklı olabilir.",
           )}
         />
       ),
-      cell: ({ getValue }) => {
+      cell: ({ getValue, row }) => {
         const value = getValue();
-        return value === null ? (
-          <span className="text-subtle">-</span>
-        ) : (
-          formatNumber(value)
+        if (value === null) return <span className="text-subtle">-</span>;
+        const signal = row.original.value;
+        return (
+          <span className="block">
+            {formatCount(value)}
+            {signal ? (
+              <span
+                className={`block text-xs ${
+                  signal === "converts"
+                    ? "text-[var(--ink-success)]"
+                    : "text-muted"
+                }`}
+              >
+                {t(VALUE_SHORT[signal])}
+              </span>
+            ) : null}
+          </span>
         );
       },
       sortingFn: nullableNumberSort,

@@ -3,7 +3,7 @@ title: Settings
 description: Theme, Google access key, PageSpeed key, usage limits, version and update check. The one settings screen for the whole installation.
 screen: Ayarlar
 route: /settings
-updated: 2026-10-26
+updated: 2026-10-27
 ---
 
 This screen holds the settings that apply to the whole installation: the Google connection, the PageSpeed key, the theme, the language and updates.
@@ -14,11 +14,22 @@ This screen holds the settings that apply to the whole installation: the Google 
 
 **Appearance**. For **Theme** there are the options **System**, **Light** and **Dark**. Your choice is stored in this browser. In another browser or on another computer, you choose again.
 
-**Language.** The app's interface comes in Turkish and English. Under **Settings → Appearance → Language**, pick **English** or **Türkçe**; the page reloads in the new language. Until you choose, the app follows your browser's language: Turkish if the browser prefers Turkish, English for any other language. The choice is saved in this browser, like the theme. Only the app's interface changes. Release notes, the answers an AI assistant gets over MCP, and the Windows tray menu stay in Turkish.
+**Language.** The app's interface comes in Turkish, English, German, French, Italian and Portuguese. Under **Settings → Appearance → Language**, pick **Türkçe**, **English**, **Deutsch**, **Français**, **Italiano** or **Português**; the page reloads in the new language. Each language is written in its own name, so you can find yours even if you cannot read the current one. Until you choose, the app follows your browser's language. If the browser prefers none of these languages, the app opens in English. If the browser gives no language at all, it opens in Turkish. The choice is saved in this browser, like the theme. Only the app's interface changes. The Windows tray menu stays in Turkish.
 
-**Notifications.** The bell in the sidebar keeps the latest 50 events and shows the unread count. **Mark all as read** preserves the history. Audit results, new versions, Google connection issues, reports and index checks appear here. **Notification sound** plays a short tone for important events; **Preview sound** lets you try it. **Desktop notifications while in the background** asks for browser permission only when enabled. If permission is blocked, enable it in the browser's site permissions. Visual animations follow the system's reduced motion preference; sound has its own setting.
+**Notifications.** The bell in the sidebar keeps the latest 50 events and shows the unread count. **Mark all as read** preserves the history. Audit results, new versions, Google connection issues, reports and index checks appear here. While the app is open, a new event shows in the app's own small popup. While the tab is in the background, the event is kept only in the bell history. The app does not send Windows or browser notifications, so the same event never appears in two overlapping windows. If you are watching an audit's own screen, that audit's completion popup is not shown separately, because the screen already shows the finish. **Notification sound** plays a short tone for important events; **Preview sound** lets you try it. **Test in-app notification** creates a test notification and its sound. Visual animations follow the system's reduced motion preference; sound has its own setting.
 
 **Windows.** Turn Start with Windows and Install updates automatically on or off here. These are the same saved preferences as in the tray menu. Administrator restrictions are explained beside the option. Controls are disabled in Docker and development installations; older Windows launchers show a package update instruction.
+
+If a preference cannot be saved, the screen says why and what to do. Because this section talks to the app in the taskbar, the errors come from that app:
+
+- **The tray app did not answer within 4 seconds.** If the computer just woke from sleep, press **Try again** after a few seconds. If it persists, choose **Çıkış** (Exit) in the tray menu and open the app again.
+- **Could not connect to the tray app's settings service.** The tray app may have closed. Open seowatcher again from the Start menu.
+- **This preference is locked by an administrator.** Only the computer's administrator can change it. This is normal if the installation was made for all users.
+- **The tray app did not recognise this request.** The server and the tray app may be left over from different sessions. Choose **Çıkış** (Exit) in the tray menu and open the app again.
+- **The tray app refused the settings request.** Restart the app from the tray menu. If it persists, update the Windows package.
+- **The tray app returned an unrecognised answer.** The app and tray versions may not match. Update the Windows package.
+
+If the section does not open at all and says Windows preferences are unavailable, check that the tray app is running.
 
 **Google.** The badge is one of three values: **Saved**, **From the setup file** (on a Docker installation, the value was set in the `.env` file) or **Missing**. The section shows the two redirect addresses to add in Google Cloud Console (Google's developer console), each with a copy button. Add both: without the Analytics address, only Search Console connects.
 
@@ -29,7 +40,7 @@ Fields: **Client ID** and **Client secret**. Both come from the access key you c
 - Search Console: "Settings → Users and permissions → Add user", permission Full.
 - Analytics: "Admin → Access management", permission Viewer.
 
-The badge says **Saved** or **Not used**. A saved service account is preferred over the Google access key. Deleting removes the account from the app but does not revoke the key in Google.
+The badge says **Saved** or **Not used**. If no client ID is entered in the **Google** section but a service account is connected, the **Google** section's badge says a neutral **Not used, a service account is connected** instead of a yellow **Missing**. Google then works through the service account. A saved service account is preferred over the Google access key. Deleting removes the account from the app but does not revoke the key in Google.
 
 **Speed tests**. The section has an **API key** field and an **Test key** button. The test "Uses 1 measurement", and you can press it once every ten seconds. The badge says **Key saved**, **From the setup file** or **Key missing**. The details are in the PageSpeed key guide.
 
@@ -44,7 +55,9 @@ The badge says **Saved** or **Not used**. A saved service account is preferred o
 
 The status of each card is **Enough left**, **Running low** (after 70 percent), **Almost used up** (after 90 percent) or **Unknown**.
 
-**About**. The **Version** row shows the installed version (for example 0.5.0 Alpha). The **Check for updates** switch is on by default. When it is on, the app asks GitHub for the latest version at most once a day. The **Check now** button then appears too. If there is a new version, a **What's changed** link appears, and for Docker installations a command you can copy: `git pull && docker compose up -d --build`. For the Windows package, it points to **Güncelle** (Update) in the menu of the taskbar icon (the tray menu is Turkish only). If automatic update is on, the new version installs by itself.
+**About**. The **Version** row shows the installed version (for example 0.8.0 Alpha). The **Check for updates** switch is on by default. When it is on, the app asks GitHub for the latest version every six hours. The **Check now** button then appears too. The tray app of the Windows package does its own check as well, once a day. If there is a new version, a **What's changed** link appears, and for Docker installations a command you can copy: `git pull && docker compose up -d --build`. For the Windows package, it points to **Güncelle** (Update) in the menu of the taskbar icon (the tray menu is Turkish only). If automatic update is on, the new version installs by itself.
+
+The check tells you one of these: a new version was released, "You're on the latest version.", or a problem. If GitHub cannot be reached, the screen says "GitHub couldn't be reached on the last check" and gives the last known version with the date of the last successful check. That means it could not be confirmed whether your version is current. Check your internet connection and try again. If the screen says "Could not reach the release source: the repository was not found or is private (GitHub 404)", the problem is not on your side. Download the diagnostics bundle from the **Help** screen and report it. If the switch is off, the screen says "Update checks are off, so no requests go to GitHub."
 
 **Release notes**. Open the separate page above Notifications in the sidebar. Colored labels show the features, fixes and security changes in each release.
 

@@ -11,6 +11,7 @@ const mocks = vi.hoisted(() => ({
     vi.fn<(batch: { links: Array<{ targets: string[] }> }) => unknown>(),
   releaseUrls: vi.fn<(urls: string[]) => Promise<void>>(),
   insertCrawledBatch: vi.fn(),
+  updateAuditProgress: vi.fn(),
   stepDo: vi.fn(),
   sleepUntil: vi.fn(),
   getCrawlThrottle: vi.fn(),
@@ -29,7 +30,7 @@ vi.mock("@/server/features/audit/AuditScratchpad", () => ({
 vi.mock("@/server/features/audit/repositories/AuditRepository", () => ({
   AuditRepository: {
     insertCrawledBatch: mocks.insertCrawledBatch,
-    updateAuditProgress: vi.fn(),
+    updateAuditProgress: mocks.updateAuditProgress,
   },
 }));
 vi.mock("@/server/features/audit/auditHeartbeat", () => ({
@@ -133,6 +134,24 @@ function serve(status: (now: number) => number, retryAfter?: string) {
     });
   });
 }
+
+describe("crawl totals", () => {
+  it("records every URL found, not only the ones the page limit let through", async () => {
+    vi.spyOn(globalThis, "fetch").mockImplementation(
+      async () =>
+        new Response(HTML, { headers: { "content-type": "text/html" } }),
+    );
+    const result = crawl(10);
+    urls.push(...Array.from({ length: 15 }, (_, i) => `${ORIGIN}/more-${i}`));
+    await vi.runAllTimersAsync();
+    expect(await result).toEqual({ pagesCrawled: 10, completed: false });
+    expect(mocks.updateAuditProgress).toHaveBeenLastCalledWith(
+      "audit",
+      "workflow",
+      { pagesCrawled: 10, pagesTotal: 10, urlsDiscovered: 25 },
+    );
+  });
+});
 
 describe("crawl pacing and cooldowns", () => {
   it("spaces a fast site's requests across chunks without duplicates", async () => {

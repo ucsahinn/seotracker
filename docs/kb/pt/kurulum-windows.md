@@ -5,7 +5,7 @@ kind: nasil-yapilir
 updated: 2026-10-23
 ---
 
-A interface do aplicativo está disponível em turco e inglês. O idioma é escolhido em Ayarlar → Görünüm → Dil. Este guia mostra cada botão e cada nome de tela em turco, com o significado em português entre parênteses.
+A interface do aplicativo existe em seis idiomas: turco, inglês, alemão, francês, italiano e português. O idioma é escolhido em Configurações → Aparência → Idioma. Este guia mostra botões e telas com o nome que eles têm na interface em português. O assistente de instalação só existe em turco e inglês, e o menu da bandeja do Windows só em turco. Ali o nome exibido vem com o significado em português entre parênteses.
 
 Ao fim desta página, o aplicativo estará instalado no seu computador e aberto no navegador. A instalação leva dois minutos. Ela é feita só para a sua conta de usuário e não exige direitos de administrador (a permissão é pedida uma única vez, se faltar o componente Visual C++).
 
@@ -23,14 +23,14 @@ Ao fim desta página, o aplicativo estará instalado no seu computador e aberto 
 
 1. Baixe o arquivo **seowatcher-setup.exe** na página de versões do GitHub. O endereço fixo é: `github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe`
 2. Dê um duplo clique no arquivo.
-3. Se o Windows disser "O Windows protegeu o computador", clique em **Mais informações** e depois em **Executar assim mesmo** (em um Windows em turco: "Daha fazla bilgi", "Yine de çalıştır"). O arquivo ainda não tem assinatura digital, por isso o Windows não reconhece o editor. Esse aviso é normal.
+3. Se o Windows disser "O Windows protegeu o computador", clique em **Mais informações** e depois em **Executar assim mesmo**. O arquivo ainda não tem assinatura digital, por isso o Windows não reconhece o editor. Esse aviso é normal.
 4. Se quiser, compare o hash SHA-256 do arquivo (a impressão digital do arquivo) com o `SHA256SUMS.txt` da página de versões.
-5. No assistente de instalação, percorra as páginas nesta ordem:
-   1. Página de boas-vindas: clique em **Avançar**.
-   2. Página "instalar para": escolha **Somente para mim**. É a instalação por usuário, recomendada, em `%LOCALAPPDATA%\Programs\seowatcher`. "Todos os usuários" instala em `C:\Program Files\seowatcher` e pede permissão de administrador.
-   3. Página de opções: **Iniciar o seowatcher quando o Windows iniciar** (em turco: "Windows açılınca seowatcher'ı başlat") e **Criar um atalho na área de trabalho** (em turco: "Masaüstüne kısayol ekle"). A primeira já vem marcada. Desmarque-a se não quiser que o aplicativo inicie em segundo plano. Clique em **Avançar**.
-   4. Clique em **Instalar** (em um Windows em turco: **Kur**).
-   5. A última página tem a caixa **Iniciar o seowatcher agora**. Deixe-a marcada e clique em **Concluir** (em um Windows em turco: **Bitti**). O aplicativo abre.
+5. O assistente de instalação existe em turco e inglês. Se ele perguntar o idioma, escolha **English**; os passos abaixo usam os nomes em inglês. Percorra as páginas nesta ordem:
+   1. Página de boas-vindas: clique em **Next** (Avançar).
+   2. Página "instalar para": escolha **Install for me only** (Instalar só para mim). É a instalação por usuário, recomendada, em `%LOCALAPPDATA%\Programs\seowatcher`. **Install for all users** (Instalar para todos os usuários) instala em `C:\Program Files\seowatcher` e pede permissão de administrador.
+   3. Página de opções: **Start seowatcher when Windows starts** (Iniciar o seowatcher com o Windows) e **Create a desktop shortcut** (Criar um atalho na área de trabalho). A primeira já vem marcada. Desmarque-a se não quiser que o aplicativo inicie em segundo plano. Clique em **Next** (Avançar).
+   4. Clique em **Install** (Instalar).
+   5. A última página tem a caixa **Start seowatcher now** (Iniciar o seowatcher agora). Deixe-a marcada e clique em **Finish** (Concluir). O aplicativo abre.
 6. Aguarde. A primeira abertura leva de 20 a 30 segundos. Procure o ícone do seowatcher na área de notificação (a bandeja do sistema), à direita da barra de tarefas. Se o ícone não aparecer, clique na seta ^ da barra de tarefas. O texto do ícone muda em sequência para "Anahtarlar hazırlanıyor" (Preparando as chaves), "Veritabanı güncelleniyor" (Atualizando o banco de dados) e "Sunucu başlatılıyor" (Iniciando o servidor). Quando estiver pronto, o navegador abre sozinho. Quando o Windows inicia o aplicativo automaticamente, o navegador não abre; aparece um balão "seowatcher hazır" (o seowatcher está pronto).
 7. O endereço `http://127.0.0.1:3001` abre sozinho no navegador. O 127.0.0.1 é o seu próprio computador e o 3001 é o número da porta.
 
@@ -43,12 +43,12 @@ Clique com o botão direito no ícone (se ele não estiver visível, clique na s
 - **seowatcher'ı aç** (Abrir o seowatcher): abre o aplicativo no navegador. Um duplo clique no ícone faz o mesmo. Se o aplicativo ainda estiver iniciando, aparece o balão "seowatcher açılıyor" (o seowatcher está iniciando), e o navegador abre sozinho quando ele estiver pronto.
 - Linha de status: "Çalışıyor: http://127.0.0.1:3001/" (Em execução: http://127.0.0.1:3001/), "Veritabanı güncelleniyor" (Atualizando o banco de dados) ou um texto de erro. Ela não é clicável. Se o texto for longo, deixe o mouse sobre ele para vê-lo inteiro.
 - **Eksik Windows bileşenini kur** (Instalar o componente do Windows que falta): aparece só se o pacote Visual C++ estiver faltando. Ao clicar, ele instala o pacote e reinicia o aplicativo.
-- **Güncelle** (Atualizar): fica sempre no menu. Ao clicar, ele consulta o GitHub na hora. Se houver uma versão nova, baixa e instala; senão diz "Güncel" (Atualizado). Durante a consulta o item mostra "Kontrol ediliyor…" (Verificando…) e, durante o download, "Güncelleme indiriliyor: X.Y.Z (%45)" (Baixando a atualização: X.Y.Z (45%)); nessa hora ele não é clicável. Quando uma versão nova já foi encontrada, o item mostra "Güncelle: X.Y.Z sürümü hazır" (Atualizar: a versão X.Y.Z está pronta); os números de versão são exemplos.
+- **Güncelle** (Atualizar): fica sempre no menu. Ao clicar, ele consulta o GitHub na hora. Se houver uma versão nova, baixa e instala; senão diz "Güncel" (Atualizado). Durante a consulta o item mostra "Verificando…" e, durante o download, "Güncelleme indiriliyor: X.Y.Z (%45)" (Baixando a atualização: X.Y.Z (45%)); nessa hora ele não é clicável. Quando uma versão nova já foi encontrada, o item mostra "Güncelle: X.Y.Z sürümü hazır" (Atualizar: a versão X.Y.Z está pronta); os números de versão são exemplos.
 - **Yeniden başlat** (Reiniciar): fecha o aplicativo e o abre de novo. Se algo travar, tente isto primeiro.
 - **Windows açılınca başlat** (Iniciar com o Windows): se estiver marcado, o aplicativo inicia em segundo plano quando o computador liga. Se um administrador ativou essa configuração numa instalação para todos os usuários do computador, o item aparece marcado e em cinza, e só um administrador pode desmarcá-lo.
 - **Güncellemeleri kendiliğinden kur** (Instalar as atualizações automaticamente): se estiver marcado, o aplicativo instala sozinho uma versão nova quando a encontra.
 - **Kurulumu onar** (Reparar a instalação): limpa os arquivos temporários, verifica se o pacote está completo e abre o aplicativo de novo. Durante o reparo, o item mostra "Onarılıyor…" (Reparando…).
-- **Tanı bilgisini kopyala** (Copiar informações de diagnóstico): copia para a área de transferência a versão do Windows, o processador, a versão do Visual C++, um teste do motor, o módulo com falha do log de eventos do Windows, os arquivos de despejo de falhas e as últimas linhas do registro. As informações ficam prontas em alguns segundos, e então aparece o balão "Kopyalandı" (Copiado). Isso ajuda ao relatar um problema.
+- **Tanı bilgisini kopyala** (Copiar informações de diagnóstico): copia para a área de transferência a versão do Windows, o processador, a versão do Visual C++, um teste do motor, o módulo com falha do log de eventos do Windows, os arquivos de despejo de falhas e as últimas linhas do registro. As informações ficam prontas em alguns segundos, e então aparece o balão "Copiado". Isso ajuda ao relatar um problema.
 - **Sorunu bildir (GitHub)** (Relatar um problema (GitHub)): coloca as mesmas informações na área de transferência e abre no GitHub um relato já preenchido. Acrescente uma frase sobre o que você estava fazendo e envie.
 - **Günlükleri aç** (Abrir os registros): abre a pasta de registros. Nela ficam `launcher.log`, `server.log` e `migrate.log`.
 - **Veri klasörünü aç** (Abrir a pasta de dados): abre a pasta com o banco de dados e as chaves.
@@ -61,7 +61,7 @@ Se o servidor fechar sozinho durante o uso, o aplicativo o abre de novo e mostra
 
 ### Atualização
 
-O aplicativo se atualiza sozinho. Dois minutos depois de abrir, e depois uma vez por dia, ele consulta no GitHub a última versão. Se houver uma versão nova, ele a baixa, compara a impressão digital do arquivo (SHA-256) com o valor da página de versões, instala em silêncio e reabre. Nesse meio tempo, o texto do ícone mostra "Güncelleme indiriliyor" (Baixando a atualização) e "Güncelleme kuruluyor" (Instalando a atualização), e uma pequena janela de instalação aparece rapidamente. Quando o aplicativo reabre, aparece o balão "seowatcher X.Y.Z sürümüne güncellendi" (o seowatcher foi atualizado para a versão X.Y.Z); ao clicar nele, abre-se a lista de novidades. A seção **Ayarlar → Hakkında** (Configurações → Sobre) do aplicativo também avisa da versão nova e leva você ao item **Güncelle** do ícone.
+O aplicativo se atualiza sozinho. Dois minutos depois de abrir, e depois uma vez por dia, ele consulta no GitHub a última versão. Se houver uma versão nova, ele a baixa, compara a impressão digital do arquivo (SHA-256) com o valor da página de versões, instala em silêncio e reabre. Nesse meio tempo, o texto do ícone mostra "Güncelleme indiriliyor" (Baixando a atualização) e "Güncelleme kuruluyor" (Instalando a atualização), e uma pequena janela de instalação aparece rapidamente. Quando o aplicativo reabre, aparece o balão "seowatcher X.Y.Z sürümüne güncellendi" (o seowatcher foi atualizado para a versão X.Y.Z); ao clicar nele, abre-se a lista de novidades. A seção **Configurações → Sobre** do aplicativo também avisa da versão nova e leva você ao item **Güncelle** do ícone.
 
 - Se você não quiser que ele instale sozinho, desmarque **Güncellemeleri kendiliğinden kur** no menu. Quando sair uma versão nova, você verá um balão uma única vez, e o item do menu passará a mostrar "Güncelle: X.Y.Z sürümü hazır" (Atualizar: a versão X.Y.Z está pronta). Para instalar, clique no balão ou no item.
 - Se não houver internet, ou se o GitHub não responder naquele momento, o aplicativo tenta de novo uma hora depois. Nas tentativas automáticas, ele avisa só uma vez por versão.
@@ -89,8 +89,8 @@ Se um arquivo do pacote tiver sido apagado (por exemplo, colocado em quarentena 
 
 ### Desinstalação
 
-1. No Windows, em **Ayarlar → Uygulamalar → Yüklü uygulamalar** (Configurações → Aplicativos → Aplicativos instalados), encontre **seowatcher**.
-2. Clique em **Kaldır** (Desinstalar).
+1. No Windows, em **Configurações → Aplicativos → Aplicativos instalados**, encontre **seowatcher**.
+2. Clique em **Desinstalar**.
 
 O desinstalador remove o programa, o atalho do menu Iniciar o registro de "iniciar com o Windows" (inclusive se você o ativou pelo menu) e os arquivos de atualização baixados. Ele não mexe na pasta de dados, e a janela de desinstalação também avisa isso. Se você também quiser apagar o banco de dados, a conexão com o Google e os relatórios, apague a pasta de dados por conta própria.
 
@@ -134,7 +134,7 @@ Quando o número muda, atualize também no Google os dois endereços de redireci
 
 - Ao passar o mouse sobre o ícone da barra de tarefas (se ele não aparecer, clique na seta ^), deve aparecer "seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/" (seowatcher 0.5.0 Alpha: Em execução: http://127.0.0.1:3001/). O número da versão é o da que você instalou.
 - No navegador, o endereço `http://127.0.0.1:3001/api/health` deve mostrar um texto que começa com "status":"ok".
-- Na tela **Yardım** (Ajuda), o cartão "Kurulumunuzun durumu" (Estado da sua instalação) deve dizer "Her şey yolunda." (Está tudo certo.). Antes de conectar o Google, a linha "Google girişi" (Login do Google) pede atenção. Isso é normal.
+- Na tela **Ajuda**, o cartão "Seu status de configuração" deve dizer "Tudo parece bem.". Antes de conectar o Google, a linha "Login no Google" pede atenção. Isso é normal.
 
 ## Perguntas frequentes
 

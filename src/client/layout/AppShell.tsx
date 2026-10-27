@@ -12,6 +12,7 @@ import { siteUrl } from "@/client/features/support/links";
 import { t } from "@/shared/i18n";
 import { useBackgroundNotifications } from "@/client/features/notifications/useBackgroundNotifications";
 import { AnnouncementNotifications } from "@/client/features/announcements/AnnouncementNotifications";
+import { PortFallbackBanner } from "@/client/features/support/PortFallbackBanner";
 
 export function AuthenticatedAppLayout({
   children,
@@ -81,7 +82,7 @@ function AppFrame({
     projectId ?? fallbackProjectId ?? rememberedProjectId;
 
   return (
-    <div className="flex h-[100dvh] bg-base-200">
+    <div className="app-shell flex h-[100dvh] bg-base-200">
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-[1100] focus:rounded-field focus:bg-base-100 focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:text-base-content focus:shadow-lg"
@@ -102,7 +103,8 @@ function AppFrame({
         {/* PostHog-style cutout: the main content sits on a raised panel with a
             thin strip of the sidebar background above it and a hairline border. */}
         <div className="flex min-h-0 flex-1 flex-col md:pt-2">
-          <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-base-100 md:rounded-tl-[var(--radius-box)] md:border-l md:border-t md:border-base-300">
+          <div className="app-pane flex min-h-0 flex-1 flex-col overflow-hidden bg-base-100 md:rounded-tl-[var(--radius-box)] md:border-l md:border-t md:border-base-300">
+            <PortFallbackBanner />
             {banner}
 
             <main

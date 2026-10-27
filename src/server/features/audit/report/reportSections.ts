@@ -31,6 +31,7 @@ import {
 } from "./reportModel";
 import type { AuditReportInput } from "./reportTypes";
 import type { AuditBreakdown } from "@/shared/auditBreakdown";
+import type { AuditStanding } from "@/shared/auditStanding";
 import type { TodoItem } from "@/shared/auditTodo";
 import { getLocale, t } from "@/shared/i18n";
 
@@ -44,6 +45,8 @@ export type ReportContext = {
   stats: ReturnType<typeof describePages>;
   /** Every check with its state and the per-category scores. */
   breakdown: AuditBreakdown;
+  /** Whether the score is shown, provisional or capped (see `auditStanding`). */
+  standing: AuditStanding;
   /** Fixes ranked by score impact and Search Console traffic. */
   todos: TodoItem[];
 };

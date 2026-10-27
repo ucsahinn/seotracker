@@ -408,7 +408,7 @@ export function AnalyticsPage({
       </TabPanel>
 
       {connection.data?.connected ? (
-        <QuotaCard projectId={projectId} kinds={["ga4"]} />
+        <QuotaCard projectId={projectId} kinds={["ga4"]} hideWhenUnknown />
       ) : null}
     </PageShell>
   );

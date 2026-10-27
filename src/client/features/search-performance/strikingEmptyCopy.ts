@@ -17,15 +17,15 @@ export function strikingEmptyCopy({
     return {
       title: t("Bu gruba uyan sorgu yok"),
       description: t(
-        "Seçimi kaldırarak sıra 5-20 arasındaki tüm sorgulara dönün.",
+        "Seçimi kaldırarak sıra 4-20 arasındaki tüm sorgulara dönün.",
       ),
     };
   }
   if (hasQueryData) {
     return {
-      title: t("Bu dönemde 5-20. sırada kelime yok"),
+      title: t("Bu dönemde 4-20. sırada kelime yok"),
       description: t(
-        "Hiçbir kelimeniz 5-20. sırada değil. Bu aralıktaki kelimeler küçük bir iyileştirmeyle üst sıralara çıkabilir; olunca burada listelenir.",
+        "Hiçbir kelimeniz 4-20. sırada değil. Bu aralıktaki kelimeler küçük bir iyileştirmeyle üst sıralara çıkabilir; olunca burada listelenir.",
       ),
     };
   }
@@ -40,7 +40,7 @@ export function strikingEmptyCopy({
   return {
     title: t("Kelime düzeyinde veri henüz gelmedi"),
     description: t(
-      "Search Console, hangi kelimeyle arandığınızı bu dönem için henüz paylaşmadı. Az trafikli sitelerde bu normaldir. Veri gelince 5-20. sıradaki kelimeler burada listelenir.",
+      "Search Console, hangi kelimeyle arandığınızı bu dönem için henüz paylaşmadı. Az trafikli sitelerde bu normaldir. Veri gelince 4-20. sıradaki kelimeler burada listelenir.",
     ),
   };
 }

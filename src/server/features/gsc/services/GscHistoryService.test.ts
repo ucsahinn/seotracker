@@ -16,7 +16,7 @@ const mocks = vi.hoisted(() => ({
         error: string | null;
       }) => Promise<void>
     >(),
-  countRows: vi.fn(),
+  getArchiveSpan: vi.fn(),
   getQueryHistory: vi.fn(),
   getTrackedQueries: vi.fn(),
   getPerformance:
@@ -107,6 +107,38 @@ describe("backfill", () => {
     expect(outcome.daysFetched).toBe(2);
     expect(outcome.error).toBeNull();
     expect(mocks.markRun).toHaveBeenCalledOnce();
+  });
+
+  // Installed 0.8.0: earliest_date was the window start (25 Jun) while the
+  // first stored row was 1 Oct, so the archive overstated its coverage.
+  it("records the first day with data, not the window start", async () => {
+    mocks.getPerformance.mockResolvedValueOnce({
+      siteUrl: SITE,
+      rows: [
+        performanceRow("2026-06-02", "seo aracı", 3.8),
+        performanceRow("2026-06-01", "seo aracı", 4.2),
+      ],
+    });
+
+    const outcome = await GscHistoryService.backfill({
+      projectId: "p1",
+      today: TODAY,
+    });
+
+    expect(outcome.earliestDate).toBe("2026-06-01");
+  });
+
+  it("reports the archive's first stored day as its start", async () => {
+    mocks.getArchiveState.mockResolvedValue({ earliestDate: "2026-06-25" });
+    mocks.getArchiveSpan.mockResolvedValue({
+      rowCount: 3,
+      firstDate: "2026-10-01",
+    });
+
+    expect(await GscHistoryService.getStatus("p1")).toMatchObject({
+      earliestDate: "2026-10-01",
+      rowCount: 3,
+    });
   });
 
   /*

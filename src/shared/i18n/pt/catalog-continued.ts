@@ -17,7 +17,7 @@ export const ptCatalogContinued: Catalog = {
   "Denetim uygulamadaki bir hata yüzünden durdu.":
     "A auditoria parou por causa de um erro no app.",
   "Sorun sitenizde değil. Denetimi yeniden başlatın. Tekrarlarsa Yardım ekranından tanı paketini indirip sorun kaydına ekleyin. Hata kodu: {code}":
-    "O problema não é o seu site. Inicie a auditoria novamente. Se acontecer de novo, baixe o pacote de diagnóstico em Ajuda e anexe-o a um issue. Código do erro: {code}",
+    "O problema não é o seu site. Inicie a auditoria novamente. Se acontecer de novo, baixe o pacote de diagnóstico em Ajuda e anexe-o a um relatório de problema. Código do erro: {code}",
   "Sayfadaki canonical adresi": "URL canônico na página",
   "robots etiketleri": "Tags robots",
   "googlebot etiketleri": "Tags googlebot",
@@ -413,7 +413,7 @@ export const ptCatalogContinued: Catalog = {
   'Sayfa "bulunamadı" diyor ama başarılı yanıt veriyor':
     'A página diz "não encontrada", mas responde com sucesso',
   'Sayfanın başlığı ya da ana başlığı "404" ya da "sayfa bulunamadı" diyor, ama sunucu 200 (başarılı) kodu döndürüyor. Google böyle sayfaları "soft 404" sayar ve dizine almaz; ama taramaya zaman harcar ve gerçek bir hata sayfası olduğunu anlamakta gecikebilir.':
-    'O título ou o título principal da página diz "404" ou "página não encontrada", mas o servidor retorna o código 200 (sucesso). O Google trata essas páginas como "soft 404" e não as indexa, mas gasta tempo de rastreamento com elas e pode demorar a perceber que é uma página de erro.',
+    'O título (title) ou o título principal da página diz "404" ou "página não encontrada", mas o servidor retorna o código 200 (sucesso). O Google trata essas páginas como "soft 404" e não as indexa, mas gasta tempo de rastreamento com elas e pode demorar a perceber que é uma página de erro.',
   "Sayfa gerçekten yoksa sunucunun 404 ya da 410 kodu döndürmesini sağlayın. Varsa başlığını ve içeriğini düzeltin.":
     "Se a página realmente não existe, faça o servidor retornar o código 404 ou 410. Se existe, corrija o título e o conteúdo.",
   "Sayfada yer tutucu metin (lorem ipsum) kalmış":
@@ -772,7 +772,7 @@ export const ptCatalogContinued: Catalog = {
   Sıkıştırma: "Compactação",
   Önbellek: "Cache",
   Sunucu: "Servidor",
-  "Teknoloji ipucu": "Pista da tecnologia",
+  "Teknoloji ipucu": "Indício de tecnologia",
   "Güvenlik başlıkları": "Cabeçalhos de segurança",
   "http'den https'e yönlendirme": "Redirecionamento de http para https",
   "Çerçeveye gömme koruması": "Proteção contra frames",
@@ -798,7 +798,7 @@ export const ptCatalogContinued: Catalog = {
   "Google arama sonucu önizlemesi": "Prévia do resultado na Pesquisa Google",
   "(başlık yok)": "(sem título)",
   "(meta açıklama yok; Google sayfadan bir parça seçer)":
-    "(sem meta description; o Google escolhe um trecho da página)",
+    "(sem meta descrição; o Google escolhe um trecho da página)",
   "Başlık {px} piksel; yaklaşık {max} pikselden sonrası kesiliyor.":
     "O título tem {px} pixels; o que passar de cerca de {max} pixels é cortado.",
   "Başlık {px} piksel, sığıyor.": "O título tem {px} pixels e cabe.",
@@ -863,7 +863,7 @@ export const ptCatalogContinued: Catalog = {
     "Verificações que não encontraram nada e verificações sem resultado porque os dados não puderam ser coletados.",
   "Ana içeriğin görünmesi": "Exibição do conteúdo principal",
   "Tıklamaya tepki": "Resposta a um toque",
-  "Görsel kayma": "Mudança de layout",
+  "Görsel kayma": "Deslocamento de layout",
   "İlk içerik": "Primeiro conteúdo",
   "Sunucunun ilk yanıtı": "Primeira resposta do servidor",
   İyileştirilmeli: "Precisa melhorar",
@@ -902,9 +902,9 @@ export const ptCatalogContinued: Catalog = {
     "Quanto a correção adiciona, aproximadamente, à pontuação do site; os valores não se somam.",
   "{points} puan kayıp": "{points} pontos perdidos",
   "Hız ölçümü (PageSpeed) bu denetimde sonuç vermedi; nedeni Hız sekmesinde.":
-    "O teste de velocidade (PageSpeed) não retornou resultados nesta auditoria; a guia Velocidade explica por quê.",
+    "O teste de velocidade (PageSpeed) não retornou resultados nesta auditoria; a aba Velocidade explica por quê.",
   "Sayfalar Google'da henüz kontrol edilmedi; Dizin durumu sekmesinden sorabilirsiniz.":
-    "As páginas ainda não foram verificadas no Google; você pode pedir isso na guia Status do índice.",
+    "As páginas ainda não foram verificadas no Google; você pode pedir isso na aba Status de indexação.",
   "Karşılaştırma için bağlı bir Google Analytics mülkü ve sayfalarda bir G- etiketi gerekir.":
     "Esta comparação precisa de uma propriedade do Google Analytics conectada e de uma tag G- nas páginas.",
   "Site hakkındaki bilginin bir kısmı (sertifika, alan adı kaydı, DNS) bu denetimde okunamadı.":
@@ -1040,4 +1040,112 @@ export const ptCatalogContinued: Catalog = {
   "Rapor hazırlanıyor…": "Preparando o relatório…",
   "Dizin durumu kontrol ediliyor": "Verificando o status de indexação",
   "Sosyal ve yapılandırılmış veri": "Social e dados estruturados",
+  // Audit failure and notice copy (auditFailureCopy.ts)
+  "Denetim {phase} aşamasında durdu.": 'A auditoria parou na fase "{phase}".',
+  "Denetim tamamlanamadan durdu.": "A auditoria parou antes de terminar.",
+  "adres keşfi": "descoberta de URLs",
+  tarama: "rastreamento",
+  "hız ölçümü": "medição de velocidade",
+  "sonuçların hazırlanması": "preparação dos resultados",
+  "Bir adım zamanında bitmedi. Genelde site çok yavaş yanıt veriyor ya da bağlantıyı açık tutup bekletiyor.":
+    "Uma etapa não terminou a tempo. Em geral, o site responde muito devagar ou mantém a conexão aberta sem responder.",
+  "Birkaç dakika sonra yeniden deneyin. Yine olursa daha az sayfayla başlatın.":
+    "Tente novamente em alguns minutos. Se voltar a acontecer, inicie com menos páginas.",
+  "Denetim, uygulamanın kullanabildiği belleğe sığmadı. Çok büyük sayfalar ya da çok fazla sayfa buna yol açar.":
+    "A auditoria não coube na memória que o aplicativo pode usar. Páginas muito grandes ou páginas demais causam isso.",
+  "Daha az sayfayla yeniden başlatın.": "Inicie novamente com menos páginas.",
+  "Denetim, uygulamanın izin verdiği işlemci süresini aştı. Çok büyük ya da çok karmaşık sayfalar buna yol açar.":
+    "A auditoria passou do tempo de processador que o aplicativo permite. Páginas muito grandes ou complexas causam isso.",
+  "Sonuçlar uygulamanın veritabanına yazılırken hata oluştu. Disk dolu ya da veri dosyası başka bir programda kilitli olabilir.":
+    "Ocorreu um erro ao gravar os resultados no banco de dados do aplicativo. O disco pode estar cheio ou o arquivo de dados pode estar bloqueado por outro programa.",
+  "Diskte boş yer olduğunu kontrol edin, uygulamayı yeniden başlatın ve denetimi yeniden başlatın.":
+    "Verifique se há espaço livre no disco, reinicie o aplicativo e inicie a auditoria de novo.",
+  "Bir adımın sonucu uygulamanın saklayabildiği boyutu aştı. Çok büyük siteler buna yol açar.":
+    "O resultado de uma etapa passou do tamanho que o aplicativo consegue guardar. Sites muito grandes causam isso.",
+  "Denetimi yürüten uygulamanın iç düzeni hata verdi.":
+    "O mecanismo interno de auditoria do aplicativo informou um erro.",
+  "Uygulamayı yeniden başlatın (tepsi menüsünde Yeniden başlat), sonra denetimi yeniden başlatın.":
+    "Reinicie o aplicativo (Reiniciar no menu da bandeja) e inicie a auditoria de novo.",
+  "Denetim yarıda kaldı. Uygulama denetimin ortasında kapanmış ya da yeniden başlamış olabilir.":
+    "A auditoria foi interrompida. O aplicativo pode ter sido fechado ou reiniciado no meio dela.",
+  "Uygulamanın açık kaldığından emin olun ve denetimi yeniden başlatın.":
+    "Mantenha o aplicativo aberto e inicie a auditoria de novo.",
+  "Kayıtlı Google ve PageSpeed anahtarlarını açan kurulum anahtarı denetimi yürüten bölüme ulaşmamış. Anahtarlarınız silinmedi.":
+    "A chave de instalação que abre as chaves Google e PageSpeed salvas não chegou à parte do aplicativo que executa as auditorias. Suas chaves não foram apagadas.",
+  "Uygulamayı güncelleyin ya da yeniden başlatın, sonra denetimi yeniden başlatın.":
+    "Atualize ou reinicie o aplicativo e inicie a auditoria de novo.",
+  "Denetim beklenmedik bir hatayla durdu.":
+    "A auditoria parou com um erro inesperado.",
+  "Denetimi yeniden başlatın. Tekrarlarsa Yardım'dan tanılama paketini indirip sorunu bildirin.":
+    "Inicie a auditoria de novo. Se continuar, baixe o pacote de diagnóstico na Ajuda e relate o problema.",
+  "Sorun sitenizde değil, uygulamada.":
+    "O problema está no aplicativo, não no seu site.",
+  "Büyük olasılıkla sorun sitenizin yavaş yanıt vermesinde; uygulamada bir arıza yok.":
+    "Provavelmente o seu site está respondendo devagar; o aplicativo não tem defeito.",
+  "Nedeni belirlenemedi.": "Não foi possível determinar a causa.",
+  "{count} sayfa tarandı ve kaydedildi; aşağıdaki sonuçlar bu sayfalara dayanır.":
+    {
+      one: "{count} página foi rastreada e salva; os resultados abaixo se baseiam nela.",
+      other:
+        "{count} páginas foram rastreadas e salvas; os resultados abaixo se baseiam nelas.",
+    },
+  "Kayıtlı PageSpeed anahtarı okunamadı; hız ölçümü anahtarsız yapıldı.":
+    "Não foi possível ler a chave PageSpeed salva; a medição de velocidade foi feita sem chave.",
+  "Tarama sonuçları etkilenmedi, ama hız ölçümü yalnızca ilk sayfalarla sınırlı kaldı. Uygulamayı güncelleyin ya da yeniden başlatın, sonra yeni bir denetim başlatın. Sürerse Ayarlar'dan PageSpeed anahtarını yeniden kaydedin.":
+    "Os resultados do rastreamento não foram afetados, mas a medição de velocidade ficou limitada às primeiras páginas. Atualize ou reinicie o aplicativo e inicie uma nova auditoria. Se continuar, salve a chave PageSpeed de novo em Configurações.",
+  // Audit score standing: coverage, provisional score, tier caps
+  "Kısmi puan": "Pontuação provisória",
+  "Gri çubuklar kısmi puandır: o denetimde kontrollerin önemli bir kısmı ölçülemedi.":
+    "As barras cinzas são pontuações provisórias: grande parte das verificações daquela auditoria não pôde ser medida.",
+  "{count} eksik denetim puansız olduğu için grafikte yok.": {
+    one: "{count} auditoria incompleta não tem pontuação e não aparece no gráfico.",
+    other:
+      "{count} auditorias incompletas não têm pontuação e não aparecem no gráfico.",
+  },
+  "Kısmi puan — ölçüm kapsamı {percent}":
+    "Pontuação provisória — cobertura das medições {percent}",
+  "Kontrollerin önemli bir kısmı ölçülemediği için bu puan kesin değil; derece verilmedi.":
+    "Grande parte das verificações não pôde ser medida, então esta pontuação não é definitiva e não recebe classificação.",
+  "Eksik denetim — puan verilmedi": "Auditoria incompleta — sem pontuação",
+  "Sorun listesi tam olmadığı için puan hesaplanmadı. Aşağıdaki bulgular taranan sayfalar için geçerli; tam bir puan için denetimi yeniden çalıştırın.":
+    "A lista de problemas está incompleta, por isso nenhuma pontuação foi calculada. Os resultados abaixo valem para as páginas rastreadas; execute a auditoria de novo para obter uma pontuação completa.",
+  kısmi: "provisória",
+  "{category} ölçülmedi: {reason}": "{category} não medida: {reason}",
+  "{category} ölçülmedi.": "{category} não medida.",
+  "{category} kontrollerinin çoğu ölçülmedi: {reason}":
+    "{category}: a maioria das verificações não foi medida: {reason}",
+  "{category} kontrollerinin çoğu ölçülmedi.":
+    "{category}: a maioria das verificações não foi medida.",
+  "hız ölçümü kapalıydı": "a medição de velocidade estava desligada",
+  "PageSpeed kotası doldu": "a cota do PageSpeed acabou",
+  "PageSpeed anahtarı yok": "sem chave do PageSpeed",
+  "hız ölçümü yapılmadı": "nenhuma medição de velocidade foi feita",
+  "hız ölçümleri başarısız oldu": "as medições de velocidade falharam",
+  "Search Console'dan dizin verisi alınmadı":
+    "nenhum dado de indexação lido do Search Console",
+  "Puan, ölçülen {count} kontrolün sonucuna göre.": {
+    one: "Pontuação baseada na {count} verificação medida.",
+    other: "Pontuação baseada nas {count} verificações medidas.",
+  },
+  "{count} kontrol ölçülemedi.": {
+    one: "{count} verificação não pôde ser medida.",
+    other: "{count} verificações não puderam ser medidas.",
+  },
+  "Her bulgu, önemine ve etkilediği sayfa oranına göre kendi kategorisinden puan düşer; site puanı yedi kategorinin ağırlıklı ortalamasıdır. Ölçülemeyen kontroller puanı ne artırır ne düşürür. Kontrollerin ağırlıklı kapsamı {coverage} değerinin altındaysa ya da Tarama, Dizine alma, İçerik veya Hız kategorisinde ölçülen kontrollerin oranı {heavy} değerinin altındaysa puan kısmidir ve derece verilmez. Kritik bir sorun varken puan en fazla {criticalCap}, {count} veya daha fazla uyarı varken en fazla {warningsCap} olur.":
+    "Cada problema tira pontos da própria categoria conforme a gravidade e a parcela de páginas afetadas; a pontuação do site é a média ponderada das sete categorias. Verificações não medidas não a aumentam nem a reduzem. Se a cobertura ponderada ficar abaixo de {coverage}, ou a parcela medida de Rastreamento, Indexação, Conteúdo ou Velocidade ficar abaixo de {heavy}, a pontuação é provisória e não recebe classificação. Com um problema crítico a pontuação é no máximo {criticalCap}; com {count} ou mais avisos, no máximo {warningsCap}.",
+  "Kritik sorun olduğu için puan en fazla {cap} olabilir. Önce kritik sorunlara bakın.":
+    "Com um problema crítico a pontuação pode ser no máximo {cap}. Comece pelos problemas críticos.",
+  "{count} veya daha fazla uyarı olduğu için puan en fazla {cap} olabilir.":
+    "Com {count} ou mais avisos a pontuação pode ser no máximo {cap}.",
+  "Denetim {count} sayfayla sınırlıydı; sitede daha fazla sayfa olabilir.": {
+    one: "A auditoria estava limitada a {count} página; o site pode ter mais páginas.",
+    other:
+      "A auditoria estava limitada a {count} páginas; o site pode ter mais páginas.",
+  },
+  "Bulunan adres: {found}, taranan: {crawled}":
+    "Endereços encontrados: {found}, rastreados: {crawled}",
+  "Port: {actual} (ayarlanan: {configured})":
+    "Porta: {actual} (configurada: {configured})",
+  "seowatcher bu sefer {actual} numarasında çalışıyor çünkü {configured} başka bir program tarafından kullanılıyor (ör. eski bir Docker kopyası). Google bağlantısı {configured} için ayarlandı; o programı kapatıp seowatcher'ı yeniden başlatın.":
+    "Desta vez o seowatcher está rodando em {actual} porque outro programa está usando {configured} (por exemplo, uma cópia antiga do Docker). O login do Google está configurado para {configured}; feche esse programa e reinicie o seowatcher.",
 };

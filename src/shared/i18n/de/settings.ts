@@ -159,8 +159,6 @@ export const deSettings: Catalog = {
     "GitHub ist nicht erreichbar. Prüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.",
   "GitHub'a ulaşılamadı; son bilinen sürüm {version}":
     "GitHub ist nicht erreichbar; die letzte bekannte Version ist {version}",
-  "Henüz yayımlanmış bir sürüm yok":
-    "Es wurde noch keine Version veröffentlicht",
   "En güncel sürümü kullanıyorsunuz": "Sie verwenden die neueste Version",
   "Güncelleme kontrol edilemedi. Birazdan tekrar deneyin.":
     "Updates konnten nicht geprüft werden. Versuchen Sie es gleich noch einmal.",
@@ -182,8 +180,6 @@ export const deSettings: Catalog = {
   "Proje klasöründe çalıştırın. Verileriniz Docker biriminde ({volume}) kalır, güncelleme onu silmez.":
     "Führen Sie den Befehl im Projektordner aus. Ihre Daten bleiben im Docker-Volume ({volume}); das Update löscht sie nicht.",
   "En güncel sürümü kullanıyorsunuz.": "Sie verwenden die neueste Version.",
-  "Depoda henüz yayımlanmış bir sürüm yok.":
-    "Im Repository wurde noch keine Version veröffentlicht.",
   "Güncelleme kontrolü kapalı; GitHub'a istek gitmiyor. Yeni sürümleri depodaki yayınlardan kendiniz takip edebilirsiniz.":
     "Die Updateprüfung ist deaktiviert; es werden keine Anfragen an GitHub gesendet. Neue Versionen können Sie selbst auf der Release-Seite des Repositorys verfolgen.",
   "Son kontrol başarısız oldu: GitHub'a ulaşılamadı. Son bilinen sürüm {version} (son başarılı kontrol: {date}); güncel olup olmadığı doğrulanamadı.":
@@ -193,11 +189,11 @@ export const deSettings: Catalog = {
   "Son kontrolde GitHub'a ulaşılamadı.":
     "GitHub war bei der letzten Prüfung nicht erreichbar.",
   "Güncellemeleri kontrol et": "Nach Updates suchen",
-  "Açıkken günde bir kez GitHub'daki sürüm listesine bakar, başka hiçbir şey göndermez. Kapatırsanız dışarıya hiç istek gitmez ve sürümü kendiniz takip edersiniz.":
-    "Ist die Option aktiviert, wird einmal täglich die Versionsliste auf GitHub abgerufen. Weitere Daten werden nicht gesendet. Wenn Sie sie deaktivieren, werden keine Anfragen mehr gesendet und Sie verfolgen neue Versionen selbst.",
+  "Açıkken altı saatte bir GitHub'daki sürüm listesine bakar, başka hiçbir şey göndermez. Kapatırsanız dışarıya hiç istek gitmez ve sürümü kendiniz takip edersiniz.":
+    "Ist die Option aktiviert, wird alle sechs Stunden die Versionsliste auf GitHub abgerufen. Weitere Daten werden nicht gesendet. Wenn Sie sie deaktivieren, werden keine Anfragen mehr gesendet und Sie verfolgen neue Versionen selbst.",
   "Şimdi kontrol et": "Jetzt prüfen",
-  "Kontrol açıkken uygulama günde bir kez GitHub'a bağlanıp en son sürümü sorar. GitHub bu istekte yalnızca genel IP adresinizi, uygulama adını ve sürümü görür; siteleriniz, Google hesabınız ya da denetimleriniz gönderilmez.":
-    "Wenn die Prüfung aktiviert ist, fragt die App einmal täglich bei GitHub nach der neuesten Version. GitHub sieht dabei nur Ihre öffentliche IP-Adresse, den App-Namen und die Version; Websites, Google-Konto oder Audits werden nicht übertragen.",
+  "Kontrol açıkken uygulama, bir sekmede açık olduğu sürece en çok altı saatte bir GitHub'a bağlanıp en son sürümü sorar. GitHub bu istekte yalnızca genel IP adresinizi, uygulama adını ve sürümü görür; siteleriniz, Google hesabınız ya da denetimleriniz gönderilmez.":
+    "Ist die Prüfung eingeschaltet, fragt die App GitHub höchstens alle sechs Stunden nach der neuesten Version, solange sie in einem Browser-Tab geöffnet ist. GitHub sieht dabei nur Ihre öffentliche IP-Adresse, den App-Namen und die Version; Ihre Websites, Ihr Google-Konto und Ihre Audits werden nie übertragen.",
   "Son kontrol: {date}.": "Zuletzt geprüft: {date}.",
   "Kurulu sürüm": "Installierte Version",
   "Komutu kopyala": "Befehl kopieren",

@@ -61,7 +61,26 @@ export const severityChip = {
   error: "border-error/30 bg-error/10 text-[var(--ink-error)]",
 } as const;
 
-export function HttpStatusBadge({ code }: { code: number | null }) {
+export function HttpStatusBadge({
+  code,
+  fetchClass,
+}: {
+  code: number | null;
+  /** "error" with no status: the request never got an HTTP answer. */
+  fetchClass?: string | null;
+}) {
+  if (!code && fetchClass === "error") {
+    return (
+      <span
+        className={`badge badge-sm ${severityChip.warning}`}
+        title={t(
+          "Sunucudan yanıt alınamadı (bağlantı koptu ya da adres çözülemedi). Sayfa denetlenmedi ve bozuk sayılmadı; denetimi yeniden çalıştırın.",
+        )}
+      >
+        {t("alınamadı (ağ hatası)")}
+      </span>
+    );
+  }
   if (!code) return <span className="badge badge-ghost badge-sm">-</span>;
   if (code >= 200 && code < 300) {
     return (

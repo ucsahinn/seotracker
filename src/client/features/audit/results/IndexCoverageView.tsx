@@ -207,13 +207,17 @@ export function IndexCoverageView({
           label={t("Google'ın farklı adresi seçtiği sayfalar")}
           value={neverChecked ? null : formatNumber(data.canonicalMismatches)}
           animateTo={{ value: data.canonicalMismatches, format: formatNumber }}
+          /* The finding and the fix, with its base, rather than how the
+             tile relates to the chart above it. */
           hint={
             data.canonicalMismatches > 0
               ? t(
-                  "Üstteki grafikte seçtiğiniz gruptan bağımsız, kontrol edilen tüm sayfalar. Google, sizin seçtiğiniz adres yerine başka bir sayfayı asıl sayfa saydı.",
+                  "Kontrol edilen {checked} sayfa içinde. Google başka bir adresi asıl saydı: bu sayfaların canonical etiketini ve iç bağlantılarını kontrol edin.",
+                  { checked: formatNumber(data.asked) },
                 )
               : t(
-                  "Üstteki grafikte seçtiğiniz gruptan bağımsız, kontrol edilen tüm sayfalar.",
+                  "Kontrol edilen {checked} sayfanın hiçbirinde Google başka bir adresi asıl saymadı.",
+                  { checked: formatNumber(data.asked) },
                 )
           }
         />

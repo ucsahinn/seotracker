@@ -1,7 +1,7 @@
 import { Ga4ConnectionRepository } from "@/server/features/ga4/repositories/Ga4ConnectionRepository";
 import { createGa4AdminClient } from "@/server/lib/ga4Client";
 import { Ga4ReportError } from "@/server/lib/ga4Errors";
-import { mapGa4ReportError } from "@/server/features/ga4/services/Ga4ReportingService";
+import { mapGa4ReportError } from "@/server/features/ga4/services/mapGa4ReportError";
 
 async function getMeasurementHealth(projectId: string) {
   const connection = await Ga4ConnectionRepository.getByProjectId(projectId);

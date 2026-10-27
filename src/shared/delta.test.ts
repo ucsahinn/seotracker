@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { fractionalChange } from "./delta";
+import { fractionalChange, placesDelta } from "./delta";
 
 describe("fractionalChange", () => {
   it("is the change relative to the previous value", () => {
@@ -10,5 +10,12 @@ describe("fractionalChange", () => {
   it("has no answer without a positive base", () => {
     expect(fractionalChange(10, 0)).toBeNull();
     expect(fractionalChange(10, -5)).toBeNull();
+  });
+});
+
+describe("placesDelta", () => {
+  it("says no change, rather than nothing, when both periods exist but did not move", () => {
+    expect(placesDelta(8.92, 8.9)).toMatchObject({ neutral: true });
+    expect(placesDelta(8.9, null)).toBeNull();
   });
 });

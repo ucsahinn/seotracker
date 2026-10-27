@@ -23,10 +23,10 @@ import { PositionBandBars } from "@/client/features/rankings/PositionBandBars";
 import {
   applyBandAndChip,
   countChips,
-  HIGH_IMPRESSIONS,
-  type BandId,
+  highImpressionsThreshold,
   type ChipId,
 } from "@/client/features/rankings/positionBands";
+import type { BandId } from "@/shared/positionBands";
 import { MoversCard } from "@/client/features/rankings/MoversCard";
 import {
   applyMove,
@@ -74,6 +74,26 @@ export const RANKING_WINDOWS = [
   { days: 480, label: "16 ay" },
   { days: 1825, label: "Arşivin tamamı" },
 ] as const;
+
+/**
+ * A chip that holds every row (or none) narrows nothing; the active one stays
+ * so it can be switched off.
+ */
+function usefulChips<Id extends string, Chip extends { id: Id; count: number }>(
+  chips: Chip[],
+  active: Id | undefined,
+  total: number,
+): Chip[] {
+  return chips.filter(
+    (entry) => entry.id === active || (entry.count > 0 && entry.count < total),
+  );
+}
+
+/** "Gün" only says something when some query was missing on some days. */
+function daysVary(rows: readonly { days: number }[]): boolean {
+  const max = rows.reduce((most, row) => Math.max(most, row.days), 0);
+  return rows.some((row) => row.days < max);
+}
 
 export function RankingsPage({
   projectId,
@@ -155,9 +175,14 @@ export function RankingsPage({
   // inside the 21+ bar honestly reads zero instead of a number the table
   // could never show.
   const inBand = applyBandAndChip(fetched, band, undefined);
-  const chipCounts = countChips(inBand);
+  // Relative to what is on screen: the top quarter by impressions.
+  const highImpressions = highImpressionsThreshold(inBand);
+  const chipCounts = countChips(inBand, highImpressions);
   const moveCounts = countMoves(inBand);
-  const filtered = applyMove(applyBandAndChip(fetched, band, chip), move);
+  const filtered = applyMove(
+    applyBandAndChip(fetched, band, chip, highImpressions),
+    move,
+  );
   const allRows = sorting.apply(
     needle
       ? filtered.filter((row) =>
@@ -316,44 +341,48 @@ export function RankingsPage({
                       setMove(next);
                       setPage(1);
                     }}
-                    chips={[
-                      {
-                        id: "risers",
-                        label: t("Yükselenler"),
-                        icon: ArrowUp,
-                        count: moveCounts.risers,
-                        hint: t(
-                          "Önceki döneme göre en az yarım sıra yükselen sorgular.",
-                        ),
-                      },
-                      {
-                        id: "fallers",
-                        label: t("Düşenler"),
-                        icon: ArrowDown,
-                        count: moveCounts.fallers,
-                        hint: t(
-                          "Önceki döneme göre en az yarım sıra düşen sorgular.",
-                        ),
-                      },
-                      {
-                        id: "top10",
-                        label: t("Şu an ilk 10'da"),
-                        icon: Trophy,
-                        count: moveCounts.top10,
-                        hint: t(
-                          "Şimdi ortalama sırası 10 ya da daha iyi olan sorgular, ilk 10'a yeni girenler dahil. Önceki dönemde de verisi olanlar sayılır. Üstteki çubuk ise şu anki tüm sorguları sayar.",
-                        ),
-                      },
-                      {
-                        id: "lost",
-                        label: t("İlk 10'dan çıkanlar"),
-                        icon: LogOut,
-                        count: moveCounts.lost,
-                        hint: t(
-                          "Önceki dönemde ilk 10'da olup şimdi ilk 10'un dışına çıkan sorgular.",
-                        ),
-                      },
-                    ]}
+                    chips={usefulChips(
+                      [
+                        {
+                          id: "risers",
+                          label: t("Yükselenler"),
+                          icon: ArrowUp,
+                          count: moveCounts.risers,
+                          hint: t(
+                            "Önceki döneme göre en az yarım sıra yükselen sorgular.",
+                          ),
+                        },
+                        {
+                          id: "fallers",
+                          label: t("Düşenler"),
+                          icon: ArrowDown,
+                          count: moveCounts.fallers,
+                          hint: t(
+                            "Önceki döneme göre en az yarım sıra düşen sorgular.",
+                          ),
+                        },
+                        {
+                          id: "top10",
+                          label: t("Şu an ilk 10'da"),
+                          icon: Trophy,
+                          count: moveCounts.top10,
+                          hint: t(
+                            "Şimdi ortalama sırası 10 ya da daha iyi olan sorgular, ilk 10'a yeni girenler dahil. Önceki dönemde de verisi olanlar sayılır. Üstteki çubuk ise şu anki tüm sorguları sayar.",
+                          ),
+                        },
+                        {
+                          id: "lost",
+                          label: t("İlk 10'dan çıkanlar"),
+                          icon: LogOut,
+                          count: moveCounts.lost,
+                          hint: t(
+                            "Önceki dönemde ilk 10'da olup şimdi ilk 10'un dışına çıkan sorgular.",
+                          ),
+                        },
+                      ],
+                      move,
+                      inBand.length,
+                    )}
                   />
                   <FilterChips<ChipId>
                     label={t("Hızlı filtreler")}
@@ -362,25 +391,29 @@ export function RankingsPage({
                       setChip(next);
                       setPage(1);
                     }}
-                    chips={[
-                      {
-                        id: "highImpressions",
-                        label: t("Gösterimi yüksek"),
-                        icon: Eye,
-                        count: chipCounts.highImpressions,
-                        hint: t(
-                          "{impressions} veya daha fazla gösterim alan sorgular.",
-                          { impressions: formatNumber(HIGH_IMPRESSIONS) },
-                        ),
-                      },
-                      {
-                        id: "noClicks",
-                        label: t("Hiç tıklanmayan"),
-                        icon: CircleSlash,
-                        count: chipCounts.noClicks,
-                        hint: t("Gösterilmiş ama hiç tıklanmamış sorgular."),
-                      },
-                    ]}
+                    chips={usefulChips(
+                      [
+                        {
+                          id: "highImpressions",
+                          label: t("Gösterimi yüksek"),
+                          icon: Eye,
+                          count: chipCounts.highImpressions,
+                          hint: t(
+                            "Bu listede en çok gösterim alan dörtte bir: {impressions} ve üstü gösterim.",
+                            { impressions: formatNumber(highImpressions) },
+                          ),
+                        },
+                        {
+                          id: "noClicks",
+                          label: t("Hiç tıklanmayan"),
+                          icon: CircleSlash,
+                          count: chipCounts.noClicks,
+                          hint: t("Gösterilmiş ama hiç tıklanmamış sorgular."),
+                        },
+                      ],
+                      chip,
+                      inBand.length,
+                    )}
                   />
                 </div>
               ) : null}
@@ -394,6 +427,7 @@ export function RankingsPage({
               onSelect={setSelected}
               emptyTitle={emptyTitle}
               emptyDescription={emptyDescription}
+              showDays={daysVary(fetched)}
             />
             {allRows.length > PAGE_SIZES[0] ? (
               <TablePagination

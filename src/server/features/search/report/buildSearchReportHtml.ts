@@ -1,0 +1,841 @@
+/* eslint-disable max-lines -- one self-contained document, section by section, like the audit report */
+import {
+  formatCount,
+  formatCountry,
+  formatDate,
+  formatDateTime,
+  formatDecimal,
+  formatPercent,
+} from "@/shared/format";
+import { getLocale, t } from "@/shared/i18n";
+import { appearanceLabel } from "@/shared/searchAppearance";
+import { INSIGHT_RULES } from "@/shared/searchInsights";
+import type {
+  Breakdown,
+  MetricChanges,
+  SearchPerformanceView,
+} from "@/shared/searchPerformanceView";
+import {
+  CONFIDENCE_LABEL,
+  combinedGain,
+  countDelta,
+  describeTodo,
+  gainText,
+  positionMove,
+  shortPage,
+  type WordedDelta,
+} from "@/shared/searchTodoCopy";
+import { placesDelta, pointsDelta } from "@/shared/delta";
+import { BAND_IDS, BAND_LABELS, type BandId } from "@/shared/positionBands";
+import type { CannibalizationReport } from "@/server/features/gsc/cannibalization";
+import {
+  escapeHtml,
+  hostOf,
+  truncate,
+  truncateUrl,
+} from "@/server/features/audit/report/reportFormat";
+import { STYLES } from "@/server/features/audit/report/reportStyles";
+import { trendSvg } from "./reportTrendSvg";
+
+/*
+ * The Search performance report: the screen's view, printed.
+ *
+ * Built from the same `SearchPerformanceView` the screen draws, so every
+ * number here is the number on screen for the same filters. One
+ * self-contained file (inline styles, inline SVG, no script), stored in the
+ * reports table and printable to A4 from the browser. It borrows the audit
+ * report's stylesheet and helpers so the two read as one product.
+ */
+
+type SearchReportInput = {
+  view: SearchPerformanceView;
+  /** Null when the overlap analysis failed; the section says so. */
+  overlaps: CannibalizationReport | null;
+  /** Fixed in tests; the build time otherwise. */
+  now?: Date;
+};
+
+/*
+ * The seowatcher mark (public/icon.svg), inline so the file stays
+ * self-contained; the same mark the audit report carries.
+ */
+const LOGO = `<svg viewBox="0 0 256 256" aria-hidden="true" focusable="false"><defs><radialGradient id="sr-iris" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffd27a"/><stop offset="0.45" stop-color="#ff8a1f"/><stop offset="1" stop-color="#d9480f"/></radialGradient><clipPath id="sr-eye"><path d="M26 128 Q128 34 230 128 Q128 222 26 128 Z"/></clipPath></defs><rect width="256" height="256" rx="48" fill="#141210"/><path d="M26 128 Q128 34 230 128 Q128 222 26 128 Z" fill="#241d19"/><g clip-path="url(#sr-eye)"><circle cx="128" cy="128" r="54" fill="url(#sr-iris)"/></g><path d="M26 128 Q128 34 230 128 Q128 222 26 128 Z" fill="none" stroke="#ff8a1f" stroke-width="12" stroke-linejoin="round"/><path d="M128 84 Q141 128 128 172 Q115 128 128 84 Z" fill="#0c0b0a"/><circle cx="148" cy="108" r="9" fill="#fff4e0"/></svg>`;
+
+const EXTRA_STYLES = `
+.delta{font-size:12px;font-weight:600;margin-left:6px}
+.delta--up{color:#1c7a4a}.delta--down{color:#b4232a}.delta--flat{color:#4b5563}
+.gain{color:#1c7a4a;font-weight:700;white-space:nowrap}
+.legend-line{display:inline-block;width:22px;vertical-align:middle;margin-right:6px;border-top:2px solid #b4440c}
+.legend-line--dash{border-top:2px dashed #64748b}
+.legend-hatch{display:inline-block;width:12px;height:12px;vertical-align:middle;margin-right:6px;background:repeating-linear-gradient(45deg,#c9ced6 0 2px,transparent 2px 5px);border:1px solid #e3e6ea}
+.legends{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:12px;color:var(--muted);margin-top:6px}
+.bar{display:block;height:5px;border-radius:999px;background:#eceef1;margin-top:3px;overflow:hidden}
+.bar>span{display:block;height:100%;background:#b4440c;border-radius:999px}
+.notes{margin:10px 0 0;padding-left:18px;font-size:12.5px;color:var(--muted)}
+`;
+
+type Cell = string;
+
+const BUCKET_BAND: Record<string, BandId> = {
+  "1-3": "top3",
+  "4-10": "top10",
+  "11-20": "top20",
+};
+
+function pct(value: number | null): string {
+  return value === null ? "–" : formatPercent(value);
+}
+
+function pos(value: number | null): string {
+  return value === null ? "–" : formatDecimal(value);
+}
+
+function deltaHtml(delta: WordedDelta): string {
+  if (!delta) return "";
+  if (delta.neutral)
+    return `<span class="delta delta--flat">${escapeHtml(delta.text)}</span>`;
+  return `<span class="delta delta--${delta.improved ? "up" : "down"}">${delta.improved ? "↑" : "↓"} ${escapeHtml(delta.text)}</span>`;
+}
+
+function table(
+  caption: string,
+  headers: Array<{ label: string; num?: boolean }>,
+  rows: Cell[][],
+): string {
+  return `<table class="rows"><caption class="note" style="caption-side:bottom;text-align:left">${escapeHtml(caption)}</caption><thead><tr>${headers
+    .map((h) => `<th${h.num ? ' class="num"' : ""}>${escapeHtml(h.label)}</th>`)
+    .join("")}</tr></thead><tbody>${rows
+    .map(
+      (row) =>
+        `<tr>${row
+          .map(
+            (cell, i) =>
+              `<td${headers[i]?.num ? ' class="num"' : ' class="url"'}>${cell}</td>`,
+          )
+          .join("")}</tr>`,
+    )
+    .join("")}</tbody></table>`;
+}
+
+function card(label: string, value: string, delta: WordedDelta): string {
+  return `<div class="card"><p class="card-label">${escapeHtml(label)}</p><p class="card-value">${escapeHtml(value)}${deltaHtml(delta)}</p></div>`;
+}
+
+const DEVICE_NAME: Record<string, string> = {
+  MOBILE: "Mobil",
+  DESKTOP: "Bilgisayar",
+  TABLET: "Tablet",
+};
+const TYPE_NAME: Record<string, string> = {
+  web: "Web",
+  image: "Görsel",
+  video: "Video",
+  news: "Haber",
+};
+
+function deviceName(key: string): string {
+  const name = DEVICE_NAME[key.toUpperCase()];
+  return name ? t(name) : key;
+}
+
+function filtersText(view: SearchPerformanceView): string {
+  const parts = [
+    t(TYPE_NAME[view.filters.searchType] ?? view.filters.searchType),
+    view.filters.device ? deviceName(view.filters.device) : t("Tüm cihazlar"),
+    view.filters.country
+      ? formatCountry(view.filters.country)
+      : t("Tüm ülkeler"),
+  ];
+  return parts.join(", ");
+}
+
+function coverSection(view: SearchPerformanceView, now: Date): string {
+  const { window, totals } = view;
+  const changes: MetricChanges | null = totals.vsPrevious;
+  const meta: Array<[string, string]> = [
+    [
+      t("Kesin günler"),
+      t("{start} – {end} ({days} gün)", {
+        start: formatDate(window.startDate),
+        end: formatDate(window.endDate),
+        days: window.days,
+      }),
+    ],
+    [
+      t("Karşılaştırma"),
+      totals.previous
+        ? t("{start} – {end}", {
+            start: formatDate(window.previous.startDate),
+            end: formatDate(window.previous.endDate),
+          })
+        : t("Yok"),
+    ],
+    [t("Filtreler"), filtersText(view)],
+    [
+      t("Son veri"),
+      window.lastDataDate ? formatDate(window.lastDataDate) : t("Yok"),
+    ],
+    [t("Oluşturulma"), formatDateTime(now.toISOString())],
+  ];
+  const c = totals.current;
+  return `<section class="cover" id="ozet">
+    <header class="masthead">
+      <span class="brand">${LOGO}<span>seowatcher</span></span>
+      <p class="masthead-kind">${escapeHtml(t("Arama performansı raporu"))}</p>
+    </header>
+    <h1>${escapeHtml(hostOf(view.siteUrl.replace(/^sc-domain:/, "https://")))}</h1>
+    <p class="sub sub--url">${escapeHtml(view.siteUrl)}</p>
+    <dl class="meta">${meta
+      .map(
+        ([label, value]) =>
+          `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`,
+      )
+      .join("")}</dl>
+    <div class="cards cards--4" style="margin-top:22px">
+      ${card(t("Tıklama"), formatCount(c.clicks), countDelta(changes?.clicks))}
+      ${card(t("Gösterim"), formatCount(c.impressions), countDelta(changes?.impressions))}
+      ${card(t("Tıklama oranı"), pct(c.ctr), c.impressions > 0 ? pointsDelta(c.ctr, totals.previous?.ctr) : null)}
+      ${card(t("Ortalama sıra"), pos(c.position), c.impressions > 0 ? placesDelta(c.position, totals.previous?.position) : null)}
+    </div>
+    <p class="note">${escapeHtml(
+      totals.previous
+        ? t(
+            "Değişimler önceki {days} güne göre. Sıra değişimi yer olarak verilir (↑ yükseldi); tıklama oranı değişimi puan olarak.",
+            { days: window.days },
+          )
+        : t("Önceki dönem Google'da olmadığı için değişim gösterilmez."),
+    )}</p>
+    ${trustCallout(view)}
+    ${todoSection(view)}
+  </section>`;
+}
+
+function trustCallout(view: SearchPerformanceView): string {
+  const { window, coverage, totals } = view;
+  const lines: string[] = [];
+  if (totals.provisional) {
+    lines.push(
+      t(
+        "Son günler hâlâ sayılıyor ({clicks} tıklama); toplamlara ve karşılaştırmalara katılmadı.",
+        { clicks: formatCount(totals.provisional.clicks) },
+      ),
+    );
+  }
+  if (coverage.hiddenQueries.clickShare !== null) {
+    lines.push(
+      t(
+        "Google'ın gizlediği sorgulardan gelen tıklama: {share}. Bu yüzden sorgu tablolarının toplamı site toplamından küçüktür.",
+        { share: formatPercent(coverage.hiddenQueries.clickShare) },
+      ),
+    );
+  }
+  if (coverage.queries.truncated || coverage.pages.truncated) {
+    lines.push(
+      t(
+        "Google'ın satır sınırına ulaşıldı; en az tıklanan sorgu ve sayfalar listelerde eksik.",
+      ),
+    );
+  }
+  lines.push(
+    t(
+      "Günler Google'ın kullandığı Pasifik saatine göredir; veriler {date} gününe kadar kesindir.",
+      { date: formatDate(window.endDate) },
+    ),
+  );
+  return `<div class="callout"><p><strong>${escapeHtml(t("Verinin durumu"))}</strong></p>${lines
+    .map((line) => `<p>${escapeHtml(line)}</p>`)
+    .join("")}</div>`;
+}
+
+function todoSection(view: SearchPerformanceView): string {
+  const items = view.todo.slice(0, 10);
+  if (items.length === 0) {
+    return `<h2>${escapeHtml(t("Yapılacaklar"))}</h2><p class="empty">${escapeHtml(t("Search Console verisinde eşiği aşan bir fırsat ya da düşüş bulunmadı."))}</p>`;
+  }
+  const first = items.slice(0, 3);
+  const gain = combinedGain(first);
+  return `<h2>${escapeHtml(t("Önce bunlar"))}</h2>
+    <p class="note">${escapeHtml(
+      gain === null
+        ? t("İlk {count} iş, kazancı tahmin edilemeyen işler.", {
+            count: first.length,
+          })
+        : t(
+            "İlk {count} iş birlikte {days} günde en fazla {clicks} ek tıklama getirebilir (üst sınır).",
+            {
+              count: first.length,
+              days: view.window.days,
+              clicks: formatCount(Math.round(gain)),
+            },
+          ),
+    )}</p>
+    <ol class="todos">${items
+      .map((item) => {
+        const copy = describeTodo(item);
+        const gainCell =
+          item.estimatedClicks !== null && item.estimatedClicks > 0
+            ? ` <span class="gain">${escapeHtml(gainText(item.estimatedClicks))}</span>`
+            : "";
+        return `<li class="todo"><div class="todo-head"><span class="todo-title">${escapeHtml(copy.title)}</span>${gainCell}<span class="fix-meta">${escapeHtml(t(CONFIDENCE_LABEL[item.confidence]))}</span></div>
+          <p class="why">${escapeHtml(copy.evidence)}</p>
+          <p><strong>${escapeHtml(t("Ne yapılmalı:"))}</strong> ${escapeHtml(copy.action)}</p>
+          ${copy.page ? `<p class="todo-pages">${escapeHtml(truncateUrl(copy.page, 100))}</p>` : ""}</li>`;
+      })
+      .join("")}</ol>
+    <p class="note">${escapeHtml(
+      t(
+        "Tıklama kazançları, sitenizin kendi sıra ve tıklama oranlarından hesaplanan yaklaşık değerlerdir. Aynı sorgu ya da sayfa için birden çok iş varsa özet onu bir kez sayar.",
+      ),
+    )}</p>`;
+}
+
+function trendSection(view: SearchPerformanceView): string {
+  const svg = trendSvg(view, "previous");
+  if (!svg) return "";
+  const best = view.series.daily
+    .filter((d) => d.state === "complete")
+    .reduce<{
+      date: string;
+      clicks: number;
+    } | null>(
+      (top, d) => (top === null || d.clicks > top.clicks ? d : top),
+      null,
+    );
+  const marks = view.annotations.filter(
+    (a) =>
+      a.startDate >= (view.series.daily[0]?.date ?? "") &&
+      a.startDate <= view.window.freshEndDate,
+  );
+  return `<section id="egilim">
+    <h2>${escapeHtml(t("Zaman içinde"))}</h2>
+    <figure class="chart" role="group" aria-label="${escapeHtml(t("Günlük tıklama"))}">
+      <p class="chart-title">${escapeHtml(t("Günlük tıklama"))}</p>
+      ${svg}
+      <div class="legends"><span><span class="legend-line"></span>${escapeHtml(t("Bu dönem"))}</span>${view.series.previousDaily ? `<span><span class="legend-line legend-line--dash"></span>${escapeHtml(t("Önceki dönem"))}</span>` : ""}${view.totals.provisional ? `<span><span class="legend-hatch"></span>${escapeHtml(t("Hâlâ sayılan günler"))}</span>` : ""}</div>
+      <figcaption>${escapeHtml(
+        best
+          ? t(
+              "{days} günde {clicks} tıklama; en iyi gün {day}, {best} tıklama.",
+              {
+                days: view.window.days,
+                clicks: formatCount(view.totals.current.clicks),
+                day: formatDate(best.date),
+                best: formatCount(best.clicks),
+              },
+            )
+          : t("Bu dönemde tıklama yok."),
+      )}</figcaption>
+    </figure>
+    ${
+      marks.length > 0
+        ? `<h3>${escapeHtml(t("İşaretler"))}</h3><ul class="plain">${marks
+            .map(
+              (a) =>
+                `<li>${escapeHtml(formatDate(a.startDate))} · ${escapeHtml(
+                  a.kind === "audit" ? t("Site denetimi tamamlandı") : a.label,
+                )}${a.kind === "googleUpdate" ? ` <span class="muted">(${escapeHtml(t("Google güncellemesi"))})</span>` : a.kind === "note" ? ` <span class="muted">(${escapeHtml(t("Not"))})</span>` : ""}</li>`,
+            )
+            .join("")}</ul>`
+        : ""
+    }
+  </section>`;
+}
+
+function opportunitiesSection(view: SearchPerformanceView): string {
+  const { striking, snippets, zeroClickPages, thresholds, ctrCurve, brand } =
+    view.insights;
+  const curve = ctrCurve.nonBrand ?? ctrCurve.all;
+  // Striking distance leaves brand queries out whenever brand terms are in use.
+  const brandNote =
+    brand.status === "unset" ? "" : ` ${t("Marka aramaları dahil değildir.")}`;
+  return `<section id="firsatlar">
+    <h2>${escapeHtml(t("Fırsatlar"))}</h2>
+    <h3>${escapeHtml(t("İlk üçe yakın sorgular"))}</h3>
+    <p class="note">${escapeHtml(
+      t(
+        "Ortalama sırası 4 ile 20 arasında, en az {impressions} gösterim alan {count} sorgu. Olası kazanç, sorgu bir basamak yükselirse (6-10'dan 4-5'e, 4-5'ten 2-3'e, 11-20'den ilk sayfaya) beklenen en fazla ek tıklamadır.",
+        {
+          impressions: formatCount(thresholds.strikingMinImpressions),
+          count: formatCount(striking.total),
+        },
+      ) + brandNote,
+    )}</p>
+    ${
+      striking.rows.length === 0
+        ? `<p class="empty">${escapeHtml(t("Bu aralıkta sorgu yok."))}</p>`
+        : table(
+            striking.total > 20
+              ? t("İlk 20 / {total} sorgu", {
+                  total: formatCount(striking.total),
+                })
+              : "",
+            [
+              { label: t("Sorgu") },
+              { label: t("Hedef sayfa") },
+              { label: t("Sıra"), num: true },
+              { label: t("Gösterim"), num: true },
+              { label: t("Olası kazanç"), num: true },
+            ],
+            striking.rows
+              .slice(0, 20)
+              .map((r) => [
+                escapeHtml(truncate(r.query, 80)),
+                r.page ? escapeHtml(truncateUrl(shortPage(r.page), 60)) : "–",
+                pos(r.position),
+                formatCount(r.impressions),
+                r.potentialClicks === null
+                  ? "–"
+                  : escapeHtml(gainText(r.potentialClicks)),
+              ]),
+          )
+    }
+    <h3>${escapeHtml(t("Sırasına göre az tıklanan sonuçlar"))}</h3>
+    ${
+      snippets.length === 0
+        ? `<p class="empty">${escapeHtml(t("Belirgin biçimde az tıklanan sonuç yok."))}</p>`
+        : table(
+            t(
+              "Beklenen oran: sitenizde aynı sıradaki sonuçların tıklama oranı.",
+            ),
+            [
+              { label: t("Sorgu") },
+              { label: t("Sıra"), num: true },
+              { label: t("Tıklama oranı"), num: true },
+              { label: t("Bu sırada beklenen"), num: true },
+              { label: t("Olası kazanç"), num: true },
+            ],
+            snippets
+              .slice(0, 10)
+              .map((r) => [
+                escapeHtml(truncate(r.query, 80)),
+                pos(r.position),
+                pct(r.ctr),
+                pct(r.expectedCtr),
+                escapeHtml(gainText(r.gainClicks)),
+              ]),
+          )
+    }
+    <h3>${escapeHtml(t("Görünen ama hiç tıklanmayan sayfalar"))}</h3>
+    ${
+      zeroClickPages.rows.length === 0
+        ? `<p class="empty">${escapeHtml(t("Gösterim alıp hiç tıklanmayan sayfa yok."))}</p>`
+        : table(
+            zeroClickPages.total > 10
+              ? t("İlk 10 / {total} sayfa", { total: zeroClickPages.total })
+              : "",
+            [
+              { label: t("Sayfa") },
+              { label: t("Gösterim"), num: true },
+              { label: t("Sıra"), num: true },
+            ],
+            zeroClickPages.rows
+              .slice(0, 10)
+              .map((r) => [
+                escapeHtml(truncateUrl(r.page, 90)),
+                formatCount(r.impressions),
+                pos(r.position),
+              ]),
+          )
+    }
+    <h3>${escapeHtml(t("Sitenizin sıraya göre tıklama oranı"))}</h3>
+    ${table(
+      t(
+        "En az {queries} sorgu ve {impressions} gösterim olmayan sıralar için oran hesaplanmaz.",
+        {
+          queries: INSIGHT_RULES.curveMinQueries,
+          impressions: formatCount(thresholds.curveBucketMinImpressions),
+        },
+      ),
+      [
+        { label: t("Sıra") },
+        { label: t("Sorgu"), num: true },
+        { label: t("Gösterim"), num: true },
+        { label: t("Tıklama oranı"), num: true },
+      ],
+      curve.map((p) => [
+        escapeHtml(p.band.replace("-", "–")),
+        formatCount(p.queries),
+        formatCount(p.impressions),
+        p.sufficient ? pct(p.ctr) : escapeHtml(t("Yetersiz veri")),
+      ]),
+    )}
+  </section>`;
+}
+
+function changesSection(view: SearchPerformanceView): string {
+  const { movers, newQueries, lostQueries, decay } = view.insights;
+  const moverTable = (
+    title: string,
+    rows: typeof movers.queries.declining,
+    page: boolean,
+  ) =>
+    `<h3>${escapeHtml(title)}</h3>${
+      rows.length === 0
+        ? `<p class="empty">${escapeHtml(t("Eşiği aşan değişim yok."))}</p>`
+        : table(
+            "",
+            [
+              { label: page ? t("Sayfa") : t("Sorgu") },
+              { label: t("Önceki"), num: true },
+              { label: t("Şimdi"), num: true },
+              { label: t("Sıra"), num: true },
+            ],
+            rows
+              .slice(0, 10)
+              .map((r) => [
+                escapeHtml(page ? truncateUrl(r.key, 80) : truncate(r.key, 80)),
+                formatCount(r.previousClicks),
+                formatCount(r.clicks),
+                escapeHtml(positionMove(r.previousPosition, r.position) ?? "–"),
+              ]),
+          )
+    }`;
+  const queryList = (title: string, rows: typeof newQueries, unknown: string) =>
+    `<h3>${escapeHtml(title)}</h3>${
+      rows === null
+        ? `<p class="empty">${escapeHtml(unknown)}</p>`
+        : rows.length === 0
+          ? `<p class="empty">${escapeHtml(t("Yok."))}</p>`
+          : table(
+              "",
+              [
+                { label: t("Sorgu") },
+                { label: t("Tıklama"), num: true },
+                { label: t("Gösterim"), num: true },
+              ],
+              rows
+                .slice(0, 10)
+                .map((r) => [
+                  escapeHtml(truncate(r.query, 80)),
+                  formatCount(r.clicks),
+                  formatCount(r.impressions),
+                ]),
+            )
+    }`;
+  return `<section id="degisimler">
+    <h2>${escapeHtml(t("Değişimler"))}</h2>
+    <p class="note">${escapeHtml(
+      t("Önceki dönem: {start} – {end}. Tıklama sayıları.", {
+        start: formatDate(view.window.previous.startDate),
+        end: formatDate(view.window.previous.endDate),
+      }),
+    )}</p>
+    ${moverTable(t("Tıklaması düşen sorgular"), movers.queries.declining, false)}
+    ${moverTable(t("Tıklaması düşen sayfalar"), movers.pages.declining, true)}
+    ${moverTable(t("Tıklaması artan sorgular"), movers.queries.growing, false)}
+    ${moverTable(t("Tıklaması artan sayfalar"), movers.pages.growing, true)}
+    ${queryList(t("Yeni görünen sorgular"), newQueries, t("Önceki dönemin tablosu kesildiği için bilinemiyor."))}
+    ${queryList(t("Kaybolan sorgular (önceki dönemdeki değerleriyle)"), lostQueries, t("Bu dönemin tablosu kesildiği için bilinemiyor."))}
+    <h3>${escapeHtml(t("Gücünü kaybeden sayfalar"))}</h3>
+    ${
+      decay === null
+        ? `<p class="empty">${escapeHtml(t("Bu karşılaştırma için bir yılı aşkın veri gerekir."))}</p>`
+        : decay.length === 0
+          ? `<p class="empty">${escapeHtml(t("Belirgin biçimde gücünü kaybeden sayfa yok."))}</p>`
+          : table(
+              t("Çeyrek: 91 gün."),
+              [
+                { label: t("Sayfa") },
+                { label: t("Son çeyrek"), num: true },
+                { label: t("En iyi çeyrek"), num: true },
+              ],
+              decay
+                .slice(0, 10)
+                .map((r) => [
+                  escapeHtml(truncateUrl(r.page, 90)),
+                  formatCount(r.clicks),
+                  `${formatCount(r.peakClicks)} <span class="muted">(${escapeHtml(formatDate(r.peakStartDate))})</span>`,
+                ]),
+            )
+    }
+  </section>`;
+}
+
+function overlapsSection(overlaps: CannibalizationReport | null): string {
+  const body =
+    overlaps === null
+      ? `<p class="empty">${escapeHtml(t("Çakışma analizi bu rapor için alınamadı."))}</p>`
+      : overlaps.rows.length === 0
+        ? `<p class="empty">${escapeHtml(t("Hiçbir sorguda iki sayfanız birbiriyle yarışmıyor."))}</p>`
+        : `<p class="note">${escapeHtml(
+            t(
+              "{queries} sorguda birden fazla sayfanız yarışıyor; {impressions} gösterim ana sayfa dışındaki sayfalara gitti. Dönem: {start} – {end}.",
+              {
+                queries: formatCount(overlaps.rows.length),
+                impressions: formatCount(overlaps.splitImpressions),
+                start: formatDate(overlaps.startDate),
+                end: formatDate(overlaps.endDate),
+              },
+            ),
+          )}</p>${table(
+            "",
+            [
+              { label: t("Sorgu") },
+              { label: t("Google'ın tercih ettiği sayfa") },
+              { label: t("Yarışan sayfa"), num: true },
+              { label: t("Bölünen pay"), num: true },
+            ],
+            overlaps.rows
+              .slice(0, 10)
+              .map((r) => [
+                escapeHtml(truncate(r.query, 70)),
+                escapeHtml(truncateUrl(shortPage(r.primary.page), 60)),
+                formatCount(r.competitors.length),
+                formatPercent(r.splitShare),
+              ]),
+          )}`;
+  return `<section id="cakismalar"><h2>${escapeHtml(t("Çakışmalar"))}</h2>${body}</section>`;
+}
+
+function breakdownTable(
+  caption: string,
+  breakdown: Breakdown,
+  label: (key: string) => string,
+  limit: number,
+): string {
+  const base =
+    breakdown.baseKind === "siteTotal"
+      ? t("Paylar sitenin toplamına göre.")
+      : t("Paylar satırların toplamına göre.");
+  return table(
+    breakdown.rows.length > limit
+      ? `${base} ${t("İlk {limit} / {total}.", { limit, total: breakdown.rows.length })}`
+      : base,
+    [
+      { label: caption },
+      { label: t("Tıklama"), num: true },
+      { label: t("Pay"), num: true },
+      { label: t("Gösterim"), num: true },
+      { label: t("Tıklama oranı"), num: true },
+      { label: t("Sıra"), num: true },
+    ],
+    breakdown.rows
+      .slice(0, limit)
+      .map((r) => [
+        `${escapeHtml(label(r.key))}<span class="bar"><span style="width:${Math.round((r.clickShare ?? 0) * 100)}%"></span></span>`,
+        formatCount(r.clicks),
+        pct(r.clickShare),
+        formatCount(r.impressions),
+        pct(r.ctr),
+        pos(r.position),
+      ]),
+  );
+}
+
+function distributionSection(view: SearchPerformanceView): string {
+  const { positionDistribution, brand, brandState, questions, longTail } =
+    view.insights;
+  const { devices, countries, searchAppearance } = view.breakdowns;
+  const brandHtml =
+    brand.status === "unset"
+      ? `<p class="empty">${escapeHtml(t("Bilinmiyor: marka adları tanımlanmadı."))}</p>`
+      : table(
+          // Suggested terms are applied until confirmed; the printout says so.
+          brandState.source === "suggested"
+            ? t("Marka adları: {terms} (önerilen, onaylanmadı).", {
+                terms: brand.terms.join(", "),
+              })
+            : t("Marka adları: {terms}.", { terms: brand.terms.join(", ") }),
+          [
+            { label: "" },
+            { label: t("Sorgu"), num: true },
+            { label: t("Tıklama"), num: true },
+            { label: t("Tıklama oranı"), num: true },
+            { label: t("Sıra"), num: true },
+          ],
+          [
+            { name: t("Marka aramaları"), seg: brand.brand },
+            { name: t("Marka dışı aramalar"), seg: brand.nonBrand },
+          ].map(({ name, seg }) => [
+            escapeHtml(name),
+            formatCount(seg.queries),
+            formatCount(seg.clicks),
+            pct(seg.ctr),
+            pos(seg.position),
+          ]),
+        );
+  return `<section id="dagilim">
+    <h2>${escapeHtml(t("Dağılım"))}</h2>
+    <h3>${escapeHtml(t("Sıra dağılımı"))}</h3>
+    ${table(
+      t("Okunan sorguların ortalama sırasına göre."),
+      [
+        { label: t("Sıra") },
+        { label: t("Sorgu"), num: true },
+        { label: t("Tıklama"), num: true },
+      ],
+      BAND_IDS.map((band) => {
+        // The view's finer 21-50 / 51+ buckets fold into the app's bands.
+        const members = positionDistribution.filter(
+          (b) => (BUCKET_BAND[b.bucket] ?? "beyond") === band,
+        );
+        return [
+          escapeHtml(BAND_LABELS[band]),
+          formatCount(members.reduce((sum, b) => sum + b.queries, 0)),
+          formatCount(members.reduce((sum, b) => sum + b.clicks, 0)),
+        ];
+      }),
+    )}
+    <h3>${escapeHtml(t("Marka ve marka dışı aramalar"))}</h3>
+    ${brandHtml}
+    <h3>${escapeHtml(t("Cihazlar"))}</h3>
+    ${breakdownTable(t("Cihaz"), devices, deviceName, 5)}
+    <h3>${escapeHtml(t("Ülkeler"))}</h3>
+    ${breakdownTable(t("Ülke"), countries, formatCountry, 10)}
+    <h3>${escapeHtml(t("Arama görünümü"))}</h3>
+    ${
+      searchAppearance && searchAppearance.rows.length > 0
+        ? breakdownTable(t("Görünüm"), searchAppearance, appearanceLabel, 10)
+        : `<p class="empty">${escapeHtml(t("Google bu dönem için özel bir sonuç biçimi bildirmedi."))}</p>`
+    }
+    <h3>${escapeHtml(t("Soru ve uzun aramalar"))}</h3>
+    ${table(
+      t("Paylar okunan sorguların tıklamasına göre."),
+      [
+        { label: "" },
+        { label: t("Sorgu"), num: true },
+        { label: t("Tıklama"), num: true },
+        { label: t("Pay"), num: true },
+      ],
+      [
+        [t("Soru aramaları"), questions] as const,
+        [
+          t("{words}+ kelimeli aramalar", {
+            words: INSIGHT_RULES.longTailMinWords,
+          }),
+          longTail,
+        ] as const,
+      ].map(([name, lens]) => [
+        escapeHtml(name),
+        formatCount(lens.queries),
+        formatCount(lens.clicks),
+        pct(lens.clickShare),
+      ]),
+    )}
+  </section>`;
+}
+
+function methodSection(view: SearchPerformanceView): string {
+  const items: Array<[string, string]> = [
+    [
+      t("Kaynak"),
+      t(
+        "Google Search Console API, bu mülk için. Başka bir veri kaynağı, tahmini hacim ya da rakip verisi kullanılmadı.",
+      ),
+    ],
+    [
+      t("Kesin günler"),
+      t(
+        "Toplamlar ve karşılaştırmalar yalnızca Google'ın saymayı bitirdiği günleri kapsar. Günler Pasifik saatine göredir.",
+      ),
+    ],
+    [
+      t("Site toplamları"),
+      t(
+        "Site toplamı tarihe göre istenen toplamdan gelir, sorgu ya da sayfa satırlarının toplamından değil. Ortalama sıra gösterime göre ağırlıklıdır; tıklama oranı tıklama bölü gösterimdir.",
+      ),
+    ],
+    [
+      t("Gizli sorgular"),
+      t(
+        "Google az aranan sorguları listelemez ama site toplamına katar; sorgu tabloları bu yüzden site toplamından küçüktür.",
+      ),
+    ],
+    [
+      t("Kazanç tahminleri"),
+      t(
+        "Sitenizin kendi sıra-tıklama oranı eğrisinden hesaplanır; yeterli veri olmayan sıralar için tahmin yapılmaz.",
+      ),
+    ],
+    [
+      t("Google istekleri"),
+      t("Bu rapor {count} Google isteğiyle hazırlandı.", {
+        count: view.quota.requests,
+      }),
+    ],
+  ];
+  return `<section id="yontem"><h2>${escapeHtml(t("Yöntem ve sınırlar"))}</h2><dl class="method">${items
+    .map(
+      ([dt, dd]) =>
+        `<div><dt>${escapeHtml(dt)}</dt><dd>${escapeHtml(dd)}</dd></div>`,
+    )
+    .join("")}</dl></section>`;
+}
+
+export function buildSearchReportHtml(input: SearchReportInput): {
+  title: string;
+  summary: string;
+  html: string;
+} {
+  const { view, overlaps } = input;
+  const now = input.now ?? new Date();
+  const host = hostOf(view.siteUrl.replace(/^sc-domain:/, "https://"));
+  /*
+   * Site, window and filters in the title, so building the same view again
+   * refreshes its report instead of piling up copies.
+   */
+  const filterNote =
+    view.filters.device ||
+    view.filters.country ||
+    view.filters.searchType !== "web"
+      ? ` (${filtersText(view)})`
+      : "";
+  const title = truncate(
+    t("{host} arama performansı, {start} – {end}{filters}", {
+      host,
+      start: formatDate(view.window.startDate),
+      end: formatDate(view.window.endDate),
+      filters: filterNote,
+    }),
+    200,
+  );
+  const c = view.totals.current;
+  const summary = [
+    t("{days} günde {clicks} tıklama, {impressions} gösterim.", {
+      days: view.window.days,
+      clicks: formatCount(c.clicks),
+      impressions: formatCount(c.impressions),
+    }),
+    c.ctr !== null && c.position !== null
+      ? t("Tıklama oranı {ctr}, ortalama sıra {position}.", {
+          ctr: formatPercent(c.ctr),
+          position: formatDecimal(c.position),
+        })
+      : "",
+    view.todo[0]
+      ? t("İlk iş: {title}.", { title: describeTodo(view.todo[0]).title })
+      : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const html = `<!doctype html>
+<html lang="${getLocale()}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${escapeHtml(title)}</title>
+<style>${STYLES}${EXTRA_STYLES}</style>
+</head>
+<body>
+<div class="running">${escapeHtml(host)} · ${escapeHtml(t("Arama performansı raporu"))} · ${escapeHtml(formatDateTime(now.toISOString()))}</div>
+<main>
+  ${coverSection(view, now)}
+  ${trendSection(view)}
+  ${opportunitiesSection(view)}
+  ${changesSection(view)}
+  ${overlapsSection(overlaps)}
+  ${distributionSection(view)}
+  ${methodSection(view)}
+  <footer>
+    <p>${escapeHtml(
+      t(
+        "seowatcher ile üretildi. Bu dosya kendi kendine yeter: açmak için internet bağlantısı gerekmez. PDF için tarayıcıdan Yazdır seçeneğini kullanın.",
+      ),
+    )}</p>
+  </footer>
+</main>
+</body>
+</html>`;
+  return { title, summary: summary.slice(0, 2500), html };
+}

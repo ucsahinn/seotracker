@@ -4,8 +4,15 @@ import type { Effort, TodoItem } from "@/shared/auditTodo";
 import { AUDIT_CATEGORY_LABEL } from "@/shared/auditCategory";
 import { auditScoreBand, auditScoreTier } from "@/shared/auditScore";
 import {
+  capVerdict,
+  coverageLine,
+  crawlLimitNote,
+  thinCategoryLines,
+} from "@/shared/auditStanding";
+import {
   formatCount,
   formatDate,
+  formatPercent,
   formatPoints,
   formatTime,
   parseTimestamp,
@@ -121,7 +128,7 @@ function actionPlan(
     <p class="note">${t("Puanlar, o sorun tek başına tamamen düzeltilirse site puanına eklenecek yaklaşık değerdir; değerler toplanmaz.")}</p>`;
 }
 
-function statusNote(status: string | null | undefined): string {
+export function statusNote(status: string | null | undefined): string {
   if (status === "failed") return t("Denetim hata verip durdu.");
   if (status === "running") return t("Denetim hâlâ çalışıyor.");
   return t("Hiç sayfa taranamadı.");
@@ -187,6 +194,52 @@ function speedState(input: ReportContext["input"]): string {
   return input.lighthouse.length > 0 ? t("Ölçülemedi") : t("Yok");
 }
 
+/**
+ * The verdict under the score, from the same standing as the screen: no
+ * score for an incomplete audit, no tier word for a provisional one, and a
+ * tier capped by critical findings or many warnings (see `auditStanding`).
+ */
+function coverVerdict(ctx: ReportContext): string {
+  const { standing, reliable, score, counts, input } = ctx;
+  const p = (text: string, cls = "verdict") =>
+    `<p class="${cls}">${escapeHtml(text)}</p>`;
+  const withheldCutShort =
+    standing.kind === "withheld" && standing.reason === "cut-short";
+  if (!reliable || withheldCutShort) {
+    const why = withheldCutShort
+      ? t("Tarama, sitenin istek sınırı yüzünden erken durdu.")
+      : statusNote(input.status);
+    return p(`${t("Eksik denetim — puan verilmedi")}. ${why}`);
+  }
+  if (standing.kind !== "scored" || score === null) {
+    return p(scoreVerdict(score, counts.critical, reliable));
+  }
+  const limit = crawlLimitNote({
+    pagesCrawled: input.pagesCrawled,
+    maxPages: input.maxPages,
+    urlsDiscovered: input.urlsDiscovered,
+    sitemapUrls:
+      input.siteFacts?.sitemap.onHostUrlCount ??
+      input.siteFacts?.sitemap.urlCount,
+  });
+  const coverage = `${p(coverageLine(standing), "sub")}${limit ? p(limit, "sub") : ""}`;
+  if (standing.provisional) {
+    const lines = thinCategoryLines(standing, ctx.breakdown.categories, {
+      lighthouse: input.lighthouse,
+      speedOff: input.lighthouseMode === "none",
+      googleInspected: input.insights?.googleInspected ?? null,
+    });
+    return `${p(
+      t("Kısmi puan — ölçüm kapsamı {percent}", {
+        percent: formatPercent(standing.coverage.ratio, 0),
+      }),
+    )}${p(t("Kontrollerin önemli bir kısmı ölçülemediği için bu puan kesin değil; derece verilmedi."), "sub")}${lines.map((line) => p(line, "sub")).join("")}${coverage}`;
+  }
+  const verdict =
+    capVerdict(standing) ?? scoreVerdict(score, counts.critical, reliable);
+  return `${p(verdict)}${coverage}`;
+}
+
 export function coverSection(ctx: ReportContext): string {
   const { input, counts, score, stats, groups, reliable, todos } = ctx;
   const when = input.completedAt ?? input.startedAt;
@@ -229,10 +282,10 @@ export function coverSection(ctx: ReportContext): string {
       .join("")}</dl>
     ${reliable ? "" : `<div class="callout callout--warn"><p><strong>${t("Rapor eksik olabilir.")}</strong> ${escapeHtml(statusNote(input.status))} ${escapeHtml(t(UNRELIABLE_NOTE))}</p></div>`}
     <div class="scorebox">
-      ${gauge(score)}
+      ${gauge(score, ctx.standing.kind === "scored" ? ctx.standing.tier : null)}
       <div>
         <p class="score-label">${t("Site puanı")}</p>
-        <p class="verdict">${escapeHtml(scoreVerdict(score, counts.critical, reliable))}</p>
+        ${coverVerdict(ctx)}
         <p class="sub">${
           counts.total === 0
             ? reliable

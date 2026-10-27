@@ -1,8 +1,32 @@
 import { getOptionalEnvValue } from "@/server/lib/runtime-env";
+import { networkErrorReason } from "@/server/lib/fetchRetry";
 import {
   windowsSettingsSchema,
   type WindowsSetting,
 } from "@/shared/windows-settings";
+
+const BRIDGE_TIMEOUT_MS = 4000;
+
+/**
+ * Why the tray launcher's settings bridge did not answer. One bare "Windows
+ * settings unavailable" used to cover all four, so neither the log nor the
+ * Settings screen could say whether the launcher was gone, busy, refusing or
+ * speaking a different version.
+ */
+type WindowsBridgeFailure = "timeout" | "connect" | "status" | "parse";
+
+export class WindowsSettingsBridgeError extends Error {
+  constructor(
+    public readonly failure: WindowsBridgeFailure,
+    /** HTTP status for `status`, otherwise null. */
+    public readonly httpStatus: number | null = null,
+  ) {
+    super(
+      `Windows settings unavailable (${failure}${httpStatus ? ` ${httpStatus}` : ""})`,
+    );
+    this.name = "WindowsSettingsBridgeError";
+  }
+}
 
 /** Server-only capability: the browser never receives the port or credential. */
 async function request(path: string) {
@@ -17,20 +41,43 @@ async function request(path: string) {
     !/^[a-f0-9]{64}$/.test(token)
   )
     return null;
+  let response: Response;
   try {
-    const response = await fetch(`http://127.0.0.1:${port}/settings/${path}`, {
+    response = await fetch(`http://127.0.0.1:${port}/settings/${path}`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       // Workers supports manual redirects; non-2xx responses are rejected below.
       redirect: "manual",
-      signal: AbortSignal.timeout(4000),
+      signal: AbortSignal.timeout(BRIDGE_TIMEOUT_MS),
     });
-    if (!response.ok) throw new Error("Native settings request failed");
-    return windowsSettingsSchema.parse(await response.json());
-  } catch {
-    // Never forward native errors or credential-bearing request details.
-    throw new Error("Windows settings unavailable");
+  } catch (error) {
+    const failure =
+      error instanceof Error && error.name === "TimeoutError"
+        ? "timeout"
+        : "connect";
+    // The transport's own words, without the URL; the token is a header and
+    // never part of either.
+    console.warn(
+      `Windows settings bridge ${path}: ${failure}: ${networkErrorReason(error)}`,
+    );
+    throw new WindowsSettingsBridgeError(failure);
   }
+  if (!response.ok) {
+    console.warn(`Windows settings bridge ${path}: HTTP ${response.status}`);
+    throw new WindowsSettingsBridgeError("status", response.status);
+  }
+  const parsed = windowsSettingsSchema.safeParse(
+    await response.json().catch(() => null),
+  );
+  if (!parsed.success) {
+    console.warn(
+      `Windows settings bridge ${path}: unrecognised response (${parsed.error.issues
+        .map((issue) => issue.path.join(".") || issue.code)
+        .join(", ")})`,
+    );
+    throw new WindowsSettingsBridgeError("parse");
+  }
+  return parsed.data;
 }
 
 export const WindowsSettingsRepository = {

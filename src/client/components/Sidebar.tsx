@@ -27,8 +27,10 @@ interface SidebarProps {
   onClose?: () => void;
 }
 
+// `nav-item` is a hook for app.css: the light theme tints the active item with
+// the accent there, so the dark theme stays exactly as it is.
 const navItemBaseClass =
-  "flex items-center gap-2.5 rounded-field px-3 py-2 text-sm text-muted";
+  "nav-item flex items-center gap-2.5 rounded-field px-3 py-2 text-sm text-muted";
 
 // Hover uses a lighter tint than the active background (bg-base-300/50) so a
 // hovered item next to the active one stays visually distinct instead of
@@ -74,7 +76,7 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
     ? getProjectNavGroups(projectId)
     : [connectNavGroup];
   return (
-    <div className="flex h-full w-60 flex-col bg-base-200">
+    <div className="app-sidebar flex h-full w-60 flex-col bg-base-200">
       <div className="flex items-center justify-between px-4 pb-2 pt-3">
         <a
           href={siteUrl()}
@@ -117,7 +119,7 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
         {navGroups.map((group) => (
           <div key={group.label ?? "top"} className="mb-1">
             {group.label ? (
-              <div className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wider text-subtle">
+              <div className="nav-group-label px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wider text-subtle">
                 {t(group.label)}
               </div>
             ) : null}

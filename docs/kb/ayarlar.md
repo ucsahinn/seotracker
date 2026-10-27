@@ -3,7 +3,7 @@ title: Ayarlar
 description: Tema, Google erişim anahtarı, PageSpeed anahtarı, kullanım sınırları ve güncelleme kontrolü: bütün kurulum için tek ayar ekranı.
 screen: Ayarlar
 route: /settings
-updated: 2026-10-26
+updated: 2026-10-27
 ---
 
 Google bağlantısını, hız anahtarını ve güncellemeyi nereden yöneteceğinizi burada görürsünüz.
@@ -14,11 +14,22 @@ Google bağlantısını, hız anahtarını ve güncellemeyi nereden yöneteceği
 
 **Görünüm.** **Tema** için Sistem, Açık ve Koyu seçeneği var. Seçim bu tarayıcıda saklanır. Başka bir tarayıcıda ya da bilgisayarda ayrıca seçersiniz.
 
-**Dil.** **Ayarlar → Görünüm → Dil** bölümünden Türkçe veya English seçin. Sayfa seçilen dilde yeniden açılır; sayı ve tarihler de bu dili izler. Seçim bu tarayıcıda saklanır. Seçim yapılmazsa tarayıcının dili kullanılır, dil bilgisi yoksa Türkçe açılır.
+**Dil.** **Ayarlar → Görünüm → Dil** bölümünden Türkçe, English, Deutsch, Français, Italiano ya da Português seçin. Sayfa seçilen dilde yeniden açılır; sayı ve tarihler de bu dili izler. Her dil kendi adıyla yazılır, bu yüzden geçerli dili okuyamasanız bile kendi dilinizi bulursunuz. Seçim bu tarayıcıda saklanır. Seçim yapılmazsa tarayıcının dili kullanılır. Tarayıcının dili bunlardan biri değilse English, tarayıcı dil bilgisi vermiyorsa Türkçe açılır.
 
-**Bildirimler.** Sol menüdeki zil son 50 olayı ve okunmamış sayısını gösterir. **Tümünü okundu işaretle** geçmişi korur. Denetim sonucu, yeni sürüm, Google bağlantı sorunu, rapor ve dizin sorgusu sonuçları burada bulunur. **Bildirim sesi** önemli olaylarda kısa bir ses çalar; **Sesi dinle** ile deneyebilirsiniz. **Arka plandayken masaüstü bildirimi** seçeneği tarayıcıdan izin ister. İzin engellenmişse tarayıcının site izinlerinden açılır. Görsel animasyonlar sistemin hareketi azaltma tercihine uyar; ses ayrı ayarlanır.
+**Bildirimler.** Sol menüdeki zil son 50 olayı ve okunmamış sayısını gösterir. **Tümünü okundu işaretle** geçmişi korur. Denetim sonucu, yeni sürüm, Google bağlantı sorunu, rapor ve dizin sorgusu sonuçları burada bulunur. Uygulama açıkken yeni bir olay uygulamanın kendi küçük penceresinde görünür. Sekme arka plandayken olay yalnızca zil geçmişinde tutulur. Uygulama Windows ya da tarayıcı bildirimi göndermez. Böylece aynı olay üst üste iki pencerede çıkmaz. Bir denetimin kendi ekranını izliyorsanız o denetimin bitiş penceresi ayrıca açılmaz, çünkü ekran bitişi zaten gösterir. **Bildirim sesi** önemli olaylarda kısa bir ses çalar; **Sesi dinle** ile deneyebilirsiniz. **Uygulama bildirimini dene** bir deneme bildirimi ve sesi üretir. Görsel animasyonlar sistemin hareketi azaltma tercihine uyar; ses ayrı ayarlanır.
 
 **Windows.** Windows açılınca başlat ve Otomatik güncelleme kurulumu seçeneklerini buradan açıp kapatabilirsiniz. Bunlar tepsi menüsüyle aynı kalıcı ayarlardır. Yönetici kısıtlaması varsa nedeni görünür. Docker ve geliştirici kurulumunda seçenekler kapalıdır; eski Windows başlatıcısında paketi güncellemeniz istenir.
+
+Bir ayar kaydedilemezse ekran nedenini ve ne yapacağınızı yazar. Ayar bölümü görev çubuğundaki uygulamayla konuştuğu için hatalar o uygulamadan gelir:
+
+- **Tepsi uygulaması 4 saniye içinde yanıt vermedi.** Bilgisayar uykudan yeni uyandıysa birkaç saniye sonra **Tekrar dene**'ye basın. Sürerse tepsi menüsünden **Çıkış** deyip uygulamayı yeniden açın.
+- **Tepsi uygulamasının ayar servisine bağlanılamadı.** Tepsi uygulaması kapanmış olabilir. seowatcher'ı Başlat menüsünden yeniden açın.
+- **Bu ayar yönetici tarafından kilitlenmiş.** Yalnızca bilgisayarın yöneticisi değiştirebilir. Kurulum tüm kullanıcılar için yapılmışsa bu normaldir.
+- **Tepsi uygulaması bu isteği tanımadı.** Sunucu ile tepsi uygulaması farklı oturumlardan kalmış olabilir. Tepsi menüsünden **Çıkış** deyip uygulamayı yeniden açın.
+- **Tepsi uygulaması ayar isteğini reddetti.** Uygulamayı tepsi menüsünden yeniden başlatın. Sürerse Windows paketini güncelleyin.
+- **Tepsi uygulaması tanınmayan bir yanıt döndürdü.** Uygulama ile tepsi sürümü uyuşmuyor olabilir. Windows paketini güncelleyin.
+
+Bölüm hiç açılmıyor ve "Windows ayarlarına ulaşılamadı" diyorsa tepsi uygulamasının açık olduğunu kontrol edin.
 
 **Google.** Rozet üç değerden biridir: **Kayıtlı**, **Ortamdan geliyor** (Docker kurulumunda `.env` dosyasıyla verilmiş) ya da **Eksik**. Bölüm, Google Cloud Console'a (Google'ın geliştirici paneli) ekleyeceğiniz iki yönlendirme adresini gösterir. Yanlarında kopyalama düğmeleri vardır. İkisini de eklemeniz gerekir. Analytics adresini eklemezseniz yalnızca Search Console bağlanır.
 
@@ -29,7 +40,7 @@ Google bağlantısını, hız anahtarını ve güncellemeyi nereden yöneteceği
 - Search Console: "Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle", yetki Tam.
 - Analytics: "Yönetici → Erişim yönetimi", yetki Görüntüleyen.
 
-Rozet **Kayıtlı** ya da **Kullanılmıyor** yazar. Kayıtlı bir hizmet hesabı varsa uygulama onu Google erişim anahtarına tercih eder. Silmek hesabı uygulamadan kaldırır ama Google'daki anahtarı iptal etmez.
+Rozet **Kayıtlı** ya da **Kullanılmıyor** yazar. Google bölümünde istemci kimliği girilmemişse ama bir hizmet hesabı bağlıysa, **Google** bölümünün rozeti sarı **Eksik** yerine nötr bir **Kullanılmıyor, hizmet hesabı bağlı** yazar. Google bu durumda hizmet hesabıyla çalışır. Kayıtlı bir hizmet hesabı varsa uygulama onu Google erişim anahtarına tercih eder. Silmek hesabı uygulamadan kaldırır ama Google'daki anahtarı iptal etmez.
 
 **Hız ölçümü.** **API anahtarı** alanı ve **Anahtarı test et** düğmesi var. Test "1 ölçüm harcar". Ona on saniyede bir basabilirsiniz. Rozet **Anahtar kayıtlı**, **Ortam anahtarı** ya da **Anahtar eksik** yazar. Ayrıntıyı PageSpeed anahtarı kılavuzunda bulursunuz.
 
@@ -44,7 +55,9 @@ Rozet **Kayıtlı** ya da **Kullanılmıyor** yazar. Kayıtlı bir hizmet hesab�
 
 Her kartın durumu **Yeterli**, **Azalıyor** (yüzde 70'ten sonra), **Neredeyse doldu** (yüzde 90'dan sonra) ya da **Bilinmiyor** olur.
 
-**Hakkında.** **Sürüm** satırı sürümü gösterir (0.5.0 Alpha gibi). **Güncellemeleri kontrol et** anahtarı varsayılan olarak açıktır. Açıksa uygulama günde en çok bir kez GitHub'daki son sürümü sorar. Bu durumda **Şimdi kontrol et** düğmesi de görünür. Yeni sürüm varsa **Değişiklikler** bağlantısı çıkar. Docker kurulumları için kopyalayacağınız komut da çıkar: `git pull && docker compose up -d --build`. Windows paketinde ekran sizi görev çubuğu simgesindeki **Güncelle** maddesine yönlendirir. Otomatik güncelleme açıksa yeni sürüm kendiliğinden kurulur.
+**Hakkında.** **Sürüm** satırı sürümü gösterir (0.8.0 Alpha gibi). **Güncellemeleri kontrol et** anahtarı varsayılan olarak açıktır. Açıksa uygulama altı saatte bir GitHub'daki son sürümü sorar. Bu durumda **Şimdi kontrol et** düğmesi de görünür. Windows paketindeki görev çubuğu uygulaması ayrıca kendi kontrolünü yapar. O, günde bir kez bakar. Yeni sürüm varsa **Değişiklikler** bağlantısı çıkar. Docker kurulumları için kopyalayacağınız komut da çıkar: `git pull && docker compose up -d --build`. Windows paketinde ekran sizi görev çubuğu simgesindeki **Güncelle** maddesine yönlendirir. Otomatik güncelleme açıksa yeni sürüm kendiliğinden kurulur.
+
+Kontrol şunlardan birini söyler: yeni sürümün yayımlandığını, "En güncel sürümü kullanıyorsunuz." ya da bir sorunu. GitHub'a ulaşılamazsa ekran "Son kontrolde GitHub'a ulaşılamadı" der ve son bilinen sürümü, bir önceki başarılı kontrolün tarihiyle birlikte yazar. Bu durumda sürümün güncel olup olmadığı doğrulanamamıştır. İnternet bağlantınızı kontrol edip yeniden deneyin. Ekran "Sürüm kaynağına ulaşılamadı: depo bulunamadı ya da gizli (GitHub 404)" derse sorun sizde değildir. **Yardım** ekranından tanılama paketini indirip sorunu bildirin. Anahtar kapalıysa ekran "Güncelleme kontrolü kapalı; GitHub'a istek gitmiyor." der.
 
 **Sürüm notları.** Sol menüde Bildirimler’in üstündeki ayrı sayfada bulunur. Renkli etiketler sürümün yenilik, düzeltme ve güvenlik içeriğini gösterir.
 

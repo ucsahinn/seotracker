@@ -31,9 +31,18 @@
  *  - **100 means empty.** Any finding at all caps the score at 99, however
  *    small its cost. A score that reads 100 with warnings still listed is a
  *    score nobody believes.
+ *  - **Severity caps the number.** Any critical finding caps the site
+ *    score at `CRITICAL_SCORE_CAP` (69, the top of "fair"), and
+ *    `MANY_WARNINGS` or more warning findings cap it at
+ *    `WARNINGS_SCORE_CAP` (89, the top of "good"). A weighted average of
+ *    seven categories let one noindexed page on a large site read 98: a
+ *    high number over a critical problem is the complaint the cap answers.
  *  - **A fix's points are exact.** A finding's `points` is what fixing it
- *    adds to the site score: its category's gain times the category's share
- *    of the weight. That is what lets the screen say "fix this, get +4".
+ *    adds to the site score: the capped score without it minus the capped
+ *    score now, both before rounding. So fixing the only critical finding
+ *    shows the whole release of the cap, and a warning fixed under a
+ *    binding critical cap shows the little it really adds. That is what
+ *    lets the screen say "fix this, get +4".
  *
  * Lives in `shared/` so the audit screen, the dashboard and the exported
  * report can never disagree about the number.
@@ -62,6 +71,13 @@ const WEIGHT = { critical: 40, warning: 15, info: 3 } as const;
 /** How much each severity weighs, for rankings that must agree with the score. */
 export const SEVERITY_WEIGHT = WEIGHT;
 
+/** Any critical finding caps the site score here: the top of "fair". */
+export const CRITICAL_SCORE_CAP = 69;
+/** This many warning findings or more cap the site score at `WARNINGS_SCORE_CAP`. */
+export const MANY_WARNINGS = 5;
+/** The top of "good". */
+export const WARNINGS_SCORE_CAP = 89;
+
 /** The part of a finding's cost that does not depend on how widespread it is. */
 const FLOOR = 0.15;
 
@@ -81,9 +97,13 @@ type CategoryResult = {
   impact: number;
 };
 
+type ScoreCap = "critical" | "warnings";
+
 type AuditScore = {
   /** 0-100, or null when nothing was crawled to score. */
   score: number | null;
+  /** The severity cap that lowered the score, if one did. */
+  cappedBy: ScoreCap | null;
   /** Findings by what fixing them would add to the site score, largest first. */
   gains: {
     issueType: string;
@@ -123,6 +143,19 @@ export function auditScoreBand(score: number): "good" | "fair" | "poor" {
   return tier === "poor" ? "poor" : "fair";
 }
 
+/** The cap a set of findings puts on the site score, if any. */
+function severityCap(
+  findings: readonly { severity: ScoredFinding["severity"] }[],
+): { cap: number; by: ScoreCap } | null {
+  if (findings.some((finding) => finding.severity === "critical")) {
+    return { cap: CRITICAL_SCORE_CAP, by: "critical" };
+  }
+  const warnings = findings.filter((f) => f.severity === "warning").length;
+  return warnings >= MANY_WARNINGS
+    ? { cap: WARNINGS_SCORE_CAP, by: "warnings" }
+    : null;
+}
+
 /** Floor, not round: 99.6 must not read as 100 while findings remain. */
 const capped = (raw: number, hasFindings: boolean) =>
   hasFindings ? Math.min(99, Math.floor(raw)) : 100;
@@ -144,6 +177,7 @@ export function scoreAudit(
   if (pagesCrawled <= 0) {
     return {
       score: null,
+      cappedBy: null,
       gains: [],
       categories: AUDIT_CATEGORIES.map((category) => ({
         category,
@@ -184,30 +218,42 @@ export function scoreAudit(
   const worth = (category: AuditCategory) =>
     totalWeight > 0 ? AUDIT_CATEGORY_WEIGHT[category] / totalWeight : 0;
 
-  const raw = included.reduce(
-    (sum, category) =>
-      sum + categoryRaw(costOf.get(category) ?? 0) * worth(category),
-    0,
-  );
+  // The site score before rounding, from a set of costed findings. The
+  // included categories stay those of the full audit, so a fix that empties
+  // a category is worth the category's whole loss rather than dropping it.
+  const value = (subset: typeof costed) => {
+    const costs = new Map<AuditCategory, number>();
+    for (const finding of subset) {
+      costs.set(
+        finding.category,
+        (costs.get(finding.category) ?? 0) + finding.cost,
+      );
+    }
+    const raw = included.reduce(
+      (sum, category) =>
+        sum + categoryRaw(costs.get(category) ?? 0) * worth(category),
+      0,
+    );
+    const cap = severityCap(subset);
+    return { raw: cap ? Math.min(raw, cap.cap) : raw, cap };
+  };
+  const now = value(costed);
 
   const gains = sort(
-    costed.map((finding) => {
-      const total = costOf.get(finding.category) ?? 0;
-      return {
-        issueType: finding.issueType,
-        severity: finding.severity,
-        // Exact even when the category is floored at 0: a fix that leaves
-        // the category still below zero gives back less than its cost.
-        points:
-          (categoryRaw(total - finding.cost) - categoryRaw(total)) *
-          worth(finding.category),
-      };
-    }),
+    costed.map((finding) => ({
+      issueType: finding.issueType,
+      severity: finding.severity,
+      points: value(costed.filter((other) => other !== finding)).raw - now.raw,
+    })),
     (a, b) => b.points - a.points,
   );
 
   return {
-    score: included.length === 0 ? null : capped(raw, costed.length > 0),
+    score: included.length === 0 ? null : capped(now.raw, costed.length > 0),
+    cappedBy:
+      now.cap && included.length > 0 && now.raw >= now.cap.cap
+        ? now.cap.by
+        : null,
     gains,
     categories: AUDIT_CATEGORIES.map((category) => {
       const cost = costOf.get(category);

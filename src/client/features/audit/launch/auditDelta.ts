@@ -42,6 +42,37 @@ export function previousAuditIds(rows: DeltaRow[]): Map<string, string> {
   return previous;
 }
 
+export type AuditSite = { key: string; label: string; count: number };
+
+/**
+ * The sites a project's audits covered, by host, the project's own first and
+ * then by audit count. One project can hold audits of several addresses
+ * (a client's site, a test crawl of something else), and a trend line or a
+ * "previous audit" across two of them compares two different sites.
+ */
+export function auditSites(
+  rows: ReadonlyArray<{ startUrl: string }>,
+  projectDomain: string | null,
+): AuditSite[] {
+  const counts = new Map<string, number>();
+  for (const row of rows) {
+    const key = siteHost(row.startUrl);
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+  const own = projectDomain ? siteHost(projectDomain) : null;
+  return sort(
+    [...counts].map(([key, count]) => ({ key, label: key, count })),
+    (a, b) =>
+      Number(b.key === own) - Number(a.key === own) || b.count - a.count,
+  );
+}
+
+/** A site's host without "www.", the key `auditSites` groups by. */
+export function siteHost(url: string): string {
+  const withScheme = url.includes("://") ? url : `https://${url}`;
+  return siteKey(withScheme).split("/")[0] ?? url;
+}
+
 export function issueDelta(current: number, previous: number): IssueDelta {
   return {
     diff: current - previous,

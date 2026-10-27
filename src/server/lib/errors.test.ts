@@ -1,9 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
   AppError,
+  googleAppError,
   isUniqueConstraintError,
   toClientError,
 } from "@/server/lib/errors";
+import { Ga4ReportError } from "@/server/lib/ga4Errors";
+import { GscApiError } from "@/server/lib/gscErrors";
 
 describe("toClientError", () => {
   it("sanitizes detailed internal error messages", () => {
@@ -50,6 +53,45 @@ describe("toClientError", () => {
       expect(error.message).toBe(`${code}: Alan adı geçersiz.`);
     },
   );
+});
+
+/*
+ * A Google failure used to reach the screen as one "Google did not answer"
+ * whatever happened. Each cause now carries its own cause-and-fix sentence.
+ */
+describe("googleAppError", () => {
+  const clientMessage = (error: unknown) =>
+    toClientError(googleAppError(error)).message;
+
+  it("names a missing GA4 permission and how to grant it", () => {
+    const message = clientMessage(
+      new Ga4ReportError("ga4_property_inaccessible", "no access", null, {
+        status: 403,
+        reason: "PERMISSION_DENIED",
+      }),
+    );
+    expect(message).toMatch(/^UPSTREAM_UNAVAILABLE: /);
+    expect(message).toContain("HTTP 403");
+    expect(message).toContain("Görüntüleyen");
+  });
+
+  it("keeps an exhausted quota as RATE_LIMITED, with when it renews", () => {
+    const message = clientMessage(
+      new Ga4ReportError("ga4_quota_exhausted", "quota", 60, {
+        status: 429,
+        reason: null,
+      }),
+    );
+    expect(message).toMatch(/^RATE_LIMITED: /);
+    expect(message).toContain("saatlik ve günlük");
+  });
+
+  it("tells a removed Search Console property from a Google outage", () => {
+    expect(clientMessage(new GscApiError(404, "gone"))).toContain(
+      "mülkü bulunamadı",
+    );
+    expect(clientMessage(new GscApiError(500, "oops"))).toContain("HTTP 500");
+  });
 });
 
 describe("isUniqueConstraintError", () => {

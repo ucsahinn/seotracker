@@ -2,12 +2,12 @@
 title: Troubleshooting
 description: The most common problems: symptom, cause and fix. Port in use, the Windows warning, Google errors, quota, a stuck audit, empty charts, assistant 401.
 kind: sorun-giderme
-updated: 2026-10-26
+updated: 2026-10-27
 ---
 
-The app's interface comes in English and Turkish. This guide uses the English names; to switch, go to **Settings → Appearance → Language**.
+The app's interface comes in six languages: Turkish, English, German, French, Italian and Portuguese. This guide uses the English names; to switch, go to **Settings → Appearance → Language**.
 
-This guide covers what to do when something does not work. First, check the "Your setup status" card on the **Help** screen in the app. The card checks four things: sign-in and access, Google sign-in, the PageSpeed key, and the database. If it says "N things need attention", the button next to it takes you to the right setting. The sections below run from the most common problem to the rarest.
+This guide covers what to do when something does not work. First, check the "App health" card on the **Help** screen in the app. The card looks at this installation itself, and it checks four things: sign-in and access, Google sign-in, the PageSpeed key, and the database. If it says "N things need attention", the button next to it takes you to the right setting. The sections below run from the most common problem to the rarest.
 
 ## The page does not open
 
@@ -21,11 +21,11 @@ This guide covers what to do when something does not work. First, check the "You
 
 ## The port number is in use
 
-**Symptom:** On Windows, the icon says "3001 ve sonraki 9 adres numarası (port) dolu" (3001 and the next 9 ports are in use). On Docker, you see "Bind for 127.0.0.1:3001 failed".
+**Symptom:** On Windows, a yellow strip appears at the top of every screen in the app: "seowatcher is running on 3002 this time because another program is using 3001 (for example an old Docker copy). Google sign-in is set up for 3001; close that program and restart seowatcher." Connecting to Google gives an error. Or the icon says "3001 ve sonraki 9 adres numarası (port) dolu" (3001 and the next 9 ports are in use). The same sentence is written in the "App health" card on the **Help** screen. On Docker, you see "Bind for 127.0.0.1:3001 failed".
 
-**Cause:** Another program is using the same port number.
+**Cause:** Another program is using the same port number. The most common cause is an old Docker copy you once ran. Docker Desktop can restart it by itself when the computer starts. Google's redirect addresses name 3001, so Google sign-in does not work while the app is open on 3002.
 
-**Fix:** The Windows package normally picks a free number between 3002 and 3010, tells you in a balloon, and uses it only for that one start. When 3001 is free again, choose **Yeniden başlat** (Restart) and the app returns to 3001. If they are all in use, write a different number in the `config.json` file in the data folder. On Docker, create a `.env` file with the line `PORT=3002` and run `docker compose up -d --force-recreate seotracker`. When the number changes, update the Google redirect addresses too.
+**Fix:** The Windows package normally picks a free number between 3002 and 3010, tells you in a balloon and in the strip above, and uses it only for that one start. First close the program that holds 3001. If it is an old Docker copy, stop the seotracker container in Docker Desktop, or run `docker compose stop` in the project folder. Then choose **Yeniden başlat** (Restart) in the menu. The app returns to 3001 and the strip disappears. Closing the strip only hides it for that tab; it does not fix anything. If they are all in use, write a different number in the `config.json` file in the data folder. On Docker, create a `.env` file with the line `PORT=3002` and run `docker compose up -d --force-recreate seotracker`. When the number changes, update the Google redirect addresses too.
 
 ## The icon says "Windows bileşeni eksik"
 
@@ -118,6 +118,48 @@ This guide covers what to do when something does not work. First, check the "You
 
 **Fix:** Wait. The app checks any audit that has shown "In progress" for more than 15 minutes. If there are no signs of life, it closes the audit as "Failed" and records the reason. Then choose **Run again with the same settings**. Do not start two audits with speed testing at the same time. They slow each other down.
 
+## The audit says "The audit stopped before it could finish"
+
+**Symptom:** The audit screen says "The audit stopped during the crawl phase." or "The audit stopped before it could finish." Instead of the score, it says "Incomplete audit — no score given".
+
+**Cause:** The screen says three things: what happened, whether the fault is in your site or in the app, and what to do. The title says in which phase it stopped: URL discovery, crawl, speed test or results preparation.
+
+**Fix:** Follow the sentence on the screen.
+
+- **A step did not finish in time.** Usually the site is answering very slowly. Try again in a few minutes. If it happens again, start with fewer pages.
+- **The audit did not fit in the memory**, **went over the processor time**, or **the result of one step was larger than the app can store.** Very large or complex pages cause this. Start again with fewer pages.
+- **An error occurred while writing the results to the database.** The disk may be full or the data file may be locked by another program. Check that the disk has free space, restart the app, then start the audit again.
+- **The app's internal audit engine reported an error.** Choose **Yeniden başlat** (Restart) in the tray menu, then start the audit again.
+- **The audit was cut off.** The app may have been closed or restarted in the middle of it. Make sure the app stays open and start the audit again.
+- **The install key did not reach the part that runs audits.** Your saved Google and PageSpeed keys were not deleted. Update or restart the app, then start the audit again.
+- **An unexpected error.** Start the audit again. If it keeps happening, download the diagnostics bundle from the **Help** screen and report the problem.
+
+The raw error text does not reach the screen. It stays in the diagnostics bundle.
+
+## The audit says "Partial score"
+
+**Symptom:** The score has no rating word beside it. A line like "Partial score — measurement coverage 62%" is there.
+
+**Cause:** A large share of the checks could not be measured (the share of measured checks is below 70 percent, or fewer than half the checks in Crawling, Indexing, Content or Speed were measured). The lines under the card give the reasons: the PageSpeed quota ran out, there is no PageSpeed key, speed testing was turned off, or no index data could be fetched from Search Console.
+
+**Fix:** Turn on speed measurement, add a PageSpeed key or connect Search Console, then run the audit again. The score is based on what was measured. No judgement, good or bad, was made about the rest.
+
+## The audit says "Incomplete audit — no score given"
+
+**Symptom:** This sentence sits where the score card would be. The findings are still shown below it.
+
+**Cause:** The audit stopped with an error, is still running, or the crawl stopped early because of the site's rate limit. The issue list is incomplete, so no score was calculated. If no page could be crawled, the score card does not appear at all.
+
+**Fix:** Read the reason in the section above. Run the audit again once the rate limit has reset or the problem is fixed. The findings apply to the pages that were crawled.
+
+## The audit finished but says "the speed test ran without a key"
+
+**Symptom:** The audit completed. A warning says "The saved PageSpeed key could not be read, so the speed test ran without a key." The Speed tab has at most 50 pages.
+
+**Cause:** The part that runs audits did not receive the install key that opens the saved key, so the speed test ran without it. The crawl results were not affected.
+
+**Fix:** Update or restart the app, then start a new audit. If it continues, save the PageSpeed key again in **Settings**.
+
 ## The audit says "Engellendik"
 
 **Symptom:** A yellow warning appears: "The audit could not fully crawl this site." or "N sayfada engellendik." (We were blocked on N pages.)
@@ -141,6 +183,40 @@ This guide covers what to do when something does not work. First, check the "You
 **Cause:** Google allows 2,000 questions per day per property. The app, your assistant and the checks you make by hand in Search Console all use the same pool.
 
 **Fix:** Continue tomorrow. The app only asks again for answers that have gone stale, so your allowance is not wasted.
+
+## The Analytics card or report shows an error
+
+**Symptom:** The Organic traffic card on the Dashboard, or the Analytics screen, shows a sentence instead of data, with **Fix the connection** and **Try again** buttons.
+
+**Cause:** The sentence gives the cause and the fix. The main cases are these.
+
+- **The connection has expired or was revoked.** Connect it again in **Settings**.
+- **Access to this property was refused (HTTP 403).** Give the connected account or service account at least the Viewer role on the property.
+- **The property was not found (HTTP 404).** It may have been deleted or moved. Choose it again in **Settings**.
+- **No property is connected to this project.** Choose one in **Settings**.
+- **The reporting quota is used up (HTTP 429).** The quota refreshes hourly and daily. Try again later.
+- **The Google Analytics Data API is off in the Google Cloud project.** Turn on "Google Analytics Data API" in Google Cloud Console and try again.
+- **The report is not compatible with the selected property (HTTP 400).** Check the property or choose another.
+- **Google returned an invalid answer or is not answering for the moment.** Try again shortly.
+- **Google cannot be reached.** Check this computer's internet connection.
+
+**Fix:** Do the step the sentence names. Most often **Fix the connection** takes you to the right setting.
+
+## A Search Console request shows an error
+
+**Symptom:** Search performance, Opportunities or Rank tracking shows a Search Console error instead of data.
+
+**Cause:** The error sentence names the cause.
+
+- **The request was found invalid (HTTP 400).** This is not a connection problem. The chosen dimension, filter or search type cannot be used on this property. Remove the filters.
+- **Access to the property was refused (HTTP 401 or 403).** Check that the account has verified permission on the property, or refresh the connection in **Settings**.
+- **The property was not found (HTTP 404).** It may have been removed from Search Console. Choose it again in **Settings**.
+- **The request limit is used up (HTTP 429).** Try again in a few minutes.
+- **It did not answer in time.** Try again shortly.
+- **It is not answering for the moment (another HTTP code).** Try again shortly. If it continues, look at Google's status page.
+- **Google cannot be reached.** The sentence gives a detail on the "Reason" line. If it continues, check this computer's internet connection.
+
+**Fix:** Do the step the sentence names. For account and property problems, refreshing the connection in **Settings** is usually enough.
 
 ## Localhost traffic shows up in Analytics
 
@@ -189,6 +265,21 @@ On Docker, the data is in the `seotracker_data` volume (`/app/.wrangler`). You s
 
 When you report a problem, press **Download diagnostics bundle** on the **Help** screen. The package includes phase and error summaries for the last 25 audits; page URLs are removed from PageSpeed error text. It may contain identifying details such as project names and domains, so review it before attaching it to a GitHub issue.
 
+## A Windows setting cannot be saved
+
+**Symptom:** Changing an option in the Windows section of **Settings** gives an error, or the section says Windows preferences are unavailable.
+
+**Cause:** This section talks to the app in the taskbar. The error sentence says which of these it is.
+
+- **The tray app did not answer within 4 seconds.** If the computer just woke from sleep, press **Try again** after a few seconds. If it persists, choose **Çıkış** (Exit) in the tray menu and open the app again.
+- **Could not connect to the tray app's settings service.** The tray app may have closed. Open seowatcher again from the Start menu.
+- **This preference is locked by an administrator.** Only the computer's administrator can change it.
+- **The tray app did not recognise this request.** The server and the tray app may be left over from different sessions. Choose **Çıkış** (Exit) in the tray menu and open the app again.
+- **The tray app refused the settings request.** Restart the app from the tray menu. If it persists, update the Windows package.
+- **The tray app returned an unrecognised answer.** The app and tray versions may not match. Update the Windows package.
+
+**Fix:** Do the step the sentence names. These options exist only in the Windows package. On Docker, you manage startup behaviour from your operating system.
+
 ## Launcher messages
 
 These messages appear on the Windows icon or in a dialog. The Windows launcher is the small program that starts the app.
@@ -197,7 +288,7 @@ These messages appear on the Windows icon or in a dialog. The Windows launcher i
 - **"seowatcher yeniden başlatılıyor"** (seowatcher is restarting): the server closed by itself and the app is reopening it. Refresh the open page after a few seconds.
 - **"Sunucu 10 dakikada üç kez kapandı"** (The server closed three times in 10 minutes): the app has stopped reopening it. Choose **Kurulumu onar** (Repair installation), and if that does not help, **Sorunu bildir (GitHub)** (Report a problem (GitHub)).
 - **"Kurulum eksik"** (Installation incomplete): **Kurulumu onar** (Repair installation) puts the missing files back by downloading the installer. If there is no internet, the releases page opens; download the installer and run it.
-- **"3001 numarası dolu, 3002 kullanılıyor"** (Port 3001 is in use, using 3002): another program holds 3001. If you get an error when connecting to Google, close that program and choose **Yeniden başlat** (Restart).
+- **"3001 numarası dolu, 3002 kullanılıyor"** (Port 3001 is in use, using 3002): another program holds 3001, often an old Docker copy. The same warning also shows as a yellow strip across the app. If you get an error when connecting to Google, close that program and choose **Yeniden başlat** (Restart). See "The port number is in use" above.
 - **"Güncelleme denetlenemedi"** (The update could not be checked) or **"Güncelleme yapılamadı"** (Update failed): the balloon gives the reason. If it says "GitHub'a ulaşılamadı" (GitHub could not be reached), check your internet connection. If it says "GitHub şu an çok fazla istek alıyor" (GitHub is getting too many requests right now), try again in an hour. If the fingerprint did not match, download the installer from the releases page. In every case the installed version keeps running.
 - **"Güncelleme kurulmadı"** (The update was not installed): the installer window was closed, or administrator permission was not given. Try again from **Güncelle** (Update) in the menu.
 - **"Windows bileşeni kurulamadı"** (The Windows component could not be installed): choose **Eksik Windows bileşenini kur** (Install the missing Windows component) from the menu.

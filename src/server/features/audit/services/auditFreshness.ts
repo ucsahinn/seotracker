@@ -1,5 +1,6 @@
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
 import { getIssueTypePageCountsForAudit } from "@/server/features/audit/repositories/auditSummaryQueries";
+import { siteKey } from "@/shared/auditTodo";
 
 /**
  * Is this project's audit stale, and what changed since the one before it?
@@ -57,7 +58,19 @@ export async function getAuditFreshness(input: {
   const now = input.now ?? new Date();
   const audits = await AuditRepository.getAuditsByProject(input.projectId);
   const completed = audits.filter((audit) => audit.status === "completed");
-  const [latest, previous] = completed;
+  const [latest] = completed;
+  /*
+   * The audit before it *of the same site*. A project can hold crawls of
+   * several addresses, and "new since last time" against another site's
+   * crawl listed that site's problems as this one's.
+   */
+  const previous = latest
+    ? completed.find(
+        (audit) =>
+          audit.id !== latest.id &&
+          siteKey(audit.startUrl) === siteKey(latest.startUrl),
+      )
+    : undefined;
 
   if (!latest) {
     return {

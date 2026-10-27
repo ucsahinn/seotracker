@@ -9,6 +9,8 @@ import type { QueryClient } from "@tanstack/react-query";
 export const PROPERTY_DEPENDENT_QUERY_KEYS = [
   "searchPerformance",
   "searchPerformanceTable",
+  "searchPerformanceView",
+  "searchPerformanceDrilldown",
   "searchOpportunities",
   "cannibalization",
   "gscHistorySync",
@@ -20,7 +22,6 @@ export const PROPERTY_DEPENDENT_QUERY_KEYS = [
   "ga4MeasurementHealth",
   "ga4Report",
   "dashboardActivation",
-  "dashboardGscReport",
   "dashboardGa4Report",
   "dashboardOverview",
   "quotaStatus",

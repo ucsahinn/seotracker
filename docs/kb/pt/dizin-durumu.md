@@ -8,47 +8,47 @@ updated: 2026-10-22
 
 Esta página mostra como descobrir quais das suas páginas o Google colocou na busca.
 
-A auditoria do site informa que uma página pode ser aberta. Ela não consegue dizer se o Google realmente a adicionou ao seu índice (a lista de páginas do Google). A aba **Dizin durumu** (Status de indexação) pergunta isso ao Google e guarda a resposta. As respostas ficam guardadas neste computador. A mesma pergunta não é repetida sem necessidade. Só as respostas que ficaram velhas são perguntadas outra vez. Isso importa porque o Google concede 2.000 perguntas por dia para cada propriedade (o registro do seu site no Search Console). O aplicativo e o seu assistente dividem essa cota.
+A auditoria do site informa que uma página pode ser aberta. Ela não consegue dizer se o Google realmente a adicionou ao seu índice (a lista de páginas do Google). A aba **Status de indexação** pergunta isso ao Google e guarda a resposta. As respostas ficam guardadas neste computador. A mesma pergunta não é repetida sem necessidade. Só as respostas que ficaram velhas são perguntadas outra vez. Isso importa porque o Google concede 2.000 perguntas por dia para cada propriedade (o registro do seu site no Search Console). O aplicativo e o seu assistente dividem essa cota.
 
 ## O que há na tela
 
-**O anel "Google bu sayfalarla ne yapmış?" (O que o Google fez com estas páginas?).** As páginas rastreadas são divididas em três grupos:
+**O anel "O que o Google fez com essas páginas?".** As páginas rastreadas são divididas em três grupos:
 
-- **Google'da** (No Google): podem aparecer na busca.
-- **Dizinde değil** (Fora do índice): o Google olhou, mas não a incluiu.
-- **Yanıt bekleyen** (Aguardando resposta): a página ainda não foi consultada, ou o Google não deu resposta.
+- **No Google**: podem aparecer na busca.
+- **Não indexado**: o Google olhou, mas não a incluiu.
+- **Aguardando uma resposta**: a página ainda não foi consultada, ou o Google não deu resposta.
 
-**Caixas de resumo.** Mostram quantas páginas foram consultadas, quantas estão no índice, quantas não estão e quantas aguardam. A caixa "Google'ın farklı adresi seçtiği sayfalar" (Páginas em que o Google escolheu outro endereço) conta as páginas em que o Google escolheu um endereço diferente do canônico que você declarou (a etiqueta que diz qual é o endereço principal da página). A caixa "Bu denetimde henüz sorulmamış" (Ainda não consultadas nesta auditoria) é o número de páginas que faltam consultar.
+**Caixas de resumo.** Mostram quantas páginas foram consultadas, quantas estão no índice, quantas não estão e quantas aguardam. A caixa "Páginas onde o Google escolheu um canônico diferente" conta as páginas em que o Google escolheu um endereço diferente do canônico que você declarou (a etiqueta que diz qual é o endereço principal da página). A caixa "Ainda não consultadas nesta auditoria" é o número de páginas que faltam consultar.
 
-**O botão "Google'da durumunu kontrol et" (Verificar o status no Google).** Cada clique consulta no máximo 25 páginas. As páginas que estão há mais tempo sem resposta vêm primeiro. Se o limite diário estiver cheio, aparece o aviso "Google'ın günlük 2.000 adres sınırına ulaşıldı" (O limite diário de 2.000 endereços do Google foi atingido). Se o Search Console não estiver conectado, o botão fica desativado. Ele também fica desativado se o domínio auditado não estiver dentro da propriedade conectada.
+**O botão "Verificar o status no Google".** Cada clique consulta no máximo 25 páginas. As páginas que estão há mais tempo sem resposta vêm primeiro. Se o limite diário estiver cheio, aparece o aviso "O limite diário de 2.000 endereços do Google foi atingido". Se o Search Console não estiver conectado, o botão fica desativado. Ele também fica desativado se o domínio auditado não estiver dentro da propriedade conectada.
 
-**Tabela.** Colunas: **Sayfa** (Página), **Durum** (Status), **Sebep** (Motivo), **Google'ın seçtiği adres** (Endereço escolhido pelo Google), **Google'ın son ziyareti** (Última visita do Google). A célula de status mostra "Google'da", "Kontrol edilmedi" (Não verificada), "Yanıt alınamadı" (Sem resposta), "Hata" (Erro), ou a versão em turco do próprio status do Google. No total, 18 status são traduzidos para o turco. Exemplos:
+**Tabela.** Colunas: **Página**, **Status**, **Motivo**, **URL canônico selecionado pelo Google**, **Último rastreamento do Google**. A célula de status mostra "No Google", "Não verificado", "Sem resposta", "Erro", ou a versão em turco do próprio status do Google. No total, 18 status são traduzidos para o turco. Exemplos:
 
-- "Keşfedildi, henüz taranmadı" (Descoberta, ainda não rastreada)
-- "'noindex' etiketiyle dışlandı" (Excluída pela etiqueta 'noindex') (a página fica fora da busca)
-- "robots.txt engelliyor" (O robots.txt bloqueia) (robots.txt: o arquivo que diz ao Google em quais páginas ele pode entrar)
-- "Yumuşak 404" (404 suave) (a página existe, mas o Google a considera vazia)
-- "Google bu adresi bilmiyor" (O Google não conhece este endereço)
+- "Descoberto, atualmente não indexado"
+- "Excluído pela tag 'noindex'" (a página fica fora da busca)
+- "Bloqueado por robots.txt" (robots.txt: o arquivo que diz ao Google em quais páginas ele pode entrar)
+- "Soft 404" (a página existe, mas o Google a considera vazia)
+- "URL desconhecido para o Google"
 
 Você pode baixar a tabela como CSV.
 
 ## Como usar
 
-1. Quando a auditoria terminar, abra a aba. Se o número de "Yanıt bekleyen" for alto, clique em **Google'da durumunu kontrol et**. Cada clique avança 25 páginas. Em um site pequeno, alguns cliques bastam.
-2. Olhe primeiro o grupo "Dizinde değil". A coluna **Sebep** é o motivo do Google e muitas vezes diz o que fazer. Se disser "robots.txt engelliyor", remova o bloqueio. Se disser "'noindex' etiketiyle dışlandı", apague a etiqueta. Se disser "Keşfedildi, henüz taranmadı", esperar costuma bastar.
-3. Adicione ao mapa do site (sitemap) as páginas importantes que dizem "Google bu adresi bilmiyor". Envie o mapa do site ao Search Console. Para as três ou quatro páginas mais importantes, clique à mão em "Dizine eklenmesini iste" (Solicitar indexação) no Search Console.
-4. Se a caixa "Google'ın farklı adresi seçtiği sayfalar" não for zero, olhe a coluna **Google'ın seçtiği adres**. O Google preferiu outro endereço. Corrija o seu endereço principal ou adote o que o Google escolheu.
+1. Quando a auditoria terminar, abra a aba. Se o número de "Aguardando uma resposta" for alto, clique em **Verificar o status no Google**. Cada clique avança 25 páginas. Em um site pequeno, alguns cliques bastam.
+2. Olhe primeiro o grupo "Não indexado". A coluna **Motivo** é o motivo do Google e muitas vezes diz o que fazer. Se disser "Bloqueado por robots.txt", remova o bloqueio. Se disser "Excluído pela tag 'noindex'", apague a etiqueta. Se disser "Descoberto, atualmente não indexado", esperar costuma bastar.
+3. Adicione ao mapa do site (sitemap) as páginas importantes que dizem "URL desconhecido para o Google". Envie o mapa do site ao Search Console. Para as três ou quatro páginas mais importantes, clique à mão em "Dizine eklenmesini iste" (Solicitar indexação) no Search Console.
+4. Se a caixa "Páginas onde o Google escolheu um canônico diferente" não for zero, olhe a coluna **URL canônico selecionado pelo Google**. O Google preferiu outro endereço. Corrija o seu endereço principal ou adote o que o Google escolheu.
 5. Clique de novo depois de alguns dias. Só as respostas velhas são perguntadas outra vez, então a sua cota não é desperdiçada.
 
 ## Como os números são calculados
 
-Se o Google disser "indexada", a página conta como "Google'da". Se disser "não indexada" ou "desconhecida", a página conta como "Dizinde değil". Se não houver resposta, a página é "Yanıt bekleyen".
+Se o Google disser "indexada", a página conta como "No Google". Se disser "não indexada" ou "desconhecida", a página conta como "Não indexado". Se não houver resposta, a página é "Aguardando uma resposta".
 
 Uma resposta é considerada velha depois de um tempo definido e é perguntada de novo. Para uma página no índice, esse tempo é de 14 dias. Para uma página fora do índice, ou uma resposta com erro, é de 3 dias. Uma página que nunca foi consultada está sempre pronta para ser consultada. O limite diário é calculado a partir do número de perguntas das últimas 24 horas. O aplicativo conta apenas as suas próprias perguntas. As consultas que você faz à mão no Search Console não entram nesse contador, mas contam para o limite real do Google.
 
 Uma divergência de canônico significa que o endereço que o Google escolheu e o endereço que você declarou são diferentes. Uma diferença de barra no fim também conta.
 
-Se o último rastreamento do Google tiver mais de 90 dias, a auditoria relata o problema "Google bu sayfayı uzun süredir taramadı" (O Google não rastreia esta página há muito tempo). As respostas velhas são reunidas em um único problema, "Google'ın bazı sayfalar hakkındaki yanıtı eskimiş" (A resposta do Google sobre algumas páginas está desatualizada).
+Se o último rastreamento do Google tiver mais de 90 dias, a auditoria relata o problema "O Google não rastreia esta página há muito tempo". As respostas velhas são reunidas em um único problema, "A resposta do Google sobre algumas páginas está desatualizada".
 
 ## Perguntas frequentes
 
@@ -56,7 +56,7 @@ Se o último rastreamento do Google tiver mais de 90 dias, a auditoria relata o 
 
 **De quem é o limite de 2.000?** Da propriedade. Dois projetos conectados à mesma propriedade e o seu assistente gastam do mesmo conjunto.
 
-**O que devo fazer com uma página que diz "Keşfedildi, henüz taranmadı"?** Na maioria das vezes, nada. Em sites novos, o Google pode fazer as páginas esperarem semanas. Colocar um link para a página a partir de páginas do site que são rastreadas com frequência acelera o processo.
+**O que devo fazer com uma página que diz "Descoberto, atualmente não indexado"?** Na maioria das vezes, nada. Em sites novos, o Google pode fazer as páginas esperarem semanas. Colocar um link para a página a partir de páginas do site que são rastreadas com frequência acelera o processo.
 
 **Esta aba avisa o Google sobre páginas novas?** Não, ela apenas pergunta. Para avisar o Google, há o mapa do site e "Dizine eklenmesini iste" no Search Console.
 

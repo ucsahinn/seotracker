@@ -39,6 +39,9 @@ export type SitemapProblems = {
    */
   /** Absent on a replayed run that predates it; see above. */
   offHost?: { count: number; sample: string[] };
+  /** Named sitemap documents that yielded nothing, with why (capped). */
+  failed?: { url: string; reason: string; statusCode?: number }[];
+  failedCount?: number;
   lastmod?: {
     urls: number;
     withLastmod: number;
@@ -122,6 +125,21 @@ export function siteLevelIssues(input: {
         sample: sitemapProblems.offHost.sample,
       });
     }
+    /*
+     * One finding per document, at the document's own address, so the
+     * report names which sitemap could not be read and why. Discovery used to
+     * log only "failed=1".
+     */
+    for (const doc of sitemapProblems.failed ?? []) {
+      at("sitemap-unreadable", doc.url, {
+        reason: doc.reason,
+        ...(doc.statusCode ? { statusCode: doc.statusCode } : {}),
+        ...(sitemapProblems.failedCount &&
+        sitemapProblems.failedCount > (sitemapProblems.failed?.length ?? 0)
+          ? { count: sitemapProblems.failedCount }
+          : {}),
+      });
+    }
     reportLastmod(sitemapProblems.lastmod, startUrl, at);
   }
 
@@ -179,6 +197,7 @@ export function measuredSiteLevelChecks(input: {
 }): string[] {
   const measured: string[] = [];
   if (input.sitemapProblems?.offHost) measured.push("sitemap-off-host-urls");
+  if (input.sitemapProblems?.failed) measured.push("sitemap-unreadable");
   if (Array.isArray(input.siteFacts?.robots.googlebotOnlyRules)) {
     measured.push("robots-googlebot-only-paths");
   }

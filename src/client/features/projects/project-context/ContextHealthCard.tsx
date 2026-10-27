@@ -2,11 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { AlertCircle, CheckCircle2, Circle, Loader2 } from "lucide-react";
 import { ProgressBar } from "@/client/components/ProgressBar";
-import {
-  ga4ConnectionOptions,
-  gscConnectionOptions,
-} from "@/client/features/integrations/googleConnectionQueries";
-import { getPageSpeedKeyStatus } from "@/serverFunctions/pagespeedKey";
+import { projectSetupOptions } from "@/client/features/projects/projectSetupQuery";
 import {
   buildContextHealth,
   healthProgress,
@@ -18,21 +14,19 @@ import { t } from "@/shared/i18n";
 
 function stateOf(
   query: { isPending: boolean; isError: boolean },
-  done: boolean,
+  value: boolean | null | undefined,
 ): HealthState {
   if (query.isPending) return "loading";
-  if (query.isError) return "error";
-  return done ? "done" : "todo";
+  if (query.isError || value === null || value === undefined) return "error";
+  return value ? "done" : "todo";
 }
 
 /**
  * How complete this project's setup is, item by item, with the fix one click
- * away.
- *
- * Everything here is read, not guessed: the written sections and lists come
- * from the context the page already loaded, the connections from the same
- * queries the integrations screen uses, and the PageSpeed key from its
- * status call (which never returns the key itself).
+ * away. The counted items and their states come from the same server call
+ * the dashboard's verdict uses (`shared/projectSetup`), so the two screens
+ * always give the same "x / y"; competitors and key pages are listed as
+ * advice and not counted.
  */
 export function ContextHealthCard({
   projectId,
@@ -41,30 +35,20 @@ export function ContextHealthCard({
   projectId: string;
   context: ProjectContextData;
 }) {
-  const gsc = useQuery(gscConnectionOptions(projectId));
-  const ga4 = useQuery(ga4ConnectionOptions(projectId));
-  const pageSpeed = useQuery({
-    queryKey: ["pageSpeedKeyStatus"],
-    queryFn: () => getPageSpeedKeyStatus(),
-  });
+  const setup = useQuery(projectSetupOptions(projectId));
 
   const items = buildContextHealth({
     missingSections: context.missingSections,
     competitorCount: context.competitors.length,
     keyPageCount: context.keyPages.length,
-    searchConsole: stateOf(gsc, gsc.data?.connected === true),
-    analytics: stateOf(ga4, ga4.data?.connected === true),
-    pageSpeed: stateOf(
-      pageSpeed,
-      pageSpeed.data !== undefined && pageSpeed.data.source !== null,
-    ),
+    searchConsole: stateOf(setup, setup.data?.searchConsole),
+    analytics: stateOf(setup, setup.data?.analytics),
+    pageSpeed: stateOf(setup, setup.data?.pageSpeed),
+    audit: stateOf(setup, setup.data?.audit),
+    agent: stateOf(setup, setup.data?.agent),
   });
   const { done, total } = healthProgress(items);
-  const retry = {
-    searchConsole: () => void gsc.refetch(),
-    analytics: () => void ga4.refetch(),
-    pageSpeed: () => void pageSpeed.refetch(),
-  };
+  const retry = () => void setup.refetch();
 
   return (
     <section
@@ -96,13 +80,7 @@ export function ContextHealthCard({
             key={item.id}
             item={item}
             projectId={projectId}
-            onRetry={
-              item.id === "searchConsole" ||
-              item.id === "analytics" ||
-              item.id === "pageSpeed"
-                ? retry[item.id]
-                : undefined
-            }
+            onRetry={item.target.kind === "anchor" ? undefined : retry}
           />
         ))}
       </ul>
@@ -155,6 +133,11 @@ function HealthRow({
       <div className="min-w-0 flex-1">
         <p className="text-sm font-medium">
           {item.label}
+          {item.optional ? (
+            <span className="ml-1.5 text-xs font-normal text-muted">
+              {t("öneri, sayılmaz")}
+            </span>
+          ) : null}
           <span className="sr-only">, {t(STATE_WORD[item.state])}</span>
         </p>
         <p className="text-xs text-muted">{detail}</p>
@@ -199,6 +182,24 @@ function HealthAction({
     );
   }
   const label = item.state === "done" ? t("Ayarlar") : item.actionLabel;
+  if (target.kind === "audit") {
+    return (
+      <Link
+        to="/p/$projectId/audit"
+        params={{ projectId }}
+        className={className}
+      >
+        {label}
+      </Link>
+    );
+  }
+  if (target.kind === "agent") {
+    return (
+      <Link to="/ai" className={className}>
+        {label}
+      </Link>
+    );
+  }
   if (target.kind === "integrations") {
     return (
       <Link

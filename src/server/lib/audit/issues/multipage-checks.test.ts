@@ -192,6 +192,19 @@ describe("findCanonicalTargetProblems", () => {
     ]);
   });
 
+  it("does not judge a canonical target the crawl got no answer from", () => {
+    const issues = findCanonicalTargetProblems([
+      makeSlimPage(source),
+      makeSlimPage({
+        url: "https://example.com/b",
+        statusCode: 0,
+        fetchClass: "error",
+      }),
+    ]);
+
+    expect(issues).toEqual([]);
+  });
+
   it("flags a canonical that points at a noindexed page", () => {
     const issues = findCanonicalTargetProblems([
       makeSlimPage(source),

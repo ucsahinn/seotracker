@@ -1,4 +1,14 @@
-import { and, asc, desc, eq, gte, lte, sql, type SQL } from "drizzle-orm";
+import {
+  and,
+  asc,
+  desc,
+  eq,
+  gte,
+  inArray,
+  lte,
+  sql,
+  type SQL,
+} from "drizzle-orm";
 import { db } from "@/db";
 import { executeInBatches, runBatch } from "@/db/runBatch";
 import { gscArchiveState, gscConnections, gscQueryDaily } from "@/db/schema";
@@ -218,20 +228,137 @@ async function getTrackedQueries(input: {
     .limit(input.limit);
 }
 
-/** Row count, for telling the operator how much history exists. */
-async function countRows(projectId: string): Promise<number> {
+/**
+ * Per Monday-started week in [since, until]: how many queries sat in each
+ * position bucket, by the query's impression-weighted position for that
+ * week. Rounded like the quick filters (`positionBucketFor`), so a query at
+ * 3.4 is in "1-3" here and on the chips.
+ */
+async function getWeeklyPositionBuckets(input: {
+  projectId: string;
+  since: string;
+  until: string;
+}): Promise<
+  Array<{ weekStart: string; bucket: string; queries: number; days: number }>
+> {
+  const weekly = db
+    .select({
+      // Monday of the row's week: 'weekday 0' moves to Sunday (or stays),
+      // and six days back from that Sunday is its Monday.
+      weekStart:
+        sql<string>`date(${gscQueryDaily.date}, 'weekday 0', '-6 days')`.as(
+          "week_start",
+        ),
+      query: gscQueryDaily.query,
+      position:
+        sql<number>`sum(${gscQueryDaily.position} * ${gscQueryDaily.impressions}) / nullif(sum(${gscQueryDaily.impressions}), 0)`.as(
+          "weighted_position",
+        ),
+      days: sql<number>`count(distinct ${gscQueryDaily.date})`.as("days"),
+    })
+    .from(gscQueryDaily)
+    .where(
+      and(
+        eq(gscQueryDaily.projectId, input.projectId),
+        gte(gscQueryDaily.date, input.since),
+        lte(gscQueryDaily.date, input.until),
+      ),
+    )
+    .groupBy(sql`week_start`, gscQueryDaily.query)
+    .as("weekly");
+  const rounded = sql<number>`max(1, cast(round(${weekly.position}) as integer))`;
+  const rows = await db
+    .select({
+      weekStart: weekly.weekStart,
+      bucket: sql<string>`case
+        when ${rounded} <= 3 then '1-3'
+        when ${rounded} <= 10 then '4-10'
+        when ${rounded} <= 20 then '11-20'
+        when ${rounded} <= 50 then '21-50'
+        else '51+' end`.as("bucket"),
+      queries: sql<number>`count(*)`,
+      days: sql<number>`max(${weekly.days})`,
+    })
+    .from(weekly)
+    .where(sql`${weekly.position} is not null`)
+    .groupBy(sql`week_start`, sql`bucket`)
+    .orderBy(sql`week_start`);
+  return rows;
+}
+
+/**
+ * Row count and the first day that holds data, for telling the operator how
+ * much history exists. The first day comes from the rows themselves:
+ * gsc_archive_state.earliest_date used to be a window start.
+ */
+async function getArchiveSpan(
+  projectId: string,
+): Promise<{ rowCount: number; firstDate: string | null }> {
   const [row] = await db
-    .select({ value: sql<number>`count(*)` })
+    .select({
+      rowCount: sql<number>`count(*)`,
+      firstDate: sql<string | null>`min(${gscQueryDaily.date})`,
+    })
     .from(gscQueryDaily)
     .where(eq(gscQueryDaily.projectId, projectId));
-  return row?.value ?? 0;
+  return { rowCount: row?.rowCount ?? 0, firstDate: row?.firstDate ?? null };
+}
+
+/**
+ * Each listed query's impression-weighted position per Monday-started week
+ * since `since`, oldest first: the per-row sparkline on Rankings, read from
+ * the archive this install already holds.
+ */
+async function getWeeklyPositions(input: {
+  projectId: string;
+  since: string;
+  queries: string[];
+}): Promise<Array<{ query: string; weekStart: string; position: number }>> {
+  // D1 binds at most 100 parameters per statement; two go to project and date.
+  const out: Array<{ query: string; weekStart: string; position: number }> = [];
+  for (let i = 0; i < input.queries.length; i += 90) {
+    out.push(
+      ...(await weeklyPositionsChunk({
+        ...input,
+        queries: input.queries.slice(i, i + 90),
+      })),
+    );
+  }
+  return out;
+}
+
+async function weeklyPositionsChunk(input: {
+  projectId: string;
+  since: string;
+  queries: string[];
+}) {
+  const weekStart = sql<string>`date(${gscQueryDaily.date}, 'weekday 0', '-6 days')`;
+  const rows = await db
+    .select({
+      query: gscQueryDaily.query,
+      weekStart,
+      position: sql<number>`sum(${gscQueryDaily.position} * ${gscQueryDaily.impressions}) / nullif(sum(${gscQueryDaily.impressions}), 0)`,
+    })
+    .from(gscQueryDaily)
+    .where(
+      and(
+        eq(gscQueryDaily.projectId, input.projectId),
+        gte(gscQueryDaily.date, input.since),
+        inArray(gscQueryDaily.query, input.queries),
+      ),
+    )
+    .groupBy(gscQueryDaily.query, weekStart)
+    .orderBy(weekStart);
+  return rows.filter((row) => row.position !== null);
 }
 
 export const GscHistoryRepository = {
+  getWeeklyPositions,
   getArchiveState,
   upsertDailyRows,
   markRun,
   getQueryHistory,
   getTrackedQueries,
-  countRows,
+  getWeeklyPositionBuckets,
+  getArchiveSpan,
 };

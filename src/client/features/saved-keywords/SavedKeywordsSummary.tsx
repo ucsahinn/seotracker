@@ -1,12 +1,12 @@
-import { CircleHelp, Target, Trophy } from "lucide-react";
+import { ArrowDown, ArrowUp } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { DonutCard, donutSummary } from "@/client/components/DonutChart";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
-import { FilterChips } from "@/client/features/search-performance/FilterChips";
-import { BAND_LABELS } from "@/client/features/rankings/positionBands";
+import { BAND_LABELS } from "@/shared/positionBands";
 import { formatCount } from "@/client/lib/format";
 import { fillParts } from "@/client/features/settings/fillParts";
 import {
+  countMoves,
   countPositionGroups,
   toPositionFilter,
   type PositionFilter,
@@ -22,9 +22,9 @@ type Positions = {
   /** Null while the archive read is healthy. */
   error: Error | null;
   onRetry: () => void;
-  /** Rows in the Search Console archive for the window. */
-  archiveRows: number;
   map: Map<string, number>;
+  /** The archive rows, for the change against the previous window. */
+  tracked: { query: string; delta: number | null }[];
 };
 
 /**
@@ -69,10 +69,11 @@ export function SavedKeywordsSummary({
   }
 
   const counts = countPositionGroups(keywords, positions.map);
+  const moves = countMoves(keywords, positions.tracked);
   const ranked = keywords.length - counts.none;
   // The archive read stops at TRACKED_LIMIT rows, so a keyword missing from it
   // may still rank; "no record" would be a claim the data cannot back.
-  const truncated = positions.archiveRows >= TRACKED_LIMIT;
+  const truncated = positions.tracked.length >= TRACKED_LIMIT;
   const noneLabel = truncated
     ? t("Bilinmiyor (arşiv kesildi)")
     : t("Verisi yok");
@@ -112,7 +113,7 @@ export function SavedKeywordsSummary({
             days: POSITION_WINDOW_DAYS,
           },
         )}
-        {positions.archiveRows >= TRACKED_LIMIT
+        {positions.tracked.length >= TRACKED_LIMIT
           ? ` ${t(
               "Arşivden en çok {limit} sorgu okunuyor; bu yüzden bazı kelimelerin sırası eksik görünebilir.",
               { limit: formatCount(TRACKED_LIMIT) },
@@ -120,7 +121,7 @@ export function SavedKeywordsSummary({
           : null}
       </p>
 
-      {positions.archiveRows === 0 ? (
+      {positions.tracked.length === 0 ? (
         <div className="rounded-box border border-base-300 bg-base-200/40 px-4 py-3 text-sm text-muted">
           <p className="font-medium text-base-content">
             {t("Kelimelerinizin sırası henüz yok")}
@@ -155,38 +156,26 @@ export function SavedKeywordsSummary({
         </div>
       ) : null}
 
-      <FilterChips<PositionFilter>
-        label={t("Sıraya göre hızlı filtreler")}
-        active={filter ?? undefined}
-        onChange={(next) => onFilter(next ?? null)}
-        chips={[
-          {
-            id: "firstPage",
-            label: t("İlk 10"),
-            icon: Trophy,
-            count: counts.firstPage,
-            hint: t(
-              "Ortalama sırası 10 veya daha iyi olan kelimeler; yani Google'ın ilk sayfası.",
-            ),
-          },
-          {
-            id: "top20",
-            label: band("top20"),
-            icon: Target,
-            count: counts.top20,
-            hint: t(
-              "Ortalama sırası 11 ile 20 arasında olanlar, yani ikinci sayfadakiler. Küçük bir iyileştirme ilk sayfaya taşıyabilir.",
-            ),
-          },
-          {
-            id: "none",
-            label: noneLabel,
-            icon: CircleHelp,
-            count: counts.none,
-            hint: noneHint,
-          },
-        ]}
-      />
+      {/*
+       * Movement, not a second copy of the split: the chips that used to sit
+       * here ("İlk 10 / Sıra 11-20 / Verisi yok") repeated the donut below
+       * with different cuts.
+       */}
+      {moves.up + moves.down > 0 ? (
+        <p className="flex flex-wrap items-center gap-x-4 gap-y-1 px-1 text-sm">
+          <span className="text-muted">
+            {t("Önceki {days} güne göre:", { days: POSITION_WINDOW_DAYS })}
+          </span>
+          <span className="inline-flex items-center gap-1 font-medium text-[var(--ink-success)]">
+            <ArrowUp aria-hidden className="size-3.5" />
+            {t("{count} kelime yükseldi", { count: moves.up })}
+          </span>
+          <span className="inline-flex items-center gap-1 font-medium text-[var(--ink-error)]">
+            <ArrowDown aria-hidden className="size-3.5" />
+            {t("{count} kelime geriledi", { count: moves.down })}
+          </span>
+        </p>
+      ) : null}
 
       <DonutCard
         title={t("Sıra dağılımı")}

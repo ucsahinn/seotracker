@@ -5,6 +5,7 @@ import {
   gscArchiveState,
   gscConnections,
   gscQueryDaily,
+  gscSiteDaily,
   gscUrlInspections,
 } from "@/db/schema";
 import { runBatch } from "@/db/runBatch";
@@ -84,7 +85,8 @@ async function upsert(input: {
 }
 
 /**
- * The project's per-property data: query archive, its cursor, URL inspections.
+ * The project's per-property data: query archive, its cursor, the site-total
+ * archive, URL inspections.
  * `where` picks the projects from each table's own project column, so one
  * definition serves a single project and a whole account's projects.
  *
@@ -98,6 +100,7 @@ function propertyDataDeletes(
   return [
     tx.delete(gscQueryDaily).where(where(gscQueryDaily.projectId)),
     tx.delete(gscArchiveState).where(where(gscArchiveState.projectId)),
+    tx.delete(gscSiteDaily).where(where(gscSiteDaily.projectId)),
     tx.delete(gscUrlInspections).where(where(gscUrlInspections.projectId)),
   ];
 }

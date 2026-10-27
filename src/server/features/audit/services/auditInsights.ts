@@ -40,6 +40,7 @@ import {
   type CheckContext,
 } from "@/shared/auditBreakdown";
 import type { ScoredFinding } from "@/shared/auditScore";
+import { auditStanding } from "@/shared/auditStanding";
 import { pageKey, siteKey } from "@/shared/auditTodo";
 
 /** How many audits the score history shows, this one included. */
@@ -193,26 +194,53 @@ async function scoreHistory(
       ...summaries.map((row) => row.issueType),
     ]),
   ];
+  /*
+   * Judged on each audit's own checks, not the shared ones: a failed or
+   * cut-short audit gets no point on the chart, and one that measured too
+   * little is drawn as provisional (see `auditStanding`). A withheld audit
+   * also does not narrow the checks the others are compared on.
+   */
+  const standingById = new Map(
+    chosen.map((audit) => [
+      audit.id,
+      auditStanding(
+        buildAuditBreakdown(findingsById.get(audit.id) ?? [], ctxOf(audit.id)),
+        audit.status,
+      ),
+    ]),
+  );
+  const plotted = chosen.filter(
+    (audit) => standingById.get(audit.id)?.kind !== "withheld",
+  );
   const shared = new Set(
     known.filter((issueType) =>
-      chosen.every((audit) => checkMeasured(issueType, ctxOf(audit.id))),
+      plotted.every((audit) => checkMeasured(issueType, ctxOf(audit.id))),
     ),
   );
   const history = chosen.map((audit) => {
     const ctx = ctxOf(audit.id);
     const findings = findingsById.get(audit.id) ?? [];
+    const standing = standingById.get(audit.id);
+    const withheld = standing?.kind === "withheld";
     return {
       auditId: audit.id,
       startedAt: audit.startedAt,
       pagesCrawled: audit.pagesCrawled,
-      score: buildAuditBreakdown(
-        findings.filter((f) => shared.has(f.issueType)),
-        ctx,
-      ).score,
+      score: withheld
+        ? null
+        : buildAuditBreakdown(
+            findings.filter((f) => shared.has(f.issueType)),
+            ctx,
+          ).score,
+      withheld,
+      provisional: standing?.kind === "scored" && standing.provisional,
       /** Scored without some checks this audit ran; see above. */
-      partial: known.some(
-        (issueType) => !shared.has(issueType) && checkMeasured(issueType, ctx),
-      ),
+      partial:
+        !withheld &&
+        known.some(
+          (issueType) =>
+            !shared.has(issueType) && checkMeasured(issueType, ctx),
+        ),
     };
   });
   const previous = earlier[0];

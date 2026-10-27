@@ -1,4 +1,3 @@
-import { ctrDelta } from "@/client/features/search-performance/TotalsCards";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -8,7 +7,7 @@ import {
 } from "@/client/components/MetricTile";
 import { describeTotals } from "@/client/features/search-performance/totals";
 import { dashboardGscReportQuery } from "@/client/features/dashboard/dashboardGscReport";
-import { fractionalChange } from "@/shared/delta";
+import { fractionalChange, placesDelta, pointsDelta } from "@/shared/delta";
 import { DEFAULT_WINDOW_DAYS } from "@/shared/dataFreshness";
 import {
   formatCount,
@@ -91,7 +90,7 @@ export function DashboardMetrics({
    * A delta needs both a base and a period worth comparing. Without
    * impressions there is no measurement to have moved.
    */
-  const delta = (pick: (totals: Totals) => number) =>
+  const delta = (pick: (totals: Counts) => number) =>
     report && shown?.hasImpressions
       ? fractionalChange(pick(report.totals), pick(report.prevTotals))
       : null;
@@ -103,6 +102,9 @@ export function DashboardMetrics({
    */
   const period = report
     ? `${formatDate(report.range.startDate)} – ${formatDate(report.range.endDate)}`
+    : undefined;
+  const deltaTitle = report
+    ? t("Önceki {days} güne göre", { days: DEFAULT_WINDOW_DAYS })
     : undefined;
 
   /*
@@ -132,6 +134,7 @@ export function DashboardMetrics({
         value={shown?.clicks ?? null}
         animateTo={count(report?.totals.clicks, formatCount)}
         delta={delta((totals) => totals.clicks)}
+        deltaTitle={deltaTitle}
         hint={hintFor(period)}
       />
       <MetricTile
@@ -141,6 +144,7 @@ export function DashboardMetrics({
         value={shown?.impressions ?? null}
         animateTo={count(report?.totals.impressions, formatCount)}
         delta={delta((totals) => totals.impressions)}
+        deltaTitle={deltaTitle}
         hint={hintFor(period)}
       />
       <MetricTile
@@ -151,11 +155,17 @@ export function DashboardMetrics({
         href={searchPerformance}
         value={shown?.ctr ?? null}
         animateTo={count(report?.totals.ctr, (n) => formatPercent(n))}
+        /*
+         * No rate to compare against without previous impressions: the
+         * previous CTR stays null then, never a 0 that turns the whole
+         * current rate into a gain.
+         */
         delta={
-          report && shown?.hasImpressions
-            ? ctrDelta(report.totals.ctr, report.prevTotals.ctr)
+          report && shown?.hasImpressions && report.prevTotals.impressions > 0
+            ? pointsDelta(report.totals.ctr, report.prevTotals.ctr)
             : null
         }
+        deltaTitle={deltaTitle}
         hint={hintFor(period)}
       />
       <MetricTile
@@ -166,8 +176,18 @@ export function DashboardMetrics({
         href={{ to: "/p/$projectId/rankings", projectId }}
         value={shown?.position ?? null}
         animateTo={count(report?.totals.position, (n) => formatDecimal(n))}
-        delta={delta((totals) => totals.position)}
-        // Position 3 is better than position 8, so a fall is the good direction.
+        /*
+         * In places, not as a percentage of the position: 8,25 -> 8,20 read
+         * "-%0,6" with a down arrow, which an owner reads as worse. Rankings
+         * words the same kind of move as places too.
+         */
+        delta={
+          report && shown?.hasImpressions
+            ? placesDelta(report.totals.position, report.prevTotals.position)
+            : null
+        }
+        deltaTitle={deltaTitle}
+        // Position 3 is better than position 8: the sparkline reads inverted.
         inverted
         hint={
           connected && !noImpressions
@@ -186,9 +206,4 @@ function count(value: number | undefined, format: (n: number) => string) {
   return value === undefined ? undefined : { value, format };
 }
 
-type Totals = {
-  clicks: number;
-  impressions: number;
-  ctr: number;
-  position: number;
-};
+type Counts = { clicks: number; impressions: number };

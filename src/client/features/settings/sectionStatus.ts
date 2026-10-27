@@ -15,8 +15,17 @@ export type SectionBadge = {
 
 export function oauthClientBadge(
   status: { source: "settings" | "environment" | null } | undefined,
+  /*
+   * With a service account in place Google works without an OAuth client,
+   * and a warning-yellow "Eksik" here read as a broken install while the
+   * help screen said "Sorun yok". Neutral, and it says why.
+   */
+  serviceAccount?: { clientEmail: string | null },
 ): SectionBadge | null {
   if (!status) return null;
+  if (status.source === null && serviceAccount?.clientEmail) {
+    return { tone: "neutral", label: t("Kullanılmıyor, hizmet hesabı bağlı") };
+  }
   if (status.source === "settings") {
     return { tone: "success", label: t("Kayıtlı"), live: true };
   }
@@ -109,7 +118,11 @@ export function updateBadge(
   }
   if (!status.enabled) return { tone: "neutral", label: t("Kontrol kapalı") };
   if (status.outcome === "ok") return { tone: "success", label: t("Güncel") };
-  if (status.outcome === "unreachable" || status.outcome === "error") {
+  if (
+    status.outcome === "unreachable" ||
+    status.outcome === "error" ||
+    status.outcome === "source_missing"
+  ) {
     return { tone: "neutral", label: t("Ulaşılamadı") };
   }
   return { tone: "neutral", label: t("Denetlenmedi") };

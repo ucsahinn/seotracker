@@ -1,50 +1,30 @@
 import { t } from "@/shared/i18n";
 import type { Ref } from "react";
-import { BarChart3, SearchX, TrendingUp, type LucideIcon } from "lucide-react";
+import { BadgeCheck, CircleOff, type LucideIcon } from "lucide-react";
 import {
   QUICK_COPY,
   type QuickId,
 } from "@/client/features/opportunities/opportunityLogic";
 import { formatNumber } from "@/client/lib/format";
 
-// Turkish, translated with t() where it renders.
-const CHIPS: ReadonlyArray<{
-  id: QuickId;
-  icon: LucideIcon;
-  /** Shown as text, not a tooltip, when the chip has nothing behind it. */
-  emptyReason: string;
-}> = [
-  {
-    id: "analytics",
-    icon: BarChart3,
-    emptyReason:
-      "Analytics'te trafiği olan sayfa yok; Analytics bağlı değilse önce bağlayın.",
-  },
-  {
-    id: "no_analytics",
-    icon: SearchX,
-    emptyReason:
-      "Her sayfanın Analytics'te karşılığı var; eşleşmeyen sayfa kalmadı.",
-  },
-  {
-    id: "top_impressions",
-    icon: TrendingUp,
-    emptyReason: "Listelenecek sayfa yok.",
-  },
-];
+const ICONS: Record<QuickId, LucideIcon> = {
+  converts: BadgeCheck,
+  no_conversions: CircleOff,
+};
 
 /**
- * Two shortcuts on top of the kind tiles. Counts are over the whole set, not
- * over what the tiles left, so a chip never promises rows a kind has hidden;
- * one with nothing behind it is disabled rather than hidden, and says why in
- * text beside it (a tooltip never reaches touch or keyboard users).
+ * Two shortcuts on the Analytics side of the list. The page only passes the
+ * chips that narrow something: one that holds no row or every row is noise,
+ * which is what "Analytics'te karşılığı var 40" over a list of 40 was.
  */
 export function OpportunityQuickFilters({
+  chips,
   counts,
   selected,
   onSelect,
   ref,
 }: {
+  chips: QuickId[];
   counts: Record<QuickId, number>;
   selected: QuickId | null;
   onSelect: (next: QuickId | null) => void;
@@ -59,31 +39,27 @@ export function OpportunityQuickFilters({
       aria-label={t("Hızlı filtreler")}
       className="flex flex-wrap items-center gap-2"
     >
-      {CHIPS.map(({ id, icon: Icon, emptyReason }) => {
+      {chips.map((id) => {
         const active = selected === id;
+        const Icon = ICONS[id];
         return (
-          <span key={id} className="inline-flex flex-wrap items-center gap-2">
-            <button
-              type="button"
-              aria-pressed={active}
-              disabled={counts[id] === 0}
-              onClick={() => onSelect(active ? null : id)}
-              className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm transition-colors disabled:cursor-default disabled:opacity-50 ${
-                active
-                  ? "border-primary bg-primary/5"
-                  : "border-base-300 bg-base-100 enabled:hover:border-primary/40"
-              }`}
-            >
-              <Icon aria-hidden className="size-3.5" />
-              {t(QUICK_COPY[id])}
-              <span className="tabular-nums text-muted">
-                {formatNumber(counts[id])}
-              </span>
-            </button>
-            {counts[id] === 0 ? (
-              <span className="text-xs text-muted">{t(emptyReason)}</span>
-            ) : null}
-          </span>
+          <button
+            key={id}
+            type="button"
+            aria-pressed={active}
+            onClick={() => onSelect(active ? null : id)}
+            className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm transition-colors ${
+              active
+                ? "border-primary bg-primary/5"
+                : "border-base-300 bg-base-100 hover:border-primary/40"
+            }`}
+          >
+            <Icon aria-hidden className="size-3.5" />
+            {t(QUICK_COPY[id])}
+            <span className="tabular-nums text-muted">
+              {formatNumber(counts[id])}
+            </span>
+          </button>
         );
       })}
     </div>

@@ -1,6 +1,7 @@
 import { GA4_HELP } from "@/client/features/analytics/metricHelp";
 import { HeaderHelpLabel } from "@/client/features/saved-keywords/components/HeaderHelpLabel";
-import { fractionalChange } from "@/shared/delta";
+import { fractionalChange, pointsDelta } from "@/shared/delta";
+import { AnimatedNumber } from "@/client/components/AnimatedNumber";
 import { useQuery } from "@tanstack/react-query";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import {
@@ -102,7 +103,8 @@ export function OrganicTrendPanel({
             value={totals.engagementRate}
             previous={prevTotals.engagementRate}
             deltaTitle={deltaTitle}
-            format={formatPercent}
+            format={(n) => formatPercent(n)}
+            rate
           />
           {/* Fetched on every load for both windows and dropped before it
               reached the screen. GA4 answers 0 rather than null for a
@@ -144,9 +146,12 @@ function Total({
   deltaTitle,
   format,
   help,
+  rate = false,
 }: {
   label: string;
   help?: string;
+  /** A rate moves in points ("-0,3 puan"), as CTR does, not as a percentage of itself. */
+  rate?: boolean;
   value: number | null;
   previous: number | null;
   /** What the delta is measured against, named rather than implied. */
@@ -156,14 +161,20 @@ function Total({
   const change =
     value === null || previous === null
       ? null
-      : fractionalChange(value, previous);
+      : rate
+        ? pointsDelta(value, previous)
+        : fractionalChange(value, previous);
   return (
     <div className="text-right">
       <p className="text-xs text-muted">
         {help ? <HeaderHelpLabel label={label} helpText={help} /> : label}
       </p>
       <p className="flex items-center gap-1.5 text-sm font-medium tabular-nums">
-        {value === null ? "--" : format(value)}
+        {value === null ? (
+          "--"
+        ) : (
+          <AnimatedNumber value={value} format={format} />
+        )}
         {change === null ? null : (
           <DeltaBadge value={change} title={deltaTitle} />
         )}

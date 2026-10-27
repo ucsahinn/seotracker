@@ -8,7 +8,7 @@ import {
 const DASHBOARD_QUERIES = [
   "dashboardActivation",
   "dashboardOverview",
-  "dashboardGscReport",
+  "searchPerformanceView",
   "dashboardGa4Report",
   "auditFreshness",
 ];

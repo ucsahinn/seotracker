@@ -19,7 +19,7 @@ import {
   DEMO_SITE_URL,
   type GscRequest,
   ga4RunReport,
-  gscSearchAnalytics,
+  gscSearchAnalyticsResponse,
 } from "../../../scripts/demo-data";
 
 let enabled = false;
@@ -120,10 +120,9 @@ function answer(url: URL, body: DemoRequestBody): Response {
       type: body.type,
       dataState: body.dataState,
     };
-    const rows = gscSearchAnalytics(request);
-    const start = request.startRow ?? 0;
-    const limit = request.rowLimit ?? 1000;
-    return json({ rows: rows.slice(start, start + limit) });
+    // Paged by startRow/rowLimit inside, like Google; slicing again here
+    // emptied every page after the first.
+    return json(gscSearchAnalyticsResponse(request));
   }
   if (path.endsWith("/sitemaps")) {
     return json({

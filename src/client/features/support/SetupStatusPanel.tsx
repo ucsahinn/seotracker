@@ -13,6 +13,7 @@ import type { getDiagnostics } from "@/serverFunctions/diagnostics";
 import { t } from "@/shared/i18n";
 import { fillParts } from "@/client/features/settings/fillParts";
 import { describeCheck, type CheckStatus } from "./checkCopy";
+import { portFallbackMessage } from "./portFallbackCopy";
 import { buildDiagnosticsSummary } from "./DiagnosticsBundleButton";
 import { useSetupSnapshot } from "./useSetupSnapshot";
 
@@ -192,8 +193,16 @@ function StatusBody({
           </span>
           <div>
             <h2 id="setup-status-title" className="text-sm font-medium">
-              {t("Kurulumunuzun durumu")}
+              {t("Uygulamanın durumu")}
             </h2>
+            {/* Install health, not a project's setup: that checklist is on
+                the dashboard and Proje bilgisi, and the two must not be
+                read as one verdict. */}
+            <p className="text-xs text-muted">
+              {t(
+                "Bu kurulumun kendisi. Bir projenin kurulum listesi Panel'de ve Proje bilgisi'nde.",
+              )}
+            </p>
             <p className="mt-0.5 text-sm" aria-live="polite">
               {problems === 0
                 ? t("Her şey yolunda.")
@@ -207,6 +216,15 @@ function StatusBody({
                 date: formatDateTime(data.generatedAt),
               })}
             </p>
+            {data.setup.port.fallback ? (
+              <p className="mt-2 flex max-w-prose items-start gap-1.5 text-sm">
+                <AlertTriangle
+                  aria-hidden
+                  className="mt-0.5 size-4 shrink-0 text-[var(--ink-warning)]"
+                />
+                <span>{portFallbackMessage(data.setup.port.fallback)}</span>
+              </p>
+            ) : null}
           </div>
         </div>
         <CopyButton

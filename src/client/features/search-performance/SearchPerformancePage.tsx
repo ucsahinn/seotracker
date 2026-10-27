@@ -1,74 +1,79 @@
 import { t } from "@/shared/i18n";
+import * as React from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Download, Sheet } from "lucide-react";
+import { toast } from "sonner";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
-import { SearchTrendPanel } from "@/client/features/search-performance/SearchTrendChart";
-import { DeviceBreakdown } from "@/client/features/search-performance/DeviceBreakdown";
-import { SearchAppearanceBreakdown } from "@/client/features/search-performance/SearchAppearanceBreakdown";
-import { TYPE_LABELS } from "@/client/features/search-performance/SearchFilters";
-import { CountryBreakdown } from "@/client/features/search-performance/CountryBreakdown";
 import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
-import { refreshState } from "@/client/lib/refreshState";
-import { TAB_HINTS } from "@/client/features/search-performance/tabHints";
-import { useWarmQueriesTab } from "@/client/features/search-performance/useWarmQueriesTab";
-import { TabPanel, Tabs } from "@/client/components/Tabs";
-import { Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { Download, Sheet } from "lucide-react";
-import { Skeleton } from "@/client/components/Skeleton";
-import { Spinner } from "@/client/components/Spinner";
-import { toast } from "sonner";
+import { TabPanel } from "@/client/components/Tabs";
+import { EmptyState } from "@/client/components/EmptyState";
 import { TableExportMenu } from "@/client/components/table/TableBulkActionBar";
 import { SearchConsoleConnectionCard } from "@/client/features/gsc/SearchConsoleConnectionCard";
-import { SearchPerformanceLoadingState } from "@/client/features/search-performance/SearchPerformanceLoadingState";
-import {
-  DimensionTable,
-  exportDimensionRows,
-  exportStriking,
-  StrikingDistanceTable,
-  type ExportTarget,
-  type Tab,
-} from "@/client/features/search-performance/SearchPerformanceParts";
-import { TotalsCards } from "@/client/features/search-performance/TotalsCards";
-import { SearchFilters } from "@/client/features/search-performance/SearchFilters";
-import { CannibalizationTable } from "@/client/features/search-performance/CannibalizationTable";
-import {
-  applyQuickFilter,
-  type QuickFilterId,
-} from "@/client/features/search-performance/quickFilters";
-import {
-  CannibalizationSummary,
-  PagesSummary,
-  QueriesSummary,
-  quickFilterForTab,
-  StrikingSummary,
-  TabSummarySkeleton,
-} from "@/client/features/search-performance/TabSummaries";
-import {
-  buildFilterInput,
-  tabDimension,
-  tableQueryOptions,
-} from "@/client/features/search-performance/searchPerformanceQueries";
-import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { useSaveTrackedKeyword } from "@/client/features/rankings/useSaveTrackedKeyword";
-import { describeWindow } from "@/shared/dataFreshness";
-import { formatDate } from "@/client/lib/format";
+import { searchPerformanceViewQuery } from "@/client/features/dashboard/dashboardGscReport";
+import { getStandardErrorMessage } from "@/client/lib/error-messages";
+import { isDevice } from "@/client/features/search-performance/deviceShare";
 import {
   exportSearchPerformanceTable,
-  getSearchPerformanceReport,
+  getSearchPerformanceView,
 } from "@/serverFunctions/searchPerformance";
-import {
-  type SearchPerformanceDateRange,
-  type SearchPerformanceDevice,
-  type SearchPerformanceType,
+import type {
+  SearchPerformanceDateRange,
+  SearchPerformanceDevice,
+  SearchPerformanceType,
 } from "@/types/schemas/search-performance";
+import { SearchPerformanceLoadingState } from "@/client/features/search-performance/SearchPerformanceLoadingState";
+import { SearchFilters } from "@/client/features/search-performance/SearchFilters";
+import { DataTrustStrip } from "@/client/features/search-performance/DataTrustStrip";
+import { KpiTiles } from "@/client/features/search-performance/KpiTiles";
+import {
+  SearchVerdict,
+  TopTasks,
+} from "@/client/features/search-performance/SearchVerdict";
+import { useDoneTodos } from "@/client/features/search-performance/useDoneTodos";
+import { SearchTrendPanel } from "@/client/features/search-performance/SearchTrendChart";
+import { TodoTab } from "@/client/features/search-performance/TodoTab";
+import { DimensionTab } from "@/client/features/search-performance/DimensionTab";
+import { OpportunitiesTab } from "@/client/features/search-performance/OpportunitiesTab";
+import { ChangesTab } from "@/client/features/search-performance/ChangesTab";
+import { DistributionTab } from "@/client/features/search-performance/DistributionTab";
+import { OverlapsTab } from "@/client/features/search-performance/CannibalizationSummary";
+import {
+  DrilldownPanel,
+  type DrillTarget,
+} from "@/client/features/search-performance/DrilldownPanel";
+import { SearchReportButton } from "@/client/features/search-performance/SearchReportButton";
+import { buildFilterInput } from "@/client/features/search-performance/searchPerformanceQueries";
+import {
+  dimensionExportTable,
+  runExport,
+  strikingExportTable,
+  type ExportTarget,
+} from "@/client/features/search-performance/searchExport";
+import type { QuickFilterId } from "@/client/features/search-performance/quickFilters";
+import type {
+  CompareMode,
+  Granularity,
+  SearchTab,
+} from "@/client/features/search-performance/searchTabs";
+import type { TodoTarget } from "@/shared/searchTodoCopy";
+import {
+  TabStrip,
+  useHistorySync,
+} from "@/client/features/search-performance/SearchPageParts";
 
-/** The tab values the route validates against. */
-export const SEARCH_PERFORMANCE_TABS = [
-  "striking",
-  "queries",
-  "pages",
-  "cannibalization",
-] as const;
+type ViewChange = {
+  tab?: SearchTab;
+  range?: SearchPerformanceDateRange;
+  device?: SearchPerformanceDevice;
+  country?: string;
+  type?: SearchPerformanceType;
+  q?: string;
+  f?: QuickFilterId;
+  cmp?: CompareMode;
+  g?: Granularity;
+};
 
 export function SearchPerformancePage({
   projectId,
@@ -79,350 +84,328 @@ export function SearchPerformancePage({
   searchType,
   query,
   quickFilter,
+  compare,
+  granularity,
   onViewChange,
 }: {
   projectId: string;
-  tab: Tab;
-  /*
-   * Range, device and country come from the URL rather than local state:
-   * on this screen the filter is the finding, and a link that drops it is
-   * a link to the wrong answer. `undefined` means "no filter".
-   */
+  tab: SearchTab;
   range: SearchPerformanceDateRange;
   device?: SearchPerformanceDevice;
   country?: string;
-  /** Web unless the URL says otherwise. */
   searchType: SearchPerformanceType;
-  /** Free-text narrowing of the dimension table, from the URL. */
   query: string;
-  /** Chip filter on the queries and pages tables, from the URL. */
   quickFilter?: QuickFilterId;
-  onViewChange: (next: {
-    tab?: Tab;
-    range?: SearchPerformanceDateRange;
-    device?: SearchPerformanceDevice;
-    country?: string;
-    type?: SearchPerformanceType;
-    q?: string;
-    f?: QuickFilterId;
-  }) => void;
+  compare: CompareMode;
+  granularity: Granularity;
+  onViewChange: (next: ViewChange) => void;
 }) {
-  // One keyword from a row menu, the same call the rankings screen uses.
+  const queryClient = useQueryClient();
   const saveOne = useSaveTrackedKeyword(projectId);
-  // A chip or a search term chosen on one tab must not silently narrow the
-  // next one (a query typed on Sorgular would filter Sayfalar by that text).
-  const setTab = (next: Tab) =>
-    onViewChange({ tab: next, f: undefined, q: undefined });
-
-  const filterInput = buildFilterInput(range, device, country, searchType);
-
-  const reportQuery = useQuery({
-    queryKey: [
-      "searchPerformance",
-      projectId,
-      range,
-      device,
-      country,
-      searchType,
-    ],
-    queryFn: () =>
-      getSearchPerformanceReport({ data: { projectId, ...filterInput } }),
-    // Carry the report over a filter change, never across projects.
+  const filters = buildFilterInput(range, device, country, searchType);
+  const viewOptions = searchPerformanceViewQuery(projectId, filters);
+  const viewQuery = useQuery({
+    ...viewOptions,
+    // Carry the view over a filter change, never across projects.
     placeholderData: (previous, previousQuery) =>
       previousQuery?.queryKey[1] === projectId ? previous : undefined,
   });
-  const report = reportQuery.data;
+  const view = viewQuery.data?.connected ? viewQuery.data : null;
+  useHistorySync(projectId, view);
 
-  const isTableTab = tab === "queries" || tab === "pages";
-  const dimension = tabDimension(tab);
-  const tableQuery = useQuery({
-    ...tableQueryOptions(projectId, dimension, filterInput),
-    enabled: report?.connected === true && isTableTab,
-    /* Keep the old rows while a filter changes, never across dimensions:
-       only queries are prefetched, so Sayfalar would otherwise open on
-       query rows until Google answered. */
-    placeholderData: (previous, previousQuery) =>
-      previousQuery?.queryKey[1] === projectId &&
-      previousQuery.queryKey[2] === dimension
-        ? previous
-        : undefined,
+  const doneTodos = useDoneTodos(projectId);
+  const openTodos = view
+    ? view.todo.filter((item) => !doneTodos.done.has(item.id))
+    : [];
+  const [drill, setDrill] = React.useState<DrillTarget | null>(null);
+  const closeDrill = React.useCallback(() => setDrill(null), []);
+
+  // A refresh skips the server's few-minute memory of Google's answers.
+  const refresh = useMutation({
+    mutationFn: () =>
+      getSearchPerformanceView({
+        data: { projectId, ...filters, fresh: true },
+      }),
+    onSuccess: async (fresh) => {
+      queryClient.setQueryData(viewOptions.queryKey, fresh);
+      await Promise.all(
+        [
+          "searchPerformanceTable",
+          "searchPerformanceDrilldown",
+          "cannibalization",
+          "siteDailyHistory",
+        ].map((key) =>
+          queryClient.invalidateQueries({ queryKey: [key, projectId] }),
+        ),
+      );
+    },
+    onError: (error) =>
+      toast.error(getStandardErrorMessage(error, t("Yenilenemedi"))),
   });
-  const tableData = tableQuery.data;
-  const tableRows = tableData?.connected ? tableData.rows : [];
-  // A link can carry a chip that belongs to another tab; ignore it here.
-  const activeFilter = quickFilterForTab(tab, quickFilter);
-  const strikingRows = applyQuickFilter(
-    report?.connected ? report.strikingDistance : [],
-    activeFilter,
-  );
-  const clearFilter = () => onViewChange({ f: undefined });
-  const onFilter = (next: QuickFilterId | undefined) =>
-    onViewChange({ f: next });
-  const tableTruncated = tableData?.connected ? tableData.truncated : false;
 
-  useWarmQueriesTab(projectId, report?.connected === true, filterInput);
+  const setTab = (next: SearchTab) =>
+    onViewChange({ tab: next, f: undefined, q: undefined });
+  const tabsRef = React.useRef<HTMLDivElement>(null);
+  const showTodo = () => {
+    setTab("todo");
+    tabsRef.current?.scrollIntoView({ block: "start" });
+  };
 
-  // The table query is only live on the Sorgular and Sayfalar tabs; a disabled
-  // query would still fetch on refetch(), so it joins only while it is shown.
-  const refresh = refreshState(
-    isTableTab ? [reportQuery, tableQuery] : [reportQuery],
-  );
+  const onTarget = (target: Exclude<TodoTarget, null | { kind: "brand" }>) => {
+    if (target.kind === "drill") {
+      setDrill({ dimension: target.dimension, key: target.key });
+    } else if (target.kind === "device") {
+      if (isDevice(target.device)) onViewChange({ device: target.device });
+    } else {
+      onViewChange({ country: target.country });
+    }
+  };
 
-  const stale = reportQuery.isPlaceholderData || tableQuery.isPlaceholderData;
-
-  const handleExport = async (target: ExportTarget) => {
-    if (!report?.connected) return;
+  const handleExport = async (
+    what: "query" | "page" | "striking",
+    target: ExportTarget,
+  ) => {
+    if (!view) return;
     try {
-      if (tab === "striking") {
-        exportStriking(report, target);
+      if (what === "striking") {
+        runExport(strikingExportTable(view), target);
         return;
       }
-      const data = await exportSearchPerformanceTable({
-        data: { projectId, dimension, ...filterInput },
+      const onThisTab =
+        (what === "query" && tab === "queries") ||
+        (what === "page" && tab === "pages");
+      const result = await exportSearchPerformanceTable({
+        data: {
+          projectId,
+          ...filters,
+          dimension: what,
+          window: {
+            startDate: view.window.startDate,
+            endDate: view.window.endDate,
+          },
+          ...(onThisTab && query ? { search: query } : {}),
+          ...(onThisTab && quickFilter ? { quickFilter } : {}),
+        },
       });
-      exportDimensionRows(dimension, data.rows, report.range, target);
+      runExport(dimensionExportTable(result), target);
     } catch (error) {
       toast.error(getStandardErrorMessage(error, t("Dışa aktarılamadı")));
     }
   };
 
+  const stale = viewQuery.isPlaceholderData;
+
   return (
-    <PageShell width={report?.connected ? "wide" : "reading"}>
+    <PageShell width={view || viewQuery.isPending ? "wide" : "reading"}>
       <PageHeader
         title={t("Arama performansı")}
         description={t(
-          "Google Search Console'dan gelen tıklama, gösterim, tıklama oranı ve ortalama sıra.",
+          "Google'da kaç kez göründüğünüz, kaç tıklama aldığınız ve önce neyi düzeltmeniz gerektiği.",
         )}
         actions={
-          report?.connected ? (
+          view ? (
             <PageActions>
-              <RefreshButton {...refresh} shortcut />
-              <Link
-                to="/p/$projectId/settings/integrations"
-                params={{ projectId }}
-                className="btn btn-sm"
-              >
-                {t("Mülkü değiştir")}
-              </Link>
+              <RefreshButton
+                onRefresh={() => refresh.mutate()}
+                isFetching={refresh.isPending || viewQuery.isFetching}
+                dataUpdatedAt={viewQuery.dataUpdatedAt}
+                shortcut
+              />
+              <SearchReportButton projectId={projectId} filters={filters} />
+              <TableExportMenu
+                buttonClassName="btn btn-sm gap-1"
+                actions={[
+                  {
+                    label: t("Sorgular (CSV)"),
+                    icon: <Download className="size-4" />,
+                    onClick: () => void handleExport("query", "csv"),
+                  },
+                  {
+                    label: t("Sayfalar (CSV)"),
+                    icon: <Download className="size-4" />,
+                    onClick: () => void handleExport("page", "csv"),
+                  },
+                  {
+                    label: t("İlk üçe yakın sorgular (CSV)"),
+                    icon: <Download className="size-4" />,
+                    onClick: () => void handleExport("striking", "csv"),
+                  },
+                  {
+                    label: t("Sorguları E-Tablolar'a aktar"),
+                    icon: <Sheet className="size-4" />,
+                    onClick: () => void handleExport("query", "sheets"),
+                  },
+                  {
+                    label: t("Sayfaları E-Tablolar'a aktar"),
+                    icon: <Sheet className="size-4" />,
+                    onClick: () => void handleExport("page", "sheets"),
+                  },
+                ]}
+              />
             </PageActions>
           ) : null
         }
       />
 
-      {reportQuery.isPending ? (
+      {viewQuery.isPending ? (
         <SearchPerformanceLoadingState />
-      ) : reportQuery.isError ? (
-        <div className="rounded-box border border-base-300 bg-base-100">
+      ) : viewQuery.isError ? (
+        <div className="rounded-box border border-[var(--hairline)] bg-base-100">
           <QueryErrorState
-            error={reportQuery.error}
-            onRetry={() => void reportQuery.refetch()}
+            error={viewQuery.error}
+            onRetry={() => void viewQuery.refetch()}
             title={t("Arama performansı yüklenemedi")}
           />
         </div>
-      ) : !report?.connected ? (
+      ) : !view ? (
         <SearchConsoleConnectionCard projectId={projectId} />
       ) : (
-        /* The previous report stays up while a new range, device or country
-           loads; dimmed and aria-busy so it is not mistaken for the answer. */
         <div
-          className={`flex flex-col gap-6 transition-opacity ${
+          className={`flex flex-col gap-5 transition-opacity ${
             stale ? "opacity-60" : ""
           }`}
           aria-busy={stale}
         >
-          {/*
-           * Which days these totals are about. The dropdown says "Son 28
-           * gün" and the resolved range reached the client all along, but
-           * it was spent on export filenames and a tooltip -- so nothing on
-           * a populated screen told the operator the window stops three
-           * days short of today, which is the first thing someone asks
-           * when a number looks lower than they expected.
-           */}
-          <p className="text-xs text-muted">
-            {describeWindow(
-              report.range.startDate,
-              report.range.endDate,
-              formatDate,
-            )}
-            {searchType === "web"
-              ? null
-              : ` · ${t("Arama türü: {type}", { type: t(TYPE_LABELS[searchType]) })}`}
-          </p>
-          <TotalsCards report={report} />
-          <SearchTrendPanel daily={report.daily} projectId={projectId} />
-          <DeviceBreakdown
-            devices={report.devices}
-            selected={device}
-            onSelect={(next) => onViewChange({ device: next })}
+          <SearchFilters
+            range={range}
+            device={device}
+            country={country}
+            searchType={searchType}
+            compare={compare}
+            countries={view.breakdowns.countries.rows}
+            onViewChange={onViewChange}
           />
-          <SearchAppearanceBreakdown rows={report.searchAppearance} />
-          <CountryBreakdown
-            countries={report.countries}
-            selected={country}
-            onSelect={(next) => onViewChange({ country: next })}
+
+          <DataTrustStrip projectId={projectId} view={view} compare={compare} />
+          <SearchVerdict
+            view={view}
+            compare={compare}
+            open={openTodos}
+            onShowTodo={showTodo}
           />
-          <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
-            {/* Side by side only where both fit on one line. Below that the
-                tabs wrapped onto a second row, and how far depended on the
-                live count in the first label, so "Dışa aktar" jumped to its
-                own line on one tab and not the others. */}
-            <div className="flex flex-col gap-3 border-b border-base-300 px-4 py-3 2xl:flex-row 2xl:items-center 2xl:justify-between">
-              <Tabs
-                group="search-performance"
-                className="w-fit"
-                value={tab}
-                onChange={setTab}
-                items={[
-                  {
-                    id: "striking",
-                    label: t("Sıra 5-20 ({count})", {
-                      count: report.strikingDistance.length,
-                    }),
-                  },
-                  { id: "queries", label: t("Sorgular") },
-                  { id: "pages", label: t("Sayfalar") },
-                  { id: "cannibalization", label: t("Sayfa çakışmaları") },
-                ]}
-              />
-              <div className="flex flex-wrap items-center gap-2">
-                {reportQuery.isFetching && !reportQuery.isPending ? (
-                  <Spinner size="md" className="text-muted" />
-                ) : null}
-                <SearchFilters
+          <KpiTiles view={view} compare={compare} />
+
+          {view.totals.current.impressions === 0 ? (
+            <EmptyState
+              title={t("Bu dönemde hiç gösterim yok")}
+              description={
+                device || country || searchType !== "web"
+                  ? t(
+                      "Seçili cihaz, ülke ya da arama türü için Google bu günlerde sitenizi hiç göstermedi. Filtreleri genişletmeyi deneyin.",
+                    )
+                  : t(
+                      "Google bu günlerde sitenizi arama sonuçlarında göstermedi. Yeni bir siteyse birkaç gün sonra tekrar bakın; değilse dizin durumunu Site denetimi'nden kontrol edin.",
+                    )
+              }
+            />
+          ) : null}
+
+          <SearchTrendPanel
+            projectId={projectId}
+            view={view}
+            compare={compare}
+            granularity={granularity}
+            onGranularityChange={(next) =>
+              onViewChange({ g: next === "day" ? undefined : next })
+            }
+          />
+
+          <TopTasks
+            open={openTodos}
+            onTarget={onTarget}
+            onShowTodo={showTodo}
+          />
+
+          <div
+            ref={tabsRef}
+            className="scroll-mt-4 overflow-hidden rounded-box border border-[var(--hairline)] bg-base-100 shadow-[var(--shadow-raise)]"
+          >
+            <TabStrip tab={tab} view={view} onChange={setTab} />
+            <TabPanel group="search-performance" value={tab}>
+              {tab === "todo" ? (
+                <TodoTab
+                  projectId={projectId}
+                  todo={view.todo}
+                  days={view.window.days}
+                  doneTodos={doneTodos}
+                  onTarget={onTarget}
+                />
+              ) : tab === "queries" || tab === "pages" ? (
+                <DimensionTab
+                  key={tab}
+                  projectId={projectId}
+                  view={view}
+                  filters={filters}
+                  dimension={tab === "queries" ? "query" : "page"}
+                  search={query}
+                  quickFilter={quickFilter}
+                  onSearchChange={(next) =>
+                    onViewChange({ q: next || undefined })
+                  }
+                  onQuickFilterChange={(next) => onViewChange({ f: next })}
+                  onOpen={(key) =>
+                    setDrill({
+                      dimension: tab === "queries" ? "query" : "page",
+                      key,
+                    })
+                  }
+                  onSaveKeyword={(keyword) => saveOne.mutate(keyword)}
+                />
+              ) : tab === "opportunities" ? (
+                <OpportunitiesTab
+                  projectId={projectId}
+                  view={view}
+                  segmentFiltered={Boolean(device ?? country)}
+                  onOpen={setDrill}
+                />
+              ) : tab === "changes" ? (
+                <ChangesTab
+                  projectId={projectId}
+                  view={view}
+                  searchType={searchType}
+                  device={device}
+                  onOpen={setDrill}
+                />
+              ) : tab === "overlaps" ? (
+                <OverlapsTab
+                  projectId={projectId}
                   range={range}
                   device={device}
                   country={country}
                   searchType={searchType}
-                  countries={report.countries}
-                  onViewChange={onViewChange}
+                  search={query}
+                  onSearch={(next) => onViewChange({ q: next })}
                 />
-                {/* Cannibalization has no export of its own, and
-                    `tabDimension` answers "query" for it -- so the button
-                    downloaded a query report while the screen showed
-                    overlapping pages, with nothing saying so. */}
-                {tab === "cannibalization" ? null : (
-                  <TableExportMenu
-                    buttonClassName="btn btn-ghost btn-sm gap-1"
-                    actions={[
-                      {
-                        label: t("E-Tablolar'a aktar"),
-                        icon: <Sheet className="size-4" />,
-                        onClick: () => void handleExport("sheets"),
-                      },
-                      {
-                        label: t("CSV indir"),
-                        icon: <Download className="size-4" />,
-                        onClick: () => void handleExport("csv"),
-                      },
-                    ]}
-                  />
-                )}
-              </div>
-            </div>
-
-            <p className="border-b border-base-300 px-4 py-2.5 text-sm text-muted">
-              {t(TAB_HINTS[tab])}
-              {tab === "cannibalization" && range === "last_7_days"
-                ? ` ${t("Bu analiz için 7 günlük seçim 28 güne çıkarılır. Gerçek tarih aralığı aşağıda yazar.")}`
-                : null}
-            </p>
-
-            <TabPanel group="search-performance" value={tab}>
-              {tab === "striking" ? (
-                <>
-                  <StrikingSummary
-                    rows={report.strikingDistance}
-                    active={activeFilter}
-                    onChange={onFilter}
-                  />
-                  <StrikingDistanceTable
-                    projectId={projectId}
-                    rows={strikingRows}
-                    filtered={activeFilter !== undefined}
-                    hasQueryData={report.queryRowCount > 0}
-                    segmentFiltered={Boolean(device ?? country)}
-                    onClearFilter={clearFilter}
-                  />
-                </>
-              ) : tab === "cannibalization" ? (
-                <>
-                  <CannibalizationSummary
-                    projectId={projectId}
-                    dateRange={range}
-                    device={device}
-                    country={country}
-                    searchType={searchType}
-                    onPickQuery={(picked) => onViewChange({ q: picked })}
-                  />
-                  <CannibalizationTable
-                    projectId={projectId}
-                    dateRange={range}
-                    device={device}
-                    country={country}
-                    searchType={searchType}
-                    search={query}
-                    onClearSearch={() => onViewChange({ q: undefined })}
-                  />
-                </>
-              ) : tableQuery.isPending ? (
-                /* Shaped like the table that is coming, per the house rule:
-                   a spinner in an empty box tells the reader nothing about
-                   what is about to appear or how tall it will be. */
-                <>
-                  <TabSummarySkeleton />
-                  <Skeleton variant="table" rows={8} className="p-4" />
-                </>
-              ) : tableQuery.isError ? (
-                <div className="p-4">
-                  <QueryErrorState
-                    compact
-                    error={tableQuery.error}
-                    onRetry={() => void tableQuery.refetch()}
-                    title={t("Tablo yüklenemedi")}
-                  />
-                </div>
               ) : (
-                <>
-                  {tab === "queries" ? (
-                    <QueriesSummary
-                      rows={tableRows}
-                      active={activeFilter}
-                      onChange={onFilter}
-                    />
-                  ) : (
-                    <PagesSummary
-                      rows={tableRows}
-                      active={activeFilter}
-                      onChange={onFilter}
-                    />
-                  )}
-                  <div className="p-4">
-                    <DimensionTable
-                      rows={tableRows}
-                      keyLabel={tab === "queries" ? t("Sorgu") : t("Sayfa")}
-                      onSaveKeyword={
-                        tab === "queries"
-                          ? (keyword) => saveOne.mutate(keyword)
-                          : undefined
-                      }
-                      truncated={tableTruncated}
-                      hasActiveFilter={
-                        Boolean(device ?? country) || searchType !== "web"
-                      }
-                      search={query}
-                      onSearchChange={(next) =>
-                        onViewChange({ q: next || undefined })
-                      }
-                      quickFilter={activeFilter}
-                      onClearQuickFilter={clearFilter}
-                    />
-                  </div>
-                </>
+                <DistributionTab
+                  projectId={projectId}
+                  view={view}
+                  device={device}
+                  country={country}
+                  onDevice={(next) => onViewChange({ device: next })}
+                  onCountry={(next) => onViewChange({ country: next })}
+                  onOpen={setDrill}
+                />
               )}
             </TabPanel>
           </div>
         </div>
       )}
+
+      {view && drill ? (
+        <DrilldownPanel
+          projectId={projectId}
+          filters={filters}
+          window={{
+            startDate: view.window.startDate,
+            endDate: view.window.endDate,
+          }}
+          target={drill}
+          onNavigate={setDrill}
+          onClose={closeDrill}
+          onSaveKeyword={(keyword) => saveOne.mutate(keyword)}
+        />
+      ) : null}
     </PageShell>
   );
 }

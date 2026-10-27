@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { OpportunitiesTable } from "./OpportunitiesTable";
+import { makeRow } from "./opportunity-test-fixtures";
 
 /*
  * `Link` needs a router, and this suite is about what the table lets you do
@@ -22,22 +23,8 @@ vi.mock("@tanstack/react-router", () => ({
   ),
 }));
 
-function row(page: string, score: number, impressions: number) {
-  return {
-    page,
-    normalizedPage: page,
-    clicks: 1,
-    impressions,
-    ctr: 0.01,
-    position: 8,
-    joinStatus: "gsc_only" as const,
-    ga4: null,
-    score,
-    kind: "near_miss" as const,
-    ctrGap: null,
-    scoreComponents: null,
-  };
-}
+const row = (page: string, gainPerMonth: number, impressions: number) =>
+  makeRow({ page, gainPerMonth, impressions });
 
 /*
  * This table used to be a raw `<table>`: no sortable headers, no way into a
@@ -50,19 +37,19 @@ function row(page: string, score: number, impressions: number) {
  */
 describe("OpportunitiesTable", () => {
   const rows = [
-    row("https://example.com/high-score", 90, 10),
+    row("https://example.com/high-gain", 90, 10),
     row("https://example.com/many-impressions", 10, 9_999),
   ];
 
-  it("opens on score, because that is what the screen ranks by", () => {
-    render(<OpportunitiesTable projectId="p1" rows={rows} />);
+  it("opens on the estimated gain, because that is what the screen ranks by", () => {
+    render(<OpportunitiesTable projectId="p1" days={28} rows={rows} />);
 
     const cells = screen.getAllByRole("row").slice(1);
-    expect(cells[0].textContent).toContain("/high-score");
+    expect(cells[0].textContent).toContain("/high-gain");
   });
 
   it("re-sorts on a column the operator picks", () => {
-    render(<OpportunitiesTable projectId="p1" rows={rows} />);
+    render(<OpportunitiesTable projectId="p1" days={28} rows={rows} />);
 
     fireEvent.click(screen.getByRole("button", { name: /Gösterim/ }));
 
@@ -71,7 +58,7 @@ describe("OpportunitiesTable", () => {
   });
 
   it("gives every row a copy and an open-in-new-tab shortcut", () => {
-    render(<OpportunitiesTable projectId="p1" rows={rows} />);
+    render(<OpportunitiesTable projectId="p1" days={28} rows={rows} />);
 
     expect(screen.getAllByLabelText("Adresi kopyala").length).toBe(rows.length);
     expect(screen.getAllByLabelText("Sayfayı yeni sekmede aç").length).toBe(
@@ -80,29 +67,51 @@ describe("OpportunitiesTable", () => {
   });
 
   it("opens the detail on a row click and closes it on Escape", () => {
-    render(<OpportunitiesTable projectId="p1" rows={rows} />);
+    render(<OpportunitiesTable projectId="p1" days={28} rows={rows} />);
 
     fireEvent.click(screen.getAllByRole("row")[1]);
 
     const dialog = screen.getByRole("dialog");
     expect(dialog.textContent).toContain("Ne yapmalı?");
-    expect(dialog.textContent).toContain("iç bağlantı");
+    expect(dialog.textContent).toContain("+90 tıklama/ay");
 
     fireEvent.keyDown(window, { key: "Escape" });
     expect(screen.queryByRole("dialog")).toBeNull();
   });
 
-  it("shows the checklist for the row's own kind", () => {
+  it("lists the queries behind the estimate and the work for that kind", () => {
     render(
       <OpportunitiesTable
         projectId="p1"
-        rows={[{ ...row("https://example.com/a", 50, 100), kind: "ctr_gap" }]}
+        days={28}
+        rows={[
+          makeRow({
+            page: "https://example.com/a",
+            work: "snippet",
+            queries: [
+              {
+                query: "nevresim nasıl yıkanır",
+                clicks: 10,
+                impressions: 1000,
+                ctr: 0.01,
+                position: 2.4,
+                work: "snippet",
+                targetCtr: 0.12,
+                gain: 110,
+              },
+            ],
+          }),
+        ]}
       />,
     );
 
     fireEvent.click(screen.getByRole("button", { name: "/a" }));
 
-    expect(screen.getByRole("dialog").textContent).toContain("Meta açıklamayı");
+    const dialog = screen.getByRole("dialog");
+    expect(dialog.textContent).toContain("nevresim nasıl yıkanır");
+    // 110 over 28 days, as a month.
+    expect(dialog.textContent).toContain("+118");
+    expect(dialog.textContent).toContain("Meta açıklamayı");
   });
 
   /*
@@ -112,7 +121,7 @@ describe("OpportunitiesTable", () => {
    * rows than the screen showed is the bug it guards.
    */
   it("can hand the list to a spreadsheet, and says how many rows", () => {
-    render(<OpportunitiesTable projectId="p1" rows={rows} />);
+    render(<OpportunitiesTable projectId="p1" days={28} rows={rows} />);
 
     fireEvent.click(
       screen.getByRole("button", { name: "Dışa aktarma seçenekleri" }),

@@ -1,78 +1,139 @@
 ---
 title: Audit du site
-description: L'application parcourt votre site page par page, applique 201 règles et classe les problèmes par importance, chacun avec ce qu'il faut faire.
+description: L'application parcourt votre site page par page, applique 202 règles et classe les problèmes par importance. Le score dit aussi quelle part a pu être mesurée. Un audit arrêté en route n'a pas de score.
 screen: Site denetimi
 route: /p/<proje>/audit
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
 Cet écran trouve les problèmes de votre site et vous dit comment les corriger.
 
-L'application parcourt votre site avec son propre explorateur (un programme qui ouvre les pages une à une et les lit). Elle cherche les liens cassés, les titres manquants et les pages lentes. À la fin, vous obtenez un score et une liste de problèmes classés par ordre d'importance. Sous chaque problème, la correction est expliquée.
+L'application parcourt votre site avec son propre explorateur (un programme qui ouvre les pages une à une et les lit). Elle cherche les liens cassés, les titres manquants et les pages lentes. À la fin, vous obtenez un score et une liste de problèmes classés par importance, chacun avec la façon de le corriger. Le score montre aussi combien de vérifications ont pu être mesurées. Un audit arrêté à mi-chemin n'a pas de score.
 
 ## Ce que l'écran affiche
 
-**Carte « Yeni denetim başlat » (Lancer un nouvel audit).** Elle comporte trois champs.
+**Carte « Démarrer un nouvel audit ».** Elle comporte ces champs.
 
-- **Taranacak site adresi** (Adresse du site à explorer) : le nom de domaine de votre projet est déjà rempli.
-- **Kaç sayfa taransın?** (Combien de pages explorer ?) : au moins 10, au plus 10 000, 50 par défaut. Si vous saisissez un nombre supérieur à 500, l'application demande une confirmation.
-- **Sayfa hızını da ölç** (Mesurer aussi la vitesse des pages) : désactivé par défaut. Si vous l'activez, chaque page est mesurée sur téléphone et sur ordinateur. La mesure est faite par Google Lighthouse (l'outil de mesure des pages de Google).
+- **Le champ d'adresse du site** : le nom de domaine de votre projet est déjà rempli.
+- **Explorer jusqu'à N pages** : au moins 10, au plus 10 000, 50 par défaut. Si vous saisissez plus de 500, l'application demande une confirmation.
+- **Mesurer aussi la vitesse des pages** : désactivé par défaut. Si vous l'activez, chaque page est mesurée sur téléphone et sur ordinateur. La mesure est faite par Google Lighthouse (l'outil de mesure des pages de Google). La carte indique à l'avance le temps minimal que cela prendra.
+- **Vérifier aussi les liens sortants et le poids des images** : après l'exploration, elle vérifie si les liens vers d'autres sites s'ouvrent et quel poids ont vos images. 300 adresses au plus sont interrogées. Les sites qui bloquent les robots sont ignorés.
 
-Si vous n'avez pas de clé PageSpeed (le code gratuit que Google fournit pour la mesure de vitesse), la mesure de vitesse est limitée à 50 pages au maximum. Pour tout mesurer, ajoutez une clé gratuite dans **Ayarlar** (Paramètres).
+Si vous n'avez pas de clé PageSpeed (le code gratuit que Google fournit pour la mesure de vitesse), la mesure de vitesse est limitée à 50 pages. Pour tout mesurer, ajoutez une clé gratuite dans **Paramètres**. **Démarrer l'audit** lance l'audit. La section **Quotas** en dessous est repliée. Dépliez-la pour voir l'état actuel des quotas PageSpeed et d'inspection d'URL.
 
-**Audits précédents.** La date, l'état, le nombre de pages et le nombre de problèmes de chaque audit sont listés. Les nombres de problèmes sont ramenés à cent pages. Vous pouvez ainsi comparer des audits de 50 et de 500 pages. **Denetimi sil** (Supprimer l'audit), dans le menu de ligne, supprime tout et est irréversible.
+**Audits précédents.** La date, l'adresse, l'état, le nombre de pages et le nombre de problèmes de chaque audit sont listés. Les nombres de problèmes sont ramenés à cent pages, le total est entre parenthèses. Vous pouvez ainsi comparer des audits de 50 et de 500 pages. Si plusieurs sites ont été audités dans le projet, un sélecteur de site apparaît au-dessus de la liste. Le graphique et les flèches de variation comparent toujours des audits du même site. Quand plusieurs sites sont sélectionnés, le graphique est masqué. **Afficher** sur une ligne ouvre l'audit. Le menu de la ligne propose **Relancer avec les mêmes paramètres** et **Supprimer l'audit**. Supprimer efface aussi les pages, les problèmes et les mesures de vitesse de l'audit, et ne peut pas être annulé.
 
-**Détail de l'audit.** Si l'exploration reste incomplète, un avertissement jaune apparaît. Par exemple « Denetim bu siteyi tamamen tarayamadı. » (L'audit n'a pas pu explorer entièrement ce site), souvent parce que la protection anti-bots l'a bloqué. Les résultats s'affichent quand même. **Raporu indir** (Télécharger le rapport) télécharge le rapport HTML en un seul fichier et l'enregistre dans l'écran **Raporlar** (Rapports).
+**Détail de l'audit.** En haut, **Télécharger le rapport** télécharge un rapport HTML d'un seul fichier et l'enregistre dans **Rapports**. En dessous, des avertissements jaunes apparaissent au besoin (voir plus bas). Vient ensuite la carte du score.
 
-**Score du site.** Vous voyez un nombre de 0 à 100. En dessous, les trois actions qui rapporteront le plus de points sont écrites avec « +N puan » (+N points).
+**Carte du score.** Elle montre ceci.
 
-**Deux graphiques.** L'un montre quel problème touche le plus de pages, l'autre à quel point les problèmes sont graves.
+- Au centre, le **Score du site** et à côté un mot d'appréciation : **Excellent**, **Bon**, **Moyenne** ou **Médiocre**.
+- En dessous, la ligne de couverture : « Score fondé sur les 142 contrôles mesurés. 38 contrôles n'ont pas pu être mesurés. » Le point d'interrogation à côté explique comment le score est calculé.
+- Une phrase d'appréciation. Si le score est retenu à une limite, elle en donne la raison.
+- **Adresses trouvées : N, explorées : M**. Combien d'adresses l'exploration a trouvées sur le site et combien elle en a ouvertes. Si l'audit s'est arrêté à la limite de pages que vous aviez choisie, une note indique « L'audit était limité à N pages ; le site peut en compter davantage. » Le score reste valable dans ce cas.
+- Des lignes pour les catégories lourdes qui n'ont pas pu être mesurées. Par exemple « Vitesse non mesuré : le quota PageSpeed était épuisé ».
+- Quatre compteurs : **Problèmes critiques**, **Améliorations** (avertissements et informations), **Vérifications réussies** et **Non mesuré**.
+- **Scores par catégorie** : Exploration, Contenu, Indexation, Vitesse, Sécurité, Accessibilité, Réseaux sociaux et données structurées. La plus basse est en haut. Un clic sur une catégorie ouvre l'onglet **Vérifications** sur cette catégorie. Une catégorie où rien n'a pu être mesuré indique « Non mesuré ». Une catégorie mesurée en partie indique « Données partielles ».
+- **Historique du score** : les scores des derniers audits du même site. Il apparaît dès que deux audits ont un score. Les barres grises sont des scores provisoires. Les audits sans score ne figurent pas sur le graphique, et une ligne en dessous dit combien il y en a.
 
-**Quatre onglets.**
+**Onglets.**
 
-- **Sorunlu sayfalar** (Pages à problèmes) : quand vous ouvrez une carte, vous voyez la cause et l'encadré **Nasıl düzeltilir?** (Comment corriger ?). Boutons : **URL'leri kopyala** (Copier les URL), **CSV indir** (Télécharger en CSV), **Sayfalar sekmesinde göster** (Afficher dans l'onglet Pages).
-- **Sayfalar** (Pages) : chaque page explorée. Filtres rapides : **Dizine kapalı** (Exclue de l'index), **Yavaş** (Lente, plus d'une seconde), **Alt metni eksik** (Texte alternatif manquant), **Site haritasında yok** (Absente du plan du site).
-- **Dizin durumu** (État de l'index) : la réponse de Google pour chaque page. Elle est expliquée dans un guide à part.
-- **Hız** (Vitesse) : visible uniquement si la mesure de vitesse est activée.
+- **À faire (N)** : les travaux, en commençant par celui qui rapporte le plus de points. Chaque travail indique les points que vous gagnez, une étiquette « Petite tâche », « Tâche moyenne » ou « Grosse tâche » et une boîte **Comment le corriger**. Si Search Console est connecté, l'ordre tient aussi compte des clics des pages concernées.
+- **Vérifications (N)** : toutes les vérifications, par catégorie. Chacune apparaît comme réussie, échouée ou non mesurée. Pour les non mesurées, la raison est écrite.
+- **Instantané** : le site au-delà de ses pages. Par exemple le certificat, l'enregistrement du nom de domaine, le DNS et un aperçu du site.
+- **Pages présentant des problèmes (N)** : regroupe les problèmes. Ouvrez une carte pour voir la cause, les adresses concernées et la boîte **Comment le corriger**. Vous pouvez chercher dans les adresses.
+- **Pages (N)** : chaque page explorée. Filtres rapides : **Indexation bloquée**, **Lent** (plus d'une seconde), **Texte alternatif manquant**, **Absente du sitemap**.
+- **État de l'indexation** : la réponse de Google pour chaque page. Elle est décrite dans un guide à part. Si le site audité n'appartient pas à la propriété Search Console du projet, cet onglet n'affiche pas de données Google et l'écran en explique la raison.
+- **Vitesse (N)** : n'apparaît que si la mesure de vitesse était activée. Si certaines pages n'ont pas pu être mesurées, le nombre s'écrit « 10/12 ».
+
+Le menu **Exporter** en haut à droite donne la liste de l'onglet ouvert en **Exporter vers Google Sheets**, **CSV** ou **JSON**. Si un filtre est actif, seules les lignes visibles partent.
+
+## Les trois états du score
+
+**Score complet.** Quand la plus grande part des vérifications a été mesurée, il vient avec un mot d'appréciation. Lisez le score ainsi : à partir de 90 Excellent, à partir de 70 Bon, à partir de 50 Moyenne, en dessous Mauvais.
+
+**Score provisoire.** Si la part de vérifications mesurées tombe sous 70 pour cent, le score est provisoire. C'est aussi le cas si moins de la moitié des vérifications d'Exploration, d'Indexation, de Contenu ou de Vitesse ont été mesurées. La carte indique « Score provisoire, couverture des mesures 62 % », ne donne aucun mot d'appréciation et reste de couleur neutre. Le nombre ne reflète que les vérifications qu'on a pu voir. Aucun jugement, bon ou mauvais, n'a été porté sur le reste. Les raisons habituelles sont celles-ci : le quota PageSpeed était épuisé, il n'y a pas de clé PageSpeed, la mesure de vitesse était désactivée ou les données d'index n'ont pas pu être récupérées dans Search Console.
+
+**Aucun score attribué.** Dans ces cas, la carte indique « Audit incomplet, aucun score attribué » à la place du score.
+
+- L'audit s'est arrêté sur une erreur.
+- L'audit est toujours en cours.
+- L'exploration s'est arrêtée prématurément en raison de la limite de débit du site. La liste des problèmes est incomplète, un score ne serait qu'une supposition.
+- Aucune page n'a pu être explorée. Dans ce cas, la carte du score n'apparaît pas du tout.
+
+Les constats sont tout de même affichés et valent pour les pages explorées. Pour un score complet, relancez l'audit.
+
+## Si l'audit s'est arrêté, ce qui est écrit
+
+Quand un audit échoue, l'écran dit trois choses : ce qui s'est passé, si le défaut vient de votre site ou de l'application, et ce que vous devez faire. Le titre indique la phase où il s'est arrêté : **découverte des URL**, **exploration**, **mesure de vitesse** ou **préparation des résultats**.
+
+| Ce que dit l'écran                                                                                              | Côté                    | Que faire                                                                                                 |
+| --------------------------------------------------------------------------------------------------------------- | ----------------------- | --------------------------------------------------------------------------------------------------------- |
+| Une étape n'a pas terminé à temps                                                                               | Probablement votre site | Réessayez dans quelques minutes. Si cela se reproduit, lancez avec moins de pages                         |
+| L'audit ne tenait pas dans la mémoire de l'application                                                          | L'application           | Relancez avec moins de pages                                                                              |
+| L'audit a dépassé le temps de processeur autorisé                                                               | L'application           | Relancez avec moins de pages                                                                              |
+| Une erreur est survenue lors de l'écriture des résultats dans la base de données                                | L'application           | Vérifiez qu'il reste de la place sur le disque, redémarrez l'application et relancez l'audit              |
+| Le résultat d'une étape dépassait la taille que l'application peut stocker                                      | L'application           | Relancez avec moins de pages                                                                              |
+| Le moteur interne d'audit de l'application a signalé une erreur                                                 | L'application           | Choisissez **Yeniden başlat** (Redémarrer) dans le menu de la zone de notification, puis relancez l'audit |
+| L'audit a été interrompu                                                                                        | L'application           | Laissez l'application ouverte et relancez l'audit                                                         |
+| La clé d'installation n'est pas parvenue à la partie qui exécute les audits (vos clés n'ont pas été supprimées) | L'application           | Mettez l'application à jour ou redémarrez-la, puis relancez l'audit                                       |
+| L'audit s'est arrêté sur une erreur inattendue                                                                  | Non déterminé           | Relancez. Si cela continue, téléchargez le package de diagnostics depuis **Aide**                         |
+
+Le texte brut de l'erreur n'arrive pas à l'écran. Il reste dans le package de diagnostics.
+
+## Avertissements jaunes pendant l'exploration
+
+- **L'audit n'a pas pu explorer complètement ce site.** La protection anti-bots de votre site a arrêté l'explorateur. Les résultats sont tout de même affichés. Autorisez « seotracker-audit » dans votre pare-feu ou essayez l'un des explorateurs de bureau que le guide propose.
+- **N pages n'ont pas pu être récupérées (erreur réseau).** La connexion n'a pas pu être établie, même à la nouvelle tentative. Ces pages n'ont pas été auditées et ne sont pas comptées comme cassées. C'est souvent passager. Relancez l'audit. Si cela continue, vérifiez que le site s'ouvre depuis cet ordinateur.
+- **Le site a limité le débit sur N pages.** Le site a répondu « trop de requêtes ». Ces pages n'ont pas pu être auditées. Relancez quand la limite est réinitialisée.
+- **L'exploration s'est arrêtée prématurément en raison de la limite de débit du site.** L'attente demandée dépassait la durée que l'audit peut prendre. Le rapport est incomplet et n'a pas de score.
+- **La clé PageSpeed enregistrée n'a pas pu être lue ; la mesure de vitesse s'est faite sans clé.** L'audit est terminé, mais la mesure de vitesse s'est faite sans clé. Les résultats de l'exploration ne sont pas touchés. La mesure de vitesse s'est limitée aux premières pages. Mettez l'application à jour ou redémarrez-la, puis lancez un nouvel audit. Si cela continue, enregistrez de nouveau la clé PageSpeed dans **Paramètres**.
 
 ## Comment l'utiliser
 
-1. Au premier audit, laissez le nombre de pages à 50. Gardez la mesure de vitesse désactivée. Il se termine en une ou deux minutes.
-2. Commencez par les trois actions « +N puan » de la carte de score. Ce sont celles qui rapportent le plus de points pour le moins d'effort.
-3. Dans l'onglet **Sorunlu sayfalar**, terminez d'abord les problèmes critiques. Un problème critique empêche Google de voir la page.
-4. Avec **URL'leri kopyala**, prenez la liste et donnez-la à la personne qui gère votre site. Vous pouvez lui transmettre tel quel l'encadré **Nasıl düzeltilir?**.
-5. Après la correction, cliquez sur **Aynı ayarlarla yeniden başlat** (Relancer avec les mêmes réglages). Dans le tableau de bord, la carte « Düzelenler » (Corrigés) montre ce qui a été réglé.
-6. Activez la mesure de vitesse une fois par semaine, pour les pages importantes. Chaque page prend environ dix secondes et consomme du quota Google.
+1. Pour le premier audit, laissez le nombre de pages à 50. Gardez la mesure de vitesse désactivée. Cela se termine en une ou deux minutes. Avec la mesure de vitesse désactivée, le score peut sortir provisoire. C'est normal.
+2. Lisez la ligne de couverture sur la carte du score. Si elle indique **Score provisoire**, les lignes en dessous donnent la raison.
+3. Dans l'onglet **À faire**, commencez par les trois premiers travaux. Ils rapportent le plus de points pour le moins d'effort.
+4. Dans l'onglet **Pages présentant des problèmes**, finissez d'abord les problèmes critiques. Un problème critique empêche Google de voir la page.
+5. Récupérez la liste avec **Exporter** et donnez-la à la personne qui gère votre site. Vous pouvez transmettre telle quelle la boîte **Comment le corriger**.
+6. Après correction, cliquez sur **Relancer avec les mêmes paramètres**. Les flèches de la liste **Audits précédents** et l'**Historique du score** montrent ce qui a été corrigé.
+7. Activez la mesure de vitesse une fois par semaine, pour les pages importantes. Chaque page prend environ dix secondes et consomme du quota Google.
 
 ## Comment les chiffres sont calculés
 
-**Score.** Chaque problème a un poids différent : critique 40, avertissement 15, info 3. Plus un problème touche de pages, plus il retire de points. Le score part de 100 et ne descend pas sous zéro. Dès qu'il existe un seul problème, le score ne dépasse pas 99.
+**Score.** Chaque constat retire des points à sa catégorie. Combien, cela dépend de l'importance du constat et de la part de pages touchées. Les poids sont : critique 40, avertissement 15, information 3. Le score du site est la moyenne pondérée de sept catégories. Exploration et Indexation pèsent le plus, Réseaux sociaux et données structurées le moins. Une vérification qui n'a pas pu être mesurée ne relève ni n'abaisse le score. C'est pourquoi la couverture est montrée à part.
 
-Les tranches de score sont les suivantes : 90 et plus, très bien ; 70 et plus, bien ; 50 et plus, moyen ; en dessous, faible.
+**Plafonds.** S'il y a ne serait-ce qu'un problème, le score vaut au plus 99. S'il y a un problème critique, au plus 69. Avec 5 avertissements ou plus, au plus 89. Ainsi, une seule page bloquée à l'indexation sur un grand site ne se cache pas sous un score élevé. Si un plafond retient le score, la carte l'écrit. Le « +N points » à côté d'un travail tient compte du plafond aussi. Corriger l'unique problème critique lève tout le plafond. Corriger un avertissement pendant qu'un plafond s'applique rapporte très peu.
 
-**Exploration.** L'application ménage votre site. Elle envoie au plus deux requêtes à la fois. Si le site répond « trop de requêtes » (429), elle attend. Si l'attente totale dépasse 30 minutes, l'exploration s'arrête.
+**Exploration.** L'application ne fatigue pas votre site. Elle envoie au plus deux requêtes à la fois. Si le site répond « trop de requêtes » (429), elle attend. Si l'attente totale dépasse 30 minutes, l'exploration s'arrête et l'audit n'a pas de score.
 
-**Mesure de vitesse.** Sur un site de 212 pages, l'audit complet a duré 35 minutes. Environ 24 minutes étaient consacrées à la mesure de vitesse. Si le quota quotidien est atteint, la mesure s'arrête et les résultats obtenus jusque-là sont conservés. Un problème est signalé dans les cas suivants :
+**Mesure de vitesse.** Sur un site de 212 pages, l'audit entier a pris 35 minutes. Environ 24 de ces minutes étaient la mesure de vitesse. Si le quota quotidien est épuisé, la mesure s'arrête, les résultats obtenus restent et le score peut être provisoire. Un problème est écrit dans ces cas :
 
 - Le contenu principal s'affiche après plus de 4 secondes (LCP).
 - Le contenu se décale de plus de 0,25 (CLS).
-- La réponse à un clic arrive après plus de 500 millisecondes (INP).
+- La réponse à un clic prend plus de 500 millisecondes (INP).
 - Le score SEO de Lighthouse est inférieur à 90.
 
 ## Questions fréquentes
 
-**L'audit montre-t-il ce que Google voit ?** Non. L'explorateur de l'application lit la page lui-même. La réponse de Google se trouve dans l'onglet **Dizin durumu**.
+**L'audit montre-t-il ce que Google voit ?** Non. L'explorateur de l'application lit la page lui-même. La réponse de Google est dans l'onglet **État de l'indexation**.
 
-**Le score est de 98, pourquoi pas 100 ?** Un seul problème suffit à garder le score à 99 au plus.
+**Le score est 98, pourquoi pas 100 ?** Un seul problème suffit à garder le score à 99 ou moins.
 
-**Que signifie l'avertissement « Engellendik » (Nous avons été bloqués) ?** La protection anti-bots de votre site a arrêté l'explorateur. Autorisez le nom « seotracker-audit » dans le pare-feu.
+**Pourquoi mon score reste-t-il bloqué à 69 ?** Il y a un problème critique. Le score ne peut pas dépasser 69 tant que vous ne l'avez pas corrigé. La carte le dit.
 
-**La mesure de vitesse s'est arrêtée à mi-chemin.** En général, il n'y a pas de clé PageSpeed ou le quota quotidien est atteint. La carte de quota dans **Ayarlar** en donne la cause.
+**Pourquoi est-il écrit « Score provisoire » ?** Une grande part des vérifications n'a pas pu être mesurée. La ligne de couverture et les lignes en dessous donnent la raison. Activer la mesure de vitesse ou connecter Search Console augmente en général la couverture.
 
-**Combien d'audits peuvent tourner en même temps ?** Trois au maximum. Deux audits qui mesurent la vitesse se ralentissent mutuellement.
+**Pourquoi « Audit incomplet » au lieu d'un score ?** L'audit s'est arrêté à mi-chemin ou trop tôt. La liste des problèmes est incomplète, donc pas de score. Relancez l'audit.
+
+**Que veut dire l'avertissement « bloqué » ?** La protection anti-bots de votre site a arrêté l'explorateur. Autorisez « seotracker-audit » dans le pare-feu.
+
+**La mesure de vitesse s'est arrêtée en route.** En général, il n'y a pas de clé PageSpeed ou le quota quotidien est épuisé. La carte des quotas dans **Paramètres** en donne la raison.
+
+**Combien d'audits tournent en même temps ?** Trois au plus. Deux audits qui mesurent la vitesse se ralentissent l'un l'autre.
 
 ## Limites
 
-L'explorateur peut ne pas voir le contenu ajouté après coup par JavaScript (du code qui s'exécute dans la page). Un audit explore au plus 10 000 pages. La mesure de vitesse est une mesure de laboratoire de Google, pas des données de vrais visiteurs. L'audit ne modifie rien sur votre site. La correction, c'est à vous ou à votre assistant de la faire.
+L'explorateur peut ne pas voir le contenu que JavaScript (le code qui s'exécute dans la page) ajoute plus tard. Un audit explore 10 000 pages au plus. La mesure de vitesse est la mesure de laboratoire de Google, pas des données de vrais visiteurs. L'audit ne change rien sur votre site. Les corrections, c'est vous ou votre assistant qui les faites.
 
-<!-- Kaynaklar: src/client/features/audit/launch/LaunchView.tsx; LaunchFormCard.tsx; useLaunchController.ts; AuditHistorySection.tsx; ProgressCard.tsx; ResultsView.tsx; ResultsTables.tsx; TabIntro.tsx; ScoreCard.tsx; IssueWorkloadChart.tsx; SeverityDonut.tsx; IssueCard.tsx; DownloadReportButton.tsx; export.ts; src/shared/auditScore.ts; src/shared/audit-limits.ts; src/shared/audit-issues/speed.ts; src/server/lib/audit/crawl-window.ts; crawl-throttle.ts; src/server/features/audit/services/auditReconciler.ts; src/server/features/audit/report/buildAuditReportHtml.ts -->
+<!-- Sources : src/client/features/audit/launch/LaunchView.tsx; LaunchFormCard.tsx; useLaunchController.ts; AuditHistorySection.tsx; AuditSiteFilter.tsx; ProgressCard.tsx; src/client/features/audit/results/ResultsView.tsx; ResultsHeader.tsx; ScoreOverview.tsx; ScoreGauge.tsx; WithheldScore.tsx; scoreWords.ts; auditFailureCopy.ts; ChecksView.tsx; TodoView.tsx; IssuesView.tsx; QuickFilters.tsx; ForeignPropertyNotice.tsx; DownloadReportButton.tsx; src/routes/_project/p/$projectId/audit/index.tsx; src/shared/auditStanding.ts; src/shared/auditScore.ts; src/shared/auditCategory.ts; src/shared/audit-limits.ts; src/server/lib/audit/crawl-throttle.ts -->

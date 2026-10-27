@@ -142,6 +142,8 @@ export function useLaunchController({
   return {
     launchForm,
     historyQuery,
+    /** The project's own site, so the history can open on its audits. */
+    projectDomain: domain,
     maxPagesLimit,
     commitMaxPagesInput: () => commitMaxPagesInput(launchForm, maxPagesLimit),
     deleteAudit: (auditId: string) => deleteMutation.mutate(auditId),

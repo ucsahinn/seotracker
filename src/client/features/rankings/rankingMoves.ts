@@ -55,8 +55,17 @@ export function applyMove<Row extends MoveRow>(
   return move ? rows.filter((row) => matchesMove(move, row)) : rows;
 }
 
-/** The biggest climbers and biggest drops, each at most `size` long. */
-export function topMovers<Row extends MoveRow>(
+const impact = (row: { delta: number; impressions: number }) =>
+  Math.abs(row.delta) * row.impressions;
+
+/**
+ * The moves that matter most, each list at most `size` long: places moved
+ * times impressions, so a query seen 5.000 times that climbed two places
+ * outranks one seen 30 times that climbed four. By places alone, low-volume
+ * queries going from page three to page two (still no clicks) filled both
+ * lists.
+ */
+export function topMovers<Row extends MoveRow & { impressions: number }>(
   rows: Row[],
   size = 5,
 ): { risers: Row[]; fallers: Row[] } {
@@ -66,7 +75,7 @@ export function topMovers<Row extends MoveRow>(
   );
   const risers = moved.filter((row) => row.delta > 0);
   const fallers = moved.filter((row) => row.delta < 0);
-  risers.sort((a, b) => b.delta - a.delta);
-  fallers.sort((a, b) => a.delta - b.delta);
+  risers.sort((a, b) => impact(b) - impact(a));
+  fallers.sort((a, b) => impact(b) - impact(a));
   return { risers: risers.slice(0, size), fallers: fallers.slice(0, size) };
 }

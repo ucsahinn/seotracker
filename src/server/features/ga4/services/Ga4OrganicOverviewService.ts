@@ -8,7 +8,8 @@ import {
 import { normalizeGa4Response } from "./Ga4ReportNormalization";
 import { comparisonValue, previousPeriod } from "./Ga4ReportEnhancements";
 import { Ga4ReportError } from "@/server/lib/ga4Errors";
-import { mapGa4ReportError, resolveGa4DateRange } from "./Ga4ReportingService";
+import { resolveGa4DateRange } from "./Ga4ReportingService";
+import { mapGa4ReportError } from "./mapGa4ReportError";
 
 type Ga4OrganicOverviewInput = {
   projectId: string;

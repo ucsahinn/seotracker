@@ -1,4 +1,4 @@
-import { ArrowDownRight, ArrowUpRight } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, Minus } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import * as React from "react";
 import { AnimatedNumber } from "@/client/components/AnimatedNumber";
@@ -23,7 +23,7 @@ import { t } from "@/shared/i18n";
  */
 type MetricDelta =
   | number
-  | { text: string; improved: boolean }
+  | { text: string; improved: boolean; neutral?: true }
   | null
   | undefined;
 
@@ -76,7 +76,12 @@ export function MetricTile({
       {value === null ? (
         <p className="text-2xl font-semibold text-subtle">–</p>
       ) : (
-        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+        /*
+         * The change sits under the value on every tile, never beside it:
+         * beside, it wrapped on some tiles of a phone-width row and not on
+         * others, and the four tiles stopped lining up.
+         */
+        <div className="flex flex-col gap-0.5">
           {/* Remounted by the key when a refetch changes the number, so the
               tint plays then and not on first paint. */}
           <p
@@ -92,25 +97,31 @@ export function MetricTile({
               value
             )}
           </p>
-          <DeltaBadge value={delta} inverted={inverted} title={deltaTitle} />
+          <span className="flex min-h-4 items-center">
+            <DeltaBadge value={delta} inverted={inverted} title={deltaTitle} />
+          </span>
         </div>
       )}
       {/* Not truncated: a hint is usually the one link that makes the tile
           useful, and half a link is worse than a second line. */}
       {hint ? <p className="text-xs text-subtle">{hint}</p> : null}
+      {/* Pinned to the bottom so a row of tiles with and without hints
+          keeps its sparklines on one line. */}
       {value !== null && trend && (
-        <Sparkline values={trend} inverted={inverted} />
+        <div className="mt-auto pt-1">
+          <Sparkline values={trend} inverted={inverted} />
+        </div>
       )}
     </>
   );
-  const frame = "flex min-w-0 flex-col gap-1.5 px-5 py-4";
+  const frame = "flex h-full min-w-0 flex-col gap-1.5 px-5 py-4";
 
   if (!href) return <div className={frame}>{body}</div>;
   return (
     <Link
       to={href.to}
       params={{ projectId: href.projectId }}
-      className={`${frame} h-full transition-colors hover:bg-base-200/60 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary`}
+      className={`${frame} transition-colors hover:bg-base-200/60 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary`}
     >
       {body}
     </Link>
@@ -134,6 +145,19 @@ export function DeltaBadge({
 }) {
   if (value == null) return null;
 
+  // Both periods exist and nothing moved: words, no arrow, no tint.
+  if (typeof value !== "number" && value.neutral) {
+    return (
+      <span
+        title={title}
+        className="flex items-start gap-0.5 text-xs font-medium text-muted"
+      >
+        <Minus className="mt-px size-3.5 shrink-0" aria-hidden />
+        {value.text}
+      </span>
+    );
+  }
+
   // An arrow, not just a colour. Success and error sit at almost the same
   // lightness, so under the common colour-vision deficiencies the tint alone
   // says nothing about which direction a number moved.
@@ -148,9 +172,16 @@ export function DeltaBadge({
             text,
             improved: inverted ? value < 0 : value > 0,
             up: value > 0,
+            spoken: true,
           };
         })()
-      : { text: value.text, improved: value.improved, up: value.improved };
+      : // A worded delta carries its direction in the words or the sign.
+        {
+          text: value.text,
+          improved: value.improved,
+          up: value.improved,
+          spoken: false,
+        };
   if (!resolved) return null;
 
   const Icon = resolved.up ? ArrowUpRight : ArrowDownRight;
@@ -168,7 +199,11 @@ export function DeltaBadge({
       {/* The arrow carries direction for a sighted reader and is
           aria-hidden, so without this the announced value is a bare
           number: no up or down, and good-or-bad only in colour. */}
-      <span className="sr-only">{resolved.up ? t("arttı") : t("azaldı")} </span>
+      {resolved.spoken ? (
+        <span className="sr-only">
+          {resolved.up ? t("arttı") : t("azaldı")}{" "}
+        </span>
+      ) : null}
       {resolved.text}
     </span>
   );
@@ -185,7 +220,7 @@ export function MetricRow({ children }: { children: React.ReactNode }) {
      * frame, so a row of four numbers reads as data landing rather than a
      * page swap. The index is written onto each child below.
      */
-    <div className="stagger grid grid-cols-2 divide-x divide-y divide-base-300 overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)] lg:grid-cols-4 lg:divide-y-0">
+    <div className="metric-grid stagger grid grid-cols-2 divide-x divide-y divide-base-300 overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)] lg:grid-cols-4 lg:divide-y-0">
       {React.Children.map(children, (child, index) => (
         /*
          * The delay is written as `animation-delay` itself rather than as a

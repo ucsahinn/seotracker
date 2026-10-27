@@ -1,7 +1,8 @@
+/* eslint-disable max-lines */
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { GscApiError, GscNotConnectedError } from "@/server/lib/gscErrors";
 import * as searchConsoleTools from "./search-console-tools";
-import { makeToolContext } from "./tool-test-support";
+import { makeToolContext, textContent } from "./tool-test-support";
 
 const mocks = vi.hoisted(() => ({
   getProjectForOrganization: vi.fn(),
@@ -12,6 +13,7 @@ const mocks = vi.hoisted(() => ({
     inspectUrls: vi.fn(),
   },
   inspectAndRecord: vi.fn(),
+  getView: vi.fn(),
 }));
 
 vi.mock("cloudflare:workers", () => ({ env: {} }));
@@ -33,6 +35,9 @@ vi.mock("@/server/features/gsc/services/GscService", () => ({
 // client, and that module reaches the database this suite does not stand up.
 vi.mock("@/server/features/gsc/services/GscIndexCoverageService", () => ({
   inspectAndRecord: mocks.inspectAndRecord,
+}));
+vi.mock("@/server/features/gsc/services/SearchPerformanceService", () => ({
+  SearchPerformanceService: { getView: mocks.getView },
 }));
 const toolContext = makeToolContext();
 
@@ -452,5 +457,70 @@ describe("inspect_urls", () => {
       reason: "gsc_oauth_not_configured",
     });
     expect(mocks.GscService.inspectUrls).not.toHaveBeenCalled();
+  });
+});
+
+describe("get_search_summary", () => {
+  const none = { change: null, relative: null };
+  /** A view with no data at all; the brand state is the one thing varied. */
+  const emptyView = (brandState: { source: string; terms: string[] }) => ({
+    siteUrl: "sc-domain:example.com",
+    window: {
+      startDate: "2026-09-26",
+      endDate: "2026-10-23",
+      days: 28,
+      firstIncompleteDate: "2026-10-24",
+      incompleteSource: "google",
+    },
+    totals: {
+      current: { clicks: 0, impressions: 0, ctr: null, position: null },
+      vsPrevious: {
+        clicks: none,
+        impressions: none,
+        ctr: none,
+        position: none,
+      },
+      vsYoy: null,
+      provisional: null,
+    },
+    coverage: {
+      hiddenQueries: { clickShare: null, exact: true },
+    },
+    todo: [],
+    insights: { striking: { rows: [] }, anomalies: [], brandState },
+    quota: { requests: 14 },
+  });
+
+  beforeEach(() => {
+    mocks.getProjectForOrganization.mockResolvedValue({ id: "project_1" });
+    mocks.hasSelfHostedGoogleOAuthConfig.mockResolvedValue(true);
+    mocks.hasServiceAccount.mockResolvedValue(false);
+    mocks.getView.mockResolvedValue(emptyView({ source: "none", terms: [] }));
+  });
+
+  it("states an absent metric as unknown, never as zero", async () => {
+    const result = await searchConsoleTools.getSearchSummaryTool.handler(
+      { projectId: "project_1" },
+      toolContext,
+    );
+    const text = textContent(result);
+    expect(text).toContain("CTR unknown · position unknown");
+    expect(text).toContain("Anonymized queries: unknown of clicks");
+  });
+
+  it("says when the brand split runs on unconfirmed suggestions", async () => {
+    mocks.getView.mockResolvedValue(
+      emptyView({ source: "suggested", terms: ["example"] }),
+    );
+    const result = await searchConsoleTools.getSearchSummaryTool.handler(
+      { projectId: "project_1" },
+      toolContext,
+    );
+    expect(textContent(result)).toContain(
+      "Brand terms (suggested from the domain, not confirmed): example.",
+    );
+    expect(result.structuredContent).toMatchObject({
+      brand: { source: "suggested", terms: ["example"] },
+    });
   });
 });

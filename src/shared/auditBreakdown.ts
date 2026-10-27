@@ -157,6 +157,8 @@ export type CategoryScore = {
 export type AuditBreakdown = {
   /** The site score, 0-100, or null when nothing was crawled. */
   score: number | null;
+  /** The severity cap that lowered the site score, if one did (see `scoreAudit`). */
+  cappedBy: "critical" | "warnings" | null;
   /** What fixing each failed check adds to the site score, largest first. */
   gains: { issueType: string; points: number }[];
   checks: AuditCheck[];
@@ -250,6 +252,7 @@ export function buildAuditBreakdown(
   const failed = checks.filter((check) => check.state === "failed");
   return {
     score: scored.score,
+    cappedBy: scored.cappedBy,
     gains: scored.gains,
     checks,
     categories,

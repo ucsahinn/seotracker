@@ -1,5 +1,6 @@
 import { expect, it, vi } from "vitest";
 import { diagnosticsTool } from "./diagnostics-tool";
+import { makeToolContext } from "./tool-test-support";
 
 const mocks = vi.hoisted(() => ({
   collectDiagnostics: vi.fn(),
@@ -11,6 +12,9 @@ vi.mock("@/server/features/diagnostics/collectDiagnostics", () => ({
 }));
 vi.mock("@/server/features/quotas/QuotaService", () => ({
   getQuotaStatus: mocks.getQuotaStatus,
+}));
+vi.mock("@/server/lib/instance-facts", () => ({
+  getInstanceFacts: async () => ({ agentNote: "No sign" }),
 }));
 
 it("adds each active project's quota meters", async () => {
@@ -42,7 +46,7 @@ it("adds each active project's quota meters", async () => {
     ],
   });
 
-  const result = await diagnosticsTool.handler();
+  const result = await diagnosticsTool.handler({}, makeToolContext());
 
   expect(mocks.getQuotaStatus).toHaveBeenCalledTimes(1);
   expect(result.structuredContent?.diagnostics.quotas).toEqual([

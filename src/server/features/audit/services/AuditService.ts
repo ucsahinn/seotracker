@@ -27,6 +27,7 @@ import {
   reconcileRunningAudit,
   reconcileStaleAudits,
 } from "@/server/features/audit/services/auditReconciler";
+import { storedAuditErrorCode } from "@/server/lib/audit/audit-errors";
 import { t } from "@/shared/i18n";
 
 async function startAudit(input: {
@@ -147,7 +148,11 @@ async function getStatus(auditId: string, projectId: string) {
     lighthouseCompleted: audit.lighthouseCompleted,
     lighthouseFailed: audit.lighthouseFailed,
     currentPhase: audit.currentPhase,
-    errorCode: audit.errorCode,
+    errorCode: storedAuditErrorCode(audit),
+    failedPhase: audit.failedPhase,
+    // What a completed audit worked around; see AuditRepository.recordAuditNotice.
+    noticeCode: audit.noticeCode,
+    urlsDiscovered: audit.urlsDiscovered,
     startedAt: audit.startedAt,
     completedAt: audit.completedAt,
   };
@@ -178,6 +183,12 @@ async function getResults(auditId: string, projectId: string) {
       completedAt: audit.completedAt,
       config: parsedConfig,
       analyticsCompared: audit.analyticsCompared,
+      // Why a failed audit stopped, for the "no score" panel on its results.
+      errorCode: storedAuditErrorCode(audit),
+      failedPhase: audit.failedPhase,
+      noticeCode: audit.noticeCode,
+      // Null on audits from before it was recorded.
+      urlsDiscovered: audit.urlsDiscovered,
     },
     pages,
     lighthouse,

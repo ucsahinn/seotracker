@@ -12,51 +12,41 @@ import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
 import { refreshState } from "@/client/lib/refreshState";
 import { OpportunitiesTable } from "@/client/features/opportunities/OpportunitiesTable";
 import type { OpportunityReport } from "@/client/features/opportunities/report";
-import { formatDate, formatNumber } from "@/client/lib/format";
-import { describeWindow } from "@/shared/dataFreshness";
+import { formatCount, formatDate, formatPercent } from "@/client/lib/format";
+import { GSC_DATA_LAG_DAYS } from "@/shared/dataFreshness";
+import type { WorkKind } from "@/shared/pageOpportunities";
 import { getSearchOpportunities } from "@/serverFunctions/opportunities";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
-import { OpportunityKinds } from "@/client/features/opportunities/OpportunityKinds";
+import { OpportunityWorkBars } from "@/client/features/opportunities/OpportunityWorkBars";
+import { OpportunityMethod } from "@/client/features/opportunities/OpportunityMethod";
 import { OpportunityQuickFilters } from "@/client/features/opportunities/OpportunityQuickFilters";
-import { OpportunitySummary } from "@/client/features/opportunities/OpportunitySummary";
 import {
   applyFilters,
+  extraConversions,
   pathOf,
   quickCounts,
-  topOpportunity,
-  type KindId,
+  usefulChips,
+  WORK_COPY,
   type QuickId,
 } from "@/client/features/opportunities/opportunityLogic";
+
 /**
- * Every page Google showed, ranked by what working on it would be worth.
+ * One question per page: how many more clicks a month could it bring, and
+ * what gets them.
  *
- * This used to keep only positions 4 through 20 and call the rest "not an
- * opportunity", which threw away two real ones: a page ranking second whose
- * snippet nobody clicks is a title-and-description afternoon, and a page at
- * 34 with four thousand impressions is a content decision. An opportunity is
- * an opportunity; the band only ever said which *kind* -- so that is what
- * the tiles above the table now say.
- *
- * Which page to spend a week on is the actual question, and Search Console
- * alone cannot answer it because it does not know which pages earn anything.
- * Joining it with GA4 outcomes does: demand at 50%, business value at 30%,
- * and how close the page already is at 20%.
+ * The screen used to rank every page by a percentile mix of demand, business
+ * value and "reachability" -- where a page already at #1 scored highest on
+ * reachability. Its tiles counted table rows and Analytics join coverage,
+ * and the one number an owner needs was nowhere. The estimate now comes from
+ * `src/shared/pageOpportunities.ts`, on the same CTR curve and thresholds as
+ * the Search performance insights; Analytics is a label beside it.
  */
 /*
- * 100 is the ceiling `SearchOpportunityService` enforces, and it threw a
- * validation error rather than clamping -- so the 250 this list used to
- * offer broke the screen every time it was picked. Kept in step with
- * `opportunitiesSchema`, which now caps at the same number.
+ * 100 is the ceiling `SearchOpportunityService` enforces. Kept in step with
+ * the server function schema, which caps at the same number.
  */
 const LIMITS = [25, 50, 100] as const;
 
-/*
- * The same vocabulary the search-performance and analytics screens use. This
- * screen had no window control at all -- 28 days was a literal inside
- * `SearchOpportunityService` with no path to override it -- so "bu aralıkta
- * fırsat yok" was a verdict on a period the operator never chose and could
- * not widen.
- */
 // Labels stay Turkish here and go through t() where they render.
 const WINDOWS = [
   { days: 7, label: "Son 7 gün" },
@@ -66,22 +56,7 @@ const WINDOWS = [
 
 type WindowDays = (typeof WINDOWS)[number]["days"];
 
-/**
- * "Analytics" is a Latin brand word; under lang="tr" the tile's uppercase
- * would print it as "ANALYTİCS". `text` is a translated template with an
- * {analytics} placeholder, split there so the word sits where each language
- * puts it.
- */
-function AnalyticsLabel({ text }: { text: string }) {
-  const [before = "", after = ""] = text.split("{analytics}");
-  return (
-    <>
-      {before}
-      <span lang="en">Analytics</span>
-      {after}
-    </>
-  );
-}
+const plusCount = (n: number) => `+${formatCount(n)}`;
 
 export function OpportunitiesPage({
   projectId,
@@ -104,8 +79,7 @@ export function OpportunitiesPage({
       getSearchOpportunities({ data: { projectId, limit, windowDays } }),
     retry: false,
     // Keep the previous rows (and the pickers mounted) while a new window or
-    // limit loads, so focus and the report state survive a change; never
-    // across projects, where they would be the wrong site's pages.
+    // limit loads; never across projects.
     placeholderData: (previous, previousQuery) =>
       previousQuery?.queryKey[1] === projectId ? previous : undefined,
   });
@@ -115,11 +89,8 @@ export function OpportunitiesPage({
       <PageHeader
         title={t("Fırsatlar")}
         description={t(
-          "Google'da görünen sayfalarınız, üzerinde çalışmaya en değer olandan başlayarak.",
+          "Her sayfanın ayda kaç tıklama daha getirebileceği ve bunun için ne yapmanız gerektiği.",
         )}
-        /* Beside the title because they re-query everything below, the same
-           place Rankings puts its window. Shown whenever the data came back
-           ok, so the empty state keeps its way to widen the period. */
         actions={
           <PageActions>
             {query.data?.status === "ok" ? (
@@ -148,6 +119,7 @@ export function OpportunitiesPage({
       {query.isPending ? (
         <div className="space-y-4" aria-busy>
           <div className="skeleton h-[104px]" />
+          <div className="skeleton h-48" />
           <div className="skeleton h-96" />
         </div>
       ) : query.isError ? (
@@ -202,8 +174,6 @@ function WindowPicker({
   );
 }
 
-/* Without this the cut list had no control at all: no pagination, no
-   limit, nothing saying more existed. */
 function LimitPicker({
   limit,
   onChange,
@@ -267,28 +237,36 @@ function Report({
   /** A new window or row count is loading behind these rows. */
   stale: boolean;
 }) {
-  const [kind, setKind] = useState<KindId | null>(null);
+  const [work, setWork] = useState<WorkKind | null>(null);
   const [quick, setQuick] = useState<QuickId | null>(null);
   const [openPage, setOpenPage] = useState<string | null>(null);
   const filtersRef = useRef<HTMLDivElement>(null);
 
-  const shown = applyFilters(data.rows, kind, quick);
-  const filtered = kind !== null || quick !== null;
-
+  const shown = applyFilters(data.rows, work, quick);
+  const filtered = work !== null || quick !== null;
   const counts = quickCounts(data.rows);
-  const top = topOpportunity(data.rows);
+  const chips = usefulChips(counts, data.rows.length);
+  const top = data.rows[0] ?? null;
+  const { totals } = data;
+  const range = data.request.dateRange;
+  const period = t("{start} – {end}", {
+    start: formatDate(range.startDate),
+    end: formatDate(range.endDate),
+  });
+  const analyticsOn = data.analytics.state === "connected";
+  const converting = data.rows.filter((row) => row.value === "converts");
+  const conversions = converting.reduce(
+    (sum, row) => sum + (extraConversions(row) ?? 0),
+    0,
+  );
 
   if (data.rows.length === 0) {
-    /*
-     * The window picker lives in the page header and stays there for this
-     * branch. Without it a 7-day window that found nothing left the operator
-     * on an empty page with no way to widen the period.
-     */
     return (
       <div className="rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
         <NoOpportunities
-          dateRange={data.request.dateRange}
-          pagesConsidered={data.coverage.gscRowsConsidered}
+          dateRange={range}
+          pagesConsidered={totals.pagesConsidered}
+          curveInsufficient={data.method.curveInsufficient}
         />
       </div>
     );
@@ -301,143 +279,113 @@ function Report({
       }`}
       aria-busy={stale}
     >
-      {/* One block: three one-line notes read as one note, not three sections. */}
-      <div className="space-y-1">
-        {data.truncated.gsc ? (
-          <p className="text-xs text-muted">
-            {t(
-              "Search Console tek seferde sınırlı sayıda satır verir ve bu sınıra ulaşıldı; gerçekte daha fazla aday sayfa olabilir.",
-            )}
-          </p>
-        ) : null}
-
-        {data.warnings.includes("source_time_zones_differ") ? (
-          <p className="text-xs text-muted">
-            {t(
-              "Search Console ve Analytics farklı saat dilimlerinde raporluyor; günlük eşleşmeler bir gün kayabilir.",
-            )}
-          </p>
-        ) : null}
-
-        {/*
-         * The window the numbers below actually cover. It used to appear only
-         * in the empty state, so an operator reading a populated screen was
-         * never told which days it was about -- or that Search Console's
-         * newest finalised day is three days behind, which is why "bugün"
-         * is never the end of it.
-         */}
-        <p className="text-xs text-muted">
-          {describeWindow(
-            data.request.dateRange.startDate,
-            data.request.dateRange.endDate,
-            formatDate,
-          )}
-        </p>
-      </div>
+      {/* The window, once, above everything it covers. */}
+      <p className="text-xs text-muted">
+        {t(
+          "Son {days} gün · {period}. Search Console {lag} gün geriden gelir; Analytics oturumları da aynı günlerden okunur. Tahminler 30 güne ölçeklenir.",
+          { days: data.request.days, period, lag: GSC_DATA_LAG_DAYS },
+        )}
+      </p>
 
       <MetricRow>
-        {/* `rowCount` is the slice, not a verdict: every candidate is
-            scored, so "Fırsat 50" beside "300 aday sayfadan" used to read as
-            "50 of your 300 qualified" when it meant "you are looking at the
-            top 50 of 300". The hint says which, and the selector below lets
-            the operator actually reach the rest. */}
-        {/*
-         * Counts what is on screen. With a kind selected the tile
-         * kept reporting the unfiltered total -- "50" above nine visible
-         * rows -- while the export menu beside it already labelled itself
-         * from the filtered array.
-         */}
         <MetricTile
-          label={t("Listelenen")}
-          value={formatNumber(shown.length)}
+          label={t("En fazla kazanılabilecek tıklama / ay (üst sınır)")}
+          value={plusCount(totals.gainPerMonth)}
+          animateTo={{ value: totals.gainPerMonth, format: plusCount }}
           hint={
-            filtered
-              ? t("Filtreye uyan · {rows} satır içinde", {
-                  rows: formatNumber(data.rowCount),
-                })
-              : data.truncated.candidates
-                ? t("{candidates} aday sayfanın en iyileri", {
-                    candidates: formatNumber(data.totalCandidateRows),
-                  })
-                : t("Tüm aday sayfalar ({candidates})", {
-                    candidates: formatNumber(data.totalCandidateRows),
-                  })
+            totals.clicksPerMonth > 0
+              ? t(
+                  "{count} sayfada · bu sayfalar bugün ayda {clicks} tıklama alıyor, kazanç bunun {share} kadarı",
+                  {
+                    count: data.totalCandidateRows,
+                    clicks: formatCount(totals.clicksPerMonth),
+                    share: formatPercent(
+                      totals.gainPerMonth / totals.clicksPerMonth,
+                      0,
+                    ),
+                  },
+                )
+              : t("{count} sayfada", { count: data.totalCandidateRows })
           }
         />
-        {/* Was "Puanlanan", counted over the returned page, and every row
-            carries a score since unmatched pages started being scored too -
-            so it always equalled the row count while its hint described the
-            Analytics match. This is the number the hint meant. */}
-        <MetricTile
-          label={<AnalyticsLabel text={t("{analytics}'te karşılığı var")} />}
-          value={formatNumber(data.coverage.matchedRows)}
-          hint={t("{candidates} aday içinde", {
-            candidates: formatNumber(data.totalCandidateRows),
-          })}
-        />
-        {/* A count with no way to see those pages is a complaint, not a
-            tool, so it applies the same filter the chip below does. The tile
-            counts every candidate, the chip only the rows returned. */}
-        <TileButton
-          disabled={counts.no_analytics === 0}
-          onClick={() => {
-            setKind(null);
-            setQuick("no_analytics");
-          }}
-        >
-          <MetricTile
-            label={<AnalyticsLabel text={t("{analytics}'te karşılığı yok")} />}
-            value={formatNumber(data.coverage.unmatchedGscRows)}
-            hint={
-              counts.no_analytics === 0
-                ? t("Listedeki her sayfanın Analytics karşılığı var")
-                : t("Listelenen {rows} sayfanın {count} tanesi · listele", {
-                    rows: formatNumber(data.rowCount),
-                    count: formatNumber(counts.no_analytics),
-                  })
-            }
-          />
-        </TileButton>
-        {/* Was a tile naming the business-value setting, which is a label
-            rather than a number; the footnote says how it is chosen. */}
         <TileButton
           disabled={top === null}
           onClick={() => {
             if (top === null) return;
-            setKind(null);
+            setWork(null);
             setQuick(null);
             setOpenPage(top.page);
           }}
         >
           <MetricTile
-            label={t("En yüksek puan")}
-            value={top?.score == null ? null : formatNumber(top.score)}
+            label={t("Önce şuna bakın")}
+            value={top ? pathOf(top.page) : null}
             hint={
-              top === null
-                ? undefined
-                : t("{page} · ayrıntı", { page: pathOf(top.page) })
+              top
+                ? t("+{gain} tıklama/ay · {action}", {
+                    gain: formatCount(top.gainPerMonth),
+                    action: t(WORK_COPY[top.work].action),
+                  })
+                : undefined
             }
           />
         </TileButton>
+        <TileButton
+          disabled={!analyticsOn || counts.converts === 0}
+          onClick={() => {
+            setWork(null);
+            setQuick("converts");
+          }}
+        >
+          <MetricTile
+            label={t("Dönüşüm getiren sayfalar")}
+            value={analyticsOn ? formatCount(counts.converts) : null}
+            animateTo={
+              analyticsOn
+                ? { value: counts.converts, format: formatCount }
+                : undefined
+            }
+            hint={
+              !analyticsOn
+                ? t("Analytics bağlanınca görünür")
+                : counts.converts === 0
+                  ? t("Listedeki sayfalardan dönüşüm gelmiyor")
+                  : t(
+                      "Kazanç gelirse ayda yaklaşık +{count} anahtar olay (tahmin) · listele",
+                      { count: Math.round(conversions) },
+                    )
+            }
+          />
+        </TileButton>
+        <MetricTile
+          label={t("Kazanç beklenmeyen sayfalar")}
+          value={formatCount(totals.noGainPages)}
+          animateTo={{ value: totals.noGainPages, format: formatCount }}
+          hint={t(
+            "Zaten iyi sıradalar ve normal tıklanıyorlar ya da çok az gösterim aldılar; listede yoklar.",
+          )}
+        />
       </MetricRow>
 
-      <OpportunitySummary
-        rows={data.rows}
-        selectedKind={kind}
-        onSelectKind={setKind}
+      <OpportunityWorkBars
+        byWork={totals.byWork}
+        selected={work}
+        onSelect={setWork}
       />
 
-      <OpportunityKinds rows={data.rows} selected={kind} onSelect={setKind} />
-
-      <OpportunityQuickFilters
-        counts={counts}
-        selected={quick}
-        onSelect={setQuick}
-        ref={filtersRef}
-      />
+      {chips.length > 0 ? (
+        <OpportunityQuickFilters
+          chips={chips}
+          counts={counts}
+          selected={quick}
+          onSelect={setQuick}
+          ref={filtersRef}
+        />
+      ) : null}
 
       <OpportunitiesTable
         projectId={projectId}
+        days={data.request.days}
         rows={shown}
         openPage={openPage}
         onOpenPageChange={setOpenPage}
@@ -446,39 +394,23 @@ function Report({
             ? () => {
                 // The button being clicked is about to unmount.
                 filtersRef.current?.focus();
-                setKind(null);
+                setWork(null);
                 setQuick(null);
               }
             : undefined
         }
       />
 
-      <div className="space-y-1 text-xs text-muted">
-        <p>
-          <span className="font-medium text-base-content">
-            {t("Puan nasıl hesaplanır?")}
-          </span>{" "}
-          {data.scoring.businessValueMetric === "engagementRate"
-            ? data.scoring.engagementFallback
-              ? t(
-                  "Talep (%50) + iş değeri (%30) + yükselme kolaylığı (%20). İş değeri dönüşüm tanımlı olmadığı için etkileşim oranına göre hesaplanır.",
-                )
-              : t(
-                  "Talep (%50) + iş değeri (%30) + yükselme kolaylığı (%20). İş değeri etkileşim oranına göre hesaplanır.",
-                )
-            : t(
-                "Talep (%50) + iş değeri (%30) + yükselme kolaylığı (%20). İş değeri dönüşümlere göre hesaplanır.",
-              )}
-        </p>
-        <p>
-          <span className="font-medium text-base-content">
-            {t("Analytics'te karşılığı yok ne demek?")}
-          </span>{" "}
+      {data.truncated.candidates ? (
+        <p className="text-xs text-muted">
           {t(
-            "Analytics o sayfaya hiç ziyaret görmemiş ya da adresi farklı yazılmış olabilir. Bu sayfalar da puanlanır. İş değerinde haksız yere sıfır almasınlar diye ortada bir değer verilir.",
+            "Kazanç beklenen {total} sayfanın en büyük {count} tanesi listeleniyor; üstteki toplamlar hepsini kapsar.",
+            { total: data.totalCandidateRows, count: data.rowCount },
           )}
         </p>
-      </div>
+      ) : null}
+
+      <OpportunityMethod data={data} projectId={projectId} />
     </div>
   );
 }

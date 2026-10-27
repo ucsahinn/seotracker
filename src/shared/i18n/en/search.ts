@@ -57,18 +57,18 @@ export const enSearch: Catalog = {
     "Where several of your pages compete with each other for the same search.",
   // search-performance/strikingEmptyCopy.ts
   "Bu gruba uyan sorgu yok": "No queries in this group",
-  "Seçimi kaldırarak sıra 5-20 arasındaki tüm sorgulara dönün.":
-    "Clear the selection to go back to every query in positions 5-20.",
-  "Bu dönemde 5-20. sırada kelime yok":
-    "No keywords in positions 5-20 this period",
-  "Hiçbir kelimeniz 5-20. sırada değil. Bu aralıktaki kelimeler küçük bir iyileştirmeyle üst sıralara çıkabilir; olunca burada listelenir.":
-    "None of your keywords are in positions 5-20. Keywords in this range can climb higher with a small improvement; when there are some, they are listed here.",
+  "Seçimi kaldırarak sıra 4-20 arasındaki tüm sorgulara dönün.":
+    "Clear the selection to go back to every query in positions 4-20.",
+  "Bu dönemde 4-20. sırada kelime yok":
+    "No keywords in positions 4-20 this period",
+  "Hiçbir kelimeniz 4-20. sırada değil. Bu aralıktaki kelimeler küçük bir iyileştirmeyle üst sıralara çıkabilir; olunca burada listelenir.":
+    "None of your keywords are in positions 4-20. Keywords in this range can climb higher with a small improvement; when there are some, they are listed here.",
   "Bu seçimde sorgu verisi yok": "No query data for this selection",
   "Seçili ülke ya da cihaz için Search Console sorgu verisi paylaşmadı. Filtreyi kaldırarak tüm trafiğe bakın.":
     "Search Console shared no query data for the selected country or device. Clear the filter to see all traffic.",
   "Kelime düzeyinde veri henüz gelmedi": "No keyword-level data yet",
-  "Search Console, hangi kelimeyle arandığınızı bu dönem için henüz paylaşmadı. Az trafikli sitelerde bu normaldir. Veri gelince 5-20. sıradaki kelimeler burada listelenir.":
-    "Search Console has not yet shared which keywords people searched for in this period. This is normal for low-traffic sites. Once data arrives, keywords in positions 5-20 are listed here.",
+  "Search Console, hangi kelimeyle arandığınızı bu dönem için henüz paylaşmadı. Az trafikli sitelerde bu normaldir. Veri gelince 4-20. sıradaki kelimeler burada listelenir.":
+    "Search Console has not yet shared which keywords people searched for in this period. This is normal for low-traffic sites. Once data arrives, keywords in positions 4-20 are listed here.",
   // search-performance/deviceShare.ts (Search Console: Mobile, Desktop, Tablet)
   Mobil: "Mobile",
   Bilgisayar: "Desktop",
@@ -196,7 +196,6 @@ export const enSearch: Catalog = {
     "{queries} queries earn {impressions} impressions in total but sit outside the top three. The bars show each group's share of impressions; click one to narrow the table.",
   "Sıra 5-20 arasındaki {queries} sorgunun {impressions} gösterimi, sıra 5-10 ve 11-20 olarak bölünmüş.":
     "{impressions} impressions from {queries} queries in positions 5-20, split into positions 5-10 and 11-20.",
-  "Çakışma özeti": "Cannibalization summary",
   "Search Console bu dönem için sorgu vermedi, bu yüzden karşılaştırılacak bir şey yok.":
     "Search Console returned no queries for this period, so there is nothing to compare.",
   "Hiçbir sorguda iki sayfanız birbiriyle yarışmıyor, bu yüzden özetlenecek bir şey yok.":
@@ -207,8 +206,6 @@ export const enSearch: Catalog = {
   },
   "{queries} sorguda birden fazla sayfanız yarışıyor; {impressions} gösterim risk altında.":
     "More than one of your pages competes on {queries} queries; {impressions} impressions are at risk.",
-  "Çakışan sorgu": "Cannibalized queries",
-  "Risk altındaki gösterim": "Impressions at risk",
   "En çok kaybettiren sorgu": "Query losing the most",
   "Listeyi bu sorguya daraltır": "Narrows the list to this query",
   "{impressions} gösterim bölünüyor · {pages} sayfa":
@@ -245,7 +242,6 @@ export const enSearch: Catalog = {
   "{count} sayfa": { one: "{count} page", other: "{count} pages" },
   "Google'ın tercih ettiği sayfa dışında kalan gösterim payı":
     "Share of impressions that went to pages other than the one Google prefers",
-  "{share} pay dışında": "{share} split off",
   "Aynı sorguya yarışan sayfalar": "Pages competing for the same query",
   "Google bu sorguda en çok bu sayfayı gösteriyor":
     "Google shows this page most often for this query",
@@ -605,4 +601,828 @@ export const enSearch: Catalog = {
     "What does “not found in Analytics” mean?",
   "Analytics o sayfaya hiç ziyaret görmemiş ya da adresi farklı yazılmış olabilir. Bu sayfalar da puanlanır. İş değerinde haksız yere sıfır almasınlar diye ortada bir değer verilir.":
     "Analytics may have seen no visits to that page, or recorded its address differently. These pages are scored too; they get a middle business value so they don't unfairly score zero.",
+  // Cards and stats review (Opportunities, rankings, setup verdict).
+  "Her sayfanın ayda kaç tıklama daha getirebileceği ve bunun için ne yapmanız gerektiği.":
+    "How many more clicks a month each page could bring, and what to do to get them.",
+  "Son {days} gün · {period}. Search Console {lag} gün geriden gelir; Analytics oturumları da aynı günlerden okunur. Tahminler 30 güne ölçeklenir.":
+    "Last {days} days · {period}. Search Console runs {lag} days behind; Analytics sessions are read for the same days. Estimates are scaled to 30 days.",
+  "{count} sayfada · bu sayfalar bugün ayda {clicks} tıklama alıyor, kazanç bunun {share} kadarı":
+    "Across {count} pages · they get {clicks} clicks a month today; the gain is {share} of that",
+  "Önce şuna bakın": "Start here",
+  "+{gain} tıklama/ay · {action}": "+{gain} clicks/month · {action}",
+  "Dönüşüm getiren sayfalar": "Pages that convert",
+  "Analytics bağlanınca görünür": "Shows once Analytics is connected",
+  "Listedeki sayfalardan dönüşüm gelmiyor": "None of the listed pages converts",
+  "Kazanç gelirse ayda yaklaşık +{count} anahtar olay (tahmin) · listele":
+    "If the gain arrives, about +{count} key events a month (estimate) · list them",
+  "Kazanç beklenmeyen sayfalar": "Pages with nothing to gain",
+  "Zaten iyi sıradalar ve normal tıklanıyorlar ya da çok az gösterim aldılar; listede yoklar.":
+    "Already ranking well and clicked normally, or shown too rarely to estimate; they are not listed.",
+  "Kazanç beklenen {total} sayfanın en büyük {count} tanesi listeleniyor; üstteki toplamlar hepsini kapsar.":
+    "Showing the biggest {count} of {total} pages with a gain; the totals above cover all of them.",
+  "Tahmin nasıl yapılır?": "How is it estimated?",
+  "Hesaba katılmadı ({terms}). Markanızı arayan sizi zaten bulur; onların yüksek tıklama oranı diğer aramaları haksız yere düşük gösterirdi.":
+    "Left out ({terms}). People searching your brand find you anyway, and their high click-through would make every other search look low.",
+  "Alan adınızdan tahmin edilen terimlerle ayrıldı ({terms}). Doğru terimleri Arama performansı ekranında onaylayabilirsiniz.":
+    "Separated using terms guessed from your domain ({terms}). You can confirm the right terms on the Search performance screen.",
+  "Marka terimi tanımlı değil, bu yüzden marka aramaları da karşılaştırmaya dahil. Arama performansı ekranında tanımlayabilirsiniz.":
+    "No brand terms are set, so brand searches are part of the comparison. You can set them on the Search performance screen.",
+  "Analytics ne katıyor?": "What does Analytics add?",
+  "Analytics bağlı değil. Bağlarsanız her sayfanın dönüşüm getirip getirmediği tahminin yanında görünür.":
+    "Analytics is not connected. Connect it to see next to each estimate whether the page converts.",
+  "Analytics bu kez yanıt vermedi; tahminler yalnızca Search Console'dan.":
+    "Analytics did not answer this time; the estimates come from Search Console alone.",
+  "Tahmini değiştirmez; yanında bir etiket olarak durur. Bir sayfa en az {sessions} organik oturum aldıysa dönüşümlerine bakılır, daha azında oran gürültüdür. {matched} / {total} sayfanın Analytics karşılığı var.":
+    "It does not change the estimate; it sits beside it as a label. A page's conversions are only judged from {sessions} organic sessions up; below that the rate is noise. {matched} / {total} pages have an Analytics match.",
+  "Hangi aramaların kazandıracağını görmek için bir satıra tıklayın.":
+    "Click a row to see which searches the gain comes from.",
+  "Seçtiğiniz iş türü ya da hızlı filtre bu dönemde hiçbir sayfayla eşleşmedi. Filtreleri kaldırın ya da dönemi genişletin.":
+    "The kind of work or quick filter you picked matched no page in this period. Clear the filters or widen the period.",
+  "Sitenizin aynı sıradaki marka dışı aramaları: {ctr}":
+    "Your site's non-brand searches at the same position: {ctr}",
+  "site {ctr} · {value} puan": "site {ctr} · {value} pts",
+  "Bu sayfanın aramaları sitenizin kendi tıklama oranlarına ulaşırsa ayda gelebilecek ek tıklama.":
+    "Extra clicks a month if this page's searches reached your own site's click-through rates.",
+  "/ay": "/mo",
+  "Gösterilenlerin yüzde kaçı tıklandı. Altındaki satır, sayfanın marka dışı aramalarını sitenizin aynı sıradaki aramalarıyla yüzde puan olarak karşılaştırır.":
+    "Share of impressions that were clicked. The line under it compares the page's non-brand searches with your site's at the same position, in percentage points.",
+  "Analytics'teki organik oturumlar, Search Console ile aynı günler için. Analytics ekranı dünü de saydığı için sayı orada biraz farklı olabilir.":
+    "Organic sessions in Analytics, for the same days as Search Console. The Analytics screen counts up to yesterday, so its figure can differ a little.",
+  "+{gain} tıklama/ay": "+{gain} clicks/month",
+  "Bugünkü dönüşüm oranıyla bu, ayda yaklaşık +{count} anahtar olay eder (tahmin).":
+    "At today's conversion rate that is about +{count} key events a month (estimate).",
+  "ayda {count} gösterim": "{count} impressions a month",
+  "Değer (Analytics)": "Value (Analytics)",
+  Mesafe: "Distance",
+  "{position}. sıra → hedef {target}": "Position {position} → target {target}",
+  "Hangi aramalar?": "Which searches?",
+  "Kazanç/ay": "Gain/month",
+  "hedef {ctr}": "target {ctr}",
+  "Ne yapmalı? {action}": "What to do? {action}",
+  "Ortalama {position}. sırada; {impressions} gösterimden {clicks} tıklama aldı. Aşağıdaki aramalar sitenizin kendi tıklama oranlarına ulaşırsa ayda yaklaşık {gain} tıklama daha gelir.":
+    "Average position {position}; {clicks} clicks from {impressions} impressions. If the searches below reached your own site's click-through rates, about {gain} more clicks a month would come.",
+  "{events} anahtar olay · dönüşen oturum oranı {rate}":
+    "{events} key events · {rate} of sessions convert",
+  "{sessions} oturum, hiç dönüşüm yok": "{sessions} sessions, no conversions",
+  "{sessions} oturum; değerini söylemek için az":
+    "{sessions} sessions; too few to judge its value",
+  "{sessions} oturum": "{sessions} sessions",
+  "Her sayfa için tek bir soru: ayda kaç tıklama daha getirebilir ve bunun için ne yapmalı? Tahmin, sitenizin kendi tıklama oranlarından yapılır. Kazancı olmayan sayfalar listede yer almaz. Bir satıra tıklayınca hangi aramaların bu kazancı getirdiğini görürsünüz.":
+    "One question per page: how many more clicks a month could it bring, and what gets them? The estimate uses your own site's click-through rates. Pages with nothing to gain are left out. Click a row to see which searches the gain comes from.",
+  "Fırsatlar için Search Console gerekir": "Opportunities need Search Console",
+  "Tahminler Search Console'daki aramalardan hesaplanır. Analytics'i de bağlarsanız hangi sayfaların dönüşüm getirdiği yanında görünür.":
+    "The estimates are calculated from your searches in Search Console. Connect Analytics too to see which pages convert.",
+  "Tahmin için veri henüz az": "Not enough data to estimate yet",
+  "{start} – {end} aralığında sitenizin tıklama oranını sıraya göre ölçecek kadar arama yok. Dönemi 90 güne genişletmeyi deneyin.":
+    "Between {start} and {end} there are not enough searches to measure your site's click-through by position. Try widening the period to 90 days.",
+  "Bu dönemde kazanç beklenen sayfa yok":
+    "No page has anything to gain in this period",
+  "{start} – {end} aralığında {count} sayfanın hepsi ya zaten iyi sırada ve normal tıklanıyor ya da tahmin için çok az gösterim aldı.":
+    "Between {start} and {end}, all {count} pages either already rank well and are clicked normally, or had too few impressions to estimate.",
+  "Kazanç hangi işte?": "Where is the gain?",
+  "Her satır, o işle ayda gelebilecek ek tıklama. Bir satıra basınca tablo o işe daralır.":
+    "Each row is the extra clicks a month that kind of work could bring. Press a row to narrow the table to it.",
+  "İş türleri": "Kinds of work",
+  "Bu türde kazanç beklenen sayfa yok.":
+    "No page has a gain from this kind of work.",
+  "tıklama/ay": "clicks/month",
+  "Tahmini kazanç (tıklama/ay)": "Estimated gain (clicks/month)",
+  "Yapılacak iş": "Work to do",
+  dönüşüyor: "converts",
+  "dönüşüm yok": "no conversions",
+  "az trafik": "little traffic",
+  "Dönüşüm getirenler": "Converting",
+  "Trafik var, dönüşüm yok": "Traffic, no conversions",
+  "Başlık ve açıklama işi": "Title and description work",
+  "Başlığı ve açıklamayı yenileyin": "Rewrite the title and description",
+  "İlk sayfada ama sitenizin aynı sıradaki aramalarına göre az tıklanıyor. Sıra değişmeden tıklama artar.":
+    "On page one, but clicked less than your site's searches at the same position. Clicks rise without moving position.",
+  "aynı sıra, sitenizin tıklama oranı":
+    "same position, your site's click-through",
+  "Başlığı, aşağıdaki aramaların ilk kelimelerde karşılık bulacağı biçimde yeniden yazın.":
+    "Rewrite the title so the searches below are answered in its first words.",
+  "İki hafta sonra bu ekrana dönüp tahmini kazancın küçülüp küçülmediğine bakın.":
+    "Come back to this screen in two weeks and check whether the estimated gain has shrunk.",
+  "İlk sayfada, 4-10. sıra": "On page one, positions 4-10",
+  "İçeriği güçlendirin": "Strengthen the content",
+  "İçeriği, aşağıdaki aramalara rakiplerden daha eksiksiz yanıt verecek şekilde genişletin.":
+    "Expand the content so it answers the searches below more completely than competitors do.",
+  "Sitenizdeki ilgili sayfalardan bu sayfaya, aramayı anlatan bir bağlantı metniyle iç bağlantı verin.":
+    "Link to this page from related pages on your site, with link text that describes the search.",
+  "Başlıkta ve ilk paragrafta en çok kazandıracak aramayı açıkça geçirin.":
+    "Name the search with the biggest gain clearly in the title and first paragraph.",
+  "2. sayfada, 11-20. sıra": "On page two, positions 11-20",
+  "İç bağlantı verin, içeriği genişletin":
+    "Add internal links, expand the content",
+  "İlk sayfanın hemen arkasında. İlk sayfaya çıkana kadar neredeyse hiç tıklanmaz.":
+    "Just behind page one. It gets almost no clicks until it reaches page one.",
+  "ilk sayfa, 6-10. sıra": "page one, positions 6-10",
+  "Sayfanın bu aramalar için gerçekten doğru sayfa olduğunu kontrol edin; değilse doğru sayfaya yönlendirin.":
+    "Check that this really is the right page for these searches; if not, redirect to the right one.",
+  "Eksik alt başlıkları, örnekleri ve sık sorulan soruları ekleyin.":
+    "Add the missing subheadings, examples and frequently asked questions.",
+  "Ana menüden ya da güçlü sayfalardan bu sayfaya iç bağlantı verin.":
+    "Link to this page from the main menu or from strong pages.",
+  "Derinde, 21. sıradan sonra": "Deep, beyond position 20",
+  "Birleştirin ya da bırakın": "Merge or let go",
+  "Talep var ama sayfa çok geride. Genişletmek mi, başka bir sayfayla birleştirmek mi, bırakmak mı, karar verin.":
+    "There is demand but the page is far back. Decide whether to expand it, merge it with another page, or let it go.",
+  "Aynı konuya değinen başka bir sayfanız varsa ikisini birleştirip eskisinden yönlendirme kurun.":
+    "If another page covers the same topic, merge the two and redirect from the old one.",
+  "Sayfa bu konunun cevabıysa eksik bölümleri yazın ve iç bağlantı verin.":
+    "If the page is the answer to this topic, write the missing sections and link to it internally.",
+  "Tahmini kazanç küçükse sayfayı bırakın; emeği daha yakın fırsatlara harcayın.":
+    "If the estimated gain is small, let the page go and spend the effort on closer opportunities.",
+  "Bu bilgisayarda {start} – {end} arasının geçmişi saklı; Google'ın 16 ay sınırı buna uygulanmaz.":
+    "History from {start} to {end} is stored on this computer; Google's 16-month limit does not apply to it.",
+  "{from} → {to}. sıra · {impressions} gösterim":
+    "Position {from} → {to} · {impressions} impressions",
+  "Önceki aynı uzunluktaki döneme göre, gösterimle tartılarak: çok aranan bir sorgunun küçük hareketi az arananın büyük hareketinden önce gelir.":
+    "Against the previous period of the same length, weighted by impressions: a small move on a much-searched query ranks above a big move on a rare one.",
+  "{count} sorgunun ortalama sırası; sağdaki sayı önceki döneme göre değişim. Bir çubuğa tıklayınca tablo o gruba göre daralır.":
+    "Average position of {count} queries; the number on the right is the change against the previous period. Click a bar to narrow the table to that group.",
+  "Önceki döneme göre bu gruba giren ya da çıkan sorgu sayısı":
+    "Queries that entered or left this group since the previous period",
+  "Bu listede en çok gösterim alan dörtte bir: {impressions} ve üstü gösterim.":
+    "The quarter of this list with the most impressions: {impressions} impressions or more.",
+  "{value} sıra yükseldi": "up {value} places",
+  "{value} sıra geriledi": "down {value} places",
+  // search-performance redesign: screen, to-do copy and printable report
+  "Marka adları kaydedildi": "Brand names saved",
+  "Marka adları kaydedilemedi": "Couldn't save brand names",
+  "Sitenizin adını ve insanların onu nasıl yazdığını girin. Bu kelimeleri içeren aramalar marka araması sayılır.":
+    "Enter your site's name and the ways people spell it. Searches containing these words count as brand searches.",
+  "Marka adları": "Brand names",
+  "{term} adını kaldır": "Remove {term}",
+  "Marka adı ekle": "Add a brand name",
+  "Örnek: örnek site": "Example: example site",
+  Ekle: "Add",
+  "Öneriler:": "Suggestions:",
+  "Eşiği aşan değişim yok.": "No change above the threshold.",
+  "{previous} → {current} tıklama": "{previous} → {current} clicks",
+  "sıra {position}": "position {position}",
+  "Düşenler ({count})": "Falling ({count})",
+  "Yükselenler ({count})": "Rising ({count})",
+  "Arşivde henüz gün yok. Bu ekran her açıldığında Search Console'dan günlük toplamları alıp bu bilgisayarda saklar; ay ay eğilim birkaç gün içinde burada görünür.":
+    "No days in the archive yet. Each time this screen opens it saves Search Console's daily totals on this computer; the month-by-month trend shows up here within a few days.",
+  "Arşiv {date} tarihinden başlıyor; iki ay dolunca eğilim burada görünür.":
+    "The archive starts on {date}; the trend shows up here once it holds two months.",
+  "{count} aylık tıklama, {start} – {end}.":
+    "Clicks over {count} months, {start} – {end}.",
+  "Aylık tıklama": "Monthly clicks",
+  Ay: "Month",
+  "Arşivdeki gün": "Days in the archive",
+  "Bu bilgisayardaki arşivden, cihaz filtresine göre (ülke filtresi uygulanmaz). Kesik çizgili çubuk: arşivin o ayın tamamını tutmadığı ay.":
+    "From the archive on this computer, by the device filter (the country filter does not apply). Dashed bar: a month the archive does not hold in full.",
+  "Önceki döneme göre en çok değişenler":
+    "Biggest changes since the previous period",
+  "{start} – {end} ile karşılaştırma. En az {clicks} tıklamalık ve {share} oranında bir değişim aranır.":
+    "Compared with {start} – {end}. Looks for a change of at least {clicks} clicks and {share}.",
+  "Satır sınırı yüzünden bir dönemin tablosu eksik; yalnızca iki dönemde de görünen satırlar karşılaştırıldı.":
+    "One period's table is incomplete because of the row limit; only rows seen in both periods were compared.",
+  "Yeni ve kaybolan sorgular": "New and lost queries",
+  "Yalnızca bir dönemde en az {impressions} gösterim alan sorgular.":
+    "Queries with at least {impressions} impressions in only one of the two periods.",
+  "Yeni görünenler": "Newly showing",
+  "Önceki dönemin tablosu satır sınırında kesildiği için hangi sorguların yeni olduğu bilinemiyor.":
+    "It can't be told which queries are new: the previous period's table was cut at the row limit.",
+  "Bu dönemde yeni görünen sorgu yok.":
+    "No newly showing queries in this period.",
+  "Kaybolanlar (önceki dönemdeki değerleriyle)":
+    "Lost (with their previous-period numbers)",
+  "Bu dönemin tablosu satır sınırında kesildiği için hangi sorguların kaybolduğu bilinemiyor.":
+    "It can't be told which queries were lost: this period's table was cut at the row limit.",
+  "Kaybolan sorgu yok.": "No lost queries.",
+  "Gücünü kaybeden sayfalar": "Pages losing ground",
+  "Son çeyrekteki tıklamaları, önceki dört çeyreğin en iyisinin {share} kadarından aza düşen ve geçen yılın aynı çeyreğinden de geride kalan sayfalar.":
+    "Pages whose clicks last quarter fell below {share} of their best of the four quarters before, and also trail the same quarter a year earlier.",
+  "Bu karşılaştırma bir yılı aşkın veri ister; Search Console bu mülk için o kadar eski veri vermedi ya da filtre uygulanmış.":
+    "This comparison needs more than a year of data; Search Console didn't return that much for this property, or a filter is on.",
+  "Belirgin biçimde gücünü kaybeden sayfa yok.":
+    "No page is clearly losing ground.",
+  "Son çeyrek {clicks} · en iyisi {peak} tıklama":
+    "Last quarter {clicks} · best {peak} clicks",
+  "Uzun dönem: aylık tıklama": "Long term: monthly clicks",
+  "Search Console en fazla 16 ay geriye gider; bu arşiv günlük toplamları bu bilgisayarda daha uzun saklar.":
+    "Search Console goes back 16 months at most; this archive keeps daily totals on this computer for longer.",
+  sorgular: "queries",
+  sayfalar: "pages",
+  "sorgu-sayfa eşleşmeleri": "query-page pairs",
+  "Geçen yıl karşılaştırılamıyor: Google bu günleri artık vermiyor (en fazla 16 ay).":
+    "Can't compare with last year: Google no longer serves those days (16 months at most).",
+  "Önceki dönem karşılaştırılamıyor: Google bu günleri vermiyor.":
+    "Can't compare with the previous period: Google doesn't serve those days.",
+  "Verinin durumu": "Data status",
+  "Kesin günler": "Final days",
+  "Kesinleşmemiş gün yok.": "No days still being counted.",
+  "Son veri: {date}.": "Latest data: {date}.",
+  "Bu dönem için Google'dan hiç satır gelmedi.":
+    "Google returned no rows for this period.",
+  "Gizli sorgular": "Hidden queries",
+  "Gizli sorgu payı hesaplanamadı (tıklama yok).":
+    "Hidden query share can't be calculated (no clicks).",
+  "Satır sınırına ulaşıldı ({tables}); en az tıklanan uç eksik. Daraltmak için filtre kullanın.":
+    "Row limit reached ({tables}); the least-clicked tail is missing. Use a filter to narrow it down.",
+  "Tablolar tam: {queries} sorgu, {pages} sayfa okundu.":
+    "Tables complete: {queries} queries and {pages} pages read.",
+  "Sıra 4-10": "Position 4-10",
+  "İlk sayfada ama ilk üçte değil: en çok tıklama kazandıran adım ilk üçe çıkmaktır.":
+    "On page one but not in the top three: moving into the top three wins the most clicks.",
+  "Bu dönem için satır yok": "No rows for this period",
+  "Search Console bu dönem ve filtreler için satır vermedi. Dönemi genişletmeyi ya da filtreleri kaldırmayı deneyin.":
+    "Search Console returned no rows for this period and these filters. Try a longer period or clear the filters.",
+  "Taban: okunan {rows} sorgu, {clicks} tıklama. Sitenin toplamı {site} tıklama; aradaki fark Google'ın gizlediği sorgulardan.":
+    "Base: {rows} queries read, {clicks} clicks. The site total is {site} clicks; the difference is queries Google hides.",
+  "Taban: okunan {rows} sayfa, {clicks} tıklama. Google sayfa satırlarını sayfa bazında topladığı için site toplamından ({site}) biraz farklı olabilir.":
+    "Base: {rows} pages read, {clicks} clicks. Google totals page rows by page, so this can differ slightly from the site total ({site}).",
+  "Çubuk, satırın bu tablodaki tıklama payı.":
+    "The bar is the row's share of clicks in this table.",
+  "Google'ın satır sınırına ulaşıldı; en az tıklanan uç listede yok.":
+    "Google's row limit was reached; the least-clicked tail isn't listed.",
+  "Önceki dönem tablosu da kesildi; değişimi bilinmeyen satırlarda – yazar.":
+    "The previous period's table was cut too; rows whose change is unknown show –.",
+  "Önceki dönemde bilinmiyor": "Unknown for the previous period",
+  "Sıra {range}": "Position {range}",
+  "Paylar sitenin toplamına göre: {clicks} tıklama, {impressions} gösterim.":
+    "Shares are of the site total: {clicks} clicks, {impressions} impressions.",
+  "Bu kırılımda filtre olduğu için paylar satırların toplamına göre: {clicks} tıklama.":
+    "A filter is on for this breakdown, so shares are of the rows' total: {clicks} clicks.",
+  "{name} filtresini kaldır": "Remove the {name} filter",
+  "Tüm ekranı {name} ile daralt": "Narrow the whole screen to {name}",
+  "Daha az göster": "Show less",
+  "Tümünü göster ({count})": "Show all ({count})",
+  "Google'ın satır sınırına ulaşıldı; liste tam değil.":
+    "Google's row limit was reached; the list isn't complete.",
+  "{clicks} tıklama": "{clicks} clicks",
+  "Okunan {count} sorgunun ortalama sırasına göre. Google'ın gizlediği sorgular burada yok.":
+    "By the average position of the {count} queries read. Queries Google hides aren't included.",
+  "Haftalara göre sorgu dağılımı": "Queries by week",
+  "{count} haftada, sıra aralıklarının sorgular içindeki payı.":
+    "Share of position ranges among queries, over {count} weeks.",
+  Hafta: "Week",
+  "{date} haftası": "Week of {date}",
+  "Her hafta, o hafta görünen sorguların sıra aralıklarına dağılımı (pay). Bu bilgisayardaki sorgu arşivinden, kesin verilerle; tüm cihaz ve ülkeler.":
+    "Each week, how the queries shown that week split across position ranges (share). From the query archive on this computer, final data; all devices and countries.",
+  "Haftalık dağılım için sorgu arşivi doluyor; Sıralama takibi ekranı ya da bu ekran açıldıkça tamamlanır.":
+    "The query archive is still filling for the weekly split; it completes as this screen or Rank tracking is opened.",
+  "Haftalık dağılım cihaz ya da ülke filtresiyle gösterilmez: arşiv bu kırılımları tutmaz.":
+    "The weekly split isn't shown with a device or country filter: the archive doesn't keep those breakdowns.",
+  "Haftalık dağılım için en az iki hafta gerekir.":
+    "The weekly split needs at least two weeks.",
+  "{count} sorgu · {clicks} tıklama": "{count} queries · {clicks} clicks",
+  "(sorgu tıklamalarının {share} kadarı)": "({share} of query clicks)",
+  "Tıklama oranı {ctr} · ortalama sıra {position}":
+    "CTR {ctr} · average position {position}",
+  "Marka aramaları": "Brand searches",
+  "Marka dışı aramalar": "Non-brand searches",
+  "{count} sorgu · tıklama oranı {ctr} · ortalama sıra {position}":
+    "{count} queries · CTR {ctr} · average position {position}",
+  "Marka adları: {terms}. Paylar okunan sorgulara göre; gizli sorgular dahil değil.":
+    "Brand names: {terms}. Shares are of the queries read; hidden queries aren't included.",
+  "Marka adlarını düzenle": "Edit brand names",
+  "Sorgularınız Google'da hangi sıralarda görünüyor.":
+    "Where your queries show up on Google.",
+  "Marka ve marka dışı aramalar": "Brand and non-brand searches",
+  "Adınızla gelen aramalar ile sizi bilmeden bulanlar ayrı ölçülür.":
+    "Searches for your name and searches by people who didn't know you are measured separately.",
+  "Bir cihaza tıklayınca tüm ekran o cihaza göre daralır.":
+    "Click a device to narrow the whole screen to it.",
+  "Bir ülkeye tıklayınca tüm ekran o ülkeye göre daralır.":
+    "Click a country to narrow the whole screen to it.",
+  "Sonuçlarınızın Google'da hangi özel biçimlerle göründüğü. Google bu dökümü sayfa bazında toplar.":
+    "The special formats your results appeared in on Google. Google totals this breakdown by page.",
+  "Google bu dönem için özel bir sonuç biçimi (zengin sonuç, video vb.) bildirmedi.":
+    "Google reported no special result format (rich result, video and so on) for this period.",
+  "Soru ve uzun aramalar": "Questions and long searches",
+  "Soru kalıbındaki aramalar ve {words} ya da daha çok kelimeli aramalar: içerik fikirlerinin en net kaynağı.":
+    "Searches phrased as questions, and searches of {words} or more words: the clearest source of content ideas.",
+  "Soru aramaları": "Question searches",
+  "Uzun aramalar": "Long searches",
+  "Paneli kapat": "Close panel",
+  "Ayrıntı yüklenemedi": "Couldn't load details",
+  "Search Console bağlantısı yok.": "Search Console isn't connected.",
+  "{start} – {end}, kesin günler": "{start} – {end}, final days",
+  "{key} için günlük tıklama, toplam {total}.":
+    "Daily clicks for {key}, {total} in total.",
+  "Bu sayfanın sorguları ({count})": "This page's queries ({count})",
+  "Bu sorguda görünen sayfalar ({count})":
+    "Pages showing for this query ({count})",
+  "Bu sayfa için listelenen sorgu yok; tıklamaları Google'ın gizlediği sorgulardan geliyor olabilir.":
+    "No queries listed for this page; its clicks may come from queries Google hides.",
+  "Bu sorgu için sayfa satırı yok.": "No page rows for this query.",
+  "Sorgu-sayfa tablosu satır sınırında kesildi; bazı eşleşmeler eksik olabilir.":
+    "The query-page table was cut at the row limit; some pairs may be missing.",
+  "Sorgu satırlarının toplamı sayfanın toplamından küçük olabilir: gizli sorgular listelenmez.":
+    "This page's query rows can add up to less than its total: hidden queries aren't listed.",
+  "Hedef sayfa": "Target page",
+  "{count} sayfa bu sorguda": "{count} pages on this query",
+  "Olası kazanç": "Possible gain",
+  "Yetersiz veri": "Not enough data",
+  "Sıra 4-20 arasındaki sorgular": "Queries at positions 4-20",
+  "Marka dışı sorgularınızın her sıradaki tıklama oranı. Bir sırada en az {queries} sorgu ve {impressions} gösterim yoksa o sıra hesaba katılmaz; tahmin yapılmaz.":
+    "Your non-brand queries' CTR at each position. A position needs at least {queries} queries and {impressions} impressions to count; nothing is estimated.",
+  "Sorgularınızın her sıradaki tıklama oranı (marka adları tanımlanmadığı için marka aramaları dahil). Bir sırada en az {queries} sorgu ve {impressions} gösterim yoksa o sıra hesaba katılmaz; tahmin yapılmaz.":
+    "Your queries' CTR at each position (brand searches included, since no brand names are set). A position needs at least {queries} queries and {impressions} impressions to count; nothing is estimated.",
+  "İlk üçe yakın sorgular": "Queries close to the top three",
+  "Ortalama sırası 4 ile 20 arasında, en az {impressions} gösterim alan {count} sorgu. İlk üçe çıkarlarsa birlikte yaklaşık {clicks} ek tıklama getirebilir.":
+    "{count} queries with an average position between 4 and 20 and at least {impressions} impressions. Reaching the top three could bring about {clicks} more clicks between them.",
+  "En büyük kazançlı {shown} tanesi listeleniyor.":
+    "The {shown} with the largest gain are listed.",
+  "Sırasına göre az tıklanan sonuçlar":
+    "Results clicked less than their position suggests",
+  "Tıklama oranı, sitenizde aynı sıradaki sonuçların ortalamasının {share} kadarından az olan ve en az {impressions} gösterim alan sorgular. Başlık ve açıklama yeniden yazılarak kazanılabilir.":
+    "Queries whose CTR is under {share} of what your results at the same position get, with at least {impressions} impressions. A rewritten title and description can win these clicks.",
+  "Sırasına göre belirgin biçimde az tıklanan sonuç yok ya da karşılaştırma için yeterli veri yok.":
+    "No result is clearly under-clicked for its position, or there isn't enough data to compare.",
+  "Bu sırada beklenen": "Expected at this position",
+  "Görünen ama hiç tıklanmayan sayfalar":
+    "Pages that show up but never get clicked",
+  "Bu dönemde en az {impressions} gösterim alıp tek tıklama almayan sayfalar.":
+    "Pages with at least {impressions} impressions and not a single click in this period.",
+  "{shown} / {total} sayfa listeleniyor.": "{shown} of {total} pages listed.",
+  "Gösterim alıp hiç tıklanmayan sayfa yok.":
+    "No page got impressions without clicks.",
+  "Sitenizin sıraya göre tıklama oranı": "Your site's CTR by position",
+  "Yukarıdaki kazançların ölçüsü: başka sitelerin değil, sizin sonuçlarınızın her sıradaki tıklama oranı.":
+    "The yardstick for the gains above: your own results' CTR at each position, not other sites'.",
+  Web: "Web",
+  Video: "Video",
+  "Google güncellemesi": "Google update",
+  Not: "Note",
+  "Site denetimi tamamlandı": "Site audit completed",
+  "Not eklendi": "Note added",
+  "Not eklenemedi": "Couldn't add the note",
+  "Not silindi": "Note deleted",
+  "Not silinemedi": "Couldn't delete the note",
+  "Grafikteki işaretler": "Chart markers",
+  "Notu sil: {note}": "Delete note: {note}",
+  "Örnek: Yeni sayfa başlıkları yayına alındı":
+    "Example: New page titles went live",
+  "Notu ekle": "Add the note",
+  "Not ekle": "Add a note",
+  "Bu dönemin dışındaki notlar ({count})":
+    "Notes outside this period ({count})",
+  "Önceki dönemle": "Against previous period",
+  "Geçen yılla": "Against last year",
+  "Karşılaştırma yok": "No comparison",
+  Yenilenemedi: "Couldn't refresh",
+  "Google'da kaç kez göründüğünüz, kaç tıklama aldığınız ve önce neyi düzeltmeniz gerektiği.":
+    "How often you show up on Google, how many clicks you get, and what to fix first.",
+  "Sorgular (CSV)": "Queries (CSV)",
+  "Sayfalar (CSV)": "Pages (CSV)",
+  "İlk üçe yakın sorgular (CSV)": "Queries close to the top three (CSV)",
+  "Sorguları E-Tablolar'a aktar": "Export queries to Sheets",
+  "Sayfaları E-Tablolar'a aktar": "Export pages to Sheets",
+  Karşılaştırma: "Comparison",
+  "Mülk: {site}": "Property: {site}",
+  "Bu dönemde hiç gösterim yok": "No impressions in this period",
+  "Seçili cihaz, ülke ya da arama türü için Google bu günlerde sitenizi hiç göstermedi. Filtreleri genişletmeyi deneyin.":
+    "Google didn't show your site for the selected device, country or search type on these days. Try widening the filters.",
+  "Google bu günlerde sitenizi arama sonuçlarında göstermedi. Yeni bir siteyse birkaç gün sonra tekrar bakın; değilse dizin durumunu Site denetimi'nden kontrol edin.":
+    "Google didn't show your site in search results on these days. If the site is new, check back in a few days; if not, check its index status in Site audit.",
+  "Aynı sorguda birden çok sayfanızın göründüğü durumlar. Sayfalar birbirinin tıklamasını bölebilir; birini ana sayfa yapıp diğerlerinden ona bağlantı vermek çoğu zaman yeter.":
+    "Queries where more than one of your pages shows up. The pages can split each other's clicks; making one the main page and linking to it from the others is often enough.",
+  "Sorgular ({count})": "Queries ({count})",
+  "Değişimler ({count} düşüş)": "Changes ({count} falling)",
+  Değişimler: "Changes",
+  Çakışmalar: "Overlaps",
+  "Geçen yıl": "Last year",
+  "Önceki dönem": "Previous period",
+  "Zaman içinde": "Over time",
+  "Zaman birimi": "Time unit",
+  "Bu zaman biriminde çizilecek kadar dönem yok.":
+    "Not enough periods to draw in this time unit.",
+  "{metric} ({grain})": "{metric} ({grain})",
+  Kesinleşmedi: "Not final",
+  "Gösterim yok": "No impressions",
+  Kesin: "Final",
+  "{count} dönemlik {metric} grafiği. En iyi dönem {day}, {value}.":
+    "{metric} chart over {count} periods. Best period {day}, {value}.",
+  "{metric} grafiği": "{metric} chart",
+  "Eksik dönem": "Incomplete period",
+  Gösterge: "Legend",
+  "Taralı günler: Google hâlâ sayıyor, toplamlara katılmadı":
+    "Hatched days: Google is still counting them; left out of the totals",
+  "İçi boş nokta: eksik ya da kesinleşmemiş dönem":
+    "Hollow dot: incomplete or not yet final period",
+  "Karşılaştırma çizgisi yalnızca gün görünümünde.":
+    "The comparison line shows in the day view only.",
+  "Şu an önerilecek iş yok": "Nothing to recommend right now",
+  "Search Console verisinde eşiği aşan bir fırsat ya da düşüş bulunmadı. Daha uzun bir dönem seçmek ya da birkaç gün sonra tekrar bakmak yeni bulgular çıkarabilir.":
+    "No opportunity or drop above the thresholds in the Search Console data. A longer period, or checking back in a few days, may bring new findings.",
+  "ilk {count} iş birlikte {days} günde yaklaşık {clicks} ek tıklama getirebilir (tahmin).":
+    "the first {count} tasks could bring about {clicks} more clicks over {days} days together (estimate).",
+  "Listedeki işlerin hepsini yapıldı olarak işaretlediniz.":
+    "You've marked every task in the list as done.",
+  "Yapıldı olarak işaretlenenler ({count})": "Marked as done ({count})",
+  "Tıklama kazançları, sitenizin kendi sıra ve tıklama oranlarından hesaplanan yaklaşık değerlerdir. Aynı sorgu ya da sayfa için birden çok iş varsa üstteki özet onu bir kez sayar. Yapıldı işaretleri yalnızca bu tarayıcıda saklanır.":
+    "Clicks gained are estimates from your site's own positions and CTR. When several tasks concern the same query or page, the summary above counts it once. Done marks are kept in this browser only.",
+  "{rank}. sıradaki iş:": "Task {rank}:",
+  "Marka adını gir": "Enter brand name",
+  "Bu kırılımı aç": "Open this breakdown",
+  Yapıldı: "Done",
+  Tablet: "Tablet",
+  "Önceki dönem tıklama": "Previous-period clicks",
+  "Tıklama değişimi": "Click change",
+  "Önceki dönem sıra": "Previous-period position",
+  "↑{value} sıra": "↑{value} places",
+  "↓{value} sıra": "↓{value} places",
+  "“{query}” için ilk üçe çıkma fırsatı":
+    "A chance for “{query}” to reach the top three",
+  "Sıra {position} · {impressions} gösterim · {clicks} tıklama":
+    "Position {position} · {impressions} impressions · {clicks} clicks",
+  "Hedef sayfayı bu sorguya göre güçlendirin: başlıkta ve ilk paragrafta sorgunun cevabını verin, ilgili sayfalarınızdan bu sayfaya bağlantı ekleyin.":
+    "Strengthen the target page for this query: answer it in the title and first paragraph, and link to the page from your related pages.",
+  "“{query}” görülüyor ama az tıklanıyor":
+    "“{query}” is seen but rarely clicked",
+  "Tıklama oranı {ctr}; sitenizde bu sıradaki sonuçların oranı {expected} · sıra {position} · {impressions} gösterim":
+    "CTR {ctr}; your results at this position get {expected} · position {position} · {impressions} impressions",
+  "Sayfa başlığını ve açıklamasını aramadaki niyete göre yeniden yazın: sorgunun kelimelerini kullanın, bir sayı, yıl ya da açık bir fayda ekleyin.":
+    "Rewrite the page title and description for the intent behind the search: use the query's words, add a number, a year or a clear benefit.",
+  "“{query}” sorgusundan gelen tıklamalar düştü": "Clicks from “{query}” fell",
+  "{page} sayfasının tıklamaları düştü": "Clicks to {page} fell",
+  "Sıra da düştü: içeriği güncelleyin, aramadaki sorulara bugünkü cevabı verin ve sayfaya iç bağlantıları artırın.":
+    "Position fell too: update the content, answer today's version of the question, and add internal links to the page.",
+  "Sıra yerinde, tıklama düştü: talep azalmış ya da sonuç sayfasına yeni bir öğe gelmiş olabilir. Başlığı ve açıklamayı gözden geçirin.":
+    "Position held, clicks fell: demand may have dropped or something new appeared on the results page. Review the title and description.",
+  "{page} eski gücünü kaybediyor": "{page} is losing ground",
+  "Son çeyrekte {clicks} tıklama; en iyi çeyreği {peak} tıklama ({start} – {end})":
+    "{clicks} clicks last quarter; its best quarter had {peak} ({start} – {end})",
+  "Sayfayı tazeleyin: eskiyen bilgileri düzeltin, yeni çıkan soruları ekleyin ve güncellediğiniz tarihi sayfada gösterin.":
+    "Refresh the page: fix outdated information, answer new questions, and show the date you updated it.",
+  "{page} görünüyor ama hiç tıklanmıyor":
+    "{page} shows up but never gets clicked",
+  "{impressions} gösterim, 0 tıklama · sıra {position}":
+    "{impressions} impressions, 0 clicks · position {position}",
+  "İkinci sayfadan sonrasında görünüyor: önce sırasını yükseltin; içeriği derinleştirin ve diğer sayfalarınızdan bağlantı verin.":
+    "It shows up past page one: raise its position first; deepen the content and link to it from your other pages.",
+  "İlk sayfada olduğu hâlde tıklanmıyor: başlık ve açıklama aramayla örtüşmüyor olabilir, yeniden yazın.":
+    "It's on page one but not clicked: the title and description may not match the search; rewrite them.",
+  "“{query}” sorgusunda artık görünmüyorsunuz":
+    "You no longer show up for “{query}”",
+  "Önceki dönemde {clicks} tıklama, {impressions} gösterim; bu dönemde gösterim yok":
+    "{clicks} clicks and {impressions} impressions in the previous period; no impressions in this one",
+  "Bu sorguyu karşılayan sayfa hâlâ yayında ve dizinde mi bakın; içerik değiştiyse sorgunun cevabını sayfaya geri ekleyin.":
+    "Check that the page answering this query is still live and indexed; if the content changed, add the answer back.",
+  "Tıklama oranı {ctr} (site geneli {site})": "CTR {ctr} (site-wide {site})",
+  "sıra {position} (site geneli {site})":
+    "position {position} (site-wide {site})",
+  "{device} aramalarında geride kalıyorsunuz":
+    "You're falling behind in {device} searches",
+  "{country} aramalarında geride kalıyorsunuz":
+    "You're falling behind in searches from {country}",
+  "Sayfalarınızı bu cihazda açıp okunurluğu ve hızı kontrol edin; Site denetimi'ndeki hız sonuçları nereden başlanacağını gösterir.":
+    "Open your pages on this device and check readability and speed; the speed results in Site audit show where to start.",
+  "Bu ülkedeki aramalara uygun dilde ve içerikte sayfanız var mı bakın; çok dilli bir siteyse hreflang ayarlarını gözden geçirin.":
+    "Check that you have pages in the right language and content for searches from this country; for a multilingual site, review the hreflang settings.",
+  "{date} günü tıklamalarda olağan dışı düşüş":
+    "Unusual drop in clicks on {date}",
+  "{date} günü gösterimlerde olağan dışı düşüş":
+    "Unusual drop in impressions on {date}",
+  "{value}; önceki haftaların aynı gününde ortası {expected}":
+    "{value}; the median for the same weekday in earlier weeks is {expected}",
+  "O gün sitede bir değişiklik, kesinti ya da Google güncellemesi oldu mu bakın; grafikteki işaretler yardımcı olur.":
+    "Check whether the site changed, went down or a Google update happened that day; the chart markers help.",
+  "Marka adınızı tanımlayın": "Set your brand name",
+  "Marka sorguları ayrılmadan sitenin tıklama oranı beklentisi şişer ve fırsatlar eksik çıkar.":
+    "Without separating brand searches, your site's expected CTR is inflated and opportunities are missed.",
+  "Marka adınızı ve yazılışlarını ekleyin; marka ve marka dışı aramalar ayrı ölçülür.":
+    "Add your brand name and its spellings; brand and non-brand searches are then measured separately.",
+  "Güven: yüksek": "Confidence: high",
+  "Güven: orta": "Confidence: medium",
+  "Güven: düşük": "Confidence: low",
+  Podcast: "Podcast",
+  "{start} – {end} ({days} gün)": "{start} – {end} ({days} days)",
+  "{start} – {end}": "{start} – {end}",
+  "Son veri": "Latest data",
+  Oluşturulma: "Created",
+  "Arama performansı raporu": "Search performance report",
+  "Değişimler önceki {days} güne göre. Sıra değişimi yer olarak verilir (↑ yükseldi); tıklama oranı değişimi puan olarak.":
+    "Changes are against the previous {days} days. Position change is in places (↑ moved up); CTR change in points.",
+  "Önceki dönem Google'da olmadığı için değişim gösterilmez.":
+    "No change is shown because Google doesn't have the previous period.",
+  "Son günler hâlâ sayılıyor ({clicks} tıklama); toplamlara ve karşılaştırmalara katılmadı.":
+    "The latest days are still being counted ({clicks} clicks); left out of totals and comparisons.",
+  "Google'ın gizlediği sorgulardan gelen tıklama: {share}. Bu yüzden sorgu tablolarının toplamı site toplamından küçüktür.":
+    "Clicks from queries Google hides: {share}. That is why the query tables add up to less than the site total.",
+  "Google'ın satır sınırına ulaşıldı; en az tıklanan sorgu ve sayfalar listelerde eksik.":
+    "Google's row limit was reached; the least-clicked queries and pages are missing from the lists.",
+  "Günler Google'ın kullandığı Pasifik saatine göredir; veriler {date} gününe kadar kesindir.":
+    "Days follow Google's Pacific time; data is final through {date}.",
+  Yapılacaklar: "To do",
+  "Search Console verisinde eşiği aşan bir fırsat ya da düşüş bulunmadı.":
+    "No opportunity or drop above the thresholds in the Search Console data.",
+  "Önce bunlar": "Start with these",
+  "İlk {count} iş, kazancı tahmin edilemeyen işler.":
+    "The first {count} tasks, with gains that can't be estimated.",
+  "İlk {count} iş birlikte {days} günde yaklaşık {clicks} ek tıklama getirebilir (tahmin).":
+    "The first {count} tasks could bring about {clicks} more clicks over {days} days together (estimate).",
+  "Tıklama kazançları, sitenizin kendi sıra ve tıklama oranlarından hesaplanan yaklaşık değerlerdir. Aynı sorgu ya da sayfa için birden çok iş varsa özet onu bir kez sayar.":
+    "Clicks gained are estimates from your site's own positions and CTR. When several tasks concern the same query or page, the summary counts it once.",
+  "Günlük tıklama": "Daily clicks",
+  "Bu dönem": "This period",
+  "Hâlâ sayılan günler": "Days still being counted",
+  "{days} günde {clicks} tıklama; en iyi gün {day}, {best} tıklama.":
+    "{clicks} clicks over {days} days; best day {day}, {best} clicks.",
+  "Bu dönemde tıklama yok.": "No clicks in this period.",
+  İşaretler: "Markers",
+  "Ortalama sırası 4 ile 20 arasında, en az {impressions} gösterim alan {count} sorgu. Olası kazanç, ilk üçe çıkarsa beklenen ek tıklamadır.":
+    "{count} queries with an average position between 4 and 20 and at least {impressions} impressions. Possible gain is the extra clicks expected if they reach the top three.",
+  "Bu aralıkta sorgu yok.": "No queries in this range.",
+  "İlk 20 / {total} sorgu": "First 20 of {total} queries",
+  "Belirgin biçimde az tıklanan sonuç yok.":
+    "No result is clearly under-clicked.",
+  "Beklenen oran: sitenizde aynı sıradaki sonuçların tıklama oranı.":
+    "Expected rate: the CTR of your results at the same position.",
+  "İlk 10 / {total} sayfa": "First 10 of {total} pages",
+  "En az {queries} sorgu ve {impressions} gösterim olmayan sıralar için oran hesaplanmaz.":
+    "Positions without at least {queries} queries and {impressions} impressions get no rate.",
+  Önceki: "Before",
+  Şimdi: "Now",
+  "Yok.": "None.",
+  "Önceki dönem: {start} – {end}. Tıklama sayıları.":
+    "Previous period: {start} – {end}. Click counts.",
+  "Tıklaması düşen sorgular": "Queries with falling clicks",
+  "Tıklaması düşen sayfalar": "Pages with falling clicks",
+  "Tıklaması artan sorgular": "Queries with rising clicks",
+  "Tıklaması artan sayfalar": "Pages with rising clicks",
+  "Yeni görünen sorgular": "Newly showing queries",
+  "Önceki dönemin tablosu kesildiği için bilinemiyor.":
+    "Unknown: the previous period's table was cut.",
+  "Kaybolan sorgular (önceki dönemdeki değerleriyle)":
+    "Lost queries (with their previous-period numbers)",
+  "Bu dönemin tablosu kesildiği için bilinemiyor.":
+    "Unknown: this period's table was cut.",
+  "Bu karşılaştırma için bir yılı aşkın veri gerekir.":
+    "This comparison needs more than a year of data.",
+  "Çeyrek: 91 gün.": "Quarter: 91 days.",
+  "Son çeyrek": "Last quarter",
+  "En iyi çeyrek": "Best quarter",
+  "Çakışma analizi bu rapor için alınamadı.":
+    "The overlap analysis couldn't be loaded for this report.",
+  "Hiçbir sorguda iki sayfanız birbiriyle yarışmıyor.":
+    "None of your pages compete with each other on a query.",
+  "{queries} sorguda birden fazla sayfanız yarışıyor; {impressions} gösterim ana sayfa dışındaki sayfalara gitti. Dönem: {start} – {end}.":
+    "More than one of your pages competes on {queries} queries; {impressions} impressions went to pages other than the main one. Period: {start} – {end}.",
+  "Google'ın tercih ettiği sayfa": "Page Google prefers",
+  "Yarışan sayfa": "Competing pages",
+  "Bölünen pay": "Split share",
+  "Paylar sitenin toplamına göre.": "Shares are of the site total.",
+  "Paylar satırların toplamına göre.": "Shares are of the rows' total.",
+  "İlk {limit} / {total}.": "First {limit} of {total}.",
+  "Bilinmiyor: marka adları tanımlanmadı.": "Unknown: no brand names set.",
+  "Marka adları: {terms}.": "Brand names: {terms}.",
+  "Okunan sorguların ortalama sırasına göre.":
+    "By the average position of the queries read.",
+  "Google bu dönem için özel bir sonuç biçimi bildirmedi.":
+    "Google reported no special result format for this period.",
+  "Paylar okunan sorguların tıklamasına göre.":
+    "Shares are of the clicks of the queries read.",
+  "{words}+ kelimeli aramalar": "Searches of {words}+ words",
+  "Google Search Console API, bu mülk için. Başka bir veri kaynağı, tahmini hacim ya da rakip verisi kullanılmadı.":
+    "The Google Search Console API, for this property. No other data source, estimated volume or competitor data was used.",
+  "Toplamlar ve karşılaştırmalar yalnızca Google'ın saymayı bitirdiği günleri kapsar. Günler Pasifik saatine göredir.":
+    "Totals and comparisons cover only days Google has finished counting. Days follow Pacific time.",
+  "Site toplamları": "Site totals",
+  "Site toplamı tarihe göre istenen toplamdan gelir, sorgu ya da sayfa satırlarının toplamından değil. Ortalama sıra gösterime göre ağırlıklıdır; tıklama oranı tıklama bölü gösterimdir.":
+    "The site total comes from the request grouped by date, not from adding up query or page rows. Average position is weighted by impressions; CTR is clicks divided by impressions.",
+  "Google az aranan sorguları listelemez ama site toplamına katar; sorgu tabloları bu yüzden site toplamından küçüktür.":
+    "Google doesn't list rarely searched queries but counts them in the site total, so the query tables add up to less than the site total.",
+  "Kazanç tahminleri": "Gain estimates",
+  "Sitenizin kendi sıra-tıklama oranı eğrisinden hesaplanır; yeterli veri olmayan sıralar için tahmin yapılmaz.":
+    "Taken from your site's own position-to-CTR curve; positions without enough data get no estimate.",
+  "Google istekleri": "Google requests",
+  "Bu rapor {count} Google isteğiyle hazırlandı.":
+    "This report was built with {count} Google requests.",
+  "Yöntem ve sınırlar": "Method and limits",
+  "{host} arama performansı, {start} – {end}{filters}":
+    "{host} search performance, {start} – {end}{filters}",
+  "{days} günde {clicks} tıklama, {impressions} gösterim.":
+    "{clicks} clicks and {impressions} impressions over {days} days.",
+  "Tıklama oranı {ctr}, ortalama sıra {position}.":
+    "CTR {ctr}, average position {position}.",
+  "İlk iş: {title}.": "First task: {title}.",
+  "Arama performansı raporu saklama sınırını aşıyor. Daha kısa bir dönem ya da filtre seçip yeniden deneyin.":
+    "The search performance report is over the storage limit. Choose a shorter period or a filter and try again.",
+  "Şu an 4. ile 20. sıra arasında yeterli gösterimi olan sorgu yok. Sorgular bu aralığa girdikçe burada listelenir.":
+    "No query with enough impressions sits between positions 4 and 20 right now. Queries show up here as they enter that range.",
+  "Ortalama sırası 4–20 olan {count} sorgu; ilk üçe çıkarlarsa yaklaşık {clicks} ek tıklama.":
+    "{count} queries average positions 4–20; reaching the top three could bring about {clicks} more clicks.",
+  "Ek tıklama tahmini": "Estimated extra clicks",
+  "Onaylanmadı.": "Not confirmed.",
+  "Alan adından önerilen adlar: {terms}.":
+    "Names suggested from your domain: {terms}.",
+  "Önerileri onayla": "Confirm suggestions",
+  "Alan adından önerilen marka adlarıyla ölçüldü: {terms}. Onaylayın ya da düzeltin.":
+    "Measured with brand names suggested from your domain: {terms}. Confirm or correct them.",
+  // Cards and stats review (Opportunities, rankings, setup verdict).
+  "En fazla kazanılabilecek tıklama / ay (üst sınır)":
+    "At most this many extra clicks / month (upper bound)",
+  "Aramaların toplamı daha büyük; sayfanın tamamı hedef orana ulaşsa alacağı kadarla sınırlandı.":
+    "The searches add up to more; capped at what the whole page would get at the target rate.",
+  "2. sayfa, 11-20. sıra": "page two, positions 11-20",
+  // Cards and stats review (Opportunities, rankings, setup verdict).
+  "ilk {count} iş birlikte {days} günde en fazla {clicks} ek tıklama getirebilir (üst sınır).":
+    "together, the first {count} tasks could bring at most {clicks} extra clicks in {days} days (upper bound).",
+  // Cards and stats review (Opportunities, rankings, setup verdict).
+  "İlk sayfada ama ilk üçün altında. Bir basamak yükselmek (6-10'dan 4-5'e, 4-5'ten 2-3'e) tıklamayı belirgin artırır.":
+    "On page one but below the top three. One step up (6-10 to 4-5, 4-5 to 2-3) raises clicks noticeably.",
+  "bir basamak yukarı": "one step up",
+  "Her sayfanın Google'da çıktığı her arama ayrı ayrı ele alınır. İlk sayfadaki bir arama sitenizin aynı sıradaki aramalarının tıklama oranının %70'inin altındaysa kazanç o orana ulaşmaktır (başlık işi). Diğer her arama yalnızca bir basamak yükselir: 6-10. sıradan 4-5'in oranına, 4-5. sıradan 2-3'ün oranına, 2. sayfadan ilk sayfanın (6-10. sıra) oranına, daha geriden 2. sayfanın (11-20. sıra) oranına. Bir sayfanın toplamı, aramaları sıra gruplarına ayrılıp her grup bir basamak yükselse alacağı ek tıklamayı geçemez. Oranlar başka sitelerden değil, sizin sitenizden ölçülür; bu yüzden üstteki sayı bir üst sınırdır, söz değildir.":
+    "Each search a page appears for is taken on its own. If a search on page one gets less than 70% of the click-through your site's searches get at that position, the gain is reaching that rate (title work). Every other search moves up one step only: from 6-10 to the rate of 4-5, from 4-5 to the rate of 2-3, from page two to the rate of page one (positions 6-10), from further back to the rate of page two (positions 11-20). A page's total cannot exceed what its searches would gain if each group of them at the same position moved up one step. The rates come from your own site, not other sites, so the figure above is an upper bound, not a promise.",
+  "Ortalama sırası 4 ile 20 arasında, en az {impressions} gösterim alan {count} sorgu. Her biri bir basamak yükselirse (6-10'dan 4-5'e, 4-5'ten 2-3'e, 11-20'den ilk sayfaya) birlikte en fazla {clicks} ek tıklama getirebilir (üst sınır).":
+    "{count} queries averaging positions 4 to 20 with at least {impressions} impressions. If each moves up one step (6-10 to 4-5, 4-5 to 2-3, 11-20 to page one), together they could bring at most {clicks} extra clicks (upper bound).",
+  // Search performance review, 2026-10-26
+  "Aynı sorgu, birden çok sayfa": "Pages competing for one query",
+  "Birden çok sayfanın yarıştığı sorgu": "Queries with competing pages",
+  "{count} / {total}": "{count} / {total}",
+  "incelenen sorguların {share} kadarı": "{share} of the queries examined",
+  "Ana sayfa dışına giden gösterim": "Impressions going to the other pages",
+  "incelenen gösterimlerin {share} kadarı":
+    "{share} of the impressions examined",
+  "2. sayfa {share} gösterim alıyor":
+    "the second page gets {share} of impressions",
+  "Diğer {count} sayfa {share} gösterim alıyor": {
+    one: "{count} other page gets {share} of impressions",
+    other: "the other {count} pages get {share} of impressions",
+  },
+  "{impressions} gösterim · {clicks} tıklama":
+    "{impressions} impressions · {clicks} clicks",
+  "1 yıl önce": "A year ago",
+  "Çeyrek başına tıklama, eskiden yeniye: {values}":
+    "Clicks per quarter, oldest to newest: {values}",
+  "Yalnızca bir dönemde en az {impressions} gösterim alan sorgular, en çok gösterimden aza.":
+    "Queries with at least {impressions} impressions in only one of the two periods, most impressions first.",
+  "{count} tanesi hiç tıklama almadı.": {
+    one: "{count} of them got no clicks.",
+    other: "{count} of them got no clicks.",
+  },
+  "Veriler {date} tarihine kadar kesin; son {count} gün hâlâ sayılıyor (grafikte taralı).":
+    {
+      one: "Data is final up to {date}; Google is still counting the last {count} day (hatched in the chart).",
+      other:
+        "Data is final up to {date}; Google is still counting the last {count} days (hatched in the chart).",
+    },
+  "Veriler {date} tarihine kadar kesin.": "Data is final up to {date}.",
+  "Karşılaştırma: geçen yılın aynı günleri ({start} – {end}).":
+    "Compared with the same days last year ({start} – {end}).",
+  "Karşılaştırma: önceki {days} gün ({start} – {end}).":
+    "Compared with the previous {days} days ({start} – {end}).",
+  "Search Console mülkü: {site}": "Search Console property: {site}",
+  "Veri hakkında": "About the data",
+  "Kesin günler: {start} – {end} ({days} gün). Search Console bir günü birkaç gün boyunca saymaya devam eder; toplamlar ve karşılaştırmalar yalnızca sayımı bitmiş günleri kullanır. Günler Google'ın kullandığı Pasifik saatine göredir.":
+    "Final days: {start} – {end} ({days} days). Search Console keeps counting a day for several days; totals and comparisons use only the days it has finished counting. Days follow Pacific time, as Google does.",
+  "Son {count} gün hâlâ sayılıyor olabilir (Google tarih bildirmedi); toplamlara katılmadı.":
+    {
+      one: "Google may still be counting the last {count} day (it gave no date); it is left out of the totals.",
+      other:
+        "Google may still be counting the last {count} days (it gave no date); they are left out of the totals.",
+    },
+  "Son {count} gün hâlâ sayılıyor; toplamlara katılmadı.": {
+    one: "Google is still counting the last {count} day; it is left out of the totals.",
+    other:
+      "Google is still counting the last {count} days; they are left out of the totals.",
+  },
+  "Tıklamaların {share} kadarı ({clicks}) Google'ın gizlilik nedeniyle göstermediği aramalardan geliyor. Site toplamına dahil, sorgu tablosunda yok; bu yüzden sorgu tablosunun toplamı daha küçüktür.":
+    "{share} of clicks ({clicks}) come from searches Google does not show for privacy reasons. They are in the site total but not in the query table, which is why the query table adds up to less.",
+  "Tıklamaların {share} kadarı, Google'ın gizlilik nedeniyle göstermediği ya da satır sınırının dışında kalan aramalardan geliyor. Site toplamına dahil, sorgu tablosunda yok.":
+    "{share} of clicks come from searches Google does not show for privacy reasons or that fall past the row limit. They are in the site total but not in the query table.",
+  "Bu görünüm için Google'a {count} istek gönderildi.": {
+    one: "This view sent {count} request to Google.",
+    other: "This view sent {count} requests to Google.",
+  },
+  "Bu görünüm birkaç dakika içinde alınmış yanıtlardan geldi; Google'a yeni istek gönderilmedi.":
+    "This view came from answers fetched in the last few minutes; no new request went to Google.",
+  "Marka aramaları ayrılmadı": "Brand searches are not separated",
+  "Marka adınızı girmeden hangi aramaların sizi adınızla bulduğu bilinemez.":
+    "Without your brand name there is no telling which searches found you by name.",
+  "Marka adını ekle": "Add brand name",
+  "Önceki dönemle karşılaştırılamadı.":
+    "Could not compare with the previous period.",
+  "Bu ay henüz tamamlanmadı ({days} gün)":
+    "This month is not over yet ({days} days so far)",
+  "Son çubuk kesik çizgili: bu ay henüz tamamlanmadı.":
+    "The last bar is dashed: this month is not over yet.",
+  "Sıra {position} · tıklama oranı {ctr} (bu sırada {expected}) · {gain}":
+    "Position {position} · CTR {ctr} ({expected} at this position) · {gain}",
+  "Olası kazanç (en fazla)": "Possible gain (at most)",
+  "{share} tıklama": "{share} of clicks",
+  "Sorgu sayısı": "Number of queries",
+  "Tıklama payı": "Share of clicks",
+  "{date} (eksik veri)": "{date} (incomplete data)",
+  "Arşivde eksik; paylar karşılaştırılamaz":
+    "Incomplete in the archive; shares are not comparable",
+  "Arşiv {count} haftalık; soluk çubuklu haftalar eksik veri, paylar onlarla karşılaştırılamaz.":
+    {
+      one: "The archive holds {count} full week; faded weeks have incomplete data and their shares are not comparable.",
+      other:
+        "The archive holds {count} full weeks; faded weeks have incomplete data and their shares are not comparable.",
+    },
+  "Arşivde henüz tam bir hafta yok; soluk çubuklar eksik veri, paylar karşılaştırılamaz.":
+    "The archive has no full week yet; faded bars have incomplete data and their shares are not comparable.",
+  "Sıralama fırsatları ({count})": "Ranking opportunities ({count})",
+  "Google hâlâ sayıyor; bu gün toplamlara katılmadı":
+    "Google is still counting; this day is not in the totals",
+  "Son {days} günde {clicks} tıklama, {impressions} gösterim.":
+    "{clicks} clicks and {impressions} impressions in the last {days} days.",
+  "Son {days} günde tıklamalar geçen yılın aynı günleriyle aynı.":
+    "Clicks over the last {days} days match the same days last year.",
+  "Son {days} günde tıklamalar geçen yıla göre {share} arttı.":
+    "Clicks over the last {days} days are up {share} on last year.",
+  "Son {days} günde tıklamalar geçen yıla göre {share} azaldı.":
+    "Clicks over the last {days} days are down {share} on last year.",
+  "Son {days} günde tıklamalar önceki dönemle aynı.":
+    "Clicks over the last {days} days match the period before.",
+  "Son {days} günde tıklamalar önceki döneme göre {share} arttı.":
+    "Clicks over the last {days} days are up {share} on the period before.",
+  "Son {days} günde tıklamalar önceki döneme göre {share} azaldı.":
+    "Clicks over the last {days} days are down {share} on the period before.",
+  "Tıklama oranı {points} puan arttı.": "CTR rose {points} points.",
+  "Tıklama oranı {points} puan düştü.": "CTR fell {points} points.",
+  "Ortalama sıra {places} basamak yükseldi.":
+    "Average position improved by {places}.",
+  "Ortalama sıra {places} basamak geriledi.":
+    "Average position slipped by {places}.",
+  "Önce yapılacak {count} iş hazır.": {
+    one: "{count} first task is ready.",
+    other: "The first {count} tasks are ready.",
+  },
+  "Önce yapılacak {count} iş birlikte en fazla {clicks} ek tıklama getirebilir (üst sınır).":
+    {
+      one: "The first {count} task could bring at most {clicks} more clicks (an upper bound).",
+      other:
+        "The first {count} tasks together could bring at most {clicks} more clicks (an upper bound).",
+    },
+  "Tüm yapılacaklar ({count})": "All to-dos ({count})",
+  "en fazla +{count} tıklama": {
+    one: "at most +{count} click",
+    other: "at most +{count} clicks",
+  },
+  "Sıra {position}": "Position {position}",
+  "Neden ve ne yapmalı": "Why, and what to do",
+  "Bu iş yapılırsa aynı uzunlukta bir dönemde beklenen en fazla ek tıklama (üst sınır).":
+    "The most extra clicks to expect over a period of the same length if this is done (an upper bound).",
+  "Değişmedi (±{value} sıra)": "No change (±{value} places)",
+  "≈ +{count} tıklama": { one: "≈ +{count} click", other: "≈ +{count} clicks" },
+  "{count} sorgu ilk üçe yakın": {
+    one: "{count} query close to the top three",
+    other: "{count} queries close to the top three",
+  },
+  "{count} sonuç sırasına göre az tıklanıyor": {
+    one: "{count} result gets few clicks for its position",
+    other: "{count} results get few clicks for their position",
+  },
+  "{count} sorgudan gelen tıklama düştü": {
+    one: "Clicks fell for {count} query",
+    other: "Clicks fell for {count} queries",
+  },
+  "{count} sayfanın tıklaması düştü": {
+    one: "Clicks fell for {count} page",
+    other: "Clicks fell for {count} pages",
+  },
+  "{count} sayfa eski gücünü kaybediyor": {
+    one: "{count} page is losing its old strength",
+    other: "{count} pages are losing their old strength",
+  },
+  "{count} sayfa görünüyor ama hiç tıklanmıyor": {
+    one: "{count} page is seen but never clicked",
+    other: "{count} pages are seen but never clicked",
+  },
+  "{count} sorguda artık görünmüyorsunuz": {
+    one: "You no longer appear for {count} query",
+    other: "You no longer appear for {count} queries",
+  },
+  "{count} cihazda geride kalıyorsunuz": {
+    one: "You trail on {count} device type",
+    other: "You trail on {count} device types",
+  },
+  "{count} ülkede geride kalıyorsunuz": {
+    one: "You trail in {count} country",
+    other: "You trail in {count} countries",
+  },
+  "{count} günde olağan dışı düşüş": {
+    one: "An unusual drop on {count} day",
+    other: "Unusual drops on {count} days",
+  },
+  "{date}: tıklama": "{date}: clicks",
+  "{date}: gösterim": "{date}: impressions",
+  "Tıklama farkı": "Click change",
+  sürüyor: "in progress",
+  Oran: "CTR",
+  // Search performance review fixes: brand confirmation, windows, archive lag
+  "Marka adları: {terms} (önerilen, onaylanmadı).":
+    "Brand terms: {terms} (suggested, not confirmed).",
+  "Marka adını onayla": "Confirm your brand name",
+  "Marka aramaları şimdilik alan adından önerilen adlarla ayrılıyor: {terms}. Onaylanana kadar bu ayrım bir tahmin.":
+    "Brand searches are split for now by names suggested from your domain: {terms}. Until you confirm them, the split is an estimate.",
+  "Önerilen adlar doğruysa onaylayın; değilse markanızın adını ve yazılışlarını girin.":
+    "If the suggested names are right, confirm them; if not, enter your brand's name and how people spell it.",
+  "Dönem: {start} – {end}.": "Period: {start} – {end}.",
+  "Ayın son günleri henüz gelmedi ({days} gün)":
+    "The month's last days have not arrived yet ({days} days)",
+  "Son çubuk kesik çizgili: ayın son günleri Search Console'dan henüz gelmedi.":
+    "The last bar is dashed: the month's last days have not arrived from Search Console yet.",
+  "Haftalık dağılım yalnızca Web aramaları için.":
+    "The weekly distribution is for Web searches only.",
+  "Marka aramaları dahil değildir.": "Brand searches are excluded.",
 };

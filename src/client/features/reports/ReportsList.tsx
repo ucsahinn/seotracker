@@ -8,6 +8,7 @@ import {
   Sparkles,
   Trash2,
   type LucideIcon,
+  ClipboardCheck,
 } from "lucide-react";
 import { useRef, useState } from "react";
 import { CopyButton } from "@/client/components/CopyButton";
@@ -48,6 +49,7 @@ const FILTERS: { key: ReportFilter; label: string; icon: LucideIcon }[] = [
   { key: "recent", label: "Son 7 gün", icon: Clock },
   { key: "template", label: "Şablonla yazılan", icon: LayoutTemplate },
   { key: "skill", label: "Beceriyle yazılan", icon: Sparkles },
+  { key: "audit", label: "Denetim raporu", icon: ClipboardCheck },
 ];
 
 function compareReports(

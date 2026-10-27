@@ -1,18 +1,16 @@
-import { sortBy } from "remeda";
 import { t } from "@/shared/i18n";
 import * as React from "react";
 import {
   Area,
-  AreaChart,
   CartesianGrid,
+  ComposedChart,
+  Line,
+  ReferenceArea,
+  ReferenceLine,
   Tooltip,
   XAxis,
   YAxis,
-  ReferenceLine,
 } from "recharts";
-import { useQuery } from "@tanstack/react-query";
-import { getAuditHistory } from "@/serverFunctions/audit";
-import { parseTimestamp } from "@/shared/format";
 import {
   Chart,
   ChartTooltip,
@@ -22,313 +20,352 @@ import {
 } from "@/client/components/Chart";
 import {
   formatCount,
+  formatDate,
   formatDay,
-  formatDecimal,
-  formatPercent,
+  formatMonth,
 } from "@/client/lib/format";
-
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
-
-type DailyRow = {
-  key: string;
-  clicks: number;
-  impressions: number;
-  ctr: number;
-  position: number;
-};
-
-type MetricId = (typeof METRICS)[number]["id"];
-
-/**
- * What the four totals above it cannot say: when it happened.
- *
- * Search Console is already asked for these rows by date — the totals are a
- * sum of them — so this reads data the screen was throwing away rather than
- * spending another call. "Down 12%" is a different problem depending on
- * whether the drop is a step on one day or a slope across four weeks, and
- * the four totals above cannot tell those apart.
- *
- * One series. The previous period is summed into the delta badges above and
- * is deliberately not drawn here: the comparison it would support is the
- * shape of the *current* period, and a second band at a different scale
- * competes with the line it is meant to explain.
- */
-function SearchTrendChart({
-  daily,
-  metric,
-  auditDates,
-}: {
-  daily: DailyRow[];
-  metric: MetricId;
-  auditDates: string[];
-}) {
-  const reduced = useReducedMotion();
-  if (daily.length < 2) return null;
-
-  const config = METRICS.find((entry) => entry.id === metric) ?? METRICS[0];
-  const label = t(config.inline);
-  /*
-   * A day with no impressions has no position -- `toDailyRows` fills it with
-   * zero, and zero would draw as a better rank than 1. Rate and rank are
-   * read on the days the site was actually shown; the counts keep every day,
-   * because a day with no clicks really is zero clicks.
-   */
-  const shown =
-    config.kind === "count"
-      ? daily
-      : daily.filter((row) => row.impressions > 0);
-  if (shown.length < 2) return null;
-
-  const format =
-    config.kind === "count"
-      ? formatCount
-      : config.kind === "percent"
-        ? (value: number) => formatPercent(value)
-        : (value: number) => formatDecimal(value);
-  const total = shown.reduce((sum, row) => sum + row[metric], 0);
-  const peak = shown.reduce((best, row) =>
-    // Position is better when smaller, so "peak" means the best rank.
-    config.kind === "position"
-      ? row[metric] < best[metric]
-        ? row
-        : best
-      : row[metric] > best[metric]
-        ? row
-        : best,
-  );
-
-  return (
-    <Chart
-      height={180}
-      table={{
-        caption: t("Günlük {metric}", { metric: label }),
-        columns: [t("Gün"), t(config.label)],
-        rows: shown.map((row) => [formatDay(row.key), format(row[metric])]),
-      }}
-      summary={
-        config.kind === "count"
-          ? t(
-              "{days} günde toplam {total} {metric}. En yüksek gün {day}, {peak}.",
-              {
-                days: formatCount(shown.length),
-                total: format(total),
-                metric: label,
-                day: formatDay(peak.key),
-                peak: format(peak[metric]),
-              },
-            )
-          : t(
-              "{days} günde ortalama {average} {metric}. En iyi gün {day}, {peak}.",
-              {
-                days: formatCount(shown.length),
-                average: format(total / shown.length),
-                metric: label,
-                day: formatDay(peak.key),
-                peak: format(peak[metric]),
-              },
-            )
-      }
-    >
-      <AreaChart data={shown} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
-        <CartesianGrid {...CHART_GRID} />
-        {auditDates
-          .filter((date) => shown.some((row) => row.key === date))
-          .map((date) => (
-            <ReferenceLine
-              key={date}
-              x={date}
-              stroke="var(--color-primary)"
-              strokeDasharray="3 4"
-              label={{
-                value: t("Denetim"),
-                position: "insideTopRight",
-                fill: "var(--color-base-content)",
-                fontSize: 10,
-              }}
-            />
-          ))}
-        <XAxis
-          dataKey="key"
-          {...CHART_AXIS}
-          tickFormatter={formatDay}
-          minTickGap={24}
-        />
-        <YAxis
-          {...CHART_AXIS}
-          width={48}
-          tickFormatter={format}
-          /*
-           * Position runs the other way: 1 is the top of the page, so the
-           * axis is inverted and starts at the best rank rather than at
-           * zero. `QueryHistoryCard` already draws it this way.
-           */
-          domain={
-            config.kind === "position" ? ["dataMin", "dataMax"] : [0, "auto"]
-          }
-          reversed={config.kind === "position"}
-          /*
-           * Clicks are whole things. Without this a property with a single
-           * click got a 0–1 domain sliced into fifths, and the axis read
-           * "1 1 1 0 0" -- five ticks rounding to three distinct labels.
-           * Rates and ranks are not whole, so they keep their decimals.
-           */
-          allowDecimals={config.kind !== "count"}
-        />
-        <Tooltip
-          cursor={{ stroke: "currentColor", strokeOpacity: 0.2 }}
-          /*
-           * The value is looked up in `daily` rather than read off recharts'
-           * `payload`, which is typed as `any` -- so this stays type-checked
-           * and the tooltip cannot drift from the series it is describing.
-           */
-          content={({ active, label: day }) => {
-            if (!active || typeof day !== "string") return null;
-            const row = shown.find((entry) => entry.key === day);
-            if (!row) return null;
-            return (
-              <ChartTooltip
-                title={formatDay(day)}
-                rows={[
-                  {
-                    label,
-                    value: format(row[metric]),
-                    color: CHART_SERIES.primary,
-                  },
-                ]}
-              />
-            );
-          }}
-        />
-        <Area
-          type="monotone"
-          dataKey={metric}
-          stroke={CHART_SERIES.primary}
-          strokeWidth={2}
-          fill={CHART_SERIES.primary}
-          fillOpacity={0.08}
-          isAnimationActive={!reduced}
-        />
-      </AreaChart>
-    </Chart>
-  );
-}
-
-/*
- * All four, not two. Search Console returns clicks, impressions, CTR and
- * position for every day in the window, and the rows were already on the
- * client -- the switch simply did not offer half of them. Average position
- * over time is *the* ranking trend line, and it cost no extra Google call.
- */
-/*
- * `inline` is the name inside a sentence ("toplam 120 tıklama"); English
- * keeps "CTR" in capitals there, so it is its own string, not a lowercased
- * label. Both go through t() where they render.
- */
-const METRICS = [
-  { id: "clicks", label: "Tıklama", inline: "tıklama", kind: "count" },
-  { id: "impressions", label: "Gösterim", inline: "gösterim", kind: "count" },
-  {
-    id: "ctr",
-    label: "Tıklama oranı",
-    inline: "tıklama oranı",
-    kind: "percent",
-  },
-  {
-    id: "position",
-    label: "Ortalama sıra",
-    inline: "ortalama sıra",
-    kind: "position",
-  },
-] as const;
+import {
+  buildPoints,
+  formatterFor,
+  GRAIN_LABEL,
+  METRICS,
+  placedAnnotations,
+  type MetricId,
+  type Point,
+} from "@/client/features/search-performance/trendPoints";
+import type { SearchPerformanceView } from "@/shared/searchPerformanceView";
+import type {
+  CompareMode,
+  Granularity,
+} from "@/client/features/search-performance/searchTabs";
+import {
+  ANNOTATION_KIND_LABEL,
+  annotationText,
+  SearchNotes,
+} from "@/client/features/search-performance/SearchNotes";
+import {
+  periodDot,
+  TrendControls,
+  TrendDefs,
+  TrendLegend,
+} from "@/client/features/search-performance/TrendParts";
 
 /**
- * The trend with its own metric switch, framed like the panels around it.
+ * The trend, one metric at a time, with what it is compared against drawn as
+ * a dashed line, the days Google is still counting shaded, and numbered
+ * markers for Google updates, audits and the operator's own notes.
  *
- * Clicks and impressions share an axis badly — impressions run one to two
- * orders of magnitude higher, so plotted together the clicks line lies flat
- * on the floor and says nothing. One at a time, full height each.
+ * Clicks and impressions share an axis badly (impressions run one to two
+ * orders of magnitude higher), so they are switched, not stacked.
  */
 export function SearchTrendPanel({
-  daily,
   projectId,
+  view,
+  compare,
+  granularity,
+  onGranularityChange,
 }: {
-  daily: DailyRow[];
   projectId: string;
+  view: SearchPerformanceView;
+  compare: CompareMode;
+  granularity: Granularity;
+  onGranularityChange: (next: Granularity) => void;
 }) {
-  const audits = useQuery({
-    queryKey: ["audit-history", projectId],
-    queryFn: () => getAuditHistory({ data: { projectId } }),
-    staleTime: 60_000,
-  });
-  // Mark real completed runs only, with at most three dates to keep the plot readable.
-  const auditDates = sortBy(
-    [
-      ...new Set(
-        (audits.data ?? [])
-          .filter((audit) => audit.status === "completed")
-          .map((audit) => parseTimestamp(audit.completedAt ?? audit.startedAt))
-          .filter(Number.isFinite)
-          .map((stamp) => new Date(stamp).toISOString().slice(0, 10)),
-      ),
-    ].filter((date) => daily.some((row) => row.key === date)),
-    (date) => date,
-  ).slice(-3);
-  const [metric, setMetric] =
-    React.useState<(typeof METRICS)[number]["id"]>("clicks");
+  const reduced = useReducedMotion();
+  const [metric, setMetric] = React.useState<MetricId>("clicks");
+  const config = METRICS.find((entry) => entry.id === metric) ?? METRICS[0];
+  const format = formatterFor(config);
+  const label = t(config.label);
 
-  // One day is a dot, and a dot is not a trend.
-  if (daily.length < 2) return null;
-
-  /*
-   * A flat line along zero is not a trend either -- it is a shape that looks
-   * like an answer. Search Console returns rows for days a property was
-   * queried at all, so a new property produces a full set of zeros. Say that
-   * instead, the way the dashboard card already does for empty GA4 windows.
-   */
-  const hasAnything = daily.some(
-    (row) => row.clicks > 0 || row.impressions > 0,
+  const points = buildPoints(view, metric, granularity, compare);
+  const marks = placedAnnotations(view.annotations, points);
+  const hasAnything = view.series.daily.some(
+    (p) => p.clicks > 0 || p.impressions > 0,
   );
+  const unsettled = points.filter((p) => p.unsettled);
+  const firstUnsettled = granularity === "day" ? unsettled[0] : undefined;
+  const lastPoint = points[points.length - 1];
+  const showsCompare =
+    granularity === "day" && points.some((p) => p.compare !== null);
+  const compareLabel = compare === "yoy" ? t("Geçen yıl") : t("Önceki dönem");
+
+  const measured = points.filter(
+    (p): p is Point & { value: number } => p.value !== null && !p.unsettled,
+  );
+  const best = measured.reduce<(Point & { value: number }) | null>(
+    (top, p) =>
+      top === null ||
+      (config.kind === "position" ? p.value < top.value : p.value > top.value)
+        ? p
+        : top,
+    null,
+  );
+  /*
+   * The settled stretch is a filled area; the days Google is still counting
+   * are a thin dashed line with no fill, joined to the last settled point.
+   * A solid line diving to the right edge read as traffic collapsing.
+   */
+  const chartData = points.map((p, i) => {
+    // Two dashed series, so an unsettled period joins the settled point
+    // before it (the tail at the right edge) and after it (a cut-off first
+    // week), without one dashed line also running over the settled stretch.
+    return {
+      ...p,
+      solid: p.unsettled ? null : p.value,
+      lead: p.unsettled || points[i - 1]?.unsettled ? p.value : null,
+      tail: p.unsettled || points[i + 1]?.unsettled ? p.value : null,
+    };
+  });
+  const xLabel = (x: string) =>
+    granularity === "month" ? formatMonth(x) : formatDay(x);
 
   return (
-    <section className="overflow-hidden rounded-box border border-base-300 bg-base-100">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-base-300 px-4 py-3">
-        <div>
-          <h2 className="text-sm font-medium">{t("Günlük değişim")}</h2>
-          <p className="mt-0.5 text-xs text-muted">
-            {t("Yukarıdaki toplamların günlere dağılımı.")}
-          </p>
-        </div>
-        <div role="group" aria-label={t("Grafik ölçüsü")} className="join">
-          {METRICS.map((option) => (
-            <button
-              key={option.id}
-              type="button"
-              aria-pressed={metric === option.id}
-              onClick={() => setMetric(option.id)}
-              className={`btn join-item btn-sm ${
-                metric === option.id ? "btn-active" : "btn-ghost"
-              }`}
-            >
-              {t(option.label)}
-            </button>
-          ))}
-        </div>
+    <section className="overflow-hidden rounded-box border border-[var(--hairline)] bg-base-100 shadow-[var(--shadow-raise)]">
+      <div className="flex flex-col gap-3 border-b border-[var(--hairline)] px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
+        <h2 className="text-sm font-medium">{t("Zaman içinde")}</h2>
+        <TrendControls
+          metric={metric}
+          onMetric={setMetric}
+          granularity={granularity}
+          onGranularity={onGranularityChange}
+        />
       </div>
-      {hasAnything ? (
-        <div className="px-2 py-3">
-          <SearchTrendChart
-            daily={daily}
-            metric={metric}
-            auditDates={auditDates}
-          />
-        </div>
-      ) : (
+
+      {!hasAnything ? (
         <p className="px-4 py-6 text-sm text-muted">
           {t(
             "Bu dönemde hiç gösterim yok, grafik boş. Search Console sayfalarınızı arama sonuçlarında göstermeye başlayınca günlük dağılım burada görünür.",
           )}
         </p>
+      ) : points.length < 2 ? (
+        <p className="px-4 py-6 text-sm text-muted">
+          {t("Bu zaman biriminde çizilecek kadar dönem yok.")}
+        </p>
+      ) : (
+        <div className="px-2 pt-3">
+          <Chart
+            height={240}
+            table={{
+              caption: t("{metric} ({grain})", {
+                metric: label,
+                grain: t(GRAIN_LABEL[granularity]),
+              }),
+              columns: [
+                t("Dönem"),
+                label,
+                ...(showsCompare ? [compareLabel] : []),
+                t("Durum"),
+              ],
+              rows: points.map((p) => [
+                xLabel(p.x),
+                p.value === null ? "–" : format(p.value),
+                ...(showsCompare
+                  ? [p.compare === null ? "–" : format(p.compare)]
+                  : []),
+                p.state === "pending"
+                  ? t("Henüz veri yok")
+                  : p.unsettled
+                    ? t("Kesinleşmedi")
+                    : p.state === "noImpressions"
+                      ? t("Gösterim yok")
+                      : t("Kesin"),
+              ]),
+            }}
+            summary={
+              best
+                ? t(
+                    "{count} dönemlik {metric} grafiği. En iyi dönem {day}, {value}.",
+                    {
+                      count: formatCount(points.length),
+                      metric: t(config.inline),
+                      day: xLabel(best.x),
+                      value: format(best.value),
+                    },
+                  )
+                : t("{metric} grafiği", { metric: label })
+            }
+          >
+            <ComposedChart
+              data={chartData}
+              margin={{ top: 18, right: 12, bottom: 0, left: 0 }}
+            >
+              <TrendDefs />
+              <CartesianGrid {...CHART_GRID} />
+              {firstUnsettled && lastPoint ? (
+                <ReferenceArea
+                  x1={firstUnsettled.x}
+                  x2={lastPoint.x}
+                  fill="url(#sp-unsettled)"
+                  fillOpacity={1}
+                  label={{
+                    value: t("Kesinleşmedi"),
+                    position: "insideTopRight",
+                    fill: "var(--text-muted)",
+                    fontSize: 10,
+                  }}
+                />
+              ) : null}
+              {marks.map((mark) => (
+                <ReferenceLine
+                  key={`${mark.annotation.kind}-${mark.n}`}
+                  x={mark.x}
+                  stroke={
+                    mark.annotation.kind === "note"
+                      ? "var(--color-primary)"
+                      : "currentColor"
+                  }
+                  strokeOpacity={0.6}
+                  strokeDasharray="3 4"
+                  label={{
+                    value: String(mark.n),
+                    position: "top",
+                    fill: "currentColor",
+                    fontSize: 11,
+                    fontWeight: 600,
+                  }}
+                />
+              ))}
+              <XAxis
+                dataKey="x"
+                {...CHART_AXIS}
+                tickFormatter={xLabel}
+                minTickGap={24}
+              />
+              <YAxis
+                {...CHART_AXIS}
+                width={52}
+                tickFormatter={format}
+                domain={
+                  config.kind === "position"
+                    ? ["dataMin", "dataMax"]
+                    : [0, "auto"]
+                }
+                reversed={config.kind === "position"}
+                allowDecimals={config.kind !== "count"}
+              />
+              <Tooltip
+                cursor={{ stroke: "currentColor", strokeOpacity: 0.2 }}
+                content={({ active, label: x }) => {
+                  if (!active || typeof x !== "string") return null;
+                  const p = points.find((entry) => entry.x === x);
+                  if (!p) return null;
+                  const here = marks.filter((m) => m.x === x);
+                  return (
+                    <ChartTooltip
+                      title={
+                        p.end === p.x
+                          ? formatDate(p.x)
+                          : `${formatDate(p.x)} – ${formatDate(p.end)}`
+                      }
+                      rows={[
+                        {
+                          label,
+                          value:
+                            p.value === null
+                              ? t("Henüz veri yok")
+                              : format(p.value),
+                          color: CHART_SERIES.primary,
+                        },
+                        ...(showsCompare
+                          ? [
+                              {
+                                label: compareLabel,
+                                value:
+                                  p.compare === null ? "–" : format(p.compare),
+                              },
+                            ]
+                          : []),
+                        ...(p.unsettled
+                          ? [
+                              {
+                                label: t("Durum"),
+                                value:
+                                  granularity === "day"
+                                    ? t(
+                                        "Google hâlâ sayıyor; bu gün toplamlara katılmadı",
+                                      )
+                                    : t("Eksik dönem"),
+                              },
+                            ]
+                          : []),
+                        ...here.map((m) => ({
+                          label: `${m.n}. ${t(ANNOTATION_KIND_LABEL[m.annotation.kind])}`,
+                          value: annotationText(m.annotation),
+                        })),
+                      ]}
+                    />
+                  );
+                }}
+              />
+              {showsCompare ? (
+                <Line
+                  type="monotone"
+                  dataKey="compare"
+                  stroke="var(--text-muted)"
+                  strokeWidth={1.75}
+                  strokeDasharray="5 4"
+                  dot={false}
+                  connectNulls={false}
+                  isAnimationActive={!reduced}
+                />
+              ) : null}
+              <Line
+                type="monotone"
+                dataKey="tail"
+                stroke={CHART_SERIES.primary}
+                strokeOpacity={0.55}
+                strokeWidth={1.5}
+                strokeDasharray="4 3"
+                dot={granularity === "day" ? false : periodDot(points, true)}
+                activeDot={false}
+                connectNulls={false}
+                isAnimationActive={!reduced}
+              />
+              <Line
+                type="monotone"
+                dataKey="lead"
+                stroke={CHART_SERIES.primary}
+                strokeOpacity={0.55}
+                strokeWidth={1.5}
+                strokeDasharray="4 3"
+                dot={false}
+                activeDot={false}
+                connectNulls={false}
+                isAnimationActive={!reduced}
+              />
+              <Area
+                type="monotone"
+                dataKey="solid"
+                stroke={CHART_SERIES.primary}
+                strokeWidth={2}
+                fill="url(#sp-area)"
+                fillOpacity={1}
+                connectNulls={false}
+                dot={granularity === "day" ? false : periodDot(points, false)}
+                isAnimationActive={!reduced}
+              />
+            </ComposedChart>
+          </Chart>
+        </div>
       )}
+
+      <div className="flex flex-col gap-2 px-4 pb-3 pt-1 text-xs text-muted">
+        <TrendLegend
+          label={label}
+          compareLabel={showsCompare ? compareLabel : null}
+          unsettled={unsettled.length > 0}
+          granularity={granularity}
+          compareOff={compare === "none"}
+        />
+        <SearchNotes
+          projectId={projectId}
+          marks={marks}
+          defaultDate={view.window.lastDataDate ?? view.window.endDate}
+          floorDate={view.window.floorDate}
+          lastDate={view.window.freshEndDate}
+        />
+      </div>
     </section>
   );
 }

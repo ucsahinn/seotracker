@@ -5,7 +5,7 @@ kind: nasil-yapilir
 updated: 2026-10-23
 ---
 
-L'interfaccia dell'app è disponibile in turco e in inglese. La lingua si sceglie in Ayarlar → Görünüm → Dil. In questa guida ogni nome di pulsante e di schermata è riportato in turco, con il significato italiano tra parentesi.
+L'interfaccia dell'app esiste in sei lingue: turco, inglese, tedesco, francese, italiano e portoghese. La lingua si sceglie in Impostazioni → Aspetto → Lingua. In questa guida pulsanti e schermate hanno il nome che portano nell'interfaccia in italiano. La procedura di installazione esiste solo in turco e in inglese, il menu dell'area di notifica solo in turco. Lì il nome mostrato è seguito dal significato italiano tra parentesi.
 
 Al termine l'app sarà installata sul computer e aperta nel browser. L'installazione richiede due minuti. Viene installata solo per il proprio account utente e non servono i permessi di amministratore. Se manca il componente Visual C++, il permesso viene chiesto una sola volta.
 
@@ -23,13 +23,13 @@ Al termine l'app sarà installata sul computer e aperta nel browser. L'installaz
 
 1. Scaricare il file **seowatcher-setup.exe** dalla pagina delle versioni su GitHub. Indirizzo fisso: `github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe`
 2. Fare doppio clic sul file.
-3. Se Windows mostra "Windows ha protetto il PC", scegliere **Maggiori informazioni** e poi **Esegui comunque** (in un Windows in turco: **Daha fazla bilgi**, **Yine de çalıştır**). Il file non è ancora firmato e Windows non riconosce l'autore. L'avviso è normale.
+3. Se Windows mostra "Windows ha protetto il PC", scegliere **Maggiori informazioni** e poi **Esegui comunque**. Il file non è ancora firmato e Windows non riconosce l'autore. L'avviso è normale.
 4. Se si desidera, confrontare l'impronta SHA-256 del file (la sua impronta digitale) con quella di `SHA256SUMS.txt` nella pagina delle versioni.
-5. Nella pagina di benvenuto scegliere **Sonraki** (Avanti).
-6. Alla domanda "per chi installare" scegliere **Yalnızca ben** (Solo per me). È l'opzione consigliata: l'installazione riguarda solo il proprio account. L'opzione **Tüm kullanıcılar** (Tutti gli utenti) richiede il permesso di amministratore.
-7. Guardare le due opzioni **Windows açılınca seowatcher'ı başlat** (Avvia seowatcher all'avvio di Windows) e **Masaüstüne kısayol ekle** (Aggiungi un collegamento sul desktop). La prima è già spuntata. Se non si vuole che parta in secondo piano, togliere la spunta. Poi scegliere **Sonraki**.
-8. Scegliere **Kur** (Installa).
-9. Nell'ultima pagina c'è la casella **seowatcher'ı şimdi başlat** (Avvia seowatcher ora). Lasciarla spuntata e scegliere **Bitti** (Fine). L'app si apre.
+5. La procedura di installazione esiste in turco e in inglese. Se chiede la lingua, scegliere **English**; i passi seguenti riportano i nomi inglesi. Nella pagina di benvenuto scegliere **Next** (Avanti).
+6. Alla domanda "per chi installare" scegliere **Install for me only** (Installa solo per me). È l'opzione consigliata: l'installazione riguarda solo il proprio account. L'opzione **Install for all users** (Installa per tutti gli utenti) richiede il permesso di amministratore.
+7. Guardare le due opzioni **Start seowatcher when Windows starts** (Avvia seowatcher all'avvio di Windows) e **Create a desktop shortcut** (Crea un collegamento sul desktop). La prima è già spuntata. Se non si vuole che parta in secondo piano, togliere la spunta. Poi scegliere **Next** (Avanti).
+8. Scegliere **Install** (Installa).
+9. Nell'ultima pagina c'è la casella **Start seowatcher now** (Avvia seowatcher ora). Lasciarla spuntata e scegliere **Finish** (Fine). L'app si apre.
 10. Attendere. Il primo avvio dura 20-30 secondi. Il testo dell'icona nella barra delle applicazioni cambia in ordine: "Anahtarlar hazırlanıyor" (Preparazione delle chiavi), "Veritabanı güncelleniyor" (Aggiornamento del database), "Sunucu başlatılıyor" (Avvio del server). Se l'icona non si vede, fare clic sulla freccia ^ nella barra delle applicazioni. Quando è tutto pronto, il browser si apre da solo. Se invece l'app parte con Windows, il browser non si apre e compare un fumetto "seowatcher hazır" (seowatcher è pronto).
 11. Nel browser si apre da solo `http://127.0.0.1:3001`. 127.0.0.1 è il computer stesso, 3001 è il numero di porta (l'indirizzo interno del servizio).
 
@@ -42,12 +42,12 @@ Fare clic con il tasto destro sull'icona. Se non si vede, fare clic sulla frecci
 - **seowatcher'ı aç** (Apri seowatcher): apre l'app nel browser. Un doppio clic sull'icona fa lo stesso. Se l'app si sta ancora avviando, compare il fumetto "seowatcher açılıyor" (seowatcher si sta avviando) e il browser si apre da solo quando è pronta.
 - Riga di stato: "Çalışıyor: http://127.0.0.1:3001/" (In esecuzione: http://127.0.0.1:3001/), "Veritabanı güncelleniyor" (Aggiornamento del database) oppure un messaggio di errore. Non si può fare clic. Se il testo è lungo, tenere il mouse sopra per vederlo per intero.
 - **Eksik Windows bileşenini kur** (Installa il componente Windows mancante): compare solo se manca il pacchetto Visual C++. Un clic installa il pacchetto e riavvia l'app.
-- **Güncelle** (Aggiorna): è sempre nel menu. Un clic controlla subito GitHub. Se c'è una nuova versione la scarica e la installa, altrimenti dice "Güncel" (Aggiornato). Durante il controllo la voce riporta "Kontrol ediliyor…" (Controllo in corso…), durante lo scaricamento "Güncelleme indiriliyor: X.Y.Z (%45)" (Scaricamento dell'aggiornamento: X.Y.Z (45%)); in quel momento non si può fare clic. Quando una nuova versione è già stata trovata, la voce riporta "Güncelle: X.Y.Z sürümü hazır" (Aggiorna: la versione X.Y.Z è pronta); i numeri di versione sono esempi.
+- **Güncelle** (Aggiorna): è sempre nel menu. Un clic controlla subito GitHub. Se c'è una nuova versione la scarica e la installa, altrimenti dice "Güncel" (Aggiornato). Durante il controllo la voce riporta "Verifica in corso…", durante lo scaricamento "Güncelleme indiriliyor: X.Y.Z (%45)" (Scaricamento dell'aggiornamento: X.Y.Z (45%)); in quel momento non si può fare clic. Quando una nuova versione è già stata trovata, la voce riporta "Güncelle: X.Y.Z sürümü hazır" (Aggiorna: la versione X.Y.Z è pronta); i numeri di versione sono esempi.
 - **Yeniden başlat** (Riavvia): chiude l'app e la riapre. Se qualcosa si blocca, provare prima questa voce.
 - **Windows açılınca başlat** (Avvia all'avvio di Windows): se è spuntata, l'app parte in secondo piano all'accensione del computer. Se un amministratore ha attivato questa impostazione durante un'installazione per tutti gli utenti del computer, la voce è spuntata e disattivata (grigia), e solo un amministratore può toglierla.
 - **Güncellemeleri kendiliğinden kur** (Installa gli aggiornamenti automaticamente): se è spuntata, l'app installa da sola una nuova versione quando ne trova una.
 - **Kurulumu onar** (Ripara l'installazione): elimina i file temporanei, controlla che il pacchetto sia completo e riapre l'app. Durante la riparazione la voce riporta "Onarılıyor…" (Riparazione in corso…).
-- **Tanı bilgisini kopyala** (Copia le informazioni di diagnostica): copia negli appunti la versione di Windows, il processore, la versione di Visual C++, una prova del motore, il modulo difettoso del registro eventi di Windows, i file di dump dei crash e le ultime righe del registro. Le informazioni sono pronte in pochi secondi, poi compare il fumetto "Kopyalandı" (Copiato). Torna utile quando si segnala un problema.
+- **Tanı bilgisini kopyala** (Copia le informazioni di diagnostica): copia negli appunti la versione di Windows, il processore, la versione di Visual C++, una prova del motore, il modulo difettoso del registro eventi di Windows, i file di dump dei crash e le ultime righe del registro. Le informazioni sono pronte in pochi secondi, poi compare il fumetto "Copiato". Torna utile quando si segnala un problema.
 - **Sorunu bildir (GitHub)** (Segnala un problema (GitHub)): mette le stesse informazioni negli appunti e apre su GitHub una segnalazione già compilata. Aggiungere una frase su ciò che si stava facendo e inviarla.
 - **Günlükleri aç** (Apri i registri): apre la cartella dei registri. Contiene `launcher.log`, `server.log` e `migrate.log`.
 - **Veri klasörünü aç** (Apri la cartella dei dati): apre la cartella con il database e le chiavi.
@@ -60,7 +60,7 @@ Se il server si chiude da solo mentre è in esecuzione, l'app lo riapre e mostra
 
 ### Aggiornamento
 
-L'app si aggiorna da sola. Due minuti dopo l'apertura, e poi una volta al giorno, controlla su GitHub l'ultima versione. Se ce n'è una nuova, la scarica, confronta l'impronta del file (SHA-256) con il valore indicato nella pagina delle versioni, la installa in silenzio e si riapre. In questa fase il testo dell'icona riporta "Güncelleme indiriliyor" (Scaricamento dell'aggiornamento) e "Güncelleme kuruluyor" (Installazione dell'aggiornamento), e per un attimo compare una piccola finestra di installazione. Quando l'app si riapre, compare il fumetto "seowatcher X.Y.Z sürümüne güncellendi" (seowatcher è stato aggiornato alla versione X.Y.Z); un clic apre l'elenco delle novità. Anche la sezione **Ayarlar → Hakkında** (Impostazioni → Informazioni) dell'app segnala la nuova versione e rimanda alla voce **Güncelle** dell'icona.
+L'app si aggiorna da sola. Due minuti dopo l'apertura, e poi una volta al giorno, controlla su GitHub l'ultima versione. Se ce n'è una nuova, la scarica, confronta l'impronta del file (SHA-256) con il valore indicato nella pagina delle versioni, la installa in silenzio e si riapre. In questa fase il testo dell'icona riporta "Güncelleme indiriliyor" (Scaricamento dell'aggiornamento) e "Güncelleme kuruluyor" (Installazione dell'aggiornamento), e per un attimo compare una piccola finestra di installazione. Quando l'app si riapre, compare il fumetto "seowatcher X.Y.Z sürümüne güncellendi" (seowatcher è stato aggiornato alla versione X.Y.Z); un clic apre l'elenco delle novità. Anche la sezione **Impostazioni → Informazioni** dell'app segnala la nuova versione e rimanda alla voce **Güncelle** dell'icona.
 
 - Se non si vuole che si installi da sola, togliere la spunta a **Güncellemeleri kendiliğinden kur** nel menu. Quando esce una nuova versione si vede allora un fumetto una sola volta, e la voce del menu riporta "Güncelle: X.Y.Z sürümü hazır" (Aggiorna: la versione X.Y.Z è pronta). Per installare, fare clic sul fumetto o sulla voce.
 - Se non c'è internet, o GitHub in quel momento non risponde, l'app riprova dopo un'ora. Nei tentativi automatici avvisa una sola volta per ogni versione.
@@ -88,8 +88,8 @@ Se un file del pacchetto è stato eliminato (per esempio messo in quarantena da 
 
 ### Disinstallazione
 
-1. In Windows, nell'elenco **Ayarlar → Uygulamalar → Yüklü uygulamalar** (Impostazioni → App → App installate), cercare **seowatcher**.
-2. Scegliere **Kaldır** (Disinstalla).
+1. In Windows, nell'elenco **Impostazioni → App → App installate**, cercare **seowatcher**.
+2. Scegliere **Disinstalla**.
 
 Il programma di disinstallazione elimina il programma, il collegamento nel menu Start la voce "avvia con Windows" (anche se è stata attivata dal menu) e i file di aggiornamento scaricati. Non tocca la cartella dei dati, e la finestra di disinstallazione lo dice. Per eliminare anche il database, il collegamento con Google e i report, cancellare a mano la cartella dei dati.
 
@@ -133,7 +133,7 @@ Quando il numero cambia, aggiornare con il nuovo numero anche i due indirizzi di
 
 - Passando il mouse sull'icona nella barra delle applicazioni deve comparire "seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/". Il numero iniziale è la versione installata. 0.5.0 Alpha è un esempio.
 - Nel browser l'indirizzo `http://127.0.0.1:3001/api/health` deve mostrare un testo che inizia con "status":"ok".
-- Nella schermata **Yardım** (Aiuto) la scheda "Kurulumunuzun durumu" (Stato dell'installazione) deve dire "Her şey yolunda." (Tutto a posto.). Finché Google non è collegato, la riga "Google girişi" (Accesso a Google) segnala un problema. È normale.
+- Nella schermata **Aiuto** la scheda "Stato della configurazione" deve dire "Sembra tutto a posto.". Finché Google non è collegato, la riga "Accesso a Google" segnala un problema. È normale.
 
 ## Domande frequenti
 

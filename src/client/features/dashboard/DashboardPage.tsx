@@ -23,12 +23,14 @@ import {
   getDashboardOverview,
 } from "@/serverFunctions/dashboard";
 import { t } from "@/shared/i18n";
+import { projectSetupOptions } from "@/client/features/projects/projectSetupQuery";
 
 export function DashboardPage({ projectId }: { projectId: string }) {
   const activationQuery = useQuery({
     queryKey: ["dashboardActivation", projectId],
     queryFn: () => getDashboardActivation({ data: { projectId } }),
   });
+  const setupQuery = useQuery(projectSetupOptions(projectId));
   const overviewQuery = useQuery({
     queryKey: ["dashboardOverview", projectId],
     queryFn: () => getDashboardOverview({ data: { projectId } }),
@@ -179,9 +181,7 @@ export function DashboardPage({ projectId }: { projectId: string }) {
       <NextStepsCard
         projectId={projectId}
         gscConnected={gscConnected}
-        ga4Connected={ga4Connected}
-        hasProjectContext={activation.hasProjectContext}
-        agentConnected={activation.mcp.firstToolCallAt !== null}
+        setup={setupQuery.data}
         googleMissing={googleMissing}
         audit={overview?.audit ?? null}
       />

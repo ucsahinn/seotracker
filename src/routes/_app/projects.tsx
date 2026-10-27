@@ -13,11 +13,13 @@ import { toast } from "sonner";
 import {
   getArchivedProjects,
   getProjects,
+  getProjectsOverview,
   restoreProject,
 } from "@/serverFunctions/projects";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { getLastProjectId } from "@/client/lib/active-project";
 import { CreateProjectModal } from "@/client/features/projects/CreateProjectModal";
+import { ProjectFacts } from "@/client/features/projects/ProjectFacts";
 import { t } from "@/shared/i18n";
 
 export const Route = createFileRoute("/_app/projects")({
@@ -38,6 +40,13 @@ function ProjectsPage() {
     queryFn: () => getProjects(),
   });
   const projects = projectsQuery.data ?? [];
+  // Local database only: the archive, audits and connections.
+  const overviewQuery = useQuery({
+    queryKey: ["projectsOverview"],
+    queryFn: () => getProjectsOverview(),
+  });
+  const overviewOf = (id: string) =>
+    overviewQuery.data?.find((row) => row.projectId === id);
 
   return (
     <PageShell width="reading">
@@ -106,6 +115,7 @@ function ProjectsPage() {
                 <span className="truncate text-xs text-muted">
                   {project.domain ?? t("Site eklenmedi")}
                 </span>
+                <ProjectFacts overview={overviewOf(project.id)} />
               </Link>
               <Link
                 to="/p/$projectId/settings"

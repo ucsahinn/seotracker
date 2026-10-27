@@ -5,6 +5,10 @@ import type { Catalog } from "@/shared/i18n";
  * Keys are the Turkish source strings exactly as passed to t().
  */
 export const enSettings: Catalog = {
+  "Sürüm kaynağına ulaşılamadı: depo bulunamadı ya da gizli.":
+    "Could not reach the release source: the repository was not found or is private.",
+  "Sürüm kaynağına ulaşılamadı: depo bulunamadı ya da gizli (GitHub 404). Yardım ekranından tanılama paketini indirip sorunu bildirin.":
+    "Could not reach the release source: the repository was not found or is private (GitHub 404). Download the diagnostics bundle from the Help screen and report the problem.",
   "Her sürümde nelerin eklendiğini ve düzeltildiğini burada bulabilirsiniz.":
     "See what was added and fixed in each release.",
   Yenilik: "Feature",
@@ -169,7 +173,6 @@ export const enSettings: Catalog = {
     "Couldn't reach GitHub. Check your internet connection and try again.",
   "GitHub'a ulaşılamadı; son bilinen sürüm {version}":
     "Couldn't reach GitHub; the last known version is {version}",
-  "Henüz yayımlanmış bir sürüm yok": "No version has been released yet",
   "En güncel sürümü kullanıyorsunuz": "You're on the latest version",
   "Güncelleme kontrol edilemedi. Birazdan tekrar deneyin.":
     "Couldn't check for updates. Try again in a moment.",
@@ -192,8 +195,6 @@ export const enSettings: Catalog = {
   "Proje klasöründe çalıştırın. Verileriniz Docker biriminde ({volume}) kalır, güncelleme onu silmez.":
     "Run it in the project folder. Your data stays in the Docker volume ({volume}); updating does not delete it.",
   "En güncel sürümü kullanıyorsunuz.": "You're on the latest version.",
-  "Depoda henüz yayımlanmış bir sürüm yok.":
-    "The repository has no released version yet.",
   "Güncelleme kontrolü kapalı; GitHub'a istek gitmiyor. Yeni sürümleri depodaki yayınlardan kendiniz takip edebilirsiniz.":
     "Update checks are off, so no requests go to GitHub. You can follow new versions yourself on the repository's releases page.",
   "Son kontrol başarısız oldu: GitHub'a ulaşılamadı. Son bilinen sürüm {version} (son başarılı kontrol: {date}); güncel olup olmadığı doğrulanamadı.":
@@ -203,11 +204,11 @@ export const enSettings: Catalog = {
   "Son kontrolde GitHub'a ulaşılamadı.":
     "GitHub couldn't be reached on the last check.",
   "Güncellemeleri kontrol et": "Check for updates",
-  "Açıkken günde bir kez GitHub'daki sürüm listesine bakar, başka hiçbir şey göndermez. Kapatırsanız dışarıya hiç istek gitmez ve sürümü kendiniz takip edersiniz.":
-    "When on, it looks at the release list on GitHub once a day and sends nothing else. Turn it off and no requests go out at all; you keep track of versions yourself.",
+  "Açıkken altı saatte bir GitHub'daki sürüm listesine bakar, başka hiçbir şey göndermez. Kapatırsanız dışarıya hiç istek gitmez ve sürümü kendiniz takip edersiniz.":
+    "When on, it looks at the release list on GitHub every six hours and sends nothing else. Turn it off and no requests go out at all; you keep track of versions yourself.",
   "Şimdi kontrol et": "Check now",
-  "Kontrol açıkken uygulama günde bir kez GitHub'a bağlanıp en son sürümü sorar. GitHub bu istekte yalnızca genel IP adresinizi, uygulama adını ve sürümü görür; siteleriniz, Google hesabınız ya da denetimleriniz gönderilmez.":
-    "With checks on, the app asks GitHub for the latest version once a day. GitHub sees only your public IP address, the app name and its version; your sites, Google account and audits are never sent.",
+  "Kontrol açıkken uygulama, bir sekmede açık olduğu sürece en çok altı saatte bir GitHub'a bağlanıp en son sürümü sorar. GitHub bu istekte yalnızca genel IP adresinizi, uygulama adını ve sürümü görür; siteleriniz, Google hesabınız ya da denetimleriniz gönderilmez.":
+    "With checks on, the app asks GitHub for the latest version at most every six hours while it is open in a browser tab. GitHub sees only your public IP address, the app name and its version; your sites, Google account and audits are never sent.",
   "Son kontrol: {date}.": "Last checked: {date}.",
   // settings/WhatsNewSection.tsx
   "Kurulu sürüm": "Installed version",
@@ -262,6 +263,10 @@ export const enSettings: Catalog = {
   Dikkat: "Attention",
   Hata: "Error",
   "Kurulum durumu okunamadı": "Couldn't read the setup status",
+  "Port: {actual} (ayarlanan: {configured})":
+    "Port: {actual} (configured: {configured})",
+  "seowatcher bu sefer {actual} numarasında çalışıyor çünkü {configured} başka bir program tarafından kullanılıyor (ör. eski bir Docker kopyası). Google bağlantısı {configured} için ayarlandı; o programı kapatıp seowatcher'ı yeniden başlatın.":
+    "seowatcher is running on {actual} this time because another program is using {configured} (for example an old Docker copy). Google sign-in is set up for {configured}; close that program and restart seowatcher.",
   "Sürümünüz v{version}.": "You're on v{version}.",
   "Yeni sürüm {version} çıktı": "Version {version} is out",
   "Sürümünüz v{version}. Güncelleme kontrolü başarısız oldu; son bilinen sürüm {latest}.":
@@ -499,4 +504,10 @@ export const enSettings: Catalog = {
     "Notification permission is blocked. Enable it in your browser’s site permissions.",
   "Bu tarayıcı masaüstü bildirimlerini desteklemiyor.":
     "This browser does not support desktop notifications.",
+  // Cards and stats review (Opportunities, rankings, setup verdict).
+  "Kullanılmıyor, hizmet hesabı bağlı":
+    "Not used, a service account is connected",
+  "Uygulamanın durumu": "App health",
+  "Bu kurulumun kendisi. Bir projenin kurulum listesi Panel'de ve Proje bilgisi'nde.":
+    "This install itself. A project's setup checklist is on the Dashboard and in Project info.",
 };

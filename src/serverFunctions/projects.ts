@@ -1,3 +1,4 @@
+import { ProjectOverviewService } from "@/server/features/projects/services/ProjectOverviewService";
 import { createServerFn } from "@tanstack/react-start";
 import { requireOrgPermission } from "@/server/auth/org-gate";
 import { ProjectService } from "@/server/features/projects/services/ProjectService";
@@ -20,6 +21,13 @@ export const getProjects = createServerFn({ method: "POST" })
   .middleware(requireAuthenticatedContext)
   .handler(async ({ context }) =>
     ProjectService.listProjectsEnsuringOne(context.organizationId),
+  );
+
+/** Clicks, last audit and connections per project, from the local database only. */
+export const getProjectsOverview = createServerFn({ method: "POST" })
+  .middleware(requireAuthenticatedContext)
+  .handler(async ({ context }) =>
+    ProjectOverviewService.getOverview(context.organizationId),
   );
 
 export const createProject = createServerFn({ method: "POST" })

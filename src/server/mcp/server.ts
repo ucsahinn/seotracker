@@ -43,6 +43,7 @@ import {
 import { saveKeywordsTool } from "@/server/mcp/tools/save-keywords";
 import {
   getSearchConsolePerformanceTool,
+  getSearchSummaryTool,
   inspectUrlsTool,
 } from "@/server/mcp/tools/search-console-tools";
 import {
@@ -137,10 +138,12 @@ export function createMcpServer(authProps: McpProps) {
       instructions: [
         "seotracker: a single-user, self-hosted SEO workspace. Every tool reads free first-party data the user owns (their Search Console and Google Analytics 4 properties, a local crawler, the install's own database) and nothing bills per call. There is no third-party market data: no search volumes, keyword difficulty, backlinks or competitor rankings. Say so when asked; do not estimate.",
         "",
+        "Call whoami first. If whoami.instance.version is older than whoami.instance.latestVersion (instance.stale), or installKind/port differ from what the user expects, tell the user before using any data: this may be an old or different seotracker instance (e.g. an old Docker copy on the same port).",
+        "",
         "Start: call list_projects and use the project's id as projectId on every project tool (whoami checks the connection; get_diagnostics answers \"something is broken or empty\"). Then get_project_context: the user's business, goal, key pages and research log. Do not repeat research the log already records.",
         "",
         "Which tool for which question:",
-        "- What ranks and what is close: get_search_console_performance, get_search_opportunities, get_cannibalization.",
+        "- What ranks and what is close: get_search_summary (start here: totals, anonymized-query share and a ranked to-do list), get_search_console_performance, get_search_opportunities, get_cannibalization.",
         '- When something moved: get_ranking_history (local archive, can be empty), or get_search_console_performance with dimensions ["date"].',
         "- Did Google index it: get_index_coverage (stored answers, free), then inspect_urls only for the gaps; get_sitemaps for Google's view of sitemaps.",
         "- Did visitors do anything: the get_google_analytics_* tools; get_google_analytics_measurement_health separates a tracking break from a real drop.",
@@ -171,6 +174,7 @@ export function createMcpServer(authProps: McpProps) {
   register(updateProjectContextTool);
   register(listSavedKeywordsTool);
   register(saveKeywordsTool);
+  register(getSearchSummaryTool);
   register(getSearchConsolePerformanceTool);
   register(inspectUrlsTool);
   register(getRankingHistoryTool);

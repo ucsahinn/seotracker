@@ -1,4 +1,5 @@
-import { bandOf, type BandId } from "@/client/features/rankings/positionBands";
+import { bandOf, type BandId } from "@/shared/positionBands";
+import { directionOf } from "@/shared/rankingChange";
 
 /**
  * Where each saved keyword ranks, read from the Search Console archive.
@@ -37,6 +38,30 @@ export function indexPositions(tracked: Tracked[]): Map<string, number> {
   return new Map(
     tracked.map((row) => [normalizeKeyword(row.query), row.position]),
   );
+}
+
+/**
+ * How many saved keywords climbed and how many slipped against the previous
+ * window, by the archive's own change (half a place or more; see
+ * `directionOf`). A keyword with no earlier reading is neither.
+ */
+export function countMoves(
+  keywords: { keyword: string }[],
+  tracked: { query: string; delta: number | null }[],
+): { up: number; down: number } {
+  const deltas = new Map(
+    tracked.map((row) => [normalizeKeyword(row.query), row.delta]),
+  );
+  let up = 0;
+  let down = 0;
+  for (const { keyword } of keywords) {
+    const delta = deltas.get(normalizeKeyword(keyword));
+    if (delta == null) continue;
+    const direction = directionOf(delta);
+    if (direction === "up") up += 1;
+    else if (direction === "down") down += 1;
+  }
+  return { up, down };
 }
 
 export function positionOf(

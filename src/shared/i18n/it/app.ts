@@ -24,7 +24,7 @@ export const itApp: Catalog = {
   Fırsatlar: "Opportunità",
   "Kayıtlı kelimeler": "Parole chiave salvate",
   "Arama performansı": "Rendimento della ricerca",
-  "Site denetimi": "Verifica del sito",
+  "Site denetimi": "Controllo del sito",
   Raporlar: "Report",
   "Proje bilgisi": "Contesto del progetto",
   "Ajan kurulumu": "Configurazione dell’agente",
@@ -47,8 +47,8 @@ export const itApp: Catalog = {
   "Sayfa bulunamadı": "Pagina non trovata",
   "Bu adreste bir sayfa yok": "Non c’è una pagina a questo indirizzo",
   "Adres yanlış yazılmış ya da sayfa kaldırılmış olabilir. Panelden devam edebilir ya da Yardım'a bakabilirsiniz.":
-    "L’indirizzo potrebbe essere errato oppure la pagina potrebbe essere stata rimossa. Puoi continuare dalla Dashboard o consultare Aiuto.",
-  "Panele dön": "Torna alla Dashboard",
+    "L’indirizzo potrebbe essere errato oppure la pagina potrebbe essere stata rimossa. Puoi continuare dal Pannello o consultare Aiuto.",
+  "Panele dön": "Torna al Pannello",
   "{label} hakkında açıklama": "Informazioni su {label}",
   "Ülke: {country}": "Paese: {country}",
   seçilmedi: "non selezionato",
@@ -104,7 +104,7 @@ export const itApp: Catalog = {
   "Önceki sayfa": "Pagina precedente",
   "Sonraki sayfa": "Pagina successiva",
   "Adresi kopyala": "Copia URL",
-  "Adres kopyalandı": "URL copiata",
+  "Adres kopyalandı": "URL copiato",
   "Oturumunuz doğrulanamadı. Sayfayı yenileyip tekrar deneyin.":
     "Impossibile verificare la sessione. Ricarica la pagina e riprova.",
   "Giriş ayarı eksik. Yardım ekranındaki kurulum belgelerine bakın.":
@@ -113,11 +113,11 @@ export const itApp: Catalog = {
     "Non hai l’autorizzazione per eseguire questa operazione.",
   "Kayıt bulunamadı.": "Record non trovato.",
   "Şu an çok fazla denetim çalışıyor. Biri bitince yeniden deneyin.":
-    "Sono in corso troppe verifiche. Riprova quando una sarà terminata.",
+    "Sono in corso troppi controlli. Riprova quando uno sarà terminato.",
   "Bir denetim en çok {max} sayfa tarayabilir.":
-    "Una verifica può scansionare al massimo {max} pagine.",
+    "Un controllo può scansionare al massimo {max} pagine.",
   "Aynı anda çalışabilecek denetim sayısına ulaştınız. Biri bitene kadar bekleyin ya da çalışan birini silin.":
-    "Hai raggiunto il numero massimo di verifiche simultanee. Attendi che una termini o elimina una verifica in corso.",
+    "Hai raggiunto il numero massimo di controlli simultanei. Attendi che uno termini o elimina un controllo in corso.",
   "Girdiğiniz bilgileri kontrol edip tekrar deneyin.":
     "Controlla i dati inseriti e riprova.",
   "Güvenlik nedeniyle bu adres taranamaz.":
@@ -151,14 +151,14 @@ export const itApp: Catalog = {
   "Proje adı gerekli": "Il nome del progetto è obbligatorio",
   "Temel bilgiler": "Informazioni di base",
   "Site adresi, denetimin nereden başlayacağını belirler. Ülke ve dil, Search Console verisinin hangi pazar için okunacağını belirler. Yanlış seçerseniz sayılar doğru olur ama sizinle ilgisiz kalır.":
-    "L’indirizzo del sito stabilisce da dove inizia la verifica. Paese e lingua indicano per quale mercato leggere i dati di Search Console. Con una scelta errata, i numeri saranno corretti ma irrilevanti per te.",
+    "L’indirizzo del sito stabilisce da dove inizia il controllo. Paese e lingua indicano per quale mercato leggere i dati di Search Console. Con una scelta errata, i numeri saranno corretti ma irrilevanti per te.",
   Ad: "Nome",
   "Yalnızca sizin içindir. Proje değiştiricide ve raporların başlığında görünür, Google'a gitmez.":
     "È solo per te. Compare nel selettore dei progetti e nei titoli dei report, ma non viene inviato a Google.",
   "Alan adı": "Dominio",
   "(isteğe bağlı)": "(facoltativo)",
   "Denetim bu adresten başlar, Search Console mülkü de bununla eşleştirilir. https:// olmadan yazın, örneğin example.com.":
-    "La verifica parte da questo indirizzo e lo usa per trovare la proprietà di Search Console. Inseriscilo senza https://, ad esempio example.com.",
+    "Il controllo parte da questo indirizzo, che serve anche a trovare la proprietà di Search Console. Inseriscilo senza https://, ad esempio example.com.",
   "Kaydettiğiniz anahtar kelimeler bu ülke ve dile göre saklanır.":
     "Le parole chiave salvate vengono associate a questo paese e a questa lingua.",
   "Kaydediliyor…": "Salvataggio…",
@@ -167,7 +167,7 @@ export const itApp: Catalog = {
   "Proje arşivlenemedi": "Impossibile archiviare il progetto",
   "Projeyi arşivle": "Archivia progetto",
   "Arşivlenen proje kenar çubuğundan kalkar ama hiçbir verisi silinmez. Denetimler, kelimeler ve raporlar durur, geri alınca aynen döner.":
-    "Il progetto archiviato scompare dalla barra laterale, ma nessun dato viene eliminato. Verifiche, parole chiave e report vengono sospesi e tornano invariati quando lo ripristini.",
+    "Il progetto archiviato scompare dalla barra laterale, ma nessun dato viene eliminato. Controlli, parole chiave e report vengono sospesi e tornano invariati quando lo ripristini.",
   "{name} projesini arşivlerseniz çalışma alanınızdan kaldırılır. Daha sonra Projeler sayfasından geri alabilirsiniz.":
     "Archiviando il progetto {name}, lo rimuovi dall’area di lavoro. Potrai ripristinarlo in seguito dalla pagina Progetti.",
   "Evet, projeyi arşivle": "Sì, archivia il progetto",
@@ -191,13 +191,13 @@ export const itApp: Catalog = {
   "Projeyi oluşturduktan sonra Search Console'u bağlayın; arama ve sıralama verileri oradan gelir.":
     "Dopo aver creato il progetto, collega Search Console: i dati di ricerca e posizionamento provengono da lì.",
   "Kaydettiğiniz anahtar kelimeler bu ülke ve dile göre saklanır. Sonradan proje ayarlarından değiştirebilirsiniz.":
-    "Le parole chiave salvate vengono associate a questo paese e a questa lingua. Potrai modificarle in seguito nelle impostazioni del progetto.",
+    "Le parole chiave salvate vengono associate a questo paese e a questa lingua. Potrai cambiarli in seguito nelle impostazioni del progetto.",
   "Proje oluştur": "Crea progetto",
   Ülke: "Paese",
   Dil: "Lingua",
   "Proje tanımı": "Descrizione del progetto",
   "{count} bölümün hepsi dolu.": {
-    one: "La sezione {count} è compilata.",
+    one: "{count} sezione compilata.",
     other: "Tutte le {count} sezioni sono compilate.",
   },
   "{total} bölümün {filled} tanesi dolu. Boş olan: {missing}.":
@@ -221,7 +221,7 @@ export const itApp: Catalog = {
     "Nessuna pagina importante contrassegnata. Non è chiaro quali pagine generino ricavi.",
   "Sayfa ekle": "Aggiungi pagina",
   "Bağlı. Tıklama, gösterim ve sıra verisi okunuyor.":
-    "Connesso. Lettura di clic, impressioni e posizionamento.",
+    "Connesso. Vengono letti i dati su clic, impressioni e posizione.",
   "Bağlı değil. Sıralama, arama performansı ve fırsatlar bu bağlantıya dayanır.":
     "Non connesso. Monitoraggio del posizionamento, rendimento della ricerca e opportunità dipendono da questa connessione.",
   Bağla: "Connetti",
@@ -241,7 +241,7 @@ export const itApp: Catalog = {
   "Yazım tercihleri": "Preferenze di scrittura",
   "Ne satıyorsunuz, kim alıyor, nerede.": "Cosa vendi, chi compra e dove.",
   "Şu anda neyin peşindesiniz ve ne zamana kadar.":
-    "Qual è il tuo obiettivo attuale e entro quando.",
+    "Qual è il tuo obiettivo attuale ed entro quando.",
   "Biri neden alternatifler yerine sizi seçsin.":
     "Perché qualcuno dovrebbe scegliere te invece delle alternative.",
   "Üslup, kullanılmayacak kelimeler, girilmeyecek konular.":
@@ -280,14 +280,14 @@ export const itApp: Catalog = {
   "Sitenin en önemli sayfaları. Tam liste olması gerekmez.":
     "Le pagine più importanti del sito. Non serve un elenco completo.",
   "Henüz önemli sayfa yok. Sıralamada olması gereken birkaç sayfayı ekleyin, ya da bir ajan son site denetiminizden bunları önersin.":
-    "Non ci sono ancora pagine importanti. Aggiungi alcune pagine che dovrebbero posizionarsi oppure chiedi a un agente di suggerirle dall’ultima verifica del sito.",
+    "Non ci sono ancora pagine importanti. Aggiungi alcune pagine che dovrebbero posizionarsi oppure chiedi a un agente di suggerirle dall’ultimo controllo del sito.",
   "Hedef: {topic}": "Obiettivo: {topic}",
   "{url} sayfasını düzenle": "Modifica la pagina {url}",
   "{url} sayfasını kaldır": "Rimuovi la pagina {url}",
   "Sayfa adresi": "URL della pagina",
   "Sayfa rolü": "Ruolo della pagina",
-  "Hedef konu (isteğe bağlı)": "Argomento di destinazione (facoltativo)",
-  "Hedef konu": "Argomento di destinazione",
+  "Hedef konu (isteğe bağlı)": "Argomento mirato (facoltativo)",
+  "Hedef konu": "Argomento mirato",
   "Notlar (isteğe bağlı)": "Note (facoltative)",
   "Sayfa notları": "Note sulla pagina",
   "Kendinizi kıyasladığınız siteler.": "Siti con cui ti confronti.",
@@ -310,7 +310,7 @@ export const itApp: Catalog = {
   "{author} ekledi": "Aggiunto da {author}",
   Kaldır: "Rimuovi",
   Kaydet: "Salva",
-  "Ajanınıza doldurtabilirsiniz": "Puoi farlo compilare al tuo agente",
+  "Ajanınıza doldurtabilirsiniz": "Fallo compilare all’agente",
   "Ajanınıza gözden geçirtin": "Chiedi al tuo agente di rivederlo",
   "İstemi kopyalayıp Claude Code ya da Codex'e yapıştırın. Ajan sitenizi ve ölçümleri okuyup taslak hazırlar; siz onaylamadan hiçbir şey kaydetmez ve sitedeki metinleri talimat saymaz.":
     "Copia il prompt e incollalo in Claude Code o Codex. L’agente legge il sito e i dati e prepara una bozza; non salva nulla senza la tua approvazione e non considera istruzioni i testi presenti sul sito.",
@@ -358,4 +358,6 @@ export const itApp: Catalog = {
   "Şablon oluştur": "Crea modello",
   Rapor: "Report",
   "Son 7 gün": "Ultimi 7 giorni",
+  "Yanıtınız alındı": "La tua risposta è stata registrata",
+  "{count} yanıt": { one: "{count} risposta", other: "{count} risposte" },
 };

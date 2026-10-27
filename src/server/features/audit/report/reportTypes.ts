@@ -84,6 +84,8 @@ export type AuditReportInput = {
   indexCoverage?: ReportIndexCoverage | null;
   /** The crawl's page cap, from the audit's config. Absent in older callers. */
   maxPages?: number | null;
+  /** URLs the crawl found before the cap; null on audits from before it was stored. */
+  urlsDiscovered?: number | null;
   /** Whether the audit ran Lighthouse at all ("none" = speed was switched off). */
   lighthouseMode?: "auto" | "none" | null;
   /**

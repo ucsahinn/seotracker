@@ -68,6 +68,41 @@ describe("crawlPage", () => {
     expect(result).toMatchObject({ statusCode: 0, fetchClass: "error" });
   });
 
+  /*
+   * server.log (installed 0.8.0): "Failed to crawl ...: internal error;
+   * reference = ..." left a status-0 page in audit 61a977c4 that the next
+   * audit of the same site fetched without trouble.
+   */
+  it("retries a page once when workerd drops the connection", async () => {
+    vi.useFakeTimers();
+    const fetchMock = vi
+      .spyOn(globalThis, "fetch")
+      .mockRejectedValueOnce(new Error("internal error; reference = abc123"))
+      .mockResolvedValueOnce(
+        new Response(PAGE_HTML, { headers: { "content-type": "text/html" } }),
+      );
+
+    const crawled = crawl();
+    await vi.runAllTimersAsync();
+    const page = await crawled;
+
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(page).toMatchObject({ fetchClass: "ok", title: "A page" });
+  });
+
+  it("records a page that stays unreachable as a fetch error, not a status", async () => {
+    vi.useFakeTimers();
+    const fetchMock = vi
+      .spyOn(globalThis, "fetch")
+      .mockRejectedValue(new Error("Network connection lost."));
+
+    const crawled = crawl();
+    await vi.runAllTimersAsync();
+
+    expect(await crawled).toMatchObject({ fetchClass: "error", statusCode: 0 });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
   it("waits out the server's Retry-After and keeps the retried page", async () => {
     vi.useFakeTimers();
     const fetchMock = stubFetch(

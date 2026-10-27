@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import { AnimatedNumber } from "@/client/components/AnimatedNumber";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { t } from "@/shared/i18n";
-import { scoreFill, scoreInk, scoreWord } from "./scoreWords";
+import {
+  standingFill,
+  standingInk,
+  standingWord,
+  type ScoredStanding,
+} from "./scoreWords";
 
 /*
  * A 240-degree dial, open at the bottom. The arc is drawn with
@@ -37,12 +42,14 @@ const ARC = (() => {
  * where it is -- a dial that sweeps up on every visit is decoration.
  */
 export function ScoreGauge({
-  score,
+  standing,
   animate = false,
 }: {
-  score: number;
+  /** The word and colour follow the standing, not the raw number. */
+  standing: ScoredStanding;
   animate?: boolean;
 }) {
+  const { score } = standing;
   const reduced = useReducedMotion();
   const still = reduced || !animate;
   const [arrived, setArrived] = useState(false);
@@ -58,7 +65,7 @@ export function ScoreGauge({
       role="img"
       aria-label={t("Site puanı {score}/100, {word}", {
         score,
-        word: scoreWord(score),
+        word: standingWord(standing),
       })}
     >
       <svg viewBox="0 0 200 160" className="size-full" aria-hidden>
@@ -75,7 +82,7 @@ export function ScoreGauge({
           fill="none"
           strokeWidth="12"
           strokeLinecap="round"
-          stroke={scoreFill(score)}
+          stroke={standingFill(standing)}
           pathLength={100}
           strokeDasharray="100 100"
           strokeDashoffset={100 - shown}
@@ -114,9 +121,9 @@ export function ScoreGauge({
         <span className="mt-1 text-xs text-subtle">/ 100</span>
         <span
           className="mt-2 text-sm font-medium"
-          style={{ color: scoreInk(score) }}
+          style={{ color: standingInk(standing) }}
         >
-          {scoreWord(score)}
+          {standingWord(standing)}
         </span>
       </div>
     </div>

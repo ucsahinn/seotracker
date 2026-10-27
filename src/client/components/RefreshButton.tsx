@@ -1,7 +1,7 @@
 import { Loader2, RefreshCw } from "lucide-react";
 import * as React from "react";
 import { useFlashOnChange } from "@/client/components/useFlashOnChange";
-import { formatTime } from "@/client/lib/format";
+import { formatDateTime, formatTime } from "@/client/lib/format";
 import { t } from "@/shared/i18n";
 
 /**
@@ -10,7 +10,8 @@ import { t } from "@/shared/i18n";
  * Props
  *   onRefresh       called on click (and on the optional `r` shortcut)
  *   isFetching      spinner + disabled while true (`query.isFetching`)
- *   dataUpdatedAt   ms epoch (`query.dataUpdatedAt`); shows "Güncellendi: HH:mm"
+ *   dataUpdatedAt   ms epoch (`query.dataUpdatedAt`); shows the local time,
+ *                   adding the date when the update was not today
  *   disabled        extra disabled state
  *   label           visible text, default "Yenile"
  *   shortcut        opt-in: bare `r` triggers a refresh. Off by default so two
@@ -81,9 +82,13 @@ export function RefreshButton({
     }
   }, [isFetching]);
 
+  // The time alone on a tab left open overnight reads as today's; a day
+  // other than today carries its date.
   const updated =
     dataUpdatedAt !== undefined && dataUpdatedAt > 0
-      ? formatTime(dataUpdatedAt)
+      ? new Date(dataUpdatedAt).toDateString() === new Date().toDateString()
+        ? formatTime(dataUpdatedAt)
+        : formatDateTime(new Date(dataUpdatedAt).toISOString())
       : null;
 
   const flash = useFlashOnChange(updated ? (dataUpdatedAt ?? null) : null);

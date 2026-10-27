@@ -18,8 +18,10 @@ import {
 export { GscNotConnectedError } from "@/server/lib/gscErrors";
 import {
   buildSearchAnalyticsRequest,
+  GSC_API_MAX_ROW_LIMIT,
   type GscPerformanceInput,
 } from "@/server/features/gsc/searchAnalytics";
+import { cachedSearchAnalytics } from "@/server/features/gsc/searchAnalyticsCache";
 import {
   GscConnectionRepository,
   type GscConnection,
@@ -273,6 +275,101 @@ async function getPerformance(
   };
 }
 
+export type GscAnalyticsResult = {
+  siteUrl: string;
+  request: GscSearchAnalyticsRequest;
+  rows: GscSearchAnalyticsRow[];
+  /**
+   * True when the page budget ran out while Google still had rows. Google
+   * sorts by clicks, so what is missing is the low-click tail -- the rows
+   * held are the top of the table, not a sample of it.
+   */
+  truncated: boolean;
+  /** Requests this answer took (0 when it came from the cache). */
+  requests: number;
+  aggregationType: string | null;
+  firstIncompleteDate: string | null;
+};
+
+/**
+ * `searchAnalytics.query`, paged through `startRow` until Google runs out or
+ * `maxPages` is spent.
+ *
+ * Google: rowLimit "Valid range is 1–25,000", startRow "Zero-based index of
+ * the first row", and "If startRow exceeds the number of results ... the
+ * response will be a successful response with zero rows"; the API exposes at
+ * most 50,000 rows per day per search type, sorted by clicks
+ * (developers.google.com/webmaster-tools/v1/searchanalytics/query and
+ * developers.google.com/webmaster-tools/v1/how-tos/all-your-data). A short
+ * page therefore means the end; a full last page means there may be more.
+ *
+ * Answers are kept for a few minutes per isolate (searchAnalyticsCache.ts),
+ * keyed by the property and the exact request.
+ */
+async function queryAnalytics(
+  input: GscPerformanceInput & { maxPages?: number; fresh?: boolean },
+): Promise<GscAnalyticsResult> {
+  const connection = await GscConnectionRepository.getByProjectId(
+    input.projectId,
+  );
+  if (!connection) {
+    throw new GscNotConnectedError(input.projectId);
+  }
+  const pageSize = Math.min(
+    input.rowLimit ?? GSC_API_MAX_ROW_LIMIT,
+    GSC_API_MAX_ROW_LIMIT,
+  );
+  const maxPages = Math.max(1, input.maxPages ?? 1);
+  const request = buildSearchAnalyticsRequest(
+    { ...input, rowLimit: pageSize, startRow: undefined },
+    new Date(),
+    { maxRowLimit: GSC_API_MAX_ROW_LIMIT },
+  );
+  const key = JSON.stringify([connection.siteUrl, request, maxPages]);
+  let loaded = false;
+
+  const result = await cachedSearchAnalytics(
+    key,
+    (value: GscAnalyticsResult) => value.rows.length,
+    async () => {
+      loaded = true;
+      const client = createGscClient({
+        userId: connection.connectedByUserId,
+        gscAccountId: connection.gscAccountId ?? undefined,
+      });
+      const rows: GscSearchAnalyticsRow[] = [];
+      let aggregationType: string | null = null;
+      let firstIncompleteDate: string | null = null;
+      let requests = 0;
+      let truncated = true;
+      while (truncated && requests < maxPages) {
+        const answer = await client.querySearchAnalyticsPage(
+          connection.siteUrl,
+          requests === 0
+            ? request
+            : { ...request, startRow: requests * pageSize },
+        );
+        requests += 1;
+        aggregationType ??= answer.aggregationType;
+        firstIncompleteDate ??= answer.firstIncompleteDate;
+        rows.push(...answer.rows);
+        truncated = answer.rows.length >= pageSize;
+      }
+      return {
+        siteUrl: connection.siteUrl,
+        request,
+        rows,
+        truncated,
+        requests,
+        aggregationType,
+        firstIncompleteDate,
+      };
+    },
+    { fresh: input.fresh },
+  );
+  return loaded ? result : { ...result, requests: 0 };
+}
+
 type GscUrlInspection = {
   url: string;
   result: UrlInspectionResult | null;
@@ -388,5 +485,6 @@ export const GscService = {
   setSite,
   disconnect,
   getPerformance,
+  queryAnalytics,
   inspectUrls,
 };

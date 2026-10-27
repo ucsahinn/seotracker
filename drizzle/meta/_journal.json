@@ -484,6 +484,20 @@
       "when": 1793267299159,
       "tag": "0068_sitemap_on_host_url_count",
       "breakpoints": true
+    },
+    {
+      "idx": 69,
+      "version": "6",
+      "when": 1793353699159,
+      "tag": "0069_search_performance_archive",
+      "breakpoints": true
+    },
+    {
+      "idx": 70,
+      "version": "6",
+      "when": 1793440099159,
+      "tag": "0070_audit_discovered_and_notice",
+      "breakpoints": true
     }
   ]
 }

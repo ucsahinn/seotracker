@@ -16,15 +16,15 @@ export const itCatalogContinued: Catalog = {
   Yanıtla: "Invia risposta",
   "Gönderiliyor…": "Invio…",
   "Denetim uygulamadaki bir hata yüzünden durdu.":
-    "L'audit si è interrotto per un errore dell'app.",
+    "Il controllo si è interrotto per un errore dell'app.",
   "Sorun sitenizde değil. Denetimi yeniden başlatın. Tekrarlarsa Yardım ekranından tanı paketini indirip sorun kaydına ekleyin. Hata kodu: {code}":
-    "Il problema non è il tuo sito. Avvia di nuovo l'audit. Se succede ancora, scarica il pacchetto diagnostico da Aiuto e allegalo a una segnalazione. Codice errore: {code}",
+    "Il problema non è il tuo sito. Avvia di nuovo il controllo. Se succede ancora, scarica il pacchetto diagnostico da Aiuto e allegalo a una segnalazione. Codice errore: {code}",
   "Sayfadaki canonical adresi": "URL canonico nella pagina",
   "robots etiketleri": "Tag robots",
   "googlebot etiketleri": "Tag googlebot",
   "Sayfa başlığı": "Titolo della pagina",
   "Başlıktaki anlamlı kelime": "Parole significative nel titolo",
-  "Lighthouse denetimi": "Audit Lighthouse",
+  "Lighthouse denetimi": "Controllo Lighthouse",
   "Etkilenen öğe": "Elementi interessati",
   "Karşılanmayan koşul": "Condizione non soddisfatta",
   "Tahmini kazanç": "Risparmio stimato",
@@ -90,11 +90,11 @@ export const itCatalogContinued: Catalog = {
   "Lighthouse'un tahmini; en çok kazandıran sayfa için.":
     "Stima di Lighthouse, per la pagina che ne trae più vantaggio.",
   "Lighthouse bu denetimde bu ölçümleri raporlamadı, ya da denetim bu kontroller eklenmeden önce yapıldı.":
-    "Lighthouse non ha riportato queste misurazioni in questo audit, oppure l'audit è stato eseguito prima che questi controlli venissero aggiunti.",
+    "Lighthouse non ha riportato queste misurazioni in questo controllo, oppure il controllo è stato eseguito prima che queste verifiche venissero aggiunte.",
   "Dış bağlantı ve görsel boyutu kontrolü bu denetimde açık değildi ya da ölçülemedi.":
-    "Il controllo dei link esterni e delle dimensioni delle immagini era disattivato per questo audit o non è stato possibile misurarlo.",
+    "La verifica dei link esterni e delle dimensioni delle immagini era disattivata per questo controllo o non è stato possibile misurarla.",
   "Bu kontroller denetimden sonra eklendi; yeni bir denetim onları da ölçer.":
-    "Questi controlli sono stati aggiunti dopo questo audit; un nuovo audit li misura.",
+    "Queste verifiche sono state aggiunte dopo l'esecuzione di questo controllo; un nuovo controllo le misura.",
   "Orta. Kritik sorun yok; en çok puan getiren uyarılardan başlayın.":
     "Discreto. Nessun problema critico; inizia dagli avvisi che valgono più punti.",
   "Zayıf. Kritik sorun yok, ama birikmiş uyarılar puanı aşağı çekiyor.":
@@ -108,7 +108,7 @@ export const itCatalogContinued: Catalog = {
   "robots.txt bazı yolları yalnızca Googlebot'a açıyor":
     "robots.txt apre alcuni percorsi solo a Googlebot",
   "robots.txt dosyanız bazı yolları tüm botlara (User-agent: *) kapatıyor ama Googlebot'a ayrıca izin veriyor. Bu araç Googlebot değil, o yüzden bu yollardaki sayfaları taramadı; denetimde görünmemeleri sorun olmadıkları anlamına gelmez. Google bu sayfaları tarayabilir.":
-    "Il tuo robots.txt chiude alcuni percorsi a tutti i bot (User-agent: *) ma consente separatamente Googlebot. Questo strumento non è Googlebot, quindi non ha scansionato le pagine sotto quei percorsi; la loro assenza da questo audit non significa che vadano bene. Google può scansionarle.",
+    "Il tuo robots.txt chiude alcuni percorsi a tutti i bot (User-agent: *) ma consente separatamente Googlebot. Questo strumento non è Googlebot, quindi non ha scansionato le pagine sotto quei percorsi; la loro assenza da questo controllo non significa che vadano bene. Google può scansionarle.",
   "Bir şey yapmanız gerekmiyor. Bu sayfaları da denetlemek istiyorsanız ayrıntıdaki kuralları gözden geçirin; yalnızca Googlebot'a açık bırakmanın bir nedeni yoksa kuralı tüm botlar için aynı yapın.":
     "Non serve cambiare nulla. Se vuoi che anche queste pagine vengano analizzate, controlla le regole nei dettagli; se non c'è motivo di aprirle solo a Googlebot, rendi la regola uguale per tutti i bot.",
   "Sayfanın ilk görünümünü engelleyen dosyalar var":
@@ -161,7 +161,7 @@ export const itCatalogContinued: Catalog = {
   "Tarayıcıda oluşan sayfa yapısı çok büyük":
     "La struttura della pagina costruita nel browser è molto grande",
   "Lighthouse, sayfa tarayıcıda çalıştıktan sonra oluşan HTML yapısının çok büyük olduğunu buldu. Bu, sayfanın kaynak kodunu sayan kontrolden farklıdır: JavaScript'in sonradan eklediği öğeleri de içerir. Büyük bir yapı stil hesaplamayı ve tıklamalara yanıtı yavaşlatır. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
-    "Lighthouse ha rilevato che la struttura HTML costruita dalla pagina dopo l'esecuzione nel browser è molto grande. È diverso dal controllo che conta il sorgente della pagina: include gli elementi aggiunti in seguito da JavaScript. Una struttura grande rallenta il calcolo degli stili e le risposte ai tocchi. Questo risultato proviene dal report Lighthouse generato da PageSpeed Insights durante la misurazione della versione mobile della pagina.",
+    "Lighthouse ha rilevato che la struttura HTML costruita dalla pagina dopo l'esecuzione nel browser è molto grande. È diversa dalla verifica che conta il sorgente della pagina: include gli elementi aggiunti in seguito da JavaScript. Una struttura grande rallenta il calcolo degli stili e le risposte ai tocchi. Questo risultato proviene dal report Lighthouse generato da PageSpeed Insights durante la misurazione della versione mobile della pagina.",
   "Görünmeyen içeriği (kapalı menüler, sekmeler, uzun listeler) gerektiğinde oluşturun ve sayfa oluşturucunun gereksiz sarmalayıcı katmanlarını azaltın.":
     "Costruisci i contenuti nascosti (menu chiusi, schede, elenchi lunghi) solo quando servono e riduci i livelli contenitore superflui del page builder.",
   "Sayfa açılmadan önce yönlendirme yapılıyor":
@@ -418,7 +418,7 @@ export const itCatalogContinued: Catalog = {
   'Sayfa "bulunamadı" diyor ama başarılı yanıt veriyor':
     'La pagina dice "non trovata" ma risponde con successo',
   'Sayfanın başlığı ya da ana başlığı "404" ya da "sayfa bulunamadı" diyor, ama sunucu 200 (başarılı) kodu döndürüyor. Google böyle sayfaları "soft 404" sayar ve dizine almaz; ama taramaya zaman harcar ve gerçek bir hata sayfası olduğunu anlamakta gecikebilir.':
-    'Il titolo o il titolo principale della pagina dice "404" o "pagina non trovata", ma il server restituisce un codice 200 (successo). Google tratta queste pagine come "soft 404" e non le indicizza, ma ci spende tempo di scansione e può impiegare tempo a capire che si tratta di una pagina di errore.',
+    'Il titolo o l\'intestazione principale della pagina dice "404" o "pagina non trovata", ma il server restituisce un codice 200 (successo). Google tratta queste pagine come "soft 404" e non le indicizza, ma ci spende tempo di scansione e può impiegare tempo a capire che si tratta di una pagina di errore.',
   "Sayfa gerçekten yoksa sunucunun 404 ya da 410 kodu döndürmesini sağlayın. Varsa başlığını ve içeriğini düzeltin.":
     "Se la pagina davvero non esiste, fai restituire al server un codice 404 o 410. Se esiste, correggi il titolo e il contenuto.",
   "Sayfada yer tutucu metin (lorem ipsum) kalmış":
@@ -519,7 +519,7 @@ export const itCatalogContinued: Catalog = {
   "robots.txt dosyanız Googlebot'un ana sayfayı taramasını yasaklıyor (genelde `Disallow: /` satırı). Google sitenizi taramaz; sayfalar arama sonuçlarından zamanla düşer ya da açıklamasız görünür. Çoğu zaman geliştirme sırasında konup unutulmuş bir kuraldır.":
     "Il tuo robots.txt vieta a Googlebot di scansionare la home page (di solito con una riga `Disallow: /`). Google non scansionerà il sito; con il tempo le pagine escono dalla ricerca o compaiono senza descrizione. Spesso è una regola aggiunta durante lo sviluppo e dimenticata.",
   "robots.txt'teki `Disallow: /` satırını kaldırın ya da yalnızca gizli kalması gereken klasörlerle sınırlayın. Sonra Search Console'daki robots.txt raporundan Google'ın yeni dosyayı okuduğunu kontrol edin.":
-    "Rimuovi la riga `Disallow: /` dal robots.txt o limitala alle cartelle che devono restare nascoste. Poi verifica nel rapporto robots.txt di Search Console che Google abbia letto il nuovo file.",
+    "Rimuovi la riga `Disallow: /` dal robots.txt o limitala alle cartelle che devono restare nascoste. Poi verifica nel report robots.txt di Search Console che Google abbia letto il nuovo file.",
   "robots.txt site haritasını göstermiyor": "robots.txt non indica la sitemap",
   "robots.txt dosyanızda `Sitemap:` satırı yok. Arama motorları site haritasını bu satırdan da bulur; Search Console'a gönderdiyseniz Google için sorun değildir, ama Bing ve diğer tarayıcılar için en kolay yoldur.":
     "Il tuo robots.txt non ha una riga `Sitemap:`. Anche tramite questa riga i motori di ricerca trovano la sitemap; se l'hai inviata in Search Console non è un problema per Google, ma è la strada più semplice per Bing e gli altri crawler.",
@@ -545,13 +545,13 @@ export const itCatalogContinued: Catalog = {
   "Başlangıç sayfası sıkıştırılmadan geldi":
     "La pagina iniziale è arrivata senza compressione",
   "Denetim başlangıç sayfasını gzip ve brotli kabul ettiğini söyleyerek istedi, ama yanıtta Content-Encoding başlığı yoktu: sayfa sıkıştırılmadan geldi. Sıkıştırma HTML'i genelde 4-5 kat küçültür ve sayfayı hızlandırır. Bazı ara sunucular ve CDN'ler sıkıştırmayı yalnızca tarayıcılara uyguladığı için tarayıcıda da doğrulayın.":
-    "L'audit ha richiesto la pagina iniziale dichiarando di accettare gzip e brotli, ma la risposta non aveva l'intestazione Content-Encoding: la pagina è arrivata senza compressione. La compressione di solito riduce l'HTML di 4-5 volte e velocizza la pagina. Alcuni proxy e CDN comprimono solo per i browser, quindi verificalo anche in un browser.",
+    "Il controllo ha richiesto la pagina iniziale dichiarando di accettare gzip e brotli, ma la risposta non aveva l'intestazione Content-Encoding: la pagina è arrivata senza compressione. La compressione di solito riduce l'HTML di 4-5 volte e velocizza la pagina. Alcuni proxy e CDN comprimono solo per i browser, quindi verificalo anche in un browser.",
   "Sunucunuzda ya da CDN'de gzip veya brotli sıkıştırmayı açın. Sonucu tarayıcının geliştirici araçlarında, yanıt başlıklarında `content-encoding` satırına bakarak doğrulayın.":
     "Attiva la compressione gzip o brotli sul server o sulla CDN. Verifica il risultato negli strumenti per sviluppatori del browser cercando la riga `content-encoding` nelle intestazioni della risposta.",
   "Sunucu ilk yanıtı geç veriyor (TTFB)":
     "Il server è lento a inviare la prima risposta (TTFB)",
   "Başlangıç sayfasının ilk baytı 800 milisaniyeden geç geldi; web.dev bu sınırın altını önerir. Sunucu yanıtı geç başlarsa sayfadaki her şey o kadar geç başlar. Süre, denetimi çalıştıran bilgisayardan iki ayrı istekle ölçülür ve hızlı olanı esas alınır; yine de ağa göre değişebilir.":
-    "Il primo byte della pagina iniziale è arrivato dopo più di 800 millisecondi; web.dev consiglia di restare sotto questa soglia. Se la risposta del server parte tardi, tutto nella pagina parte altrettanto tardi. Il tempo viene misurato con due richieste separate dal computer che esegue l'audit e conta la più veloce; può comunque variare in base alla rete.",
+    "Il primo byte della pagina iniziale è arrivato dopo più di 800 millisecondi; web.dev consiglia di restare sotto questa soglia. Se la risposta del server parte tardi, tutto nella pagina parte altrettanto tardi. Il tempo viene misurato con due richieste separate dal computer che esegue il controllo e conta la più veloce; può comunque variare in base alla rete.",
   "Sayfa önbelleğini açın, yavaş veritabanı sorgularını ve eklentileri bulun, ziyaretçilerinize yakın bir CDN kullanın. Sorun sürerse barındırma paketinizi gözden geçirin.":
     "Attiva la cache delle pagine, individua query di database e plugin lenti e usa una CDN vicina ai tuoi visitatori. Se il problema persiste, rivedi il piano di hosting.",
   "http adresi https'e yönlendirilmiyor":
@@ -665,7 +665,7 @@ export const itCatalogContinued: Catalog = {
     "Converti le immagini in WebP o AVIF, oppure aggiungi un <source> in quei formati dentro un <picture>. La maggior parte dei CMS e dei plugin per immagini può farlo automaticamente.",
   "Etiketi olmayan form alanları": "Campi del modulo senza etichetta",
   'Sayfadaki bazı form alanlarının (metin kutusu, seçim listesi) etiketi yok: ne <label>, ne aria-label, ne title, ne de yer tutucu metin. Ekran okuyucu kullanan ziyaretçi alana gelince yalnızca "düzenleme alanı" duyar, ne yazacağını bilemez. Lighthouse\'un erişilebilirlik denetimi de bunu hata sayar.':
-    "Alcuni campi del modulo nella pagina (caselle di testo, elenchi a discesa) non hanno un'etichetta: né <label>, né aria-label, né title, né placeholder. Un visitatore che usa uno screen reader sente solo \"modifica testo\" quando arriva al campo e non capisce cosa digitare. Anche l'audit di accessibilità di Lighthouse lo considera un errore.",
+    'Alcuni campi del modulo nella pagina (caselle di testo, elenchi a discesa) non hanno un\'etichetta: né <label>, né aria-label, né title, né placeholder. Un visitatore che usa uno screen reader sente solo "modifica testo" quando arriva al campo e non capisce cosa digitare. Anche il controllo di accessibilità di Lighthouse lo considera un errore.',
   'Her alana görünür bir <label for="alan-id"> ekleyin. Tasarım görünür etikete izin vermiyorsa aria-label="E-posta adresi" gibi bir etiket verin.':
     'Dai a ogni campo un <label for="id-campo"> visibile. Se il design non consente un\'etichetta visibile, aggiungine una come aria-label="Indirizzo email".',
   "Aynı id birden çok öğede": "Stesso id su più elementi",
@@ -698,15 +698,15 @@ export const itCatalogContinued: Catalog = {
   "Yapılandırılmış veride zorunlu özellikler eksik":
     "Proprietà obbligatorie mancanti nei dati strutturati",
   "Sayfadaki yapılandırılmış veri (JSON-LD) bir türü bildiriyor ama Google'ın o tür için zorunlu saydığı özelliklerden bazıları yok. Bu, Product, FAQPage, BreadcrumbList ve LocalBusiness türleri içindir; eksik olunca arama sonucunda zengin görünüm (yıldız, fiyat, içerik haritası) çıkmaz.":
-    "I dati strutturati (JSON-LD) della pagina dichiarano un tipo ma mancano di alcune proprietà che Google considera obbligatorie per esso. Vale per Product, FAQPage, BreadcrumbList e LocalBusiness; senza di esse nella ricerca non compare alcun risultato multimediale (stelle, prezzo, breadcrumb).",
+    "I dati strutturati (JSON-LD) della pagina dichiarano un tipo ma mancano di alcune proprietà che Google considera obbligatorie per esso. Vale per Product, FAQPage, BreadcrumbList e LocalBusiness; senza di esse nella ricerca non compare alcun risultato avanzato (stelle, prezzo, breadcrumb).",
   "Ayrıntıdaki eksik özellikleri işaretlemeye ekleyin ve sonucu Google'ın Zengin Sonuç Testi ile kontrol edin. İşaretleme sayfada gerçekten görünen bilgiyi anlatmalı; sayfada olmayan bir fiyatı ya da yorumu işaretlemek Google kurallarına aykırıdır.":
-    "Aggiungi al markup le proprietà mancanti elencate nei dettagli e verifica il risultato con il Test dei risultati multimediali di Google. Il markup deve descrivere informazioni realmente visibili nella pagina; contrassegnare un prezzo o una recensione che non sono nella pagina viola le linee guida di Google.",
+    "Aggiungi al markup le proprietà mancanti elencate nei dettagli e verifica il risultato con il Test dei risultati avanzati di Google. Il markup deve descrivere informazioni realmente visibili nella pagina; contrassegnare un prezzo o una recensione che non sono nella pagina viola le linee guida di Google.",
   "Yapılandırılmış veride önerilen özellikler eksik":
     "Proprietà consigliate mancanti nei dati strutturati",
   "Sayfadaki Article ya da Organization işaretlemesinde Google'ın önerdiği özelliklerden (başlık, görsel, tarih, yazar; ya da ad, web adresi, logo) bazıları yok. Google bu türler için zorunlu özellik saymaz, bu yüzden işaretleme geçerlidir ve zengin görünümü engellemez; önerilen özellikler yalnızca Google'ın sayfayı daha eksiksiz göstermesine yardım eder.":
-    "Il markup Article o Organization della pagina non ha alcune delle proprietà consigliate da Google (headline, image, data, autore; oppure nome, URL, logo). Google non indica proprietà obbligatorie per questi tipi, quindi il markup è valido e non blocca un risultato multimediale; le proprietà consigliate aiutano solo Google a mostrare la pagina in modo più completo.",
+    "Il markup Article o Organization della pagina non ha alcune delle proprietà consigliate da Google (headline, image, data, autore; oppure nome, URL, logo). Google non indica proprietà obbligatorie per questi tipi, quindi il markup è valido e non blocca un risultato avanzato; le proprietà consigliate aiutano solo Google a mostrare la pagina in modo più completo.",
   "Ayrıntıdaki özellikleri, sayfada gerçekten görünen bilgiyle işaretlemeye ekleyin ve sonucu Google'ın Zengin Sonuç Testi ile kontrol edin. Acil değildir; zorunlu özellik eksiklerinden sonra gelir.":
-    "Aggiungi al markup le proprietà elencate nei dettagli, usando informazioni realmente visibili nella pagina, e verifica il risultato con il Test dei risultati multimediali di Google. Non è urgente; viene dopo le proprietà obbligatorie mancanti.",
+    "Aggiungi al markup le proprietà elencate nei dettagli, usando informazioni realmente visibili nella pagina, e verifica il risultato con il Test dei risultati avanzati di Google. Non è urgente; viene dopo le proprietà obbligatorie mancanti.",
   "Sayfalarda Google Analytics etiketi bulunamadı":
     "Nessun tag di Google Analytics trovato nelle pagine",
   "Taranan sayfaların HTML'sinde Google Analytics 4 (G-), Google Etiket Yöneticisi (GTM-) ya da Universal Analytics (UA-) kimliği bulunamadı. Ölçüm yoksa hangi sayfanın ziyaretçi ve dönüşüm getirdiğini göremezsiniz. Etiket bir çerez onay aracı ya da başka bir betik tarafından sonradan yükleniyorsa burada görünmez; o durumda bu bulguyu yok sayabilirsiniz.":
@@ -719,10 +719,10 @@ export const itCatalogContinued: Catalog = {
     "L'ID di misurazione di Google Analytics 4 (G-) trovato nelle pagine non corrisponde a nessuno degli ID negli stream di dati web della proprietà Analytics collegata a questo progetto. Quindi è molto probabile che i dati dei visitatori vadano a un'altra proprietà e che i report di Analytics qui non mostrino questo sito. Di solito la causa è il codice di una vecchia proprietà o un template copiato.",
   "Ayrıntıdaki iki kimlik listesini karşılaştırın. Doğru mülk bağlıysa sayfalardaki etiketi o mülkün ölçüm kimliğiyle değiştirin; sayfalardaki doğruysa Ayarlar'dan projeye o mülkü bağlayın.":
     "Confronta i due elenchi di ID nei dettagli. Se è collegata la proprietà giusta, sostituisci il tag nelle pagine con l'ID di misurazione di quella proprietà; se è giusto quello nelle pagine, collega quella proprietà al progetto in Impostazioni.",
-  "{count} kontrol aşamasından geçti": "{count} controlli superati",
+  "{count} kontrol aşamasından geçti": "{count} verifiche superate",
   Ölçülmedi: "Non misurato",
-  "Geçen {count} kontrol": "{count} controlli superati",
-  Geçti: "Superato",
+  "Geçen {count} kontrol": "{count} verifiche superate",
+  Geçti: "Superata",
   "{count} sayfada": "Su {count} pagine",
   "Başlangıç sayfası okunamadığı için önizleme yok.":
     "Nessuna anteprima, perché non è stato possibile leggere la pagina iniziale.",
@@ -731,8 +731,8 @@ export const itCatalogContinued: Catalog = {
   "Başlangıç sayfası ölçülemedi; gösterilen, ölçülen en üst sayfa: {url}":
     "Impossibile misurare la pagina iniziale; viene mostrata la pagina misurata meno profonda: {url}",
   "Bu denetimde başlangıç sayfası için PageSpeed ölçümü yok. Denetimi hız ölçümü açık başlatırsanız gerçek kullanıcı verisi (CrUX) ve laboratuvar sonuçları burada görünür.":
-    "Questo audit non ha una misurazione PageSpeed per la pagina iniziale. Esegui l'audit con i test di velocità attivi: qui compariranno i dati degli utenti reali (CrUX) e i risultati di laboratorio.",
-  "Temel Web Verileri": "Segnali web essenziali",
+    "Questo controllo non ha una misurazione PageSpeed per la pagina iniziale. Esegui il controllo con i test di velocità attivi: qui compariranno i dati degli utenti reali (CrUX) e i risultati di laboratorio.",
+  "Temel Web Verileri": "Core Web Vitals",
   "Gerçek kullanıcı verisi Chrome Kullanıcı Deneyimi Raporu'ndan (CrUX, son 28 gün, mobil); laboratuvar sütunu PageSpeed Insights'ın tek ölçümü.":
     "I dati degli utenti reali provengono dal Chrome User Experience Report (CrUX, ultimi 28 giorni, mobile); la colonna di laboratorio è una singola esecuzione di PageSpeed Insights.",
   Metrik: "Metrica",
@@ -742,12 +742,12 @@ export const itCatalogContinued: Catalog = {
   "Site puanı {score}/100, {word}": "Punteggio del sito {score}/100, {word}",
   "Uyarı ve bilgi": "Avvisi e note",
   "Kategori puanları": "Punteggi per categoria",
-  "Tüm kontroller": "Tutti i controlli",
-  "{passed}/{total} geçti": "{passed}/{total} superati",
+  "Tüm kontroller": "Tutte le verifiche",
+  "{passed}/{total} geçti": "{passed}/{total} superate",
   "Puan geçmişi": "Cronologia del punteggio",
-  "Son {count} denetimin puanı": "Punteggio degli ultimi {count} audit",
+  "Son {count} denetimin puanı": "Punteggio degli ultimi {count} controlli",
   "Öncekiyle aynı": "Uguale all'ultima volta",
-  "{value} puan, öncekine göre": "{value} punti dall'ultimo audit",
+  "{value} puan, öncekine göre": "{value} punti dall'ultimo controllo",
   "Tarayıcı erişimi (robots.txt)": "Accesso dei crawler (robots.txt)",
   "Arama motorları ve yapay zekâ tarayıcıları sitenin ana sayfasını okuyabiliyor mu?":
     "I motori di ricerca e i crawler di IA possono leggere la home page del sito?",
@@ -799,11 +799,11 @@ export const itCatalogContinued: Catalog = {
   "robots.txt içinde Sitemap satırı": "Riga Sitemap nel robots.txt",
   "Olmayan bir sayfa": "Una pagina che non esiste",
   "Bu denetim site bilgisi toplanmadan önce yapılmış. Sunucu, güvenlik başlıkları, DNS ve sertifika bilgisini görmek için denetimi yeniden çalıştırın.":
-    "Questo audit è stato eseguito prima che venissero raccolti i dettagli del sito. Esegui di nuovo l'audit per vedere server, intestazioni di sicurezza, DNS e dettagli del certificato.",
+    "Questo controllo è stato eseguito prima che venissero raccolti i dettagli del sito. Esegui di nuovo il controllo per vedere server, intestazioni di sicurezza, DNS e dettagli del certificato.",
   "Google arama sonucu önizlemesi": "Anteprima del risultato di ricerca Google",
   "(başlık yok)": "(nessun titolo)",
   "(meta açıklama yok; Google sayfadan bir parça seçer)":
-    "(nessuna meta description; Google sceglie un passaggio dalla pagina)",
+    "(nessuna meta descrizione; Google sceglie un passaggio dalla pagina)",
   "Başlık {px} piksel; yaklaşık {max} pikselden sonrası kesiliyor.":
     "Il titolo è di {px} pixel; oltre circa {max} pixel viene tagliato.",
   "Başlık {px} piksel, sığıyor.": "Il titolo è di {px} pixel e ci sta.",
@@ -823,12 +823,12 @@ export const itCatalogContinued: Catalog = {
   "{url}: {critical} kritik, {warning} uyarı, {info} bilgi":
     "{url}: {critical} critici, {warning} avvisi, {info} note",
   "{count} tıklama": "{count} clic",
-  "Son denetimden bu yana": "Dall'ultimo audit",
+  "Son denetimden bu yana": "Dall'ultimo controllo",
   "{date} tarihli denetimle karşılaştırıldı.":
-    "Confronto con l'audit del {date}.",
+    "Confronto con il controllo del {date}.",
   "Düzeltilenler ({count})": "Risolti ({count})",
   "Önceki denetimdeki sorunların hiçbiri tamamen gitmedi.":
-    "Nessuno dei problemi dell'audit precedente è del tutto scomparso.",
+    "Nessuno dei problemi del controllo precedente è del tutto scomparso.",
   "Yeni çıkanlar ({count})": "Nuovi ({count})",
   "Yeni bir sorun türü çıkmadı.":
     "Non è comparso nessun nuovo tipo di problema.",
@@ -849,24 +849,25 @@ export const itCatalogContinued: Catalog = {
   "Başlık arama sonucunda kesiliyor.":
     "Il titolo viene tagliato nei risultati di ricerca.",
   "Bu denetimde başlangıç sayfası için PageSpeed ölçümü yok; gerçek kullanıcı verisi (CrUX) ölçülmedi.":
-    "Questo audit non ha una misurazione PageSpeed per la pagina iniziale; i dati degli utenti reali (CrUX) non sono stati misurati.",
+    "Questo controllo non ha una misurazione PageSpeed per la pagina iniziale; i dati degli utenti reali (CrUX) non sono stati misurati.",
   "2. Anlık veri": "2. Dati immediati",
   "Siteniz hakkında denetim anında toplanan bilgiler: sunucu, güvenlik başlıkları, DNS, sertifika, robots.txt ve gerçek kullanıcı hızı.":
-    "Ciò che l'audit ha raccolto sul tuo sito in quel momento: server, intestazioni di sicurezza, DNS, certificato, robots.txt e velocità per gli utenti reali.",
+    "Ciò che il controllo ha raccolto sul tuo sito in quel momento: server, intestazioni di sicurezza, DNS, certificato, robots.txt e velocità per gli utenti reali.",
   "Kategori başına 100 üzerinden puan": "Punteggio su 100 per categoria",
-  Sorunlu: "Non superato",
+  Sorunlu: "Non superata",
   "Puan etkisi": "Impatto sul punteggio",
   "Puan etkisi, o kategorideki sorunların site puanından düşürdüğü puandır; hepsi düzelirse site puanına geri eklenir.":
     "L'impatto sul punteggio è il numero di punti che i problemi di quella categoria tolgono al punteggio del sito; se li risolvi tutti, vengono restituiti.",
-  "Denetim tarihine göre site puanı": "Punteggio del sito per data dell'audit",
-  "1. Puan dağılımı ve kontroller": "1. Ripartizione del punteggio e controlli",
+  "Denetim tarihine göre site puanı":
+    "Punteggio del sito per data del controllo",
+  "1. Puan dağılımı ve kontroller": "1. Ripartizione del punteggio e verifiche",
   "Denetim, her sorun türünü bir kontrol olarak çalıştırır. Bulgusu olan kontrol sorunlu, ölçülüp temiz çıkan geçti sayılır; verisi toplanamayan kontrol ölçülmedi olarak kalır, ne geçti ne kaldı sayılır.":
-    "L'audit esegue ogni tipo di problema come un controllo. Un controllo con risultati non è superato, uno misurato e risultato pulito è superato, e uno i cui dati non è stato possibile raccogliere resta non misurato: non conta né come superato né come non superato.",
-  "Ölçülmedi ({count})": "Non misurati ({count})",
+    "Il controllo esegue ogni tipo di problema come una verifica. Una verifica con risultati non è superata, una misurata e risultata pulita è superata, e una i cui dati non è stato possibile raccogliere resta non misurata: non conta né come superata né come non superata.",
+  "Ölçülmedi ({count})": "Non misurate ({count})",
   "Ek C. Geçen ve ölçülemeyen kontroller":
-    "Appendice C. Controlli superati e non misurati",
+    "Appendice C. Verifiche superate e non misurate",
   "Sorun çıkmayan kontroller ve verisi toplanamadığı için sonuç verilmeyen kontroller.":
-    "Controlli che non hanno trovato nulla e controlli senza risultato perché non è stato possibile raccoglierne i dati.",
+    "Verifiche che non hanno trovato nulla e verifiche senza risultato perché non è stato possibile raccoglierne i dati.",
   "Ana içeriğin görünmesi": "Comparsa del contenuto principale",
   "Tıklamaya tepki": "Risposta a un tocco",
   "Görsel kayma": "Spostamento del layout",
@@ -877,7 +878,7 @@ export const itCatalogContinued: Catalog = {
   "Yapılacak her iş tek listede, en çok kazandıranı üstte. Search Console bağlıysa trafik getiren sayfalardaki işler öne çıkar.":
     "Tutte le attività in un unico elenco, le più utili per prime. Con Search Console collegato, salgono le attività sulle pagine che portano traffico.",
   "Denetimin yaptığı her kontrol, kategorisine göre: geçenler, kalanlar ve ölçülemeyenler.":
-    "Ogni controllo eseguito dall'audit, per categoria: superati, non superati e non misurati.",
+    "Ogni verifica eseguita dal controllo, per categoria: superate, non superate e non misurate.",
   "Küçük iş": "Attività piccola",
   "Orta iş": "Attività media",
   "Büyük iş": "Attività grande",
@@ -891,42 +892,42 @@ export const itCatalogContinued: Catalog = {
   "Site haritası ve ana sayfanın bağlantılarından adresler toplanıyor.":
     "Raccolta degli indirizzi dalla sitemap e dai link della home page.",
   "Her sayfa indirilip başlık, içerik, bağlantı ve teknik kontrollerden geçiriliyor.":
-    "Download di ogni pagina ed esecuzione dei controlli su titolo, contenuto, link e aspetti tecnici.",
+    "Download di ogni pagina ed esecuzione delle verifiche su titolo, contenuto, link e aspetti tecnici.",
   "Bulgular puanlanıyor ve sonuçlar hazırlanıyor.":
-    "Assegnazione dei punteggi ai risultati e preparazione dei risultati.",
+    "Assegnazione dei punteggi ai risultati e preparazione dell'esito.",
   "{shown} / {total} satır": "{shown} di {total} righe",
-  "{count} geçti": "{count} superati",
+  "{count} geçti": "{count} superate",
   "{count} sorunlu": "{count} con problemi",
-  "{count} ölçülmedi": "{count} non misurati",
-  "{total} kontrol: {summary}": "{total} controlli: {summary}",
+  "{count} ölçülmedi": "{count} non misurate",
+  "{total} kontrol: {summary}": "{total} verifiche: {summary}",
   "Kısmi veri": "Dati parziali",
   "{count} kontrol ölçülmedi: neden?": {
-    one: "{count} controllo non misurato: perché?",
-    other: "{count} controlli non misurati: perché?",
+    one: "{count} verifica non misurata: perché?",
+    other: "{count} verifiche non misurate: perché?",
   },
   "Düzeltilirse site puanına yaklaşık bu kadar eklenir; değerler toplanmaz.":
     "Quanto aggiunge circa la correzione al punteggio del sito; i valori non si sommano.",
   "{points} puan kayıp": "{points} punti persi",
   "Hız ölçümü (PageSpeed) bu denetimde sonuç vermedi; nedeni Hız sekmesinde.":
-    "Il test di velocità (PageSpeed) non ha restituito risultati in questo audit; la scheda Velocità spiega perché.",
+    "Il test di velocità (PageSpeed) non ha restituito risultati in questo controllo; la scheda Velocità spiega perché.",
   "Sayfalar Google'da henüz kontrol edilmedi; Dizin durumu sekmesinden sorabilirsiniz.":
-    "Le pagine non sono ancora state verificate con Google; puoi chiederlo dalla scheda Stato indice.",
+    "Le pagine non sono ancora state verificate con Google; puoi chiederlo dalla scheda Stato dell'indicizzazione.",
   "Karşılaştırma için bağlı bir Google Analytics mülkü ve sayfalarda bir G- etiketi gerekir.":
     "Questo confronto richiede una proprietà Google Analytics collegata e un tag G- nelle pagine.",
   "Site hakkındaki bilginin bir kısmı (sertifika, alan adı kaydı, DNS) bu denetimde okunamadı.":
-    "Alcune informazioni sul sito (certificato, registrazione del dominio, DNS) non sono state lette in questo audit.",
+    "Alcune informazioni sul sito (certificato, registrazione del dominio, DNS) non sono state lette in questo controllo.",
   "PageSpeed ölçümü bu denetimde sonuç vermedi: {error} Ölçüm çalışınca gerçek kullanıcı verisi (CrUX) ve laboratuvar sonuçları burada görünür.":
-    "Il test PageSpeed non ha restituito risultati in questo audit: {error} Quando verrà eseguito, qui compariranno i dati degli utenti reali (CrUX) e i risultati di laboratorio.",
+    "Il test PageSpeed non ha restituito risultati in questo controllo: {error} Quando verrà eseguito, qui compariranno i dati degli utenti reali (CrUX) e i risultati di laboratorio.",
   "Bu proje {auditedHost} için Google verisi okuyamıyor":
     "Questo progetto non può leggere i dati Google per {auditedHost}",
   "Projenin Search Console bağlantısı {propertyHost} mülküne ait. Google'a {auditedHost} sayfalarını sormak günlük kotayı boşa harcardı, bu yüzden dizin durumu, site haritaları ve kota bu denetimde gösterilmiyor. {auditedHost} için ayrı bir proje açıp kendi mülküne bağlayın.":
-    "La connessione Search Console del progetto appartiene alla proprietà {propertyHost}. Chiedere a Google delle pagine di {auditedHost} sprecherebbe la quota giornaliera, quindi stato dell'indice, sitemap e quota non vengono mostrati per questo audit. Crea un progetto separato per {auditedHost} e collegalo alla sua proprietà.",
+    "La connessione Search Console del progetto appartiene alla proprietà {propertyHost}. Chiedere a Google delle pagine di {auditedHost} sprecherebbe la quota giornaliera, quindi stato dell'indicizzazione, sitemap e quota non vengono mostrati per questo controllo. Crea un progetto separato per {auditedHost} e collegalo alla sua proprietà.",
   "Siteyi ayrı proje olarak ekle": "Aggiungi il sito come progetto a sé",
   "Henüz kontrol edilmedi": "Non ancora verificato",
   "Bu denetimin Google'a sorulmamış sayfaları. Son kontrol {date}":
-    "Pagine di questo audit non ancora verificate con Google. Ultima verifica {date}",
+    "Pagine di questo controllo non ancora verificate con Google. Ultima verifica {date}",
   "Bu denetimin Google'a sorulmamış sayfaları.":
-    "Pagine di questo audit non ancora verificate con Google.",
+    "Pagine di questo controllo non ancora verificate con Google.",
   "En çok sayfayı etkileyen {count} sorun türü; kalan {hidden} tür aşağıdaki listede.":
     "I {count} tipi di problema che interessano più pagine; gli altri {hidden} sono nell'elenco qui sotto.",
   "En çok sayfayı etkileyen {count} sorun türü.":
@@ -935,7 +936,7 @@ export const itCatalogContinued: Catalog = {
   "Kısmi veri: {measured} / {total} ölçüm sonuç verdi. Ortalamalar yalnızca ölçülenlerden.":
     "Dati parziali: {measured} test su {total} hanno restituito un risultato. Le medie usano solo quelli.",
   "Ayarlar'dan ücretsiz bir PageSpeed anahtarı ekleyip denetimi yeniden başlatın.":
-    "Aggiungi una chiave PageSpeed gratuita in Impostazioni ed esegui di nuovo l'audit.",
+    "Aggiungi una chiave PageSpeed gratuita in Impostazioni ed esegui di nuovo il controllo.",
   "PageSpeed anahtarı ekle": "Aggiungi una chiave PageSpeed",
   "{count} ölçüm yapılamadı": {
     one: "{count} test non è stato eseguito",
@@ -953,18 +954,18 @@ export const itCatalogContinued: Catalog = {
   "Google'ın ölçüm aracı bu sayfalar için sonuç döndürmedi. Ayrıntı aşağıdaki listede.":
     "Lo strumento di test di Google non ha restituito risultati per queste pagine. L'elenco qui sotto contiene i dettagli.",
   "Yapılacaklar ({count})": "Da fare ({count})",
-  "Kontroller ({count})": "Controlli ({count})",
+  "Kontroller ({count})": "Verifiche ({count})",
   "Hız ({measured}/{total})": "Velocità ({measured}/{total})",
   "İlk denetim. Puanın seyri bir sonrakinde başlar.":
-    "Primo audit. L'andamento del punteggio parte dal prossimo.",
+    "Primo controllo. L'andamento del punteggio parte dal prossimo.",
   "Kritik sorun": "Problemi critici",
   İyileştirme: "Miglioramenti",
-  "Geçen kontrol": "Controlli superati",
+  "Geçen kontrol": "Verifiche superate",
   "Veri toplanamadı": "Nessun dato raccolto",
-  "{measured}/{total} kontrol ölçüldü": "{measured}/{total} controlli misurati",
-  "Bu denetimde veri toplanamadı": "Nessun dato raccolto in questo audit",
+  "{measured}/{total} kontrol ölçüldü": "{measured}/{total} verifiche misurate",
+  "Bu denetimde veri toplanamadı": "Nessun dato raccolto in questo controllo",
   "{category}: {state}. Kontrolleri aç":
-    "{category}: {state}. Apri i controlli",
+    "{category}: {state}. Apri le verifiche",
   "{findings} bulgu, {types} sorun türü. Bulgu, bir sorunun bir sayfada görülmesidir. Bir gruba tıklayın, liste yalnızca onları göstersin.":
     "{findings} risultati, {types} tipi di problema. Un risultato è un problema rilevato in una pagina. Fai clic su un gruppo per mostrare solo quelli nell'elenco.",
   "{allowed}/{total} izinli": "{allowed}/{total} consentiti",
@@ -975,7 +976,7 @@ export const itCatalogContinued: Catalog = {
     other: "Certificato valido per {count} giorni",
   },
   "Site ya da kayıt servisi denetim sırasında bu bilgilere yanıt vermedi. Sitenizde bir sorun olduğu anlamına gelmez; denetimi yeniden çalıştırınca tekrar sorulur.":
-    "Il sito o il registro non hanno risposto a queste richieste durante l'audit. Non significa che il tuo sito abbia un problema; verranno richieste di nuovo quando ripeterai l'audit.",
+    "Il sito o il registro non hanno risposto a queste richieste durante il controllo. Non significa che il tuo sito abbia un problema; verranno richieste di nuovo quando ripeterai il controllo.",
   "Çubuk, sayfadaki sorun türlerinin önem ağırlıklı toplamı: bir kritik sorun 40, bir uyarı 15, bir bilgi 3 sayılır. En uzun çubuk en çok iş çıkaran sayfa.":
     "La barra è il totale ponderato per gravità dei tipi di problema della pagina: un problema critico vale 40, un avviso 15, una nota 3. La barra più lunga è la pagina con più lavoro da fare.",
   "Önce bunlar:": "Inizia da qui:",
@@ -997,10 +998,10 @@ export const itCatalogContinued: Catalog = {
     "Quanto si guadagna circa correggendo solo questo problema; i valori non si sommano.",
   "{points} puan": "{points} punti",
   "Yeni kontroller eklendi; bu karşılaştırma yalnızca iki denetimin de ölçtüğü kontrolleri kapsar.":
-    "Sono stati aggiunti nuovi controlli; questo confronto copre solo i controlli misurati da entrambi gli audit.",
+    "Sono state aggiunte nuove verifiche; questo confronto copre solo le verifiche misurate da entrambi i controlli.",
   "Platform alan adı": "Dominio della piattaforma",
   "Site bir barındırma platformunun alt alan adında; kaydı ve DNS'i platforma ait olduğu için alan adı ve DNS kontrolleri yapılmadı.":
-    "Il sito è su un sottodominio di una piattaforma di hosting; registrazione e DNS appartengono alla piattaforma, quindi i controlli su dominio e DNS sono stati saltati.",
+    "Il sito è su un sottodominio di una piattaforma di hosting; registrazione e DNS appartengono alla piattaforma, quindi le verifiche su dominio e DNS sono state saltate.",
   "sayı alınamadı (tarama sınırı)": "conteggio non letto (limite di scansione)",
   "Twitter kartı: ölçülmedi.": "Scheda Twitter: non misurata.",
   "Google hizmet hesabı kullanılıyor (Ayarlar'da kayıtlı). Bir OAuth istemcisi de tanımlı; hizmet hesabı önce gelir.":
@@ -1014,21 +1015,21 @@ export const itCatalogContinued: Catalog = {
   "Google erişimi henüz girilmedi: Ayarlar'a bir hizmet hesabı ya da OAuth istemcisi girin. Girmeden Search Console ve Analytics bağlanamaz.":
     "Nessun accesso Google ancora inserito: aggiungi un account di servizio o un client OAuth in Impostazioni. Search Console e Analytics non possono collegarsi senza.",
   "Orta düzeyde. Kritik sorun yok; uyarı sorunları aramadaki performansı gölgeliyor.":
-    "Discreto. Nessun problema critico; gli avvisi frenano le prestazioni nella ricerca.",
+    "Discreto. Nessun problema critico; gli avvisi frenano il rendimento nella ricerca.",
   "Zayıf. Kritik sorun yok, ama birikmiş uyarılar aramadaki performansı aşağı çekiyor; en çok puan getirenlerden başlayın.":
-    "Scarso. Nessun problema critico, ma gli avvisi accumulati frenano le prestazioni nella ricerca; inizia da quelli che valgono più punti.",
+    "Scarso. Nessun problema critico, ma gli avvisi accumulati frenano il rendimento nella ricerca; inizia da quelli che valgono più punti.",
   "PageSpeed ölçümü bu denetimde sonuç vermedi: {error} Gerçek kullanıcı verisi (CrUX) ölçülmedi.":
-    "PageSpeed non ha restituito risultati in questo audit: {error} I dati degli utenti reali (CrUX) non sono stati misurati.",
+    "PageSpeed non ha restituito risultati in questo controllo: {error} I dati degli utenti reali (CrUX) non sono stati misurati.",
   "<strong>Laboratuvar ve gerçek kullanıcı verisi.</strong> Buradaki rakamlar Lighthouse'un laboratuvar ölçümüdür: tek bir sanal cihazda, kontrollü ağ ve işlemci koşulunda yapılır. Gerçek ziyaretçilerden toplanan alan verisi (Chrome Kullanıcı Deneyimi Raporu, CrUX), PageSpeed ölçümü varsa Anlık veri bölümündeki Temel Web Verileri tablosundadır. İkisi farklı çıkabilir. Google, sıralama sistemlerinde alan verisini (CrUX) kullanır; ama iyi bir değer tek başına sıralama garantisi vermez, içeriğin ilgili olması öncelik taşır.":
-    "<strong>Dati di laboratorio e dati degli utenti reali.</strong> Questi valori sono misurazioni di laboratorio di Lighthouse, effettuate su un unico dispositivo simulato con condizioni di rete e CPU controllate. I dati sul campo raccolti dai visitatori reali (Chrome User Experience Report, CrUX) si trovano nella tabella Segnali web essenziali della sezione Dati immediati, quando PageSpeed è stato misurato. I due possono differire. I sistemi di ranking di Google usano i dati sul campo (CrUX), ma un buon valore da solo non garantisce il posizionamento; i contenuti pertinenti vengono prima.",
+    "<strong>Dati di laboratorio e dati degli utenti reali.</strong> Questi valori sono misurazioni di laboratorio di Lighthouse, effettuate su un unico dispositivo simulato con condizioni di rete e CPU controllate. I dati sul campo raccolti dai visitatori reali (Chrome User Experience Report, CrUX) si trovano nella tabella Core Web Vitals della sezione Dati immediati, quando PageSpeed è stato misurato. I due possono differire. I sistemi di posizionamento di Google usano i dati sul campo (CrUX), ma un buon valore da solo non garantisce il posizionamento; i contenuti pertinenti vengono prima.",
   "Puanlar, o sorun tek başına tamamen düzeltilirse site puanına eklenecek yaklaşık değerdir; değerler toplanmaz.":
     "I punti indicano circa quanto aggiungerebbe al punteggio del sito la correzione completa di quel solo problema; i valori non si sommano.",
   Kapalı: "Disattivato",
   "{measured} / {total} ölçüm": "{measured} misurazioni su {total}",
-  "Denetim tarihi": "Data dell'audit",
+  "Denetim tarihi": "Data del controllo",
   "{count} (üst sınır {max})": "{count} (limite {max})",
   "Google dizin verisi": "Dati dell'indice Google",
-  "Kritik kontrol": "Controlli critici",
+  "Kritik kontrol": "Verifiche critiche",
   "Temiz çıkan": "Risultati puliti",
   "Bir ayarı değiştirdim, uygulama görmüyor":
     "Ho cambiato un'impostazione e l'app non la vede",
@@ -1044,4 +1045,115 @@ export const itCatalogContinued: Catalog = {
   "Rapor hazırlanıyor…": "Preparazione del report…",
   "Dizin durumu kontrol ediliyor": "Verifica dello stato dell'indice",
   "Sosyal ve yapılandırılmış veri": "Social e dati strutturati",
+  // Audit failure and notice copy (auditFailureCopy.ts)
+  "Denetim {phase} aşamasında durdu.":
+    "Il controllo si è interrotto nella fase «{phase}».",
+  "Denetim tamamlanamadan durdu.":
+    "Il controllo si è interrotto prima di terminare.",
+  "adres keşfi": "individuazione degli URL",
+  tarama: "scansione",
+  "hız ölçümü": "misurazione della velocità",
+  "sonuçların hazırlanması": "preparazione dei risultati",
+  "Bir adım zamanında bitmedi. Genelde site çok yavaş yanıt veriyor ya da bağlantıyı açık tutup bekletiyor.":
+    "Un passaggio non è terminato in tempo. Di solito il sito risponde molto lentamente o tiene aperta la connessione senza rispondere.",
+  "Birkaç dakika sonra yeniden deneyin. Yine olursa daha az sayfayla başlatın.":
+    "Riprova tra qualche minuto. Se si ripete, avvia il controllo con meno pagine.",
+  "Denetim, uygulamanın kullanabildiği belleğe sığmadı. Çok büyük sayfalar ya da çok fazla sayfa buna yol açar.":
+    "Il controllo non è rientrato nella memoria che l'app può usare. La causa sono pagine molto grandi o troppe pagine.",
+  "Daha az sayfayla yeniden başlatın.": "Riavvialo con meno pagine.",
+  "Denetim, uygulamanın izin verdiği işlemci süresini aştı. Çok büyük ya da çok karmaşık sayfalar buna yol açar.":
+    "Il controllo ha superato il tempo di elaborazione consentito dall'app. La causa sono pagine molto grandi o complesse.",
+  "Sonuçlar uygulamanın veritabanına yazılırken hata oluştu. Disk dolu ya da veri dosyası başka bir programda kilitli olabilir.":
+    "Si è verificato un errore durante la scrittura dei risultati nel database dell'app. Il disco potrebbe essere pieno o il file dei dati bloccato da un altro programma.",
+  "Diskte boş yer olduğunu kontrol edin, uygulamayı yeniden başlatın ve denetimi yeniden başlatın.":
+    "Controlla che il disco abbia spazio libero, riavvia l'app e poi avvia di nuovo il controllo.",
+  "Bir adımın sonucu uygulamanın saklayabildiği boyutu aştı. Çok büyük siteler buna yol açar.":
+    "Il risultato di un passaggio superava le dimensioni che l'app può salvare. La causa sono siti molto grandi.",
+  "Denetimi yürüten uygulamanın iç düzeni hata verdi.":
+    "Il motore interno dei controlli dell'app ha segnalato un errore.",
+  "Uygulamayı yeniden başlatın (tepsi menüsünde Yeniden başlat), sonra denetimi yeniden başlatın.":
+    "Riavvia l'app (Riavvia nel menu dell'area di notifica), poi avvia di nuovo il controllo.",
+  "Denetim yarıda kaldı. Uygulama denetimin ortasında kapanmış ya da yeniden başlamış olabilir.":
+    "Il controllo è stato interrotto. L'app potrebbe essere stata chiusa o riavviata a metà.",
+  "Uygulamanın açık kaldığından emin olun ve denetimi yeniden başlatın.":
+    "Assicurati che l'app resti aperta e avvia di nuovo il controllo.",
+  "Kayıtlı Google ve PageSpeed anahtarlarını açan kurulum anahtarı denetimi yürüten bölüme ulaşmamış. Anahtarlarınız silinmedi.":
+    "La chiave di installazione che apre le chiavi Google e PageSpeed salvate non è arrivata alla parte dell'app che esegue i controlli. Le tue chiavi non sono state eliminate.",
+  "Uygulamayı güncelleyin ya da yeniden başlatın, sonra denetimi yeniden başlatın.":
+    "Aggiorna o riavvia l'app, poi avvia di nuovo il controllo.",
+  "Denetim beklenmedik bir hatayla durdu.":
+    "Il controllo si è interrotto per un errore imprevisto.",
+  "Denetimi yeniden başlatın. Tekrarlarsa Yardım'dan tanılama paketini indirip sorunu bildirin.":
+    "Avvia di nuovo il controllo. Se si ripete, scarica il pacchetto diagnostico da Aiuto e segnala il problema.",
+  "Sorun sitenizde değil, uygulamada.":
+    "Il problema è nell'app, non nel tuo sito.",
+  "Büyük olasılıkla sorun sitenizin yavaş yanıt vermesinde; uygulamada bir arıza yok.":
+    "Con ogni probabilità il tuo sito risponde lentamente; l'app non ha guasti.",
+  "Nedeni belirlenemedi.": "Non è stato possibile stabilire la causa.",
+  "{count} sayfa tarandı ve kaydedildi; aşağıdaki sonuçlar bu sayfalara dayanır.":
+    {
+      one: "{count} pagina è stata scansionata e salvata; i risultati qui sotto si basano su di essa.",
+      other:
+        "{count} pagine sono state scansionate e salvate; i risultati qui sotto si basano su di esse.",
+    },
+  "Kayıtlı PageSpeed anahtarı okunamadı; hız ölçümü anahtarsız yapıldı.":
+    "La chiave PageSpeed salvata non è stata letta; la misurazione della velocità è stata fatta senza chiave.",
+  "Tarama sonuçları etkilenmedi, ama hız ölçümü yalnızca ilk sayfalarla sınırlı kaldı. Uygulamayı güncelleyin ya da yeniden başlatın, sonra yeni bir denetim başlatın. Sürerse Ayarlar'dan PageSpeed anahtarını yeniden kaydedin.":
+    "I risultati della scansione non sono toccati, ma la misurazione della velocità si è limitata alle prime pagine. Aggiorna o riavvia l'app, poi avvia un nuovo controllo. Se persiste, salva di nuovo la chiave PageSpeed in Impostazioni.",
+  // Audit score standing: coverage, provisional score, tier caps
+  "Kısmi puan": "Punteggio provvisorio",
+  "Gri çubuklar kısmi puandır: o denetimde kontrollerin önemli bir kısmı ölçülemedi.":
+    "Le barre grigie sono punteggi provvisori: gran parte delle verifiche di quel controllo non è stata misurata.",
+  "{count} eksik denetim puansız olduğu için grafikte yok.": {
+    one: "{count} controllo incompleto non ha punteggio e non è nel grafico.",
+    other:
+      "{count} controlli incompleti non hanno punteggio e non sono nel grafico.",
+  },
+  "Kısmi puan — ölçüm kapsamı {percent}":
+    "Punteggio provvisorio — copertura delle misure {percent}",
+  "Kontrollerin önemli bir kısmı ölçülemediği için bu puan kesin değil; derece verilmedi.":
+    "Gran parte delle verifiche non è stata misurata, quindi questo punteggio non è definitivo e non riceve un giudizio.",
+  "Eksik denetim — puan verilmedi": "Controllo incompleto — nessun punteggio",
+  "Sorun listesi tam olmadığı için puan hesaplanmadı. Aşağıdaki bulgular taranan sayfalar için geçerli; tam bir puan için denetimi yeniden çalıştırın.":
+    "L'elenco dei problemi è incompleto, quindi non è stato calcolato alcun punteggio. I risultati qui sotto valgono per le pagine scansionate; esegui di nuovo il controllo per un punteggio completo.",
+  kısmi: "provvisorio",
+  "{category} ölçülmedi: {reason}": "{category} non misurata: {reason}",
+  "{category} ölçülmedi.": "{category} non misurata.",
+  "{category} kontrollerinin çoğu ölçülmedi: {reason}":
+    "{category}: gran parte delle verifiche non è stata misurata: {reason}",
+  "{category} kontrollerinin çoğu ölçülmedi.":
+    "{category}: gran parte delle verifiche non è stata misurata.",
+  "hız ölçümü kapalıydı": "la misurazione della velocità era disattivata",
+  "PageSpeed kotası doldu": "la quota PageSpeed era esaurita",
+  "PageSpeed anahtarı yok": "nessuna chiave PageSpeed",
+  "hız ölçümü yapılmadı": "non è stata fatta alcuna misurazione della velocità",
+  "hız ölçümleri başarısız oldu":
+    "le misurazioni della velocità non sono riuscite",
+  "Search Console'dan dizin verisi alınmadı":
+    "nessun dato di indicizzazione letto da Search Console",
+  "Puan, ölçülen {count} kontrolün sonucuna göre.": {
+    one: "Punteggio basato sulla {count} verifica misurata.",
+    other: "Punteggio basato sulle {count} verifiche misurate.",
+  },
+  "{count} kontrol ölçülemedi.": {
+    one: "{count} verifica non è stata misurata.",
+    other: "{count} verifiche non sono state misurate.",
+  },
+  "Her bulgu, önemine ve etkilediği sayfa oranına göre kendi kategorisinden puan düşer; site puanı yedi kategorinin ağırlıklı ortalamasıdır. Ölçülemeyen kontroller puanı ne artırır ne düşürür. Kontrollerin ağırlıklı kapsamı {coverage} değerinin altındaysa ya da Tarama, Dizine alma, İçerik veya Hız kategorisinde ölçülen kontrollerin oranı {heavy} değerinin altındaysa puan kısmidir ve derece verilmez. Kritik bir sorun varken puan en fazla {criticalCap}, {count} veya daha fazla uyarı varken en fazla {warningsCap} olur.":
+    "Ogni problema toglie punti alla propria categoria in base alla gravità e alla quota di pagine coinvolte; il punteggio del sito è la media ponderata delle sette categorie. Le verifiche non misurabili non lo alzano né lo abbassano. Se la copertura ponderata delle verifiche è sotto {coverage}, o la quota misurata di Scansione, Indicizzazione, Contenuti o Velocità è sotto {heavy}, il punteggio è provvisorio e non riceve un giudizio. Con un problema critico il punteggio è al massimo {criticalCap}; con {count} o più avvisi, al massimo {warningsCap}.",
+  "Kritik sorun olduğu için puan en fazla {cap} olabilir. Önce kritik sorunlara bakın.":
+    "Con un problema critico il punteggio può essere al massimo {cap}. Parti dai problemi critici.",
+  "{count} veya daha fazla uyarı olduğu için puan en fazla {cap} olabilir.":
+    "Con {count} o più avvisi il punteggio può essere al massimo {cap}.",
+  "Denetim {count} sayfayla sınırlıydı; sitede daha fazla sayfa olabilir.": {
+    one: "Il controllo era limitato a {count} pagina; il sito può averne di più.",
+    other:
+      "Il controllo era limitato a {count} pagine; il sito può averne di più.",
+  },
+  "Bulunan adres: {found}, taranan: {crawled}":
+    "Indirizzi trovati: {found}, scansionati: {crawled}",
+  "Port: {actual} (ayarlanan: {configured})":
+    "Porta: {actual} (configurata: {configured})",
+  "seowatcher bu sefer {actual} numarasında çalışıyor çünkü {configured} başka bir program tarafından kullanılıyor (ör. eski bir Docker kopyası). Google bağlantısı {configured} için ayarlandı; o programı kapatıp seowatcher'ı yeniden başlatın.":
+    "Questa volta seowatcher è in esecuzione su {actual} perché un altro programma usa {configured} (ad es. una vecchia copia Docker). L'accesso a Google è configurato per {configured}; chiudi quel programma e riavvia seowatcher.",
 };

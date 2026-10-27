@@ -17,6 +17,7 @@ const TOP_PAGES = 5;
 import { Ga4ConnectionRepository } from "@/server/features/ga4/repositories/Ga4ConnectionRepository";
 import { GscConnectionRepository } from "@/server/features/gsc/repositories/GscConnectionRepository";
 import { ProjectContextRepository } from "@/server/features/project-context/repositories/ProjectContextRepository";
+import { storedAuditErrorCode } from "@/server/lib/audit/audit-errors";
 
 type DashboardOverview = {
   audit: DashboardAuditSummary | null;
@@ -105,6 +106,8 @@ async function getAuditSummary(
     status: audit.status,
     pagesCrawled: audit.pagesCrawled,
     startedAt: audit.startedAt,
+    errorCode: storedAuditErrorCode(audit),
+    failedPhase: audit.failedPhase,
     topIssues: sorted.slice(0, 3),
     totalIssueTypes: sorted.length,
     severityTotals,

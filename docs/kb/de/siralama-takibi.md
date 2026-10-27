@@ -1,68 +1,78 @@
 ---
 title: Ranking-Verfolgung
-description: Durchschnittliche Google-Position Ihrer Suchanfragen Tag für Tag, auch über Googles 16-Monate-Grenze hinaus, weil die Daten auf Ihrem Computer liegen.
+description: Durchschnittliche Google-Position Ihrer Suchanfragen, welche steigen oder fallen und wie sich die Positionsgruppen verändern, auch über Googles 16-Monate-Grenze hinaus, weil die Daten auf Ihrem Computer liegen.
 screen: Sıralama takibi
 route: /p/<proje>/rankings
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
-Sie sehen, wie Ihre Suchanfragen im Lauf der Zeit steigen und fallen. Google Search Console begrenzt den Verlauf auf 16 Monate. Sie zeigt auch nicht, an welchem Tag eine Suchanfrage auf welche Position gefallen ist.
+Hier sehen Sie, wie Ihre Suchanfragen im Lauf der Zeit steigen und fallen und welche Bewegung am meisten zählt. Die Google Search Console begrenzt den Verlauf auf 16 Monate. Sie zeigt auch nicht, auf welcher Position eine Suche an einem bestimmten Tag stand.
 
-Die App ruft diese Daten Tag für Tag ab und speichert sie auf diesem Computer. Mit jedem Öffnen des Bildschirms wächst das Archiv. Mit der Zeit reichen Sie weiter zurück, als Google zeigt.
+Die App holt diese Daten Tag für Tag und speichert sie auf diesem Computer. Mit jedem Öffnen des Bildschirms wächst das Archiv. Mit der Zeit kommen Sie weiter zurück, als Google es zeigt.
 
 ## Was auf dem Bildschirm zu sehen ist
 
-**Zeitraum.** Zur Wahl stehen 30 gün (30 Tage), 90 gün (90 Tage, Standard), 6 ay (6 Monate), 16 ay (16 Monate) und **Arşivin tamamı** (Gesamtes Archiv). Der Zeitraum wird von heute bis drei Tage zurück gerechnet.
+**Zeitraum.** Zur Wahl stehen 30 Tage, 90 Tage (Standard), 6 Monate, 16 Monate und Gesamtes Archiv. Der gewählte Zeitraum steht in der Adressleiste. Er endet drei Tage vor heute. Oben steht, welche Daten gezeigt werden.
 
-**Zeile mit dem Archivstatus.** Sie nennt, wie viele Tage und wie viele Zeilen im Archiv sind. Bei jedem Öffnen holt der Bildschirm fehlende Tage von Google nach. Steht dort „Bu açılışta N gün eklendi.“ (Beim Öffnen wurden N Tage ergänzt.), sind neue Tage hinzugekommen. Steht dort „Kalan günler sonraki açılışta tamamlanacak.“ (Die übrigen Tage werden beim nächsten Öffnen ergänzt.), geht die Arbeit beim nächsten Öffnen weiter.
+**Archivzeile.** Sie nennt, welche Daten das Archiv abdeckt. Bei jedem Öffnen füllt der Bildschirm fehlende Tage bei Google nach. Steht dort ein Hinweis, dass bei diesem Besuch Tage hinzugefügt wurden, sind neue Tage ins Archiv gekommen. Steht dort, dass die verbleibenden Tage beim nächsten Öffnen ergänzt werden, geht die Arbeit beim nächsten Besuch weiter.
 
-Das Feld **Sorgu içinde ara** (In Suchanfragen suchen) grenzt die Liste ein.
+**Aufsteiger und Absteiger.** Zwei kurze Listen: **Größte Aufsteiger** und **Größte Absteiger**. Jede Zeile zeigt die Suchanfrage, die alte und neue Position wie „Position 6,2 → 4,1“, die Impressionen und wie viele Plätze sie sich bewegt hat. Die Listen sind nicht allein nach der Bewegung sortiert. Die Bewegung wird mit den Impressionen multipliziert. Eine oft gesuchte Anfrage, die zwei Plätze gestiegen ist, steht vor einer selten gesuchten, die vier Plätze gestiegen ist. Ein Klick auf eine Zeile öffnet den Verlauf dieser Suche unter der Tabelle. Suchen ohne Daten im Vorzeitraum kommen in diese Listen nicht hinein. Ist gar kein Vergleich möglich, steht anstelle des Abschnitts ein Hinweis mit dem Grund.
 
-**Filter für Veränderungen.** **Yükselenler** (Aufsteiger) und **Düşenler** (Absteiger) zeigen Suchanfragen, die sich um mindestens eine halbe Position bewegt haben. Dazu kommen **Şu an ilk 10'da** (Aktuell in den Top 10) und **İlk 10'dan çıkanlar** (Aus den Top 10 gefallen). Es gibt zwei weitere Schnellfilter: **Gösterimi yüksek** (Viele Impressionen; mindestens 100 Impressionen) und **Hiç tıklanmayan** (Nie geklickt).
+**Positionsverteilung.** Vier Balken zeigen, wie viele Ihrer Suchanfragen nach Durchschnittsposition in den Gruppen 1-3, 4-10, 11-20 und 21+ liegen. Neben jedem Balken stehen die Zahl der Suchanfragen und ihr Anteil. Die Zahl ganz rechts nennt, wie viele Suchanfragen seit dem Vorzeitraum in die Gruppe hinein- oder aus ihr herausgekommen sind, mit Pfeil und Vorzeichen. In den ersten drei Gruppen ist ein Zuwachs eine gute Nachricht. In der Gruppe 21+ ist er eine schlechte. Ein Klick auf einen Balken grenzt die Tabelle auf diese Gruppe ein. Noch ein Klick hebt den Filter auf.
 
-**Positionsverteilung.** Die Balken zeigen, wie viele Ihrer Suchanfragen in den Bereichen 1-3, 4-10, 11-20 und 21+ liegen.
+**Suchfeld und Filter.** Das Feld **Suchanfragen** grenzt die Liste ein. Darunter gibt es zwei Filtergruppen.
 
-**Aufsteiger und Absteiger.** Sie sehen zwei kurze Listen: „En çok yükselenler“ (Größte Aufsteiger) und „En çok düşenler“ (Größte Absteiger).
+- **Filter ändern**: **Aufsteiger** und **Absteiger** zeigen Suchen, die sich gegenüber dem Vorzeitraum um mindestens eine halbe Position bewegt haben. Auch **Jetzt in den Top 10** und **Aus den Top 10 ausgeschieden** stehen hier.
+- **Schnellfilter**: **Viele Impressionen** und **Keine Klicks**. Viele Impressionen ist das am häufigsten angezeigte Viertel der Liste. Es gibt keine feste Zahl, denn eine feste Zahl würde bei einem kurzen Zeitraum jede Zeile auswählen.
 
-**Tabelle.** Die Spalten sind: **Sorgu** (Suchanfrage), **Ort. sıra** (Durchschn. Position), **Değişim** (Veränderung), **Gösterim** (Impressionen), **Tıklama** (Klicks), **Gün** (Tage). Die Spalte **Gün** zeigt, an wie vielen Tagen des gewählten Zeitraums die Suchanfrage erschien. Eine Suchanfrage, die in 90 Tagen nur an 3 Tagen erscheint, wird selten gesucht. In der Zelle Veränderung steht „Yükseldi 2,4“ (Gestiegen 2,4) oder „Düştü 1,1“ (Gefallen 1,1). Das Zeilenmenü hat drei Einträge: **Kelimeyi kopyala** (Suchbegriff kopieren), **Kayıtlı kelimelere ekle** (Zu gespeicherten Suchbegriffen hinzufügen), **Arama performansında ara** (In der Suchleistung suchen).
+Ein Filter, der die Liste nicht wirklich eingrenzt, wird nicht gezeigt. Eine Schaltfläche, die keine oder alle Zeilen wählen würde, sagt nichts aus.
 
-**Suchanfrage-Verlauf.** Ein Klick auf eine Zeile öffnet die Positionslinie dieser Suchanfrage Tag für Tag. Der Link **Arama performansında aç** (In der Suchleistung öffnen) zeigt dieselbe Suchanfrage auf dem anderen Bildschirm.
+**Tabelle.** Die Spalten sind **Suchanfrage**, **Durchschnittliche Position**, **Ändern**, **Impressionen**, **Klicks** und manchmal **Tag**. Mit einem Klick auf die Überschrift sortieren Sie. Zuerst ist nach Impressionen sortiert. In der Zelle **Durchschnittliche Position** steht links eine kleine Linie. Sie zeigt die Position Woche für Woche über den Zeitraum. Geht die Linie nach oben, wird die Position besser. Auf einem kleinen Bildschirm ist die Linie ausgeblendet. Eine Position auf der ersten Seite ist grün geschrieben, auf der zweiten Seite gelb. Die Farbe allein trägt keine Information, denn die Zahl steht immer da. In der Zelle **Ändern** steht „2,4 Plätze gestiegen“, „1,1 Plätze gefallen“ oder „Keine Änderung“. Bei einer Suche ohne Daten im Vorzeitraum steht „Keine Daten im vorherigen Zeitraum“. Die Spalte **Tag** erscheint nur, wenn manche Suchen an manchen Tagen fehlten. Eine Suche, die an nur 3 von 90 Tagen auftaucht, wird selten gesucht. Das Zeilenmenü hat drei Punkte: **Keyword kopieren**, **Zu gespeicherten Keywords hinzufügen**, **In der Suchleistung suchen**. Die Tabelle ist in Seiten zu 25, 50 oder 100 Zeilen geteilt.
 
-**Leeres Archiv.** Ist das Archiv leer, steht dort „Henüz hangi kelimeyle arandığınız bilinmiyor“ (Noch ist nicht bekannt, mit welchen Suchbegriffen man Sie findet), und die Schaltfläche **Arama performansını aç** (Suchleistung öffnen) erscheint. Die Liste ist auf die 100 am häufigsten angezeigten Suchanfragen begrenzt. Gibt es mehr, steht darunter ein Hinweis.
+**Suchverlauf.** Ein Klick auf eine Zeile öffnet die Tag-für-Tag-Positionslinie dieser Suche. Auf der Linie ist oben die bessere Position. Fahren Sie darüber, lesen Sie Position, Klicks und Impressionen des Tages ab. Der Link **In der Suchleistung öffnen** zeigt dieselbe Suche auf dem anderen Bildschirm.
+
+**Leere Zustände.** Ist die Search Console nicht verbunden, erscheint die Schaltfläche **Search Console verbinden**. Ist das Archiv leer, steht dort „Mit welchen Keywords nach Ihnen gesucht wird, ist noch nicht sichtbar“ und es erscheint die Schaltfläche **Suchleistung öffnen**. Die Liste ist auf die 100 am häufigsten angezeigten Suchen begrenzt. Gibt es mehr, steht darunter ein Hinweis.
 
 ## So gehen Sie vor
 
-1. Öffnen Sie den Bildschirm zum ersten Mal und warten Sie, bis in der Archivzeile „eklendi“ (ergänzt) steht.
-2. Die erste Befüllung reicht bis zu 480 Tage zurück. Das kann einige Öffnungen dauern.
-3. Suchen Sie einen Rückgang, klicken Sie auf **Düşenler**. Blenden Sie danach mit **Gösterimi yüksek** das Unwichtige aus.
-4. Klicken Sie auf die oberste Suchanfrage. Lesen Sie im Verlaufsdiagramm ab, an welchem Tag der Rückgang begann.
-5. Markieren Sie die Suchanfragen, die Sie verfolgen möchten, mit **Kayıtlı kelimelere ekle**.
-6. Sehen Sie einmal im Monat in die Listen „En çok yükselenler“ und „En çok düşenler“. Für den Überblick genügt das.
+1. Warten Sie beim ersten Öffnen des Bildschirms, bis die Archivzeile meldet, dass Tage hinzugefügt wurden.
+2. Die erste Füllung geht bis zu 480 Tage zurück. Das kann einige Besuche dauern.
+3. Sehen Sie sich **Aufsteiger und Absteiger** an. Der oberste Absteiger ist die Bewegung, die Ihrem Traffic am meisten schadet.
+4. Sehen Sie sich die Balken der **Positionsverteilung** an. Steht neben der Gruppe 21+ ein roter Zuwachs, rutschen Suchen hinter Seite zwei ab.
+5. Suchen Sie einen Rückgang, drücken Sie den Filter **Absteiger**. Mit **Viele Impressionen** sortieren Sie dann Unwichtiges aus.
+6. Klicken Sie auf die oberste Suche. Im Verlaufsdiagramm lesen Sie den Tag ab, an dem der Rückgang begann.
+7. Markieren Sie die Suchen, die Sie verfolgen möchten, mit **Zu gespeicherten Keywords hinzufügen**.
 
 ## Wie die Zahlen berechnet werden
 
-Das Archiv füllt sich nur mit Daten, die Google endgültig festgelegt hat. Bei jedem Öffnen werden die letzten drei Tage neu abgerufen, weil Google diese Tage nachträglich korrigieren kann. So werden korrigierte Tage im Archiv neu geschrieben.
+Das Archiv wird nur mit Daten gefüllt, die Google endgültig gemacht hat. Bei jedem Öffnen werden die letzten drei Tage neu geholt, weil Google diese Tage nachträglich korrigieren kann. So werden korrigierte Tage erneut ins Archiv geschrieben. Das Öffnen des Bildschirms verbraucht Kontingent der Search Console. Wird der Bildschirm daher innerhalb von 15 Minuten nach der letzten Füllung erneut geöffnet, nutzt er dasselbe Ergebnis.
 
-Klicks und Impressionen sind Summen. **Ort. sıra** gewichtet Tage mit vielen Impressionen stärker. **Gün** ist die Zahl der Tage mit Daten.
+Klicks und Impressionen sind Summen. Bei der **Durchschnittliche Position** zählen Tage mit mehr Impressionen stärker. **Tag** ist die Zahl der Tage mit Daten.
 
-Die Veränderung ist die Durchschnittsposition des vorherigen Zeitraums minus die Position dieses Zeitraums. Ist das Ergebnis positiv, sind Sie gestiegen. Der vorherige Zeitraum ist gleich lang und endet unmittelbar vor diesem Zeitraum.
+Die Veränderung ermitteln wir so: Wir ziehen die Position dieses Zeitraums von der Durchschnittsposition des Vorzeitraums ab. Ist das Ergebnis positiv, sind Sie gestiegen. Der Vorzeitraum ist gleich lang und endet direkt vor diesem. Verglichen wird nur bei Suchen, die in beiden Zeiträumen Daten haben. Eine Suche, die sich um weniger als eine halbe Position bewegt, gilt weder als steigend noch als fallend.
 
-Die Liste enthält die 100 am häufigsten angezeigten Suchanfragen. Im Browser wird sie in Seiten zu 25, 50 oder 100 Zeilen aufgeteilt.
+Die Liste der Aufsteiger und Absteiger ist nach dem Positionsunterschied mal Impressionen sortiert. Jede Liste hat höchstens fünf Zeilen.
+
+Die Positionsgruppen werden an der gerundeten Position geschnitten. 3,4 gilt als „um Platz drei“, 3,5 als „um Platz vier“. Deshalb liegt eine Suche auf 3,4 in der Gruppe 1-3 und eine auf 3,5 in der Gruppe 4-10.
+
+Die Liste holt die 100 am häufigsten angezeigten Suchen.
 
 ## Häufige Fragen
 
-**Warum weicht die Zahl von der in der Search Console ab?** Das Archiv enthält nur endgültige Tage und reicht bis drei Tage zurück. Haben Sie in der Search Console einen Zeitraum gewählt, der den heutigen Tag einschließt, stimmen die Zahlen nicht überein.
+**Warum weicht es von der Zahl in der Search Console ab?** Das Archiv hält nur endgültige Tage und reicht bis drei Tage zurück. Haben Sie in der Search Console einen Zeitraum mit heute gewählt, stimmen die Zahlen nicht überein.
 
-**Die Suchanfrage steht in der Liste, aber ihr Positionsverlauf ist leer.** Die Suchanfrage ist möglicherweise nur an wenigen Tagen erschienen. Sehen Sie in die Spalte **Gün**.
+**Die Suche steht in der Liste, aber ihr Positionsverlauf ist leer.** Die Suche ist womöglich an wenigen Tagen aufgetaucht. Das erkennen Sie an der Spalte **Tag**.
 
-**Warum bleibt das Archiv an einem Tag hängen?** Die App ruft im Hintergrund keine Daten ab. Öffnen Sie den Bildschirm und warten Sie auf den Hinweis „eklendi“.
+**Warum steht dort, dass die Änderung nicht angezeigt werden kann?** Das Archiv hat für diese Suchen keine Einträge im Vorzeitraum. Wählen Sie einen kürzeren Zeitraum oder warten Sie, bis sich das Archiv füllt.
 
-**Kann ich die Position meines Wettbewerbers sehen?** Nein. Die Search Console liefert nur die Daten Ihrer eigenen Website.
+**Warum bleibt das Archiv auf demselben Tag stehen?** Die App holt im Hintergrund keine Daten. Öffnen Sie den Bildschirm und warten Sie auf den Hinweis, dass Tage hinzugefügt wurden.
 
-**Was bedeutet Position 1,0?** Sie sind im ganzen Zeitraum bei jeder Impression auf Position 1 erschienen. Wären Sie an einem Tag auf Position 3 gefallen, läge der Durchschnitt über 1.
+**Kann ich die Position meines Mitbewerbers sehen?** Nein. Die Search Console liefert nur Daten Ihrer eigenen Website.
+
+**Was bedeutet Position 1,0?** Sie standen im ganzen Zeitraum bei jeder Impression an erster Stelle. Wären Sie an einem Tag auf Platz 3 gefallen, läge der Durchschnitt über 1.
 
 ## Grenzen
 
-Das Archiv enthält nur die Tage, die diese Installation gesehen hat. Haben Sie die App gerade erst installiert, können Sie beim ersten Öffnen höchstens 480 Tage zurückgehen. Seltene Suchanfragen, die Google ausblendet, gelangen auch nicht ins Archiv. Wird das Archiv gelöscht, ist der Verlauf weg. Das geschieht zum Beispiel, wenn Sie den Docker-Datenspeicher oder den Datenordner entfernen. Eine Sicherung müssen Sie selbst anlegen.
+Das Archiv enthält nur die Tage, die diese Installation gesehen hat. Haben Sie gerade erst installiert, reichen Sie beim ersten Öffnen höchstens 480 Tage zurück. Seltene Suchen, die Google verbirgt, kommen auch nicht ins Archiv. Wird das Archiv gelöscht, ist der Verlauf weg. Das Löschen des Docker-Datenspeichers oder des Datenordners ist ein Beispiel dafür. Backups zu machen, liegt bei Ihnen.
 
-<!-- Kaynaklar: src/routes/_project/p/$projectId/rankings.tsx; src/client/features/rankings/RankingsPage.tsx; TrackedQueriesTable.tsx; PositionChange.tsx; PositionBandBars.tsx; MoversCard.tsx; ArchiveStatus.tsx; EmptyArchivePanel.tsx; QueryHistoryCard.tsx; src/serverFunctions/gscHistory.ts; src/server/features/gsc/services/GscHistoryService.ts; src/server/features/gsc/repositories/GscHistoryRepository.ts; src/shared/rankingChange.ts; src/db/gsc-history.schema.ts -->
+<!-- Quellen: src/routes/_project/p/$projectId/rankings.tsx; src/client/features/rankings/RankingsPage.tsx; TrackedQueriesTable.tsx; PositionChange.tsx; PositionBandBars.tsx; PositionSparkline.tsx; MoversCard.tsx; ArchiveStatus.tsx; EmptyArchivePanel.tsx; QueryHistoryCard.tsx; positionBands.ts; rankingMoves.ts; src/shared/positionBands.ts; src/serverFunctions/gscHistory.ts; src/server/features/gsc/services/GscHistoryService.ts; src/server/features/gsc/repositories/GscHistoryRepository.ts; src/shared/rankingChange.ts; src/db/gsc-history.schema.ts -->

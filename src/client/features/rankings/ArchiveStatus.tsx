@@ -107,14 +107,17 @@ export function ArchiveStatus({
   // Both ends are nullable. Interpolated raw they rendered as nothing, so a
   // half-populated archive read "Arşiv  –  arasını kapsıyor"; the range is
   // either there or the sentence does without it.
+  // Row counts are storage plumbing; the dates are what an owner reads.
   const rows = formatNumber(data.rowCount);
   const summary =
     data.earliestDate && data.lastDate
-      ? t("Arşiv {start} – {end} arasını kapsıyor, {rows} satır.", {
-          start: formatDate(data.earliestDate),
-          end: formatDate(data.lastDate),
-          rows,
-        })
+      ? t(
+          "Bu bilgisayarda {start} – {end} arasının geçmişi saklı; Google'ın 16 ay sınırı buna uygulanmaz.",
+          {
+            start: formatDate(data.earliestDate),
+            end: formatDate(data.lastDate),
+          },
+        )
       : t("Arşiv {rows} satır.", { rows });
 
   return (

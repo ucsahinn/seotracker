@@ -1,67 +1,93 @@
 ---
 title: Painel
-description: A primeira tela que você vê ao abrir um projeto. Os números de busca dos últimos 28 dias, o resumo da última auditoria e as suas tarefas, tudo em um só lugar.
+description: A primeira tela que você vê ao abrir um projeto. Os números de busca dos últimos 28 dias, o estado da configuração, as suas tarefas e o resumo da última auditoria, tudo em um só lugar.
 screen: Panel
 route: /p/<proje>
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
-Nesta tela você vê o estado mais recente do seu site e descobre o que fazer a seguir. É a primeira tela que aparece quando você abre um projeto.
+Esta é a primeira tela de um projeto. Ela mostra o estado atual do seu site e o que fazer em seguida.
 
-Os números de busca vêm da ferramenta Search Console, do Google. Os números de visitantes vêm do Google Analytics. O resumo da auditoria vem do rastreador de sites do próprio aplicativo. O botão **Yenile** (Atualizar), no alto, atualiza tudo isso. **Denetimi başlat** (Iniciar auditoria) leva você à tela de auditoria.
+Os números de busca vêm do Google Search Console. Os números de visitantes vêm do Google Analytics. O resumo da auditoria vem do rastreador de sites do próprio aplicativo. O botão **Atualizar** no alto atualiza tudo. Se o projeto tem pelo menos uma auditoria, aparece ao lado o botão **Iniciar auditoria**, que leva à tela da auditoria. Abaixo do título fica o domínio do projeto.
 
 ## O que há na tela
 
-**Quatro cartões de números.** **Tıklama** (Cliques), **Gösterim** (Impressões), **Tıklama oranı** (Taxa de cliques) e **Ortalama sıra** (Posição média). Todos mostram os últimos 28 dias. Cada cartão tem uma seta que compara com os 28 dias anteriores. Na posição média, um número pequeno é bom, e 1 é a primeira posição. Portanto, se o número cai, é uma boa notícia, e a seta tem a cor correspondente. Se o Search Console não estiver conectado, o cartão diz "Search Console'u bağlayın" (Conecte o Search Console).
+**Quatro cartões de números.** **Cliques**, **Impressões**, **CTR** e **Posição média** cobrem os últimos 28 dias. Cada cartão tem uma seta em relação aos 28 dias anteriores. Na posição média, um número pequeno é bom, porque 1 é o primeiro lugar. Por isso, se o número cai, a notícia é boa e a seta ganha a cor correspondente. Se o Search Console não estiver ligado, o cartão avisa que só mostra dados depois de conectado. Se estiver ligado mas não houve impressões no período, o cartão diz "Não há impressões neste período".
 
-**Sıradaki adımlar** (Próximos passos). Até três tarefas que o aplicativo sugere. As sugestões vêm nesta ordem:
+**Próximos passos.** Ao lado do título, um rótulo diz o estado da configuração: "Configuração 4 / 6" ou, quando tudo está feito, "Configuração concluída". São contados seis itens: Search Console, Analytics, uma auditoria recente, a descrição do projeto, a chave do PageSpeed e o agente de IA. Os mesmos seis itens estão na tela **Contexto do projeto**, então as duas telas mostram o mesmo número. Uma auditoria recente é uma auditoria do próprio site do projeto, concluída nos últimos sete dias. A auditoria de outro site não conta. O que falta é listado na linha "Falta na configuração: ..." e o link **Concluir** ao lado leva à tela Contexto do projeto. A configuração não diz nada sobre o site em si. É só uma lista de tarefas.
 
-- Se o Search Console não estiver conectado, **Search Console'u bağla** (Conectar o Search Console).
-- Se não houver auditoria, ou se a última tiver mais de sete dias, **Denetimi başlat**.
-- Se houver um problema grave, **Kritik sorunları gör** (Ver os problemas críticos).
-- Depois, **Fırsatları aç** (Abrir as oportunidades) e **Uyarıları gör** (Ver os avisos).
+O aplicativo sugere no máximo três tarefas. A ordem é esta:
 
-Quando uma tarefa é concluída, o item sai da lista.
+- Se o Search Console não estiver ligado: **Conectar o Search Console** (botão: **Conectar**). Se a chave de acesso do Google ainda não foi inserida, um aviso substitui esta linha: "Chave de acesso do Google ausente", com o botão **Insira a chave de acesso do Google em Configurações**.
+- Se não houver auditoria: **Execute sua primeira auditoria** (botão: **Iniciar**). A lista termina aqui.
+- Se a última auditoria falhou: **Executar a auditoria novamente** (botão: **Executar novamente**). Abaixo ficam a causa, se o defeito está no site ou no aplicativo, e o que fazer. Se uma auditoria estiver em execução: **Auditoria em andamento** (botão: **Ver progresso**).
+- Se houver problemas críticos: "N problemas críticos" (botão: **Visualizar**).
+- Se o Search Console estiver ligado: **Revisar oportunidades** (botão: **Abrir**).
+- Se a última auditoria tiver mais de sete dias: **Atualizar a auditoria** (botão: **Iniciar**).
+- Se houver avisos: "N avisos" (botão: **Visualizar**).
 
-**Novidades da última auditoria e Düzelenler (Corrigidos).** Compara as duas últimas auditorias. Você vê qual problema apareceu em quantas páginas e qual diminuiu. Se nada foi corrigido, aparece "Düzelen sorun yok." (Nenhum problema corrigido.).
+Quando uma tarefa é concluída, ela sai da lista. Se a lista estiver vazia, aparece "Nada urgente. A auditoria está atualizada e não há problemas críticos."
 
-**Tıklama eğilimi** (Tendência de cliques). A linha diária de cliques dos últimos 28 dias. Se houver dados de menos de quatro dias, nenhuma linha é desenhada. O link **Sorguları aç** (Abrir as consultas) leva à tela Arama performansı (Desempenho de busca).
+**Novidades na última auditoria** e **Corrigido**. Este cartão só aparece quando tem algo a dizer. Se a última auditoria tiver mais de sete dias, ele diz quantos dias se passaram e oferece o botão **Iniciar auditoria**. Se os problemas mudaram entre as duas últimas auditorias, aparecem duas listas. **Novidades na última auditoria** mostra quais problemas foram vistos pela primeira vez, **Corrigido** quais foram fechados. Se nada foi corrigido, o cartão avisa que nenhum problema foi corrigido. Se não houver nem um nem outro, o cartão nem aparece.
 
-**Sıra 5-20 arası sorgular** (Consultas nas posições 5 a 20). As quatro primeiras buscas que aparecem entre as posições 5 e 20 no Google. Com um pouco de trabalho, elas podem chegar à primeira página. **Tümünü gör** (Ver tudo) abre a lista completa.
+**Tendência de cliques.** Uma linha com os cliques diários dos últimos 28 dias. Ela traz o total, a variação em relação ao período anterior e o dia de pico. Com menos de quatro dias de dados, nenhuma linha é desenhada. O link abaixo do gráfico abre a tela **Desempenho da pesquisa**.
 
-Cartão **Site denetimi** (Auditoria do site). Mostra quantas páginas foram rastreadas, os três problemas mais comuns e as cinco páginas com mais problemas. Enquanto uma auditoria está em andamento, o cartão se atualiza a cada cinco segundos. O ícone de ponto de interrogação explica os três níveis de gravidade:
+**Consultas perto das três primeiras posições.** Aqui ficam as pesquisas com posição média entre 4 e 20 e impressões suficientes. O cartão diz quantos cliques a mais elas poderiam trazer juntas se cada uma subisse um degrau. É um limite superior. Cada linha mostra a posição da pesquisa e o ganho possível. Um clique numa linha abre essa pesquisa na tela Desempenho da pesquisa. **Ver tudo** abre a guia Oportunidades de posição da tela Desempenho da pesquisa. Se nenhuma pesquisa tiver impressões suficientes, o cartão avisa.
 
-- Crítico: prejudica diretamente a sua presença na busca.
-- Aviso: desgasta as posições com o tempo, mas não é urgente.
-- Informação: pequenas oportunidades de melhoria.
+**Cartão Auditoria do site.** Mostra quantas páginas foram rastreadas e em que data, os problemas mais comuns e as páginas com mais problemas. Enquanto uma auditoria está em execução, ele diz que a auditoria está em execução e que os resultados aparecem quando ela termina, e o cartão se atualiza a cada cinco segundos. Se a auditoria não pôde ser concluída, ele diz que por isso não há resultados. Se nenhum problema foi encontrado, diz que o seu site parece íntegro. Abaixo dos problemas, uma barra mostra os níveis de gravidade. O ponto de interrogação explica os três níveis: problemas críticos podem impedir uma página de aparecer na pesquisa, avisos corroem a posição com o tempo, informações são pequenas melhorias. Um clique na barra ou num dos rótulos abaixo leva à lista de problemas. No fim fica a lista **Páginas com mais problemas**. Se não houver auditoria, este cartão não aparece, porque "Próximos passos" já sugere a primeira auditoria. **Detalhes** abre a guia de páginas com problemas da auditoria.
 
-Cartão **Organik trafik** (Tráfego orgânico). Aparece se o Google Analytics estiver conectado. Para os visitantes que vieram da busca, mostra **Oturum** (Sessões), **Aktif kullanıcı** (Usuários ativos), **Etkileşim oranı** (Taxa de engajamento) e **Anahtar olay** (Eventos-chave). Se o site mede vendas, são acrescentados também **Organik gelir** (Receita orgânica) e **Sipariş** (Pedidos).
+**Cartão de tráfego orgânico.** Aparece se o Google Analytics estiver ligado. Para os visitantes que vieram da pesquisa, mostra **Sessões**, **Usuários ativos**, **Taxa de engajamento** e **Eventos principais**. Se o site mede vendas, entram também a receita orgânica e as **Transações**. No alto do cartão, **Relatórios** abre a tela do Analytics e **Gerenciar** as configurações de conexão do Analytics. Uma nota no fim diz que o Analytics chega com 1 dia de atraso e o Search Console com 3. Por isso os dias deste cartão diferem dos quadros de cliques do alto. Se o Analytics não estiver ligado, um convite para conectar ocupa o lugar do cartão. Se você o fechar, ele não volta.
+
+Se o cartão não consegue ler os dados, ele mostra uma frase com a causa e a solução e oferece dois botões: **Corrigir a conexão** (abre as configurações do Analytics) e **Tentar novamente**. As causas principais são estas:
+
+- A conexão expirou ou foi revogada. Conecte de novo em **Configurações**.
+- A conta conectada não alcança mais a propriedade. Dê à conta ou à conta de serviço pelo menos a função de Leitor na propriedade.
+- A propriedade foi excluída ou movida. Escolha-a de novo em **Configurações**.
+- Nenhuma propriedade do Analytics está conectada a este projeto. Escolha uma em **Configurações**.
+- A cota de relatórios acabou. A cota se renova a cada hora e a cada dia, tente mais tarde.
+- A Google Analytics Data API está desativada no seu projeto do Google Cloud. Ative "Google Analytics Data API" no Google Cloud Console.
+- Não foi possível alcançar o Google. Veja a conexão de internet deste computador.
+- O Google não está respondendo no momento. Tente de novo daqui a pouco.
+
+Se o cartão não tem sessões orgânicas, diz que nenhum tráfego de pesquisa orgânica foi registrado neste intervalo. Não há nada errado. Naquele período não houve visitas vindas da pesquisa.
+
+**Configure seu espaço de trabalho.** No fim da página, as etapas de configuração a fazer ficam em uma caixa fechada. As etapas: adicionar o seu site, adicionar os seus outros sites, conectar o seu agente de IA, conectar o Search Console e descrever o projeto. Aparece "N etapas restantes. Tudo é opcional". Você adia uma etapa com **Pular por enquanto**. As etapas adiadas e as concluídas são contadas abaixo da caixa, e **Restaurar** as traz de volta. Quando tudo estiver feito, a caixa desaparece.
 
 ## Como usar
 
 1. Abra uma vez por semana e olhe as setas dos quatro cartões.
-2. Faça a primeira tarefa da lista **Sıradaki adımlar**. Se a lista estiver vazia, não há nada urgente.
-3. Se a última auditoria tiver mais de sete dias, clique em **Denetimi başlat**.
-4. Revise o título e a descrição das páginas no cartão **Sıra 5-20 arası sorgular**. Os ganhos mais fáceis costumam estar aqui.
+2. Faça a primeira tarefa da caixa **Próximos passos**. Se a caixa estiver vazia, não há nada urgente.
+3. Se o rótulo da configuração mostrar algo faltando, clique em **Concluir**. Os itens que faltam se resolvem rápido.
+4. Se a última auditoria tiver mais de sete dias, clique em **Iniciar auditoria**.
+5. Reveja o título e a descrição das páginas do cartão **Consultas perto das três primeiras posições**. O ganho mais fácil costuma estar aqui.
+6. Se o cartão **Novidades na última auditoria** e **Corrigido** aparecer, dê prioridade aos problemas vistos pela primeira vez. Você vê a mudança de uma semana de relance.
 
 ## Como os números são calculados
 
-Os quatro cartões vêm de um único relatório do Search Console. O Google entrega os dados com três dias de atraso. Por isso, o período de 28 dias termina três dias atrás, não hoje. O período anterior são os 28 dias imediatamente antes desse intervalo. Se o período anterior for zero, nenhuma seta é mostrada.
+Os quatro cartões vêm de um único relatório do Search Console. O Google entrega os dados com três dias de atraso. Por isso o intervalo de 28 dias não termina hoje, e sim três dias antes. O período anterior são os 28 dias logo antes deste intervalo. Se o período anterior for zero, a seta não é mostrada.
 
-A posição média dá mais peso às buscas com muitas impressões. Esses quatro números são os totais reais do site. Se você somar as linhas da tabela na tela Arama performansı, obtém um número maior. O Google conta separadamente cada página que aparece na mesma busca.
+Na posição média, as pesquisas com muitas impressões pesam mais. Esses quatro números são os totais reais do site. Se você somar as linhas da tabela da tela **Desempenho da pesquisa**, vai achar um número maior, porque o Google conta separadamente cada página que aparece para a mesma pesquisa.
+
+O ganho do cartão **Consultas perto das três primeiras posições** é um limite superior. São os cliques a mais que cada pesquisa teria se subisse um degrau. O mesmo cálculo vale na tela Oportunidades. As duas telas dão o mesmo número.
+
+O rótulo da configuração é um número, não uma porcentagem nem uma pontuação. Ele mostra quantos dos seis itens estão feitos.
 
 ## Perguntas frequentes
 
-**Por que não há dados de hoje?** O Google ainda não entrega os últimos três dias. Isso não é uma falha.
+**Por que não há dados de hoje?** O Google ainda não entregou os últimos três dias. Isso não é uma falha.
 
-**A posição média subiu. Isso é bom?** Não. Passar de 3 para 7 significa cair. Por isso a seta fica vermelha.
+**A posição média aumentou. Isso é bom?** Não. Passar de 3 para 7 é uma queda. Por isso a seta fica vermelha.
 
-**O cartão da auditoria mostra o que o Google vê?** Não. Mostra o que o rastreamento do próprio aplicativo encontrou. Quais páginas o Google registrou está na aba **Dizin durumu** (Status de indexação) da tela de auditoria.
+**O cartão da auditoria mostra o que o Google vê?** Não. Ele mostra o que o rastreamento do próprio aplicativo encontrou. Quais páginas o Google indexou aparece na guia **Status de indexação** da tela da auditoria.
 
-**Não há o cartão Organik trafik.** O Google Analytics não está conectado nas configurações do projeto. Conectá-lo é opcional.
+**Não há o cartão de tráfego orgânico.** O Google Analytics não está ligado nas configurações do projeto, ou você fechou o cartão. Conectá-lo é opcional.
+
+**Por que a configuração diz 5 / 6 se achei que tinha feito tudo?** A linha "Falta na configuração" diz qual item falta. Quase sempre é uma chave do PageSpeed ou uma auditoria dos últimos sete dias.
+
+**O cartão do Analytics mostra um erro.** A frase no cartão diz a causa. Quase sempre basta renovar a conexão em **Configurações**.
 
 ## Limites
 
-O Painel não mostra volume de busca, backlinks (links de outros sites para você) nem posições de concorrentes. Esses dados não estão no aplicativo. As consultas pesquisadas muito raramente ficam ocultas no Search Console. Para os detalhes, vá à tela correspondente.
+O painel não mostra volume de pesquisa, backlinks (links que chegam de outros sites até você) nem posições de concorrentes. Esses dados não existem no aplicativo. O Search Console oculta as consultas pesquisadas muito raramente. Para ver os detalhes, passe para a tela correspondente.
 
-<!-- Kaynaklar: src/routes/_project/p/$projectId/index.tsx; src/client/features/dashboard/DashboardPage.tsx; DashboardMetrics.tsx; SearchInsights.tsx; DashboardCards.tsx; SeverityBar.tsx; Ga4Card.tsx; NextStepsCard.tsx; AuditFreshnessCard.tsx; src/client/features/dashboard/dashboardGscReport.ts; src/server/features/dashboard/services/DashboardService.ts; src/server/features/gsc/searchPerformanceReport.ts; src/shared/dataFreshness.ts; src/shared/delta.ts -->
+<!-- Fontes: src/routes/_project/p/$projectId/index.tsx; src/client/features/dashboard/DashboardPage.tsx; DashboardMetrics.tsx; SearchInsights.tsx; DashboardCards.tsx; SeverityBar.tsx; Ga4Card.tsx; Ga4ConnectCard.tsx; NextStepsCard.tsx; AuditFreshnessCard.tsx; DashboardOnboarding.tsx; dashboardSteps.ts; GoogleSetupBanner.tsx; src/client/features/projects/projectSetupQuery.ts; src/shared/projectSetup.ts; src/server/lib/errors.ts; src/client/features/dashboard/dashboardGscReport.ts; src/server/features/dashboard/services/DashboardService.ts; src/shared/dataFreshness.ts; src/shared/delta.ts -->

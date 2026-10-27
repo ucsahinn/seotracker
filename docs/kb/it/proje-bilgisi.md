@@ -8,11 +8,11 @@ updated: 2026-10-22
 
 Il sito si racconta all'assistente una volta sola, poi non serve più ripeterlo.
 
-Nella schermata **Proje bilgisi** (Informazioni sul progetto) si scrive ciò che Google non sa. Si racconta che cosa si vende, qual è l'obiettivo attuale, chi sono i concorrenti, quali pagine fanno guadagnare e come si desidera che si scriva. La schermata può essere compilata dall'utente o dall'assistente di intelligenza artificiale (nella schermata compare come "ajan"). L'assistente la legge prima di cominciare e vi scrive ciò che impara. Se si nota qualcosa di sbagliato, lo si corregge di persona. Serve anche a chi non usa un assistente. Se tra sei mesi ci si chiede "perché ci eravamo concentrati su questa pagina", la risposta sarà qui.
+Nella schermata **Contesto del progetto** si scrive ciò che Google non sa. Si racconta che cosa si vende, qual è l'obiettivo attuale, chi sono i concorrenti, quali pagine fanno guadagnare e come si desidera che si scriva. La schermata può essere compilata dall'utente o dall'assistente di intelligenza artificiale (nella schermata compare come "l’agente"). L'assistente la legge prima di cominciare e vi scrive ciò che impara. Se si nota qualcosa di sbagliato, lo si corregge di persona. Serve anche a chi non usa un assistente. Se tra sei mesi ci si chiede "perché ci eravamo concentrati su questa pagina", la risposta sarà qui.
 
 ## Cosa c'è nella schermata
 
-**Quattro sezioni principali.** Sono **İşin özeti** (Sintesi dell'attività), **Şu anki hedef** (Obiettivo attuale), **Konumlandırma** (Posizionamento: come ci si descrive sul mercato) e **Yazım tercihleri** (Preferenze di scrittura). In tutte si scrive liberamente e ognuna accetta al massimo 4.000 caratteri. Sotto si vede chi l'ha aggiornata e quando.
+**Quattro sezioni principali.** Sono **Panoramica dell’attività**, **Obiettivo attuale**, **Posizionamento** (come ci si descrive sul mercato) e **Preferenze di scrittura**. In tutte si scrive liberamente e ognuna accetta al massimo 4.000 caratteri. Sotto si vede chi l'ha aggiornata e quando.
 
 **Sezioni personalizzate.** Se un argomento non rientra nelle quattro sezioni, si apre un titolo proprio. Si possono aprire al massimo 20 sezioni personalizzate e il titolo è al massimo di 120 caratteri.
 
@@ -20,24 +20,24 @@ Nella schermata **Proje bilgisi** (Informazioni sul progetto) si scrive ciò che
 
 **Pagine importanti.** Per ogni pagina si scrivono indirizzo, ruolo, argomento e nota. I ruoli sono:
 
-- **Merkez sayfa** (Pagina centrale): la pagina di ingresso di un argomento.
-- **Destek sayfası** (Pagina di supporto): una sottopagina che alimenta la pagina centrale.
-- **Dönüşüm sayfası** (Pagina di conversione): la pagina che fa guadagnare o che contiene un modulo.
-- **Diğer** (Altro).
+- **Pagina hub**: la pagina di ingresso di un argomento.
+- **Pagina di supporto**: una sottopagina che alimenta la pagina centrale.
+- **Pagina di conversione**: la pagina che fa guadagnare o che contiene un modulo.
+- **Altro**.
 
 Si possono aggiungere al massimo 100 pagine. Gli indirizzi vengono completati in modo che inizino con https.
 
 **Registro delle ricerche.** L'assistente lascia note datate del tipo "ho cercato questo, è uscito questo". Queste note le scrive soltanto l'assistente e ognuna è al massimo di 1.000 caratteri. Volendo, le si può eliminare. Le note si cancellano da sole dopo 90 giorni. Nella schermata si vedono le 20 più recenti.
 
-**Scheda dell'assistente.** Nella scheda ci sono due testi pronti: "Ajanınıza doldurtun" (Far compilare all'assistente) e "Ajanınıza gözden geçirtin" (Far rivedere all'assistente). Premendo **İstemi kopyala** (Copia il testo) lo si incolla nell'assistente. Se il progetto è vuoto, il primo testo chiede all'assistente di porre all'utente alcune domande e poi di compilare le sezioni.
+**Scheda dell'assistente.** Nella scheda ci sono due testi pronti: "Fallo compilare all’agente" e "Chiedi al tuo agente di rivederlo". Premendo **Copia prompt** lo si incolla nell'assistente. Se il progetto è vuoto, il primo testo chiede all'assistente di porre all'utente alcune domande e poi di compilare le sezioni.
 
 ## Come si usa
 
-1. Appena aperto il progetto, scrivere in **İşin özeti** tre o cinque frasi. Dire che cosa si vende, a chi, in quali lingue è il sito e qual è la pagina di conversione. L'assistente prepara ogni report in base a questo paragrafo.
-2. Scrivere **Şu anki hedef** in modo concreto. Non scrivere "traffico". Scrivere "far entrare le pagine dei prodotti nell'indice (l'elenco delle pagine di Google)" oppure "cinque richieste al mese dal modulo per la demo". L'assistente ordina i suggerimenti di conseguenza.
-3. In **Önemli sayfalar** (Pagine importanti) aggiungere prima le pagine di conversione, poi le pagine centrali. L'assistente capisce da qui che cosa mettere in priorità.
-4. In **Yazım tercihleri** scrivere le parole che non si vogliono usare e il tono. Per esempio "non dire leader del settore", "dare del lei", "indicare il numero di versione". I report dell'assistente rispettano queste regole.
-5. Se si usa un assistente, il primo giorno copiare e incollare il testo **Ajanınıza doldurtun**. L'assistente compila le sezioni parlando con l'utente. Una volta al mese leggere il registro delle ricerche e correggere ciò che risulta sbagliato.
+1. Appena aperto il progetto, scrivere in **Panoramica dell’attività** tre o cinque frasi. Dire che cosa si vende, a chi, in quali lingue è il sito e qual è la pagina di conversione. L'assistente prepara ogni report in base a questo paragrafo.
+2. Scrivere **Obiettivo attuale** in modo concreto. Non scrivere "traffico". Scrivere "far entrare le pagine dei prodotti nell'indice (l'elenco delle pagine di Google)" oppure "cinque richieste al mese dal modulo per la demo". L'assistente ordina i suggerimenti di conseguenza.
+3. In **Pagine importanti** aggiungere prima le pagine di conversione, poi le pagine centrali. L'assistente capisce da qui che cosa mettere in priorità.
+4. In **Preferenze di scrittura** scrivere le parole che non si vogliono usare e il tono. Per esempio "non dire leader del settore", "dare del lei", "indicare il numero di versione". I report dell'assistente rispettano queste regole.
+5. Se si usa un assistente, il primo giorno copiare e incollare il testo **Fallo compilare all’agente**. L'assistente compila le sezioni parlando con l'utente. Una volta al mese leggere il registro delle ricerche e correggere ciò che risulta sbagliato.
 
 ## Come si calcolano i numeri
 

@@ -11,12 +11,21 @@ import {
   CardShell,
   moreDetailsClass,
 } from "@/client/features/dashboard/cardParts";
-import { dashboardGscReportQuery } from "@/client/features/dashboard/dashboardGscReport";
+import {
+  dashboardGscReportQuery,
+  dashboardSearchViewQuery,
+} from "@/client/features/dashboard/dashboardGscReport";
+import { gainText } from "@/shared/searchTodoCopy";
 import { describeClickTrend } from "@/client/features/dashboard/clickTrend";
 import { DeltaBadge } from "@/client/components/MetricTile";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { DEFAULT_WINDOW_DAYS } from "@/shared/dataFreshness";
-import { formatCount, formatDay, formatDecimal } from "@/client/lib/format";
+import {
+  formatCount,
+  formatDate,
+  formatDay,
+  formatDecimal,
+} from "@/client/lib/format";
 import { t } from "@/shared/i18n";
 
 const TOP_QUERIES = 4;
@@ -40,6 +49,8 @@ export function SearchInsights({
 }) {
   const reduced = useReducedMotion();
   const query = useQuery(dashboardGscReportQuery(projectId, connected));
+  // The same cache entry as above, read whole for the striking list.
+  const viewQuery = useQuery(dashboardSearchViewQuery(projectId, connected));
   if (!connected || query.isError) return null;
 
   if (query.isPending) {
@@ -64,7 +75,11 @@ export function SearchInsights({
       ? (report.totals.clicks - report.prevTotals.clicks) /
         report.prevTotals.clicks
       : null;
-  const striking = report.strikingDistance.slice(0, TOP_QUERIES);
+  const view = viewQuery.data?.connected ? viewQuery.data : null;
+  const striking = (view?.insights.striking.rows ?? []).slice(0, TOP_QUERIES);
+  const strikingTotal = view?.insights.striking.total ?? 0;
+  // Over every striking query, not only the rows the view lists.
+  const strikingGain = view?.insights.striking.totalGain ?? 0;
 
   return (
     <div className="stagger grid gap-5 lg:grid-cols-2">
@@ -167,12 +182,12 @@ export function SearchInsights({
 
       <div style={{ animationDelay: "60ms" }}>
         <CardShell
-          title={t("Sıra 5-20 arası sorgular")}
+          title={t("İlk üçe yakın sorgular")}
           action={
             <Link
               to="/p/$projectId/search-performance"
               params={{ projectId }}
-              search={{ tab: "striking" }}
+              search={{ tab: "opportunities" }}
               className={moreDetailsClass}
             >
               {t("Tümünü gör")}
@@ -182,30 +197,51 @@ export function SearchInsights({
           {striking.length === 0 ? (
             <p className="text-sm text-muted">
               {t(
-                "Şu an 5. ile 20. sıra arasında sorgu yok. Sorgular bu aralığa girdikçe burada listelenir.",
+                "Şu an 4. ile 20. sıra arasında yeterli gösterimi olan sorgu yok. Sorgular bu aralığa girdikçe burada listelenir.",
               )}
             </p>
           ) : (
-            <ul className="space-y-1">
-              {striking.map((row) => (
-                <li key={row.query}>
-                  <Link
-                    to="/p/$projectId/search-performance"
-                    params={{ projectId }}
-                    search={{ tab: "queries", q: row.query }}
-                    className="flex items-center justify-between gap-3 rounded-field px-1 py-1 text-sm transition-colors hover:bg-base-200/60"
-                  >
-                    <span className="min-w-0 truncate">{row.query}</span>
-                    <span className="shrink-0 tabular-nums text-muted">
-                      {t("{impressions} gösterim · sıra {position}", {
-                        impressions: formatCount(row.impressions),
-                        position: formatDecimal(row.position),
-                      })}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <>
+              <p className="mb-2 text-sm text-muted">
+                {t(
+                  "Ortalama sırası 4–20 olan {count} sorgu; her biri bir basamak yükselirse en fazla {clicks} ek tıklama (üst sınır).",
+                  {
+                    count: formatCount(strikingTotal),
+                    clicks: formatCount(Math.round(strikingGain)),
+                  },
+                )}
+                {view
+                  ? ` ${t("Dönem: {start} – {end}.", {
+                      start: formatDate(view.window.startDate),
+                      end: formatDate(view.window.endDate),
+                    })}`
+                  : null}
+              </p>
+              <ul className="space-y-1">
+                {striking.map((row) => (
+                  <li key={row.query}>
+                    <Link
+                      to="/p/$projectId/search-performance"
+                      params={{ projectId }}
+                      search={{ tab: "queries", q: row.query }}
+                      className="flex items-center justify-between gap-3 rounded-field px-1 py-1 text-sm transition-colors hover:bg-base-200/60"
+                    >
+                      <span className="min-w-0 truncate">{row.query}</span>
+                      <span className="shrink-0 text-right tabular-nums text-muted">
+                        {t("sıra {position}", {
+                          position: formatDecimal(row.position),
+                        })}
+                        {row.potentialClicks !== null ? (
+                          <span className="ml-2 font-medium text-[var(--ink-success)]">
+                            {gainText(row.potentialClicks)}
+                          </span>
+                        ) : null}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </>
           )}
         </CardShell>
       </div>

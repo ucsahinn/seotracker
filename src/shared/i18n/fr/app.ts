@@ -32,4 +32,6 @@ export const frApp: Catalog = {
     "L'audit s'est arrêté à cause d'une erreur dans l'application.",
   "Sorun sitenizde değil. Denetimi yeniden başlatın. Tekrarlarsa Yardım ekranından tanı paketini indirip sorun kaydına ekleyin. Hata kodu: {code}":
     "Votre site n'est pas en cause. Relancez l'audit. Si cela se reproduit, téléchargez le paquet de diagnostic depuis l'Aide et joignez-le à un ticket. Code d'erreur : {code}",
+  "Yanıtınız alındı": "Votre réponse a été enregistrée",
+  "{count} yanıt": { one: "{count} réponse", other: "{count} réponses" },
 };

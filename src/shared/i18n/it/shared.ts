@@ -18,7 +18,7 @@ export const itShared: Catalog = {
   "Dizine alındı, site haritasına eklemeyi düşünün":
     "Indicizzato; valuta di aggiungerlo a una sitemap",
   "Tarandı, şu an dizine alınmadı": "Scansionato, al momento non indicizzato",
-  "Keşfedildi, henüz taranmadı": "Rilevato, al momento non scansionato",
+  "Keşfedildi, henüz taranmadı": "Rilevato, al momento non indicizzato",
   "Yinelenen içerik, canonical belirtilmemiş":
     "Duplicato senza canonical selezionato dall’utente",
   "Yinelenen içerik, Google başka bir canonical seçti":

@@ -163,6 +163,32 @@ describe("buildAuditReportHtml", () => {
     expect(partial.html).toContain("5 sayfanın ölçülmesi planlandı");
   });
 
+  // A crawl the site's rate limit cut short has an incomplete issue list.
+  it("gives no score to an audit whose crawl was cut short", () => {
+    const { html, summary } = buildAuditReportHtml(
+      input({
+        issues: [
+          {
+            issueType: "crawl-rate-limited",
+            severity: "warning",
+            pageUrl: "https://example.com/",
+            pageId: null,
+          },
+        ],
+      }),
+    );
+    expect(html).toContain("Eksik denetim — puan verilmedi");
+    expect(summary).not.toContain("Site puanı");
+  });
+
+  // No speed run, no probes, no Search Console: no verdict word on page one.
+  it("prints a score from a thinly measured audit as provisional", () => {
+    const { html, summary } = buildAuditReportHtml(input({}));
+    expect(html).toContain("Kısmi puan");
+    expect(html).not.toContain("Kayıtlı hiçbir sorun yok");
+    expect(summary).toContain("Kısmi puan");
+  });
+
   it("does not call a failed or empty audit clean", () => {
     for (const overrides of [
       { status: "failed" as const },
@@ -174,6 +200,20 @@ describe("buildAuditReportHtml", () => {
       expect(summary).not.toContain("Kayıtlı sorun yok");
       expect(summary).not.toContain("Site puanı");
     }
+  });
+
+  /*
+   * Installed 0.8.0: report 064ef45c came from failed audit 61a977c4, and
+   * its list row and summary read like a finished audit.
+   */
+  it("says a report from a failed audit is partial where it is listed", () => {
+    const { title, summary } = buildAuditReportHtml(
+      input({ status: "failed" }),
+    );
+    expect(title).toContain("(eksik)");
+    expect(summary).toMatch(/^Eksik rapor: Denetim hata verip durdu\./);
+
+    expect(buildAuditReportHtml(input({})).title).not.toContain("(eksik)");
   });
 
   it("gives two audits sharing an id prefix, of one site on one day, different titles", () => {

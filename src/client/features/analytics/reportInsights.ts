@@ -214,6 +214,18 @@ export function availableChips(
 ): ChipState[] {
   return CHIP_DEFS.flatMap((def) => {
     const rule = def.build(metrics, rows);
+    /*
+     * A chip that holds every row narrows nothing: "Dönüşümü olan 45" over a
+     * table of 45 rows was noise.
+     */
+    if (
+      rule &&
+      !rule.disabledReason &&
+      rows.length > 0 &&
+      rows.every(rule.test)
+    ) {
+      return [];
+    }
     return rule
       ? [
           {

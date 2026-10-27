@@ -719,7 +719,7 @@ export const frAudit: Catalog = {
     "La page de départ n'a pas pu être mesurée ; affichage de la page mesurée la moins profonde : {url}",
   "Bu denetimde başlangıç sayfası için PageSpeed ölçümü yok. Denetimi hız ölçümü açık başlatırsanız gerçek kullanıcı verisi (CrUX) ve laboratuvar sonuçları burada görünür.":
     "Cet audit n'a pas de mesure PageSpeed pour la page de départ. Lancez l'audit avec les tests de vitesse activés : les données de vrais utilisateurs (CrUX) et les résultats de laboratoire apparaîtront ici.",
-  "Temel Web Verileri": "Signaux Web essentiels",
+  "Temel Web Verileri": "Core Web Vitals",
   "Gerçek kullanıcı verisi Chrome Kullanıcı Deneyimi Raporu'ndan (CrUX, son 28 gün, mobil); laboratuvar sütunu PageSpeed Insights'ın tek ölçümü.":
     "Les données de vrais utilisateurs proviennent du Chrome User Experience Report (CrUX, 28 derniers jours, mobile) ; la colonne laboratoire correspond à une seule exécution de PageSpeed Insights.",
   Metrik: "Métrique",
@@ -897,7 +897,7 @@ export const frAudit: Catalog = {
   "Hız ölçümü (PageSpeed) bu denetimde sonuç vermedi; nedeni Hız sekmesinde.":
     "Le test de vitesse (PageSpeed) n'a renvoyé aucun résultat dans cet audit ; l'onglet Vitesse en donne la raison.",
   "Sayfalar Google'da henüz kontrol edilmedi; Dizin durumu sekmesinden sorabilirsiniz.":
-    "Les pages n'ont pas encore été vérifiées auprès de Google ; vous pouvez le demander depuis l'onglet État de l'index.",
+    "Les pages n'ont pas encore été vérifiées auprès de Google ; vous pouvez le demander depuis l'onglet État de l'indexation.",
   "Karşılaştırma için bağlı bir Google Analytics mülkü ve sayfalarda bir G- etiketi gerekir.":
     "Cette comparaison nécessite une propriété Google Analytics connectée et une balise G- sur les pages.",
   "Site hakkındaki bilginin bir kısmı (sertifika, alan adı kaydı, DNS) bu denetimde okunamadı.":
@@ -1008,7 +1008,7 @@ export const frAudit: Catalog = {
   "PageSpeed ölçümü bu denetimde sonuç vermedi: {error} Gerçek kullanıcı verisi (CrUX) ölçülmedi.":
     "PageSpeed n'a renvoyé aucun résultat dans cet audit : {error} Les données de vrais utilisateurs (CrUX) n'ont pas été mesurées.",
   "<strong>Laboratuvar ve gerçek kullanıcı verisi.</strong> Buradaki rakamlar Lighthouse'un laboratuvar ölçümüdür: tek bir sanal cihazda, kontrollü ağ ve işlemci koşulunda yapılır. Gerçek ziyaretçilerden toplanan alan verisi (Chrome Kullanıcı Deneyimi Raporu, CrUX), PageSpeed ölçümü varsa Anlık veri bölümündeki Temel Web Verileri tablosundadır. İkisi farklı çıkabilir. Google, sıralama sistemlerinde alan verisini (CrUX) kullanır; ama iyi bir değer tek başına sıralama garantisi vermez, içeriğin ilgili olması öncelik taşır.":
-    "<strong>Données de laboratoire et données de vrais utilisateurs.</strong> Ces chiffres sont des mesures de laboratoire Lighthouse, réalisées sur un seul appareil simulé dans des conditions de réseau et de processeur contrôlées. Les données terrain recueillies auprès de vrais visiteurs (Chrome User Experience Report, CrUX) figurent dans le tableau des Signaux Web essentiels de la section Instantané quand PageSpeed a été mesuré. Les deux peuvent différer. Les systèmes de classement de Google utilisent les données terrain (CrUX), mais une bonne valeur seule ne garantit pas le classement ; un contenu pertinent passe avant tout.",
+    "<strong>Données de laboratoire et données de vrais utilisateurs.</strong> Ces chiffres sont des mesures de laboratoire Lighthouse, réalisées sur un seul appareil simulé dans des conditions de réseau et de processeur contrôlées. Les données terrain recueillies auprès de vrais visiteurs (Chrome User Experience Report, CrUX) figurent dans le tableau Core Web Vitals de la section Instantané quand PageSpeed a été mesuré. Les deux peuvent différer. Les systèmes de classement de Google utilisent les données terrain (CrUX), mais une bonne valeur seule ne garantit pas le classement ; un contenu pertinent passe avant tout.",
   "Puanlar, o sorun tek başına tamamen düzeltilirse site puanına eklenecek yaklaşık değerdir; değerler toplanmaz.":
     "Les points correspondent à peu près à ce que la correction complète de ce seul problème ajoute au score du site ; les valeurs ne s'additionnent pas.",
   Kapalı: "Désactivé",
@@ -1018,4 +1018,113 @@ export const frAudit: Catalog = {
   "Google dizin verisi": "Données d'index Google",
   "Kritik kontrol": "Vérifications critiques",
   "Temiz çıkan": "Sans constat",
+  // Audit failure and notice copy (auditFailureCopy.ts)
+  "Denetim {phase} aşamasında durdu.":
+    "L'audit s'est arrêté pendant la phase « {phase} ».",
+  "Denetim tamamlanamadan durdu.": "L'audit s'est arrêté avant la fin.",
+  "adres keşfi": "découverte des URL",
+  tarama: "exploration",
+  "hız ölçümü": "mesure de vitesse",
+  "sonuçların hazırlanması": "préparation des résultats",
+  "Bir adım zamanında bitmedi. Genelde site çok yavaş yanıt veriyor ya da bağlantıyı açık tutup bekletiyor.":
+    "Une étape n'a pas terminé à temps. En général, le site répond très lentement ou garde la connexion ouverte sans répondre.",
+  "Birkaç dakika sonra yeniden deneyin. Yine olursa daha az sayfayla başlatın.":
+    "Réessayez dans quelques minutes. Si cela se reproduit, lancez l'audit avec moins de pages.",
+  "Denetim, uygulamanın kullanabildiği belleğe sığmadı. Çok büyük sayfalar ya da çok fazla sayfa buna yol açar.":
+    "L'audit ne tenait pas dans la mémoire dont l'application dispose. Des pages très volumineuses ou trop nombreuses en sont la cause.",
+  "Daha az sayfayla yeniden başlatın.": "Relancez-le avec moins de pages.",
+  "Denetim, uygulamanın izin verdiği işlemci süresini aştı. Çok büyük ya da çok karmaşık sayfalar buna yol açar.":
+    "L'audit a dépassé le temps de processeur autorisé par l'application. Des pages très volumineuses ou complexes en sont la cause.",
+  "Sonuçlar uygulamanın veritabanına yazılırken hata oluştu. Disk dolu ya da veri dosyası başka bir programda kilitli olabilir.":
+    "Une erreur est survenue lors de l'écriture des résultats dans la base de données de l'application. Le disque est peut-être plein ou le fichier de données verrouillé par un autre programme.",
+  "Diskte boş yer olduğunu kontrol edin, uygulamayı yeniden başlatın ve denetimi yeniden başlatın.":
+    "Vérifiez qu'il reste de l'espace disque, redémarrez l'application, puis relancez l'audit.",
+  "Bir adımın sonucu uygulamanın saklayabildiği boyutu aştı. Çok büyük siteler buna yol açar.":
+    "Le résultat d'une étape dépassait la taille que l'application peut stocker. Les très grands sites en sont la cause.",
+  "Denetimi yürüten uygulamanın iç düzeni hata verdi.":
+    "Le moteur interne d'audit de l'application a signalé une erreur.",
+  "Uygulamayı yeniden başlatın (tepsi menüsünde Yeniden başlat), sonra denetimi yeniden başlatın.":
+    "Redémarrez l'application (Redémarrer dans le menu de la zone de notification), puis relancez l'audit.",
+  "Denetim yarıda kaldı. Uygulama denetimin ortasında kapanmış ya da yeniden başlamış olabilir.":
+    "L'audit a été interrompu. L'application a peut-être été fermée ou redémarrée en cours de route.",
+  "Uygulamanın açık kaldığından emin olun ve denetimi yeniden başlatın.":
+    "Gardez l'application ouverte, puis relancez l'audit.",
+  "Kayıtlı Google ve PageSpeed anahtarlarını açan kurulum anahtarı denetimi yürüten bölüme ulaşmamış. Anahtarlarınız silinmedi.":
+    "La clé d'installation qui ouvre les clés Google et PageSpeed enregistrées n'est pas parvenue à la partie de l'application qui exécute les audits. Vos clés n'ont pas été supprimées.",
+  "Uygulamayı güncelleyin ya da yeniden başlatın, sonra denetimi yeniden başlatın.":
+    "Mettez à jour ou redémarrez l'application, puis relancez l'audit.",
+  "Denetim beklenmedik bir hatayla durdu.":
+    "L'audit s'est arrêté sur une erreur inattendue.",
+  "Denetimi yeniden başlatın. Tekrarlarsa Yardım'dan tanılama paketini indirip sorunu bildirin.":
+    "Relancez l'audit. Si cela continue, téléchargez le paquet de diagnostic depuis l'Aide et signalez le problème.",
+  "Sorun sitenizde değil, uygulamada.":
+    "Le problème vient de l'application, pas de votre site.",
+  "Büyük olasılıkla sorun sitenizin yavaş yanıt vermesinde; uygulamada bir arıza yok.":
+    "Votre site répond probablement lentement ; l'application fonctionne normalement.",
+  "Nedeni belirlenemedi.": "La cause n'a pas pu être déterminée.",
+  "{count} sayfa tarandı ve kaydedildi; aşağıdaki sonuçlar bu sayfalara dayanır.":
+    {
+      one: "{count} page a été explorée et enregistrée ; les résultats ci-dessous s'appuient sur elle.",
+      other:
+        "{count} pages ont été explorées et enregistrées ; les résultats ci-dessous s'appuient sur elles.",
+    },
+  "Kayıtlı PageSpeed anahtarı okunamadı; hız ölçümü anahtarsız yapıldı.":
+    "La clé PageSpeed enregistrée n'a pas pu être lue ; la mesure de vitesse s'est faite sans clé.",
+  "Tarama sonuçları etkilenmedi, ama hız ölçümü yalnızca ilk sayfalarla sınırlı kaldı. Uygulamayı güncelleyin ya da yeniden başlatın, sonra yeni bir denetim başlatın. Sürerse Ayarlar'dan PageSpeed anahtarını yeniden kaydedin.":
+    "Les résultats de l'exploration ne sont pas touchés, mais la mesure de vitesse s'est limitée aux premières pages. Mettez à jour ou redémarrez l'application, puis lancez un nouvel audit. Si cela continue, enregistrez de nouveau la clé PageSpeed dans les Paramètres.",
+  // Audit score standing: coverage, provisional score, tier caps
+  "Kısmi puan": "Score provisoire",
+  "Gri çubuklar kısmi puandır: o denetimde kontrollerin önemli bir kısmı ölçülemedi.":
+    "Les barres grises sont des scores provisoires : une grande partie des vérifications de cet audit n'a pas pu être mesurée.",
+  "{count} eksik denetim puansız olduğu için grafikte yok.": {
+    one: "{count} audit incomplet n'a pas de score et ne figure pas sur le graphique.",
+    other:
+      "{count} audits incomplets n'ont pas de score et ne figurent pas sur le graphique.",
+  },
+  "Kısmi puan — ölçüm kapsamı {percent}":
+    "Score provisoire — couverture des mesures {percent}",
+  "Kontrollerin önemli bir kısmı ölçülemediği için bu puan kesin değil; derece verilmedi.":
+    "Une grande partie des vérifications n'a pas pu être mesurée : ce score n'est pas définitif et ne reçoit pas d'appréciation.",
+  "Eksik denetim — puan verilmedi": "Audit incomplet — aucun score attribué",
+  "Sorun listesi tam olmadığı için puan hesaplanmadı. Aşağıdaki bulgular taranan sayfalar için geçerli; tam bir puan için denetimi yeniden çalıştırın.":
+    "La liste des problèmes est incomplète, aucun score n'a donc été calculé. Les constats ci-dessous valent pour les pages explorées ; relancez l'audit pour obtenir un score complet.",
+  kısmi: "provisoire",
+  "{category} ölçülmedi: {reason}": "{category} non mesuré : {reason}",
+  "{category} ölçülmedi.": "{category} non mesuré.",
+  "{category} kontrollerinin çoğu ölçülmedi: {reason}":
+    "{category} : la plupart des vérifications non mesurées : {reason}",
+  "{category} kontrollerinin çoğu ölçülmedi.":
+    "{category} : la plupart des vérifications non mesurées.",
+  "hız ölçümü kapalıydı": "la mesure de vitesse était désactivée",
+  "PageSpeed kotası doldu": "le quota PageSpeed était épuisé",
+  "PageSpeed anahtarı yok": "aucune clé PageSpeed",
+  "hız ölçümü yapılmadı": "aucune mesure de vitesse n'a été faite",
+  "hız ölçümleri başarısız oldu": "les mesures de vitesse ont échoué",
+  "Search Console'dan dizin verisi alınmadı":
+    "aucune donnée d'indexation lue dans la Search Console",
+  "Puan, ölçülen {count} kontrolün sonucuna göre.": {
+    one: "Score fondé sur la {count} vérification mesurée.",
+    other: "Score fondé sur les {count} vérifications mesurées.",
+  },
+  "{count} kontrol ölçülemedi.": {
+    one: "{count} vérification n'a pas pu être mesurée.",
+    other: "{count} vérifications n'ont pas pu être mesurées.",
+  },
+  "Her bulgu, önemine ve etkilediği sayfa oranına göre kendi kategorisinden puan düşer; site puanı yedi kategorinin ağırlıklı ortalamasıdır. Ölçülemeyen kontroller puanı ne artırır ne düşürür. Kontrollerin ağırlıklı kapsamı {coverage} değerinin altındaysa ya da Tarama, Dizine alma, İçerik veya Hız kategorisinde ölçülen kontrollerin oranı {heavy} değerinin altındaysa puan kısmidir ve derece verilmez. Kritik bir sorun varken puan en fazla {criticalCap}, {count} veya daha fazla uyarı varken en fazla {warningsCap} olur.":
+    "Chaque constat retire des points à sa catégorie selon sa gravité et la part des pages touchées ; le score du site est la moyenne pondérée des sept catégories. Les vérifications non mesurables ne l'augmentent ni ne le diminuent. Si la couverture pondérée est inférieure à {coverage}, ou si la part mesurée de l'exploration, de l'indexation, du contenu ou de la vitesse est inférieure à {heavy}, le score est provisoire et ne reçoit pas d'appréciation. Avec un problème critique, le score vaut au plus {criticalCap} ; avec {count} avertissements ou plus, au plus {warningsCap}.",
+  "Kritik sorun olduğu için puan en fazla {cap} olabilir. Önce kritik sorunlara bakın.":
+    "Avec un problème critique, le score vaut au plus {cap}. Commencez par les problèmes critiques.",
+  "{count} veya daha fazla uyarı olduğu için puan en fazla {cap} olabilir.":
+    "Avec {count} avertissements ou plus, le score vaut au plus {cap}.",
+  "Denetim {count} sayfayla sınırlıydı; sitede daha fazla sayfa olabilir.": {
+    one: "L'audit était limité à {count} page ; le site peut en compter davantage.",
+    other:
+      "L'audit était limité à {count} pages ; le site peut en compter davantage.",
+  },
+  "Bulunan adres: {found}, taranan: {crawled}":
+    "Adresses trouvées : {found}, explorées : {crawled}",
+  "Port: {actual} (ayarlanan: {configured})":
+    "Port : {actual} (configuré : {configured})",
+  "seowatcher bu sefer {actual} numarasında çalışıyor çünkü {configured} başka bir program tarafından kullanılıyor (ör. eski bir Docker kopyası). Google bağlantısı {configured} için ayarlandı; o programı kapatıp seowatcher'ı yeniden başlatın.":
+    "seowatcher tourne cette fois sur {actual}, car un autre programme utilise {configured} (par exemple une ancienne copie Docker). La connexion Google est configurée pour {configured} ; fermez ce programme et redémarrez seowatcher.",
 };

@@ -1,4 +1,7 @@
 import { t } from "@/shared/i18n";
+import * as React from "react";
+import { ChevronDown, SlidersHorizontal } from "lucide-react";
+import type { CompareMode } from "@/client/features/search-performance/searchTabs";
 import {
   DEVICE_LABELS,
   isDevice,
@@ -29,7 +32,7 @@ const DEVICE_OPTIONS = GSC_DEVICES.map((value) => ({
   label: DEVICE_LABELS[value],
 }));
 
-export const TYPE_LABELS: Record<SearchPerformanceType, string> = {
+const TYPE_LABELS: Record<SearchPerformanceType, string> = {
   web: "Web",
   image: "Görsel",
   video: "Video",
@@ -47,16 +50,28 @@ function isSearchType(value: string): value is SearchPerformanceType {
 // Sentinel for "no filter" in the selects; never sent to the server.
 const ALL = "ALL";
 
+const COMPARE_LABEL: Record<CompareMode, string> = {
+  previous: "Önceki dönemle",
+  yoy: "Geçen yılla",
+  none: "Karşılaştırma yok",
+};
+
 function isDateRange(value: string): value is SearchPerformanceDateRange {
   return SEARCH_PERFORMANCE_RANGES.some((option) => option === value);
 }
 
-/** The device, country and date-range selects beside the tabs. */
+/**
+ * The search type, device, country, date-range and comparison selects. On a
+ * phone five stacked selects pushed the numbers below the fold, so there
+ * they fold behind one "Filters (Web · All devices · ...)" button that says
+ * what is applied.
+ */
 export function SearchFilters({
   range,
   device,
   country,
   searchType,
+  compare,
   countries,
   onViewChange,
 }: {
@@ -64,89 +79,139 @@ export function SearchFilters({
   device?: SearchPerformanceDevice;
   country?: string;
   searchType: SearchPerformanceType;
+  compare: CompareMode;
   countries: { key: string }[];
   onViewChange: (next: {
     range?: SearchPerformanceDateRange;
     device?: SearchPerformanceDevice;
     country?: string;
     type?: SearchPerformanceType;
+    cmp?: CompareMode;
   }) => void;
 }) {
+  const [open, setOpen] = React.useState(false);
+  const panelId = React.useId();
+  const summary = [
+    t(TYPE_LABELS[searchType]),
+    device ? t(DEVICE_LABELS[device]) : t("Tüm cihazlar"),
+    country ? formatCountry(country) : t("Tüm ülkeler"),
+    t(RANGE_LABELS[range]),
+    t(COMPARE_LABEL[compare]),
+  ].join(" · ");
   return (
-    <>
-      <select
-        className="select select-bordered select-sm w-32"
-        value={searchType}
-        onChange={(event) => {
-          if (isSearchType(event.target.value)) {
-            // Web is the default, so it leaves the URL instead of sitting in it.
+    <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+      <button
+        type="button"
+        className="btn btn-sm min-h-11 justify-start gap-2 sm:hidden"
+        aria-expanded={open}
+        aria-controls={panelId}
+        onClick={() => setOpen((v) => !v)}
+      >
+        <SlidersHorizontal className="size-4 shrink-0" aria-hidden />
+        <span className="min-w-0 flex-1 truncate text-left font-normal">
+          <span className="font-medium">{t("Filtreler")}</span>{" "}
+          <span className="text-muted">({summary})</span>
+        </span>
+        <ChevronDown
+          className={`size-4 shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
+          aria-hidden
+        />
+      </button>
+      <div
+        id={panelId}
+        className={`${open ? "grid" : "hidden"} grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center`}
+      >
+        <select
+          className="select select-sm w-full sm:w-32"
+          value={searchType}
+          onChange={(event) => {
+            if (isSearchType(event.target.value)) {
+              // Web is the default, so it leaves the URL instead of sitting in it.
+              onViewChange({
+                type:
+                  event.target.value === "web" ? undefined : event.target.value,
+              });
+            }
+          }}
+          aria-label={t("Arama türü")}
+        >
+          {TYPE_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {t(option.label)}
+            </option>
+          ))}
+        </select>
+        <select
+          className="select select-sm w-full sm:w-36"
+          value={device ?? ALL}
+          onChange={(event) =>
             onViewChange({
-              type:
-                event.target.value === "web" ? undefined : event.target.value,
-            });
+              device: isDevice(event.target.value)
+                ? event.target.value
+                : undefined,
+            })
           }
-        }}
-        aria-label={t("Arama türü")}
-      >
-        {TYPE_OPTIONS.map((option) => (
-          <option key={option.value} value={option.value}>
-            {t(option.label)}
-          </option>
-        ))}
-      </select>
-      <select
-        className="select select-bordered select-sm w-36"
-        value={device ?? ALL}
-        onChange={(event) =>
-          onViewChange({
-            device: isDevice(event.target.value)
-              ? event.target.value
-              : undefined,
-          })
-        }
-        aria-label={t("Cihaz filtresi")}
-      >
-        <option value={ALL}>{t("Tüm cihazlar")}</option>
-        {DEVICE_OPTIONS.map((option) => (
-          <option key={option.value} value={option.value}>
-            {t(option.label)}
-          </option>
-        ))}
-      </select>
-      <select
-        className="select select-bordered select-sm w-36"
-        value={country ?? ALL}
-        onChange={(event) =>
-          onViewChange({
-            country:
-              event.target.value === ALL ? undefined : event.target.value,
-          })
-        }
-        aria-label={t("Ülke filtresi")}
-      >
-        <option value={ALL}>{t("Tüm ülkeler")}</option>
-        {countries.map((row) => (
-          <option key={row.key} value={row.key}>
-            {formatCountry(row.key)}
-          </option>
-        ))}
-      </select>
-      <select
-        className="select select-bordered select-sm w-36"
-        value={range}
-        onChange={(event) => {
-          if (isDateRange(event.target.value)) {
-            onViewChange({ range: event.target.value });
+          aria-label={t("Cihaz filtresi")}
+        >
+          <option value={ALL}>{t("Tüm cihazlar")}</option>
+          {DEVICE_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {t(option.label)}
+            </option>
+          ))}
+        </select>
+        <select
+          className="select select-sm w-full sm:w-36"
+          value={country ?? ALL}
+          onChange={(event) =>
+            onViewChange({
+              country:
+                event.target.value === ALL ? undefined : event.target.value,
+            })
           }
-        }}
-        aria-label={t("Tarih aralığı")}
-      >
-        {RANGE_OPTIONS.map((option) => (
-          <option key={option.value} value={option.value}>
-            {t(option.label)}
-          </option>
-        ))}
-      </select>
-    </>
+          aria-label={t("Ülke filtresi")}
+        >
+          <option value={ALL}>{t("Tüm ülkeler")}</option>
+          {countries.map((row) => (
+            <option key={row.key} value={row.key}>
+              {formatCountry(row.key)}
+            </option>
+          ))}
+        </select>
+        <select
+          className="select select-sm w-full sm:w-36"
+          value={range}
+          onChange={(event) => {
+            if (isDateRange(event.target.value)) {
+              onViewChange({ range: event.target.value });
+            }
+          }}
+          aria-label={t("Tarih aralığı")}
+        >
+          {RANGE_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {t(option.label)}
+            </option>
+          ))}
+        </select>
+        <select
+          className="select select-sm col-span-2 w-full sm:w-44"
+          value={compare}
+          aria-label={t("Karşılaştırma")}
+          onChange={(event) => {
+            const next = event.target.value;
+            if (next === "previous" || next === "yoy" || next === "none") {
+              onViewChange({ cmp: next === "previous" ? undefined : next });
+            }
+          }}
+        >
+          {(["previous", "yoy", "none"] as const).map((mode) => (
+            <option key={mode} value={mode}>
+              {t(COMPARE_LABEL[mode])}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
   );
 }

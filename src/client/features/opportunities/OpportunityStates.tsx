@@ -65,7 +65,7 @@ export function Intro({ collapsedByDefault }: { collapsedByDefault: boolean }) {
       {open ? (
         <p id="opportunities-intro" className="mt-2 text-sm text-muted">
           {t(
-            "Google'ın sayfanızı gösterdiği ama az tıklandığı ya da birkaç basamak yükselince çok daha fazla ziyaretçi getirecek sayfaları burada topluyoruz. Bir satıra tıklayınca nedenini ve ne yapmanız gerektiğini görürsünüz.",
+            "Her sayfa için tek bir soru: ayda kaç tıklama daha getirebilir ve bunun için ne yapmalı? Tahmin, sitenizin kendi tıklama oranlarından yapılır. Kazancı olmayan sayfalar listede yer almaz. Bir satıra tıklayınca hangi aramaların bu kazancı getirdiğini görürsünüz.",
           )}
         </p>
       ) : null}
@@ -74,18 +74,17 @@ export function Intro({ collapsedByDefault }: { collapsedByDefault: boolean }) {
 }
 
 /**
- * This screen needs both Search Console and Analytics, so "not connected" is
- * the expected first state rather than a failure. The server reports only the
- * first missing source, so the copy names both and does not guess.
+ * The estimate needs Search Console; Analytics only adds a label beside it,
+ * so "not connected" names the one source that is actually required.
  */
 export function NotReady({ projectId }: { projectId: string }) {
   return (
     <div className="rounded-box border border-base-300 bg-base-100">
       <EmptyState
         icon={Target}
-        title={t("Fırsatlar için Search Console ve Analytics gerekir")}
+        title={t("Fırsatlar için Search Console gerekir")}
         description={t(
-          "Sıralamalar Search Console'dan, sayfaların kazandırdığı Analytics'ten gelir. İkisini de bağlayınca fırsatlar puanlanır.",
+          "Tahminler Search Console'daki aramalardan hesaplanır. Analytics'i de bağlarsanız hangi sayfaların dönüşüm getirdiği yanında görünür.",
         )}
         action={
           <Link
@@ -102,21 +101,18 @@ export function NotReady({ projectId }: { projectId: string }) {
 }
 
 /**
- * Nothing scored — and which of the two reasons it was decides what to do
- * next, so the screen has to say which.
- *
- * The old copy offered both at once ("ya hepsi ilk üçte, ya da henüz kimse
- * görmüyor") and neither is true when Search Console returned no pages at
- * all for the period, which is exactly the state a fresh property is in.
- * It also never named the period, so "no pages" read as a verdict on the
- * site rather than on twenty-eight days of it.
+ * Nothing to gain -- and which of the reasons it was decides what to do next,
+ * so the screen says which, and names the period it is about.
  */
 export function NoOpportunities({
   dateRange,
   pagesConsidered,
+  curveInsufficient,
 }: {
   dateRange: { startDate: string; endDate: string };
   pagesConsidered: number;
+  /** The site has too few queries per position band for any estimate. */
+  curveInsufficient: boolean;
 }) {
   const period = {
     start: formatDate(dateRange.startDate),
@@ -136,13 +132,26 @@ export function NoOpportunities({
     );
   }
 
+  if (curveInsufficient) {
+    return (
+      <EmptyState
+        icon={Target}
+        title={t("Tahmin için veri henüz az")}
+        description={t(
+          "{start} – {end} aralığında sitenizin tıklama oranını sıraya göre ölçecek kadar arama yok. Dönemi 90 güne genişletmeyi deneyin.",
+          period,
+        )}
+      />
+    );
+  }
+
   return (
     <EmptyState
       icon={Target}
-      title={t("Bu dönemde fırsat çıkmadı")}
+      title={t("Bu dönemde kazanç beklenen sayfa yok")}
       description={t(
-        "{start} – {end} aralığında puanlanacak bir sayfa çıkmadı. Dönemi genişletmeyi deneyin.",
-        period,
+        "{start} – {end} aralığında {count} sayfanın hepsi ya zaten iyi sırada ve normal tıklanıyor ya da tahmin için çok az gösterim aldı.",
+        { ...period, count: pagesConsidered },
       )}
     />
   );

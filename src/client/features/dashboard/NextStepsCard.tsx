@@ -9,8 +9,10 @@ import {
 } from "lucide-react";
 import { formatCount } from "@/shared/format";
 import { formatRelativeTime, parseTimestamp } from "@/client/lib/format";
+import { describeAuditFailure } from "@/client/features/audit/results/auditFailureCopy";
 import { t } from "@/shared/i18n";
-import { getReadinessScore } from "./readinessScore";
+import { setupVerdict, type SetupSignals } from "@/shared/projectSetup";
+import { SETUP_LABELS } from "@/client/features/projects/projectSetupQuery";
 import { GoogleSetupBanner } from "./GoogleSetupBanner";
 
 /**
@@ -46,17 +48,14 @@ type Step = {
 export function NextStepsCard({
   projectId,
   gscConnected,
-  ga4Connected = false,
-  hasProjectContext = false,
-  agentConnected = false,
+  setup,
   googleMissing = false,
   audit,
 }: {
   projectId: string;
   gscConnected: boolean;
-  ga4Connected?: boolean;
-  hasProjectContext?: boolean;
-  agentConnected?: boolean;
+  /** The shared setup checklist (shared/projectSetup); undefined while it loads. */
+  setup?: SetupSignals;
   /**
    * The Google access key is not entered yet. The setup action inside this
    * panel handles it, and Search Console cannot be connected before it.
@@ -66,6 +65,8 @@ export function NextStepsCard({
     auditId: string;
     status: "running" | "completed" | "failed";
     startedAt: string;
+    errorCode?: string | null;
+    failedPhase?: string | null;
     severityTotals: { critical: number; warning: number; info: number };
   } | null;
 }) {
@@ -75,92 +76,58 @@ export function NextStepsCard({
     googleMissing,
     audit,
   }).slice(0, SHOWN);
-  const auditCompleted = audit?.status === "completed";
-  const ageMs = audit ? Date.now() - parseTimestamp(audit.startedAt) : NaN;
-  const auditFresh =
-    auditCompleted &&
-    Number.isFinite(ageMs) &&
-    ageMs >= 0 &&
-    ageMs <= STALE_AFTER_DAYS * 86_400_000;
-  const readiness = getReadinessScore({
-    gscConnected,
-    ga4Connected,
-    auditCompleted,
-    auditFresh,
-    hasProjectContext,
-    agentConnected,
-  });
-
+  const verdict = setup ? setupVerdict(setup) : null;
   return (
     <section className="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
+      {/*
+       * The setup verdict is one line, not a 0-100 ring: it is a checklist,
+       * and it was the biggest number on the dashboard while saying nothing
+       * about the site. Same items and count as Proje bilgisi.
+       */}
       <div className="border-b border-base-300 px-5 py-4">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-          <div
-            role="progressbar"
-            aria-label={t("Hazırlık puanı")}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={readiness.score}
-            className="relative size-14 shrink-0"
-          >
-            <svg viewBox="0 0 56 56" className="-rotate-90" aria-hidden>
-              <circle
-                cx="28"
-                cy="28"
-                r="23"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                className="text-base-300"
-              />
-              <circle
-                cx="28"
-                cy="28"
-                r="23"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeDasharray={`${(readiness.score / 100) * 144.5} 144.5`}
-                className="text-primary transition-[stroke-dasharray] duration-300 ease-out"
-              />
-            </svg>
-            <span className="absolute inset-0 flex items-center justify-center text-sm font-semibold tabular-nums">
-              {formatCount(readiness.score)}
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+          <h2 className="text-base font-semibold leading-tight">
+            {t("Sıradaki adımlar")}
+          </h2>
+          {verdict ? (
+            <span
+              className={`badge badge-sm tabular-nums ${
+                verdict.complete
+                  ? "border-success/30 bg-success/10 text-[var(--ink-success)]"
+                  : "badge-ghost"
+              }`}
+            >
+              {verdict.complete ? (
+                <CheckCircle2 aria-hidden className="size-3" />
+              ) : null}
+              {verdict.complete
+                ? t("Kurulum tamam")
+                : t("Kurulum {done} / {total}", {
+                    done: formatCount(verdict.done),
+                    total: formatCount(verdict.total),
+                  })}
             </span>
-          </div>
-
-          <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-              <h2 className="text-base font-semibold leading-tight">
-                {t("Sıradaki adımlar")}
-              </h2>
-              <span className="badge badge-ghost badge-sm tabular-nums">
-                {t("{completed} / {total} hazır", {
-                  completed: formatCount(readiness.completed),
-                  total: formatCount(readiness.total),
-                })}
-              </span>
-            </div>
-            <p className="mt-1 text-sm text-muted">
-              {t("En hızlı kazandıracak işten başlayın.")}
-            </p>
-          </div>
-
-          <div className="sm:max-w-44 sm:text-right">
-            <p className="text-xs font-medium text-muted">
-              {t("Hazırlık puanı")}
-            </p>
-            <p className="text-lg font-semibold tabular-nums">
-              {formatCount(readiness.score)} / 100
-            </p>
-          </div>
+          ) : null}
         </div>
-        <p className="mt-3 text-xs leading-relaxed text-subtle">
-          {t(
-            "Puan; Google bağlantıları, güncel denetim, proje bilgisi ve ajan kurulumunun hazır olup olmadığını gösterir. Arama sırası ya da SEO başarısı değildir.",
-          )}
+        <p className="mt-1 text-sm text-muted">
+          {t("En hızlı kazandıracak işten başlayın.")}
         </p>
+        {verdict && verdict.missing.length > 0 ? (
+          <p className="mt-2 text-xs text-muted">
+            {t("Kurulumda eksik: {items}.", {
+              items: verdict.missing
+                .map((item) => t(SETUP_LABELS[item]))
+                .join(", "),
+            })}{" "}
+            <Link
+              to="/p/$projectId/context"
+              params={{ projectId }}
+              className="link"
+            >
+              {t("Tamamla")}
+            </Link>
+          </p>
+        ) : null}
       </div>
 
       {googleMissing ? (
@@ -246,6 +213,8 @@ function buildSteps({
     auditId: string;
     status: "running" | "completed" | "failed";
     startedAt: string;
+    errorCode?: string | null;
+    failedPhase?: string | null;
     severityTotals: { critical: number; warning: number; info: number };
   } | null;
 }): Step[] {
@@ -291,7 +260,7 @@ function buildSteps({
       key: "retry-audit",
       icon: Radar,
       title: t("Denetimi yeniden başlatın"),
-      detail: t("Önceki denetim tamamlanamadı. Yeniden deneyin."),
+      detail: failedAuditDetail(audit),
       to: "/p/$projectId/audit",
       params,
       cta: t("Yeniden denetle"),
@@ -373,4 +342,16 @@ function buildSteps({
   }
 
   return steps;
+}
+
+/** The same reason-aware wording as the audit screen's banner. */
+function failedAuditDetail(audit: {
+  errorCode?: string | null;
+  failedPhase?: string | null;
+}): string {
+  if (!audit.errorCode) {
+    return t("Önceki denetim tamamlanamadı. Yeniden deneyin.");
+  }
+  const copy = describeAuditFailure(audit);
+  return `${t(copy.cause)} ${t(copy.side)} ${t(copy.action)}`;
 }

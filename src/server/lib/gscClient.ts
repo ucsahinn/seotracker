@@ -6,6 +6,7 @@ import {
 } from "@/server/lib/googleServiceAccountToken";
 import { GSC_OAUTH_PROVIDER_ID, GSC_SERVICE_ACCOUNT_SCOPE } from "@/shared/gsc";
 import { GscApiError, GscTokenError } from "./gscErrors";
+import { fetchWithRetry } from "./fetchRetry";
 import { t } from "@/shared/i18n";
 
 export { GscApiError, GscTokenError } from "./gscErrors";
@@ -77,6 +78,49 @@ export type GscSearchAnalyticsRow = {
   impressions: number;
   ctr: number;
   position: number;
+};
+
+/**
+ * One `searchAnalytics.query` response, parsed rather than cast.
+ *
+ * Field meanings, from developers.google.com/webmaster-tools/v1/searchanalytics/query:
+ * - `responseAggregationType`: "How the results were aggregated" -- `byPage`
+ *   or `byProperty`. Page and search-appearance tables come back by page,
+ *   which is why their sums never equal a property total.
+ * - `metadata.first_incomplete_date`: "The first date for which the data is
+ *   still being collected and processed". Populated "only when the request's
+ *   `dataState` is `all` and data is grouped by `date`, and the requested date
+ *   range contains incomplete data points". Pacific-time date.
+ */
+const searchAnalyticsRowSchema = z.object({
+  keys: z.array(z.string()).optional(),
+  clicks: z.number().catch(0),
+  impressions: z.number().catch(0),
+  ctr: z.number().catch(0),
+  // Discover and Google News report no position; 0 stands for "absent" in
+  // the row type the rest of the app already reads.
+  position: z.number().optional().default(0),
+});
+const searchAnalyticsResponseSchema = z.object({
+  rows: z.array(searchAnalyticsRowSchema).optional().default([]),
+  responseAggregationType: z.string().optional(),
+  metadata: z
+    .object({
+      first_incomplete_date: z
+        .string()
+        .regex(/^\d{4}-\d{2}-\d{2}$/)
+        .optional()
+        .catch(undefined),
+    })
+    .optional(),
+});
+
+type GscSearchAnalyticsPage = {
+  rows: GscSearchAnalyticsRow[];
+  /** "byPage", "byProperty" or "auto" as Google reported it; null when absent. */
+  aggregationType: string | null;
+  /** Pacific-time date; null when Google sent none (see the schema note). */
+  firstIncompleteDate: string | null;
 };
 
 export type GscDimensionFilter = {
@@ -222,17 +266,26 @@ export function createGscClient(opts: {
     const hasBody = init?.body !== undefined;
     let response: Response;
     try {
-      response = await fetch(url, {
-        method: init?.method ?? "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          ...(hasBody ? { "Content-Type": "application/json" } : {}),
+      // A dropped connection is retried (bounded) before it fails the call;
+      // after that it surfaces as UpstreamNetworkError, which the error
+      // middleware turns into "Google could not be reached" with the reason.
+      response = await fetchWithRetry(
+        url,
+        {
+          method: init?.method ?? "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            ...(hasBody ? { "Content-Type": "application/json" } : {}),
+          },
+          body: hasBody ? JSON.stringify(init?.body) : undefined,
         },
-        body: hasBody ? JSON.stringify(init?.body) : undefined,
-        // A stalled Google call must not hold a request or a bulk inspection
-        // run open indefinitely.
-        signal: AbortSignal.timeout(GSC_REQUEST_TIMEOUT_MS),
-      });
+        {
+          service: "Search Console",
+          // A stalled Google call must not hold a request or a bulk
+          // inspection run open indefinitely.
+          timeoutMs: GSC_REQUEST_TIMEOUT_MS,
+        },
+      );
     } catch (error) {
       if (error instanceof Error && error.name === "TimeoutError") {
         throw new GscApiError(
@@ -278,6 +331,27 @@ export function createGscClient(opts: {
         { method: "POST", body },
       );
       return data.rows ?? [];
+    },
+
+    /**
+     * The same call, keeping what the response says about itself: how it was
+     * aggregated and where Google's still-changing days begin.
+     */
+    async querySearchAnalyticsPage(
+      siteUrl: string,
+      body: GscSearchAnalyticsRequest,
+    ): Promise<GscSearchAnalyticsPage> {
+      const data = searchAnalyticsResponseSchema.parse(
+        await request<unknown>(
+          `${GSC_API_BASE}/sites/${encodeURIComponent(siteUrl)}/searchAnalytics/query`,
+          { method: "POST", body },
+        ),
+      );
+      return {
+        rows: data.rows,
+        aggregationType: data.responseAggregationType ?? null,
+        firstIncompleteDate: data.metadata?.first_incomplete_date ?? null,
+      };
     },
 
     /**

@@ -3,10 +3,10 @@ title: Help
 description: The setup status card, quick actions, common problems and the diagnostics package you send when you report a problem.
 screen: Yardım
 route: /support
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
-The app's interface comes in English and Turkish. This guide uses the English names; to switch, go to **Settings → Appearance → Language**.
+The app's interface comes in six languages: Turkish, English, German, French, Italian and Portuguese. This guide uses the English names; to switch, go to **Settings → Appearance → Language**.
 
 This is the first place to look when something goes wrong. The screen checks your setup, tells you what is missing and takes you to the right setting.
 
@@ -22,11 +22,13 @@ This is the first place to look when something goes wrong. The screen checks you
 - **Copy setup prompt**: copies the setup text you paste into your AI assistant (called an "agent" in the app).
 - **Agent setup**: goes to the assistant connection screen.
 
-**Your setup status**. The card checks four things: **Sign-in and access**, **Google sign-in**, **PageSpeed key** and **Database**. At the top it says "Everything looks good." or "N things need attention.". Below that you see the version line ("You're on vX, the latest." or "Version Y is out") and the time of the last check. Next to a row with a problem, a button appears that takes you to the right setting: **Open Settings** or **Enter key**. **Copy summary** puts the card's text on the clipboard.
+**App health**. The card looks at this installation itself. A project's setup checklist is on the Dashboard and in Project context, not here. The card checks four things: **Sign-in and access**, **Google sign-in**, **PageSpeed key** and **Database**. At the top it says "Everything looks good." or "N things need attention.". Below that you see the version line ("You're on vX, the latest." or "Version Y is out") and the time of the last check. Next to a row with a problem, a button appears that takes you to the right setting: **Open Settings** or **Enter key**. **Copy summary** puts the card's text on the clipboard.
+
+**Port number warning.** If the Windows package opens on another port because a different program holds 3001 (for example an old Docker copy using 3001), a yellow strip appears at the top of every screen in the app: "seowatcher is running on 3002 this time because another program is using 3001 (for example an old Docker copy). Google sign-in is set up for 3001; close that program and restart seowatcher." The strip is there in case you missed the notification in the taskbar. Google sign-in goes back to address 3001 and fails if you opened the app on 3002. The close button on the right of the strip hides it for this tab. The same sentence is also written in the **App health** card. To fix it, close the program that holds 3001, then choose **Yeniden başlat** (Restart) in the tray menu. The app goes back to 3001 and the strip disappears. If no other program is using it, the app goes back to 3001 on the next start anyway.
 
 **Projects**. The status of each project's Search Console and Analytics connection. The **Open connections** button takes you to the project settings.
 
-**Common problems**. Five collapsible items: the page does not open, the port number is in use, the assistant cannot connect (401), the PageSpeed limit, and no query data. Each gives what to do and a link to the matching setting.
+**Common problems**. Six collapsible items: the page won't open or the app isn't running, the port is in use, my agent can't connect (401), speed measurement stops partway (429), no query data, and I changed a setting and the app doesn't see it. Each gives what to do and a link to the matching setting.
 
 **Google and system limits**. With **Show limits** you see the current state of Google's daily limits.
 

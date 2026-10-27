@@ -20,23 +20,31 @@ import { deNotifications } from "@/shared/i18n/de/notifications";
 import { deCatalog } from "@/shared/i18n/de/catalog";
 import { deAudit } from "@/shared/i18n/de/audit";
 import { deApp } from "@/shared/i18n/de/app";
+import { deSearch } from "@/shared/i18n/de/search";
+import { deCards } from "@/shared/i18n/de/cards";
+import { frCards } from "@/shared/i18n/fr/cards";
+import { itCards } from "@/shared/i18n/it/cards";
+import { ptCards } from "@/shared/i18n/pt/cards";
 import { frNotifications } from "@/shared/i18n/fr/notifications";
 import { frShared } from "@/shared/i18n/fr/shared";
 import { frCatalog } from "@/shared/i18n/fr/catalog";
 import { frAudit } from "@/shared/i18n/fr/audit";
 import { frApp } from "@/shared/i18n/fr/app";
+import { frSearch } from "@/shared/i18n/fr/search";
 import { itApp } from "@/shared/i18n/it/app";
 import { itAppContinued } from "@/shared/i18n/it/app-continued";
 import { itNotifications } from "@/shared/i18n/it/notifications";
 import { itShared } from "@/shared/i18n/it/shared";
 import { itCatalog } from "@/shared/i18n/it/catalog";
 import { itCatalogContinued } from "@/shared/i18n/it/catalog-continued";
+import { itSearch } from "@/shared/i18n/it/search";
 import { ptNotifications } from "@/shared/i18n/pt/notifications";
 import { ptShared } from "@/shared/i18n/pt/shared";
 import { ptApp } from "@/shared/i18n/pt/app";
 import { ptAppContinued } from "@/shared/i18n/pt/app-continued";
 import { ptCatalog } from "@/shared/i18n/pt/catalog";
 import { ptCatalogContinued } from "@/shared/i18n/pt/catalog-continued";
+import { ptSearch } from "@/shared/i18n/pt/search";
 
 export const LOCALES = ["tr", "en", "de", "fr", "it", "pt"] as const;
 export type Locale = (typeof LOCALES)[number];
@@ -51,6 +59,7 @@ function isLocale(value: string): value is Locale {
 const catalogs: Partial<Record<Locale, Catalog>> = {
   en,
   de: {
+    ...deCards,
     ...deShared,
     ...deSettings,
     ...deSettingsContinued,
@@ -58,29 +67,36 @@ const catalogs: Partial<Record<Locale, Catalog>> = {
     ...deCatalog,
     ...deAudit,
     ...deApp,
+    ...deSearch,
   },
   fr: {
+    ...frCards,
     ...frShared,
     ...frNotifications,
     ...frCatalog,
     ...frAudit,
     ...frApp,
+    ...frSearch,
   },
   it: {
+    ...itCards,
     ...itShared,
     ...itApp,
     ...itAppContinued,
     ...itNotifications,
     ...itCatalog,
     ...itCatalogContinued,
+    ...itSearch,
   },
   pt: {
+    ...ptCards,
     ...ptShared,
     ...ptNotifications,
     ...ptApp,
     ...ptAppContinued,
     ...ptCatalog,
     ...ptCatalogContinued,
+    ...ptSearch,
   },
 };
 

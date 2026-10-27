@@ -65,3 +65,46 @@ export function gscHistoryWindow(
     endDate: end.toISOString().slice(0, 10),
   };
 }
+
+/**
+ * Search Console's calendar. Every date the Search Analytics API accepts and
+ * returns is a day in `America/Los_Angeles`; its response `metadata` says so
+ * in as many words ("All dates and times provided in this object are in the
+ * America/Los_Angeles time zone",
+ * developers.google.com/webmaster-tools/v1/searchanalytics/query).
+ */
+export const GSC_TIME_ZONE = "America/Los_Angeles";
+
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
+/** `YYYY-MM-DD` shifted by whole days, stepped in UTC so DST cannot skip one. */
+export function addIsoDays(date: string, days: number): string {
+  const ms = Date.parse(`${date}T00:00:00Z`) + days * ONE_DAY_MS;
+  return new Date(ms).toISOString().slice(0, 10);
+}
+
+/** Inclusive day count of [startDate, endDate]; 0 when end precedes start. */
+export function isoDaysInclusive(startDate: string, endDate: string): number {
+  const span =
+    (Date.parse(`${endDate}T00:00:00Z`) -
+      Date.parse(`${startDate}T00:00:00Z`)) /
+    ONE_DAY_MS;
+  return Number.isFinite(span) && span >= 0 ? Math.round(span) + 1 : 0;
+}
+
+/**
+ * Today's date on Search Console's calendar.
+ *
+ * Between UTC midnight and Pacific midnight (seven or eight hours a day) the
+ * UTC date is a day ahead of Google's, so a window ended at "UTC today - 3"
+ * reached one day further than intended for a third of every day.
+ */
+export function gscToday(now: Date = new Date()): string {
+  // en-CA formats as YYYY-MM-DD.
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: GSC_TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(now);
+}

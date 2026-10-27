@@ -32,4 +32,6 @@ export const deApp: Catalog = {
     "Das Audit wurde wegen eines Fehlers in der App angehalten.",
   "Sorun sitenizde değil. Denetimi yeniden başlatın. Tekrarlarsa Yardım ekranından tanı paketini indirip sorun kaydına ekleyin. Hata kodu: {code}":
     "Ihre Website ist nicht das Problem. Starten Sie das Audit erneut. Passiert es wieder, laden Sie unter „Hilfe“ das Diagnosepaket herunter und hängen Sie es an ein Issue an. Fehlercode: {code}",
+  "Yanıtınız alındı": "Ihre Antwort wurde gespeichert",
+  "{count} yanıt": { one: "{count} Antwort", other: "{count} Antworten" },
 };

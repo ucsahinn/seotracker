@@ -3,52 +3,54 @@ title: Ajuda
 description: O cartão de estado da instalação, as ações rápidas, os problemas comuns e o pacote de diagnóstico que você envia ao relatar um problema.
 screen: Yardım
 route: /support
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
-A interface do aplicativo está disponível em turco e inglês. O idioma é escolhido em Ayarlar → Görünüm → Dil. Este guia mostra cada botão e cada nome de tela em turco, com o significado em português entre parênteses.
+A interface do aplicativo existe em seis idiomas: turco, inglês, alemão, francês, italiano e português. O idioma é escolhido em Configurações → Aparência → Idioma. Este guia mostra botões e telas com o nome que eles têm na interface em português. O menu da bandeja do Windows só existe em turco. Ali o nome em turco vem com o significado em português entre parênteses.
 
 Este é o primeiro lugar a olhar quando algo dá errado. A tela confere a sua instalação, diz o que está faltando e leva você à configuração certa.
 
 ## O que há na tela
 
-**Hızlı işlemler** (Ações rápidas). Os botões no alto:
+**Ações rápidas**. Os botões no alto:
 
-- **Durumu yeniden kontrol et** (Verificar o estado de novo): atualiza o cartão abaixo.
-- **Tanılama paketi indir** (Baixar o pacote de diagnóstico): baixa o arquivo que você envia ao relatar um problema. Ele não contém nenhum valor secreto.
-- **Kılavuzu aç** (Abrir o guia): abre o guia no seowatcher.io.
+- **Verificar o status novamente**: atualiza o cartão abaixo.
+- **Baixar pacote de diagnóstico**: baixa o arquivo que você envia ao relatar um problema. Ele não contém nenhum valor secreto.
+- **Abrir guia**: abre o guia no seowatcher.io.
 - **seowatcher.io**: abre o site do aplicativo, onde ficam a página de download e o guia.
-- **Sürüm notları** (Notas de versão): vai às notas de versão em Ayarlar (Configurações).
-- **Kurulum istemini kopyala** (Copiar o prompt de instalação): copia o texto de configuração que você cola no seu assistente de IA (chamado de "agente" no aplicativo).
-- **Ajan kurulumu** (Configuração do agente): vai à tela de conexão do assistente.
+- **Notas de versão**: vai às notas de versão em Configurações.
+- **Copiar prompt de configuração**: copia o texto de configuração que você cola no seu assistente de IA (chamado de "agente" no aplicativo).
+- **Configuração do agente**: vai à tela de conexão do assistente.
 
-**Kurulumunuzun durumu** (Estado da sua instalação). O cartão confere quatro coisas: **Giriş ve erişim** (Login e acesso), **Google girişi** (Login do Google), **PageSpeed anahtarı** (Chave do PageSpeed) e **Veritabanı** (Banco de dados). No alto, diz "Her şey yolunda." (Está tudo certo.) ou "N şey dikkat istiyor." (N coisas pedem atenção.). Abaixo você vê a linha da versão ("Sürüm X, güncel." (Versão X, atualizada.) ou "yeni sürüm Y var" (há uma versão nova, Y)) e a hora da última verificação. Ao lado de uma linha com problema, aparece um botão que leva à configuração certa: **Ayarları aç** (Abrir as configurações) ou **Anahtar gir** (Informar a chave). **Özeti kopyala** (Copiar o resumo) coloca o texto do cartão na área de transferência.
+**Status do app.** O cartão olha esta instalação em si. A lista de configuração de um projeto fica no Painel e nas Informações do projeto, não aqui. O cartão confere quatro coisas: **Login e acesso**, **Login no Google**, **Chave do PageSpeed** e **Banco de dados**. No alto, diz "Tudo parece bem." ou "N itens precisam de atenção.". Abaixo você vê a linha da versão ("Sürüm X, güncel." (Versão X, atualizada.) ou "yeni sürüm Y var" (há uma versão nova, Y)) e a hora da última verificação. Ao lado de uma linha com problema, aparece um botão que leva à configuração certa: **Abrir Configurações** ou **Inserir chave**. **Copiar resumo** coloca o texto do cartão na área de transferência.
 
-**Projeler** (Projetos). O estado da conexão de cada projeto com o Search Console e o Analytics. O botão **Bağlantıları aç** (Abrir as conexões) leva às configurações do projeto.
+**Aviso sobre o número da porta.** Se o pacote do Windows abrir em outro número de porta porque outro programa ocupa a 3001 (por exemplo, uma cópia antiga do Docker), aparece uma faixa amarela no alto de todas as telas do aplicativo: "Desta vez o seowatcher está rodando em 3002 porque outro programa está usando 3001 (por exemplo, uma cópia antiga do Docker). O login do Google está configurado para 3001; feche esse programa e reinicie o seowatcher." A faixa existe caso você tenha perdido a notificação da barra de tarefas. O login do Google volta ao endereço 3001 e falha se você abriu o aplicativo em 3002. O botão de fechar à direita da faixa a esconde nesta aba. A mesma frase também está escrita no cartão **Status do app**. Para resolver, feche o programa que ocupa a 3001 e escolha **Yeniden başlat** (Reiniciar) no menu da bandeja. O aplicativo volta para a 3001 e a faixa some. Se nenhum outro programa a usa, o aplicativo volta para a 3001 na próxima abertura de qualquer jeito.
 
-**Sık sorunlar** (Problemas comuns). Cinco títulos recolhíveis: a página não abre, o número da porta está em uso, o assistente não consegue se conectar (401), o limite do PageSpeed e a falta de dados de consultas. Cada um tem o que fazer e um link para a configuração correspondente.
+**Projetos**. O estado da conexão de cada projeto com o Search Console e o Analytics. O botão **Abrir conexões** leva às configurações do projeto.
 
-**Google ve sistem sınırları** (Limites do Google e do sistema). Com **Sınırları göster** (Mostrar os limites), você vê o estado atual dos limites diários do Google.
+**Problemas comuns.** Seis títulos recolhíveis: a página não abre ou o aplicativo não está em execução, a porta está em uso, o meu agente não consegue se conectar (401), a medição de velocidade para no meio (429), a falta de dados de consultas e mudei uma configuração e o app não reconhece. Cada um tem o que fazer e um link para a configuração correspondente.
 
-**Lista no fim.** Atalhos para os arquivos de registro e para o endereço de verificação de saúde (`/api/health`). No pacote Windows, os registros abrem com **Günlükleri aç** (Abrir os registros) no menu da barra de tarefas. No Docker, use o comando dado por **Komutu kopyala** (Copiar o comando).
+**Limites do Google e do sistema**. Com **Mostrar limites**, você vê o estado atual dos limites diários do Google.
+
+**Lista no fim.** Atalhos para os arquivos de registro e para o endereço de verificação de saúde (`/api/health`). No pacote Windows, os registros abrem com **Günlükleri aç** (Abrir os registros) no menu da barra de tarefas. No Docker, use o comando dado por **Copiar comando**.
 
 ## Como usar
 
 1. Se algo não funciona, abra esta tela primeiro e leia o aviso do cartão.
-2. Clique no botão ao lado do aviso. Ele leva você à configuração certa. Faça a mudança, volte e clique em **Durumu yeniden kontrol et**.
-3. Se o cartão disser "Her şey yolunda." mas o problema continuar, olhe os títulos de **Sık sorunlar**.
-4. Se ainda não resolver, clique em **Tanılama paketi indir** e anexe o arquivo ao relato no GitHub. No pacote Windows, **Sorunu bildir (GitHub)** (Relatar um problema no GitHub), no menu da barra de tarefas, faz o mesmo com um clique.
+2. Clique no botão ao lado do aviso. Ele leva você à configuração certa. Faça a mudança, volte e clique em **Verificar o status novamente**.
+3. Se o cartão disser "Tudo parece bem." mas o problema continuar, olhe os títulos de **Problemas comuns**.
+4. Se ainda não resolver, clique em **Baixar pacote de diagnóstico** e anexe o arquivo ao relato no GitHub. No pacote Windows, **Sorunu bildir (GitHub)** (Relatar um problema no GitHub), no menu da barra de tarefas, faz o mesmo com um clique.
 
 ## Perguntas frequentes
 
-**Por que a linha "Google girişi" está amarela?** Nenhuma chave de acesso do Google foi informada ainda. A linha fica amarela até que o Google seja conectado. Siga o guia para conectar ao Google.
+**Por que a linha "Login no Google" está amarela?** Nenhuma chave de acesso do Google foi informada ainda. A linha fica amarela até que o Google seja conectado. Siga o guia para conectar ao Google.
 
-**A linha "Giriş ve erişim" diz "parolasız tek kullanıcı" (um só usuário, sem senha).** Isso é normal. O aplicativo abre apenas a partir do seu próprio computador. Se você quiser abri-lo para fora, precisa colocar na frente o seu próprio login protegido por senha.
+**A linha "Login e acesso" diz "um só usuário, sem senha".** Isso é normal. O aplicativo abre apenas a partir do seu próprio computador. Se você quiser abri-lo para fora, precisa colocar na frente o seu próprio login protegido por senha.
 
 **O que há no pacote de diagnóstico?** A versão, as verificações da instalação, as contagens das tabelas e os resumos de etapa e erro das últimas 25 auditorias. Os erros do PageSpeed são resumidos sem os URLs das páginas. Segredos e senhas são excluídos; nomes de projetos, domínios e IDs de propriedades Google podem aparecer. Revise os arquivos antes de enviá-los.
 
 ## Limites
 
-A tela confere apenas a própria instalação. Para encontrar um problema no seu site, use Site denetimi (Auditoria do site). Para ver um problema do lado do Google, use a tela Dizin durumu (Status de indexação).
+A tela confere apenas a própria instalação. Para encontrar um problema no seu site, use Auditoria do site. Para ver um problema do lado do Google, use a tela Status de indexação.
 
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/support/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->

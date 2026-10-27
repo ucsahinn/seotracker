@@ -1,13 +1,10 @@
-import { z } from "zod";
 import { createGa4DataClient } from "@/server/lib/ga4Client";
 import { recordGa4Quota } from "@/server/features/quotas/ga4QuotaSnapshot";
 import {
-  Ga4AdminApiError,
-  Ga4DataApiError,
   Ga4MalformedResponseError,
   Ga4ReportError,
-  Ga4TokenError,
 } from "@/server/lib/ga4Errors";
+import { mapGa4ReportError } from "./mapGa4ReportError";
 import { Ga4ConnectionRepository } from "@/server/features/ga4/repositories/Ga4ConnectionRepository";
 import {
   buildGa4ReportRequest,
@@ -140,75 +137,6 @@ function normalizeOffset(value: number | undefined): number {
     );
   }
   return offset;
-}
-
-export function mapGa4ReportError(error: unknown): never {
-  if (error instanceof Ga4ReportError) throw error;
-  if (error instanceof Ga4TokenError) {
-    throw new Ga4ReportError(
-      "ga4_reconnect_required",
-      "The Google Analytics connection has expired or was revoked.",
-    );
-  }
-  if (error instanceof Ga4MalformedResponseError) {
-    throw new Ga4ReportError(
-      "ga4_malformed_response",
-      "Google Analytics returned an invalid report.",
-    );
-  }
-  if (error instanceof Ga4DataApiError && error.status === 400) {
-    throw new Ga4ReportError(
-      "ga4_report_incompatible",
-      "This report is not compatible with the selected Analytics property.",
-    );
-  }
-  if (error instanceof Ga4DataApiError || error instanceof Ga4AdminApiError) {
-    if (error.status === 401) {
-      throw new Ga4ReportError(
-        "ga4_reconnect_required",
-        "The Google Analytics connection has expired or was revoked.",
-      );
-    }
-    if (error.status === 403) {
-      if (
-        error instanceof Ga4DataApiError &&
-        error.upstreamReason === "SERVICE_DISABLED"
-      ) {
-        throw new Ga4ReportError(
-          "ga4_upstream_unavailable",
-          "The Google Analytics Data API is not enabled for this OAuth application.",
-        );
-      }
-      throw new Ga4ReportError(
-        "ga4_property_inaccessible",
-        "The connected Google account can no longer access this property.",
-      );
-    }
-    if (error.status === 404) {
-      throw new Ga4ReportError(
-        "ga4_property_inaccessible",
-        "The selected Google Analytics property is no longer available.",
-      );
-    }
-    if (error.status === 429) {
-      throw new Ga4ReportError(
-        "ga4_quota_exhausted",
-        "Google Analytics reporting quota is exhausted. Try again later.",
-        error instanceof Ga4DataApiError ? error.retryAfterSeconds : null,
-      );
-    }
-    throw new Ga4ReportError(
-      "ga4_upstream_unavailable",
-      "Google Analytics reporting is temporarily unavailable.",
-    );
-  }
-  if (error instanceof z.ZodError) {
-    throw new Ga4ReportError(
-      "ga4_malformed_response",
-      "Google Analytics returned an invalid report.",
-    );
-  }
-  throw error;
 }
 
 async function resolveReportPage(input: {

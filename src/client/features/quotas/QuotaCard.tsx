@@ -23,6 +23,7 @@ export function QuotaCard({
   kinds = "all",
   title,
   refreshable = true,
+  hideWhenUnknown = false,
 }: {
   projectId: string;
   kinds?: readonly QuotaKind[] | "all";
@@ -33,8 +34,25 @@ export function QuotaCard({
    * refresh buttons on one screen leave the reader asking which one counts.
    */
   refreshable?: boolean;
+  /**
+   * Render nothing while no meter has a figure. Under a report that just
+   * ran, "Bilinmiyor / Veri yok" contradicted the screen above it.
+   */
+  hideWhenUnknown?: boolean;
 }) {
   const query = useQuotaStatus(projectId, kinds);
+  if (
+    hideWhenUnknown &&
+    query.data &&
+    query.data.items.every(
+      (item) =>
+        item.state === "unknown" &&
+        item.used === null &&
+        item.remaining === undefined,
+    )
+  ) {
+    return null;
+  }
 
   return (
     <section className="rounded-box border border-[var(--hairline)] bg-base-100 p-4 shadow-[var(--shadow-raise)]">

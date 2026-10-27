@@ -13,6 +13,7 @@ import type {
   SearchPerformanceDevice,
   SearchPerformanceType,
 } from "@/types/schemas/search-performance";
+import { foldText } from "@/shared/searchInsights";
 import { useCannibalizationReport } from "@/client/features/search-performance/useCannibalizationReport";
 import type { getCannibalizationReport } from "@/serverFunctions/cannibalization";
 import { UrlCell } from "@/client/components/table/UrlCell";
@@ -125,11 +126,10 @@ export function CannibalizationTable({
     { queries: formatNumber(data.rows.length) },
   ).split("{impressions}");
 
-  const needle = search.trim().toLocaleLowerCase("tr");
+  // Folded like the other tables' search, so "ornek" finds "Örnek-Site".
+  const needle = foldText(search);
   const shown = needle
-    ? data.rows.filter((row) =>
-        row.query.toLocaleLowerCase("tr").includes(needle),
-      )
+    ? data.rows.filter((row) => foldText(row.query).includes(needle))
     : data.rows;
 
   return (
@@ -234,9 +234,14 @@ function QueryRow({
           className="hidden shrink-0 text-xs text-muted sm:inline"
           title={t("Google'ın tercih ettiği sayfa dışında kalan gösterim payı")}
         >
-          {t("{share} pay dışında", {
-            share: formatPercent(row.splitShare, 0),
-          })}
+          {row.competitors.length === 1
+            ? t("2. sayfa {share} gösterim alıyor", {
+                share: formatPercent(row.splitShare, 0),
+              })
+            : t("Diğer {count} sayfa {share} gösterim alıyor", {
+                count: row.competitors.length,
+                share: formatPercent(row.splitShare, 0),
+              })}
         </span>
         <span className="w-20 shrink-0 text-right text-xs text-muted">
           {t("{impressions} gösterim", {

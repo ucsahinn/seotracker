@@ -11,6 +11,14 @@ import {
   readLastmodStats,
 } from "./sitemap-xml";
 import { isSameOrigin, normalizeUrl } from "./url-utils";
+import { isTransientNetworkError } from "@/server/lib/fetchRetry";
+import {
+  describeFailedSitemaps,
+  failedSitemapEntry,
+  sitemapFailure,
+  type SitemapFailure,
+  type SitemapFailureReason,
+} from "./discovery-sitemap-failures";
 
 const SITEMAP_FETCH_TIMEOUT_MS = 15_000;
 // robots.txt is checkpointed as durable Workflow step state (~1MiB cap, shared
@@ -238,6 +246,10 @@ async function fetchSitemapDocumentWithRetry(
    * audit and left no trace an operator could see.
    */
   tooLarge?: boolean;
+  /** Why nothing was read from the document; absent when it was read. */
+  failure?: SitemapFailureReason;
+  /** HTTP status when `failure` is "status". */
+  failureStatus?: number;
   pageUrls: string[];
   timedOut: boolean;
   lastmod?: {
@@ -248,9 +260,7 @@ async function fetchSitemapDocumentWithRetry(
   };
 }> {
   const normalizedSitemapUrl = normalizeUrl(sitemapUrl);
-  if (!normalizedSitemapUrl) {
-    return { nestedSitemaps: [], pageUrls: [], timedOut: false };
-  }
+  if (!normalizedSitemapUrl) return sitemapFailure("off_site");
 
   let lastError: unknown = null;
 
@@ -265,17 +275,16 @@ async function fetchSitemapDocumentWithRetry(
         },
         checkedHosts,
       );
-      if (!response) {
-        return { nestedSitemaps: [], pageUrls: [], timedOut: false };
-      }
+      // Null: a redirect left the site, looped, or reached a private host.
+      if (!response) return sitemapFailure("off_site");
 
       const finalUrl = normalizeUrl(response.url, normalizedSitemapUrl);
       if (!finalUrl || !isSameOrigin(finalUrl, normalizedSitemapUrl)) {
-        return { nestedSitemaps: [], pageUrls: [], timedOut: false };
+        return sitemapFailure("off_site");
       }
 
       if (!response.ok) {
-        return { nestedSitemaps: [], pageUrls: [], timedOut: false };
+        return sitemapFailure("status", response.status);
       }
 
       const body = await readBodyCapped(response, MAX_SITEMAP_BYTES);
@@ -288,7 +297,7 @@ async function fetchSitemapDocumentWithRetry(
         };
       }
       if (!isProbablySitemapXml(response.headers.get("content-type"), body)) {
-        return { nestedSitemaps: [], pageUrls: [], timedOut: false };
+        return sitemapFailure("not_xml");
       }
 
       const parsed = xmlParser.parse(body) as unknown;
@@ -308,17 +317,15 @@ async function fetchSitemapDocumentWithRetry(
       };
     } catch (error) {
       lastError = error;
-      if (!isTimeoutError(error) || attempt === SITEMAP_RETRIES) {
+      // A dropped connection gets the same retry a timeout does.
+      const retryable = isTimeoutError(error) || isTransientNetworkError(error);
+      if (!retryable || attempt === SITEMAP_RETRIES) {
         break;
       }
     }
   }
 
-  return {
-    nestedSitemaps: [],
-    pageUrls: [],
-    timedOut: isTimeoutError(lastError),
-  };
+  return sitemapFailure(isTimeoutError(lastError) ? "timeout" : "network");
 }
 
 /**
@@ -360,6 +367,13 @@ export async function discoverUrls(
     oversizedCount: number;
     overfull: { url: string; urlCount: number }[];
     overfullCount: number;
+    /**
+     * Sitemap documents that were named (robots.txt, a sitemap index, or a
+     * /sitemap.xml that answered something other than 404/410) but yielded
+     * nothing, each with why. Capped at 5; `failedCount` is the total.
+     */
+    failed: SitemapFailure[];
+    failedCount: number;
     /**
      * Listed addresses on another host: Google ignores them unless that
      * host cross-submits the sitemap. Counted out of `listedUrlCount`.
@@ -403,6 +417,7 @@ export async function discoverUrls(
   let fetchedDocs = 0;
   let failedDocs = 0;
   const oversizedSitemaps: string[] = [];
+  const failedSitemaps: SitemapFailure[] = [];
   const overfullSitemaps: { url: string; urlCount: number }[] = [];
   const lastmod = {
     urls: 0,
@@ -469,6 +484,13 @@ export async function discoverUrls(
           if (result.timedOut) {
             timedOutDocs += 1;
           }
+          const failure = failedSitemapEntry(
+            normalizedUrl,
+            result,
+            origin,
+            robots.sitemapUrls,
+          );
+          if (failure) failedSitemaps.push(failure);
           return;
         }
         if (depth === MAX_SITEMAP_DEPTH) rootsWithEntries.add(normalizedUrl);
@@ -509,7 +531,7 @@ export async function discoverUrls(
 
   if (failedDocs > 0) {
     console.warn(
-      `Sitemap discovery completed with partial failures for ${origin}: fetched=${fetchedDocs}, failed=${failedDocs}, timedOut=${timedOutDocs}, discoveredUrls=${allUrls.size}`,
+      `Sitemap discovery completed with partial failures for ${origin}: fetched=${fetchedDocs}, failed=${failedDocs}, timedOut=${timedOutDocs}, discoveredUrls=${allUrls.size}; ${describeFailedSitemaps(failedSitemaps)}`,
     );
   }
 
@@ -534,6 +556,8 @@ export async function discoverUrls(
       oversizedCount: oversizedSitemaps.length,
       overfull: overfullSitemaps.slice(0, 5),
       overfullCount: overfullSitemaps.length,
+      failed: failedSitemaps.slice(0, 5),
+      failedCount: failedSitemaps.length,
       offHost: { count: offHostCount, sample: offHostSample },
       lastmod,
     },

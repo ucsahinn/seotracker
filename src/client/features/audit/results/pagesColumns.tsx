@@ -101,7 +101,12 @@ export function buildPagesColumns({
       header: ({ column }) => (
         <SortableHeader column={column} label={t("Durum")} />
       ),
-      cell: ({ getValue }) => <HttpStatusBadge code={getValue()} />,
+      cell: ({ getValue, row }) => (
+        <HttpStatusBadge
+          code={getValue()}
+          fetchClass={row.original.fetchClass}
+        />
+      ),
       sortingFn: nullableNumberSort,
     }),
     /*

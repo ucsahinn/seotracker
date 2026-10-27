@@ -69,6 +69,7 @@ export const createAuditReport = createServerFn({ method: "POST" })
       lighthouse: results.lighthouse,
       indexCoverage,
       maxPages: results.audit.config.maxPages,
+      urlsDiscovered: results.audit.urlsDiscovered,
       lighthouseMode: results.audit.config.lighthouseStrategy,
       lighthouseTotal: results.audit.lighthouseTotal,
       status: results.audit.status,

@@ -7,18 +7,18 @@ import { Modal } from "@/client/components/Modal";
 import { getSafeExternalUrl } from "@/client/components/table/url";
 import {
   explainRow,
-  KIND_COPY,
+  extraConversions,
+  monthlyImpressions,
   pathOf,
-  scoreWords,
+  valueText,
+  WORK_COPY,
+  workColor,
   type OpportunityRow,
 } from "@/client/features/opportunities/opportunityLogic";
-import {
-  formatDecimal,
-  formatNumber,
-  formatPercent,
-} from "@/client/lib/format";
+import { perMonth } from "@/shared/pageOpportunities";
+import { formatCount, formatDecimal, formatPercent } from "@/client/lib/format";
 
-function Stat({ label, value }: { label: string; value: string }) {
+function Fact({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-field bg-base-200 px-3 py-2">
       <dt className="text-xs text-muted">{label}</dt>
@@ -28,27 +28,30 @@ function Stat({ label, value }: { label: string; value: string }) {
 }
 
 /**
- * What a row means and what to do about it.
+ * What a row is worth, where it comes from, and what to do.
  *
- * The table says a page is an opportunity and shows six numbers; it never
- * says why, or what an afternoon on it would look like. Opening a row answers
- * both, and its buttons are the two things an operator does next: take the
- * address somewhere, or see which searches bring people to it.
+ * A page's position is an average over every search it showed for, so "move
+ * up" cannot be acted on without saying which search. The queries behind the
+ * estimate are the panel's centre: each with its position, its click-through
+ * against the one the estimate assumes, and its share of the gain.
  */
 export function OpportunityDetail({
   row,
+  days,
   projectId,
   onClose,
 }: {
   row: OpportunityRow;
+  days: number;
   projectId: string;
   onClose: () => void;
 }) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const [copied, setCopied] = useState(false);
-  const kind = KIND_COPY[row.kind];
-  const parts = scoreWords(row.scoreComponents);
+  const work = WORK_COPY[row.work];
   const safeUrl = getSafeExternalUrl(row.page);
+  const value = valueText(row);
+  const conversions = extraConversions(row);
 
   // Focus goes into the dialog and comes back to whatever opened it.
   useEffect(() => {
@@ -60,15 +63,24 @@ export function OpportunityDetail({
   }, []);
 
   return (
-    <Modal maxWidth="max-w-xl" onClose={onClose} labelledBy="opportunity-title">
+    <Modal
+      maxWidth="max-w-2xl"
+      onClose={onClose}
+      labelledBy="opportunity-title"
+    >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <span className="badge badge-sm border-base-300 bg-base-200 text-muted">
-            {t(kind.label)}
+          <span className="inline-flex items-center gap-1.5 text-xs text-muted">
+            <span
+              aria-hidden
+              className="inline-block size-2 rounded-full"
+              style={{ backgroundColor: workColor(row.work) }}
+            />
+            {t(work.label)}
           </span>
           <h2
             id="opportunity-title"
-            className="mt-2 break-all text-lg font-semibold"
+            className="mt-1 break-all text-lg font-semibold"
             title={row.page}
           >
             {pathOf(row.page)}
@@ -85,59 +97,100 @@ export function OpportunityDetail({
         </button>
       </div>
 
-      <p className="text-sm">{explainRow(row)}</p>
-
-      <dl className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        <Stat label={t("Sıra")} value={formatDecimal(row.position)} />
-        <Stat label={t("Gösterim")} value={formatNumber(row.impressions)} />
-        <Stat label={t("Tıklama")} value={formatNumber(row.clicks)} />
-        <Stat label={t("Tıklama oranı")} value={formatPercent(row.ctr)} />
-        {row.ga4 ? (
-          <Stat
-            label={t("Analytics oturumu")}
-            value={formatNumber(row.ga4.sessions)}
-          />
+      <div className="rounded-box bg-primary/8 px-4 py-3">
+        <p className="text-2xl font-semibold tabular-nums">
+          {t("+{gain} tıklama/ay", { gain: formatCount(row.gainPerMonth) })}
+        </p>
+        <p className="text-sm">{explainRow(row)}</p>
+        {row.capped ? (
+          <p className="mt-1 text-xs text-muted">
+            {t(
+              "Aramaların toplamı daha büyük; sayfanın tamamı hedef orana ulaşsa alacağı kadarla sınırlandı.",
+            )}
+          </p>
         ) : null}
+        {conversions !== null && conversions >= 0.5 ? (
+          <p className="mt-1 text-xs text-muted">
+            {t(
+              "Bugünkü dönüşüm oranıyla bu, ayda yaklaşık +{count} anahtar olay eder (tahmin).",
+              { count: formatDecimal(conversions, conversions < 10 ? 1 : 0) },
+            )}
+          </p>
+        ) : null}
+      </div>
+
+      <dl className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+        <Fact
+          label={t("Talep")}
+          value={t("ayda {count} gösterim", {
+            count: formatCount(monthlyImpressions(row, days)),
+          })}
+        />
+        <Fact
+          label={t("Değer (Analytics)")}
+          value={value ?? t("Analytics'te karşılığı yok")}
+        />
+        <Fact
+          label={t("Mesafe")}
+          value={t("{position}. sıra → hedef {target}", {
+            position: formatDecimal(row.position),
+            target: t(work.target),
+          })}
+        />
       </dl>
 
-      {parts ? (
-        <section aria-label={t("Puanın dökümü")} className="space-y-2">
-          <h3 className="text-sm font-medium">
-            {row.score === null
-              ? t("Puan nereden geliyor?")
-              : t("Puan {score} nereden geliyor?", {
-                  score: formatNumber(row.score),
-                })}
-          </h3>
-          <ul className="space-y-2">
-            {parts.map((part) => (
-              <li key={part.key} className="text-sm">
-                <div className="flex justify-between gap-3">
-                  <span>{part.label}</span>
-                  <span className="tabular-nums text-muted">
-                    {formatDecimal(part.points)} / {part.max}
-                  </span>
-                </div>
-                <span
-                  aria-hidden
-                  className="mt-1 block h-1.5 rounded-full bg-base-200"
-                >
-                  <span
-                    className="block h-full rounded-full bg-primary"
-                    style={{ width: `${(part.points / part.max) * 100}%` }}
-                  />
-                </span>
-                <span className="text-xs text-muted">{part.sentence}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
+      <section aria-labelledby="opportunity-queries" className="space-y-2">
+        <h3 id="opportunity-queries" className="text-sm font-medium">
+          {t("Hangi aramalar?")}
+        </h3>
+        <div className="overflow-x-auto">
+          <table className="table table-xs">
+            <thead>
+              <tr>
+                <th>{t("Arama")}</th>
+                <th className="text-right">{t("Sıra")}</th>
+                <th className="text-right">{t("Tıklama oranı")}</th>
+                <th className="text-right">{t("Kazanç/ay")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {row.queries.map((query) => (
+                <tr key={query.query}>
+                  <td className="max-w-56">
+                    <span className="block truncate" title={query.query}>
+                      {query.query}
+                    </span>
+                    <span className="block text-xs text-muted">
+                      {t(WORK_COPY[query.work].action)}
+                    </span>
+                  </td>
+                  <td className="text-right tabular-nums">
+                    {formatDecimal(query.position)}
+                  </td>
+                  <td className="text-right tabular-nums">
+                    {formatPercent(query.ctr)}
+                    <span className="block text-xs text-muted">
+                      {t("hedef {ctr}", {
+                        ctr: formatPercent(query.targetCtr),
+                      })}
+                    </span>
+                  </td>
+                  <td className="text-right font-medium tabular-nums">
+                    +{formatCount(perMonth(query.gain, days))}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
 
       <section aria-label={t("Ne yapmalı?")} className="space-y-2">
-        <h3 className="text-sm font-medium">{t("Ne yapmalı?")}</h3>
+        <h3 className="text-sm font-medium">
+          {t("Ne yapmalı? {action}", { action: t(work.action) })}
+        </h3>
         <ul className="space-y-1.5">
-          {kind.todo.map((item) => (
+          {work.todo.map((item) => (
             <li key={item} className="flex gap-2 text-sm">
               <Check
                 aria-hidden

@@ -780,4 +780,34 @@ export const enApp: Catalog = {
     "Your site is not the problem. Start the audit again. If it happens again, download the diagnostics bundle from Help and attach it to an issue. Error code: {code}",
   "Yanıtınız alındı": "Your response has been recorded",
   "{count} yanıt": { one: "{count} response", other: "{count} responses" },
+  // Cards and stats review (Opportunities, rankings, setup verdict).
+  "Güncel denetim": "Recent audit",
+  "Yapay zeka ajanı": "AI agent",
+  "Sitenizin son 7 gün içinde tamamlanmış bir denetimi var.":
+    "Your site has an audit completed in the last 7 days.",
+  "Son 7 günde bu sitenin tamamlanmış denetimi yok. Başka bir adresin denetimi sayılmaz.":
+    "No completed audit of this site in the last 7 days. An audit of another address does not count.",
+  Denetle: "Audit",
+  "Bir ajan bağlandı ve en az bir araç çağırdı.":
+    "An agent connected and called at least one tool.",
+  "Henüz hiçbir ajan bağlanmadı.": "No agent has connected yet.",
+  "öneri, sayılmaz": "advice, not counted",
+  "Önceki {days} güne göre:": "Against the previous {days} days:",
+  "{count} kelime yükseldi": "{count} keywords up",
+  "{count} kelime geriledi": "{count} keywords down",
+  // Cards and stats review (Opportunities, rankings, setup verdict).
+  "Son rapor": "Latest report",
+  "Son 7 günde": "In the last 7 days",
+  "yazılan ya da güncellenen rapor": "reports written or updated",
+  Toplam: "Total",
+  "{audit} denetim raporu · {skill} beceriyle · {template} şablonla":
+    "{audit} audit reports · {skill} by skill · {template} from templates",
+  "Denetim raporu": "Audit report",
+  "{count} tıklama / 28 gün": "{count} clicks / 28 days",
+  "Önceki 28 güne göre": "Against the previous 28 days",
+  "Arama verisi arşivde yok": "No search data in the archive",
+  "Son denetim {when}": "Last audit {when}",
+  "{start} – {end}": "{start} – {end}",
+  // Cards and stats review (Opportunities, rankings, setup verdict).
+  "{title} · {kind} · aç": "{title} · {kind} · open",
 };

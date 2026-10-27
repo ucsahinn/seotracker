@@ -133,11 +133,13 @@ const opportunityOutputSchema = analyticsEnvelopeSchema({
   rowCount: z.number(),
   totalCandidateRows: z.number(),
   rows: z.array(z.record(z.string(), z.unknown())),
-  scoring: looseObjectOutputSchema,
+  analytics: looseObjectOutputSchema,
+  totals: looseObjectOutputSchema,
+  method: looseObjectOutputSchema,
   coverage: looseObjectOutputSchema,
   truncated: looseObjectOutputSchema,
   warnings: z.array(z.string()),
-  reportMetadata: looseObjectOutputSchema,
+  reportMetadata: looseObjectOutputSchema.nullable().optional(),
   quota: looseObjectOutputSchema.nullable().optional(),
 });
 
@@ -436,7 +438,7 @@ export const getSearchOpportunitiesTool = {
   config: {
     title: "Get search opportunities",
     description:
-      "Join Search Console pages at ANY position with GA4 organic landing-page outcomes, then score every candidate by demand, business value and reachability; each row carries a kind: ctr_gap (click-through well below this site's median for that position, at any position), top (position 3 or better with a normal click-through), near_miss (positions 4–20), deep (beyond position 20); a page GA4 did not match keeps its score and takes the neutral middle for business value. Requires BOTH Search Console and Google Analytics — with Search Console alone, use get_search_console_performance and read the positions directly. Read-only.",
+      "Estimate how many more clicks per month each page could bring, from Search Console query x page rows and the site's own non-brand CTR curve (the same engine as the Search performance insights). Each query on a page gets a kind of work and a gain: snippet (page one, click-through below 70% of the site's CTR at that position; gain = reaching it), each other query moves ONE band up the site's CTR curve (the same rule as Search performance striking distance): page1 (6-10 -> the CTR at 4-5, 4-5 -> 2-3), page2 (11-20 -> page one, CTR at 6-10), deep (21+ -> page two, CTR at 11-20). A page's total is capped per group of its queries that share a position band: each group's non-brand impressions x the site CTR one band up (its own band in the top three) minus the group's clicks, summed (row.capped), so totals.gainPerMonth is an upper bound. Brand queries are excluded (confirmed brand terms, else ones suggested from the domain; method.brandSource says which). Rows are pages with a gain, sorted by gainPerMonth; each carries its top queries, the dominant work, and a GA4 value signal (converts / no_conversions / too_little_traffic) when Google Analytics is connected. Analytics is optional. Read-only.",
     inputSchema: opportunityInputSchema,
     outputSchema: opportunityOutputSchema,
     annotations: {
@@ -449,7 +451,7 @@ export const getSearchOpportunitiesTool = {
     try {
       const result = await SearchOpportunityService.getOpportunities(args);
       return mcpResponse({
-        text: `Search opportunities: ${result.rowCount} returned from ${result.totalCandidateRows} candidates. ${result.coverage.matchedRows} candidates matched GA4 landing pages.`,
+        text: `Search opportunities ${result.request.dateRange.startDate} to ${result.request.dateRange.endDate}: ${result.totalCandidateRows} page(s) with an estimated +${result.totals.gainPerMonth} clicks per month in total (${result.rowCount} returned); ${result.totals.noGainPages} page(s) have nothing to gain. Analytics: ${result.analytics.state}.`,
         meta: buildProjectMeta(context, args.projectId),
         structuredContent: result,
       });

@@ -88,8 +88,12 @@ function historyBlock(ctx: ReportContext): string {
   );
   // A first audit has no history: no heading over a sentence saying so.
   if (history.length < 2) return "";
+  // Failed and cut-short audits have no score and are not plotted; a
+  // provisional one is labelled so its number does not pass for a verdict.
   const data = history.map((point) => ({
-    label: formatDate(point.startedAt),
+    label: point.provisional
+      ? `${formatDate(point.startedAt)} (${t("kısmi")})`
+      : formatDate(point.startedAt),
     value: point.score,
   }));
   const partial = history.some((point) => point.partial)

@@ -3,7 +3,7 @@ title: Projects
 description: Creating a new project, choosing the site and country, renaming, managing Google connections, and archiving and restoring a project.
 screen: Projeler, Proje ayarları
 route: /projects, /p/{proje}/settings
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
 This guide covers creating a project, changing its settings and, if needed, archiving it. Each site is a project. Each project has its own Google connection, its own audits and its own reports.
@@ -12,7 +12,7 @@ This guide covers creating a project, changing its settings and, if needed, arch
 
 **Project switcher**. Click the project name at the top left to list your projects. At the bottom are **New project** and **Manage projects**. The gear icon next to it opens **Project settings**. When you have eight or more projects, a search box appears in the list.
 
-**Projects** page. Each row shows the project's name and its site. A project with no site says "No site added". The open project carries the **Active** label. Click a row and that project's settings open. Archived projects sit at the bottom in the **Archived** section. **Restore** brings them back.
+**Projects page.** Each row shows the project's name and site. A project with no site says "No site added". If you have more than one project, the open one carries an **Active** label. Below each row is a short summary of the project: the clicks of the last 28 days and the change against the previous 28 (with a small line), the time of the last audit ("Last audit 3 days ago" or "No audits yet"), and whether Search Console and Analytics are connected. A filled dot means connected, an empty dot means not connected. The click figure comes from the archive on this computer. If the archive has no search data, it says "No search data in the archive". Hover over the figure to see which dates it covers. Click the row to open the project. The **Settings** button on the right opens the project settings. For a project with no site, that button says **Add site**. Projects you archived sit at the bottom in the **Archived** section. **Restore** puts them back in the list.
 
 **New project window.** It has four fields:
 
@@ -56,4 +56,4 @@ This screen has no numbers. When a domain is saved, spaces and capital letters a
 
 There is no limit on the number of projects. Creating a project starts nothing. Data comes only once Google is connected. If you did not enter a domain, you type the address by hand when you start an audit.
 
-<!-- Kaynaklar: src/routes/_app/projects.tsx; src/routes/_app/index.tsx; src/client/features/projects/CreateProjectModal.tsx; src/client/features/projects/ProjectGeneralSettings.tsx; src/client/features/projects/ProjectSwitcher.tsx; src/routes/_project/p/$projectId/settings.tsx; src/routes/_project/p/$projectId/settings/integrations.tsx; src/client/features/integrations/*; src/server/lib/domainUtils.ts; src/server/features/projects/services/projects.ts -->
+<!-- Kaynaklar: src/routes/_app/projects.tsx; src/routes/_app/index.tsx; src/client/features/projects/CreateProjectModal.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/ProjectGeneralSettings.tsx; src/client/features/projects/ProjectSwitcher.tsx; src/routes/_project/p/$projectId/settings.tsx; src/routes/_project/p/$projectId/settings/integrations.tsx; src/client/features/integrations/*; src/server/lib/domainUtils.ts; src/server/features/projects/services/projects.ts -->

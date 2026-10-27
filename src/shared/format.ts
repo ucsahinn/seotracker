@@ -394,6 +394,11 @@ export function formatDay(value: string): string {
   return safe(value, dateFormat(DAY));
 }
 
+/** "Eyl 2026", for a monthly axis. */
+export function formatMonth(value: string): string {
+  return safe(value, dateFormat({ month: "short", year: "numeric" }));
+}
+
 /** "19 Eyl 2026" */
 export function formatDate(value: string): string {
   return safe(value, dateFormat(DATE));

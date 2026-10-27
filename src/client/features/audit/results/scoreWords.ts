@@ -1,4 +1,10 @@
+import { formatPercent } from "@/client/lib/format";
 import { auditScoreBand, auditScoreTier } from "@/shared/auditScore";
+import {
+  capVerdict,
+  tierBand,
+  type AuditStanding,
+} from "@/shared/auditStanding";
 import { t } from "@/shared/i18n";
 
 /**
@@ -43,12 +49,36 @@ export function categoryCoverage(category: {
   return category.unknown > 0 ? "partial" : "full";
 }
 
-/** Text colour that keeps contrast on both themes. */
-export function scoreInk(score: number): string {
-  const band = auditScoreBand(score);
+export type ScoredStanding = Extract<AuditStanding, { kind: "scored" }>;
+
+/** The site score's word: the capped tier, or "Kısmi puan" when provisional. */
+export function standingWord(standing: ScoredStanding): string {
+  return standing.tier === null ? t("Kısmi puan") : t(TIER_WORD[standing.tier]);
+}
+
+/** The site score's fill: neutral while provisional, else the capped tier's. */
+export function standingFill(standing: ScoredStanding): string {
+  if (standing.tier === null) return "var(--text-subtle)";
+  const band = tierBand(standing.tier);
+  if (band === "good") return "var(--mark-success)";
+  if (band === "fair") return "var(--mark-warning)";
+  return "var(--mark-error)";
+}
+
+/** Text colour for the site score's word, neutral while provisional. */
+export function standingInk(standing: ScoredStanding): string {
+  if (standing.tier === null) return "var(--text-muted)";
+  const band = tierBand(standing.tier);
   if (band === "good") return "var(--ink-success)";
   if (band === "fair") return "var(--ink-warning)";
   return "var(--ink-error)";
+}
+
+/** "Kısmi puan — ölçüm kapsamı %62,0", for a provisional score. */
+export function provisionalLine(standing: ScoredStanding): string {
+  return t("Kısmi puan — ölçüm kapsamı {percent}", {
+    percent: formatPercent(standing.coverage.ratio, 0),
+  });
 }
 
 /**
@@ -56,7 +86,26 @@ export function scoreInk(score: number): string {
  * warnings must not send the reader looking for critical problems that the
  * audit did not find.
  */
-export function scoreVerdict(score: number, critical: number): string {
+export function standingVerdict(
+  standing: ScoredStanding,
+  critical: number,
+): string {
+  if (standing.tier === null) {
+    return t(
+      "Kontrollerin önemli bir kısmı ölçülemediği için bu puan kesin değil; derece verilmedi.",
+    );
+  }
+  const capped = capVerdict(standing);
+  if (capped) return capped;
+  return scoreVerdict(standing.score, critical);
+}
+
+/**
+ * `critical` is the number of failed critical checks: a low score made of
+ * warnings must not send the reader looking for critical problems that the
+ * audit did not find.
+ */
+function scoreVerdict(score: number, critical: number): string {
   if (score === 100) return t("Eksiksiz. Düzeltilecek bir şey kalmadı.");
   switch (auditScoreTier(score)) {
     case "excellent":

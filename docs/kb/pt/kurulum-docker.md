@@ -53,7 +53,7 @@ git pull
 docker compose up -d --build
 ```
 
-**Ayarlar → Hakkında** (Configurações → Sobre) avisa da versão nova e mostra esses dois comandos. Seus dados ficam no volume de dados chamado `seotracker_data`, então a atualização não os apaga.
+**Configurações → Sobre** avisa da versão nova e mostra esses dois comandos. Seus dados ficam no volume de dados chamado `seotracker_data`, então a atualização não os apaga.
 
 ### Parar e remover
 
@@ -84,15 +84,15 @@ Nenhuma configuração é obrigatória. Se quiser mudar algo, coloque um arquivo
 | ALLOWED_HOST                           | O nome pelo qual o aplicativo é acessado de fora, se houver outro servidor na frente. Se estiver vazio, só localhost                         |
 | AUTH_MODE                              | `local_noauth` (padrão) ou `cloudflare_access`                                                                                               |
 | BETTER_AUTH_SECRET                     | A chave de criptografia. Deixe vazia e o aplicativo cria uma. Se você a definir à mão, use pelo menos 32 caracteres e depois não a altere    |
-| GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET | Uma alternativa a informá-los na tela **Ayarlar** (Configurações). O valor informado na tela tem prioridade                                  |
-| PAGESPEED_API_KEY                      | Uma alternativa a informá-la na tela **Ayarlar** (Configurações)                                                                             |
+| GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET | Uma alternativa a informá-los na tela **Configurações**. O valor informado na tela tem prioridade                                            |
+| PAGESPEED_API_KEY                      | Uma alternativa a informá-la na tela **Configurações**                                                                                       |
 | MCP_TOKEN                              | Se estiver vazio, é criado na primeira inicialização. Se você escrever `off`, nenhuma senha é pedida. Qualquer outro valor é usado como está |
 
 ## Verificação
 
 - Na saída de `docker compose ps`, o estado deve ser **healthy**. Na primeira inicialização, pode levar até cinco minutos para chegar a ele.
 - A saída de `curl.exe http://127.0.0.1:3001/api/health` deve começar com "status":"ok". Você também pode abrir `http://127.0.0.1:3001/api/health` no navegador.
-- `http://localhost:3001` deve abrir no navegador. O cartão de estado da tela **Yardım** (Ajuda) deve dizer "Her şey yolunda." (Está tudo certo.) Antes de conectar o Google, a linha "Google girişi" (Login do Google) pede atenção. Isso é normal.
+- `http://localhost:3001` deve abrir no navegador. O cartão de estado da tela **Ajuda** deve dizer "Tudo parece bem." Antes de conectar o Google, a linha "Login no Google" pede atenção. Isso é normal.
 
 ## Perguntas frequentes
 
@@ -102,13 +102,13 @@ Nenhuma configuração é obrigatória. Se quiser mudar algo, coloque um arquivo
 
 **Posso abri-lo para a internet?** O aplicativo não pergunta quem você é. Não o abra sem colocar sua própria autenticação na frente. Se você definir `ALLOWED_HOST`, o aplicativo avisa na verificação de saúde.
 
-**Onde pego a senha do meu assistente?** A tela **Ajan kurulumu** (Configuração do agente) do aplicativo mostra o comando: `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. Se você usa o Git Bash, coloque `MSYS_NO_PATHCONV=1` na frente.
+**Onde pego a senha do meu assistente?** A tela **Configuração do agente** do aplicativo mostra o comando: `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. Se você usa o Git Bash, coloque `MSYS_NO_PATHCONV=1` na frente.
 
 ## Se algo der errado
 
 - **Aparece "Bind for 127.0.0.1:3001 failed".** O número da porta está em uso. Coloque na pasta do projeto um arquivo `.env` com a linha `PORT=3002` e recrie o contêiner. No Windows, o Bloco de Notas pode salvar o arquivo como `.env.txt`. No PowerShell, `Set-Content -Encoding ascii .env 'PORT=3002'` é seguro.
 - **O estado é "unhealthy".** `docker compose logs --tail 50` mostra as últimas linhas. Se a memória acabou durante a construção, dê mais memória ao Docker Desktop.
-- **A conexão com o Google diz "yapılandırılmamış" (não configurada).** Se `BETTER_AUTH_SECRET` tiver menos de 32 caracteres, o Google fica desligado. Se você a definiu à mão, deixe-a mais longa. Se não definiu, o arquivo `instance-secret` no volume de dados pode estar danificado.
-- **A conexão com o Google caiu depois de uma atualização.** `BETTER_AUTH_SECRET` mudou ou o volume de dados foi recriado. Escolha **Yeniden bağlan** (Reconectar) nas configurações do projeto.
+- **A conexão com o Google diz "não configurada".** Se `BETTER_AUTH_SECRET` tiver menos de 32 caracteres, o Google fica desligado. Se você a definiu à mão, deixe-a mais longa. Se não definiu, o arquivo `instance-secret` no volume de dados pode estar danificado.
+- **A conexão com o Google caiu depois de uma atualização.** `BETTER_AUTH_SECRET` mudou ou o volume de dados foi recriado. Escolha **Reconectar** nas configurações do projeto.
 
 <!-- Kaynaklar: docs/SELF_HOSTING_DOCKER.md; docs/ENVIRONMENT.md; compose.yaml; docker-entrypoint.sh; src/lib/selfhost-preflight.ts; src/routes/_app/ai.tsx -->

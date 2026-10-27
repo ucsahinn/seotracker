@@ -5,6 +5,36 @@ import type { Catalog } from "@/shared/i18n";
  * Keys are the Turkish source strings exactly as passed to t().
  */
 export const enAudit: Catalog = {
+  // installed-0.8.0 diagnostics: Google/Windows/audit failure causes
+  "{count} sayfa alınamadı (ağ hatası).": {
+    one: "{count} page could not be fetched (network error).",
+    other: "{count} pages could not be fetched (network error).",
+  },
+  "Bağlantı yeniden denemede de kurulamadı, bu sayfalar denetlenmedi ve bozuk sayılmadı. Çoğu zaman geçicidir; denetimi yeniden çalıştırın. Sürerse sitenin bu bilgisayardan açıldığını kontrol edin.":
+    "The connection failed again on retry, so these pages were not audited and are not counted as broken. It is usually temporary; run the audit again. If it persists, check that the site opens from this computer.",
+  "Sunucudan yanıt alınamadı (bağlantı koptu ya da adres çözülemedi). Sayfa denetlenmedi ve bozuk sayılmadı; denetimi yeniden çalıştırın.":
+    "No answer from the server (the connection dropped or the address did not resolve). The page was not audited and is not counted as broken; run the audit again.",
+  "alınamadı (ağ hatası)": "not fetched (network error)",
+  "Toplam {count} site haritası dosyası okunamadı": {
+    one: "{count} sitemap file could not be read in total",
+    other: "{count} sitemap files could not be read in total",
+  },
+  "Site haritası dosyası okunamadı": "A sitemap file could not be read",
+  "robots.txt dosyanızın ya da bir site haritası dizininin gösterdiği bir site haritası dosyasından hiç adres okunamadı. Ayrıntıda hangi dosya olduğu ve nedeni yazıyor: hata kodu, zaman aşımı, bağlantı hatası, siteden çıkan yönlendirme, XML olmayan içerik ya da boş liste. O dosyadaki sayfalar bu denetime site haritasından girmedi; Google da aynı hatayı görüyorsa onları da okuyamıyor olabilir.":
+    "No addresses could be read from a sitemap file that your robots.txt or a sitemap index points to. The details name the file and the reason: an error code, a timeout, a connection error, a redirect off the site, content that is not XML, or an empty list. The pages in that file did not enter this audit from the sitemap; if Google sees the same error, it may not be able to read them either.",
+  "Ayrıntıdaki adresi tarayıcıda açın. Hata kodu ya da yönlendirme varsa dosyayı doğru adreste yayınlayın veya robots.txt ve site haritası dizinindeki satırı düzeltin. Zaman aşımı ya da bağlantı hatası çoğu zaman geçicidir; denetimi yeniden çalıştırın, sürerse sunucunun yanıt süresine bakın. Search Console'daki Site Haritaları raporu Google'ın gördüğünü gösterir.":
+    "Open the address from the details in a browser. If there is an error code or a redirect, publish the file at the right address or fix the line in robots.txt and the sitemap index. A timeout or connection error is usually temporary; run the audit again, and if it persists, look at the server's response time. The Sitemaps report in Search Console shows what Google sees.",
+  "Sunucu HTTP {status} döndürdü": "The server returned HTTP {status}",
+  "Sunucu zamanında yanıt vermedi (zaman aşımı, yeniden denendi)":
+    "The server did not answer in time (timeout, retried)",
+  "Bağlantı kurulamadı (ağ hatası, yeniden denendi)":
+    "No connection could be made (network error, retried)",
+  "Başka bir siteye ya da döngüye yönlendiriyor":
+    "It redirects to another site or in a loop",
+  "Dönen içerik site haritası XML'i değil":
+    "The content returned is not sitemap XML",
+  "Dosya okundu ama hiç adres listelemiyor":
+    "The file was read but lists no addresses",
   // audit/shared.tsx
   Sürüyor: "In progress",
   Bitti: "Done",
@@ -2223,4 +2253,119 @@ export const enAudit: Catalog = {
     "The site is on a subdomain of a hosting platform; its registration and DNS belong to the platform, so the domain and DNS checks were skipped.",
   "sayı alınamadı (tarama sınırı)": "count not read (crawl limit)",
   "Twitter kartı: ölçülmedi.": "Twitter card: not measured.",
+  // Audit failure and notice copy (auditFailureCopy.ts)
+  "Denetim {phase} aşamasında durdu.":
+    "The audit stopped during the {phase} phase.",
+  "Denetim tamamlanamadan durdu.": "The audit stopped before it could finish.",
+  "adres keşfi": "URL discovery",
+  tarama: "crawl",
+  "hız ölçümü": "speed test",
+  "sonuçların hazırlanması": "results preparation",
+  "Bir adım zamanında bitmedi. Genelde site çok yavaş yanıt veriyor ya da bağlantıyı açık tutup bekletiyor.":
+    "A step did not finish in time. Usually the site is answering very slowly or keeping the connection open without replying.",
+  "Birkaç dakika sonra yeniden deneyin. Yine olursa daha az sayfayla başlatın.":
+    "Try again in a few minutes. If it happens again, start with fewer pages.",
+  "Denetim, uygulamanın kullanabildiği belleğe sığmadı. Çok büyük sayfalar ya da çok fazla sayfa buna yol açar.":
+    "The audit did not fit in the memory the app can use. Very large pages or too many pages cause this.",
+  "Daha az sayfayla yeniden başlatın.": "Start it again with fewer pages.",
+  "Denetim, uygulamanın izin verdiği işlemci süresini aştı. Çok büyük ya da çok karmaşık sayfalar buna yol açar.":
+    "The audit went over the processor time the app allows. Very large or complex pages cause this.",
+  "Sonuçlar uygulamanın veritabanına yazılırken hata oluştu. Disk dolu ya da veri dosyası başka bir programda kilitli olabilir.":
+    "An error occurred while writing the results to the app's database. The disk may be full or the data file may be locked by another program.",
+  "Diskte boş yer olduğunu kontrol edin, uygulamayı yeniden başlatın ve denetimi yeniden başlatın.":
+    "Check that the disk has free space, restart the app, then start the audit again.",
+  "Bir adımın sonucu uygulamanın saklayabildiği boyutu aştı. Çok büyük siteler buna yol açar.":
+    "The result of one step was larger than the app can store. Very large sites cause this.",
+  "Denetimi yürüten uygulamanın iç düzeni hata verdi.":
+    "The app's internal audit engine reported an error.",
+  "Uygulamayı yeniden başlatın (tepsi menüsünde Yeniden başlat), sonra denetimi yeniden başlatın.":
+    "Restart the app (Restart in the tray menu), then start the audit again.",
+  "Denetim yarıda kaldı. Uygulama denetimin ortasında kapanmış ya da yeniden başlamış olabilir.":
+    "The audit was cut off. The app may have been closed or restarted in the middle of it.",
+  "Uygulamanın açık kaldığından emin olun ve denetimi yeniden başlatın.":
+    "Make sure the app stays open, then start the audit again.",
+  "Kayıtlı Google ve PageSpeed anahtarlarını açan kurulum anahtarı denetimi yürüten bölüme ulaşmamış. Anahtarlarınız silinmedi.":
+    "The install key that opens the saved Google and PageSpeed keys did not reach the part of the app that runs audits. Your keys were not deleted.",
+  "Uygulamayı güncelleyin ya da yeniden başlatın, sonra denetimi yeniden başlatın.":
+    "Update or restart the app, then start the audit again.",
+  "Denetim beklenmedik bir hatayla durdu.":
+    "The audit stopped with an unexpected error.",
+  "Denetimi yeniden başlatın. Tekrarlarsa Yardım'dan tanılama paketini indirip sorunu bildirin.":
+    "Start the audit again. If it keeps happening, download the diagnostics bundle from Help and report the problem.",
+  "Sorun sitenizde değil, uygulamada.":
+    "The problem is in the app, not in your site.",
+  "Büyük olasılıkla sorun sitenizin yavaş yanıt vermesinde; uygulamada bir arıza yok.":
+    "Most likely your site is answering slowly; nothing is wrong with the app.",
+  "Nedeni belirlenemedi.": "The cause could not be determined.",
+  "{count} sayfa tarandı ve kaydedildi; aşağıdaki sonuçlar bu sayfalara dayanır.":
+    {
+      one: "{count} page was crawled and saved; the results below are based on it.",
+      other:
+        "{count} pages were crawled and saved; the results below are based on them.",
+    },
+  "Kayıtlı PageSpeed anahtarı okunamadı; hız ölçümü anahtarsız yapıldı.":
+    "The saved PageSpeed key could not be read, so the speed test ran without a key.",
+  "Tarama sonuçları etkilenmedi, ama hız ölçümü yalnızca ilk sayfalarla sınırlı kaldı. Uygulamayı güncelleyin ya da yeniden başlatın, sonra yeni bir denetim başlatın. Sürerse Ayarlar'dan PageSpeed anahtarını yeniden kaydedin.":
+    "The crawl results are not affected, but the speed test was limited to the first pages only. Update or restart the app, then start a new audit. If it continues, save the PageSpeed key again in Settings.",
+  // Audit score standing: coverage, provisional score, tier caps
+  "Kısmi puan": "Partial score",
+  "Gri çubuklar kısmi puandır: o denetimde kontrollerin önemli bir kısmı ölçülemedi.":
+    "Grey bars are partial scores: a large share of that audit's checks could not be measured.",
+  "{count} eksik denetim puansız olduğu için grafikte yok.": {
+    one: "{count} incomplete audit has no score and is not on the chart.",
+    other: "{count} incomplete audits have no score and are not on the chart.",
+  },
+  "Kısmi puan — ölçüm kapsamı {percent}":
+    "Partial score — measurement coverage {percent}",
+  "Kontrollerin önemli bir kısmı ölçülemediği için bu puan kesin değil; derece verilmedi.":
+    "A large share of the checks could not be measured, so this score is not final and gets no rating.",
+  "Eksik denetim — puan verilmedi": "Incomplete audit — no score given",
+  "Sorun listesi tam olmadığı için puan hesaplanmadı. Aşağıdaki bulgular taranan sayfalar için geçerli; tam bir puan için denetimi yeniden çalıştırın.":
+    "The issue list is incomplete, so no score was calculated. The findings below apply to the pages that were crawled; run the audit again for a full score.",
+  kısmi: "partial",
+  "{category} ölçülmedi: {reason}": "{category} not measured: {reason}",
+  "{category} ölçülmedi.": "{category} not measured.",
+  "{category} kontrollerinin çoğu ölçülmedi: {reason}":
+    "Most {category} checks not measured: {reason}",
+  "{category} kontrollerinin çoğu ölçülmedi.":
+    "Most {category} checks not measured.",
+  "hız ölçümü kapalıydı": "speed testing was turned off",
+  "PageSpeed kotası doldu": "the PageSpeed quota ran out",
+  "PageSpeed anahtarı yok": "no PageSpeed key",
+  "hız ölçümü yapılmadı": "no speed test was run",
+  "hız ölçümleri başarısız oldu": "the speed tests failed",
+  "Search Console'dan dizin verisi alınmadı":
+    "no index data was read from Search Console",
+  "Puan, ölçülen {count} kontrolün sonucuna göre.": {
+    one: "Score based on the {count} check that was measured.",
+    other: "Score based on the {count} checks that were measured.",
+  },
+  "{count} kontrol ölçülemedi.": {
+    one: "{count} check could not be measured.",
+    other: "{count} checks could not be measured.",
+  },
+  "Her bulgu, önemine ve etkilediği sayfa oranına göre kendi kategorisinden puan düşer; site puanı yedi kategorinin ağırlıklı ortalamasıdır. Ölçülemeyen kontroller puanı ne artırır ne düşürür. Kontrollerin ağırlıklı kapsamı {coverage} değerinin altındaysa ya da Tarama, Dizine alma, İçerik veya Hız kategorisinde ölçülen kontrollerin oranı {heavy} değerinin altındaysa puan kısmidir ve derece verilmez. Kritik bir sorun varken puan en fazla {criticalCap}, {count} veya daha fazla uyarı varken en fazla {warningsCap} olur.":
+    "Each finding takes points off its own category by its severity and the share of pages it affects; the site score is the weighted average of the seven categories. Checks that could not be measured neither raise nor lower it. If the weighted coverage of the checks is below {coverage}, or the measured share of Crawl, Indexing, Content or Speed is below {heavy}, the score is partial and gets no rating. With a critical issue the score is at most {criticalCap}; with {count} or more warnings, at most {warningsCap}.",
+  "Kritik sorun olduğu için puan en fazla {cap} olabilir. Önce kritik sorunlara bakın.":
+    "With a critical issue the score can be at most {cap}. Look at the critical issues first.",
+  "{count} veya daha fazla uyarı olduğu için puan en fazla {cap} olabilir.":
+    "With {count} or more warnings the score can be at most {cap}.",
+  "Denetim {count} sayfayla sınırlıydı; sitede daha fazla sayfa olabilir.": {
+    one: "The audit was limited to {count} page; the site may have more pages.",
+    other:
+      "The audit was limited to {count} pages; the site may have more pages.",
+  },
+  "Bulunan adres: {found}, taranan: {crawled}":
+    "URLs found: {found}, crawled: {crawled}",
+  // Cards and stats review (Opportunities, rankings, setup verdict).
+  Site: "Site",
+  "Bu projede {count} farklı site denetlenmiş:":
+    "This project has audits of {count} different sites:",
+  "Grafik ve değişim okları her zaman aynı sitenin denetimlerini karşılaştırır; birden çok site seçiliyken grafik gizlenir.":
+    "The chart and change arrows always compare audits of the same site; the chart is hidden while several sites are shown.",
+  // Cards and stats review (Opportunities, rankings, setup verdict).
+  "Kontrol edilen {checked} sayfa içinde. Google başka bir adresi asıl saydı: bu sayfaların canonical etiketini ve iç bağlantılarını kontrol edin.":
+    "Out of {checked} checked pages. Google chose another address as the main one: check these pages' canonical tags and internal links.",
+  "Kontrol edilen {checked} sayfanın hiçbirinde Google başka bir adresi asıl saymadı.":
+    "For none of the {checked} checked pages did Google choose another address as the main one.",
 };

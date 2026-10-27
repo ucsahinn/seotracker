@@ -1,47 +1,76 @@
+import { t } from "@/shared/i18n";
 import { MetricRow } from "@/client/components/MetricTile";
-// Skeleton loading state for the Search Performance (GSC) page. Mirrors the
-// loaded layout — four totals cards over a tabbed table panel — so the shell
-// stays put and only the data fills in, matching the other pages' loaders
-// (e.g. DomainOverviewLoadingState, KeywordResearchLoadingState).
+
+/**
+ * Shaped like the screen that is coming -- filters, the data strip, four
+ * tiles, the chart and the to-do list -- so nothing moves when it lands.
+ */
 export function SearchPerformanceLoadingState() {
   return (
-    <div className="space-y-4" aria-busy>
-      {/*
-       * Through `MetricRow`, which is what actually arrives: one bordered
-       * box divided by hairlines, not four separate cards. Four boxes
-       * becoming one box on load is the layout jump a skeleton exists to
-       * prevent -- the loader was causing the thing it was there to stop.
-       */}
-      <MetricRow>
-        {Array.from({ length: 4 }).map((_, index) => (
-          <div key={index} className="space-y-2 p-4">
-            <div className="skeleton h-3 w-20" />
-            <div className="skeleton h-7 w-24" />
-          </div>
+    <div className="flex flex-col gap-5" aria-busy="true">
+      <span className="sr-only" role="status">
+        {t("Yükleniyor")}
+      </span>
+      <div className="flex flex-wrap gap-2" aria-hidden>
+        {[32, 36, 36, 36, 44].map((w, index) => (
+          <div
+            key={index}
+            className="skeleton h-8"
+            style={{ width: `${w * 4}px` }}
+          />
         ))}
-      </MetricRow>
-
-      <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
-        <div className="flex flex-col gap-3 border-b border-base-300 px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex items-center gap-4">
-            <div className="skeleton h-8 w-40" />
-            <div className="skeleton h-8 w-20" />
-            <div className="skeleton h-8 w-16" />
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="skeleton h-8 w-36" />
-            <div className="skeleton h-8 w-36" />
-            <div className="skeleton h-8 w-36" />
-          </div>
+      </div>
+      <div
+        className="grid gap-2 rounded-box border border-[var(--hairline)] p-4 sm:grid-cols-2 xl:grid-cols-3"
+        aria-hidden
+      >
+        {[0, 1, 2, 3, 4].map((index) => (
+          <div key={index} className="skeleton h-3.5 w-4/5" />
+        ))}
+      </div>
+      <div aria-hidden>
+        <MetricRow>
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index} className="flex flex-col gap-2.5 px-5 py-4">
+              <div className="skeleton h-3 w-20" />
+              <div className="skeleton h-7 w-28" />
+              <div className="skeleton h-6 w-28" />
+            </div>
+          ))}
+        </MetricRow>
+      </div>
+      <div
+        className="flex flex-col gap-3 rounded-box border border-[var(--hairline)] p-4"
+        aria-hidden
+      >
+        <div className="flex justify-between gap-3">
+          <div className="skeleton h-4 w-28" />
+          <div className="skeleton h-8 w-72 max-w-full" />
         </div>
-
-        <div className="space-y-3 p-4">
-          {Array.from({ length: 8 }).map((_, index) => (
-            <div key={index} className="grid grid-cols-5 gap-3">
-              <div className="skeleton col-span-2 h-4" />
-              <div className="skeleton h-4" />
-              <div className="skeleton h-4" />
-              <div className="skeleton h-4" />
+        <div className="skeleton h-56" />
+      </div>
+      <div
+        className="overflow-hidden rounded-box border border-[var(--hairline)]"
+        aria-hidden
+      >
+        <div className="flex gap-4 border-b border-[var(--hairline)] px-4 py-3">
+          {[28, 20, 20, 20, 24].map((w, index) => (
+            <div
+              key={index}
+              className="skeleton h-5 shrink-0"
+              style={{ width: `${w * 4}px` }}
+            />
+          ))}
+        </div>
+        <div className="flex flex-col gap-2 p-4">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div
+              key={index}
+              className="flex flex-col gap-2 rounded-box border border-[var(--hairline)] p-4"
+            >
+              <div className="skeleton h-4 w-3/5" />
+              <div className="skeleton h-3 w-2/5" />
+              <div className="skeleton h-3 w-4/5" />
             </div>
           ))}
         </div>

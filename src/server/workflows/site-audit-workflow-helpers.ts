@@ -4,6 +4,10 @@ import { sha256Hex } from "@/server/lib/audit/ids";
 import { assertPublicHostname } from "@/server/lib/audit/url-policy";
 import { normalizeUrl } from "@/server/lib/audit/url-utils";
 import type { CrawlThrottle } from "@/server/lib/audit/crawl-throttle";
+import {
+  isTransientNetworkError,
+  networkErrorReason,
+} from "@/server/lib/fetchRetry";
 
 const CRAWL_USER_AGENT = "seotracker-audit/1.0";
 const MAX_HTML_BYTES = 1024 * 1024;
@@ -57,6 +61,41 @@ function parseLinkHeaderCanonical(
   return null;
 }
 
+const TRANSPORT_RETRY_DELAY_MS = 1_000;
+
+function requestPage(url: string) {
+  return fetch(url, {
+    headers: {
+      "User-Agent": CRAWL_USER_AGENT,
+      Accept: "text/html,application/xhtml+xml",
+    },
+    redirect: "manual",
+    signal: AbortSignal.timeout(15_000),
+  });
+}
+
+/**
+ * One retry when no HTTP answer arrived at all. workerd reports a dropped
+ * outbound connection as "internal error; reference = ..." or "Network
+ * connection lost.", and the page then landed in the results as a status-0
+ * row although the site was fine (the next audit of the same site fetched
+ * it). A timeout is not retried: the page already had its 15 seconds.
+ */
+async function fetchOnceRetryingTransport(url: string): Promise<Response> {
+  try {
+    return await requestPage(url);
+  } catch (error) {
+    if (!isTransientNetworkError(error)) throw error;
+    console.warn(
+      `Retrying ${url} after a network error: ${networkErrorReason(error)}`,
+    );
+    await new Promise((resolve) =>
+      setTimeout(resolve, TRANSPORT_RETRY_DELAY_MS),
+    );
+    return requestPage(url);
+  }
+}
+
 /**
  * Fetch one URL, pausing the whole chunk and retrying while the site 429s
  * (see crawl-throttle.ts). `responseTimeMs` is measured from the last attempt
@@ -72,14 +111,7 @@ async function fetchPage(url: string, throttle: CrawlThrottle) {
     // /docs/) need no special handling: normalizeUrl preserves trailing
     // slashes, so /docs and /docs/ are distinct URLs and the redirect resolves
     // to its canonical target instead of cycling back to its own source.
-    const response = await fetch(url, {
-      headers: {
-        "User-Agent": CRAWL_USER_AGENT,
-        Accept: "text/html,application/xhtml+xml",
-      },
-      redirect: "manual",
-      signal: AbortSignal.timeout(15_000),
-    });
+    const response = await fetchOnceRetryingTransport(url);
     const result = {
       response,
       responseTimeMs: Date.now() - startedAt,
@@ -324,7 +356,9 @@ export async function crawlPage(
     // error that lets the scheduler continue making requests.
     if (throttle.checkpointFailed) throw error;
     const responseTimeMs = Date.now() - startTime;
-    console.warn(`Failed to crawl ${url}:`, error);
+    // Recorded as fetchClass "error" with no status: the results show it as
+    // "could not fetch (network error)", and no rule counts it as broken.
+    console.warn(`Failed to crawl ${url}: ${networkErrorReason(error)}`);
     return emptyPageResult({
       url,
       statusCode: 0,

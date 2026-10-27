@@ -33,6 +33,36 @@ const sitemapWith = (lastmod: {
 });
 
 describe("siteLevelIssues", () => {
+  it("reports each unreadable sitemap at its own address, with why", () => {
+    const issues = siteLevelIssues({
+      startUrl: START,
+      sitemapProblems: {
+        ...sitemapWith({
+          urls: 0,
+          withLastmod: 0,
+          future: 0,
+          futureSample: null,
+        }),
+        failed: [
+          {
+            url: "https://example.com/gone.xml",
+            reason: "status",
+            statusCode: 404,
+          },
+        ],
+        failedCount: 1,
+      },
+    });
+
+    expect(issues).toEqual([
+      expect.objectContaining({
+        issueType: "sitemap-unreadable",
+        pageUrl: "https://example.com/gone.xml",
+        details: { reason: "status", statusCode: 404 },
+      }),
+    ]);
+  });
+
   it("says nothing when nothing was recorded", () => {
     // Absent findings mean the run predates them, not that the site is
     // clean. Inventing a clean bill of health from missing data is the one

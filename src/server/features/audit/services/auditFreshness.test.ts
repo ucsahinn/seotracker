@@ -17,8 +17,13 @@ import { getAuditFreshness } from "./auditFreshness";
 const NOW = new Date("2026-06-30T12:00:00.000Z");
 
 /** Audits come back newest first, with SQLite's space-separated timestamps. */
-function audit(id: string, startedAt: string, status = "completed") {
-  return { id, startedAt, status };
+function audit(
+  id: string,
+  startedAt: string,
+  status = "completed",
+  startUrl = "https://example.com/",
+) {
+  return { id, startedAt, status, startUrl };
 }
 
 beforeEach(() => {
@@ -121,5 +126,23 @@ describe("getAuditFreshness", () => {
 
     expect(result.newIssues).toEqual([]);
     expect(mocks.getIssueTypePageCountsForAudit).not.toHaveBeenCalled();
+  });
+
+  it("compares against the previous audit of the same site only", async () => {
+    mocks.getAuditsByProject.mockResolvedValue([
+      audit("now", "2026-06-29 10:00:00"),
+      audit(
+        "other-site",
+        "2026-06-28 10:00:00",
+        "completed",
+        "https://npr.org/",
+      ),
+      audit("before", "2026-06-20 10:00:00"),
+    ]);
+    await getAuditFreshness({ projectId: "p1", now: NOW });
+    expect(mocks.getIssueTypePageCountsForAudit).toHaveBeenCalledWith("before");
+    expect(mocks.getIssueTypePageCountsForAudit).not.toHaveBeenCalledWith(
+      "other-site",
+    );
   });
 });

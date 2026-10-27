@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
 import { collectDiagnostics } from "@/server/features/diagnostics/collectDiagnostics";
 import { requireAuthenticatedContext } from "@/serverFunctions/middleware";
 
@@ -12,4 +13,4 @@ import { requireAuthenticatedContext } from "@/serverFunctions/middleware";
  */
 export const getDiagnostics = createServerFn({ method: "POST" })
   .middleware(requireAuthenticatedContext)
-  .handler(() => collectDiagnostics());
+  .handler(() => collectDiagnostics(new Date(), getRequest().url));

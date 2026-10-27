@@ -3,6 +3,12 @@ import { useMemo } from "react";
 import { getAuditInsights } from "@/serverFunctions/audit";
 import { buildAuditBreakdown } from "@/shared/auditBreakdown";
 import { findingsFromIssues } from "@/shared/auditScore";
+import {
+  auditStanding,
+  crawlCountLine,
+  crawlLimitNote,
+  thinCategoryLines,
+} from "@/shared/auditStanding";
 import { pageKey, rankTodos, todoInputs } from "@/shared/auditTodo";
 import type { AuditInsightsData, AuditResultsData } from "./types";
 
@@ -64,6 +70,49 @@ export function useAuditOverview(projectId: string, data: AuditResultsData) {
     () => buildAuditBreakdown(findings, context),
     [findings, context],
   );
+  const standing = useMemo(
+    () => auditStanding(breakdown, audit.status),
+    [breakdown, audit.status],
+  );
+  const thinLines = useMemo(
+    () =>
+      thinCategoryLines(standing, breakdown.categories, {
+        lighthouse,
+        speedOff: audit.config.lighthouseStrategy === "none",
+        googleInspected: insights?.googleInspected ?? null,
+      }),
+    [
+      standing,
+      breakdown.categories,
+      lighthouse,
+      audit.config.lighthouseStrategy,
+      insights,
+    ],
+  );
+  const limitNote = useMemo(
+    () =>
+      crawlLimitNote({
+        pagesCrawled: audit.pagesCrawled,
+        maxPages: audit.config.maxPages,
+        urlsDiscovered: audit.urlsDiscovered,
+        sitemapUrls:
+          siteFacts?.sitemap.onHostUrlCount ?? siteFacts?.sitemap.urlCount,
+      }),
+    [
+      audit.pagesCrawled,
+      audit.config.maxPages,
+      audit.urlsDiscovered,
+      siteFacts,
+    ],
+  );
+  const countLine = useMemo(
+    () =>
+      crawlCountLine({
+        pagesCrawled: audit.pagesCrawled,
+        urlsDiscovered: audit.urlsDiscovered,
+      }),
+    [audit.pagesCrawled, audit.urlsDiscovered],
+  );
   const traffic = useMemo(
     () =>
       insights?.traffic
@@ -90,16 +139,22 @@ export function useAuditOverview(projectId: string, data: AuditResultsData) {
     const first = new Set(
       todos.slice(0, FIRST_COUNT).map((todo) => todo.issueType),
     );
-    if (first.size === 0 || breakdown.score === null) return null;
+    // No score shown, so no promise of points on it.
+    if (first.size === 0 || standing.kind !== "scored") return null;
+    if (breakdown.score === null) return null;
     const after = buildAuditBreakdown(
       findings.filter((finding) => !first.has(finding.issueType)),
       context,
     ).score;
     return after === null ? null : after - breakdown.score;
-  }, [todos, findings, context, breakdown.score]);
+  }, [todos, findings, context, breakdown.score, standing.kind]);
 
   return {
     score: breakdown.score,
+    standing,
+    thinLines,
+    limitNote,
+    countLine,
     firstGain,
     breakdown,
     todos,

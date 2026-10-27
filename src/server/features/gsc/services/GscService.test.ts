@@ -17,6 +17,19 @@ const mocks = vi.hoisted(() => {
     vi.fn<(opts: GscClientOptions) => Promise<never[]>>();
   const inspectUrl =
     vi.fn<(siteUrl: string, url: string) => Promise<unknown>>();
+  type Page = {
+    rows: Array<{
+      keys: string[];
+      clicks: number;
+      impressions: number;
+      ctr: number;
+      position: number;
+    }>;
+    aggregationType: string | null;
+    firstIncompleteDate: string | null;
+  };
+  const queryPage =
+    vi.fn<(siteUrl: string, body: { startRow?: number }) => Promise<Page>>();
   const deleteWhere = vi
     .fn<(condition: SQL) => Promise<void>>()
     .mockResolvedValue(undefined);
@@ -39,8 +52,13 @@ const mocks = vi.hoisted(() => {
     listSites,
     getUserInfoEmail,
     querySearchAnalytics,
+    queryPage,
     inspectUrl,
     createGscClient: vi.fn((opts: GscClientOptions) => ({
+      querySearchAnalyticsPage: (
+        siteUrl: string,
+        body: { startRow?: number },
+      ) => queryPage(siteUrl, body),
       listSites: () => listSites(opts),
       getUserInfoEmail: () => getUserInfoEmail(opts),
       querySearchAnalytics: () => querySearchAnalytics(opts),
@@ -563,5 +581,83 @@ describe("GscService.inspectUrls", () => {
     expect(result.results.map((entry) => entry.url)).toEqual(
       ["a", "c", "d", "e"].map((path) => "https://x.test/" + path),
     );
+  });
+});
+
+function analyticsRow(key: string) {
+  return { keys: [key], clicks: 1, impressions: 1, ctr: 1, position: 1 };
+}
+
+function analyticsPage(count: number, offset: number) {
+  return {
+    rows: Array.from({ length: count }, (_, i) =>
+      analyticsRow(`k${offset + i}`),
+    ),
+    aggregationType: "byProperty",
+    firstIncompleteDate: offset === 0 ? "2026-10-24" : null,
+  };
+}
+
+describe("GscService.queryAnalytics", () => {
+  beforeEach(() => {
+    mocks.queryPage.mockReset();
+    mocks.getByProjectId.mockResolvedValue({
+      connectedByUserId: "u1",
+      connectedAccountEmail: null,
+      gscAccountId: null,
+      // A property per test, so the isolate cache never answers across tests.
+      siteUrl: `sc-domain:${crypto.randomUUID()}.test`,
+    });
+  });
+
+  it("pages through startRow until Google returns a short page", async () => {
+    mocks.queryPage.mockImplementation((_site, body) =>
+      Promise.resolve(
+        (body.startRow ?? 0) === 0
+          ? analyticsPage(2, 0)
+          : analyticsPage(1, body.startRow ?? 0),
+      ),
+    );
+    const result = await GscService.queryAnalytics({
+      projectId: "p1",
+      startDate: "2026-10-01",
+      endDate: "2026-10-28",
+      rowLimit: 2,
+      maxPages: 3,
+    });
+    expect(mocks.queryPage.mock.calls.map(([, body]) => body.startRow)).toEqual(
+      [undefined, 2],
+    );
+    expect(result).toMatchObject({
+      truncated: false,
+      requests: 2,
+      firstIncompleteDate: "2026-10-24",
+    });
+    expect(result.rows).toHaveLength(3);
+  });
+
+  it("says the set is truncated when the page budget ends on a full page", async () => {
+    mocks.queryPage.mockResolvedValue(analyticsPage(2, 0));
+    const result = await GscService.queryAnalytics({
+      projectId: "p1",
+      startDate: "2026-10-01",
+      endDate: "2026-10-28",
+      rowLimit: 2,
+      maxPages: 1,
+    });
+    expect(result.truncated).toBe(true);
+  });
+
+  it("answers a repeated request from the cache at no cost", async () => {
+    mocks.queryPage.mockResolvedValue(analyticsPage(1, 0));
+    const input = {
+      projectId: "p1",
+      startDate: "2026-10-01",
+      endDate: "2026-10-28",
+    };
+    await GscService.queryAnalytics(input);
+    const again = await GscService.queryAnalytics(input);
+    expect(mocks.queryPage).toHaveBeenCalledTimes(1);
+    expect(again.requests).toBe(0);
   });
 });

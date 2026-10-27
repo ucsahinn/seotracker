@@ -8,19 +8,23 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { sort } from "remeda";
+import { HelpTip } from "@/client/components/HelpTip";
 import { formatCount, formatDate, formatPoints } from "@/client/lib/format";
 import type { AuditBreakdown, CategoryScore } from "@/shared/auditBreakdown";
 import {
   AUDIT_CATEGORY_LABEL,
   type AuditCategory,
 } from "@/shared/auditCategory";
+import { coverageLine, scoreMethod } from "@/shared/auditStanding";
 import { t } from "@/shared/i18n";
 import { ScoreGauge } from "./ScoreGauge";
 import {
   categoryCoverage,
+  provisionalLine,
   scoreFill,
-  scoreVerdict,
   scoreWord,
+  standingVerdict,
+  type ScoredStanding,
 } from "./scoreWords";
 
 /**
@@ -42,16 +46,29 @@ type ScorePoint = {
   score: number | null;
   /** Scored on the checks every audit in the window measured, not all of its own. */
   partial?: boolean;
+  /** Too little of that audit was measured for a verdict (see `auditStanding`). */
+  provisional?: boolean;
+  /** Failed or cut short: no score, and no bar. */
+  withheld?: boolean;
 };
 
 export function ScoreOverview({
-  score,
+  standing,
+  thinLines,
+  limitNote,
+  countLine,
   breakdown,
   history,
   animate = false,
   onOpenChecks,
 }: {
-  score: number;
+  standing: ScoredStanding;
+  /** "Hız ölçülmedi: PageSpeed kotası doldu", one per heavy category missing. */
+  thinLines: string[];
+  /** The crawl stopped at the chosen page limit; see `crawlLimitNote`. */
+  limitNote: string | null;
+  /** "Bulunan adres: N, taranan: M"; null on audits from before it was stored. */
+  countLine: string | null;
   breakdown: AuditBreakdown;
   /** Oldest first, this audit last; undefined while it loads. */
   history: ScorePoint[] | undefined;
@@ -64,6 +81,7 @@ export function ScoreOverview({
     (point): point is ScorePoint & { score: number } => point.score !== null,
   );
   const hasHistory = scored.length >= 2;
+  const withheld = (history ?? []).filter((point) => point.withheld).length;
   // Worst first: the category to open is the one at the top. A category
   // nobody could measure has no place in that order and goes last.
   const categories = sort(
@@ -78,7 +96,11 @@ export function ScoreOverview({
     >
       <div className="grid gap-6 p-5 md:grid-cols-[15rem_1fr] md:items-center">
         <div>
-          <ScoreGauge score={score} animate={animate} />
+          <ScoreGauge standing={standing} animate={animate} />
+          <p className="mx-auto mt-1 flex max-w-[15rem] items-start justify-center gap-1 text-center text-xs text-subtle">
+            <span>{coverageLine(standing)}</span>
+            <HelpTip label={t("Site puanı")}>{scoreMethod()}</HelpTip>
+          </p>
           {history !== undefined && !hasHistory ? (
             <p className="mx-auto mt-1 max-w-[15rem] text-center text-xs text-subtle">
               {t("İlk denetim. Puanın seyri bir sonrakinde başlar.")}
@@ -89,9 +111,23 @@ export function ScoreOverview({
           <h2 id="audit-score-heading" className="text-base font-semibold">
             {t("Site puanı")}
           </h2>
+          {standing.provisional ? (
+            <p className="mt-1 text-sm font-medium text-muted">
+              {provisionalLine(standing)}
+            </p>
+          ) : null}
           <p className="mt-1 max-w-prose text-sm text-muted">
-            {scoreVerdict(score, counters.errors)}
+            {standingVerdict(standing, counters.errors)}
           </p>
+          {thinLines.length > 0 || limitNote || countLine ? (
+            <ul className="mt-1 max-w-prose text-sm text-muted">
+              {thinLines.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+              {limitNote ? <li>{limitNote}</li> : null}
+              {countLine ? <li>{countLine}</li> : null}
+            </ul>
+          ) : null}
           <dl className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-box border border-[var(--hairline)] bg-[var(--hairline)] lg:grid-cols-4">
             <Counter
               Icon={OctagonAlert}
@@ -150,7 +186,9 @@ export function ScoreOverview({
             ))}
           </ul>
         </div>
-        {hasHistory ? <ScoreHistory scored={scored} /> : null}
+        {hasHistory ? (
+          <ScoreHistory scored={scored} withheld={withheld} />
+        ) : null}
       </div>
     </section>
   );
@@ -275,8 +313,11 @@ function CategoryRow({
 
 function ScoreHistory({
   scored,
+  withheld,
 }: {
   scored: (ScorePoint & { score: number })[];
+  /** Failed or cut-short audits in the window, left off the chart. */
+  withheld: number;
 }) {
   const last = scored.at(-1);
   const previous = scored.at(-2);
@@ -298,7 +339,7 @@ function ScoreHistory({
           <li
             key={point.auditId}
             className="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-1"
-            title={`${formatDate(point.startedAt)}: ${point.score}`}
+            title={`${formatDate(point.startedAt)}: ${point.score}${point.provisional ? ` (${t("Kısmi puan")})` : ""}`}
           >
             <span
               className={`text-xs tabular-nums ${index === scored.length - 1 ? "font-semibold" : "text-muted"}`}
@@ -309,7 +350,11 @@ function ScoreHistory({
               className="w-full max-w-8 rounded-t-[4px]"
               style={{
                 height: `${Math.max(4, point.score * 0.8)}%`,
-                background: scoreFill(point.score),
+                // A provisional point is drawn neutral: its number is not a
+                // verdict, and the chart must not colour it as one.
+                background: point.provisional
+                  ? "var(--text-subtle)"
+                  : scoreFill(point.score),
                 opacity: index === scored.length - 1 ? 1 : 0.55,
               }}
             />
@@ -319,6 +364,20 @@ function ScoreHistory({
           </li>
         ))}
       </ol>
+      {scored.some((point) => point.provisional) ? (
+        <p className="mt-2 text-xs text-subtle">
+          {t(
+            "Gri çubuklar kısmi puandır: o denetimde kontrollerin önemli bir kısmı ölçülemedi.",
+          )}
+        </p>
+      ) : null}
+      {withheld > 0 ? (
+        <p className="mt-2 text-xs text-subtle">
+          {t("{count} eksik denetim puansız olduğu için grafikte yok.", {
+            count: withheld,
+          })}
+        </p>
+      ) : null}
       {scored.some((point) => point.partial) ? (
         <p className="mt-2 text-xs text-subtle">
           {t(

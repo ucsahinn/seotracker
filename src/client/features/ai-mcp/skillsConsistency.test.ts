@@ -20,6 +20,8 @@ const NOT_TOOLS = new Set([
   ...PROJECT_CONTEXT_SECTION_KEYS,
   "ctr_gap",
   "near_miss",
+  "no_conversions",
+  "too_little_traffic",
   "last_28_days",
   "last_3_months",
   "last_6_months",

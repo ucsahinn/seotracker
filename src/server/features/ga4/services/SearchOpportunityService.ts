@@ -1,19 +1,31 @@
 import { GscService } from "@/server/features/gsc/services/GscService";
 import { GscNotConnectedError } from "@/server/lib/gscErrors";
-import {
-  Ga4ReportingService,
-  resolveGa4DateRange,
-} from "@/server/features/ga4/services/Ga4ReportingService";
+import { toMetricRows } from "@/server/features/gsc/searchPerformanceReport";
+import { SearchSettingsRepository } from "@/server/features/gsc/repositories/SearchSettingsRepository";
+import { Ga4ReportingService } from "@/server/features/ga4/services/Ga4ReportingService";
 import { Ga4ReportError } from "@/server/lib/ga4Errors";
 import { Ga4ConnectionRepository } from "@/server/features/ga4/repositories/Ga4ConnectionRepository";
-import { ga4DateInTimeZone, shiftGa4Date } from "./Ga4Dates";
-import { DEFAULT_WINDOW_DAYS, GSC_DATA_LAG_DAYS } from "@/shared/dataFreshness";
 import {
-  classify,
-  ctrGap,
-  expectedCtrByBucket,
-  type OpportunityKind,
-} from "@/server/features/ga4/services/opportunityKind";
+  addIsoDays,
+  DEFAULT_WINDOW_DAYS,
+  GSC_DATA_LAG_DAYS,
+  GSC_TIME_ZONE,
+  gscToday,
+  isoDaysInclusive,
+} from "@/shared/dataFreshness";
+import {
+  pageOpportunities,
+  perMonth,
+  type PageOpportunity,
+  type WorkKind,
+} from "@/shared/pageOpportunities";
+import { bandOf, type BandId } from "@/shared/positionBands";
+import {
+  effectiveBrandTerms,
+  scaleThreshold,
+  suggestBrandTerms,
+  type QueryPageRow,
+} from "@/shared/searchInsights";
 
 type SearchOpportunityInput = {
   projectId: string;
@@ -24,67 +36,67 @@ type SearchOpportunityInput = {
   limit?: number;
 };
 
-type Candidate = {
-  page: string;
-  normalizedPage: string | null;
-  clicks: number;
-  impressions: number;
-  ctr: number;
-  position: number;
-  joinStatus: "joined" | "gsc_only";
-  ga4: {
-    sessions: number;
-    activeUsers: number;
-    engagedSessions: number;
-    engagementRate: number;
-    keyEvents: number;
-    sessionKeyEventRate: number;
-    transactions: number;
-    purchaseRevenue: number | null;
-  } | null;
-  /*
-   * What kind of work this page needs. The screen used to keep only
-   * positions 4-20 and call everything else "not an opportunity", which
-   * threw away a page ranking second that nobody clicks and a page at 34
-   * with four thousand impressions.
-   */
-  kind: OpportunityKind;
-  /** How far the click-through sits from this site's own median for the
-      position, or null when there is too little to compare against. */
-  ctrGap: number | null;
-  score: number | null;
-  scoreComponents: {
-    demand: number;
-    businessValue: number;
-    reachability: number;
-  } | null;
+type Ga4PageValue = {
+  sessions: number;
+  activeUsers: number;
+  engagedSessions: number;
+  engagementRate: number;
+  keyEvents: number;
+  sessionKeyEventRate: number;
+  transactions: number;
+  purchaseRevenue: number | null;
 };
 
-function resolveCombinedDates(
+/**
+ * What GA4 says about the page's business value, as a label next to the
+ * click estimate rather than a weight inside it.
+ *
+ * - converts: enough organic sessions to judge, and key events among them.
+ * - no_conversions: enough sessions, none converted, while other pages on the
+ *   property do convert (so key events are set up).
+ * - too_little_traffic: under the session floor; one lucky conversion on
+ *   three sessions is not a conversion rate.
+ *
+ * Null when Analytics has no row for the page or is not connected.
+ */
+type ValueSignal = "converts" | "no_conversions" | "too_little_traffic";
+
+type OpportunityRow = Omit<PageOpportunity, "page"> & {
+  page: string;
+  normalizedPage: string | null;
+  band: BandId;
+  gainPerMonth: number;
+  joinStatus: "joined" | "gsc_only";
+  ga4: Ga4PageValue | null;
+  value: ValueSignal | null;
+};
+
+/** Organic sessions over 28 days below which a page's conversion rate is noise. */
+const VALUE_MIN_SESSIONS_28D = 30;
+
+/**
+ * Search Console's window, on Search Console's calendar: the newest day it
+ * has finalised and `windowDays` back from it. The same lag the dashboard and
+ * Search performance assume when Google does not say. Analytics is read for
+ * the same days, so the two sources can be joined row by row -- which is why
+ * a page's sessions here can differ from the Analytics screen, whose window
+ * ends yesterday.
+ */
+function resolveDates(
   input: Pick<SearchOpportunityInput, "startDate" | "endDate" | "windowDays">,
-  propertyTimeZone: string,
   now: Date,
-) {
-  if (!input.startDate && !input.endDate) {
-    /*
-     * GSC's boundary, not GA4's, on both halves. The two sources are joined
-     * row by row here, so pulling Analytics back to the day Search Console
-     * has finalised is what makes the pair comparable -- it is the reason
-     * this is not `resolveGa4DateRange`.
-     */
-    const endDate = shiftGa4Date(
-      ga4DateInTimeZone(now, propertyTimeZone),
-      -GSC_DATA_LAG_DAYS,
-    );
-    return {
-      startDate: shiftGa4Date(
-        endDate,
-        -((input.windowDays ?? DEFAULT_WINDOW_DAYS) - 1),
-      ),
-      endDate,
-    };
+): { startDate: string; endDate: string } {
+  if (input.startDate && input.endDate && input.startDate <= input.endDate) {
+    return { startDate: input.startDate, endDate: input.endDate };
   }
-  return resolveGa4DateRange(input, propertyTimeZone, now).resolvedDateRange;
+  const endDate = addIsoDays(gscToday(now), -GSC_DATA_LAG_DAYS);
+  return {
+    startDate: addIsoDays(
+      endDate,
+      -((input.windowDays ?? DEFAULT_WINDOW_DAYS) - 1),
+    ),
+    endDate,
+  };
 }
 
 function normalizePageKey(value: string): string | null {
@@ -198,35 +210,71 @@ function finishRates(totals: Ga4PageTotals): void {
   totals.sessionKeyEventRate = totals.weighted.keyEvent / totals.sessions;
 }
 
-/**
- * Where each value sits in the set, as a mid-rank in [0, 1].
- *
- * Mid-rank rather than the floor of a tie block, for two reasons that both
- * bite here. Search Console impression tails are dense with ties, and
- * `lower / (n - 1)` gave every member of a tie the rank of its weakest
- * member: [10, 10, 10, 10, 11] scored the first four at 0, losing them fifty
- * points for being one impression short of the top.
- *
- * The second is the 0.5 a GA4-unmatched page is given for business value. A
- * floor cannot straddle it: when every matched page ties -- which is what a
- * property whose key event fires on every session looks like -- they all
- * score 0 and sort *below* the pages with no measured value at all. A
- * mid-rank makes 0.5 genuinely the middle, including for a lone value.
- */
-function percentileRanks(values: number[]): number[] {
-  return values.map((value) => {
-    let lower = 0;
-    let equal = 0;
-    for (const candidate of values) {
-      if (candidate < value) lower += 1;
-      else if (candidate === value) equal += 1;
-    }
-    return (lower + equal / 2) / values.length;
-  });
+function valueSignal(
+  ga4: Ga4PageValue | null,
+  minSessions: number,
+  propertyConverts: boolean,
+): ValueSignal | null {
+  if (!ga4) return null;
+  if (ga4.sessions < minSessions) return "too_little_traffic";
+  if (ga4.keyEvents > 0) return "converts";
+  return propertyConverts ? "no_conversions" : null;
 }
 
-function roundComponent(value: number): number {
-  return Math.round(value * 10_000) / 10_000;
+function toQueryPageRows(
+  rows: ReadonlyArray<{
+    keys?: string[] | null;
+    clicks: number;
+    impressions: number;
+    ctr: number;
+    position: number;
+  }>,
+): QueryPageRow[] {
+  const out: QueryPageRow[] = [];
+  for (const row of rows) {
+    const [query, page] = row.keys ?? [];
+    if (!query || !page) continue;
+    out.push({
+      query,
+      page,
+      clicks: row.clicks,
+      impressions: row.impressions,
+      ctr: row.ctr,
+      position: row.position,
+    });
+  }
+  return out;
+}
+
+/**
+ * Analytics for the same days, joined by host and path. Analytics is the
+ * secondary factor here, so a project without it still gets every estimate;
+ * a GA4 failure (quota, permissions) becomes a note instead of an empty
+ * screen.
+ */
+async function readAnalytics(
+  projectId: string,
+  dates: { startDate: string; endDate: string },
+) {
+  const connection = await Ga4ConnectionRepository.getByProjectId(projectId);
+  if (!connection) return { state: "not_connected" as const };
+  try {
+    const report = await Ga4ReportingService.runReport({
+      projectId,
+      kind: "landing_pages",
+      startDate: dates.startDate,
+      endDate: dates.endDate,
+      limit: 1_000,
+      offset: 0,
+      channel: "organic_search",
+    });
+    return { state: "connected" as const, report };
+  } catch (error) {
+    if (error instanceof Ga4ReportError) {
+      return { state: "unavailable" as const, code: error.code };
+    }
+    throw error;
+  }
 }
 
 async function getOpportunities(
@@ -240,47 +288,62 @@ async function getOpportunities(
       "limit must be an integer from 1 to 100.",
     );
   }
-  const [ga4Connection, gscConnection] = await Promise.all([
-    Ga4ConnectionRepository.getByProjectId(input.projectId),
-    GscService.getConnection(input.projectId),
-  ]);
-  if (!ga4Connection) {
-    throw new Ga4ReportError(
-      "ga4_not_connected",
-      "Google Analytics is not connected for this project.",
-    );
-  }
+  const gscConnection = await GscService.getConnection(input.projectId);
   if (!gscConnection) throw new GscNotConnectedError(input.projectId);
 
-  const now = opts.now ?? new Date();
-  const dates = resolveCombinedDates(
-    input,
-    ga4Connection.propertyTimeZone,
-    now,
+  const dates = resolveDates(input, opts.now ?? new Date());
+  const days = isoDaysInclusive(dates.startDate, dates.endDate);
+  /*
+   * The same three tables, with the same request, Search performance reads,
+   * so a visit to one screen warms the cache for the other and both read
+   * one set of rows.
+   */
+  const ask = (dimensions: Array<"query" | "page">) =>
+    GscService.queryAnalytics({
+      projectId: input.projectId,
+      startDate: dates.startDate,
+      endDate: dates.endDate,
+      dimensions,
+      filters: [],
+      type: "web",
+      dataState: "all",
+      maxPages: 2,
+    });
+  const [queries, pages, queryPages, confirmedTerms, identity, analytics] =
+    await Promise.all([
+      ask(["query"]),
+      ask(["page"]),
+      ask(["query", "page"]),
+      SearchSettingsRepository.listBrandTerms(input.projectId),
+      SearchSettingsRepository.getProjectIdentity(input.projectId),
+      readAnalytics(input.projectId, dates),
+    ]);
+
+  /*
+   * Brand queries are split out of the curve and out of the gain. Until the
+   * operator confirms terms, the ones suggested from the domain and project
+   * name stand in -- otherwise the brand name at 55% sets the bar for every
+   * informational query at the same position, which is how a blog post at
+   * 2.7 with a healthy 16% was told to rewrite its title. The screen says
+   * which terms were used.
+   */
+  const { terms: brandTerms, source: brandSource } = effectiveBrandTerms(
+    confirmedTerms,
+    suggestBrandTerms(identity.domain, identity.name),
   );
-  const gsc = await GscService.getPerformance({
-    projectId: input.projectId,
-    dimensions: ["page"],
-    startDate: dates.startDate,
-    endDate: dates.endDate,
-    rowLimit: 1_000,
-    startRow: 0,
-    type: "web",
-    dataState: "final",
-  });
-  const ga4 = await Ga4ReportingService.runReport({
-    projectId: input.projectId,
-    kind: "landing_pages",
-    startDate: dates.startDate,
-    endDate: dates.endDate,
-    limit: 1_000,
-    offset: 0,
-    channel: "organic_search",
+
+  const result = pageOpportunities({
+    days,
+    queries: toMetricRows(queries.rows),
+    pages: toMetricRows(pages.rows),
+    queryPages: toQueryPageRows(queryPages.rows),
+    brandTerms,
   });
 
   const ga4ByPage = new Map<string, Ga4PageTotals>();
   let invalidGa4Rows = 0;
-  for (const row of ga4.rows) {
+  const ga4Rows = analytics.state === "connected" ? analytics.report.rows : [];
+  for (const row of ga4Rows) {
     const host = typeof row.hostName === "string" ? row.hostName : "";
     const landing = typeof row.landingPage === "string" ? row.landingPage : "";
     const key = normalizePageKey(`${host}${landing}`);
@@ -291,159 +354,114 @@ async function getOpportunities(
     ga4ByPage.set(key, addRow(ga4ByPage.get(key), row));
   }
   for (const totals of ga4ByPage.values()) finishRates(totals);
-
-  /*
-   * The site's own click-through by position, computed before the rows are
-   * mapped so every candidate can be compared against it.
-   */
-  const expectedCtr = expectedCtrByBucket(gsc.rows);
-
-  const candidates: Candidate[] = gsc.rows
-    // Anything Google actually showed. A row with no impressions is not an
-    // opportunity, it is a page nobody has been offered yet.
-    .filter((row) => row.impressions > 0)
-    .map((row) => {
-      const page = row.keys?.[0] ?? "";
-      const normalizedPage = normalizePageKey(page);
-      const analytics = normalizedPage
-        ? ga4ByPage.get(normalizedPage)
-        : undefined;
-      return {
-        page,
-        normalizedPage,
-        clicks: row.clicks,
-        impressions: row.impressions,
-        ctr: row.ctr,
-        position: row.position,
-        joinStatus: analytics ? "joined" : "gsc_only",
-        ga4: analytics ?? null,
-        kind: classify(row, expectedCtr),
-        ctrGap: ctrGap(row, expectedCtr),
-        score: null,
-        scoreComponents: null,
-      } satisfies Candidate;
-    });
-
-  const joined = candidates.filter(
-    (
-      candidate,
-    ): candidate is Candidate & { ga4: NonNullable<Candidate["ga4"]> } =>
-      candidate.ga4 !== null,
+  const propertyConverts = [...ga4ByPage.values()].some(
+    (totals) => totals.keyEvents > 0,
   );
-  const engagementFallback =
-    joined.length > 0 &&
-    joined.every((candidate) => candidate.ga4.keyEvents === 0);
+  const minSessions = scaleThreshold(VALUE_MIN_SESSIONS_28D, days);
 
-  /*
-   * Every candidate is scored, not only the ones GA4 matched.
-   *
-   * A page appears in GA4's landing-page report only if it received organic
-   * sessions. Scoring `joined` alone therefore meant a page with forty
-   * thousand impressions at position 6 and no traffic got no score and sorted
-   * below pages with a tenth of its demand - which inverts the whole point of
-   * the screen, because demand without traffic is the opportunity.
-   *
-   * Demand and reachability need only Search Console, so they run over
-   * everything. Business value needs GA4, so an unmatched page takes the
-   * neutral middle rather than a zero it did not earn; `joinStatus` already
-   * tells the UI which rows those are.
-   */
-  const demand = percentileRanks(
-    candidates.map((candidate) => candidate.impressions),
-  );
-  // Percentile ranking only reads order, so the old `log1p` here and the
-  // `20 - position` below changed nothing. Dropping them removes a knob that
-  // looked tunable and was not.
-  const reachability = percentileRanks(
-    candidates.map((candidate) => -candidate.position),
-  );
-  const joinedValue = percentileRanks(
-    joined.map((candidate) =>
-      engagementFallback
-        ? candidate.ga4.engagementRate
-        : candidate.ga4.sessionKeyEventRate,
-    ),
-  );
-  const valueByPage = new Map(
-    joined.map((candidate, index) => [candidate.page, joinedValue[index] ?? 0]),
-  );
-
-  candidates.forEach((candidate, index) => {
-    const components = {
-      demand: roundComponent(demand[index] ?? 0),
-      businessValue: roundComponent(valueByPage.get(candidate.page) ?? 0.5),
-      reachability: roundComponent(reachability[index] ?? 0),
+  const candidates: OpportunityRow[] = result.pages.map((page) => {
+    const normalizedPage = normalizePageKey(page.page);
+    const totals = normalizedPage ? ga4ByPage.get(normalizedPage) : undefined;
+    const ga4: Ga4PageValue | null = totals
+      ? {
+          sessions: totals.sessions,
+          activeUsers: totals.activeUsers,
+          engagedSessions: totals.engagedSessions,
+          engagementRate: totals.engagementRate,
+          keyEvents: totals.keyEvents,
+          sessionKeyEventRate: totals.sessionKeyEventRate,
+          transactions: totals.transactions,
+          purchaseRevenue: totals.purchaseRevenue,
+        }
+      : null;
+    return {
+      ...page,
+      normalizedPage,
+      band: bandOf(page.position),
+      gainPerMonth: perMonth(page.gain, days),
+      joinStatus: ga4 ? "joined" : "gsc_only",
+      ga4,
+      value: valueSignal(ga4, minSessions, propertyConverts),
     };
-    candidate.scoreComponents = components;
-    candidate.score = Math.round(
-      100 *
-        (0.5 * components.demand +
-          0.3 * components.businessValue +
-          0.2 * components.reachability),
-    );
   });
-  // Every candidate now carries a score, so this is a plain ranking. The
-  // null-last branch stayed behind from when GA4-unmatched rows had none.
-  candidates.sort(
-    (a, b) => (b.score ?? 0) - (a.score ?? 0) || b.impressions - a.impressions,
-  );
 
-  const matchedRows = joined.length;
-  // Several GSC URLs can normalize to one GA4 page; count that page once.
-  const matchedGa4Pages = new Set(joined.map((c) => c.normalizedPage)).size;
-  const unmatchedGscRows = candidates.length - matchedRows;
+  const workTotals = (kind: WorkKind) => {
+    const gain = candidates.reduce((sum, row) => sum + row.gainByWork[kind], 0);
+    return {
+      pages: candidates.filter((row) => row.gainByWork[kind] > 0).length,
+      gain,
+      gainPerMonth: perMonth(gain, days),
+    };
+  };
+  const byWork = {
+    snippet: workTotals("snippet"),
+    page1: workTotals("page1"),
+    page2: workTotals("page2"),
+    deep: workTotals("deep"),
+  };
+  const totalGain = candidates.reduce((sum, row) => sum + row.gain, 0);
+  const listedClicks = candidates.reduce((sum, row) => sum + row.clicks, 0);
+
+  const joined = candidates.filter((row) => row.ga4 !== null);
+  const matchedGa4Pages = new Set(joined.map((row) => row.normalizedPage)).size;
   const returned = candidates.slice(0, limit);
+  const ga4Report = analytics.state === "connected" ? analytics.report : null;
   return {
     status: "ok" as const,
     source: {
-      searchConsoleSiteUrl: gsc.siteUrl,
-      googleAnalyticsPropertyId: ga4.source.propertyId,
-      googleAnalyticsPropertyDisplayName: ga4.source.propertyDisplayName,
+      searchConsoleSiteUrl: pages.siteUrl,
+      googleAnalyticsPropertyId: ga4Report?.source.propertyId ?? null,
+      googleAnalyticsPropertyDisplayName:
+        ga4Report?.source.propertyDisplayName ?? null,
     },
     request: {
       dateRange: dates,
+      days,
       limit,
-      searchConsoleTimeZone: "America/Los_Angeles",
-      googleAnalyticsTimeZone: ga4.request.propertyTimeZone,
+      searchConsoleTimeZone: GSC_TIME_ZONE,
+      googleAnalyticsTimeZone: ga4Report?.request.propertyTimeZone ?? null,
     },
+    analytics:
+      analytics.state === "unavailable"
+        ? { state: analytics.state, code: analytics.code }
+        : { state: analytics.state, code: null },
     rowCount: returned.length,
     totalCandidateRows: candidates.length,
     rows: returned,
-    scoring: {
+    totals: {
+      gain: totalGain,
+      gainPerMonth: perMonth(totalGain, days),
+      clicksPerMonth: perMonth(listedClicks, days),
+      byWork,
+      noGainPages: result.noGainPages,
+      pagesConsidered: candidates.length + result.noGainPages,
+    },
+    method: {
       formula:
-        "round(100 * (0.5 * demand + 0.3 * businessValue + 0.2 * reachability))",
-      // Percentile ranks are relative to this candidate set, so a weak site
-      // still produces a 95. The UI has to say "compared with your other
-      // pages", not treat it as an absolute verdict.
-      relativeToCandidateSet: true,
-      // Pages GA4 could not match take the neutral middle for business value
-      // rather than being excluded; joinStatus marks them.
-      unmatchedBusinessValue: 0.5,
-      businessValueMetric: engagementFallback
-        ? "engagementRate"
-        : "sessionKeyEventRate",
-      engagementFallback,
-      scoreDataLimited: ga4.reportMetadata.hasLimitedData,
+        "per query x page: impressions x site CTR at the target position - clicks; summed per page, scaled to 30 days",
+      curve: result.curve,
+      curveInsufficient: result.curveInsufficient,
+      brandSource,
+      brandTerms,
+      valueMinSessions: minSessions,
     },
     coverage: {
-      gscRowsConsidered: gsc.rows.length,
-      ga4RowsConsidered: ga4.rows.length,
-      matchedRows,
-      unmatchedGscRows,
+      gscRowsConsidered: pages.rows.length,
+      queryPageRows: queryPages.rows.length,
+      ga4RowsConsidered: ga4Rows.length,
+      matchedRows: joined.length,
+      unmatchedGscRows: candidates.length - joined.length,
       unmatchedGa4Rows:
         Math.max(ga4ByPage.size - matchedGa4Pages, 0) + invalidGa4Rows,
     },
     truncated: {
-      gsc: gsc.rows.length >= 1_000,
-      ga4: ga4.totalRowCount > ga4.rows.length,
+      gsc: pages.truncated || queryPages.truncated,
+      ga4: ga4Report ? ga4Report.totalRowCount > ga4Report.rows.length : false,
       candidates: returned.length < candidates.length,
     },
-    warnings:
-      ga4.request.propertyTimeZone === "America/Los_Angeles"
-        ? ga4.warnings
-        : [...ga4.warnings, "source_time_zones_differ"],
-    reportMetadata: ga4.reportMetadata,
-    quota: ga4.quota,
+    warnings: ga4Report?.warnings ?? [],
+    reportMetadata: ga4Report?.reportMetadata ?? null,
+    quota: ga4Report?.quota ?? null,
   };
 }
 

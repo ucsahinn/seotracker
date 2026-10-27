@@ -8,11 +8,11 @@ updated: 2026-10-22
 
 Sie erklären Ihrem Assistenten Ihre Website einmal und danach nie wieder.
 
-Was Google nicht weiß, tragen Sie auf dem Bildschirm **Proje bilgisi** (Projektinfo) ein. Sie beschreiben, was Sie verkaufen, was Sie jetzt erreichen wollen, wer Ihre Wettbewerber sind, welche Seiten Umsatz bringen und wie geschrieben werden soll. Sie können den Bildschirm selbst ausfüllen oder von Ihrem KI-Assistenten ausfüllen lassen (auf dem Bildschirm steht „ajan“, Agent). Der Assistent liest diese Seite, bevor er mit der Arbeit beginnt, und schreibt auch das, was er lernt, hierher. Steht etwas Falsches da, korrigieren Sie es selbst. Der Bildschirm nützt Ihnen auch ohne Assistenten. Fragen Sie in sechs Monaten „warum haben wir uns auf diese Seite konzentriert“, steht die Antwort hier.
+Was Google nicht weiß, tragen Sie auf dem Bildschirm **Projektkontext** ein. Sie beschreiben, was Sie verkaufen, was Sie jetzt erreichen wollen, wer Ihre Wettbewerber sind, welche Seiten Umsatz bringen und wie geschrieben werden soll. Sie können den Bildschirm selbst ausfüllen oder von Ihrem KI-Assistenten ausfüllen lassen (auf dem Bildschirm steht „der Agent“, Agent). Der Assistent liest diese Seite, bevor er mit der Arbeit beginnt, und schreibt auch das, was er lernt, hierher. Steht etwas Falsches da, korrigieren Sie es selbst. Der Bildschirm nützt Ihnen auch ohne Assistenten. Fragen Sie in sechs Monaten „warum haben wir uns auf diese Seite konzentriert“, steht die Antwort hier.
 
 ## Was auf dem Bildschirm zu sehen ist
 
-**Vier Hauptabschnitte.** Das sind **İşin özeti** (Zusammenfassung des Geschäfts), **Şu anki hedef** (Aktuelles Ziel), **Konumlandırma** (Positionierung: wie Sie sich im Markt beschreiben) und **Yazım tercihleri** (Schreibvorgaben). In jedem schreiben Sie frei; er nimmt höchstens 4.000 Zeichen auf. Darunter sehen Sie, wer wann aktualisiert hat.
+**Vier Hauptabschnitte.** Das sind **Geschäftsüberblick**, **Aktuelles Ziel**, **Positionierung** (wie Sie sich im Markt beschreiben) und **Schreibpräferenzen**. In jedem schreiben Sie frei; er nimmt höchstens 4.000 Zeichen auf. Darunter sehen Sie, wer wann aktualisiert hat.
 
 **Eigene Abschnitte.** Passt ein Thema nicht in die vier Abschnitte, legen Sie eine eigene Überschrift an. Sie können höchstens 20 eigene Abschnitte anlegen, die Überschrift hat höchstens 120 Zeichen.
 
@@ -20,24 +20,24 @@ Was Google nicht weiß, tragen Sie auf dem Bildschirm **Proje bilgisi** (Projekt
 
 **Wichtige Seiten.** Zu jeder Seite schreiben Sie Adresse, Rolle, Thema und Notiz. Die Rollen sind:
 
-- **Merkez sayfa** (Zentrale Seite): die Einstiegsseite zu einem Thema.
-- **Destek sayfası** (Unterstützende Seite): eine Unterseite, die die zentrale Seite stärkt.
-- **Dönüşüm sayfası** (Conversion-Seite): eine Seite, die Umsatz bringt oder ein Formular enthält.
-- **Diğer** (Sonstige).
+- **Hub-Seite**: die Einstiegsseite zu einem Thema.
+- **Unterstützende Seite**: eine Unterseite, die die zentrale Seite stärkt.
+- **Conversion-Seite**: eine Seite, die Umsatz bringt oder ein Formular enthält.
+- **Andere**.
 
 Sie können höchstens 100 Seiten hinzufügen. Adressen werden so ergänzt, dass sie mit https beginnen.
 
 **Recherchejournal.** Der Assistent hinterlässt datierte Notizen wie „das habe ich recherchiert, das kam heraus“. Diese Notizen schreibt nur der Assistent, jede hat höchstens 1.000 Zeichen. Wenn Sie möchten, löschen Sie sie selbst. Nach 90 Tagen werden Notizen automatisch gelöscht. Auf dem Bildschirm sehen Sie die neuesten 20 Notizen.
 
-**Assistenten-Karte.** Auf der Karte stehen zwei fertige Texte: „Ajanınıza doldurtun“ (Lassen Sie Ihren Assistenten ausfüllen) und „Ajanınıza gözden geçirtin“ (Lassen Sie Ihren Assistenten prüfen). Mit **İstemi kopyala** (Anweisung kopieren) kopieren Sie den Text und fügen ihn in Ihren Assistenten ein. Ist das Projekt leer, bittet der erste Text den Assistenten, Ihnen einige Fragen zu stellen und danach die Abschnitte auszufüllen.
+**Assistenten-Karte.** Auf der Karte stehen zwei fertige Texte: „Von Ihrem Agenten ausfüllen lassen“ und „Von Ihrem Agenten überprüfen lassen“. Mit **Prompt kopieren** kopieren Sie den Text und fügen ihn in Ihren Assistenten ein. Ist das Projekt leer, bittet der erste Text den Assistenten, Ihnen einige Fragen zu stellen und danach die Abschnitte auszufüllen.
 
 ## So gehen Sie vor
 
-1. Schreiben Sie gleich nach dem Öffnen des Projekts drei bis fünf Sätze in **İşin özeti**. Sagen Sie, was Sie verkaufen, an wen, in welchen Sprachen Ihre Website erscheint und welche Seite Ihre Conversion-Seite ist. Der Assistent bereitet jeden Bericht anhand dieses Absatzes vor.
-2. Formulieren Sie **Şu anki hedef** konkret. Schreiben Sie nicht „Traffic“. Schreiben Sie „Produktseiten sollen in den Index (Googles Seitenliste) kommen“ oder „fünf Anfragen pro Monat über das Demo-Formular“. Der Assistent ordnet seine Vorschläge danach.
-3. Tragen Sie unter **Önemli sayfalar** (Wichtige Seiten) zuerst die Conversion-Seiten ein, dann die zentralen Seiten. Daran erkennt der Assistent, was er priorisieren soll.
-4. Schreiben Sie in **Yazım tercihleri** die Wörter, die nicht verwendet werden sollen, und den Ton. Zum Beispiel „nicht ‚Branchenführer‘ sagen“, „Sie-Form“, „Versionsnummer angeben“. Die Berichte des Assistenten halten sich an diese Regeln.
-5. Nutzen Sie einen Assistenten, kopieren Sie am ersten Tag den Text **Ajanınıza doldurtun** und fügen ihn ein. Der Assistent füllt die Abschnitte im Gespräch mit Ihnen aus. Lesen Sie einmal im Monat das Recherchejournal und korrigieren Sie, was falsch ist.
+1. Schreiben Sie gleich nach dem Öffnen des Projekts drei bis fünf Sätze in **Geschäftsüberblick**. Sagen Sie, was Sie verkaufen, an wen, in welchen Sprachen Ihre Website erscheint und welche Seite Ihre Conversion-Seite ist. Der Assistent bereitet jeden Bericht anhand dieses Absatzes vor.
+2. Formulieren Sie **Aktuelles Ziel** konkret. Schreiben Sie nicht „Traffic“. Schreiben Sie „Produktseiten sollen in den Index (Googles Seitenliste) kommen“ oder „fünf Anfragen pro Monat über das Demo-Formular“. Der Assistent ordnet seine Vorschläge danach.
+3. Tragen Sie unter **Schlüsselseiten** zuerst die Conversion-Seiten ein, dann die zentralen Seiten. Daran erkennt der Assistent, was er priorisieren soll.
+4. Schreiben Sie in **Schreibpräferenzen** die Wörter, die nicht verwendet werden sollen, und den Ton. Zum Beispiel „nicht ‚Branchenführer‘ sagen“, „Sie-Form“, „Versionsnummer angeben“. Die Berichte des Assistenten halten sich an diese Regeln.
+5. Nutzen Sie einen Assistenten, kopieren Sie am ersten Tag den Text **Von Ihrem Agenten ausfüllen lassen** und fügen ihn ein. Der Assistent füllt die Abschnitte im Gespräch mit Ihnen aus. Lesen Sie einmal im Monat das Recherchejournal und korrigieren Sie, was falsch ist.
 
 ## Wie der Assistent schreibt
 

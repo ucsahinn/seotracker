@@ -40,10 +40,14 @@ import { sanitizeAuditErrorDetail } from "./sanitizeAuditError";
 const AUDIT_SAMPLE = 25;
 const LIGHTHOUSE_ERROR_SAMPLE = 5;
 
-export async function collectDiagnostics(now = new Date()) {
+export async function collectDiagnostics(
+  now = new Date(),
+  /** The URL the caller reached this instance by, for the actual port. */
+  requestUrl?: string | null,
+) {
   const [setup, tables, projectRows, auditRows, connections] =
     await Promise.all([
-      getSelfHostSetupStatus(),
+      getSelfHostSetupStatus({ requestUrl }),
       countTables(),
       listProjects(),
       listRecentAudits(),
@@ -162,6 +166,10 @@ export async function listRecentAudits() {
       failedPhase: audits.failedPhase,
       errorCode: audits.errorCode,
       errorDetail: audits.errorDetail,
+      // A completed audit that worked around something (missing_secret).
+      noticeCode: audits.noticeCode,
+      // URLs found before the page limit; null on older audits.
+      urlsDiscovered: audits.urlsDiscovered,
       pagesCrawled: audits.pagesCrawled,
       pagesTotal: audits.pagesTotal,
       lighthouseTotal: audits.lighthouseTotal,

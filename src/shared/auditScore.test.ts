@@ -5,7 +5,14 @@ import {
   auditCategoryOf,
   type AuditCategory,
 } from "./auditCategory";
-import { auditScoreBand, auditScoreTier, scoreAudit } from "./auditScore";
+import {
+  auditScoreBand,
+  auditScoreTier,
+  CRITICAL_SCORE_CAP,
+  MANY_WARNINGS,
+  scoreAudit,
+  WARNINGS_SCORE_CAP,
+} from "./auditScore";
 
 const finding = (
   severity: "critical" | "warning" | "info",
@@ -101,6 +108,9 @@ describe("scoreAudit", () => {
         finding("warning", 100, "middle"),
       ],
       100,
+      // Crawl only, so the site score (42) is under the critical cap and
+      // every fix moves it; under a binding cap the lesser fixes give 0.
+      new Set<AuditCategory>(["crawl"]),
     );
 
     expect(gains.map((gain) => gain.issueType)).toEqual([
@@ -159,6 +169,47 @@ describe("scoreAudit", () => {
     expect(
       scored.categories.find((c) => c.category === "speed")?.score,
     ).toBeNull();
+  });
+});
+
+describe("severity caps", () => {
+  /*
+   * One critical page on a large site cost about a point and a half of the
+   * weighted average, so the site read 98 with a critical problem listed.
+   */
+  it("holds a site with a critical finding at 69", () => {
+    const scored = scoreAudit([finding("critical", 1)], 1000);
+
+    expect(scored.score).toBe(CRITICAL_SCORE_CAP);
+    expect(scored.cappedBy).toBe("critical");
+  });
+
+  it("holds many warnings at 89, and fewer not at all", () => {
+    const warnings = (count: number) =>
+      Array.from({ length: count }, (_, i) => finding("warning", 1, `w${i}`));
+
+    expect(scoreAudit(warnings(MANY_WARNINGS), 1000)).toMatchObject({
+      score: WARNINGS_SCORE_CAP,
+      cappedBy: "warnings",
+    });
+    expect(scoreAudit(warnings(MANY_WARNINGS - 1), 1000).score).toBeGreaterThan(
+      WARNINGS_SCORE_CAP,
+    );
+  });
+
+  // The gain is the capped score after the fix minus the capped score now.
+  it("credits fixing the only critical finding with releasing the cap", () => {
+    const scored = scoreAudit(
+      [finding("critical", 1, "c"), finding("info", 1, "i")],
+      1000,
+    );
+    const after = scoreAudit([finding("info", 1, "i")], 1000).score ?? 0;
+    const gain = scored.gains.find((g) => g.issueType === "c")?.points ?? 0;
+
+    expect(after).toBe(99);
+    expect(Math.abs(after - (scored.score ?? 0) - gain)).toBeLessThan(1.01);
+    // The info fixed under the binding cap adds nothing yet.
+    expect(scored.gains.find((g) => g.issueType === "i")?.points).toBe(0);
   });
 });
 

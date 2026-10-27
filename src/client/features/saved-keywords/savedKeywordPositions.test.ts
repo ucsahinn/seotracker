@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  countMoves,
   countPositionGroups,
   filterByPosition,
   indexPositions,
@@ -41,5 +42,24 @@ describe("saved keyword positions", () => {
       "hiç görünmeyen",
     ]);
     expect(filterByPosition(keywords, null, positions)).toHaveLength(6);
+  });
+});
+
+describe("countMoves", () => {
+  it("counts climbs and slips of half a place or more", () => {
+    expect(
+      countMoves(
+        [
+          { keyword: "Ankara Otel" },
+          { keyword: "gül yağı" },
+          { keyword: "yeni" },
+        ],
+        [
+          { query: "ankara otel", delta: 2 },
+          { query: "gül yağı", delta: -0.2 },
+          { query: "yeni", delta: null },
+        ],
+      ),
+    ).toEqual({ up: 1, down: 0 });
   });
 });

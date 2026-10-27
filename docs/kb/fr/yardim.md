@@ -3,10 +3,10 @@ title: Aide
 description: En cas de souci, commencez ici : l'écran vérifie l'installation, donne la solution aux problèmes courants et prépare le fichier à joindre au signalement.
 screen: Yardım
 route: /support
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
-L'interface de l'application est disponible en turc et en anglais. La langue se choisit dans Ayarlar → Görünüm → Dil. Ce guide donne chaque nom de bouton et d'écran en turc, suivi de sa traduction française entre parenthèses.
+L'interface de l'application existe en six langues : turc, anglais, allemand, français, italien et portugais. La langue se choisit dans Paramètres → Apparence → Langue. Ce guide donne les boutons et les écrans sous le nom qu'ils portent dans l'interface en français. Le menu de la zone de notification de Windows n'existe qu'en turc. Là, le nom turc est suivi de sa traduction française entre parenthèses.
 
 Si quelque chose ne va pas, regardez d'abord ici. Cet écran contrôle votre installation, dit ce qui manque et vous conduit au bon réglage.
 
@@ -14,41 +14,43 @@ Si quelque chose ne va pas, regardez d'abord ici. Cet écran contrôle votre ins
 
 **Actions rapides.** Les boutons du haut :
 
-- **Durumu yeniden kontrol et** (Revérifier l'état) : actualise la carte ci-dessous.
-- **Tanılama paketi indir** (Télécharger le paquet de diagnostic) : télécharge le fichier à joindre quand vous signalez un problème. Il ne contient aucune valeur secrète.
-- **Kılavuzu aç** (Ouvrir le guide) : ouvre le guide sur seowatcher.io.
+- **Revérifier l'état** : actualise la carte ci-dessous.
+- **Télécharger le paquet de diagnostic** : télécharge le fichier à joindre quand vous signalez un problème. Il ne contient aucune valeur secrète.
+- **Ouvrir le guide** : ouvre le guide sur seowatcher.io.
 - **seowatcher.io** : ouvre le site de l'application ; la page de téléchargement et le guide s'y trouvent.
-- **Sürüm notları** (Notes de version) : mène aux notes de version dans Ayarlar.
-- **Kurulum istemini kopyala** (Copier la consigne d'installation) : copie le texte d'installation à coller dans votre assistant IA (« ajan » dans l'application).
-- **Ajan kurulumu** (Installation de l'assistant) : mène à l'écran de connexion de l'assistant.
+- **Notes de version** : mène aux notes de version dans Paramètres.
+- **Copier l'invite de configuration** : copie le texte d'installation à coller dans votre assistant IA (« l'agent » dans l'application).
+- **Configuration de l'agent** : mène à l'écran de connexion de l'assistant.
 
-**L'état de votre installation (« Kurulumunuzun durumu »).** La carte vérifie quatre choses : **Giriş ve erişim** (Connexion et accès), **Google girişi** (Connexion Google), **PageSpeed anahtarı** (Clé PageSpeed), **Veritabanı** (Base de données). En haut, elle indique « Her şey yolunda. » (Tout va bien.) ou « N şey dikkat istiyor. » (N choses demandent de l'attention.). En dessous, on voit la ligne de version (« Sürüm X, güncel. » (Version X, à jour.) ou « yeni sürüm Y var » (une nouvelle version Y existe)) et l'heure de la dernière vérification. Le bouton à côté d'une ligne en difficulté vous mène au réglage concerné : **Ayarları aç** (Ouvrir les paramètres) ou **Anahtar gir** (Saisir la clé). **Özeti kopyala** (Copier le résumé) copie le texte de la carte dans le presse-papiers.
+**État de l'application.** La carte regarde cette installation elle-même. La liste de configuration d'un projet se trouve dans le Tableau de bord et dans les Infos du projet, pas ici. La carte vérifie quatre choses : **Connexion et accès**, **Connexion Google**, **Clé PageSpeed**, **Base de données**. En haut, elle indique « Tout est en ordre. » ou « N éléments nécessitent votre attention. ». En dessous, on voit la ligne de version (« Sürüm X, güncel. » (Version X, à jour.) ou « yeni sürüm Y var » (une nouvelle version Y existe)) et l'heure de la dernière vérification. Le bouton à côté d'une ligne en difficulté vous mène au réglage concerné : **Ouvrir les Paramètres** ou **Saisir la clé**. **Copier le résumé** copie le texte de la carte dans le presse-papiers.
 
-**Projets.** L'état de la connexion Search Console et Analytics de chaque projet s'affiche. **Bağlantıları aç** (Ouvrir les connexions) vous mène aux paramètres du projet.
+**Avertissement sur le numéro de port.** Si le paquet Windows s'ouvre sur un autre numéro de port parce qu'un autre programme occupe 3001 (par exemple une ancienne copie Docker), une bande jaune apparaît en haut de chaque écran de l'application : « seowatcher tourne cette fois sur 3002, car un autre programme utilise 3001 (par exemple une ancienne copie Docker). La connexion Google est configurée pour 3001 ; fermez ce programme et redémarrez seowatcher. » La bande est là au cas où vous auriez manqué la notification de la barre des tâches. La connexion Google revient à l'adresse 3001 et échoue si vous avez ouvert l'application sur 3002. Le bouton de fermeture à droite de la bande la masque pour cet onglet. La même phrase est aussi écrite dans la carte **État de l'application**. Pour résoudre, fermez le programme qui occupe 3001, puis choisissez **Yeniden başlat** (Redémarrer) dans le menu de la zone de notification. L'application revient sur 3001 et la bande disparaît. Si aucun autre programme ne l'utilise, l'application revient de toute façon sur 3001 au prochain démarrage.
 
-**Problèmes courants.** Il y a cinq rubriques dépliables : la page ne s'ouvre pas, le numéro de port est occupé, l'assistant ne peut pas se connecter (401), la limite PageSpeed, pas de données de requêtes. Chacune dit ce qu'il faut faire et donne le lien du réglage concerné.
+**Projets.** L'état de la connexion Search Console et Analytics de chaque projet s'affiche. **Ouvrir les connexions** vous mène aux paramètres du projet.
 
-**Limites de Google et du système.** Avec **Sınırları göster** (Afficher les limites), vous voyez où vous en êtes par rapport aux limites quotidiennes de Google.
+**Problèmes courants.** Il y a six rubriques dépliables : la page ne s'ouvre pas ou l'application ne fonctionne pas, le port est en cours d'utilisation, mon agent ne parvient pas à se connecter (401), la mesure de la vitesse s'arrête à mi-chemin (429), aucune donnée de requête et j'ai modifié un réglage et l'application ne le voit pas. Chacune dit ce qu'il faut faire et donne le lien du réglage concerné.
 
-**Liste du bas.** Il y a des raccourcis vers les fichiers de journal et vers l'adresse de santé (`/api/health`). Avec le paquet Windows, vous ouvrez les journaux par **Günlükleri aç** (Ouvrir les journaux) dans le menu de la barre des tâches. Avec Docker, vous utilisez la commande donnée avec **Komutu kopyala** (Copier la commande).
+**Limites de Google et du système.** Avec **Afficher les limites**, vous voyez où vous en êtes par rapport aux limites quotidiennes de Google.
+
+**Liste du bas.** Il y a des raccourcis vers les fichiers de journal et vers l'adresse de santé (`/api/health`). Avec le paquet Windows, vous ouvrez les journaux par **Günlükleri aç** (Ouvrir les journaux) dans le menu de la barre des tâches. Avec Docker, vous utilisez la commande donnée avec **Copier la commande**.
 
 ## Comment l'utiliser
 
 1. Si quelque chose ne fonctionne pas, ouvrez d'abord cet écran et lisez l'avertissement de la carte.
-2. Cliquez sur le bouton à côté de l'avertissement, il vous mène au bon réglage. Faites le réglage, revenez et cliquez sur **Durumu yeniden kontrol et**.
-3. Si la carte dit « Her şey yolunda. » mais que le problème persiste, regardez les rubriques **Sık sorunlar** (Problèmes courants).
-4. Si le problème n'est toujours pas résolu, cliquez sur **Tanılama paketi indir** et joignez le fichier au signalement sur GitHub. Avec le paquet Windows, **Sorunu bildir (GitHub)** (Signaler un problème (GitHub)), dans le menu de la barre des tâches, fait la même chose en un clic.
+2. Cliquez sur le bouton à côté de l'avertissement, il vous mène au bon réglage. Faites le réglage, revenez et cliquez sur **Revérifier l'état**.
+3. Si la carte dit « Tout est en ordre. » mais que le problème persiste, regardez les rubriques **Problèmes courants**.
+4. Si le problème n'est toujours pas résolu, cliquez sur **Télécharger le paquet de diagnostic** et joignez le fichier au signalement sur GitHub. Avec le paquet Windows, **Sorunu bildir (GitHub)** (Signaler un problème (GitHub)), dans le menu de la barre des tâches, fait la même chose en un clic.
 
 ## Questions fréquentes
 
-**Pourquoi la ligne « Google girişi » est-elle jaune ?** La clé d'accès Google n'a pas encore été saisie : la ligne reste jaune tant que Google n'est pas connecté. Suivez le guide de la connexion à Google.
+**Pourquoi la ligne « Connexion Google » est-elle jaune ?** La clé d'accès Google n'a pas encore été saisie : la ligne reste jaune tant que Google n'est pas connecté. Suivez le guide de la connexion à Google.
 
-**La ligne « Giriş ve erişim » indique « parolasız tek kullanıcı » (utilisateur unique sans mot de passe).** C'est normal. L'application ne s'ouvre que depuis votre propre ordinateur. Pour l'ouvrir depuis l'extérieur, vous devez placer devant elle votre propre accès protégé par mot de passe.
+**La ligne « Connexion et accès » indique « utilisateur unique sans mot de passe ».** C'est normal. L'application ne s'ouvre que depuis votre propre ordinateur. Pour l'ouvrir depuis l'extérieur, vous devez placer devant elle votre propre accès protégé par mot de passe.
 
 **Que contient le paquet de diagnostic ?** La version, les contrôles d'installation, le nombre de lignes des tables et les étapes et erreurs des 25 derniers audits. Les erreurs PageSpeed sont résumées sans URL de page. Les secrets et mots de passe sont exclus ; les noms de projets, domaines et identifiants de propriétés Google peuvent apparaître. Vérifiez les fichiers avant de les envoyer.
 
 ## Limites
 
-Cet écran ne contrôle que l'installation elle-même. Pour trouver un problème sur votre site, regardez l'écran Audit du site ; pour voir un problème du côté de Google, regardez l'écran État de l'index.
+Cet écran ne contrôle que l'installation elle-même. Pour trouver un problème sur votre site, regardez l'écran Audit du site ; pour voir un problème du côté de Google, regardez l'écran État de l'indexation.
 
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/support/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->

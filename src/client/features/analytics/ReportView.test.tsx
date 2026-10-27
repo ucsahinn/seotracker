@@ -208,9 +208,18 @@ describe("ReportView per-tab summaries", () => {
     mount(pages, "landing_pages");
 
     // Median sessions 50, median rate 0.05: only /a is busy and below it.
-    const chip = screen.getByRole("button", { name: /Trafiği yüksek/ });
+    const quickFilters = within(
+      screen.getByRole("group", { name: "Hızlı filtreler" }),
+    );
+    const chip = quickFilters.getByRole("button", {
+      name: /^Trafiği yüksek/,
+    });
     expect(chip.textContent).toContain("1");
-    fireEvent.click(chip);
+    // The same finding as a tile above the table, which applies the chip.
+    fireEvent.click(
+      screen.getByRole("button", { name: /dönüşümü düşük sayfa/ }),
+    );
+    expect(chip.getAttribute("aria-pressed")).toBe("true");
     expect(bodyRows()).toHaveLength(1);
   });
 
@@ -223,7 +232,7 @@ describe("ReportView per-tab summaries", () => {
       "landing_pages",
     );
 
-    const chip = screen.getByRole("button", { name: /Trafiği yüksek/ });
+    const chip = screen.getByRole("button", { name: /^Trafiği yüksek/ });
     expect(chip.hasAttribute("disabled")).toBe(true);
     expect(chip.getAttribute("title")).toContain("anahtar olay");
     expect(chip.textContent).toContain("0");

@@ -65,6 +65,41 @@ describe("discoverUrls robots.txt and sitemap handling", () => {
     vi.unstubAllGlobals();
   });
 
+  /*
+   * server.log (installed 2.4.2): "fetched=3, failed=1" for vaultpilot.io,
+   * with no way to tell which document failed, or whether it was only the
+   * /sitemap.xml guess answering 404.
+   */
+  it("names a sitemap robots.txt points at that could not be read", async () => {
+    vi.mocked(fetch).mockImplementation(async (input) => {
+      const url = requestUrl(input);
+      if (url.endsWith("/robots.txt")) {
+        return new Response(
+          "Sitemap: https://example.com/a.xml\nSitemap: https://example.com/gone.xml\n",
+        );
+      }
+      if (url.endsWith("/a.xml")) {
+        return new Response(
+          "<?xml version='1.0'?><urlset><url><loc>https://example.com/p</loc></url></urlset>",
+          { headers: { "content-type": "application/xml" } },
+        );
+      }
+      return new Response("", { status: 404 });
+    });
+
+    const result = await discoverUrls("https://example.com");
+
+    // The unnamed /sitemap.xml guess answering 404 is not a finding.
+    expect(result.sitemapProblems.failed).toEqual([
+      {
+        url: "https://example.com/gone.xml",
+        reason: "status",
+        statusCode: 404,
+      },
+    ]);
+    expect(result.sitemapProblems.failedCount).toBe(1);
+  });
+
   it("applies the complete lines of an oversized robots.txt instead of allowing all", async () => {
     const body = `User-agent: *\nDisallow: /private/\n${"# pad\n".repeat(100_000)}`;
     vi.mocked(fetch).mockImplementation(async (input) =>

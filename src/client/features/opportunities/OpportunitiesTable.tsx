@@ -9,15 +9,19 @@ import {
 import { TableExportMenu } from "@/client/components/table/TableBulkActionBar";
 import { buildOpportunityColumns } from "@/client/features/opportunities/OpportunityColumns";
 import { OpportunityDetail } from "@/client/features/opportunities/OpportunityDetail";
-import type { OpportunityRow } from "@/client/features/opportunities/opportunityLogic";
+import {
+  WORK_COPY,
+  type OpportunityRow,
+} from "@/client/features/opportunities/opportunityLogic";
 import { buildCsv, downloadCsv, type CsvValue } from "@/client/lib/csv";
 import { exportTableToSheets } from "@/client/lib/exportToSheets";
 import { formatNumber } from "@/client/lib/format";
 
 // Turkish, translated with t() when an export is built.
 const OPPORTUNITY_HEADERS = [
-  "Puan",
+  "Tahmini kazanç (tıklama/ay)",
   "Sayfa",
+  "Yapılacak iş",
   "Sıra",
   "Gösterim",
   "Tıklama",
@@ -26,49 +30,51 @@ const OPPORTUNITY_HEADERS = [
 ] as const;
 
 /**
- * The ranked worklist, as a real table.
- *
- * A row opens the detail panel: the numbers alone never said why a page was
- * on the list or what to do about it. The button in the page cell is the
- * keyboard route; a click anywhere else on the row is the same thing for a
- * mouse, unless it landed on a control that has its own job.
+ * The ranked worklist. A row opens the detail panel with the queries behind
+ * its estimate; the button in the page cell is the keyboard route, a click
+ * anywhere else on the row the same for a mouse.
  */
 export function OpportunitiesTable({
   projectId,
+  days,
   rows,
   onReset,
   openPage: controlledPage,
   onOpenPageChange,
 }: {
   projectId: string;
+  /** The window the rows cover, for the monthly figures in the panel. */
+  days: number;
   rows: OpportunityRow[];
   /** Clears the filters that emptied the table, when there are any. */
   onReset?: () => void;
-  /** Lets the page open a row's dialog from outside (the top-score tile). Uncontrolled when omitted. */
+  /** Lets the page open a row's dialog from outside (the first tile). Uncontrolled when omitted. */
   openPage?: string | null;
   onOpenPageChange?: (page: string | null) => void;
 }) {
   const [ownPage, setOwnPage] = useState<string | null>(null);
   const openPage = controlledPage === undefined ? ownPage : controlledPage;
   const setOpenPage = onOpenPageChange ?? setOwnPage;
+  const maxGain = rows.reduce((max, row) => Math.max(max, row.gainPerMonth), 0);
   const columns = useMemo(
-    () => buildOpportunityColumns((row) => setOpenPage(row.page)),
-    [setOpenPage],
+    () => buildOpportunityColumns((row) => setOpenPage(row.page), maxGain),
+    [setOpenPage, maxGain],
   );
   const table = useAppTable({
     data: rows,
     columns,
     withSorting: true,
-    // Score is the point of the screen, so it stays the default order.
-    initialState: { sorting: [{ id: "score", desc: true }] },
+    // The estimate is the point of the screen, so it is the default order.
+    initialState: { sorting: [{ id: "gainPerMonth", desc: true }] },
   });
 
   const opened = rows.find((row) => row.page === openPage) ?? null;
 
   const headers = OPPORTUNITY_HEADERS.map((header) => t(header));
   const csvRows = rows.map((row): CsvValue[] => [
-    row.score,
+    row.gainPerMonth,
     row.page,
+    t(WORK_COPY[row.work].action),
     row.position,
     row.impressions,
     row.clicks,
@@ -80,7 +86,9 @@ export function OpportunitiesTable({
     <div className="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
       <div className="flex items-center justify-between gap-3 border-b border-base-300 px-3 py-2">
         <p className="text-xs text-muted">
-          {t("Ayrıntı ve öneriler için bir satıra tıklayın.")}
+          {t(
+            "Hangi aramaların kazandıracağını görmek için bir satıra tıklayın.",
+          )}
         </p>
         <TableExportMenu
           buttonClassName="btn btn-ghost btn-sm gap-1"
@@ -129,7 +137,7 @@ export function OpportunitiesTable({
             icon={Target}
             title={t("Bu filtreye uyan sayfa yok")}
             description={t(
-              "Seçtiğiniz tür ya da hızlı filtre bu dönemde hiçbir sayfayla eşleşmedi. Filtreleri kaldırın ya da dönemi genişletin.",
+              "Seçtiğiniz iş türü ya da hızlı filtre bu dönemde hiçbir sayfayla eşleşmedi. Filtreleri kaldırın ya da dönemi genişletin.",
             )}
             action={
               onReset ? (
@@ -144,6 +152,7 @@ export function OpportunitiesTable({
       {opened ? (
         <OpportunityDetail
           row={opened}
+          days={days}
           projectId={projectId}
           onClose={() => setOpenPage(null)}
         />

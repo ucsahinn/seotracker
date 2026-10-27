@@ -1,15 +1,38 @@
 import { t } from "@/shared/i18n";
 import { useEffect, useState } from "react";
+import { ArrowDown, ArrowUp } from "lucide-react";
 import { HelpTip } from "@/client/components/HelpTip";
 import {
   BAND_IDS,
   BAND_LABELS,
   countBands,
   type BandId,
-} from "@/client/features/rankings/positionBands";
+} from "@/shared/positionBands";
 import { formatCount, formatPercent } from "@/client/lib/format";
 
-type Row = { position: number };
+type Row = { position: number; previousPosition?: number | null };
+
+/**
+ * How many queries each band gained or lost against the previous window,
+ * over the queries that have a reading in both (a query new this window is
+ * not a move into a band).
+ */
+export function bandChanges(rows: readonly Row[]): Record<BandId, number> {
+  const both = rows.filter(
+    (row): row is Row & { previousPosition: number } =>
+      row.previousPosition != null,
+  );
+  const now = countBands(both);
+  const before = countBands(
+    both.map((row) => ({ position: row.previousPosition })),
+  );
+  return {
+    top3: now.top3 - before.top3,
+    top10: now.top10 - before.top10,
+    top20: now.top20 - before.top20,
+    beyond: now.beyond - before.beyond,
+  };
+}
 
 /** Lighter as the rank gets worse, so the top of the page reads strongest. */
 const BAND_SHADE: Record<BandId, number> = {
@@ -37,6 +60,7 @@ export function PositionBandBars({
   onChange: (next: BandId | undefined) => void;
 }) {
   const counts = countBands(rows);
+  const changes = bandChanges(rows);
   const total = rows.length;
   const max = Math.max(...BAND_IDS.map((id) => counts[id]), 1);
   const [drawn, setDrawn] = useState(false);
@@ -59,7 +83,7 @@ export function PositionBandBars({
       </div>
       <p className="mt-0.5 text-xs text-muted">
         {t(
-          "{count} sorgunun ortalama sırası. Bir çubuğa tıklayınca tablo o gruba göre daralır.",
+          "{count} sorgunun ortalama sırası; sağdaki sayı önceki döneme göre değişim. Bir çubuğa tıklayınca tablo o gruba göre daralır.",
           { count: total },
         )}
       </p>
@@ -110,10 +134,37 @@ export function PositionBandBars({
                   {formatPercent(count / total, 0)}
                 </span>
               </span>
+              <BandChange band={id} change={changes[id]} />
             </button>
           );
         })}
       </div>
     </section>
+  );
+}
+
+/**
+ * The band's move against the previous window, with an arrow and a sign.
+ * More queries in the first three bands is good; more in 21+ is not.
+ */
+function BandChange({ band, change }: { band: BandId; change: number }) {
+  if (change === 0) {
+    return (
+      <span className="w-14 shrink-0 text-right text-xs text-subtle">±0</span>
+    );
+  }
+  const good = band === "beyond" ? change < 0 : change > 0;
+  const Icon = change > 0 ? ArrowUp : ArrowDown;
+  return (
+    <span
+      className={`inline-flex w-14 shrink-0 items-center justify-end gap-0.5 text-xs font-medium tabular-nums ${
+        good ? "text-[var(--ink-success)]" : "text-[var(--ink-error)]"
+      }`}
+      title={t("Önceki döneme göre bu gruba giren ya da çıkan sorgu sayısı")}
+    >
+      <Icon aria-hidden className="size-3" />
+      {change > 0 ? "+" : "-"}
+      {formatCount(Math.abs(change))}
+    </span>
   );
 }

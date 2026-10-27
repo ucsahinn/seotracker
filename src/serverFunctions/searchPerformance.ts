@@ -1,240 +1,189 @@
 import { createServerFn } from "@tanstack/react-start";
-import { GscService } from "@/server/features/gsc/services/GscService";
-import { resolveDateRange } from "@/server/features/gsc/searchAnalytics";
+import { isExpectedConnectionFailure } from "@/server/features/gsc/connectionFailure";
 import {
-  buildStrikingDistanceRows,
-  previousPeriod,
-  sumSearchTotals,
-  toDailyRows,
-  toDimensionRows,
-} from "@/server/features/gsc/searchPerformanceReport";
-import { buildGscFilters } from "@/server/features/gsc/performanceFilters";
-import {
-  isExpectedConnectionFailure,
-  optionalRows,
-} from "@/server/features/gsc/connectionFailure";
+  SearchPerformanceService,
+  type SearchFilters,
+} from "@/server/features/gsc/services/SearchPerformanceService";
 import { requireProjectContext } from "@/serverFunctions/middleware";
+import type { SearchPerformanceViewResult } from "@/shared/searchPerformanceView";
 import {
-  searchPerformanceInputSchema,
+  brandTermsInputSchema,
+  searchNoteDeleteInputSchema,
+  searchNoteInputSchema,
+  searchPerformanceDrilldownInputSchema,
   searchPerformanceTableExportInputSchema,
   searchPerformanceTableInputSchema,
+  searchPerformanceViewInputSchema,
+  siteDailyHistoryInputSchema,
 } from "@/types/schemas/search-performance";
+import { z } from "zod";
 
-// query x page fan-out needs more rows to find the 5..20 band.
-const STRIKING_DISTANCE_FETCH_LIMIT = 1000;
-// dimensions:["date"] returns one row per day; the longest range is ~92 days.
-const DAILY_ROW_LIMIT = 200;
-const COUNTRY_ROW_LIMIT = 25;
-// Google defines a few dozen appearance types; the ring shows the top few.
-const APPEARANCE_ROW_LIMIT = 25;
-// GSC knows three devices.
-const DEVICE_ROW_LIMIT = 3;
-// Export pulls the whole dimension in one shot, capped at GSC's per-call max
-// (GSC_MAX_ROW_LIMIT). Large stores get everything up to this ceiling.
-const EXPORT_ROW_LIMIT = 1000;
-/*
- * The table holds its whole dataset so the column headers can sort it.
- * Same ceiling as the export: what you can sort is what you can download.
- */
-const TABLE_ROW_LIMIT = 1000;
+function filtersOf(data: {
+  dateRange: SearchFilters["dateRange"];
+  device?: SearchFilters["device"];
+  country?: string;
+  searchType: SearchFilters["searchType"];
+}): SearchFilters {
+  return {
+    dateRange: data.dateRange,
+    device: data.device,
+    country: data.country,
+    searchType: data.searchType,
+  };
+}
+
+/** Not connected, or a dead grant: the screen shows the connect card. */
+async function orNotConnected<T>(
+  call: () => Promise<T>,
+): Promise<T | { connected: false }> {
+  try {
+    return await call();
+  } catch (error) {
+    if (isExpectedConnectionFailure(error)) return { connected: false };
+    throw error;
+  }
+}
 
 /**
- * The Search Performance overview: current + previous-period totals, the
- * striking-distance rows, and the country list that powers the filter dropdown.
- * The queries/pages tables paginate separately (getSearchPerformanceTable) so
- * page-flips never re-run the striking-distance scan. All first-party GSC data,
- * free.
+ * The Search performance view: window, totals, series, breakdowns, coverage,
+ * insights and the ranked to-do list in one typed answer
+ * (`SearchPerformanceView`). All first-party Search Console data, free.
  */
-export const getSearchPerformanceReport = createServerFn({ method: "POST" })
+export const getSearchPerformanceView = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)
-  .validator(searchPerformanceInputSchema)
-  .handler(async ({ data, context }) => {
-    const { startDate, endDate } = resolveDateRange({
-      dateRange: data.dateRange,
-    });
-    const prev = previousPeriod(startDate, endDate);
-    const projectId = context.projectId;
-    const type = data.searchType;
-    const { deviceFilters, filters } = buildGscFilters(data);
-    // The device ring ignores the device filter (so every device stays
-    // visible while one is chosen) but keeps the country filter.
-    const deviceRingFilters = buildGscFilters({
-      country: data.country,
-    }).filters;
-
-    try {
-      const [current, previous, queryPages, countries, devices, appearances] =
-        await Promise.all([
-          GscService.getPerformance({
-            projectId,
-            startDate,
-            endDate,
-            dimensions: ["date"],
-            type,
-            filters,
-            rowLimit: DAILY_ROW_LIMIT,
-          }),
-          GscService.getPerformance({
-            projectId,
-            startDate: prev.startDate,
-            endDate: prev.endDate,
-            dimensions: ["date"],
-            type,
-            filters,
-            rowLimit: DAILY_ROW_LIMIT,
-          }),
-          GscService.getPerformance({
-            projectId,
-            startDate,
-            endDate,
-            dimensions: ["query", "page"],
-            type,
-            filters,
-            rowLimit: STRIKING_DISTANCE_FETCH_LIMIT,
-          }),
-          GscService.getPerformance({
-            projectId,
-            startDate,
-            endDate,
-            dimensions: ["country"],
-            type,
-            filters: deviceFilters,
-            rowLimit: COUNTRY_ROW_LIMIT,
-          }),
-          optionalRows(
-            GscService.getPerformance({
-              projectId,
-              startDate,
-              endDate,
-              dimensions: ["device"],
-              type,
-              filters: deviceRingFilters,
-              rowLimit: DEVICE_ROW_LIMIT,
-            }),
-          ),
-          /*
-           * searchAppearance cannot be combined with any other dimension, so
-           * it is its own call. Same range, country and device filters as
-           * the trend; most sites get no rows back.
-           */
-          optionalRows(
-            GscService.getPerformance({
-              projectId,
-              startDate,
-              endDate,
-              dimensions: ["searchAppearance"],
-              type,
-              filters,
-              rowLimit: APPEARANCE_ROW_LIMIT,
-            }),
-          ),
-        ]);
-
-      return {
-        connected: true as const,
-        range: {
-          startDate,
-          endDate,
-          prevStartDate: prev.startDate,
-          prevEndDate: prev.endDate,
-        },
-        totals: sumSearchTotals(current.rows),
-        prevTotals: sumSearchTotals(previous.rows),
-        /*
-         * The same rows the totals are summed from, kept instead of thrown
-         * away. Already fetched by date, so the trend costs no extra Google
-         * call -- and "4.200 tıklama in 28 days" and "it halved on day 14"
-         * are different findings.
-         *
-         * Only the current period. The previous one is summed into
-         * `prevTotals` for the deltas; sending its ~90 daily rows as well
-         * would be payload nothing reads.
-         */
-        daily: toDailyRows(current.rows, startDate, endDate),
-        /** Zero means Search Console shared no keyword-level data at all. */
-        queryRowCount: queryPages.rows.length,
-        strikingDistance: buildStrikingDistanceRows(queryPages.rows),
-        countries: toDimensionRows(countries.rows),
-        devices: toDimensionRows(devices),
-        searchAppearance: toDimensionRows(appearances),
-      };
-    } catch (error) {
-      if (isExpectedConnectionFailure(error)) {
-        return { connected: false as const };
-      }
-      throw error;
-    }
-  });
+  .validator(searchPerformanceViewInputSchema)
+  .handler(
+    async ({ data, context }): Promise<SearchPerformanceViewResult> =>
+      orNotConnected(() =>
+        SearchPerformanceService.getView({
+          projectId: context.projectId,
+          filters: filtersOf(data),
+          fresh: data.fresh,
+        }),
+      ),
+  );
 
 /**
- * One page of the queries or pages table, paginated server-side against GSC via
- * `startRow` so it scales to large properties. GSC returns no total count, so we
- * fetch one extra row to detect a next page. All first-party GSC data, free.
+ * One page of the queries or pages table: searched, chip-filtered and sorted
+ * on the server over every row fetched for the window (up to 50,000), each
+ * with the previous period beside it.
+ *
+ * `truncated` keeps its old meaning for the current screen: there are rows
+ * this answer does not show, either past this page or past Google's cap.
  */
 export const getSearchPerformanceTable = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)
   .validator(searchPerformanceTableInputSchema)
   .handler(async ({ data, context }) => {
-    const { startDate, endDate } = resolveDateRange({
-      dateRange: data.dateRange,
-    });
-    const { filters } = buildGscFilters(data);
-
-    try {
-      // One extra row so the client can say the set was capped rather than
-      // silently presenting a truncated table as the whole dataset.
-      const result = await GscService.getPerformance({
+    const result = await orNotConnected(async () => ({
+      connected: true as const,
+      ...(await SearchPerformanceService.getTable({
         projectId: context.projectId,
-        startDate,
-        endDate,
-        dimensions: [data.dimension],
-        type: data.searchType,
-        filters,
-        rowLimit: TABLE_ROW_LIMIT + 1,
-      });
-
-      const fetched = toDimensionRows(result.rows);
-      const truncated = fetched.length > TABLE_ROW_LIMIT;
-
-      return {
-        connected: true as const,
+        filters: filtersOf(data),
         dimension: data.dimension,
-        truncated,
-        rows: truncated ? fetched.slice(0, TABLE_ROW_LIMIT) : fetched,
-      };
-    } catch (error) {
-      if (isExpectedConnectionFailure(error)) {
-        return { connected: false as const };
-      }
-      throw error;
-    }
+        window: data.window,
+        search: data.search,
+        quickFilter: data.quickFilter,
+        sort: data.sort,
+        offset: data.offset,
+        limit: data.limit,
+      })),
+    }));
+    if (!result.connected) return result;
+    return {
+      ...result,
+      dimension: data.dimension,
+      truncated:
+        result.googleTruncated ||
+        result.total > data.offset + result.rows.length,
+    };
   });
 
-/**
- * The full queries/pages dataset for CSV/Sheets export (capped at
- * EXPORT_ROW_LIMIT), rather than only the visible page.
- */
+/** Every fetched row that matches, for CSV/Sheets. */
 export const exportSearchPerformanceTable = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)
   .validator(searchPerformanceTableExportInputSchema)
   .handler(async ({ data, context }) => {
-    const { startDate, endDate } = resolveDateRange({
-      dateRange: data.dateRange,
-    });
-    const { filters } = buildGscFilters(data);
-
-    const result = await GscService.getPerformance({
+    const result = await SearchPerformanceService.exportTable({
       projectId: context.projectId,
-      startDate,
-      endDate,
-      dimensions: [data.dimension],
-      type: data.searchType,
-      filters,
-      rowLimit: EXPORT_ROW_LIMIT,
-    });
-
-    return {
+      filters: filtersOf(data),
       dimension: data.dimension,
-      rows: toDimensionRows(result.rows),
-    };
+      window: data.window,
+      search: data.search,
+      quickFilter: data.quickFilter,
+    });
+    return { dimension: data.dimension, ...result };
+  });
+
+/** A query's pages or a page's queries, with that key's own daily series. */
+export const getSearchPerformanceDrilldown = createServerFn({ method: "POST" })
+  .middleware(requireProjectContext)
+  .validator(searchPerformanceDrilldownInputSchema)
+  .handler(async ({ data, context }) =>
+    orNotConnected(async () => ({
+      connected: true as const,
+      ...(await SearchPerformanceService.getDrilldown({
+        projectId: context.projectId,
+        filters: filtersOf(data),
+        dimension: data.dimension,
+        key: data.key,
+        window: data.window,
+      })),
+    })),
+  );
+
+/** Archived site totals (local, no Google call), for trends past 16 months. */
+export const getSiteDailyHistory = createServerFn({ method: "POST" })
+  .middleware(requireProjectContext)
+  .validator(siteDailyHistoryInputSchema)
+  .handler(async ({ data, context }) =>
+    SearchPerformanceService.getSiteHistory({
+      projectId: context.projectId,
+      searchType: data.searchType,
+      device: data.device,
+      days: data.days,
+    }),
+  );
+
+const projectOnlySchema = z.object({ projectId: z.string().min(1) });
+
+/** The brand terms and suggestions from the domain. */
+export const getBrandTerms = createServerFn({ method: "POST" })
+  .middleware(requireProjectContext)
+  .validator(projectOnlySchema)
+  .handler(async ({ context }) =>
+    SearchPerformanceService.getBrandTerms(context.projectId),
+  );
+
+export const setBrandTerms = createServerFn({ method: "POST" })
+  .middleware(requireProjectContext)
+  .validator(brandTermsInputSchema)
+  .handler(async ({ data, context }) =>
+    SearchPerformanceService.setBrandTerms(context.projectId, data.terms),
+  );
+
+export const listSearchNotes = createServerFn({ method: "POST" })
+  .middleware(requireProjectContext)
+  .validator(projectOnlySchema)
+  .handler(async ({ context }) =>
+    SearchPerformanceService.listNotes({ projectId: context.projectId }),
+  );
+
+export const addSearchNote = createServerFn({ method: "POST" })
+  .middleware(requireProjectContext)
+  .validator(searchNoteInputSchema)
+  .handler(async ({ data, context }) =>
+    SearchPerformanceService.addNote({
+      projectId: context.projectId,
+      date: data.date,
+      note: data.note,
+    }),
+  );
+
+export const deleteSearchNote = createServerFn({ method: "POST" })
+  .middleware(requireProjectContext)
+  .validator(searchNoteDeleteInputSchema)
+  .handler(async ({ data, context }) => {
+    await SearchPerformanceService.deleteNote(context.projectId, data.id);
+    return { ok: true as const };
   });

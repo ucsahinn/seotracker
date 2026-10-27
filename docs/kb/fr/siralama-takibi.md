@@ -1,68 +1,78 @@
 ---
-title: Suivi du classement
-description: La position moyenne de vos recherches sur Google, jour après jour. Les données restent sur cet ordinateur : vous remontez au-delà des 16 mois de Google.
+title: Suivi des classements
+description: Position moyenne de vos recherches sur Google, celles qui montent ou baissent et l'évolution des groupes de positions, même au-delà de la limite de 16 mois de Google, car les données sont conservées sur cet ordinateur.
 screen: Sıralama takibi
 route: /p/<proje>/rankings
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
-Vous voyez comment vos recherches montent et descendent au fil du temps. Google Search Console limite l'historique à 16 mois. Il ne montre pas non plus à quelle position se trouvait une recherche tel ou tel jour.
+Vous voyez ici comment vos recherches montent et baissent au fil du temps, et quel mouvement compte le plus. Google Search Console limite l'historique à 16 mois. Elle n'indique pas non plus à quelle position se trouvait une recherche tel jour.
 
-L'application récupère ces données jour par jour et les conserve sur cet ordinateur. Chaque fois que vous ouvrez l'écran, les archives grossissent. Avec le temps, vous remontez plus loin que ce que Google montre.
+L'application récupère ces données jour par jour et les conserve sur cet ordinateur. L'archive grandit chaque fois que vous ouvrez l'écran. Avec le temps, vous remontez plus loin que Google ne le montre.
 
 ## Ce que l'écran affiche
 
-**Plage de temps.** Les choix sont 30 gün (30 jours), 90 gün (90 jours, par défaut), 6 ay (6 mois), 16 ay (16 mois) et Arşivin tamamı (Toutes les archives). La plage est comptée jusqu'à trois jours avant aujourd'hui.
+**Période.** Les choix sont 30 jours, 90 jours (par défaut), 6 mois, 16 mois et Toute l'archive. La plage choisie reste dans la barre d'adresse. Elle se termine trois jours avant aujourd'hui. Une ligne en haut dit quelles dates sont affichées.
 
-**Ligne d'état des archives.** Elle indique combien de jours et de lignes contiennent les archives. À chaque ouverture, l'écran complète auprès de Google les jours manquants. Si elle indique « Bu açılışta N gün eklendi. » (N jours ajoutés à cette ouverture.), de nouveaux jours sont arrivés. Si elle indique « Kalan günler sonraki açılışta tamamlanacak. » (Les jours restants seront complétés à la prochaine ouverture.), le travail continue à la prochaine ouverture.
+**Ligne d'état de l'archive.** Elle indique les dates que l'archive couvre. À chaque ouverture, l'écran comble auprès de Google les jours manquants. Si une note dit que des jours ont été ajoutés lors de cette visite, de nouveaux jours sont entrés dans l'archive. Si elle dit que les jours restants seront renseignés à la prochaine ouverture, le travail continue à la visite suivante.
 
-La zone **Sorgu içinde ara** (Chercher dans les requêtes) réduit la liste.
+**Hausses et baisses.** Deux courtes listes : **Plus fortes hausses** et **Plus fortes baisses**. Chaque ligne donne la recherche, l'ancienne et la nouvelle position comme « Position 6,2 → 4,1 », les impressions et le nombre de places gagnées ou perdues. Les listes ne sont pas triées par le seul mouvement. Le mouvement est multiplié par les impressions. Une requête très recherchée qui a gagné deux places passe avant une requête rarement recherchée qui en a gagné quatre. Un clic sur une ligne ouvre l'historique de cette recherche sous le tableau. Les recherches sans données sur la période précédente n'entrent pas dans ces listes. Si aucune comparaison n'est possible, une note à la place de la section en donne la raison.
 
-**Filtres de variation.** **Yükselenler** (En hausse) et **Düşenler** (En baisse) montrent les recherches qui ont bougé d'au moins une demi-position. Il y a aussi **Şu an ilk 10'da** (Actuellement dans le top 10) et **İlk 10'dan çıkanlar** (Sortis du top 10). Deux boutons rapides s'y ajoutent : **Gösterimi yüksek** (Beaucoup d'impressions, au moins 100 impressions) et **Hiç tıklanmayan** (Jamais cliquées).
+**Distribution des positions.** Quatre barres montrent combien de vos recherches se trouvent dans les groupes 1-3, 4-10, 11-20 et 21+, selon la position moyenne. À côté de chaque barre figurent le nombre de recherches et leur part. Le nombre tout à droite indique combien de recherches sont entrées dans ce groupe ou en sont sorties depuis la période précédente, avec une flèche et un signe. Dans les trois premiers groupes, une hausse est une bonne nouvelle. Dans le groupe 21+, c'est une mauvaise nouvelle. Un clic sur une barre réduit le tableau à ce groupe. Un nouveau clic retire le filtre.
 
-**Répartition des positions.** Les barres montrent combien de vos recherches se trouvent dans les tranches 1-3, 4-10, 11-20 et 21+.
+**Zone de recherche et filtres.** La zone **Requêtes de recherche** réduit la liste. En dessous, il y a deux groupes de filtres.
 
-**Hausses et baisses.** Vous voyez deux courtes listes : « En çok yükselenler » (Plus fortes hausses) et « En çok düşenler » (Plus fortes baisses).
+- **Modifier les filtres** : **En hausse** et **En baisse** montrent les recherches qui ont bougé d'au moins une demi-position par rapport à la période précédente. **Maintenant dans le top 10** et **Sorties du top 10** sont ici aussi.
+- **Filtres rapides** : **Impressions élevées** et **Aucun clic**. Impressions élevées, c'est le quart de la liste le plus affiché. Il n'y a pas de nombre fixe, car un nombre fixe sélectionnerait toutes les lignes sur une courte plage.
 
-**Tableau.** Les colonnes sont : **Sorgu** (Requête), **Ort. sıra** (Position moy.), **Değişim** (Variation), **Gösterim** (Impressions), **Tıklama** (Clics), **Gün** (Jours). La colonne **Gün** indique pendant combien de jours la recherche est apparue dans la plage choisie. Une recherche qui n'apparaît que 3 jours sur 90 est rarement recherchée. La cellule de variation indique « Yükseldi 2,4 » (En hausse de 2,4) ou « Düştü 1,1 » (En baisse de 1,1). Le menu de ligne propose trois choix : **Kelimeyi kopyala** (Copier le mot), **Kayıtlı kelimelere ekle** (Ajouter aux mots-clés enregistrés), **Arama performansında ara** (Chercher dans la performance de recherche).
+Un filtre qui ne réduit pas vraiment la liste n'est pas affiché. Un bouton qui ne sélectionnerait aucune ligne, ou toutes, ne dit rien.
 
-**Historique d'une requête.** Un clic sur une ligne ouvre la courbe de position de cette recherche, jour par jour. Le lien **Arama performansında aç** (Ouvrir dans la performance de recherche) montre la même recherche dans l'autre écran.
+**Tableau.** Les colonnes sont **Requête**, **Position moyenne**, **Modifier**, **Impressions**, **Clics** et parfois **Jour**. Cliquez sur un en-tête pour trier. Le tri initial se fait par impressions. La cellule **Position moyenne** a une petite ligne à gauche. Elle montre la position semaine par semaine sur la plage. Si la ligne monte, la position s'améliore. Sur un petit écran, la ligne est masquée. Une position en première page est écrite en vert, en deuxième page en jaune. La couleur ne porte jamais seule l'information, car le nombre est toujours écrit. La cellule **Modifier** indique « 2,4 places gagnées », « 1,1 places perdues » ou « Aucun changement ». Pour une recherche sans données sur la période précédente, elle indique « Aucune donnée dans la période précédente ». La colonne **Jour** n'apparaît que si certaines recherches manquaient certains jours. Une recherche qui n'apparaît que 3 jours sur 90 est rarement recherchée. Le menu de la ligne propose trois options : **Copier le mot-clé**, **Ajouter aux mots-clés enregistrés**, **Rechercher dans Performances de recherche**. Le tableau est découpé en pages de 25, 50 ou 100 lignes.
 
-**États vides.** Si les archives sont vides, l'écran indique « Henüz hangi kelimeyle arandığınız bilinmiyor » (On ne sait pas encore par quels mots vous êtes recherché) et un bouton **Arama performansını aç** (Ouvrir la performance de recherche) apparaît. La liste est limitée aux 100 recherches les plus affichées. S'il y en a davantage, une note sous la liste vous le dit.
+**Historique d'une recherche.** Un clic sur une ligne ouvre la courbe de position jour par jour de cette recherche. Sur la courbe, le haut est une meilleure position. En la survolant, vous lisez la position, les clics et les impressions du jour. Le lien **Ouvrir dans Performances de recherche** montre la même recherche sur l'autre écran.
+
+**États vides.** Si Search Console n'est pas connecté, un bouton **Connecter la Search Console** apparaît. Si l'archive est vide, il est écrit « Les mots-clés avec lesquels les internautes vous recherchent ne sont pas encore visibles » et un bouton **Ouvrir Performances de recherche** apparaît. La liste est limitée aux 100 recherches les plus affichées. S'il y en a davantage, une note en dessous le dit.
 
 ## Comment l'utiliser
 
-1. Quand vous ouvrez l'écran pour la première fois, attendez que la ligne des archives affiche « eklendi » (ajouté).
-2. Le premier remplissage remonte jusqu'à 480 jours. Cela peut demander quelques ouvertures.
-3. Si vous cherchez une baisse, cliquez sur le bouton **Düşenler**. Écartez ensuite les cas sans importance avec **Gösterimi yüksek**.
-4. Cliquez sur la recherche tout en haut. Dans le graphique de l'historique, lisez le jour où la baisse a commencé.
-5. Enregistrez les recherches que vous voulez suivre avec **Kayıtlı kelimelere ekle**.
-6. Une fois par mois, regardez les listes « En çok yükselenler » et « En çok düşenler ». Cela suffit pour avoir une vue d'ensemble.
+1. À la première ouverture de l'écran, attendez que la ligne d'état de l'archive indique que des jours ont été ajoutés.
+2. Le premier remplissage remonte jusqu'à 480 jours. Cela peut prendre quelques visites.
+3. Regardez **Hausses et baisses**. La baisse en tête est le mouvement qui nuit le plus à votre trafic.
+4. Regardez les barres de **Distribution des positions**. Si le groupe 21+ a une hausse en rouge à côté, des recherches glissent au-delà de la page deux.
+5. Si vous cherchez une baisse, appuyez sur le filtre **En baisse**. Puis utilisez **Impressions élevées** pour écarter les moins importantes.
+6. Cliquez sur la recherche du haut. Sur le graphique d'historique, lisez le jour où la baisse a commencé.
+7. Marquez les recherches à suivre avec **Ajouter aux mots-clés enregistrés**.
 
 ## Comment les chiffres sont calculés
 
-Les archives ne se remplissent qu'avec des données que Google a confirmées. À chaque ouverture, les trois derniers jours sont récupérés de nouveau, car Google peut corriger ces jours après coup. Les jours corrigés sont ainsi réécrits dans les archives.
+L'archive n'est remplie qu'avec des données que Google a rendues définitives. À chaque ouverture, les trois derniers jours sont récupérés de nouveau, car Google peut corriger ces jours plus tard. Ainsi les jours corrigés sont réécrits dans l'archive. L'ouverture de l'écran consomme du quota Search Console. Si l'écran est rouvert dans les 15 minutes qui suivent le dernier remplissage, il réutilise donc le même résultat.
 
-Les clics et les impressions sont des totaux. **Ort. sıra** donne plus de poids aux jours où il y a eu beaucoup d'impressions. **Gün** est le nombre de jours pour lesquels il existe des données.
+Les clics et les impressions sont des totaux. Dans la **Position moyenne**, les jours qui ont plus d'impressions pèsent davantage. **Jour** est le nombre de jours avec des données.
 
-La variation se calcule ainsi : on soustrait la position moyenne de cette période de celle de la période précédente. Si le résultat est positif, vous avez monté. La période précédente a la même durée et se termine juste avant cette période.
+Nous calculons l'évolution ainsi : nous retranchons la position de cette période de la position moyenne de la période précédente. Si le résultat est positif, vous avez monté. La période précédente a la même durée et se termine juste avant celle-ci. La comparaison n'est faite que pour les recherches qui ont des données dans les deux périodes. Une recherche qui bouge de moins d'une demi-position n'est comptée ni « en hausse » ni « en baisse ».
 
-La liste reprend les 100 recherches les plus affichées. Dans le navigateur, elle est découpée en pages de 25, 50 ou 100.
+La liste des hausses et des baisses est triée selon l'écart de position multiplié par les impressions. Chaque liste compte cinq lignes au plus.
+
+Les groupes de positions sont coupés sur la position arrondie. 3,4 compte comme « autour de la troisième », 3,5 comme « autour de la quatrième ». C'est pourquoi une recherche à 3,4 se trouve dans le groupe 1-3 et une à 3,5 dans le groupe 4-10.
+
+La liste récupère les 100 recherches les plus affichées.
 
 ## Questions fréquentes
 
-**Pourquoi est-ce différent du chiffre de Search Console ?** Les archives ne gardent que les jours confirmés et vont jusqu'à trois jours en arrière. Si, dans Search Console, vous avez choisi une plage qui inclut aujourd'hui, les chiffres ne correspondent pas.
+**Pourquoi est-ce différent du chiffre de Search Console ?** L'archive ne garde que les jours définitifs et remonte jusqu'à trois jours avant aujourd'hui. Si vous avez choisi dans Search Console une plage qui inclut aujourd'hui, les chiffres ne concordent pas.
 
-**La recherche est dans la liste, mais l'historique de position est vide.** Cette recherche est peut-être apparue peu de jours. Regardez la colonne **Gün**.
+**La recherche est dans la liste mais son historique de position est vide.** La recherche est peut-être apparue peu de jours. Vous le voyez dans la colonne **Jour**.
 
-**Pourquoi les archives sont-elles bloquées sur le même jour ?** L'application ne récupère pas de données en arrière-plan. Ouvrez l'écran et attendez la note « eklendi ».
+**Pourquoi est-il écrit que l'évolution ne peut pas être affichée ?** L'archive n'a aucun enregistrement de ces recherches sur la période précédente. Choisissez une plage plus courte ou attendez que l'archive se remplisse.
 
-**Puis-je voir la position de mon concurrent ?** Non. Search Console ne fournit que les données de votre propre site.
+**Pourquoi l'archive reste-t-elle sur le même jour ?** L'application ne récupère pas de données en arrière-plan. Ouvrez l'écran et attendez la note indiquant que des jours ont été ajoutés.
 
-**Que signifie une position de 1,0 ?** Que vous êtes apparu en première position à chaque impression pendant la période. Si vous étiez tombé un jour à la 3e position, la moyenne aurait dépassé 1.
+**Puis-je voir la position de mon concurrent ?** Non. Search Console ne donne que les données de votre propre site.
+
+**Que veut dire la position 1,0 ?** Vous étiez en première position à chaque impression pendant toute la période. Si vous étiez tombé 3e un jour, la moyenne dépasserait 1.
 
 ## Limites
 
-Les archives ne contiennent que les jours vus par cette installation. Si vous venez d'installer l'application, la première ouverture remonte au plus à 480 jours. Les recherches rares que Google masque n'entrent pas non plus dans les archives. Si les archives sont supprimées (le volume Docker ou le dossier de données, par exemple), l'historique disparaît. C'est à vous d'en faire une sauvegarde.
+L'archive ne contient que les jours que cette installation a vus. Si vous venez d'installer, la première ouverture remonte à 480 jours au plus. Les recherches rares que Google masque n'entrent pas non plus dans l'archive. Si l'archive est supprimée, l'historique disparaît. Supprimer le stockage de données Docker ou le dossier de données en est un exemple. Faire des sauvegardes vous revient.
 
-<!-- Kaynaklar: src/routes/_project/p/$projectId/rankings.tsx; src/client/features/rankings/RankingsPage.tsx; TrackedQueriesTable.tsx; PositionChange.tsx; PositionBandBars.tsx; MoversCard.tsx; ArchiveStatus.tsx; EmptyArchivePanel.tsx; QueryHistoryCard.tsx; src/serverFunctions/gscHistory.ts; src/server/features/gsc/services/GscHistoryService.ts; src/server/features/gsc/repositories/GscHistoryRepository.ts; src/shared/rankingChange.ts; src/db/gsc-history.schema.ts -->
+<!-- Sources : src/routes/_project/p/$projectId/rankings.tsx; src/client/features/rankings/RankingsPage.tsx; TrackedQueriesTable.tsx; PositionChange.tsx; PositionBandBars.tsx; PositionSparkline.tsx; MoversCard.tsx; ArchiveStatus.tsx; EmptyArchivePanel.tsx; QueryHistoryCard.tsx; positionBands.ts; rankingMoves.ts; src/shared/positionBands.ts; src/serverFunctions/gscHistory.ts; src/server/features/gsc/services/GscHistoryService.ts; src/server/features/gsc/repositories/GscHistoryRepository.ts; src/shared/rankingChange.ts; src/db/gsc-history.schema.ts -->

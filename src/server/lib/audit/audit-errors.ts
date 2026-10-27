@@ -25,6 +25,11 @@ const AUDIT_ERROR_CODES = [
   // The workflow instance no longer exists (expired from retention or never
   // created) while the audit row still said "running".
   "instance_lost",
+  // A secret the audit worker needs (the instance key that opens saved
+  // credentials) was not available to it. A setup fault of the app, never the
+  // site's. Also recorded on a COMPLETED audit as a notice when the audit
+  // routed around it (speed tests ran without the saved PageSpeed key).
+  "missing_secret",
   // Anything we could not classify.
   "unknown",
 ] as const;
@@ -66,6 +71,12 @@ function classifyMessage(message: string): AuditErrorCode {
   ) {
     return "step_timeout";
   }
+  if (
+    message.includes("MissingInstanceKeyError") ||
+    message.includes("No instance encryption key")
+  ) {
+    return "missing_secret";
+  }
   if (message.includes("output is too large")) return "step_output_too_large";
   if (message.includes("WorkflowInternalError")) return "workflow_internal";
   if (
@@ -76,4 +87,18 @@ function classifyMessage(message: string): AuditErrorCode {
     return "db_error";
   }
   return "unknown";
+}
+
+/**
+ * The code to show for a stored audit row. Rows written before a code existed
+ * say "unknown" while their stored detail names the cause, so those are
+ * classified again from the detail.
+ */
+export function storedAuditErrorCode(audit: {
+  errorCode: string | null;
+  errorDetail: string | null;
+}): string | null {
+  if (audit.errorCode && audit.errorCode !== "unknown") return audit.errorCode;
+  if (!audit.errorDetail) return audit.errorCode;
+  return classifyMessage(audit.errorDetail);
 }

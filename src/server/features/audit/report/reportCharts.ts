@@ -1,5 +1,6 @@
 import { formatCount } from "@/shared/format";
-import { auditScoreBand } from "@/shared/auditScore";
+import { auditScoreTier } from "@/shared/auditScore";
+import { tierBand, type AuditTier } from "@/shared/auditStanding";
 import { escapeHtml, percent, percentText, truncate } from "./reportFormat";
 import { t } from "@/shared/i18n";
 
@@ -184,11 +185,17 @@ export function stackedBars(rows: StackedRow[]): string {
   return `<svg viewBox="0 0 ${labelW + barW + 60} ${rows.length * rowH}" class="bars-svg" aria-hidden="true" focusable="false">${body}</svg>`;
 }
 
-/** The score ring of the cover page: the number is text inside the ring. */
-export function gauge(score: number | null): string {
+/**
+ * The score ring of the cover page: the number is text inside the ring. The
+ * colour follows `tier` (the capped tier from `auditStanding`); a null tier
+ * is a provisional score, drawn neutral.
+ */
+export function gauge(
+  score: number | null,
+  tier: AuditTier | null = score === null ? null : auditScoreTier(score),
+): string {
   const value = score ?? 0;
-  const color =
-    score === null ? COLORS.muted : GAUGE_COLOR[auditScoreBand(score)];
+  const color = tier === null ? COLORS.muted : GAUGE_COLOR[tierBand(tier)];
   const c = 2 * Math.PI * 52;
   return `<svg viewBox="0 0 120 120" class="gauge" role="img" aria-label="${score === null ? t("Puan yok") : t("Site puanı 100 üzerinden {score}", { score })}">
     <circle cx="60" cy="60" r="52" fill="none" stroke="#eef0f3" stroke-width="10"/>

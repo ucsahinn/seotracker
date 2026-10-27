@@ -1,5 +1,6 @@
 import { SafeExternalLink } from "@/client/components/SafeExternalLink";
 import { ScoreOverview } from "@/client/features/audit/results/ScoreOverview";
+import { WithheldScore } from "@/client/features/audit/results/WithheldScore";
 import { ChecksView } from "@/client/features/audit/results/ChecksView";
 import { TodoView } from "@/client/features/audit/results/TodoView";
 import { FactsView } from "@/client/features/audit/results/FactsView";
@@ -94,6 +95,13 @@ export function ResultsView({
   );
   const rateLimitedCount = useMemo(
     () => pages.filter((page) => page.fetchClass === "rate_limited").length,
+    [pages],
+  );
+  // No HTTP answer at all, even after the crawler's retry.
+  const unreachableCount = useMemo(
+    () =>
+      pages.filter((page) => page.fetchClass === "error" && !page.statusCode)
+        .length,
     [pages],
   );
   /*
@@ -194,6 +202,18 @@ export function ResultsView({
         </CrawlWarning>
       )}
 
+      {unreachableCount > 0 && (
+        <CrawlWarning
+          headline={t("{count} sayfa alınamadı (ağ hatası).", {
+            count: unreachableCount,
+          })}
+        >
+          {t(
+            "Bağlantı yeniden denemede de kurulamadı, bu sayfalar denetlenmedi ve bozuk sayılmadı. Çoğu zaman geçicidir; denetimi yeniden çalıştırın. Sürerse sitenin bu bilgisayardan açıldığını kontrol edin.",
+          )}
+        </CrawlWarning>
+      )}
+
       {(rateLimitedCount > 0 || crawlStopped) && (
         <CrawlWarning
           headline={
@@ -218,9 +238,20 @@ export function ResultsView({
       )}
 
       <Reveal className="flex flex-col gap-6">
-        {overview.score === null ? null : (
+        {overview.standing.kind === "withheld" &&
+        overview.standing.reason !== "empty" ? (
+          <WithheldScore
+            reason={overview.standing.reason}
+            errorCode={audit.errorCode}
+            failedPhase={audit.failedPhase}
+          />
+        ) : null}
+        {overview.standing.kind !== "scored" ? null : (
           <ScoreOverview
-            score={overview.score}
+            standing={overview.standing}
+            thinLines={overview.thinLines}
+            limitNote={overview.limitNote}
+            countLine={overview.countLine}
             breakdown={overview.breakdown}
             history={overview.insights?.history}
             animate={justCompleted}

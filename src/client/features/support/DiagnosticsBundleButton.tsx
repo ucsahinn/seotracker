@@ -8,6 +8,7 @@ import { downloadBlob } from "@/client/lib/download";
 import { useDoneFlash } from "@/client/lib/useDoneFlash";
 import { getDiagnostics } from "@/serverFunctions/diagnostics";
 import { t } from "@/shared/i18n";
+import { portFallbackMessage } from "./portFallbackCopy";
 
 /**
  * One button, one archive, everything needed to diagnose this install.
@@ -99,6 +100,8 @@ export function buildDiagnosticsSummary(
         audit.errorCode,
         audit.failedPhase && `phase=${audit.failedPhase}`,
         audit.errorDetail,
+        audit.noticeCode && `notice=${audit.noticeCode}`,
+        audit.urlsDiscovered != null && `found=${audit.urlsDiscovered}`,
       ]
         .filter(Boolean)
         .join(" · ");
@@ -114,12 +117,19 @@ export function buildDiagnosticsSummary(
     })
     .join("\n");
 
+  const { port } = server.setup;
+  const portLine = `${t("Port: {actual} (ayarlanan: {configured})", {
+    actual: port.actual === null ? "?" : String(port.actual),
+    configured: port.configured === null ? "?" : String(port.configured),
+  })}${port.fallback ? `\n${portFallbackMessage(port.fallback)}` : ""}`;
+
   const tables = Object.entries(server.tables)
     .map(([name, value]) => `  ${name.padEnd(26)} ${value}`)
     .join("\n");
 
   return `seowatcher ${server.version} Alpha · ${server.authMode}
 ${t("Oluşturulma: {date}", { date: server.generatedAt })}
+${portLine}
 
 ${t("Kurulum kontrolleri")}
 ${failing || `  ${t("hepsi ok")}`}

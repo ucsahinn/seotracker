@@ -10,8 +10,8 @@ export const itAppContinued: Catalog = {
     "Fai clic su un tipo per mostrare solo i report di quel tipo.",
   rapor: "report",
   Belirtilmemiş: "Non specificato",
-  "Site denetimi raporu": "Report di verifica del sito",
-  "SEO denetimi": "Verifica SEO",
+  "Site denetimi raporu": "Report di controllo del sito",
+  "SEO denetimi": "Controllo SEO",
   "Dönem karşılaştırması": "Confronto tra periodi",
   "Trafik düşüşü incelemesi": "Analisi del calo di traffico",
   "SEO raporu": "Report SEO",
@@ -23,7 +23,7 @@ export const itAppContinued: Catalog = {
   "Beceriyle yazılan": "Creato con una skill",
   "Henüz rapor yok": "Non ci sono ancora report",
   "Rapor iki yoldan alınır: ajanınıza yazdırın ya da Site denetimi ekranından indirin.":
-    "Puoi ottenere un report in due modi: chiedi all’agente di scriverlo oppure scaricalo dalla schermata Verifica del sito.",
+    "Puoi ottenere un report in due modi: chiedi all’agente di scriverlo oppure scaricalo dalla schermata Controllo del sito.",
   "Rapor komutunu kopyala": "Copia prompt del report",
   "Komut kopyalandı. Ajanınıza yapıştırın":
     "Prompt copiato. Incollalo nel tuo agente",
@@ -59,7 +59,7 @@ export const itAppContinued: Catalog = {
   "Claude Code ya da Codex projenizi inceler ve raporu buraya kaydeder. “Rapor komutunu kopyala” ajanınıza yapıştıracağınız komutu kopyalar.":
     "Claude Code o Codex esamina il progetto e salva qui il report. “Copia prompt del report” copia il prompt da incollare nell’agente.",
   "Site denetimi ekranındaki “Raporu indir” hem bilgisayarınıza indirir hem burada saklar. Ajan gerekmez.":
-    "“Scarica report” nella schermata Verifica del sito lo scarica sul computer e lo salva anche qui. Non serve un agente.",
+    "“Scarica report” nella schermata Controllo del sito lo scarica sul computer e lo salva anche qui. Non serve un agente.",
   "Rapor önizlemesi: {title}": "Anteprima del report: {title}",
   "HTML olarak indir": "Scarica come HTML",
   "Tam ekrandan çık": "Esci da schermo intero",
@@ -121,9 +121,9 @@ export const itAppContinued: Catalog = {
   "{intent} arama amacı": "Intento di ricerca: {intent}",
   "Etiketleri güncelle": "Aggiorna etichette",
   "Seçili {count} kelimeye etiket ekleyin ya da bunlardan etiket kaldırın.": {
-    one: "Aggiungi etichette alla {count} parola chiave selezionata o rimuovile.",
+    one: "Aggiungi o rimuovi etichette per la {count} parola chiave selezionata.",
     other:
-      "Aggiungi etichette alle {count} parole chiave selezionate o rimuovile.",
+      "Aggiungi o rimuovi etichette per le {count} parole chiave selezionate.",
   },
   "Etiket ekle": "Aggiungi etichette",
   "Etiket kaldır": "Rimuovi etichette",
@@ -145,7 +145,7 @@ export const itAppContinued: Catalog = {
   },
   Uygula: "Applica",
   Kelime: "Parola chiave",
-  "Arama performansında göster": "Mostra nel Rendimento della ricerca",
+  "Arama performansında göster": "Mostra in Rendimento della ricerca",
   "Ortalama sıra": "Posizione media",
   "Search Console bu kelime için sıra kaydetmemiş":
     "Search Console non ha registrato una posizione per questa parola chiave",
@@ -154,7 +154,7 @@ export const itAppContinued: Catalog = {
   Eklenme: "Aggiunta",
   "Kelimeyi kopyala": "Copia parola chiave",
   "Kelime kopyalandı": "Parola chiave copiata",
-  "Arama performansında ara": "Cerca nel Rendimento della ricerca",
+  "Arama performansında ara": "Cerca in Rendimento della ricerca",
   "Kelimeyi sil": "Elimina parola chiave",
   "Bu filtrelere uyan kelime yok":
     "Nessuna parola chiave corrisponde ai filtri",
@@ -190,7 +190,7 @@ export const itAppContinued: Catalog = {
   "Etiket ara…": "Cerca etichette…",
   "Aramayı temizle": "Cancella ricerca",
   "Henüz etiket yok. Kelimeleri seçip etiket ekleyin.":
-    "Non ci sono ancora etichette. Seleziona parole chiave e aggiungile.",
+    "Non ci sono ancora etichette. Seleziona delle parole chiave e aggiungi etichette.",
   "{count} seçili": "{count} selezionati",
   "{name} etiketini yönet": "Gestisci l’etichetta {name}",
   "Etiket güncellendi": "Etichetta aggiornata",
@@ -244,7 +244,7 @@ export const itAppContinued: Catalog = {
   "Nerede durduğunuzu anlatır ve sıradaki adımı seçer.":
     "Spiega a che punto sei e indica il prossimo passo.",
   "Hedeflerinizi, rakiplerinizi ve önemli sayfalarınızı bir kez kaydeder; diğer beceriler bunu hep bilir.":
-    "Salva una volta obiettivi, concorrenti e pagine importanti, che saranno sempre disponibili alle altre competenze.",
+    "Salva una volta obiettivi, concorrenti e pagine importanti, che saranno sempre disponibili alle altre skill.",
   "Sitenizi denetler ve bu hafta yapılacak tek bir işi öne çıkarır.":
     "Esamina il sito e mette in evidenza una sola attività da svolgere questa settimana.",
   "Bu dönemi öncekiyle karşılaştırır. Ne değişti, ne zaman değişti, önemli mi, söyler.":
@@ -254,7 +254,7 @@ export const itAppContinued: Catalog = {
   "Yukarıdakilerden birinin sonucunu Raporlar sayfasına kaydeder.":
     "Salva il risultato di una delle attività precedenti nella pagina Report.",
   "Ajanınızı kurun": "Configura il tuo agente",
-  Beceriler: "Competenze",
+  Beceriler: "Skill",
   "seowatcher'ı yapay zeka ajanınızla kullanabilirsiniz. Bir kez bağlayın, sonra ne istiyorsanız ona sorun.":
     "Puoi usare seowatcher con il tuo agente IA. Collegalo una volta e poi chiedigli ciò che ti serve.",
   "Durum okunamadı": "Impossibile leggere lo stato",
@@ -263,9 +263,9 @@ export const itAppContinued: Catalog = {
   "Bir ajan": "Un agente",
   "Henüz bağlanmadı": "Non ancora connesso",
   "Kurulum adımları yükleniyor": "Caricamento dei passaggi di configurazione",
-  "Becerileri güncelleyin": "Aggiorna le competenze",
+  "Becerileri güncelleyin": "Aggiorna le skill",
   "Ajanınızı daha önce kurduysanız güncelleme komutunu yapıştırın. Beceriler yenilenir, bağlantı ayarlarınız ve kendi düzenlemeleriniz olduğu gibi kalır.":
-    "Se hai già configurato l’agente, incolla il comando di aggiornamento. Le competenze verranno aggiornate, mentre le impostazioni di connessione e le tue modifiche resteranno invariate.",
+    "Se hai già configurato l’agente, incolla il comando di aggiornamento. Le skill verranno aggiornate, mentre le impostazioni di connessione e le tue modifiche resteranno invariate.",
   "Güncelleme komutunu kopyala": "Copia il comando di aggiornamento",
   "Güncelleme komutu kopyalandı": "Comando di aggiornamento copiato",
   "Bu kurulum Cloudflare Access arkasında. Ajanın bağlanabilmesi için Access uygulamanızda Managed OAuth'u açın.":
@@ -289,9 +289,9 @@ export const itAppContinued: Catalog = {
   "Bu adres parola istemez. Bilgisayarınızdaki başka bir programın araçları çalıştırmasını önlemek için {token} adıyla bir parola ayarlayın ve aracınıza şu başlığı ekletin:":
     "Questo indirizzo non richiede una password. Per impedire ad altri programmi sul computer di eseguire gli strumenti, imposta una password chiamata {token} e chiedi al tuo strumento di inviare questa intestazione:",
   "Kurulum komutu bunları kurar. Kısa cevap yerine tam bir çıktı istiyorsanız beceriyi adıyla çağırın.":
-    "Il comando di configurazione installa questi elementi. Per una risposta completa invece di una risposta breve, richiama la competenza per nome.",
+    "Il comando di configurazione installa questi elementi. Per una risposta completa invece di una risposta breve, richiama la skill per nome.",
   "{name} adını kopyala": "Copia il nome {name}",
-  "Beceri adı kopyalandı": "Nome della competenza copiato",
+  "Beceri adı kopyalandı": "Nome della skill copiato",
   "Bir şey ters giderse önce aşağıdaki duruma bakın. Çözüm çoğu zaman satırın yanındaki düğmededir.":
     "Se qualcosa non funziona, controlla prima lo stato qui sotto. Spesso la soluzione è il pulsante accanto alla voce.",
   Günlükler: "Registri",
@@ -314,12 +314,12 @@ export const itAppContinued: Catalog = {
   "Kılavuzu aç": "Apri la guida",
   "Sorun bildirmek için": "Per segnalare un problema",
   "Üstteki “{download}” düğmesi tek bir arşiv indirir. İçinde sürüm, kurulum kontrolleri, tablo büyüklükleri, bağlı Google mülkleri, son denetimlerin durumu ve bu sekmede yakalanan tarayıcı hataları var. Gizli değer yok. Parolalar ve anahtarlar toplanmaz, yalnızca ayarlı olup olmadıkları yazılır. Kısa bir not yeterliyse durum panelindeki “{summary}” düğmesi aynı özeti metin olarak verir. Arşivdeki {readme} içindekileri ve sizi tanımlayan şeyleri satır satır anlatır.":
-    "Il pulsante “{download}” in alto scarica un unico archivio. Contiene la versione, i controlli di configurazione, le dimensioni delle tabelle, le proprietà Google collegate, lo stato delle verifiche recenti e gli errori del browser rilevati in questa scheda. Non contiene valori segreti: le password e le chiavi non vengono raccolte, si indica solo se sono configurate. Se basta una nota breve, il pulsante “{summary}” nel pannello di stato fornisce lo stesso riepilogo in testo. Il file {readme} nell’archivio spiega riga per riga cosa contiene e quali dati potrebbero identificarti.",
+    "Il pulsante “{download}” in alto scarica un unico archivio. Contiene la versione, i controlli di configurazione, le dimensioni delle tabelle, le proprietà Google collegate, lo stato dei controlli recenti e gli errori del browser rilevati in questa scheda. Non contiene valori segreti: le password e le chiavi non vengono raccolte, si indica solo se sono configurate. Se basta una nota breve, il pulsante “{summary}” nel pannello di stato fornisce lo stesso riepilogo in testo. Il file {readme} nell’archivio spiega riga per riga cosa contiene e quali dati potrebbero identificarti.",
   "Tanılama paketi indir": "Scarica il pacchetto diagnostico",
   "Özeti kopyala": "Copia riepilogo",
   "Proje GitHub'da": "Progetto su GitHub",
   "Her projenin kendi Search Console bağlantısı, arama verisi ve site denetimleri vardır.":
-    "Ogni progetto ha la propria connessione Search Console, i propri dati di ricerca e le proprie verifiche del sito.",
+    "Ogni progetto ha la propria connessione Search Console, i propri dati di ricerca e i propri controlli del sito.",
   "Henüz proje yok": "Non ci sono ancora progetti",
   "Bir proje oluşturun, sonra sitesini ekleyin.":
     "Crea un progetto e poi aggiungi il sito.",
@@ -337,22 +337,22 @@ export const itAppContinued: Catalog = {
   "Bir şeyler ters gitti. Yardım ekranındaki günlüklere bakın.":
     "Si è verificato un problema. Controlla i registri nella schermata Aiuto.",
   "Bu denetim bulunamadı. Silinmiş olabilir.":
-    "Questa verifica non è stata trovata. Potrebbe essere stata eliminata.",
-  "Denetime bağlanılamadı": "Impossibile caricare la verifica",
-  "Tüm denetimler": "Tutte le verifiche",
-  "Site denetimi · {time}": "Verifica del sito · {time}",
+    "Questo controllo non è stato trovato. Potrebbe essere stato eliminato.",
+  "Denetime bağlanılamadı": "Impossibile caricare il controllo",
+  "Tüm denetimler": "Tutti i controlli",
+  "Site denetimi · {time}": "Controllo del sito · {time}",
   "Denetim bu siteyi tamamen tarayamadı.":
-    "La verifica non è riuscita a scansionare completamente il sito.",
+    "Il controllo non è riuscito a scansionare completamente il sito.",
   "Sitenin bot koruması tarayıcımızı engelledi ve şu an aşmanın bir yolu yok. Bilgisayarınızda çalışan masaüstü tarayıcılar genelde geçer. Şunları deneyin: {libreCrawl} (ücretsiz, açık kaynak) ya da {screamingFrog} (500 adrese kadar ücretsiz).":
     "La protezione anti-bot del sito ha bloccato il nostro crawler e al momento non è possibile aggirarla. I crawler desktop eseguiti sul computer di solito riescono ad accedere. Prova {libreCrawl} (gratuito e open source) oppure {screamingFrog} (gratuito fino a 500 URL).",
   "Denetim {count} sayfadan sonra erken durdu.": {
-    one: "La verifica si è interrotta in anticipo dopo {count} pagina.",
-    other: "La verifica si è interrotta in anticipo dopo {count} pagine.",
+    one: "Il controllo si è interrotto in anticipo dopo {count} pagina.",
+    other: "Il controllo si è interrotto in anticipo dopo {count} pagine.",
   },
   "Aşağıdaki sonuçlar, tarama durmadan önce bakılan her şeyi içerir. Yeniden denemek için yeni bir denetim başlatın. Yine olursa Yardım'dan tanılama paketini indirip sorunu bildirin.":
-    "I risultati qui sotto includono tutto ciò che è stato controllato prima dell’interruzione della scansione. Avvia una nuova verifica per riprovare. Se succede di nuovo, scarica il pacchetto diagnostico da Aiuto e segnala il problema.",
+    "I risultati qui sotto includono tutto ciò che è stato controllato prima dell’interruzione della scansione. Avvia un nuovo controllo per riprovare. Se succede di nuovo, scarica il pacchetto diagnostico da Aiuto e segnala il problema.",
   "Denetim sonuçları yüklenemedi":
-    "Impossibile caricare i risultati della verifica",
+    "Impossibile caricare i risultati del controllo",
   "Bu rapor bulunamadı. Silinmiş olabilir ya da başka bir projeye ait olabilir.":
     "Questo report non è stato trovato. Potrebbe essere stato eliminato o appartenere a un altro progetto.",
   "Rapor yüklenemedi": "Impossibile caricare il report",

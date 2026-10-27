@@ -13,6 +13,11 @@ import {
 } from "@/server/lib/googleServiceAccountToken";
 import { GA4_OAUTH_PROVIDER_ID, GA4_SERVICE_ACCOUNT_SCOPE } from "@/shared/ga4";
 import { t } from "@/shared/i18n";
+import {
+  fetchWithRetry,
+  networkErrorReason,
+  UpstreamNetworkError,
+} from "@/server/lib/fetchRetry";
 
 const GA4_ADMIN_API_BASE = "https://analyticsadmin.googleapis.com/v1beta";
 const GA4_ADMIN_ALPHA_API_BASE =
@@ -210,14 +215,20 @@ export function createGa4AdminClient(opts: {
     const token = await accessToken();
     let response: Response;
     try {
-      response = await fetch(url, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      response = await fetchWithRetry(
+        url,
+        { headers: { Authorization: `Bearer ${token}` } },
+        { service: "Google Analytics Admin API" },
+      );
     } catch (error) {
       if (isAbortError(error)) throw error;
+      // Status 0 means "no HTTP answer"; the transport's reason travels in
+      // the message so the log and the user both learn what happened.
       throw new Ga4AdminApiError(
         0,
-        "Google Analytics Admin API is temporarily unavailable.",
+        `Google Analytics Admin API could not be reached: ${networkErrorReason(
+          error instanceof UpstreamNetworkError ? error.reason : error,
+        )}`,
       );
     }
     if (!response.ok) {
@@ -425,6 +436,9 @@ const runReportResponseSchema = z.object({
 
 const googleErrorSchema = z.object({
   error: z.object({
+    // Google's canonical code ("PERMISSION_DENIED", "RESOURCE_EXHAUSTED"),
+    // the fallback reason when no detail names one.
+    status: z.string().optional(),
     details: z
       .array(
         z.object({
@@ -484,19 +498,25 @@ export function createGa4DataClient(opts: {
       const token = await accessToken();
       let response: Response;
       try {
-        response = await fetch(`${GA4_DATA_API_BASE}/${propertyId}:runReport`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+        response = await fetchWithRetry(
+          `${GA4_DATA_API_BASE}/${propertyId}:runReport`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(request),
           },
-          body: JSON.stringify(request),
-        });
+          { service: "Google Analytics Data API" },
+        );
       } catch (error) {
         if (isAbortError(error)) throw error;
         throw new Ga4DataApiError(
           0,
-          "Google Analytics reporting is temporarily unavailable.",
+          `Google Analytics could not be reached: ${networkErrorReason(
+            error instanceof UpstreamNetworkError ? error.reason : error,
+          )}`,
         );
       }
       if (!response.ok) {
@@ -515,6 +535,7 @@ export function createGa4DataClient(opts: {
               )?.reason ??
               parsed.data.error.details?.find((detail) => detail.reason)
                 ?.reason ??
+              parsed.data.error.status ??
               null;
           }
         } catch {

@@ -484,6 +484,9 @@ async function persistCrawledPages(input: {
   await AuditRepository.updateAuditProgress(auditId, input.workflowInstanceId, {
     pagesCrawled: stats.attempted,
     pagesTotal: Math.min(stats.seen, input.maxPages),
+    // Every URL found so far, sitemap seeds plus links, crawled or not: what
+    // the page limit cut from. The last batch's write is the crawl's total.
+    urlsDiscovered: stats.seen,
   });
   await recordAuditHeartbeat(auditId);
   await AuditProgressKV.pushCrawledUrls(

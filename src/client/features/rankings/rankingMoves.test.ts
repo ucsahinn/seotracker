@@ -36,10 +36,17 @@ describe("quick filters", () => {
   });
 });
 
+const seen = (r: MoveRow, impressions: number) => ({ ...r, impressions });
+
 describe("topMovers", () => {
-  it("orders by size of the move and skips unchanged queries", () => {
-    const { risers, fallers } = topMovers(rows);
-    expect(risers.map((r) => r.query)).toEqual(["climber"]);
+  it("orders by places moved times impressions and skips unchanged queries", () => {
+    const { risers, fallers } = topMovers([
+      seen(row("small leap", 20, 24), 30),
+      seen(row("big query", 6, 8), 5000),
+      seen(row("slipper", 14, 8), 100),
+      seen(row("steady", 5, 5.2), 900),
+    ]);
+    expect(risers.map((r) => r.query)).toEqual(["big query", "small leap"]);
     expect(fallers.map((r) => r.query)).toEqual(["slipper"]);
   });
 });

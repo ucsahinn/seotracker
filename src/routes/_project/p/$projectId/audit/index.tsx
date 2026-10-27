@@ -23,6 +23,10 @@ import {
   StatusBadge,
 } from "@/client/features/audit/shared";
 import { fillParts } from "@/client/features/settings/fillParts";
+import {
+  describeAuditFailure,
+  describeAuditNotice,
+} from "@/client/features/audit/results/auditFailureCopy";
 import { t } from "@/shared/i18n";
 
 export const Route = createFileRoute<"/_project/p/$projectId/audit/">(
@@ -249,26 +253,9 @@ function AuditDetail({
         isFailed={isFailed}
         isComplete={isComplete}
         failedWithResults={failedWithResults}
+        keptPages={partialPageCount}
         resultsReady={resultsQuery.isSuccess}
       />
-
-      {failedWithResults && (
-        <div className="alert alert-warning">
-          <AlertCircle className="size-5" />
-          <div className="space-y-1">
-            <p className="font-medium">
-              {t("Denetim {count} sayfadan sonra erken durdu.", {
-                count: partialPageCount,
-              })}
-            </p>
-            <p>
-              {t(
-                "Aşağıdaki sonuçlar, tarama durmadan önce bakılan her şeyi içerir. Yeniden denemek için yeni bir denetim başlatın. Yine olursa Yardım'dan tanılama paketini indirip sorunu bildirin.",
-              )}
-            </p>
-          </div>
-        </div>
-      )}
 
       {/* The status query has had a skeleton and an error branch since it was
           written; the results query had neither, so a completed audit whose
@@ -307,44 +294,85 @@ function AuditDetail({
 }
 
 /**
- * The banner for an audit that found (almost) nothing. A failure we
- * classified (database, timeout, memory...) is ours, not the site's bot
- * protection, so it gets its own banner with the code. The results fetch is
- * awaited before choosing between the "partial results" banner and the
- * zero-page support CTA, so the CTA doesn't flash first.
+ * What an audit that stopped (or finished with a caveat) tells the operator.
+ * A failure we classified says what happened, whether it is the site or the
+ * app, and what to do (see auditFailureCopy.ts). An unclassified failure with
+ * nothing crawled is read as the site's bot protection, so it gets the
+ * desktop-crawler suggestion; the results fetch is awaited before choosing so
+ * that suggestion doesn't flash first.
  */
 function FailureBanners({
   status,
   isFailed,
   isComplete,
   failedWithResults,
+  keptPages,
   resultsReady,
 }: {
-  status: { errorCode?: string | null; pagesCrawled: number } | undefined;
+  status:
+    | {
+        errorCode?: string | null;
+        failedPhase?: string | null;
+        noticeCode?: string | null;
+        pagesCrawled: number;
+      }
+    | undefined;
   isFailed: boolean;
   isComplete: boolean;
   failedWithResults: boolean;
+  keptPages: number;
   resultsReady: boolean;
 }) {
-  const internalFailure = isFailed && Boolean(status?.errorCode);
+  const classifiedFailure = isFailed && Boolean(status?.errorCode);
+  const showFailure = classifiedFailure || failedWithResults;
+  const failure = showFailure
+    ? describeAuditFailure({
+        errorCode: status?.errorCode,
+        failedPhase: status?.failedPhase,
+      })
+    : null;
+  const notice = isComplete ? describeAuditNotice(status?.noticeCode) : null;
   const showSupportCta =
-    (isFailed && !internalFailure && resultsReady && !failedWithResults) ||
+    (isFailed && !classifiedFailure && resultsReady && !failedWithResults) ||
     (isComplete && status !== undefined && status.pagesCrawled <= 1);
   return (
     <>
-      {internalFailure && !failedWithResults && (
-        <div role="alert" className="alert alert-error">
+      {failure && (
+        <div
+          role="alert"
+          className={
+            failedWithResults ? "alert alert-warning" : "alert alert-error"
+          }
+        >
           <AlertCircle className="size-5" />
           <div className="space-y-1">
             <p className="font-medium">
-              {t("Denetim uygulamadaki bir hata yüzünden durdu.")}
+              {t(failure.title, {
+                phase: failure.phase ? t(failure.phase) : "",
+              })}
             </p>
             <p>
-              {t(
-                "Sorun sitenizde değil. Denetimi yeniden başlatın. Tekrarlarsa Yardım ekranından tanı paketini indirip sorun kaydına ekleyin. Hata kodu: {code}",
-                { code: status?.errorCode ?? "" },
-              )}
+              {t(failure.cause)} {t(failure.side)}
             </p>
+            {failedWithResults && (
+              <p>
+                {t(
+                  "{count} sayfa tarandı ve kaydedildi; aşağıdaki sonuçlar bu sayfalara dayanır.",
+                  { count: keptPages },
+                )}
+              </p>
+            )}
+            <p>{t(failure.action)}</p>
+          </div>
+        </div>
+      )}
+
+      {notice && (
+        <div role="status" className="alert alert-warning">
+          <AlertCircle className="size-5" />
+          <div className="space-y-1">
+            <p className="font-medium">{t(notice.title)}</p>
+            <p>{t(notice.body)}</p>
           </div>
         </div>
       )}

@@ -14,6 +14,11 @@ describe("buildDiagnosticsSummary", () => {
         version: "0.7.1",
         authMode: "local_noauth",
         installKind: "windows",
+        port: {
+          configured: 8787,
+          actual: 8788,
+          fallback: { configured: 8787, actual: 8788 },
+        },
         checks: {},
       },
       tables: {},
@@ -29,6 +34,8 @@ describe("buildDiagnosticsSummary", () => {
           failedPhase: "lighthouse",
           errorCode: "unknown",
           errorDetail: "Workflow instance errored",
+          noticeCode: null,
+          urlsDiscovered: 640,
           pagesCrawled: 144,
           pagesTotal: 144,
           lighthouseTotal: 400,
@@ -49,8 +56,10 @@ describe("buildDiagnosticsSummary", () => {
     const summary = buildDiagnosticsSummary(diagnostics, 0);
 
     expect(summary).toContain(
-      "unknown · phase=lighthouse · Workflow instance errored",
+      "unknown · phase=lighthouse · Workflow instance errored · found=640",
     );
+    expect(summary).toContain("Port: 8788 (ayarlanan: 8787)");
+    expect(summary).toContain("seowatcher bu sefer 8788 numarasında");
     expect(summary).toContain(
       "PageSpeed ölçüm hatası (10): PageSpeed timed out for [URL redacted]",
     );

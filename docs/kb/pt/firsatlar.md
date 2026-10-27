@@ -1,66 +1,99 @@
 ---
 title: Oportunidades
-description: Mostra em quais das suas páginas você deve mexer esta semana. Divide as páginas em quatro grupos, dá uma pontuação a cada uma e escreve o trabalho a fazer.
+description: Mostra quantos cliques a mais por mês cada uma das suas páginas poderia trazer e que trabalho os traz. O número é um limite superior, não uma promessa.
 screen: Fırsatlar
 route: /p/<proje>/opportunities
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
-Esta tela mostra em quais páginas você deve mexer esta semana.
+Aqui você vê quantos cliques a mais por mês cada uma das suas páginas poderia trazer e o que fazer para consegui-los.
 
-O aplicativo lê todas as suas páginas no Search Console, combina cada uma com a página correspondente no Google Analytics e dá a cada página uma pontuação de 0 a 100. Essa pontuação não é uma medida do Google. É a estimativa do aplicativo de quanto vale a pena trabalhar nesta página. A tela precisa do Search Console e do Analytics. Se um deles não estiver conectado, aparecem um aviso e o botão **Bağlantıları aç** (Abrir as conexões).
+A estimativa vem só das suas pesquisas no Search Console. Se o Analytics estiver ligado, cada página recebe também uma etiqueta que diz se ela traz conversões. A etiqueta não muda a estimativa. Se o Search Console não estiver ligado, a tela mostra um aviso e o botão **Configurar conexões**.
 
 ## O que há na tela
 
-**Barra superior.** **Dönem** (Período) (Son 7 gün, Son 28 gün, Son 90 gün: últimos 7, 28 e 90 dias), **Satır sayısı** (Número de linhas) (25, 50, 100) e **Yenile** (Atualizar).
+**Barra superior.** **Período** (Últimos 7 dias, Últimos 28 dias, Últimos 90 dias), **Linhas** (25, 50, 100) e **Atualizar**. O período e o número de linhas escolhidos ficam na barra de endereço. Se você recarregar a página ou compartilhar o link, a mesma visão se abre.
 
-**Cartões de resumo.** **Listelenen** (Listadas), **Analytics'te karşılığı var** (Têm correspondência no Analytics), **Analytics'te karşılığı yok** (Não têm correspondência no Analytics) e **En yüksek puan** (Maior pontuação).
+**Para que serve esta página?** Uma caixa curta que explica a tela. Na primeira vez ela está aberta. Se você a fechar, o navegador lembra.
 
-**Quatro grupos.** Cada página cai em um de quatro grupos. O nome do grupo aparece na linha como um rótulo.
+**Linha do período.** Diz quais dias a lista cobre. Os dados do Search Console chegam com três dias de atraso, então os últimos dias faltam. As estimativas são levadas a 30 dias. Escolha 7 ou 90 dias, leia os números como "por mês".
 
-| Grupo                                 | O que significa                                                                                       | O que fazer                                                                      |
-| ------------------------------------- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| **Az tıklanan** (Pouco clicadas)      | Entre as 20 primeiras. A taxa de cliques é menos da metade da de suas outras páginas na mesma posição | Reescreva o título e a descrição. O texto exibido na busca não atrai cliques     |
-| **Yükselmeye yakın** (Perto de subir) | Posição 4 a 20                                                                                        | Amplie o conteúdo e adicione links internos. Pode subir uma ou duas posições     |
-| **İlk sıralarda** (No topo)           | Entre as 3 primeiras                                                                                  | Mantenha. Deixe a página atualizada e garanta que ela não quebre                 |
-| **Derinde kalan** (Enterradas)        | Depois da posição 20                                                                                  | Pense se a página realmente responde a essa busca. A página certa pode ser outra |
+**Quatro quadros.**
+
+- **No máximo estes cliques extra / mês (limite superior).** O ganho total das páginas listadas. Abaixo, você vê quantos cliques essas páginas recebem hoje por mês e que parte disso o ganho representa.
+- **Comece por aqui.** A página que poderia ganhar mais. Ao tocar no quadro, abre-se o painel de detalhes dessa página.
+- **Páginas que convertem.** O número de páginas que trazem eventos principais segundo o Analytics. Um evento principal é uma ação que você considera importante, como o envio de um formulário. Ao tocar no quadro, a tabela se limita a essas páginas. Se o Analytics não estiver ligado, aparece "Aparece quando o Analytics estiver conectado".
+- **Páginas sem ganho esperado.** O número de páginas que já estão bem posicionadas e recebem cliques normais, ou que tiveram pouquíssimas impressões. Essas páginas não estão na lista.
+
+**Onde está o ganho?** Mostra os quatro tipos de trabalho ao lado dos cliques extra por mês que cada um poderia trazer. O trabalho mais barato fica no alto. Ao tocar numa linha, a tabela se limita às páginas que ganham com esse trabalho. Toque de novo para tirar o filtro.
+
+| Tipo de trabalho                      | O que significa                                                                                                                      | O que fazer                                |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------ |
+| **Título e descrição**                | Na primeira página, mas clicada menos do que as outras pesquisas do seu site na mesma posição. Os cliques sobem sem mudar de posição | Reescreva o título e a descrição           |
+| **Na primeira página, posições 4-10** | Abaixo das três primeiras. Subir um degrau aumenta bem os cliques                                                                    | Reforce o conteúdo                         |
+| **Na segunda página, posições 11-20** | Logo atrás da primeira página. Quase ninguém clica até você chegar lá                                                                | Adicione links internos, amplie o conteúdo |
+| **Longe, depois da posição 20**       | Há demanda, mas a página está muito atrás                                                                                            | Junte ou abandone                          |
 
 Um link interno é um link que você coloca de uma página do seu site para outra.
 
-**Filtros rápidos.** **Analytics'te karşılığı olanlar** (Com correspondência no Analytics), **Analytics'te karşılığı yok**, **En çok gösterim alan 10** (As 10 com mais impressões).
+**Filtros rápidos.** **Que convertem** e **Tráfego, sem conversões**. Eles só aparecem se realmente reduzem a lista. Não aparecem se o Analytics não estiver ligado. Você pode combiná-los com uma linha de tipo de trabalho. Os dois funcionam juntos como um "e".
 
-**O cartão "Fırsat nerede toplanıyor?" (Onde a oportunidade se concentra?).** Mostra a distribuição das impressões ou dos cliques por grupo.
+**Tabela.** As colunas são estas.
 
-**Tabela.** Colunas: **Puan** (Pontuação), **Sayfa** (Página), **Sıra** (Posição), **Gösterim** (Impressões), **Tıklama** (Cliques), **Tıklama oranı** (Taxa de cliques), **Oturum** (Sessões). Uma sessão é uma visita ao site. Vem do Analytics.
+- **Cliques extra estimados.** Os cliques a mais que poderiam chegar a cada mês. A barra abaixo é proporcional ao maior ganho da lista.
+- **Página.** O endereço e, abaixo, o tipo de trabalho principal.
+- **Posição, Impressões, Cliques.** Os valores da página no período escolhido.
+- **CTR.** Abaixo, a diferença entre a taxa de cliques da página sem pesquisas de marca e a do seu site na mesma posição, em pontos percentuais. Seta para baixo significa abaixo do seu site, seta para cima, acima.
+- **Sessões.** As visitas orgânicas no Analytics. Abaixo você lê "converte", "sem conversões" ou "pouco tráfego". Se uma página tem menos de 30 sessões, a taxa de conversão dela não é considerada confiável, por isso aparece "pouco tráfego". Se não houver correspondência, você vê um traço.
 
-**Painel de detalhes.** Abre quando você clica em uma linha. A lista "Ne yapmalı?" (O que fazer?) fica aqui. As três partes da pontuação também: **Talep** (Demanda), **İş değeri** (Valor para o negócio), **Yükselme kolaylığı** (Facilidade de subir). Cada uma é alta, média ou baixa. Botões: **Arama performansında aç** (Abrir em Desempenho de busca), **Adresi kopyala** (Copiar o endereço), **Sayfayı aç** (Abrir a página).
+No menu acima da tabela, você leva a lista como **Exportar para Sheets** ou **CSV**. Se um filtro estiver ativo, só as linhas visíveis saem. A tabela ordena por qualquer coluna. Ela começa ordenada por ganho.
+
+**Painel de detalhes.** Abre quando você clica numa linha. No alto, ele diz o ganho e o motivo: posição média, impressões, cliques. Se o ganho passar do que a página inteira poderia alcançar, o painel avisa e puxa o número para esse limite. Para uma página que converte no Analytics, ele diz também quantos eventos principais por mês o ganho traria, mais ou menos, com a taxa de conversão de hoje. É uma estimativa.
+
+Abaixo há três informações: **Demanda** (impressões por mês), **Valor (Analytics)** e **Distância** (posição atual e meta). Depois vem a tabela **Que pesquisas?**. Para cada pesquisa ela mostra a posição, a taxa de cliques, a taxa-meta que a estimativa supõe e o ganho mensal. A posição média de uma página é a média de muitas pesquisas. Por isso "suba" não basta. Essa tabela diz em qual pesquisa você precisa subir. No fim, o título **O que fazer?** com uma lista de três itens.
+
+Botões: **Abrir em Desempenho da pesquisa**, **Copiar URL**, **Abrir página**.
 
 ## Como usar
 
-1. Comece com **Son 28 gün**. A linha do topo é a página que o aplicativo manda olhar primeiro.
-2. Pegue as duas primeiras páginas do grupo **Az tıklanan**. Elas estão bem posicionadas no Google, mas não são clicadas. Corrija o título e a descrição. É meia hora de trabalho.
-3. No grupo **Yükselmeye yakın**, olhe as páginas com pontuação alta. Acrescente uma seção e coloque dois ou três links internos no site.
-4. O botão **Analytics'te karşılığı yok** separa as páginas que o Google mostra, mas em que o Analytics não vê visitas. Na maioria das vezes é uma diferença de endereço (uma barra no fim, o www). Às vezes a página realmente não é clicada.
-5. Mexa em no máximo três ou quatro páginas por semana.
+1. Comece com **Últimos 28 dias**. O quadro do alto e a primeira linha da tabela dizem qual página olhar primeiro.
+2. Olhe **Onde está o ganho?**. O trabalho de título e descrição é o mais barato, porque os cliques sobem sem mudar de posição. Toque nessa linha e pegue as duas primeiras páginas da tabela.
+3. Abra o painel de detalhes. Escreva com clareza, no título e na descrição, a pesquisa de maior ganho em **Que pesquisas?**.
+4. Depois passe às páginas nas posições 4-10. Acrescente uma seção e faça links para elas a partir de páginas relacionadas.
+5. Nas páginas da linha **Longe**, decida primeiro. Se você tem outra página sobre o mesmo assunto, junte as duas. Se o ganho for pequeno, deixe a página.
+6. Se o Analytics estiver ligado, comece pelo filtro **Que convertem**. O mesmo aumento de cliques vale mais ali.
+7. Volte em duas semanas. Se o ganho estimado de uma página em que você mexeu diminuiu, o trabalho deu resultado.
 
 ## Como os números são calculados
 
-O período termina tão atrás quanto o atraso de três dias do Search Console. São pegas até 1.000 linhas do Search Console e até 1.000 linhas do Analytics. As duas listas são combinadas pelo nome do domínio e pelo caminho. Uma barra no fim do endereço não conta. Se as 1.000 linhas forem atingidas, aparece uma nota sob a tabela.
+O número é um limite superior, não uma promessa. O aplicativo chega a ele assim.
 
-Toda página com mais de zero impressões é candidata. O grupo é escolhido pela posição e pela taxa de cliques esperada. A taxa esperada é a taxa de cliques típica das suas páginas na mesma faixa de posição. As faixas são 1-3, 3-5, 5-10, 10-20 e 20-50. Uma faixa precisa de pelo menos três páginas com 10 impressões cada. Uma página na posição 20 ou abaixo, com taxa menor que a metade da esperada, vira "Az tıklanan".
+Cada pesquisa em que uma página aparece é tratada separadamente. As taxas de cliques são medidas no seu próprio site, não em outros.
 
-A pontuação é calculada assim: 50% demanda, 30% valor para o negócio, 20% facilidade de subir. A demanda se baseia nas impressões. Quanto melhor a posição, mais fácil se considera subir. O valor para o negócio é a taxa de eventos-chave no Analytics. Um evento-chave é uma ação que você conta como importante. Se nenhuma página tiver um, usa-se a taxa de engajamento. Uma página sem correspondência no Analytics recebe uma pontuação intermediária de valor para o negócio. A pontuação só compara entre si as páginas do seu próprio site.
+- **Uma pesquisa de primeira página com poucos cliques.** Se a taxa de cliques da pesquisa estiver abaixo de 70 por cento da taxa do seu site para pesquisas na mesma posição, o ganho é alcançar essa taxa. A posição não muda. É o trabalho de título e descrição.
+- **Toda outra pesquisa sobe só um degrau.** Uma pesquisa nas posições 4-5 alcança a taxa de 2-3, uma em 6-10 alcança a de 4-5, uma de segunda página alcança a da primeira página (posições 6-10) e uma mais atrás alcança a da segunda página. Pesquisas entre as três primeiras não são contadas.
+- **Limite por página.** As pesquisas de uma página são agrupadas por faixa de posições. Para cada grupo, o aplicativo calcula os cliques a mais que ele teria se as pesquisas subissem juntas um degrau: as impressões do grupo vezes a sua taxa de cliques uma faixa acima, menos os cliques que ele já recebe. Um grupo entre os três primeiros é medido pela taxa da própria faixa. O total da página não pode passar da soma desses valores de grupo. Assim, muitos ganhos pequenos não se somam num número irreal. A posição média única da página não é usada: uma página em 2º lugar na pesquisa principal e em 15º no resto tem média perto do topo, e essa média apagaria o ganho real das pesquisas mais abaixo.
+
+Pesquisas com pouquíssimas impressões não contam. Esse limite acompanha o tamanho do período. Se não houver pesquisas suficientes para medir a taxa de cliques do seu site por posição, nenhuma estimativa é possível. A tela avisa. Passar o período para 90 dias muitas vezes basta.
+
+**Pesquisas de marca ficam de fora.** Quem pesquisa a sua marca encontra você de qualquer jeito. A taxa de cliques alta delas faria as outras pesquisas parecerem baixas sem razão. Os termos de marca estão em um de três estados. Se você os confirmou, valem os termos confirmados. Se não, valem termos deduzidos do nome de domínio e a tela avisa. Se não houver nenhum termo, as pesquisas de marca entram na comparação. Você confirma os termos na tela **Desempenho da pesquisa**.
+
+**O Analytics só acrescenta uma etiqueta.** Ele não muda a estimativa. As conversões de uma página só são consideradas se ela teve pelo menos 30 sessões orgânicas. Com menos, a taxa é ruído. As páginas são pareadas por domínio e caminho. Uma barra no fim do endereço não conta.
+
+Se mais páginas têm ganho do que o número de linhas escolhido, a tabela mostra as de maior ganho e uma nota aparece abaixo. O total no alto sempre cobre todas.
 
 ## Perguntas frequentes
 
-**Uma página com pontuação 80 é duas vezes mais importante que uma com 60?** Não. 80 significa "olhe primeiro", 60 significa "olhe depois".
+**Por que não vieram "+120 cliques"?** É um limite superior. É o máximo possível se a posição subisse um degrau. O resultado real depende dos concorrentes e do Google.
 
-**O que significa "Analytics'te karşılığı yok"?** O formato do endereço pode ser diferente, ou a página pode nunca ter sido clicada.
+**Por que a lista está vazia ou aparece "Ainda há poucos dados para estimar"?** Não há pesquisas suficientes para medir a taxa de cliques do seu site por posição. Escolha **Últimos 90 dias**. Se você acabou de ligar o Search Console, o Google leva alguns dias para preencher os dados.
 
-**Por que a lista ficou vazia com 7 dias?** Em sete dias, a maioria das páginas fica abaixo de 10 impressões. Então a taxa esperada não pode ser calculada. Para a maioria dos sites, 28 dias é o certo.
+**O que significa "Nenhuma página tem ganho esperado neste período"?** Suas páginas ou já estão bem posicionadas e recebem cliques normais, ou tiveram poucas impressões para uma estimativa.
+
+**E se aparecer "Não encontrado no Google Analytics"?** O formato do endereço pode ser diferente, ou a página não teve visitas. A estimativa não é afetada.
 
 ## Limites
 
-A tela não usa volume de busca nem posições de concorrentes. A demanda são apenas as suas próprias impressões. O Search Console e o Analytics podem informar em fusos horários diferentes. As correspondências diárias podem se deslocar um dia. A pontuação não conhece a qualidade do conteúdo. A decisão final é sua.
+A tela não usa volume de pesquisa nem posições de concorrentes. Você só tem as suas próprias impressões. A estimativa não sabe a qualidade do conteúdo. O Search Console e o Analytics podem contar os dias em fusos horários diferentes. A decisão final é sua.
 
-<!-- Kaynaklar: src/routes/_project/p/$projectId/opportunities.tsx; src/client/features/opportunities/OpportunitiesPage.tsx; OpportunityStates.tsx; opportunityLogic.ts; OpportunitySummary.tsx; OpportunityColumns.tsx; OpportunitiesTable.tsx; OpportunityDetail.tsx; src/server/features/ga4/services/SearchOpportunityService.ts; src/server/features/ga4/services/opportunityKind.ts -->
+<!-- Fontes: src/routes/_project/p/$projectId/opportunities.tsx; src/client/features/opportunities/OpportunitiesPage.tsx; OpportunityStates.tsx; OpportunityMethod.tsx; OpportunityWorkBars.tsx; OpportunityQuickFilters.tsx; OpportunityColumns.tsx; OpportunitiesTable.tsx; OpportunityDetail.tsx; opportunityLogic.ts; src/shared/pageOpportunities.ts; src/shared/searchInsights.ts; src/server/features/ga4/services/SearchOpportunityService.ts -->

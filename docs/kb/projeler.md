@@ -3,7 +3,7 @@ title: Projeler
 description: Yeni proje açar, siteyi ve ülkeyi seçer, adı değiştirir, Google bağlantısını yönetirsiniz. Projeyi arşivleyip geri de alabilirsiniz.
 screen: Projeler, Proje ayarları
 route: /projects, /p/{proje}/settings
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
 Proje açar, ayarlarını değiştirir, gerekirse arşivlersiniz. Her site bir projedir. Her projenin kendi Google bağlantısı, kendi denetimleri ve kendi raporları olur.
@@ -12,7 +12,7 @@ Proje açar, ayarlarını değiştirir, gerekirse arşivlersiniz. Her site bir p
 
 **Proje seçici.** Sol üstteki proje adına tıklayınca projeleriniz açılır. Altta **Yeni proje** ve **Projeleri yönet** durur. Yanındaki dişli simgesi **Proje ayarları**'nı açar. Sekiz ya da daha fazla projeniz olursa listede bir arama kutusu çıkar.
 
-**Projeler sayfası.** Her satırda projenin adı ve sitesi görünür. Sitesi olmayan proje "Site belirlenmemiş" der. Açık olan projede **Etkin** etiketi durur. Satıra tıklayınca o projenin ayarları açılır. Arşivlediğiniz projeler en altta **Arşivlendi** bölümünde durur. **Geri al** deyince listeye döner.
+**Projeler sayfası.** Her satırda projenin adı ve sitesi görünür. Sitesi olmayan proje "Site eklenmedi" der. Birden çok projeniz varsa açık olanda **Etkin** etiketi durur. Satırın altında projenin kısa özeti yer alır: son 28 günün tıklaması ve önceki 28 güne göre değişimi (küçük bir çizgiyle), son denetimin zamanı ("Son denetim 3 gün önce" ya da "Henüz denetim yok") ve Search Console ile Analytics'in bağlı olup olmadığı. Dolu nokta bağlı, boş nokta bağlı değil demektir. Tıklama rakamı bu bilgisayardaki arşivden gelir. Arşivde arama verisi yoksa "Arama verisi arşivde yok" yazar. Rakamın üstüne gelirseniz hangi tarihler olduğunu görürsünüz. Satıra tıklayınca proje açılır. Sağdaki **Ayarlar** düğmesi proje ayarlarını açar. Sitesi olmayan projede bu düğme **Site ekle** der. Arşivlediğiniz projeler en altta **Arşivlendi** bölümünde durur. **Geri al** deyince listeye döner.
 
 **Yeni proje penceresi.** Dört alan var:
 
@@ -56,4 +56,4 @@ Bu ekranda sayı yok. Alan adı kaydedilirken şu kurallar geçerlidir: boşlukl
 
 Proje sayısında sınır yok. Proje oluşturmak hiçbir şeyi başlatmaz. Veri ancak Google bağlanınca gelir. Alan adı girmediyseniz denetim başlatırken adresi elle yazarsınız.
 
-<!-- Kaynaklar: src/routes/_app/projects.tsx; src/routes/_app/index.tsx; src/client/features/projects/CreateProjectModal.tsx; src/client/features/projects/ProjectGeneralSettings.tsx; src/client/features/projects/ProjectSwitcher.tsx; src/routes/_project/p/$projectId/settings.tsx; src/routes/_project/p/$projectId/settings/integrations.tsx; src/client/features/integrations/*; src/server/lib/domainUtils.ts; src/server/features/projects/services/projects.ts -->
+<!-- Kaynaklar: src/routes/_app/projects.tsx; src/routes/_app/index.tsx; src/client/features/projects/CreateProjectModal.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/ProjectGeneralSettings.tsx; src/client/features/projects/ProjectSwitcher.tsx; src/routes/_project/p/$projectId/settings.tsx; src/routes/_project/p/$projectId/settings/integrations.tsx; src/client/features/integrations/*; src/server/lib/domainUtils.ts; src/server/features/projects/services/projects.ts -->

@@ -5,6 +5,7 @@ import type { Catalog } from "@/shared/i18n";
  * Keys are the Turkish source strings exactly as passed to t().
  */
 export const enAnalytics: Catalog = {
+  "Bağlantıyı düzelt": "Fix the connection",
   "Hazırlık puanı": "Readiness score",
   "{completed} / {total} hazır": "{completed} / {total} ready",
   "Puan; Google bağlantıları, güncel denetim, proje bilgisi ve ajan kurulumunun hazır olup olmadığını gösterir. Arama sırası ya da SEO başarısı değildir.":
@@ -565,4 +566,20 @@ export const enAnalytics: Catalog = {
     "No queries rank between positions 5 and 20 right now. They are listed here as they enter that range.",
   "{impressions} gösterim · sıra {position}":
     "{impressions} impressions · position {position}",
+  // Cards and stats review (Opportunities, rankings, setup verdict).
+  "Önceki {days} güne göre": "Against the previous {days} days",
+  "Analytics {ga4} gün, Search Console {gsc} gün geriden gelir; bu yüzden buradaki günler üstteki tıklama kutularından farklıdır. Değişimler önceki aynı uzunluktaki döneme göredir.":
+    "Analytics runs {ga4} day behind and Search Console {gsc} days, so the days here differ from the click tiles above. Changes are against the previous period of the same length.",
+  "Kurulum tamam": "Setup complete",
+  "Kurulum {done} / {total}": "Setup {done} / {total}",
+  "Kurulumda eksik: {items}.": "Missing from setup: {items}.",
+  Tamamla: "Complete it",
+  // Cards and stats review (Opportunities, rankings, setup verdict).
+  "Trafiği yüksek, dönüşümü düşük sayfa":
+    "pages with high traffic and low conversion",
+  "Listede gösteriliyor": "Shown in the list",
+  Listele: "List them",
+  // Cards and stats review (Opportunities, rankings, setup verdict).
+  "Ortalama sırası 4–20 olan {count} sorgu; her biri bir basamak yükselirse en fazla {clicks} ek tıklama (üst sınır).":
+    "{count} queries averaging positions 4–20; if each moves up one step, at most {clicks} extra clicks (upper bound).",
 };

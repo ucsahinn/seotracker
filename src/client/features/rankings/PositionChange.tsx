@@ -37,7 +37,7 @@ export function PositionChange({ delta }: { delta: number | null }) {
       }`}
     >
       <Icon className="size-3.5" aria-hidden />
-      {t(up ? "Yükseldi {value}" : "Düştü {value}", {
+      {t(up ? "{value} sıra yükseldi" : "{value} sıra geriledi", {
         value: formatDecimal(Math.abs(delta)),
       })}
     </span>

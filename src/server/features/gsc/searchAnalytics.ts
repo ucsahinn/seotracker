@@ -40,6 +40,13 @@ export const GSC_DEFAULT_ROW_LIMIT = 250;
 // supports up to 25000, but we keep fetched == returned so counts stay honest;
 // the agent paginates with `startRow` for more.
 export const GSC_MAX_ROW_LIMIT = 1000;
+/**
+ * What Google itself allows per request: "Valid range is 1–25,000; Default is
+ * 1,000" (developers.google.com/webmaster-tools/v1/searchanalytics/query,
+ * `rowLimit`). The app's own screens page with this; the MCP surface keeps
+ * GSC_MAX_ROW_LIMIT for the sake of the agent's context window.
+ */
+export const GSC_API_MAX_ROW_LIMIT = 25_000;
 import { GSC_DATA_LAG_DAYS } from "@/shared/dataFreshness";
 export type GscDimension = (typeof GSC_DIMENSIONS)[number];
 type GscFilterOperator = (typeof GSC_FILTER_OPERATORS)[number];
@@ -110,7 +117,13 @@ function subtractRange(end: Date, range: GscDateRange): Date {
   return d;
 }
 
-function sixteenMonthFloor(today: Date): string {
+/** The first day of a preset window that ends on `endDate` (inclusive). */
+export function rangeStartDate(endDate: string, range: GscDateRange): string {
+  return formatDate(subtractRange(new Date(`${endDate}T00:00:00Z`), range));
+}
+
+/** The oldest day Search Console still serves, counted back from `today`. */
+export function sixteenMonthFloor(today: Date): string {
   return formatDate(subtractUtcMonths(today, 16));
 }
 
@@ -144,6 +157,7 @@ export function resolveDateRange(
 export function buildSearchAnalyticsRequest(
   input: GscPerformanceInput,
   today: Date = new Date(),
+  options: { maxRowLimit?: number } = {},
 ): GscSearchAnalyticsRequest {
   const { startDate, endDate } = resolveDateRange(input, today);
   const request: GscSearchAnalyticsRequest = {
@@ -155,7 +169,7 @@ export function buildSearchAnalyticsRequest(
         : ["query"],
     rowLimit: clamp(input.rowLimit ?? GSC_DEFAULT_ROW_LIMIT, {
       min: 1,
-      max: GSC_MAX_ROW_LIMIT,
+      max: options.maxRowLimit ?? GSC_MAX_ROW_LIMIT,
     }),
     type: input.type ?? "web",
     dataState: input.dataState ?? "all",

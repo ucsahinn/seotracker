@@ -33,24 +33,49 @@ function audit(
 }
 
 describe("NextStepsCard", () => {
-  it("shows a transparent readiness score that reflects setup completion", () => {
+  it("words the shared setup verdict and names what is missing", () => {
+    const setup = {
+      searchConsole: true,
+      analytics: false,
+      audit: true,
+      projectInfo: true,
+      pageSpeed: false,
+      agent: true,
+    };
+    const { rerender } = render(
+      <NextStepsCard
+        projectId="p1"
+        gscConnected={true}
+        setup={setup}
+        audit={audit()}
+      />,
+    );
+    expect(screen.getByText("Kurulum 4 / 6")).toBeDefined();
+    expect(
+      screen.getByText(/Kurulumda eksik: Analytics, PageSpeed anahtarı/),
+    ).toBeDefined();
+
+    rerender(
+      <NextStepsCard
+        projectId="p1"
+        gscConnected={true}
+        setup={{ ...setup, analytics: true, pageSpeed: true }}
+        audit={audit()}
+      />,
+    );
+    expect(screen.getByText("Kurulum tamam")).toBeDefined();
+  });
+
+  it("says why a failed audit stopped, in the same words as the audit screen", () => {
     render(
       <NextStepsCard
         projectId="p1"
         gscConnected={true}
-        ga4Connected={true}
-        hasProjectContext={true}
-        agentConnected={true}
-        audit={audit()}
+        audit={audit({ status: "failed", errorCode: "missing_secret" })}
       />,
     );
 
-    expect(
-      screen
-        .getByRole("progressbar", { name: "Hazırlık puanı" })
-        .getAttribute("aria-valuenow"),
-    ).toBe("100");
-    expect(screen.getByText("100 / 100")).toBeDefined();
+    expect(screen.getByText(/Sorun sitenizde değil, uygulamada/)).toBeDefined();
   });
 
   it("keeps the recommendations panel visible when Google setup is the only remaining action", () => {
@@ -65,9 +90,6 @@ describe("NextStepsCard", () => {
 
     expect(
       screen.getByRole("heading", { name: "Sıradaki adımlar" }),
-    ).toBeDefined();
-    expect(
-      screen.getByRole("progressbar", { name: "Hazırlık puanı" }),
     ).toBeDefined();
     expect(
       screen.getByRole("link", {

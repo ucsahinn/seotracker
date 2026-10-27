@@ -6,6 +6,7 @@ import {
   redactKey,
 } from "./pagespeedPayload";
 import type { LighthouseStrategy } from "./types";
+import { classifyAuditError } from "./audit-errors";
 import {
   LIGHTHOUSE_NO_KEY_MARKER,
   LIGHTHOUSE_RATE_LIMIT_MARKER,
@@ -162,7 +163,14 @@ export async function fetchPageSpeedReport(input: {
    */
   const { getPageSpeedApiKey } =
     await import("@/server/features/lighthouse/pagespeed-config");
-  const apiKey = await getPageSpeedApiKey();
+  // A saved key the worker cannot open (no instance key) means unkeyed, not a
+  // failed check; the workflow records one notice for the whole audit.
+  let apiKey: string | undefined;
+  try {
+    apiKey = await getPageSpeedApiKey();
+  } catch (error) {
+    if (classifyAuditError(error).errorCode !== "missing_secret") throw error;
+  }
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 

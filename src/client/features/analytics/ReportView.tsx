@@ -24,6 +24,7 @@ import { buildSummary } from "@/client/features/analytics/reportBuckets";
 import { buildCsv, downloadCsv } from "@/client/lib/csv";
 import { exportTableToSheets } from "@/client/lib/exportToSheets";
 import { formatCount, formatDate } from "@/client/lib/format";
+import { AnimatedNumber } from "@/client/components/AnimatedNumber";
 import type { Ga4ReportKindName } from "@/shared/ga4-reports";
 import { t } from "@/shared/i18n";
 
@@ -63,6 +64,17 @@ export function ReportView({
   onOpenHealth?: () => void;
 }) {
   const columns = [...result.dimensions, ...result.metrics];
+  /*
+   * The host column on every row repeated one site's name. Hidden while the
+   * report holds a single host; the CSV keeps every column.
+   */
+  const singleHost =
+    result.dimensions.includes("hostName") &&
+    new Set(result.rows.map((row) => row["hostName"])).size <= 1;
+  const shownDimensions = singleHost
+    ? result.dimensions.filter((field) => field !== "hostName")
+    : result.dimensions;
+  const shownColumns = [...shownDimensions, ...result.metrics];
   const sorting = useLocalSort<string>({ key: "", desc: true });
   const [activeChips, setActiveChips] = React.useState<ChipId[]>([]);
   const [segmentKey, setSegmentKey] = React.useState<string | null>(null);
@@ -117,6 +129,21 @@ export function ReportView({
         selectedKey={segment ? segment.key : null}
         onSelect={setSegmentKey}
         currencyCode={result.currencyCode ?? null}
+      />
+
+      <WeakConversionTile
+        chip={chips.find(
+          (chip) =>
+            chip.id === "weakConversion" && chip.disabledReason === null,
+        )}
+        active={activeChips.includes("weakConversion")}
+        onShow={() =>
+          setActiveChips((current) =>
+            current.includes("weakConversion")
+              ? current
+              : [...current, "weakConversion"],
+          )
+        }
       />
 
       <p className="text-xs text-muted">
@@ -257,12 +284,54 @@ export function ReportView({
       ) : (
         <ReportTable
           rows={rows}
-          columns={columns}
-          dimensionCount={result.dimensions.length}
+          columns={shownColumns}
+          dimensionCount={shownDimensions.length}
           sorting={sorting}
           currencyCode={result.currencyCode ?? null}
         />
       )}
     </div>
+  );
+}
+
+/**
+ * The one finding on this screen worth acting on first: busy pages that
+ * convert below the report's median. It used to be one chip among four; as a
+ * tile it says how many and opens the list.
+ */
+function WeakConversionTile({
+  chip,
+  active,
+  onShow,
+}: {
+  chip: { count: number; hint: string } | undefined;
+  active: boolean;
+  onShow: () => void;
+}) {
+  if (!chip || chip.count === 0) return null;
+  return (
+    <button
+      type="button"
+      aria-pressed={active}
+      onClick={onShow}
+      className={`flex w-full flex-wrap items-center gap-x-4 gap-y-1 rounded-box border px-4 py-3 text-left transition-colors ${
+        active
+          ? "border-primary bg-primary/5"
+          : "border-base-300 bg-base-100 hover:border-primary/40"
+      }`}
+    >
+      <span className="text-2xl font-semibold tabular-nums">
+        <AnimatedNumber value={chip.count} format={formatCount} />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-sm font-medium">
+          {t("Trafiği yüksek, dönüşümü düşük sayfa")}
+        </span>
+        <span className="block text-xs text-muted">{chip.hint}</span>
+      </span>
+      <span className="text-sm text-muted">
+        {active ? t("Listede gösteriliyor") : t("Listele")}
+      </span>
+    </button>
   );
 }

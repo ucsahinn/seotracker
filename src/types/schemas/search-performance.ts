@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { QUICK_FILTER_IDS } from "@/shared/searchQuickFilters";
 
 /** Date ranges offered by the Search Performance page. A deliberate subset of
  *  the GSC agent ranges (GSC_DATE_RANGES in searchAnalytics.ts); assignability
@@ -48,6 +49,81 @@ export const searchPerformanceInputSchema = z.object(
   searchPerformanceFilterShape,
 );
 
+/**
+ * The view. `fresh` skips the server's few-minute memory of Google's
+ * answers (searchAnalyticsCache.ts) for an explicit refresh.
+ */
+export const searchPerformanceViewInputSchema = z.object({
+  ...searchPerformanceFilterShape,
+  fresh: z.boolean().optional(),
+});
+
+const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+
+/**
+ * The window a view resolved, handed back by the table, drill-down and export
+ * calls so they read exactly the days the view's totals cover, even across
+ * Google's midnight. Omitted, the server resolves it the same way.
+ */
+const resolvedWindowSchema = z
+  .object({ startDate: isoDate, endDate: isoDate })
+  .refine((w) => w.startDate <= w.endDate, "startDate after endDate");
+
+export const SEARCH_TABLE_SORT_COLUMNS = [
+  "clicks",
+  "impressions",
+  "ctr",
+  "position",
+  "clickChange",
+] as const;
+export type SearchTableSortColumn = (typeof SEARCH_TABLE_SORT_COLUMNS)[number];
+
+/** Server-side search, chip, sort and paging over the whole fetched set. */
+const tableQueryShape = {
+  window: resolvedWindowSchema.optional(),
+  search: z.string().trim().max(200).optional(),
+  quickFilter: z.enum(QUICK_FILTER_IDS).optional(),
+  sort: z
+    .object({
+      column: z.enum(SEARCH_TABLE_SORT_COLUMNS),
+      direction: z.enum(["asc", "desc"]),
+    })
+    .optional(),
+  offset: z.number().int().min(0).default(0),
+  limit: z.number().int().min(1).max(1000).default(1000),
+};
+
+export const searchPerformanceDrilldownInputSchema = z.object({
+  ...searchPerformanceFilterShape,
+  window: resolvedWindowSchema.optional(),
+  dimension: z.enum(["query", "page"]),
+  key: z.string().min(1).max(2048),
+});
+
+export const siteDailyHistoryInputSchema = z.object({
+  projectId: z.string().min(1),
+  searchType: z.enum(SEARCH_PERFORMANCE_TYPES).default("web"),
+  device: z.enum(GSC_DEVICES).optional(),
+  /** Up to five years, like the query archive. */
+  days: z.number().int().min(7).max(1825).default(730),
+});
+
+export const brandTermsInputSchema = z.object({
+  projectId: z.string().min(1),
+  terms: z.array(z.string().trim().min(2).max(80)).max(50),
+});
+
+export const searchNoteInputSchema = z.object({
+  projectId: z.string().min(1),
+  date: isoDate,
+  note: z.string().trim().min(1).max(280),
+});
+
+export const searchNoteDeleteInputSchema = z.object({
+  projectId: z.string().min(1),
+  id: z.number().int().positive(),
+});
+
 /** The dimensions that get their own paginated table (query + page). Striking
  *  distance is computed from the overview call and never paginates. */
 export const SEARCH_PERFORMANCE_TABLE_DIMENSIONS = ["query", "page"] as const;
@@ -70,11 +146,15 @@ export const SEARCH_PERFORMANCE_PAGE_SIZES = [25, 50, 100] as const;
  */
 export const searchPerformanceTableInputSchema = z.object({
   ...searchPerformanceFilterShape,
+  ...tableQueryShape,
   dimension: z.enum(SEARCH_PERFORMANCE_TABLE_DIMENSIONS),
 });
 
-/** Export pulls the full dataset (capped) rather than a single page. */
+/** Export pulls every fetched row that matches, rather than a single page. */
 export const searchPerformanceTableExportInputSchema = z.object({
   ...searchPerformanceFilterShape,
+  window: resolvedWindowSchema.optional(),
+  search: tableQueryShape.search,
+  quickFilter: tableQueryShape.quickFilter,
   dimension: z.enum(SEARCH_PERFORMANCE_TABLE_DIMENSIONS),
 });

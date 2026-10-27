@@ -81,29 +81,30 @@ describe("UpdateCheckService", () => {
   });
 
   /*
-   * The state this repo is actually in until the first release is cut, and
-   * the one most likely to be mistaken for a fault: 404 is GitHub's ordinary
-   * answer for a repo with no releases.
+   * The repository has releases, so a 404 means it was renamed, removed or
+   * made private. Reading it as "nothing published yet" hid that.
    */
-  it("treats a 404 as 'nothing published yet', not as a failure", async () => {
+  it("treats a 404 as a missing release source, not as 'no releases yet'", async () => {
     mocks.fetch.mockResolvedValue(new Response("", { status: 404 }));
 
     const status = await UpdateCheckService.getStatus();
 
-    expect(status.outcome).toBe("no_releases");
+    expect(status.outcome).toBe("source_missing");
     expect(status.updateAvailable).toBe(false);
   });
 
-  it("checks a 'no releases yet' repo once a day, not on the failure back-off", async () => {
+  it("asks again after six hours, in step with the tray launcher", async () => {
     mocks.get.mockResolvedValue({
       ...BLANK,
       checkedAt: new Date(Date.now() - 7 * 60 * 60 * 1000).toISOString(),
-      lastStatus: 404,
+      lastStatus: 200,
+      latestTag: `v${currentVersion}`,
     });
+    mocks.fetch.mockResolvedValue(release(`v${currentVersion}`));
 
     await UpdateCheckService.getStatus();
 
-    expect(mocks.fetch).not.toHaveBeenCalled();
+    expect(mocks.fetch).toHaveBeenCalledOnce();
   });
 
   it("records a 200 that is not a release as a failed attempt", async () => {
@@ -182,13 +183,15 @@ describe("UpdateCheckService", () => {
       ...BLANK,
       checkedAt: new Date().toISOString(),
       lastStatus: 200,
-      latestTag: "v0.3.0",
+      // The running version: a cached tag older than that predates the
+      // install and is re-checked (see the test below).
+      latestTag: `v${currentVersion}`,
     });
 
     const status = await UpdateCheckService.getStatus();
 
     expect(mocks.fetch).not.toHaveBeenCalled();
-    expect(status.latestVersion).toBe("v0.3.0");
+    expect(status.latestVersion).toBe(`v${currentVersion}`);
   });
 
   it("asks again when the cached answer is a day old", async () => {
@@ -207,6 +210,27 @@ describe("UpdateCheckService", () => {
 
   // Off has to mean the request is never constructed, not that the answer is
   // hidden — that is the difference between a setting and a placebo.
+  /*
+   * Installed 0.8.0: the row still said v0.7.0 (checked the day before the
+   * upgrade) while the tray launcher, asking the same endpoint hourly, knew
+   * about 0.8.0.
+   */
+  it("asks again when the cached latest predates the running version", async () => {
+    mocks.get.mockResolvedValue({
+      ...BLANK,
+      checkedAt: new Date().toISOString(),
+      lastSuccessAt: new Date().toISOString(),
+      lastStatus: 200,
+      latestTag: "v0.0.1",
+    });
+    mocks.fetch.mockResolvedValue(release(`v${currentVersion}`));
+
+    const status = await UpdateCheckService.getStatus();
+
+    expect(mocks.fetch).toHaveBeenCalledOnce();
+    expect(status.latestVersion).toBe(`v${currentVersion}`);
+  });
+
   it("never contacts GitHub when checking is switched off", async () => {
     mocks.get.mockResolvedValue({ ...BLANK, enabled: false });
 

@@ -59,6 +59,12 @@ export type CannibalizedQuery = {
    * the case being measured, so the denominator runs slightly high.
    */
   splitShare: number;
+  /**
+   * Impressions on the competing pages other than the primary one (the
+   * numerator of `splitShare`). `impressions` x `splitShare` is not this:
+   * `impressions` also counts pages filtered out as noise.
+   */
+  splitImpressions: number;
 };
 
 export type CannibalizationReport = {
@@ -67,6 +73,12 @@ export type CannibalizationReport = {
   queriesAnalyzed: number;
   /** Impressions sitting on non-primary pages across every affected query. */
   splitImpressions: number;
+  /**
+   * Every examined query's impressions: the base `splitImpressions` is a
+   * share of, so the screen can say "0.05% of the total" instead of a bare
+   * count nobody can weigh.
+   */
+  analyzedImpressions: number;
   /**
    * Google returned a full page of rows, so there are more it did not send.
    * It sorts by clicks descending and cannibalisation lives in the low-click
@@ -103,7 +115,7 @@ export function findCannibalizedQueries(
   rows: GscSearchAnalyticsRow[],
 ): Pick<
   CannibalizationReport,
-  "rows" | "queriesAnalyzed" | "splitImpressions"
+  "rows" | "queriesAnalyzed" | "splitImpressions" | "analyzedImpressions"
 > {
   const byQuery = new Map<string, CompetingPage[]>();
 
@@ -123,11 +135,13 @@ export function findCannibalizedQueries(
   const found: CannibalizedQuery[] = [];
   let queriesAnalyzed = 0;
   let splitImpressions = 0;
+  let analyzedImpressions = 0;
 
   for (const [query, pages] of byQuery) {
     const impressions = pages.reduce((sum, page) => sum + page.impressions, 0);
     if (impressions < MIN_QUERY_IMPRESSIONS) continue;
     queriesAnalyzed += 1;
+    analyzedImpressions += impressions;
 
     const contenders = pages.filter(
       (page) =>
@@ -164,6 +178,7 @@ export function findCannibalizedQueries(
       primary,
       competitors,
       splitShare: split / contended,
+      splitImpressions: split,
     });
   }
 
@@ -172,5 +187,6 @@ export function findCannibalizedQueries(
     rows: sort(found, (a, b) => b.impressions - a.impressions),
     queriesAnalyzed,
     splitImpressions,
+    analyzedImpressions,
   };
 }

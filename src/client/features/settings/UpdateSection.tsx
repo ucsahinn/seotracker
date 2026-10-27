@@ -56,8 +56,10 @@ export function UpdateSection({ version }: { version: string }) {
             version: result.latestVersion ?? "",
           }),
         );
-      } else if (result.outcome === "no_releases") {
-        toast.success(t("Henüz yayımlanmış bir sürüm yok"));
+      } else if (result.outcome === "source_missing") {
+        toast.error(
+          t("Sürüm kaynağına ulaşılamadı: depo bulunamadı ya da gizli."),
+        );
       } else if (result.updateAvailable) {
         if (result.latestVersion) notifyUpdateAvailable(result.latestVersion);
       } else {
@@ -195,9 +197,11 @@ export function UpdateSection({ version }: { version: string }) {
         </p>
       ) : null}
 
-      {status?.outcome === "no_releases" ? (
-        <p className="text-sm text-muted">
-          {t("Depoda henüz yayımlanmış bir sürüm yok.")}
+      {status?.outcome === "source_missing" ? (
+        <p role="alert" className="text-sm text-[var(--ink-warning)]">
+          {t(
+            "Sürüm kaynağına ulaşılamadı: depo bulunamadı ya da gizli (GitHub 404). Yardım ekranından tanılama paketini indirip sorunu bildirin.",
+          )}
         </p>
       ) : null}
 
@@ -245,7 +249,7 @@ export function UpdateSection({ version }: { version: string }) {
             {t("Güncellemeleri kontrol et")}
             <HelpTip label={t("Güncellemeleri kontrol et")}>
               {t(
-                "Açıkken günde bir kez GitHub'daki sürüm listesine bakar, başka hiçbir şey göndermez. Kapatırsanız dışarıya hiç istek gitmez ve sürümü kendiniz takip edersiniz.",
+                "Açıkken altı saatte bir GitHub'daki sürüm listesine bakar, başka hiçbir şey göndermez. Kapatırsanız dışarıya hiç istek gitmez ve sürümü kendiniz takip edersiniz.",
               )}
             </HelpTip>
           </span>
@@ -271,7 +275,7 @@ export function UpdateSection({ version }: { version: string }) {
           ask for individually and can switch off. */}
       <p className="text-xs text-subtle">
         {t(
-          "Kontrol açıkken uygulama günde bir kez GitHub'a bağlanıp en son sürümü sorar. GitHub bu istekte yalnızca genel IP adresinizi, uygulama adını ve sürümü görür; siteleriniz, Google hesabınız ya da denetimleriniz gönderilmez.",
+          "Kontrol açıkken uygulama, bir sekmede açık olduğu sürece en çok altı saatte bir GitHub'a bağlanıp en son sürümü sorar. GitHub bu istekte yalnızca genel IP adresinizi, uygulama adını ve sürümü görür; siteleriniz, Google hesabınız ya da denetimleriniz gönderilmez.",
         )}
         {status?.checkedAt
           ? ` ${t("Son kontrol: {date}.", { date: formatDateTime(status.checkedAt) })}`

@@ -447,6 +447,10 @@ export type DemoQuery = {
   fromDay: number;
   /** Index into DEMO_QUERIES, used by the noise hash. */
   index: number;
+  /** The query stops being shown after this day index (a lost query). */
+  toDay?: number;
+  /** Shown but never clicked (a result nobody picks). */
+  clickless?: boolean;
 };
 
 type Topic = {
@@ -757,6 +761,197 @@ function buildQueries(): DemoQuery[] {
 
 export const DEMO_QUERIES: DemoQuery[] = buildQueries();
 
+/*
+ * The long tail: rare queries with a handful of impressions a day, mostly on
+ * page two and beyond, a few on the edge of page one. They exist only in the
+ * live Search Console stand-in -- not in the GA4 model and not seeded into
+ * the archive -- so the Search performance screen meets what a real property
+ * looks like: more than a thousand query+page rows, sorted by clicks, where
+ * the striking-distance queries have almost no clicks and sit far down the
+ * table. Some of them rank with two pages, so query+page outnumbers query.
+ */
+const TAIL_MODIFIERS: Array<[string, number, number]> = [
+  // [pattern ("%" = topic), position shift, weight]
+  ["% nasıl temizlenir", 4, 1],
+  ["% kaç derecede yıkanır", 9, 0.8],
+  ["% ölçüleri", 3, 1.2],
+  ["% renkleri", 6, 0.9],
+  ["% beyaz", 7, 0.9],
+  ["% gri", 10, 0.7],
+  ["% lacivert", 14, 0.5],
+  ["% pamuk", 5, 1],
+  ["% 160x220", 11, 0.6],
+  ["% 200x220", 12, 0.6],
+  ["% istanbul", 18, 0.5],
+  ["% ankara", 22, 0.4],
+  ["% izmir", 24, 0.4],
+  ["% kampanyalı", 9, 0.6],
+  ["% en ucuz", 16, 0.7],
+  ["% online satın al", 8, 0.8],
+  ["% kapıda ödeme", 20, 0.4],
+  ["% hediye", 13, 0.5],
+  ["% çocuk", 15, 0.6],
+  ["% bebek", 17, 0.5],
+  ["% organik", 10, 0.5],
+  ["% yazlık", 19, 0.4],
+  ["% kışlık", 12, 0.5],
+  ["% nedir", 6, 0.7],
+  ["% nasıl seçilir", 5, 0.8],
+  ["% hangisi daha iyi", 9, 0.6],
+  ["% markaları", 21, 0.5],
+  ["% tavsiye", 14, 0.5],
+  ["% yorumları 2026", 26, 0.3],
+  ["% outlet", 23, 0.4],
+  ["% toptan", 30, 0.3],
+  ["% kombin", 15, 0.4],
+  ["% dekorasyon", 18, 0.4],
+  ["% modern", 12, 0.5],
+  ["% vintage", 25, 0.3],
+  ["% desenli", 11, 0.5],
+  ["% düz renk", 13, 0.4],
+  ["% lüks", 17, 0.4],
+  ["% indirimli", 10, 0.6],
+  ["% stok", 28, 0.3],
+  ["% fiyat listesi", 8, 0.5],
+  ["% karşılaştırma", 19, 0.3],
+  ["% bakımı", 7, 0.5],
+  ["% ne kadar", 9, 0.6],
+  ["% kaç tl", 11, 0.6],
+  ["% en iyi marka", 20, 0.4],
+  ["% doğal", 16, 0.4],
+  ["% antialerjik", 14, 0.4],
+  ["% yıkama talimatı", 12, 0.3],
+  ["% kurutma makinesi", 22, 0.3],
+  ["% ütü", 27, 0.3],
+  ["% leke çıkarma", 10, 0.4],
+];
+
+/** Days from DEMO_START_DATE to DEMO_END_DATE (488 back to 1 back), inclusive. */
+const DEMO_DAYS = 488;
+
+export type DemoTailQuery = DemoQuery & {
+  /** Rare enough that it only shows up on some days. */
+  tail: true;
+};
+
+function buildTailQueries(): DemoTailQuery[] {
+  const out: DemoTailQuery[] = [];
+  const known = new Set(DEMO_QUERIES.map((q) => q.query));
+  let index = DEMO_QUERIES.length;
+  TOPICS.forEach((topic, ti) => {
+    TAIL_MODIFIERS.forEach(([pattern, shift, weight], mi) => {
+      const query = pattern.replace("%", topic.name);
+      if (known.has(query)) return;
+      known.add(query);
+      // 0.3 .. 3 impressions a day: a few dozen over 28 days.
+      const base =
+        (0.3 + 2.7 * hash(ti, mi, 7)) * weight * (0.6 + topic.weight);
+      const position = Math.min(
+        60,
+        topic.position + shift * (0.6 + hash(ti, mi, 8)),
+      );
+      out.push({
+        query,
+        page: topic.page,
+        base,
+        position,
+        season: topic.season,
+        fromDay: (ti * 31 + mi * 17) % 7 === 0 ? 200 + ((ti + mi) % 150) : 0,
+        index: index++,
+        tail: true,
+      });
+      /*
+       * A few queries that appeared inside the newest four weeks, and a few
+       * that stopped before them: what the new and lost lists are for.
+       */
+      if ((ti * 31 + mi * 17) % 23 === 1) {
+        out.push({
+          query: `${query} yeni sezon`,
+          page: topic.page,
+          base: 4 + 4 * hash(ti, mi, 9),
+          position,
+          season: topic.season,
+          fromDay: DEMO_DAYS - 22 + ((ti + mi) % 8),
+          index: index++,
+          tail: true,
+        });
+      }
+      if ((ti * 13 + mi * 5) % 29 === 2) {
+        out.push({
+          query: `${query} eski model`,
+          page: topic.page,
+          base: 4 + 4 * hash(ti, mi, 10),
+          position,
+          season: topic.season,
+          fromDay: 0,
+          toDay: DEMO_DAYS - 40,
+          index: index++,
+          tail: true,
+        });
+      }
+      // One in six also ranks with a second page: the blog or the parent.
+      if ((ti + mi) % 6 === 0) {
+        const second = topic.page.split("/").slice(0, 2).join("/");
+        out.push({
+          query,
+          page:
+            second !== topic.page
+              ? second
+              : (BLOG_QUERIES[(ti + mi) % BLOG_QUERIES.length]?.[1] ?? "/blog"),
+          base: base * 0.4,
+          position: position + 6,
+          season: topic.season,
+          fromDay: 0,
+          index: index++,
+          tail: true,
+        });
+      }
+    });
+  });
+  return out;
+}
+
+/** An old campaign page still shown for a few searches nobody clicks. */
+const CLICKLESS: DemoTailQuery[] = [
+  "kampanya 2024 nevresim",
+  "yılbaşı indirimi 2024",
+  "eski kampanya kodu",
+  "2024 kış kampanyası",
+].map((query, i) => ({
+  query,
+  page: "/blog/kampanya-2024",
+  base: 3 + i,
+  position: 14 + i * 3,
+  season: "neutral",
+  fromDay: 0,
+  index: 6000 + i,
+  clickless: true,
+  tail: true,
+}));
+
+export const DEMO_TAIL_QUERIES: DemoTailQuery[] = [
+  ...buildTailQueries(),
+  ...CLICKLESS,
+];
+
+/*
+ * Anonymized queries: searches Google counts in the site total but never
+ * names, "to protect the privacy of the user making the query". They reach
+ * every table without a query dimension (date, page, country, device) and no
+ * query table, which is why query rows never add up to the total.
+ */
+const HIDDEN_QUERIES: DemoQuery[] = DEMO_PAGES.filter(
+  (p) => p.kind !== "info",
+).map((p, i) => ({
+  query: `\u0000hidden-${i}`,
+  page: p.path,
+  base: 45 + 70 * hash(i, 3, 11),
+  position: 4 + 9 * hash(i, 4, 11),
+  season: "neutral",
+  fromDay: 0,
+  index: 5000 + i,
+}));
+
 // ---------------------------------------------------------------------------
 // Dates
 // ---------------------------------------------------------------------------
@@ -838,15 +1033,53 @@ export type QueryDay = {
   position: number;
 };
 
+type DayInfo = {
+  day: number;
+  /** weekday x growth, shared by every query that day. */
+  common: number;
+  season: Record<Season, number>;
+};
+const dayInfoCache = new Map<string, DayInfo>();
+
+function dayInfo(iso: string): DayInfo {
+  let info = dayInfoCache.get(iso);
+  if (!info) {
+    const day = dayIndex(iso);
+    info = {
+      day,
+      common: weekdayFactor(iso) * growthFactor(day),
+      season: {
+        neutral: seasonFactor("neutral", iso),
+        winter: seasonFactor("winter", iso),
+        summer: seasonFactor("summer", iso),
+      },
+    };
+    dayInfoCache.set(iso, info);
+  }
+  return info;
+}
+
+/**
+ * One guide that has been losing ground for half a year -- outranked, never
+ * refreshed -- so the content-decay list has a real case, not a season.
+ */
+const DEMO_DECAYING_PAGE = "/blog/yatak-odasi-dekorasyon-fikirleri";
+
+function decayFactor(page: string, day: number): number {
+  if (page !== DEMO_DECAYING_PAGE || day < 300) return 1;
+  return Math.max(0.3, 1 - (day - 300) / 220);
+}
+
 /** One query's Search Console numbers on one day. Null when it did not exist yet. */
 export function queryDay(q: DemoQuery, iso: string): QueryDay | null {
-  const day = dayIndex(iso);
+  const { day, common, season } = dayInfo(iso);
   if (day < q.fromDay || day >= DEMO_TOTAL_DAYS || day < 0) return null;
+  if (q.toDay !== undefined && day > q.toDay) return null;
   const expected =
     q.base *
-    seasonFactor(q.season, iso) *
-    weekdayFactor(iso) *
-    growthFactor(day) *
+    season[q.season] *
+    common *
+    decayFactor(q.page, day) *
     noise(q.index, day, 1, 0.3);
   const impressions = Math.max(0, Math.round(expected));
   if (impressions === 0) return null;
@@ -861,14 +1094,16 @@ export function queryDay(q: DemoQuery, iso: string): QueryDay | null {
   const brand = q.query.startsWith("örnek site");
   const ctr =
     (brand ? 0.52 : ctrForPosition(position)) * noise(q.index, day, 3, 0.35);
-  const clicks = Math.min(impressions, Math.round(impressions * ctr));
+  const clicks = q.clickless
+    ? 0
+    : Math.min(impressions, Math.round(impressions * ctr));
   return { impressions, clicks, position: Math.round(position * 100) / 100 };
 }
 
 type Split = Array<[string, number]>;
 
 const COUNTRIES: Split = [
-  ["tur", 0.862],
+  ["tur", 0.85],
   ["deu", 0.048],
   ["nld", 0.021],
   ["gbr", 0.017],
@@ -878,6 +1113,19 @@ const COUNTRIES: Split = [
   ["aut", 0.008],
   ["bel", 0.004],
   ["che", 0.003],
+  // The long list Search Console really returns: a dozen with a sliver each.
+  ["swe", 0.0015],
+  ["dnk", 0.0012],
+  ["nor", 0.0011],
+  ["ita", 0.0011],
+  ["esp", 0.001],
+  ["rus", 0.001],
+  ["ukr", 0.001],
+  ["geo", 0.001],
+  ["cyp", 0.001],
+  ["grc", 0.0009],
+  ["bgr", 0.0009],
+  ["can", 0.0008],
 ];
 const DEVICES: Split = [
   ["MOBILE", 0.64],
@@ -908,6 +1156,23 @@ export type GscRequest = {
   type?: string;
   dataState?: string;
 };
+
+/**
+ * Google's "fresh" days: from here on the numbers are still being counted.
+ * dataState=final stops the day before; dataState=all includes them, partly
+ * counted, and says where they begin in `metadata.first_incomplete_date`.
+ */
+export const DEMO_FIRST_INCOMPLETE_DATE = addDays(DEMO_END_DATE, -1);
+
+/** How much of a provisional day Google has counted so far. */
+/** A day the site half-vanished (a deploy that served errors), for the anomaly check. */
+const DEMO_OUTAGE_DATE = addDays(DEMO_END_DATE, -12);
+
+function provisionalShare(iso: string): number {
+  if (iso === DEMO_OUTAGE_DATE) return 0.48;
+  if (iso < DEMO_FIRST_INCOMPLETE_DATE) return 1;
+  return iso === DEMO_FIRST_INCOMPLETE_DATE ? 0.74 : 0.41;
+}
 
 export type GscRow = {
   keys: string[];
@@ -962,8 +1227,18 @@ export function gscSearchAnalytics(request: GscRequest): GscRow[] {
   );
   const start =
     request.startDate < DEMO_START_DATE ? DEMO_START_DATE : request.startDate;
-  const end = request.endDate > DEMO_END_DATE ? DEMO_END_DATE : request.endDate;
+  const newest =
+    (request.dataState ?? "final").toLowerCase() === "all"
+      ? DEMO_END_DATE
+      : addDays(DEMO_FIRST_INCOMPLETE_DATE, -1);
+  const end = request.endDate > newest ? newest : request.endDate;
   if (start > end) return [];
+  // Anonymized queries are in every table without a query in it.
+  const hidden =
+    !dims.includes("query") && !filters.some((f) => f.dimension === "query");
+  const sources: DemoQuery[] = hidden
+    ? [...DEMO_QUERIES, ...DEMO_TAIL_QUERIES, ...HIDDEN_QUERIES]
+    : [...DEMO_QUERIES, ...DEMO_TAIL_QUERIES];
 
   const wantsAppearance = dims.includes("searchAppearance");
   const splits: Array<{ dim: string; values: Split }> = [];
@@ -1017,7 +1292,7 @@ export function gscSearchAnalytics(request: GscRequest): GscRow[] {
     groups.set(key, g);
   };
 
-  for (const q of DEMO_QUERIES) {
+  for (const q of sources) {
     const pageUrl = `${DEMO_ORIGIN}${q.page}`;
     let keep = true;
     for (const f of filters) {
@@ -1036,6 +1311,7 @@ export function gscSearchAnalytics(request: GscRequest): GscRow[] {
     for (const iso of eachDay(start, end)) {
       const day = queryDay(q, iso);
       if (!day) continue;
+      const counted = provisionalShare(iso);
       const base: Array<{ keys: string[]; share: number }> = [
         { keys: [], share: baseShare },
       ];
@@ -1066,8 +1342,8 @@ export function gscSearchAnalytics(request: GscRequest): GscRow[] {
       for (const c of combos) {
         add(
           c.keys,
-          day.clicks * c.share,
-          day.impressions * c.share,
+          day.clicks * c.share * counted,
+          day.impressions * c.share * counted,
           day.position,
         );
       }
@@ -1088,6 +1364,37 @@ export function gscSearchAnalytics(request: GscRequest): GscRow[] {
   const startRow = request.startRow ?? 0;
   const limit = Math.min(Math.max(request.rowLimit ?? 1000, 1), 25_000);
   return rows.slice(startRow, startRow + limit);
+}
+
+/**
+ * The whole `searchAnalytics.query` response: the rows plus what Google says
+ * about them -- the aggregation (by page for page and search-appearance
+ * tables) and, for a date-grouped dataState=all request that reaches them,
+ * where the still-changing days begin.
+ */
+export function gscSearchAnalyticsResponse(request: GscRequest): {
+  rows: GscRow[];
+  responseAggregationType: string;
+  metadata?: { first_incomplete_date: string };
+} {
+  const dims = request.dimensions ?? [];
+  const byPage =
+    dims.includes("page") ||
+    dims.includes("searchAppearance") ||
+    (request.dimensionFilterGroups ?? []).some((g) =>
+      g.filters.some((f) => f.dimension === "page"),
+    );
+  const fresh =
+    (request.dataState ?? "").toLowerCase() === "all" &&
+    dims.includes("date") &&
+    request.endDate >= DEMO_FIRST_INCOMPLETE_DATE;
+  return {
+    rows: gscSearchAnalytics(request),
+    responseAggregationType: byPage ? "byPage" : "byProperty",
+    ...(fresh
+      ? { metadata: { first_incomplete_date: DEMO_FIRST_INCOMPLETE_DATE } }
+      : {}),
+  };
 }
 
 // ---------------------------------------------------------------------------

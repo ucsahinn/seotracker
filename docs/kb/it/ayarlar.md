@@ -3,37 +3,48 @@ title: Impostazioni
 description: Tema, chiave di accesso a Google, chiave PageSpeed, limiti d'uso e aggiornamenti. È l'unica schermata di impostazioni dell'intera installazione.
 screen: Ayarlar
 route: /settings
-updated: 2026-10-24
+updated: 2026-10-27
 ---
 
 Qui si gestiscono il collegamento con Google, la chiave per la misurazione della velocità e gli aggiornamenti.
 
-Nella schermata **Ayarlar** (Impostazioni) si regola ciò che riguarda l'intera installazione. Le impostazioni specifiche del progetto (nome, dominio, proprietà di Search Console e di Analytics) stanno nella pagina **Proje ayarları** (Impostazioni del progetto) di ciascun progetto. Qui si gestiscono la chiave di accesso necessaria per collegarsi a Google, la chiave PageSpeed, il tema e il controllo degli aggiornamenti. A sinistra ci sono le sezioni **Görünüm** (Aspetto), **Google**, **Hizmet hesabı** (Account di servizio), **Hız ölçümü** (Misurazione della velocità), **Sınırlar** (Limiti), **Hakkında** (Informazioni) e **Windows**. Nel titolo di ogni sezione c'è un badge che ne mostra lo stato.
+Nella schermata **Impostazioni** si regola ciò che riguarda l'intera installazione. Le impostazioni specifiche del progetto (nome, dominio, proprietà di Search Console e di Analytics) stanno nella pagina **Impostazioni progetto** di ciascun progetto. Qui si gestiscono la chiave di accesso necessaria per collegarsi a Google, la chiave PageSpeed, il tema e il controllo degli aggiornamenti. A sinistra ci sono le sezioni **Aspetto**, **Google**, **Account di servizio**, **Test di velocità**, **Limiti**, **Informazioni** e **Windows**. Nel titolo di ogni sezione c'è un badge che ne mostra lo stato.
 
 ## Cosa c'è nella schermata
 
-**Görünüm.** Per il **Tema** (Tema) ci sono le opzioni Sistem (Sistema), Açık (Chiaro) e Koyu (Scuro). La scelta è conservata in questo browser. In un altro browser o su un altro computer la si sceglie di nuovo.
+**Aspetto.** Per il **Tema** ci sono le opzioni Sistema, Chiaro e Scuro. La scelta è conservata in questo browser. In un altro browser o su un altro computer la si sceglie di nuovo.
 
-**Lingua.** L’interfaccia dell’app è disponibile in turco e inglese. In **Ayarlar → Görünüm → Dil**, scegliere Türkçe o English. La pagina si ricarica; numeri e date seguono la lingua selezionata. La scelta viene salvata nel browser.
+**Lingua.** L'interfaccia dell'app è disponibile in turco, inglese, tedesco, francese, italiano e portoghese. In **Impostazioni → Aspetto → Lingua** si sceglie **Türkçe**, **English**, **Deutsch**, **Français**, **Italiano** o **Português**; la pagina si ricarica nella nuova lingua. Ogni lingua è scritta con il proprio nome, così si trova la propria anche se non si legge quella attuale. Finché non si sceglie, l'app segue la lingua del browser. Se il browser non chiede nessuna di queste lingue, l'app si apre in inglese. Se il browser non indica alcuna lingua, si apre in turco. La scelta è salvata in questo browser, come il tema. Cambia solo l'interfaccia dell'app. Il menu dell'area di notifica di Windows resta in turco.
 
-**Notifiche (Bildirimler).** La campanella mostra gli ultimi 50 eventi e il numero di messaggi non letti. **Tümünü okundu işaretle** segna tutto come letto senza eliminare la cronologia. In **Bildirimler** è possibile ascoltare il suono e attivare le notifiche desktop in background. Il permesso del browser viene richiesto solo all’attivazione.
+**Notifiche.** La campanella nella barra laterale mostra gli ultimi 50 eventi e il numero di messaggi non letti. **Segna tutto come letto** conserva la cronologia. Qui compaiono risultati dei controlli, nuove versioni, problemi di collegamento a Google, report e richieste all'indice. Finché l'app è aperta, un nuovo evento compare in una piccola finestra propria dell'app. Quando la scheda è in secondo piano, l'evento resta solo nella cronologia della campanella. L'app non invia notifiche di Windows né del browser, così lo stesso evento non compare mai in due finestre sovrapposte. Se si sta guardando la schermata di un controllo, la finestra di fine di quel controllo non viene mostrata in più, perché la schermata mostra già la fine. **Suono delle notifiche** riproduce un breve suono per gli eventi importanti; con **Ascolta il suono** lo si prova. **Prova la notifica nell'app** crea una notifica di prova e il suo suono. Le animazioni visive seguono la preferenza di sistema per la riduzione del movimento; il suono ha un'impostazione a parte.
 
-**Windows.** Attiva o disattiva l’avvio con Windows e l’installazione automatica degli aggiornamenti. Sono le stesse preferenze salvate nel menu dell’icona di notifica. Le restrizioni dell’amministratore sono spiegate accanto al comando. I comandi sono disabilitati nelle installazioni Docker e di sviluppo; i vecchi launcher Windows richiedono l’aggiornamento del pacchetto.
+**Windows.** Qui si attivano o disattivano l'avvio con Windows e l'installazione automatica degli aggiornamenti. Sono le stesse preferenze salvate del menu dell'area di notifica. Le restrizioni dell'amministratore sono spiegate accanto all'opzione. I comandi sono disattivati nelle installazioni Docker e di sviluppo; i vecchi programmi di avvio di Windows chiedono di aggiornare il pacchetto.
 
-**Google.** Il badge ha uno di tre valori: **Kayıtlı** (Registrata), **Ortamdan geliyor** (Arriva dall'ambiente; in un'installazione Docker è stata data con il file `.env`) oppure **Eksik** (Mancante). La sezione mostra i due indirizzi di reindirizzamento da aggiungere in Google Cloud Console (il pannello per sviluppatori di Google). Accanto ci sono i pulsanti di copia. Vanno aggiunti entrambi. Se non si aggiunge l'indirizzo di Analytics, si collega solo Search Console.
+Se una preferenza non si può salvare, la schermata dice perché e cosa fare. Poiché questa sezione parla con l'app nella barra delle applicazioni, gli errori vengono da quell'app:
 
-Ci sono due campi: **İstemci kimliği** (ID client) e **Gizli anahtar** (Chiave segreta). Entrambi sono parti della chiave di accesso ottenuta da Google. I pulsanti sono: **Kaydet** (Salva), **Vazgeç** (Annulla), **Değiştir** (Modifica) e **Sil** (Elimina). **Sil** interrompe i collegamenti esistenti. I passaggi dettagliati sono nella guida al collegamento con Google.
+- **L'app nell'area di notifica non ha risposto entro 4 secondi.** Se il computer si è appena riattivato dalla sospensione, premere **Riprova** dopo qualche secondo. Se persiste, scegliere **Çıkış** (Esci) nel menu dell'area di notifica e riaprire l'app.
+- **Impossibile connettersi al servizio impostazioni dell'app nell'area di notifica.** L'app potrebbe essersi chiusa. Riaprire seowatcher dal menu Start.
+- **Questa impostazione è bloccata da un amministratore.** Solo l'amministratore del computer può modificarla. È normale se l'installazione è stata fatta per tutti gli utenti.
+- **L'app nell'area di notifica non ha riconosciuto questa richiesta.** Server e app potrebbero provenire da sessioni diverse. Scegliere **Çıkış** (Esci) nel menu e riaprire l'app.
+- **L'app nell'area di notifica ha rifiutato la richiesta.** Riavviare l'app dal menu. Se persiste, aggiornare il pacchetto Windows.
+- **L'app nell'area di notifica ha restituito una risposta non riconosciuta.** Le versioni potrebbero non corrispondere. Aggiornare il pacchetto Windows.
 
-**Hizmet hesabı (strada più breve).** L'account di servizio è un account robot creato su Google per l'app. Nel campo **JSON anahtar dosyası** (File chiave JSON) si incolla il contenuto del file scaricato da Google Cloud. Se è registrato, si vede l'indirizzo e-mail dell'account. La schermata dice dove aggiungere questo indirizzo:
+Se la sezione non si apre affatto e dice che le preferenze di Windows non sono disponibili, controllare che l'app nell'area di notifica sia in esecuzione.
 
-- Search Console: "Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle" (Impostazioni → Utenti e autorizzazioni → Aggiungi utente), autorizzazione Tam (Completa).
-- Analytics: "Yönetici → Erişim yönetimi" (Amministrazione → Gestione degli accessi), autorizzazione Görüntüleyen (Visualizzatore).
+**Google.** Il badge ha uno di tre valori: **Salvato**, **Proviene dalle variabili d'ambiente** (Arriva dall'ambiente; in un'installazione Docker è stata data con il file `.env`) oppure **Mancante**. La sezione mostra i due indirizzi di reindirizzamento da aggiungere in Google Cloud Console (il pannello per sviluppatori di Google). Accanto ci sono i pulsanti di copia. Vanno aggiunti entrambi. Se non si aggiunge l'indirizzo di Analytics, si collega solo Search Console.
 
-Il badge dice **Kayıtlı** (Registrato) oppure **Kullanılmıyor** (Non in uso). Se esiste un account di servizio registrato, l'app lo preferisce alla chiave di accesso a Google. Eliminarlo lo toglie dall'app, ma non revoca la chiave su Google.
+Ci sono due campi: **ID client** e **Segreto client**. Entrambi sono parti della chiave di accesso ottenuta da Google. I pulsanti sono: **Salva**, **Annulla**, **Cambia** e **Elimina**. **Elimina** interrompe i collegamenti esistenti. I passaggi dettagliati sono nella guida al collegamento con Google.
 
-**Hız ölçümü.** Ci sono il campo **API anahtarı** (Chiave API) e il pulsante **Anahtarı test et** (Prova la chiave). La prova "consuma 1 misurazione". Si può premere ogni dieci secondi. Il badge dice **Anahtar kayıtlı** (Chiave registrata), **Ortam anahtarı** (Chiave dell'ambiente) oppure **Anahtar eksik** (Chiave mancante). I dettagli sono nella guida alla chiave PageSpeed.
+**Hizmet hesabı (strada più breve).** L'account di servizio è un account robot creato su Google per l'app. Nel campo **File della chiave dell'account di servizio (JSON)** si incolla il contenuto del file scaricato da Google Cloud. Se è registrato, si vede l'indirizzo e-mail dell'account. La schermata dice dove aggiungere questo indirizzo:
 
-**Sınırlar.** Nelle schede "Google ve sistem sınırları" (Limiti di Google e del sistema) ci sono:
+- Search Console: "Impostazioni → Utenti e autorizzazioni → Aggiungi utente", autorizzazione Tam (Completa).
+- Analytics: "Amministrazione → Gestione dell'accesso", autorizzazione Görüntüleyen (Visualizzatore).
+
+Il badge dice **Salvato** oppure **Non utilizzato**. Se esiste un account di servizio registrato, l'app lo preferisce alla chiave di accesso a Google. Eliminarlo lo toglie dall'app, ma non revoca la chiave su Google. Se nella sezione **Google** non è inserito l'ID client ma è collegato un account di servizio, il badge della sezione **Google** dice un neutro **Non usato, è collegato un account di servizio** invece del giallo **Mancante**. Google funziona allora con l'account di servizio.
+
+**Test di velocità.** Ci sono il campo **Chiave API** e il pulsante **Prova la chiave**. La prova "consuma 1 misurazione". Si può premere ogni dieci secondi. Il badge dice **Chiave salvata**, **Proveniente da una variabile di ambiente** oppure **Chiave mancante**. I dettagli sono nella guida alla chiave PageSpeed.
+
+**Limiti.** Nelle schede "Limiti di Google e di sistema" ci sono:
 
 - URL Denetimi (Controllo URL, Search Console): 2.000 al giorno.
 - PageSpeed Insights.
@@ -42,24 +53,26 @@ Il badge dice **Kayıtlı** (Registrato) oppure **Kullanılmıyor** (Non in uso)
 - Report per progetto: 10.000, modelli: 10.
 - Report più grande: 500.000 byte.
 
-Lo stato di ogni scheda è **Yeterli** (Sufficiente), **Azalıyor** (In esaurimento, oltre il 70 per cento usato), **Neredeyse doldu** (Quasi esaurito, oltre il 90 per cento usato) oppure **Bilinmiyor** (Sconosciuto).
+Lo stato di ogni scheda è **Ancora sufficiente**, **In esaurimento** (oltre il 70 per cento usato), **Quasi esaurito** (oltre il 90 per cento usato) oppure **Sconosciuto**.
 
-**Hakkında.** La riga **Sürüm** (Versione) mostra la versione (per esempio 0.5.0 Alpha). L'interruttore **Güncellemeleri kontrol et** (Controlla gli aggiornamenti) è attivo per impostazione predefinita. Se è attivo, l'app chiede a GitHub l'ultima versione al massimo una volta al giorno. In tal caso compare anche il pulsante **Şimdi kontrol et** (Controlla ora). Se c'è una versione nuova, compare il collegamento **Değişiklikler** (Modifiche). Per le installazioni Docker compare anche il comando da copiare: `git pull && docker compose up -d --build`. Nel pacchetto Windows la schermata rimanda a **Güncelle** (Aggiorna) nell'icona della barra delle applicazioni. Se l'aggiornamento automatico è attivo, la nuova versione si installa da sola.
+**Informazioni.** La riga **Versione** mostra la versione installata (per esempio 0.8.0 Alpha). L'interruttore **Controlla aggiornamenti** è attivo per impostazione predefinita. Se è attivo, l'app chiede a GitHub l'ultima versione ogni sei ore. Compare allora anche il pulsante **Controlla ora**. L'app dell'area di notifica del pacchetto Windows fa inoltre un proprio controllo, una volta al giorno. Se c'è una versione nuova, compare il collegamento **Cosa è cambiato** e, per le installazioni Docker, un comando da copiare: `git pull && docker compose up -d --build`. Per il pacchetto Windows la schermata rimanda a **Güncelle** (Aggiorna) nel menu dell'icona nella barra delle applicazioni (quel menu esiste solo in turco). Se l'aggiornamento automatico è attivo, la nuova versione si installa da sola.
 
-**Sürüm notları.** Le note di versione hanno una pagina separata sopra le notifiche nel menu laterale. Le etichette colorate indicano novità, correzioni e modifiche di sicurezza.
+Il controllo dice una di queste cose: è uscita una versione nuova, "Hai la versione più recente." oppure un problema. Se GitHub non è raggiungibile, la schermata dice "GitHub non è stato raggiunto durante l'ultimo controllo" e riporta l'ultima versione nota con la data dell'ultimo controllo riuscito. Significa che non si è potuto confermare che la versione sia aggiornata. Controllare la connessione a internet e riprovare. Se la schermata dice "Impossibile raggiungere la fonte delle versioni: il repository non esiste o è privato (GitHub 404)", il problema non è di chi usa l'app. Scaricare il pacchetto di diagnostica dalla schermata **Aiuto** e segnalarlo. Se l'interruttore è spento, la schermata dice "I controlli di aggiornamento sono disattivati, quindi nessuna richiesta viene inviata a GitHub."
+
+**Note sulla versione.** Le note di versione hanno una pagina separata sopra le notifiche nel menu laterale. Le etichette colorate indicano novità, correzioni e modifiche di sicurezza.
 
 ## Come si usa
 
-1. Alla prima installazione, inserire nella sezione **Google** l'ID client e la chiave segreta. Poi inserire la chiave PageSpeed nella sezione **Hız ölçümü**. Una volta salvate entrambe, si passa al progetto e si sceglie la proprietà.
-2. Una volta al mese guardare la sezione **Sınırlar**. La quota che si vede "Azalıyor" è di solito il limite del controllo URL.
-3. Nella sezione **Hakkında**, se c'è una versione nuova, aggiornare. Le note di versione dicono che cosa è cambiato. Il controllo degli aggiornamenti è l'unico collegamento in uscita dal computer verso un indirizzo diverso da Google. Per non usarla, disattivare l'interruttore.
-4. Se bisogna cambiare la chiave di accesso a Google (per esempio con un nuovo progetto Cloud), fare clic su **Değiştir** e incollare i nuovi valori. I collegamenti esistenti non funzionano con la nuova chiave. Nei progetti serve **Yeniden bağlan** (Ricollega).
+1. Alla prima installazione, inserire nella sezione **Google** l'ID client e la chiave segreta. Poi inserire la chiave PageSpeed nella sezione **Test di velocità**. Una volta salvate entrambe, si passa al progetto e si sceglie la proprietà.
+2. Una volta al mese guardare la sezione **Limiti**. La quota che si vede "In esaurimento" è di solito il limite del controllo URL.
+3. Nella sezione **Informazioni**, se c'è una versione nuova, aggiornare. Le note di versione dicono che cosa è cambiato. Il controllo degli aggiornamenti è l'unico collegamento in uscita dal computer verso un indirizzo diverso da Google. Per non usarla, disattivare l'interruttore.
+4. Se bisogna cambiare la chiave di accesso a Google (per esempio con un nuovo progetto Cloud), fare clic su **Cambia** e incollare i nuovi valori. I collegamenti esistenti non funzionano con la nuova chiave. Nei progetti serve **Riconnetti**.
 
 ## Domande frequenti
 
 **Perché la chiave segreta non si vede nella schermata?** L'app la conserva cifrata e non la rimanda al browser. La schermata mostra solo che è registrata e l'ID.
 
-**Se il valore dato con `.env` in Docker e quello inserito nella schermata sono in conflitto?** Vince quello inserito nella schermata. Se si salva un valore mentre il badge dice "Ortamdan geliyor", da quel momento si usa quello.
+**Se il valore dato con `.env` in Docker e quello inserito nella schermata sono in conflitto?** Vince quello inserito nella schermata. Se si salva un valore mentre il badge dice "Proviene dalle variabili d'ambiente", da quel momento si usa quello.
 
 **Che cosa invia il controllo degli aggiornamenti?** Non invia alcun dato. Legge l'elenco pubblico delle versioni di GitHub. La richiesta è anonima.
 

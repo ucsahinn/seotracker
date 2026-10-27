@@ -10,12 +10,20 @@ import {
 } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { formatCount, formatSignedPercent } from "@/client/lib/format";
-import { issueDelta, previousAuditIds, type IssueDelta } from "./auditDelta";
+import { useState } from "react";
+import {
+  auditSites,
+  issueDelta,
+  previousAuditIds,
+  siteHost,
+  type IssueDelta,
+} from "./auditDelta";
 import type { getAuditHistory } from "@/serverFunctions/audit";
 import { RowActions } from "@/client/components/table/RowActions";
 import { formatDateTime, StatusBadge } from "@/client/features/audit/shared";
 import { CopyButton } from "@/client/components/CopyButton";
 import { AuditTrendChart } from "./AuditTrendChart";
+import { AuditSiteFilter } from "./AuditSiteFilter";
 import { SortableHeader } from "@/client/components/table/SortableHeader";
 import {
   compareText,
@@ -27,7 +35,8 @@ type HistoryRow = Awaited<ReturnType<typeof getAuditHistory>>[number];
 
 export function AuditHistorySection({
   projectId,
-  history,
+  projectDomain = null,
+  history: allHistory,
   isLoading,
   error,
   onRetry,
@@ -36,6 +45,8 @@ export function AuditHistorySection({
   isRerunPending = false,
 }: {
   projectId: string;
+  /** The project's own site; its audits are shown first. */
+  projectDomain?: string | null;
   history: Awaited<ReturnType<typeof getAuditHistory>>;
   isLoading: boolean;
   error?: unknown;
@@ -55,6 +66,25 @@ export function AuditHistorySection({
     key: "startedAt",
     desc: true,
   });
+
+  /*
+   * One site at a time when the project holds audits of several. The trend
+   * line used to zigzag between npr.org, sqlite.org and the project's own
+   * site, which is a comparison of sites, not of time. The project's own
+   * site is the default; "Tümü" keeps every row reachable.
+   */
+  const sites = auditSites(allHistory, projectDomain);
+  const [picked, setPicked] = useState<string | null>(null);
+  const site =
+    sites.length > 1
+      ? picked === "all" || sites.some((entry) => entry.key === picked)
+        ? picked
+        : (sites[0]?.key ?? null)
+      : null;
+  const history =
+    site === null || site === "all"
+      ? allHistory
+      : allHistory.filter((row) => siteHost(row.startUrl) === site);
 
   // A failed load used to fall into "Henüz denetim yok", telling an operator
   // with a dozen audits that they had never run one.
@@ -112,7 +142,23 @@ export function AuditHistorySection({
     <section className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4">
       <div className="space-y-3">
         <h2 className="text-sm font-semibold">{t("Önceki denetimler")}</h2>
-        <AuditTrendChart history={history} />
+        {sites.length > 1 ? (
+          <AuditSiteFilter
+            sites={sites}
+            total={allHistory.length}
+            selected={site}
+            onSelect={setPicked}
+          />
+        ) : null}
+        {site === "all" ? (
+          <p className="text-xs text-muted">
+            {t(
+              "Grafik ve değişim okları her zaman aynı sitenin denetimlerini karşılaştırır; birden çok site seçiliyken grafik gizlenir.",
+            )}
+          </p>
+        ) : (
+          <AuditTrendChart history={history} />
+        )}
         <div className="overflow-x-auto">
           <table className="table table-sm">
             <thead>
@@ -296,20 +342,27 @@ function SeverityCell({
       ) : (
         <span className="text-xs text-muted">0</span>
       )}
-      {delta && delta.diff !== 0 ? <DeltaText delta={delta} /> : null}
+      {delta && delta.diff !== 0 ? (
+        <DeltaText delta={delta} current={count} />
+      ) : null}
     </div>
   );
 }
 
 /** Fewer issues is the good direction; the arrow carries it, not the tint. */
-function DeltaText({ delta }: { delta: IssueDelta }) {
+function DeltaText({ delta, current }: { delta: IssueDelta; current: number }) {
   const fewer = delta.diff < 0;
   const Icon = fewer ? ArrowDown : ArrowUp;
-  const size = Math.abs(delta.diff);
-  // A change that rounds to "%0,0" would read as no change under an arrow,
-  // so it falls back to the issue count.
+  const before = current - delta.diff;
+  /*
+   * Counts, not a percentage, on a small base: 1 -> 0 printed "-%100,0",
+   * which reads as a site transformed. The percentage only once the earlier
+   * count is large enough for it to mean something.
+   */
   const percent =
-    delta.fraction === null ? null : formatSignedPercent(delta.fraction);
+    delta.fraction === null || before < 20
+      ? null
+      : formatSignedPercent(delta.fraction);
 
   return (
     <span
@@ -320,7 +373,7 @@ function DeltaText({ delta }: { delta: IssueDelta }) {
     >
       <Icon className="size-3" aria-hidden />
       <span className="sr-only">{fewer ? t("azaldı") : t("arttı")} </span>
-      {percent ?? formatCount(size)}
+      {percent ?? `${formatCount(before)} → ${formatCount(current)}`}
     </span>
   );
 }

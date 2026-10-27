@@ -3,7 +3,7 @@ title: Yardım
 description: Bir şey ters giderse önce buraya bakın. Kurulumunuzu kontrol eder, sık sorunların çözümünü gösterir ve sorun bildirirken göndereceğiniz dosyayı hazırlar.
 screen: Yardım
 route: /support
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
 Bir şey ters giderse ilk buraya bakın. Bu ekran kurulumunuzu kontrol eder, eksiği söyler ve sizi doğru ayara götürür.
@@ -20,11 +20,13 @@ Bir şey ters giderse ilk buraya bakın. Bu ekran kurulumunuzu kontrol eder, eks
 - **Kurulum istemini kopyala**: yapay zekâ asistanınıza (uygulamada "ajan") yapıştıracağınız kurulum metnini kopyalar.
 - **Ajan kurulumu**: asistan bağlantısı ekranına gider.
 
-**Kurulumunuzun durumu.** Kart dört şeye bakar: **Giriş ve erişim**, **Google girişi**, **PageSpeed anahtarı**, **Veritabanı**. Üstte "Her şey yolunda." ya da "N şey dikkat istiyor." yazar. Altında sürüm satırı ("Sürüm X, güncel." ya da "yeni sürüm Y var") ve son kontrol zamanı görünür. Sorunlu satırın yanındaki düğme sizi ilgili ayara götürür: **Ayarları aç** ya da **Anahtar gir**. **Özeti kopyala** kartın metnini panoya alır.
+**Uygulamanın durumu.** Kart bu kurulumun kendisine bakar. Bir projenin kurulum listesi Panel'de ve Proje bilgisi'ndedir, burada değil. Kart dört şeye bakar: **Giriş ve erişim**, **Google girişi**, **PageSpeed anahtarı**, **Veritabanı**. Üstte "Her şey yolunda." ya da "N şey dikkat istiyor." yazar. Altında sürüm satırı ("Sürüm X, güncel." ya da "yeni sürüm Y var") ve son kontrol zamanı görünür. Sorunlu satırın yanındaki düğme sizi ilgili ayara götürür: **Ayarları aç** ya da **Anahtar gir**. **Özeti kopyala** kartın metnini panoya alır.
+
+**Adres numarası (port) uyarısı.** Windows paketi 3001 numarasını başka bir program tutarken başka bir numarada açılırsa (örneğin eski bir Docker kopyası 3001'i kullanıyorsa), uygulamanın her ekranında üstte sarı bir şerit çıkar: "seowatcher bu sefer 3002 numarasında çalışıyor çünkü 3001 başka bir program tarafından kullanılıyor (ör. eski bir Docker kopyası). Google bağlantısı 3001 için ayarlandı; o programı kapatıp seowatcher'ı yeniden başlatın." Şerit, görev çubuğundaki bildirimi kaçırmış olabilirsiniz diye vardır. Google ile giriş 3001 adresine döner ve uygulamayı 3002'de açtıysanız hata verir. Şeridin sağındaki kapat düğmesi onu bu sekme için gizler. Aynı cümle **Uygulamanın durumu** kartında da yazar. Çözmek için 3001'i tutan programı kapatın, sonra görev çubuğu menüsünden **Yeniden başlat** deyin. Uygulama 3001'e döner ve şerit kaybolur. Başka bir program kullanmıyorsanız bir sonraki açılışta zaten 3001'e döner.
 
 **Projeler.** Her projenin Search Console ve Analytics bağlantısının durumu görünür. **Bağlantıları aç** sizi proje ayarlarına götürür.
 
-**Sık sorunlar.** Beş açılır başlık var: sayfa açılmıyor, adres numarası (port) dolu, asistan bağlanamıyor (401), PageSpeed sınırı, sorgu verisi yok. Her birinde ne yapacağınız ve ilgili ayarın bağlantısı yazar.
+**Sık sorunlar.** Altı açılır başlık var: sayfa açılmıyor ya da uygulama kapalı, adres numarası (port) dolu, ajanım bağlanamıyor (401), hız ölçümü yarım kalıyor (429), sorgu verisi yok ve bir ayarı değiştirdim, uygulama görmüyor. Her birinde ne yapacağınız ve ilgili ayarın bağlantısı yazar.
 
 **Google ve sistem sınırları.** **Sınırları göster** deyince Google'ın günlük sınırlarında şu an nerede olduğunuzu görürsünüz.
 

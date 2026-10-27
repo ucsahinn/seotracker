@@ -101,4 +101,10 @@ export const enShared: Catalog = {
 
   // audit screens UX pass (2026-10-26)
   "Sosyal ve yapılandırılmış veri": "Social and structured data",
+  // Cards and stats review (Opportunities, rankings, setup verdict).
+  "{value} sıra yükseldi": "up {value} places",
+  "{value} sıra geriledi": "down {value} places",
+  // Cards and stats review (Opportunities, rankings, setup verdict).
+  "“{query}” için bir basamak yükselme fırsatı":
+    "A chance to move “{query}” up one step",
 };

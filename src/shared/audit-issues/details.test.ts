@@ -5,6 +5,12 @@ const text = (issueType: string, details: unknown) =>
   describeIssueDetails(issueType, JSON.stringify(details)).map(detailLineText);
 
 describe("describeIssueDetails", () => {
+  it("says why a sitemap could not be read", () => {
+    expect(
+      text("sitemap-unreadable", { reason: "status", statusCode: 404 }),
+    ).toEqual(["Neden: Sunucu HTTP 404 döndürdü"]);
+  });
+
   it("turns generic evidence into labelled lines", () => {
     expect(
       text("redirect-chain", { length: 82, statusCode: 404, hops: ["a", "b"] }),

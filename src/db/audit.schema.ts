@@ -46,6 +46,14 @@ export const audits = sqliteTable(
     errorCode: text("error_code"),
     errorDetail: text("error_detail"),
     failedPhase: text("failed_phase"),
+    // Something the audit worked around and still finished (same code
+    // vocabulary as errorCode; today only "missing_secret"). Kept apart from
+    // the failure columns so error_* always means the audit failed.
+    noticeCode: text("notice_code"),
+    noticeDetail: text("notice_detail"),
+    // URLs the crawl found (sitemap seeds plus links) before the page limit
+    // cut it. Null on audits from before it was recorded.
+    urlsDiscovered: integer("urls_discovered"),
     startedAt: text("started_at")
       .notNull()
       .default(sql`(current_timestamp)`),

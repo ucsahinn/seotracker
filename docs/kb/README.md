@@ -7,13 +7,18 @@ sitesindeki `/docs/` sayfaları `node scripts/build-site-docs.mjs` ile bunlardan
 
 İngilizce sürüm `docs/kb/en/` altında, aynı dosya adlarıyla durur; aynı betik
 onları `site/en/docs/<ingilizce-slug>/` olarak üretir (slug eşlemesi
-`scripts/site-locales.mjs` içinde). Bir Türkçe sayfayı değiştirince İngilizcesini
-de güncelleyin; betik eşi olmayan sayfayı uyarı olarak yazar. Ana sayfanın
+`scripts/site-locales.mjs` içinde). Almanca, Fransızca, İtalyanca ve Portekizce
+sürümler de aynı dosya adlarıyla `docs/kb/de/`, `fr/`, `it/` ve `pt/` altındadır.
+Bir Türkçe sayfayı değiştirince diğer dillerdekini de güncelleyin; betik eşi
+olmayan sayfayı uyarı olarak yazar. Ana sayfanın
 İngilizcesi `scripts/site-home.en.json` çeviri tablosundan
 `node scripts/build-site-home.mjs build` ile üretilir (`pnpm run site:build`
-üçünü birden çalıştırır). Uygulamanın arayüzü Türkçe ve İngilizcedir. İngilizce kılavuz, İngilizce ekran
-adlarını kullanır. Windows tepsi menüsü Türkçe kaldığı için menü adlarının
-yanında İngilizce karşılığı verilir.
+üçünü birden çalıştırır). Uygulamanın arayüzü altı dildedir; **Ayarlar → Görünüm →
+Dil** seçicisi onları kendi adlarıyla gösterir: Türkçe, English, Deutsch,
+Français, Italiano, Português. Her dilin kılavuzu (`docs/kb/en/`, `de/`, `fr/`,
+`it/`, `pt/`) o dildeki ekran adlarını birebir kullanır. Windows tepsi menüsü
+ve kurulum sihirbazı yalnızca Türkçe ve İngilizce olduğu için oradaki adların
+yanında o dildeki karşılığı verilir.
 
 Her dosya YAML ön bilgisiyle başlar (`title`, `description`, ekran sayfalarında
 `screen` ve `route`, kılavuzlarda `kind`, hepsinde `updated`). Sonunda, sayfaya
@@ -43,8 +48,8 @@ listeler.
 
 ## Başvuru
 
-- [Denetim kuralları](denetim-kurallari.md): 201 kuralın tam listesi
-- [Ajan kurulumu](ajan-kurulumu.md): MCP, 33 araç, 6 beceri
+- [Denetim kuralları](denetim-kurallari.md): 202 kuralın tam listesi
+- [Ajan kurulumu](ajan-kurulumu.md): MCP, 35 araç, 6 beceri
 - [Sorun giderme](sorun-giderme.md): belirti, sebep, çözüm
 
 ## Yazım kuralları

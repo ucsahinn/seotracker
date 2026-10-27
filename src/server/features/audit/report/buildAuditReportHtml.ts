@@ -1,5 +1,10 @@
 import { isDeepEqual } from "remeda";
-import { formatCount, formatDate, formatDateTime } from "@/shared/format";
+import {
+  formatCount,
+  formatDate,
+  formatDateTime,
+  formatPercent,
+} from "@/shared/format";
 import { getLocale, t } from "@/shared/i18n";
 import { escapeHtml, hostOf } from "./reportFormat";
 import { appendixSection, issuesSection } from "./reportIssueSections";
@@ -10,7 +15,7 @@ import {
   groupIssues,
   isReliable,
 } from "./reportModel";
-import { coverSection } from "./reportCoverSection";
+import { coverSection, statusNote } from "./reportCoverSection";
 import { methodSection } from "./reportMethodSection";
 import { pagesSection } from "./reportPagesSection";
 import {
@@ -21,6 +26,7 @@ import {
 import { speedSection } from "./reportSpeedSection";
 import { STYLES } from "./reportStyles";
 import { buildAuditBreakdown } from "@/shared/auditBreakdown";
+import { auditStanding } from "@/shared/auditStanding";
 import { pageKey, rankTodos, todoInputs } from "@/shared/auditTodo";
 import { factsSection } from "./reportFactsSection";
 import { passedAppendix, scoreSection } from "./reportScoreSection";
@@ -170,8 +176,12 @@ export function buildAuditReportHtml(
     ...group,
     points: gains.get(group.issueType) ?? 0,
   }));
-  // A failed or running audit has no trustworthy score; do not print one.
-  const score = reliable ? breakdown.score : null;
+  /*
+   * A failed, running or cut-short audit has no trustworthy score; do not
+   * print one. A provisional one is printed without a verdict word.
+   */
+  const standing = auditStanding(breakdown, input.status);
+  const score = reliable && standing.kind === "scored" ? standing.score : null;
   const traffic = input.insights?.traffic
     ? new Map(
         input.insights.traffic.rows.map((row) => [
@@ -202,6 +212,7 @@ export function buildAuditReportHtml(
     reliable,
     stats: describePages(input.pages),
     breakdown,
+    standing,
     todos,
   };
 
@@ -212,13 +223,35 @@ export function buildAuditReportHtml(
    * title is too long, never the suffix.
    */
   const suffix = ` - ${formatDate(stamp)}${input.auditId ? ` · ${input.auditId}` : ""}`;
-  const title = `${t("{host} site denetimi", { host }).slice(0, 120 - suffix.length)}${suffix}`;
+  /*
+   * A report from a failed, running or empty audit says so where it is
+   * listed, not only inside the document: the reports list shows the title,
+   * and agents read the summary. The status of a finished audit does not
+   * change, so regenerating the same audit still finds this title.
+   */
+  const label = reliable
+    ? t("{host} site denetimi", { host })
+    : t("{host} site denetimi (eksik)", { host });
+  const title = `${label.slice(0, 120 - suffix.length)}${suffix}`;
   const summary = [
+    reliable
+      ? ""
+      : t("Eksik rapor: {why} Sorun listesi tam değil.", {
+          why: statusNote(input.status),
+        }),
     t("{host} için {count} sayfa tarandı.", {
       host,
       count: input.pagesCrawled,
     }),
     score === null ? "" : t("Site puanı {count}/100.", { count: score }),
+    standing.kind === "scored" && standing.provisional
+      ? t("Kısmi puan — ölçüm kapsamı {percent}", {
+          percent: formatPercent(standing.coverage.ratio, 0),
+        })
+      : "",
+    reliable && standing.kind === "withheld" && standing.reason === "cut-short"
+      ? t("Eksik denetim — puan verilmedi")
+      : "",
     counts.total === 0
       ? reliable
         ? t("Kayıtlı sorun yok.")

@@ -39,6 +39,13 @@ async function createAudit(data: {
     pagesTotal: data.pagesTotal,
     lighthouseTotal: data.lighthouseTotal,
     currentPhase: "discovery",
+    /*
+     * Written here rather than left to the column default, which is SQLite's
+     * zone-less "YYYY-MM-DD HH:MM:SS" while completed_at is ISO. Older rows
+     * keep the SQLite form; readers go through parseTimestamp, and string
+     * order still holds because every ISO row is newer than every old one.
+     */
+    startedAt: new Date().toISOString(),
   });
 }
 
@@ -52,6 +59,7 @@ async function updateAuditProgress(
     lighthouseCompleted?: number;
     lighthouseFailed?: number;
     currentPhase?: string;
+    urlsDiscovered?: number;
   },
 ) {
   await db
@@ -61,6 +69,29 @@ async function updateAuditProgress(
       and(
         eq(audits.id, auditId),
         eq(audits.workflowInstanceId, workflowInstanceId),
+      ),
+    );
+}
+
+/**
+ * A thing the audit worked around, kept on a still-running audit so it can be
+ * shown once the audit finishes. Its own columns, not the failure ones: the
+ * code vocabulary is the same (`classifyAuditError`), but error_* is reserved
+ * for audits that failed.
+ */
+async function recordAuditNotice(
+  auditId: string,
+  workflowInstanceId: string,
+  notice: { noticeCode: string; noticeDetail: string },
+) {
+  await db
+    .update(audits)
+    .set(notice)
+    .where(
+      and(
+        eq(audits.id, auditId),
+        eq(audits.workflowInstanceId, workflowInstanceId),
+        eq(audits.status, "running"),
       ),
     );
 }
@@ -343,6 +374,7 @@ async function deleteAuditForProject(auditId: string, projectId: string) {
 export const AuditRepository = {
   createAudit,
   updateAuditProgress,
+  recordAuditNotice,
   completeAudit,
   failAudit,
   getAuditForWorkflow,

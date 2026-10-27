@@ -5,7 +5,7 @@ kind: nasil-yapilir
 updated: 2026-10-23
 ---
 
-The app's interface comes in English and Turkish. This guide uses the English names; to switch, go to **Settings → Appearance → Language**. The Windows tray menu is Turkish only, so there the guide gives the Turkish name with its English meaning in brackets.
+The app's interface comes in six languages: Turkish, English, German, French, Italian and Portuguese. This guide uses the English names; to switch, go to **Settings → Appearance → Language**. The Windows tray menu is Turkish only, so there the guide gives the Turkish name with its English meaning in brackets.
 
 This guide installs the app on your computer and opens it in the browser. The install takes two minutes. It installs only for your own user account and needs no administrator rights, except once if the Visual C++ component is missing.
 
@@ -27,7 +27,7 @@ This guide installs the app on your computer and opens it in the browser. The in
 4. Optionally, compare the file's SHA-256 hash (the file's fingerprint) with `SHA256SUMS.txt` on the releases page.
 5. In the installer wizard, go through the pages in this order:
    1. The welcome page: click **Next**.
-   2. The "install for" page: choose **Only for me**. This is the recommended per-user install, into `%LOCALAPPDATA%\Programs\seowatcher`. "All users" installs into `C:\Program Files\seowatcher` and asks for administrator permission.
+   2. The "install for" page: choose **Install for me only**. This is the recommended per-user install, into `%LOCALAPPDATA%\Programs\seowatcher`. **Install for all users** installs into `C:\Program Files\seowatcher` and asks for administrator permission.
    3. The options page: **Start seowatcher when Windows starts** (Turkish: "Windows açılınca seowatcher'ı başlat") and **Create a desktop shortcut** (Turkish: "Masaüstüne kısayol ekle"). The first one is checked by default. Clear it if you do not want the app to start in the background. Click **Next**.
    4. Click **Install** (on a Turkish Windows: **Kur**).
    5. The final page has a **Start seowatcher now** checkbox. Leave it checked and click **Finish** (on a Turkish Windows: **Bitti**). The app opens.

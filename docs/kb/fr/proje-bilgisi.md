@@ -8,11 +8,11 @@ updated: 2026-10-22
 
 Vous présentez votre site une fois à votre assistant, et vous n'avez plus à le refaire.
 
-Vous écrivez dans l'écran **Proje bilgisi** (Infos du projet) ce que Google ne sait pas. Vous y dites ce que vous vendez, ce que vous visez maintenant, qui sont vos concurrents, quelles pages rapportent de l'argent et comment vous voulez qu'on écrive. Vous pouvez remplir l'écran, et votre assistant IA aussi (l'écran indique alors « ajan », agent). L'assistant lit cet écran avant de commencer le travail et y écrit ce qu'il apprend. Si vous voyez une erreur, corrigez-la vous-même. Cet écran vous est utile même sans assistant. Si, dans six mois, vous vous demandez « pourquoi nous étions-nous concentrés sur cette page ? », la réponse sera ici.
+Vous écrivez dans l'écran **Contexte du projet** ce que Google ne sait pas. Vous y dites ce que vous vendez, ce que vous visez maintenant, qui sont vos concurrents, quelles pages rapportent de l'argent et comment vous voulez qu'on écrive. Vous pouvez remplir l'écran, et votre assistant IA aussi (l'écran indique alors « l'agent », agent). L'assistant lit cet écran avant de commencer le travail et y écrit ce qu'il apprend. Si vous voyez une erreur, corrigez-la vous-même. Cet écran vous est utile même sans assistant. Si, dans six mois, vous vous demandez « pourquoi nous étions-nous concentrés sur cette page ? », la réponse sera ici.
 
 ## Ce que l'écran affiche
 
-**Quatre sections principales.** Ce sont **İşin özeti** (Résumé de l'activité), **Şu anki hedef** (Objectif actuel), **Konumlandırma** (Positionnement : comment vous vous présentez sur le marché) et **Yazım tercihleri** (Préférences de rédaction). Vous écrivez librement dans chacune, et chacune accepte 4 000 caractères au plus. En dessous, on voit qui l'a mise à jour et quand.
+**Quatre sections principales.** Ce sont **Présentation de l'activité**, **Objectif actuel**, **Positionnement** (comment vous vous présentez sur le marché) et **Préférences de rédaction**. Vous écrivez librement dans chacune, et chacune accepte 4 000 caractères au plus. En dessous, on voit qui l'a mise à jour et quand.
 
 **Sections personnalisées.** Si un sujet ne tient pas dans les quatre sections, vous ouvrez votre propre titre. Vous pouvez ouvrir 20 sections personnalisées au plus, et le titre fait 120 caractères au plus.
 
@@ -20,24 +20,24 @@ Vous écrivez dans l'écran **Proje bilgisi** (Infos du projet) ce que Google ne
 
 **Pages importantes.** Pour chaque page, vous écrivez l'adresse, le rôle, le sujet et une note. Les rôles sont :
 
-- **Merkez sayfa** (Page pilier) : la page d'entrée d'un sujet.
-- **Destek sayfası** (Page de soutien) : la sous-page qui alimente la page pilier.
-- **Dönüşüm sayfası** (Page de conversion) : la page qui rapporte de l'argent ou qui contient un formulaire.
-- **Diğer** (Autre).
+- **Page pilier** : la page d'entrée d'un sujet.
+- **Page de soutien** : la sous-page qui alimente la page pilier.
+- **Page de conversion** : la page qui rapporte de l'argent ou qui contient un formulaire.
+- **Autre**.
 
 Vous pouvez ajouter 100 pages au plus. Les adresses sont corrigées pour commencer par https.
 
 **Journal de recherche.** L'assistant y laisse des notes datées du genre « j'ai cherché ceci, voici le résultat ». Ces notes ne sont écrites que par l'assistant, et chaque note fait 1 000 caractères au plus. Vous pouvez les supprimer si vous le souhaitez. Les notes sont supprimées automatiquement au bout de 90 jours. L'écran affiche les 20 notes les plus récentes.
 
-**Carte Ajan** (Assistant). La carte propose deux textes prêts : « Ajanınıza doldurtun » (Faites-le remplir par votre assistant) et « Ajanınıza gözden geçirtin » (Faites-le relire par votre assistant). Vous cliquez sur **İstemi kopyala** (Copier la consigne) et collez le texte dans votre assistant. Si le projet est vide, le premier texte demande à l'assistant de vous poser quelques questions, puis de remplir les sections.
+**Carte Ajan** (Assistant). La carte propose deux textes prêts : « Laissez votre agent le remplir » et « Faire relire par votre agent ». Vous cliquez sur **Copier l'invite** et collez le texte dans votre assistant. Si le projet est vide, le premier texte demande à l'assistant de vous poser quelques questions, puis de remplir les sections.
 
 ## Comment l'utiliser
 
-1. Dès que vous ouvrez le projet, écrivez trois ou quatre phrases dans **İşin özeti**. Dites ce que vous vendez, à qui, en quelles langues est votre site, et quelle est votre page de conversion. L'assistant prépare chaque rapport en fonction de ce paragraphe.
-2. Écrivez **Şu anki hedef** de façon concrète. N'écrivez pas « trafic ». Écrivez « que les pages de produits entrent dans l'index (la liste des pages de Google) » ou « cinq demandes par mois via le formulaire de démo ». L'assistant classe ses recommandations en fonction de cet objectif.
-3. Dans **Önemli sayfalar** (Pages importantes), ajoutez d'abord les pages de conversion, puis les pages piliers. L'assistant en déduit ce qu'il doit traiter en priorité.
-4. Dans **Yazım tercihleri**, écrivez les mots que vous ne voulez pas voir employés et le ton. Par exemple « ne pas dire leader du secteur », « vouvoiement », « donner le numéro de version ». Les rapports de l'assistant respectent ces règles.
-5. Si vous utilisez un assistant, copiez dès le premier jour le texte **Ajanınıza doldurtun** et collez-le. L'assistant remplit les sections en discutant avec vous. Une fois par mois, lisez le journal de recherche et corrigez ce qui vous paraît faux.
+1. Dès que vous ouvrez le projet, écrivez trois ou quatre phrases dans **Présentation de l'activité**. Dites ce que vous vendez, à qui, en quelles langues est votre site, et quelle est votre page de conversion. L'assistant prépare chaque rapport en fonction de ce paragraphe.
+2. Écrivez **Objectif actuel** de façon concrète. N'écrivez pas « trafic ». Écrivez « que les pages de produits entrent dans l'index (la liste des pages de Google) » ou « cinq demandes par mois via le formulaire de démo ». L'assistant classe ses recommandations en fonction de cet objectif.
+3. Dans **Pages clés**, ajoutez d'abord les pages de conversion, puis les pages piliers. L'assistant en déduit ce qu'il doit traiter en priorité.
+4. Dans **Préférences de rédaction**, écrivez les mots que vous ne voulez pas voir employés et le ton. Par exemple « ne pas dire leader du secteur », « vouvoiement », « donner le numéro de version ». Les rapports de l'assistant respectent ces règles.
+5. Si vous utilisez un assistant, copiez dès le premier jour le texte **Laissez votre agent le remplir** et collez-le. L'assistant remplit les sections en discutant avec vous. Une fois par mois, lisez le journal de recherche et corrigez ce qui vous paraît faux.
 
 ## Comment les chiffres sont calculés
 

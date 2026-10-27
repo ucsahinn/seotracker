@@ -1,63 +1,84 @@
 ---
 title: Rapports et modèles
-description: Chaque rapport, téléchargé depuis un audit ou rédigé par votre assistant, tient dans un seul fichier HTML à ouvrir sur mobile, imprimer ou envoyer.
+description: Chaque rapport que vous téléchargez depuis un audit ou depuis les performances de recherche, ou que votre assistant écrit, est un seul fichier HTML. Vous l'ouvrez sur un téléphone, l'imprimez ou l'envoyez par e-mail.
 screen: Raporlar
 route: /p/<proje>/reports
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
-Cet écran explique comment obtenir un rapport, l'envoyer et le refaire à chaque période avec un modèle.
+Vous trouvez ici comment obtenir un rapport, à qui l'envoyer et comment le répéter avec un modèle.
 
-Chaque rapport préparé pour ce projet se trouve dans une seule liste, dans l'écran **Raporlar** (Rapports). Un rapport arrive de deux façons. Le bouton **Raporu indir** (Télécharger le rapport) de l'écran Audit du site produit le rapport propre à l'application. Votre assistant IA peut aussi faire des recherches et enregistrer ses trouvailles sous forme de rapport. Chaque rapport est un seul fichier HTML. Il ne contient ni script (du code qui s'exécute dans la page), ni ressource externe, ni police intégrée. C'est pourquoi il s'ouvre sur un téléphone, s'imprime en PDF et s'envoie par e-mail. L'application n'a pas d'éditeur pour écrire un rapport à la main. Le rapport est écrit soit par l'application, soit par l'assistant.
+L'écran **Rapports** garde tous les rapports faits pour ce projet dans une seule liste. Un rapport naît de trois façons. Le bouton **Télécharger le rapport** de l'écran **Audit du site** produit le rapport de l'audit. Le bouton **Télécharger le rapport** de l'écran **Performances de recherche** produit un rapport de la vue affichée. Votre assistant d'IA peut aussi faire des recherches et enregistrer ses résultats sous forme de rapport. Chaque rapport est un seul fichier HTML sans script (code qui s'exécute dans la page), sans ressource externe ni police intégrée. Il s'ouvre donc sur un téléphone, s'imprime en PDF et s'envoie par e-mail. L'application n'a pas d'éditeur pour écrire un rapport à la main : c'est l'application ou l'assistant qui l'écrit.
 
 ## Ce que l'écran affiche
 
-**Barre du haut.** Le bouton **Yeni rapor iste** (Demander un nouveau rapport) copie dans le presse-papiers un texte à coller dans votre assistant.
+**Barre du haut.** Les boutons **Actualiser**, **Copier l'invite du rapport** et **Modèles**. **Copier l'invite du rapport** place dans le presse-papiers un texte que vous collez dans votre assistant. S'il n'y a pas encore de rapport, ce bouton est dans la carte de l'état vide.
 
-**Filtres.** Il y a les filtres Tümü (Tous), Son 7 gün (7 derniers jours), Şablonla yazılan (Rédigés avec un modèle) et Beceriyle yazılan (Rédigés avec une compétence). Une zone de recherche apparaît aussi.
+**Tuiles de synthèse.** Il y en a trois.
 
-**Tableau.** Les colonnes sont **Rapor** (Rapport), **Tür** (Type), **Oluşturulma** (Création) et **Boyut** (Taille). La colonne **Tür** indique quel travail a produit le rapport. Par exemple, « Site denetimi raporu » (Rapport d'audit du site) vient de l'application elle-même. Pour les rapports rédigés avec un modèle, vous voyez le nom du modèle.
+- **Dernier rapport** : depuis combien de temps le dernier rapport a été écrit ou mis à jour. Le lien en dessous ouvre le rapport.
+- **Ces 7 derniers jours** : le nombre de rapports écrits ou mis à jour sur cette durée.
+- **Total** : tous les rapports. En dessous, on voit combien sont des rapports d'audit, combien viennent d'une compétence et combien d'un modèle.
 
-**Page du rapport.** Le rapport s'ouvre dans son propre cadre sécurisé. Il y a trois boutons : **HTML olarak indir** (Télécharger en HTML), copier le lien et imprimer. Le lien ne s'ouvre que sur cette installation, personne ne peut y accéder de l'extérieur.
+**Rapports par type.** Un graphique en anneau répartit les rapports par type. Un clic sur un type réduit la liste aux rapports de ce type. Un nouveau clic retire le filtre.
 
-**Modèles de rapport.** Vous y accédez par le menu ou par l'écran Rapports. Un modèle est une recette enregistrée qui explique à votre assistant comment rédiger le rapport. Vous dites qui lira le rapport, quelles sections il contiendra et dans quelle langue il sera écrit. Il y a trois champs :
+**Comment ça marche ?** Une courte explication, repliée au départ. Elle explique la différence entre les rapports écrits par l'agent et le rapport d'audit du site.
 
-- **Ad** (Nom) fait 80 caractères au plus et doit être unique dans le projet.
-- **Açıklama** (Description) fait 200 caractères au plus. Dites en une phrase quand utiliser le modèle.
-- **Yönerge** (Consigne) fait 3 000 caractères au plus.
+**Filtres.** Tous, 7 derniers jours, Écrit avec un modèle, Écrit avec une compétence. À côté se trouve la zone **Rechercher des rapports**.
 
-Un projet peut avoir 10 modèles au plus. Si vous supprimez un modèle, les rapports produits avec lui ne sont pas supprimés.
+**Tableau.** Il a les colonnes **Rapports**, **Type**, **Créé** et **Taille**. Cliquez sur un en-tête pour trier. **Type** dit d'où vient le rapport. Par exemple, « Rapport d'audit du site » est fait par l'application elle-même. Ce que l'assistant écrit porte des noms comme « Audit SEO », « Comparaison de périodes », « Revue des baisses de trafic », « Rapport SEO », « Note de coaching » ou « Configuration du projet ». Un rapport dont le type n'est pas connu indique « Non spécifié ». Pour les rapports écrits avec un modèle, le nom du modèle apparaît. La liste montre les 100 derniers rapports. S'il y en a davantage, une note en dessous le dit.
+
+**Page du rapport.** Le rapport s'ouvre dans son propre cadre isolé. Boutons : **Télécharger au format HTML**, **Enregistrer au format PDF (imprimer)**, **Ouvrir dans un nouvel onglet**. Le menu **Plus d'actions** contient **Copier le lien**. Le lien ne fonctionne que sur cette installation, personne ne peut y accéder de l'extérieur. La page indique aussi qui a créé le rapport, son type, sa date de création et de mise à jour et sa taille.
+
+**Modèles de rapport.** Vous y accédez par le bouton **Modèles**. Un modèle est une recette enregistrée qui dit à votre assistant comment écrire le rapport : qui le lira, quelles sections il aura et dans quelle langue il sera écrit. Il y a trois champs :
+
+- **Nom** : 80 caractères au plus, unique dans le projet.
+- **Description** : 200 caractères au plus. Une phrase qui dit quand l'utiliser.
+- **Instruction** : 3 000 caractères au plus.
+
+Un projet peut avoir 10 modèles au plus. Supprimer un modèle ne supprime pas les rapports qui en sont issus.
+
+## Les rapports propres à l'application
+
+**Rapport d'audit du site.** Produit par **Télécharger le rapport** dans le détail de l'audit. Si l'audit s'est arrêté à mi-chemin, « (partiel) » est ajouté au titre du rapport. Par exemple « Audit du site exemple.fr (partiel) ». La couverture d'un tel rapport porte l'avertissement « Le rapport est peut-être incomplet. » et la raison : l'audit s'est arrêté sur une erreur, il est toujours en cours ou aucune page n'a pu être explorée. Un rapport partiel n'a pas de sections de score. Si l'exploration s'est arrêtée prématurément en raison de la limite de débit du site, la couverture indique « Audit incomplet, aucun score attribué ». Si peu de vérifications ont été mesurées, le score s'écrit « Score provisoire » avec la couverture des mesures. Le résumé du rapport indique aussi la situation. C'est ainsi qu'un assistant qui lit la liste des rapports sait qu'un rapport est incomplet.
+
+**Rapport de performances de recherche.** Produit par **Télécharger le rapport** sur l'écran Performances de recherche. Il transforme la vue que vous regardez à l'écran (période, appareil, pays, type de recherche) en un document imprimable. La couverture donne les jours définitifs, la comparaison, les filtres, la date des dernières données et l'heure de création. Viennent ensuite les quatre totaux, le cadre « État des données », les travaux sous **Commencez par celles-ci**, le graphique **Dans le temps** (avec les mises à jour de Google et les notes marquées), les opportunités, les évolutions et les pages en compétition pour la même requête. Les chiffres sont les mêmes qu'à l'écran. Le reprendre avec le même site, la même plage de dates et les mêmes filtres n'ajoute pas de nouveau rapport. Il met à jour le rapport précédent de l'application. Si le rapport dépasse la limite de stockage, on vous demande de choisir une période ou un filtre plus court.
+
+Les deux rapports sont d'abord enregistrés, puis téléchargés sur votre ordinateur. Si le téléchargement échoue pour une raison quelconque, le rapport reste dans la liste **Rapports**. Téléchargez-le de là.
 
 ## Comment l'utiliser
 
-1. Pour un premier rapport, cliquez sur **Raporu indir** dans l'écran Audit du site. Le rapport est téléchargé sur votre ordinateur et arrive dans cette liste. Il commence par la section « Bu hafta yapılacak N şey » (N choses à faire cette semaine).
-2. Si vous travaillez avec un assistant, cliquez sur **Yeni rapor iste**. Collez le texte copié dans Claude Code, Codex ou Cursor. L'assistant vous demande quel rapport vous voulez, lit les données et enregistre le rapport ici.
-3. Si vous voulez le même rapport chaque mois, écrivez un modèle. Dans la consigne, indiquez le lecteur (« une personne qui gère le site et ne connaît pas le SEO »), les sections, l'ordre et le ton. Quand vous demandez le modèle par son nom, l'assistant l'applique.
-4. Pour partager, cliquez sur **HTML olarak indir** et envoyez le fichier. Le destinataire ouvre le fichier dans un navigateur. Copier le lien ne sert que sur le même ordinateur.
-5. Ne supprimez pas les anciens rapports. À la conversation suivante, l'assistant lit le résumé du rapport précédent et compare.
+1. Pour un premier rapport, cliquez sur **Télécharger le rapport** sur l'écran Audit du site. Le rapport se télécharge sur votre ordinateur et apparaît aussi dans cette liste. Il commence par la section « N choses à faire cette semaine ».
+2. Pour documenter votre situation de recherche, réglez la période et les filtres sur l'écran Performances de recherche, puis cliquez sur **Télécharger le rapport**.
+3. Si vous travaillez avec un assistant, cliquez sur **Copier l'invite du rapport**. Collez le texte copié dans Claude Code, Codex ou Cursor. L'assistant demande quel rapport vous voulez, lit les données et enregistre le rapport ici.
+4. Si vous voulez le même rapport chaque mois, écrivez un modèle. Dans l'instruction, indiquez le lecteur (« la personne qui gère le site, ne connaît pas le SEO »), les sections, l'ordre et le ton. Si vous demandez le modèle par son nom, l'assistant l'applique.
+5. Pour partager, cliquez sur **Télécharger au format HTML** et envoyez le fichier. Le destinataire ouvre le fichier dans un navigateur. Un lien copié ne marche que sur le même ordinateur.
+6. Ne supprimez pas les anciens rapports. À la conversation suivante, l'assistant lit le résumé du rapport précédent et compare.
 
 ## Comment les chiffres sont calculés
 
-Le rapport d'audit est mis en page pour une impression A4. Il comprend les sections suivantes : table des matières, « Bu hafta yapılacak N şey », problèmes, mesure de vitesse, état de l'index Google et plan du site. La section sur l'état de l'index n'utilise que les réponses enregistrées et ne pose aucune nouvelle question à Google.
+Le rapport d'audit est mis en page pour une impression A4. Il contient le sommaire, « N choses à faire cette semaine », les problèmes, la mesure de vitesse, l'état de l'index Google et le plan du site. La section sur l'état de l'index n'utilise que des réponses enregistrées et ne pose pas de nouvelle question à Google.
 
-Les listes ont une limite : 50 adresses par problème, 300 pages, 50 lignes de vitesse, 3 000 adresses en annexe. Si le fichier dépasse 400 Ko, les listes sont raccourcies.
+Les listes sont limitées : 50 adresses par problème, 300 pages, 50 lignes de vitesse, 3 000 adresses en annexe. Si le fichier dépasse 400 Ko, les listes sont raccourcies.
 
-Un rapport peut faire 500 000 octets au plus (moins de 80 Ko est recommandé). Le titre fait 120 caractères au plus et est unique dans le projet. Le résumé fait 2 500 caractères au plus. Un second rapport avec le même titre n'est pas accepté. Un projet conserve 10 000 rapports au plus, et 5 Go d'espace au total sont réservés pour l'installation.
+Un rapport peut faire 500 000 octets au plus (moins de 80 Ko est recommandé). Le titre fait 120 caractères au plus et est unique dans le projet. Le résumé fait 2 500 caractères au plus. Un second rapport avec le même titre n'est pas accepté. Un projet peut avoir 10 000 rapports au plus, et l'installation réserve 5 Go au total.
 
-Côté sécurité, les fichiers qui contiennent un script, une iframe (un cadre qui intègre une autre page dans la page), un formulaire, une feuille de style externe, un gestionnaire d'événement (comme onclick), un lien javascript: ou une redirection automatique sont refusés à l'enregistrement. À l'ouverture, le rapport est aussi affiché dans un cadre isolé, sans accès au réseau. Un rapport ne peut donc rien envoyer à l'extérieur à votre insu.
+Par sécurité, à l'enregistrement, les fichiers qui contiennent un script, un iframe (une boîte qui intègre une page dans une autre), un formulaire, une feuille de style externe, un gestionnaire d'événement (comme onclick), un lien javascript: ou une redirection automatique sont refusés. À l'ouverture, le rapport est de plus affiché dans un cadre scellé, sans accès au réseau. Un rapport ne peut donc rien envoyer vers l'extérieur à votre insu.
 
 ## Questions fréquentes
 
-**Qui a écrit le rapport ?** Regardez la colonne **Tür**. « Site denetimi raporu » est celui de l'application, les autres ont été écrits par l'assistant. La page du rapport montre aussi qui l'a enregistré.
+**Qui a écrit le rapport ?** La colonne **Type** le dit. « Rapport d'audit du site » vient de l'application, tous les autres de l'assistant. La page du rapport montre aussi qui l'a enregistré.
 
-**Puis-je modifier le rapport ?** Pas dans l'application. Dites à l'assistant « change cette section », et il met à jour le rapport.
+**Le titre indique « (partiel) », que faire ?** L'audit s'est arrêté à mi-chemin. La couverture du rapport en donne la raison. Relancez l'audit et téléchargez de nouveau le rapport.
 
-**J'ai envoyé le lien, l'autre personne ne peut pas l'ouvrir.** Le lien ne fonctionne que sur cet ordinateur. Envoyez le fichier avec **HTML olarak indir**.
+**Puis-je modifier le rapport ?** Pas dans l'application. Dites à l'assistant « change cette section », il met le rapport à jour.
 
-**À quoi faire attention en écrivant un modèle ?** Un modèle est une recette de forme, pas une source d'information. Écrivez les sections, le ton et le lecteur du rapport. N'écrivez ni chiffre ni affirmation. L'assistant prend les chiffres dans les données à chaque fois.
+**J'ai envoyé le lien, mais le destinataire ne peut pas l'ouvrir.** Le lien ne marche que sur cet ordinateur. Envoyez le fichier avec **Télécharger au format HTML**.
+
+**À quoi faire attention en écrivant un modèle ?** Un modèle est une recette de forme, pas une source d'information. Écrivez les sections, le ton et pour qui le rapport est écrit. N'y mettez ni chiffre ni affirmation. L'assistant prend les chiffres dans les données à chaque fois.
 
 ## Limites
 
-Les rapports ne sont pas publiés à l'extérieur. Pour partager, vous envoyez le fichier. L'exactitude d'un rapport dépend des données lues par celui qui l'a écrit. À la fin des rapports de l'assistant, il y a une section « Bu rapor nasıl hazırlandı » (Comment ce rapport a été préparé). Vous y voyez quel outil a dit quoi. Si un chiffre vous semble douteux, suivez sa source à cet endroit.
+Les rapports ne sont jamais publiés à l'extérieur. Pour partager, vous envoyez le fichier. Un rapport n'est exact que dans la mesure des données lues par son auteur. La section « Comment ce rapport a été préparé » à la fin des rapports de l'assistant indique quel outil a fourni quelle information. Pour un chiffre dont vous doutez, remontez à sa source par là.
 
-<!-- Kaynaklar: src/routes/_project/p/$projectId/reports/index.tsx; reports/$reportId.tsx; reports/templates.tsx; src/client/features/reports/ReportsList.tsx; reportStats.ts; reportRequestPrompt.ts; src/server/features/reports/services/ReportService.ts; src/types/schemas/reports.ts; src/types/schemas/report-templates.ts; src/routes/r/$reportId.ts; src/shared/report-sandbox.ts; src/server/features/audit/report/buildAuditReportHtml.ts -->
+<!-- Sources : src/routes/_project/p/$projectId/reports/index.tsx; reports/$reportId.tsx; reports/templates.tsx; src/client/features/reports/ReportsList.tsx; ReportsSummary.tsx; ReportKindsHelp.tsx; ReportKindChip.tsx; reportStats.ts; reportRequestPrompt.ts; src/client/features/search-performance/SearchReportButton.tsx; src/serverFunctions/searchReport.ts; src/server/features/search/report/buildSearchReportHtml.ts; src/server/features/reports/services/ReportService.ts; src/types/schemas/reports.ts; src/types/schemas/report-templates.ts; src/routes/r/$reportId.ts; src/shared/report-sandbox.ts; src/server/features/audit/report/buildAuditReportHtml.ts; reportCoverSection.ts -->

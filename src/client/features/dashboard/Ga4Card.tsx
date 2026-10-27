@@ -1,5 +1,6 @@
 import { GA4_HELP } from "@/client/features/analytics/metricHelp";
-import { fractionalChange } from "@/shared/delta";
+import { fractionalChange, pointsDelta } from "@/shared/delta";
+import { GA4_DATA_LAG_DAYS, GSC_DATA_LAG_DAYS } from "@/shared/dataFreshness";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Area, AreaChart, Tooltip, XAxis, YAxis } from "recharts";
@@ -11,6 +12,7 @@ import {
 import { DeltaBadge } from "@/client/components/MetricTile";
 import { Chart, CHART_SERIES } from "@/client/components/Chart";
 import { Ga4ConnectCard } from "@/client/features/dashboard/Ga4ConnectCard";
+import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import {
   formatCount,
   formatDay,
@@ -36,6 +38,11 @@ function statValue(
   // "–", matching MetricTile: two absence glyphs on one screen for the
   // same meaning is a detail the reader has to resolve for no reason.
   return value === null ? "–" : format(value);
+}
+
+/** The count-up props, only when there is a number. */
+function count(value: number | null, format: (n: number) => string) {
+  return value === null ? undefined : { value, format };
 }
 
 function statDelta(current: number | null, previous: number | null) {
@@ -76,10 +83,13 @@ export function Ga4Card({
     queryKey: ["dashboardGa4Report", projectId],
     queryFn: () => getGa4DashboardReport({ data: { projectId } }),
     enabled: connected,
+    // The server already retried Google; a lost property or an expired
+    // grant will not fix itself, so say so after one more try.
+    retry: 1,
   });
 
-  // Not connected (or a dead grant discovered by the report call): the
-  // connection card sells and runs the whole flow itself.
+  // Never connected: the connection card sells and runs the whole flow
+  // itself. A broken connection is an error below, with its cause.
   if (!connected || (reportQuery.data && !reportQuery.data.connected)) {
     return <Ga4ConnectCard projectId={projectId} connected={connected} />;
   }
@@ -146,15 +156,30 @@ export function Ga4Card({
       ) : reportQuery.isError ? (
         <div className="space-y-2 text-sm">
           <p className="text-muted">
-            {t("Google Analytics verileri yüklenemedi.")}
+            {/* The server's sentence names the cause (quota, permission,
+                removed property, no connection) and the fix. */}
+            {getStandardErrorMessage(
+              reportQuery.error,
+              t("Google Analytics verileri yüklenemedi."),
+            )}
           </p>
-          <button
-            type="button"
-            className="btn btn-ghost btn-xs"
-            onClick={() => void reportQuery.refetch()}
-          >
-            {t("Tekrar dene")}
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <Link
+              to="/p/$projectId/settings"
+              params={{ projectId }}
+              hash="google-analytics"
+              className="btn btn-primary btn-xs"
+            >
+              {t("Bağlantıyı düzelt")}
+            </Link>
+            <button
+              type="button"
+              className="btn btn-ghost btn-xs"
+              onClick={() => void reportQuery.refetch()}
+            >
+              {t("Tekrar dene")}
+            </button>
+          </div>
         </div>
       ) : report?.connected ? (
         // Covers null (no report row) and 0: a zero-session period would
@@ -169,6 +194,7 @@ export function Ga4Card({
               <Stat
                 label={t("Oturum")}
                 value={statValue(report.totals.sessions, formatCount)}
+                animateTo={count(report.totals.sessions, formatCount)}
                 sub={statDelta(
                   report.totals.sessions,
                   report.prevTotals.sessions,
@@ -178,6 +204,7 @@ export function Ga4Card({
                 label={t("Aktif kullanıcı")}
                 help={t(GA4_HELP.activeUsers)}
                 value={statValue(report.totals.activeUsers, formatCount)}
+                animateTo={count(report.totals.activeUsers, formatCount)}
                 sub={statDelta(
                   report.totals.activeUsers,
                   report.prevTotals.activeUsers,
@@ -187,11 +214,23 @@ export function Ga4Card({
                 label={t("Etkileşim oranı")}
                 help={t(GA4_HELP.engagementRate)}
                 value={statValue(report.totals.engagementRate, formatPercent)}
+                animateTo={count(report.totals.engagementRate, (n) =>
+                  formatPercent(n),
+                )}
+                sub={(() => {
+                  // A rate moves in points, as CTR does on the tiles above.
+                  const delta = pointsDelta(
+                    report.totals.engagementRate,
+                    report.prevTotals.engagementRate,
+                  );
+                  return delta ? <DeltaBadge value={delta} /> : undefined;
+                })()}
               />
               <Stat
                 label={t("Anahtar olay")}
                 help={t(GA4_HELP.keyEvents)}
                 value={statValue(report.totals.keyEvents, formatCount)}
+                animateTo={count(report.totals.keyEvents, formatCount)}
                 sub={statDelta(
                   report.totals.keyEvents,
                   report.prevTotals.keyEvents,
@@ -231,6 +270,13 @@ export function Ga4Card({
                 />
               ) : null}
             </div>
+            {/* Why these days differ from the Search Console tiles above. */}
+            <p className="text-xs text-subtle">
+              {t(
+                "Analytics {ga4} gün, Search Console {gsc} gün geriden gelir; bu yüzden buradaki günler üstteki tıklama kutularından farklıdır. Değişimler önceki aynı uzunluktaki döneme göredir.",
+                { ga4: GA4_DATA_LAG_DAYS, gsc: GSC_DATA_LAG_DAYS },
+              )}
+            </p>
             {/*
              * Through the shared wrapper like every other chart. Its own
              * `ResponsiveContainer` measured during hydration, before the

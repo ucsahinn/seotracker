@@ -8,40 +8,40 @@ updated: 2026-10-22
 
 Qui si raccolgono le ricerche che contano, le si etichetta e se ne seguono le posizioni.
 
-L'app non suggerisce parole chiave. Nella schermata Arama performansı (Prestazioni di ricerca) o Sıralama takibi (Monitoraggio delle posizioni), dal menu di una riga si sceglie **Kelime olarak kaydet** (Salva come parola chiave) e la parola finisce qui. Qui si vede la posizione media di ogni parola negli ultimi 90 giorni. La posizione arriva dall'archivio di Sıralama takibi. Salvare non avvia un nuovo monitoraggio su Google: filtra per queste parole i dati che vengono già raccolti.
+L'app non suggerisce parole chiave. Nella schermata Rendimento della ricerca o Monitoraggio del posizionamento, dal menu di una riga si sceglie **Salva come parola chiave** e la parola finisce qui. Qui si vede la posizione media di ogni parola negli ultimi 90 giorni. La posizione arriva dall'archivio di Monitoraggio del posizionamento. Salvare non avvia un nuovo monitoraggio su Google: filtra per queste parole i dati che vengono già raccolti.
 
 ## Cosa c'è nella schermata
 
-**Barra superiore.** Ci sono una riga di spiegazione e i pulsanti **E-Tablolar'a aktar** (Esporta nei fogli di calcolo), **CSV indir** (Scarica il CSV) e **Yenile** (Aggiorna). Sotto compare "{n} kayıtlı kelime" ({n} parole chiave salvate).
+**Barra superiore.** Ci sono una riga di spiegazione e i pulsanti **Esporta in Fogli Google**, **Scarica CSV** e **Aggiorna**. Sotto compare "N parole chiave salvate".
 
-**Scheda della distribuzione delle posizioni.** Le barre mostrano quante parole chiave sono nelle posizioni 1-3, 4-10, 11-20 e 21+. Sotto c'è la nota "sıralar son 90 günün ortalaması" (le posizioni sono la media degli ultimi 90 giorni). Una parola chiave senza registrazioni nell'archivio conta come "Verisi yok" (Senza dati). Se l'archivio è incompleto, si vede "Bilinmiyor (arşiv kesildi)" (Sconosciuta, archivio interrotto). I pulsanti **İlk 10** (Primi 10) e **Sıra 11-20** (Posizione 11-20) restringono la tabella a quella fascia.
+**Scheda della distribuzione delle posizioni.** Le barre mostrano quante parole chiave sono nelle posizioni 1-3, 4-10, 11-20 e 21+. Sotto c'è la nota "le posizioni sono la media degli ultimi 90 giorni". Una parola chiave senza registrazioni nell'archivio conta come "Nessun dato". Se l'archivio è incompleto, si vede "Sconosciuto (archivio interrotto)". I pulsanti **Primi 10** e **Posizione 11-20** restringono la tabella a quella fascia.
 
-**Pannello dei filtri.** Sotto **Sonuçları filtrele** (Filtra i risultati) ci sono le caselle **İçersin** (Deve contenere) e **İçermesin** (Non deve contenere). Entrambe cercano testo all'interno della parola. Per cercare un'etichetta, usare **Etiket ara** (Cerca etichetta). **Tümünü temizle** (Cancella tutto) azzera tutto. In un progetto possono esserci al massimo 50 etichette.
+**Pannello dei filtri.** Sotto **Filtra risultati** ci sono le caselle **Deve contenere** e **Non deve contenere**. Entrambe cercano testo all'interno della parola. Per cercare un'etichetta, usare **Cerca etichette**. **Cancella tutto** azzera tutto. In un progetto possono esserci al massimo 50 etichette.
 
-**Tabella.** Le colonne sono: **Kelime** (Parola), **Ort. sıra** (Posizione media), **Amaç** (Intento), **Etiketler** (Etichette), **Eklenme** (Aggiunta). Se la posizione è vuota, passando il mouse sopra si legge "Search Console bu kelime için sıra kaydetmemiş" (Search Console non ha registrato una posizione per questa parola). La colonna **Amaç** mostra che cosa vuole chi cerca la parola:
+**Tabella.** Le colonne sono: **Parola chiave**, **Pos. media**, **Intento**, **Etichette**, **Aggiunta**. Se la posizione è vuota, passando il mouse sopra si legge "Search Console non ha registrato una posizione per questa parola chiave". La colonna **Intento** mostra che cosa vuole chi cerca la parola:
 
-- Bilgi amaçlı (Informativo): vuole imparare.
-- Ticari araştırma (Ricerca commerciale): confronterà e sceglierà.
-- İşlem odaklı (Orientato all'azione): è pronto ad acquistare.
-- Yönlendirici (Di navigazione): cerca un sito preciso.
-- Bilinmiyor (Sconosciuto): non è chiaro.
+- Informativa: vuole imparare.
+- Ricerca commerciale: confronterà e sceglierà.
+- Transazionale: è pronto ad acquistare.
+- Navigazionale: cerca un sito preciso.
+- Sconosciuto: non è chiaro.
 
-Nella tabella compaiono le forme brevi: Bilgi, Ticari, İşlem, Gezinme e un punto interrogativo. Il menu della riga ha tre opzioni: **Kelimeyi kopyala** (Copia la parola), **Arama performansında ara** (Cerca nelle prestazioni di ricerca), **Kelimeyi sil** (Elimina la parola).
+Nella tabella compaiono le forme brevi: Informativa, Commerciale, Transazionale, Navigazionale e un punto interrogativo. Il menu della riga ha tre opzioni: **Copia parola chiave**, **Cerca in Rendimento della ricerca**, **Elimina parola chiave**.
 
-**Azioni multiple.** Selezionando le righe, in alto compaiono **Kelimeleri kopyala** (Copia le parole), **Etiketleri güncelle** (Aggiorna le etichette) e il pulsante di eliminazione. Prima di eliminare arriva l'avviso "kalıcı olarak silinecek. Bu geri alınamaz." (sarà eliminata in modo permanente. L'operazione non si può annullare.).
+**Azioni multiple.** Selezionando le righe, in alto compaiono **Copia parole chiave**, **Aggiorna etichette** e il pulsante di eliminazione. Prima di eliminare arriva l'avviso "sarà eliminata in modo permanente. L'operazione non si può annullare.".
 
-**Stati vuoti.** Se non c'è nessuna parola chiave, la schermata scrive "Henüz kayıtlı kelime yok" (Ancora nessuna parola chiave salvata). Compaiono due scorciatoie: **Sorgulara göz at** (Sfoglia le query) e **Sıralamayı aç** (Apri il monitoraggio delle posizioni). Se nessuna parola corrisponde al filtro, scrive "Bu filtrelere uyan kelime yok" (Nessuna parola corrisponde a questi filtri).
+**Stati vuoti.** Se non c'è nessuna parola chiave, la schermata scrive "Non ci sono ancora parole chiave salvate". Compare una scorciatoia: **Esplora query**; se Search Console non è ancora collegata, al suo posto compare **Collega Search Console**. Se nessuna parola corrisponde al filtro, scrive "Nessuna parola chiave corrisponde ai filtri".
 
 ## Come si usa
 
-1. In Arama performansı aprire la scheda **Sıra 5-20**. Segnare con **Kelime olarak kaydet** cinque o dieci ricerche che si ritengono importanti. Scegliere anche le ricerche delle pagine che fanno guadagnare: sono utili quanto quelle più mostrate.
-2. Venire qui e selezionare le parole. Con **Etiketleri güncelle** assegnare etichette come "ürün" (prodotto), "blog" o "marka" (marchio). Il mese prossimo il confronto sarà più facile.
-3. Una volta al mese guardare la scheda **Sıra dağılımı** (Distribuzione delle posizioni). Le parole nella fascia 11-20 sono le più vicine alla prima pagina. Trovare le pagine di quelle parole nella schermata Fırsatlar (Opportunità).
-4. Per un report, scegliere **CSV indir** o **E-Tablolar'a aktar**. Il file arriva con i filtri applicati.
+1. In Rendimento della ricerca aprire la scheda **Opportunità di posizionamento**. Segnare con **Salva come parola chiave** cinque o dieci ricerche che si ritengono importanti. Scegliere anche le ricerche delle pagine che fanno guadagnare: sono utili quanto quelle più mostrate.
+2. Venire qui e selezionare le parole. Con **Aggiorna etichette** assegnare etichette come "ürün" (prodotto), "blog" o "marka" (marchio). Il mese prossimo il confronto sarà più facile.
+3. Una volta al mese guardare la scheda **Distribuzione delle posizioni**. Le parole nella fascia 11-20 sono le più vicine alla prima pagina. Trovare le pagine di quelle parole nella schermata Opportunità.
+4. Per un report, scegliere **Scarica CSV** o **Esporta in Fogli Google**. Il file arriva con i filtri applicati.
 
 ## Come si calcolano i numeri
 
-Parole chiave ed etichette stanno nel database su questo computer. **Ort. sıra** è calcolata per gli ultimi 90 giorni dall'archivio di Sıralama takibi. I giorni con molte impressioni pesano di più sulla media. Maiuscole e minuscole non contano.
+Parole chiave ed etichette stanno nel database su questo computer. **Pos. media** è calcolata per gli ultimi 90 giorni dall'archivio di Monitoraggio del posizionamento. I giorni con molte impressioni pesano di più sulla media. Maiuscole e minuscole non contano.
 
 Dall'archivio si prendono le 500 ricerche più mostrate. Se una parola chiave salvata è fuori da queste 500, la sua posizione risulta "sconosciuta".
 
@@ -49,11 +49,11 @@ L'informazione sull'intento viene scritta solo se è arrivata quando la parola �
 
 ## Domande frequenti
 
-**La parola è stata salvata, perché la posizione è vuota?** L'archivio può non aver ancora raccolto giorni per quella parola. Aprire la schermata Sıralama takibi e attendere che l'archivio si riempia. Poi qui scegliere **Yenile**.
+**La parola è stata salvata, perché la posizione è vuota?** L'archivio può non aver ancora raccolto giorni per quella parola. Aprire la schermata Monitoraggio del posizionamento e attendere che l'archivio si riempia. Poi qui scegliere **Aggiorna**.
 
 **Cercando su Google la posizione risulta diversa.** La posizione qui è la media di 90 giorni. Non si può confrontare con una singola ricerca.
 
-**Dov'è la colonna del volume di ricerca?** Non c'è. L'app non stima i volumi. Il numero di impressioni si vede nella schermata Arama performansı.
+**Dov'è la colonna del volume di ricerca?** Non c'è. L'app non stima i volumi. Il numero di impressioni si vede nella schermata Rendimento della ricerca.
 
 **Si può salvare due volte la stessa parola?** No. Lo stesso testo diventa una sola voce.
 

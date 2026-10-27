@@ -8,6 +8,8 @@ const base: Parameters<typeof buildContextHealth>[0] = {
   searchConsole: "done",
   analytics: "done",
   pageSpeed: "done",
+  audit: "done",
+  agent: "done",
 };
 
 describe("buildContextHealth", () => {
@@ -22,13 +24,14 @@ describe("buildContextHealth", () => {
     });
   });
 
-  it("counts only finished items, not ones still loading or failed", () => {
+  /* Same count as the dashboard: competitors and key pages are advice. */
+  it("counts the shared checklist only, finished items only", () => {
     const items = buildContextHealth({
       ...base,
       competitorCount: 0,
       searchConsole: "loading",
       analytics: "error",
     });
-    expect(healthProgress(items)).toEqual({ done: 3, total: 6 });
+    expect(healthProgress(items)).toEqual({ done: 4, total: 6 });
   });
 });

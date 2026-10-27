@@ -13,6 +13,7 @@ import {
   formatRemaining,
 } from "@/client/lib/format";
 import { LIGHTHOUSE_CHECKS_PER_PAGE } from "@/shared/audit-limits";
+import { crawlCountLine } from "@/shared/auditStanding";
 import { getCrawlProgress } from "@/serverFunctions/audit";
 import { t } from "@/shared/i18n";
 import { useEffect, useState } from "react";
@@ -64,6 +65,8 @@ export function ProgressCard({
   status: {
     pagesCrawled: number;
     pagesTotal: number;
+    /** Every URL the crawl found so far; null until the first batch lands. */
+    urlsDiscovered?: number | null;
     lighthouseTotal: number;
     lighthouseCompleted: number;
     lighthouseFailed: number;
@@ -207,6 +210,10 @@ export function ProgressCard({
                 state={crawlDone ? "done" : "running"}
                 indeterminate={!completed && status.pagesTotal === 0}
               />
+              <FoundUrlsLine
+                pagesCrawled={status.pagesCrawled}
+                urlsDiscovered={status.urlsDiscovered}
+              />
               {showSpeedBar ? (
                 <ProgressBar
                   label={t("Hız ölçümü")}
@@ -293,6 +300,18 @@ export function ProgressCard({
       )}
     </div>
   );
+}
+
+/**
+ * The bar's total stops at the page limit; this says how much the crawl
+ * found beyond it. Nothing until the first batch has been counted.
+ */
+function FoundUrlsLine(input: {
+  pagesCrawled: number;
+  urlsDiscovered?: number | null;
+}) {
+  const line = crawlCountLine(input);
+  return line ? <p className="text-xs text-muted">{line}</p> : null;
 }
 
 /** The one number the reader came back to look at, with what it counts. */

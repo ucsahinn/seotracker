@@ -1,3 +1,4 @@
+import { Sparkline } from "@/client/components/Sparkline";
 import { t } from "@/shared/i18n";
 import { copyText } from "@/client/lib/copyText";
 import { useNavigate } from "@tanstack/react-router";
@@ -22,6 +23,8 @@ type Row = {
   days: number;
   previousPosition: number | null;
   delta: number | null;
+  /** Weekly position across the window, oldest first; gaps are null. */
+  trend?: (number | null)[];
 };
 
 /** The tracked-queries table: sortable header, states, and per-row actions. */
@@ -34,6 +37,7 @@ export function TrackedQueriesTable({
   onSelect,
   emptyTitle,
   emptyDescription,
+  showDays = true,
 }: {
   projectId: string;
   rows: Row[];
@@ -46,6 +50,8 @@ export function TrackedQueriesTable({
   onSelect: (query: string | null) => void;
   emptyTitle: string;
   emptyDescription: string;
+  /** Off when every row has data on every day: a column of one number says nothing. */
+  showDays?: boolean;
 }) {
   const navigate = useNavigate();
   const saveKeyword = useSaveTrackedKeyword(projectId);
@@ -93,13 +99,15 @@ export function TrackedQueriesTable({
               align="right"
             />
           </th>
-          <th className="text-right" aria-sort={sorting.ariaSort("days")}>
-            <SortableHeader
-              column={sorting.column("days")}
-              label={t("Gün")}
-              align="right"
-            />
-          </th>
+          {showDays ? (
+            <th className="text-right" aria-sort={sorting.ariaSort("days")}>
+              <SortableHeader
+                column={sorting.column("days")}
+                label={t("Gün")}
+                align="right"
+              />
+            </th>
+          ) : null}
           <th />
         </tr>
       </thead>
@@ -114,7 +122,7 @@ export function TrackedQueriesTable({
         !tracked.isPending &&
         !tracked.isError ? (
           <tr>
-            <td colSpan={7} className="p-0">
+            <td colSpan={showDays ? 7 : 6} className="p-0">
               <EmptyState
                 compact
                 icon={TrendingUp}
@@ -143,7 +151,7 @@ export function TrackedQueriesTable({
           : null}
         {tracked.isError ? (
           <tr>
-            <td colSpan={7}>
+            <td colSpan={showDays ? 7 : 6}>
               <QueryErrorState
                 compact
                 error={tracked.error}
@@ -177,7 +185,15 @@ export function TrackedQueriesTable({
             <td
               className={`text-right tabular-nums ${positionInk(row.position)}`}
             >
-              {formatDecimal(row.position)}
+              {/* The week-by-week line, inverted: up means a better rank. */}
+              <span className="inline-flex items-center justify-end gap-2">
+                {row.trend && row.trend.length > 1 ? (
+                  <span className="hidden w-16 sm:block [&_svg]:mt-0 [&_svg]:h-5">
+                    <Sparkline values={row.trend} inverted />
+                  </span>
+                ) : null}
+                {formatDecimal(row.position)}
+              </span>
             </td>
             <td className="text-right tabular-nums">
               <PositionChange delta={row.delta} />
@@ -188,9 +204,11 @@ export function TrackedQueriesTable({
             <td className="text-right tabular-nums">
               {formatNumber(row.clicks)}
             </td>
-            <td className="text-right tabular-nums text-muted">
-              {formatNumber(row.days)}
-            </td>
+            {showDays ? (
+              <td className="text-right tabular-nums text-muted">
+                {formatNumber(row.days)}
+              </td>
+            ) : null}
             {/*
              * Row actions. An operator looking at a query that dropped
              * nine positions could not copy it, save it, or jump to its

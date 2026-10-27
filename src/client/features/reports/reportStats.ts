@@ -32,7 +32,7 @@ export function kindLabel(kind: string): string {
 
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
-export type ReportFilter = "all" | "recent" | "template" | "skill";
+export type ReportFilter = "all" | "recent" | "template" | "skill" | "audit";
 
 type ReportLike = Pick<
   ReportListItem,
@@ -81,6 +81,10 @@ export function matchesFilter(
       return hasTemplate(report);
     case "skill":
       return !hasTemplate(report) && present(report.skill) !== null;
+    case "audit":
+      // The audit download has neither, so it fell in no chip and the chips
+      // did not add up to "Tümü".
+      return reportKind(report) === AUDIT_EXPORT_KIND;
   }
 }
 
@@ -93,6 +97,7 @@ export function filterCounts(
     recent: reports.filter((r) => matchesFilter(r, "recent", now)).length,
     template: reports.filter((r) => matchesFilter(r, "template", now)).length,
     skill: reports.filter((r) => matchesFilter(r, "skill", now)).length,
+    audit: reports.filter((r) => matchesFilter(r, "audit", now)).length,
   };
 }
 
@@ -133,10 +138,10 @@ export function kindSegments(
 }
 
 /** The most recently updated report (id and time), or null for an empty list. */
-export function latestUpdate(
-  reports: { id: string; updatedAt: string }[],
-): { id: string; updatedAt: string } | null {
-  return reports.reduce<{ id: string; updatedAt: string } | null>(
+export function latestUpdate<Row extends { id: string; updatedAt: string }>(
+  reports: Row[],
+): Row | null {
+  return reports.reduce<Row | null>(
     (best, r) => (best === null || r.updatedAt > best.updatedAt ? r : best),
     null,
   );

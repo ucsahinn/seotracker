@@ -47,22 +47,26 @@
 :root {
   /* Hairlines. Alpha over the surface rather than a fixed grey, so they stay
      correct on both the page and the raised panel. */
-  --hairline: oklch(0% 0 0 / 0.08);
-  --hairline-strong: oklch(0% 0 0 / 0.13);
+  /* Warm ink rather than black: on the stone surfaces of the light theme a
+     black alpha reads as a cold grey line. */
+  --hairline: oklch(30% 0.02 55 / 0.11);
+  --hairline-strong: oklch(30% 0.02 55 / 0.17);
 
   /* Diffused and tinted toward the surface hue. No black drop shadows. */
   --shadow-raise:
-    0 1px 2px oklch(25% 0.015 60 / 0.05), 0 2px 6px oklch(25% 0.015 60 / 0.04);
+    0 1px 2px oklch(30% 0.03 55 / 0.07), 0 3px 8px oklch(30% 0.03 55 / 0.05);
   --shadow-float:
-    0 2px 4px oklch(25% 0.015 60 / 0.05), 0 8px 24px oklch(25% 0.015 60 / 0.08);
+    0 2px 4px oklch(30% 0.03 55 / 0.07), 0 10px 28px oklch(30% 0.03 55 / 0.1);
 
   /* Muted text. The alpha that reads well on a dark surface is far too weak
      on a light one, because of the +0.05 floor in the contrast formula, so
-     these are set per theme rather than reusing one opacity ladder. */
-  --text-muted: oklch(22% 0.01 60 / 0.78);
+     these are set per theme rather than reusing one opacity ladder. Light:
+     muted 7.5:1 and subtle 5.3:1 on base-100, 7.0 and 5.1 on base-200. */
+  --text-muted: oklch(22% 0.01 60 / 0.76);
   --text-subtle: oklch(22% 0.01 60 / 0.66);
-  /* A control's perimeter has to be visible; a panel's does not. */
-  --control-border: oklch(0% 0 0 / 0.42);
+  /* A control's perimeter has to be visible; a panel's does not. 3.4:1 on
+     base-100, 3.2:1 on base-200 (WCAG 1.4.11 asks 3:1). */
+  --control-border: oklch(30% 0.02 55 / 0.56);
 
   /* Ink for a tinted chip. Painting the fill colour as the text on a 10% wash
      of itself lands around 2.5:1 in light mode - the severity chips were the
@@ -72,7 +76,16 @@
   --ink-warning: oklch(44% 0.1 88);
   --ink-error: oklch(44% 0.16 25);
   --ink-info: oklch(42% 0.11 240);
-  --ink-primary: oklch(45% 0.14 42);
+  --ink-primary: oklch(45% 0.145 42);
+
+  /* The accent as a wash: the fill behind an active nav item, a pressed
+     segment, a selected chip. ink-primary on it holds 5.4:1 or better. */
+  --accent-wash: color-mix(in oklab, var(--color-primary) 12%, transparent);
+  --accent-wash-strong: color-mix(
+    in oklab,
+    var(--color-primary) 18%,
+    transparent
+  );
 
   /* Marks: a bar, a ring, a segment. Graphics need 3:1 against the surface
      (WCAG 1.4.11). The light theme's warning fill sits near 2:1 on base-100,
@@ -80,7 +93,7 @@
   --mark-success: var(--color-success);
   --mark-warning: oklch(62% 0.13 85);
   --mark-error: var(--color-error);
-  --mark-track: oklch(0% 0 0 / 0.09);
+  --mark-track: oklch(30% 0.02 55 / 0.1);
 
   /* Motion. One curve and three durations, so a press, a panel and a
      progress fill all move with the same hand. Fast is for state the pointer
@@ -121,18 +134,24 @@ html[data-theme="seotracker-dark"] {
   default: false;
   prefersdark: false;
   color-scheme: light;
-  --color-base-100: oklch(99.3% 0.002 70);
-  --color-base-200: oklch(96.9% 0.004 70);
-  --color-base-300: oklch(91.9% 0.006 70);
+  /* Warm stone, not paper white. The content pane used to sit at 99% and
+     glared on a full-width dashboard. Now three steps: the sidebar (see
+     --surface-sidebar), the content pane on base-200, and the cards on
+     base-100, so panels float on the page instead of dissolving into it.
+     Body text is 16:1 on base-100 and 13.8:1 on base-200. */
+  --color-base-100: oklch(97.2% 0.005 75);
+  --color-base-200: oklch(92.4% 0.009 70);
+  --color-base-300: oklch(87.5% 0.011 66);
   --color-base-content: oklch(22% 0.01 60);
-  --color-primary: oklch(52% 0.16 42);
+  /* White on it is 5.9:1; as text it is 5.4:1 on base-100. */
+  --color-primary: oklch(52% 0.165 42);
   --color-primary-content: oklch(100% 0 0);
   --color-secondary: oklch(55% 0.15 145);
   /* Dark ink, not white: white on these mid-lightness fills lands between
      2.7:1 and 4.0:1, and the amber one cannot carry white text at any usable
      lightness. Error and primary are dark enough to keep white. */
   --color-secondary-content: oklch(26% 0.06 145);
-  --color-accent: oklch(52% 0.16 42);
+  --color-accent: oklch(52% 0.165 42);
   --color-accent-content: oklch(100% 0 0);
   --color-neutral: oklch(21% 0.01 60);
   --color-neutral-content: oklch(99% 0 0);
@@ -291,6 +310,10 @@ html {
    light surface is close to invisible; three settings sections patched this
    per call site. This is the same look, once, for every primary button. */
 .btn-primary:is(:disabled, .btn-disabled) {
+  /* The lit-from-above gradient below is an image, so without this the
+     disabled button kept its orange and looked pressable. */
+  background-image: none;
+  box-shadow: none;
   background-color: var(--color-base-200);
   border-color: var(--control-border);
   color: var(--text-muted);
@@ -330,10 +353,204 @@ html[data-theme="seotracker"]
   --btn-border: var(--color-base-300);
 }
 
+/* Light theme: the accent where it carries meaning. On the stone surfaces a
+   grey fill for "you are here" or "this one is on" disappeared into the page,
+   so each of these takes an ember wash and ember ink instead. Dark mode
+   already reads its active state and is left alone. ink-primary holds 5.4:1
+   or better on every wash below. */
+html[data-theme="seotracker"] .nav-item[aria-current="page"],
+html[data-theme="seotracker"] .nav-item[aria-current="page"]:hover {
+  background-color: var(--accent-wash);
+  color: var(--ink-primary);
+}
+html[data-theme="seotracker"] .nav-item[aria-current="page"] > svg {
+  color: var(--color-primary);
+}
+
+/* The pressed segment of a button group (Gün / Hafta / Ay, Tıklama /
+   Gösterim) and a toggled ghost button such as "Filtreler". */
+html[data-theme="seotracker"] .join > .btn.btn-active,
+html[data-theme="seotracker"] .btn-ghost.btn-active {
+  background-color: color-mix(
+    in oklab,
+    var(--color-primary) 14%,
+    var(--color-base-100)
+  );
+  border-color: color-mix(in oklab, var(--color-primary) 45%, transparent);
+  color: var(--ink-primary);
+}
+
+/* The section index on the settings page and the theme picker. */
+html[data-theme="seotracker"] a[aria-current="location"] {
+  background-color: var(--accent-wash);
+  color: var(--ink-primary);
+}
+html[data-theme="seotracker"] [role="radio"][aria-checked="true"] {
+  color: var(--ink-primary);
+}
+
+/* A plain `.link` is a link, so it takes the link colour. `link-hover` stays
+   neutral on purpose: those are row titles in tables, and a column of orange
+   names would shout over the numbers beside them. */
+html[data-theme="seotracker"] .link:not(.link-hover, .link-primary) {
+  color: var(--ink-primary);
+  text-decoration-color: color-mix(
+    in oklab,
+    var(--color-primary) 45%,
+    transparent
+  );
+}
+
+/* A switch that is on. Unstyled ones turned near-black when checked, beside
+   the orange `toggle-primary` ones on the audit form; now they all agree.
+   A toggle that names another colour keeps it. */
+html[data-theme="seotracker"]
+  .toggle:is(:checked, [aria-checked="true"], :has(> input:checked)):not(
+    .toggle-secondary,
+    .toggle-accent,
+    .toggle-neutral,
+    .toggle-info,
+    .toggle-success,
+    .toggle-warning,
+    .toggle-error
+  ) {
+  --input-color: var(--color-primary);
+}
+
+/* The underline is already the accent; the label follows it. */
+html[data-theme="seotracker"] .tabs-border > .tab.tab-active {
+  color: var(--ink-primary);
+}
+
+/* Light theme depth. The sidebar is the quietest, darkest step, the content
+   pane one step up on base-200, and the cards on base-100 above both. Dark
+   mode keeps its own arrangement, so these hook classes do nothing there. */
+html[data-theme="seotracker"] {
+  --surface-sidebar: oklch(89.8% 0.011 66);
+}
+html[data-theme="seotracker"] :is(.app-shell, .app-sidebar) {
+  background-color: var(--surface-sidebar);
+}
+html[data-theme="seotracker"] .app-pane {
+  background-color: var(--color-base-200);
+}
+/* A well drawn in base-200 (the theme and language pickers) would vanish
+   into a base-200 pane; it drops one step so it still reads as a well. */
+html[data-theme="seotracker"] .app-pane [role="radiogroup"].bg-base-200 {
+  background-color: var(--color-base-300);
+}
+/* The settings section index sticks to the top of the pane, not of a card,
+   so its frosted backing takes the pane colour. */
+html[data-theme="seotracker"] .app-pane nav.sticky.bg-base-100\/95 {
+  background-color: color-mix(in oklab, var(--color-base-200) 95%, transparent);
+}
+
+/* Sidebar group headings ("ARAMA VE SİTE", "AJAN"): a muted ember rather
+   than grey, 4.9:1 on the sidebar. */
+html[data-theme="seotracker"] .nav-group-label {
+  color: oklch(46% 0.1 45);
+}
+
+/* The page guide "?" beside every title. */
+html[data-theme="seotracker"] main h1 + a.btn-circle,
+html[data-theme="seotracker"] main h1 + a.btn-circle > svg {
+  color: var(--color-primary);
+}
+
+/* Actions that go somewhere: a row's trailing "Aç →" / "Gör →", and the
+   ghost-link actions in card headers ("Tümünü gör", "Sorguları aç"). A
+   ghost <button> does something in place and stays neutral. */
+html[data-theme="seotracker"]
+  main
+  a.group
+  > span.text-muted:last-child:has(> svg.lucide-arrow-right),
+html[data-theme="seotracker"] main a.btn.btn-ghost:not(.btn-circle) {
+  color: var(--ink-primary);
+}
+
+/* The round icon chip at the start of a step row. The neutral ones take an
+   ember wash; a warning keeps its own yellow so it never reads as the
+   accent. */
+html[data-theme="seotracker"]
+  main
+  a.group
+  > span.size-8.rounded-full.bg-base-200 {
+  background-color: var(--accent-wash);
+  color: var(--color-primary);
+}
+html[data-theme="seotracker"]
+  main
+  a.group
+  > span.size-8.rounded-full:has(> svg.lucide-triangle-alert) {
+  background-color: color-mix(in oklab, var(--color-warning) 22%, transparent);
+  color: var(--ink-warning);
+}
+
+/* Count and status labels ("Kurulum 4 / 6", a crawl phase). */
+html[data-theme="seotracker"] .badge-ghost {
+  background-color: var(--accent-wash);
+  border-color: color-mix(in oklab, var(--color-primary) 35%, transparent);
+  color: var(--ink-primary);
+}
+
+/* The KPI strip: an ember top edge, and a hovered tile warms instead of
+   greying. */
+html[data-theme="seotracker"] .metric-grid {
+  box-shadow:
+    inset 0 2px 0 var(--color-primary),
+    var(--shadow-raise);
+}
+html[data-theme="seotracker"] .metric-grid a:hover {
+  background-color: color-mix(in oklab, var(--color-primary) 7%, transparent);
+}
+
+/* A secondary button ("Yenile") answers the pointer in the accent. */
+@media (hover: hover) {
+  html[data-theme="seotracker"]
+    .btn:not(
+      .btn-primary,
+      .btn-error,
+      .btn-neutral,
+      .btn-ghost,
+      .btn-outline,
+      .btn-soft,
+      :disabled,
+      .btn-disabled
+    ):hover {
+    border-color: var(--color-primary);
+    color: var(--ink-primary);
+  }
+}
+
+/* Table headers sit on a faint warm band, so a long table shows where its
+   columns are named. Header text holds 5:1 on it. */
+html[data-theme="seotracker"] .table thead tr {
+  background-color: color-mix(in oklab, var(--color-primary) 5%, transparent);
+}
+
+/* A running progress bar's track is a pale ember, not grey. */
+html[data-theme="seotracker"] .progress-track:has(> .bg-primary) {
+  background-color: color-mix(in oklab, var(--color-primary) 16%, transparent);
+}
+
+html[data-theme="seotracker"] ::selection {
+  background-color: color-mix(in oklab, var(--color-primary) 22%, transparent);
+}
+
 /* Underline tabs: DaisyUI's tabs-border underlines the active tab with
    currentColor; use the primary accent instead (PostHog-style). */
 .tabs-border > .tab.tab-active::before {
   --tab-border-color: var(--color-primary);
+}
+
+/* An inactive tab is still a label to read. DaisyUI fades it to half the
+   ink, which measured 3.3:1 on the light surface; the muted token holds
+   4.5:1 in both themes. */
+.tabs > .tab:not(.tab-active) {
+  color: var(--text-muted);
+}
+.tabs > .tab:not(.tab-active):hover {
+  color: var(--color-base-content);
 }
 
 /* Alerts were a 40%-opacity slab of colour, which shouted louder than the data

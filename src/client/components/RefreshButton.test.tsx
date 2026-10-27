@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import { formatDateTime } from "@/client/lib/format";
 import { PageActions, RefreshButton } from "./RefreshButton";
 
 describe("RefreshButton", () => {
@@ -21,7 +22,7 @@ describe("RefreshButton", () => {
     expect(screen.getByRole("status").textContent).toContain("Güncelleniyor");
   });
 
-  it("announces Güncellendi after a fetch ends and shows the time", () => {
+  it("announces Güncellendi after a fetch ends and shows the localized update time", () => {
     const at = new Date(2026, 0, 5, 14, 32).getTime();
     const { rerender } = render(
       <RefreshButton onRefresh={() => {}} isFetching dataUpdatedAt={at} />,
@@ -34,7 +35,11 @@ describe("RefreshButton", () => {
       />,
     );
     expect(screen.getByRole("status").textContent).toContain("Güncellendi");
-    expect(screen.getByText("Güncellendi: 14:32")).toBeTruthy();
+    expect(
+      screen.getByText(
+        `Güncellendi: ${formatDateTime(new Date(at).toISOString())}`,
+      ),
+    ).toBeTruthy();
   });
 
   it("honours disabled", () => {

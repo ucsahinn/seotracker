@@ -260,8 +260,8 @@ function SavedKeywordsPage() {
           loading: positionData.tracked.isLoading,
           error: positionData.tracked.error,
           onRetry: () => void positionData.tracked.refetch(),
-          archiveRows: positionData.tracked.data?.rows.length ?? 0,
           map: positionData.positions,
+          tracked: positionData.tracked.data?.rows ?? [],
         }}
         filter={positionFilter}
         onFilter={(next) => {

@@ -4,6 +4,7 @@ import { GscHistoryService } from "@/server/features/gsc/services/GscHistoryServ
 import { requireProjectContext } from "@/serverFunctions/middleware";
 import { gscHistoryWindow } from "@/shared/dataFreshness";
 import { attachChange, previousWindow } from "@/shared/rankingChange";
+import { weeklyTrends } from "@/shared/weeklyTrends";
 
 /** How many queries of the preceding window are read to match against. */
 const PREVIOUS_WINDOW_LIMIT = 5000;
@@ -77,10 +78,21 @@ export const getTrackedQueries = createServerFn({ method: "POST" })
       until: before.until,
       limit: PREVIOUS_WINDOW_LIMIT,
     });
+    const shown = rows.slice(0, data.limit);
+    // A weekly position line per row, from the archive (no Google request).
+    const weekly = await GscHistoryService.getWeeklyPositions({
+      projectId: context.projectId,
+      since,
+      queries: shown.map((row) => row.query),
+    });
+    const trends = weeklyTrends(weekly);
     // One extra row so the screen can say the set was capped instead of
     // presenting a truncated list as the whole archive.
     return {
-      rows: attachChange(rows.slice(0, data.limit), previous),
+      rows: attachChange(shown, previous).map((row) => ({
+        ...row,
+        trend: trends.get(row.query) ?? [],
+      })),
       previousRange: { startDate: before.since, endDate: before.until },
       previousQueryCount: previous.length,
       truncated: rows.length > data.limit,

@@ -14,7 +14,9 @@ export type HealthItemId =
   | "keyPages"
   | "searchConsole"
   | "analytics"
-  | "pageSpeed";
+  | "pageSpeed"
+  | "audit"
+  | "agent";
 
 export type HealthItem = {
   id: HealthItemId;
@@ -26,8 +28,16 @@ export type HealthItem = {
   target:
     | { kind: "anchor"; id: string }
     | { kind: "integrations"; hash: "search-console" | "google-analytics" }
-    | { kind: "settings" };
+    | { kind: "settings" }
+    | { kind: "audit" }
+    | { kind: "agent" };
   actionLabel: string;
+  /**
+   * Recommended but not part of the shared setup checklist
+   * (`shared/projectSetup`), so not counted: the dashboard and this card
+   * have to give the same "x / y".
+   */
+  optional?: boolean;
 };
 
 type HealthInput = {
@@ -37,6 +47,8 @@ type HealthInput = {
   searchConsole: HealthState;
   analytics: HealthState;
   pageSpeed: HealthState;
+  audit: HealthState;
+  agent: HealthState;
 };
 
 export function buildContextHealth(input: HealthInput): HealthItem[] {
@@ -73,6 +85,7 @@ export function buildContextHealth(input: HealthInput): HealthItem[] {
           : t("Rakip yok. Ajan, kimle yarıştığınızı bilmeden öneri yapar."),
       target: { kind: "anchor", id: "context-competitors" },
       actionLabel: t("Rakip ekle"),
+      optional: true,
     },
     {
       id: "keyPages",
@@ -86,6 +99,7 @@ export function buildContextHealth(input: HealthInput): HealthItem[] {
             ),
       target: { kind: "anchor", id: "context-key-pages" },
       actionLabel: t("Sayfa ekle"),
+      optional: true,
     },
     {
       id: "searchConsole",
@@ -126,16 +140,41 @@ export function buildContextHealth(input: HealthInput): HealthItem[] {
       target: { kind: "settings" },
       actionLabel: t("Anahtar gir"),
     },
+    {
+      id: "audit",
+      label: t("Güncel denetim"),
+      state: input.audit,
+      detail:
+        input.audit === "done"
+          ? t("Sitenizin son 7 gün içinde tamamlanmış bir denetimi var.")
+          : t(
+              "Son 7 günde bu sitenin tamamlanmış denetimi yok. Başka bir adresin denetimi sayılmaz.",
+            ),
+      target: { kind: "audit" },
+      actionLabel: t("Denetle"),
+    },
+    {
+      id: "agent",
+      label: t("Yapay zeka ajanı"),
+      state: input.agent,
+      detail:
+        input.agent === "done"
+          ? t("Bir ajan bağlandı ve en az bir araç çağırdı.")
+          : t("Henüz hiçbir ajan bağlanmadı."),
+      target: { kind: "agent" },
+      actionLabel: t("Bağla"),
+    },
   ];
 }
 
-/** Items that are finished, out of those that could be judged. */
+/** Checklist items finished, out of the checklist (optional rows are not counted). */
 export function healthProgress(items: HealthItem[]): {
   done: number;
   total: number;
 } {
+  const counted = items.filter((item) => !item.optional);
   return {
-    done: items.filter((item) => item.state === "done").length,
-    total: items.length,
+    done: counted.filter((item) => item.state === "done").length,
+    total: counted.length,
   };
 }

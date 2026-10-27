@@ -5,6 +5,57 @@ import type { Catalog } from "@/shared/i18n";
  * Keys are the Turkish source strings exactly as passed to t().
  */
 export const enServer: Catalog = {
+  // installed-0.8.0 diagnostics: Google/Windows/audit failure causes
+  "{host} site denetimi (eksik)": "{host} site audit (partial)",
+  "Eksik rapor: {why} Sorun listesi tam değil.":
+    "Partial report: {why} The issue list is incomplete.",
+  "Tepsi uygulaması 4 saniye içinde yanıt vermedi (zaman aşımı). Bilgisayar uykudan yeni uyandıysa birkaç saniye sonra Tekrar dene'ye basın; sürerse tepsi menüsünden Çıkış deyip uygulamayı yeniden açın.":
+    "The tray app did not answer within 4 seconds (timeout). If the computer just woke from sleep, press Try again in a few seconds; if it persists, choose Exit in the tray menu and open the app again.",
+  "Tepsi uygulamasının ayar servisine bağlanılamadı. Tepsi uygulaması kapanmış olabilir; seowatcher'ı Başlat menüsünden yeniden açın.":
+    "Could not connect to the tray app's settings service. The tray app may have closed; open seowatcher again from the Start menu.",
+  "Bu ayar yönetici tarafından kilitlenmiş (HTTP 409). Yalnızca bilgisayarın yöneticisi değiştirebilir.":
+    "This preference is locked by an administrator (HTTP 409). Only the computer's administrator can change it.",
+  "Tepsi uygulaması bu isteği tanımadı (HTTP 403); sunucu ile tepsi uygulaması farklı oturumlardan kalmış olabilir. Tepsi menüsünden Çıkış deyip uygulamayı yeniden açın.":
+    "The tray app did not recognise this request (HTTP 403); the server and the tray app may be left over from different sessions. Choose Exit in the tray menu and open the app again.",
+  "Tepsi uygulaması ayar isteğini reddetti (HTTP {status}). Uygulamayı tepsi menüsünden yeniden başlatın; sürerse Windows paketini güncelleyin.":
+    "The tray app refused the settings request (HTTP {status}). Restart the app from the tray menu; if it persists, update the Windows package.",
+  "Tepsi uygulaması tanınmayan bir yanıt döndürdü; uygulama ile tepsi sürümü uyuşmuyor olabilir. Windows paketini güncelleyin.":
+    "The tray app returned an unrecognised answer; the app and tray versions may not match. Update the Windows package.",
+  "Google Analytics geçersiz bir yanıt döndürdü. Birazdan tekrar deneyin.":
+    "Google Analytics returned an invalid response. Try again shortly.",
+  "Google'a bağlanılamadı, birazdan tekrar deneyin. Neden: {reason}. Sürerse bu bilgisayarın internet bağlantısını kontrol edin.":
+    "Could not connect to Google, try again shortly. Reason: {reason}. If it persists, check this computer's internet connection.",
+  bilinmiyor: "unknown",
+  "Search Console isteği geçersiz buldu (HTTP 400). Bu bir bağlantı sorunu değil; seçili boyut, filtre ya da arama türü bu mülkte kullanılamıyor.":
+    "Search Console rejected the request (HTTP 400). This is not a connection problem; the selected dimension, filter or search type is not available for this property.",
+  "Search Console bu mülke erişimi reddetti (HTTP {status}). Hesabın mülkte doğrulanmış yetkisi olduğunu kontrol edin ya da Ayarlar'dan bağlantıyı yenileyin.":
+    "Search Console denied access to this property (HTTP {status}). Check that the account has verified permission on the property, or renew the connection in Settings.",
+  "Search Console mülkü bulunamadı (HTTP 404). Mülk Search Console'dan kaldırılmış olabilir; Ayarlar'dan yeniden seçin.":
+    "Search Console property not found (HTTP 404). It may have been removed from Search Console; choose it again in Settings.",
+  "Search Console istek sınırı doldu (HTTP 429). Birkaç dakika sonra tekrar deneyin.":
+    "Search Console request limit reached (HTTP 429). Try again in a few minutes.",
+  "Search Console zamanında yanıt vermedi. Birazdan tekrar deneyin.":
+    "Search Console did not answer in time. Try again shortly.",
+  "Search Console geçici olarak yanıt vermiyor (HTTP {status}). Birazdan tekrar deneyin; sürerse Google'ın durum sayfasına bakın.":
+    "Search Console is temporarily not answering (HTTP {status}). Try again shortly; if it persists, check Google's status page.",
+  'Google Analytics Data API bu Google Cloud projesinde kapalı. Google Cloud Console\'da "Google Analytics Data API"yi etkinleştirip tekrar deneyin.':
+    'The Google Analytics Data API is turned off in this Google Cloud project. Enable "Google Analytics Data API" in the Google Cloud Console and try again.',
+  "Bu rapor seçili Google Analytics mülküyle uyumlu değil (HTTP 400).":
+    "This report is not compatible with the selected Google Analytics property (HTTP 400).",
+  "Google Analytics bağlantısının süresi dolmuş ya da iptal edilmiş. Ayarlar'dan yeniden bağlayın.":
+    "The Google Analytics connection has expired or was revoked. Reconnect it in Settings.",
+  "Google Analytics bu mülke erişimi reddetti (HTTP 403). Bağlı hesaba ya da hizmet hesabına mülkte en az Görüntüleyen yetkisi verin.":
+    "Google Analytics denied access to this property (HTTP 403). Give the connected account or service account at least Viewer access on the property.",
+  "Google Analytics mülkü bulunamadı (HTTP 404). Mülk silinmiş ya da taşınmış olabilir; Ayarlar'dan yeniden seçin.":
+    "Google Analytics property not found (HTTP 404). It may have been deleted or moved; choose it again in Settings.",
+  "Google Analytics raporlama kotası doldu (HTTP 429). Kota saatlik ve günlük yenilenir; daha sonra tekrar deneyin.":
+    "Google Analytics reporting quota is exhausted (HTTP 429). The quota renews hourly and daily; try again later.",
+  "Google Analytics geçici olarak yanıt vermiyor (HTTP {status}{reason}). Birazdan tekrar deneyin.":
+    "Google Analytics is temporarily not answering (HTTP {status}{reason}). Try again shortly.",
+  "Bu projeye bağlı bir Google Analytics mülkü yok. Ayarlar'dan bir mülk seçin.":
+    "No Google Analytics property is connected to this project. Choose one in Settings.",
+  "Google Analytics geçici olarak yanıt vermiyor. Birazdan tekrar deneyin.":
+    "Google Analytics is temporarily not answering. Try again shortly.",
   "Bu seçenek yalnızca Windows paketinde kullanılabilir.":
     "This option is only available in the Windows app.",
   "Windows ayarı kaydedilemedi. Tepsi uygulamasının açık olduğunu ve ayarın yönetici tarafından kilitlenmediğini kontrol edip tekrar deneyin.":
@@ -621,4 +672,10 @@ export const enServer: Catalog = {
   "Site bir barındırma platformunun alt alan adında; kaydı ve DNS'i platforma ait olduğu için alan adı ve DNS kontrolleri yapılmadı.":
     "The site is on a subdomain of a hosting platform; its registration and DNS belong to the platform, so the domain and DNS checks were skipped.",
   "sayı alınamadı (tarama sınırı)": "count not read (crawl limit)",
+  // Cards and stats review (Opportunities, rankings, setup verdict).
+  "İlk {count} iş birlikte {days} günde en fazla {clicks} ek tıklama getirebilir (üst sınır).":
+    "Together, the first {count} tasks could bring at most {clicks} extra clicks in {days} days (upper bound).",
+  // Cards and stats review (Opportunities, rankings, setup verdict).
+  "Ortalama sırası 4 ile 20 arasında, en az {impressions} gösterim alan {count} sorgu. Olası kazanç, sorgu bir basamak yükselirse (6-10'dan 4-5'e, 4-5'ten 2-3'e, 11-20'den ilk sayfaya) beklenen en fazla ek tıklamadır.":
+    "{count} queries averaging positions 4 to 20 with at least {impressions} impressions. The possible gain is the most extra clicks expected if a query moves up one step (6-10 to 4-5, 4-5 to 2-3, 11-20 to page one).",
 };

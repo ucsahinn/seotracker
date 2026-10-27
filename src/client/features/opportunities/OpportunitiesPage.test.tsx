@@ -3,6 +3,7 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { INTRO_STORAGE_KEY } from "./OpportunityStates";
 import { OpportunitiesPage } from "./OpportunitiesPage";
+import { makeReport, makeRow } from "./opportunity-test-fixtures";
 
 const getSearchOpportunities = vi.fn();
 vi.mock("@/serverFunctions/opportunities", () => ({
@@ -25,57 +26,20 @@ vi.mock("@tanstack/react-router", () => ({
 }));
 
 const traffic = {
-  sessions: 5,
-  activeUsers: 4,
-  engagedSessions: 3,
+  sessions: 120,
+  activeUsers: 100,
+  engagedSessions: 70,
   engagementRate: 0.6,
-  keyEvents: 0,
-  sessionKeyEventRate: 0,
+  keyEvents: 6,
+  sessionKeyEventRate: 0.05,
   transactions: 0,
   purchaseRevenue: null,
 };
 
-function row(page: string, score: number, joined: boolean) {
-  return {
-    page,
-    normalizedPage: page,
-    clicks: 1,
-    impressions: 100,
-    ctr: 0.01,
-    position: 8,
-    joinStatus: joined ? ("joined" as const) : ("gsc_only" as const),
-    ga4: joined ? traffic : null,
-    score,
-    kind: "near_miss" as const,
-    ctrGap: null,
-    scoreComponents: null,
-  };
-}
-
-function report(rows: ReturnType<typeof row>[]) {
-  return {
-    status: "ok",
-    report: {
-      rows,
-      rowCount: rows.length,
-      totalCandidateRows: rows.length,
-      request: {
-        dateRange: { startDate: "2026-09-01", endDate: "2026-09-28" },
-      },
-      coverage: {
-        matchedRows: rows.filter((r) => r.ga4).length,
-        unmatchedGscRows: rows.filter((r) => !r.ga4).length,
-        gscRowsConsidered: rows.length,
-      },
-      truncated: { gsc: false, candidates: false },
-      warnings: [],
-      scoring: {
-        businessValueMetric: "engagementRate",
-        engagementFallback: false,
-      },
-    },
-  };
-}
+const report = (rows: ReturnType<typeof makeRow>[]) => ({
+  status: "ok",
+  report: makeReport(rows),
+});
 
 function renderPage() {
   const client = new QueryClient();
@@ -92,9 +56,15 @@ function renderPage() {
 }
 
 const rows = [
-  row("https://example.com/joined", 40, true),
-  row("https://example.com/alone", 70, false),
-  row("https://example.com/best", 95, true),
+  makeRow({ page: "https://example.com/best", gainPerMonth: 400 }),
+  makeRow({
+    page: "https://example.com/sells",
+    gainPerMonth: 200,
+    joinStatus: "joined",
+    ga4: traffic,
+    value: "converts",
+  }),
+  makeRow({ page: "https://example.com/alone", gainPerMonth: 50 }),
 ];
 
 /* The runtime's own `localStorage` is not reliably a Storage here, so the
@@ -114,37 +84,37 @@ beforeEach(() => {
 });
 
 describe("OpportunitiesPage", () => {
-  it("filters to pages without an Analytics match from the tile", async () => {
+  it("leads with the clicks to gain and the page to start with", async () => {
     getSearchOpportunities.mockResolvedValue(report(rows));
     renderPage();
 
-    const tile = await screen.findByRole("button", {
-      name: /Analytics\s*'te karşılığı yok.*tanesi/,
+    const start = await screen.findByRole("button", {
+      name: /Önce şuna bakın/,
     });
-    // The tile counts every candidate; its click lists only the returned rows.
-    expect(tile.textContent).toContain("Listelenen");
-    fireEvent.click(tile);
-
+    expect(start.textContent).toContain("/best");
     expect(
-      screen
-        .getAllByRole("button", { name: /^Analytics'te karşılığı yok/ })
-        .find((button) => button.hasAttribute("aria-pressed"))
-        ?.getAttribute("aria-pressed"),
-    ).toBe("true");
-    expect(screen.getAllByRole("row").slice(1)).toHaveLength(1);
-    expect(screen.getByText("/alone")).toBeDefined();
+      screen.getByText("En fazla kazanılabilecek tıklama / ay (üst sınır)"),
+    ).toBeDefined();
+
+    fireEvent.click(start);
+    expect(
+      within(screen.getByRole("dialog")).getAllByText(/best/).length,
+    ).toBeGreaterThan(0);
   });
 
-  it("opens the dialog of the top-scoring row from its tile", async () => {
+  it("filters to converting pages, and hides chips that would select everything", async () => {
     getSearchOpportunities.mockResolvedValue(report(rows));
     renderPage();
 
     fireEvent.click(
-      await screen.findByRole("button", { name: /En yüksek puan/ }),
+      await screen.findByRole("button", { name: /^Dönüşüm getirenler/ }),
     );
-
-    const dialog = screen.getByRole("dialog");
-    expect(within(dialog).getAllByText(/best/).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("row").slice(1)).toHaveLength(1);
+    expect(screen.getByText("/sells")).toBeDefined();
+    // Every listed page with Analytics converts; "no conversions" holds none.
+    expect(
+      screen.queryByRole("button", { name: /^Trafik var, dönüşüm yok/ }),
+    ).toBeNull();
   });
 
   it("puts the window and row-count controls in the header", async () => {
@@ -185,14 +155,12 @@ describe("OpportunitiesPage", () => {
     ).toBe("false");
   });
 
-  it("starts the intro closed and names both sources when nothing is connected", async () => {
+  it("starts the intro closed and asks only for Search Console when nothing is connected", async () => {
     getSearchOpportunities.mockResolvedValue({ status: "needs_gsc" });
     renderPage();
 
     expect(
-      await screen.findByText(
-        "Fırsatlar için Search Console ve Analytics gerekir",
-      ),
+      await screen.findByText("Fırsatlar için Search Console gerekir"),
     ).toBeDefined();
     expect(
       screen

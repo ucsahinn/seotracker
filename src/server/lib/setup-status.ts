@@ -12,6 +12,7 @@ import { getGoogleOAuthClientSource } from "@/server/features/google/oauth-confi
 import { getPageSpeedKeySource } from "@/server/features/lighthouse/pagespeed-config";
 import { hasServiceAccount } from "@/server/lib/googleServiceAccountToken";
 import { getOptionalEnvValue } from "@/server/lib/runtime-env";
+import { getPortFacts, type PortFacts } from "@/server/lib/port-fallback";
 import { t } from "@/shared/i18n";
 
 // "error" blocks core functionality; "warn" degrades a feature.
@@ -25,6 +26,11 @@ type SelfHostSetupStatus = {
   authMode: string;
   /** "windows" for the Windows package, "docker" for everything else. */
   installKind: InstallKind;
+  /**
+   * The port this instance runs on and the one it was set up for; `fallback`
+   * is set when the Windows launcher found the configured port taken.
+   */
+  port: PortFacts;
   checks: Record<string, SetupCheck>;
 };
 
@@ -64,6 +70,8 @@ async function checkDatabase(): Promise<SetupCheck> {
 
 export async function getSelfHostSetupStatus(options?: {
   skipDatabaseCheck?: boolean;
+  /** The URL the caller reached this instance by, for the actual port. */
+  requestUrl?: string | null;
 }): Promise<SelfHostSetupStatus> {
   const env = Object.fromEntries(
     await Promise.all(
@@ -121,10 +129,12 @@ export async function getSelfHostSetupStatus(options?: {
             };
   }
 
+  const installKind = await getInstallKind();
   return {
     version,
     authMode: getAuthMode(env.AUTH_MODE),
-    installKind: await getInstallKind(),
+    installKind,
+    port: await getPortFacts(options?.requestUrl, installKind),
     checks,
   };
 }

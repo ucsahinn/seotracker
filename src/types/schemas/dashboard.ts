@@ -54,6 +54,9 @@ export type DashboardAuditSummary = {
   status: "running" | "completed" | "failed";
   pagesCrawled: number;
   startedAt: string;
+  /** Why a failed audit stopped; see audit-errors.ts. Null otherwise. */
+  errorCode?: string | null;
+  failedPhase?: string | null;
   // Top issue types by severity then affected-page count, for the card's list.
   topIssues: {
     issueType: string;

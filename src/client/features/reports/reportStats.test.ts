@@ -59,6 +59,7 @@ describe("report stats", () => {
       recent: 2,
       template: 1,
       skill: 1,
+      audit: 0,
     });
   });
 

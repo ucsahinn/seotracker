@@ -6,8 +6,10 @@ import { SearchOpportunityService } from "./SearchOpportunityService";
 const mocks = vi.hoisted(() => ({
   getGa4Connection: vi.fn(),
   getGscConnection: vi.fn(),
-  getPerformance: vi.fn(),
+  queryAnalytics: vi.fn(),
   runGa4Report: vi.fn(),
+  listBrandTerms: vi.fn(),
+  getProjectIdentity: vi.fn(),
 }));
 
 vi.mock("@/server/features/ga4/repositories/Ga4ConnectionRepository", () => ({
@@ -16,90 +18,90 @@ vi.mock("@/server/features/ga4/repositories/Ga4ConnectionRepository", () => ({
 vi.mock("@/server/features/gsc/services/GscService", () => ({
   GscService: {
     getConnection: mocks.getGscConnection,
-    getPerformance: mocks.getPerformance,
+    queryAnalytics: mocks.queryAnalytics,
+  },
+}));
+vi.mock("@/server/features/gsc/repositories/SearchSettingsRepository", () => ({
+  SearchSettingsRepository: {
+    listBrandTerms: mocks.listBrandTerms,
+    getProjectIdentity: mocks.getProjectIdentity,
   },
 }));
 vi.mock("@/server/features/ga4/services/Ga4ReportingService", () => ({
   Ga4ReportingService: { runReport: mocks.runGa4Report },
-  resolveGa4DateRange: vi.fn(),
 }));
 
-const ga4Result = makeGa4ReportResult({
-  status: "ok" as const,
-  source: {
-    provider: "google_analytics" as const,
-    propertyId: "properties/123",
-    propertyDisplayName: "Example",
-  },
-  request: {
-    requestedDateRange: { startDate: "2026-07-07", endDate: "2026-08-03" },
-    resolvedDateRange: { startDate: "2026-07-07", endDate: "2026-08-03" },
-    propertyTimeZone: "America/New_York",
-    currencyCode: "USD",
-    channel: "organic_search" as const,
-    limit: 1_000,
-    offset: 0,
-  },
-  rows: [
-    {
-      hostName: "example.com",
-      landingPage: "/High-Value/?utm_source=x",
-      sessions: 100,
-      activeUsers: 90,
-      engagedSessions: 80,
-      engagementRate: 0.8,
-      keyEvents: 10,
-      sessionKeyEventRate: 0.1,
-      transactions: 2,
-      purchaseRevenue: 500,
-    },
-    {
-      hostName: "example.com",
-      landingPage: "/other/",
-      sessions: 10,
-      activeUsers: 9,
-      engagedSessions: 5,
-      engagementRate: 0.5,
-      keyEvents: 1,
-      sessionKeyEventRate: 0.02,
-      transactions: 0,
-      purchaseRevenue: 0,
-    },
-  ],
-  rowCount: 2,
-  totalRowCount: 2,
-  pageInfo: { offset: 0, limit: 1_000, hasMore: false, nextOffset: null },
-  reportMetadata: {
-    dataLossFromOtherRow: false,
-    subjectToThresholding: false,
-    sampling: [],
-    restrictedMetrics: [],
-    emptyReason: null,
-    hasLimitedData: false,
-  },
-  quota: null,
-  warnings: [],
-});
+type Row = {
+  keys: string[];
+  clicks: number;
+  impressions: number;
+  position: number;
+};
+const row = (
+  keys: string[],
+  position: number,
+  impressions: number,
+  clicks: number,
+): Row => ({ keys, position, impressions, clicks });
 
-const ga4Row = (landingPage: string) => ({
+/** Five queries at #2 clicking 15%: the site's CTR for positions 2-3. */
+const CURVE = Array.from({ length: 5 }, (_, i) =>
+  row([`curve ${i}`], 2, 1000, 150),
+);
+
+function gsc(queryPages: Row[]) {
+  const pages = new Map<string, Row>();
+  for (const qp of queryPages) {
+    const page = qp.keys[1] ?? "";
+    const prev = pages.get(page);
+    pages.set(
+      page,
+      prev
+        ? row(
+            [page],
+            qp.position,
+            prev.impressions + qp.impressions,
+            prev.clicks + qp.clicks,
+          )
+        : row([page], qp.position, qp.impressions, qp.clicks),
+    );
+  }
+  mocks.queryAnalytics.mockImplementation(
+    async ({ dimensions }: { dimensions: string[] }) => ({
+      siteUrl: "https://example.com/",
+      truncated: false,
+      rows:
+        dimensions.length === 2
+          ? queryPages
+          : dimensions[0] === "page"
+            ? [...pages.values()]
+            : CURVE,
+    }),
+  );
+}
+
+const ga4Row = (landingPage: string, sessions: number, keyEvents: number) => ({
   hostName: "example.com",
   landingPage,
-  sessions: 10,
-  activeUsers: 9,
-  engagedSessions: 5,
+  sessions,
+  activeUsers: sessions,
+  engagedSessions: sessions / 2,
   engagementRate: 0.5,
-  keyEvents: 1,
-  sessionKeyEventRate: 0.1,
+  keyEvents,
+  sessionKeyEventRate: sessions > 0 ? keyEvents / sessions : 0,
   transactions: 0,
   purchaseRevenue: 0,
 });
-const gscRow = (url: string) => ({
-  keys: [url],
-  clicks: 5,
-  impressions: 500,
-  ctr: 0.01,
-  position: 8,
-});
+
+const ga4Result = (rows: Array<ReturnType<typeof ga4Row>>) =>
+  makeGa4ReportResult({
+    rows,
+    rowCount: rows.length,
+    totalRowCount: rows.length,
+  });
+
+const NOW = { now: new Date("2026-08-06T12:00:00Z") };
+
 describe("SearchOpportunityService", () => {
   beforeEach(() => {
     mocks.getGa4Connection.mockResolvedValue({
@@ -108,330 +110,127 @@ describe("SearchOpportunityService", () => {
     mocks.getGscConnection.mockResolvedValue({
       siteUrl: "https://example.com/",
     });
-    mocks.runGa4Report.mockResolvedValue(ga4Result);
+    mocks.listBrandTerms.mockResolvedValue([]);
+    mocks.getProjectIdentity.mockResolvedValue({ domain: null, name: null });
+    mocks.runGa4Report.mockResolvedValue(ga4Result([]));
   });
 
-  it("normalizes URLs and scores every candidate, matched or not", async () => {
-    mocks.getPerformance.mockResolvedValue({
-      siteUrl: "https://example.com/",
-      request: {},
-      rows: [
-        {
-          keys: ["https://EXAMPLE.com/High-Value/?ref=gsc"],
-          clicks: 10,
-          impressions: 1_000,
-          ctr: 0.01,
-          position: 6,
-        },
-        {
-          keys: ["https://example.com/other"],
-          clicks: 5,
-          impressions: 500,
-          ctr: 0.01,
-          position: 12,
-        },
-        {
-          keys: ["https://example.com/no-analytics"],
-          clicks: 1,
-          impressions: 2_000,
-          ctr: 0.0005,
-          position: 8,
-        },
-        {
-          keys: ["https://example.com/top-result"],
-          clicks: 100,
-          impressions: 3_000,
-          ctr: 0.03,
-          position: 2,
-        },
-      ],
-    });
+  it("reads Search Console's window and lists only pages with a gain", async () => {
+    gsc([
+      row(["near miss", "https://example.com/a"], 5, 1000, 40),
+      row(["already top", "https://example.com/top"], 1, 1000, 300),
+    ]);
     const result = await SearchOpportunityService.getOpportunities(
       { projectId: "project_1" },
-      { now: new Date("2026-08-06T12:00:00Z") },
+      NOW,
     );
 
-    expect(mocks.getPerformance).toHaveBeenCalledWith(
-      expect.objectContaining({
-        startDate: "2026-07-07",
-        endDate: "2026-08-03",
-        dimensions: ["page"],
-        rowLimit: 1_000,
-      }),
-    );
+    // Search Console's calendar (Pacific), three days back, 28 days long.
+    expect(result.request.dateRange).toEqual({
+      startDate: "2026-07-07",
+      endDate: "2026-08-03",
+    });
     expect(mocks.runGa4Report).toHaveBeenCalledWith(
       expect.objectContaining({
         startDate: "2026-07-07",
         endDate: "2026-08-03",
-        kind: "landing_pages",
       }),
     );
-    /*
-     * Four, not three. `/top-result` at position 2 used to be dropped by a
-     * hard 4-20 band and called "not an opportunity" -- but a page ranking
-     * second that nobody clicks is a title-and-description afternoon, which
-     * is the cheapest work on the screen. Every row Google showed is now a
-     * candidate and the *kind* says which afternoon it is.
-     */
-    expect(result.totalCandidateRows).toBe(4);
-    expect(result.rows.map((row) => row.page)).toContain(
-      "https://example.com/top-result",
-    );
-    expect(result.coverage).toMatchObject({
-      matchedRows: 2,
-      unmatchedGscRows: 2,
-    });
-    /*
-     * The page the old band hid. `/top-result` has the most impressions of
-     * the four and the best position, so it leads on both demand and
-     * reachability -- and it was not on this screen at all, because 2 is
-     * outside 4-20.
-     */
-    expect(result.rows[0]).toMatchObject({
-      page: "https://example.com/top-result",
-      score: 76,
-      scoreComponents: {
-        demand: 0.875,
-        reachability: 0.875,
-      },
-    });
-
-    /*
-     * The invariant that survives the widening: a page with demand and no
-     * traffic is still scored rather than buried. /no-analytics has no GA4
-     * row, so it takes the neutral middle for business value instead of a
-     * zero it did not earn -- under the old scoring it had no score at all
-     * and sorted last.
-     */
-    const noAnalytics = result.rows.find(
-      (row) => row.page === "https://example.com/no-analytics",
-    );
-    expect(noAnalytics).toMatchObject({
-      joinStatus: "gsc_only",
-      ga4: null,
-      scoreComponents: { businessValue: 0.5 },
-    });
-    expect(noAnalytics?.score).toBeGreaterThan(0);
-    /*
-     * Looked up by page rather than by index: this test is about
-     * normalization and about every candidate being scored, not about the
-     * ranking -- and pinning positions made it fail for the right change.
-     */
-    expect(
-      result.rows.find(
-        (row) => row.page === "https://EXAMPLE.com/High-Value/?ref=gsc",
-      ),
-    ).toMatchObject({
-      normalizedPage: "example.com/High-Value",
-      joinStatus: "joined",
-      // Relative to the candidate set, which is now four rows rather than
-      // three -- `scoring.relativeToCandidateSet` says so in the response.
-      score: 54,
-    });
-    expect(result.scoring.businessValueMetric).toBe("sessionKeyEventRate");
-    expect(result.warnings).toContain("source_time_zones_differ");
+    // 1000 x 15% - 40 over 28 days, scaled to 30.
+    expect(result.rows).toEqual([
+      expect.objectContaining({
+        page: "https://example.com/a",
+        work: "page1",
+        gain: 110,
+        gainPerMonth: 118,
+      }),
+    ]);
+    expect(result.totals).toMatchObject({ noGainPages: 1, gainPerMonth: 118 });
   });
 
-  it("counts a GA4 page once when two GSC URLs collapse onto it", async () => {
-    mocks.runGa4Report.mockResolvedValue({
-      ...ga4Result,
-      rows: [ga4Row("/blog/"), ga4Row("/other-page")],
-    });
-    mocks.getPerformance.mockResolvedValue({
-      siteUrl: "https://example.com/",
-      request: {},
-      rows: [
-        gscRow("https://example.com/blog"),
-        gscRow("https://example.com/blog?ref=x"),
-      ],
-    });
+  it("works without Analytics, which is only the secondary factor", async () => {
+    mocks.getGa4Connection.mockResolvedValue(null);
+    gsc([row(["q", "https://example.com/a"], 5, 1000, 40)]);
     const result = await SearchOpportunityService.getOpportunities(
       { projectId: "project_1" },
-      { now: new Date("2026-08-06T12:00:00Z") },
+      NOW,
     );
-    expect(result.coverage.unmatchedGa4Rows).toBe(1);
+    expect(result.analytics.state).toBe("not_connected");
+    expect(result.rows[0]).toMatchObject({ ga4: null, value: null });
+    expect(mocks.runGa4Report).not.toHaveBeenCalled();
+  });
+
+  it("labels business value only above a session floor", async () => {
+    gsc([
+      row(["q1", "https://example.com/sells"], 5, 1000, 40),
+      row(["q2", "https://example.com/lucky"], 5, 1000, 40),
+      row(["q3", "https://example.com/reads"], 5, 1000, 40),
+    ]);
+    mocks.runGa4Report.mockResolvedValue(
+      ga4Result([
+        ga4Row("/sells", 200, 12),
+        // One conversion on three sessions is not a conversion rate.
+        ga4Row("/lucky", 3, 1),
+        ga4Row("/reads", 200, 0),
+      ]),
+    );
+    const result = await SearchOpportunityService.getOpportunities(
+      { projectId: "project_1" },
+      NOW,
+    );
+    const value = Object.fromEntries(
+      result.rows.map((r) => [new URL(r.page).pathname, r.value]),
+    );
+    expect(value).toEqual({
+      "/sells": "converts",
+      "/lucky": "too_little_traffic",
+      "/reads": "no_conversions",
+    });
   });
 
   /*
-   * Search Console reports `/blog`; GA4 reports `/blog`, `/blog?utm_source=x`
-   * and `/blog?page=2` separately. The join key collapses them on purpose,
-   * and before this the collapse kept whichever row GA4 returned last - so a
-   * page's traffic could be read off its smallest campaign variant.
+   * Search Console reports `/blog`; GA4 reports `/blog` and
+   * `/blog?utm_source=x` separately. The join key collapses them, and the
+   * variants are added, not overwritten by whichever came last.
    */
   it("adds up the GA4 variants that collapse onto one page", async () => {
-    mocks.runGa4Report.mockResolvedValue({
-      ...ga4Result,
-      rows: [
-        {
-          hostName: "example.com",
-          landingPage: "/blog/",
-          sessions: 800,
-          activeUsers: 700,
-          engagedSessions: 600,
-          engagementRate: 0.75,
-          keyEvents: 40,
-          sessionKeyEventRate: 0.05,
-          transactions: 4,
-          purchaseRevenue: 400,
-        },
-        {
-          hostName: "example.com",
-          landingPage: "/blog/?utm_source=newsletter",
-          sessions: 200,
-          activeUsers: 150,
-          engagedSessions: 100,
-          engagementRate: 0.5,
-          keyEvents: 2,
-          sessionKeyEventRate: 0.01,
-          transactions: 1,
-          purchaseRevenue: 100,
-        },
-      ],
-    });
-    mocks.getPerformance.mockResolvedValue({
-      siteUrl: "https://example.com/",
-      request: {},
-      rows: [
-        {
-          keys: ["https://example.com/blog"],
-          clicks: 50,
-          impressions: 5_000,
-          ctr: 0.01,
-          position: 6,
-        },
-      ],
-    });
-
+    gsc([row(["q", "https://example.com/blog"], 5, 1000, 40)]);
+    mocks.runGa4Report.mockResolvedValue(
+      ga4Result([
+        ga4Row("/blog/", 800, 40),
+        ga4Row("/blog/?utm_source=n", 200, 2),
+      ]),
+    );
     const result = await SearchOpportunityService.getOpportunities(
       { projectId: "project_1" },
-      { now: new Date("2026-08-06T12:00:00Z") },
+      NOW,
     );
-
     expect(result.rows[0]).toMatchObject({
-      page: "https://example.com/blog",
       joinStatus: "joined",
-      ga4: {
-        sessions: 1_000,
-        engagedSessions: 700,
-        keyEvents: 42,
-        transactions: 5,
-        purchaseRevenue: 500,
-        // Session-weighted, not averaged: (800*0.75 + 200*0.5) / 1000.
-        engagementRate: 0.7,
-        // (800*0.05 + 200*0.01) / 1000.
-        sessionKeyEventRate: 0.042,
-      },
+      ga4: { sessions: 1_000, keyEvents: 42 },
     });
   });
 
-  /*
-   * The inversion a floor-rank produced: a property whose key event fires on
-   * every session gives every matched page the same rate, so all of them
-   * ranked 0 for business value and sorted below the 0.5 handed to pages GA4
-   * never saw. Measuring a page's value must not cost it points.
-   */
-  it("does not rank matched pages below unmatched ones when their value ties", async () => {
-    mocks.getPerformance.mockResolvedValue({
-      siteUrl: "https://example.com/",
-      request: {},
-      rows: [
-        {
-          keys: ["https://example.com/other"],
-          clicks: 5,
-          impressions: 500,
-          ctr: 0.01,
-          position: 10,
-        },
-        {
-          keys: ["https://example.com/unmatched"],
-          clicks: 5,
-          impressions: 500,
-          ctr: 0.01,
-          position: 10,
-        },
-      ],
+  it("uses brand terms suggested from the domain until some are confirmed", async () => {
+    mocks.getProjectIdentity.mockResolvedValue({
+      domain: "ornek-site.com",
+      name: null,
     });
-    mocks.runGa4Report.mockResolvedValue({
-      ...ga4Result,
-      rows: [ga4Result.rows[1]],
-      rowCount: 1,
-      totalRowCount: 1,
-    });
-
-    const result = await SearchOpportunityService.getOpportunities({
-      projectId: "project_1",
-    });
-    const matched = result.rows.find((row) => row.joinStatus === "joined");
-    const unmatched = result.rows.find((row) => row.joinStatus === "gsc_only");
-
-    expect(matched?.scoreComponents?.businessValue).toBe(0.5);
-    expect(matched?.score).toBe(unmatched?.score);
-  });
-
-  it("uses engagement rate when all joined rows have zero key events", async () => {
-    mocks.getPerformance.mockResolvedValue({
-      siteUrl: "https://example.com/",
-      request: {},
-      rows: [
-        {
-          keys: ["https://example.com/other"],
-          clicks: 1,
-          impressions: 100,
-          ctr: 0.01,
-          position: 10,
-        },
-      ],
-    });
-    mocks.runGa4Report.mockResolvedValue({
-      ...ga4Result,
-      rows: [{ ...ga4Result.rows[1], keyEvents: 0, sessionKeyEventRate: 0 }],
-      rowCount: 1,
-      totalRowCount: 1,
-    });
-    const result = await SearchOpportunityService.getOpportunities({
-      projectId: "project_1",
-    });
-    expect(result.scoring).toMatchObject({
-      engagementFallback: true,
-      businessValueMetric: "engagementRate",
-    });
-  });
-
-  it("anchors the shared default range to the GA4 property date", async () => {
-    mocks.getGa4Connection.mockResolvedValue({
-      propertyTimeZone: "America/Los_Angeles",
-    });
-    mocks.getPerformance.mockResolvedValue({
-      siteUrl: "https://example.com/",
-      request: {},
-      rows: [],
-    });
-
-    await SearchOpportunityService.getOpportunities(
+    gsc([row(["ornek site kampanya", "https://example.com/k"], 5, 1000, 40)]);
+    const result = await SearchOpportunityService.getOpportunities(
       { projectId: "project_1" },
-      { now: new Date("2026-08-06T01:00:00Z") },
+      NOW,
     );
-
-    expect(mocks.getPerformance).toHaveBeenCalledWith(
-      expect.objectContaining({
-        startDate: "2026-07-06",
-        endDate: "2026-08-02",
-      }),
-    );
-    expect(mocks.runGa4Report).toHaveBeenCalledWith(
-      expect.objectContaining({
-        startDate: "2026-07-06",
-        endDate: "2026-08-02",
-      }),
-    );
+    expect(result.method.brandSource).toBe("suggested");
+    expect(result.rows).toEqual([]);
   });
 
-  it("fails before querying GA4 when Search Console is not connected", async () => {
+  it("fails before asking anything when Search Console is not connected", async () => {
     mocks.getGscConnection.mockResolvedValue(null);
     await expect(
       SearchOpportunityService.getOpportunities({ projectId: "project_1" }),
     ).rejects.toBeInstanceOf(GscNotConnectedError);
-    expect(mocks.getPerformance).not.toHaveBeenCalled();
+    expect(mocks.queryAnalytics).not.toHaveBeenCalled();
     expect(mocks.runGa4Report).not.toHaveBeenCalled();
   });
 });

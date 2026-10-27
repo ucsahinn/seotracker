@@ -191,10 +191,13 @@ export function findCanonicalTargetProblems(
      * the target itself; repeating them one hop away as a verdict about the
      * canonical would light up a site behind a WAF with failures that do not
      * exist. An unjudgeable target is skipped, exactly as an uncrawled one is.
+     * So is one that got no HTTP answer at all ("error", status 0): the
+     * connection failed, which says nothing about the canonical target.
      */
     if (
       target.fetchClass === "blocked" ||
-      target.fetchClass === "rate_limited"
+      target.fetchClass === "rate_limited" ||
+      target.fetchClass === "error"
     ) {
       continue;
     }

@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { PositionBandBars } from "./PositionBandBars";
+import { bandChanges, PositionBandBars } from "./PositionBandBars";
 
 const rows = [
   { position: 2 },
@@ -37,5 +37,15 @@ describe("PositionBandBars", () => {
     expect(active.getAttribute("aria-pressed")).toBe("true");
     fireEvent.click(active);
     expect(onChange).toHaveBeenCalledWith(undefined);
+  });
+
+  it("counts moves between bands over queries seen in both windows", () => {
+    expect(
+      bandChanges([
+        { position: 2, previousPosition: 5 },
+        { position: 8, previousPosition: 25 },
+        { position: 3, previousPosition: null },
+      ]),
+    ).toEqual({ top3: 1, top10: 0, top20: 0, beyond: -1 });
   });
 });

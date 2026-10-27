@@ -7,6 +7,8 @@ import {
   plainText,
 } from "./changelog";
 
+const emojiOf = (heading: string) => heading.split(" ")[0];
+
 /*
  * These are the customer-facing notes shipped with the app, separate from
  * the fuller repository changelog. The tests protect their structure and
@@ -156,7 +158,6 @@ describe("changelog", () => {
   // Each section heading opens with an emoji, the same one in every language,
   // and each release opens with an introduction.
   it("opens every section heading with an emoji shared across locales", () => {
-    const emojiOf = (heading: string) => heading.split(" ")[0];
     for (const locale of ["tr", "en", "de", "fr", "it", "pt"] as const) {
       for (const [index, entry] of CHANGELOG_ENTRIES.entries()) {
         const translated = CHANGELOG_ENTRIES_BY_LOCALE[locale][index];

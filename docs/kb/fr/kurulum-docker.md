@@ -52,7 +52,7 @@ git pull
 docker compose up -d --build
 ```
 
-**Ayarlar → Hakkında** (Paramètres → À propos) annonce la nouvelle version et affiche ces deux commandes. Vos données restent dans le volume nommé `seotracker_data`, donc la mise à jour ne les supprime pas.
+**Paramètres → À propos** annonce la nouvelle version et affiche ces deux commandes. Vos données restent dans le volume nommé `seotracker_data`, donc la mise à jour ne les supprime pas.
 
 ### Arrêt et suppression
 
@@ -83,15 +83,15 @@ Aucun réglage n'est obligatoire. Si vous voulez en changer, placez un fichier `
 | ALLOWED_HOST                           | Le nom visible de l'extérieur si vous êtes derrière un autre serveur. Vide, seul localhost est accepté                               |
 | AUTH_MODE                              | `local_noauth` (par défaut) ou `cloudflare_access`                                                                                   |
 | BETTER_AUTH_SECRET                     | La clé de chiffrement. Laissez vide, l'application la génère. Si vous la fournissez, 32 caractères au moins, puis ne la changez plus |
-| GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET | Une alternative à la saisie dans l'écran Ayarlar. La valeur saisie à l'écran est prioritaire                                         |
-| PAGESPEED_API_KEY                      | Une alternative à la saisie dans l'écran Ayarlar                                                                                     |
+| GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET | Une alternative à la saisie dans l'écran Paramètres. La valeur saisie à l'écran est prioritaire                                      |
+| PAGESPEED_API_KEY                      | Une alternative à la saisie dans l'écran Paramètres                                                                                  |
 | MCP_TOKEN                              | Vide, il est généré au premier démarrage. Avec `off`, aucun mot de passe n'est demandé. Toute autre valeur est utilisée telle quelle |
 
 ## Vérification
 
 - Dans la sortie de `docker compose ps`, l'état doit être **healthy**. Au premier démarrage, l'atteindre peut prendre jusqu'à cinq minutes.
 - La sortie de `curl.exe http://127.0.0.1:3001/api/health` (sous Windows ; `curl` sur Mac et Linux) doit commencer par "status":"ok". Vous pouvez aussi ouvrir cette adresse dans le navigateur.
-- `http://localhost:3001` doit s'ouvrir dans le navigateur. La carte d'état de l'écran **Yardım** (Aide) doit dire « Her şey yolunda. » (Tout va bien.). Avant la connexion à Google, la ligne « Google girişi » (Connexion Google) demande de l'attention. C'est normal.
+- `http://localhost:3001` doit s'ouvrir dans le navigateur. La carte d'état de l'écran **Aide** doit dire « Tout est en ordre. ». Avant la connexion à Google, la ligne « Connexion Google » demande de l'attention. C'est normal.
 
 ## Questions fréquentes
 
@@ -101,13 +101,13 @@ Aucun réglage n'est obligatoire. Si vous voulez en changer, placez un fichier `
 
 **Puis-je l'ouvrir sur internet ?** L'application ne demande aucune identité. Ne l'exposez pas sans placer devant elle votre propre authentification. Si vous définissez `ALLOWED_HOST`, l'application vous avertit dans son contrôle de santé.
 
-**Où trouver le mot de passe de mon assistant ?** L'écran **Ajan kurulumu** (Installation de l'assistant) de l'application affiche la commande : `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. Si vous utilisez Git Bash, ajoutez `MSYS_NO_PATHCONV=1` au début.
+**Où trouver le mot de passe de mon assistant ?** L'écran **Configuration de l'agent** de l'application affiche la commande : `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. Si vous utilisez Git Bash, ajoutez `MSYS_NO_PATHCONV=1` au début.
 
 ## En cas de problème
 
 - **« Bind for 127.0.0.1:3001 failed » s'affiche.** Le numéro de port est déjà utilisé. Placez dans le dossier du projet un fichier `.env` contenant la ligne `PORT=3002`, puis recréez le conteneur. Sous Windows, le Bloc-notes peut enregistrer le fichier sous le nom `.env.txt`. Dans PowerShell, `Set-Content -Encoding ascii .env 'PORT=3002'` est sûr.
 - **L'état est « unhealthy ».** `docker compose logs --tail 50` affiche les dernières lignes. Si la mémoire s'est épuisée pendant la compilation, donnez plus de mémoire à Docker Desktop.
-- **La connexion à Google indique « yapılandırılmamış » (non configurée).** Si `BETTER_AUTH_SECRET` fait moins de 32 caractères, Google reste désactivé. Si vous l'avez fourni, rallongez-le. Sinon, le fichier `instance-secret` du volume est peut-être abîmé.
-- **La connexion à Google a sauté après une mise à jour.** `BETTER_AUTH_SECRET` a changé ou le volume a été recréé. Dans les paramètres du projet, cliquez sur **Yeniden bağlan** (Se reconnecter).
+- **La connexion à Google indique « non configurée ».** Si `BETTER_AUTH_SECRET` fait moins de 32 caractères, Google reste désactivé. Si vous l'avez fourni, rallongez-le. Sinon, le fichier `instance-secret` du volume est peut-être abîmé.
+- **La connexion à Google a sauté après une mise à jour.** `BETTER_AUTH_SECRET` a changé ou le volume a été recréé. Dans les paramètres du projet, cliquez sur **Reconnecter**.
 
 <!-- Kaynaklar: docs/SELF_HOSTING_DOCKER.md; docs/ENVIRONMENT.md; compose.yaml; docker-entrypoint.sh; src/lib/selfhost-preflight.ts; src/routes/_app/ai.tsx -->

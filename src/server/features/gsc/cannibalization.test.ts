@@ -124,6 +124,21 @@ describe("findCannibalizedQueries", () => {
     expect(result.splitImpressions).toBe(400);
   });
 
+  // A page below the noise floor still counts toward the query's
+  // impressions, so impressions x splitShare overstated the split.
+  it("counts each query's split over the competing pages only", () => {
+    const result = findCannibalizedQueries([
+      row("ayakkabı", "/a", 600, 40),
+      row("ayakkabı", "/b", 400, 10),
+      row("ayakkabı", "/stray", 30),
+    ]);
+
+    expect(result.rows[0]).toMatchObject({
+      impressions: 1030,
+      splitImpressions: 400,
+    });
+  });
+
   it("puts the query with the most at stake first", () => {
     const result = findCannibalizedQueries([
       row("küçük", "/a", 60, 5),

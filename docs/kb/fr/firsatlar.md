@@ -1,66 +1,99 @@
 ---
 title: Opportunités
-description: L'écran désigne la page à travailler cette semaine. Il classe les pages en quatre groupes, leur donne un score et dit quoi faire pour chacune.
+description: Montre combien de clics de plus par mois chacune de vos pages pourrait apporter et quel travail les apporte. Le chiffre est un plafond, pas une promesse.
 screen: Fırsatlar
 route: /p/<proje>/opportunities
-updated: 2026-10-22
+updated: 2026-10-27
 ---
 
-Vous voyez ici sur quelle page vous devez intervenir cette semaine.
+Vous voyez ici combien de clics de plus par mois chacune de vos pages pourrait apporter, et ce qu'il faut faire pour les obtenir.
 
-L'application associe chacune de vos pages dans Search Console à son équivalent dans Google Analytics. Puis elle donne à chaque page un score de 0 à 100. Ce score n'est pas une mesure de Google. C'est l'estimation de l'application : « cette page vaut-elle la peine d'y travailler ? ». L'écran a besoin à la fois de Search Console et d'Analytics. Si l'un des deux n'est pas connecté, un avertissement et un bouton **Bağlantıları aç** (Ouvrir les connexions) apparaissent.
+L'estimation vient uniquement de vos recherches dans Search Console. Si Analytics est connecté, chaque page reçoit en plus une étiquette qui dit si elle apporte des conversions. L'étiquette ne change pas l'estimation. Si Search Console n'est pas connecté, l'écran affiche un avertissement et un bouton **Configurer les connexions**.
 
-## Ce que l'écran affiche
+## Ce que vous voyez à l'écran
 
-**Barre du haut.** **Dönem** (Période : 7 derniers jours, 28 derniers jours, 90 derniers jours), **Satır sayısı** (Nombre de lignes : 25, 50, 100) et **Yenile** (Actualiser).
+**Barre du haut.** **Période** (7 derniers jours, 28 derniers jours, 90 derniers jours), **Lignes** (25, 50, 100) et **Actualiser**. La période et le nombre de lignes choisis restent dans la barre d'adresse. Si vous rechargez la page ou partagez le lien, la même vue s'ouvre.
 
-**Cartes de synthèse.** **Listelenen** (Listées), **Analytics'te karşılığı var** (Présentes dans Analytics), **Analytics'te karşılığı yok** (Absentes d'Analytics) et **En yüksek puan** (Score le plus élevé).
+**À quoi sert cette page ?** Une courte boîte qui explique l'écran. Elle est ouverte la première fois. Si vous la fermez, votre navigateur s'en souvient.
 
-**Quatre groupes.** Chaque page entre dans l'un des quatre groupes. Le nom du groupe apparaît en étiquette sur la ligne.
+**Ligne de la période.** Elle indique les jours couverts par la liste. Les données de Search Console arrivent avec trois jours de retard, donc les derniers jours manquent. Les estimations sont ramenées à 30 jours. Que vous choisissiez 7 ou 90 jours, lisez les chiffres comme "par mois".
 
-| Groupe                                   | Ce que cela veut dire                                                                                               | Que faire                                                                                         |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| **Az tıklanan** (Peu cliquées)           | Dans les 20 premières positions. Le taux de clic est inférieur à la moitié de celui de vos pages à la même position | Réécrivez le titre et la description. Le texte affiché dans la recherche n'attire pas             |
-| **Yükselmeye yakın** (Proches de monter) | Position entre 4 et 20                                                                                              | Développez le contenu, ajoutez des liens internes. Cela peut gagner une ou deux places            |
-| **İlk sıralarda** (Aux premières places) | Dans les 3 premières positions                                                                                      | Maintenez cette place. Gardez la page à jour et vérifiez qu'elle ne recule pas                    |
-| **Derinde kalan** (Enfouies)             | Après la 20e position                                                                                               | Demandez-vous si la page répond vraiment à cette recherche. La bonne page est peut-être une autre |
+**Quatre tuiles.**
 
-Un lien interne est un lien que vous placez, sur votre site, d'une page vers une autre.
+- **Au plus ce nombre de clics en plus / mois (plafond).** Le gain total des pages listées. En dessous, vous voyez combien de clics ces pages reçoivent aujourd'hui par mois et quelle part le gain en représente.
+- **Commencez ici.** La page qui pourrait gagner le plus. Appuyez sur la tuile pour ouvrir le panneau de détail de cette page.
+- **Pages qui convertissent.** Le nombre de pages qui apportent des événements clés d'après Analytics. Un événement clé est une action que vous jugez importante, par exemple l'envoi d'un formulaire. Appuyez sur la tuile et le tableau se réduit à ces pages. Si Analytics n'est pas connecté, elle indique "S'affiche une fois Analytics connecté".
+- **Pages sans gain attendu.** Le nombre de pages déjà bien placées et cliquées normalement, ou qui ont reçu très peu d'impressions. Ces pages ne figurent pas dans la liste.
 
-**Filtres rapides.** **Analytics'te karşılığı olanlar** (Celles qui existent dans Analytics), **Analytics'te karşılığı yok**, **En çok gösterim alan 10** (Les 10 plus affichées).
+**Où est le gain ?** Montre les quatre types de travail à côté des clics supplémentaires par mois que chacun pourrait apporter. Le travail le moins coûteux est en haut. Appuyez sur une ligne et le tableau se réduit aux pages qui gagnent grâce à ce travail. Appuyez encore pour retirer le filtre.
 
-**Carte « Fırsat nerede toplanıyor? » (Où se concentre l'opportunité ?).** Elle montre comment les impressions ou les clics se répartissent entre les groupes.
+| Type de travail                       | Ce que cela veut dire                                                                                                                       | Que faire                                      |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| **Titre et description**              | En première page, mais moins cliquée que les autres recherches de votre site à la même position. Les clics montent sans changer de position | Réécrivez le titre et la description           |
+| **En première page, positions 4-10**  | Sous les trois premières. Monter d'un cran augmente nettement les clics                                                                     | Renforcez le contenu                           |
+| **En deuxième page, positions 11-20** | Juste derrière la première page. Presque personne ne clique avant d'y arriver                                                               | Ajoutez des liens internes, étoffez le contenu |
+| **Loin, au-delà de la position 20**   | Il y a de la demande mais la page est très loin derrière                                                                                    | Fusionnez ou abandonnez                        |
 
-**Tableau.** Les colonnes sont : **Puan** (Score), **Sayfa** (Page), **Sıra** (Position), **Gösterim** (Impressions), **Tıklama** (Clics), **Tıklama oranı** (Taux de clic), **Oturum** (Sessions). Une session est une visite de votre site ; ce chiffre vient d'Analytics.
+Un lien interne est un lien que vous placez sur une page de votre site vers une autre.
 
-**Panneau de détail.** Il s'ouvre quand vous cliquez sur une ligne. La liste « Ne yapmalı? » (Que faire ?) s'y trouve. Vous voyez aussi les trois composantes du score : **Talep** (Demande), **İş değeri** (Valeur commerciale), **Yükselme kolaylığı** (Facilité de progression). Chacune ressort élevée, moyenne ou faible. Les boutons du bas : **Arama performansında aç** (Ouvrir dans la performance de recherche), **Adresi kopyala** (Copier l'adresse), **Sayfayı aç** (Ouvrir la page).
+**Filtres rapides.** **Qui convertissent** et **Du trafic, aucune conversion**. Ils n'apparaissent que s'ils réduisent vraiment la liste. Ils sont absents si Analytics n'est pas connecté. Vous pouvez les combiner avec une ligne de type de travail. Les deux fonctionnent ensemble comme un "et".
+
+**Tableau.** Les colonnes sont les suivantes.
+
+- **Clics supplémentaires estimés.** Les clics en plus qui pourraient arriver chaque mois. La barre en dessous est à l'échelle du plus gros gain de la liste.
+- **Page.** L'adresse et, en dessous, le type de travail principal.
+- **Position, Impressions, Clics.** Les valeurs de la page sur la période choisie.
+- **CTR.** En dessous, l'écart entre le taux de clic hors marque de la page et celui de votre site à la même position, en points de pourcentage. Une flèche vers le bas veut dire en dessous de votre site, une flèche vers le haut au-dessus.
+- **Sessions.** Les visites organiques dans Analytics. En dessous, vous lisez "convertit", "aucune conversion" ou "peu de trafic". Si une page a moins de 30 sessions, son taux de conversion n'est pas jugé fiable, d'où "peu de trafic". Si aucune correspondance n'est trouvée, vous voyez un tiret.
+
+Dans le menu au-dessus du tableau, vous récupérez la liste avec **Exporter vers Google Sheets** ou **CSV**. Si un filtre est actif, seules les lignes visibles partent. Le tableau se trie par n'importe quelle colonne. Il est d'abord trié par gain.
+
+**Panneau de détail.** Il s'ouvre quand vous cliquez sur une ligne. En haut, il indique le gain et la raison : position moyenne, impressions, clics. Si le gain dépasse ce que la page entière pourrait atteindre, le panneau le dit et ramène le chiffre à cette limite. Pour une page qui convertit dans Analytics, il indique aussi combien d'événements clés par mois le gain apporterait environ au taux de conversion actuel. C'est une estimation.
+
+En dessous, trois informations : **Demande** (impressions par mois), **Valeur (Analytics)** et **Distance** (position actuelle et cible). Vient ensuite le tableau **Quelles recherches ?**. Pour chaque recherche, il donne la position, le taux de clic, le taux cible supposé par l'estimation et le gain mensuel. La position moyenne d'une page est la moyenne de nombreuses recherches. "Montez" ne suffit donc pas. Ce tableau dit sur quelle recherche il faut monter. Tout en bas, le titre **Que faire ?** et une liste de trois points.
+
+Boutons : **Ouvrir dans Performances de recherche**, **Copier l'URL**, **Ouvrir la page**.
 
 ## Comment l'utiliser
 
-1. Commencez par **Son 28 gün** (28 derniers jours). La ligne tout en haut est la page à regarder en premier.
-2. Dans le groupe **Az tıklanan**, prenez les deux premières pages. Elles sont bien placées sur Google, mais peu de gens cliquent. Corrigez le titre et la description. C'est un travail d'une demi-heure.
-3. Dans le groupe **Yükselmeye yakın**, regardez les pages au score élevé. Ajoutez une section, placez deux ou trois liens internes depuis le site.
-4. Le bouton **Analytics'te karşılığı yok** isole les pages que Google affiche mais qu'Analytics ne voit pas visitées. Le plus souvent, c'est une différence d'adresse (barre oblique finale, www). Parfois, la page n'est vraiment pas cliquée.
-5. Ne touchez pas plus de trois ou quatre pages par semaine.
+1. Commencez par **28 derniers jours**. La tuile du haut et la première ligne du tableau vous disent quelle page regarder en premier.
+2. Regardez **Où est le gain ?**. Le travail sur le titre et la description est le moins coûteux, car les clics montent sans changer de position. Appuyez sur cette ligne et prenez les deux premières pages du tableau.
+3. Ouvrez le panneau de détail. Écrivez clairement, dans le titre et la description, la recherche au plus gros gain de **Quelles recherches ?**.
+4. Passez ensuite aux pages en positions 4-10. Ajoutez une section et faites des liens vers elles depuis les pages voisines.
+5. Pour les pages de la ligne **Loin**, décidez d'abord. Si vous avez une autre page sur le même sujet, fusionnez-les. Si le gain est faible, abandonnez la page.
+6. Si Analytics est connecté, commencez par le filtre **Qui convertissent**. La même hausse de clics y vaut davantage.
+7. Revenez dans deux semaines. Si le gain estimé d'une page que vous avez retravaillée a diminué, le travail a servi.
 
 ## Comment les chiffres sont calculés
 
-La période se termine avec le retard de trois jours de Search Console. On prend au plus 1 000 lignes de Search Console et au plus 1 000 lignes d'Analytics. Les deux listes sont associées par nom de domaine et chemin. La barre oblique à la fin de l'adresse n'est pas comptée. Si la limite de 1 000 lignes est atteinte, une note apparaît sous le tableau.
+Le chiffre est un plafond, pas une promesse. L'application le trouve ainsi.
 
-Toute page ayant plus de zéro impression est candidate. Le groupe est choisi selon la position et le taux de clic attendu. Le taux attendu est le taux de clic typique de vos pages dans la même tranche de positions. Les tranches de positions sont : 1-3, 3-5, 5-10, 10-20 et 20-50. Une tranche exige au moins trois pages ayant 10 impressions chacune. Une page classée dans les 20 premières positions, dont le taux est inférieur à la moitié du taux attendu, devient « Az tıklanan ».
+Chaque recherche pour laquelle une page apparaît est traitée séparément. Les taux de clic sont mesurés sur votre propre site, pas sur d'autres sites.
 
-Le score se compose ainsi : 50 pour cent de demande, 30 pour cent de valeur commerciale, 20 pour cent de facilité de progression. La demande repose sur les impressions. Mieux la position est bonne, plus la progression est considérée comme facile. La valeur commerciale est le taux d'événements clés d'Analytics. Un événement clé est une action que vous jugez importante. Si aucune page n'en a, on utilise le taux d'engagement. Une page sans équivalent dans Analytics reçoit un score moyen pour la valeur commerciale. Le score compare uniquement les pages de votre propre site entre elles.
+- **Une recherche de première page peu cliquée.** Si le taux de clic de la recherche est sous 70 pour cent du taux de votre site pour les recherches à la même position, le gain consiste à atteindre ce taux. La position ne change pas. C'est le travail sur le titre et la description.
+- **Toute autre recherche ne monte que d'un cran.** Une recherche en positions 4-5 atteint le taux de 2-3, une en 6-10 atteint le taux de 4-5, une de deuxième page atteint le taux de première page (positions 6-10), et une plus loin atteint le taux de deuxième page. Les recherches du top trois ne sont pas comptées.
+- **Limite par page.** Les recherches d'une page sont regroupées par tranche de positions. Pour chaque groupe, l'application calcule les clics en plus qu'il obtiendrait si ses recherches montaient ensemble d'un cran : les impressions du groupe multipliées par votre taux de clics une tranche plus haut, moins les clics qu'il obtient déjà. Un groupe dans le top trois est mesuré au taux de sa propre tranche. Le total de la page ne peut pas dépasser la somme de ces chiffres de groupe. Cela évite que beaucoup de petits gains s'additionnent en un chiffre irréaliste. La position moyenne unique de la page n'est pas utilisée : une page en 2e position sur sa recherche principale et en 15e sur le reste a une moyenne proche du haut, et cette moyenne effacerait le vrai potentiel des recherches plus basses.
+
+Les recherches avec très peu d'impressions ne comptent pas. Cette limite s'adapte à la durée de la période. S'il n'y a pas assez de recherches pour mesurer le taux de clic de votre site par position, aucune estimation n'est possible. L'écran le dit. Passer la période à 90 jours suffit souvent.
+
+**Les recherches de marque sont laissées de côté.** Qui cherche votre marque vous trouve de toute façon. Leur taux de clic élevé ferait paraître les autres recherches injustement basses. Les termes de marque sont dans l'un de trois états. Si vous les avez confirmés, les termes confirmés servent. Sinon, des termes déduits de votre nom de domaine servent et l'écran le dit. S'il n'y a aucun terme, les recherches de marque entrent dans la comparaison. Vous confirmez les termes sur l'écran **Performances de recherche**.
+
+**Analytics ajoute seulement une étiquette.** Il ne change pas l'estimation. Les conversions d'une page ne sont regardées que si elle a reçu au moins 30 sessions organiques. En dessous, le taux n'est que du bruit. Les pages sont associées par domaine et chemin. Une barre oblique à la fin de l'adresse ne compte pas.
+
+Si plus de pages ont un gain que le nombre de lignes choisi, le tableau montre celles au plus gros gain et une note apparaît dessous. Le total du haut les couvre toujours toutes.
 
 ## Questions fréquentes
 
-**Une page à 80 est-elle deux fois plus importante qu'une page à 60 ?** Non. 80 veut dire « regardez d'abord », 60 veut dire « regardez ensuite ».
+**Pourquoi n'ai-je pas eu "+120 clics" ?** C'est un plafond. C'est le maximum possible si la position montait d'un cran. Le résultat réel dépend des concurrents et de Google.
 
-**Que veut dire « pas d'équivalent dans Analytics » ?** Le format de l'adresse peut être différent, ou la page n'a jamais été cliquée.
+**Pourquoi la liste est-elle vide ou affiche "Pas encore assez de données pour estimer" ?** Il n'y a pas assez de recherches pour mesurer le taux de clic de votre site par position. Choisissez **90 derniers jours**. Si vous venez de connecter Search Console, Google met quelques jours à remplir les données.
 
-**Pourquoi la liste s'est-elle vidée sur 7 jours ?** Sur sept jours, la plupart des pages restent sous 10 impressions. Le taux attendu ne peut donc pas être calculé. Pour la plupart des sites, 28 jours est la bonne période.
+**Que veut dire "Aucune page n'a de gain attendu sur cette période" ?** Vos pages sont soit déjà bien placées et cliquées normalement, soit trop peu affichées pour une estimation.
+
+**Et si c'est écrit "Introuvable dans Analytics" ?** Le format de l'adresse peut différer, ou la page n'a eu aucune visite. L'estimation n'en est pas touchée.
 
 ## Limites
 
-L'écran n'utilise ni volume de recherche ni position de concurrents. La demande, ce sont uniquement vos propres impressions. Search Console et Analytics peuvent rapporter dans des fuseaux horaires différents. Les correspondances quotidiennes peuvent donc se décaler d'un jour. Le score ne connaît pas la qualité du contenu. La décision finale est la vôtre.
+L'écran n'utilise ni volume de recherche ni position des concurrents. Vous n'avez que vos propres impressions. L'estimation ne connaît pas la qualité du contenu. Search Console et Analytics peuvent compter les jours dans des fuseaux horaires différents. La décision finale vous revient.
 
-<!-- Kaynaklar: src/routes/_project/p/$projectId/opportunities.tsx; src/client/features/opportunities/OpportunitiesPage.tsx; OpportunityStates.tsx; opportunityLogic.ts; OpportunitySummary.tsx; OpportunityColumns.tsx; OpportunitiesTable.tsx; OpportunityDetail.tsx; src/server/features/ga4/services/SearchOpportunityService.ts; src/server/features/ga4/services/opportunityKind.ts -->
+<!-- Sources : src/routes/_project/p/$projectId/opportunities.tsx; src/client/features/opportunities/OpportunitiesPage.tsx; OpportunityStates.tsx; OpportunityMethod.tsx; OpportunityWorkBars.tsx; OpportunityQuickFilters.tsx; OpportunityColumns.tsx; OpportunitiesTable.tsx; OpportunityDetail.tsx; opportunityLogic.ts; src/shared/pageOpportunities.ts; src/shared/searchInsights.ts; src/server/features/ga4/services/SearchOpportunityService.ts -->

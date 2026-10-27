@@ -45,14 +45,14 @@ export const deSettingsContinued: Catalog = {
   "Kurulum türü belirleniyor…": "Installationstyp wird ermittelt …",
   "Sık sorunlar": "Häufige Probleme",
   "Sayfa açılmıyor ya da uygulama kapalı":
-    "Die Seite öffnet sich nicht oder die App ist geschlossen",
+    "Die Seite öffnet sich nicht oder die App läuft nicht",
   "Görev çubuğundaki seowatcher simgesine bakın; üzerine gelince {running} yazmalı. Simge yoksa Başlat menüsünden seowatcher'ı açın. Simgede {error} yazıyorsa sağ tıklayıp {restart}, olmazsa {repair} deyin.":
     "Prüfen Sie das seowatcher-Symbol im Infobereich. Beim Darüberfahren sollte {running} angezeigt werden. Falls das Symbol fehlt, starten Sie seowatcher über das Startmenü. Wenn das Symbol {error} zeigt, klicken Sie mit der rechten Maustaste darauf und wählen Sie {restart}; falls das nicht hilft, {repair}.",
   "Hâlâ açılmıyorsa {logs} ile {launcher} ve {server} dosyalarının son satırlarına bakın; {report} bunları hazır bir kayda koyar.":
     "Falls sich die App weiterhin nicht öffnet, prüfen Sie mit {logs} die letzten Zeilen der Dateien {launcher} und {server}. Mit {report} werden diese Informationen für eine Meldung zusammengestellt.",
   "Windows kurulum kılavuzu": "Windows-Installationsanleitung",
   "Sayfa açılmıyor ya da Docker kapalı":
-    "Seite öffnet sich nicht oder Docker ist ausgeschaltet",
+    "Die Seite öffnet sich nicht oder Docker läuft nicht",
   "Önce Docker Desktop'ın çalıştığına bakın; Windows'ta tepsideki simge \"running\" demeli. Sonra durumu görün: {command} Durum {healthy} olana kadar bekleyin; ilk açılış birkaç dakika sürebilir.":
     "Prüfen Sie zuerst, ob Docker Desktop läuft. Unter Windows sollte das Symbol im Infobereich „running“ anzeigen. Prüfen Sie dann den Status: {command} Warten Sie, bis der Status {healthy} lautet; der erste Start kann einige Minuten dauern.",
   "Hâlâ açılmıyorsa son günlük satırları nedeni yazar: {command}":

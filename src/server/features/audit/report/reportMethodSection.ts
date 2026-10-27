@@ -1,4 +1,9 @@
-import { formatCount, formatDateTime, formatDuration } from "@/shared/format";
+import {
+  formatCount,
+  formatDateTime,
+  formatDuration,
+  parseTimestamp,
+} from "@/shared/format";
 import { t } from "@/shared/i18n";
 import { escapeHtml } from "./reportFormat";
 import type { AuditReportInput, ReportCaps } from "./reportTypes";
@@ -34,8 +39,11 @@ function speedLine(input: AuditReportInput): string {
 }
 
 function durationLine(input: AuditReportInput): string {
-  const start = Date.parse(input.startedAt);
-  const end = input.completedAt ? Date.parse(input.completedAt) : NaN;
+  // parseTimestamp, not Date.parse: started_at on older audits is SQLite's
+  // zone-less "YYYY-MM-DD HH:MM:SS", which Date.parse reads as local time
+  // while completed_at is ISO (UTC).
+  const start = parseTimestamp(input.startedAt);
+  const end = input.completedAt ? parseTimestamp(input.completedAt) : NaN;
   const hasSpan =
     Number.isFinite(start) && Number.isFinite(end) && end >= start;
   const started = formatDateTime(input.startedAt);

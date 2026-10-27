@@ -147,7 +147,7 @@ Karanlık ve aydınlık tema, tek tıkla değişir. Görüntüler gerçek bir ku
 | 🔁  | **Denetim karşılaştırması**    | Bir haftadır tarama yoksa panel hatırlatır; son iki denetimi karşılaştırıp yeni çıkan sorunları ayrı gösterir.                                                                                   |
 | 📄  | **Raporlar**                   | Ajanın yazdığı, tek dosyalık HTML belgeler. Şablon kaydedin, aynı raporu her ay isteyin.                                                                                                         |
 | 🧠  | **Proje bilgisi**              | İşiniz, hedefiniz, kilit sayfalar, rakipler ve araştırma günlüğü tek yerde. Ajan her oturuma bu bağlamla başlar.                                                                                 |
-| 🤖  | **MCP sunucusu**               | Ajanlar bu verinin tamamına 33 araç üzerinden erişir. Bağlantı için [`docs/SELF_HOSTING_DOCKER.md`](./docs/SELF_HOSTING_DOCKER.md#mcp-kimlik-doğrulaması).                                       |
+| 🤖  | **MCP sunucusu**               | Ajanlar bu verinin tamamına 35 araç üzerinden erişir. Bağlantı için [`docs/SELF_HOSTING_DOCKER.md`](./docs/SELF_HOSTING_DOCKER.md#mcp-kimlik-doğrulaması).                                       |
 
 ### 🚫 Ne yapmaz
 
@@ -163,7 +163,7 @@ flowchart LR
     CRAWL["Yerleşik tarayıcı"] --> APP
     APP["seowatcher<br/>Docker · SQLite · yalnızca bu bilgisayar"]
     APP --> UI["Türkçe arayüz"]
-    APP --> MCP["MCP sunucusu · 33 araç"]
+    APP --> MCP["MCP sunucusu · 35 araç"]
     MCP --> AGENT["Claude Code · Codex · Cursor"]
     AGENT --> REPORT["HTML rapor"]
 ```

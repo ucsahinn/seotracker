@@ -29,7 +29,7 @@ The "fill the context with my agent" prompt on the Context page binds in the pro
   - `{ addKeyPages: [{ url, role: "hub" | "spoke" | "money" | "other", topic?, notes? }] }`: at most 100; omitting `role` keeps the stored one.
   - `{ customSection: "<lowercase-slug>", title?, content }` for what fits no typed section.
   - `{ appendResearchLog: { summary } }`: at most 1,000 characters; the server stamps the date.
-- Reads for facts: `get_search_console_performance`, `get_search_opportunities` (Search Console pages at any position joined with GA4 outcomes; needs both), `get_audit_pages`, `get_index_coverage`, `list_saved_keywords`.
+- Reads for facts: `get_search_console_performance`, `get_search_opportunities` (extra clicks per month each page could bring, with the queries behind it; needs Search Console, GA4 optional), `get_audit_pages`, `get_index_coverage`, `list_saved_keywords`.
 
 ## Steps
 

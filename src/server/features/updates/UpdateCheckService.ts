@@ -9,7 +9,8 @@
  *
  * GitHub allows an anonymous caller 60 requests an hour, counted against the
  * operator's public IP and shared with everything else on their network. One
- * check a day is 0.07% of that. The conditional request carries the stored
+ * check every six hours is a rounding error of that, and keeps this screen
+ * within hours of the tray launcher, which asks the same endpoint hourly. The conditional request carries the stored
  * ETag, which saves the body but *not* the quota — GitHub only exempts
  * conditional requests that are authorized, and this one deliberately is not.
  */
@@ -22,10 +23,11 @@ const RELEASES_URL =
   "https://api.github.com/repos/ucsahinn/seotracker/releases/latest";
 const REPO_RELEASES_PAGE = "https://github.com/ucsahinn/seotracker/releases";
 
-/** A day. Finer granularity buys nothing for a tool updated by hand. */
-const TTL_MS = 24 * 60 * 60 * 1000;
-/** After a failure, wait before spending another request. */
-const RETRY_AFTER_FAILURE_MS = 6 * 60 * 60 * 1000;
+/**
+ * Six hours, answered or not. It was a day, and the Settings screen then
+ * lagged the tray launcher's hourly check by up to a day after a release.
+ */
+const TTL_MS = 6 * 60 * 60 * 1000;
 /** GitHub terminates its own requests at ten seconds; do not wait that long. */
 const TIMEOUT_MS = 5_000;
 
@@ -38,7 +40,7 @@ const releaseSchema = z.object({
 type UpdateStatus = {
   currentVersion: string;
   enabled: boolean;
-  /** null until a check has succeeded, or when the repo has no releases. */
+  /** null until a check has succeeded. */
   latestVersion: string | null;
   releaseUrl: string;
   publishedAt: string | null;
@@ -58,18 +60,15 @@ type UpdateStatus = {
     | "error"
     | "disabled"
     | "never_checked"
-    | "no_releases"
+    // GitHub answered 404: the repository was renamed, removed or made
+    // private. It has releases, so this is not "nothing published yet".
+    | "source_missing"
     | "unreachable";
 };
 
-/** 200 and 304 both confirm the cached answer; 404 is "no releases yet". */
+/** 200 and 304 both confirm the cached answer. */
 function isFailedAttempt(lastStatus: number | null): boolean {
-  return (
-    lastStatus !== null &&
-    lastStatus !== 200 &&
-    lastStatus !== 304 &&
-    lastStatus !== 404
-  );
+  return lastStatus !== null && lastStatus !== 200 && lastStatus !== 304;
 }
 
 function statusFrom(row: {
@@ -87,7 +86,7 @@ function statusFrom(row: {
     : !row.checkedAt
       ? "never_checked"
       : row.lastStatus === 404
-        ? "no_releases"
+        ? "source_missing"
         : latestVersion
           ? isFailedAttempt(row.lastStatus)
             ? "error"
@@ -109,17 +108,23 @@ function statusFrom(row: {
   };
 }
 
-function isDue(checkedAt: string | null, lastStatus: number | null): boolean {
+function isDue(checkedAt: string | null): boolean {
   if (!checkedAt) return true;
   const age = Date.now() - Date.parse(checkedAt);
-  if (Number.isNaN(age)) return true;
-  // A failed attempt still counts as an attempt; backing off is what keeps a
+  // A failed attempt counts as an attempt: the same wait is what keeps a
   // rate-limited or offline install from spending the rest of its window.
-  // 404 is the ordinary "no releases yet" answer, so it waits a day like 200
-  // and 304 do.
-  const answered = lastStatus !== null && !isFailedAttempt(lastStatus);
-  const wait = answered ? TTL_MS : RETRY_AFTER_FAILURE_MS;
-  return age > wait;
+  return Number.isNaN(age) || age > TTL_MS;
+}
+
+/**
+ * A cached "latest" older than the version that is running was written
+ * before this install was upgraded, so it says nothing about what is out now.
+ * The tray launcher asks the same GitHub endpoint every hour; without this the
+ * Settings screen kept showing v0.7.0 as the newest release for up to a day
+ * after 0.8.0 was installed and announced.
+ */
+function predatesThisVersion(latestTag: string | null): boolean {
+  return latestTag !== null && isNewerVersion(latestTag, currentVersion);
 }
 
 async function fetchLatest(etag: string | null) {
@@ -139,9 +144,9 @@ async function fetchLatest(etag: string | null) {
     return { status: 304 as const, release: null, etag };
   }
   if (!response.ok) {
-    // 404 is the ordinary answer for a repo that has published no releases
-    // yet, not a fault. 403/429 is the rate limit. Both are recorded so the
-    // UI can say which.
+    // 404: the repository is gone or private (it has releases, so it is not
+    // "none published yet"). 403/429 is the rate limit. Both are recorded so
+    // the UI can say which.
     return { status: response.status, release: null, etag: null };
   }
 
@@ -157,7 +162,11 @@ async function fetchLatest(etag: string | null) {
 async function getStatus(options?: { force?: boolean }): Promise<UpdateStatus> {
   const row = await UpdateCheckRepository.get();
   if (!row.enabled) return statusFrom(row);
-  if (!options?.force && !isDue(row.checkedAt, row.lastStatus)) {
+  if (
+    !options?.force &&
+    !isDue(row.checkedAt) &&
+    !predatesThisVersion(row.latestTag)
+  ) {
     return statusFrom(row);
   }
 
@@ -194,9 +203,13 @@ async function getStatus(options?: { force?: boolean }): Promise<UpdateStatus> {
         lastStatus: result.status === 200 ? 0 : result.status,
       }),
     );
-  } catch {
+  } catch (error) {
     // Offline, DNS failure, timeout. Recorded as an attempt so the backoff
-    // applies; the operator sees "could not check", not a broken page.
+    // applies; the operator sees "could not check", not a broken page. The
+    // reason goes to the log, which used to get nothing.
+    console.warn(
+      `Update check: GitHub could not be reached: ${error instanceof Error ? `${error.name}: ${error.message}` : String(error)}`,
+    );
     return statusFrom(
       await UpdateCheckRepository.save({ checkedAt, lastStatus: 0 }),
     );
@@ -207,4 +220,12 @@ async function setEnabled(enabled: boolean): Promise<UpdateStatus> {
   return statusFrom(await UpdateCheckRepository.save({ enabled }));
 }
 
-export const UpdateCheckService = { getStatus, setEnabled };
+/**
+ * The stored answer as it stands, never asking GitHub: for callers such as
+ * the MCP `whoami` that must stay free of network calls.
+ */
+async function getCachedStatus(): Promise<UpdateStatus> {
+  return statusFrom(await UpdateCheckRepository.get());
+}
+
+export const UpdateCheckService = { getStatus, getCachedStatus, setEnabled };

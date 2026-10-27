@@ -7,35 +7,20 @@
  * "4-10" bar while being missing from "İlk sayfada".
  */
 
-export const BAND_IDS = ["top3", "top10", "top20", "beyond"] as const;
-export type BandId = (typeof BAND_IDS)[number];
-
-export const BAND_LABELS: Record<BandId, string> = {
-  top3: "1-3",
-  top10: "4-10",
-  top20: "11-20",
-  beyond: "21+",
-};
+import { sort } from "remeda";
+import { bandOf, type BandId } from "@/shared/positionBands";
 
 export const CHIP_IDS = ["firstPage", "highImpressions", "noClicks"] as const;
 export type ChipId = (typeof CHIP_IDS)[number];
 
-/** Impressions from which a query counts as "high". */
-export const HIGH_IMPRESSIONS = 100;
+/** The share of the set, by impressions, that "Gösterimi yüksek" holds. */
+const HIGH_IMPRESSIONS_SHARE = 0.25;
 
 type BandRow = {
   position: number;
   impressions: number;
   clicks: number;
 };
-
-export function bandOf(position: number): BandId {
-  const rounded = Math.round(position);
-  if (rounded <= 3) return "top3";
-  if (rounded <= 10) return "top10";
-  if (rounded <= 20) return "top20";
-  return "beyond";
-}
 
 /**
  * Text colour for a position number, on the same cuts as the bars: the first
@@ -54,36 +39,51 @@ export function positionInk(position: number): string {
   }
 }
 
-export function countBands(
-  rows: { position: number }[],
-): Record<BandId, number> {
-  const counts: Record<BandId, number> = {
-    top3: 0,
-    top10: 0,
-    top20: 0,
-    beyond: 0,
-  };
-  for (const row of rows) counts[bandOf(row.position)] += 1;
-  return counts;
+/**
+ * The impressions a query needs to count as "high": the top quarter of the
+ * set being looked at. A fixed 100 impressions held all 100 rows on a
+ * 90-day window, so the chip selected everything.
+ */
+export function highImpressionsThreshold(
+  rows: readonly { impressions: number }[],
+): number {
+  if (rows.length === 0) return Infinity;
+  const sorted = sort(
+    rows.map((row) => row.impressions),
+    (a, b) => b - a,
+  );
+  const index = Math.max(
+    0,
+    Math.ceil(sorted.length * HIGH_IMPRESSIONS_SHARE) - 1,
+  );
+  return Math.max(1, sorted[index] ?? 1);
 }
 
-export function matchesChip(id: ChipId, row: BandRow): boolean {
+export function matchesChip(
+  id: ChipId,
+  row: BandRow,
+  highImpressions: number,
+): boolean {
   switch (id) {
     case "firstPage":
       return Math.round(row.position) <= 10;
     case "highImpressions":
-      return row.impressions >= HIGH_IMPRESSIONS;
+      return row.impressions >= highImpressions;
     case "noClicks":
       return row.clicks === 0;
   }
 }
 
-export function countChips(rows: BandRow[]): Record<ChipId, number> {
+export function countChips(
+  rows: BandRow[],
+  highImpressions: number,
+): Record<ChipId, number> {
+  const count = (id: ChipId) =>
+    rows.filter((row) => matchesChip(id, row, highImpressions)).length;
   return {
-    firstPage: rows.filter((row) => matchesChip("firstPage", row)).length,
-    highImpressions: rows.filter((row) => matchesChip("highImpressions", row))
-      .length,
-    noClicks: rows.filter((row) => matchesChip("noClicks", row)).length,
+    firstPage: count("firstPage"),
+    highImpressions: count("highImpressions"),
+    noClicks: count("noClicks"),
   };
 }
 
@@ -91,10 +91,11 @@ export function applyBandAndChip<Row extends BandRow>(
   rows: Row[],
   band: BandId | undefined,
   chip: ChipId | undefined,
+  highImpressions = Infinity,
 ): Row[] {
   return rows.filter(
     (row) =>
       (!band || bandOf(row.position) === band) &&
-      (!chip || matchesChip(chip, row)),
+      (!chip || matchesChip(chip, row, highImpressions)),
   );
 }

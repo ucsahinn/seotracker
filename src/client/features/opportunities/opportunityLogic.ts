@@ -1,78 +1,87 @@
 import { t } from "@/shared/i18n";
-import { filter, firstBy, sort } from "remeda";
 import type { OpportunityReport } from "@/client/features/opportunities/report";
-import {
-  formatDecimal,
-  formatNumber,
-  formatPercent,
-} from "@/client/lib/format";
+import type { WorkKind } from "@/shared/pageOpportunities";
+import { formatCount, formatDecimal, formatPercent } from "@/client/lib/format";
+import { perMonth } from "@/shared/pageOpportunities";
 
 export type OpportunityRow = OpportunityReport["rows"][number];
-export type KindId = OpportunityRow["kind"];
-export type QuickId = "analytics" | "no_analytics" | "top_impressions";
+export type QuickId = "converts" | "no_conversions";
 
 /**
- * The four kinds, cheapest work first. Copy lives here so the tiles, the ring
- * and the panel agree. It stays Turkish and goes through t() where it renders.
+ * The four kinds of work, cheapest first. Copy lives here so the bars, the
+ * table and the panel agree; it stays Turkish and goes through t() where it
+ * renders. Colours are tints of the one accent: these are categories, not
+ * verdicts, so success / warning / error stay out of them.
  */
-export const KIND_COPY = {
-  ctr_gap: {
-    label: "Az tıklanan",
-    hint: "Sıralaması iyi ama tıklama oranı, sitenizdeki benzer sıralı sayfaların altında. Başlığı ve açıklamayı yeniden yazmaya değer.",
-    color: "var(--color-primary)",
+export const WORK_COPY = {
+  snippet: {
+    label: "Başlık ve açıklama işi",
+    action: "Başlığı ve açıklamayı yenileyin",
+    hint: "İlk sayfada ama sitenizin aynı sıradaki aramalarına göre az tıklanıyor. Sıra değişmeden tıklama artar.",
+    target: "aynı sıra, sitenizin tıklama oranı",
+    shade: 100,
     todo: [
-      "Başlığı, kullanıcının aradığı şeyi ilk kelimelerde karşılayacak biçimde yeniden yazın.",
+      "Başlığı, aşağıdaki aramaların ilk kelimelerde karşılık bulacağı biçimde yeniden yazın.",
       "Meta açıklamayı, tıklamaya değeceğini gösteren tek bir somut vaatle güncelleyin.",
-      "Yayına aldıktan iki hafta sonra bu ekrana dönüp tıklama oranına bakın.",
+      "İki hafta sonra bu ekrana dönüp tahmini kazancın küçülüp küçülmediğine bakın.",
     ],
   },
-  top: {
-    label: "İlk sıralarda",
-    hint: "Zaten ilk üçte; yükselecek yer az. Tıklama oranı düşükse başlığa ve açıklamaya bakın, değilse içeriği güncel tutmak yeterli.",
-    color: "var(--color-success)",
+  page1: {
+    label: "İlk sayfada, 4-10. sıra",
+    action: "İçeriği güçlendirin",
+    hint: "İlk sayfada ama ilk üçün altında. Bir basamak yükselmek (6-10'dan 4-5'e, 4-5'ten 2-3'e) tıklamayı belirgin artırır.",
+    target: "bir basamak yukarı",
+    shade: 76,
     todo: [
-      "İçeriği güncel tutun; tarih, fiyat ve örnekleri yılda en az bir kez gözden geçirin.",
-      "Bu sayfadan öne çıkarmak istediğiniz diğer sayfalara iç bağlantı verin.",
-      "Tıklama oranı beklediğinizden düşükse başlığı ve meta açıklamayı yeniden yazın.",
+      "İçeriği, aşağıdaki aramalara rakiplerden daha eksiksiz yanıt verecek şekilde genişletin.",
+      "Sitenizdeki ilgili sayfalardan bu sayfaya, aramayı anlatan bir bağlantı metniyle iç bağlantı verin.",
+      "Başlıkta ve ilk paragrafta en çok kazandıracak aramayı açıkça geçirin.",
     ],
   },
-  near_miss: {
-    label: "Yükselmeye yakın",
-    hint: "İlk sayfaya çok yakın ya da hemen üstünde. Küçük bir iyileştirme sıra kazandırabilir.",
-    color: "var(--color-warning)",
+  page2: {
+    label: "2. sayfada, 11-20. sıra",
+    action: "İç bağlantı verin, içeriği genişletin",
+    hint: "İlk sayfanın hemen arkasında. İlk sayfaya çıkana kadar neredeyse hiç tıklanmaz.",
+    target: "ilk sayfa, 6-10. sıra",
+    shade: 54,
     todo: [
-      "İçeriği, bu sayfanın öne çıktığı aramalara daha eksiksiz yanıt verecek şekilde güçlendirin.",
-      "Sitenizdeki ilgili sayfalardan, doğal bir bağlam içinde bu sayfaya iç bağlantı verin.",
-      "Başlıkta ve ilk paragrafta hedef aramayı açıkça geçirin.",
+      "Sayfanın bu aramalar için gerçekten doğru sayfa olduğunu kontrol edin; değilse doğru sayfaya yönlendirin.",
+      "Eksik alt başlıkları, örnekleri ve sık sorulan soruları ekleyin.",
+      "Ana menüden ya da güçlü sayfalardan bu sayfaya iç bağlantı verin.",
     ],
   },
   deep: {
-    label: "Derinde kalan",
-    hint: "20. sıranın gerisinde ama bu arama için bir talep var. Sayfayı genişletip genişletmeyeceğinize ya da başka bir sayfayla birleştirip birleştirmeyeceğinize karar verin.",
-    color: "color-mix(in oklab, var(--color-base-content) 45%, transparent)",
+    label: "Derinde, 21. sıradan sonra",
+    action: "Birleştirin ya da bırakın",
+    hint: "Talep var ama sayfa çok geride. Genişletmek mi, başka bir sayfayla birleştirmek mi, bırakmak mı, karar verin.",
+    target: "2. sayfa, 11-20. sıra",
+    shade: 34,
     todo: [
-      "Sayfa gerçekten bu konunun cevabı mı? Değilse hangi bölümler eksik, yazın.",
-      "Aynı konuya değinen başka sayfanız varsa birleştirmeyi ve yönlendirme kurmayı düşünün.",
-      "Genişletmeye değmiyorsa sayfayı bırakın; emeği daha yakın fırsatlara harcayın.",
+      "Aynı konuya değinen başka bir sayfanız varsa ikisini birleştirip eskisinden yönlendirme kurun.",
+      "Sayfa bu konunun cevabıysa eksik bölümleri yazın ve iç bağlantı verin.",
+      "Tahmini kazanç küçükse sayfayı bırakın; emeği daha yakın fırsatlara harcayın.",
     ],
   },
 } as const satisfies Record<
-  KindId,
-  { label: string; hint: string; color: string; todo: readonly string[] }
+  WorkKind,
+  {
+    label: string;
+    action: string;
+    hint: string;
+    target: string;
+    shade: number;
+    todo: readonly string[];
+  }
 >;
 
-export const KIND_ORDER: readonly KindId[] = [
-  "ctr_gap",
-  "near_miss",
-  "top",
-  "deep",
-];
+export function workColor(work: WorkKind): string {
+  return `color-mix(in oklab, var(--color-primary) ${WORK_COPY[work].shade}%, transparent)`;
+}
 
 // Turkish, translated with t() where the chips render.
 export const QUICK_COPY = {
-  analytics: "Analytics'te karşılığı olanlar",
-  no_analytics: "Analytics'te karşılığı yok",
-  top_impressions: "En çok gösterim alan 10",
+  converts: "Dönüşüm getirenler",
+  no_conversions: "Trafik var, dönüşüm yok",
 } as const satisfies Record<QuickId, string>;
 
 export function pathOf(url: string): string {
@@ -83,168 +92,84 @@ export function pathOf(url: string): string {
   }
 }
 
-/** Why this page is on the list, in one sentence a non-specialist can act on. */
+/** Why this page is on the list and what it is worth, in one sentence. */
 export function explainRow(row: OpportunityRow): string {
-  const position = formatDecimal(row.position);
-  const impressions = formatNumber(row.impressions);
-  const clicks = formatNumber(row.clicks);
-  const ga4 =
-    row.ga4 === null
-      ? ""
-      : ` ${t("Analytics'te aynı dönemde {sessions} oturum getirmiş.", {
-          sessions: formatNumber(row.ga4.sessions),
-        })}`;
+  return t(
+    "Ortalama {position}. sırada; {impressions} gösterimden {clicks} tıklama aldı. Aşağıdaki aramalar sitenizin kendi tıklama oranlarına ulaşırsa ayda yaklaşık {gain} tıklama daha gelir.",
+    {
+      position: formatDecimal(row.position),
+      impressions: formatCount(row.impressions),
+      clicks: formatCount(row.clicks),
+      gain: formatCount(row.gainPerMonth),
+    },
+  );
+}
 
-  if (row.kind === "ctr_gap") {
-    const ctr = formatPercent(row.ctr);
-    const sentence =
-      row.ctrGap === null
-        ? t(
-            "Ortalama {position}. sırada {impressions} kez gösterildi ama yalnızca {clicks} tıklama aldı (tıklama oranı {ctr}).",
-            { position, impressions, clicks, ctr },
-          )
-        : t(
-            "Ortalama {position}. sırada {impressions} kez gösterildi ama yalnızca {clicks} tıklama aldı (tıklama oranı {ctr}, sitenizde bu sıradaki sayfaların ortancasından {gap} yüzde puan daha düşük).",
-            {
-              position,
-              impressions,
-              clicks,
-              ctr,
-              gap: formatDecimal(Math.abs(row.ctrGap) * 100),
-            },
-          );
-    return `${sentence}${ga4}`;
+/** The Analytics side of a row, worded; null when Analytics has no row for it. */
+export function valueText(row: OpportunityRow): string | null {
+  if (!row.ga4) return null;
+  const sessions = formatCount(row.ga4.sessions);
+  switch (row.value) {
+    case "converts":
+      return t("{events} anahtar olay · dönüşen oturum oranı {rate}", {
+        events: formatCount(row.ga4.keyEvents),
+        rate: formatPercent(row.ga4.sessionKeyEventRate),
+      });
+    case "no_conversions":
+      return t("{sessions} oturum, hiç dönüşüm yok", { sessions });
+    case "too_little_traffic":
+      return t("{sessions} oturum; değerini söylemek için az", { sessions });
+    default:
+      return t("{sessions} oturum", { sessions });
   }
-  if (row.kind === "top") {
-    // Without a baseline (small site) the click-through cannot be judged, so
-    // do not call it normal; say what is known and what to check.
-    const judged =
-      row.ctrGap === null
-        ? t(
-            "Tıklama oranını ({ctr}) kıyaslayacak kadar veri yok; düşük görünüyorsa başlığı ve açıklamayı gözden geçirin.",
-            { ctr: formatPercent(row.ctr) },
-          )
-        : t(
-            "Tıklama oranı sitenizdeki benzer sıradaki sayfalarla uyumlu; içeriği ve başlığı güçlü tutmak yeterli.",
-          );
-    return `${t(
-      "Ortalama {position}. sırada, yani zaten ilk sıralarda. {impressions} gösterimden {clicks} tıklama aldı.",
-      { position, impressions, clicks },
-    )} ${judged}${ga4}`;
-  }
-  if (row.kind === "near_miss") {
-    return `${t(
-      "Ortalama {position}. sırada; ilk sayfaya çok yakın. {impressions} gösterimden {clicks} tıklama aldı, birkaç basamak yükselmek bunu belirgin şekilde artırabilir.",
-      { position, impressions, clicks },
-    )}${ga4}`;
-  }
-  return `${t(
-    "Ortalama {position}. sırada, yani çoğu kullanıcının görmediği yerde; yine de {impressions} gösterim aldı. Bu sayfaya bir talep var.",
-    { position, impressions },
-  )}${ga4}`;
 }
 
-const PARTS = [
-  { key: "demand", label: "Talep", weight: 50 },
-  { key: "businessValue", label: "İş değeri", weight: 30 },
-  { key: "reachability", label: "Yükselme kolaylığı", weight: 20 },
-] as const;
-
-function level(fraction: number): "high" | "medium" | "low" {
-  if (fraction >= 0.66) return "high";
-  if (fraction >= 0.33) return "medium";
-  return "low";
-}
-
-const PART_SENTENCE = {
-  demand: {
-    high: "Bu sayfa için arama talebi yüksek.",
-    medium: "Arama talebi orta.",
-    low: "Arama talebi düşük.",
-  },
-  businessValue: {
-    high: "Sitenize gelen ziyaretçiler bu sayfada değerli işlemler yapıyor.",
-    medium: "İş değeri orta.",
-    low: "Ziyaretçilerin bu sayfada yaptığı işlem az.",
-  },
-  reachability: {
-    high: "İlk sıralara çok yakın; emek çabuk karşılık verir.",
-    medium: "İlk sıralara makul uzaklıkta.",
-    low: "İlk sıralardan uzak; sonuç almak zaman alır.",
-  },
-} as const;
-
-/** The score split in words. Null when the service could not score the row. */
-export function scoreWords(components: OpportunityRow["scoreComponents"]) {
-  if (components === null) return null;
-  return PARTS.map((part) => {
-    const fraction = components[part.key];
-    return {
-      key: part.key,
-      label: t(part.label),
-      max: part.weight,
-      points: fraction * part.weight,
-      sentence: t(PART_SENTENCE[part.key][level(fraction)]),
-    };
-  });
-}
-
-/** Rows Analytics has a record for. The complement of `lacksAnalyticsMatch`, so the two chips split the list. */
-function hasAnalyticsTraffic(row: OpportunityRow): boolean {
-  return row.ga4 !== null;
-}
-
-/** Rows Search Console saw but Analytics has no record of (scored on Search Console data alone). */
-function lacksAnalyticsMatch(row: OpportunityRow): boolean {
-  return row.ga4 === null;
-}
-
-/** The row with the highest score, or null for an empty list. */
-export function topOpportunity(rows: OpportunityRow[]): OpportunityRow | null {
-  const scored = filter(rows, (row) => row.score !== null);
-  return firstBy(scored, [(row) => row.score ?? 0, "desc"]) ?? null;
-}
-
-/** Page ids of the ten most-shown rows across the WHOLE set, so a kind filter cannot change what "top 10" means. */
-function topImpressionPages(rows: OpportunityRow[]): Set<string> {
-  const ranked = sort(rows, (a, b) => b.impressions - a.impressions);
-  return new Set(ranked.slice(0, 10).map((row) => row.page));
+/**
+ * Extra key events a month if the extra clicks convert like today's organic
+ * sessions do. Only for a page that clears the session floor; a click is
+ * roughly a session, so it is labelled an estimate where it shows.
+ */
+export function extraConversions(row: OpportunityRow): number | null {
+  if (row.value !== "converts" || !row.ga4) return null;
+  return row.gainPerMonth * row.ga4.sessionKeyEventRate;
 }
 
 export function quickCounts(rows: OpportunityRow[]): Record<QuickId, number> {
   return {
-    analytics: filter(rows, hasAnalyticsTraffic).length,
-    no_analytics: filter(rows, lacksAnalyticsMatch).length,
-    top_impressions: Math.min(10, rows.length),
+    converts: rows.filter((row) => row.value === "converts").length,
+    no_conversions: rows.filter((row) => row.value === "no_conversions").length,
   };
 }
 
-/** Kind tile and quick chip combine with AND; both read the whole set. */
+/**
+ * Chips worth showing: one that holds nothing or holds every row narrows
+ * nothing, and a chip reading "45" beside a list of 45 is noise.
+ */
+export function usefulChips(
+  counts: Record<QuickId, number>,
+  total: number,
+): QuickId[] {
+  const ids: QuickId[] = ["converts", "no_conversions"];
+  return ids.filter((id) => counts[id] > 0 && counts[id] < total);
+}
+
+/**
+ * Work bar and quick chip combine with AND. A bar selects every page with a
+ * gain from that work, the same pages its count and sum are over.
+ */
 export function applyFilters(
   rows: OpportunityRow[],
-  kind: KindId | null,
+  work: WorkKind | null,
   quick: QuickId | null,
 ): OpportunityRow[] {
-  const top = quick === "top_impressions" ? topImpressionPages(rows) : null;
   return rows.filter(
     (row) =>
-      (kind === null || row.kind === kind) &&
-      (quick !== "analytics" || hasAnalyticsTraffic(row)) &&
-      (quick !== "no_analytics" || lacksAnalyticsMatch(row)) &&
-      (top === null || top.has(row.page)),
+      (work === null || row.gainByWork[work] > 0) &&
+      (quick === null || row.value === quick),
   );
 }
 
-export type Metric = "impressions" | "clicks";
-
-/** Per-kind totals for the ring. */
-export function kindTotals(rows: OpportunityRow[], metric: Metric) {
-  return KIND_ORDER.map((id) => ({
-    key: id,
-    label: t(KIND_COPY[id].label),
-    color: KIND_COPY[id].color,
-    value: rows
-      .filter((row) => row.kind === id)
-      .reduce((sum, row) => sum + row[metric], 0),
-  }));
+/** Monthly impressions, for the "demand" fact in the detail panel. */
+export function monthlyImpressions(row: OpportunityRow, days: number): number {
+  return perMonth(row.impressions, days);
 }
