@@ -221,3 +221,38 @@ describe("get_report", () => {
     expect(textContent(withHtml)).toContain(html);
   });
 });
+
+it("returns server-stamped native source identity without offering it as writable input", async () => {
+  mocks.getReport.mockResolvedValue(
+    storedReport({
+      nativeKind: "search-performance-export",
+      nativeIdentity: "source-1",
+      skill: null,
+    }),
+  );
+  const result = await getReportTool.handler(
+    { projectId, reportId },
+    toolContext,
+  );
+  expect(result.structuredContent.report).toMatchObject({
+    nativeKind: "search-performance-export",
+    nativeIdentity: "source-1",
+  });
+  expect(textContent(result)).toContain("search-performance-export");
+});
+
+it("refuses native document replacement through save_report", async () => {
+  mocks.getReport.mockResolvedValue(
+    storedReport({
+      nativeKind: "site-audit-export",
+      nativeIdentity: "audit-1",
+    }),
+  );
+  await expect(
+    saveReportTool.handler(
+      { projectId, reportId, title: "Replacement", summary: "Summary", html },
+      toolContext,
+    ),
+  ).rejects.toThrow("Native reports");
+  expect(mocks.updateReportContent).not.toHaveBeenCalled();
+});

@@ -1,3 +1,4 @@
+import { boundedReportTitle } from "@/shared/reportTitle";
 import { isDeepEqual } from "remeda";
 import {
   formatCount,
@@ -232,7 +233,7 @@ export function buildAuditReportHtml(
   const label = reliable
     ? t("{host} site denetimi", { host })
     : t("{host} site denetimi (eksik)", { host });
-  const title = `${label.slice(0, 120 - suffix.length)}${suffix}`;
+  const title = `${boundedReportTitle(label, 120 - suffix.length)}${suffix}`;
   const summary = [
     reliable
       ? ""

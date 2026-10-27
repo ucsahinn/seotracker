@@ -32,4 +32,4 @@ Position means are impression-weighted. Change is previous mean minus current me
 
 Observed days always remain visible: 10 days in a 90-day period is not complete coverage. Daily points use real calendar spacing and gaps break the line. Arrow keys, Home and End inspect dates. Expand daily values for a readable list. Whole missing weeks remain gaps in weekly lines; edge weeks can be partial.
 
-The Search performance link currently opens a text search. Exact query and archive dates are not preserved. Check scope before comparing results. Competitor rankings, paid search volume and traffic forecasts are unavailable.
+The Search performance link preserves the exact query and archive dates. For periods older than Google's retention, the earliest readable date is explained before navigation. Competitor rankings, paid search volume and traffic forecasts are unavailable.

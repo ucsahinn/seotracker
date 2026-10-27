@@ -1,3 +1,4 @@
+import { GoogleAccessRepository } from "@/server/features/google/GoogleAccessRepository";
 import { Ga4ConnectionRepository } from "@/server/features/ga4/repositories/Ga4ConnectionRepository";
 import { DAILY_QUOTA } from "@/server/features/gsc/indexCoverage";
 import { getPageSpeedKeySource } from "@/server/features/lighthouse/pagespeed-config";
@@ -322,7 +323,15 @@ export async function getQuotaStatus(input: {
       input.projectId,
     );
     // Only a reading from the project's current connection counts.
-    items.push(...ga4Items(connection ? readGa4Quota(connection) : null, now));
+    const credentialGeneration = await GoogleAccessRepository.generation();
+    items.push(
+      ...ga4Items(
+        connection
+          ? readGa4Quota({ ...connection, credentialGeneration })
+          : null,
+        now,
+      ),
+    );
   }
   if (wanted.has("audit")) {
     const selection = await QuotaRepository.latestAuditPages(input.projectId);

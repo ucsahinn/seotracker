@@ -2,6 +2,17 @@ import type { Catalog } from "@/shared/i18n";
 
 /** German for app-wide labels: Google access status, settings help, feedback form and audit errors. */
 export const deApp: Catalog = {
+  "Bu bölüm başka bir yerde değişti. Metinleri karşılaştırıp taslağınızı birleştirin.":
+    "Dieser Abschnitt wurde anderswo geändert. Vergleichen Sie die Texte und führen Sie Ihren Entwurf zusammen.",
+  "Düzenleme başındaki metin": "Text zu Beginn der Bearbeitung",
+  "Son kayıtlı metin": "Zuletzt gespeicherter Text",
+  "Karşılaştırdım, birleştirilmiş taslağı kullan":
+    "Verglichen; zusammengeführten Entwurf verwenden",
+  "Son doksan gündeki en yeni yirmi kayıt gösterilir. Tarihi sunucu UTC gününe göre belirler.":
+    "Die neuesten zwanzig Einträge der letzten neunzig Tage werden angezeigt. Das Datum folgt dem UTC-Tag des Servers.",
+  "Bu zaman aralığında gösterilmeyen daha eski kayıtlar var.":
+    "Ältere Einträge in diesem Zeitraum werden nicht angezeigt.",
+  "Önceki: {previous} → {current}": "Vorher: {previous} → {current}",
   "Sosyal ve yapılandırılmış veri": "Social Media und strukturierte Daten",
   "Bir ayarı değiştirdim, uygulama görmüyor":
     "Ich habe eine Einstellung geändert, und die App übernimmt sie nicht",

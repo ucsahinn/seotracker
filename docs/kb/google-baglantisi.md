@@ -20,3 +20,5 @@ Google Cloud'da OAuth Web application istemcisi oluşturun. Ayarlar'daki Search 
 ## Sorun çıkarsa
 
 Son mülk listesi okuma hatasında korunur; boş liste erişiminiz olmadığına tek başına kanıt değildir. Süresi dolan izni yeniden bağlayın; erişim reddinde mülk izinlerini, etkin olmayan API'de Cloud projesini kontrol edin. İstek sınırında bekleyip yeniden deneyin. Bilinmeyen hatada **Tekrar dene** ve **Yardım** tanılamasını kullanın. Kimlik silmek Google tarafındaki anahtarı iptal etmez. Alan adını değiştirmek Google mülkünü veya geçmişi değiştirmez.
+
+Bağlantı kartı, geçerli kimlik ve mülk için daha önce gözlenen son Google okumasını tarihiyle gösterir; geçici hatada önceki başarılı okumanın tarihi korunur. Geçmiş yoksa erişim doğrulanmadı olarak görünür. Ayar ekranını açmak Google sorgusu çalıştırmaz. Kimlik değiştiğinde eski okuma ve kota kanıtları yeni kimliğe taşınmaz; raporları açıkça yenileyin.

@@ -18,3 +18,5 @@ Per OAuth crea un client Web application. Registra esattamente entrambi gli URL 
 ## Recupero
 
 Un errore conserva l'elenco precedente; un elenco vuoto da solo non prova l'assenza di diritti. Ricollega autorizzazioni scadute, verifica i permessi per accesso negato e il progetto Cloud per API inattive. Attendi per i limiti. Per errori sconosciuti riprova e usa la diagnostica Aiuto. Eliminare credenziali qui non le revoca in Google. Cambiare dominio conserva collegamento e storico.
+
+La scheda di collegamento mostra la data dell’ultima lettura Google già osservata per le credenziali e la proprietà attuali. Dopo un errore temporaneo mantiene la data della precedente lettura riuscita. Senza cronologia, l’accesso resta non verificato. Aprire le impostazioni non invia richieste a Google. Un cambio di credenziali non trasferisce le precedenti prove di accesso o quota alla nuova identità; aggiornate esplicitamente i report.

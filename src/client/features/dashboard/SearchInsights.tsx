@@ -23,7 +23,8 @@ import {
   dashboardGscReportQuery,
   dashboardSearchViewQuery,
 } from "@/client/features/dashboard/dashboardGscReport";
-import { gainText, countDelta } from "@/shared/searchTodoCopy";
+import { gainText } from "@/shared/searchTodoCopy";
+import { countDelta } from "@/client/components/MetricTile";
 import { describeClickTrend } from "@/client/features/dashboard/clickTrend";
 import { DeltaBadge } from "@/client/components/MetricTile";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";

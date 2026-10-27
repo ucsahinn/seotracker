@@ -2,6 +2,17 @@ import type { Catalog } from "@/shared/i18n";
 
 /** Portuguese for the main app, projects, reports and saved keywords. */
 export const ptApp: Catalog = {
+  "Bu bölüm başka bir yerde değişti. Metinleri karşılaştırıp taslağınızı birleştirin.":
+    "Esta secção foi alterada noutro local. Compare os textos e integre o seu rascunho.",
+  "Düzenleme başındaki metin": "Texto no início da edição",
+  "Son kayıtlı metin": "Último texto guardado",
+  "Karşılaştırdım, birleştirilmiş taslağı kullan":
+    "Comparado; usar o rascunho integrado",
+  "Son doksan gündeki en yeni yirmi kayıt gösterilir. Tarihi sunucu UTC gününe göre belirler.":
+    "São mostrados os vinte registos mais recentes dos últimos noventa dias. As datas seguem o dia UTC do servidor.",
+  "Bu zaman aralığında gösterilmeyen daha eski kayıtlar var.":
+    "Existem registos mais antigos neste período que não são mostrados.",
+  "Önceki: {previous} → {current}": "Antes: {previous} → {current}",
   "seowatcher.io sitesini yeni sekmede aç":
     "Abrir o site seowatcher.io em uma nova aba",
   Duyurular: "Avisos",

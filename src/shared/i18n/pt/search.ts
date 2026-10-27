@@ -792,4 +792,8 @@ export const ptSearch: Catalog = {
     "Primeiros {count} registos por impressões; a pesquisa também filtra esta lista.",
   "Bağlantı yok; gösterilen özet kayıtlı tarihsel gözlemlerdir.":
     "Sem ligação; o resumo mostra observações históricas guardadas.",
+  "Seçilen dönem Search Console'un okunabilir kesin günleri dışında. Kullanılabilir dönem: {start} – {end}.":
+    "O período selecionado está fora dos dias completos disponíveis no Search Console. Período disponível: {start} – {end}.",
+  "Search Console yalnızca {start} ve sonrasını okuyabilir. Bu arşiv dönemi bütünüyle açılamaz.":
+    "O Search Console só pode ler dados a partir de {start}. Este período do arquivo não pode ser aberto por completo.",
 };

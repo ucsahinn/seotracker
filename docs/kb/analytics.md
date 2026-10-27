@@ -29,3 +29,5 @@ Rapor, kanal, tarihler, kırılım, satır boyutu ve sayfalama URL'de korunur. h
 Ölçüm durumu yalnızca GA4 yönetim ayarlarını okur. “Kontrol edilen ayarlarda eksik bulunmadı” etiketin veri gönderdiğini kanıtlamaz; bağlantılı doğrulama adımlarını izleyin. Eksik envanterde sayılar en az olarak gösterilir. Gelişmiş ölçümün ana anahtarı kapalıysa etkin alt seçenek sayısı sıfırdır. Kontrol, hesap ayarlarını değiştirmez.
 
 Kota ve sınırlar açılır bölümündeki değerler son rapor yanıtının yerel anlık görüntüsüdür; seçilen trafik döneminin toplamı değildir. Standart hesap tavanı bir varsayımdır. Yenile, görünür raporları yeniden ister; raporların belirteç maliyeti vardır.
+
+Google tarih kapsamındaki verileri kesmişse Analytics özetinde ve rapor ayrıntılarında kesinti nedeni ve Google'ın bildirdiği tarihler gösterilir. Bu rapor sınırlı sayılır; eksik kapsam güvenilir bir dönem karşılaştırması olarak sunulmaz.

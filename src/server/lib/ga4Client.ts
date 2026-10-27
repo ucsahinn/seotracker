@@ -1,5 +1,9 @@
 /* eslint-disable max-lines -- one client module per Google integration (gscClient precedent); GA4 spans the Admin and Data APIs */
 import { z } from "zod";
+import {
+  googleAccessScope,
+  observeGoogleAccess,
+} from "@/server/features/google/GoogleAccessService";
 import { getGoogleGrantAuth } from "@/lib/auth";
 import {
   Ga4AdminApiError,
@@ -201,7 +205,12 @@ function memoizedGa4AccessToken(opts: {
   ga4AccountId?: string;
 }) {
   let accessTokenPromise: Promise<string> | undefined;
-  return () => (accessTokenPromise ??= getGa4AccessToken(opts));
+  let tokenGeneration: number | undefined;
+  return (generation?: number) => {
+    if (tokenGeneration !== generation) accessTokenPromise = undefined;
+    tokenGeneration = generation;
+    return (accessTokenPromise ??= getGa4AccessToken(opts));
+  };
 }
 
 /** Read-only Admin API client used only for account/property discovery. */
@@ -229,12 +238,28 @@ export function createGa4AdminClient(opts: {
         `Google Analytics Admin API could not be reached: ${networkErrorReason(
           error instanceof UpstreamNetworkError ? error.reason : error,
         )}`,
+        error instanceof Error && error.name === "TimeoutError"
+          ? "TIMEOUT"
+          : null,
       );
     }
     if (!response.ok) {
+      let upstreamReason: string | null = null;
+      try {
+        const parsed = googleErrorSchema.safeParse(await response.json());
+        if (parsed.success)
+          upstreamReason =
+            parsed.data.error.details?.find((detail) => detail.reason)
+              ?.reason ??
+            parsed.data.error.status ??
+            null;
+      } catch {
+        /* HTML error pages have no structured reason. */
+      }
       throw new Ga4AdminApiError(
         response.status,
         adminMessageForStatus(response.status),
+        upstreamReason,
       );
     }
     return response.json();
@@ -388,6 +413,23 @@ const propertyQuotaSchema = z.object({
 });
 
 const responseMetadataSchema = z.object({
+  dataTruncationReasons: z
+    .array(
+      z.object({
+        dataTruncationType: z.string().optional(),
+        dataTruncationMessage: z.string().optional(),
+        dataTruncationDate: z.string().optional(),
+        dataTruncationDateRanges: z
+          .array(
+            z.object({
+              startDate: z.string().optional(),
+              endDate: z.string().optional(),
+            }),
+          )
+          .optional(),
+      }),
+    )
+    .optional(),
   dataLossFromOtherRow: z.boolean().optional(),
   samplingMetadatas: z
     .array(
@@ -450,7 +492,9 @@ const googleErrorSchema = z.object({
   }),
 });
 
-export type Ga4RunReportResponse = z.infer<typeof runReportResponseSchema>;
+export type Ga4RunReportResponse = z.infer<typeof runReportResponseSchema> & {
+  credentialGeneration?: number;
+};
 
 export type Ga4RunReportRequest = {
   dateRanges: Array<{ startDate: string; endDate: string }>;
@@ -495,65 +539,82 @@ export function createGa4DataClient(opts: {
     async runReport(
       request: Ga4RunReportRequest,
     ): Promise<Ga4RunReportResponse> {
-      const token = await accessToken();
-      let response: Response;
-      try {
-        response = await fetchWithRetry(
-          `${GA4_DATA_API_BASE}/${propertyId}:runReport`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(request),
-          },
-          { service: "Google Analytics Data API" },
-        );
-      } catch (error) {
-        if (isAbortError(error)) throw error;
-        throw new Ga4DataApiError(
-          0,
-          `Google Analytics could not be reached: ${networkErrorReason(
-            error instanceof UpstreamNetworkError ? error.reason : error,
-          )}`,
-        );
-      }
-      if (!response.ok) {
-        const body = await response
-          .text()
-          .then((responseBody) => responseBody.slice(0, MAX_ERROR_BODY_LENGTH))
-          .catch(() => "");
-        let upstreamReason: string | null = null;
+      const scope = await googleAccessScope({
+        provider: "ga4",
+        propertyId,
+        userId: opts.userId,
+        accountId: opts.ga4AccountId,
+      });
+      return observeGoogleAccess(scope, async () => {
+        const token = await accessToken(scope.generation);
+        let response: Response;
         try {
-          const parsed = googleErrorSchema.safeParse(JSON.parse(body));
-          if (parsed.success) {
-            upstreamReason =
-              parsed.data.error.details?.find(
-                (detail) =>
-                  detail.metadata?.service === "analyticsdata.googleapis.com",
-              )?.reason ??
-              parsed.data.error.details?.find((detail) => detail.reason)
-                ?.reason ??
-              parsed.data.error.status ??
-              null;
-          }
-        } catch {
-          // Non-JSON error pages intentionally collapse to status-only errors.
+          response = await fetchWithRetry(
+            `${GA4_DATA_API_BASE}/${propertyId}:runReport`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(request),
+            },
+            { service: "Google Analytics Data API" },
+          );
+        } catch (error) {
+          if (isAbortError(error)) throw error;
+          throw new Ga4DataApiError(
+            0,
+            `Google Analytics could not be reached: ${networkErrorReason(
+              error instanceof UpstreamNetworkError ? error.reason : error,
+            )}`,
+            null,
+            error instanceof Error && error.name === "TimeoutError"
+              ? "TIMEOUT"
+              : null,
+          );
         }
-        throw new Ga4DataApiError(
-          response.status,
-          dataMessageForStatus(response.status),
-          safeRetryAfter(response),
-          upstreamReason,
-        );
-      }
+        if (!response.ok) {
+          const body = await response
+            .text()
+            .then((responseBody) =>
+              responseBody.slice(0, MAX_ERROR_BODY_LENGTH),
+            )
+            .catch(() => "");
+          let upstreamReason: string | null = null;
+          try {
+            const parsed = googleErrorSchema.safeParse(JSON.parse(body));
+            if (parsed.success) {
+              upstreamReason =
+                parsed.data.error.details?.find(
+                  (detail) =>
+                    detail.metadata?.service === "analyticsdata.googleapis.com",
+                )?.reason ??
+                parsed.data.error.details?.find((detail) => detail.reason)
+                  ?.reason ??
+                parsed.data.error.status ??
+                null;
+            }
+          } catch {
+            // Non-JSON error pages intentionally collapse to status-only errors.
+          }
+          throw new Ga4DataApiError(
+            response.status,
+            dataMessageForStatus(response.status),
+            safeRetryAfter(response),
+            upstreamReason,
+          );
+        }
 
-      try {
-        return runReportResponseSchema.parse(await response.json());
-      } catch {
-        throw new Ga4MalformedResponseError();
-      }
+        try {
+          return {
+            ...runReportResponseSchema.parse(await response.json()),
+            credentialGeneration: scope.generation,
+          };
+        } catch {
+          throw new Ga4MalformedResponseError();
+        }
+      });
     },
   };
 }

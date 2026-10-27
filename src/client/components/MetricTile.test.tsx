@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { DeltaBadge, MetricTile } from "./MetricTile";
+import { countComparison, DeltaBadge, MetricTile } from "./MetricTile";
 
 // `Link` needs a router; the contract here is where the tile points.
 vi.mock("@tanstack/react-router", () => ({
@@ -87,9 +87,21 @@ describe("MetricTile", () => {
 });
 
 describe("DeltaBadge", () => {
-  it("renders nothing when the change rounds to 0% at the displayed precision", () => {
+  it("distinguishes zero-base growth, unchanged and missing evidence (previously all disappeared)", () => {
+    expect(countComparison(12, 0)).toMatchObject({
+      neutral: true,
+      text: "Önceki: 0 → 12",
+    });
+    expect(countComparison(0, 0)).toBe(0);
+    expect(countComparison(0, 10)).toBe(-1);
+    expect(countComparison(10, null)).toBeNull();
+    expect(countComparison(0.25, 0, String)).toMatchObject({
+      text: "Önceki: 0 → 0.25",
+    });
+  });
+  it("keeps known unchanged comparisons visible (previously rounded zero disappeared)", () => {
     const { container } = render(<DeltaBadge value={0.0004} />);
-    expect(container.innerHTML).toBe("");
+    expect(container.textContent).toContain("Değişmedi");
   });
 
   it("shows direction and a signed one-decimal percent otherwise", () => {

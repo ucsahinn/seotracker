@@ -1,4 +1,5 @@
 import { runBatch } from "@/db/runBatch";
+import { AppError } from "@/server/lib/errors";
 import { ProjectContextRepository } from "@/server/features/project-context/repositories/ProjectContextRepository";
 import { resolveContextUpdates } from "@/server/features/project-context/services/contextUpdateOps";
 import { ReportTemplateRepository } from "@/server/features/reports/repositories/ReportTemplateRepository";
@@ -18,6 +19,8 @@ const RESEARCH_LOG_RETENTION_DAYS = 90;
 const RESEARCH_LOG_LIMIT = 20;
 
 type ProjectContext = {
+  researchLogHasMore: boolean;
+  reportTemplatesAvailable: boolean;
   sections: {
     key: ProjectContextSectionKey;
     content: string;
@@ -72,8 +75,15 @@ export async function getProjectContext(
       ProjectContextRepository.listSections(projectId),
       ProjectContextRepository.listCompetitors(projectId),
       ProjectContextRepository.listKeyPages(projectId),
-      ProjectContextRepository.listResearchLog(projectId, RESEARCH_LOG_LIMIT),
-      ReportTemplateRepository.listTemplates(projectId),
+      ProjectContextRepository.listResearchLog(
+        projectId,
+        RESEARCH_LOG_LIMIT + 1,
+        dayStamp(-RESEARCH_LOG_RETENTION_DAYS),
+      ),
+      ReportTemplateRepository.listTemplates(projectId).then(
+        (rows) => ({ rows, available: true }),
+        () => ({ rows: [], available: false }),
+      ),
     ]);
 
   const stored = new Map(sectionRows.map((row) => [row.key, row]));
@@ -94,6 +104,8 @@ export async function getProjectContext(
   });
 
   return {
+    researchLogHasMore: researchLog.length > RESEARCH_LOG_LIMIT,
+    reportTemplatesAvailable: reportTemplates.available,
     sections,
     missingSections: PROJECT_CONTEXT_SECTION_KEYS.filter(
       (key) => !stored.has(key),
@@ -109,13 +121,13 @@ export async function getProjectContext(
       })),
     competitors,
     keyPages,
-    researchLog: researchLog.map((row) => ({
+    researchLog: researchLog.slice(0, RESEARCH_LOG_LIMIT).map((row) => ({
       id: row.id,
       entryDate: row.entryDate,
       summary: row.summary,
       createdBy: row.createdBy,
     })),
-    reportTemplates: reportTemplates.map((template) => ({
+    reportTemplates: reportTemplates.rows.map((template) => ({
       name: template.name,
       description: template.description,
     })),
@@ -155,74 +167,107 @@ export async function applyContextUpdates(
 
   // One atomic batch (D1 batch / PG transaction): a mid-batch failure rolls
   // everything back, which is what lets callers retry a whole batch safely.
-  await runBatch((tx) =>
-    resolved.flatMap((op): Promise<unknown>[] => {
-      switch (op.kind) {
-        case "upsertSection":
-          return [
-            ProjectContextRepository.upsertSection(tx, {
-              projectId,
-              key: op.key,
-              title: op.title,
-              content: op.content,
-              updatedBy,
-            }),
-          ];
-        case "deleteSection":
-          return [
-            ProjectContextRepository.deleteSection(tx, projectId, op.key),
-          ];
-        case "upsertCompetitors":
-          return ProjectContextRepository.upsertCompetitors(
-            tx,
-            projectId,
-            op.rows,
-            updatedBy,
-          );
-        case "deleteCompetitors":
-          return ProjectContextRepository.deleteCompetitors(
-            tx,
-            projectId,
-            op.domains,
-          );
-        case "upsertKeyPages":
-          return ProjectContextRepository.upsertKeyPages(
-            tx,
-            projectId,
-            op.rows,
-            updatedBy,
-          );
-        case "deleteKeyPages":
-          return ProjectContextRepository.deleteKeyPages(
-            tx,
-            projectId,
-            op.urls,
-          );
-        case "deleteResearchLog":
-          return ProjectContextRepository.deleteResearchLogEntries(
-            tx,
-            projectId,
-            op.ids,
-          );
-        case "appendResearchLog":
-          return [
-            ProjectContextRepository.appendResearchLogEntry(tx, {
-              projectId,
-              entryDate: dayStamp(),
-              summary: op.summary,
-              createdBy: updatedBy,
-            }),
-            // The log only has to answer "was this bought recently?", so it
-            // is pruned on write instead of growing forever.
-            ProjectContextRepository.pruneResearchLogBefore(
+  try {
+    await runBatch((tx) => [
+      ...updates.flatMap((update) =>
+        ("section" in update ||
+          "customSection" in update ||
+          "deleteCustomSection" in update) &&
+        update.expectedContent !== undefined
+          ? [
+              ProjectContextRepository.assertSectionContent(
+                tx,
+                projectId,
+                "section" in update
+                  ? update.section
+                  : CUSTOM_SECTION_KEY_PREFIX +
+                      ("customSection" in update
+                        ? update.customSection
+                        : update.deleteCustomSection),
+                update.expectedContent,
+              ),
+            ]
+          : [],
+      ),
+      ...resolved.flatMap((op): Promise<unknown>[] => {
+        switch (op.kind) {
+          case "upsertSection":
+            return [
+              ProjectContextRepository.upsertSection(tx, {
+                projectId,
+                key: op.key,
+                title: op.title,
+                content: op.content,
+                updatedBy,
+              }),
+            ];
+          case "deleteSection":
+            return [
+              ProjectContextRepository.deleteSection(tx, projectId, op.key),
+            ];
+          case "upsertCompetitors":
+            return ProjectContextRepository.upsertCompetitors(
               tx,
               projectId,
-              dayStamp(-RESEARCH_LOG_RETENTION_DAYS),
-            ),
-          ];
-      }
-    }),
-  );
+              op.rows,
+              updatedBy,
+            );
+          case "deleteCompetitors":
+            return ProjectContextRepository.deleteCompetitors(
+              tx,
+              projectId,
+              op.domains,
+            );
+          case "upsertKeyPages":
+            return ProjectContextRepository.upsertKeyPages(
+              tx,
+              projectId,
+              op.rows,
+              updatedBy,
+            );
+          case "deleteKeyPages":
+            return ProjectContextRepository.deleteKeyPages(
+              tx,
+              projectId,
+              op.urls,
+            );
+          case "deleteResearchLog":
+            return ProjectContextRepository.deleteResearchLogEntries(
+              tx,
+              projectId,
+              op.ids,
+            );
+          case "appendResearchLog":
+            return [
+              ProjectContextRepository.appendResearchLogEntry(tx, {
+                projectId,
+                entryDate: dayStamp(),
+                summary: op.summary,
+                createdBy: updatedBy,
+              }),
+              // The log only has to answer "was this bought recently?", so it
+              // is pruned on write instead of growing forever.
+              ProjectContextRepository.pruneResearchLogBefore(
+                tx,
+                projectId,
+                dayStamp(-RESEARCH_LOG_RETENTION_DAYS),
+              ),
+            ];
+        }
+      }),
+    ]);
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      /context_edit_conflict/.test(
+        error.message +
+          (error.cause instanceof Error ? error.cause.message : ""),
+      )
+    ) {
+      throw new AppError("VALIDATION_ERROR", "context_edit_conflict");
+    }
+    throw error;
+  }
 
   return getProjectContext(projectId);
 }
@@ -299,7 +344,7 @@ export function renderProjectContextMarkdown(context: ProjectContext): string {
       ...context.researchLog.map(
         (entry) => `- ${entry.entryDate}: ${entry.summary}`,
       ),
-      ...(context.researchLog.length >= RESEARCH_LOG_LIMIT
+      ...(context.researchLogHasMore
         ? [
             "",
             `_Older entries within the ${RESEARCH_LOG_RETENTION_DAYS}-day window are omitted._`,
@@ -317,6 +362,12 @@ export function renderProjectContextMarkdown(context: ProjectContext): string {
       ),
     );
   }
+
+  if (!context.reportTemplatesAvailable)
+    lines.push(
+      "Report templates: unavailable (core project context is available).",
+      "",
+    );
 
   lines.push(
     context.missingSections.length > 0

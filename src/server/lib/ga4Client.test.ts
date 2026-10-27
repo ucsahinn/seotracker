@@ -421,3 +421,10 @@ describe("ga4Client data API", () => {
     ).rejects.toMatchObject({ status: 0 });
   });
 });
+
+// Access persistence is tested with real SQLite in GoogleAccessRepository.test.ts.
+vi.mock("@/server/features/google/GoogleAccessService", () => ({
+  googleAccessScope: async (scope: object) => ({ ...scope, generation: 0 }),
+  observeGoogleAccess: async (_scope: object, read: () => Promise<unknown>) =>
+    read(),
+}));

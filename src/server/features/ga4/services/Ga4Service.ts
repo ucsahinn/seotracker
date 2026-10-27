@@ -1,3 +1,7 @@
+import {
+  googleFailureReason,
+  type GoogleFailureReason,
+} from "@/server/features/google/googleFailureReason";
 import { and, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { account } from "@/db/schema";
@@ -54,7 +58,19 @@ async function serviceAccountEmail(): Promise<string | null> {
   );
 }
 
-async function listPropertiesForUserWithGrantStatus(userId: string) {
+async function listPropertiesForUserWithGrantStatus(userId: string): Promise<{
+  accounts: Array<{
+    accountId: string;
+    email: string | null;
+    requiresReconnect: boolean;
+    propertiesUnavailable: boolean;
+    unavailableReason: string | null;
+    failureReason?: GoogleFailureReason;
+    properties: Awaited<
+      ReturnType<ReturnType<typeof createGa4AdminClient>["listProperties"]>
+    >;
+  }>;
+}> {
   // One credential, no grants to enumerate, and no signed-in person whose
   // email could be looked up. Same shape as a grant so the picker is unchanged.
   if (await hasServiceAccount()) {
@@ -80,6 +96,7 @@ async function listPropertiesForUserWithGrantStatus(userId: string) {
               email,
               requiresReconnect: false,
               propertiesUnavailable: true,
+              failureReason: googleFailureReason(error),
               unavailableReason: email
                 ? t(
                     "Google Analytics bu hizmet hesabına izin vermedi. İki şey gerekiyor: Google Cloud projenizde Google Analytics Admin API etkin olmalı, ve GA4 mülkünüzde Yönetici → Erişim yönetimi altında {email} adresi Görüntüleyen olarak ekli olmalı.",
@@ -93,7 +110,19 @@ async function listPropertiesForUserWithGrantStatus(userId: string) {
           ],
         };
       }
-      throw error;
+      return {
+        accounts: [
+          {
+            accountId: GA4_SERVICE_ACCOUNT_ID,
+            email,
+            requiresReconnect: false,
+            propertiesUnavailable: true,
+            failureReason: googleFailureReason(error),
+            unavailableReason: null,
+            properties: [],
+          },
+        ],
+      };
     }
 
     return {
@@ -145,6 +174,7 @@ async function listPropertiesForUserWithGrantStatus(userId: string) {
         return {
           accountId: grant.accountId,
           email: null,
+          failureReason: googleFailureReason(error),
           requiresReconnect: reconnect,
           propertiesUnavailable: !reconnect,
           unavailableReason: null,

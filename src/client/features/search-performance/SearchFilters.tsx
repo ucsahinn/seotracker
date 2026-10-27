@@ -67,6 +67,7 @@ function isDateRange(value: string): value is SearchPerformanceDateRange {
  * what is applied.
  */
 export function SearchFilters({
+  pinned = false,
   range,
   device,
   country,
@@ -75,6 +76,7 @@ export function SearchFilters({
   countries,
   onViewChange,
 }: {
+  pinned?: boolean;
   range: SearchPerformanceDateRange;
   device?: SearchPerformanceDevice;
   country?: string;
@@ -95,7 +97,7 @@ export function SearchFilters({
     t(TYPE_LABELS[searchType]),
     device ? t(DEVICE_LABELS[device]) : t("Tüm cihazlar"),
     country ? formatCountry(country) : t("Tüm ülkeler"),
-    t(RANGE_LABELS[range]),
+    pinned ? t("Özel tarih aralığı") : t(RANGE_LABELS[range]),
     t(COMPARE_LABEL[compare]),
   ].join(" · ");
   return (
@@ -180,7 +182,7 @@ export function SearchFilters({
         </select>
         <select
           className="select select-sm w-full sm:w-36"
-          value={range}
+          value={pinned ? "exact" : range}
           onChange={(event) => {
             if (isDateRange(event.target.value)) {
               onViewChange({ range: event.target.value });
@@ -188,6 +190,11 @@ export function SearchFilters({
           }}
           aria-label={t("Tarih aralığı")}
         >
+          {pinned ? (
+            <option value="exact" disabled>
+              {t("Özel tarih aralığı")}
+            </option>
+          ) : null}
           {RANGE_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>
               {t(option.label)}

@@ -41,3 +41,9 @@ Beim Erstellen werden Daten erneut gelesen. Google kann historische Werte und di
 Vorlagen: Name 80, Beschreibung 200, Anweisungen 3.000 Zeichen; zehn pro Projekt. Löschen entfernt keine Berichte. Suche löschen zeigt ausgeblendete Vorlagen wieder.
 
 Schutzgrenzen: 500.000 Bytes pro Bericht, 120 Titelzeichen, 2.500 Zusammenfassungszeichen, 10.000 Berichte pro Projekt und 5 GB je Installation. Das sind Speichergrenzen, keine SEO-Kennzahlen. Auditberichte erläutern Crawl-, Geschwindigkeits- und optionale Google-Messdaten im eigenen Methodenteil.
+
+## Quelltypen und erneute Erstellung
+
+Neue native Berichte zur Suchleistung und zum Website-Audit haben getrennte gespeicherte Typen. Ältere App-Berichte werden nicht anhand ihres Titels klassifiziert. Die Suchidentität umfasst Property, festgelegte Daten und Filter; die Auditidentität verwendet die Audit-ID. Eine erneute Erstellung derselben Quelle in einer anderen Sprache aktualisiert denselben Datensatz und kann seine Sprache ändern. Titelkonflikte mit Agentenberichten werden abgelehnt; ältere Dokumente mit gleichem Titel bleiben erhalten, und der neue Speichervorgang wird abgelehnt.
+
+Erstellen Sie native Berichte über ihre Quellseite neu; Agenten können ihren Inhalt nicht mit `save_report` ersetzen. Fehlende Quelldaten gelten nie als null Zugriffe. Die Auditmethodik nennt den GSC-Trafficzeitraum, das Zeilenlimit und die verfügbare gespeicherte mobile CrUX-Messung.

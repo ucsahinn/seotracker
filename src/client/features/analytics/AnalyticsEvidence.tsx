@@ -1,4 +1,5 @@
 import type { ReportResult } from "./ReportView";
+import { DataTruncationNotice } from "./DataTruncationNotice";
 import { formatCount, formatDate, formatPercent } from "@/shared/format";
 import { t } from "@/shared/i18n";
 
@@ -72,6 +73,7 @@ export function AnalyticsEvidence({
           )}
         </p>
       ) : null}
+      <DataTruncationNotice reasons={meta?.dataTruncationReasons} />
       <details>
         <summary className="min-h-11 cursor-pointer py-3">
           {t("Veri ayrıntıları")}

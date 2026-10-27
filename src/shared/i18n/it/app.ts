@@ -2,6 +2,17 @@ import type { Catalog } from "@/shared/i18n";
 
 /** Italian for the main app, projects, reports and saved keywords. */
 export const itApp: Catalog = {
+  "Bu bölüm başka bir yerde değişti. Metinleri karşılaştırıp taslağınızı birleştirin.":
+    "Questa sezione è stata modificata altrove. Confronta i testi e unisci la tua bozza.",
+  "Düzenleme başındaki metin": "Testo all'inizio della modifica",
+  "Son kayıtlı metin": "Ultimo testo salvato",
+  "Karşılaştırdım, birleştirilmiş taslağı kullan":
+    "Confrontato; usa la bozza unita",
+  "Son doksan gündeki en yeni yirmi kayıt gösterilir. Tarihi sunucu UTC gününe göre belirler.":
+    "Sono mostrate le venti voci più recenti degli ultimi novanta giorni. Le date seguono il giorno UTC del server.",
+  "Bu zaman aralığında gösterilmeyen daha eski kayıtlar var.":
+    "Altre voci meno recenti di questo periodo non sono mostrate.",
+  "Önceki: {previous} → {current}": "Prima: {previous} → {current}",
   "seowatcher.io sitesini yeni sekmede aç":
     "Apri il sito seowatcher.io in una nuova scheda",
   Duyurular: "Annunci",

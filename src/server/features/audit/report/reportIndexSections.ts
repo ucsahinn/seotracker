@@ -132,9 +132,9 @@ export function sitemapSection(
   return `<section id="sitemap">
     <h2>${t("7. Site haritası")}</h2>
     <p class="note">${t(
-      "Taranan {count} sayfanın {inMap} tanesi ({percent}) site haritasında. Haritanın kendisi (toplam adres sayısı, dosya boyutu) rapora girmez; yalnızca taranan sayfaların harita durumu ve haritayla ilgili bulunan sorunlar gösterilir.",
+      "Taranan {count} sayfanın {inMap} tanesi ({percent}) site haritasında. Bu oran taranan sayfalara aittir; keşfedilen harita adreslerinin toplamı mevcutsa Anlık veri bölümünde ayrıca gösterilir.",
       {
-        count: crawled,
+        count: formatCount(crawled),
         inMap: formatCount(inMap),
         percent: percentText(percent(inMap, crawled)),
       },

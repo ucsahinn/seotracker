@@ -6,6 +6,17 @@ import type { Catalog } from "@/shared/i18n";
  * Keys are the Turkish source strings exactly as passed to t().
  */
 export const enApp: Catalog = {
+  "Bu bölüm başka bir yerde değişti. Metinleri karşılaştırıp taslağınızı birleştirin.":
+    "This section changed elsewhere. Compare the texts and merge your draft.",
+  "Düzenleme başındaki metin": "Text when editing began",
+  "Son kayıtlı metin": "Latest saved text",
+  "Karşılaştırdım, birleştirilmiş taslağı kullan":
+    "Compared; use the merged draft",
+  "Son doksan gündeki en yeni yirmi kayıt gösterilir. Tarihi sunucu UTC gününe göre belirler.":
+    "The newest twenty entries from the last ninety days are shown. Dates follow the server's UTC day.",
+  "Bu zaman aralığında gösterilmeyen daha eski kayıtlar var.":
+    "Older entries in this period are not shown.",
+  "Önceki: {previous} → {current}": "Previous: {previous} → {current}",
   "seowatcher.io sitesini yeni sekmede aç":
     "Open the seowatcher.io website in a new tab",
   Duyurular: "Announcements",

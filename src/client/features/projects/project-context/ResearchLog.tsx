@@ -15,8 +15,10 @@ import { t } from "@/shared/i18n";
 export function ResearchLog({
   projectId,
   researchLog,
+  hasMore,
 }: {
   projectId: string;
+  hasMore: boolean;
   researchLog: ProjectContextData["researchLog"];
 }) {
   const update = useContextUpdate(projectId);
@@ -29,10 +31,15 @@ export function ResearchLog({
       <SectionHeader
         title={t("Araştırma günlüğü")}
         hint={t(
-          "En yeni en fazla yirmi kayıt gösterilir. Tarihi sunucu UTC gününe göre belirler. Doksan günden eski kayıtlar yeni kayıt eklenirken temizlenir; bu liste eksiksiz geçmiş değildir.",
+          "Son doksan gündeki en yeni yirmi kayıt gösterilir. Tarihi sunucu UTC gününe göre belirler.",
         )}
       />
 
+      {hasMore ? (
+        <p role="status" className="text-sm text-muted">
+          {t("Bu zaman aralığında gösterilmeyen daha eski kayıtlar var.")}
+        </p>
+      ) : null}
       <ContextSaveError error={update.error} />
       {researchLog.length === 0 ? (
         <EmptyListNote>

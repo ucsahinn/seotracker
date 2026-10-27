@@ -2,6 +2,7 @@ export class Ga4AdminApiError extends Error {
   constructor(
     public readonly status: number,
     message: string,
+    public readonly upstreamReason: string | null = null,
   ) {
     super(message);
     this.name = "Ga4AdminApiError";

@@ -23,6 +23,8 @@ const contextOutputSchema = {
   competitors: z.array(looseObjectOutputSchema),
   keyPages: z.array(looseObjectOutputSchema),
   researchLog: z.array(looseObjectOutputSchema),
+  researchLogHasMore: z.boolean(),
+  reportTemplatesAvailable: z.boolean(),
   reportTemplates: z.array(looseObjectOutputSchema),
   ...optionalMetaOutputSchema,
 } as const;
@@ -70,7 +72,7 @@ const updateInputSchema = {
   // The batch cap lives with the server function's schema so both entry points
   // accept exactly the same patch list.
   updates: updateProjectContextSchema.shape.updates.describe(
-    "Patch ops, applied in order. Empty section content clears the section; adds upsert by domain/url; research-log entries are date-stamped by the server.",
+    "Patch ops, applied in order. For section edits send expectedContent from get_project_context (null if absent); a mismatch rejects the whole batch. Empty section content clears the section; adds upsert by domain/url; research-log entries are date-stamped by the server.",
   ),
 } as const;
 

@@ -32,4 +32,4 @@ Positionsmittelwerte sind impressionsgewichtet. Änderung bedeutet vorheriger mi
 
 Beobachtete Tage bleiben immer sichtbar: 10 von 90 Tagen bedeuten keine vollständige Abdeckung. Tagespunkte folgen dem echten Kalender; Lücken unterbrechen die Linie. Pfeiltasten, Home und End wechseln den Tag. Tageswerte lassen sich aufklappen. Ganze fehlende Wochen bleiben Lücken, Randwochen können teilweise sein.
 
-Der Link zur Suchleistung öffnet derzeit eine Textsuche. Exakte Suchanfrage und Archivdaten werden nicht übernommen. Vor Zahlenvergleichen den Umfang prüfen. Konkurrenzränge, kostenpflichtiges Suchvolumen und Verkehrsprognosen sind nicht verfügbar.
+Der Link zur Suchleistung übernimmt die exakte Suchanfrage und die Archivdaten. Bei Zeiträumen vor Googles Aufbewahrungsgrenze wird vor der Navigation das früheste lesbare Datum erklärt. Konkurrenzränge, kostenpflichtiges Suchvolumen und Verkehrsprognosen sind nicht verfügbar.

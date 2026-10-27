@@ -10,6 +10,7 @@ import { deleteReport, getReport, saveReport } from "./ReportService";
 const mocks = vi.hoisted(() => ({
   listReports: vi.fn(),
   getReport: vi.fn(),
+  findReportByNativeIdentity: vi.fn(),
   findReportByTitle: vi.fn(),
   countReports: vi.fn(),
   sumReportBytesForOrganization: vi.fn(),
@@ -53,10 +54,54 @@ const storedReport = {
 describe("saveReport", () => {
   beforeEach(() => {
     mocks.findReportByTitle.mockResolvedValue(null);
+    mocks.findReportByNativeIdentity.mockResolvedValue(null);
     mocks.countReports.mockResolvedValue(0);
     mocks.sumReportBytesForOrganization.mockResolvedValue(0);
     mocks.getReport.mockResolvedValue(storedReport);
     mocks.updateReportContent.mockResolvedValue(true);
+  });
+
+  it("persists a native kind and identity on first save (previously storage lost both)", async () => {
+    await save({ nativeKind: "site-audit-export", nativeIdentity: "audit-1" });
+    expect(mocks.insertReport).toHaveBeenCalledWith(
+      expect.objectContaining({
+        nativeKind: "site-audit-export",
+        nativeIdentity: "audit-1",
+      }),
+    );
+  });
+
+  it("refreshes a native source after a language change (previously title lookup created duplicates)", async () => {
+    mocks.findReportByNativeIdentity.mockResolvedValue({
+      ...storedReport,
+      nativeKind: "search-performance-export",
+      nativeIdentity: "source-1",
+    });
+    const result = await save({
+      title: "Translated title",
+      nativeKind: "search-performance-export",
+      nativeIdentity: "source-1",
+    });
+    expect(result.reportId).toBe("report_1");
+    expect(result.created).toBe(false);
+    expect(mocks.updateReportContent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        nativeKind: "search-performance-export",
+        nativeIdentity: "source-1",
+      }),
+    );
+  });
+
+  it("refuses agent replacement of native evidence (previously any reportId could replace it)", async () => {
+    mocks.getReport.mockResolvedValue({
+      ...storedReport,
+      nativeKind: "site-audit-export",
+      nativeIdentity: "audit-1",
+    });
+    await expect(save({ reportId: "report_1" })).rejects.toThrow(
+      "Native reports",
+    );
+    expect(mocks.updateReportContent).not.toHaveBeenCalled();
   });
 
   it("updates in place, keeping the stored skill and attribution", async () => {

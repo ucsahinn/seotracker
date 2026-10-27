@@ -57,6 +57,8 @@ describe("facts section", () => {
       "Hiçbir sayfada yapılandırılmış veri bulunamadı.",
     );
     expect(html).not.toContain("Twitter kartı tanımlı değil.");
+    expect(html).toContain("Bu kayıtta kullanılabilir CrUX verisi yok");
+    expect(html).toContain("Kaydedilmiş harita keşif toplamı mevcut değil");
   });
 
   it("says none were found when the audit looked", () => {
@@ -66,3 +68,58 @@ describe("facts section", () => {
     expect(html).toContain("Twitter kartı tanımlı değil.");
   });
 });
+
+it.each([false, true])(
+  "keeps the method consistent with optional GSC and CrUX (traffic=%s; previously denied both)",
+  (hasTraffic) => {
+    const speed = {
+      url: "https://example.com/",
+      isStartPage: true,
+      fetchedAt: "2026-09-28T08:00:00Z",
+      page: {
+        overall: "FAST",
+        largestContentfulPaint: { percentile: 2000, category: "FAST" },
+        cumulativeLayoutShift: null,
+        interactionToNextPaint: null,
+        firstContentfulPaint: null,
+        timeToFirstByte: null,
+      },
+      origin: null,
+      screenshot: null,
+      lab: {
+        lcpMs: null,
+        cls: null,
+        inpMs: null,
+        fcpMs: null,
+        ttfbMs: null,
+        tbtMs: null,
+      },
+    };
+    const html = buildAuditReportHtml({
+      siteUrl: "https://example.com/",
+      startedAt: "2026-09-28T08:00:00Z",
+      completedAt: null,
+      pagesCrawled: 0,
+      pages: [],
+      issues: [],
+      lighthouse: [],
+      insights: {
+        ...insights,
+        speed,
+        traffic: hasTraffic
+          ? { startDate: "2026-08-31", endDate: "2026-09-27", rows: [] }
+          : null,
+      },
+    }).html;
+    expect(html).not.toContain("yalnızca laboratuvar ölçümü vardır");
+    expect(html).not.toContain(
+      "bu rapor Search Console ya da Analytics trafiğini içermez",
+    );
+    expect(html).toContain("Mobil CrUX");
+    expect(html).toContain(
+      hasTraffic
+        ? "Search Console sayfa trafiği"
+        : "Search Console sayfa trafiği alınamadı",
+    );
+  },
+);

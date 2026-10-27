@@ -21,6 +21,15 @@ export function projectContextQueryKey(projectId: string) {
   return ["projectContext", projectId];
 }
 
+function contextSaveMessage(error: unknown, fallback: string) {
+  return error instanceof Error &&
+    error.message.includes("context_edit_conflict")
+    ? t(
+        "Bu bölüm başka bir yerde değişti. Metinleri karşılaştırıp taslağınızı birleştirin.",
+      )
+    : getStandardErrorMessage(error, fallback);
+}
+
 /**
  * Every edit on this page is a patch op against the same endpoint, so all of
  * them share one mutation. The server function returns the context as it
@@ -42,7 +51,7 @@ export function useContextUpdate(projectId: string) {
     },
     onError: (error) =>
       toast.error(
-        getStandardErrorMessage(error, t("Değişiklikleriniz kaydedilemedi")),
+        contextSaveMessage(error, t("Değişiklikleriniz kaydedilemedi")),
       ),
     // The page instantiates this mutation per section, so two concurrent
     // patches can settle out of order and the slower (earlier-snapshotted)
@@ -226,7 +235,7 @@ export function FormActions({
 export function ContextSaveError({ error }: { error: unknown }) {
   return error ? (
     <p role="alert" className="text-sm text-[var(--ink-error)]">
-      {getStandardErrorMessage(
+      {contextSaveMessage(
         error,
         t(
           "Bilgi kaydedilemedi. Taslağınız korunuyor; alanları kontrol edip yeniden kaydedin.",

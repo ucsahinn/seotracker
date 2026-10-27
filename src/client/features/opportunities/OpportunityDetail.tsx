@@ -237,24 +237,22 @@ export function OpportunityDetail({
       </section>
 
       <div className="flex flex-wrap gap-2">
-        <Link
-          to="/p/$projectId/search-performance"
-          params={{ projectId }}
-          search={{
-            tab: "pages" as const,
-            q: row.page,
-            range:
-              days === 7
-                ? "last_7_days"
-                : days === 90
-                  ? "last_3_months"
-                  : "last_28_days",
-          }}
-          className="btn btn-primary btn-sm gap-1.5"
-        >
-          <Search className="size-4" />
-          {t("Arama performansında aç")}
-        </Link>
+        {dateRange ? (
+          <Link
+            to="/p/$projectId/search-performance"
+            params={{ projectId }}
+            search={{
+              tab: "pages" as const,
+              exactPage: row.page,
+              startDate: dateRange.startDate,
+              endDate: dateRange.endDate,
+            }}
+            className="btn btn-primary btn-sm gap-1.5"
+          >
+            <Search className="size-4" />
+            {t("Arama performansında aç")}
+          </Link>
+        ) : null}
         <button
           type="button"
           className="btn btn-sm gap-1.5"

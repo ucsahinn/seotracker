@@ -72,7 +72,7 @@ describe("report evidence honesty", () => {
       "Gizlenen ve satır sınırı dışında kalan sorgular birlikte",
     );
     expect(html).toContain("satır sınırına ulaşıldı");
-    expect(html).toContain("Kaynak bu iki durumu ayırmadığı");
+    expect(html).toContain("Kaynak durumu kaydedilmemiş.");
     expect(html).not.toContain("bir yılı aşkın veri gerekir");
     expect(html).not.toContain("Bu rapor 0 Google isteğiyle");
   });
@@ -131,4 +131,33 @@ it("labels a top-ten cut against the observed population", () => {
   expect(html).toContain("Gösterilen: 10 &#47; 12 gözlenen kayıt");
   expect(html).toContain("observed-9");
   expect(html).not.toContain("observed-10");
+});
+
+it("prints typed optional-source failure without a definitive negative (previously null and empty were conflated)", () => {
+  const base = view();
+  const { html } = buildSearchReportHtml({
+    view: {
+      ...base,
+      sourceOutcomes: {
+        devices: { status: "unavailable", reason: "request-failed" },
+        countries: { status: "empty", reason: null },
+        searchAppearance: { status: "unavailable", reason: "request-failed" },
+        decay: { status: "insufficient-history", reason: "retention-limit" },
+      },
+    },
+    overlaps: null,
+  });
+  expect(html).toContain("Kaynak isteği başarısız");
+  expect(html).toContain("Kaynak saklama süresi");
+});
+
+it("bounds an empty decay finding to the qualifying pages rather than claiming the source returned no rows", () => {
+  const base = view();
+  const { html } = buildSearchReportHtml({
+    view: { ...base, insights: { ...base.insights, decay: [] } },
+    overlaps: null,
+  });
+  expect(html).toContain(
+    "Okunan sayfalarda güç kaybı koşulunu sağlayan kayıt bulunmadı.",
+  );
 });

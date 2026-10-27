@@ -3,6 +3,7 @@ import {
   formatBytes,
   formatCount,
   formatDate,
+  formatDateTime,
   formatDecimal,
 } from "@/shared/format";
 import { t } from "@/shared/i18n";
@@ -268,6 +269,7 @@ function fieldTable(speed: Speed | null, speedError: string | null): string {
       return `<tr><td>${name}</td><td class="num">${field(speed.page, key, cls)}</td><td class="num">${field(speed.origin, key, cls)}</td><td class="num">${labValue === null ? notMeasured() : show(labValue, cls)}</td></tr>`;
     })
     .join("")}</tbody></table>
+    <p class="note">${escapeHtml(t("Kaydedilen mobil PageSpeed ölçümü: {time}.", { time: formatDateTime(speed.fetchedAt) }))}</p>
     <p class="note">${t("Gerçek kullanıcı verisi Chrome Kullanıcı Deneyimi Raporu'ndan (CrUX, son 28 gün, mobil); laboratuvar sütunu PageSpeed Insights'ın tek ölçümü.")}</p>`;
 }
 

@@ -41,3 +41,9 @@ La génération relit les données serveur. Google peut corriger le passé et la
 Modèle: nom 80, description 200, consignes 3 000 caractères; dix par projet. Supprimer un modèle conserve ses rapports. Effacer la recherche réaffiche les modèles masqués.
 
 Protections: 500 000 octets par rapport, 120 caractères de titre, 2 500 de résumé, 10 000 rapports par projet et 5 Go par installation. Ce sont des limites de stockage, pas de couverture SEO. Vérifiez les dates d'exploration, de vitesse et des sources Google optionnelles dans la méthode du rapport d'audit.
+
+## Types de source et régénération
+
+Les nouveaux rapports natifs de performances de recherche et d’audit du site ont des types enregistrés distincts. Le titre des anciens rapports ne sert pas à déterminer leur type. L’identité de recherche utilise la propriété, les dates fixées et les filtres ; celle d’audit utilise l’identifiant d’audit. Régénérer la même source dans une autre langue met à jour le même enregistrement et peut changer sa langue. Les conflits de titre avec des rapports d’agent sont refusés ; un ancien document de même titre est conservé et le nouvel enregistrement est refusé.
+
+Régénérez les rapports natifs depuis leur écran source ; les agents ne peuvent pas remplacer leur contenu avec `save_report`. Une source manquante ne vaut jamais zéro. La méthode d’audit précise la période de trafic GSC, la limite de lignes et la mesure CrUX mobile enregistrée disponible.

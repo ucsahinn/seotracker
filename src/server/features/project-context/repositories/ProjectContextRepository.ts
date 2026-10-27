@@ -1,4 +1,5 @@
-import { and, asc, desc, eq, inArray, lt, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, inArray, lt, sql } from "drizzle-orm";
+import { integer, sqliteTable } from "drizzle-orm/sqlite-core";
 import { db } from "@/db";
 import type { runBatch } from "@/db/runBatch";
 import {
@@ -38,6 +39,11 @@ type KeyPageRow = {
 // several statements within the same atomic batch.
 const ROWS_PER_INSERT = 10;
 const VALUES_PER_DELETE = 90;
+// Internal batch assertion table, defined by migration 0078. The singleton
+// successful value bounds storage; CHECK rejects 0 before conflict handling.
+const contextWriteGuard = sqliteTable("project_context_write_guard", {
+  valid: integer("valid").primaryKey(),
+});
 
 function chunk<T>(items: T[], size: number): T[][] {
   const out: T[][] = [];
@@ -94,6 +100,25 @@ function upsertSection(
         updatedBy: params.updatedBy,
       },
     });
+}
+
+function assertSectionContent(
+  tx: Tx,
+  projectId: string,
+  key: string,
+  expected: string | null,
+) {
+  // SQL NULL is distinct from an existing empty string. Check inside the same
+  // batch as every mutation, so a stale draft cannot partially apply a batch.
+  return tx
+    .insert(contextWriteGuard)
+    .values({
+      valid: sql`CASE WHEN
+    ((SELECT content FROM project_context_sections
+      WHERE project_id = ${projectId} AND key = ${key}) IS ${expected})
+      THEN 1 ELSE 0 END`,
+    })
+    .onConflictDoNothing();
 }
 
 function deleteSection(tx: Tx, projectId: string, key: string) {
@@ -224,11 +249,20 @@ function deleteKeyPages(tx: Tx, projectId: string, urls: string[]) {
   );
 }
 
-async function listResearchLog(projectId: string, limit: number) {
+async function listResearchLog(
+  projectId: string,
+  limit: number,
+  since?: string,
+) {
   return db
     .select()
     .from(projectResearchLog)
-    .where(eq(projectResearchLog.projectId, projectId))
+    .where(
+      and(
+        eq(projectResearchLog.projectId, projectId),
+        since ? gte(projectResearchLog.entryDate, since) : undefined,
+      ),
+    )
     .orderBy(
       desc(projectResearchLog.createdAt),
       desc(projectResearchLog.entryDate),
@@ -281,6 +315,7 @@ function pruneResearchLogBefore(tx: Tx, projectId: string, entryDate: string) {
 }
 
 export const ProjectContextRepository = {
+  assertSectionContent,
   listSections,
   hasAnySection,
   upsertSection,

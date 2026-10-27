@@ -173,6 +173,7 @@ export function SearchConsoleConnectionCard({
         <SelfHostedSetupWarning />
       ) : connected && !picking ? (
         <GoogleConnectedState
+          accessEvidence={connection?.accessEvidence}
           property={connection?.siteUrl ?? ""}
           bindingDate={connection?.connectedAt}
           usesServiceAccount={connection?.usesServiceAccount}

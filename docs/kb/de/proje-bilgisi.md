@@ -20,7 +20,9 @@ Aktualisieren liest Notizen und Einrichtung neu. Bei einem Hintergrundfehler ble
 
 Die Assistentenvorlage bittet um Ihre Zustimmung vor dem Speichern. Die Anwendungswerkzeuge können sofort schreiben und erzwingen keine zusätzliche Zustimmung. Ohne gelesene Projektidentität wird keine Vorlage erstellt.
 
-Das Rechercheprotokoll zeigt höchstens die neuesten 20 Einträge, je 1.000 Zeichen. Das Datum stammt vom UTC-Tag des Servers. Einträge über 90 Tage werden beim Hinzufügen neuer Notizen bereinigt; ohne neue Einträge können ältere bleiben. Die Liste ist kein vollständiger Verlauf.
+Das Rechercheprotokoll zeigt die neuesten 20 Einträge der letzten 90 Tage, je 1.000 Zeichen. Das Datum stammt vom UTC-Tag des Servers. Ältere Einträge werden bei jedem Lesen ausgefiltert. Weitere Einträge im Zeitraum werden durch einen Hinweis kenntlich gemacht. Die Liste ist kein vollständiger Verlauf.
+
+Ändert ein anderer Client einen Abschnitt während der Bearbeitung, wird der gesamte Speichervorgang abgelehnt; Ihr Entwurf bleibt erhalten. Vergleichen und verbinden Sie Ausgangstext, aktuellen Text und Entwurf vor dem erneuten Speichern. Agenten können mit `expectedContent` denselben Schutz nutzen; ältere Clients ohne dieses Feld bleiben kompatibel.
 
 Quellen und Einrichtung zählt sechs gemeinsame Konfigurationssignale; fehlend und nicht lesbar bleiben getrennt. Optionale Listen zählen nicht. Verbindungen sind kein Live-Test, ein PageSpeed-Schlüssel garantiert keine Quote, ein Werkzeugaufruf dieser Installation beweist kein Lesen dieses Projekts. Das ist kein SEO-Wert.
 

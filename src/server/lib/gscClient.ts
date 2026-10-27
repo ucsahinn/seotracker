@@ -1,3 +1,7 @@
+import {
+  googleAccessScope,
+  observeGoogleAccess,
+} from "@/server/features/google/GoogleAccessService";
 import { z } from "zod";
 import { getGoogleGrantAuth } from "@/lib/auth";
 import {
@@ -258,7 +262,7 @@ export function createGscClient(opts: {
     return result.accessToken;
   }
 
-  async function request<T>(
+  async function requestRaw<T>(
     url: string,
     init?: { method?: string; body?: unknown },
   ): Promise<T> {
@@ -305,6 +309,27 @@ export function createGscClient(opts: {
       );
     }
     return (await response.json()) as T;
+  }
+
+  async function request<T>(
+    url: string,
+    init?: { method?: string; body?: unknown },
+  ): Promise<T> {
+    const match = new URL(url).pathname.match(/\/sites\/([^/]+)\//);
+    const inspection = z.object({ siteUrl: z.string() }).safeParse(init?.body);
+    const propertyId = match
+      ? decodeURIComponent(match[1])
+      : inspection.success
+        ? inspection.data.siteUrl
+        : null;
+    if (!propertyId) return requestRaw<T>(url, init);
+    const scope = await googleAccessScope({
+      provider: "gsc",
+      propertyId,
+      userId: opts.userId,
+      accountId: opts.gscAccountId ?? "",
+    });
+    return observeGoogleAccess(scope, () => requestRaw<T>(url, init));
   }
 
   return {

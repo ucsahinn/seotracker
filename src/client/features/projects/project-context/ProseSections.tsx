@@ -31,6 +31,8 @@ export function ProseSections({
   // render straight from the query, so an agent's write shows up on refetch.
   const [drafts, setDrafts] = React.useState<Record<string, string>>({});
 
+  const bases = React.useRef<Record<string, string | null>>({});
+
   const draftOf = (key: ProjectContextSectionKey) =>
     drafts[key] ?? stored.get(key)?.content ?? "";
 
@@ -44,9 +46,20 @@ export function ProseSections({
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (update.isPending || changed.length === 0) return;
+    if (
+      update.isPending ||
+      changed.length === 0 ||
+      changed.some(
+        (key) => bases.current[key] !== (stored.get(key)?.content ?? null),
+      )
+    )
+      return;
     update.mutate(
-      changed.map((key) => ({ section: key, content: draftOf(key).trim() })),
+      changed.map((key) => ({
+        section: key,
+        content: draftOf(key).trim(),
+        expectedContent: bases.current[key],
+      })),
       // Unpin every draft the save made redundant — one that now matches the
       // server — so those sections render from the query again (a pinned
       // draft would silently overwrite a later agent write on the next
@@ -59,9 +72,13 @@ export function ProseSections({
           );
           setDrafts((current) =>
             Object.fromEntries(
-              Object.entries(current).filter(
-                ([key, value]) => value.trim() !== (saved.get(key) ?? ""),
-              ),
+              Object.entries(current).filter(([key, value]) => {
+                const keep = value.trim() !== (saved.get(key) ?? "");
+                if (keep && changed.some((submitted) => submitted === key))
+                  bases.current[key] = saved.get(key) ?? null;
+                else if (!keep) delete bases.current[key];
+                return keep;
+              }),
             ),
           );
         },
@@ -102,17 +119,49 @@ export function ProseSections({
               {t(SECTION_HINTS[key])}{" "}
               {t("En fazla {count} karakter", { count: PROSE_MAX_CHARS })}
             </p>
+            {key in bases.current &&
+            bases.current[key] !== (section?.content ?? null) ? (
+              <div
+                role="alert"
+                className="space-y-2 rounded-box border border-warning p-3 text-sm"
+              >
+                <p>
+                  {t(
+                    "Bu bölüm başka bir yerde değişti. Metinleri karşılaştırıp taslağınızı birleştirin.",
+                  )}
+                </p>
+                <p className="whitespace-pre-wrap break-words">
+                  {t("Düzenleme başındaki metin")}: {bases.current[key] ?? "—"}
+                </p>
+                <p className="whitespace-pre-wrap break-words">
+                  {t("Son kayıtlı metin")}: {section?.content ?? "—"}
+                </p>
+                <button
+                  type="button"
+                  className="btn btn-sm min-h-11"
+                  onClick={() => {
+                    bases.current[key] = section?.content ?? null;
+                    setDrafts((current) => ({ ...current }));
+                  }}
+                >
+                  {t("Karşılaştırdım, birleştirilmiş taslağı kullan")}
+                </button>
+              </div>
+            ) : null}
             <textarea
               id={`context-${key}`}
               aria-describedby={"hint-" + key}
               value={draftOf(key)}
               onChange={(event) => {
                 const value = event.target.value;
+                if (!(key in bases.current))
+                  bases.current[key] = section?.content ?? null;
                 setDrafts((current) => {
                   // A draft that matches the store is no draft at all — drop
                   // it so an edit typed and then undone doesn't pin the
                   // section against later agent writes.
                   if (value === (stored.get(key)?.content ?? "")) {
+                    delete bases.current[key];
                     const { [key]: _dropped, ...rest } = current;
                     return rest;
                   }
@@ -138,7 +187,14 @@ export function ProseSections({
         <button
           type="submit"
           className="btn btn-primary btn-sm min-h-11"
-          disabled={update.isPending || changed.length === 0}
+          disabled={
+            update.isPending ||
+            changed.length === 0 ||
+            changed.some(
+              (key) =>
+                bases.current[key] !== (stored.get(key)?.content ?? null),
+            )
+          }
         >
           {t("Değişiklikleri kaydet")}
         </button>

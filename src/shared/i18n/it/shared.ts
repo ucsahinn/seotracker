@@ -88,4 +88,42 @@ export const itShared: Catalog = {
   "Arama sayısı": "Ricerche",
   "Satılan ürün": "Articoli acquistati",
   "Ürün geliri": "Ricavi degli articoli",
+  "Okunan kaynakta bu dönem için kayıt bulunmadı.":
+    "La fonte consultata non ha restituito dati per questo periodo.",
+  "Kaynak satır sınırına ulaştı; sonuçlar yalnızca okunan kayıtları kapsar.":
+    "È stato raggiunto il limite di righe della fonte; i risultati coprono solo i dati letti.",
+  "Kaynak isteği başarısız; bu bölümün verisi alınamadı.":
+    "La richiesta alla fonte non è riuscita; i dati di questa sezione non sono disponibili.",
+  "Kaynak saklama süresi bu karşılaştırmanın tamamını kapsamıyor.":
+    "Il periodo di conservazione della fonte non copre l’intero confronto.",
+  "Kaynak durumu kaydedilmemiş.":
+    "Lo stato della fonte non è stato registrato.",
+  "Bu rapor GA4 oturum veya gelir raporu değildir.":
+    "Questo documento non è un rapporto sulle sessioni o sulle entrate GA4.",
+  "Search Console sayfa trafiği": "Traffico delle pagine di Search Console",
+  "Dönem: {start} – {end} (Pasifik). Okunan sayfa satırı: {rows}.":
+    "Periodo: {start} – {end} (ora del Pacifico). Righe di pagine lette: {rows}.",
+  "Mülk: {property}. Alınma zamanı: {time}. Satır sınırı: {limit}.":
+    "Proprietà: {property}. Recupero: {time}. Limite di righe: {limit}.",
+  "Kaynak ayrıntıları bu kayıtta mevcut değil.":
+    "I dettagli della fonte non sono disponibili in questo record.",
+  "Search Console sayfa trafiği alınamadı; trafik yokluğu sonucu çıkarılamaz.":
+    "Il traffico delle pagine di Search Console non è disponibile; ciò non dimostra l’assenza di traffico.",
+  "Gerçek kullanıcı hızı": "Velocità degli utenti reali",
+  "Mobil CrUX: {url}. Kaydedilen PageSpeed ölçümü: {time}. Sayfa ve origin kapsamları ayrı gösterilir; kayan 28 günlük veri denetim süresi değildir.":
+    "CrUX mobile: {url}. Misurazione PageSpeed salvata: {time}. Pagina e origine sono mostrate separatamente; i dati mobili su 28 giorni non corrispondono alla durata dell’audit.",
+  "Bu kayıtta kullanılabilir CrUX verisi yok; laboratuvar ölçümü gerçek kullanıcı ölçümü değildir.":
+    "Questo record non contiene dati CrUX utilizzabili; una misurazione di laboratorio non è una misurazione degli utenti reali.",
+  "Harita keşif toplamları Anlık veri bölümündedir. Harita kapsamı oranı yalnızca taranan sayfaları kullanır; tüm harita adreslerinin tarandığını göstermez.":
+    "I totali della sitemap scoperti si trovano nei dati istantanei. La copertura usa solo le pagine scansionate e non indica che tutti gli URL della sitemap siano stati scansionati.",
+  "Taranan {count} sayfanın {inMap} tanesi ({percent}) site haritasında. Bu oran taranan sayfalara aittir; keşfedilen harita adreslerinin toplamı mevcutsa Anlık veri bölümünde ayrıca gösterilir.":
+    "Delle {count} pagine scansionate, {inMap} ({percent}) sono nella sitemap. Il rapporto riguarda le pagine scansionate; il totale degli URL scoperti, se disponibile, appare separatamente nei dati istantanei.",
+  "Kaydedilen mobil PageSpeed ölçümü: {time}.":
+    "Misurazione PageSpeed mobile salvata: {time}.",
+  "Rapor hazırlanırken veriler sunucudan yeniden okundu; Google geçmiş değerleri düzeltebilir. Aynı dönem etiketi önceki ekran görüntüsüyle birebir ölçüm eşitliğini garanti etmez. Aynı kaynak yeniden hazırlanırsa kayıt güncellenir; rapor dili değişebilir.":
+    "I dati sono stati riletti dal server; Google può correggere i valori storici. La stessa etichetta di periodo non garantisce misurazioni identiche a una schermata precedente. Rigenerare la stessa fonte aggiorna il record; la lingua del rapporto può cambiare.",
+  "Okunan sayfalarda güç kaybı koşulunu sağlayan kayıt bulunmadı.":
+    "Nessuna delle pagine lette soddisfa la condizione di calo.",
+  "Kaydedilmiş harita keşif toplamı mevcut değil; kapsam oranı yalnızca taranan sayfaları kullanır.":
+    "Non è stato salvato un totale degli URL scoperti nella sitemap; la copertura usa solo le pagine scansionate.",
 };

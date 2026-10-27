@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { dashboardSearchViewQuery } from "./dashboardGscReport";
 import { DeltaBadge } from "@/client/components/MetricTile";
-import { countDelta } from "@/shared/searchTodoCopy";
+import { countDelta } from "@/client/components/MetricTile";
 import { formatCount, formatDate } from "@/shared/format";
 import { t } from "@/shared/i18n";
 export function DashboardVerdict({

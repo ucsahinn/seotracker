@@ -18,3 +18,5 @@ Alternativ erstellen Sie einen OAuth-Web-Client. Registrieren Sie beide Callback
 ## Wiederherstellung
 
 Ein Lesefehler erhält die alte Property-Liste; eine leere Liste allein beweist keine fehlenden Rechte. Abgelaufene Freigaben neu verbinden, bei Ablehnung Property-Rechte und bei deaktivierter API das Cloud-Projekt prüfen. Bei Begrenzungen warten. Unbekannte Fehler: erneut versuchen und Hilfe-Diagnose verwenden. Löschen in der App widerruft keinen Google-Schlüssel. Domainänderungen erhalten Zuordnung und Verlauf.
+
+Die Verbindungskarte zeigt den letzten bereits beobachteten Google-Abruf für die aktuellen Zugangsdaten und die Property mit Datum. Nach einem vorübergehenden Fehler bleibt das Datum des vorherigen erfolgreichen Abrufs erhalten. Ohne Verlauf ist der Zugriff unbestätigt. Das Öffnen der Einstellungen löst keine Google-Abfrage aus. Nach einem Wechsel der Zugangsdaten gelten alte Zugriffs- und Kontingentnachweise nicht für die neue Identität; Berichte müssen ausdrücklich aktualisiert werden.

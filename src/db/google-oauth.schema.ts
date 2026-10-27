@@ -1,5 +1,44 @@
 import { sql } from "drizzle-orm";
-import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+import {
+  integer,
+  primaryKey,
+  sqliteTable,
+  text,
+} from "drizzle-orm/sqlite-core";
+
+export const googleCredentialGeneration = sqliteTable(
+  "google_credential_generation",
+  {
+    id: text("id").primaryKey(),
+    generation: integer("generation").notNull(),
+  },
+);
+
+export const googleAccessEvidence = sqliteTable(
+  "google_access_evidence",
+  {
+    provider: text("provider").notNull(),
+    propertyId: text("property_id").notNull(),
+    userId: text("user_id").notNull(),
+    accountId: text("account_id").notNull(),
+    generation: integer("generation").notNull(),
+    observedAt: text("observed_at").notNull(),
+    startedAt: text("started_at").notNull(),
+    reason: text("reason"),
+    lastSuccessAt: text("last_success_at"),
+  },
+  (table) => [
+    primaryKey({
+      columns: [
+        table.provider,
+        table.propertyId,
+        table.userId,
+        table.accountId,
+        table.generation,
+      ],
+    }),
+  ],
+);
 
 /**
  * The Google OAuth client this install uses for Search Console and Analytics.

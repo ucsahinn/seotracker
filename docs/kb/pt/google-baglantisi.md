@@ -18,3 +18,5 @@ Para OAuth crie um cliente Web application. Registe exatamente os dois endereço
 ## Recuperação
 
 Uma falha conserva a lista anterior; uma lista vazia não prova falta de permissões. Volte a ligar autorizações expiradas, verifique permissões em acessos negados e o projeto Cloud para APIs inativas. Aguarde perante limites. Para falhas desconhecidas repita e use o diagnóstico da Ajuda. Remover credenciais aqui não as revoga no Google. Alterar domínio mantém ligação e histórico.
+
+O cartão de conexão mostra a data da última leitura do Google já observada para as credenciais e a propriedade atuais. Após uma falha temporária, mantém a data da leitura anterior bem-sucedida. Sem histórico, o acesso permanece não verificado. Abrir as configurações não faz consultas ao Google. Alterar as credenciais não transfere evidências antigas de acesso ou cota para a nova identidade; atualize os relatórios explicitamente.

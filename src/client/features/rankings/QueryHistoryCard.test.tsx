@@ -10,8 +10,8 @@ vi.mock("@tanstack/react-router", () => ({
   }: {
     children: React.ReactNode;
     to: string;
-    search: { q: string };
-  }) => <a href={`${to}?q=${search.q}`}>{children}</a>,
+    search: Record<string, string>;
+  }) => <a href={`${to}?${new URLSearchParams(search)}`}>{children}</a>,
 }));
 
 const rows = [
@@ -25,6 +25,7 @@ function renderCard() {
       projectId="p1"
       query="kedi maması"
       rows={rows}
+      range={{ startDate: "2026-09-01", endDate: "2026-09-02" }}
       loading={false}
       error={null}
       onRetry={() => {}}
@@ -33,7 +34,7 @@ function renderCard() {
 }
 
 describe("QueryHistoryCard", () => {
-  it("totals the window and links to the Search Performance row", () => {
+  it("keeps exact query and source dates (the old substring link lost both)", () => {
     renderCard();
     expect(
       screen.getByText(/Toplam tıklama \/ gösterim: 7 \/ 2/),
@@ -41,10 +42,16 @@ describe("QueryHistoryCard", () => {
     expect(
       screen
         .getByRole("link", {
-          name: "Arama performansında metin ara (tarih ve birebir sorgu korunmaz)",
+          name: "Arama performansında aç",
         })
         .getAttribute("href"),
-    ).toContain("q=kedi maması");
+    ).toContain("exactQuery=");
+    const href = screen.getByRole("link").getAttribute("href")!;
+    expect(
+      new URL(href, "https://local.test").searchParams.get("exactQuery"),
+    ).toBe("kedi maması");
+    expect(href).toContain("startDate=2026-09-01");
+    expect(href).toContain("endDate=2026-09-02");
   });
 
   it("reads out a day's numbers while hovering the chart", () => {

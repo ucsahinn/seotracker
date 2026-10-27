@@ -40,11 +40,11 @@ const size = (bytes: number) =>
 const metaLine = (
   report: Pick<
     ReportMetadata,
-    "skill" | "createdBy" | "updatedAt" | "sizeBytes"
+    "skill" | "createdBy" | "updatedAt" | "sizeBytes" | "nativeKind"
   >,
 ) =>
   [
-    report.skill ?? "no skill",
+    report.nativeKind ?? report.skill ?? "no skill",
     report.createdBy,
     `updated ${report.updatedAt.slice(0, 10)}`,
     size(report.sizeBytes),
@@ -111,7 +111,7 @@ export const saveReportTool = {
   config: {
     title: "Save report",
     description:
-      "Saves a finished HTML report to this project, where anyone in the workspace can read and print it. Call list_reports first and pass the matching reportId to replace that report instead of creating a near-duplicate — a save whose title already exists in the project is refused. Give the report a specific title (the subject and the period), a summary carrying the verdict, the top action and the key numbers, and the skill slug you are running. Then reply with the returned url, a one-line verdict and the single top action; do not paste the report into chat.",
+      "Saves a finished HTML report to this project, where anyone in the workspace can read and print it. Call list_reports first and pass the matching reportId to replace that report instead of creating a near-duplicate — a save whose title already exists in the project is refused. Give the report a specific title (the subject and the period), a summary carrying the verdict, the top action and the key numbers, and the skill slug you are running. Native Search and Audit exports expose server-stamped nativeKind and nativeIdentity on reads; regenerate those from their source screen instead of replacing them with save_report. Then reply with the returned url, a one-line verdict and the single top action; do not paste the report into chat.",
     inputSchema: saveInputSchema,
     outputSchema: saveOutputSchema,
     annotations: {
@@ -302,7 +302,7 @@ export const getReportTool = {
   config: {
     title: "Get report",
     description:
-      "Reads one saved report: title, skill, attribution, size, and the full summary. This is the cheap way to see what a report already says before you revise it — pass includeHtml only when you need the document itself.",
+      "Reads one saved report: title, skill, attribution, size, server-stamped nativeKind/nativeIdentity when present, and the full summary. This is the cheap way to see what a report already says before you revise it — pass includeHtml only when you need the document itself.",
     inputSchema: getInputSchema,
     outputSchema: getOutputSchema,
     annotations: {

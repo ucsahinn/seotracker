@@ -11,6 +11,7 @@ import { makeToolContext, textContent } from "./tool-test-support";
 const mocks = vi.hoisted(() => ({
   getProjectForOrganization: vi.fn(),
   listSections: vi.fn(),
+  assertSectionContent: vi.fn(),
   upsertSection: vi.fn(),
   listCompetitors: vi.fn(),
   listKeyPages: vi.fn(),
@@ -51,6 +52,32 @@ beforeEach(() => {
 });
 
 describe("update_project_context", () => {
+  it("enforces the MCP content precondition before any write (previously accepted stale edits)", async () => {
+    mocks.assertSectionContent.mockRejectedValueOnce(
+      new Error("context_edit_conflict"),
+    );
+    await expect(
+      updateProjectContextTool.handler(
+        {
+          projectId: "project_1",
+          updates: [
+            {
+              section: "current_goal",
+              content: "draft",
+              expectedContent: "base",
+            },
+          ],
+        },
+        makeToolContext(),
+      ),
+    ).rejects.toThrow("context_edit_conflict");
+    expect(mocks.assertSectionContent).toHaveBeenCalledWith(
+      expect.anything(),
+      "project_1",
+      "current_goal",
+      "base",
+    );
+  });
   // Provenance is the contract: a write arriving over MCP must be attributable
   // to MCP in the UI, and silently recording it as a user edit would be
   // invisible everywhere else.

@@ -801,4 +801,9 @@ export const enAnalytics: Catalog = {
   "Google mülk listesi okunamadı. Bu durum erişiminiz olmadığı anlamına gelmez. Son liste korunur; yeniden deneyin veya Yardım tanılamasını kontrol edin.":
     "Could not read the Google property list. This does not mean you lack access. The last list is preserved; try again or check diagnostics in Help.",
   "Mülk seçili": "Property selected",
+  "Veri erişimi henüz doğrulanmadı.": "Data access has not been verified yet.",
+  "Son başarılı Google okuması: {date}": "Last successful Google read: {date}",
+  "Son başarısız Google okuması: {date}": "Last failed Google read: {date}",
+  "Google bu raporun tarih kapsamındaki bazı verileri kesti; toplamlar ve karşılaştırmalar eksik olabilir.":
+    "Google truncated some data in this report's date range; totals and comparisons may be incomplete.",
 };

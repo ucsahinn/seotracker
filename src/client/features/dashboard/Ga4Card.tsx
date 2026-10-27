@@ -1,5 +1,5 @@
 import { GA4_HELP } from "@/client/features/analytics/metricHelp";
-import { fractionalChange, pointsDelta } from "@/shared/delta";
+import { pointsDelta } from "@/shared/delta";
 import { ga4OverviewQuery } from "./ga4OverviewQuery";
 import { Ga4Provenance } from "./Ga4Provenance";
 import { Link } from "@tanstack/react-router";
@@ -10,7 +10,7 @@ import {
   moreDetailsClass,
   Stat,
 } from "@/client/features/dashboard/cardParts";
-import { DeltaBadge } from "@/client/components/MetricTile";
+import { countComparison, DeltaBadge } from "@/client/components/MetricTile";
 import { Chart, CHART_SERIES } from "@/client/components/Chart";
 import { Ga4ConnectCard } from "@/client/features/dashboard/Ga4ConnectCard";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
@@ -46,10 +46,12 @@ function count(value: number | null, format: (n: number) => string) {
   return value === null ? undefined : { value, format };
 }
 
-function statDelta(current: number | null, previous: number | null) {
-  if (current === null || previous === null) return undefined;
-  const change = fractionalChange(current, previous);
-  return change === null ? undefined : <DeltaBadge value={change} />;
+function statDelta(
+  current: number | null,
+  previous: number | null,
+  format = formatCount,
+) {
+  return <DeltaBadge value={countComparison(current, previous, format)} />;
 }
 
 function SessionsTooltip({
@@ -255,6 +257,12 @@ export function Ga4Card({
                 sub={statDelta(
                   report.totals.purchaseRevenue,
                   previous.purchaseRevenue,
+                  (value) =>
+                    report.currencyCode
+                      ? formatMoney(value, report.currencyCode)
+                      : t("{value} (para birimi bilinmiyor)", {
+                          value: formatDecimal(value),
+                        }),
                 )}
               />
             ) : null}

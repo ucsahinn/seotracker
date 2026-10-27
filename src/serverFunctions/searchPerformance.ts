@@ -58,6 +58,7 @@ export const getSearchPerformanceView = createServerFn({ method: "POST" })
         SearchPerformanceService.getView({
           projectId: context.projectId,
           filters: filtersOf(data),
+          window: data.window,
           fresh: data.fresh,
         }),
       ),

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { dashboardSearchViewQuery } from "./dashboardGscReport";
-import { countDelta } from "@/shared/searchTodoCopy";
+import { countDelta } from "@/client/components/MetricTile";
 import { placesDelta, pointsDelta } from "@/shared/delta";
 import {
   formatCount,

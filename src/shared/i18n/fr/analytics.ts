@@ -94,4 +94,12 @@ export const frAnalytics: Catalog = {
     "Périmètre du diagnostic : {shown} / {total} lignes.",
   "Etkinlik durumu bilinmiyor; rapor sınırlı veya eksik. Dönemi ve ölçüm ayarlarını kontrol edin.":
     "L’activité est inconnue car le rapport est limité ou incomplet. Vérifiez la période et les paramètres de mesure.",
+  "Veri erişimi henüz doğrulanmadı.":
+    "L’accès aux données n’a pas encore été vérifié.",
+  "Son başarılı Google okuması: {date}":
+    "Dernière lecture Google réussie : {date}",
+  "Son başarısız Google okuması: {date}":
+    "Dernière lecture Google échouée : {date}",
+  "Google bu raporun tarih kapsamındaki bazı verileri kesti; toplamlar ve karşılaştırmalar eksik olabilir.":
+    "Google a tronqué certaines données de la période de ce rapport ; les totaux et les comparaisons peuvent être incomplets.",
 };

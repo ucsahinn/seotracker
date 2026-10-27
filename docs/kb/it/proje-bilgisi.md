@@ -20,7 +20,9 @@ Aggiorna rilegge note e configurazione. Un errore in background conserva informa
 
 Il prompt per l’assistente gli chiede di ottenere il tuo consenso prima di scrivere. Gli strumenti applicativi possono scrivere subito e non impongono un’ulteriore conferma. Il prompt resta indisponibile finché l’identità del progetto non è letta.
 
-Il diario di ricerca mostra al massimo le 20 note più recenti, di 1.000 caratteri ciascuna. La data usa il giorno UTC del server. La pulizia oltre 90 giorni avviene quando viene aggiunta una nota: senza nuovi inserimenti possono restare note più vecchie. Non è la cronologia completa.
+Il diario di ricerca mostra le 20 note più recenti degli ultimi 90 giorni, di 1.000 caratteri ciascuna. La data usa il giorno UTC del server. Le note scadute vengono filtrate a ogni lettura. Un avviso indica altre note nello stesso periodo. Non è la cronologia completa.
+
+Se un altro client modifica una sezione durante la scrittura, l’intero salvataggio viene rifiutato e la bozza resta disponibile. Confronta il testo iniziale, l’ultimo testo salvato e la bozza, poi uniscili prima di riprovare. Gli agenti possono inviare `expectedContent` per la stessa protezione; i client precedenti senza questo campo restano compatibili.
 
 Fonti e configurazione conta sei segnali condivisi distinguendo mancanze e letture fallite. Le liste facoltative non contano. Una connessione non è un test dal vivo, una chiave PageSpeed non garantisce quota, una chiamata strumento dell’installazione non prova la lettura di questo progetto. Non è un punteggio SEO.
 

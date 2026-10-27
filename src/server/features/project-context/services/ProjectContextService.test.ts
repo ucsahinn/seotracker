@@ -7,6 +7,7 @@ import {
 
 const mocks = vi.hoisted(() => ({
   listSections: vi.fn(),
+  assertSectionContent: vi.fn(),
   upsertSection: vi.fn(),
   deleteSection: vi.fn(),
   listCompetitors: vi.fn(),
@@ -329,6 +330,8 @@ describe("project context service", () => {
       competitors: [],
       keyPages: [],
       researchLog: [],
+      researchLogHasMore: false,
+      reportTemplatesAvailable: true,
       reportTemplates: [],
     });
 
@@ -342,7 +345,7 @@ describe("project context service", () => {
   // A full log is a truncated log, and an agent judging whether research is
   // stale must not read the newest 20 entries as the whole 90-day window.
   it("says so when the research log is rendered at its limit", () => {
-    const render = (entryCount: number) =>
+    const render = (entryCount: number, hasMore = false) =>
       renderProjectContextMarkdown({
         sections: [],
         missingSections: [],
@@ -350,6 +353,8 @@ describe("project context service", () => {
         competitors: [],
         keyPages: [],
         reportTemplates: [],
+        researchLogHasMore: hasMore,
+        reportTemplatesAvailable: true,
         researchLog: Array.from({ length: entryCount }, (_, index) => ({
           id: `log_${index}`,
           entryDate: "2026-08-15",
@@ -358,11 +363,12 @@ describe("project context service", () => {
         })),
       });
 
-    const atLimit = render(20);
+    const atLimit = render(20, true);
     expect(atLimit).toContain("## Research log (20 entries)");
     expect(atLimit).toContain(
       "_Older entries within the 90-day window are omitted._",
     );
     expect(render(1)).not.toContain("_Older entries");
+    expect(render(20)).not.toContain("_Older entries");
   });
 });

@@ -1,4 +1,5 @@
 import { formatDateTime } from "@/client/lib/format";
+import { GoogleAccessEvidence } from "./GoogleAccessEvidence";
 import { Loader2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { t } from "@/shared/i18n";
@@ -16,7 +17,13 @@ export function GoogleConnectedState({
   metadata,
   bindingDate,
   usesServiceAccount,
+  accessEvidence,
 }: {
+  accessEvidence?: {
+    observedAt: string;
+    reason: string | null;
+    lastSuccessAt?: string | null;
+  } | null;
   metadata?: React.ReactNode;
   bindingDate?: string | null;
   usesServiceAccount?: boolean;
@@ -79,7 +86,7 @@ export function GoogleConnectedState({
             : t("Kimlik yöntemi: Google OAuth")}
         </p>
       ) : null}
-      {metadata}
+      {metadata ?? <GoogleAccessEvidence evidence={accessEvidence} />}
       <p className="text-sm text-muted">
         {t(
           "Mülk seçimi kayıtlıdır. Veri erişimi bu ayar okumasıyla doğrulanmaz; son veri durumunu ilgili rapordan kontrol edin.",

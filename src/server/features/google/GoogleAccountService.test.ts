@@ -347,3 +347,11 @@ it.each(["same-account", "other-account", "other-user"] as const)(
     );
   },
 );
+
+// Credential generation SQL is covered independently; these tests exercise provider behavior.
+vi.mock("@/server/features/google/GoogleAccessRepository", () => ({
+  GoogleAccessRepository: {
+    generation: async () => 0,
+    advance: async () => {},
+  },
+}));

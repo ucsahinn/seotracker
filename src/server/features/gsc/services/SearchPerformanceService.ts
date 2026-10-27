@@ -1,4 +1,8 @@
+import { sourceOutcome } from "@/shared/searchSourceOutcome";
 import { completeSearchSeries } from "./completeSearchSeries";
+import { AppError } from "@/server/lib/errors";
+import { searchPerformanceViewInputSchema } from "@/types/schemas/search-performance";
+import { t } from "@/shared/i18n";
 /* eslint-disable max-lines */
 import { sort, sortBy } from "remeda";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
@@ -29,7 +33,7 @@ import { GscSiteDailyRepository } from "@/server/features/gsc/repositories/GscSi
 import { SearchSettingsRepository } from "@/server/features/gsc/repositories/SearchSettingsRepository";
 import { addIsoDays, gscToday } from "@/shared/dataFreshness";
 import { googleUpdatesBetween } from "@/shared/googleSearchUpdates";
-import { parseTimestamp } from "@/shared/format";
+import { formatDate, parseTimestamp } from "@/shared/format";
 import {
   buildInsights,
   buildTodo,
@@ -190,9 +194,23 @@ async function resolveSeries(
    * what Google serves and not reaching into incomplete days.
    */
   const valid =
-    window.startDate >= floorDate && window.endDate <= resolved.endDate;
+    searchPerformanceViewInputSchema.safeParse({
+      projectId,
+      ...filters,
+      window,
+    }).success &&
+    window.startDate >= floorDate &&
+    window.endDate <= resolved.endDate;
+  if (!valid)
+    throw new AppError(
+      "VALIDATION_ERROR",
+      t(
+        "Seçilen dönem Search Console'un okunabilir kesin günleri dışında. Kullanılabilir dönem: {start} – {end}.",
+        { start: formatDate(floorDate), end: formatDate(resolved.endDate) },
+      ),
+    );
   return {
-    window: valid ? withSpan(resolved, window) : resolved,
+    window: withSpan(resolved, window),
     series,
   };
 }
@@ -314,13 +332,14 @@ function decaySpans(endDate: string): DateSpan[] {
 async function getView(input: {
   projectId: string;
   filters: SearchFilters;
+  window?: DateSpan;
   fresh?: boolean;
 }): Promise<SearchPerformanceView> {
   const { projectId, filters, fresh } = input;
   const { window, series } = await resolveSeries(
     projectId,
     filters,
-    undefined,
+    input.window,
     fresh,
   );
   const { filters: gscFilters, deviceFilters } = filterSet(filters);
@@ -357,12 +376,16 @@ async function getView(input: {
      */
     optional(ask(scope, current, ["searchAppearance"], gscFilters)),
     optional(
-      Promise.all(
-        decaySpans(window.endDate).map(async (span) => ({
-          span,
-          result: await ask(scope, span, ["page"], gscFilters, ROW_PAGES),
-        })),
-      ),
+      decaySpans(window.endDate).some(
+        (span) => span.startDate < window.floorDate,
+      )
+        ? Promise.resolve(null)
+        : Promise.all(
+            decaySpans(window.endDate).map(async (span) => ({
+              span,
+              result: await ask(scope, span, ["page"], gscFilters, ROW_PAGES),
+            })),
+          ),
     ),
     SearchSettingsRepository.listBrandTerms(projectId),
     SearchSettingsRepository.getProjectIdentity(projectId),
@@ -488,6 +511,21 @@ async function getView(input: {
 
   return {
     connected: true,
+    sourceOutcomes: {
+      devices: sourceOutcome(devices),
+      countries: sourceOutcome(countries),
+      searchAppearance: sourceOutcome(appearance),
+      decay: decaySpans(window.endDate).some(
+        (span) => span.startDate < window.floorDate,
+      )
+        ? { status: "insufficient-history", reason: "retention-limit" }
+        : decay
+          ? sourceOutcome({
+              rows: decay.flatMap((quarter) => quarter.result.rows),
+              truncated: decay.some((quarter) => quarter.result.truncated),
+            })
+          : sourceOutcome(null),
+    },
     siteUrl: series.siteUrl,
     filters: {
       range: filters.dateRange,
@@ -815,9 +853,9 @@ async function getBrandTerms(projectId: string) {
 }
 
 async function setBrandTerms(projectId: string, terms: string[]) {
-  const unique = [...new Set(terms.map((t) => t.trim().toLowerCase()))].filter(
-    (t) => t.length >= 2,
-  );
+  const unique = [
+    ...new Set(terms.map((term) => term.trim().toLowerCase())),
+  ].filter((term) => term.length >= 2);
   await SearchSettingsRepository.replaceBrandTerms(projectId, unique);
   return getBrandTerms(projectId);
 }

@@ -12,6 +12,7 @@ type AccountOption = {
   requiresReconnect: boolean;
   propertiesUnavailable: boolean;
   unavailableReason?: string | null;
+  failureReason?: string | null;
   sites: SiteOption[];
 };
 

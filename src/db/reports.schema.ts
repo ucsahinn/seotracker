@@ -1,3 +1,4 @@
+import type { NativeReportKind } from "@/types/schemas/reports";
 import {
   index,
   integer,
@@ -24,6 +25,8 @@ export const reports = sqliteTable(
     projectId: text("project_id")
       .notNull()
       .references(() => projects.id, { onDelete: "cascade" }),
+    nativeKind: text("native_kind").$type<NativeReportKind>(),
+    nativeIdentity: text("native_identity"),
     title: text("title").notNull(),
     // Markdown, capped at REPORT_MAX_SUMMARY_CHARS: what list reads return
     // instead of the document.
@@ -71,6 +74,11 @@ export const reports = sqliteTable(
     ),
     // One title per project: the service's read-then-write check cannot stop
     // two concurrent saves, and the audit report is found again by its title.
+    uniqueIndex("reports_project_native_idx").on(
+      table.projectId,
+      table.nativeKind,
+      table.nativeIdentity,
+    ),
     uniqueIndex("reports_project_title_idx").on(table.projectId, table.title),
   ],
 );

@@ -32,4 +32,4 @@ As posições médias são ponderadas pelas impressões. A variação é a médi
 
 Os dias observados estão sempre visíveis: 10 dias em 90 não significam cobertura completa. Os pontos diários seguem o calendário real e as lacunas interrompem a linha. Setas, Home e End percorrem as datas. Expanda os valores diários para os ler. Semanas inteiramente ausentes mantêm lacunas; as semanas nas extremidades podem ser parciais.
 
-A ligação para Desempenho de pesquisa abre atualmente uma pesquisa textual. A consulta exata e as datas do arquivo não são mantidas. Verifique o âmbito antes de comparar resultados. Não há classificações de concorrentes, volume pago nem previsões de tráfego.
+A ligação para Desempenho de pesquisa preserva a consulta exata e as datas do arquivo. Para períodos anteriores à retenção do Google, a primeira data disponível é indicada antes da navegação. Não há classificações de concorrentes, volume pago nem previsões de tráfego.

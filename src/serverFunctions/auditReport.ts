@@ -4,7 +4,6 @@ import { AuditService } from "@/server/features/audit/services/AuditService";
 import { buildAuditReportHtml } from "@/server/features/audit/report/buildAuditReportHtml";
 import { getAuditInsights } from "@/server/features/audit/services/auditInsights";
 import { getIndexCoverage } from "@/server/features/gsc/services/GscIndexCoverageService";
-import { ReportRepository } from "@/server/features/reports/repositories/ReportRepository";
 import { ReportService } from "@/server/features/reports/services/ReportService";
 import { AppError } from "@/server/lib/errors";
 import { APP_REPORT_CREATOR } from "@/shared/report-creator";
@@ -95,21 +94,13 @@ export const createAuditReport = createServerFn({ method: "POST" })
       );
     }
 
-    /*
-     * The title carries the site, the day and a short audit id, so downloading
-     * the same audit again refreshes its report. Only a report the app itself
-     * made is overwritten: an agent's report with the same title is left alone
-     * and the save is refused as a duplicate title instead.
-     */
-    const existing = await ReportRepository.findReportByTitle(
-      context.projectId,
-      document.title,
-    );
-    const sameDay =
-      existing?.createdBy === APP_REPORT_CREATOR ? existing : null;
-
     const saved = await ReportService.saveReport({
-      reportId: sameDay?.id,
+      nativeKind: "site-audit-export",
+      nativeIdentity: JSON.stringify([
+        "native-audit-v1",
+        context.projectId,
+        data.auditId,
+      ]),
       projectId: context.projectId,
       organizationId: context.organizationId,
       title: document.title,

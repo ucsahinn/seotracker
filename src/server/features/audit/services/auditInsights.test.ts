@@ -1,3 +1,4 @@
+import { GscService } from "@/server/features/gsc/services/GscService";
 import { describe, expect, it, vi } from "vitest";
 import { auditIssues, audits } from "@/db/schema";
 import type * as AuditRepositoryModule from "@/server/features/audit/repositories/AuditRepository";
@@ -97,4 +98,39 @@ describe("getAuditInsights changes", () => {
     expect(after.partial).toBe(true);
     expect(before.partial).toBe(false);
   });
+});
+
+it("retains the actual traffic property, dates and source cap (previously enrichment discarded them)", async () => {
+  await testDb.db
+    .insert(audits)
+    .values(audit("traffic", "2026-10-22T00:00:00Z"));
+  vi.mocked(GscService.getPerformance).mockResolvedValueOnce({
+    siteUrl: "sc-domain:example.com",
+    connectedBy: null,
+    request: { startDate: "2026-09-23", endDate: "2026-10-20" },
+    rows: Array.from({ length: 1000 }, (_, index) => ({
+      keys: ["https://example.com/p" + index],
+      clicks: 1,
+      impressions: 5,
+      ctr: 0.2,
+      position: 3,
+    })),
+  });
+  const insights = await getAuditInsights({
+    projectId: "p1",
+    auditId: "traffic",
+  });
+  expect(insights.traffic).toMatchObject({
+    startDate: "2026-09-23",
+    endDate: "2026-10-20",
+    source: {
+      property: "sc-domain:example.com",
+      fetchedRows: 1000,
+      rowLimit: 1000,
+      capped: true,
+      timeZone: "America/Los_Angeles",
+    },
+  });
+  expect(insights.traffic?.source?.retrievedAt).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+  expect(insights.traffic?.rows).toHaveLength(1000);
 });

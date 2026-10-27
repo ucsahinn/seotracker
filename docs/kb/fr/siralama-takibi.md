@@ -32,4 +32,4 @@ Les positions moyennes sont pondérées par les impressions. La variation soustr
 
 Le nombre de jours observés reste visible : 10 jours sur 90 ne constituent pas une couverture complète. Les points quotidiens suivent le calendrier réel et les lacunes coupent la ligne. Flèches, Home et End parcourent les dates. Développez les valeurs quotidiennes pour les lire. Les semaines entièrement absentes restent vides ; les semaines aux extrémités peuvent être partielles.
 
-Le lien Performance de recherche ouvre actuellement une recherche de texte. La requête exacte et les dates de l’archive ne sont pas conservées. Vérifiez le périmètre avant de comparer. Aucun classement concurrent, volume payant ou prévision de trafic n’est disponible.
+Le lien Performance de recherche conserve la requête exacte et les dates de l’archive. Pour les périodes dépassant la conservation de Google, la première date accessible est indiquée avant la navigation. Aucun classement concurrent, volume payant ou prévision de trafic n’est disponible.

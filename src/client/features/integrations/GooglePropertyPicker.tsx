@@ -1,3 +1,5 @@
+import { googleAuthErrorCopy } from "./googleAuthErrorCopy";
+import { GooglePropertyRecovery } from "./GooglePropertyRecovery";
 import { searchFold } from "@/client/lib/searchFold";
 import { Skeleton } from "@/client/components/Skeleton";
 import { Spinner } from "@/client/components/Spinner";
@@ -19,6 +21,7 @@ type Account = {
   requiresReconnect: boolean;
   unavailable?: boolean;
   unavailableReason?: string | null;
+  failureReason?: string | null;
   properties: Property[];
 };
 type SecondaryAction = {
@@ -218,16 +221,17 @@ export function GooglePropertyPicker({
                               not load" with a retry button is useless advice
                               for something retrying will never fix. */}
                           <p className="text-muted">
-                            {account.unavailableReason ??
-                              t("Mülkler yüklenemedi.")}
+                            {account.failureReason &&
+                            account.failureReason !== "unknown"
+                              ? googleAuthErrorCopy(account.failureReason)
+                                  .description
+                              : (account.unavailableReason ??
+                                googleAuthErrorCopy("unknown").description)}
                           </p>
-                          <button
-                            type="button"
-                            className="btn btn-ghost min-h-11 btn-xs"
-                            onClick={onRetry}
-                          >
-                            {t("Tekrar dene")}
-                          </button>
+                          <GooglePropertyRecovery
+                            reason={account.failureReason}
+                            onRetry={onRetry}
+                          />
                         </div>
                       ) : account.properties.length === 0 ? (
                         /* An account that can see nothing is usually an

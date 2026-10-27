@@ -18,6 +18,17 @@ const make = (
 ) => ({ templateName, skill, updatedAt, sizeBytes: 10 });
 
 describe("report stats", () => {
+  it("uses persisted native identity before presentation (previously native Search was unknown)", () => {
+    const search = {
+      ...make("Template", null),
+      nativeKind: "search-performance-export" as const,
+    };
+    expect(reportKind(search)).toBe("search-performance-export");
+    expect(matchesFilter(search, "audit", NOW)).toBe(false);
+    expect(
+      reportKind({ ...make(null, null), nativeKind: "site-audit-export" }),
+    ).toBe("site-audit-export");
+  });
   it("names the kind by template, then skill, then a fallback", () => {
     expect(reportKind(make("Aylık", "seo-audit"))).toBe("Aylık");
     expect(reportKind(make(null, "seo-audit"))).toBe("seo-audit");

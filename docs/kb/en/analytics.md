@@ -29,3 +29,5 @@ Report, channel, dates, breakdown, page size and offset persist in the URL. Exac
 Measurement health reads Admin settings only. “No gaps found in the settings checked” does not prove the tag sends data; follow the linked collection checks. Partial inventory counts say at least. When enhanced measurement is off, zero child features are effectively on. No account settings are changed.
 
 The collapsed quota section shows a local snapshot from the latest report response, not traffic-period usage. The standard property ceiling is an assumption. Refresh requests the visible reports again and can spend reporting tokens.
+
+When Google truncates data in the requested date range, the Analytics overview and report details show the reason and dates supplied by Google. The report is treated as limited; incomplete coverage is not presented as a reliable period comparison.

@@ -94,4 +94,12 @@ export const itAnalytics: Catalog = {
     "Copertura della diagnosi: {shown} / {total} righe.",
   "Etkinlik durumu bilinmiyor; rapor sınırlı veya eksik. Dönemi ve ölçüm ayarlarını kontrol edin.":
     "Attività sconosciuta: il report è limitato o incompleto. Controlla periodo e impostazioni di misurazione.",
+  "Veri erişimi henüz doğrulanmadı.":
+    "L’accesso ai dati non è ancora stato verificato.",
+  "Son başarılı Google okuması: {date}":
+    "Ultima lettura Google riuscita: {date}",
+  "Son başarısız Google okuması: {date}":
+    "Ultima lettura Google non riuscita: {date}",
+  "Google bu raporun tarih kapsamındaki bazı verileri kesti; toplamlar ve karşılaştırmalar eksik olabilir.":
+    "Google ha troncato alcuni dati nel periodo di questo report; totali e confronti potrebbero essere incompleti.",
 };

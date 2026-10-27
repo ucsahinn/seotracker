@@ -45,20 +45,13 @@ const searchPerformanceFilterShape = {
     .optional(),
 };
 
-export const searchPerformanceInputSchema = z.object(
-  searchPerformanceFilterShape,
-);
+const searchPerformanceInputSchema = z.object(searchPerformanceFilterShape);
 
 /**
  * The view. `fresh` skips the server's few-minute memory of Google's
  * answers (searchAnalyticsCache.ts) for an explicit refresh.
  */
-export const searchPerformanceViewInputSchema = z.object({
-  ...searchPerformanceFilterShape,
-  fresh: z.boolean().optional(),
-});
-
-const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+const isoDate = z.iso.date();
 
 /**
  * The window a view resolved, handed back by the table, drill-down and export
@@ -68,6 +61,33 @@ const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 const resolvedWindowSchema = z
   .object({ startDate: isoDate, endDate: isoDate })
   .refine((w) => w.startDate <= w.endDate, "startDate after endDate");
+
+export const searchPerformanceViewInputSchema =
+  searchPerformanceInputSchema.extend({
+    window: resolvedWindowSchema.optional(),
+    fresh: z.boolean().optional(),
+  });
+
+/** A native report must name the period actually displayed by the caller. */
+export const searchReportInputSchema = searchPerformanceInputSchema.extend({
+  window: resolvedWindowSchema,
+});
+
+/** Exact source links coexist with the original preset and substring aliases. */
+export const searchPerformanceLinkSchema = z
+  .object({
+    startDate: isoDate.optional(),
+    endDate: isoDate.optional(),
+    exactQuery: z.string().min(1).max(2048).optional(),
+    exactPage: z.string().min(1).max(2048).optional(),
+  })
+  .refine(
+    (v) =>
+      Boolean(v.startDate) === Boolean(v.endDate) &&
+      (!v.startDate || !v.endDate || v.startDate <= v.endDate),
+    "Provide both dates in chronological order.",
+  )
+  .refine((v) => !(v.exactQuery && v.exactPage), "Choose one exact dimension.");
 
 export const SEARCH_TABLE_SORT_COLUMNS = [
   "clicks",

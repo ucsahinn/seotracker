@@ -20,7 +20,9 @@ Yenileme notları ve kurulum durumunu yeniden okur. Yenileme hatasında kayıtl�
 
 **Ajanla taslak hazırla** altındaki istem, ajandan kaydetmeden önce onay istemesini ister. Uygulama araçları ayrıca onay beklemeden hemen yazabilir. Proje kimliği okunamazsa istem hazırlanmaz.
 
-**Araştırma günlüğü** en yeni 20 kaydı gösterir. Not tarihi sunucunun UTC günüdür; not en fazla 1.000 karakterdir. Doksan günlük temizleme yeni not eklenirken yapılır, bu nedenle yeni kayıt yoksa eski notlar kalabilir. Görünen liste tüm geçmiş değildir.
+**Araştırma günlüğü** son 90 gündeki en yeni 20 kaydı gösterir. Not tarihi sunucunun UTC günüdür; not en fazla 1.000 karakterdir. Eski kayıtlar yeni not eklenmese de listeden süzülür. Aynı aralıkta daha fazla kayıt varsa belirtilir. Görünen liste tüm geçmiş değildir.
+
+Bir bölümü düzenlerken başka bir istemci aynı metni değiştirirse bütün kaydetme işlemi reddedilir ve taslağınız korunur. Düzenleme başındaki metni, son kaydı ve taslağınızı karşılaştırıp birleştirdikten sonra yeniden kaydedebilirsiniz. Ajanlar da `expectedContent` göndererek aynı korumayı kullanabilir; bunu göndermeyen eski istemciler uyumlu kalır.
 
 **Kaynak ve kurulum** altı ortak yapılandırma sinyalini sayar. Eksik ve okunamayan ayrı gösterilir; rakipler ve önemli sayfalar sayılmaz. Bağlantı kaydı canlı veri testi, PageSpeed anahtarı kota garantisi, ajan araç çağrısı bu projeyi okuduğunun kanıtı değildir. Bu bir SEO başarı puanı değildir.
 

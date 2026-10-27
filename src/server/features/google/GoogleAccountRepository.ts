@@ -1,3 +1,4 @@
+import { GoogleAccessRepository } from "./GoogleAccessRepository";
 import { and, count, eq, inArray, isNull, or } from "drizzle-orm";
 import { db } from "@/db";
 import { runBatch } from "@/db/runBatch";
@@ -107,6 +108,7 @@ async function remove(input: AccountInput) {
     return [...removeConnections, tx.delete(account).where(grant)];
   });
   for (const { projectId } of ga4Projects) clearGa4Quota(projectId);
+  await GoogleAccessRepository.advance();
 }
 
 export const GoogleAccountRepository = { getRemovalImpact, remove };

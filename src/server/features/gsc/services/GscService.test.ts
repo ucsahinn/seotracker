@@ -271,6 +271,7 @@ describe("GscService.listSitesForUserWithGrantStatus", () => {
           accountId: "sub-b",
           email: null,
           requiresReconnect: true,
+          failureReason: "invalid_grant",
           propertiesUnavailable: false,
           sites: [],
         },
@@ -326,7 +327,7 @@ describe("GscService.listSitesForUserWithGrantStatus", () => {
     });
   });
 
-  it("marks a grant for reconnect on a GSC 403 without deleting it", async () => {
+  it("keeps GSC permission denial separate from an expired grant without deleting it", async () => {
     mocks.state.selectRows = [{ id: "grant-a", accountId: "sub-a" }];
     mocks.getUserInfoEmail.mockResolvedValue("a@example.com");
     mocks.listSites.mockRejectedValue(
@@ -340,8 +341,9 @@ describe("GscService.listSitesForUserWithGrantStatus", () => {
         {
           accountId: "sub-a",
           email: null,
-          requiresReconnect: true,
-          propertiesUnavailable: false,
+          requiresReconnect: false,
+          failureReason: "permission_denied",
+          propertiesUnavailable: true,
           sites: [],
         },
       ],
@@ -382,6 +384,7 @@ describe("GscService.listSitesForUserWithGrantStatus", () => {
           email: null,
           requiresReconnect: false,
           propertiesUnavailable: true,
+          failureReason: "quota_exceeded",
           sites: [],
         },
       ],
@@ -661,3 +664,11 @@ describe("GscService.queryAnalytics", () => {
     expect(again.requests).toBe(0);
   });
 });
+
+// Credential generation SQL is covered independently; these tests exercise provider behavior.
+vi.mock("@/server/features/google/GoogleAccessRepository", () => ({
+  GoogleAccessRepository: {
+    generation: async () => 0,
+    advance: async () => {},
+  },
+}));

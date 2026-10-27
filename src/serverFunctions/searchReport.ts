@@ -2,26 +2,25 @@ import { createServerFn } from "@tanstack/react-start";
 import { SearchPerformanceService } from "@/server/features/gsc/services/SearchPerformanceService";
 import { getCannibalization } from "@/server/features/gsc/services/CannibalizationService";
 import { buildSearchReportHtml } from "@/server/features/search/report/buildSearchReportHtml";
-import { ReportRepository } from "@/server/features/reports/repositories/ReportRepository";
 import { ReportService } from "@/server/features/reports/services/ReportService";
 import { AppError } from "@/server/lib/errors";
 import { APP_REPORT_CREATOR } from "@/shared/report-creator";
 import { requireProjectContext } from "@/serverFunctions/middleware";
 import { REPORT_MAX_HTML_BYTES } from "@/types/schemas/reports";
-import { searchPerformanceInputSchema } from "@/types/schemas/search-performance";
+import { searchReportInputSchema } from "@/types/schemas/search-performance";
 import { t } from "@/shared/i18n";
 
 /**
  * Turns the Search performance view on screen into a saved, printable report.
  *
  * Re-reads the canonical server view with the same requested filters. The
- * resolved period and revised Google measurements may differ from a previously
- * displayed view; the document discloses that limitation. The document
+ * displayed dates pinned. Google may revise measurements within those days;
+ * the document discloses the refetch. The document
  * is built here and stored in the local reports table.
  */
 export const createSearchReport = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)
-  .validator(searchPerformanceInputSchema)
+  .validator(searchReportInputSchema)
   .handler(async ({ context, data }) => {
     const filters = {
       dateRange: data.dateRange,
@@ -32,6 +31,7 @@ export const createSearchReport = createServerFn({ method: "POST" })
     const view = await SearchPerformanceService.getView({
       projectId: context.projectId,
       filters,
+      window: data.window,
     });
     // A failure here drops the overlaps section, not the report.
     const overlaps = await getCannibalization({
@@ -77,15 +77,9 @@ export const createSearchReport = createServerFn({ method: "POST" })
       );
     }
 
-    // The same title (site, window, filters) refreshes the app's own report.
-    const existing = await ReportRepository.findReportByTitle(
-      context.projectId,
-      document.title,
-    );
-    const same = existing?.createdBy === APP_REPORT_CREATOR ? existing : null;
-
     const saved = await ReportService.saveReport({
-      reportId: same?.id,
+      nativeKind: "search-performance-export",
+      nativeIdentity: sourceKey,
       projectId: context.projectId,
       organizationId: context.organizationId,
       title: document.title,

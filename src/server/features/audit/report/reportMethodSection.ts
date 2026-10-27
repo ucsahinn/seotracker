@@ -1,5 +1,6 @@
 import {
   formatCount,
+  formatDate,
   formatDateTime,
   formatDuration,
   parseTimestamp,
@@ -64,10 +65,9 @@ function durationLine(input: AuditReportInput): string {
 
 /* Turkish source text, shown through t(). */
 const NOT_MEASURED = [
-  "Arama sıralaması, tıklama ve trafik: bu rapor Search Console ya da Analytics trafiğini içermez.",
+  "Bu rapor GA4 oturum veya gelir raporu değildir.",
   "Geri bağlantılar ve rakip siteler.",
   "İçeriğin kalitesi, arama niyetine uygunluğu ve özgünlüğü; yalnızca kelime sayısı gibi yapısal sinyallere bakılır.",
-  "Gerçek kullanıcı hız verisi (CrUX); yalnızca laboratuvar ölçümü vardır.",
   "Giriş gerektiren sayfalar ve taramanın ulaşamadığı adresler.",
 ];
 
@@ -75,7 +75,70 @@ export function methodSection(
   input: AuditReportInput,
   caps: ReportCaps,
 ): string {
+  const traffic = input.insights?.traffic;
+  const source = traffic?.source;
+  const speed = input.insights?.speed;
+  const hasField = [speed?.page, speed?.origin].some(
+    (field) =>
+      field &&
+      (field.largestContentfulPaint ||
+        field.cumulativeLayoutShift ||
+        field.interactionToNextPaint ||
+        field.firstContentfulPaint ||
+        field.timeToFirstByte),
+  );
   const rows: Array<[string, string]> = [
+    [
+      t("Search Console sayfa trafiği"),
+      traffic
+        ? t("Dönem: {start} – {end} (Pasifik). Okunan sayfa satırı: {rows}.", {
+            start: formatDate(traffic.startDate),
+            end: formatDate(traffic.endDate),
+            rows: formatCount(source?.fetchedRows ?? traffic.rows.length),
+          }) +
+          " " +
+          (source
+            ? t(
+                "Mülk: {property}. Alınma zamanı: {time}. Satır sınırı: {limit}.",
+                {
+                  property: source.property,
+                  time: formatDateTime(source.retrievedAt),
+                  limit: formatCount(source.rowLimit),
+                },
+              ) +
+              " " +
+              (source.capped
+                ? t(
+                    "Kaynak satır sınırına ulaştı; sonuçlar yalnızca okunan kayıtları kapsar.",
+                  )
+                : "")
+            : t("Kaynak ayrıntıları bu kayıtta mevcut değil."))
+        : t(
+            "Search Console sayfa trafiği alınamadı; trafik yokluğu sonucu çıkarılamaz.",
+          ),
+    ],
+    [
+      t("Gerçek kullanıcı hızı"),
+      speed && hasField
+        ? t(
+            "Mobil CrUX: {url}. Kaydedilen PageSpeed ölçümü: {time}. Sayfa ve origin kapsamları ayrı gösterilir; kayan 28 günlük veri denetim süresi değildir.",
+            { url: speed.url, time: formatDateTime(speed.fetchedAt) },
+          )
+        : t(
+            "Bu kayıtta kullanılabilir CrUX verisi yok; laboratuvar ölçümü gerçek kullanıcı ölçümü değildir.",
+          ),
+    ],
+    [
+      t("Site haritası"),
+      input.siteFacts?.sitemap.urlCount !== null &&
+      input.siteFacts?.sitemap.urlCount !== undefined
+        ? t(
+            "Harita keşif toplamları Anlık veri bölümündedir. Harita kapsamı oranı yalnızca taranan sayfaları kullanır; tüm harita adreslerinin tarandığını göstermez.",
+          )
+        : t(
+            "Kaydedilmiş harita keşif toplamı mevcut değil; kapsam oranı yalnızca taranan sayfaları kullanır.",
+          ),
+    ],
     [t("Tarama"), crawlLine(input)],
     [t("Tarih aralığı"), durationLine(input)],
     [t("Hız ölçümü"), speedLine(input)],

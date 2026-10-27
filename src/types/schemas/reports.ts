@@ -42,7 +42,14 @@ export const REPORT_MAX_SUMMARY_CHARS = 2_500;
  * A plain type, not a Zod schema: these rows are built by the repository from
  * its own column selection, so there is no trust boundary here to validate.
  */
+export type NativeReportKind =
+  | "search-performance-export"
+  | "site-audit-export";
+
 export type ReportMetadata = {
+  /** Server-stamped; absent on legacy and agent-authored reports. */
+  nativeKind?: NativeReportKind | null;
+  nativeIdentity?: string | null;
   id: string;
   projectId: string;
   title: string;

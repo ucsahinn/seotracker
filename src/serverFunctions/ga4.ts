@@ -1,3 +1,4 @@
+import { readGoogleAccess } from "@/server/features/google/GoogleAccessService";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
 import { waitUntil } from "cloudflare:workers";
@@ -62,6 +63,14 @@ export const getGa4Connection = createServerFn({ method: "POST" })
       propertyCurrencyCode: connection?.propertyCurrencyCode ?? null,
       connectedByEmail: connection?.connectedAccountEmail ?? null,
       connectedAt: connection?.createdAt ?? null,
+      accessEvidence: connection
+        ? await readGoogleAccess({
+            provider: "ga4",
+            propertyId: connection.propertyId,
+            userId: connection.connectedByUserId,
+            accountId: connection.ga4AccountId,
+          })
+        : null,
     };
   });
 

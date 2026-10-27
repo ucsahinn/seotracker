@@ -785,4 +785,8 @@ export const frSearch: Catalog = {
     "Les {count} premiers enregistrements par impressions ; le champ de recherche filtre aussi cette liste.",
   "Bağlantı yok; gösterilen özet kayıtlı tarihsel gözlemlerdir.":
     "Connexion absente ; le résumé montre les observations historiques enregistrées.",
+  "Seçilen dönem Search Console'un okunabilir kesin günleri dışında. Kullanılabilir dönem: {start} – {end}.":
+    "La période sélectionnée dépasse les jours complets accessibles dans Search Console. Période disponible : {start} – {end}.",
+  "Search Console yalnızca {start} ve sonrasını okuyabilir. Bu arşiv dönemi bütünüyle açılamaz.":
+    "Search Console ne peut lire les données qu’à partir du {start}. Cette période d’archive ne peut pas être ouverte intégralement.",
 };

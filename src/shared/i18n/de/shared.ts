@@ -91,4 +91,41 @@ export const deShared: Catalog = {
   "Arama sayısı": "Suchvorgänge",
   "Satılan ürün": "Gekaufte Artikel",
   "Ürün geliri": "Artikelumsatz",
+  "Okunan kaynakta bu dönem için kayıt bulunmadı.":
+    "Die gelesene Quelle lieferte für diesen Zeitraum keine Einträge.",
+  "Kaynak satır sınırına ulaştı; sonuçlar yalnızca okunan kayıtları kapsar.":
+    "Das Zeilenlimit der Quelle wurde erreicht; die Ergebnisse umfassen nur die gelesenen Einträge.",
+  "Kaynak isteği başarısız; bu bölümün verisi alınamadı.":
+    "Die Anfrage an die Quelle ist fehlgeschlagen; die Daten für diesen Abschnitt konnten nicht geladen werden.",
+  "Kaynak saklama süresi bu karşılaştırmanın tamamını kapsamıyor.":
+    "Die Aufbewahrungsfrist der Quelle deckt diesen Vergleich nicht vollständig ab.",
+  "Kaynak durumu kaydedilmemiş.": "Der Quellenstatus wurde nicht gespeichert.",
+  "Bu rapor GA4 oturum veya gelir raporu değildir.":
+    "Dieses Dokument ist kein Bericht zu GA4-Sitzungen oder -Umsätzen.",
+  "Search Console sayfa trafiği": "Search-Console-Seitenzugriffe",
+  "Dönem: {start} – {end} (Pasifik). Okunan sayfa satırı: {rows}.":
+    "Zeitraum: {start} – {end} (Pazifikzeit). Gelesene Seitenzeilen: {rows}.",
+  "Mülk: {property}. Alınma zamanı: {time}. Satır sınırı: {limit}.":
+    "Property: {property}. Abgerufen: {time}. Zeilenlimit: {limit}.",
+  "Kaynak ayrıntıları bu kayıtta mevcut değil.":
+    "In diesem Datensatz sind keine Quellendetails verfügbar.",
+  "Search Console sayfa trafiği alınamadı; trafik yokluğu sonucu çıkarılamaz.":
+    "Die Search-Console-Seitenzugriffe konnten nicht geladen werden; daraus lässt sich nicht auf fehlenden Traffic schließen.",
+  "Gerçek kullanıcı hızı": "Geschwindigkeit bei echten Nutzern",
+  "Mobil CrUX: {url}. Kaydedilen PageSpeed ölçümü: {time}. Sayfa ve origin kapsamları ayrı gösterilir; kayan 28 günlük veri denetim süresi değildir.":
+    "Mobiles CrUX: {url}. Gespeicherte PageSpeed-Messung: {time}. Seite und Origin werden getrennt dargestellt; die gleitenden 28-Tage-Daten entsprechen nicht der Auditdauer.",
+  "Bu kayıtta kullanılabilir CrUX verisi yok; laboratuvar ölçümü gerçek kullanıcı ölçümü değildir.":
+    "Dieser Datensatz enthält keine nutzbaren CrUX-Daten; eine Labormessung ist keine Messung echter Nutzer.",
+  "Harita keşif toplamları Anlık veri bölümündedir. Harita kapsamı oranı yalnızca taranan sayfaları kullanır; tüm harita adreslerinin tarandığını göstermez.":
+    "Die entdeckten Sitemap-Gesamtzahlen stehen unter Momentaufnahme. Die Sitemap-Abdeckung berücksichtigt nur gecrawlte Seiten und belegt keinen vollständigen Crawl aller Sitemap-URLs.",
+  "Taranan {count} sayfanın {inMap} tanesi ({percent}) site haritasında. Bu oran taranan sayfalara aittir; keşfedilen harita adreslerinin toplamı mevcutsa Anlık veri bölümünde ayrıca gösterilir.":
+    "Von {count} gecrawlten Seiten stehen {inMap} ({percent}) in der Sitemap. Diese Quote betrifft gecrawlte Seiten; die Gesamtzahl entdeckter Sitemap-URLs wird, sofern vorhanden, separat unter Momentaufnahme angezeigt.",
+  "Kaydedilen mobil PageSpeed ölçümü: {time}.":
+    "Gespeicherte mobile PageSpeed-Messung: {time}.",
+  "Rapor hazırlanırken veriler sunucudan yeniden okundu; Google geçmiş değerleri düzeltebilir. Aynı dönem etiketi önceki ekran görüntüsüyle birebir ölçüm eşitliğini garanti etmez. Aynı kaynak yeniden hazırlanırsa kayıt güncellenir; rapor dili değişebilir.":
+    "Die Daten wurden bei der Berichtserstellung erneut vom Server gelesen; Google kann historische Werte korrigieren. Dieselbe Zeitraumbezeichnung garantiert keine identischen Messwerte zu einem früheren Screenshot. Eine erneute Erstellung derselben Quelle aktualisiert den Datensatz; die Berichtssprache kann sich ändern.",
+  "Okunan sayfalarda güç kaybı koşulunu sağlayan kayıt bulunmadı.":
+    "Unter den gelesenen Seiten wurde keine gefunden, die die Rückgangsbedingung erfüllt.",
+  "Kaydedilmiş harita keşif toplamı mevcut değil; kapsam oranı yalnızca taranan sayfaları kullanır.":
+    "Es wurde keine Gesamtzahl entdeckter Sitemap-URLs gespeichert; die Abdeckungsquote verwendet nur gecrawlte Seiten.",
 };

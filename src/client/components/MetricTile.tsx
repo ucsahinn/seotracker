@@ -4,7 +4,8 @@ import * as React from "react";
 import { AnimatedNumber } from "@/client/components/AnimatedNumber";
 import { Sparkline } from "@/client/components/Sparkline";
 import { useFlashOnChange } from "@/client/components/useFlashOnChange";
-import { formatSignedPercent } from "@/client/lib/format";
+import { formatCount, formatSignedPercent } from "@/client/lib/format";
+import type { MetricChange } from "@/shared/searchPerformanceView";
 import { t } from "@/shared/i18n";
 
 /**
@@ -26,6 +27,57 @@ type MetricDelta =
   | { text: string; improved: boolean; neutral?: true }
   | null
   | undefined;
+
+/** Presentation shared by count tiles: a zero base is not a percentage. */
+export function countDelta(change: MetricChange | undefined): MetricDelta {
+  if (
+    !change ||
+    change.change === null ||
+    !Number.isFinite(change.change) ||
+    (change.relative !== null && !Number.isFinite(change.relative))
+  )
+    return null;
+  if (change.relative === null && change.change !== 0) {
+    return {
+      text: t("Önceki: {previous} → {current}", {
+        previous: formatCount(0),
+        current: formatCount(change.change),
+      }),
+      improved: false,
+      neutral: true,
+    };
+  }
+  return change.relative ?? 0;
+}
+
+export function countComparison(
+  current: number | null,
+  previous: number | null,
+  format: (value: number) => string = formatCount,
+): MetricDelta {
+  if (
+    current === null ||
+    previous === null ||
+    !Number.isFinite(current) ||
+    !Number.isFinite(previous) ||
+    current < 0 ||
+    previous < 0
+  )
+    return null;
+  if (previous === 0 && current > 0)
+    return {
+      text: t("Önceki: {previous} → {current}", {
+        previous: format(0),
+        current: format(current),
+      }),
+      improved: false,
+      neutral: true,
+    };
+  return countDelta({
+    change: current - previous,
+    relative: previous > 0 ? (current - previous) / previous : null,
+  });
+}
 
 /** Where a tile leads. Every target takes only the project. */
 type MetricTileHref = {
@@ -143,7 +195,22 @@ export function DeltaBadge({
   inverted?: boolean;
   title?: string;
 }) {
-  if (value == null) return null;
+  if (value === undefined) return null;
+  if (value === null)
+    return (
+      <span title={title} className="text-xs text-muted">
+        {t("Karşılaştırma yok")}
+      </span>
+    );
+  if (typeof value === "number" && !Number.isFinite(value)) return null;
+  if (typeof value === "number" && formatSignedPercent(value) === null) {
+    return (
+      <DeltaBadge
+        value={{ text: t("Değişmedi"), improved: false, neutral: true }}
+        title={title}
+      />
+    );
+  }
 
   // Both periods exist and nothing moved: words, no arrow, no tint.
   if (typeof value !== "number" && value.neutral) {

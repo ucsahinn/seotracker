@@ -29,3 +29,5 @@ Report, canale, date, dettaglio, dimensione e posizione della pagina rimangono n
 Il controllo legge solo le impostazioni Admin. Nessuna lacuna nelle impostazioni non prova che il tag invii dati: segui le verifiche di raccolta collegate. Gli inventari parziali sono indicati come almeno. Se la misurazione avanzata è disattivata, nessuna sottofunzione è effettivamente attiva. Non vengono modificate impostazioni dell’account.
 
 La quota comprimibile mostra un’istantanea locale dell’ultima risposta, non l’utilizzo nel periodo di traffico. Il limite standard è un’ipotesi. Aggiorna richiede nuovamente i report visibili e può consumare token.
+
+Quando Google tronca i dati nel periodo richiesto, il riepilogo Analytics e i dettagli del report mostrano il motivo e le date forniti da Google. Il report è considerato limitato; una copertura incompleta non viene presentata come un confronto affidabile tra periodi.

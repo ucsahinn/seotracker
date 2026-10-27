@@ -88,4 +88,41 @@ export const frShared: Catalog = {
   "Arama sayısı": "Recherches",
   "Satılan ürün": "Articles achetés",
   "Ürün geliri": "Revenus des articles",
+  "Okunan kaynakta bu dönem için kayıt bulunmadı.":
+    "La source consultée n’a renvoyé aucun enregistrement pour cette période.",
+  "Kaynak satır sınırına ulaştı; sonuçlar yalnızca okunan kayıtları kapsar.":
+    "La limite de lignes de la source a été atteinte ; les résultats couvrent uniquement les données lues.",
+  "Kaynak isteği başarısız; bu bölümün verisi alınamadı.":
+    "La requête à la source a échoué ; les données de cette section n’ont pas pu être récupérées.",
+  "Kaynak saklama süresi bu karşılaştırmanın tamamını kapsamıyor.":
+    "La durée de conservation de la source ne couvre pas toute cette comparaison.",
+  "Kaynak durumu kaydedilmemiş.": "L’état de la source n’a pas été enregistré.",
+  "Bu rapor GA4 oturum veya gelir raporu değildir.":
+    "Ce document n’est pas un rapport de sessions ou de revenus GA4.",
+  "Search Console sayfa trafiği": "Trafic par page Search Console",
+  "Dönem: {start} – {end} (Pasifik). Okunan sayfa satırı: {rows}.":
+    "Période : {start} – {end} (heure du Pacifique). Lignes de pages lues : {rows}.",
+  "Mülk: {property}. Alınma zamanı: {time}. Satır sınırı: {limit}.":
+    "Propriété : {property}. Récupération : {time}. Limite de lignes : {limit}.",
+  "Kaynak ayrıntıları bu kayıtta mevcut değil.":
+    "Les détails de la source ne sont pas disponibles dans cet enregistrement.",
+  "Search Console sayfa trafiği alınamadı; trafik yokluğu sonucu çıkarılamaz.":
+    "Le trafic par page Search Console n’a pas pu être récupéré ; cela ne prouve pas une absence de trafic.",
+  "Gerçek kullanıcı hızı": "Vitesse des utilisateurs réels",
+  "Mobil CrUX: {url}. Kaydedilen PageSpeed ölçümü: {time}. Sayfa ve origin kapsamları ayrı gösterilir; kayan 28 günlük veri denetim süresi değildir.":
+    "CrUX mobile : {url}. Mesure PageSpeed enregistrée : {time}. Les périmètres page et origine sont distincts ; les données glissantes sur 28 jours ne correspondent pas à la durée de l’audit.",
+  "Bu kayıtta kullanılabilir CrUX verisi yok; laboratuvar ölçümü gerçek kullanıcı ölçümü değildir.":
+    "Cet enregistrement ne contient aucune donnée CrUX exploitable ; une mesure en laboratoire n’est pas une mesure d’utilisateurs réels.",
+  "Harita keşif toplamları Anlık veri bölümündedir. Harita kapsamı oranı yalnızca taranan sayfaları kullanır; tüm harita adreslerinin tarandığını göstermez.":
+    "Les totaux découverts du sitemap figurent dans les données instantanées. Le taux de couverture porte uniquement sur les pages explorées ; il ne prouve pas que toutes les URL du sitemap ont été explorées.",
+  "Taranan {count} sayfanın {inMap} tanesi ({percent}) site haritasında. Bu oran taranan sayfalara aittir; keşfedilen harita adreslerinin toplamı mevcutsa Anlık veri bölümünde ayrıca gösterilir.":
+    "Sur {count} pages explorées, {inMap} ({percent}) figurent dans le sitemap. Ce taux concerne les pages explorées ; le total des URL découvertes est présenté séparément dans les données instantanées, si disponible.",
+  "Kaydedilen mobil PageSpeed ölçümü: {time}.":
+    "Mesure PageSpeed mobile enregistrée : {time}.",
+  "Rapor hazırlanırken veriler sunucudan yeniden okundu; Google geçmiş değerleri düzeltebilir. Aynı dönem etiketi önceki ekran görüntüsüyle birebir ölçüm eşitliğini garanti etmez. Aynı kaynak yeniden hazırlanırsa kayıt güncellenir; rapor dili değişebilir.":
+    "Les données ont été relues depuis le serveur ; Google peut réviser les valeurs historiques. Le même libellé de période ne garantit pas des mesures identiques à une capture antérieure. Régénérer la même source met à jour l’enregistrement ; la langue du rapport peut changer.",
+  "Okunan sayfalarda güç kaybı koşulunu sağlayan kayıt bulunmadı.":
+    "Aucune des pages lues ne remplit le critère de baisse.",
+  "Kaydedilmiş harita keşif toplamı mevcut değil; kapsam oranı yalnızca taranan sayfaları kullanır.":
+    "Aucun total d’URL découvertes dans le sitemap n’a été enregistré ; le taux de couverture utilise uniquement les pages explorées.",
 };

@@ -1,4 +1,5 @@
 import { Sparkline } from "@/client/components/Sparkline";
+import { searchScopeUnavailableReason } from "@/client/features/search-performance/searchScope";
 import { t } from "@/shared/i18n";
 import { copyText } from "@/client/lib/copyText";
 import { useNavigate } from "@tanstack/react-router";
@@ -39,6 +40,7 @@ export function TrackedQueriesTable({
   emptyDescription,
   showDays = true,
   expectedDays,
+  range,
 }: {
   projectId: string;
   rows: Row[];
@@ -54,6 +56,7 @@ export function TrackedQueriesTable({
   /** Off when every row has data on every day: a column of one number says nothing. */
   showDays?: boolean;
   expectedDays?: number;
+  range?: { startDate: string; endDate: string };
 }) {
   const navigate = useNavigate();
   const saveKeyword = useSaveTrackedKeyword(projectId);
@@ -245,15 +248,21 @@ export function TrackedQueriesTable({
                       onSelect: () => saveKeyword.mutate(row.query),
                     },
                     {
-                      label: t(
-                        "Arama performansında metin ara (tarih ve birebir sorgu korunmaz)",
-                      ),
+                      label: t("Arama performansında aç"),
+                      disabledReason: range
+                        ? searchScopeUnavailableReason(range.startDate)
+                        : t("Yükleniyor"),
                       icon: Search,
                       onSelect: () =>
+                        range &&
                         void navigate({
                           to: "/p/$projectId/search-performance",
                           params: { projectId },
-                          search: { tab: "queries" as const, q: row.query },
+                          search: {
+                            tab: "queries" as const,
+                            exactQuery: row.query,
+                            ...range,
+                          },
                         }),
                     },
                   ]}

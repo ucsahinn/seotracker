@@ -1,3 +1,4 @@
+import { sourceOutcomeMessage } from "@/shared/searchSourceOutcome";
 import { t } from "@/shared/i18n";
 import * as React from "react";
 import { reverse, sort } from "remeda";
@@ -355,15 +356,24 @@ export function ChangesTab({
           { share: formatPercent(INSIGHT_RULES.decayMaxShareOfPeak, 0) },
         )}
       >
+        {view.sourceOutcomes?.decay?.status === "partial" &&
+        decay !== null &&
+        decay.length > 0 ? (
+          <p className="px-4 text-sm text-muted">
+            {sourceOutcomeMessage(view.sourceOutcomes.decay)}
+          </p>
+        ) : null}
         {decay === null ? (
           <p className="px-4 text-sm text-muted">
-            {t(
-              "Bu karşılaştırma bir yılı aşkın veri ister; Search Console bu mülk için o kadar eski veri vermedi ya da filtre uygulanmış.",
-            )}
+            {sourceOutcomeMessage(view.sourceOutcomes?.decay)}
           </p>
         ) : decay.length === 0 ? (
           <p className="px-4 text-sm text-muted">
-            {t("Belirgin biçimde gücünü kaybeden sayfa yok.")}
+            {view.sourceOutcomes?.decay?.status === "partial"
+              ? sourceOutcomeMessage(view.sourceOutcomes.decay)
+              : t(
+                  "Okunan sayfalarda güç kaybı koşulunu sağlayan kayıt bulunmadı.",
+                )}
           </p>
         ) : (
           <ul className="divide-y divide-[var(--hairline)] px-4">

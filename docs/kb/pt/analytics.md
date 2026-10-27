@@ -29,3 +29,5 @@ Relatório, canal, datas, detalhamento, tamanho e posição da página ficam na 
 O diagnóstico lê apenas configurações Admin. Não encontrar lacunas não prova que a tag envia dados: siga as verificações de coleta vinculadas. Inventários parciais indicam pelo menos. Se a medição otimizada estiver desativada, nenhuma subfunção estará efetivamente ativa. Nenhuma configuração da conta é alterada.
 
 A seção recolhida de cota mostra uma captura local da última resposta, não o uso do período de tráfego. O teto padrão é uma suposição. Atualizar solicita novamente os relatórios visíveis e pode consumir tokens.
+
+Quando o Google trunca dados no período solicitado, o resumo do Analytics e os detalhes do relatório mostram o motivo e as datas informados pelo Google. O relatório é considerado limitado; uma cobertura incompleta não é apresentada como uma comparação confiável entre períodos.

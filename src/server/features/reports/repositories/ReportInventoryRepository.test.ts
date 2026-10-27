@@ -19,11 +19,11 @@ const input = (overrides: Record<string, unknown> = {}) =>
   reportInventorySchema.parse({ projectId: "p", ...overrides });
 
 beforeAll(async () => {
-  await client.executeMultiple(`CREATE TABLE reports (id TEXT PRIMARY KEY, project_id TEXT, title TEXT, summary TEXT, html TEXT, skill TEXT, template_id TEXT, created_by TEXT, created_by_user_id TEXT, size_bytes INTEGER, created_at TEXT, updated_at TEXT);
+  await client.executeMultiple(`CREATE TABLE reports (id TEXT PRIMARY KEY, project_id TEXT, title TEXT, summary TEXT, html TEXT, skill TEXT, template_id TEXT, created_by TEXT, created_by_user_id TEXT, size_bytes INTEGER, created_at TEXT, updated_at TEXT, native_kind TEXT, native_identity TEXT);
   CREATE TABLE report_templates (id TEXT PRIMARY KEY, project_id TEXT, name TEXT);`);
   await client.batch(
     Array.from({ length: 1001 }, (_, index) => ({
-      sql: "INSERT INTO reports VALUES (?, 'p', ?, ?, '<html></html>', NULL, NULL, 'app:site-audit', 'u', 13, '2025-01-01', ?)",
+      sql: "INSERT INTO reports (id, project_id, title, summary, html, skill, template_id, created_by, created_by_user_id, size_bytes, created_at, updated_at) VALUES (?, 'p', ?, ?, '<html></html>', NULL, NULL, 'app:site-audit', 'u', 13, '2025-01-01', ?)",
       args: [
         String(index).padStart(4, "0"),
         index === 0 ? "İstanbul %_" : "Report " + index,
@@ -34,11 +34,11 @@ beforeAll(async () => {
     "write",
   );
   await client.execute(
-    "INSERT INTO reports SELECT 'other', 'other-project', title, summary, html, skill, template_id, created_by, created_by_user_id, size_bytes, created_at, updated_at FROM reports LIMIT 1",
+    "INSERT INTO reports (id, project_id, title, summary, html, skill, template_id, created_by, created_by_user_id, size_bytes, created_at, updated_at) SELECT 'other', 'other-project', title, summary, html, skill, template_id, created_by, created_by_user_id, size_bytes, created_at, updated_at FROM reports LIMIT 1",
   );
   await client.batch(
     Array.from({ length: 7 }, (_, index) => ({
-      sql: "INSERT INTO reports VALUES (?, 'facets', ?, '', '<html></html>', ?, NULL, 'Codex', 'u', 13, '2026-01-01', '2026-01-01')",
+      sql: "INSERT INTO reports (id, project_id, title, summary, html, skill, template_id, created_by, created_by_user_id, size_bytes, created_at, updated_at) VALUES (?, 'facets', ?, '', '<html></html>', ?, NULL, 'Codex', 'u', 13, '2026-01-01', '2026-01-01')",
       args: ["facet-" + index, "Facet " + index, "skill-" + index],
     })),
     "write",
@@ -93,4 +93,17 @@ it("keeps the compact Other facet actionable without returning every distinct ki
     "skill-6",
     "skill-5",
   ]);
+});
+
+// Before the native-kind contract this query classified both rows as unknown.
+it("filters persisted native kinds independently of a shared app creator", async () => {
+  await client.execute(
+    "INSERT INTO reports (id, project_id, title, summary, created_by, native_kind, native_identity) VALUES ('native-search', 'native', 'Search', '', 'seotracker', 'search-performance-export', 's1'), ('native-audit', 'native', 'Audit', '', 'seotracker', 'site-audit-export', 'a1')",
+  );
+  const result = await listReportInventory(
+    input({ projectId: "native", kind: "search-performance-export" }),
+  );
+  expect(result.totalMatching).toBe(1);
+  expect(result.reports[0]?.id).toBe("native-search");
+  expect(result.reports[0]?.nativeIdentity).toBe("s1");
 });

@@ -45,3 +45,9 @@ Veriler rapor hazırlanırken yeniden okunur. Google geçmiş değerleri düzelt
 Şablon adı en çok 80, açıklaması 200, yönergesi 3.000 karakterdir. Projede en çok 10 şablon bulunur. Şablonu silmek raporlarını silmez; arama sonucunu **Aramayı temizle** ile sıfırlayın.
 
 Bir rapor en çok 500.000 bayt, başlık 120 ve özet 2.500 karakterdir. Projede 10.000 rapor ve kurulum genelinde 5 GB koruma sınırı vardır. Bunlar dosya saklama korumalarıdır, SEO kapsamı veya başarı ölçüsü değildir. Denetim raporundaki tarama, hız ve isteğe bağlı Google verisinin tarihlerini belgenin kendi yöntem bölümünden kontrol edin.
+
+## Kaynak türü ve yeniden hazırlama
+
+Yeni yerel raporlarda Arama performansı ve Site denetimi ayrı türler olarak kaydedilir. Eski uygulama raporlarının türü başlıktan tahmin edilmez. Arama raporunun kaynak kimliği mülk, kesin tarihler ve filtrelerden; denetim raporununki denetim kimliğinden oluşur. Aynı kaynak başka bir dilde yeniden hazırlanırsa aynı kayıt güncellenir ve raporun dili değişebilir. Ajan raporlarıyla başlık çakışmaları reddedilir; eski bir belge aynı başlığı kullanıyorsa o belge korunur ve yeni kayıt reddedilir.
+
+Native raporları kaynak ekranından yeniden hazırlayın; ajanlar `save_report` ile içeriklerini değiştiremez. Eksik kaynak verisi sıfır kabul edilmez. Denetim yöntemi kullanılan GSC trafik dönemini, kaynağın satır sınırını ve mevcut kayıtlı mobil CrUX ölçümünü belirtir.

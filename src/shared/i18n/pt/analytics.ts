@@ -94,4 +94,12 @@ export const ptAnalytics: Catalog = {
     "Cobertura do diagnóstico: {shown} / {total} linhas.",
   "Etkinlik durumu bilinmiyor; rapor sınırlı veya eksik. Dönemi ve ölçüm ayarlarını kontrol edin.":
     "Atividade desconhecida: relatório limitado ou incompleto. Confira o período e as configurações de medição.",
+  "Veri erişimi henüz doğrulanmadı.":
+    "O acesso aos dados ainda não foi verificado.",
+  "Son başarılı Google okuması: {date}":
+    "Última leitura do Google bem-sucedida: {date}",
+  "Son başarısız Google okuması: {date}":
+    "Última leitura do Google com falha: {date}",
+  "Google bu raporun tarih kapsamındaki bazı verileri kesti; toplamlar ve karşılaştırmalar eksik olabilir.":
+    "O Google truncou alguns dados no período deste relatório; os totais e as comparações podem estar incompletos.",
 };

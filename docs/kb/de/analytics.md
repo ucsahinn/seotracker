@@ -29,3 +29,5 @@ Bericht, Kanal, Daten, Aufschlüsselung, Seitengröße und Versatz bleiben in de
 Die Messprüfung liest nur Admin-Einstellungen. Ein Ergebnis ohne Lücken beweist nicht, dass das Tag Daten sendet; folgen Sie den verlinkten Erfassungstests. Teilbestände werden als mindestens angegeben. Ist der Hauptschalter der erweiterten Messung aus, sind effektiv null Unterfunktionen aktiv. Kontoeinstellungen werden nicht verändert.
 
 Das eingeklappte Kontingent zeigt einen lokalen Stand aus der letzten Berichtsantwort, keine Nutzung des gewählten Traffic-Zeitraums. Die Standardobergrenze ist eine Annahme. Aktualisieren fordert sichtbare Berichte erneut an und kann Berichtstokens verbrauchen.
+
+Wenn Google Daten im angeforderten Zeitraum kürzt, zeigen die Analytics-Übersicht und die Berichtsdetails den Grund und die von Google angegebenen Daten. Der Bericht gilt als eingeschränkt; unvollständige Abdeckung wird nicht als verlässlicher Zeitraumvergleich dargestellt.

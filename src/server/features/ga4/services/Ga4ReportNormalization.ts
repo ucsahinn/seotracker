@@ -15,6 +15,9 @@ export type Ga4Quota = {
 };
 
 export type Ga4ReportMetadata = {
+  dataTruncationReasons?: NonNullable<
+    Ga4RunReportResponse["metadata"]
+  >["dataTruncationReasons"];
   dataLossFromOtherRow: boolean;
   subjectToThresholding: boolean;
   sampling: Array<{
@@ -100,12 +103,14 @@ export function normalizeGa4Response(
   });
   const sampling = response.metadata?.samplingMetadatas ?? [];
   const reportMetadata = {
+    dataTruncationReasons: response.metadata?.dataTruncationReasons ?? [],
     dataLossFromOtherRow: response.metadata?.dataLossFromOtherRow ?? false,
     subjectToThresholding: response.metadata?.subjectToThresholding ?? false,
     sampling,
     restrictedMetrics,
     emptyReason: response.metadata?.emptyReason ?? null,
     hasLimitedData:
+      (response.metadata?.dataTruncationReasons?.length ?? 0) > 0 ||
       (response.metadata?.dataLossFromOtherRow ?? false) ||
       (response.metadata?.subjectToThresholding ?? false) ||
       sampling.length > 0 ||

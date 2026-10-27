@@ -107,4 +107,41 @@ export const enShared: Catalog = {
   // Cards and stats review (Opportunities, rankings, setup verdict).
   "“{query}” için bir basamak yükselme fırsatı":
     "A chance to move “{query}” up one step",
+  "Okunan kaynakta bu dönem için kayıt bulunmadı.":
+    "No records were returned by this source for this period.",
+  "Kaynak satır sınırına ulaştı; sonuçlar yalnızca okunan kayıtları kapsar.":
+    "The source row limit was reached; results cover only the records read.",
+  "Kaynak isteği başarısız; bu bölümün verisi alınamadı.":
+    "The source request failed; data for this section could not be retrieved.",
+  "Kaynak saklama süresi bu karşılaştırmanın tamamını kapsamıyor.":
+    "The source retention period does not cover this entire comparison.",
+  "Kaynak durumu kaydedilmemiş.": "Source status was not recorded.",
+  "Bu rapor GA4 oturum veya gelir raporu değildir.":
+    "This document is not a GA4 sessions or revenue report.",
+  "Search Console sayfa trafiği": "Search Console page traffic",
+  "Dönem: {start} – {end} (Pasifik). Okunan sayfa satırı: {rows}.":
+    "Period: {start} – {end} (Pacific). Page rows read: {rows}.",
+  "Mülk: {property}. Alınma zamanı: {time}. Satır sınırı: {limit}.":
+    "Property: {property}. Retrieved: {time}. Row limit: {limit}.",
+  "Kaynak ayrıntıları bu kayıtta mevcut değil.":
+    "Source details are unavailable in this record.",
+  "Search Console sayfa trafiği alınamadı; trafik yokluğu sonucu çıkarılamaz.":
+    "Search Console page traffic could not be retrieved; this does not establish an absence of traffic.",
+  "Gerçek kullanıcı hızı": "Real-user speed",
+  "Mobil CrUX: {url}. Kaydedilen PageSpeed ölçümü: {time}. Sayfa ve origin kapsamları ayrı gösterilir; kayan 28 günlük veri denetim süresi değildir.":
+    "Mobile CrUX: {url}. Stored PageSpeed measurement: {time}. Page and origin scopes are shown separately; the rolling 28-day data is not the audit duration.",
+  "Bu kayıtta kullanılabilir CrUX verisi yok; laboratuvar ölçümü gerçek kullanıcı ölçümü değildir.":
+    "This record has no usable CrUX data; a lab measurement is not a real-user measurement.",
+  "Harita keşif toplamları Anlık veri bölümündedir. Harita kapsamı oranı yalnızca taranan sayfaları kullanır; tüm harita adreslerinin tarandığını göstermez.":
+    "Discovered sitemap totals appear in Snapshot data. Sitemap coverage uses only crawled pages; it does not show that all sitemap URLs were crawled.",
+  "Taranan {count} sayfanın {inMap} tanesi ({percent}) site haritasında. Bu oran taranan sayfalara aittir; keşfedilen harita adreslerinin toplamı mevcutsa Anlık veri bölümünde ayrıca gösterilir.":
+    "Of {count} crawled pages, {inMap} ({percent}) are in the sitemap. This rate applies to crawled pages; discovered sitemap URL totals, when available, appear separately in Snapshot data.",
+  "Kaydedilen mobil PageSpeed ölçümü: {time}.":
+    "Stored mobile PageSpeed measurement: {time}.",
+  "Rapor hazırlanırken veriler sunucudan yeniden okundu; Google geçmiş değerleri düzeltebilir. Aynı dönem etiketi önceki ekran görüntüsüyle birebir ölçüm eşitliğini garanti etmez. Aynı kaynak yeniden hazırlanırsa kayıt güncellenir; rapor dili değişebilir.":
+    "Data was read again from the server when preparing this report; Google may revise historical values. The same period label does not guarantee identical measurements to a previous screenshot. Regenerating the same source updates the record; the report language may change.",
+  "Okunan sayfalarda güç kaybı koşulunu sağlayan kayıt bulunmadı.":
+    "No pages matching the decay condition were found among the pages read.",
+  "Kaydedilmiş harita keşif toplamı mevcut değil; kapsam oranı yalnızca taranan sayfaları kullanır.":
+    "No discovered sitemap total was stored; the coverage rate uses only crawled pages.",
 };

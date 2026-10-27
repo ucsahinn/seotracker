@@ -6,6 +6,7 @@ import { formatCount, formatDate, formatDecimal } from "@/client/lib/format";
 import { PositionSparkline } from "@/client/features/rankings/PositionSparkline";
 import { PositionChange } from "./PositionChange";
 import { isoDaysInclusive } from "@/shared/dataFreshness";
+import { searchScopeUnavailableReason } from "@/client/features/search-performance/searchScope";
 
 /**
  * One query's history, opened from the table beside it.
@@ -192,14 +193,20 @@ export function QueryHistoryCard({
           })}
         </p>
       </div>
-      <Link
-        to="/p/$projectId/search-performance"
-        params={{ projectId }}
-        search={{ tab: "queries" as const, q: query }}
-        className="link link-primary text-xs"
-      >
-        {t("Arama performansında metin ara (tarih ve birebir sorgu korunmaz)")}
-      </Link>
+      {range && searchScopeUnavailableReason(range.startDate) ? (
+        <p role="status" className="text-xs text-muted">
+          {searchScopeUnavailableReason(range.startDate)}
+        </p>
+      ) : range ? (
+        <Link
+          to="/p/$projectId/search-performance"
+          params={{ projectId }}
+          search={{ tab: "queries" as const, exactQuery: query, ...range }}
+          className="link link-primary text-xs"
+        >
+          {t("Arama performansında aç")}
+        </Link>
+      ) : null}
     </div>
   );
 }

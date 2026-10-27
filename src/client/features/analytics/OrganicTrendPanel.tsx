@@ -1,6 +1,7 @@
+import { DataTruncationNotice } from "./DataTruncationNotice";
 import { GA4_HELP } from "@/client/features/analytics/metricHelp";
 import { HeaderHelpLabel } from "@/client/features/saved-keywords/components/HeaderHelpLabel";
-import { fractionalChange, pointsDelta } from "@/shared/delta";
+import { pointsDelta } from "@/shared/delta";
 import { AnimatedNumber } from "@/client/components/AnimatedNumber";
 import { useQuery } from "@tanstack/react-query";
 import { getGa4DashboardReport } from "@/serverFunctions/ga4";
@@ -20,7 +21,7 @@ import {
   CHART_GRID,
   CHART_SERIES,
 } from "@/client/components/Chart";
-import { DeltaBadge } from "@/client/components/MetricTile";
+import { countComparison, DeltaBadge } from "@/client/components/MetricTile";
 import {
   formatCount,
   formatDate,
@@ -158,25 +159,28 @@ export function OrganicTrendPanel({
             format={formatCount}
           />
           {/* Zero and unknown revenue remain visible with currency context. */}
-          {
-            <Total
-              label={t("Gelir")}
-              value={totals.purchaseRevenue}
-              previous={limited ? null : prevTotals.purchaseRevenue}
-              deltaTitle={deltaTitle}
-              format={(value) =>
-                query.data.currencyCode
-                  ? formatMoney(value, query.data.currencyCode)
-                  : t("{value} (para birimi bilinmiyor)", {
-                      value: formatDecimal(value),
-                    })
-              }
-            />
-          }
+          <Total
+            label={t("Gelir")}
+            value={totals.purchaseRevenue}
+            previous={limited ? null : prevTotals.purchaseRevenue}
+            deltaTitle={deltaTitle}
+            format={(value) =>
+              query.data.currencyCode
+                ? formatMoney(value, query.data.currencyCode)
+                : t("{value} (para birimi bilinmiyor)", {
+                    value: formatDecimal(value),
+                  })
+            }
+          />
         </div>
       </div>
 
       <div className="px-4 py-3">
+        <DataTruncationNotice
+          reasons={query.data.reportMetadata.reports.flatMap(
+            (report) => report.dataTruncationReasons ?? [],
+          )}
+        />
         <p className="mb-2 text-xs text-muted">
           {t(
             "Mülk kapsamı: tüm ana makineler ve akışlar. Bu toplam yalnızca projenin sitesine ait olmayabilir.",
@@ -308,7 +312,7 @@ function Total({
       ? null
       : rate
         ? pointsDelta(value, previous)
-        : fractionalChange(value, previous);
+        : countComparison(value, previous, format);
   return (
     <div className="text-right">
       <p className="text-xs text-muted">
@@ -328,16 +332,6 @@ function Total({
         <p className="text-xs text-muted">
           {t("Karşılaştırma yok; önceki değer okunamadı veya veri sınırlı.")}
         </p>
-      ) : !rate && previous === 0 && value > 0 ? (
-        <p className="text-xs text-muted">
-          {t("Önceki dönem sıfır, şimdi {value}.", { value: format(value) })}
-        </p>
-      ) : !rate &&
-        (value === previous ||
-          (change !== null &&
-            typeof change === "number" &&
-            Math.abs(change) < 0.0005)) ? (
-        <p className="text-xs text-muted">{t("Değişmedi")}</p>
       ) : null}
     </div>
   );

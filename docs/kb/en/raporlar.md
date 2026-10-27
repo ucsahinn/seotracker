@@ -43,3 +43,9 @@ Generation re-reads server data. Google can revise past measurements and the per
 Template limits: 80 characters for name, 200 for description, 3,000 for instructions, ten templates per project. Deleting a template preserves its reports. Clear search restores hidden templates.
 
 Storage guards are 500,000 bytes per report, 120 title characters, 2,500 summary characters, 10,000 reports per project and 5 GB across the installation. These guard storage, not SEO coverage. For Audit reports inspect the document's own method for crawl, speed and optional Google evidence dates.
+
+## Source kinds and regeneration
+
+New native Search performance and Site audit reports have separate saved kinds. Older app reports are not classified from their titles. Search identity uses the property, resolved dates and filters; Audit identity uses the audit ID. Regenerating the same source in another language updates the same record and may change its language. Title collisions with agent reports are refused; an older document with the same title is preserved and the new save is refused.
+
+Regenerate native reports from their source screen; agents cannot replace their content using `save_report`. Missing source data is never treated as zero. Audit methodology identifies the GSC traffic period, source row limit and available stored mobile CrUX measurement.

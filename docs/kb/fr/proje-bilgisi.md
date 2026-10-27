@@ -20,7 +20,9 @@ Actualiser relit notes et configuration. Une erreur en arrière-plan conserve le
 
 Le modèle destiné à l’assistant lui demande votre accord avant d’écrire. Les outils de l’application peuvent écrire immédiatement, sans accord supplémentaire imposé. Sans identité de projet résolue, le modèle reste indisponible.
 
-Le journal de recherche affiche au maximum les 20 dernières notes de 1 000 caractères. La date suit le jour UTC du serveur. Le nettoyage au-delà de 90 jours se fait lors d’un nouvel ajout ; de vieilles notes peuvent donc rester. La liste n’est pas un historique complet.
+Le journal de recherche affiche les 20 dernières notes des 90 derniers jours, de 1 000 caractères chacune. La date suit le jour UTC du serveur. Les notes expirées sont filtrées à chaque lecture. Un message indique les notes supplémentaires de cette période. La liste n’est pas un historique complet.
+
+Si un autre client modifie une section pendant votre saisie, tout l’enregistrement est refusé et votre brouillon est conservé. Comparez le texte initial, le dernier texte enregistré et votre brouillon, puis fusionnez-les avant de réessayer. Les agents peuvent transmettre `expectedContent` pour bénéficier de cette protection ; les anciens clients restent compatibles sans ce champ.
 
 Sources et configuration compte six signaux communs et distingue absence et lecture impossible. Les listes facultatives sont exclues. Une connexion n’est pas un test en direct, une clé PageSpeed ne garantit pas le quota, un appel d’outil de cette installation ne prouve pas la lecture de ce projet. Ce n’est pas une note SEO.
 

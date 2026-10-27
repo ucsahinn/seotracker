@@ -41,3 +41,9 @@ La generazione rilegge i dati del server. Google può correggere il passato e il
 Modelli: nome 80, descrizione 200, istruzioni 3.000 caratteri; dieci per progetto. Eliminare il modello conserva i rapporti. Cancella ricerca ripristina i modelli nascosti.
 
 Limiti di protezione: 500.000 byte per rapporto, titolo 120 caratteri, riepilogo 2.500, 10.000 rapporti per progetto e 5 GB per installazione. Sono limiti di archiviazione, non misure SEO. Nel metodo del rapporto di audit controlla date di scansione, velocità e fonti Google facoltative.
+
+## Tipi di fonte e rigenerazione
+
+I nuovi rapporti nativi sulle prestazioni di ricerca e sull’audit del sito hanno tipi salvati distinti. Il tipo dei vecchi rapporti non viene dedotto dal titolo. L’identità di ricerca usa proprietà, date definite e filtri; quella di audit usa l’ID dell’audit. Rigenerare la stessa fonte in un’altra lingua aggiorna lo stesso record e può cambiarne la lingua. I conflitti di titolo con rapporti degli agenti vengono rifiutati; un vecchio documento con lo stesso titolo viene conservato e il nuovo salvataggio viene rifiutato.
+
+Rigenerate i rapporti nativi dalla schermata di origine; gli agenti non possono sostituirne il contenuto con `save_report`. I dati mancanti non valgono mai zero. La metodologia dell’audit indica il periodo del traffico GSC, il limite di righe e la misurazione CrUX mobile salvata disponibile.

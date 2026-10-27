@@ -20,7 +20,9 @@ Atualizar relê notas e configuração. Falhas em segundo plano preservam inform
 
 O prompt para o assistente pede sua aprovação antes de gravar. As ferramentas do aplicativo podem gravar imediatamente e não impõem outra confirmação. O prompt fica indisponível até a identidade do projeto ser lida.
 
-O diário de pesquisa mostra no máximo as 20 notas mais recentes, de até 1.000 caracteres. A data segue o dia UTC do servidor. A limpeza de registros com mais de 90 dias acontece ao adicionar uma nota; sem novos registros, notas antigas podem permanecer. A lista não é o histórico completo.
+O diário de pesquisa mostra as 20 notas mais recentes dos últimos 90 dias, de até 1.000 caracteres. A data segue o dia UTC do servidor. As notas antigas são filtradas em cada leitura. Um aviso indica outros registos no mesmo período. A lista não é o histórico completo.
+
+Se outro cliente alterar uma secção durante a edição, toda a gravação é recusada e o rascunho é preservado. Compare o texto inicial, o último texto guardado e o rascunho, integre-os e guarde novamente. Os agentes podem enviar `expectedContent` para usar a mesma proteção; os clientes antigos sem este campo continuam compatíveis.
 
 Fontes e configuração conta seis sinais compartilhados e distingue ausência de leitura impossível. As listas opcionais não contam. Conexão salva não é teste ao vivo, chave PageSpeed não garante cota e chamada de ferramenta da instalação não prova leitura deste projeto. Não é uma pontuação SEO.
 

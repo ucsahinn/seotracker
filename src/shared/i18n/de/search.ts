@@ -796,4 +796,8 @@ export const deSearch: Catalog = {
     "Erste {count} Einträge nach Impressionen; das Suchfeld filtert auch diese Liste.",
   "Bağlantı yok; gösterilen özet kayıtlı tarihsel gözlemlerdir.":
     "Keine Verbindung; die Zusammenfassung zeigt gespeicherte historische Beobachtungen.",
+  "Seçilen dönem Search Console'un okunabilir kesin günleri dışında. Kullanılabilir dönem: {start} – {end}.":
+    "Der gewählte Zeitraum liegt außerhalb der lesbaren vollständigen Tage in Search Console. Verfügbarer Zeitraum: {start} – {end}.",
+  "Search Console yalnızca {start} ve sonrasını okuyabilir. Bu arşiv dönemi bütünüyle açılamaz.":
+    "Search Console kann nur Daten ab {start} lesen. Dieser Archivzeitraum lässt sich nicht vollständig öffnen.",
 };

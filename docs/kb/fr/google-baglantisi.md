@@ -18,3 +18,5 @@ Pour OAuth, créez un client Web application. Enregistrez exactement les deux UR
 ## Dépannage
 
 Une erreur conserve l'ancienne liste; une liste vide seule ne prouve pas l'absence de droits. Reconnectez une autorisation expirée, vérifiez les droits pour un refus et le projet Cloud pour une API inactive. Attendez en cas de limite. Sinon, réessayez et consultez le diagnostic Aide. Supprimer un identifiant ici ne le révoque pas chez Google. Modifier le domaine conserve l'association et l'historique.
+
+La fiche de connexion date la dernière lecture Google déjà observée pour les identifiants et la propriété actuels. Après un échec temporaire, elle conserve la date de la précédente lecture réussie. Sans historique, l’accès reste non vérifié. Ouvrir les paramètres ne lance aucune requête Google. Un changement d’identifiants ne transfère pas les anciennes preuves d’accès ou de quota à la nouvelle identité ; actualisez explicitement les rapports.

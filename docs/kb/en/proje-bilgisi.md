@@ -20,7 +20,9 @@ Refresh reads notes and setup again. A failed background read retains stored inf
 
 Under **Prepare a draft with an agent**, the prompt asks the assistant to request approval before saving. The application tools can write immediately without another approval gate. The prompt is unavailable until project identity is resolved.
 
-**Research log** shows at most the newest 20 entries. Dates use the server's UTC day; entries allow 1,000 characters. Cleanup of records older than 90 days runs when a new entry is appended, so older notes can remain without new writes. This is not a complete history.
+**Research log** shows the newest 20 entries from the last 90 days. Dates use the server's UTC day; entries allow 1,000 characters. Expired entries are filtered on every read, even without new writes. A notice identifies additional entries in this window. This is not a complete history.
+
+If another client changes a section while you edit, the whole save is rejected and your draft is preserved. Compare the original text, latest saved text and your draft, merge them and save again. Agents can send `expectedContent` for the same protection; older clients that omit it remain compatible.
 
 **Sources and setup** counts six shared configuration signals. Missing and unreadable states are separate; optional lists are excluded. A stored connection is not a live data test, a PageSpeed key does not guarantee quota, and an installation-level tool call does not prove this project was read. This is not an SEO score.
 

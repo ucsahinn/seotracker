@@ -32,4 +32,4 @@ Sıra ortalamaları gösterimle ağırlıklıdır. Değişim önceki ortalama ek
 
 Gözlenen gün her zaman gösterilir; örneğin 90 günlük dönemde 10 gün olması tam kapsam değildir. Günlük grafik gerçek tarihlerle aralıklıdır; eksik günlerde çizgi kesilir. Oklar, Home ve End günler arasında gezinir. Günlük değerler açılarak okunabilir. Haftalık çizgilerde tamamen boş haftalar korunur; uç haftalar kısmi olabilir.
 
-Arama performansı bağlantısı şu an metin araması açar. Birebir sorgu ve arşiv tarihleri korunmaz; sonuçları eşitlemeden önce kapsamı kontrol edin. Rakip sıralaması, ücretli arama hacmi ve trafik tahmini yoktur.
+Arama performansı bağlantısı birebir sorguyu ve arşivin başlangıç/bitiş tarihlerini korur. Google'ın saklama sınırından eski dönemlerde bağlantı yerine kullanılabilir başlangıç açıklanır. Rakip sıralaması, ücretli arama hacmi ve trafik tahmini yoktur.

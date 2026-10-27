@@ -2,7 +2,7 @@ import { t } from "@/shared/i18n";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import type { SearchPerformanceView } from "@/shared/searchPerformanceView";
 import type { CompareMode } from "@/client/features/search-performance/searchTabs";
-import { countDelta } from "@/shared/searchTodoCopy";
+import { countDelta } from "@/client/components/MetricTile";
 import { placesDelta, pointsDelta } from "@/shared/delta";
 import {
   formatCount,

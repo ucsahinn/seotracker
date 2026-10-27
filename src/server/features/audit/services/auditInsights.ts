@@ -264,7 +264,20 @@ async function scoreHistory(
 }
 
 /** Last 28 days of Search Console clicks per page; null when unavailable. */
-async function pageTraffic(projectId: string) {
+type PageTraffic = {
+  startDate: string;
+  endDate: string;
+  rows: Array<{ url: string; clicks: number; impressions: number }>;
+  source?: {
+    property: string;
+    retrievedAt: string;
+    rowLimit: number;
+    fetchedRows: number;
+    capped: boolean;
+    timeZone: "America/Los_Angeles";
+  };
+};
+async function pageTraffic(projectId: string): Promise<PageTraffic | null> {
   try {
     const result = await GscService.getPerformance({
       projectId,
@@ -297,6 +310,14 @@ async function pageTraffic(projectId: string) {
       }
     }
     return {
+      source: {
+        property: result.siteUrl,
+        retrievedAt: new Date().toISOString(),
+        rowLimit: GSC_MAX_ROW_LIMIT,
+        fetchedRows: result.rows.length,
+        capped: result.rows.length >= GSC_MAX_ROW_LIMIT,
+        timeZone: "America/Los_Angeles",
+      },
       startDate: result.request.startDate,
       endDate: result.request.endDate,
       rows: [...byKey.values()],

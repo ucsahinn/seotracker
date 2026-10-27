@@ -41,3 +41,9 @@ A geração relê os dados do servidor. O Google pode corrigir valores anteriore
 Modelos: nome com 80, descrição com 200 e instruções com 3.000 caracteres; dez por projeto. Excluir um modelo preserva seus relatórios. Limpar busca revela os modelos ocultos.
 
 Proteções: 500.000 bytes por relatório, título com 120 caracteres, resumo com 2.500, 10.000 relatórios por projeto e 5 GB por instalação. São limites de armazenamento, não medidas de SEO. Confira datas do rastreamento, velocidade e fontes Google opcionais na metodologia do relatório de auditoria.
+
+## Tipos de fonte e nova geração
+
+Os novos relatórios nativos de desempenho de pesquisa e auditoria do site têm tipos salvos distintos. O tipo de relatórios antigos não é deduzido do título. A identidade de pesquisa usa propriedade, datas definidas e filtros; a identidade de auditoria usa o ID da auditoria. Gerar novamente a mesma fonte em outro idioma atualiza o mesmo registro e pode mudar seu idioma. Conflitos de título com relatórios de agentes são recusados; um documento antigo com o mesmo título é preservado e o novo salvamento é recusado.
+
+Gere novamente relatórios nativos na tela de origem; agentes não podem substituir seu conteúdo com `save_report`. Dados ausentes nunca são tratados como zero. A metodologia de auditoria identifica o período de tráfego GSC, o limite de linhas e a medição CrUX móvel salva disponível.

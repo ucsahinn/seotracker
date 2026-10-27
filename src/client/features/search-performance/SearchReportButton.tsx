@@ -21,16 +21,27 @@ import { t } from "@/shared/i18n";
 export function SearchReportButton({
   projectId,
   filters,
+  window,
+  disabled = false,
 }: {
   projectId: string;
   filters: SearchPerformanceViewFilters;
+  window: { startDate: string; endDate: string };
+  disabled?: boolean;
 }) {
   const queryClient = useQueryClient();
   const [downloaded, setDownloaded] = useState(false);
 
   const create = useMutation({
     onMutate: () => setDownloaded(false),
-    mutationFn: () => createSearchReport({ data: { projectId, ...filters } }),
+    mutationFn: () =>
+      createSearchReport({
+        data: {
+          projectId,
+          ...filters,
+          window: { startDate: window.startDate, endDate: window.endDate },
+        },
+      }),
     onSuccess: async ({ reportId, title }) => {
       await queryClient.invalidateQueries({
         queryKey: reportsQueryKey(projectId),
@@ -56,7 +67,7 @@ export function SearchReportButton({
     <button
       type="button"
       className="btn btn-sm gap-1.5"
-      disabled={create.isPending}
+      disabled={disabled || create.isPending}
       onClick={() => create.mutate()}
     >
       {flash === "pending" ? (

@@ -243,6 +243,7 @@ function ProjectContextContent({
           <ResearchLog
             projectId={projectId}
             researchLog={context.researchLog}
+            hasMore={context.researchLogHasMore}
           />
         </details>
         <details>

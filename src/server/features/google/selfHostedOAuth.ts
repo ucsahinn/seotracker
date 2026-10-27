@@ -1,3 +1,4 @@
+import { GoogleAccessRepository } from "./GoogleAccessRepository";
 import { symmetricEncrypt } from "better-auth/crypto";
 import { env } from "cloudflare:workers";
 import { and, eq } from "drizzle-orm";
@@ -314,6 +315,7 @@ export async function handleSelfHostedGoogleOAuthCallback(input: {
     user: input.user,
     tokens,
   });
+  await GoogleAccessRepository.advance();
   return redirectToCallback();
 }
 

@@ -93,4 +93,12 @@ export const deAnalytics: Catalog = {
     "Diagnoseumfang: {shown} / {total} Zeilen.",
   "Etkinlik durumu bilinmiyor; rapor sınırlı veya eksik. Dönemi ve ölçüm ayarlarını kontrol edin.":
     "Aktivität unbekannt: Der Bericht ist eingeschränkt oder unvollständig. Prüfen Sie Zeitraum und Messeinstellungen.",
+  "Veri erişimi henüz doğrulanmadı.":
+    "Der Datenzugriff wurde noch nicht bestätigt.",
+  "Son başarılı Google okuması: {date}":
+    "Letzter erfolgreicher Google-Abruf: {date}",
+  "Son başarısız Google okuması: {date}":
+    "Letzter fehlgeschlagener Google-Abruf: {date}",
+  "Google bu raporun tarih kapsamındaki bazı verileri kesti; toplamlar ve karşılaştırmalar eksik olabilir.":
+    "Google hat einige Daten im Zeitraum dieses Berichts gekürzt; Summen und Vergleiche können unvollständig sein.",
 };

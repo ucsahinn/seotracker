@@ -1,6 +1,5 @@
 import { t } from "@/shared/i18n";
 import * as React from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Download, Sheet } from "lucide-react";
 import { toast } from "sonner";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
@@ -11,13 +10,10 @@ import { EmptyState } from "@/client/components/EmptyState";
 import { TableExportMenu } from "@/client/components/table/TableBulkActionBar";
 import { SearchConsoleConnectionCard } from "@/client/features/gsc/SearchConsoleConnectionCard";
 import { useSaveTrackedKeyword } from "@/client/features/rankings/useSaveTrackedKeyword";
-import { searchPerformanceViewQuery } from "@/client/features/dashboard/dashboardGscReport";
+import { useSearchView } from "./useSearchView";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { isDevice } from "@/client/features/search-performance/deviceShare";
-import {
-  exportSearchPerformanceTable,
-  getSearchPerformanceView,
-} from "@/serverFunctions/searchPerformance";
+import { exportSearchPerformanceTable } from "@/serverFunctions/searchPerformance";
 import type {
   SearchPerformanceDateRange,
   SearchPerformanceDevice,
@@ -73,6 +69,8 @@ type ViewChange = {
   f?: QuickFilterId;
   cmp?: CompareMode;
   g?: Granularity;
+  exactQuery?: string;
+  exactPage?: string;
 };
 
 export function SearchPerformancePage({
@@ -86,6 +84,8 @@ export function SearchPerformancePage({
   quickFilter,
   compare,
   granularity,
+  window: pinnedWindow,
+  exactTarget,
   onViewChange,
 }: {
   projectId: string;
@@ -98,18 +98,17 @@ export function SearchPerformancePage({
   quickFilter?: QuickFilterId;
   compare: CompareMode;
   granularity: Granularity;
+  window?: { startDate: string; endDate: string };
+  exactTarget?: DrillTarget;
   onViewChange: (next: ViewChange) => void;
 }) {
-  const queryClient = useQueryClient();
   const saveOne = useSaveTrackedKeyword(projectId);
   const filters = buildFilterInput(range, device, country, searchType);
-  const viewOptions = searchPerformanceViewQuery(projectId, filters);
-  const viewQuery = useQuery({
-    ...viewOptions,
-    // Carry the view over a filter change, never across projects.
-    placeholderData: (previous, previousQuery) =>
-      previousQuery?.queryKey[1] === projectId ? previous : undefined,
-  });
+  const { viewQuery, refresh } = useSearchView(
+    projectId,
+    filters,
+    pinnedWindow,
+  );
   const view = viewQuery.data?.connected ? viewQuery.data : null;
   useHistorySync(projectId, view);
 
@@ -117,31 +116,14 @@ export function SearchPerformancePage({
   const openTodos = view
     ? view.todo.filter((item) => !doneTodos.done.has(item.id))
     : [];
-  const [drill, setDrill] = React.useState<DrillTarget | null>(null);
-  const closeDrill = React.useCallback(() => setDrill(null), []);
-
-  // A refresh skips the server's few-minute memory of Google's answers.
-  const refresh = useMutation({
-    mutationFn: () =>
-      getSearchPerformanceView({
-        data: { projectId, ...filters, fresh: true },
-      }),
-    onSuccess: async (fresh) => {
-      queryClient.setQueryData(viewOptions.queryKey, fresh);
-      await Promise.all(
-        [
-          "searchPerformanceTable",
-          "searchPerformanceDrilldown",
-          "cannibalization",
-          "siteDailyHistory",
-        ].map((key) =>
-          queryClient.invalidateQueries({ queryKey: [key, projectId] }),
-        ),
-      );
-    },
-    onError: (error) =>
-      toast.error(getStandardErrorMessage(error, t("Yenilenemedi"))),
-  });
+  const drill = exactTarget;
+  const setDrill = (target: DrillTarget) =>
+    onViewChange({
+      exactQuery: target.dimension === "query" ? target.key : undefined,
+      exactPage: target.dimension === "page" ? target.key : undefined,
+    });
+  const closeDrill = () =>
+    onViewChange({ exactQuery: undefined, exactPage: undefined });
 
   const setTab = (next: SearchTab) =>
     onViewChange({ tab: next, f: undefined, q: undefined });
@@ -211,7 +193,16 @@ export function SearchPerformancePage({
                 dataUpdatedAt={viewQuery.dataUpdatedAt}
                 shortcut
               />
-              <SearchReportButton projectId={projectId} filters={filters} />
+              <SearchReportButton
+                projectId={projectId}
+                filters={filters}
+                window={view.window}
+                disabled={
+                  viewQuery.isPlaceholderData ||
+                  refresh.isPending ||
+                  viewQuery.isFetching
+                }
+              />
               <TableExportMenu
                 buttonClassName="btn btn-sm gap-1"
                 actions={[
@@ -267,6 +258,7 @@ export function SearchPerformancePage({
           aria-busy={stale}
         >
           <SearchFilters
+            pinned={Boolean(pinnedWindow)}
             range={range}
             device={device}
             country={country}
@@ -392,7 +384,7 @@ export function SearchPerformancePage({
         </div>
       )}
 
-      {view && drill ? (
+      {view && drill && !stale ? (
         <DrilldownPanel
           projectId={projectId}
           filters={filters}

@@ -113,6 +113,7 @@ async function getOrganicOverview(
     recordGa4Quota(
       {
         projectId: input.projectId,
+        credentialGeneration: response.credentialGeneration,
         propertyId: connection.propertyId,
         ga4AccountId: connection.ga4AccountId,
         connectedByUserId: connection.connectedByUserId,

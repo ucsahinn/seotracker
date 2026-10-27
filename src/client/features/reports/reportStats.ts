@@ -16,6 +16,7 @@ export const UNKNOWN_APP_KIND = "app-kind-unknown";
 /** The skill names agents write, said the way the rest of the screen speaks. */
 // Turkish source text, translated where it renders (kindLabel).
 const KIND_LABELS: Record<string, string> = {
+  "search-performance-export": "Arama performansı raporu",
   [AUDIT_EXPORT_KIND]: "Site denetimi raporu",
   [UNKNOWN_APP_KIND]: "Uygulama raporu, tür kaydedilmemiş",
   __other: "Diğer türler",
@@ -40,7 +41,7 @@ type ReportFilter = "all" | "recent" | "template" | "skill" | "audit";
 type ReportLike = Pick<
   ReportListItem,
   "templateName" | "skill" | "updatedAt" | "sizeBytes"
-> & { createdBy?: string };
+> & { createdBy?: string; nativeKind?: ReportListItem["nativeKind"] };
 
 /** True for the label the app stamps on reports it builds itself (old and new). */
 export function isAppCreator(createdBy: string | undefined): boolean {
@@ -64,6 +65,7 @@ export function hasTemplate(report: Pick<ReportLike, "templateName">): boolean {
  * Without explicit source metadata their type must remain unknown.
  */
 export function reportKind(report: ReportLike): string {
+  if (report.nativeKind) return report.nativeKind;
   const named = present(report.templateName) ?? present(report.skill);
   if (named !== null) return named;
   return isAppCreator(report.createdBy) ? UNKNOWN_APP_KIND : OTHER_KIND;

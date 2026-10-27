@@ -20,3 +20,5 @@ Create a Google Cloud OAuth Web application client. Register both callback URLs 
 ## Recovery
 
 A failed list refresh preserves the previous properties. An empty list alone does not prove missing access. Reconnect expired grants; check property permissions for denied access and the Cloud project for disabled APIs. Wait and retry rate limits. For unknown failures use Retry and Help diagnostics. Removing a credential here does not revoke it at Google. Changing a project domain preserves its property binding and history.
+
+The connection card dates the last already-observed Google read for the current credential and property; after a temporary failure it retains the previous successful read's date. Without history, access remains unverified. Opening settings makes no Google query. Credential changes do not transfer old access or quota evidence to the new identity; explicitly refresh reports.

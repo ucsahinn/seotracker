@@ -16,6 +16,7 @@ import {
 
 const KIND_ICONS: Record<string, LucideIcon> = {
   [AUDIT_EXPORT_KIND]: ClipboardCheck,
+  "search-performance-export": FileText,
   "seo-audit": ClipboardCheck,
   "seo-check-in": ArrowLeftRight,
   "seo-triage": TrendingDown,

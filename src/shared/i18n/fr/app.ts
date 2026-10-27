@@ -2,6 +2,17 @@ import type { Catalog } from "@/shared/i18n";
 
 /** French for app-wide labels: Google access status, settings help, feedback form and audit errors. */
 export const frApp: Catalog = {
+  "Bu bölüm başka bir yerde değişti. Metinleri karşılaştırıp taslağınızı birleştirin.":
+    "Cette section a été modifiée ailleurs. Comparez les textes et fusionnez votre brouillon.",
+  "Düzenleme başındaki metin": "Texte au début de la modification",
+  "Son kayıtlı metin": "Dernier texte enregistré",
+  "Karşılaştırdım, birleştirilmiş taslağı kullan":
+    "Comparaison faite ; utiliser le brouillon fusionné",
+  "Son doksan gündeki en yeni yirmi kayıt gösterilir. Tarihi sunucu UTC gününe göre belirler.":
+    "Les vingt entrées les plus récentes des quatre-vingt-dix derniers jours sont affichées. Les dates suivent le jour UTC du serveur.",
+  "Bu zaman aralığında gösterilmeyen daha eski kayıtlar var.":
+    "Des entrées plus anciennes de cette période ne sont pas affichées.",
+  "Önceki: {previous} → {current}": "Avant : {previous} → {current}",
   "Sosyal ve yapılandırılmış veri": "Réseaux sociaux et données structurées",
   "Bir ayarı değiştirdim, uygulama görmüyor":
     "J'ai modifié un réglage et l'application ne le voit pas",

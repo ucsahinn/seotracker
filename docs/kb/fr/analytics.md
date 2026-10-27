@@ -29,3 +29,5 @@ Rapport, canal, dates, ventilation, taille et position de page restent dans l’
 L’état de mesure lit uniquement les paramètres Admin. L’absence de lacune ne prouve pas que la balise envoie des données ; suivez les vérifications de collecte proposées. Les inventaires partiels sont précédés d’au moins. Si la mesure améliorée est désactivée, aucune sous-fonction n’est effectivement active. Aucun paramètre de compte n’est modifié.
 
 Le quota replié présente un instantané local de la dernière réponse de rapport, pas l’usage de la période de trafic. Le plafond standard est une hypothèse. Actualiser redemande les rapports visibles et peut consommer des jetons.
+
+Lorsque Google tronque les données de la période demandée, la synthèse Analytics et les détails du rapport indiquent la raison et les dates fournies par Google. Le rapport est considéré comme limité ; une couverture incomplète n’est pas présentée comme une comparaison fiable des périodes.

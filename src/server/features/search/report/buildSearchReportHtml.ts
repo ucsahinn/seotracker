@@ -1,3 +1,4 @@
+import { sourceOutcomeMessage } from "@/shared/searchSourceOutcome";
 /* eslint-disable max-lines -- one self-contained document, section by section, like the audit report */
 import {
   formatCount,
@@ -568,11 +569,12 @@ function changesSection(view: SearchPerformanceView): string {
     ${queryList(t("Yeni görünen sorgular"), newQueries, t("Önceki dönem karşılaştırması mevcut değil veya satır kapsamı eksik. Yeni sorgu sayısı bu veriden belirlenemez."))}
     ${queryList(t("Kaybolan sorgular (önceki dönemdeki değerleriyle)"), lostQueries, t("Dönem karşılaştırması mevcut değil veya satır kapsamı eksik. Kaybolan sorgu sayısı bu veriden belirlenemez."))}
     <h3>${escapeHtml(t("Gücünü kaybeden sayfalar"))}</h3>
+    ${view.sourceOutcomes?.decay?.status === "partial" ? `<p class="note">${escapeHtml(sourceOutcomeMessage(view.sourceOutcomes.decay))}</p>` : ""}
     ${
       decay === null
-        ? `<p class="empty">${escapeHtml(t("Uzun dönem karşılaştırması alınamadı. Yeterli geçmiş olmayabilir veya kaynak isteği başarısız olmuş olabilir; geçmiş veriyi kontrol edip raporu yeniden hazırlayın."))}</p>`
+        ? `<p class="empty">${escapeHtml(sourceOutcomeMessage(view.sourceOutcomes?.decay))}</p>`
         : decay.length === 0
-          ? `<p class="empty">${escapeHtml(t("Belirgin biçimde gücünü kaybeden sayfa yok."))}</p>`
+          ? `<p class="empty">${escapeHtml(view.sourceOutcomes?.decay?.status === "partial" ? sourceOutcomeMessage(view.sourceOutcomes.decay) : t("Okunan sayfalarda güç kaybı koşulunu sağlayan kayıt bulunmadı."))}</p>`
           : table(
               shownCaption(decay.length) + " " + t("Çeyrek: 91 gün."),
               [
@@ -756,14 +758,14 @@ function distributionSection(view: SearchPerformanceView): string {
     <h3>${escapeHtml(t("Marka ve marka dışı aramalar"))}</h3>
     ${brandHtml}
     <h3>${escapeHtml(t("Cihazlar"))}</h3>
-    ${breakdownTable(t("Cihaz"), devices, deviceName, 5)}
+    ${view.sourceOutcomes?.devices?.status === "unavailable" ? `<p class="empty">${escapeHtml(sourceOutcomeMessage(view.sourceOutcomes.devices))}</p>` : breakdownTable(t("Cihaz"), devices, deviceName, 5)}
     <h3>${escapeHtml(t("Ülkeler"))}</h3>
-    ${breakdownTable(t("Ülke"), countries, formatCountry, 10)}
+    ${view.sourceOutcomes?.countries?.status === "unavailable" ? `<p class="empty">${escapeHtml(sourceOutcomeMessage(view.sourceOutcomes.countries))}</p>` : breakdownTable(t("Ülke"), countries, formatCountry, 10)}
     <h3>${escapeHtml(t("Arama görünümü"))}</h3>
     ${
       searchAppearance && searchAppearance.rows.length > 0
         ? breakdownTable(t("Görünüm"), searchAppearance, appearanceLabel, 10)
-        : `<p class="empty">${escapeHtml(searchAppearance === null ? t("Özel sonuç görünümü verisi alınamadı veya kayıt dönmedi. Kaynak bu iki durumu ayırmadığı için yokluk sonucu çıkarılamaz; Arama performansını kontrol edin.") : t("Okunan görünüm tablosunda bu döneme ait kayıt bulunmadı."))}</p>`
+        : `<p class="empty">${escapeHtml(sourceOutcomeMessage(view.sourceOutcomes?.searchAppearance))}</p>`
     }
     <h3>${escapeHtml(t("Soru ve uzun aramalar"))}</h3>
     ${table(
@@ -797,7 +799,7 @@ function methodSection(view: SearchPerformanceView): string {
     [
       t("Kaydedilmiş belge"),
       t(
-        "Rapor hazırlanırken veriler sunucudan yeniden okundu; Google geçmiş değerleri düzeltebilir. Aynı dönem etiketi önceki ekran görüntüsüyle birebir ölçüm eşitliğini garanti etmez. Başlık dili değiştiğinde ayrı bir belge oluşabilir.",
+        "Rapor hazırlanırken veriler sunucudan yeniden okundu; Google geçmiş değerleri düzeltebilir. Aynı dönem etiketi önceki ekran görüntüsüyle birebir ölçüm eşitliğini garanti etmez. Aynı kaynak yeniden hazırlanırsa kayıt güncellenir; rapor dili değişebilir.",
       ),
     ],
     [

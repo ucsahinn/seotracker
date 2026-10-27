@@ -10,8 +10,8 @@ import {
   CHART_SERIES,
 } from "@/client/components/Chart";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
-import { MetricTile } from "@/client/components/MetricTile";
-import { fractionalChange, placesDelta, pointsDelta } from "@/shared/delta";
+import { countComparison, MetricTile } from "@/client/components/MetricTile";
+import { placesDelta, pointsDelta } from "@/shared/delta";
 import { Skeleton } from "@/client/components/Skeleton";
 import { getSafeExternalUrl } from "@/client/components/table/url";
 import {
@@ -182,7 +182,7 @@ export function DrilldownPanel({
                   value={formatCount(data.totals.clicks)}
                   delta={
                     previous
-                      ? fractionalChange(data.totals.clicks, previous.clicks)
+                      ? countComparison(data.totals.clicks, previous.clicks)
                       : null
                   }
                   deltaTitle={deltaTitle}
@@ -192,7 +192,7 @@ export function DrilldownPanel({
                   value={formatCount(data.totals.impressions)}
                   delta={
                     previous
-                      ? fractionalChange(
+                      ? countComparison(
                           data.totals.impressions,
                           previous.impressions,
                         )

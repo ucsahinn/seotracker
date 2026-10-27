@@ -38,6 +38,7 @@ vi.mock("@/server/features/lighthouse/pagespeed-config", () => ({
 }));
 
 const owner = {
+  credentialGeneration: 0,
   projectId: "p1",
   propertyId: "properties/1",
   ga4AccountId: "acct",
@@ -276,3 +277,7 @@ describe("stateFromUsage", () => {
     expect(stateFromUsage(5, 0)).toBe("unknown");
   });
 });
+
+vi.mock("@/server/features/google/GoogleAccessRepository", () => ({
+  GoogleAccessRepository: { generation: async () => 0 },
+}));

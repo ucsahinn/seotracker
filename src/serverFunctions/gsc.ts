@@ -1,3 +1,4 @@
+import { readGoogleAccess } from "@/server/features/google/GoogleAccessService";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
 import { waitUntil } from "cloudflare:workers";
@@ -55,6 +56,14 @@ export const getGscConnection = createServerFn({ method: "POST" })
       siteUrl: connection?.siteUrl ?? null,
       connectedByEmail: connection?.connectedAccountEmail ?? null,
       connectedAt: connection?.createdAt ?? null,
+      accessEvidence: connection
+        ? await readGoogleAccess({
+            provider: "gsc",
+            propertyId: connection.siteUrl,
+            userId: connection.connectedByUserId,
+            accountId: connection.gscAccountId ?? "",
+          })
+        : null,
     };
   });
 
@@ -79,6 +88,7 @@ export const listGscSites = createServerFn({ method: "POST" })
         email: grant.email,
         requiresReconnect: grant.requiresReconnect,
         propertiesUnavailable: grant.propertiesUnavailable,
+        failureReason: grant.failureReason ?? null,
         sites: grant.sites.map((site) => {
           const isSelected = connection?.gscAccountId
             ? connection.gscAccountId === grant.accountId &&

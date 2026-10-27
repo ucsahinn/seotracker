@@ -181,6 +181,10 @@ async function resolveReportPage(input: {
         ...page.reportMetadata.restrictedMetrics,
       ],
       sampling: [...reportMetadata.sampling, ...page.reportMetadata.sampling],
+      dataTruncationReasons: [
+        ...(reportMetadata.dataTruncationReasons ?? []),
+        ...(page.reportMetadata.dataTruncationReasons ?? []),
+      ],
     };
   }
 
@@ -269,7 +273,13 @@ async function runReport(input: Ga4ReportInput, opts: { now?: Date } = {}) {
     const trackedClient = {
       async runReport(report: typeof request) {
         const response = await client.runReport(report);
-        recordGa4Quota(quotaOwner, response.propertyQuota ?? null);
+        recordGa4Quota(
+          {
+            ...quotaOwner,
+            credentialGeneration: response.credentialGeneration,
+          },
+          response.propertyQuota ?? null,
+        );
         return response;
       },
     };

@@ -73,15 +73,26 @@ const keyPageInputSchema = z.object({
 const projectContextUpdateSchema = z.union([
   z.strictObject({
     section: projectContextSectionKeySchema,
+    expectedContent: z
+      .string()
+      .nullable()
+      .optional()
+      .describe(
+        "Content read before editing; null means absent. A mismatch rejects the entire batch.",
+      ),
     // An empty string clears the section.
     content: z.string(),
   }),
   z.strictObject({
     customSection: customSectionSlugSchema,
+    expectedContent: z.string().max(PROSE_MAX_CHARS).nullable().optional(),
     title: z.string().trim().min(1).max(120).optional(),
     content: z.string(),
   }),
-  z.strictObject({ deleteCustomSection: customSectionSlugSchema }),
+  z.strictObject({
+    deleteCustomSection: customSectionSlugSchema,
+    expectedContent: z.string().nullable().optional(),
+  }),
   z.strictObject({
     addCompetitors: z.array(competitorInputSchema).min(1).max(100),
   }),

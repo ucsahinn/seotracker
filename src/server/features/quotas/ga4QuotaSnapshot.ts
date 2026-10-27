@@ -30,6 +30,7 @@ export type Ga4QuotaSnapshot = {
  * produced it.
  */
 type Ga4QuotaOwner = {
+  credentialGeneration?: number;
   projectId: string;
   propertyId: string;
   ga4AccountId: string;
@@ -38,6 +39,7 @@ type Ga4QuotaOwner = {
 
 const ownerKey = (owner: Ga4QuotaOwner) =>
   JSON.stringify([
+    owner.credentialGeneration,
     owner.propertyId,
     owner.ga4AccountId,
     owner.connectedByUserId,

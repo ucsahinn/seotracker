@@ -100,8 +100,8 @@ describe("Ga4Service", () => {
     );
   });
 
-  // Anything else still throws: only the 403 is a setup step.
-  it("does not swallow a service account failure that is not a 403", async () => {
+  // Before the reason contract, a service credential failure escaped the account result.
+  it("returns a safe per-account reason for a temporary service account failure", async () => {
     mocks.hasServiceAccount.mockResolvedValue(true);
     mocks.getServiceAccountStatus.mockResolvedValue({
       clientEmail: "robot@p.iam.gserviceaccount.com",
@@ -112,7 +112,15 @@ describe("Ga4Service", () => {
 
     await expect(
       Ga4Service.listPropertiesForUserWithGrantStatus("u1"),
-    ).rejects.toBeInstanceOf(Ga4AdminApiError);
+    ).resolves.toMatchObject({
+      accounts: [
+        {
+          propertiesUnavailable: true,
+          failureReason: "unknown",
+          properties: [],
+        },
+      ],
+    });
   });
 
   it("verifies a freshly discovered property before persisting metadata", async () => {
@@ -232,6 +240,7 @@ describe("Ga4Service", () => {
           accountId: "sub-a",
           email: null,
           requiresReconnect: true,
+          failureReason: "invalid_grant",
           propertiesUnavailable: false,
           unavailableReason: null,
           properties: [],
@@ -240,6 +249,7 @@ describe("Ga4Service", () => {
           accountId: "sub-b",
           email: null,
           requiresReconnect: false,
+          failureReason: "permission_denied",
           propertiesUnavailable: true,
           unavailableReason: null,
           properties: [],

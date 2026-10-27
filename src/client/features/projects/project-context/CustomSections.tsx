@@ -57,9 +57,16 @@ export function CustomSections({
                   setEditingSlug(null);
                   document.getElementById("context-custom-sections")?.focus();
                 }}
-                onSave={(title, content) =>
+                onSave={(title, content, expectedContent) =>
                   update.mutate(
-                    [{ customSection: custom.slug, title, content }],
+                    [
+                      {
+                        customSection: custom.slug,
+                        title,
+                        content,
+                        expectedContent,
+                      },
+                    ],
                     {
                       onSuccess: () => {
                         setEditingSlug(null);
@@ -102,7 +109,12 @@ export function CustomSections({
                       })}
                       pending={update.isPending}
                       onConfirm={() =>
-                        update.mutate([{ deleteCustomSection: custom.slug }])
+                        update.mutate([
+                          {
+                            deleteCustomSection: custom.slug,
+                            expectedContent: custom.content,
+                          },
+                        ])
                       }
                     />
                   </RowActions>
@@ -128,10 +140,11 @@ function CustomSectionForm({
   custom: ProjectContextData["customSections"][number];
   pending: boolean;
   onCancel: () => void;
-  onSave: (title: string, content: string) => void;
+  onSave: (title: string, content: string, expectedContent: string) => void;
 }) {
   const [title, setTitle] = React.useState(custom.title ?? "");
   const [content, setContent] = React.useState(custom.content);
+  const [base, setBase] = React.useState(custom.content);
 
   useDirtyDraft(title !== (custom.title ?? "") || content !== custom.content);
 
@@ -140,10 +153,32 @@ function CustomSectionForm({
       className="space-y-2 rounded-box border border-base-300 bg-base-200/40 p-3"
       onSubmit={(event) => {
         event.preventDefault();
-        if (pending || !content.trim()) return;
-        onSave(title.trim() || custom.slug, content);
+        if (pending || !content.trim() || base !== custom.content) return;
+        onSave(title.trim() || custom.slug, content, base);
       }}
     >
+      {base !== custom.content ? (
+        <div role="alert" className="space-y-2 text-sm">
+          <p>
+            {t(
+              "Bu bölüm başka bir yerde değişti. Metinleri karşılaştırıp taslağınızı birleştirin.",
+            )}
+          </p>
+          <p className="whitespace-pre-wrap break-words">
+            {t("Düzenleme başındaki metin")}: {base}
+          </p>
+          <p className="whitespace-pre-wrap break-words">
+            {t("Son kayıtlı metin")}: {custom.content}
+          </p>
+          <button
+            type="button"
+            className="btn btn-sm min-h-11"
+            onClick={() => setBase(custom.content)}
+          >
+            {t("Karşılaştırdım, birleştirilmiş taslağı kullan")}
+          </button>
+        </div>
+      ) : null}
       <label className="block text-sm">
         {t("Bölüm başlığı")}
         <input
@@ -169,7 +204,7 @@ function CustomSectionForm({
       </label>
       <FormActions
         pending={pending}
-        disabled={!content.trim()}
+        disabled={!content.trim() || base !== custom.content}
         onCancel={onCancel}
       />
     </form>

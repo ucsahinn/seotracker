@@ -1546,4 +1546,8 @@ export const enSearch: Catalog = {
     "First {count} records by impressions; the search box also filters this list.",
   "Bağlantı yok; gösterilen özet kayıtlı tarihsel gözlemlerdir.":
     "Disconnected; the summary shows stored historical observations.",
+  "Seçilen dönem Search Console'un okunabilir kesin günleri dışında. Kullanılabilir dönem: {start} – {end}.":
+    "The selected period is outside Search Console's readable complete days. Available period: {start} – {end}.",
+  "Search Console yalnızca {start} ve sonrasını okuyabilir. Bu arşiv dönemi bütünüyle açılamaz.":
+    "Search Console can only read {start} onwards. This archive period cannot be opened in full.",
 };

@@ -1,3 +1,4 @@
+import { GoogleAccessEvidence } from "@/client/features/integrations/GoogleAccessEvidence";
 import { ConnectionRefreshWarning } from "@/client/features/integrations/ConnectionRefreshWarning";
 import { formatDateTime } from "@/client/lib/format";
 import { ga4ConnectionOptions } from "@/client/features/integrations/googleConnectionQueries";
@@ -286,11 +287,17 @@ function PropertyMetadata({
         propertyCurrencyCode: string | null;
         connectedAt: string | null;
         usesServiceAccount: boolean;
+        accessEvidence?: {
+          observedAt: string;
+          reason: string | null;
+          lastSuccessAt?: string | null;
+        } | null;
       }
     | undefined;
 }) {
   return (
     <div className="space-y-1 text-xs text-muted">
+      <GoogleAccessEvidence evidence={connection?.accessEvidence} />
       {connection?.connectedAt ? (
         <p>
           {t("Mülk seçim tarihi: {date}", {

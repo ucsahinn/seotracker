@@ -15,6 +15,7 @@ import {
 // Template identity is independent of the agent's skill. Native reports with
 // no persisted kind remain unknown; titles and HTML are never classification inputs.
 const kindExpression = sql<string>`case
+  when ${reports.nativeKind} is not null then ${reports.nativeKind}
   when ${reportTemplates.id} is not null then 'template:' || ${reportTemplates.id}
   when coalesce(${reports.skill}, '') <> '' then ${reports.skill}
   when ${reports.createdBy} in (${APP_REPORT_CREATOR}, ${LEGACY_APP_REPORT_CREATOR}) then 'app-kind-unknown'

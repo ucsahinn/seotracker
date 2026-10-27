@@ -1,3 +1,4 @@
+import type { SearchSourceOutcome } from "./searchSourceOutcome";
 /**
  * The Search performance screen's one contract: what
  * `getSearchPerformanceView` returns, shared by the screen, the dashboard and
@@ -156,6 +157,11 @@ export type SearchPerformanceFilters = {
 
 export type SearchPerformanceView = {
   connected: true;
+  /** Absent only on older stored/test views; never interpret absence as empty. */
+  sourceOutcomes?: Record<
+    "devices" | "countries" | "searchAppearance" | "decay",
+    SearchSourceOutcome
+  >;
   siteUrl: string;
   filters: SearchPerformanceFilters;
   window: SearchWindowInfo;

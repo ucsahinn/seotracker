@@ -1,13 +1,18 @@
+import {
+  SERVICE_ACCOUNT_ID,
+  listGrantsForUser,
+  serviceAccountEmail,
+  listSitesForUserWithGrantStatus,
+} from "./GscPropertyDiscovery";
+import { GoogleAccessRepository } from "@/server/features/google/GoogleAccessRepository";
 import { and, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { account } from "@/db/schema";
-import { GoogleServiceAccountRepository } from "@/server/features/google/GoogleServiceAccountRepository";
 import { hasServiceAccount } from "@/server/lib/googleServiceAccountToken";
 import { GSC_OAUTH_PROVIDER_ID } from "@/shared/gsc";
 import { AppError } from "@/server/lib/errors";
 import {
   createGscClient,
-  type GscSite,
   type UrlInspectionResult,
 } from "@/server/lib/gscClient";
 import {
@@ -41,16 +46,6 @@ type GscPerformanceResult = {
   rows: GscSearchAnalyticsRow[];
 };
 
-type GscSiteListResult = {
-  accounts: Array<{
-    accountId: string;
-    email: string | null;
-    requiresReconnect: boolean;
-    propertiesUnavailable: boolean;
-    sites: GscSite[];
-  }>;
-};
-
 /** Thrown when a project has no connected GSC property. */
 async function getConnection(projectId: string): Promise<GscConnection | null> {
   return GscConnectionRepository.getByProjectId(projectId);
@@ -72,34 +67,6 @@ async function userHasGrant(userId: string): Promise<boolean> {
   return rows.length > 0;
 }
 
-async function listGrantsForUser(userId: string) {
-  return db
-    .select({ id: account.id, accountId: account.accountId })
-    .from(account)
-    .where(
-      and(
-        eq(account.userId, userId),
-        eq(account.providerId, GSC_OAUTH_PROVIDER_ID),
-      ),
-    );
-}
-
-/**
- * The pseudo account id a service account is listed under.
- *
- * The picker keys rows by account id and a service account has none, so it
- * gets a reserved one. It never reaches Better Auth: `createGscClient` only
- * passes `gscAccountId` through when it is minting from a grant.
- */
-const SERVICE_ACCOUNT_ID = "service-account";
-
-/** The address the picker shows, and the one stored as the connector. */
-async function serviceAccountEmail(): Promise<string | null> {
-  return (
-    (await GoogleServiceAccountRepository.getStatus())?.clientEmail ?? null
-  );
-}
-
 /** Expected ways a stored grant fails to reach Search Console: no token could be
  *  minted (refresh token revoked or expired), or Google rejected the call
  *  (401/403). These surface a reconnect prompt without fault logging. */
@@ -109,76 +76,6 @@ export function isExpectedGrantFailure(error: unknown): boolean {
     error instanceof GscApiError &&
     (error.status === 401 || error.status === 403)
   );
-}
-
-async function listSitesForUserWithGrantStatus(
-  userId: string,
-): Promise<GscSiteListResult> {
-  /*
-   * A service account has no grants to enumerate: it is one credential, and
-   * the properties it can see are the ones its address was added to in
-   * Search Console. Presented as a single account so the picker below needs
-   * no second shape, with no email lookup -- `userinfo` describes a signed-in
-   * person and there is not one.
-   */
-  if (await hasServiceAccount()) {
-    const client = createGscClient({ userId });
-    const sites = await client.listSites();
-    return {
-      accounts: [
-        {
-          accountId: SERVICE_ACCOUNT_ID,
-          email: await serviceAccountEmail(),
-          requiresReconnect: false,
-          propertiesUnavailable: false,
-          sites,
-        },
-      ],
-    };
-  }
-
-  const grants = await listGrantsForUser(userId);
-  const accounts = await Promise.all(
-    grants.map(async (grant) => {
-      const client = createGscClient({
-        userId,
-        gscAccountId: grant.accountId,
-      });
-
-      try {
-        const sites = await client.listSites();
-        let email: string | null = null;
-        try {
-          email = await client.getUserInfoEmail();
-        } catch {
-          email = null;
-        }
-        return {
-          accountId: grant.accountId,
-          email,
-          requiresReconnect: false,
-          propertiesUnavailable: false,
-          sites,
-        };
-      } catch (error) {
-        if (!isExpectedGrantFailure(error)) {
-          console.error(
-            "Failed to list Search Console sites for account",
-            grant.accountId,
-            error,
-          );
-        }
-        return {
-          accountId: grant.accountId,
-          email: null,
-          requiresReconnect: isExpectedGrantFailure(error),
-          propertiesUnavailable: !isExpectedGrantFailure(error),
-          sites: [],
-        };
-      }
-    }),
-  );
-  return { accounts };
 }
 
 /** Map a verified property to a project. Rejects unverified properties and
@@ -325,7 +222,15 @@ async function queryAnalytics(
     new Date(),
     { maxRowLimit: GSC_API_MAX_ROW_LIMIT },
   );
-  const key = JSON.stringify([connection.siteUrl, request, maxPages]);
+  const generation = await GoogleAccessRepository.generation();
+  const key = JSON.stringify([
+    generation,
+    connection.connectedByUserId,
+    connection.gscAccountId,
+    connection.siteUrl,
+    request,
+    maxPages,
+  ]);
   let loaded = false;
 
   const result = await cachedSearchAnalytics(

@@ -1,3 +1,4 @@
+import { sourceOutcomeMessage } from "@/shared/searchSourceOutcome";
 import { t } from "@/shared/i18n";
 import * as React from "react";
 import {
@@ -251,13 +252,19 @@ export function DistributionTab({
           "Bir cihaza tıklayınca tüm ekran o cihaza göre daralır.",
         )}
       >
-        <BreakdownTable
-          caption={t("Cihaz")}
-          breakdown={devices}
-          label={deviceLabel}
-          selected={device}
-          onSelect={(key) => onDevice(key && isDevice(key) ? key : undefined)}
-        />
+        {view.sourceOutcomes?.devices?.status === "unavailable" ? (
+          <p className="px-4 text-sm text-muted">
+            {sourceOutcomeMessage(view.sourceOutcomes.devices)}
+          </p>
+        ) : (
+          <BreakdownTable
+            caption={t("Cihaz")}
+            breakdown={devices}
+            label={deviceLabel}
+            selected={device}
+            onSelect={(key) => onDevice(key && isDevice(key) ? key : undefined)}
+          />
+        )}
       </Section>
 
       <Section
@@ -266,14 +273,20 @@ export function DistributionTab({
           "Bir ülkeye tıklayınca tüm ekran o ülkeye göre daralır.",
         )}
       >
-        <BreakdownTable
-          caption={t("Ülke")}
-          breakdown={countries}
-          label={formatCountry}
-          limit={10}
-          selected={country}
-          onSelect={onCountry}
-        />
+        {view.sourceOutcomes?.countries?.status === "unavailable" ? (
+          <p className="px-4 text-sm text-muted">
+            {sourceOutcomeMessage(view.sourceOutcomes.countries)}
+          </p>
+        ) : (
+          <BreakdownTable
+            caption={t("Ülke")}
+            breakdown={countries}
+            label={formatCountry}
+            limit={10}
+            selected={country}
+            onSelect={onCountry}
+          />
+        )}
       </Section>
 
       <Section
@@ -290,9 +303,7 @@ export function DistributionTab({
           />
         ) : (
           <p className="px-4 text-sm text-muted">
-            {t(
-              "Google bu dönem için özel bir sonuç biçimi (zengin sonuç, video vb.) bildirmedi.",
-            )}
+            {sourceOutcomeMessage(view.sourceOutcomes?.searchAppearance)}
           </p>
         )}
       </Section>

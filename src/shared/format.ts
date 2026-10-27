@@ -404,9 +404,18 @@ export function formatDate(value: string): string {
   return safe(value, dateFormat(DATE));
 }
 
-/** "19 Eyl 16:07" */
+/** "19 Eyl 16:07", including the year when it differs from the current year. */
 export function formatDateTime(value: string): string {
-  return safe(value, dateFormat(DATE_TIME));
+  const timestamp = parse(value);
+  return safe(
+    value,
+    dateFormat({
+      ...DATE_TIME,
+      ...(new Date(timestamp).getFullYear() !== new Date().getFullYear()
+        ? { year: "numeric" as const }
+        : {}),
+    }),
+  );
 }
 
 const RELATIVE_UNITS: [Intl.RelativeTimeFormatUnit, number][] = [
@@ -417,7 +426,7 @@ const RELATIVE_UNITS: [Intl.RelativeTimeFormatUnit, number][] = [
   ["minute", 60 * 1000],
 ];
 
-/** "3 saat önce" / "3 hours ago"; "az önce" / "just now" under a minute. */
+/** Relative time, using the locale's current-moment wording under a minute. */
 export function formatRelativeTime(value: string): string {
   const then = parse(value);
   if (Number.isNaN(then)) return "";
@@ -429,8 +438,7 @@ export function formatRelativeTime(value: string): string {
   for (const [unit, ms] of RELATIVE_UNITS) {
     if (absolute >= ms) return formatter.format(Math.round(diff / ms), unit);
   }
-  // i18n-ignore: already split by locale on this line
-  return getLocale() === "en" ? "just now" : "az önce";
+  return formatter.format(0, "second");
 }
 
 /**

@@ -13,6 +13,8 @@ import type { ReportMetadata } from "@/types/schemas/reports";
 export const metadataColumns = {
   id: reports.id,
   projectId: reports.projectId,
+  nativeKind: reports.nativeKind,
+  nativeIdentity: reports.nativeIdentity,
   title: reports.title,
   summary: reports.summary,
   skill: reports.skill,
@@ -101,11 +103,32 @@ async function findReportByTitle(
   const [row] = await db
     .select({
       id: reports.id,
+      nativeKind: reports.nativeKind,
+      nativeIdentity: reports.nativeIdentity,
       title: reports.title,
       createdBy: reports.createdBy,
     })
     .from(reports)
     .where(and(eq(reports.projectId, projectId), eq(reports.title, title)))
+    .limit(1);
+  return row ?? null;
+}
+
+async function findReportByNativeIdentity(
+  projectId: string,
+  kind: NonNullable<ReportMetadata["nativeKind"]>,
+  identity: string,
+): Promise<ReportMetadata | null> {
+  const [row] = await db
+    .select(metadataColumns)
+    .from(reports)
+    .where(
+      and(
+        eq(reports.projectId, projectId),
+        eq(reports.nativeKind, kind),
+        eq(reports.nativeIdentity, identity),
+      ),
+    )
     .limit(1);
   return row ?? null;
 }
@@ -140,6 +163,8 @@ async function insertReport(params: {
   title: string;
   summary: string;
   html: string;
+  nativeKind?: ReportMetadata["nativeKind"];
+  nativeIdentity?: string | null;
   skill: string | null;
   templateId: string | null;
   createdBy: string;
@@ -162,6 +187,8 @@ async function updateReportContent(params: {
   title: string;
   summary: string;
   html: string;
+  nativeKind?: ReportMetadata["nativeKind"];
+  nativeIdentity?: string | null;
   skill: string | null;
   templateId: string | null;
   sizeBytes: number;
@@ -172,6 +199,8 @@ async function updateReportContent(params: {
       title: params.title,
       summary: params.summary,
       html: params.html,
+      nativeKind: params.nativeKind,
+      nativeIdentity: params.nativeIdentity,
       skill: params.skill,
       templateId: params.templateId,
       sizeBytes: params.sizeBytes,
@@ -228,6 +257,7 @@ export const ReportRepository = {
   getReportHtml,
   getReportWithHtml,
   findReportByTitle,
+  findReportByNativeIdentity,
   countReports,
   sumReportBytesForOrganization,
   insertReport,

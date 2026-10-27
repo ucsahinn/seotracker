@@ -249,6 +249,7 @@ export function RankingsPage({
               reset={reset}
             />
             <TrackedQueriesTable
+              range={range}
               projectId={projectId}
               rows={data?.rows ?? []}
               sorting={sorting}
