@@ -33,3 +33,5 @@ Les positions moyennes sont pondérées par les impressions. La variation soustr
 Le nombre de jours observés reste visible : 10 jours sur 90 ne constituent pas une couverture complète. Les points quotidiens suivent le calendrier réel et les lacunes coupent la ligne. Flèches, Home et End parcourent les dates. Développez les valeurs quotidiennes pour les lire. Les semaines entièrement absentes restent vides ; les semaines aux extrémités peuvent être partielles.
 
 Le lien Performance de recherche conserve la requête exacte et les dates de l’archive. Pour les périodes dépassant la conservation de Google, la première date accessible est indiquée avant la navigation. Aucun classement concurrent, volume payant ou prévision de trafic n’est disponible.
+
+Si aucune requête n’a été observée sur les deux périodes, les hausses et baisses ne peuvent pas être calculées. La carte des mouvements l’explique au lieu d’afficher une absence de mouvement mesurée. Le bouton d’extension apparaît seulement au-delà de trois mouvements.

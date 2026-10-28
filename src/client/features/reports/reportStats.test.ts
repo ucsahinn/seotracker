@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  displayReportTitle,
   filterCounts,
   kindLabel,
   kindSegments,
@@ -93,4 +94,16 @@ describe("report stats", () => {
       ]),
     ).toEqual({ id: "b", updatedAt: "2026-02-01" });
   });
+});
+
+it("hides only the generated UUID suffix of application report titles", () => {
+  const title =
+    "detaydepo.com site denetimi - 26 Eki 2026 · 61a977c4-9cc9-487f-95bb-3b795f17dd91";
+  expect(displayReportTitle({ title, createdBy: "seotracker" })).toBe(
+    "detaydepo.com site denetimi - 26 Eki 2026",
+  );
+  expect(displayReportTitle({ title, createdBy: "Claude" })).toBe(title);
+  expect(
+    displayReportTitle({ title: "My report · notes", createdBy: "seotracker" }),
+  ).toBe("My report · notes");
 });

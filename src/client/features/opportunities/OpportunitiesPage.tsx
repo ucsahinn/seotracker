@@ -1,6 +1,7 @@
 import { WindowPicker, LimitPicker } from "./OpportunityPickers";
 import { strikingMethodText } from "@/shared/strikingEstimateCopy";
 import { t } from "@/shared/i18n";
+import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -226,15 +227,31 @@ function Report({
 
   if (data.totalCandidateRows === 0) {
     return (
-      <div className="rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
-        <NoOpportunities
-          dateRange={range}
-          pagesConsidered={totals.pagesConsidered}
-          curveInsufficient={data.method.curveInsufficient}
-          unknownPages={totals.unknownPages}
-          hiddenQueryPages={totals.reasons.missingQueryPairs}
-          days={data.request.days}
-        />
+      <div className="space-y-4" aria-busy={stale}>
+        {stale ? (
+          <p role="status" className="text-sm text-muted">
+            {t("Önceki sonuç gösteriliyor; seçili dönem henüz yüklenmedi.")}
+          </p>
+        ) : null}
+        <div className="rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
+          <NoOpportunities
+            dateRange={range}
+            pagesConsidered={totals.pagesConsidered}
+            curveInsufficient={data.method.curveInsufficient}
+            unknownPages={totals.unknownPages}
+            hiddenQueryPages={totals.reasons.missingQueryPairs}
+            days={data.request.days}
+          />
+          <div className="flex justify-center px-4 pb-6">
+            <Link
+              to="/p/$projectId/search-performance"
+              params={{ projectId }}
+              className="btn btn-primary min-h-11"
+            >
+              {t("Arama performansını aç")}
+            </Link>
+          </div>
+        </div>
         <OpportunityMethod data={data} projectId={projectId} />
       </div>
     );

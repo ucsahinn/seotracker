@@ -85,22 +85,24 @@ function ReportsPage() {
         }
       />
 
-      <div className="flex flex-wrap gap-2">
-        <Link
-          to="/p/$projectId/search-performance"
-          params={{ projectId }}
-          className="btn min-h-11"
-        >
-          {t("Arama raporu hazırla")}
-        </Link>
-        <Link
-          to="/p/$projectId/audit"
-          params={{ projectId }}
-          className="btn min-h-11"
-        >
-          {t("Denetim raporu hazırla")}
-        </Link>
-      </div>
+      {reportsQuery.data?.totalProject !== 0 ? (
+        <div className="flex flex-wrap gap-2">
+          <Link
+            to="/p/$projectId/search-performance"
+            params={{ projectId }}
+            className="btn min-h-11"
+          >
+            {t("Arama raporu hazırla")}
+          </Link>
+          <Link
+            to="/p/$projectId/audit"
+            params={{ projectId }}
+            className="btn min-h-11"
+          >
+            {t("Denetim raporu hazırla")}
+          </Link>
+        </div>
+      ) : null}
 
       {!reportsQuery.data && reportsQuery.isPending ? (
         <div className="space-y-4">

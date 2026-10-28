@@ -56,4 +56,6 @@ La schermata controlla solo l'installazione stessa. Per trovare un problema nel 
 
 Il [Pannello](/docs/panel/) riassume configurazione e dati del progetto selezionato. Le [Opportunità](/docs/firsatlar/) aiutano a scegliere attività dai dati Search Console. Il [Monitoraggio posizioni](/docs/siralama-takibi/) segue la posizione media delle parole chiave salvate nei dati Google, non i risultati di ricerca in tempo reale. Se mancano dati, controllare collegamenti del progetto, intervallo di date e avvisi sulla copertura. Lo stato dell’installazione non verifica questi report.
 
+Nei siti con poco traffico di ricerca, Google nasconde alcune query. L’elenco può essere vuoto o mostrare meno clic dei totali delle pagine. Questo da solo non indica un problema di connessione.
+
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/quotas/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->

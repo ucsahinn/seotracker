@@ -280,6 +280,11 @@ export function CommonProblems({
       <Problem title={t("Sorgu verisi yok, grafikler boş")}>
         <p>
           {t(
+            "Az trafik alan sitelerde Google bazı sorguları gizler. Sayfa toplamlarında tıklama varken sorgu listesi boş veya daha küçük olabilir; bu tek başına bağlantı hatası değildir.",
+          )}
+        </p>
+        <p>
+          {t(
             "Önce projede Search Console'un bağlı olduğunu ve bir mülk seçildiğini doğrulayın. Hizmet hesabı kullanıyorsanız hesabın e-postasını Search Console'da mülke kullanıcı olarak eklemiş olmanız gerekir; eklemeden veri gelmez.",
           )}
         </p>

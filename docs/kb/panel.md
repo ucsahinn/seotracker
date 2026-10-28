@@ -3,7 +3,7 @@ title: Panel
 description: Panel, sitenin arama trafiğini, önce bakılacak ölçülmüş işleri ve kaynakların sınırlarını bir araya getirir.
 screen: Panel
 route: /p/<proje>
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 Panel, sitenin arama trafiğini, önce bakılacak ölçülmüş işleri ve kaynakların sınırlarını bir araya getirir. Üstteki Yenile düğmesi Panel’in etkin kaynaklarını, kurulum durumunu ve Google yapılandırmasını yeniden okur. Başarısız bir okuma varsa başarı duyurusu yerine kısmi yenileme uyarısı çıkar. Veri alınma zamanı, kaynağın ölçtüğü son gün değildir.
@@ -26,7 +26,7 @@ Yeterli gösterimli, ortalama sırası yuvarlanarak 4–20 aralığına giren so
 
 ## Kendi sitenizin denetimi
 
-Panel yalnızca proje alan adıyla eşleşen denetimleri seçer. Daha yeni başka-site taraması kullanılmaz. Son tamamlanan ölçüm, yeni çalışan veya başarısız denemeden ayrı gösterilir. Alan adı yoksa proje ayarına yönlendirme çıkar. Kart denetimin kimliğini, başlangıç adresini, tarihini, ölçülen kontrollerini ve varsa tarama sınırını belirtir.
+Panel yalnızca proje alan adıyla eşleşen denetimleri seçer. Daha yeni başka-site taraması kullanılmaz. Son tamamlanan ölçüm, yeni çalışan veya başarısız denemeden ayrı gösterilir. Alan adı yoksa proje ayarına yönlendirme çıkar. Kart denetimin başlangıç adresini, tarihini, ölçülen kontrollerini ve varsa tarama sınırını belirtir.
 
 Etkilenen benzersiz sayfa sayısı, kontrol türü sayısı ve önem düzeyindeki sayfa–kontrol çiftleri farklı birimlerdir. Bir sayfa üç kontrolden kalabilir. Bilgi notları kritik ve uyarı çubuğundan ayrı durur. Sağlık cümlesi yalnızca ölçülen kapsamı anlatır; eksik ölçüm veya sayfa sınırı tüm site için sağlık iddiası üretmez. Karşılaştırma yalnızca başlangıç kapsamı, ayarlar, taranan URL kümesi ve ölçümler uyumluysa yapılır. Yalnızca iki taramada da ölçülen kontrollerdeki değişimler gösterilir; daha dar veya okunamayan tarama düzeldi sayılmaz. Kapsam bilinmiyorsa nedeni yazılır. Sayfa satırları aynı denetimin sorunlarını seçilen URL’ye odaklayarak açar.
 
@@ -39,3 +39,9 @@ Pozitif ticaret kanıtı iki dönemden birinde varsa gelir ve sipariş görünü
 ## Sınırlar
 
 Panel arama hacmi, backlink veya rakip sırası içermez. Ekrandaki sonuçlar ilgili kaynağın tarihine ve kapsamına bağlıdır. Gerçek Google hesabıyla doğrulama, aynı dönem ve filtrelerde yapılmalıdır.
+
+## Az veriyle yorum
+
+Karşılaştırma dönemindeki tıklama sayısı analiz eşiğinin altındaysa özet yüzdeden önce gerçek tıklama ve gösterim sayılarını verir. Az veride yüzdeler ve ortalamalar tek başına büyüme veya kayıp kanıtı değildir. Boş fırsat listesi, hiçbir sorgunun 4–20. sırada olmadığını söylemez: döneme göre ölçeklenen gösterim eşiği ve marka sorgularının dışlanması da geçerlidir.
+
+Denetim kimliği bağlantıda korunur; kartta başlangıç adresi gösterilir. Oturum sayısı bilinmiyorsa Analytics raporunun kaynak uyarıları, bağlantı erişimi ve site etiketi kontrol edilir. Satış ölçümü notu Organik gelir açıklamasının içindedir.

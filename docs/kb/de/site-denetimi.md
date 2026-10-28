@@ -3,7 +3,7 @@ title: Website-Audit
 description: Die App prüft Ihre Website Seite für Seite anhand von 202 Regeln und sortiert die Probleme nach Wichtigkeit. Die Punktzahl zeigt auch, wie viel messbar war. Ein vorzeitig beendetes Audit bekommt keine Punktzahl.
 screen: Site denetimi
 route: /p/<proje>/audit
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 Hier erfahren Sie, wie Sie die Probleme Ihrer Website finden und beheben.
@@ -135,5 +135,7 @@ Der rohe Fehlertext gelangt nicht auf den Bildschirm. Er bleibt im Diagnosepaket
 ## Grenzen
 
 Der Crawler sieht Inhalte, die JavaScript (Code, der auf der Seite läuft) später hinzufügt, womöglich nicht. Ein Audit crawlt höchstens 10.000 Seiten. Die Geschwindigkeitsmessung ist Googles Labormessung, keine Daten echter Besucher. Das Audit ändert nichts an Ihrer Website. Die Korrekturen machen Sie oder Ihr Assistent.
+
+Unter Vorherige Audits zeigt **Gecrawlte Seiten** die tatsächlich gecrawlten Adressen, auch bei fehlgeschlagenen Audits, statt des anfänglichen Seitenlimits. Die Spalten Kritisch und Warnung zeigen die Gesamtzahl der Befunde. **Geschwindigkeitsmessung angefordert** bedeutet, dass die Messung beim Start aktiviert war; eine erfolgreiche Messung ist damit nicht nachgewiesen. Auf dem Smartphone können Sie die Tabelle seitlich scrollen, um weitere Spalten und Aktionen zu sehen.
 
 <!-- Quellen: src/client/features/audit/launch/LaunchView.tsx; LaunchFormCard.tsx; useLaunchController.ts; AuditHistorySection.tsx; AuditSiteFilter.tsx; ProgressCard.tsx; src/client/features/audit/results/ResultsView.tsx; ResultsHeader.tsx; ScoreOverview.tsx; ScoreGauge.tsx; WithheldScore.tsx; scoreWords.ts; auditFailureCopy.ts; ChecksView.tsx; TodoView.tsx; IssuesView.tsx; QuickFilters.tsx; ForeignPropertyNotice.tsx; DownloadReportButton.tsx; src/routes/_project/p/$projectId/audit/index.tsx; src/shared/auditStanding.ts; src/shared/auditScore.ts; src/shared/auditCategory.ts; src/shared/audit-limits.ts; src/server/lib/audit/crawl-throttle.ts -->

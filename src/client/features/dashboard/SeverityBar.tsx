@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import * as React from "react";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { HelpTip } from "@/client/components/HelpTip";
-import { formatCount, formatPercent } from "@/client/lib/format";
+import { formatCount } from "@/client/lib/format";
 import { t } from "@/shared/i18n";
 
 type Severity = "critical" | "warning" | "info";
@@ -103,7 +103,8 @@ export function SeverityBar({
           "Birim: sayfa ve kontrol türü çifti; benzersiz sayfa sayısı değildir.",
         )}
       </p>
-      {siteTotals ? (
+      {siteTotals &&
+      siteTotals.critical + siteTotals.warning + siteTotals.info > 0 ? (
         <p className="mt-2 text-xs text-muted">
           {t("Site geneli")}:{" "}
           {t("{count} kritik", { count: formatCount(siteTotals.critical) })} ·{" "}
@@ -135,10 +136,7 @@ export function SeverityBar({
                 aria-hidden
               />
               <span className="tabular-nums">
-                {t(segment.legend, { count: totals[segment.key] })}
-              </span>
-              <span className="text-subtle tabular-nums">
-                {formatPercent(totals[segment.key] / total, 0)}
+                {t(segment.legend, { count: formatCount(totals[segment.key]) })}
               </span>
             </Link>
           </li>

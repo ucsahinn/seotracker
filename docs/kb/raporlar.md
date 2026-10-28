@@ -3,7 +3,7 @@ title: Raporlar ve şablonlar
 description: Denetimden ya da Arama performansı ekranından indirdiğiniz ve asistanınıza yazdırdığınız her rapor tek bir HTML dosyasıdır. Telefonda açarsınız, yazdırırsınız, e-postayla gönderirsiniz.
 screen: Raporlar
 route: /p/<proje>/reports
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 Raporlar, bu proje için kaydedilmiş HTML belgeleridir. Uygulama her açışta Google verisini yenilemez. Kaydetme zamanı, kaynak verinin ölçüm tarihi değildir.
@@ -13,6 +13,8 @@ Raporlar, bu proje için kaydedilmiş HTML belgeleridir. Uygulama her açışta 
 **Arama raporu hazırla**, Arama performansı ekranını açar. Dönem, cihaz, ülke ve arama türünü seçip **Raporu indir** kullanın. **Denetim raporu hazırla**, Site denetimi ekranına gider; seçili taramadan rapor alın. **Rapor komutunu kopyala**, asistanınıza yapıştıracağınız isteği kopyalar. Şablonlar, asistana raporun nasıl yazılacağını anlatır; uygulamanın raporlarını otomatik üretmez ve zamanlamaz.
 
 Rapor önce kaydedilir, sonra indirilir. İndirme başarısız olursa kaydedilen dosyayı listeden tekrar indirebilirsiniz. Kaynak bağlantısı kesilse de kayıtlı raporlar okunabilir.
+
+Projede henüz rapor yoksa arama, tür ve sayfalama yerine ilk raporu hazırlama bağlantıları gösterilir. Kayıtlı raporlar yalnızca bir filtre nedeniyle görünmüyorsa filtre temizleme düğmesi kalır. Eski uygulama raporlarının başlığına eklenmiş teknik kimlik listede ve son rapor özetinde gizlenir; kayıtlı başlık ve dosya değişmez.
 
 ## Listeyi okuma
 

@@ -19,4 +19,20 @@ export const frNotifications: Catalog = {
     "L'autorisation des notifications est bloquée. Activez-la dans les autorisations du site de votre navigateur.",
   "Bu tarayıcı masaüstü bildirimlerini desteklemiyor.":
     "Ce navigateur ne prend pas en charge les notifications de bureau.",
+  "Bildirim ayarları": "Paramètres des notifications",
+  "Bildirim geçmişi bu tarayıcıda saklanır. Denetim sonuçları, yeni sürümler ve bağlantı sorunları burada görünür.":
+    "L’historique des notifications est enregistré dans ce navigateur. Les résultats d’audit, les nouvelles versions et les problèmes de connexion apparaissent ici.",
+  "Henüz bildirim yok. Bir denetim tamamlandığında veya önemli bir güncelleme olduğunda burada görünür.":
+    "Aucune notification pour le moment. Les audits terminés et les mises à jour importantes apparaîtront ici.",
+  "Burada kayıtlı mülk seçimleri gösterilir; Google erişimi bu kontrolde sınanmaz. Erişimi proje bağlantılarından doğrulayın.":
+    "Les propriétés sélectionnées sont affichées ici. Ce contrôle ne teste pas l’accès à Google. Vérifiez l’accès dans les connexions du projet.",
+  "seçili değil": "non sélectionné",
+  "Araç çağrısı alındı": "Appel d’outil reçu",
+  "{state} · {count} sınırın kullanımı bilinmiyor":
+    "{state} · utilisation inconnue pour {count} limites",
+  "Uygulama açıkken bildirimler ekranda görünür; sekme arka plandayken bildirim geçmişinde saklanır. Önemli bildirimlerin sesini buradan açıp kapatabilirsiniz.":
+    "Lorsque l’application est ouverte, les alertes s’affichent à l’écran. Dans un onglet en arrière-plan, elles restent dans l’historique des notifications. Réglez ici le son des alertes importantes.",
+  "Google hesabıyla giriş seçeneği": "Se connecter avec un compte Google",
+  "Az trafik alan sitelerde Google bazı sorguları gizler. Sayfa toplamlarında tıklama varken sorgu listesi boş veya daha küçük olabilir; bu tek başına bağlantı hatası değildir.":
+    "Sur les sites qui reçoivent peu de trafic de recherche, Google masque certaines requêtes. La liste peut être vide ou afficher moins de clics que les totaux par page. Cela ne signifie pas à lui seul que la connexion est défaillante.",
 };

@@ -3,7 +3,7 @@ title: Übersicht (Panel)
 description: Die Übersicht verbindet Suchtraffic, belegte nächste Aufgaben und die Grenzen der Datenquellen.
 screen: Panel
 route: /p/<proje>
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 Die Übersicht verbindet Suchtraffic, belegte nächste Aufgaben und die Grenzen der Datenquellen. Aktualisieren liest die aktiven Quellen, den Einrichtungsstatus und die Google-Konfiguration neu. Schlägt ein Abruf fehl, wird die Aktualisierung als teilweise gemeldet. Die Abrufzeit ist nicht der letzte gemessene Tag.
@@ -26,7 +26,7 @@ Geeignet sind Suchanfragen mit ausreichenden Impressionen und gerundeter Positio
 
 ## Audit der eigenen Website
 
-Es zählen nur Crawls der Projektdomain. Neuere Audits anderer Websites bleiben unberücksichtigt. Der letzte abgeschlossene Stand und ein neuer laufender oder fehlgeschlagener Versuch werden getrennt benannt. Ohne Domain führt ein Link zu den Projekteinstellungen. Die Karte nennt ID, Startadresse, Datum, gemessene Prüfungen und Seitenlimit.
+Es zählen nur Crawls der Projektdomain. Neuere Audits anderer Websites bleiben unberücksichtigt. Der letzte abgeschlossene Stand und ein neuer laufender oder fehlgeschlagener Versuch werden getrennt benannt. Ohne Domain führt ein Link zu den Projekteinstellungen. Die Karte nennt Startadresse, Datum, gemessene Prüfungen und Seitenlimit.
 
 Eindeutige betroffene Seiten, Prüfungsarten und Paare aus Seite und Prüfungsart sind verschiedene Einheiten. Eine Seite kann drei Prüfungen nicht bestehen. Informationshinweise stehen außerhalb des Balkens für kritische Befunde und Warnungen. Aussagen zum Zustand gelten nur für den gemessenen Bereich. Fehlende Messungen oder Seitenlimits bestätigen nicht die gesamte Website. Vergleiche erfordern denselben Startbereich, gleiche Einstellungen und URL-Mengen sowie lesbare Messungen. Nur beidseitig gemessene Prüfungen zeigen Änderungen. Engere oder nicht lesbare Crawls gelten nicht als Behebung. Unbekannter Umfang wird erklärt. Seitenlinks öffnen die Probleme desselben Audits für die gewählte URL.
 
@@ -37,3 +37,9 @@ Organische Sitzungen, aktive Nutzer, Interaktion und Schlüsselereignisse stamme
 Positive Handelsdaten in einem der beiden Zeiträume halten Umsatz und Bestellungen sichtbar, auch bei einer gemessenen Null in einem ruhigen Zeitraum. Ohne Nachweis bleibt die Umsatzmessung unbestätigt. Eine unbekannte Währung wird ausdrücklich benannt.
 
 Die Übersicht enthält weder Suchvolumen noch Backlinks oder Wettbewerber-Rankings. Ein Abgleich mit Google benötigt identische Daten und Filter.
+
+## Wenige Daten einordnen
+
+Liegt die Klickzahl des Vergleichszeitraums unter der Analyseschwelle, nennt die Zusammenfassung zuerst die tatsächlichen Klicks und Impressionen. Prozentsätze und Mittelwerte allein belegen bei wenigen Daten weder Wachstum noch Verlust. Eine leere Chancenliste bedeutet nicht, dass keine Suchanfrage auf Position 4–20 liegt: Es gelten auch die zeitabhängige Impressionsschwelle und der Ausschluss von Markensuchanfragen.
+
+Die Prüfungskennung bleibt in der Navigation; die Karte zeigt die Startadresse. Bei unbekannten Sitzungen prüfen Sie die Quellenwarnungen im Analytics-Bericht, die Zugriffsrechte und das Tag auf der Website. Der Hinweis zur Verkaufsmessung steht in der aufklappbaren Erklärung zum organischen Umsatz.

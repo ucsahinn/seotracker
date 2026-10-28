@@ -124,9 +124,7 @@ function RunningAuditCard({
       }
     >
       <div key={flash.key} className={flash.className}>
-        <p className="mb-3 break-words text-xs text-muted">
-          {audit.startUrl} · {audit.auditId}
-        </p>
+        <p className="mb-3 break-words text-xs text-muted">{audit.startUrl}</p>
         {audit.coverage ? (
           <p className="mb-3 text-sm text-muted">
             {t("{measured} / {total} kontrol ölçüldü.", {

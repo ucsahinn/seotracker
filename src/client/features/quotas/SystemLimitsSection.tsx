@@ -110,7 +110,7 @@ function WorstStateBadge({ projectId }: { projectId: string }) {
         query.isError
           ? t("Sınırlar yenilenemedi; son kayıt gösteriliyor")
           : unknownCount
-            ? t("{state} · {count} kaynak bilinmiyor", {
+            ? t("{state} · {count} sınırın kullanımı bilinmiyor", {
                 state:
                   state === "ok"
                     ? t("Bilinen sınırlarda sorun yok")

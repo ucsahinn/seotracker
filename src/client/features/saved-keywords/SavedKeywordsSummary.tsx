@@ -1,4 +1,4 @@
-import { SavedSnapshotNumber } from "./SavedSnapshotNumber";
+import { SavedSummaryCard } from "./SavedSummaryCard";
 import { Link } from "@tanstack/react-router";
 import type { SavedWatchlist } from "@/server/features/keywords/services/SavedWatchlistService";
 import type { SavedBand } from "@/shared/savedWatchlist";
@@ -27,14 +27,7 @@ export function SavedKeywordsSummary({
   onFallers: () => void;
 }) {
   if (data.totalSavedMatching === 0) return null;
-  const partial =
-    data.coverage.complete < data.requestedDays ||
-    !!(
-      data.status?.incompleteFrom &&
-      data.status.incompleteThrough &&
-      data.status.incompleteFrom <= data.range.endDate &&
-      data.status.incompleteThrough >= data.range.startDate
-    );
+  const partial = hasPartialArchive(data);
   const archiveStale =
     !!data.status?.lastDate && data.status.lastDate < data.range.endDate;
   const reason = archiveReason(data, partial, archiveStale);
@@ -59,8 +52,8 @@ export function SavedKeywordsSummary({
             : t(
                 "Kaydettiğiniz {saved} kelimenin {observed} tanesi bu aralıkta arşivde gözlendi.",
                 {
-                  saved: data.totalSavedMatching,
-                  observed: data.totalObservedMatching,
+                  saved: formatCount(data.totalSavedMatching),
+                  observed: formatCount(data.totalObservedMatching),
                 },
               )}
         </p>
@@ -83,8 +76,8 @@ export function SavedKeywordsSummary({
           {t("Eşleşen kelimelerde gözlenen gün: {observed} / {requested}", {
             observed: data.archiveError
               ? t("Bilinmiyor")
-              : data.observedDates.length,
-            requested: data.requestedDays,
+              : formatCount(data.observedDates.length),
+            requested: formatCount(data.requestedDays),
           })}
           {data.observedDates.length
             ? " · " +
@@ -130,14 +123,14 @@ export function SavedKeywordsSummary({
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <SummaryCard
+        <SavedSummaryCard
           label={t("Kayıtlı kelimeler")}
           value={formatCount(data.totalSavedMatching)}
           numericValue={data.totalSavedMatching}
           note={t("Metin ve etiket filtresine uyan kayıtlar")}
           onClick={() => onFilter(undefined)}
         />
-        <SummaryCard
+        <SavedSummaryCard
           label={t("Gözlenen kelimeler")}
           numericValue={
             data.archiveError ? undefined : data.totalObservedMatching
@@ -146,41 +139,50 @@ export function SavedKeywordsSummary({
             data.archiveError ? "—" : formatCount(data.totalObservedMatching)
           }
           note={t("{count} kayıtlı kelime içinde", {
-            count: data.totalSavedMatching,
+            count: formatCount(data.totalSavedMatching),
           })}
           onClick={() => onFilter("observed")}
           disabled={data.archiveError}
         />
-        <SummaryCard
+        <SavedSummaryCard
           label={t("Belirgin hareket ≥{value} sıra", {
             value: formatDecimal(0.5),
           })}
           value={
-            data.archiveError || data.previousError
-              ? "—"
+            data.archiveError ||
+            data.previousError ||
+            data.comparableCount === 0
+              ? t("Karşılaştırma yok")
               : t("↑ {up} · ↓ {down}", {
-                  up: data.upSignificant,
-                  down: data.downSignificant,
+                  up: formatCount(data.upSignificant),
+                  down: formatCount(data.downSignificant),
                 })
           }
           note={t("Karşılaştırılabilen: {comparable} / {total}", {
-            comparable: data.comparableCount,
-            total: data.totalSavedMatching,
+            comparable: formatCount(data.comparableCount),
+            total: formatCount(data.totalSavedMatching),
           })}
           onClick={onFallers}
-          disabled={data.archiveError || data.previousError}
+          disabled={
+            data.archiveError ||
+            data.previousError ||
+            data.comparableCount === 0 ||
+            data.downSignificant === 0
+          }
         />
-        <SummaryCard
+        <SavedSummaryCard
           label={t("Sıra bilinmiyor")}
           numericValue={data.archiveError ? undefined : data.noCurrent}
           value={data.archiveError ? "—" : formatCount(data.noCurrent)}
           note={
-            partial
-              ? t("Eksik arşiv nedeniyle gözlem yokluğu doğrulanamaz")
-              : t("Okunan arşivde eşleşen gözlem yok")
+            data.noCurrent === 0
+              ? t("Tüm kayıtlı kelimeler bu dönemde gözlendi.")
+              : partial
+                ? t("Eksik arşiv nedeniyle gözlem yokluğu doğrulanamaz")
+                : t("Okunan arşivde eşleşen gözlem yok")
           }
           onClick={() => onFilter("none")}
-          disabled={data.archiveError}
+          disabled={data.archiveError || data.noCurrent === 0}
         />
       </div>
       {!data.archiveError ? (
@@ -188,14 +190,16 @@ export function SavedKeywordsSummary({
           <p className="text-xs text-muted">
             {data.previousError
               ? t("Önceki dönem okunamadı; karşılaştırma için yeniden deneyin.")
-              : t(
-                  "Belirgin değişmedi: {stable}; önceki gözlem yok: {previous}; güncel gözlem yok: {current}.",
-                  {
-                    stable: data.stableComparable,
-                    previous: data.noPrevious,
-                    current: data.noCurrent,
-                  },
-                )}
+              : data.comparableCount === 0
+                ? t("Karşılaştırma yok")
+                : t(
+                    "Belirgin değişmedi: {stable}; önceki gözlem yok: {previous}; güncel gözlem yok: {current}.",
+                    {
+                      stable: formatCount(data.stableComparable),
+                      previous: formatCount(data.noPrevious),
+                      current: formatCount(data.noCurrent),
+                    },
+                  )}
           </p>
           <p className="text-xs text-muted">
             {t(
@@ -268,18 +272,23 @@ export function SavedKeywordsSummary({
           <p>
             {t(
               "Tam yanıt: {complete}; sınırlı: {limited}; başarısız: {failed}; doğrulanmamış gün: {unknown}.",
-              data.coverage,
+              {
+                complete: formatCount(data.coverage.complete),
+                limited: formatCount(data.coverage.limited),
+                failed: formatCount(data.coverage.failed),
+                unknown: formatCount(data.coverage.unknown),
+              },
             )}
           </p>
           <p>
             {t(
               "Önceki dönemde tam yanıt: {complete} / {days}; eşleşen gözlem günü: {observed}.",
               {
-                complete: data.previousCoverage.complete,
-                days: data.requestedDays,
+                complete: formatCount(data.previousCoverage.complete),
+                days: formatCount(data.requestedDays),
                 observed: data.previousError
                   ? t("Bilinmiyor")
-                  : data.previousObservedDates.length,
+                  : formatCount(data.previousObservedDates.length),
               },
             )}
           </p>
@@ -308,37 +317,16 @@ export function SavedKeywordsSummary({
 function formatBar(n: number, total: number) {
   return String((n / total) * 100) + "%";
 }
-function SummaryCard({
-  label,
-  value,
-  numericValue,
-  note,
-  onClick,
-  disabled,
-}: {
-  label: string;
-  value: string;
-  numericValue?: number;
-  note: string;
-  onClick: () => void;
-  disabled?: boolean;
-}) {
+
+function hasPartialArchive(data: SavedWatchlist) {
   return (
-    <button
-      disabled={disabled}
-      onClick={onClick}
-      className="min-h-32 rounded-box border border-base-300 bg-base-100 p-4 text-left focus-visible:outline-2 focus-visible:outline-primary"
-    >
-      <span className="block text-xs text-muted">{label}</span>
-      <strong className="my-2 block text-xl">
-        {numericValue === undefined ? (
-          value
-        ) : (
-          <SavedSnapshotNumber value={numericValue} />
-        )}
-      </strong>
-      <span className="block text-xs text-muted">{note}</span>
-    </button>
+    data.coverage.complete < data.requestedDays ||
+    !!(
+      data.status?.incompleteFrom &&
+      data.status.incompleteThrough &&
+      data.status.incompleteFrom <= data.range.endDate &&
+      data.status.incompleteThrough >= data.range.startDate
+    )
   );
 }
 

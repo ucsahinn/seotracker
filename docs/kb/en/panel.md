@@ -3,7 +3,7 @@ title: Dashboard
 description: The Dashboard brings together search traffic, measured next tasks and source limitations.
 screen: Panel
 route: /p/<proje>
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 The Dashboard brings together search traffic, measured next tasks and source limitations. Refresh rereads the active Dashboard sources, setup state and Google configuration. If a read fails, it reports a partial refresh. The data retrieval time is separate from the latest measured day.
@@ -26,7 +26,7 @@ Eligible queries have enough impressions and a rounded average position of 4–2
 
 ## Own-site audit
 
-Only crawls matching the project domain are selected. A newer crawl of another site is ignored. The last completed snapshot and a newer running or failed attempt are identified separately. Without a domain, the Dashboard links to project settings. The card names the audit ID, start address, date, measured checks and any page cap.
+Only crawls matching the project domain are selected. A newer crawl of another site is ignored. The last completed snapshot and a newer running or failed attempt are identified separately. Without a domain, the Dashboard links to project settings. The card names the start address, date, measured checks and any page cap.
 
 Unique affected pages, failed check types and severity page–type pairs are different units. One page can fail three checks. Information notes sit outside the critical/warning bar. Health wording applies only to measured scope. Missing measurements or a page cap cannot certify the entire site. Comparisons require matching start scope, settings, crawled URL sets and usable measurements. Only checks measured in both crawls produce changes; a narrower or unreadable crawl cannot count as a fix. Unknown scope is explained. Worst-page links open the same audit’s issues focused on the selected URL.
 
@@ -39,3 +39,9 @@ Positive commerce evidence in either period keeps revenue and orders visible, in
 ## Limits
 
 The Dashboard has no keyword volume, backlink or competitor-ranking data. Every result depends on its source window and coverage. Reconcile real Google data using identical dates and filters.
+
+## Interpreting small samples
+
+When the comparison period has fewer clicks than the analysis threshold, the summary leads with actual clicks and impressions. Percentages and averages alone do not establish growth or loss with little data. An empty opportunity list does not mean no query ranks at 4–20: the period-scaled impression threshold and brand exclusion also apply.
+
+The audit identifier stays in navigation; the card shows the starting URL. Unknown sessions call for checking source warnings in the Analytics report, connection access and the site tag. The sales measurement note is inside the Organic revenue disclosure.

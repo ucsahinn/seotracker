@@ -3,7 +3,7 @@ title: Desempenho da pesquisa
 description: Você vê quantas vezes aparece no Google, quantos cliques recebe e o que corrigir primeiro. Os números vêm do Search Console. Os ganhos são um limite superior.
 screen: Arama performansı
 route: /p/<proje>/search-performance
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 Aqui você vê quantas vezes aparece no Google, quantos cliques recebe e o que corrigir primeiro.
@@ -163,3 +163,9 @@ Os tipos de pesquisa Discover e Google Notícias não estão incluídos. Não h�
 <!-- Fontes: src/routes/_project/p/$projectId/search-performance.tsx; src/client/features/search-performance/SearchPerformancePage.tsx; SearchPageParts.tsx; SearchFilters.tsx; DataTrustStrip.tsx; SearchVerdict.tsx; KpiTiles.tsx; SearchTrendChart.tsx; TrendParts.tsx; SearchNotes.tsx; LongTermTrend.tsx; TodoTab.tsx; DimensionTab.tsx; DimensionTableParts.tsx; OpportunitiesTab.tsx; StrikingTable.tsx; ChangesTab.tsx; CannibalizationSummary.tsx; CannibalizationTable.tsx; DistributionTab.tsx; PositionDistribution.tsx; DrilldownPanel.tsx; BrandTerms.tsx; SearchReportButton.tsx; src/shared/searchInsights.ts; src/shared/searchTodoCopy.ts; src/shared/searchQuickFilters.ts; src/shared/dataFreshness.ts; src/serverFunctions/searchPerformance.ts; src/server/features/gsc/cannibalization.ts -->
 
 Os links de Oportunidades e Acompanhamento de posições abrem os detalhes da URL ou consulta exata nas datas de origem. Os totais gerais continuam sendo da propriedade; os valores da identidade selecionada ficam no painel de detalhes. Períodos indisponíveis nunca são substituídos silenciosamente. Escolher um período predefinido remove as datas fixadas. O relatório envia as datas exibidas ao servidor e fica indisponível durante a atualização. As datas permanecem fixas; o Google pode revisar as medições consultadas novamente.
+
+## Interpretar poucos dados
+
+Quando os cliques do período de comparação ficam abaixo do limite de análise, o resumo apresenta primeiro os cliques e as impressões reais. Com poucos dados, percentuais e médias não comprovam crescimento ou perda por si só. Uma lista de oportunidades vazia não significa que nenhuma consulta esteja na posição 4–20: também se aplicam o limite de impressões ajustado ao período e a exclusão de consultas de marca.
+
+Se a lista de tarefas estiver vazia, abra as consultas visíveis. Não é sugerido um período maior quando os últimos três meses já estão selecionados. Não se presume que o Google revele depois as consultas ocultas.

@@ -361,7 +361,7 @@ export function buildPanelActions({
     steps.push({
       key: "critical",
       icon: TriangleAlert,
-      title: t("{count} kritik kontrol türü", {
+      title: t("{count} kontrolde kritik sorun", {
         count: formatCount(findingTypes.critical),
       }),
       detail: t(
@@ -420,10 +420,12 @@ export function buildPanelActions({
     steps.push({
       key: "warnings",
       icon: TriangleAlert,
-      title: t("{count} uyarı kontrol türü", {
+      title: t("{count} kontrolde uyarı", {
         count: formatCount(findingTypes.warning),
       }),
-      detail: t("Kritik değil ama Google'ın sayfayı anlamasını zorlaştırıyor."),
+      detail: t(
+        "Bu bulgular hız, kullanılabilirlik veya arama görünürlüğü ile ilgili olabilir. Ayrıntılarda etkilenen sayfaları inceleyin.",
+      ),
       to: "/p/$projectId/audit",
       params,
       search: { auditId: audit.auditId, tab: "issues", severity: "warning" },

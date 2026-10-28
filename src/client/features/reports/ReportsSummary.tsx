@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ReportDownloadButton } from "./ReportDownloadButton";
 import { ReportKindChip } from "./ReportKindChip";
-import { hasTemplate, reportKind } from "./reportStats";
+import { displayReportTitle, hasTemplate, reportKind } from "./reportStats";
 import { formatDateTime } from "@/client/lib/format";
 import type { ReportListItem } from "@/serverFunctions/reports";
 import { t } from "@/shared/i18n";
@@ -41,7 +41,7 @@ export function ReportsSummary({
         params={{ projectId, reportId: latest.id }}
         className="link link-hover block break-words text-xl font-semibold"
       >
-        {latest.title}
+        {displayReportTitle(latest)}
       </Link>
       <p className="max-w-prose whitespace-pre-line text-sm">
         {latest.summary ||

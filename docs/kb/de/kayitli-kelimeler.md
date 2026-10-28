@@ -31,3 +31,5 @@ CSV und Sheets verwenden dieselbe gefilterte Basis. Die bisherigen Spalten Wort,
 Auswahl gilt nur für diese Seite; während Filter oder Aktualisierung laufen, sind Aktionen auf alten Zeilen gesperrt. Löschen erfordert Bestätigung. Standardsortierung bleibt das Hinzufügedatum; Position, Bewegung, Impressionen und Wort sind ebenfalls sortierbar. Deutliche Rückgänge werden zur Untersuchung geordnet, ohne eine Ursache zu behaupten.
 
 **Tägliche Beobachtungen.** Fordern Sie den Tagesverlauf in den Archivdetails ausdrücklich an. Zeitraum und Zuordnung bleiben gleich. Fehlende Tage bleiben Lücken; Tastaturbedienung und eine Textliste der Tageswerte sind vorhanden.
+
+Sind keine gespeicherten Keywords vergleichbar, zeigt die Bewegungskarte Kein Vergleich statt null. Wurden alle Keywords beobachtet, warnt die Karte Position unbekannt nicht vor fehlenden Beobachtungen. Die Schaltflächen für Bewegungen und unbekannte Positionen sind ohne passende Ergebnisse deaktiviert.

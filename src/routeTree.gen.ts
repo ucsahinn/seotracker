@@ -14,6 +14,7 @@ import { Route as ProjectRouteRouteImport } from './routes/_project/route'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AppAiRouteImport } from './routes/_app/ai'
 import { Route as AppAnnouncementsRouteImport } from './routes/_app/announcements'
+import { Route as AppNotificationsRouteImport } from './routes/_app/notifications'
 import { Route as AppProjectsRouteImport } from './routes/_app/projects'
 import { Route as AppReleaseNotesRouteImport } from './routes/_app/release-notes'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
@@ -64,6 +65,11 @@ const AppAiRoute = AppAiRouteImport.update({
 const AppAnnouncementsRoute = AppAnnouncementsRouteImport.update({
   id: '/announcements',
   path: '/announcements',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppNotificationsRoute = AppNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppProjectsRoute = AppProjectsRouteImport.update({
@@ -225,6 +231,7 @@ export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/ai': typeof AppAiRoute
   '/announcements': typeof AppAnnouncementsRoute
+  '/notifications': typeof AppNotificationsRoute
   '/projects': typeof AppProjectsRoute
   '/release-notes': typeof AppReleaseNotesRoute
   '/settings': typeof AppSettingsRouteWithChildren
@@ -258,6 +265,7 @@ export interface FileRoutesByTo {
   '/': typeof AppIndexRoute
   '/ai': typeof AppAiRoute
   '/announcements': typeof AppAnnouncementsRoute
+  '/notifications': typeof AppNotificationsRoute
   '/projects': typeof AppProjectsRoute
   '/release-notes': typeof AppReleaseNotesRoute
   '/support': typeof AppSupportRoute
@@ -289,6 +297,7 @@ export interface FileRoutesById {
   '/_project': typeof ProjectRouteRouteWithChildren
   '/_app/ai': typeof AppAiRoute
   '/_app/announcements': typeof AppAnnouncementsRoute
+  '/_app/notifications': typeof AppNotificationsRoute
   '/_app/projects': typeof AppProjectsRoute
   '/_app/release-notes': typeof AppReleaseNotesRoute
   '/_app/settings': typeof AppSettingsRouteWithChildren
@@ -325,6 +334,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ai'
     | '/announcements'
+    | '/notifications'
     | '/projects'
     | '/release-notes'
     | '/settings'
@@ -358,6 +368,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ai'
     | '/announcements'
+    | '/notifications'
     | '/projects'
     | '/release-notes'
     | '/support'
@@ -388,6 +399,7 @@ export interface FileRouteTypes {
     | '/_project'
     | '/_app/ai'
     | '/_app/announcements'
+    | '/_app/notifications'
     | '/_app/projects'
     | '/_app/release-notes'
     | '/_app/settings'
@@ -463,6 +475,13 @@ declare module '@tanstack/react-router' {
       path: '/announcements'
       fullPath: '/announcements'
       preLoaderRoute: typeof AppAnnouncementsRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/notifications': {
+      id: '/_app/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AppNotificationsRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/projects': {
@@ -679,6 +698,7 @@ const AppSettingsRouteWithChildren = AppSettingsRoute._addFileChildren(
 interface AppRouteRouteChildren {
   AppAiRoute: typeof AppAiRoute
   AppAnnouncementsRoute: typeof AppAnnouncementsRoute
+  AppNotificationsRoute: typeof AppNotificationsRoute
   AppProjectsRoute: typeof AppProjectsRoute
   AppReleaseNotesRoute: typeof AppReleaseNotesRoute
   AppSettingsRoute: typeof AppSettingsRouteWithChildren
@@ -689,6 +709,7 @@ interface AppRouteRouteChildren {
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppAiRoute: AppAiRoute,
   AppAnnouncementsRoute: AppAnnouncementsRoute,
+  AppNotificationsRoute: AppNotificationsRoute,
   AppProjectsRoute: AppProjectsRoute,
   AppReleaseNotesRoute: AppReleaseNotesRoute,
   AppSettingsRoute: AppSettingsRouteWithChildren,

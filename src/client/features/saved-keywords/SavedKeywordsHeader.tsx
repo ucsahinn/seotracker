@@ -36,13 +36,13 @@ export function SavedKeywordsHeader({
     <PageHeader
       title={t("Kayıtlı kelimeler")}
       description={t(
-        "Seçtiğiniz kelimelerin arşiv gözlemlerini, karşılaştırılabilir hareketlerini ve eksik kanıtlarını inceleyin.",
+        "Kaydettiğiniz aramaların ortalama sırasını ve dönemler arasındaki değişimini inceleyin.",
       )}
       actions={
         <PageActions>
           {refresh.dataUpdatedAt > 0 ? (
             <span className="text-xs text-muted">
-              {t("Liste yanıtı: {date}", {
+              {t("Liste güncellendi: {date}", {
                 date: formatDateTime(
                   new Date(refresh.dataUpdatedAt).toISOString(),
                 ),

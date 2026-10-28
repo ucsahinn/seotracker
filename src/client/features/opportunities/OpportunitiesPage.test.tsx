@@ -90,6 +90,16 @@ beforeEach(() => {
 });
 
 describe("OpportunitiesPage", () => {
+  it("keeps detailed calculations collapsed and offers a useful next step on thin data", async () => {
+    getSearchOpportunities.mockResolvedValue(report([]));
+    renderPage();
+    const summary = await screen.findByText("Veri kapsamı ve hesaplama");
+    expect(summary.closest("details")?.open).toBe(false);
+    expect(
+      screen.getAllByRole("link", { name: "Arama performansını aç" }).length,
+    ).toBeGreaterThan(0);
+  });
+
   it("leads with an actionable page and an explicitly bounded gain", async () => {
     getSearchOpportunities.mockResolvedValue(report(rows));
     renderPage();

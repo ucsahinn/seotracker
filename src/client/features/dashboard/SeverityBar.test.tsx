@@ -18,6 +18,19 @@ vi.mock("@tanstack/react-router", () => ({
 }));
 
 describe("SeverityBar", () => {
+  it("does not show an unlabelled 100 percent beside warning counts or an empty site-wide tally", () => {
+    render(
+      <SeverityBar
+        projectId="p1"
+        auditId="a1"
+        totals={{ critical: 0, warning: 32, info: 7 }}
+        siteTotals={{ critical: 0, warning: 0, info: 0 }}
+      />,
+    );
+    expect(screen.getByRole("link", { name: /32 uyarı/ })).toBeDefined();
+    expect(screen.queryByText("%100")).toBeNull();
+    expect(screen.queryByText(/Site geneli/)).toBeNull();
+  });
   it("links each present severity to the issues tab and skips empty ones", () => {
     render(
       <SeverityBar

@@ -123,6 +123,8 @@ export function OpportunitiesTab({
     filtered: false,
     hasQueryData: view.coverage.queries.rows > 0,
     segmentFiltered,
+    minImpressions: thresholds.strikingMinImpressions,
+    brandExcluded: view.insights.brandState.terms.length > 0,
   });
 
   return (

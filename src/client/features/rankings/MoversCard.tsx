@@ -80,50 +80,66 @@ function MoverList({
  */
 export function MoversCard({
   rows,
+  comparableCount,
   onPick,
 }: {
   rows: Row[];
+  comparableCount: number;
   onPick: (query: string) => void;
 }) {
   const [expanded, setExpanded] = useState(false);
-  const { risers, fallers } = topMovers(rows, expanded ? 5 : 3);
+  const movers = topMovers(rows, 5);
+  const risers = movers.risers.slice(0, expanded ? 5 : 3);
+  const fallers = movers.fallers.slice(0, expanded ? 5 : 3);
   return (
     <section
       aria-label={t("Yükselenler ve düşenler")}
       className="rounded-box border border-base-300 bg-base-100 px-4 py-4"
     >
       <h2 className="text-sm font-semibold">{t("Yükselenler ve düşenler")}</h2>
-      <p className="mt-0.5 text-xs text-muted">
-        {t(
-          "Öncelik: mutlak sıra değişimi × kayıtlı gösterim. Bu bir inceleme sırasıdır, kayıp tıklama tahmini değildir.",
-        )}
-      </p>
-      <div className="mt-3 flex flex-col gap-6 md:flex-row">
-        <MoverList
-          title={t("En çok yükselenler")}
-          icon={ArrowUp}
-          ink="text-[var(--ink-success)]"
-          up
-          rows={risers}
-          empty={t("Bu dönemde belirgin yükselen sorgu yok.")}
-          onPick={onPick}
-        />
-        <MoverList
-          title={t("En çok düşenler")}
-          icon={ArrowDown}
-          ink="text-[var(--ink-error)]"
-          up={false}
-          rows={fallers}
-          empty={t("Bu dönemde belirgin düşen sorgu yok.")}
-          onPick={onPick}
-        />
-      </div>
-      <button
-        className="btn btn-ghost min-h-11"
-        onClick={() => setExpanded(!expanded)}
-      >
-        {t(expanded ? "Daha az göster" : "Daha fazla hareket göster")}
-      </button>
+      {comparableCount === 0 ? (
+        <p className="mt-3 text-sm text-muted">
+          {t(
+            "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; mevcut sıraları aşağıdaki listeden inceleyin.",
+          )}
+        </p>
+      ) : (
+        <>
+          <p className="mt-0.5 text-xs text-muted">
+            {t(
+              "Öncelik: mutlak sıra değişimi × kayıtlı gösterim. Bu bir inceleme sırasıdır, kayıp tıklama tahmini değildir.",
+            )}
+          </p>
+          <div className="mt-3 flex flex-col gap-6 md:flex-row">
+            <MoverList
+              title={t("En çok yükselenler")}
+              icon={ArrowUp}
+              ink="text-[var(--ink-success)]"
+              up
+              rows={risers}
+              empty={t("Bu dönemde belirgin yükselen sorgu yok.")}
+              onPick={onPick}
+            />
+            <MoverList
+              title={t("En çok düşenler")}
+              icon={ArrowDown}
+              ink="text-[var(--ink-error)]"
+              up={false}
+              rows={fallers}
+              empty={t("Bu dönemde belirgin düşen sorgu yok.")}
+              onPick={onPick}
+            />
+          </div>
+          {Math.max(movers.risers.length, movers.fallers.length) > 3 ? (
+            <button
+              className="btn btn-ghost min-h-11"
+              onClick={() => setExpanded(!expanded)}
+            >
+              {t(expanded ? "Daha az göster" : "Daha fazla hareket göster")}
+            </button>
+          ) : null}
+        </>
+      )}
     </section>
   );
 }

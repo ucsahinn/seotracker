@@ -135,4 +135,13 @@ export const ptAnalytics: Catalog = {
   "Mobil anlık bildirim": "Notificações push móveis",
   Atanmamış: "Não atribuído",
   "Geri dönen": "Recorrente",
+  "Dönemi ve Analytics mülkündeki veri toplamayı kontrol edin; bağlantı kurmak geçmiş veriyi değiştirmez.":
+    "Verifique o período e a coleta de dados na propriedade do Analytics; conectar não altera os dados históricos.",
+  "Az sayıda oturumda tek bir ziyaret bile oranları belirgin değiştirir. Yüzde değişimini tek başına başarı veya kayıp saymayın.":
+    "Com poucas sessões, uma única visita pode alterar bastante as taxas. Não interprete apenas a variação percentual como sucesso ou perda.",
+  "Anahtar olay kaydedilmedi. Form gönderme gibi hedefler tanımlı değilse bu sayı sıfır kalır; ölçüm durumunu kontrol edin.":
+    "Nenhum evento principal foi registrado. Sem metas configuradas, como o envio de formulários, essa contagem permanece em zero; verifique o estado da medição.",
+
+  "Bu ekran Google’dan yeni veri istemez. Buradaki okuma bilgisi kayıtlı geçmişe aittir; güncel veriyi raporda görebilirsiniz.":
+    "Este ecrã não pede novos dados ao Google. As informações de leitura vêm do histórico guardado; abra o relatório para ver os dados atuais.",
 };

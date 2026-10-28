@@ -1558,4 +1558,44 @@ export const enSearch: Catalog = {
     "The selected period is outside Search Console's readable complete days. Available period: {start} – {end}.",
   "Search Console yalnızca {start} ve sonrasını okuyabilir. Bu arşiv dönemi bütünüyle açılamaz.":
     "Search Console can only read {start} onwards. This archive period cannot be opened in full.",
+  // Real-data dashboard and search explanations.
+  "Önceki dönemde {clicks} tıklama, {impressions} gösterim vardı.":
+    "The previous period had {clicks} clicks and {impressions} impressions.",
+  "Geçen yıl aynı dönemde {clicks} tıklama, {impressions} gösterim vardı.":
+    "The same period last year had {clicks} clicks and {impressions} impressions.",
+  "Az veride yüzdeler ve ortalamalar hızla değişir; tek başına büyüme veya kayıp kanıtı değildir.":
+    "With little data, percentages and averages change quickly; they alone do not establish growth or loss.",
+  "Bu liste, ortalama sırası yuvarlanarak 4–20 aralığında olan ve bu dönemde en az {count} gösterim alan sorguları kapsar. Eşiğin altındaki sorgular Sorgular sekmesinde incelenebilir.":
+    "This list includes queries whose rounded average position is 4–20 and that received at least {count} impressions this period. Review queries below the threshold in the Queries tab.",
+  "Marka sorguları bu listeden çıkarılır.":
+    "Brand queries are excluded from this list.",
+  "Google az aranan sorguları gizlilik için gizleyebilir. Sorgu listesi boşken de site toplamında gösterim olabilir. Toplamları ve Sayfalar sekmesini inceleyin.":
+    "Google may withhold rare queries for privacy. Site totals can include impressions even when the query list is empty. Review the totals and the Pages tab.",
+  "Alınan veride öneri eşiklerini geçen bir fırsat ya da düşüş bulunmadı. Bu, sitenizde yapılacak iş olmadığı anlamına gelmez. Google bazı sorguları gizlilik için gizler; görünen sorguları ve sayfaları inceleyin.":
+    "No opportunity or decline met the recommendation thresholds in the retrieved data. This does not mean there is no work to do. Google withholds some queries for privacy; review the visible queries and pages.",
+  "Bu bulgular hız, kullanılabilirlik veya arama görünürlüğü ile ilgili olabilir. Ayrıntılarda etkilenen sayfaları inceleyin.":
+    "These findings may concern speed, usability or search visibility. Review the affected pages in the details.",
+  "Oturum sayısı bilinmiyor. Analytics raporunu açarak kaynak uyarılarını inceleyin; bağlantı erişimini ve sitedeki Analytics etiketini kontrol edin.":
+    "The session count is unknown. Open the Analytics report to review source warnings; check connection access and the Analytics tag on your site.",
+  "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; mevcut sıraları aşağıdaki listeden inceleyin.":
+    "No queries were observed in both periods. Rises and falls cannot be calculated yet; review current positions in the list below.",
+  "{count} sorgunun mevcut sırası gösteriliyor. Önceki dönemle karşılaştırılabilecek sorgu yok.":
+    "Current positions for {count} queries. No queries can be compared with the previous period.",
+  "Tüm kayıtlı kelimeler bu dönemde gözlendi.":
+    "All saved keywords were observed in this period.",
+  "Ek kazanç hesaplanmayan: {zero}; gösterimi yetersiz: {small}; karşılaştırılacak tıklama oranı olmayan: {curve}; tahmine uygun araması olmayan sayfa: {pairs}.":
+    "Pages with no calculated gain: {zero}; too few impressions: {small}; no comparable click-through rate: {curve}; no usable queries for estimation: {pairs}.",
+  "{start} – {end} aralığında sayfa verisi alınamadı. Bu, hiç gösterim olmadığı anlamına gelmez; Arama performansında bağlı mülkü ve tarihleri kontrol edin.":
+    "No page data was returned for {start} – {end}. This does not mean there were no impressions; check the connected property and dates in Search performance.",
+  "Bu sayfalar için tahmin edilebilir arama yok":
+    "No usable queries to estimate these pages",
+  "{hidden} sayfa gösterim aldı; alınan veride tahmine uygun marka dışı arama bulunamadı. Google'ın gizlediği sorgular, marka ayrımı veya veri sınırları buna yol açabilir. Bu sayfalarda kazanç sıfır değil, bilinmiyor.":
+    "{hidden} pages received impressions, but the returned data has no usable non-brand queries for estimation. Hidden queries, brand exclusions or data limits may explain this. Their potential gain is unknown, not zero.",
+  "{start} – {end} aralığında sitenizin tıklama oranını sıraya göre ölçecek kadar arama yok. Arama performansında gösterim alan sorguları inceleyin; daha fazla veri birikince tahmin yeniden hesaplanabilir.":
+    "There are too few queries in {start} – {end} to measure your site's click-through rate by position. Review queries with impressions in Search performance; the estimate can be recalculated as more data accumulates.",
+  "Kaydettiğiniz aramaların ortalama sırasını ve dönemler arasındaki değişimini inceleyin.":
+    "Review the average positions of your saved queries and how they change between periods.",
+  "Liste güncellendi: {date}": "List updated: {date}",
+  "{count} kontrolde kritik sorun": "Critical issues in {count} checks",
+  "{count} kontrolde uyarı": "Warnings in {count} checks",
 };

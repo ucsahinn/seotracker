@@ -2368,4 +2368,8 @@ export const enAudit: Catalog = {
     "Out of {checked} checked pages. Google chose another address as the main one: check these pages' canonical tags and internal links.",
   "Kontrol edilen {checked} sayfanın hiçbirinde Google başka bir adresi asıl saymadı.":
     "For none of the {checked} checked pages did Google choose another address as the main one.",
+
+  "Tüm sütunları ve işlemleri görmek için tabloyu yana kaydırın.":
+    "Scroll sideways to see all columns and actions.",
+  "Hız ölçümü istendi": "Speed measurement requested",
 };

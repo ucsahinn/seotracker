@@ -135,4 +135,13 @@ export const itAnalytics: Catalog = {
   "Mobil anlık bildirim": "Notifiche push per dispositivi mobili",
   Atanmamış: "Non assegnato",
   "Geri dönen": "Di ritorno",
+  "Dönemi ve Analytics mülkündeki veri toplamayı kontrol edin; bağlantı kurmak geçmiş veriyi değiştirmez.":
+    "Controlla il periodo e la raccolta dati nella proprietà Analytics; il collegamento non modifica i dati storici.",
+  "Az sayıda oturumda tek bir ziyaret bile oranları belirgin değiştirir. Yüzde değişimini tek başına başarı veya kayıp saymayın.":
+    "Con poche sessioni, una singola visita può cambiare molto i tassi. Non considerare le sole variazioni percentuali come un successo o una perdita.",
+  "Anahtar olay kaydedilmedi. Form gönderme gibi hedefler tanımlı değilse bu sayı sıfır kalır; ölçüm durumunu kontrol edin.":
+    "Nessun evento chiave registrato. Senza obiettivi configurati, come gli invii di moduli, il conteggio resta a zero; controlla lo stato della misurazione.",
+
+  "Bu ekran Google’dan yeni veri istemez. Buradaki okuma bilgisi kayıtlı geçmişe aittir; güncel veriyi raporda görebilirsiniz.":
+    "Questa schermata non richiede nuovi dati a Google. Le informazioni di lettura provengono dalla cronologia salvata; apri il rapporto per i dati aggiornati.",
 };

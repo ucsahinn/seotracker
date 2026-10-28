@@ -135,4 +135,13 @@ export const frAnalytics: Catalog = {
   "Mobil anlık bildirim": "Notifications push mobiles",
   Atanmamış: "Non attribué",
   "Geri dönen": "Récurrent",
+  "Dönemi ve Analytics mülkündeki veri toplamayı kontrol edin; bağlantı kurmak geçmiş veriyi değiştirmez.":
+    "Vérifiez la période et la collecte de données dans la propriété Analytics ; la connexion ne modifie pas les données historiques.",
+  "Az sayıda oturumda tek bir ziyaret bile oranları belirgin değiştirir. Yüzde değişimini tek başına başarı veya kayıp saymayın.":
+    "Avec peu de sessions, une seule visite peut modifier fortement les taux. Une variation en pourcentage ne suffit pas à conclure à un succès ou à une perte.",
+  "Anahtar olay kaydedilmedi. Form gönderme gibi hedefler tanımlı değilse bu sayı sıfır kalır; ölçüm durumunu kontrol edin.":
+    "Aucun événement clé enregistré. Sans objectifs configurés, comme un envoi de formulaire, ce nombre reste à zéro ; vérifiez la mesure.",
+
+  "Bu ekran Google’dan yeni veri istemez. Buradaki okuma bilgisi kayıtlı geçmişe aittir; güncel veriyi raporda görebilirsiniz.":
+    "Cet écran ne demande pas de nouvelles données à Google. Les informations de lecture proviennent de l’historique enregistré ; ouvrez le rapport pour les données actuelles.",
 };

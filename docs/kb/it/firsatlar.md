@@ -35,3 +35,5 @@ Analytics aggiunge sessioni organiche, eventi chiave e quota di sessioni con eve
 CSV e Fogli Google includono le righe filtrate visibili, date, unità normalizzata, modello, proprietà, origine dei termini di marca, limiti e gruppo Analytics. La scrittura in Fogli parte solo da una tua scelta nel menu.
 
 Il collegamento a Rendimento di ricerca conserva le date iniziale e finale e apre i dettagli dell’URL esatto. I periodi non leggibili vengono spiegati senza sostituire le date. Annota le modifiche e confronta clic, CTR e posizione misurati su periodi equivalenti. Una stima in calo non dimostra da sola il successo. Non eliminare contenuti solo per una posizione bassa; valuta l’unione solo dopo aver confermato che le pagine rispondono alla stessa esigenza.
+
+Pochi dati non significano un guadagno potenziale pari a zero. L’assenza di query non di marca utilizzabili può dipendere da query nascoste, esclusioni del marchio o limiti dei dati. Il periodo massimo non suggerisce ulteriori estensioni. Apri Rendimento della ricerca per esaminare le query con impressioni. I dettagli del calcolo si espandono nella sezione sulla copertura dei dati.

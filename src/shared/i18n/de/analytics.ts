@@ -134,4 +134,13 @@ export const deAnalytics: Catalog = {
   "Mobil anlık bildirim": "Mobile Push-Benachrichtigungen",
   Atanmamış: "Nicht zugewiesen",
   "Geri dönen": "Wiederkehrend",
+  "Dönemi ve Analytics mülkündeki veri toplamayı kontrol edin; bağlantı kurmak geçmiş veriyi değiştirmez.":
+    "Prüfen Sie den Zeitraum und die Datenerhebung in der Analytics-Property; eine Verbindung ändert keine historischen Daten.",
+  "Az sayıda oturumda tek bir ziyaret bile oranları belirgin değiştirir. Yüzde değişimini tek başına başarı veya kayıp saymayın.":
+    "Bei wenigen Sitzungen kann ein einzelner Besuch die Raten stark verändern. Werten Sie prozentuale Änderungen allein nicht als Erfolg oder Verlust.",
+  "Anahtar olay kaydedilmedi. Form gönderme gibi hedefler tanımlı değilse bu sayı sıfır kalır; ölçüm durumunu kontrol edin.":
+    "Es wurden keine Schlüsselereignisse erfasst. Ohne eingerichtete Ziele wie Formularsendungen bleibt diese Zahl null; prüfen Sie den Messstatus.",
+
+  "Bu ekran Google’dan yeni veri istemez. Buradaki okuma bilgisi kayıtlı geçmişe aittir; güncel veriyi raporda görebilirsiniz.":
+    "Diese Seite fordert keine neuen Daten von Google an. Die Angaben zu Lesevorgängen stammen aus dem gespeicherten Verlauf; aktuelle Daten finden Sie im Bericht.",
 };

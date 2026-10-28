@@ -31,3 +31,5 @@ CSV et Sheets utilisent les mêmes enregistrements filtrés. Mot, intention, ét
 La sélection concerne cette page seulement. Les actions sur anciennes lignes sont bloquées pendant filtrage ou actualisation. La suppression demande confirmation. Le tri par défaut reste la date d'ajout ; position, mouvement, impressions et mot sont disponibles. L'ordre des baisses significatives aide l'enquête sans prouver leur cause.
 
 **Observations quotidiennes.** Demandez explicitement le détail quotidien dans les détails d’archive. Les dates et la règle de correspondance restent identiques. Les jours absents restent des trous ; navigation au clavier et liste textuelle des valeurs sont disponibles.
+
+Sans mots-clés comparables, la carte des mouvements affiche Aucune comparaison au lieu de zéro. Si tous les mots-clés ont été observés, la carte Position inconnue ne signale pas d’observations manquantes. Les boutons des cartes de mouvements et de positions inconnues sont désactivés sans résultat correspondant.

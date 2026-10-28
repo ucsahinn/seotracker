@@ -54,6 +54,18 @@ const audit = (
 const HEALTHY = /Taranan kapsamda sorun bulunamadı/i;
 
 describe("AuditHealthCard", () => {
+  it("keeps the audit identifier in navigation rather than the owner-facing summary", () => {
+    const { container } = render(
+      <AuditHealthCard
+        projectId="p1"
+        audit={audit({ startUrl: "https://example.com/" })}
+      />,
+    );
+    expect(container.textContent).not.toContain("audit-1");
+    expect(screen.getByText("Ayrıntılar").getAttribute("data-audit-id")).toBe(
+      "audit-1",
+    );
+  });
   it("qualifies a fully measured no-findings verdict by its crawled scope", () => {
     render(<AuditHealthCard projectId="p1" audit={audit()} />);
 

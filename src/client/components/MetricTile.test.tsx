@@ -48,6 +48,19 @@ describe("MetricTile", () => {
     expect(screen.queryByRole("link")).toBeNull();
   });
 
+  it("uses explicit metric identity without deriving it from wording", () => {
+    const { container, rerender } = render(
+      <MetricTile label="Any localized label" value="10" metric="sessions" />,
+    );
+    const tile = container.querySelector<HTMLElement>("[data-metric]");
+    expect(tile?.dataset.metric).toBe("sessions");
+    expect(tile?.style.getPropertyValue("--metric-color")).toBe(
+      "var(--data-sessions)",
+    );
+    rerender(<MetricTile label="Any localized label" value="10" />);
+    expect(container.querySelector("[data-metric]")).toBeNull();
+  });
+
   it("types a linked tile's hint as plain text so links never nest", () => {
     render(
       <MetricTile

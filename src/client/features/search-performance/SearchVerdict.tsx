@@ -10,6 +10,7 @@ import {
 } from "@/shared/searchTodoCopy";
 import { formatCount, formatDecimal, formatPercent } from "@/client/lib/format";
 import { FIRST_TODOS } from "@/client/features/search-performance/TodoTab";
+import { searchSampleNote } from "./searchSample";
 
 /**
  * The clicks sentence: how clicks moved against the chosen comparison, or
@@ -27,9 +28,9 @@ function clicksSentence(
         ? totals.vsYoy?.clicks
         : null;
   const days = window.days;
-  if (!change || change.relative === null) {
+  if (!change || change.relative === null || searchSampleNote(view, compare)) {
     return t("Son {days} günde {clicks} tıklama, {impressions} gösterim.", {
-      days,
+      days: formatCount(days),
       clicks: formatCount(totals.current.clicks),
       impressions: formatCount(totals.current.impressions),
     });
@@ -119,7 +120,8 @@ export function SearchVerdict({
 }) {
   const first = open.slice(0, FIRST_TODOS);
   const gain = combinedGain(first);
-  const second = secondSentence(view, compare);
+  const second =
+    searchSampleNote(view, compare) ?? secondSentence(view, compare);
   return (
     <p className="max-w-[90ch] text-base leading-relaxed text-base-content">
       {clicksSentence(view, compare)}

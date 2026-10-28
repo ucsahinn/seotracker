@@ -33,6 +33,23 @@ function audit(
 }
 
 describe("NextStepsCard", () => {
+  it("does not describe performance warnings as a Google comprehension problem", () => {
+    render(
+      <NextStepsCard
+        projectId="p1"
+        gscConnected
+        audit={audit({
+          severityCheckTypes: { critical: 0, warning: 6, info: 0 },
+        })}
+      />,
+    );
+    expect(
+      screen.getByText(/hız, kullanılabilirlik veya arama görünürlüğü/),
+    ).toBeDefined();
+    expect(
+      screen.queryByText(/Google'ın sayfayı anlamasını zorlaştırıyor/),
+    ).toBeNull();
+  });
   it("words the shared setup verdict and names what is missing", () => {
     const setup = {
       searchConsole: true,
@@ -153,7 +170,7 @@ describe("NextStepsCard", () => {
     );
 
     const items = screen.getAllByRole("listitem");
-    expect(items[0]?.textContent).toContain("3 kritik kontrol türü");
+    expect(items[0]?.textContent).toContain("3 kontrolde kritik sorun");
   });
 
   /*

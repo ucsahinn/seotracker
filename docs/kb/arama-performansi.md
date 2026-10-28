@@ -3,7 +3,7 @@ title: Arama performansı
 description: Google'da kaç kez göründüğünüzü, kaç tıklama aldığınızı ve önce neyi düzeltmeniz gerektiğini görürsünüz. Sayılar Search Console'dan gelir. Kazanç rakamları bir üst sınırdır.
 screen: Arama performansı
 route: /p/<proje>/search-performance
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 Google'da kaç kez göründüğünüzü, kaç tıklama aldığınızı ve önce neyi düzeltmeniz gerektiğini burada görürsünüz.
@@ -163,3 +163,9 @@ Discover ve Google Haberler arama türleri yer almaz. Arama hacmi ve rakip sıra
 <!-- Kaynaklar: src/routes/_project/p/$projectId/search-performance.tsx; src/client/features/search-performance/SearchPerformancePage.tsx; SearchPageParts.tsx; SearchFilters.tsx; DataTrustStrip.tsx; SearchVerdict.tsx; KpiTiles.tsx; SearchTrendChart.tsx; TrendParts.tsx; SearchNotes.tsx; LongTermTrend.tsx; TodoTab.tsx; DimensionTab.tsx; DimensionTableParts.tsx; OpportunitiesTab.tsx; StrikingTable.tsx; ChangesTab.tsx; CannibalizationSummary.tsx; CannibalizationTable.tsx; DistributionTab.tsx; PositionDistribution.tsx; DrilldownPanel.tsx; BrandTerms.tsx; SearchReportButton.tsx; src/shared/searchInsights.ts; src/shared/searchTodoCopy.ts; src/shared/searchQuickFilters.ts; src/shared/dataFreshness.ts; src/serverFunctions/searchPerformance.ts; src/server/features/gsc/cannibalization.ts -->
 
 Fırsatlar ve Sıralama takibi bağlantıları birebir URL/sorgu ayrıntısını kaynak tarihleriyle açar. Genel toplamlar mülk kapsamındadır; seçili kimliğin sayıları ayrıntı panelindedir. Okunamayan dönem başka tarihlerle değiştirilmez. Dönem ön ayarı seçmek tarih sabitlemesini kaldırır. Raporu indir, gösterilen tarihleri sunucuya gönderir ve yenileme sırasında kullanılamaz. Tarihler sabittir; Google yeniden okunan ölçümleri düzeltebilir.
+
+## Az veriyle yorum
+
+Karşılaştırma dönemindeki tıklama sayısı analiz eşiğinin altındaysa özet yüzdeden önce gerçek tıklama ve gösterim sayılarını verir. Az veride yüzdeler ve ortalamalar tek başına büyüme veya kayıp kanıtı değildir. Boş fırsat listesi, hiçbir sorgunun 4–20. sırada olmadığını söylemez: döneme göre ölçeklenen gösterim eşiği ve marka sorgularının dışlanması da geçerlidir.
+
+Yapılacaklar boşsa görünen sorguları açıp inceleyebilirsiniz. Son 3 ay zaten seçiliyken daha uzun dönem önerilmez. Google’ın gizlediği sorguların sonradan paylaşılacağı varsayılmaz.

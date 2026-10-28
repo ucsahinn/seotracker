@@ -345,4 +345,6 @@ export const ptApp: Catalog = {
   "Şablonu düzenle": "Editar modelo",
   "Yeni şablon": "Novo modelo",
   "Aylık müşteri değerlendirmesi": "Revisão mensal do cliente",
+
+  "Bu sitenin son tamamlanan denetimi": "Última auditoria concluída deste site",
 };

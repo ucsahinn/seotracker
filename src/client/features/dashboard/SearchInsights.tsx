@@ -29,6 +29,7 @@ import { describeClickTrend } from "@/client/features/dashboard/clickTrend";
 import { DeltaBadge } from "@/client/components/MetricTile";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { EmptyState } from "@/client/components/EmptyState";
+import { strikingEmptyCopy } from "../search-performance/strikingEmptyCopy";
 import {
   formatCount,
   formatDate,
@@ -94,6 +95,15 @@ export function SearchInsights({
   const strikingTotal = view?.insights.striking.total ?? 0;
   // Over every striking query, not only the rows the view lists.
   const estimate = view?.insights.striking.estimate;
+  const empty = view
+    ? strikingEmptyCopy({
+        filtered: false,
+        hasQueryData: view.coverage.queries.rows > 0,
+        segmentFiltered: false,
+        minImpressions: view.insights.thresholds.strikingMinImpressions,
+        brandExcluded: view.insights.brandState.terms.length > 0,
+      })
+    : null;
   const points = report.daily.map((row, i) => ({
     ...row,
     previousClicks: view?.series.previousDaily?.[i]?.clicks ?? null,
@@ -233,14 +243,8 @@ export function SearchInsights({
           {striking.length === 0 ? (
             <EmptyState
               compact
-              title={
-                view?.totals.current.impressions === 0
-                  ? t("Bu dönemde gösterim yok")
-                  : t("Bu kapsamda uygun sorgu bulunmadı.")
-              }
-              description={t(
-                "Şu an 4. ile 20. sıra arasında yeterli gösterimi olan sorgu yok. Sorgular bu aralığa girdikçe burada listelenir.",
-              )}
+              title={empty?.title ?? t("Bu kapsamda uygun sorgu bulunmadı.")}
+              description={empty?.description}
             />
           ) : (
             <>

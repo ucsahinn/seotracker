@@ -4,7 +4,12 @@ import { EmptyState } from "@/client/components/EmptyState";
 import { RowActions } from "@/client/components/table/RowActions";
 import { ReportDownloadButton } from "./ReportDownloadButton";
 import { ReportKindChip } from "./ReportKindChip";
-import { hasTemplate, kindLabel, reportKind } from "./reportStats";
+import {
+  displayReportTitle,
+  hasTemplate,
+  kindLabel,
+  reportKind,
+} from "./reportStats";
 import { formatCreatedBy } from "./shared";
 import { formatBytes, formatCount, formatDateTime } from "@/client/lib/format";
 import type {
@@ -44,10 +49,39 @@ export function ReportsList({
       sort: "updatedAt",
       page: 1,
     });
+  if (inventory.totalProject === 0) {
+    return (
+      <EmptyState
+        icon={FileText}
+        title={t("Henüz rapor yok")}
+        description={t(
+          "Arama performansı veya Site denetimi ekranından rapor hazırlayın ya da rapor komutunu ajanınıza yapıştırın.",
+        )}
+        action={
+          <div className="flex flex-wrap justify-center gap-2">
+            <Link
+              to="/p/$projectId/search-performance"
+              params={{ projectId }}
+              className="btn btn-primary min-h-11"
+            >
+              {t("Arama raporu hazırla")}
+            </Link>
+            <Link
+              to="/p/$projectId/audit"
+              params={{ projectId }}
+              className="btn min-h-11"
+            >
+              {t("Denetim raporu hazırla")}
+            </Link>
+          </div>
+        }
+      />
+    );
+  }
   return (
     <div className="space-y-4" aria-busy={pending}>
       <div className="flex flex-wrap items-end gap-3">
-        <label className="flex min-w-0 flex-1 flex-col gap-1 text-sm">
+        <label className="flex w-full min-w-0 flex-none flex-col gap-1 text-sm sm:w-auto sm:flex-1">
           {t("Raporlarda ara")}
           <input
             type="search"
@@ -99,11 +133,13 @@ export function ReportsList({
           total: formatCount(inventory.totalProject),
         })}
       </p>
-      <p className="text-xs text-subtle">
-        {t(
-          "Son 7 gün, bu sürede kaydedilen veya güncellenen ayrı dosyaları süzer; kaynak verinin güncelliğini göstermez. Arama başlık ve kayıtlı özeti tarar.",
-        )}
-      </p>
+      {filters.recent || filters.query ? (
+        <p className="text-xs text-subtle">
+          {t(
+            "Son 7 gün, bu sürede kaydedilen veya güncellenen ayrı dosyaları süzer; kaynak verinin güncelliğini göstermez. Arama başlık ve kayıtlı özeti tarar.",
+          )}
+        </p>
+      ) : null}
       <div
         className="flex flex-wrap gap-2"
         role="group"
@@ -134,11 +170,13 @@ export function ReportsList({
           </button>
         ))}
       </div>
-      <p className="text-xs text-subtle">
-        {t(
-          "Tür sayıları arama ve Son 7 gün süzgecine göredir; seçili türden önce hesaplanır.",
-        )}
-      </p>
+      {inventory.facets.length > 1 ? (
+        <p className="text-xs text-subtle">
+          {t(
+            "Tür sayıları arama ve Son 7 gün süzgecine göredir; seçili türden önce hesaplanır.",
+          )}
+        </p>
+      ) : null}
       {inventory.reports.length === 0 ? (
         <EmptyState
           compact
@@ -193,7 +231,7 @@ export function ReportsList({
                       params={{ projectId, reportId: report.id }}
                       className="link link-hover break-words font-medium"
                     >
-                      {report.title}
+                      {displayReportTitle(report)}
                     </Link>
                     <div className="mt-1 text-xs text-muted">
                       {formatCreatedBy(report)}

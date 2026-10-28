@@ -6,45 +6,20 @@ import { AnimatedNumber } from "@/client/components/AnimatedNumber";
 import { useQuery } from "@tanstack/react-query";
 import { getGa4DashboardReport } from "@/serverFunctions/ga4";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
-import {
-  Chart,
-  ChartTooltip,
-  CHART_AXIS,
-  CHART_GRID,
-  CHART_SERIES,
-} from "@/client/components/Chart";
 import { countComparison, DeltaBadge } from "@/client/components/MetricTile";
 import {
   formatCount,
   formatDate,
-  formatDay,
   formatMoney,
   formatDecimal,
   formatPercent,
 } from "@/client/lib/format";
-import { useReducedMotion } from "@/client/lib/useReducedMotion";
+import { OrganicTrendChart } from "./OrganicTrendChart";
 import { ga4OverviewQuery } from "@/client/features/dashboard/ga4OverviewQuery";
 import { Ga4Provenance } from "@/client/features/dashboard/Ga4Provenance";
 import { t } from "@/shared/i18n";
 
-type TrendRow = { date: string; sessions: number | null };
-
-/**
- * The shape of the window, above the table that lists it.
- *
- * The overview service has produced a daily trend since it was written and
- * the dashboard card was its only reader — so the screen whose entire
- * subject is Analytics drew seven tables and not one line. Same service,
- * same call shape, with the window the operator already picked.
- */
+/** The selected property's daily sessions and period totals, above its detailed report. */
 export function OrganicTrendPanel({
   projectId,
   windowDays,
@@ -105,7 +80,7 @@ export function OrganicTrendPanel({
     start: formatDate(previousDateRange.startDate),
     end: formatDate(previousDateRange.endDate),
   });
-  const rows: TrendRow[] = trend;
+  const rows = trend;
   const limited =
     query.data.reportMetadata.hasLimitedData || query.data.warnings.length > 0;
   const hasSessions = rows.some((row) => row.sessions !== null);
@@ -133,7 +108,7 @@ export function OrganicTrendPanel({
             {t("Seçtiğiniz aralık, gün gün.")}
           </p>
         </div>
-        <div className="flex flex-wrap items-start gap-4">
+        <div className="grid w-full grid-cols-2 gap-4 sm:w-auto sm:grid-cols-4">
           <Total
             label={t("Oturum")}
             value={totals.sessions}
@@ -199,6 +174,22 @@ export function OrganicTrendPanel({
                 },
               )}
         </p>
+        {totals.sessions !== null &&
+        totals.sessions > 0 &&
+        totals.sessions < 30 ? (
+          <p className="mb-2 max-w-prose text-sm text-muted">
+            {t(
+              "Az sayıda oturumda tek bir ziyaret bile oranları belirgin değiştirir. Yüzde değişimini tek başına başarı veya kayıp saymayın.",
+            )}
+          </p>
+        ) : null}
+        {totals.keyEvents === 0 ? (
+          <p className="mb-2 max-w-prose text-sm text-muted">
+            {t(
+              "Anahtar olay kaydedilmedi. Form gönderme gibi hedefler tanımlı değilse bu sayı sıfır kalır; ölçüm durumunu kontrol edin.",
+            )}
+          </p>
+        ) : null}
         <Ga4Provenance report={query.data} />
         {query.data.warnings.includes("property_time_zone_changed") ? (
           <p role="status" className="text-xs text-muted">
@@ -246,7 +237,7 @@ export function OrganicTrendPanel({
       </div>
       {hasSessions ? (
         <div className="px-2 py-3">
-          <TrendChart rows={rows} />
+          <OrganicTrendChart rows={rows} />
         </div>
       ) : (
         /* A flat line along zero is a shape that looks like an answer. */
@@ -314,13 +305,13 @@ function Total({
         ? pointsDelta(value, previous)
         : countComparison(value, previous, format);
   return (
-    <div className="text-right">
+    <div className="min-w-0 text-left">
       <p className="text-xs text-muted">
         {help ? <HeaderHelpLabel label={label} helpText={help} /> : label}
       </p>
       <p className="flex items-center gap-1.5 text-sm font-medium tabular-nums">
         {value === null ? (
-          "--"
+          t("Bilinmiyor")
         ) : (
           <AnimatedNumber value={value} format={format} />
         )}
@@ -328,86 +319,11 @@ function Total({
           <DeltaBadge value={change} title={deltaTitle} />
         )}
       </p>
-      {value === null || previous === null ? (
+      {value !== null && previous === null ? (
         <p className="text-xs text-muted">
           {t("Karşılaştırma yok; önceki değer okunamadı veya veri sınırlı.")}
         </p>
       ) : null}
     </div>
-  );
-}
-
-function TrendChart({ rows }: { rows: TrendRow[] }) {
-  const reduced = useReducedMotion();
-  const total = rows.reduce((sum, row) => sum + (row.sessions ?? 0), 0);
-  const peak = rows.reduce((best, row) =>
-    (row.sessions ?? 0) > (best.sessions ?? 0) ? row : best,
-  );
-
-  return (
-    <Chart
-      height={180}
-      summary={
-        rows.some((row) => row.sessions === null)
-          ? t(
-              "Analytics verisi sınırlı veya eksik. Bilinmeyen değerler çizilmez; dönem karşılaştırması gösterilmez.",
-            )
-          : t(
-              "{days} günde toplam {total} oturum. En yüksek gün {day}, {peak} oturum.",
-              {
-                days: formatCount(rows.length),
-                total: formatCount(total),
-                day: formatDay(peak.date),
-                peak: formatCount(peak.sessions ?? 0),
-              },
-            )
-      }
-    >
-      <AreaChart data={rows} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
-        <CartesianGrid {...CHART_GRID} />
-        <XAxis
-          dataKey="date"
-          {...CHART_AXIS}
-          tickFormatter={formatDay}
-          minTickGap={24}
-        />
-        <YAxis
-          {...CHART_AXIS}
-          width={48}
-          tickFormatter={formatCount}
-          domain={[0, "auto"]}
-        />
-        <Tooltip
-          cursor={{ stroke: "currentColor", strokeOpacity: 0.2 }}
-          content={({ active, label }) => {
-            if (!active || typeof label !== "string") return null;
-            const row = rows.find((entry) => entry.date === label);
-            if (!row) return null;
-            return (
-              <ChartTooltip
-                title={formatDay(label)}
-                rows={[
-                  {
-                    label: t("oturum"),
-                    value:
-                      row.sessions === null ? "–" : formatCount(row.sessions),
-                    color: CHART_SERIES.primary,
-                  },
-                ]}
-              />
-            );
-          }}
-        />
-        <Area
-          type="monotone"
-          dataKey="sessions"
-          stroke={CHART_SERIES.primary}
-          strokeWidth={2}
-          fill={CHART_SERIES.primary}
-          fillOpacity={0.08}
-          isAnimationActive={!reduced}
-        />
-      </AreaChart>
-    </Chart>
   );
 }

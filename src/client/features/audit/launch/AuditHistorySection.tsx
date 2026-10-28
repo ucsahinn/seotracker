@@ -159,7 +159,15 @@ export function AuditHistorySection({
         ) : (
           <AuditTrendChart history={history} />
         )}
-        <div className="overflow-x-auto">
+        <p className="text-xs text-muted sm:hidden">
+          {t("Tüm sütunları ve işlemleri görmek için tabloyu yana kaydırın.")}
+        </p>
+        <div
+          className="overflow-x-auto"
+          role="region"
+          aria-label={t("Önceki denetimler")}
+          tabIndex={0}
+        >
           <table className="table table-sm">
             <thead>
               <tr>
@@ -184,7 +192,7 @@ export function AuditHistorySection({
                 <th aria-sort={sorting.ariaSort("pages")}>
                   <SortableHeader
                     column={sorting.column("pages")}
-                    label={t("Sayfa")}
+                    label={t("Taranan sayfa")}
                   />
                 </th>
                 <th
@@ -194,7 +202,6 @@ export function AuditHistorySection({
                   <SortableHeader
                     column={sorting.column("critical")}
                     label={t("Kritik")}
-                    helpText={t("Yüz sayfa başına (toplam ayrıca parantezde)")}
                     align="right"
                   />
                 </th>
@@ -205,15 +212,12 @@ export function AuditHistorySection({
                   <SortableHeader
                     column={sorting.column("warning")}
                     label={t("Uyarı")}
-                    helpText={t("Yüz sayfa başına (toplam ayrıca parantezde)")}
                     align="right"
                   />
                 </th>
                 <th className="normal-case">
-                  {/* The sortable headers beside it are not uppercased, so this
-                      one is not either. lang="en" keeps any uppercasing from
-                      turning the I into "İ". */}
-                  <span lang="en">Lighthouse</span>
+                  {/* Configuration records a request, not a successful measurement. */}
+                  <span>{t("Hız ölçümü istendi")}</span>
                 </th>
                 <th></th>
               </tr>
@@ -255,7 +259,7 @@ export function AuditHistorySection({
                   <td>
                     <StatusBadge status={audit.status} />
                   </td>
-                  <td>{pagesShown(audit)}</td>
+                  <td>{formatCount(audit.pagesCrawled)}</td>
                   <td className="text-right">
                     <SeverityCell
                       row={audit}
@@ -275,7 +279,9 @@ export function AuditHistorySection({
                       <span className="badge badge-ghost badge-xs">
                         {t("Evet")}
                       </span>
-                    ) : null}
+                    ) : (
+                      <span className="text-xs text-muted">{t("Hayır")}</span>
+                    )}
                   </td>
                   <td>
                     <div className="flex items-center justify-end gap-2">
@@ -424,16 +430,6 @@ type HistorySortKey =
   | "warning";
 
 /** Ascending; `useLocalSort` applies the direction. */
-/**
- * `pagesTotal` is the reservation the audit started with, so a finished
- * audit shows what it actually crawled; one still planning has crawled
- * nothing yet and shows the reservation.
- */
-function pagesShown(a: HistoryRow): number {
-  if (a.status === "completed") return a.pagesCrawled;
-  return a.pagesTotal || a.pagesCrawled;
-}
-
 function compareAudits(
   a: HistoryRow,
   b: HistoryRow,
@@ -444,5 +440,5 @@ function compareAudits(
   if (key === "status") return compareText(a.status, b.status);
   if (key === "critical") return a.issues.critical - b.issues.critical;
   if (key === "warning") return a.issues.warning - b.issues.warning;
-  return pagesShown(a) - pagesShown(b);
+  return a.pagesCrawled - b.pagesCrawled;
 }

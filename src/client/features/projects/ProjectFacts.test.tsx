@@ -36,6 +36,12 @@ describe("ProjectFacts", () => {
     render(<ProjectFacts overview={facts(8, 0)} onRetry={() => {}} />);
     expect(screen.getByText("0 → 8 tıklama")).toBeDefined();
   });
+  it("shows the count change instead of a dramatic percentage on a small base", () => {
+    render(<ProjectFacts overview={facts(5, 1)} onRetry={() => {}} />);
+    expect(screen.getByText("1 → 5 tıklama")).toBeDefined();
+    expect(screen.getByText("+4")).toBeDefined();
+    expect(screen.queryByText(/400/)).toBeNull();
+  });
   it("explains why partial periods have no change", () => {
     const overview = facts(8, 0);
     overview.clicks = archiveTrend([{ date: "2026-10-25", clicks: 8 }], 1);

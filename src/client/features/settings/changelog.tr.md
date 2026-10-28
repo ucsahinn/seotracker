@@ -35,7 +35,7 @@ Bu giriş 0.5.0'dan 0.8.2'ye kadar gelen yenilikleri ve düzeltmeleri toplar: si
 ### 🔔 Bildirimler ve duyurular
 
 - **Bildirim merkezi:** Denetim sonuçları, yeni sürümler ve Google bağlantı sorunları tek yerde toplanır.
-- **Ses ve masaüstü:** Bildirim sesini ve masaüstü bildirimlerini ayrı ayrı açıp kapatabilirsiniz.
+- **Bildirim sesi:** Önemli bildirimlerin sesini Ayarlar’dan açıp kapatabilirsiniz.
 - **Windows bildirimleri:** Güncellemeler ve duyurular Windows'un bildirim alanında da görünür.
 - **Duyurular:** Yeni haberler uygulamadaki Duyurular ekranında yayımlanır.
 

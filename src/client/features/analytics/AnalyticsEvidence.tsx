@@ -44,16 +44,6 @@ export function AnalyticsEvidence({
         </p>
       ) : null}
       <p>
-        {t(
-          "Mülk kapsamı: tüm ana makineler ve akışlar. Bu toplam yalnızca projenin sitesine ait olmayabilir.",
-        )}
-      </p>
-      <p>
-        {t(
-          "Son günler yeniden işlenebilir; dün, tamamlanmış bir takvim günüdür, kesinleşmiş veri garantisi değildir.",
-        )}
-      </p>
-      <p>
         {result.channel === "all"
           ? t("Tüm trafik")
           : t("Organik arama motorları")}{" "}
@@ -78,6 +68,16 @@ export function AnalyticsEvidence({
         <summary className="min-h-11 cursor-pointer py-3">
           {t("Veri ayrıntıları")}
         </summary>
+        <p>
+          {t(
+            "Mülk kapsamı: tüm ana makineler ve akışlar. Bu toplam yalnızca projenin sitesine ait olmayabilir.",
+          )}
+        </p>
+        <p>
+          {t(
+            "Son günler yeniden işlenebilir; dün, tamamlanmış bir takvim günüdür, kesinleşmiş veri garantisi değildir.",
+          )}
+        </p>
         <p>
           {formatDate(result.dateRange.startDate)} –{" "}
           {formatDate(result.dateRange.endDate)}

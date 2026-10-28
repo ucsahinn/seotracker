@@ -319,6 +319,7 @@ export function SearchPerformancePage({
                   projectId={projectId}
                   todo={view.todo}
                   days={view.window.days}
+                  onShowQueries={() => setTab("queries")}
                   doneTodos={doneTodos}
                   onTarget={onTarget}
                 />

@@ -1,4 +1,5 @@
 import { t } from "@/shared/i18n";
+import { formatCount } from "@/shared/format";
 type Input = {
   /** A summary filter is narrowing the rows. */
   filtered: boolean;
@@ -6,12 +7,16 @@ type Input = {
   hasQueryData: boolean;
   /** A country or device filter is on, so zero rows may only mean this segment. */
   segmentFiltered: boolean;
+  minImpressions: number;
+  brandExcluded: boolean;
 };
 
 export function strikingEmptyCopy({
   filtered,
   hasQueryData,
   segmentFiltered,
+  minImpressions,
+  brandExcluded,
 }: Input): { title: string; description: string } {
   if (filtered) {
     return {
@@ -23,10 +28,16 @@ export function strikingEmptyCopy({
   }
   if (hasQueryData) {
     return {
-      title: t("Bu dönemde 4-20. sırada kelime yok"),
-      description: t(
-        "Hiçbir kelimeniz 4-20. sırada değil. Bu aralıktaki kelimeler küçük bir iyileştirmeyle üst sıralara çıkabilir; olunca burada listelenir.",
-      ),
+      title: t("Bu kapsamda uygun sorgu bulunmadı."),
+      description: [
+        t(
+          "Bu liste, ortalama sırası yuvarlanarak 4–20 aralığında olan ve bu dönemde en az {count} gösterim alan sorguları kapsar. Eşiğin altındaki sorgular Sorgular sekmesinde incelenebilir.",
+          { count: formatCount(minImpressions) },
+        ),
+        brandExcluded ? t("Marka sorguları bu listeden çıkarılır.") : null,
+      ]
+        .filter(Boolean)
+        .join(" "),
     };
   }
   if (segmentFiltered) {
@@ -38,9 +49,9 @@ export function strikingEmptyCopy({
     };
   }
   return {
-    title: t("Kelime düzeyinde veri henüz gelmedi"),
+    title: t("Bu seçimde sorgu verisi yok"),
     description: t(
-      "Search Console, hangi kelimeyle arandığınızı bu dönem için henüz paylaşmadı. Az trafikli sitelerde bu normaldir. Veri gelince 4-20. sıradaki kelimeler burada listelenir.",
+      "Google az aranan sorguları gizlilik için gizleyebilir. Sorgu listesi boşken de site toplamında gösterim olabilir. Toplamları ve Sayfalar sekmesini inceleyin.",
     ),
   };
 }

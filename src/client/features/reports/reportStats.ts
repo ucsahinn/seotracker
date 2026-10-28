@@ -50,6 +50,19 @@ export function isAppCreator(createdBy: string | undefined): boolean {
   );
 }
 
+/** Legacy app exports appended a UUID for uniqueness; keep it in storage, not the reading title. */
+export function displayReportTitle(report: {
+  title: string;
+  createdBy?: string;
+}): string {
+  return isAppCreator(report.createdBy)
+    ? report.title.replace(
+        / · [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
+        "",
+      )
+    : report.title;
+}
+
 /** An empty string means "none", the same as null. */
 function present(value: string | null): string | null {
   return value === null || value === "" ? null : value;

@@ -3,7 +3,7 @@ title: Projeler
 description: Projeler, hangi siteyi açacağınızı ve hangi bağlantıyı tamamlayacağınızı gösterir. Her sitenin Search Console, Analytics, denetim ve raporları kendi projesindedir.
 screen: Projeler, Proje ayarları
 route: /projects, /p/{proje}/settings
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 Projeler, hangi siteyi açacağınızı ve hangi bağlantıyı tamamlayacağınızı gösterir. Her sitenin Search Console, Analytics, denetim ve raporları kendi projesindedir.
@@ -21,5 +21,7 @@ Denetim, seçilen sitenin kendi alan adına aittir. Son tamamlanan denetim ile s
 **Yeni proje** ile ad, isteğe bağlı alan adı, ülke ve dil girin. Oluşturmak veri toplamaz. Google bağlantılarını **Ayarlar → Bağlantılar** üzerinden seçin. Genel ayarlarda adı, siteyi ve pazarı değiştirebilirsiniz. Bir projede bir Search Console ve bir Analytics mülkü bulunur.
 
 Arşivlemek verileri silmez. **Arşivlendi → Geri al** projeyi geri getirir. Tek kalan proje arşivlenemez. Arama tıklamaları GA4 oturumları veya sorgu arşivi toplamıyla aynı ölçü değildir; farklı tarihli projeler toplanmaz.
+
+Önceki dönem 20 tıklamadan azsa yüzde yerine tıklama farkı gösterilir. Örneğin 1’den 5’e çıkış +4 tıklamadır; küçük sayılarda bu değişim tek başına güçlü bir büyüme işareti değildir.
 
 <!-- Sources: src/routes/_app/projects.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/project-context/; src/server/features/projects/services/ProjectOverviewService.ts; src/server/features/project-context/ -->

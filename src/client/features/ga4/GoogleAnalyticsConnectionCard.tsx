@@ -175,6 +175,8 @@ export function GoogleAnalyticsConnectionCard({
           </div>
         ) : connected && !picking ? (
           <GoogleConnectedState
+            reportHref={`/p/${projectId}/analytics`}
+            reportLabel="Google Analytics"
             property={connection?.propertyDisplayName ?? ""}
             detail={connection?.propertyId}
             metadata={<PropertyMetadata connection={connection} />}

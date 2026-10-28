@@ -28,6 +28,7 @@ export function Chart({
   table,
   height = 200,
   className,
+  metric,
 }: {
   /** A single recharts chart element. */
   children: React.ReactElement;
@@ -40,6 +41,8 @@ export function Chart({
   table?: ChartTable;
   height?: number;
   className?: string;
+  /** Named metric overrides the default clicks hue, including comparison. */
+  metric?: keyof typeof DATA_SERIES;
 }) {
   /*
    * Measured here before recharts is allowed to measure it.
@@ -53,6 +56,11 @@ export function Chart({
    */
   const box = React.useRef<HTMLDivElement>(null);
   const [width, setWidth] = React.useState(0);
+  const style:
+    | (React.CSSProperties & { "--chart-series": string })
+    | undefined = metric
+    ? { "--chart-series": DATA_SERIES[metric] }
+    : undefined;
 
   React.useEffect(() => {
     const element = box.current;
@@ -65,7 +73,7 @@ export function Chart({
   }, []);
 
   return (
-    <figure className={className}>
+    <figure className={className} style={style}>
       {/*
        * `text-muted` on the wrapper, so axis ticks can inherit it through
        * `fill="currentColor"` instead of each chart picking its own grey.
@@ -176,16 +184,18 @@ export const CHART_GRID = {
   vertical: false,
 } as const;
 
-/**
- * One accent, then tints of it — the house rule for charts too.
- *
- * Severity colours are the exception and come from the caller, because
- * `--color-error` and `--color-warning` sit at nearly the same lightness:
- * a series told apart by those two alone is not told apart at all, so any
- * chart using them also labels its marks.
- */
+/** Stable metric identities, shared by cards, legends and chart marks. */
+export const DATA_SERIES = {
+  clicks: "var(--data-clicks)",
+  impressions: "var(--data-impressions)",
+  ctr: "var(--data-ctr)",
+  position: "var(--data-position)",
+  sessions: "var(--data-sessions)",
+  conversions: "var(--data-conversions)",
+} as const;
+
+/** Default search series; comparison lines also need a dash or label. */
 export const CHART_SERIES = {
-  primary: "var(--color-primary)",
-  /** The comparison series: same hue, receded. */
-  comparison: "var(--color-base-300)",
+  primary: "var(--chart-series, var(--data-clicks))",
+  comparison: "var(--chart-series, var(--data-clicks))",
 } as const;

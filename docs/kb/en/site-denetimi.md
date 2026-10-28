@@ -3,7 +3,7 @@ title: Site audit
 description: The app walks your site page by page, checks it against 202 rules and ranks the problems by importance. The score also says how much could be measured. An audit that stops early gets no score.
 screen: Site denetimi
 route: /p/<proje>/audit
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 This screen finds the problems on your site and tells you how to fix them.
@@ -135,5 +135,7 @@ The raw error text does not reach the screen. It stays in the diagnostics bundle
 ## Limits
 
 The crawler may not see content that JavaScript (code that runs on the page) adds later. An audit crawls at most 10,000 pages. Speed measurement is Google's lab measurement, not real visitor data. The audit changes nothing on your site. You or your assistant make the fixes.
+
+In Previous audits, **Pages crawled** is the number of addresses actually crawled, including failed audits; it is not the initial page limit. Critical and warning columns show total findings. **Speed measurement requested** means the audit was started with speed measurement enabled; it does not prove the measurement finished successfully. On a phone, scroll the table sideways for the other columns and actions.
 
 <!-- Sources: src/client/features/audit/launch/LaunchView.tsx; LaunchFormCard.tsx; useLaunchController.ts; AuditHistorySection.tsx; AuditSiteFilter.tsx; ProgressCard.tsx; src/client/features/audit/results/ResultsView.tsx; ResultsHeader.tsx; ScoreOverview.tsx; ScoreGauge.tsx; WithheldScore.tsx; scoreWords.ts; auditFailureCopy.ts; ChecksView.tsx; TodoView.tsx; IssuesView.tsx; QuickFilters.tsx; ForeignPropertyNotice.tsx; DownloadReportButton.tsx; src/routes/_project/p/$projectId/audit/index.tsx; src/shared/auditStanding.ts; src/shared/auditScore.ts; src/shared/auditCategory.ts; src/shared/audit-limits.ts; src/server/lib/audit/crawl-throttle.ts -->

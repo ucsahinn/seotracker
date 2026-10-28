@@ -33,3 +33,5 @@ Sıra ortalamaları gösterimle ağırlıklıdır. Değişim önceki ortalama ek
 Gözlenen gün her zaman gösterilir; örneğin 90 günlük dönemde 10 gün olması tam kapsam değildir. Günlük grafik gerçek tarihlerle aralıklıdır; eksik günlerde çizgi kesilir. Oklar, Home ve End günler arasında gezinir. Günlük değerler açılarak okunabilir. Haftalık çizgilerde tamamen boş haftalar korunur; uç haftalar kısmi olabilir.
 
 Arama performansı bağlantısı birebir sorguyu ve arşivin başlangıç/bitiş tarihlerini korur. Google'ın saklama sınırından eski dönemlerde bağlantı yerine kullanılabilir başlangıç açıklanır. Rakip sıralaması, ücretli arama hacmi ve trafik tahmini yoktur.
+
+İki dönemde de gözlenen sorgu yoksa yükseliş veya düşüş hesaplanamaz. Hareket kartı bunu açıkça söyler; sıfır hareket ölçülmüş gibi sunmaz. Genişletme düğmesi yalnızca üçten fazla hareket varsa görünür.

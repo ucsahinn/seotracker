@@ -33,3 +33,5 @@ CSV and Sheets use the same filtered population and evidence fields. Existing wo
 Selection covers this page only. Pending filters or refresh disable actions on stale rows. Removal asks for confirmation; editing a tag does not remove words. Creation time remains the default ordering; position, movement, impressions and word can also be sorted. Inspect declines orders significant paired declines for investigation and does not establish their cause.
 
 **Daily observations.** Request daily history explicitly inside Archive details. It uses the same dates and matching rule, leaves missing days as gaps, supports keyboard date inspection and includes a text list of daily values.
+
+When no saved keywords can be compared, the movement card shows No comparison instead of zero. When all saved keywords were observed, the Position unknown card does not warn about missing observations. Movement and unknown-position card buttons are disabled when they have no matching results.

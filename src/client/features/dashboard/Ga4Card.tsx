@@ -279,9 +279,21 @@ export function Ga4Card({
           </div>
           <Ga4Provenance report={report} />
           {!hasEcommerce ? (
-            <p className="text-xs text-muted">
+            <details className="text-xs text-muted">
+              <summary className="min-h-11 cursor-pointer py-3">
+                {t("Organik gelir")}
+              </summary>
+              <p>
+                {t(
+                  "Satış ölçümü doğrulanmadı; sıfır satış, mağaza olmadığı anlamına gelmez.",
+                )}
+              </p>
+            </details>
+          ) : null}
+          {report.totals.sessions === null ? (
+            <p className="text-sm text-muted">
               {t(
-                "Satış ölçümü doğrulanmadı; sıfır satış, mağaza olmadığı anlamına gelmez.",
+                "Oturum sayısı bilinmiyor. Analytics raporunu açarak kaynak uyarılarını inceleyin; bağlantı erişimini ve sitedeki Analytics etiketini kontrol edin.",
               )}
             </p>
           ) : null}
@@ -296,32 +308,34 @@ export function Ga4Card({
            * card had layout, and printed a -1 warning to the console of
            * every install on every dashboard load.
            */}
-          <Chart
-            height={96}
-            summary={trendSummary(report.trend)}
-            className="[&_figcaption]:hidden"
-          >
-            <AreaChart
-              data={report.trend}
-              margin={{ top: 4, right: 0, bottom: 0, left: 0 }}
+          {report.trend.some((row) => row.sessions !== null) ? (
+            <Chart
+              height={96}
+              summary={trendSummary(report.trend)}
+              className="[&_figcaption]:hidden"
             >
-              <XAxis dataKey="date" hide />
-              <YAxis hide domain={[0, "auto"]} />
-              <Tooltip
-                content={<SessionsTooltip />}
-                cursor={{ stroke: "currentColor", strokeOpacity: 0.2 }}
-              />
-              <Area
-                type="monotone"
-                dataKey="sessions"
-                stroke={CHART_SERIES.primary}
-                strokeWidth={2}
-                fill={CHART_SERIES.primary}
-                fillOpacity={0.08}
-                isAnimationActive={!reduced}
-              />
-            </AreaChart>
-          </Chart>
+              <AreaChart
+                data={report.trend}
+                margin={{ top: 4, right: 0, bottom: 0, left: 0 }}
+              >
+                <XAxis dataKey="date" hide />
+                <YAxis hide domain={[0, "auto"]} />
+                <Tooltip
+                  content={<SessionsTooltip />}
+                  cursor={{ stroke: "currentColor", strokeOpacity: 0.2 }}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="sessions"
+                  stroke={CHART_SERIES.primary}
+                  strokeWidth={2}
+                  fill={CHART_SERIES.primary}
+                  fillOpacity={0.08}
+                  isAnimationActive={!reduced}
+                />
+              </AreaChart>
+            </Chart>
+          ) : null}
         </div>
       ) : null}
     </CardShell>

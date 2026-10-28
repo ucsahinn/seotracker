@@ -35,3 +35,5 @@ Analytics adds observed organic sessions, key events and the share of sessions w
 CSV and Sheets exports include the displayed filtered rows, observed dates, normalized upper-bound unit, model, property, brand source, source limits and Analytics cohort. Sheets writes happen only when you select the export action.
 
 Open in Search performance preserves the source start/end dates and opens the exact URL's detail panel. Unreadable periods are explained instead of substituting other dates. Record your change, then compare measured clicks, CTR and position for equivalent periods. A shrinking estimate alone does not prove success. Low rank or a low estimate does not justify deleting content; consider merging only after confirming overlapping intent.
+
+Thin data does not mean zero potential gain. Missing usable non-brand queries may result from hidden queries, brand exclusions or data limits. The longest period never suggests extending it again. Open Search performance to review queries with impressions. Calculation details expand under Data coverage and calculation.

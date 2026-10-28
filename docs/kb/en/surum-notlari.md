@@ -41,7 +41,7 @@ This entry brings together features and fixes from 0.5.0 to 0.8.2: site audits, 
 ### 🔔 Notifications and announcements
 
 - **Notification center:** Audit results, new versions and Google connection problems gather in one place.
-- **Sound and desktop:** Turn the notification sound and desktop notifications on or off separately.
+- **Notification sound:** Turn sounds for important alerts on or off in Settings.
 - **Windows notifications:** Updates and announcements also show up in the Windows notification area.
 - **Announcements:** Fresh news appears on the app's Announcements screen.
 

@@ -54,4 +54,6 @@ Bu ekran yalnızca kurulumun kendisini kontrol eder. Sitenizdeki bir sorunu bulm
 
 [Panel](/docs/panel/) seçili projenin veri ve kurulum özetini gösterir. [Fırsatlar](/docs/firsatlar/) Search Console verisinden yapılacak işleri seçmenize yardımcı olur. [Sıralama takibi](/docs/siralama-takibi/) kaydedilen kelimelerin Google verisindeki ortalama konumunu izler; canlı arama sonucu değildir. Veri eksikse önce proje bağlantılarını, tarih aralığını ve ekrandaki veri kapsamı uyarısını kontrol edin. Yardım ekranındaki kurulum sonucu bu raporları doğrulamaz.
 
+Az trafik alan sitelerde Google bazı sorguları gizler. Sayfa toplamlarında tıklama varken sorgu listesi boş veya daha küçük olabilir; bu tek başına bağlantı hatası değildir.
+
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/quotas/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->

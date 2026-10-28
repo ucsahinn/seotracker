@@ -17,13 +17,8 @@ export function useAgentVerification() {
       setClock(Date.now());
       if (Date.now() - verification.startedAt >= 60_000) clearInterval(timer);
     }, 1000);
-    const hide = () => {
-      if (document.hidden) setVerification(null);
-    };
-    document.addEventListener("visibilitychange", hide);
     return () => {
       clearInterval(timer);
-      document.removeEventListener("visibilitychange", hide);
     };
   }, [verification]);
   const connection = useQuery({

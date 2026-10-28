@@ -46,6 +46,25 @@ function renderSection(history: ReturnType<typeof audit>[]) {
 }
 
 describe("AuditHistorySection", () => {
+  it("shows crawled pages rather than the reservation for a failed audit", () => {
+    const failed = {
+      ...audit("failed", "2026-02-01T10:00:00Z", 0),
+      status: "failed" as const,
+      pagesCrawled: 7,
+      pagesTotal: 144,
+    };
+    render(
+      <AuditHistorySection
+        projectId="p1"
+        history={[failed]}
+        isLoading={false}
+        onDelete={vi.fn()}
+        onRerun={vi.fn()}
+      />,
+    );
+    expect(screen.getByRole("cell", { name: "7" })).toBeDefined();
+    expect(screen.queryByRole("cell", { name: "144" })).toBeNull();
+  });
   it("links the date to the pages tab and shows the change since the previous audit", () => {
     renderSection([
       audit("new", "2026-02-01T10:00:00Z", 2),

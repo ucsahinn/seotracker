@@ -56,4 +56,6 @@ Cet écran ne contrôle que l'installation elle-même. Pour trouver un problème
 
 Le [Tableau de bord](/docs/panel/) résume la configuration et les données du projet sélectionné. Les [Opportunités](/docs/firsatlar/) aident à choisir des actions à partir des données Search Console. Le [Suivi du classement](/docs/siralama-takibi/) suit la position moyenne des mots-clés enregistrés dans les données Google, pas les résultats de recherche en direct. Si des données manquent, vérifiez les connexions du projet, la période et les avertissements de couverture. L’état de l’installation ne valide pas ces rapports.
 
+Sur les sites qui reçoivent peu de trafic de recherche, Google masque certaines requêtes. La liste peut être vide ou afficher moins de clics que les totaux par page. Cela ne signifie pas à lui seul que la connexion est défaillante.
+
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/quotas/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->

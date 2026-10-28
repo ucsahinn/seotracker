@@ -46,6 +46,7 @@ export function TodoTab({
   days,
   doneTodos,
   onTarget,
+  onShowQueries,
 }: {
   projectId: string;
   todo: TodoItem[];
@@ -53,6 +54,7 @@ export function TodoTab({
   days: number;
   doneTodos: DoneTodos;
   onTarget: (target: OpenTarget) => void;
+  onShowQueries: () => void;
 }) {
   const { done, toggle } = doneTodos;
   const open = todo.filter((item) => !done.has(item.id));
@@ -63,9 +65,21 @@ export function TodoTab({
       <EmptyState
         icon={ListChecks}
         title={t("Şu an önerilecek iş yok")}
-        description={t(
-          "Search Console verisinde eşiği aşan bir fırsat ya da düşüş bulunmadı. Daha uzun bir dönem seçmek ya da birkaç gün sonra tekrar bakmak yeni bulgular çıkarabilir.",
-        )}
+        description={[
+          t(
+            "Alınan veride öneri eşiklerini geçen bir fırsat ya da düşüş bulunmadı. Bu, sitenizde yapılacak iş olmadığı anlamına gelmez. Google bazı sorguları gizlilik için gizler; görünen sorguları ve sayfaları inceleyin.",
+          ),
+          days < 84
+            ? t("Daha uzun bir dönem seçmek daha çok arama gösterebilir.")
+            : null,
+        ]
+          .filter(Boolean)
+          .join(" ")}
+        action={
+          <button type="button" className="btn btn-sm" onClick={onShowQueries}>
+            {t("Sorguları aç")}
+          </button>
+        }
       />
     );
   }

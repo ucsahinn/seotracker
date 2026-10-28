@@ -192,3 +192,12 @@ it("renders a bilingual post in the selected language and can refresh", async ()
   fireEvent.click(screen.getByRole("button", { name: /Refresh/ }));
   await waitFor(() => expect(fetchAnnouncements).toHaveBeenCalled());
 });
+
+it("gives an owner somewhere useful to go when no announcements are published", async () => {
+  fetchAnnouncements.mockResolvedValue([]);
+  renderPage();
+  await screen.findByText("Şimdilik yeni duyuru yok");
+  expect(
+    screen.getByRole("link", { name: "Sürüm notları" }).getAttribute("href"),
+  ).toBe("/release-notes");
+});

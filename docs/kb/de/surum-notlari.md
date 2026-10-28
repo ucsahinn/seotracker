@@ -41,7 +41,7 @@ Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.2: Website-
 ### 🔔 Benachrichtigungen und Ankündigungen
 
 - **Benachrichtigungszentrum:** Audit-Ergebnisse, neue Versionen und Probleme mit der Google-Verbindung sammeln sich an einem Ort.
-- **Ton und Desktop:** Benachrichtigungston und Desktop-Benachrichtigungen schalten Sie getrennt ein oder aus.
+- **Benachrichtigungston:** Den Ton wichtiger Hinweise schalten Sie in den Einstellungen ein oder aus.
 - **Windows-Benachrichtigungen:** Updates und Ankündigungen erscheinen auch im Benachrichtigungsbereich von Windows.
 - **Ankündigungen:** Neuigkeiten erscheinen im Bildschirm „Ankündigungen“ der App.
 

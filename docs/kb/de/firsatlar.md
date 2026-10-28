@@ -35,3 +35,5 @@ Analytics ergänzt gemessene organische Sitzungen, Schlüsselereignisse und den 
 CSV und Google Tabellen enthalten die sichtbaren gefilterten Zeilen samt Zeitraum, 30-Tage-Obergrenze, Modell, Property, Markenquelle, Datenbeschränkungen und Analytics-Gruppe. In Google Tabellen wird nur nach Ihrer Auswahl geschrieben.
 
 Der Link zur Suchleistung übernimmt das genaue Start- und Enddatum und öffnet die Details der exakten URL. Nicht lesbare Zeiträume werden erklärt, statt andere Daten einzusetzen. Änderungen notieren und gemessene Klicks, CTR und Position in vergleichbaren Zeiträumen prüfen. Eine sinkende Schätzung allein beweist keinen Erfolg. Inhalte nicht allein wegen niedriger Position oder Schätzung löschen; Zusammenführen erst bei bestätigtem gleichem Nutzerbedarf erwägen.
+
+Wenige Daten bedeuten keinen Zugewinn von null. Fehlende geeignete Suchanfragen ohne Markenbezug können an verborgenen Suchanfragen, Markenausschlüssen oder Datenlimits liegen. Beim längsten Zeitraum wird keine weitere Verlängerung vorgeschlagen. Öffnen Sie die Suchleistung, um Suchanfragen mit Impressionen zu prüfen. Berechnungsdetails lassen sich im Abschnitt zur Datenabdeckung öffnen.

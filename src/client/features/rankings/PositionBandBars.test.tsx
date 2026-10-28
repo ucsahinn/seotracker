@@ -10,6 +10,16 @@ const rows = [
 ];
 
 describe("PositionBandBars", () => {
+  it("describes current positions without inventing a zero-query net change", () => {
+    render(
+      <PositionBandBars rows={rows} active={undefined} onChange={vi.fn()} />,
+    );
+    expect(
+      screen.getByText(/Önceki dönemle karşılaştırılabilecek sorgu yok/),
+    ).toBeDefined();
+    expect(screen.queryByText(/aynı 0 sorguda net değişim/)).toBeNull();
+  });
+
   it("counts each band and filters on click", () => {
     const onChange = vi.fn();
     render(

@@ -19,4 +19,20 @@ export const deNotifications: Catalog = {
     "Benachrichtigungen sind blockiert. Aktivieren Sie sie in den Website-Berechtigungen Ihres Browsers.",
   "Bu tarayıcı masaüstü bildirimlerini desteklemiyor.":
     "Dieser Browser unterstützt keine Desktop-Benachrichtigungen.",
+  "Bildirim ayarları": "Benachrichtigungseinstellungen",
+  "Bildirim geçmişi bu tarayıcıda saklanır. Denetim sonuçları, yeni sürümler ve bağlantı sorunları burada görünür.":
+    "Der Benachrichtigungsverlauf wird in diesem Browser gespeichert. Hier erscheinen Audit-Ergebnisse, neue Versionen und Verbindungsprobleme.",
+  "Henüz bildirim yok. Bir denetim tamamlandığında veya önemli bir güncelleme olduğunda burada görünür.":
+    "Noch keine Benachrichtigungen. Abgeschlossene Audits und wichtige Updates erscheinen hier.",
+  "Burada kayıtlı mülk seçimleri gösterilir; Google erişimi bu kontrolde sınanmaz. Erişimi proje bağlantılarından doğrulayın.":
+    "Hier werden gespeicherte Property-Auswahlen angezeigt. Dieser Test prüft den Google-Zugriff nicht. Prüfen Sie den Zugriff in den Projektverbindungen.",
+  "seçili değil": "nicht ausgewählt",
+  "Araç çağrısı alındı": "Werkzeugaufruf empfangen",
+  "{state} · {count} sınırın kullanımı bilinmiyor":
+    "{state} · Nutzung für {count} Limits unbekannt",
+  "Uygulama açıkken bildirimler ekranda görünür; sekme arka plandayken bildirim geçmişinde saklanır. Önemli bildirimlerin sesini buradan açıp kapatabilirsiniz.":
+    "Bei geöffneter App erscheinen Hinweise auf dem Bildschirm. In einem Hintergrund-Tab bleiben sie im Benachrichtigungsverlauf. Den Ton wichtiger Hinweise schalten Sie hier ein oder aus.",
+  "Google hesabıyla giriş seçeneği": "Mit einem Google-Konto anmelden",
+  "Az trafik alan sitelerde Google bazı sorguları gizler. Sayfa toplamlarında tıklama varken sorgu listesi boş veya daha küçük olabilir; bu tek başına bağlantı hatası değildir.":
+    "Bei Websites mit wenig Suchverkehr blendet Google manche Suchanfragen aus. Die Liste kann leer sein oder weniger Klicks als die Seitensummen zeigen. Das allein bedeutet keinen Verbindungsfehler.",
 };

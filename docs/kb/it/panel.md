@@ -3,7 +3,7 @@ title: Pannello
 description: La panoramica riunisce traffico di ricerca, prossime attività supportate dai dati e limiti delle fonti.
 screen: Panel
 route: /p/<proje>
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 La panoramica riunisce traffico di ricerca, prossime attività supportate dai dati e limiti delle fonti. Aggiorna rilegge le fonti attive, la configurazione e lo stato di installazione. Se una lettura fallisce, segnala un aggiornamento parziale. L’ora di ricezione è diversa dall’ultimo giorno misurato.
@@ -26,7 +26,7 @@ Le query idonee hanno abbastanza impressioni e una posizione arrotondata tra 4 e
 
 ## Controllo del proprio sito
 
-Vengono scelte solo scansioni del dominio del progetto. Un controllo più recente di un altro sito viene ignorato. L’ultimo risultato completato e un tentativo più recente in corso o fallito sono indicati separatamente. Senza dominio, un collegamento porta alle impostazioni. La scheda indica ID, indirizzo iniziale, data, controlli misurati e limite di pagine.
+Vengono scelte solo scansioni del dominio del progetto. Un controllo più recente di un altro sito viene ignorato. L’ultimo risultato completato e un tentativo più recente in corso o fallito sono indicati separatamente. Senza dominio, un collegamento porta alle impostazioni. La scheda indica indirizzo iniziale, data, controlli misurati e limite di pagine.
 
 Pagine uniche interessate, tipi di controllo e coppie pagina–controllo sono unità diverse. Una pagina può fallire tre controlli. Le note informative restano fuori dalla barra di criticità e avvisi. Il giudizio vale solo nell’ambito misurato. Dati mancanti o limiti di pagine non certificano l’intero sito. I confronti richiedono lo stesso ambito iniziale, impostazioni e URL scansionati, con misure leggibili. Solo i controlli misurati in entrambe le scansioni mostrano variazioni. Una scansione ridotta o non leggibile non prova una risoluzione. L’ambito sconosciuto viene spiegato. I collegamenti aprono i problemi dello stesso controllo per l’URL scelto.
 
@@ -37,3 +37,9 @@ Sessioni organiche, utenti attivi, coinvolgimento ed eventi chiave provengono da
 Dati commerciali positivi in uno dei periodi mantengono ricavi e ordini visibili, compreso uno zero misurato in un periodo tranquillo. Senza prove, la misurazione delle vendite resta non confermata. Una valuta sconosciuta viene indicata.
 
 La panoramica non contiene volumi di parole chiave, backlink o posizioni dei concorrenti. Confronta i dati Google con date e filtri identici.
+
+## Interpretare pochi dati
+
+Se i clic del periodo di confronto sono sotto la soglia di analisi, il riepilogo presenta prima clic e impressioni reali. Con pochi dati, percentuali e medie da sole non dimostrano una crescita o una perdita. Un elenco di opportunità vuoto non significa che nessuna query sia in posizione 4–20: valgono anche la soglia di impressioni adattata al periodo e l’esclusione delle query di marca.
+
+L’identificativo dell’audit resta nella navigazione; la scheda mostra l’indirizzo iniziale. Se le sessioni sono sconosciute, controlla gli avvisi della fonte nel report Analytics, i permessi e il tag sul sito. La nota sulle vendite si trova nella spiegazione espandibile delle entrate organiche.

@@ -1127,4 +1127,8 @@ export const frAudit: Catalog = {
     "Port : {actual} (configuré : {configured})",
   "seowatcher bu sefer {actual} numarasında çalışıyor çünkü {configured} başka bir program tarafından kullanılıyor (ör. eski bir Docker kopyası). Google bağlantısı {configured} için ayarlandı; o programı kapatıp seowatcher'ı yeniden başlatın.":
     "seowatcher tourne cette fois sur {actual}, car un autre programme utilise {configured} (par exemple une ancienne copie Docker). La connexion Google est configurée pour {configured} ; fermez ce programme et redémarrez seowatcher.",
+
+  "Tüm sütunları ve işlemleri görmek için tabloyu yana kaydırın.":
+    "Faites défiler le tableau horizontalement pour voir toutes les colonnes et actions.",
+  "Hız ölçümü istendi": "Mesure de vitesse demandée",
 };

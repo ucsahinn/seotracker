@@ -231,6 +231,7 @@ export function RankingsPage({
               />
               <MoversCard
                 rows={[...data.risers, ...data.fallers]}
+                comparableCount={data.comparableCount}
                 onPick={pick}
               />
             </div>

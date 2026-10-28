@@ -333,4 +333,8 @@ export const ptAppAdditional: Catalog = {
     "Não foi possível ler as credenciais em uso. Recarregue o status das credenciais do Google.",
   "Kimlik kayıt tarihi: {date}": "Data de registro das credenciais: {date}",
   "Google kurulum adımları": "Etapas de configuração do Google",
+
+  "Tüm sütunları ve işlemleri görmek için tabloyu yana kaydırın.":
+    "Desloque a tabela na horizontal para ver todas as colunas e ações.",
+  "Hız ölçümü istendi": "Medição de velocidade pedida",
 };

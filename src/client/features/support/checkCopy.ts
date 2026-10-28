@@ -30,6 +30,7 @@ export function describeCheck(
   check: { status: CheckStatus; detail?: string },
   googleReady: boolean | null,
   installKind: "windows" | "docker" = "docker",
+  authMode?: string,
 ): DescribedCheck {
   const detail = check.detail ?? "";
   const logs =
@@ -112,9 +113,11 @@ export function describeCheck(
 
   if (key === "auth") {
     if (check.status === "ok") {
-      // i18n-ignore: matches the server's own Turkish sentence, which it shows
-      return detail.startsWith("Giriş yok")
-        ? say(detail)
+      const localOnly = t(
+        "Giriş yok: uygulama yalnızca bu bilgisayarda kullanılır. İnternete açacaksanız önüne kendi girişinizi koyun.",
+      );
+      return authMode === "local_noauth" || detail === localOnly
+        ? say(localOnly)
         : say(t("Giriş koruması ayarlı."));
     }
     if (/Reachable off localhost/.test(detail)) {

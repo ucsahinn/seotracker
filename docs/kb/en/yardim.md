@@ -56,4 +56,6 @@ The screen checks only the setup itself. To find a problem on your site, use Sit
 
 [Dashboard](/docs/panel/) summarizes the selected project’s setup and data. [Opportunities](/docs/firsatlar/) helps you choose work from Search Console data. [Rank tracking](/docs/siralama-takibi/) follows saved keywords’ average positions in Google data; it is not a live search result. If data is missing, check project connections, the date range and the coverage warning on that screen. Help’s setup result does not validate those reports.
 
+On sites with little search traffic, Google hides some queries. The query list can be empty or show fewer clicks than the page totals; this alone does not mean the connection is broken.
+
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/quotas/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->

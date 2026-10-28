@@ -117,7 +117,7 @@ export function NoOpportunities({
   /** The site has too few queries per position band for any estimate. */
   curveInsufficient: boolean;
   unknownPages?: number;
-  /** Pages with impressions but no query rows: Google withheld the queries. */
+  /** Pages with impressions but no usable non-brand query rows in this response. */
   hiddenQueryPages?: number;
   days: number;
 }) {
@@ -125,16 +125,22 @@ export function NoOpportunities({
     start: formatDate(dateRange.startDate),
     end: formatDate(dateRange.endDate),
   };
+  const widen =
+    days < 90
+      ? ` ${t("Daha uzun bir dönem seçmek daha çok arama gösterebilir.")}`
+      : "";
 
   if (pagesConsidered === 0) {
     return (
       <EmptyState
         icon={Target}
         title={t("Search Console bu dönem için veri vermedi")}
-        description={t(
-          "{start} – {end} aralığında bu mülk için sayfa satırı dönmedi. Bu, hiç gösterim olmadığı anlamına gelmez; Arama performansında mülkü kontrol edin veya dönemi genişletin.",
-          period,
-        )}
+        description={
+          t(
+            "{start} – {end} aralığında sayfa verisi alınamadı. Bu, hiç gösterim olmadığı anlamına gelmez; Arama performansında bağlı mülkü ve tarihleri kontrol edin.",
+            period,
+          ) + widen
+        }
       />
     );
   }
@@ -142,17 +148,13 @@ export function NoOpportunities({
   if (unknownPages > 0) {
     // 90 days is the longest window this screen offers; suggesting it when it
     // is already selected sends the operator round in a circle.
-    const widen =
-      days < 90
-        ? ` ${t("Daha uzun bir dönem seçmek daha çok arama gösterebilir.")}`
-        : "";
     if (hiddenQueryPages * 2 >= unknownPages) {
       return (
         <EmptyState
           icon={Target}
-          title={t("Google bu sayfaların aramalarını göstermiyor")}
+          title={t("Bu sayfalar için tahmin edilebilir arama yok")}
           description={`${period.start} – ${period.end}. ${t(
-            "{hidden} sayfa gösterim aldı ama Search Console hangi aramalardan geldiğini vermedi: Google az aranan sorguları gizlilik için gizler. Arama bilinmeden kazanç hesaplanmaz. Bu bir hata değildir; site daha çok gösterim aldıkça tahminler kendiliğinden çıkar.",
+            "{hidden} sayfa gösterim aldı; alınan veride tahmine uygun marka dışı arama bulunamadı. Google'ın gizlediği sorgular, marka ayrımı veya veri sınırları buna yol açabilir. Bu sayfalarda kazanç sıfır değil, bilinmiyor.",
             { hidden: formatCount(hiddenQueryPages) },
           )}${widen}`}
         />
@@ -161,7 +163,7 @@ export function NoOpportunities({
     return (
       <EmptyState
         icon={Target}
-        title={t("Hesaplanamayan kapsam")}
+        title={t("Tahmin için veri henüz az")}
         description={`${period.start} – ${period.end}. ${t(
           "{count} sayfanın aramaları tahmin için yeterli gösterim almadı ya da sitenizde karşılaştırılacak sıra verisi yok.",
           { count: formatCount(unknownPages) },
@@ -175,10 +177,12 @@ export function NoOpportunities({
       <EmptyState
         icon={Target}
         title={t("Tahmin için veri henüz az")}
-        description={t(
-          "{start} – {end} aralığında sitenizin tıklama oranını sıraya göre ölçecek kadar arama yok. Dönemi 90 güne genişletmeyi deneyin.",
-          period,
-        )}
+        description={
+          t(
+            "{start} – {end} aralığında sitenizin tıklama oranını sıraya göre ölçecek kadar arama yok. Arama performansında gösterim alan sorguları inceleyin; daha fazla veri birikince tahmin yeniden hesaplanabilir.",
+            period,
+          ) + widen
+        }
       />
     );
   }

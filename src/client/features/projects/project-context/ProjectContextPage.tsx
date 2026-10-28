@@ -191,6 +191,8 @@ function ProjectContextContent({
                 {t(PROJECT_CONTEXT_SECTION_LABELS[key])}
               </option>
             ))}
+            <option value="context-competitors">{t("Rakipler")}</option>
+            <option value="context-key-pages">{t("Önemli sayfalar")}</option>
           </select>
         </label>
         <ProseSections

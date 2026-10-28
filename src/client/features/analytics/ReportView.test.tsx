@@ -354,3 +354,19 @@ describe("ReportView per-tab summaries", () => {
     expect(screen.getByText("Yalnızca bir kez aranan")).toBeDefined();
   });
 });
+
+it("keeps an empty provider result focused on recovery rather than zero-count quick filters", () => {
+  mount(
+    {
+      ...base,
+      dimensions: ["hostName", "landingPage"],
+      metrics: ["sessions", "engagementRate", "keyEvents"],
+      rows: [],
+      rowCount: 0,
+      totalRowCount: 0,
+    },
+    "landing_pages",
+  );
+  expect(screen.queryByRole("group", { name: "Hızlı filtreler" })).toBeNull();
+  expect(screen.getByText("Bu dönemde veri yok")).toBeTruthy();
+});

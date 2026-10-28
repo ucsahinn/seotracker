@@ -35,7 +35,7 @@ Esta entrada reúne novidades e correções da 0.5.0 à 0.8.2: auditoria do site
 ### 🔔 Notificações e anúncios
 
 - **Central de notificações:** Resultados de auditorias, novas versões e problemas na conexão com o Google ficam reunidos num só lugar.
-- **Som e área de trabalho:** Ligue ou desligue separadamente o som e as notificações da área de trabalho.
+- **Som das notificações:** Ative ou desative o som dos alertas importantes nas Configurações.
 - **Notificações do Windows:** Atualizações e anúncios também aparecem na área de notificações do Windows.
 - **Anúncios:** As novidades aparecem na tela Anúncios do aplicativo.
 

@@ -345,4 +345,6 @@ export const frApp: Catalog = {
     "Le dernier import des archives n'a pas pu aboutir. Consultez l'erreur dans Suivi des classements et réessayez.",
   "Arşiv bu tarihlerin tümünü doğrulamıyor. Eksik veya sınırlı günler için Sıralamalar'dan arşivi güncelleyin.":
     "Les archives ne confirment pas tous ces jours. Actualisez-les dans Suivi des classements pour les jours manquants ou limités.",
+
+  "Bu sitenin son tamamlanan denetimi": "Dernier audit terminé pour ce site",
 };

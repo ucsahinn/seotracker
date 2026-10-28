@@ -3,7 +3,7 @@ title: Controllo del sito
 description: L'app visita il sito pagina per pagina, lo controlla con 202 regole e ordina i problemi per gravità. Il punteggio dice anche quanto è stato possibile misurare. Una verifica interrotta non ha punteggio.
 screen: Site denetimi
 route: /p/<proje>/audit
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 Qui si trovano i problemi del sito e si vede come correggerli.
@@ -135,5 +135,7 @@ Il testo grezzo dell'errore non arriva sulla schermata. Resta nel pacchetto diag
 ## Limiti
 
 Il crawler può non vedere il contenuto che JavaScript (il codice che gira nella pagina) aggiunge dopo. Una verifica scansiona al massimo 10.000 pagine. La misurazione della velocità è la misura di laboratorio di Google, non dati di visitatori reali. La verifica non cambia nulla nel sito. Le correzioni le fa chi gestisce il sito o il suo assistente.
+
+Negli audit precedenti, **Pagine scansionate** indica gli indirizzi effettivamente scansionati, anche negli audit non riusciti, e non il limite iniziale. Le colonne Critico e Avviso mostrano il totale dei problemi. **Misurazione della velocità richiesta** significa che l’opzione era attiva all’avvio; non dimostra che la misurazione sia riuscita. Sul telefono, scorri la tabella in orizzontale per vedere le altre colonne e azioni.
 
 <!-- Fonti: src/client/features/audit/launch/LaunchView.tsx; LaunchFormCard.tsx; useLaunchController.ts; AuditHistorySection.tsx; AuditSiteFilter.tsx; ProgressCard.tsx; src/client/features/audit/results/ResultsView.tsx; ResultsHeader.tsx; ScoreOverview.tsx; ScoreGauge.tsx; WithheldScore.tsx; scoreWords.ts; auditFailureCopy.ts; ChecksView.tsx; TodoView.tsx; IssuesView.tsx; QuickFilters.tsx; ForeignPropertyNotice.tsx; DownloadReportButton.tsx; src/routes/_project/p/$projectId/audit/index.tsx; src/shared/auditStanding.ts; src/shared/auditScore.ts; src/shared/auditCategory.ts; src/shared/audit-limits.ts; src/server/lib/audit/crawl-throttle.ts -->

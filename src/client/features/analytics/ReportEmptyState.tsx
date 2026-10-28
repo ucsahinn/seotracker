@@ -101,9 +101,35 @@ export function ReportEmptyState({
         description={
           emptyReason
             ? t("Google hiç satır vermedi ({reason}).", { reason: emptyReason })
-            : t(
-                "Google bu aralık için satır vermedi. Mülkü yeni bağladıysanız veri birkaç gün sonra görünür.",
-              )
+            : narrowedByChannel
+              ? t(
+                  "Şu an organik arama motorlarından gelen ziyaretler sayılıyor; tüm trafiğe bakmak sonucu değiştirebilir.",
+                )
+              : t(
+                  "Dönemi ve Analytics mülkündeki veri toplamayı kontrol edin; bağlantı kurmak geçmiş veriyi değiştirmez.",
+                )
+        }
+        action={
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            {narrowedByChannel ? (
+              <button
+                type="button"
+                className="btn btn-sm min-h-11"
+                onClick={onShowAllTraffic}
+              >
+                {t("Tüm trafiğe bak")}
+              </button>
+            ) : null}
+            {onOpenHealth ? (
+              <button
+                type="button"
+                className="btn btn-sm min-h-11"
+                onClick={onOpenHealth}
+              >
+                {t("Ölçüm durumunu kontrol et")}
+              </button>
+            ) : null}
+          </div>
         }
       />
     );

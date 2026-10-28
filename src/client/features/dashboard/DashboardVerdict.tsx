@@ -6,6 +6,7 @@ import { DeltaBadge } from "@/client/components/MetricTile";
 import { countDelta } from "@/client/components/MetricTile";
 import { formatCount, formatDate } from "@/shared/format";
 import { t } from "@/shared/i18n";
+import { searchSampleNote } from "../search-performance/searchSample";
 export function DashboardVerdict({
   projectId,
   connected,
@@ -38,6 +39,7 @@ export function DashboardVerdict({
       </p>
     );
   const w = view.window;
+  const sampleNote = searchSampleNote(view, "previous");
   const excluded = Math.max(
     0,
     Math.round((Date.parse(w.freshEndDate) - Date.parse(w.endDate)) / 86400000),
@@ -54,11 +56,16 @@ export function DashboardVerdict({
             },
           )}
         </p>
-        <DeltaBadge value={countDelta(view.totals.vsPrevious?.clicks)} />
+        {!sampleNote ? (
+          <DeltaBadge value={countDelta(view.totals.vsPrevious?.clicks)} />
+        ) : null}
         {!view.totals.previous ? (
           <span className="text-sm text-muted">{t("Karşılaştırma yok")}</span>
         ) : null}
       </div>
+      {sampleNote ? (
+        <p className="max-w-prose text-sm text-muted">{sampleNote}</p>
+      ) : null}
       {action ? (
         <p className="text-sm">
           {action.title}{" "}

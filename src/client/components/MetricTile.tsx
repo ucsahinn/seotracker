@@ -2,6 +2,7 @@ import { ArrowDownRight, ArrowUpRight, Minus } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import * as React from "react";
 import { AnimatedNumber } from "@/client/components/AnimatedNumber";
+import { DATA_SERIES } from "@/client/components/Chart";
 import { Sparkline } from "@/client/components/Sparkline";
 import { useFlashOnChange } from "@/client/components/useFlashOnChange";
 import { formatCount, formatSignedPercent } from "@/client/lib/format";
@@ -106,6 +107,7 @@ export function MetricTile({
   flashKey,
   animateTo,
   trend,
+  metric,
   /** Lower is better, as with an average search position. */
   inverted = false,
 }: {
@@ -120,6 +122,8 @@ export function MetricTile({
   /** Opt in to a count-up: the raw number and its formatter. `value` stays the fallback and the null check. Off by default. */
   animateTo?: { value: number; format: (n: number) => string };
   trend?: readonly (number | null)[];
+  /** Explicit identity; never infer a metric from translated text or order. */
+  metric?: keyof typeof DATA_SERIES;
 } & TileTarget) {
   const flash = useFlashOnChange(flashKey === undefined ? value : flashKey);
   const body = (
@@ -138,7 +142,7 @@ export function MetricTile({
               tint plays then and not on first paint. */}
           <p
             key={flash.key}
-            className={`truncate text-2xl font-semibold tracking-tight ${flash.className}`}
+            className={`metric-value truncate text-2xl font-semibold tracking-tight ${flash.className}`}
           >
             {animateTo ? (
               <AnimatedNumber
@@ -166,13 +170,25 @@ export function MetricTile({
       )}
     </>
   );
-  const frame = "flex h-full min-w-0 flex-col gap-1.5 px-5 py-4";
+  const frame = "metric-tile flex h-full min-w-0 flex-col gap-1.5 px-5 py-4";
+  const style:
+    | (React.CSSProperties & { "--metric-color": string })
+    | undefined = metric
+    ? { "--metric-color": DATA_SERIES[metric] }
+    : undefined;
 
-  if (!href) return <div className={frame}>{body}</div>;
+  if (!href)
+    return (
+      <div className={frame} style={style} data-metric={metric}>
+        {body}
+      </div>
+    );
   return (
     <Link
       to={href.to}
       params={{ projectId: href.projectId }}
+      style={style}
+      data-metric={metric}
       className={`${frame} transition-colors hover:bg-base-200/60 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary`}
     >
       {body}

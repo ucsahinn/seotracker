@@ -3,7 +3,7 @@ title: Projekte
 description: Projekte hilft bei der Auswahl einer Website und zeigt fehlende Verbindungen. Jedes Projekt hat eigene Google-Properties, Prüfungen und Berichte.
 screen: Projeler, Proje ayarları
 route: /projects, /p/{proje}/settings
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 Projekte hilft bei der Auswahl einer Website und zeigt fehlende Verbindungen. Jedes Projekt hat eigene Google-Properties, Prüfungen und Berichte.
@@ -21,5 +21,7 @@ Die Prüfung gehört zum Host der ausgewählten Website. Letzte abgeschlossene P
 Neues Projekt: Name, optionale Domain, Land und Sprache eingeben. Dadurch werden keine Daten gesammelt. Google-Properties wählen Sie unter Einstellungen → Verbindungen. Allgemeine Einstellungen ändern Identität und Markt. Pro Projekt gibt es eine Search-Console- und eine Analytics-Property.
 
 Archivieren erhält Daten; Wiederherstellen holt das Projekt zurück. Das letzte Projekt kann nicht archiviert werden. Suchklicks sind keine GA4-Sitzungen oder Summen des Suchanfragenarchivs. Unterschiedliche Zeiträume werden nicht addiert.
+
+Bei weniger als 20 Klicks im vorherigen Zeitraum zeigt das Abzeichen die Klickdifferenz statt eines Prozentsatzes. Von 1 auf 5 bedeutet zum Beispiel +4 Klicks; bei kleinen Zahlen ist diese Änderung allein kein starker Wachstumsnachweis.
 
 <!-- Sources: src/routes/_app/projects.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/project-context/; src/server/features/projects/services/ProjectOverviewService.ts; src/server/features/project-context/ -->

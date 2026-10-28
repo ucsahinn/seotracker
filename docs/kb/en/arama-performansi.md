@@ -3,7 +3,7 @@ title: Search performance
 description: See how often you show up on Google, how many clicks you get and what to fix first. The numbers come from Search Console. Gain figures are an upper bound.
 screen: Arama performansı
 route: /p/<proje>/search-performance
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 Here you see how often you show up on Google, how many clicks you get and what to fix first.
@@ -163,3 +163,9 @@ The Discover and Google News search types are not included. There is no search v
 <!-- Sources: src/routes/_project/p/$projectId/search-performance.tsx; src/client/features/search-performance/SearchPerformancePage.tsx; SearchPageParts.tsx; SearchFilters.tsx; DataTrustStrip.tsx; SearchVerdict.tsx; KpiTiles.tsx; SearchTrendChart.tsx; TrendParts.tsx; SearchNotes.tsx; LongTermTrend.tsx; TodoTab.tsx; DimensionTab.tsx; DimensionTableParts.tsx; OpportunitiesTab.tsx; StrikingTable.tsx; ChangesTab.tsx; CannibalizationSummary.tsx; CannibalizationTable.tsx; DistributionTab.tsx; PositionDistribution.tsx; DrilldownPanel.tsx; BrandTerms.tsx; SearchReportButton.tsx; src/shared/searchInsights.ts; src/shared/searchTodoCopy.ts; src/shared/searchQuickFilters.ts; src/shared/dataFreshness.ts; src/serverFunctions/searchPerformance.ts; src/server/features/gsc/cannibalization.ts -->
 
 Links from Opportunities and Rankings open exact URL/query details for the source dates. Overview totals remain property-wide; selected identity metrics are in the detail panel. Unreadable periods are never silently replaced. Choosing a period preset clears pinned dates. Download report sends the displayed dates to the server and is unavailable during refresh. Dates stay fixed; Google may revise the measurements read again for the report.
+
+## Interpreting small samples
+
+When the comparison period has fewer clicks than the analysis threshold, the summary leads with actual clicks and impressions. Percentages and averages alone do not establish growth or loss with little data. An empty opportunity list does not mean no query ranks at 4–20: the period-scaled impression threshold and brand exclusion also apply.
+
+When the to-do list is empty, open the visible queries for review. The app does not suggest a longer period when the last three months are already selected, or assume Google will later reveal withheld queries.

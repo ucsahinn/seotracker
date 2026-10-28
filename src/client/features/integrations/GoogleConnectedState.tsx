@@ -18,7 +18,11 @@ export function GoogleConnectedState({
   bindingDate,
   usesServiceAccount,
   accessEvidence,
+  reportHref,
+  reportLabel,
 }: {
+  reportHref?: string;
+  reportLabel?: string;
   accessEvidence?: {
     observedAt: string;
     reason: string | null;
@@ -89,9 +93,17 @@ export function GoogleConnectedState({
       {metadata ?? <GoogleAccessEvidence evidence={accessEvidence} />}
       <p className="text-sm text-muted">
         {t(
-          "Mülk seçimi kayıtlıdır. Veri erişimi bu ayar okumasıyla doğrulanmaz; son veri durumunu ilgili rapordan kontrol edin.",
+          "Bu ekran Google’dan yeni veri istemez. Buradaki okuma bilgisi kayıtlı geçmişe aittir; güncel veriyi raporda görebilirsiniz.",
         )}
       </p>
+      {reportHref && reportLabel ? (
+        <a
+          href={reportHref}
+          className="link inline-flex min-h-11 items-center text-sm"
+        >
+          {reportLabel}
+        </a>
+      ) : null}
       <a
         href="/settings#google"
         className="link inline-flex min-h-11 items-center text-sm"

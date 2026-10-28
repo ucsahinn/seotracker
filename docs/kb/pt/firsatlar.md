@@ -35,3 +35,5 @@ O Analytics acrescenta sessões orgânicas, eventos principais e parcela de sess
 CSV e Planilhas Google incluem as linhas filtradas exibidas, datas, unidade normalizada, modelo, propriedade, origem dos termos de marca, limites e grupo do Analytics. A gravação nas Planilhas só ocorre após sua escolha no menu.
 
 O link para Desempenho da pesquisa preserva as datas de início e fim e abre os detalhes da URL exata. Períodos indisponíveis são explicados sem substituir as datas. Anote as mudanças e compare cliques, CTR e posição medidos em períodos equivalentes. Uma estimativa menor, por si só, não prova sucesso. Não exclua conteúdo apenas por posição baixa; considere unir páginas somente após confirmar que atendem à mesma necessidade.
+
+Poucos dados não significam ganho potencial zero. A ausência de consultas sem marca utilizáveis pode resultar de consultas ocultas, exclusões da marca ou limites de dados. O período máximo não sugere novas extensões. Abra Desempenho de pesquisa para consultar as consultas com impressões. Os detalhes do cálculo expandem-se na secção de cobertura dos dados.

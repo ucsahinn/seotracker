@@ -33,3 +33,5 @@ Position means are impression-weighted. Change is previous mean minus current me
 Observed days always remain visible: 10 days in a 90-day period is not complete coverage. Daily points use real calendar spacing and gaps break the line. Arrow keys, Home and End inspect dates. Expand daily values for a readable list. Whole missing weeks remain gaps in weekly lines; edge weeks can be partial.
 
 The Search performance link preserves the exact query and archive dates. For periods older than Google's retention, the earliest readable date is explained before navigation. Competitor rankings, paid search volume and traffic forecasts are unavailable.
+
+When no queries were observed in both periods, rises and falls cannot be calculated. The movement card explains this instead of presenting measured zero movement. Expansion is offered only when more than three movements exist.

@@ -33,3 +33,5 @@ As posições médias são ponderadas pelas impressões. A variação é a médi
 Os dias observados estão sempre visíveis: 10 dias em 90 não significam cobertura completa. Os pontos diários seguem o calendário real e as lacunas interrompem a linha. Setas, Home e End percorrem as datas. Expanda os valores diários para os ler. Semanas inteiramente ausentes mantêm lacunas; as semanas nas extremidades podem ser parciais.
 
 A ligação para Desempenho de pesquisa preserva a consulta exata e as datas do arquivo. Para períodos anteriores à retenção do Google, a primeira data disponível é indicada antes da navegação. Não há classificações de concorrentes, volume pago nem previsões de tráfego.
+
+Se nenhuma consulta foi observada nos dois períodos, não é possível calcular subidas e descidas. O cartão de movimentos explica isto, sem apresentar movimento zero medido. A expansão só está disponível com mais de três movimentos.

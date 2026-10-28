@@ -31,3 +31,5 @@ CSV e Fogli usano la stessa popolazione filtrata. Le prime colonne rimangono par
 La selezione vale solo per questa pagina. Filtri o aggiornamenti in corso bloccano azioni su righe vecchie. La rimozione richiede conferma. L'ordine iniziale resta la data di aggiunta; puoi ordinare anche posizione, movimento, impressioni e parola. L'ordine dei cali significativi serve a indagare, senza provarne la causa.
 
 **Osservazioni giornaliere.** Richiedi esplicitamente lo storico nei dettagli archivio. Date e abbinamento restano uguali. I giorni mancanti restano vuoti; puoi esplorare le date da tastiera e aprire l’elenco testuale dei valori.
+
+Senza parole chiave confrontabili, la scheda dei movimenti mostra Nessun confronto anziché zero. Se tutte le parole chiave sono state osservate, la scheda Posizione sconosciuta non segnala osservazioni mancanti. I pulsanti delle schede dei movimenti e delle posizioni sconosciute sono disattivati senza risultati corrispondenti.

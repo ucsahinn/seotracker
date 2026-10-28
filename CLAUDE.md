@@ -45,6 +45,19 @@ tokens and the component overrides at the bottom of that file restyle all of
 them at once. Change them there before you change a component.
 
 - **Surfaces** carry a trace of chroma. No pure black, no pure white.
+- **Data has a stable categorical palette**, separate from interactive ember:
+  clicks blue (`--data-clicks`), impressions violet (`--data-impressions`),
+  CTR teal (`--data-ctr`), position ochre (`--data-position`), sessions green
+  (`--data-sessions`), conversions rose (`--data-conversions`). Use
+  `DATA_SERIES` from the shared Chart module for marks and legends, and pass
+  `metric` to `MetricTile` for matching ink, wash and sparkline. Never assign
+  metric hues by tile position or translated label. Pass the metric name to
+  `Chart`'s `metric` prop, or set `--chart-series` to its token; the default
+  is clicks. Comparison
+  periods keep the same hue and use a dash plus a label. Opaque data tokens
+  meet 4.5:1 for text and 3:1 for marks on both theme surfaces and their 8%
+  metric washes. Do not lower mark opacity to distinguish series; label
+  categories as well as colouring them. Severity chips keep `--ink-*`.
 - **Separation is a hairline** (`var(--hairline)`), never a mid-grey 1px box.
   Depth comes from `var(--shadow-raise)`, tinted toward the surface.
 - **One radius scale**: `rounded-box` for panels, `rounded-field` for controls,

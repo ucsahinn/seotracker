@@ -3,7 +3,7 @@ title: Projetos
 description: Projetos ajuda a escolher um site e completar suas conexões. Cada projeto mantém suas próprias propriedades Google, auditorias e relatórios.
 screen: Projeler, Proje ayarları
 route: /projects, /p/{proje}/settings
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 Projetos ajuda a escolher um site e completar suas conexões. Cada projeto mantém suas próprias propriedades Google, auditorias e relatórios.
@@ -21,5 +21,7 @@ A auditoria pertence ao host do site escolhido. A última concluída é separada
 Novo projeto pede nome, domínio opcional, país e idioma. Criar não coleta dados. Escolha propriedades Google em Configurações → Conexões. As configurações gerais alteram identidade e mercado. Cada projeto tem uma propriedade Search Console e uma Analytics.
 
 Arquivar preserva os dados; Restaurar recupera o projeto. O último projeto não pode ser arquivado. Cliques de pesquisa diferem de sessões GA4 e totais por consulta. Períodos diferentes não são somados.
+
+Quando o período anterior tem menos de 20 cliques, o distintivo mostra a diferença de cliques em vez de uma percentagem. Passar de 1 para 5 representa, por exemplo, +4 cliques; com números pequenos, esta alteração por si só não demonstra um crescimento forte.
 
 <!-- Sources: src/routes/_app/projects.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/project-context/; src/server/features/projects/services/ProjectOverviewService.ts; src/server/features/project-context/ -->

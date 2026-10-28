@@ -226,13 +226,13 @@ function LighthouseEstimate({ maxPages }: { maxPages: number }) {
 
 function LighthouseOptions({ launchForm }: Pick<Props, "launchForm">) {
   return (
-    <div className="space-y-2">
-      <label className="label cursor-pointer justify-start gap-2 p-0">
+    <div className="grid gap-4 sm:grid-cols-2">
+      <label className="flex min-w-0 cursor-pointer items-start gap-3 text-base-content">
         <launchForm.Field name="runLighthouse">
           {(field) => (
             <input
               type="checkbox"
-              className="toggle toggle-sm toggle-primary"
+              className="toggle toggle-sm toggle-primary mt-0.5 shrink-0"
               checked={Boolean(field.state.value)}
               onChange={(event) => field.handleChange(event.target.checked)}
             />
@@ -241,29 +241,31 @@ function LighthouseOptions({ launchForm }: Pick<Props, "launchForm">) {
         {/* `HelpTip`, not `title` on a span: a title on a non-interactive
             element is mouse-hover only, so a keyboard user never saw the
             explanation. */}
-        <span className="text-sm">
+        <span className="min-w-0 whitespace-normal text-sm">
           {t("Sayfa hızını da ölç")}{" "}
           <HelpTip label={t("Hız ölçümü")}>
             {t(
               "Google Lighthouse ile taranan her sayfanın telefonda ve bilgisayarda ne kadar hızlı açıldığını ölçer, yavaşlatan sorunları listeler.",
             )}
           </HelpTip>
+          <span className="mt-1 block text-xs text-muted">
+            {t("Daha uzun sürer.")}
+          </span>
         </span>
-        <span className="text-xs text-muted">{t("Daha uzun sürer.")}</span>
       </label>
 
-      <label className="label cursor-pointer justify-start gap-2 p-0">
+      <label className="flex min-w-0 cursor-pointer items-start gap-3 text-base-content">
         <launchForm.Field name="checkExternal">
           {(field) => (
             <input
               type="checkbox"
-              className="toggle toggle-sm toggle-primary"
+              className="toggle toggle-sm toggle-primary mt-0.5 shrink-0"
               checked={Boolean(field.state.value)}
               onChange={(event) => field.handleChange(event.target.checked)}
             />
           )}
         </launchForm.Field>
-        <span className="text-sm">
+        <span className="min-w-0 whitespace-normal text-sm">
           {t("Dış bağlantıları ve görsel boyutlarını da kontrol et")}{" "}
           <HelpTip label={t("Dış kontroller")}>
             {t(

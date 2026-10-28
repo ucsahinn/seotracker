@@ -3,7 +3,7 @@ title: Painel
 description: O painel reúne tráfego de pesquisa, próximas tarefas apoiadas em dados e limites das fontes.
 screen: Panel
 route: /p/<proje>
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 O painel reúne tráfego de pesquisa, próximas tarefas apoiadas em dados e limites das fontes. Atualizar volta a ler as fontes ativas, a configuração e o estado da instalação. Se uma leitura falhar, apresenta um aviso de atualização parcial. A hora de receção não é o último dia medido.
@@ -26,7 +26,7 @@ As consultas elegíveis têm impressões suficientes e posição arredondada ent
 
 ## Auditoria do próprio site
 
-Só são escolhidos rastreios do domínio do projeto. Uma auditoria mais recente de outro site é ignorada. O último resultado concluído e uma tentativa mais recente em curso ou falhada são identificados separadamente. Sem domínio, existe uma ligação às definições. O cartão indica ID, endereço inicial, data, verificações medidas e limite de páginas.
+Só são escolhidos rastreios do domínio do projeto. Uma auditoria mais recente de outro site é ignorada. O último resultado concluído e uma tentativa mais recente em curso ou falhada são identificados separadamente. Sem domínio, existe uma ligação às definições. O cartão indica endereço inicial, data, verificações medidas e limite de páginas.
 
 Páginas únicas afetadas, tipos de verificação e pares página–verificação são unidades diferentes. Uma página pode falhar três verificações. As notas informativas ficam fora da barra de críticos e avisos. A avaliação aplica-se apenas ao âmbito medido. Dados em falta ou limites de páginas não certificam todo o site. As comparações exigem o mesmo âmbito inicial, definições e URLs rastreados, com medições legíveis. Só as verificações medidas nos dois rastreios mostram alterações. Um rastreio reduzido ou ilegível não prova uma resolução. O âmbito desconhecido é explicado. As ligações abrem os problemas da mesma auditoria para o URL escolhido.
 
@@ -37,3 +37,9 @@ Sessões orgânicas, utilizadores ativos, interação e eventos principais vêm 
 Dados comerciais positivos num dos períodos mantêm receitas e encomendas visíveis, incluindo um zero medido num período calmo. Sem provas, a medição de vendas fica por confirmar. Uma moeda desconhecida é indicada.
 
 O painel não contém volumes de palavras-chave, backlinks ou posições dos concorrentes. Compare os dados do Google com datas e filtros idênticos.
+
+## Interpretar poucos dados
+
+Quando os cliques do período de comparação ficam abaixo do limite de análise, o resumo apresenta primeiro os cliques e as impressões reais. Com poucos dados, percentuais e médias não comprovam crescimento ou perda por si só. Uma lista de oportunidades vazia não significa que nenhuma consulta esteja na posição 4–20: também se aplicam o limite de impressões ajustado ao período e a exclusão de consultas de marca.
+
+O identificador da auditoria permanece na navegação; o cartão mostra o endereço inicial. Se as sessões forem desconhecidas, confira os avisos da fonte no relatório do Analytics, as permissões e a tag no site. A nota sobre vendas fica na explicação expansível da receita orgânica.

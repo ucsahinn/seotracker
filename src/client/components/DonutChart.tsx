@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 import * as React from "react";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
-import { Chart, ChartTooltip } from "@/client/components/Chart";
+import { Chart, ChartTooltip, DATA_SERIES } from "@/client/components/Chart";
 import { formatCount, formatPercent } from "@/client/lib/format";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { t } from "@/shared/i18n";
@@ -35,7 +35,7 @@ type DonutSegment = {
   key: string;
   label: string;
   value: number;
-  /** A CSS colour. Omitted, the segments are tints of the one accent. */
+  /** A CSS colour. Omitted, use the categorical data palette. */
   color?: string;
   /** What the group means, in plain words, under its name. */
   hint?: string;
@@ -46,15 +46,11 @@ type DonutSegment = {
   disabled?: boolean;
 };
 
-/*
- * One accent, then tints of it: the house chart rule. Six steps is the most a
- * ring should ever carry.
- */
-const TINTS = [100, 78, 60, 46, 34, 24];
+/* Keep category order stable. Named metrics should pass DATA_SERIES explicitly. */
+const CATEGORY_COLORS = Object.values(DATA_SERIES);
 
 function tint(index: number): string {
-  const share = TINTS[index] ?? TINTS[TINTS.length - 1];
-  return `color-mix(in oklab, var(--color-primary) ${share}%, var(--color-base-100))`;
+  return CATEGORY_COLORS[index % CATEGORY_COLORS.length];
 }
 
 export function DonutChart({

@@ -1125,4 +1125,8 @@ export const deAudit: Catalog = {
     "Port: {actual} (eingerichtet: {configured})",
   "seowatcher bu sefer {actual} numarasında çalışıyor çünkü {configured} başka bir program tarafından kullanılıyor (ör. eski bir Docker kopyası). Google bağlantısı {configured} için ayarlandı; o programı kapatıp seowatcher'ı yeniden başlatın.":
     "seowatcher läuft diesmal auf {actual}, weil ein anderes Programm {configured} belegt (z. B. eine alte Docker-Kopie). Die Google-Anmeldung ist für {configured} eingerichtet; schließen Sie dieses Programm und starten Sie seowatcher neu.",
+
+  "Tüm sütunları ve işlemleri görmek için tabloyu yana kaydırın.":
+    "Scrollen Sie seitlich, um alle Spalten und Aktionen zu sehen.",
+  "Hız ölçümü istendi": "Geschwindigkeitsmessung angefordert",
 };

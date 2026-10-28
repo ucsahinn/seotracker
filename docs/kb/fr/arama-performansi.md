@@ -3,7 +3,7 @@ title: Performances de recherche
 description: Vous voyez combien de fois vous apparaissez sur Google, combien de clics vous obtenez et ce qu'il faut corriger d'abord. Les chiffres viennent de Search Console. Les gains sont un plafond.
 screen: Arama performansı
 route: /p/<proje>/search-performance
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 Vous voyez ici combien de fois vous apparaissez sur Google, combien de clics vous obtenez et ce qu'il faut corriger d'abord.
@@ -163,3 +163,9 @@ Les types de recherche Discover et Google Actualités ne sont pas inclus. Il n'y
 <!-- Sources : src/routes/_project/p/$projectId/search-performance.tsx; src/client/features/search-performance/SearchPerformancePage.tsx; SearchPageParts.tsx; SearchFilters.tsx; DataTrustStrip.tsx; SearchVerdict.tsx; KpiTiles.tsx; SearchTrendChart.tsx; TrendParts.tsx; SearchNotes.tsx; LongTermTrend.tsx; TodoTab.tsx; DimensionTab.tsx; DimensionTableParts.tsx; OpportunitiesTab.tsx; StrikingTable.tsx; ChangesTab.tsx; CannibalizationSummary.tsx; CannibalizationTable.tsx; DistributionTab.tsx; PositionDistribution.tsx; DrilldownPanel.tsx; BrandTerms.tsx; SearchReportButton.tsx; src/shared/searchInsights.ts; src/shared/searchTodoCopy.ts; src/shared/searchQuickFilters.ts; src/shared/dataFreshness.ts; src/serverFunctions/searchPerformance.ts; src/server/features/gsc/cannibalization.ts -->
 
 Les liens depuis Opportunités et Suivi du classement ouvrent les détails de l’URL ou de la requête exacte aux dates source. Les totaux généraux concernent la propriété ; les valeurs de l’élément choisi sont dans le panneau de détails. Les périodes inaccessibles ne sont jamais remplacées silencieusement. Choisir une période prédéfinie retire les dates fixes. Le rapport transmet les dates affichées au serveur et ne peut pas être créé pendant l’actualisation. Les dates restent fixes ; Google peut réviser les mesures relues.
+
+## Interpréter peu de données
+
+Si les clics de la période de comparaison sont sous le seuil d’analyse, le résumé présente d’abord les clics et impressions réels. Avec peu de données, les pourcentages et moyennes ne prouvent pas à eux seuls une croissance ou une perte. Une liste d’opportunités vide ne signifie pas qu’aucune requête n’est en position 4–20 : le seuil d’impressions adapté à la période et l’exclusion des requêtes de marque s’appliquent aussi.
+
+Si la liste des tâches est vide, ouvrez les requêtes visibles. Aucun allongement n’est proposé lorsque les trois derniers mois sont déjà sélectionnés. Rien ne suppose que Google révélera plus tard les requêtes masquées.

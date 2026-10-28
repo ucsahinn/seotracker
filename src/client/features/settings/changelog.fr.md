@@ -35,7 +35,7 @@ Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.2 : a
 ### 🔔 Notifications et annonces
 
 - **Centre de notifications:** Résultats d'audit, nouvelles versions et problèmes de connexion Google sont réunis au même endroit.
-- **Son et bureau:** Activez ou désactivez séparément le son et les notifications de bureau.
+- **Son des notifications:** Activez ou désactivez le son des alertes importantes dans les paramètres.
 - **Notifications Windows:** Les mises à jour et les annonces apparaissent aussi dans la zone de notification de Windows.
 - **Annonces:** Les nouvelles s'affichent sur l'écran Annonces de l'application.
 

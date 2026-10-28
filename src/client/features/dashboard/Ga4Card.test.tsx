@@ -66,6 +66,10 @@ it("keeps readable key events when sessions are restricted, rather than calling 
   ).toBe("true");
   expect(screen.getByText(/Analytics verisi sınırlı veya eksik/)).toBeDefined();
 });
+it("explains how to investigate unknown sessions instead of showing an empty trend", () => {
+  render(<Ga4Card projectId="p1" connected />);
+  expect(screen.getByText(/Analytics raporunu açarak/)).toBeDefined();
+});
 it("retains a measured quiet commerce period and explicitly names an unknown currency", () => {
   mocks.query.mockReturnValue({
     data: report({

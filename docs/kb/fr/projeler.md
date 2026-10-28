@@ -3,7 +3,7 @@ title: Projets
 description: Projets aide à choisir un site et à compléter ses connexions. Chaque projet conserve ses propriétés Google, audits et rapports.
 screen: Projeler, Proje ayarları
 route: /projects, /p/{proje}/settings
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 Projets aide à choisir un site et à compléter ses connexions. Chaque projet conserve ses propriétés Google, audits et rapports.
@@ -21,5 +21,7 @@ L’audit appartient à l’hôte du site choisi. Le dernier audit terminé rest
 Nouveau projet demande un nom, un domaine facultatif, un pays et une langue. La création ne collecte rien. Choisissez les propriétés Google dans Paramètres → Connexions. Les paramètres généraux modifient identité et marché. Chaque projet possède une propriété Search Console et une propriété Analytics.
 
 Archiver conserve les données ; Restaurer les rend accessibles. Le dernier projet ne peut pas être archivé. Les clics de recherche diffèrent des sessions GA4 et des totaux par requête. Les périodes différentes ne sont pas additionnées.
+
+Lorsque la période précédente compte moins de 20 clics, le badge affiche la différence de clics plutôt qu’un pourcentage. Passer de 1 à 5 représente par exemple +4 clics ; avec de petits nombres, ce changement seul ne prouve pas une forte croissance.
 
 <!-- Sources: src/routes/_app/projects.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/project-context/; src/server/features/projects/services/ProjectOverviewService.ts; src/server/features/project-context/ -->

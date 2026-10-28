@@ -102,6 +102,11 @@ export function AnnouncementsPage() {
           icon={Megaphone}
           title={t("Şimdilik yeni duyuru yok")}
           description={t("Yeni bir duyuru yayımlandığında burada görünecek.")}
+          action={
+            <a href="/release-notes" className="btn btn-primary btn-sm">
+              {t("Sürüm notları")}
+            </a>
+          }
         />
       ) : (
         <ul className="space-y-3" aria-label={t("Duyurular")}>

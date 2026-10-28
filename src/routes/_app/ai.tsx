@@ -61,10 +61,9 @@ function AiPage() {
   const mcpUrl = `${origin}/mcp`;
   const [tab, setTab] = useState<"setup" | "skills">("setup");
   /*
-   * Two states, and the past tense is deliberate. The integration cards say
-   * "Bağlı" because a credential is sitting in a row; MCP here is stateless
-   * HTTP with no session, so the only honest claim is that an agent *did*
-   * reach us, and when. "Bağlandı", never "Bağlı".
+   * MCP is stateless HTTP. A recorded call, including a diagnostic client
+   * such as curl, proves tool access at that time, not a completed agent
+   * setup or a continuous connection. Name the observation directly.
    */
   const {
     connection,
@@ -107,7 +106,7 @@ function AiPage() {
               <>
                 <StatusPill
                   tone={isRecent ? "success" : "warning"}
-                  label={t("Bağlandı")}
+                  label={t("Araç çağrısı alındı")}
                 />
                 <span className="break-words text-xs text-muted">
                   {fillParts(t("{client} · son çağrı {time}"), {

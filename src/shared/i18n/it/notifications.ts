@@ -19,4 +19,20 @@ export const itNotifications: Catalog = {
     "L’autorizzazione alle notifiche è bloccata. Attivala nelle autorizzazioni del sito del browser.",
   "Bu tarayıcı masaüstü bildirimlerini desteklemiyor.":
     "Questo browser non supporta le notifiche desktop.",
+  "Bildirim ayarları": "Impostazioni delle notifiche",
+  "Bildirim geçmişi bu tarayıcıda saklanır. Denetim sonuçları, yeni sürümler ve bağlantı sorunları burada görünür.":
+    "La cronologia delle notifiche è salvata in questo browser. Qui compaiono i risultati delle verifiche, le nuove versioni e i problemi di connessione.",
+  "Henüz bildirim yok. Bir denetim tamamlandığında veya önemli bir güncelleme olduğunda burada görünür.":
+    "Non ci sono ancora notifiche. Le verifiche completate e gli aggiornamenti importanti compariranno qui.",
+  "Burada kayıtlı mülk seçimleri gösterilir; Google erişimi bu kontrolde sınanmaz. Erişimi proje bağlantılarından doğrulayın.":
+    "Qui sono mostrate le proprietà selezionate e salvate. Questo controllo non verifica l’accesso a Google. Verifica l’accesso nelle connessioni del progetto.",
+  "seçili değil": "non selezionata",
+  "Araç çağrısı alındı": "Chiamata allo strumento ricevuta",
+  "{state} · {count} sınırın kullanımı bilinmiyor":
+    "{state} · utilizzo sconosciuto per {count} limiti",
+  "Uygulama açıkken bildirimler ekranda görünür; sekme arka plandayken bildirim geçmişinde saklanır. Önemli bildirimlerin sesini buradan açıp kapatabilirsiniz.":
+    "Quando l’app è aperta, gli avvisi compaiono sullo schermo. In una scheda in secondo piano restano nella cronologia delle notifiche. Attiva o disattiva qui il suono degli avvisi importanti.",
+  "Google hesabıyla giriş seçeneği": "Accedi con un account Google",
+  "Az trafik alan sitelerde Google bazı sorguları gizler. Sayfa toplamlarında tıklama varken sorgu listesi boş veya daha küçük olabilir; bu tek başına bağlantı hatası değildir.":
+    "Nei siti con poco traffico di ricerca, Google nasconde alcune query. L’elenco può essere vuoto o mostrare meno clic dei totali delle pagine. Questo da solo non indica un problema di connessione.",
 };

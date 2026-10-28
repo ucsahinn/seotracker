@@ -796,4 +796,44 @@ export const itSearch: Catalog = {
     "Il periodo selezionato non rientra nei giorni completi leggibili in Search Console. Periodo disponibile: {start} – {end}.",
   "Search Console yalnızca {start} ve sonrasını okuyabilir. Bu arşiv dönemi bütünüyle açılamaz.":
     "Search Console può leggere solo i dati dal {start} in poi. Questo periodo di archivio non può essere aperto per intero.",
+  // Real-data dashboard and search explanations.
+  "Önceki dönemde {clicks} tıklama, {impressions} gösterim vardı.":
+    "Il periodo precedente aveva {clicks} clic e {impressions} impressioni.",
+  "Geçen yıl aynı dönemde {clicks} tıklama, {impressions} gösterim vardı.":
+    "Lo stesso periodo dello scorso anno aveva {clicks} clic e {impressions} impressioni.",
+  "Az veride yüzdeler ve ortalamalar hızla değişir; tek başına büyüme veya kayıp kanıtı değildir.":
+    "Con pochi dati, percentuali e medie cambiano rapidamente; da sole non dimostrano una crescita o una perdita.",
+  "Bu liste, ortalama sırası yuvarlanarak 4–20 aralığında olan ve bu dönemde en az {count} gösterim alan sorguları kapsar. Eşiğin altındaki sorgular Sorgular sekmesinde incelenebilir.":
+    "Questo elenco include le query con posizione media arrotondata tra 4 e 20 e almeno {count} impressioni nel periodo. Esamina le query sotto la soglia nella scheda Query.",
+  "Marka sorguları bu listeden çıkarılır.":
+    "Le query di marca sono escluse da questo elenco.",
+  "Google az aranan sorguları gizlilik için gizleyebilir. Sorgu listesi boşken de site toplamında gösterim olabilir. Toplamları ve Sayfalar sekmesini inceleyin.":
+    "Google può nascondere le query rare per tutelare la privacy. I totali del sito possono includere impressioni anche con un elenco vuoto. Esamina i totali e la scheda Pagine.",
+  "Alınan veride öneri eşiklerini geçen bir fırsat ya da düşüş bulunmadı. Bu, sitenizde yapılacak iş olmadığı anlamına gelmez. Google bazı sorguları gizlilik için gizler; görünen sorguları ve sayfaları inceleyin.":
+    "Nessuna opportunità o calo ha superato le soglie di raccomandazione nei dati ricevuti. Ciò non significa che non ci sia nulla da fare. Google nasconde alcune query per privacy; esamina quelle visibili e le pagine.",
+  "Bu bulgular hız, kullanılabilirlik veya arama görünürlüğü ile ilgili olabilir. Ayrıntılarda etkilenen sayfaları inceleyin.":
+    "Questi risultati possono riguardare velocità, usabilità o visibilità nella ricerca. Esamina le pagine interessate nei dettagli.",
+  "Oturum sayısı bilinmiyor. Analytics raporunu açarak kaynak uyarılarını inceleyin; bağlantı erişimini ve sitedeki Analytics etiketini kontrol edin.":
+    "Il numero di sessioni è sconosciuto. Apri il report Analytics per leggere gli avvisi della fonte; controlla i permessi della connessione e il tag Analytics sul sito.",
+  "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; mevcut sıraları aşağıdaki listeden inceleyin.":
+    "Nessuna query è stata osservata in entrambi i periodi. Non è ancora possibile calcolare salite e discese; consulta le posizioni attuali qui sotto.",
+  "{count} sorgunun mevcut sırası gösteriliyor. Önceki dönemle karşılaştırılabilecek sorgu yok.":
+    "Posizioni attuali di {count} query. Nessuna è confrontabile con il periodo precedente.",
+  "Tüm kayıtlı kelimeler bu dönemde gözlendi.":
+    "Tutte le parole chiave salvate sono state osservate in questo periodo.",
+  "Ek kazanç hesaplanmayan: {zero}; gösterimi yetersiz: {small}; karşılaştırılacak tıklama oranı olmayan: {curve}; tahmine uygun araması olmayan sayfa: {pairs}.":
+    "Pagine senza guadagno calcolato: {zero}; impressioni insufficienti: {small}; nessun tasso di clic confrontabile: {curve}; nessuna query utilizzabile: {pairs}.",
+  "{start} – {end} aralığında sayfa verisi alınamadı. Bu, hiç gösterim olmadığı anlamına gelmez; Arama performansında bağlı mülkü ve tarihleri kontrol edin.":
+    "Nessun dato sulle pagine ricevuto per {start} – {end}. Non significa che non ci siano state impressioni; controlla proprietà e date in Rendimento della ricerca.",
+  "Bu sayfalar için tahmin edilebilir arama yok":
+    "Nessuna query utilizzabile per stimare queste pagine",
+  "{hidden} sayfa gösterim aldı; alınan veride tahmine uygun marka dışı arama bulunamadı. Google'ın gizlediği sorgular, marka ayrımı veya veri sınırları buna yol açabilir. Bu sayfalarda kazanç sıfır değil, bilinmiyor.":
+    "{hidden} pagine hanno ricevuto impressioni, ma i dati non contengono query non di marca utilizzabili. Query nascoste, esclusioni del marchio o limiti dei dati possono spiegarlo. Il guadagno potenziale è sconosciuto, non zero.",
+  "{start} – {end} aralığında sitenizin tıklama oranını sıraya göre ölçecek kadar arama yok. Arama performansında gösterim alan sorguları inceleyin; daha fazla veri birikince tahmin yeniden hesaplanabilir.":
+    "Le query del periodo {start} – {end} non bastano a misurare il tasso di clic per posizione. Esamina le query con impressioni in Rendimento della ricerca; la stima potrà essere ricalcolata con più dati.",
+  "Kaydettiğiniz aramaların ortalama sırasını ve dönemler arasındaki değişimini inceleyin.":
+    "Esamina le posizioni medie delle query salvate e come cambiano tra i periodi.",
+  "Liste güncellendi: {date}": "Elenco aggiornato: {date}",
+  "{count} kontrolde kritik sorun": "Problemi critici in {count} controlli",
+  "{count} kontrolde uyarı": "Avvisi in {count} controlli",
 };

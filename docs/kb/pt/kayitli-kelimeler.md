@@ -31,3 +31,5 @@ CSV e Planilhas usam a mesma população filtrada. Palavra, intenção, etiqueta
 A seleção vale apenas para esta página. Filtros ou atualizações pendentes bloqueiam ações em linhas antigas. Remover exige confirmação. A ordem inicial é a data de inclusão; posição, movimento, impressões e palavra também podem ordenar. A ordem de quedas significativas orienta a investigação sem estabelecer uma causa.
 
 **Observações diárias.** Solicite o histórico diário nos detalhes do arquivo. Datas e correspondência são as mesmas. Dias ausentes ficam como lacunas; há navegação por teclado e uma lista textual de valores diários.
+
+Sem palavras-chave comparáveis, o cartão de movimentos mostra Sem comparação em vez de zero. Se todas as palavras-chave foram observadas, o cartão Posição desconhecida não avisa sobre observações em falta. Os botões dos cartões de movimentos e posições desconhecidas ficam desativados sem resultados correspondentes.

@@ -158,168 +158,175 @@ export function GoogleOAuthClientSection() {
         <p className="text-xs font-medium text-muted">{credentialNote}</p>
       ) : null}
 
-      <p className="text-sm text-muted">
-        {t(
-          "Uygulama Google'a sizin adınıza bağlanır. Bunun için Google'dan aldığınız erişim anahtarını (OAuth client ID) buraya girin. Gizli kısmı şifrelenir ve bir daha tarayıcıya gönderilmez. Search Console ve Analytics aynı anahtarı kullanır.",
-        )}
-      </p>
-
-      <OAuthSetupInstructions stored={stored} redirectUris={redirectUris} />
-
-      {statusQuery.isPending ? <Skeleton variant="form" rows={2} /> : null}
-
-      {statusQuery.isError ? (
-        <p role="alert" className="text-sm text-[var(--ink-error)]">
-          {t("Google erişim anahtarının durumu okunamadı.")}{" "}
-          <button
-            type="button"
-            className="link"
-            onClick={() => void statusQuery.refetch()}
-          >
-            {t("Tekrar dene")}
-          </button>
+      <details open={!serviceAccountQuery.data?.clientEmail || editing}>
+        <summary className="min-h-11 cursor-pointer py-3 text-sm font-medium">
+          {t("Google hesabıyla giriş seçeneği")}
+        </summary>
+        <p className="text-sm text-muted">
+          {t(
+            "Uygulama Google'a sizin adınıza bağlanır. Bunun için Google'dan aldığınız erişim anahtarını (OAuth client ID) buraya girin. Gizli kısmı şifrelenir ve bir daha tarayıcıya gönderilmez. Search Console ve Analytics aynı anahtarı kullanır.",
+          )}
         </p>
-      ) : null}
 
-      {fromEnvironment ? (
-        <div className="alert alert-info items-start text-sm">
-          <div className="space-y-1">
-            <p className="font-medium">{t("Ortam değişkenlerinden geliyor")}</p>
-            <p className="text-muted">
-              {fillParts(
-                t(
-                  "{id} ve {secret} ayarlanmış. Buraya bir değer kaydederseniz o kullanılır.",
-                ),
-                {
-                  id: <code>GOOGLE_CLIENT_ID</code>,
-                  secret: <code>GOOGLE_CLIENT_SECRET</code>,
-                },
-              )}
-            </p>
-          </div>
-        </div>
-      ) : null}
+        <OAuthSetupInstructions stored={stored} redirectUris={redirectUris} />
 
-      {stored && !editing ? (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-box border border-base-300 p-3">
-          <div className="flex min-w-0 items-center gap-2">
-            <CheckCircle2 className="size-4 shrink-0 text-success" />
-            <span
-              className="truncate font-mono text-sm"
-              title={status?.clientId ?? undefined}
-            >
-              {status?.clientId}
-            </span>
-          </div>
-          <div className="flex gap-2">
+        {statusQuery.isPending ? <Skeleton variant="form" rows={2} /> : null}
+
+        {statusQuery.isError ? (
+          <p role="alert" className="text-sm text-[var(--ink-error)]">
+            {t("Google erişim anahtarının durumu okunamadı.")}{" "}
             <button
               type="button"
-              className="btn btn-sm"
-              onClick={() => {
-                setClientId(status?.clientId ?? "");
-                setEditing(true);
-              }}
+              className="link"
+              onClick={() => void statusQuery.refetch()}
             >
-              {t("Değiştir")}
+              {t("Tekrar dene")}
             </button>
-            <button
-              type="button"
-              className="btn btn-sm btn-ghost text-[var(--ink-error)]"
-              disabled={clear.isPending}
-              onClick={() => setConfirmingClear(true)}
-            >
-              {t("Sil")}
-            </button>
-          </div>
-        </div>
-      ) : null}
+          </p>
+        ) : null}
 
-      {showForm ? (
-        <form
-          className="space-y-5"
-          onSubmit={(event) => {
-            event.preventDefault();
-            if (canSave) save.mutate();
-          }}
-        >
-          <label className="block w-full space-y-1.5">
-            <span className="block text-sm font-medium">
-              {t("İstemci kimliği")}
-            </span>
-            <span className="block text-xs text-muted">
-              {t(
-                "Google Cloud Console'da APIs & Services → Credentials listesinde, OAuth 2.0 Client IDs altında görünür. {suffix} ile biter, gizli değildir.",
-                { suffix: CLIENT_ID_SUFFIX },
-              )}
-            </span>
-            <input
-              type="text"
-              autoComplete="off"
-              spellCheck={false}
-              className="input input-bordered w-full font-mono text-sm"
-              placeholder="1234567890-abc.apps.googleusercontent.com"
-              value={clientId}
-              aria-invalid={idTouched && idProblem !== null}
-              aria-describedby={
-                idTouched && idProblem ? "client-id-problem" : undefined
-              }
-              onChange={(event) => setClientId(event.target.value)}
-              onBlur={() => setIdTouched(true)}
-            />
-            {idTouched && idProblem ? (
+        {fromEnvironment ? (
+          <div className="alert alert-info items-start text-sm">
+            <div className="space-y-1">
+              <p className="font-medium">
+                {t("Ortam değişkenlerinden geliyor")}
+              </p>
+              <p className="text-muted">
+                {fillParts(
+                  t(
+                    "{id} ve {secret} ayarlanmış. Buraya bir değer kaydederseniz o kullanılır.",
+                  ),
+                  {
+                    id: <code>GOOGLE_CLIENT_ID</code>,
+                    secret: <code>GOOGLE_CLIENT_SECRET</code>,
+                  },
+                )}
+              </p>
+            </div>
+          </div>
+        ) : null}
+
+        {stored && !editing ? (
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-box border border-base-300 p-3">
+            <div className="flex min-w-0 items-center gap-2">
+              <CheckCircle2 className="size-4 shrink-0 text-success" />
               <span
-                id="client-id-problem"
-                role="alert"
-                className="mt-1 block text-xs text-[var(--ink-error)]"
+                className="truncate font-mono text-sm"
+                title={status?.clientId ?? undefined}
               >
-                {idProblem}
+                {status?.clientId}
               </span>
-            ) : null}
-          </label>
-
-          <label className="block w-full space-y-1.5">
-            <span className="block text-sm font-medium">
-              {t("Gizli anahtar")}
-            </span>
-            <span className="block text-xs text-muted">
-              {t(
-                "Aynı OAuth client'ı açınca sağdaki panelde. Google bunu yalnızca oluşturduğunuz anda tam gösterir. Kaçırdıysanız yeni bir gizli anahtar üretin. Burada sunucuda şifrelenir, bir daha tarayıcıya gönderilmez.",
-              )}
-            </span>
-            <input
-              type="password"
-              autoComplete="off"
-              spellCheck={false}
-              className="input input-bordered w-full font-mono text-sm"
-              placeholder="GOCSPX-..."
-              value={clientSecret}
-              onChange={(event) => setClientSecret(event.target.value)}
-            />
-          </label>
-
-          <div className="flex gap-2">
-            <button
-              type="submit"
-              className="btn btn-sm btn-primary"
-              disabled={!canSave || save.isPending}
-            >
-              {t("Kaydet")}
-            </button>
-            {editing ? (
+            </div>
+            <div className="flex gap-2">
               <button
                 type="button"
-                className="btn btn-sm btn-ghost"
+                className="btn btn-sm"
                 onClick={() => {
-                  setEditing(false);
-                  setClientSecret("");
+                  setClientId(status?.clientId ?? "");
+                  setEditing(true);
                 }}
               >
-                {t("Vazgeç")}
+                {t("Değiştir")}
               </button>
-            ) : null}
+              <button
+                type="button"
+                className="btn btn-sm btn-ghost text-[var(--ink-error)]"
+                disabled={clear.isPending}
+                onClick={() => setConfirmingClear(true)}
+              >
+                {t("Sil")}
+              </button>
+            </div>
           </div>
-        </form>
-      ) : null}
+        ) : null}
+
+        {showForm ? (
+          <form
+            className="space-y-5"
+            onSubmit={(event) => {
+              event.preventDefault();
+              if (canSave) save.mutate();
+            }}
+          >
+            <label className="block w-full space-y-1.5">
+              <span className="block text-sm font-medium">
+                {t("İstemci kimliği")}
+              </span>
+              <span className="block text-xs text-muted">
+                {t(
+                  "Google Cloud Console'da APIs & Services → Credentials listesinde, OAuth 2.0 Client IDs altında görünür. {suffix} ile biter, gizli değildir.",
+                  { suffix: CLIENT_ID_SUFFIX },
+                )}
+              </span>
+              <input
+                type="text"
+                autoComplete="off"
+                spellCheck={false}
+                className="input input-bordered w-full font-mono text-sm"
+                placeholder="1234567890-abc.apps.googleusercontent.com"
+                value={clientId}
+                aria-invalid={idTouched && idProblem !== null}
+                aria-describedby={
+                  idTouched && idProblem ? "client-id-problem" : undefined
+                }
+                onChange={(event) => setClientId(event.target.value)}
+                onBlur={() => setIdTouched(true)}
+              />
+              {idTouched && idProblem ? (
+                <span
+                  id="client-id-problem"
+                  role="alert"
+                  className="mt-1 block text-xs text-[var(--ink-error)]"
+                >
+                  {idProblem}
+                </span>
+              ) : null}
+            </label>
+
+            <label className="block w-full space-y-1.5">
+              <span className="block text-sm font-medium">
+                {t("Gizli anahtar")}
+              </span>
+              <span className="block text-xs text-muted">
+                {t(
+                  "Aynı OAuth client'ı açınca sağdaki panelde. Google bunu yalnızca oluşturduğunuz anda tam gösterir. Kaçırdıysanız yeni bir gizli anahtar üretin. Burada sunucuda şifrelenir, bir daha tarayıcıya gönderilmez.",
+                )}
+              </span>
+              <input
+                type="password"
+                autoComplete="off"
+                spellCheck={false}
+                className="input input-bordered w-full font-mono text-sm"
+                placeholder="GOCSPX-..."
+                value={clientSecret}
+                onChange={(event) => setClientSecret(event.target.value)}
+              />
+            </label>
+
+            <div className="flex gap-2">
+              <button
+                type="submit"
+                className="btn btn-sm btn-primary"
+                disabled={!canSave || save.isPending}
+              >
+                {t("Kaydet")}
+              </button>
+              {editing ? (
+                <button
+                  type="button"
+                  className="btn btn-sm btn-ghost"
+                  onClick={() => {
+                    setEditing(false);
+                    setClientSecret("");
+                  }}
+                >
+                  {t("Vazgeç")}
+                </button>
+              ) : null}
+            </div>
+          </form>
+        ) : null}
+      </details>
 
       {confirmingClear ? (
         <ConfirmDeleteModal

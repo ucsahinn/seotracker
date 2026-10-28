@@ -3,7 +3,7 @@ title: Audit du site
 description: L'application parcourt votre site page par page, applique 202 règles et classe les problèmes par importance. Le score dit aussi quelle part a pu être mesurée. Un audit arrêté en route n'a pas de score.
 screen: Site denetimi
 route: /p/<proje>/audit
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 Cet écran trouve les problèmes de votre site et vous dit comment les corriger.
@@ -135,5 +135,7 @@ Le texte brut de l'erreur n'arrive pas à l'écran. Il reste dans le package de 
 ## Limites
 
 L'explorateur peut ne pas voir le contenu que JavaScript (le code qui s'exécute dans la page) ajoute plus tard. Un audit explore 10 000 pages au plus. La mesure de vitesse est la mesure de laboratoire de Google, pas des données de vrais visiteurs. L'audit ne change rien sur votre site. Les corrections, c'est vous ou votre assistant qui les faites.
+
+Dans les audits précédents, **Pages explorées** correspond aux adresses réellement explorées, même pour un audit échoué, et non à la limite initiale. Les colonnes Critique et Avertissement donnent le nombre total de problèmes. **Mesure de vitesse demandée** signifie que cette option était activée au démarrage ; cela ne prouve pas que la mesure a réussi. Sur téléphone, faites défiler le tableau horizontalement pour voir les autres colonnes et actions.
 
 <!-- Sources : src/client/features/audit/launch/LaunchView.tsx; LaunchFormCard.tsx; useLaunchController.ts; AuditHistorySection.tsx; AuditSiteFilter.tsx; ProgressCard.tsx; src/client/features/audit/results/ResultsView.tsx; ResultsHeader.tsx; ScoreOverview.tsx; ScoreGauge.tsx; WithheldScore.tsx; scoreWords.ts; auditFailureCopy.ts; ChecksView.tsx; TodoView.tsx; IssuesView.tsx; QuickFilters.tsx; ForeignPropertyNotice.tsx; DownloadReportButton.tsx; src/routes/_project/p/$projectId/audit/index.tsx; src/shared/auditStanding.ts; src/shared/auditScore.ts; src/shared/auditCategory.ts; src/shared/audit-limits.ts; src/server/lib/audit/crawl-throttle.ts -->

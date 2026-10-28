@@ -3,7 +3,7 @@ title: Rendimento della ricerca
 description: Si vede quante volte si compare su Google, quanti clic si ottengono e cosa correggere per primo. I numeri arrivano da Search Console. I guadagni sono un limite superiore.
 screen: Arama performansı
 route: /p/<proje>/search-performance
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 Qui si vede quante volte si compare su Google, quanti clic si ottengono e cosa correggere per primo.
@@ -163,3 +163,9 @@ I tipi di ricerca Discover e Google Notizie non sono inclusi. Non ci sono volume
 <!-- Fonti: src/routes/_project/p/$projectId/search-performance.tsx; src/client/features/search-performance/SearchPerformancePage.tsx; SearchPageParts.tsx; SearchFilters.tsx; DataTrustStrip.tsx; SearchVerdict.tsx; KpiTiles.tsx; SearchTrendChart.tsx; TrendParts.tsx; SearchNotes.tsx; LongTermTrend.tsx; TodoTab.tsx; DimensionTab.tsx; DimensionTableParts.tsx; OpportunitiesTab.tsx; StrikingTable.tsx; ChangesTab.tsx; CannibalizationSummary.tsx; CannibalizationTable.tsx; DistributionTab.tsx; PositionDistribution.tsx; DrilldownPanel.tsx; BrandTerms.tsx; SearchReportButton.tsx; src/shared/searchInsights.ts; src/shared/searchTodoCopy.ts; src/shared/searchQuickFilters.ts; src/shared/dataFreshness.ts; src/serverFunctions/searchPerformance.ts; src/server/features/gsc/cannibalization.ts -->
 
 I collegamenti da Opportunità e Monitoraggio posizioni aprono i dettagli dell’URL o della query esatta nelle date originali. I totali generali restano relativi alla proprietà; i valori dell’elemento scelto sono nel pannello dei dettagli. I periodi non leggibili non vengono sostituiti in silenzio. Scegliere un periodo predefinito rimuove le date fissate. Il rapporto invia al server le date visualizzate ed è disabilitato durante l’aggiornamento. Le date restano fisse; Google può correggere le misurazioni rilette.
+
+## Interpretare pochi dati
+
+Se i clic del periodo di confronto sono sotto la soglia di analisi, il riepilogo presenta prima clic e impressioni reali. Con pochi dati, percentuali e medie da sole non dimostrano una crescita o una perdita. Un elenco di opportunità vuoto non significa che nessuna query sia in posizione 4–20: valgono anche la soglia di impressioni adattata al periodo e l’esclusione delle query di marca.
+
+Se l’elenco delle attività è vuoto, apri le query visibili. Non viene suggerito un periodo più lungo se sono già selezionati gli ultimi tre mesi. Non si presume che Google riveli in seguito le query nascoste.

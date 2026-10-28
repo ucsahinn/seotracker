@@ -46,7 +46,8 @@ export function ProjectFacts({
         ? { text: t("Değişmedi"), improved: false, neutral: true as const }
         : countDelta({
             change: clicks.clicks - prior,
-            relative: fractionalChange(clicks.clicks, prior),
+            relative:
+              prior < 20 ? null : fractionalChange(clicks.clicks, prior),
           })
       : null;
   const unknown =
@@ -163,7 +164,7 @@ export function ProjectFacts({
           snapshot ? (
             <>
               <p>
-                {t("Son tamamlanan bu-site denetimi")}:{" "}
+                {t("Bu sitenin son tamamlanan denetimi")}:{" "}
                 <span className="break-all">{snapshot.siteKey}</span>
               </p>
               <p>

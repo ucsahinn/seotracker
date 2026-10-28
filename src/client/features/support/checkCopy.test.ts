@@ -1,7 +1,25 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
+import { setLocale } from "@/shared/i18n";
 import { describeCheck } from "./checkCopy";
 
+afterEach(() => setLocale("tr"));
+
 describe("describeCheck", () => {
+  it("does not invent sign-in protection from a localized local-only check", () => {
+    setLocale("en");
+    const result = describeCheck(
+      "auth",
+      {
+        status: "ok",
+        detail: "No sign-in: this app is used only on this computer.",
+      },
+      null,
+      "windows",
+      "local_noauth",
+    );
+    expect(result.text).toContain("No sign-in");
+    expect(result.text).not.toContain("protection is set up");
+  });
   it("does not report an unread Google configuration as successful", () => {
     const result = describeCheck("gsc", { status: "ok" }, null);
     expect(result.status).toBe("warn");

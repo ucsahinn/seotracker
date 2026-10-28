@@ -29,6 +29,29 @@ const emptyContext = {
 };
 
 describe("ProjectContextPage", () => {
+  it("lets the section menu reach key pages and competitors, not only prose", async () => {
+    getProjectContext.mockResolvedValue(emptyContext);
+    const client = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+    render(
+      <QueryClientProvider client={client}>
+        <ProjectContextPage projectId="navigation" projectName="Acme" />
+      </QueryClientProvider>,
+    );
+    const menu = await screen.findByRole("combobox", { name: "Bölüme git" });
+    expect(
+      screen.getByRole("option", { name: "Önemli sayfalar" }),
+    ).toHaveProperty("value", "context-key-pages");
+    expect(screen.getByRole("option", { name: "Rakipler" })).toHaveProperty(
+      "value",
+      "context-competitors",
+    );
+    const target = document.getElementById("context-key-pages")!;
+    const focus = vi.spyOn(target, "focus");
+    fireEvent.change(menu, { target: { value: "context-key-pages" } });
+    expect(focus).toHaveBeenCalled();
+  });
   it("explains atomic conflicts without exposing the storage marker", () => {
     render(
       <ContextSaveError

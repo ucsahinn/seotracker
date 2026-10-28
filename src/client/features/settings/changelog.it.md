@@ -35,7 +35,7 @@ Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.2: verifica del s
 ### 🔔 Notifiche e annunci
 
 - **Centro notifiche:** Risultati delle verifiche, nuove versioni e problemi di connessione Google sono raccolti in un unico posto.
-- **Suono e desktop:** Attiva o disattiva separatamente il suono e le notifiche desktop.
+- **Suono delle notifiche:** Attiva o disattiva il suono degli avvisi importanti nelle Impostazioni.
 - **Notifiche di Windows:** Aggiornamenti e annunci compaiono anche nell'area notifiche di Windows.
 - **Annunci:** Le novità compaiono nella schermata Annunci dell'app.
 

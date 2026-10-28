@@ -1081,4 +1081,6 @@ export const enApp: Catalog = {
   "{name} · {domain}. Değişiklikler yalnızca bu projeye uygulanır.":
     "{name} · {domain}. Changes apply only to this project.",
   "Uygulama raporu, tür kaydedilmemiş": "Application report, type not recorded",
+
+  "Bu sitenin son tamamlanan denetimi": "Last completed audit for this site",
 };

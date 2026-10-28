@@ -797,4 +797,45 @@ export const frSearch: Catalog = {
     "La période sélectionnée dépasse les jours complets accessibles dans Search Console. Période disponible : {start} – {end}.",
   "Search Console yalnızca {start} ve sonrasını okuyabilir. Bu arşiv dönemi bütünüyle açılamaz.":
     "Search Console ne peut lire les données qu’à partir du {start}. Cette période d’archive ne peut pas être ouverte intégralement.",
+  // Real-data dashboard and search explanations.
+  "Önceki dönemde {clicks} tıklama, {impressions} gösterim vardı.":
+    "La période précédente comptait {clicks} clics et {impressions} impressions.",
+  "Geçen yıl aynı dönemde {clicks} tıklama, {impressions} gösterim vardı.":
+    "La même période l’an dernier comptait {clicks} clics et {impressions} impressions.",
+  "Az veride yüzdeler ve ortalamalar hızla değişir; tek başına büyüme veya kayıp kanıtı değildir.":
+    "Avec peu de données, les pourcentages et moyennes varient vite ; ils ne prouvent pas à eux seuls une croissance ou une perte.",
+  "Bu liste, ortalama sırası yuvarlanarak 4–20 aralığında olan ve bu dönemde en az {count} gösterim alan sorguları kapsar. Eşiğin altındaki sorgular Sorgular sekmesinde incelenebilir.":
+    "Cette liste comprend les requêtes dont la position moyenne arrondie est de 4 à 20 et qui ont reçu au moins {count} impressions sur la période. Consultez les requêtes sous le seuil dans l’onglet Requêtes.",
+  "Marka sorguları bu listeden çıkarılır.":
+    "Les requêtes de marque sont exclues de cette liste.",
+  "Google az aranan sorguları gizlilik için gizleyebilir. Sorgu listesi boşken de site toplamında gösterim olabilir. Toplamları ve Sayfalar sekmesini inceleyin.":
+    "Google peut masquer les requêtes rares pour protéger la confidentialité. Les totaux du site peuvent contenir des impressions même si la liste est vide. Consultez les totaux et l’onglet Pages.",
+  "Alınan veride öneri eşiklerini geçen bir fırsat ya da düşüş bulunmadı. Bu, sitenizde yapılacak iş olmadığı anlamına gelmez. Google bazı sorguları gizlilik için gizler; görünen sorguları ve sayfaları inceleyin.":
+    "Aucune opportunité ni baisse n’a atteint les seuils de recommandation dans les données reçues. Cela ne signifie pas qu’il n’y a rien à faire. Google masque certaines requêtes pour protéger la confidentialité ; examinez les requêtes et pages visibles.",
+  "Bu bulgular hız, kullanılabilirlik veya arama görünürlüğü ile ilgili olabilir. Ayrıntılarda etkilenen sayfaları inceleyin.":
+    "Ces constats peuvent concerner la vitesse, l’ergonomie ou la visibilité dans les recherches. Consultez les pages concernées dans les détails.",
+  "Oturum sayısı bilinmiyor. Analytics raporunu açarak kaynak uyarılarını inceleyin; bağlantı erişimini ve sitedeki Analytics etiketini kontrol edin.":
+    "Le nombre de sessions est inconnu. Ouvrez le rapport Analytics pour examiner les avertissements de la source ; vérifiez les droits d’accès et la balise Analytics sur le site.",
+  "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; mevcut sıraları aşağıdaki listeden inceleyin.":
+    "Aucune requête n’a été observée sur les deux périodes. Les hausses et baisses ne peuvent pas encore être calculées ; consultez les positions actuelles ci-dessous.",
+  "{count} sorgunun mevcut sırası gösteriliyor. Önceki dönemle karşılaştırılabilecek sorgu yok.":
+    "Positions actuelles de {count} requêtes. Aucune ne peut être comparée à la période précédente.",
+  "Tüm kayıtlı kelimeler bu dönemde gözlendi.":
+    "Tous les mots-clés enregistrés ont été observés sur cette période.",
+  "Ek kazanç hesaplanmayan: {zero}; gösterimi yetersiz: {small}; karşılaştırılacak tıklama oranı olmayan: {curve}; tahmine uygun araması olmayan sayfa: {pairs}.":
+    "Pages sans gain calculé : {zero} ; impressions insuffisantes : {small} ; aucun taux de clics comparable : {curve} ; aucune requête utilisable : {pairs}.",
+  "{start} – {end} aralığında sayfa verisi alınamadı. Bu, hiç gösterim olmadığı anlamına gelmez; Arama performansında bağlı mülkü ve tarihleri kontrol edin.":
+    "Aucune donnée de page reçue pour {start} – {end}. Cela ne signifie pas une absence d’impressions ; vérifiez la propriété et les dates dans Performances de recherche.",
+  "Bu sayfalar için tahmin edilebilir arama yok":
+    "Aucune requête utilisable pour estimer ces pages",
+  "{hidden} sayfa gösterim aldı; alınan veride tahmine uygun marka dışı arama bulunamadı. Google'ın gizlediği sorgular, marka ayrımı veya veri sınırları buna yol açabilir. Bu sayfalarda kazanç sıfır değil, bilinmiyor.":
+    "{hidden} pages ont reçu des impressions, mais aucune requête hors marque utilisable ne figure dans les données reçues. Les requêtes masquées, l’exclusion de la marque ou les limites de données peuvent l’expliquer. Le gain potentiel est inconnu, pas nul.",
+  "{start} – {end} aralığında sitenizin tıklama oranını sıraya göre ölçecek kadar arama yok. Arama performansında gösterim alan sorguları inceleyin; daha fazla veri birikince tahmin yeniden hesaplanabilir.":
+    "Il y a trop peu de requêtes du {start} au {end} pour mesurer le taux de clics par position. Consultez les requêtes avec impressions dans Performances de recherche ; l’estimation pourra être recalculée avec davantage de données.",
+  "Kaydettiğiniz aramaların ortalama sırasını ve dönemler arasındaki değişimini inceleyin.":
+    "Consultez les positions moyennes de vos requêtes enregistrées et leur évolution entre les périodes.",
+  "Liste güncellendi: {date}": "Liste mise à jour : {date}",
+  "{count} kontrolde kritik sorun":
+    "Problèmes critiques dans {count} contrôles",
+  "{count} kontrolde uyarı": "Avertissements dans {count} contrôles",
 };

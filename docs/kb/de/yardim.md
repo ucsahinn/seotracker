@@ -56,4 +56,6 @@ Dieser Bildschirm prüft nur die Installation selbst. Ein Problem auf Ihrer Webs
 
 Die [Übersicht](/docs/panel/) fasst Einrichtung und Daten des ausgewählten Projekts zusammen. [Chancen](/docs/firsatlar/) hilft bei der Auswahl von Aufgaben anhand von Search-Console-Daten. Die [Ranking-Verfolgung](/docs/siralama-takibi/) zeigt die durchschnittlichen Positionen gespeicherter Suchbegriffe in Google-Daten, keine Live-Suchergebnisse. Bei fehlenden Daten prüfen Sie Projektverbindungen, Zeitraum und Hinweise zur Datenabdeckung. Der Installationsstatus bestätigt diese Berichte nicht.
 
+Bei Websites mit wenig Suchverkehr blendet Google manche Suchanfragen aus. Die Liste kann leer sein oder weniger Klicks als die Seitensummen zeigen. Das allein bedeutet keinen Verbindungsfehler.
+
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/quotas/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->

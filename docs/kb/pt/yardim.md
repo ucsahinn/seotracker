@@ -56,4 +56,6 @@ A tela confere apenas a própria instalação. Para encontrar um problema no seu
 
 O [Painel](/docs/panel/) resume a configuração e os dados do projeto selecionado. [Oportunidades](/docs/firsatlar/) ajuda a escolher ações a partir dos dados do Search Console. O [Acompanhamento de posições](/docs/siralama-takibi/) acompanha a posição média das palavras-chave salvas nos dados Google, não resultados de busca ao vivo. Se faltarem dados, confira as conexões do projeto, o período e os avisos de cobertura. O estado da instalação não valida esses relatórios.
 
+Em sites com pouco tráfego de pesquisa, o Google oculta algumas consultas. A lista pode estar vazia ou mostrar menos cliques que os totais por página. Isso, por si só, não indica falha na conexão.
+
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/quotas/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->

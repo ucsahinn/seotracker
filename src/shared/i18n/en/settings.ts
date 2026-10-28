@@ -569,4 +569,20 @@ export const enSettings: Catalog = {
     "No issues found in installation checks.",
   "{count} kurulum kontrolü dikkat istiyor.":
     "{count} installation checks need attention.",
+  "Bildirim ayarları": "Notification settings",
+  "Bildirim geçmişi bu tarayıcıda saklanır. Denetim sonuçları, yeni sürümler ve bağlantı sorunları burada görünür.":
+    "Notification history is saved in this browser. Audit results, new versions and connection problems appear here.",
+  "Henüz bildirim yok. Bir denetim tamamlandığında veya önemli bir güncelleme olduğunda burada görünür.":
+    "No notifications yet. Completed audits and important updates will appear here.",
+  "Burada kayıtlı mülk seçimleri gösterilir; Google erişimi bu kontrolde sınanmaz. Erişimi proje bağlantılarından doğrulayın.":
+    "These are saved property selections; this check does not test Google access. Verify access in project connections.",
+  "seçili değil": "not selected",
+  "Araç çağrısı alındı": "Tool call received",
+  "{state} · {count} sınırın kullanımı bilinmiyor":
+    "{state} · usage unknown for {count} limits",
+  "Uygulama açıkken bildirimler ekranda görünür; sekme arka plandayken bildirim geçmişinde saklanır. Önemli bildirimlerin sesini buradan açıp kapatabilirsiniz.":
+    "When the app is open, alerts appear on screen. In a background tab, they stay in notification history. Turn sounds for important alerts on or off here.",
+  "Google hesabıyla giriş seçeneği": "Sign in with a Google account",
+  "Az trafik alan sitelerde Google bazı sorguları gizler. Sayfa toplamlarında tıklama varken sorgu listesi boş veya daha küçük olabilir; bu tek başına bağlantı hatası değildir.":
+    "On sites with little search traffic, Google hides some queries. The query list can be empty or show fewer clicks than the page totals; this alone does not mean the connection is broken.",
 };

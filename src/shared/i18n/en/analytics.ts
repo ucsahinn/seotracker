@@ -839,4 +839,13 @@ export const enAnalytics: Catalog = {
   "Mobil anlık bildirim": "Mobile Push Notifications",
   Atanmamış: "Unassigned",
   "Geri dönen": "Returning",
+  "Dönemi ve Analytics mülkündeki veri toplamayı kontrol edin; bağlantı kurmak geçmiş veriyi değiştirmez.":
+    "Check the date range and data collection in the Analytics property; connecting it does not change historical data.",
+  "Az sayıda oturumda tek bir ziyaret bile oranları belirgin değiştirir. Yüzde değişimini tek başına başarı veya kayıp saymayın.":
+    "With few sessions, a single visit can change rates substantially. Do not treat percentage changes alone as success or loss.",
+  "Anahtar olay kaydedilmedi. Form gönderme gibi hedefler tanımlı değilse bu sayı sıfır kalır; ölçüm durumunu kontrol edin.":
+    "No key events were recorded. If goals such as form submissions are not configured, this count stays at zero; check measurement health.",
+
+  "Bu ekran Google’dan yeni veri istemez. Buradaki okuma bilgisi kayıtlı geçmişe aittir; güncel veriyi raporda görebilirsiniz.":
+    "This screen does not request new data from Google. Read information shown here comes from saved history; open the report for current data.",
 };

@@ -30,7 +30,7 @@ export function Sparkline({
   return (
     <svg
       viewBox="0 0 120 28"
-      className="mt-1 h-7 w-full text-primary"
+      className="mt-1 h-7 w-full text-[var(--metric-color)]"
       aria-hidden="true"
       focusable="false"
     >

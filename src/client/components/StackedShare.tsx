@@ -36,7 +36,7 @@ export function StackedShare({
       <div
         role="img"
         aria-label={summary}
-        className="flex h-2.5 overflow-hidden rounded-full bg-base-200"
+        className="data-bar-enter flex h-2.5 overflow-hidden rounded-full bg-base-200"
       >
         {segments
           .filter((segment) => segment.value > 0)

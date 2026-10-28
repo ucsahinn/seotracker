@@ -33,3 +33,5 @@ Le posizioni medie sono ponderate per impressioni. La variazione è media preced
 I giorni osservati sono sempre visibili: 10 giorni su 90 non significano copertura completa. I punti giornalieri seguono il calendario reale e le lacune interrompono la linea. Frecce, Home ed End esplorano le date. Espandi i valori giornalieri per leggerli. Le settimane interamente assenti restano vuote; quelle ai margini possono essere parziali.
 
 Il collegamento a Rendimento di ricerca conserva la query esatta e le date dell’archivio. Per periodi oltre la conservazione di Google, viene indicata la prima data leggibile prima della navigazione. Non sono disponibili ranking dei concorrenti, volume a pagamento o previsioni di traffico.
+
+Se nessuna query è stata osservata in entrambi i periodi, non è possibile calcolare salite e discese. La scheda dei movimenti lo spiega senza presentare un movimento zero misurato. L’espansione è disponibile solo con più di tre movimenti.

@@ -3,7 +3,7 @@ title: Auditoria do site
 description: O aplicativo percorre o seu site página por página, confere 202 regras e ordena os problemas por importância. A pontuação também diz quanto pôde ser medido. Uma auditoria interrompida não recebe pontuação.
 screen: Site denetimi
 route: /p/<proje>/audit
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 Esta página explica como encontrar os problemas do seu site e corrigi-los.
@@ -135,5 +135,7 @@ O texto bruto do erro não chega à tela. Ele fica no pacote de diagnóstico.
 ## Limites
 
 O rastreador pode não ver conteúdo que o JavaScript (código que roda na página) acrescenta depois. Uma auditoria rastreia no máximo 10.000 páginas. A medição de velocidade é a medição de laboratório do Google, não dados de visitantes reais. A auditoria não muda nada no seu site. As correções são feitas por você ou pelo seu assistente.
+
+Nas auditorias anteriores, **Páginas rastreadas** indica os endereços efetivamente rastreados, incluindo auditorias falhadas, e não o limite inicial. As colunas Crítico e Aviso mostram o total de problemas. **Medição de velocidade pedida** significa que a opção estava ativa no início; não prova que a medição tenha sido concluída com êxito. No telemóvel, desloque a tabela na horizontal para ver as restantes colunas e ações.
 
 <!-- Fontes: src/client/features/audit/launch/LaunchView.tsx; LaunchFormCard.tsx; useLaunchController.ts; AuditHistorySection.tsx; AuditSiteFilter.tsx; ProgressCard.tsx; src/client/features/audit/results/ResultsView.tsx; ResultsHeader.tsx; ScoreOverview.tsx; ScoreGauge.tsx; WithheldScore.tsx; scoreWords.ts; auditFailureCopy.ts; ChecksView.tsx; TodoView.tsx; IssuesView.tsx; QuickFilters.tsx; ForeignPropertyNotice.tsx; DownloadReportButton.tsx; src/routes/_project/p/$projectId/audit/index.tsx; src/shared/auditStanding.ts; src/shared/auditScore.ts; src/shared/auditCategory.ts; src/shared/audit-limits.ts; src/server/lib/audit/crawl-throttle.ts -->

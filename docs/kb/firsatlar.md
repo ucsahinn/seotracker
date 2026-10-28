@@ -35,3 +35,5 @@ Analytics yalnızca ölçülmüş organik oturumları, anahtar olayları ve dön
 CSV veya E-Tablolar aktarımı yalnızca görünen filtreli satırları içerir. Ölçülen tarihler, 30 günlük üst sınır birimi, model, mülk, marka ayrımı, kaynak sınırları ve Analytics adres grubu sütunlara eklenir. E-Tablolar'a yazma yalnızca siz menüden başlatırsanız yapılır.
 
 **Arama performansında aç** kaynak başlangıç ve bitiş tarihlerini ve birebir URL'yi koruyarak ayrıntı panelini açar. Dönem artık okunamıyorsa farklı günlere geçilmez; kullanılabilir dönem açıklanır. Yaptığınız değişikliği not edin ve aynı kapsamlı dönemlerin ölçülen tıklama, CTR ve sırasını karşılaştırın. Tahminin küçülmesi tek başına başarı kanıtı değildir. Düşük sıra veya düşük tahmin nedeniyle içerik silmeyin; birleştirmeyi ancak aynı ihtiyacın tekrarlandığını doğruladığınızda değerlendirin.
+
+Az veride bu ekran kazancı sıfır saymaz. Tahmine uygun marka dışı sorgu olmayışı; gizli sorgular, marka ayrımı veya veri sınırlarından kaynaklanabilir. En uzun dönem seçiliyse daha uzun dönem önerilmez. Arama performansını açarak gösterim alan sorguları inceleyin. Hesabın ayrıntıları Veri kapsamı ve hesaplama bölümünde açılır.

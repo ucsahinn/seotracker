@@ -3,7 +3,7 @@ title: Suchleistung
 description: Sie sehen, wie oft Sie bei Google erscheinen, wie viele Klicks Sie bekommen und was Sie zuerst beheben sollten. Die Zahlen kommen aus der Search Console. Gewinnzahlen sind eine Obergrenze.
 screen: Arama performansı
 route: /p/<proje>/search-performance
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 Hier sehen Sie, wie oft Sie bei Google erscheinen, wie viele Klicks Sie bekommen und was Sie zuerst beheben sollten.
@@ -163,3 +163,9 @@ Die Suchtypen Discover und Google News sind nicht enthalten. Es gibt weder Suchv
 <!-- Quellen: src/routes/_project/p/$projectId/search-performance.tsx; src/client/features/search-performance/SearchPerformancePage.tsx; SearchPageParts.tsx; SearchFilters.tsx; DataTrustStrip.tsx; SearchVerdict.tsx; KpiTiles.tsx; SearchTrendChart.tsx; TrendParts.tsx; SearchNotes.tsx; LongTermTrend.tsx; TodoTab.tsx; DimensionTab.tsx; DimensionTableParts.tsx; OpportunitiesTab.tsx; StrikingTable.tsx; ChangesTab.tsx; CannibalizationSummary.tsx; CannibalizationTable.tsx; DistributionTab.tsx; PositionDistribution.tsx; DrilldownPanel.tsx; BrandTerms.tsx; SearchReportButton.tsx; src/shared/searchInsights.ts; src/shared/searchTodoCopy.ts; src/shared/searchQuickFilters.ts; src/shared/dataFreshness.ts; src/serverFunctions/searchPerformance.ts; src/server/features/gsc/cannibalization.ts -->
 
 Links aus Chancen und Ranking-Verfolgung öffnen die exakte URL oder Suchanfrage mit den Quelldaten. Die Übersicht bleibt auf die Property bezogen; Werte des gewählten Eintrags stehen im Detailbereich. Nicht lesbare Zeiträume werden nie still ersetzt. Eine Zeitraumvorgabe hebt die fixierten Daten auf. Der Bericht übermittelt die angezeigten Daten an den Server; während einer Aktualisierung ist der Download gesperrt. Die Daten bleiben fest, Google kann die erneut gelesenen Messwerte jedoch korrigieren.
+
+## Wenige Daten einordnen
+
+Liegt die Klickzahl des Vergleichszeitraums unter der Analyseschwelle, nennt die Zusammenfassung zuerst die tatsächlichen Klicks und Impressionen. Prozentsätze und Mittelwerte allein belegen bei wenigen Daten weder Wachstum noch Verlust. Eine leere Chancenliste bedeutet nicht, dass keine Suchanfrage auf Position 4–20 liegt: Es gelten auch die zeitabhängige Impressionsschwelle und der Ausschluss von Markensuchanfragen.
+
+Bei leerer Aufgabenliste können Sie die sichtbaren Suchanfragen öffnen. Sind bereits die letzten drei Monate gewählt, wird kein längerer Zeitraum empfohlen. Es wird nicht angenommen, dass Google verborgene Suchanfragen später offenlegt.

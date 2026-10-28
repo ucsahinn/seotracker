@@ -346,7 +346,7 @@ function DangerSection({
           </div>
         </div>
       ) : (
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <p className="text-sm text-muted">
             {canArchive
               ? t(

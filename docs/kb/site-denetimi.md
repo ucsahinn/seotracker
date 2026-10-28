@@ -3,7 +3,7 @@ title: Site denetimi
 description: Uygulama sitenizi sayfa sayfa gezer, 202 kurala göre kontrol eder ve sorunları önem sırasına dizer. Puan, ne kadarının ölçülebildiğini de söyler. Eksik kalan denetime puan vermez.
 screen: Site denetimi
 route: /p/<proje>/audit
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 Sitenizdeki sorunları nasıl bulacağınızı ve düzelteceğinizi burada öğrenirsiniz.
@@ -135,5 +135,7 @@ Ham hata metni ekrana gelmez. Tanılama paketinde durur.
 ## Sınırlar
 
 Tarayıcı, JavaScript'in (sayfada çalışan kod) sonradan eklediği içeriği görmeyebilir. Bir denetim en çok 10.000 sayfa tarar. Hız ölçümü Google'ın laboratuvar ölçümüdür, gerçek ziyaretçi verisi değildir. Denetim sitenizde hiçbir şeyi değiştirmez. Düzeltmeyi siz ya da asistanınız yaparsınız.
+
+Önceki denetimler listesindeki **Taranan sayfa**, başarısız denetimlerde de gerçekten taranan adres sayısıdır; başlangıçtaki sayfa sınırı değildir. Kritik ve uyarı sütunları toplam bulgu sayısını gösterir. **Hız ölçümü istendi**, denetimin hız ölçümü açık başlatıldığını belirtir; ölçümün başarıyla tamamlandığını kanıtlamaz. Telefonda diğer sütunları ve işlemleri görmek için tabloyu yana kaydırın.
 
 <!-- Kaynaklar: src/client/features/audit/launch/LaunchView.tsx; LaunchFormCard.tsx; useLaunchController.ts; AuditHistorySection.tsx; AuditSiteFilter.tsx; ProgressCard.tsx; src/client/features/audit/results/ResultsView.tsx; ResultsHeader.tsx; ScoreOverview.tsx; ScoreGauge.tsx; WithheldScore.tsx; scoreWords.ts; auditFailureCopy.ts; ChecksView.tsx; TodoView.tsx; IssuesView.tsx; QuickFilters.tsx; ForeignPropertyNotice.tsx; DownloadReportButton.tsx; src/routes/_project/p/$projectId/audit/index.tsx; src/shared/auditStanding.ts; src/shared/auditScore.ts; src/shared/auditCategory.ts; src/shared/audit-limits.ts; src/server/lib/audit/crawl-throttle.ts -->

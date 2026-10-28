@@ -345,4 +345,7 @@ export const itApp: Catalog = {
     "Una frase che spiega quando usarlo. L’agente decide in base a questa descrizione.",
   "Sürekli çalıştığımız müşterilere gönderdiğimiz aylık güncelleme.":
     "L’aggiornamento mensile che inviamo ai clienti continuativi.",
+
+  "Bu sitenin son tamamlanan denetimi":
+    "Ultimo controllo completato per questo sito",
 };

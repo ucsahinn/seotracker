@@ -334,4 +334,8 @@ export const itAppAdditional: Catalog = {
   "Google kurulum adımları": "Passaggi di configurazione Google",
   "{service} yönlendirme adresini kopyala":
     "Copia l’indirizzo di reindirizzamento di {service}",
+
+  "Tüm sütunları ve işlemleri görmek için tabloyu yana kaydırın.":
+    "Scorri la tabella in orizzontale per vedere tutte le colonne e le azioni.",
+  "Hız ölçümü istendi": "Misurazione della velocità richiesta",
 };

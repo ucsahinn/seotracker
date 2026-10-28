@@ -25,6 +25,12 @@
      which are redefined per theme, so the utility follows the theme. */
   --color-muted: var(--text-muted);
   --color-subtle: var(--text-subtle);
+  --color-data-clicks: var(--data-clicks);
+  --color-data-impressions: var(--data-impressions);
+  --color-data-ctr: var(--data-ctr);
+  --color-data-position: var(--data-position);
+  --color-data-sessions: var(--data-sessions);
+  --color-data-conversions: var(--data-conversions);
 }
 
 /* -------------------------------------------------------------------------
@@ -37,14 +43,22 @@
       achromatic greys read as "unstyled" next to anything that is not.
    2. Separation comes from hairlines and light, tinted shadows - not from the
       1px mid-grey box that daisyUI draws by default.
-   3. One radius scale, one accent. The accent is reserved for links, focus and
-      active state; the primary button is near-black, because on a page full of
-      amber and red severity chips a coloured button is just one more colour.
-      The accent is a burnt orange (hue 42-52); warning moved to yellow (88)
-      so the two never read as the same signal.
+   3. One radius scale, one interactive accent: ember orange (hue 42-52).
+      Categorical data tokens identify metrics; warning stays yellow (88)
+      so neither data nor severity has to borrow the interactive accent.
    ------------------------------------------------------------------------- */
 
 :root {
+  /* Categorical data ink: also opaque marks, never interactive accents.
+     Each holds >=4.5:1 on base-100, base-200 and its 8% metric wash. */
+  --data-clicks: oklch(43% 0.1 250);
+  --data-impressions: oklch(43% 0.12 300);
+  --data-ctr: oklch(43% 0.08 185);
+  --data-position: oklch(43% 0.09 90);
+  --data-sessions: oklch(43% 0.1 155);
+  --data-conversions: oklch(43% 0.13 350);
+  --surface-panel: oklch(95.5% 0.012 70);
+  --metric-color: var(--data-clicks);
   /* Hairlines. Alpha over the surface rather than a fixed grey, so they stay
      correct on both the page and the raised panel. */
   /* Warm ink rather than black: on the stone surfaces of the light theme a
@@ -54,7 +68,8 @@
 
   /* Diffused and tinted toward the surface hue. No black drop shadows. */
   --shadow-raise:
-    0 1px 2px oklch(30% 0.03 55 / 0.07), 0 3px 8px oklch(30% 0.03 55 / 0.05);
+    inset 0 1px 0 oklch(99% 0.01 75 / 0.65),
+    0 2px 3px oklch(30% 0.03 55 / 0.08), 0 8px 18px oklch(30% 0.03 55 / 0.07);
   --shadow-float:
     0 2px 4px oklch(30% 0.03 55 / 0.07), 0 10px 28px oklch(30% 0.03 55 / 0.1);
 
@@ -91,7 +106,7 @@
      (WCAG 1.4.11). The light theme's warning fill sits near 2:1 on base-100,
      so its mark is darkened; dark mode's fills already carry. */
   --mark-success: var(--color-success);
-  --mark-warning: oklch(62% 0.13 85);
+  --mark-warning: oklch(54% 0.11 85);
   --mark-error: var(--color-error);
   --mark-track: oklch(30% 0.02 55 / 0.1);
 
@@ -106,9 +121,18 @@
 }
 
 html[data-theme="seotracker-dark"] {
+  --data-clicks: oklch(78% 0.1 250);
+  --data-impressions: oklch(78% 0.12 300);
+  --data-ctr: oklch(78% 0.08 185);
+  --data-position: oklch(78% 0.09 90);
+  --data-sessions: oklch(78% 0.1 155);
+  --data-conversions: oklch(78% 0.13 350);
+  --surface-panel: oklch(23% 0.016 60);
   --hairline: oklch(100% 0 0 / 0.09);
   --hairline-strong: oklch(100% 0 0 / 0.15);
-  --shadow-raise: 0 1px 2px oklch(0% 0 0 / 0.4), 0 2px 6px oklch(0% 0 0 / 0.3);
+  --shadow-raise:
+    inset 0 1px 0 oklch(85% 0.025 65 / 0.06),
+    0 2px 3px oklch(10% 0.015 60 / 0.4), 0 8px 20px oklch(10% 0.015 60 / 0.24);
   --shadow-float:
     0 2px 4px oklch(0% 0 0 / 0.4), 0 8px 24px oklch(0% 0 0 / 0.45);
   --text-muted: oklch(93% 0.006 80 / 0.62);
@@ -138,20 +162,20 @@ html[data-theme="seotracker-dark"] {
      glared on a full-width dashboard. Now three steps: the sidebar (see
      --surface-sidebar), the content pane on base-200, and the cards on
      base-100, so panels float on the page instead of dissolving into it.
-     Body text is 16:1 on base-100 and 13.8:1 on base-200. */
-  --color-base-100: oklch(97.2% 0.005 75);
-  --color-base-200: oklch(92.4% 0.009 70);
-  --color-base-300: oklch(87.5% 0.011 66);
+     Body text is 15.2:1 on base-100 and 13.0:1 on base-200. */
+  --color-base-100: oklch(95.5% 0.012 70);
+  --color-base-200: oklch(90.5% 0.018 65);
+  --color-base-300: oklch(85% 0.022 60);
   --color-base-content: oklch(22% 0.01 60);
-  /* White on it is 5.9:1; as text it is 5.4:1 on base-100. */
-  --color-primary: oklch(52% 0.165 42);
+  /* Dark enough for text even on the recessed base-300 surface. */
+  --color-primary: oklch(47% 0.14 42);
   --color-primary-content: oklch(100% 0 0);
   --color-secondary: oklch(55% 0.15 145);
   /* Dark ink, not white: white on these mid-lightness fills lands between
      2.7:1 and 4.0:1, and the amber one cannot carry white text at any usable
      lightness. Error and primary are dark enough to keep white. */
   --color-secondary-content: oklch(26% 0.06 145);
-  --color-accent: oklch(52% 0.165 42);
+  --color-accent: oklch(47% 0.14 42);
   --color-accent-content: oklch(100% 0 0);
   --color-neutral: oklch(21% 0.01 60);
   --color-neutral-content: oklch(99% 0 0);
@@ -179,9 +203,9 @@ html[data-theme="seotracker-dark"] {
   default: true;
   prefersdark: true;
   color-scheme: dark;
-  --color-base-100: oklch(16.5% 0.008 60);
-  --color-base-200: oklch(14% 0.008 60);
-  --color-base-300: oklch(24% 0.01 60);
+  --color-base-100: oklch(23% 0.016 60);
+  --color-base-200: oklch(18% 0.012 60);
+  --color-base-300: oklch(29% 0.018 60);
   --color-base-content: oklch(97% 0.006 80);
   --color-primary: oklch(72% 0.19 52);
   --color-primary-content: oklch(16% 0.012 55);
@@ -426,7 +450,7 @@ html[data-theme="seotracker"] .tabs-border > .tab.tab-active {
    pane one step up on base-200, and the cards on base-100 above both. Dark
    mode keeps its own arrangement, so these hook classes do nothing there. */
 html[data-theme="seotracker"] {
-  --surface-sidebar: oklch(89.8% 0.011 66);
+  --surface-sidebar: oklch(86.5% 0.025 60);
 }
 html[data-theme="seotracker"] :is(.app-shell, .app-sidebar) {
   background-color: var(--surface-sidebar);
@@ -706,6 +730,57 @@ h3 {
 .modal-box {
   border-color: var(--hairline);
   box-shadow: var(--shadow-raise);
+}
+
+/* Shared panels gain depth even on screens that use a plain section/div. */
+:where(main) .bg-base-100.border-base-300 {
+  background-color: var(--surface-panel);
+  box-shadow: var(--shadow-raise);
+}
+
+/* Only an explicitly identified metric gets a categorical wash. Unknown
+   metrics keep their normal ink rather than borrowing another metric's hue. */
+.metric-tile {
+  background-color: color-mix(
+    in oklab,
+    var(--color-primary) 3%,
+    var(--surface-panel)
+  );
+}
+.metric-tile[data-metric] {
+  background-color: color-mix(
+    in oklab,
+    var(--metric-color) 8%,
+    var(--surface-panel)
+  );
+  box-shadow: inset 0 1px 0
+    color-mix(in oklab, var(--metric-color) 35%, transparent);
+}
+.metric-tile[data-metric] .metric-value {
+  color: var(--metric-color);
+}
+
+/* Arrival reinforces the existing count-up without parsing formatted text.
+   The final number and bar extent are always present, including without JS. */
+@keyframes data-arrive {
+  from {
+    opacity: 0.55;
+    transform: translateY(2px);
+  }
+}
+@keyframes data-bar-arrive {
+  from {
+    transform: scaleX(0);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .metric-value {
+    animation: data-arrive 240ms var(--ease-out);
+  }
+  .data-bar-enter {
+    transform-origin: left center;
+    animation: data-bar-arrive var(--dur-slow) var(--ease-out);
+  }
 }
 
 /* The primary button is the site's button: ember orange, lit from above.

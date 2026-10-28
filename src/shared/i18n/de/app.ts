@@ -344,4 +344,7 @@ export const deApp: Catalog = {
     "Der letzte Archivimport konnte nicht abgeschlossen werden. Prüfen Sie den Fehler unter „Ranking-Verfolgung“ und versuchen Sie es erneut.",
   "Arşiv bu tarihlerin tümünü doğrulamıyor. Eksik veya sınırlı günler için Sıralamalar'dan arşivi güncelleyin.":
     "Das Archiv bestätigt nicht alle diese Tage. Aktualisieren Sie es unter „Ranking-Verfolgung“ für fehlende oder eingeschränkte Tage.",
+
+  "Bu sitenin son tamamlanan denetimi":
+    "Letztes abgeschlossenes Audit dieser Website",
 };

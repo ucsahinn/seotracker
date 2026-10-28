@@ -107,10 +107,7 @@ export function ReportView({
   /** Switches to the setup check; offered where a property setting explains an empty tab. */
   onOpenHealth?: () => void;
 }) {
-  /*
-   * The host column on every row repeated one site's name. Hidden while the
-   * report holds a single host; the CSV keeps every column.
-   */
+  // Hide the repeated host in a single-host table; exports keep it.
   const singleHost =
     result.dimensions.includes("hostName") &&
     new Set(result.rows.map((row) => row["hostName"])).size <= 1;
@@ -214,6 +211,30 @@ export function ReportView({
     focusedRowKey,
     sort: sorting.sort,
   });
+  const pageScope = (
+    <AnalyticsPageScope
+      pageGroup={result.pageGroup}
+      exactPage={exactPage}
+      onClearPageGroup={onClearPageGroup}
+      onClearExactPage={onClearExactPage}
+    />
+  );
+  if (result.rows.length === 0) {
+    return (
+      <div className="space-y-3" id="analytics-report">
+        <AnalyticsEvidence result={result} onOpenHealth={onOpenHealth} />
+        {pageScope}
+        <ReportEmptyState
+          pageGroup={Boolean(result.pageGroup)}
+          kind={kind}
+          organicOnly={organicOnly}
+          emptyReason={result.emptyReason}
+          onShowAllTraffic={() => onOrganicOnlyChange(false)}
+          onOpenHealth={onOpenHealth}
+        />
+      </div>
+    );
+  }
   return (
     <div className="space-y-3" id="analytics-report">
       <AnalyticsEvidence result={result} onOpenHealth={onOpenHealth} />
@@ -227,12 +248,7 @@ export function ReportView({
           count: result.rows.length,
         })}
       </p>
-      <AnalyticsPageScope
-        pageGroup={result.pageGroup}
-        exactPage={exactPage}
-        onClearPageGroup={onClearPageGroup}
-        onClearExactPage={onClearExactPage}
-      />
+      {pageScope}
       <ReportSummary
         plan={plan}
         kpis={kpis}
@@ -242,10 +258,7 @@ export function ReportView({
       />
 
       <WeakConversionTile
-        chip={chips.find(
-          (chip) =>
-            chip.id === "weakConversion" && chip.disabledReason === null,
-        )}
+        chip={weakChip}
         active={activeChips.includes("weakConversion")}
         candidate={candidate}
         onShow={() => {
@@ -376,18 +389,7 @@ export function ReportView({
           </p>
         ))}
 
-      {result.rows.length === 0 ? (
-        <div className="rounded-box border border-base-300 bg-base-100">
-          <ReportEmptyState
-            pageGroup={Boolean(result.pageGroup)}
-            kind={kind}
-            organicOnly={organicOnly}
-            emptyReason={result.emptyReason}
-            onShowAllTraffic={() => onOrganicOnlyChange(false)}
-            onOpenHealth={onOpenHealth}
-          />
-        </div>
-      ) : rows.length === 0 ? (
+      {rows.length === 0 ? (
         <div className="rounded-box border border-base-300 bg-base-100">
           <EmptyState
             icon={FilterX}

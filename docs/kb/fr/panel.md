@@ -3,7 +3,7 @@ title: Tableau de bord
 description: Le tableau de bord réunit le trafic de recherche, les prochaines tâches étayées et les limites des sources.
 screen: Panel
 route: /p/<proje>
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
 Le tableau de bord réunit le trafic de recherche, les prochaines tâches étayées et les limites des sources. Actualiser relit les sources actives, la configuration et l’état de l’installation. Un échec produit un avis d’actualisation partielle. L’heure de réception ne correspond pas au dernier jour mesuré.
@@ -26,7 +26,7 @@ Les requêtes admissibles ont assez d’impressions et une position arrondie de 
 
 ## Audit du site du projet
 
-Seules les explorations du domaine du projet sont retenues. Un audit plus récent d’un autre site est ignoré. Le dernier instantané terminé et une tentative plus récente en cours ou échouée sont identifiés séparément. Sans domaine, un lien mène aux paramètres. La carte indique l’identifiant, l’adresse de départ, la date, les contrôles mesurés et une éventuelle limite de pages.
+Seules les explorations du domaine du projet sont retenues. Un audit plus récent d’un autre site est ignoré. Le dernier instantané terminé et une tentative plus récente en cours ou échouée sont identifiés séparément. Sans domaine, un lien mène aux paramètres. La carte indique l’adresse de départ, la date, les contrôles mesurés et une éventuelle limite de pages.
 
 Les pages uniques touchées, les types de contrôles et les couples page–contrôle sont des unités distinctes. Une page peut échouer à trois contrôles. Les notes d’information restent hors de la barre des critiques et avertissements. Toute appréciation se limite au périmètre mesuré. Une mesure manquante ou une limite de pages ne certifie pas tout le site. Les comparaisons exigent le même périmètre initial, les mêmes réglages et URL explorées, ainsi que des mesures lisibles. Seuls les contrôles mesurés des deux côtés montrent des changements. Une exploration réduite ou illisible ne prouve aucune résolution. Le périmètre inconnu est expliqué. Les liens ouvrent les problèmes du même audit pour l’URL choisie.
 
@@ -37,3 +37,9 @@ Les sessions organiques, utilisateurs actifs, interactions et événements clés
 Une preuve de commerce positive dans l’une des périodes maintient les revenus et commandes visibles, y compris un zéro mesuré dans une période calme. Sans preuve, le suivi des ventes reste non confirmé. Une devise inconnue est signalée.
 
 Le tableau de bord ne contient ni volume de mots-clés, ni backlinks, ni classement concurrent. Comparez les données Google avec les mêmes dates et filtres.
+
+## Interpréter peu de données
+
+Si les clics de la période de comparaison sont sous le seuil d’analyse, le résumé présente d’abord les clics et impressions réels. Avec peu de données, les pourcentages et moyennes ne prouvent pas à eux seuls une croissance ou une perte. Une liste d’opportunités vide ne signifie pas qu’aucune requête n’est en position 4–20 : le seuil d’impressions adapté à la période et l’exclusion des requêtes de marque s’appliquent aussi.
+
+L’identifiant d’audit reste dans la navigation ; la carte affiche l’adresse de départ. Si les sessions sont inconnues, vérifiez les avertissements de source du rapport Analytics, les droits d’accès et la balise du site. La note sur les ventes figure dans l’explication dépliable du revenu organique.

@@ -167,7 +167,13 @@ function StatusBody({
 }) {
   const checks = Object.entries(data.setup.checks).map(([key, check]) => ({
     key,
-    described: describeCheck(key, check, googleReady, data.setup.installKind),
+    described: describeCheck(
+      key,
+      check,
+      googleReady,
+      data.setup.installKind,
+      data.setup.authMode,
+    ),
   }));
   const problems = checks.filter(
     (check) => check.described.status !== "ok",
@@ -285,6 +291,11 @@ function StatusBody({
 
       <div className="space-y-2 border-t border-base-300 pt-3">
         <h3 className="text-xs font-medium text-muted">{t("Projeler")}</h3>
+        <p className="text-xs text-muted">
+          {t(
+            "Burada kayıtlı mülk seçimleri gösterilir; Google erişimi bu kontrolde sınanmaz. Erişimi proje bağlantılarından doğrulayın.",
+          )}
+        </p>
         {projects.length === 0 ? (
           <p className="text-sm text-muted">
             {fillParts(t("Henüz proje yok. {link}."), {
@@ -308,8 +319,8 @@ function StatusBody({
                     <span className="font-medium">{project.name}</span>
                     <span className="text-xs text-muted">
                       {t("Search Console {gsc} · Analytics {ga4}", {
-                        gsc: state.gsc ? t("bağlı") : t("bağlı değil"),
-                        ga4: state.ga4 ? t("bağlı") : t("bağlı değil"),
+                        gsc: state.gsc ? t("seçili") : t("seçili değil"),
+                        ga4: state.ga4 ? t("seçili") : t("seçili değil"),
                       })}
                     </span>
                   </span>

@@ -33,3 +33,5 @@ CSV ve E-Tablolar aynı filtrelenen kayıtları ve ölçüm alanlarını aktarı
 Seçim yalnızca mevcut sayfadadır. Liste yenilenirken veya filtre uygulanırken eski satırlara toplu işlem yapılamaz. Silme onay ister; etiket düzenleme kelimeleri silmez. Varsayılan sıralama eklenme tarihidir; sıra, hareket, gösterim ve kelimeye göre de sıralayabilirsiniz. Gerileyenleri incele yalnızca karşılaştırılabilen belirgin gerilemeleri inceleme sırasına koyar; neden veya sonuç garantisi vermez.
 
 **Günlük gözlemler.** Arşiv ayrıntısında günlük gözlemleri açıkça isteyebilirsiniz. Aynı tarih aralığı ve eşleştirme kullanılır; eksik günler grafikte boş kalır. Tarihleri klavyeyle inceleyebilir, günlük değerleri metin olarak açabilirsiniz.
+
+Karşılaştırılabilir kelime yoksa hareket kartında sıfır yerine Karşılaştırma yok görünür. Tüm kayıtlı kelimeler gözlendiyse Sıra bilinmiyor kartı eksik gözlem uyarısı vermez. Sonuç yoksa hareket ve bilinmeyen sıra kartlarının düğmeleri devre dışıdır.

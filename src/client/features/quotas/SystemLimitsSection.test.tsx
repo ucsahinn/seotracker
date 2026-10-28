@@ -25,7 +25,9 @@ it("names the selected project and qualifies a mixed known/unknown summary", () 
   render(<SystemLimitsSection />);
   expect(screen.getByRole("combobox").textContent).toContain("Example");
   expect(
-    screen.getByText("Bilinen sınırlarda sorun yok · 1 kaynak bilinmiyor"),
+    screen.getByText(
+      "Bilinen sınırlarda sorun yok · 1 sınırın kullanımı bilinmiyor",
+    ),
   ).toBeTruthy();
   expect(screen.queryByText("Yeterli")).toBeNull();
 });

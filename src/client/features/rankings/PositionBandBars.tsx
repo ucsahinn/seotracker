@@ -89,10 +89,15 @@ export function PositionBandBars({
         </HelpTip>
       </div>
       <p className="mt-0.5 text-xs text-muted">
-        {t(
-          "{count} sorgu; aynı {paired} sorguda net değişim. Çubuklar en büyük gruba görelidir.",
-          { count: formatCount(total), paired: formatCount(paired) },
-        )}
+        {paired === 0
+          ? t(
+              "{count} sorgunun mevcut sırası gösteriliyor. Önceki dönemle karşılaştırılabilecek sorgu yok.",
+              { count: formatCount(total) },
+            )
+          : t(
+              "{count} sorgu; aynı {paired} sorguda net değişim. Çubuklar en büyük gruba görelidir.",
+              { count: formatCount(total), paired: formatCount(paired) },
+            )}
       </p>
       <div
         role="group"

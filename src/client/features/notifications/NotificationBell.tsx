@@ -1,9 +1,9 @@
 import { useId, useState } from "react";
 import { Bell, CheckCheck, X } from "lucide-react";
 import { Modal } from "@/client/components/Modal";
-import { formatCount, formatDateTime } from "@/shared/format";
+import { formatCount } from "@/shared/format";
 import { t } from "@/shared/i18n";
-import { openNotification } from "./notify";
+import { NotificationHistory } from "./NotificationHistory";
 import { markAllNotificationsRead, useNotifications } from "./store";
 
 export function NotificationBell({ onNavigate }: { onNavigate?: () => void }) {
@@ -56,56 +56,14 @@ export function NotificationBell({ onNavigate }: { onNavigate?: () => void }) {
             <CheckCheck className="size-4" />
             {t("Tümünü okundu işaretle")}
           </button>
-          {items.length === 0 ? (
-            <p className="py-8 text-sm text-muted">
-              {t(
-                "Henüz bildirim yok. İşlemler tamamlandığında burada görünür.",
-              )}
-            </p>
-          ) : (
-            <ul className="max-h-[60dvh] overflow-y-auto divide-y divide-[var(--hairline)]">
-              {items.map((item) => (
-                <li key={item.id}>
-                  <button
-                    type="button"
-                    className="w-full rounded-field px-3 py-3 text-left hover:bg-base-200"
-                    onClick={() => {
-                      openNotification(item);
-                      if (item.href) {
-                        setOpen(false);
-                        onNavigate?.();
-                      }
-                    }}
-                  >
-                    <span className="flex items-start gap-2">
-                      <span
-                        className={`mt-1.5 size-2 shrink-0 rounded-full ${item.read ? "bg-base-300" : "bg-primary"}`}
-                        aria-label={item.read ? t("Okundu") : t("Okunmamış")}
-                      />
-                      <span className="min-w-0">
-                        <span
-                          className={`block text-sm ${item.read ? "text-muted" : "font-medium"}`}
-                        >
-                          {item.title}
-                        </span>
-                        {item.body && (
-                          <span className="block break-words text-sm text-muted">
-                            {item.body}
-                          </span>
-                        )}
-                        <time
-                          className="mt-1 block text-xs text-subtle"
-                          dateTime={item.createdAt}
-                        >
-                          {formatDateTime(item.createdAt)}
-                        </time>
-                      </span>
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
+          <div className="max-h-[60dvh] overflow-y-auto">
+            <NotificationHistory
+              onNavigate={() => {
+                setOpen(false);
+                onNavigate?.();
+              }}
+            />
+          </div>
         </Modal>
       )}
     </>
