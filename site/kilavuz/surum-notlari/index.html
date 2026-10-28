@@ -9,7 +9,7 @@
     <title>Sürüm notları | seowatcher kılavuzu</title>
     <meta
       name="description"
-      content="seowatcher 0.8.1 Alpha — daha doğru ölçümler, daha okunaklı ekranlar ve yenilenen proje, kayıt ve rapor görünümleri."
+      content="seowatcher 0.8.2 Alpha — daha doğru karşılaştırmalar, daha kullanışlı menüler, korunan kayıtlar ve Windows açılış düzeltmeleri."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/kilavuz/surum-notlari/" />
@@ -83,7 +83,7 @@
     <meta property="og:title" content="Sürüm notları | seowatcher kılavuzu" />
     <meta
       property="og:description"
-      content="seowatcher 0.8.1 Alpha — daha doğru ölçümler, daha okunaklı ekranlar ve yenilenen proje, kayıt ve rapor görünümleri."
+      content="seowatcher 0.8.2 Alpha — daha doğru karşılaştırmalar, daha kullanışlı menüler, korunan kayıtlar ve Windows açılış düzeltmeleri."
     />
     <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
     <meta property="og:image:type" content="image/png" />
@@ -93,7 +93,7 @@
       property="og:image:alt"
       content="seowatcher tanıtım kartı: Search Console, Analytics 4 ve site denetimi verilerini gösteren uygulama paneli ve Windows için indirme düğmesi"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-28" />
     <meta
       property="og:url"
       content="https://seowatcher.io/kilavuz/surum-notlari/"
@@ -108,7 +108,7 @@
     <meta name="twitter:title" content="Sürüm notları | seowatcher kılavuzu" />
     <meta
       name="twitter:description"
-      content="seowatcher 0.8.1 Alpha — daha doğru ölçümler, daha okunaklı ekranlar ve yenilenen proje, kayıt ve rapor görünümleri."
+      content="seowatcher 0.8.2 Alpha — daha doğru karşılaştırmalar, daha kullanışlı menüler, korunan kayıtlar ve Windows açılış düzeltmeleri."
     />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta
@@ -146,10 +146,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/kilavuz/surum-notlari/#article",
             "headline": "Sürüm notları",
-            "description": "seowatcher 0.8.1 Alpha — daha doğru ölçümler, daha okunaklı ekranlar ve yenilenen proje, kayıt ve rapor görünümleri.",
+            "description": "seowatcher 0.8.2 Alpha — daha doğru karşılaştırmalar, daha kullanışlı menüler, korunan kayıtlar ve Windows açılış düzeltmeleri.",
             "url": "https://seowatcher.io/kilavuz/surum-notlari/",
             "inLanguage": "tr",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-28",
             "articleSection": "Yardım ve başvuru",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -184,7 +184,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.1" defer></script>
+    <script src="/assets/docs.js?v=0.8.2" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1489,11 +1489,11 @@
       <article id="icerik" data-page="surum-notlari">
         <h1>Sürüm notları</h1>
         <p class="lede">
-          seowatcher 0.8.1 Alpha — daha doğru ölçümler, daha okunaklı ekranlar
-          ve yenilenen proje, kayıt ve rapor görünümleri.
+          seowatcher 0.8.2 Alpha — daha doğru karşılaştırmalar, daha kullanışlı
+          menüler, korunan kayıtlar ve Windows açılış düzeltmeleri.
         </p>
         <p>
-          Son sürüm <strong>0.8.1 Alpha</strong>, 27 Ekim 2026. Güncellerken
+          Son sürüm <strong>0.8.2 Alpha</strong>, 28 Ekim 2026. Güncellerken
           veriniz korunur.
         </p>
         <p>
@@ -1501,9 +1501,9 @@
           dosyasını elle çalıştırın; eski otomatik güncelleyici küçük numarayı
           yeni sürüm olarak tanımaz.
         </p>
-        <h2 id="0-8-1-alpha-2026-10-27">0.8.1 Alpha — 2026-10-27</h2>
+        <h2 id="0-8-2-alpha-2026-10-28">0.8.2 Alpha — 2026-10-28</h2>
         <p>
-          Bu giriş 0.5.0'dan 0.8.1'e kadar gelen yenilikleri ve düzeltmeleri
+          Bu giriş 0.5.0'dan 0.8.2'ye kadar gelen yenilikleri ve düzeltmeleri
           toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha
           doğru veriler ve daha okunaklı ekranlar.
         </p>
@@ -1674,34 +1674,42 @@
         <h3 id="duzeltmeler">🛠️ Düzeltmeler</h3>
         <ul>
           <li>
-            <strong>Daha doğru denetim:</strong> Gerçek sitelerde bulunan
-            hatalar giderildi; sonuçlar daha güvenilir.
+            <strong>Daha doğru denetim:</strong> Gerçek sitelerdeki hatalar
+            giderildi; karşılaştırmalar her denetimin kendi sayfalarını
+            kullanır, başlatılamayan denetimin kaydı korunur.
           </li>
           <li>
-            <strong>Telefonda düzgün:</strong> Denetim ekranı ve indirilen rapor
-            telefonda artık taşmaz.
+            <strong>Menüler ve klavye:</strong> Telefonda ekranlar, raporlar ve
+            ülke listesi taşmaz; menüler ekrana sığar, klavye odağı açık
+            pencerede kalır, Esc yalnızca üstteki listeyi kapatır ve
+            yazdıklarınızı korur; ekran okuyucular seçimleri, Analytics ise
+            kanal adlarını seçtiğiniz dilde bildirir.
           </li>
           <li>
-            <strong>Yeni proje:</strong> Telefonda ülke listesi kesilmez; Esc
-            tuşu listeyi kapatır, yazdıklarınız silinmez.
-          </li>
-          <li>
-            <strong>Sorun bildirme:</strong> Yardım'daki tanılama paketi sorunu
+            <strong>Sorun bildirme:</strong> Yardım’daki tanılama paketi sorunu
             daha iyi anlatır ve sayfa adreslerinizi içermez.
           </li>
           <li>
-            <strong>Arama performansı:</strong> Öncelikli işler, seçilen
-            tarihler ve kazanç tahminlerinin sınırları daha açık gösterilir.
+            <strong>Daha doğru sayılar:</strong> Eksik ölçümler sıfır sayılmaz,
+            sınırlı Analytics verisi kesin sonuç gibi sunulmaz; sıralamalar aynı
+            tarihleri kullanır, öncelikli işler ve tahminlerin sınırları
+            açıklanır, filtrelemek aylık kazanç tahminini değiştirmez.
           </li>
           <li>
-            <strong>Daha doğru sayılar:</strong> Panel, Fırsatlar, Sıralamalar
-            ve Analytics eksik ölçümü sıfır saymaz; karşılaştırmalar veri
-            kapsamını belirtir.
+            <strong>Bağlantı durumu:</strong> Mülk seçimi ile doğrulanmış erişim
+            ayrıdır, hesap değişince eski sonuçlar güncel sayılmaz; yanıt
+            vermeyen Google bağlantısı beklemede kalmaz, geçici hatada yeniden
+            denemeniz, kapalı hizmette neyi açmanız gerektiği söylenir.
           </li>
           <li>
-            <strong>Bağlantı durumu:</strong> Ayarlar'da mülk seçmek ile veri
-            erişiminin doğrulanması ayrı gösterilir; hesap değişince eski
-            sonuçlar güncel sayılmaz.
+            <strong>Kayıtların korunması:</strong> Etiket ekleme ve kaldırma
+            yarım kalmaz, kullanılan etiket silinmez; geçmiş veriler doğru
+            mülkle tamamlanır ve bekleyen işler doğru sırada ele alınır.
+          </li>
+          <li>
+            <strong>Windows açılışı:</strong> Çalışma dosyaları kullanıcı
+            klasörüne yazılır; onarılan asistan bağlantısı yeniden açılışta
+            korunur ve başlangıç kontrolü takılı kalmaz.
           </li>
         </ul>
         <h3 id="guvenlik">🔒 Güvenlik</h3>
@@ -1920,7 +1928,7 @@
         <p>
           seowatcher 1.0'a kadar 0.x Alpha numaralarıyla ilerler. Kullanıcının
           fark ettiği yeni özellik ikinci numarayı (0.7.1 → 0.8.0), yalnızca
-          düzeltme üçüncü numarayı (0.8.0 → 0.8.1) artırır. Yeni giriş yalnızca
+          düzeltme üçüncü numarayı (0.8.0 → 0.8.2) artırır. Yeni giriş yalnızca
           kullanıcıların fark edeceği dönüm noktaları için açılır; küçük
           düzeltmeler mevcut girişe eklenir ve giriş en yeni numarayı alır.
           0.0.0 ile 0.4.3 arasındaki sürümler ilk yayımlandığında v2.x
@@ -1949,7 +1957,7 @@
           ><span class="pager-next empty"></span>
         </nav>
         <p class="meta">
-          Son güncelleme: 27 Ekim 2026. Bir hata görürseniz
+          Son güncelleme: 28 Ekim 2026. Bir hata görürseniz
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1962,7 +1970,7 @@
         <p class="toc-label">Bu sayfada</p>
         <ol>
           <li>
-            <a href="#0-8-1-alpha-2026-10-27">0.8.1 Alpha — 2026-10-27</a>
+            <a href="#0-8-2-alpha-2026-10-28">0.8.2 Alpha — 2026-10-28</a>
           </li>
           <li>
             <a href="#0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</a>

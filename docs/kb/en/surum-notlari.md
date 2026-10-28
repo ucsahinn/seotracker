@@ -1,16 +1,16 @@
 ---
 title: Release notes
-description: seowatcher 0.8.1 Alpha — more accurate measurements, clearer screens and revised project, saved-search and report views.
-updated: 2026-10-27
+description: seowatcher 0.8.2 Alpha — more accurate comparisons, easier menus, protected records and Windows startup fixes.
+updated: 2026-10-28
 ---
 
-The latest release is **0.8.1 Alpha**, October 27, 2026. Your data is kept when you update.
+The latest release is **0.8.2 Alpha**, October 28, 2026. Your data is kept when you update.
 
 For the first move from 2.x to 0.x.x Alpha, run the new installer manually; the old updater does not recognize the lower number as newer.
 
-## 0.8.1 Alpha — 2026-10-27
+## 0.8.2 Alpha — 2026-10-28
 
-This entry brings together features and fixes from 0.5.0 to 0.8.1: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
+This entry brings together features and fixes from 0.5.0 to 0.8.2: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
 
 ### ✨ Highlights
 
@@ -72,13 +72,13 @@ This entry brings together features and fixes from 0.5.0 to 0.8.1: site audits, 
 
 ### 🛠️ Fixes
 
-- **More accurate audit:** Mistakes found on real sites were fixed, so results are more reliable.
-- **Works on phones:** The audit screen and the downloaded report no longer overflow on a phone.
-- **New project:** The country list is no longer cut off on a phone; Esc closes the list and keeps what you typed.
+- **More accurate audits:** Errors found on real sites were fixed; comparisons use each audit’s own pages, and an audit record is kept if startup fails.
+- **Menus and keyboard:** Screens, reports and country lists fit on phones; menus stay on screen, keyboard focus stays in the open window, and Esc closes only the top list while keeping your text; screen readers announce selections, and Analytics shows channel names in your language.
 - **Problem reports:** The diagnostics package in Help describes the problem better and leaves out your page addresses.
-- **Search performance:** Priority tasks, selected dates and the limits of estimated gains are clearer.
-- **More accurate numbers:** Dashboard, Opportunities, Rankings and Analytics keep missing measurements separate from zero and explain comparison coverage.
-- **Connection status:** Settings distinguish selecting a property from verified data access; after an account change, old results are no longer treated as current.
+- **More accurate numbers:** Missing measurements are not counted as zero, and limited Analytics data is not presented as a firm conclusion; rankings use matching dates, priority tasks and estimate limits are explained, and filtering does not change estimated monthly gains.
+- **Connection status:** Selecting a property is separate from verified access, and old results are not treated as current after an account change; unresponsive Google connections stop waiting, temporary errors suggest trying again, and disabled services explain what to enable.
+- **Saved data:** Adding or removing labels completes in full, labels in use cannot be deleted, historical data stays tied to the right property, and waiting tasks are handled in the right order.
+- **Windows startup:** Working files are saved in your user folder; repaired assistant connections survive a restart, and the startup check no longer hangs.
 
 ### 🔒 Security
 
@@ -169,6 +169,6 @@ The first release of seowatcher: it gathers your Google data, site audit and spe
 
 ## Version numbers
 
-seowatcher uses 0.x Alpha numbers until 1.0. A new feature you can notice raises the middle number (0.7.1 → 0.8.0); a fix-only release raises the last number (0.8.0 → 0.8.1). A new entry is added only for a milestone users will notice; small fixes go into the current entry, which takes the newest number. The releases from 0.0.0 to 0.4.3 were first published with v2.x tags; the matching table is at the top of [CHANGELOG.md](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md).
+seowatcher uses 0.x Alpha numbers until 1.0. A new feature you can notice raises the middle number (0.7.1 → 0.8.0); a fix-only release raises the last number (0.8.0 → 0.8.2). A new entry is added only for a milestone users will notice; small fixes go into the current entry, which takes the newest number. The releases from 0.0.0 to 0.4.3 were first published with v2.x tags; the matching table is at the top of [CHANGELOG.md](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md).
 
 The full history is in [CHANGELOG.md](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md) on GitHub.

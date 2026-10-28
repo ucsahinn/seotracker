@@ -9,7 +9,7 @@
     <title>Note di versione | guida di seowatcher</title>
     <meta
       name="description"
-      content="seowatcher 0.8.1 Alpha — misure più precise, schermate più leggibili e viste riviste per progetti, ricerche salvate e report."
+      content="seowatcher 0.8.2 Alpha — confronti più precisi, menu più comodi, dati protetti e correzioni all’avvio su Windows."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -89,7 +89,7 @@
     />
     <meta
       property="og:description"
-      content="seowatcher 0.8.1 Alpha — misure più precise, schermate più leggibili e viste riviste per progetti, ricerche salvate e report."
+      content="seowatcher 0.8.2 Alpha — confronti più precisi, menu più comodi, dati protetti e correzioni all’avvio su Windows."
     />
     <meta
       property="og:image"
@@ -102,7 +102,7 @@
       property="og:image:alt"
       content="Scheda di seowatcher: la dashboard dell’app con i dati di Search Console, Analytics 4 e dell’audit del sito, e un pulsante per scaricarla su Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-28" />
     <meta
       property="og:url"
       content="https://seowatcher.io/it/guide/note-di-rilascio/"
@@ -120,7 +120,7 @@
     />
     <meta
       name="twitter:description"
-      content="seowatcher 0.8.1 Alpha — misure più precise, schermate più leggibili e viste riviste per progetti, ricerche salvate e report."
+      content="seowatcher 0.8.2 Alpha — confronti più precisi, menu più comodi, dati protetti e correzioni all’avvio su Windows."
     />
     <meta
       name="twitter:image"
@@ -161,10 +161,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/it/guide/note-di-rilascio/#article",
             "headline": "Note di versione",
-            "description": "seowatcher 0.8.1 Alpha — misure più precise, schermate più leggibili e viste riviste per progetti, ricerche salvate e report.",
+            "description": "seowatcher 0.8.2 Alpha — confronti più precisi, menu più comodi, dati protetti e correzioni all’avvio su Windows.",
             "url": "https://seowatcher.io/it/guide/note-di-rilascio/",
             "inLanguage": "it",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-28",
             "articleSection": "Aiuto e riferimento",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -199,7 +199,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.1" defer></script>
+    <script src="/assets/docs.js?v=0.8.2" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1543,11 +1543,11 @@
       <article id="icerik" data-page="surum-notlari">
         <h1>Note di versione</h1>
         <p class="lede">
-          seowatcher 0.8.1 Alpha — misure più precise, schermate più leggibili e
-          viste riviste per progetti, ricerche salvate e report.
+          seowatcher 0.8.2 Alpha — confronti più precisi, menu più comodi, dati
+          protetti e correzioni all’avvio su Windows.
         </p>
         <p>
-          L’ultima versione è la <strong>0.8.1 Alpha</strong>, del 27 ottobre
+          L’ultima versione è la <strong>0.8.2 Alpha</strong>, del 28 ottobre
           2026. I dati restano intatti durante l’aggiornamento.
         </p>
         <p>
@@ -1555,9 +1555,9 @@
           programma di installazione; il vecchio aggiornamento non riconosce il
           numero inferiore come più recente.
         </p>
-        <h2 id="0-8-1-alpha-2026-10-27">0.8.1 Alpha — 2026-10-27</h2>
+        <h2 id="0-8-2-alpha-2026-10-28">0.8.2 Alpha — 2026-10-28</h2>
         <p>
-          Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.1:
+          Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.2:
           verifica del sito, dashboard, notifiche e sei lingue, con dati più
           precisi e schermate più leggibili.
         </p>
@@ -1737,37 +1737,46 @@
         <h3 id="correzioni">🛠️ Correzioni</h3>
         <ul>
           <li>
-            <strong>Verifica più accurata:</strong> Sono stati corretti gli
-            errori trovati su siti reali; i risultati sono più affidabili.
+            <strong>Verifiche più accurate:</strong> Gli errori trovati su siti
+            reali sono stati corretti; i confronti usano le pagine di ciascuna
+            verifica e la verifica resta registrata se l’avvio non riesce.
           </li>
           <li>
-            <strong>Bene sul telefono:</strong> La schermata di verifica e il
-            report scaricato non vanno più fuori schermo sul telefono.
-          </li>
-          <li>
-            <strong>Nuovo progetto:</strong> L'elenco dei paesi non viene più
-            tagliato sul telefono; Esc chiude l'elenco e conserva ciò che hai
-            scritto.
+            <strong>Menu e tastiera:</strong> Schermate, report ed elenchi dei
+            paesi restano nei limiti del telefono; i menu restano visibili, il
+            focus resta nella finestra aperta ed Esc chiude solo l’elenco in
+            primo piano senza cancellare il testo; i lettori di schermo
+            annunciano le selezioni e Analytics mostra i canali nella tua
+            lingua.
           </li>
           <li>
             <strong>Segnalazione problemi:</strong> Il pacchetto diagnostico
-            nell'Aiuto descrive meglio il problema e non include gli indirizzi
+            nell’Aiuto descrive meglio il problema e non include gli indirizzi
             delle tue pagine.
           </li>
           <li>
-            <strong>Rendimento di ricerca:</strong> Attività prioritarie, date
-            scelte e limiti dei guadagni stimati sono più chiari.
+            <strong>Numeri più precisi:</strong> Le misure mancanti non contano
+            come zero e i dati Analytics limitati non danno conclusioni certe;
+            le posizioni usano le stesse date, priorità e limiti delle stime
+            sono spiegati e i filtri non cambiano il guadagno mensile stimato.
           </li>
           <li>
-            <strong>Numeri più precisi:</strong> Dashboard, Opportunità,
-            Posizioni e Analytics distinguono le misure mancanti dallo zero e
-            indicano la copertura dei confronti.
+            <strong>Stato della connessione:</strong> La scelta della proprietà
+            è distinta dall’accesso verificato e i vecchi risultati non sono
+            attuali dopo un cambio di account; le connessioni Google senza
+            risposta smettono di attendere, gli errori temporanei invitano a
+            riprovare e i servizi disattivati indicano cosa attivare.
           </li>
           <li>
-            <strong>Stato della connessione:</strong> Le impostazioni
-            distinguono la scelta di una proprietà dall’accesso verificato ai
-            dati; dopo un cambio di account i vecchi risultati non sono
-            considerati attuali.
+            <strong>Dati salvati:</strong> Aggiungere o rimuovere etichette non
+            lascia modifiche a metà, le etichette in uso non si possono
+            eliminare, lo storico resta legato alla proprietà corretta e le
+            attività in attesa seguono l’ordine giusto.
+          </li>
+          <li>
+            <strong>Avvio Windows:</strong> I file di lavoro vengono salvati
+            nella cartella utente; le connessioni riparate dell’assistente
+            restano valide al riavvio e il controllo iniziale non si blocca più.
           </li>
         </ul>
         <h3 id="sicurezza">🔒 Sicurezza</h3>
@@ -1992,7 +2001,7 @@
         <p>
           seowatcher usa numeri 0.x Alpha fino alla 1.0. Una nuova funzionalità
           visibile aumenta il numero centrale (0.7.1 → 0.8.0); una versione con
-          sole correzioni aumenta l’ultimo (0.8.0 → 0.8.1). Una nuova voce si
+          sole correzioni aumenta l’ultimo (0.8.0 → 0.8.2). Una nuova voce si
           aggiunge solo per una tappa che gli utenti notano; le piccole
           correzioni confluiscono nella voce corrente, che prende il numero più
           recente. Le versioni da 0.0.0 a 0.4.3 sono state pubblicate in origine
@@ -2023,7 +2032,7 @@
           ><span class="pager-next empty"></span>
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 27 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 28 ottobre 2026. Se si nota un errore,
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -2036,7 +2045,7 @@
         <p class="toc-label">In questa pagina</p>
         <ol>
           <li>
-            <a href="#0-8-1-alpha-2026-10-27">0.8.1 Alpha — 2026-10-27</a>
+            <a href="#0-8-2-alpha-2026-10-28">0.8.2 Alpha — 2026-10-28</a>
           </li>
           <li>
             <a href="#0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</a>

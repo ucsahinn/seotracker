@@ -15,7 +15,7 @@ sürümü yayımlamak) hesap ve onay gerektirir; bu dosya onları kendiliğinden
   PATCH olamaz.
 - **Az giriş.** CHANGELOG'da yalnızca kullanıcıların fark edeceği dönüm
   noktaları için yeni giriş açılır. Şu an üç giriş var: 0.2.1 (ilk yayın),
-  0.4.3 (Windows kurulumu ve site) ve 0.8.1 (0.5.0'dan bu yana her şey).
+  0.4.3 (Windows kurulumu ve site) ve 0.8.2 (0.5.0'dan bu yana her şey).
   Her giriş, grubundaki en yüksek yayımlanmış sürümün numarasını ve tarihini
   taşır; böylece her giriş gerçek bir etikete karşılık gelir.
 - **Yama nereye gider.** Küçük düzeltme sürümü yeni giriş açmaz. Düzeltmeyi
@@ -50,12 +50,13 @@ yeni bir giriş ya da birleştirme olduğunda ikisi birlikte güncellenir.
 | v2.2.1      | 0.2.1                                  |
 | v2.3.0      | 0.4.3 (0.3.0 bu girişte birleştirildi) |
 | v2.4.3      | 0.4.3                                  |
-| v0.5.0      | 0.8.1 (0.5.0 bu girişte birleştirildi) |
-| v0.6.0      | 0.8.1 (0.6.0 bu girişte birleştirildi) |
-| v0.7.0      | 0.8.1 (0.7.0 bu girişte birleştirildi) |
-| v0.7.1      | 0.8.1 (0.7.1 bu girişte birleştirildi) |
-| v0.8.0      | 0.8.1 (0.8.0 bu girişte birleştirildi) |
-| v0.8.1      | 0.8.1                                  |
+| v0.5.0      | 0.8.2 (0.5.0 bu girişte birleştirildi) |
+| v0.6.0      | 0.8.2 (0.6.0 bu girişte birleştirildi) |
+| v0.7.0      | 0.8.2 (0.7.0 bu girişte birleştirildi) |
+| v0.7.1      | 0.8.2 (0.7.1 bu girişte birleştirildi) |
+| v0.8.0      | 0.8.2 (0.8.0 bu girişte birleştirildi) |
+| v0.8.1      | 0.8.2 (0.8.1 bu girişte birleştirildi) |
+| v0.8.2      | 0.8.2                                  |
 
 Dikkat edilecekler:
 

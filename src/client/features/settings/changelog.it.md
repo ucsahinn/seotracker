@@ -2,9 +2,9 @@
 
 Novità e correzioni, dalla versione più recente.
 
-## [0.8.1] Alpha — 2026-10-27
+## [0.8.2] Alpha — 2026-10-28
 
-Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.1: verifica del sito, dashboard, notifiche e sei lingue, con dati più precisi e schermate più leggibili.
+Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.2: verifica del sito, dashboard, notifiche e sei lingue, con dati più precisi e schermate più leggibili.
 
 ### ✨ In evidenza
 
@@ -66,13 +66,13 @@ Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.1: verifica del s
 
 ### 🛠️ Correzioni
 
-- **Verifica più accurata:** Sono stati corretti gli errori trovati su siti reali; i risultati sono più affidabili.
-- **Bene sul telefono:** La schermata di verifica e il report scaricato non vanno più fuori schermo sul telefono.
-- **Nuovo progetto:** L'elenco dei paesi non viene più tagliato sul telefono; Esc chiude l'elenco e conserva ciò che hai scritto.
-- **Segnalazione problemi:** Il pacchetto diagnostico nell'Aiuto descrive meglio il problema e non include gli indirizzi delle tue pagine.
-- **Rendimento di ricerca:** Attività prioritarie, date scelte e limiti dei guadagni stimati sono più chiari.
-- **Numeri più precisi:** Dashboard, Opportunità, Posizioni e Analytics distinguono le misure mancanti dallo zero e indicano la copertura dei confronti.
-- **Stato della connessione:** Le impostazioni distinguono la scelta di una proprietà dall’accesso verificato ai dati; dopo un cambio di account i vecchi risultati non sono considerati attuali.
+- **Verifiche più accurate:** Gli errori trovati su siti reali sono stati corretti; i confronti usano le pagine di ciascuna verifica e la verifica resta registrata se l’avvio non riesce.
+- **Menu e tastiera:** Schermate, report ed elenchi dei paesi restano nei limiti del telefono; i menu restano visibili, il focus resta nella finestra aperta ed Esc chiude solo l’elenco in primo piano senza cancellare il testo; i lettori di schermo annunciano le selezioni e Analytics mostra i canali nella tua lingua.
+- **Segnalazione problemi:** Il pacchetto diagnostico nell’Aiuto descrive meglio il problema e non include gli indirizzi delle tue pagine.
+- **Numeri più precisi:** Le misure mancanti non contano come zero e i dati Analytics limitati non danno conclusioni certe; le posizioni usano le stesse date, priorità e limiti delle stime sono spiegati e i filtri non cambiano il guadagno mensile stimato.
+- **Stato della connessione:** La scelta della proprietà è distinta dall’accesso verificato e i vecchi risultati non sono attuali dopo un cambio di account; le connessioni Google senza risposta smettono di attendere, gli errori temporanei invitano a riprovare e i servizi disattivati indicano cosa attivare.
+- **Dati salvati:** Aggiungere o rimuovere etichette non lascia modifiche a metà, le etichette in uso non si possono eliminare, lo storico resta legato alla proprietà corretta e le attività in attesa seguono l’ordine giusto.
+- **Avvio Windows:** I file di lavoro vengono salvati nella cartella utente; le connessioni riparate dell’assistente restano valide al riavvio e il controllo iniziale non si blocca più.
 
 ### 🔒 Sicurezza
 

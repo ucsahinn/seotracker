@@ -9,7 +9,7 @@
     <title>Notas da versão | Guia do seowatcher</title>
     <meta
       name="description"
-      content="seowatcher 0.8.1 Alpha — medições mais precisas, telas mais legíveis e visualizações revisadas de projetos, pesquisas salvas e relatórios."
+      content="seowatcher 0.8.2 Alpha — comparações mais precisas, menus mais fáceis, dados protegidos e correções na abertura do Windows."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -86,7 +86,7 @@
     <meta property="og:title" content="Notas da versão | Guia do seowatcher" />
     <meta
       property="og:description"
-      content="seowatcher 0.8.1 Alpha — medições mais precisas, telas mais legíveis e visualizações revisadas de projetos, pesquisas salvas e relatórios."
+      content="seowatcher 0.8.2 Alpha — comparações mais precisas, menus mais fáceis, dados protegidos e correções na abertura do Windows."
     />
     <meta
       property="og:image"
@@ -99,7 +99,7 @@
       property="og:image:alt"
       content="Cartão do seowatcher: o painel do aplicativo com dados do Search Console, do Analytics 4 e da auditoria do site, e um botão para baixar para Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-28" />
     <meta
       property="og:url"
       content="https://seowatcher.io/pt/guias/notas-da-versao/"
@@ -114,7 +114,7 @@
     <meta name="twitter:title" content="Notas da versão | Guia do seowatcher" />
     <meta
       name="twitter:description"
-      content="seowatcher 0.8.1 Alpha — medições mais precisas, telas mais legíveis e visualizações revisadas de projetos, pesquisas salvas e relatórios."
+      content="seowatcher 0.8.2 Alpha — comparações mais precisas, menus mais fáceis, dados protegidos e correções na abertura do Windows."
     />
     <meta
       name="twitter:image"
@@ -155,10 +155,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/pt/guias/notas-da-versao/#article",
             "headline": "Notas da versão",
-            "description": "seowatcher 0.8.1 Alpha — medições mais precisas, telas mais legíveis e visualizações revisadas de projetos, pesquisas salvas e relatórios.",
+            "description": "seowatcher 0.8.2 Alpha — comparações mais precisas, menus mais fáceis, dados protegidos e correções na abertura do Windows.",
             "url": "https://seowatcher.io/pt/guias/notas-da-versao/",
             "inLanguage": "pt",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-28",
             "articleSection": "Ajuda e referência",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -193,7 +193,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.1" defer></script>
+    <script src="/assets/docs.js?v=0.8.2" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1523,11 +1523,11 @@
       <article id="icerik" data-page="surum-notlari">
         <h1>Notas da versão</h1>
         <p class="lede">
-          seowatcher 0.8.1 Alpha — medições mais precisas, telas mais legíveis e
-          visualizações revisadas de projetos, pesquisas salvas e relatórios.
+          seowatcher 0.8.2 Alpha — comparações mais precisas, menus mais fáceis,
+          dados protegidos e correções na abertura do Windows.
         </p>
         <p>
-          A versão mais recente é a <strong>0.8.1 Alpha</strong>, de 27 de
+          A versão mais recente é a <strong>0.8.2 Alpha</strong>, de 28 de
           outubro de 2026. Os dados são mantidos na atualização.
         </p>
         <p>
@@ -1535,9 +1535,9 @@
           manualmente; o atualizador antigo não reconhece o número menor como
           mais recente.
         </p>
-        <h2 id="0-8-1-alpha-2026-10-27">0.8.1 Alpha — 2026-10-27</h2>
+        <h2 id="0-8-2-alpha-2026-10-28">0.8.2 Alpha — 2026-10-28</h2>
         <p>
-          Esta entrada reúne novidades e correções da 0.5.0 à 0.8.1: auditoria
+          Esta entrada reúne novidades e correções da 0.5.0 à 0.8.2: auditoria
           do site, painel, notificações e seis idiomas, com dados mais precisos
           e telas mais legíveis.
         </p>
@@ -1716,16 +1716,17 @@
         <h3 id="correcoes">🛠️ Correções</h3>
         <ul>
           <li>
-            <strong>Auditoria mais precisa:</strong> Erros encontrados em sites
-            reais foram corrigidos; os resultados ficaram mais confiáveis.
+            <strong>Auditorias mais precisas:</strong> Erros encontrados em
+            sites reais foram corrigidos; as comparações usam as páginas de cada
+            auditoria e o registro é mantido se a auditoria não conseguir
+            iniciar.
           </li>
           <li>
-            <strong>Boa no celular:</strong> A tela de auditoria e o relatório
-            baixado não transbordam mais no celular.
-          </li>
-          <li>
-            <strong>Novo projeto:</strong> A lista de países não é mais cortada
-            no celular; Esc fecha a lista e mantém o que você digitou.
+            <strong>Menus e teclado:</strong> Telas, relatórios e listas de
+            países cabem no celular; os menus ficam visíveis, o foco fica na
+            janela aberta e Esc fecha só a lista da frente sem apagar seu texto;
+            leitores de tela anunciam as seleções e o Analytics mostra os canais
+            no seu idioma.
           </li>
           <li>
             <strong>Relato de problemas:</strong> O pacote de diagnóstico da
@@ -1733,18 +1734,29 @@
             páginas.
           </li>
           <li>
-            <strong>Desempenho de pesquisa:</strong> Tarefas prioritárias, datas
-            escolhidas e limites dos ganhos estimados estão mais claros.
+            <strong>Números mais precisos:</strong> Medições ausentes não contam
+            como zero e dados limitados do Analytics não geram conclusões
+            certas; as posições usam as mesmas datas, prioridades e limites das
+            estimativas são explicados e os filtros não mudam o ganho mensal
+            estimado.
           </li>
           <li>
-            <strong>Números mais precisos:</strong> Painel, Oportunidades,
-            Posições e Analytics distinguem medições ausentes de zero e informam
-            a cobertura das comparações.
+            <strong>Estado da conexão:</strong> A escolha da propriedade é
+            separada do acesso verificado e resultados antigos não são atuais
+            após trocar de conta; conexões Google sem resposta param de esperar,
+            erros temporários sugerem tentar novamente e serviços desativados
+            explicam o que ativar.
           </li>
           <li>
-            <strong>Estado da conexão:</strong> As configurações distinguem a
-            escolha de uma propriedade do acesso verificado aos dados; após
-            trocar de conta, resultados antigos não são tratados como atuais.
+            <strong>Dados salvos:</strong> Adicionar ou remover etiquetas não
+            deixa alterações pela metade, etiquetas em uso não podem ser
+            excluídas, o histórico fica ligado à propriedade certa e as tarefas
+            pendentes seguem a ordem correta.
+          </li>
+          <li>
+            <strong>Abertura no Windows:</strong> Os arquivos de trabalho ficam
+            na pasta do usuário; conexões reparadas do assistente são mantidas
+            ao reabrir e a verificação inicial não fica mais travada.
           </li>
         </ul>
         <h3 id="seguranca">🔒 Segurança</h3>
@@ -1968,7 +1980,7 @@
         <p>
           O seowatcher usa números 0.x Alpha até a 1.0. Um novo recurso
           perceptível aumenta o número do meio (0.7.1 → 0.8.0); uma versão só
-          com correções aumenta o último (0.8.0 → 0.8.1). Uma nova entrada só é
+          com correções aumenta o último (0.8.0 → 0.8.2). Uma nova entrada só é
           criada para um marco que os usuários percebem; as pequenas correções
           entram na entrada atual, que recebe o número mais novo. As versões de
           0.0.0 a 0.4.3 foram publicadas primeiro com tags v2.x; a
@@ -1999,7 +2011,7 @@
           ><span class="pager-next empty"></span>
         </nav>
         <p class="meta">
-          Última atualização: 27 de outubro de 2026. Viu algum erro?
+          Última atualização: 28 de outubro de 2026. Viu algum erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -2012,7 +2024,7 @@
         <p class="toc-label">Nesta página</p>
         <ol>
           <li>
-            <a href="#0-8-1-alpha-2026-10-27">0.8.1 Alpha — 2026-10-27</a>
+            <a href="#0-8-2-alpha-2026-10-28">0.8.2 Alpha — 2026-10-28</a>
           </li>
           <li>
             <a href="#0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</a>

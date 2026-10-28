@@ -1,16 +1,16 @@
 ---
 title: Notes de version
-description: seowatcher 0.8.1 Alpha — des mesures plus justes, des écrans plus lisibles et des vues de projets, de recherches enregistrées et de rapports revues.
-updated: 2026-10-27
+description: seowatcher 0.8.2 Alpha — des comparaisons plus justes, des menus plus pratiques, des données préservées et un démarrage Windows corrigé.
+updated: 2026-10-28
 ---
 
-La dernière version est la **0.8.1 Alpha**, du 27 octobre 2026. Vos données sont conservées lors de la mise à jour.
+La dernière version est la **0.8.2 Alpha**, du 28 octobre 2026. Vos données sont conservées lors de la mise à jour.
 
 Pour passer de 2.x à 0.x.x Alpha, lancez le nouvel installateur manuellement ; l’ancien outil ne reconnaît pas le numéro inférieur comme plus récent.
 
-## 0.8.1 Alpha — 2026-10-27
+## 0.8.2 Alpha — 2026-10-28
 
-Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.1 : audit du site, tableau de bord, notifications et six langues, avec des données plus justes et des écrans plus lisibles.
+Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.2 : audit du site, tableau de bord, notifications et six langues, avec des données plus justes et des écrans plus lisibles.
 
 ### ✨ Points forts
 
@@ -72,13 +72,13 @@ Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.1 : a
 
 ### 🛠️ Corrections
 
-- **Audit plus précis:** Des erreurs trouvées sur de vrais sites ont été corrigées ; les résultats sont plus fiables.
-- **Bien sur téléphone:** L'écran d'audit et le rapport téléchargé ne débordent plus sur un téléphone.
-- **Nouveau projet:** La liste des pays n'est plus coupée sur un téléphone ; Échap ferme la liste et garde votre saisie.
-- **Signalement de problème:** Le paquet de diagnostic de l'Aide décrit mieux le problème et ne contient pas les adresses de vos pages.
-- **Performances de recherche :** Les tâches prioritaires, les dates choisies et les limites des gains estimés sont plus claires.
-- **Chiffres plus justes :** Tableau de bord, Opportunités, Classements et Analytics distinguent les mesures absentes de zéro et précisent la couverture des comparaisons.
-- **État de connexion :** Les paramètres distinguent la sélection d’une propriété d’un accès aux données vérifié ; après un changement de compte, les anciens résultats ne sont plus considérés comme actuels.
+- **Audits plus précis:** Les erreurs trouvées sur de vrais sites ont été corrigées ; les comparaisons utilisent les pages de chaque audit et un audit reste enregistré si son démarrage échoue.
+- **Menus et clavier:** Écrans, rapports et listes de pays tiennent sur téléphone ; les menus restent visibles, le focus reste dans la fenêtre ouverte et Échap ferme seulement la liste au premier plan sans effacer votre saisie ; les lecteurs d’écran annoncent les choix et Analytics affiche les noms des canaux dans votre langue.
+- **Signalement de problèmes:** Le paquet de diagnostic de l’Aide décrit mieux le problème et ne contient pas les adresses de vos pages.
+- **Chiffres plus justes:** Les mesures absentes ne comptent pas comme zéro et les données Analytics limitées ne donnent pas de conclusion certaine ; les classements utilisent les mêmes dates, les priorités et limites des estimations sont expliquées, et filtrer ne change pas le gain mensuel estimé.
+- **État de connexion:** Le choix d’une propriété est distinct de l’accès vérifié et les anciens résultats ne sont plus actuels après un changement de compte ; une connexion Google sans réponse cesse d’attendre, une erreur passagère invite à réessayer et un service désactivé indique quoi activer.
+- **Données conservées:** L’ajout et le retrait d’étiquettes se terminent entièrement, les étiquettes utilisées ne peuvent pas être supprimées, l’historique reste lié à la bonne propriété et les tâches en attente suivent le bon ordre.
+- **Démarrage Windows:** Les fichiers de travail sont enregistrés dans votre dossier utilisateur ; les connexions réparées de l’assistant sont conservées au redémarrage et le contrôle de démarrage ne reste plus bloqué.
 
 ### 🔒 Sécurité
 
@@ -169,6 +169,6 @@ La première version de seowatcher : elle réunit vos données Google, l'audit d
 
 ## Numéros de version
 
-seowatcher utilise des numéros 0.x Alpha jusqu’à la 1.0. Une nouvelle fonctionnalité visible augmente le deuxième numéro (0.7.1 → 0.8.0) ; une version qui ne contient que des corrections augmente le dernier (0.8.0 → 0.8.1). Une nouvelle entrée n’est ajoutée que pour une étape marquante que les utilisateurs remarquent ; les petites corrections rejoignent l’entrée en cours, qui prend le numéro le plus récent. Les versions 0.0.0 à 0.4.3 ont d’abord été publiées avec des étiquettes v2.x ; la correspondance figure dans le tableau au début de [CHANGELOG.md](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md).
+seowatcher utilise des numéros 0.x Alpha jusqu’à la 1.0. Une nouvelle fonctionnalité visible augmente le deuxième numéro (0.7.1 → 0.8.0) ; une version qui ne contient que des corrections augmente le dernier (0.8.0 → 0.8.2). Une nouvelle entrée n’est ajoutée que pour une étape marquante que les utilisateurs remarquent ; les petites corrections rejoignent l’entrée en cours, qui prend le numéro le plus récent. Les versions 0.0.0 à 0.4.3 ont d’abord été publiées avec des étiquettes v2.x ; la correspondance figure dans le tableau au début de [CHANGELOG.md](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md).
 
 L'historique complet se trouve dans [CHANGELOG.md](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md) sur GitHub.

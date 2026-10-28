@@ -2,9 +2,9 @@
 
 New features and fixes, newest release first.
 
-## [0.8.1] Alpha — 2026-10-27
+## [0.8.2] Alpha — 2026-10-28
 
-This entry brings together features and fixes from 0.5.0 to 0.8.1: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
+This entry brings together features and fixes from 0.5.0 to 0.8.2: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
 
 ### ✨ Highlights
 
@@ -66,13 +66,13 @@ This entry brings together features and fixes from 0.5.0 to 0.8.1: site audits, 
 
 ### 🛠️ Fixes
 
-- **More accurate audit:** Mistakes found on real sites were fixed, so results are more reliable.
-- **Works on phones:** The audit screen and the downloaded report no longer overflow on a phone.
-- **New project:** The country list is no longer cut off on a phone; Esc closes the list and keeps what you typed.
+- **More accurate audits:** Errors found on real sites were fixed; comparisons use each audit’s own pages, and an audit record is kept if startup fails.
+- **Menus and keyboard:** Screens, reports and country lists fit on phones; menus stay on screen, keyboard focus stays in the open window, and Esc closes only the top list while keeping your text; screen readers announce selections, and Analytics shows channel names in your language.
 - **Problem reports:** The diagnostics package in Help describes the problem better and leaves out your page addresses.
-- **Search performance:** Priority tasks, selected dates and the limits of estimated gains are clearer.
-- **More accurate numbers:** Dashboard, Opportunities, Rankings and Analytics keep missing measurements separate from zero and explain comparison coverage.
-- **Connection status:** Settings distinguish selecting a property from verified data access; after an account change, old results are no longer treated as current.
+- **More accurate numbers:** Missing measurements are not counted as zero, and limited Analytics data is not presented as a firm conclusion; rankings use matching dates, priority tasks and estimate limits are explained, and filtering does not change estimated monthly gains.
+- **Connection status:** Selecting a property is separate from verified access, and old results are not treated as current after an account change; unresponsive Google connections stop waiting, temporary errors suggest trying again, and disabled services explain what to enable.
+- **Saved data:** Adding or removing labels completes in full, labels in use cannot be deleted, historical data stays tied to the right property, and waiting tasks are handled in the right order.
+- **Windows startup:** Working files are saved in your user folder; repaired assistant connections survive a restart, and the startup check no longer hangs.
 
 ### 🔒 Security
 

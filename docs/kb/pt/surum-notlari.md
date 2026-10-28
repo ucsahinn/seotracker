@@ -1,16 +1,16 @@
 ---
 title: Notas da versão
-description: seowatcher 0.8.1 Alpha — medições mais precisas, telas mais legíveis e visualizações revisadas de projetos, pesquisas salvas e relatórios.
-updated: 2026-10-27
+description: seowatcher 0.8.2 Alpha — comparações mais precisas, menus mais fáceis, dados protegidos e correções na abertura do Windows.
+updated: 2026-10-28
 ---
 
-A versão mais recente é a **0.8.1 Alpha**, de 27 de outubro de 2026. Os dados são mantidos na atualização.
+A versão mais recente é a **0.8.2 Alpha**, de 28 de outubro de 2026. Os dados são mantidos na atualização.
 
 Para passar de 2.x para 0.x.x Alpha, execute o novo instalador manualmente; o atualizador antigo não reconhece o número menor como mais recente.
 
-## 0.8.1 Alpha — 2026-10-27
+## 0.8.2 Alpha — 2026-10-28
 
-Esta entrada reúne novidades e correções da 0.5.0 à 0.8.1: auditoria do site, painel, notificações e seis idiomas, com dados mais precisos e telas mais legíveis.
+Esta entrada reúne novidades e correções da 0.5.0 à 0.8.2: auditoria do site, painel, notificações e seis idiomas, com dados mais precisos e telas mais legíveis.
 
 ### ✨ Destaques
 
@@ -72,13 +72,13 @@ Esta entrada reúne novidades e correções da 0.5.0 à 0.8.1: auditoria do site
 
 ### 🛠️ Correções
 
-- **Auditoria mais precisa:** Erros encontrados em sites reais foram corrigidos; os resultados ficaram mais confiáveis.
-- **Boa no celular:** A tela de auditoria e o relatório baixado não transbordam mais no celular.
-- **Novo projeto:** A lista de países não é mais cortada no celular; Esc fecha a lista e mantém o que você digitou.
+- **Auditorias mais precisas:** Erros encontrados em sites reais foram corrigidos; as comparações usam as páginas de cada auditoria e o registro é mantido se a auditoria não conseguir iniciar.
+- **Menus e teclado:** Telas, relatórios e listas de países cabem no celular; os menus ficam visíveis, o foco fica na janela aberta e Esc fecha só a lista da frente sem apagar seu texto; leitores de tela anunciam as seleções e o Analytics mostra os canais no seu idioma.
 - **Relato de problemas:** O pacote de diagnóstico da Ajuda descreve melhor o problema e não inclui os endereços das suas páginas.
-- **Desempenho de pesquisa:** Tarefas prioritárias, datas escolhidas e limites dos ganhos estimados estão mais claros.
-- **Números mais precisos:** Painel, Oportunidades, Posições e Analytics distinguem medições ausentes de zero e informam a cobertura das comparações.
-- **Estado da conexão:** As configurações distinguem a escolha de uma propriedade do acesso verificado aos dados; após trocar de conta, resultados antigos não são tratados como atuais.
+- **Números mais precisos:** Medições ausentes não contam como zero e dados limitados do Analytics não geram conclusões certas; as posições usam as mesmas datas, prioridades e limites das estimativas são explicados e os filtros não mudam o ganho mensal estimado.
+- **Estado da conexão:** A escolha da propriedade é separada do acesso verificado e resultados antigos não são atuais após trocar de conta; conexões Google sem resposta param de esperar, erros temporários sugerem tentar novamente e serviços desativados explicam o que ativar.
+- **Dados salvos:** Adicionar ou remover etiquetas não deixa alterações pela metade, etiquetas em uso não podem ser excluídas, o histórico fica ligado à propriedade certa e as tarefas pendentes seguem a ordem correta.
+- **Abertura no Windows:** Os arquivos de trabalho ficam na pasta do usuário; conexões reparadas do assistente são mantidas ao reabrir e a verificação inicial não fica mais travada.
 
 ### 🔒 Segurança
 
@@ -169,6 +169,6 @@ A primeira versão do seowatcher: reúne seus dados do Google, a auditoria do si
 
 ## Numeração das versões
 
-O seowatcher usa números 0.x Alpha até a 1.0. Um novo recurso perceptível aumenta o número do meio (0.7.1 → 0.8.0); uma versão só com correções aumenta o último (0.8.0 → 0.8.1). Uma nova entrada só é criada para um marco que os usuários percebem; as pequenas correções entram na entrada atual, que recebe o número mais novo. As versões de 0.0.0 a 0.4.3 foram publicadas primeiro com tags v2.x; a correspondência está na tabela no início do [CHANGELOG.md](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md).
+O seowatcher usa números 0.x Alpha até a 1.0. Um novo recurso perceptível aumenta o número do meio (0.7.1 → 0.8.0); uma versão só com correções aumenta o último (0.8.0 → 0.8.2). Uma nova entrada só é criada para um marco que os usuários percebem; as pequenas correções entram na entrada atual, que recebe o número mais novo. As versões de 0.0.0 a 0.4.3 foram publicadas primeiro com tags v2.x; a correspondência está na tabela no início do [CHANGELOG.md](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md).
 
 O histórico completo está no [CHANGELOG.md](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md) no GitHub.

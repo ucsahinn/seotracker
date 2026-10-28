@@ -2,9 +2,9 @@
 
 Yenilikler ve düzeltmeler, en yeni sürümden başlayarak listelenir.
 
-## [0.8.1] Alpha — 2026-10-27
+## [0.8.2] Alpha — 2026-10-28
 
-Bu giriş 0.5.0'dan 0.8.1'e kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
+Bu giriş 0.5.0'dan 0.8.2'ye kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
 
 ### ✨ Öne çıkanlar
 
@@ -66,13 +66,13 @@ Bu giriş 0.5.0'dan 0.8.1'e kadar gelen yenilikleri ve düzeltmeleri toplar: sit
 
 ### 🛠️ Düzeltmeler
 
-- **Daha doğru denetim:** Gerçek sitelerde bulunan hatalar giderildi; sonuçlar daha güvenilir.
-- **Telefonda düzgün:** Denetim ekranı ve indirilen rapor telefonda artık taşmaz.
-- **Yeni proje:** Telefonda ülke listesi kesilmez; Esc tuşu listeyi kapatır, yazdıklarınız silinmez.
-- **Sorun bildirme:** Yardım'daki tanılama paketi sorunu daha iyi anlatır ve sayfa adreslerinizi içermez.
-- **Arama performansı:** Öncelikli işler, seçilen tarihler ve kazanç tahminlerinin sınırları daha açık gösterilir.
-- **Daha doğru sayılar:** Panel, Fırsatlar, Sıralamalar ve Analytics eksik ölçümü sıfır saymaz; karşılaştırmalar veri kapsamını belirtir.
-- **Bağlantı durumu:** Ayarlar'da mülk seçmek ile veri erişiminin doğrulanması ayrı gösterilir; hesap değişince eski sonuçlar güncel sayılmaz.
+- **Daha doğru denetim:** Gerçek sitelerdeki hatalar giderildi; karşılaştırmalar her denetimin kendi sayfalarını kullanır, başlatılamayan denetimin kaydı korunur.
+- **Menüler ve klavye:** Telefonda ekranlar, raporlar ve ülke listesi taşmaz; menüler ekrana sığar, klavye odağı açık pencerede kalır, Esc yalnızca üstteki listeyi kapatır ve yazdıklarınızı korur; ekran okuyucular seçimleri, Analytics ise kanal adlarını seçtiğiniz dilde bildirir.
+- **Sorun bildirme:** Yardım’daki tanılama paketi sorunu daha iyi anlatır ve sayfa adreslerinizi içermez.
+- **Daha doğru sayılar:** Eksik ölçümler sıfır sayılmaz, sınırlı Analytics verisi kesin sonuç gibi sunulmaz; sıralamalar aynı tarihleri kullanır, öncelikli işler ve tahminlerin sınırları açıklanır, filtrelemek aylık kazanç tahminini değiştirmez.
+- **Bağlantı durumu:** Mülk seçimi ile doğrulanmış erişim ayrıdır, hesap değişince eski sonuçlar güncel sayılmaz; yanıt vermeyen Google bağlantısı beklemede kalmaz, geçici hatada yeniden denemeniz, kapalı hizmette neyi açmanız gerektiği söylenir.
+- **Kayıtların korunması:** Etiket ekleme ve kaldırma yarım kalmaz, kullanılan etiket silinmez; geçmiş veriler doğru mülkle tamamlanır ve bekleyen işler doğru sırada ele alınır.
+- **Windows açılışı:** Çalışma dosyaları kullanıcı klasörüne yazılır; onarılan asistan bağlantısı yeniden açılışta korunur ve başlangıç kontrolü takılı kalmaz.
 
 ### 🔒 Güvenlik
 

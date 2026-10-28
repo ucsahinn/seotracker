@@ -9,7 +9,7 @@
     <title>Notes de version | Guide seowatcher</title>
     <meta
       name="description"
-      content="seowatcher 0.8.1 Alpha — des mesures plus justes, des écrans plus lisibles et des vues de projets, de recherches enregistrées et de rapports revues."
+      content="seowatcher 0.8.2 Alpha — des comparaisons plus justes, des menus plus pratiques, des données préservées et un démarrage Windows corrigé."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -86,7 +86,7 @@
     <meta property="og:title" content="Notes de version | Guide seowatcher" />
     <meta
       property="og:description"
-      content="seowatcher 0.8.1 Alpha — des mesures plus justes, des écrans plus lisibles et des vues de projets, de recherches enregistrées et de rapports revues."
+      content="seowatcher 0.8.2 Alpha — des comparaisons plus justes, des menus plus pratiques, des données préservées et un démarrage Windows corrigé."
     />
     <meta
       property="og:image"
@@ -99,7 +99,7 @@
       property="og:image:alt"
       content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-28" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/guides/notes-de-version/"
@@ -114,7 +114,7 @@
     <meta name="twitter:title" content="Notes de version | Guide seowatcher" />
     <meta
       name="twitter:description"
-      content="seowatcher 0.8.1 Alpha — des mesures plus justes, des écrans plus lisibles et des vues de projets, de recherches enregistrées et de rapports revues."
+      content="seowatcher 0.8.2 Alpha — des comparaisons plus justes, des menus plus pratiques, des données préservées et un démarrage Windows corrigé."
     />
     <meta
       name="twitter:image"
@@ -155,10 +155,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/fr/guides/notes-de-version/#article",
             "headline": "Notes de version",
-            "description": "seowatcher 0.8.1 Alpha — des mesures plus justes, des écrans plus lisibles et des vues de projets, de recherches enregistrées et de rapports revues.",
+            "description": "seowatcher 0.8.2 Alpha — des comparaisons plus justes, des menus plus pratiques, des données préservées et un démarrage Windows corrigé.",
             "url": "https://seowatcher.io/fr/guides/notes-de-version/",
             "inLanguage": "fr",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-28",
             "articleSection": "Aide et référence",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -193,7 +193,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.1" defer></script>
+    <script src="/assets/docs.js?v=0.8.2" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1525,12 +1525,11 @@
       <article id="icerik" data-page="surum-notlari">
         <h1>Notes de version</h1>
         <p class="lede">
-          seowatcher 0.8.1 Alpha — des mesures plus justes, des écrans plus
-          lisibles et des vues de projets, de recherches enregistrées et de
-          rapports revues.
+          seowatcher 0.8.2 Alpha — des comparaisons plus justes, des menus plus
+          pratiques, des données préservées et un démarrage Windows corrigé.
         </p>
         <p>
-          La dernière version est la <strong>0.8.1 Alpha</strong>, du 27 octobre
+          La dernière version est la <strong>0.8.2 Alpha</strong>, du 28 octobre
           2026. Vos données sont conservées lors de la mise à jour.
         </p>
         <p>
@@ -1538,10 +1537,10 @@
           manuellement ; l’ancien outil ne reconnaît pas le numéro inférieur
           comme plus récent.
         </p>
-        <h2 id="0-8-1-alpha-2026-10-27">0.8.1 Alpha — 2026-10-27</h2>
+        <h2 id="0-8-2-alpha-2026-10-28">0.8.2 Alpha — 2026-10-28</h2>
         <p>
           Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la
-          0.8.1 : audit du site, tableau de bord, notifications et six langues,
+          0.8.2 : audit du site, tableau de bord, notifications et six langues,
           avec des données plus justes et des écrans plus lisibles.
         </p>
         <h3 id="points-forts">✨ Points forts</h3>
@@ -1723,37 +1722,49 @@
         <h3 id="corrections">🛠️ Corrections</h3>
         <ul>
           <li>
-            <strong>Audit plus précis:</strong> Des erreurs trouvées sur de
-            vrais sites ont été corrigées ; les résultats sont plus fiables.
+            <strong>Audits plus précis:</strong> Les erreurs trouvées sur de
+            vrais sites ont été corrigées ; les comparaisons utilisent les pages
+            de chaque audit et un audit reste enregistré si son démarrage
+            échoue.
           </li>
           <li>
-            <strong>Bien sur téléphone:</strong> L'écran d'audit et le rapport
-            téléchargé ne débordent plus sur un téléphone.
+            <strong>Menus et clavier:</strong> Écrans, rapports et listes de
+            pays tiennent sur téléphone ; les menus restent visibles, le focus
+            reste dans la fenêtre ouverte et Échap ferme seulement la liste au
+            premier plan sans effacer votre saisie ; les lecteurs d’écran
+            annoncent les choix et Analytics affiche les noms des canaux dans
+            votre langue.
           </li>
           <li>
-            <strong>Nouveau projet:</strong> La liste des pays n'est plus coupée
-            sur un téléphone ; Échap ferme la liste et garde votre saisie.
+            <strong>Signalement de problèmes:</strong> Le paquet de diagnostic
+            de l’Aide décrit mieux le problème et ne contient pas les adresses
+            de vos pages.
           </li>
           <li>
-            <strong>Signalement de problème:</strong> Le paquet de diagnostic de
-            l'Aide décrit mieux le problème et ne contient pas les adresses de
-            vos pages.
+            <strong>Chiffres plus justes:</strong> Les mesures absentes ne
+            comptent pas comme zéro et les données Analytics limitées ne donnent
+            pas de conclusion certaine ; les classements utilisent les mêmes
+            dates, les priorités et limites des estimations sont expliquées, et
+            filtrer ne change pas le gain mensuel estimé.
           </li>
           <li>
-            <strong>Performances de recherche :</strong> Les tâches
-            prioritaires, les dates choisies et les limites des gains estimés
-            sont plus claires.
+            <strong>État de connexion:</strong> Le choix d’une propriété est
+            distinct de l’accès vérifié et les anciens résultats ne sont plus
+            actuels après un changement de compte ; une connexion Google sans
+            réponse cesse d’attendre, une erreur passagère invite à réessayer et
+            un service désactivé indique quoi activer.
           </li>
           <li>
-            <strong>Chiffres plus justes :</strong> Tableau de bord,
-            Opportunités, Classements et Analytics distinguent les mesures
-            absentes de zéro et précisent la couverture des comparaisons.
+            <strong>Données conservées:</strong> L’ajout et le retrait
+            d’étiquettes se terminent entièrement, les étiquettes utilisées ne
+            peuvent pas être supprimées, l’historique reste lié à la bonne
+            propriété et les tâches en attente suivent le bon ordre.
           </li>
           <li>
-            <strong>État de connexion :</strong> Les paramètres distinguent la
-            sélection d’une propriété d’un accès aux données vérifié ; après un
-            changement de compte, les anciens résultats ne sont plus considérés
-            comme actuels.
+            <strong>Démarrage Windows:</strong> Les fichiers de travail sont
+            enregistrés dans votre dossier utilisateur ; les connexions réparées
+            de l’assistant sont conservées au redémarrage et le contrôle de
+            démarrage ne reste plus bloqué.
           </li>
         </ul>
         <h3 id="securite">🔒 Sécurité</h3>
@@ -1986,7 +1997,7 @@
           seowatcher utilise des numéros 0.x Alpha jusqu’à la 1.0. Une nouvelle
           fonctionnalité visible augmente le deuxième numéro (0.7.1 → 0.8.0) ;
           une version qui ne contient que des corrections augmente le dernier
-          (0.8.0 → 0.8.1). Une nouvelle entrée n’est ajoutée que pour une étape
+          (0.8.0 → 0.8.2). Une nouvelle entrée n’est ajoutée que pour une étape
           marquante que les utilisateurs remarquent ; les petites corrections
           rejoignent l’entrée en cours, qui prend le numéro le plus récent. Les
           versions 0.0.0 à 0.4.3 ont d’abord été publiées avec des étiquettes
@@ -2014,7 +2025,7 @@
           ><span class="pager-next empty"></span>
         </nav>
         <p class="meta">
-          Dernière mise à jour: 27 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 28 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -2027,7 +2038,7 @@
         <p class="toc-label">Sur cette page</p>
         <ol>
           <li>
-            <a href="#0-8-1-alpha-2026-10-27">0.8.1 Alpha — 2026-10-27</a>
+            <a href="#0-8-2-alpha-2026-10-28">0.8.2 Alpha — 2026-10-28</a>
           </li>
           <li>
             <a href="#0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</a>
