@@ -3,8 +3,8 @@
 > seowatcher (GitHub ve uygulama içi adı: seotracker), Google Search Console, Google Analytics 4, kendi site tarayıcısı ve PageSpeed Insights verisini tek panelde toplayan ücretsiz, açık kaynaklı (MIT) bir SEO uygulamasıdır. Windows 10/11 (64 bit) için tek kurulum dosyası vardır; Mac ve Linux'ta Docker ile çalışır. Tek kullanıcılıdır, yalnızca kullanıcının kendi bilgisayarından erişilir, veri o bilgisayarda saklanır. Google, denetlenen siteler ve GitHub ile bağlantı kurar; isteğe bağlı yapay zekâ bağlantısı seçilen sağlayıcıya veri gönderebilir. Abonelik ve hesap yoktur.
 > English: seowatcher (also named seotracker) is a free, MIT-licensed, self-hosted SEO app that reads Google Search Console, Google Analytics 4, its own crawler and PageSpeed Insights. Windows 10/11 installer; Docker on macOS/Linux. Single user, localhost only, data is stored on your machine. It connects to Google, audited sites and GitHub; optional AI integrations may send data to the selected provider. Derived from open-seo. The app's interface is available in Turkish and English; the website and this guide exist in Türkçe, English, Deutsch, Français, Italiano, Português.
 
-Hızlı bilgiler: sürüm 0.8.3 Alpha, 202 denetim kuralı, yapay zekâ asistanları için 35 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 86 MB, kurulu hali 313 MB; Visual C++ çalışma zamanı pakete dahildir.
-Quick facts: version 0.8.3 Alpha, 202 audit rules, 35 MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 86 MB, installed 313 MB; the Visual C++ runtime is bundled.
+Hızlı bilgiler: sürüm 0.8.4 Alpha, 202 denetim kuralı, yapay zekâ asistanları için 35 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 86 MB, kurulu hali 313 MB; Visual C++ çalışma zamanı pakete dahildir.
+Quick facts: version 0.8.4 Alpha, 202 audit rules, 35 MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 86 MB, installed 313 MB; the Visual C++ runtime is bundled.
 
 ## Ana bağlantılar / Main links
 - [seowatcher (Türkçe)](https://seowatcher.io/): Search Console, Analytics 4 ve site denetimi tek uygulamada. Ücretsiz ve açık kaynak. Yerel veri saklama; yapay zekâ bağlantısı isteğe bağlı.
@@ -47,7 +47,7 @@ Quick facts: version 0.8.3 Alpha, 202 audit rules, 35 MCP tools and 6 ready-made
 - [Denetim kuralları](https://seowatcher.io/kilavuz/denetim-kurallari/): Site denetiminin baktığı 202 kuralın tam listesi. Her kuralın ne demek olduğunu ve nasıl düzelteceğinizi buradan okursunuz.
 - [Ajan kurulumu](https://seowatcher.io/kilavuz/ajan-kurulumu/): Ajanı güvenle bağlayın, yeni araç çağrısını doğrulayın ve SEO becerilerini kullanın.
 - [Sorun giderme](https://seowatcher.io/kilavuz/sorun-giderme/): Sık görülen sorunlar belirti, sebep ve çözümle: dolu adres numarası, Windows uyarısı, Google hataları, kota, takılan ya da durup puan vermeyen denetim, boş grafik, 401.
-- [Sürüm notları](https://seowatcher.io/kilavuz/surum-notlari/): seowatcher 0.8.3 Alpha — eksiksiz Google verisi, görünür alım zamanı, canlı ölçüm renkleri ve gerçek verilerle bulunan 25 düzeltme.
+- [Sürüm notları](https://seowatcher.io/kilavuz/surum-notlari/): seowatcher 0.8.4 Alpha — eksiksiz Google verisi, canlı renkler ve gerçek verilerle yeniden incelenen, telefonda daha okunaklı ekranlar.
 
 ## Guide: Getting started
 - [Install on Windows](https://seowatcher.io/en/docs/install-windows/): Install on Windows with a single file. First launch, update, uninstall, backup and changing the port number. No Docker or terminal needed.
@@ -66,7 +66,7 @@ Quick facts: version 0.8.3 Alpha, 202 audit rules, 35 MCP tools and 6 ready-made
 - [Site audit](https://seowatcher.io/en/docs/site-audit/): The app walks your site page by page, checks it against 202 rules and ranks the problems by importance. The score also says how much could be measured. An audit that stops early gets no score.
 - [Index status](https://seowatcher.io/en/docs/index-status/): Google's answer for each of your pages: is it in search, if not why, and when it last visited. You can ask at most 2,000 queries a day.
 - [Reports and templates](https://seowatcher.io/en/docs/reports/): Every report you download from an audit or from the Search performance screen, or have your assistant write, is a single HTML file. You open it on a phone, print it or send it by email.
-- [Project info](https://seowatcher.io/en/docs/project-context/): Project info stores local notes that you and a connected assistant can use. Filled text is not verified, and not every assistant necessarily reads it.
+- [Project context](https://seowatcher.io/en/docs/project-context/): Project context stores local notes that you and a connected assistant can use. Filled text is not verified, and not every assistant necessarily reads it.
 - [Settings](https://seowatcher.io/en/docs/settings/): Browser, installation and project scopes; Google credentials, local counters and version checks.
 
 ## Guide: Help and reference
@@ -74,7 +74,7 @@ Quick facts: version 0.8.3 Alpha, 202 audit rules, 35 MCP tools and 6 ready-made
 - [Audit rules](https://seowatcher.io/en/docs/audit-rules/): The list of 202 rules the site audit checks. For each rule you find what it means and how to fix it.
 - [Agent setup](https://seowatcher.io/en/docs/agent-setup/): Connect an agent safely, verify a new tool call and use SEO skills.
 - [Troubleshooting](https://seowatcher.io/en/docs/troubleshooting/): The most common problems: symptom, cause and fix. Port in use, the Windows warning, Google errors, quota, a stuck audit, empty charts, assistant 401.
-- [Release notes](https://seowatcher.io/en/docs/release-notes/): seowatcher 0.8.3 Alpha — complete Google data, visible fetch times, vivid metric colours and 25 fixes found with real data.
+- [Release notes](https://seowatcher.io/en/docs/release-notes/): seowatcher 0.8.4 Alpha — complete Google data, vivid colours and screens reviewed again with real data for clearer reading on phones.
 
 ## Anleitung: Erste Schritte
 - [Installation unter Windows](https://seowatcher.io/de/dokumentation/installation-unter-windows/): seowatcher mit einer einzigen Datei installieren, ohne Docker und ohne Terminal. Dazu Update, Deinstallation, Sicherung und Portnummer.
@@ -101,7 +101,7 @@ Quick facts: version 0.8.3 Alpha, 202 audit rules, 35 MCP tools and 6 ready-made
 - [Audit-Regeln](https://seowatcher.io/de/dokumentation/audit-regeln/): Die vollständige Liste der 202 Regeln, die das Website-Audit prüft. Hier lesen Sie zu jeder Regel, was sie bedeutet und wie Sie sie beheben.
 - [Assistent einrichten](https://seowatcher.io/de/dokumentation/assistent-einrichten/): Agent sicher verbinden, einen neuen Werkzeugaufruf prüfen und SEO-Fähigkeiten nutzen.
 - [Fehlerbehebung](https://seowatcher.io/de/dokumentation/fehlerbehebung/): Häufige Probleme mit Symptom, Ursache und Lösung: Port, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme, Assistent 401.
-- [Versionshinweise](https://seowatcher.io/de/dokumentation/versionshinweise/): seowatcher 0.8.3 Alpha — vollständige Google-Daten, sichtbare Abrufzeit, kräftige Messwertfarben und 25 mit echten Daten gefundene Korrekturen.
+- [Versionshinweise](https://seowatcher.io/de/dokumentation/versionshinweise/): seowatcher 0.8.4 Alpha — vollständige Google-Daten, lebendige Farben und erneut mit echten Daten geprüfte, auf dem Handy besser lesbare Ansichten.
 
 ## Guide: Pour démarrer
 - [Installation sous Windows](https://seowatcher.io/fr/guides/installation-sous-windows/): Installez l'application sous Windows avec un seul fichier : premier lancement, mise à jour, désinstallation, sauvegarde et port. Ni Docker ni terminal.
@@ -128,7 +128,7 @@ Quick facts: version 0.8.3 Alpha, 202 audit rules, 35 MCP tools and 6 ready-made
 - [Règles d'audit](https://seowatcher.io/fr/guides/regles-d-audit/): La liste complète des 202 règles de l'audit du site. Pour chacune : ce qu'elle signifie et comment la corriger.
 - [Installation de l'assistant](https://seowatcher.io/fr/guides/installation-assistant/): Connecter un agent sans exposer le jeton et vérifier un nouvel appel.
 - [Dépannage](https://seowatcher.io/fr/guides/depannage/): Problèmes fréquents par symptôme, cause et solution : port occupé, alerte Windows, erreurs Google, quota, audit bloqué, graphiques vides, assistant 401.
-- [Notes de version](https://seowatcher.io/fr/guides/notes-de-version/): seowatcher 0.8.3 Alpha — données Google complètes, heure de récupération visible, couleurs plus vives et 25 corrections issues de données réelles.
+- [Notes de version](https://seowatcher.io/fr/guides/notes-de-version/): seowatcher 0.8.4 Alpha — données Google complètes, couleurs vives et écrans revus avec des données réelles, plus lisibles sur téléphone.
 
 ## Guida: Per iniziare
 - [Installazione su Windows](https://seowatcher.io/it/guide/installazione-su-windows/): Si installa su Windows con un solo file, senza Docker né terminale. Nella stessa pagina: aggiornamento, disinstallazione, copia di sicurezza, porta.
@@ -155,7 +155,7 @@ Quick facts: version 0.8.3 Alpha, 202 audit rules, 35 MCP tools and 6 ready-made
 - [Regole del controllo](https://seowatcher.io/it/guide/regole-del-controllo/): L'elenco completo delle 202 regole che il controllo del sito verifica. Qui si legge che cosa significa ogni regola e come correggerla.
 - [Configurazione dell'assistente](https://seowatcher.io/it/guide/configurazione-assistente/): Collegare un agente in sicurezza e verificare una nuova chiamata.
 - [Risoluzione dei problemi](https://seowatcher.io/it/guide/risoluzione-problemi/): I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, assistente 401.
-- [Note di versione](https://seowatcher.io/it/guide/note-di-rilascio/): seowatcher 0.8.3 Alpha — dati Google completi, ora di recupero visibile, colori più vivaci e 25 correzioni trovate con dati reali.
+- [Note di versione](https://seowatcher.io/it/guide/note-di-rilascio/): seowatcher 0.8.4 Alpha — dati Google completi, colori vivaci e schermate riviste con dati reali, più leggibili sul telefono.
 
 ## Guia: Primeiros passos
 - [Instalar no Windows](https://seowatcher.io/pt/guias/instalar-no-windows/): Instale no Windows com um único arquivo: primeira abertura, atualização, desinstalação, backup e troca da porta. Sem Docker e sem terminal.
@@ -182,7 +182,7 @@ Quick facts: version 0.8.3 Alpha, 202 audit rules, 35 MCP tools and 6 ready-made
 - [Regras de auditoria](https://seowatcher.io/pt/guias/regras-de-auditoria/): A lista das 202 regras que a auditoria do site confere. Para cada regra, você encontra o que ela significa e como corrigir.
 - [Configurar o agente](https://seowatcher.io/pt/guias/configurar-agente/): Ligar um agente com segurança e verificar uma nova chamada.
 - [Solução de problemas](https://seowatcher.io/pt/guias/solucao-de-problemas/): Problemas mais comuns, com sintoma, causa e solução: porta em uso, aviso do Windows, erros do Google, cota, auditoria travada, gráficos vazios, erro 401.
-- [Notas da versão](https://seowatcher.io/pt/guias/notas-da-versao/): seowatcher 0.8.3 Alpha — dados Google completos, horário de busca visível, cores mais vivas e 25 correções encontradas com dados reais.
+- [Notas da versão](https://seowatcher.io/pt/guias/notas-da-versao/): seowatcher 0.8.4 Alpha — dados Google completos, cores vivas e telas revistas com dados reais, mais legíveis no celular.
 
 ## Kaynak ve notlar
 - [GitHub deposu ve README (Docker kurulumu)](https://github.com/ucsahinn/seotracker)

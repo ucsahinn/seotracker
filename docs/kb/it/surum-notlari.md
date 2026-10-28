@@ -1,20 +1,20 @@
 ---
 title: Note di versione
-description: seowatcher 0.8.3 Alpha — dati Google completi, ora di recupero visibile, colori più vivaci e 25 correzioni trovate con dati reali.
+description: seowatcher 0.8.4 Alpha — dati Google completi, colori vivaci e schermate riviste con dati reali, più leggibili sul telefono.
 updated: 2026-10-28
 ---
 
-L’ultima versione è la **0.8.3 Alpha**, del 28 ottobre 2026. I dati restano intatti durante l’aggiornamento.
+L’ultima versione è la **0.8.4 Alpha**, del 28 ottobre 2026. I dati restano intatti durante l’aggiornamento.
 
 Per passare da 2.x a 0.x.x Alpha, avviare manualmente il nuovo programma di installazione; il vecchio aggiornamento non riconosce il numero inferiore come più recente.
 
-## 0.8.3 Alpha — 2026-10-28
+## 0.8.4 Alpha — 2026-10-28
 
-Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.3: verifica del sito, dashboard, notifiche e sei lingue, con dati più precisi e schermate più leggibili.
+Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.4: verifica del sito, dashboard, notifiche e sei lingue, con dati più precisi e schermate più leggibili.
 
 ### ✨ In evidenza
 
-- **Nuova verifica del sito:** Esamina il tuo sito pagina per pagina e nel suo insieme, con 202 regole.
+- **Nuova verifica:** Esamina il tuo sito pagina per pagina e nel suo insieme, con 202 regole.
 - **Risultati onesti:** Ciò che non riesce a misurare non conta come «superato»; se mancano i dati, lo schermo lo dice chiaramente.
 - **Attività in ordine:** Per prime vengono i problemi delle pagine che portano più visitatori da Google.
 - **Sei lingue:** Usa l'app in turco, inglese, tedesco, francese, italiano o portoghese.
@@ -74,13 +74,13 @@ Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.3: verifica del s
 
 ### 🛠️ Correzioni
 
-- **Verifiche più accurate:** Gli errori trovati su siti reali sono stati corretti; i confronti usano le pagine di ciascuna verifica e la verifica resta registrata se l’avvio non riesce.
-- **Menu e tastiera:** Schermate, report ed elenchi dei paesi restano nei limiti del telefono; i menu restano visibili, il focus resta nella finestra aperta ed Esc chiude solo l’elenco in primo piano senza cancellare il testo; i lettori di schermo annunciano le selezioni e Analytics mostra i canali nella tua lingua.
-- **Correzioni quotidiane:** Il pacchetto diagnostico nell’Aiuto descrive meglio il problema e non include gli indirizzi delle tue pagine. Sono stati corretti 25 problemi trovati con dati reali nella dashboard, nel rendimento di ricerca, nelle posizioni, nelle ricerche salvate, in Analytics, nei report, nella verifica, nelle impostazioni, nelle connessioni, nell’Aiuto e nei plurali inglesi.
-- **Numeri più precisi:** Le misure mancanti non contano come zero e i dati Analytics limitati non danno conclusioni certe; le posizioni usano le stesse date, priorità e limiti delle stime sono spiegati e i filtri non cambiano il guadagno mensile stimato. Opportunità spiega le ricerche nascoste da Google e non suggerisce più di passare a 90 giorni quando sono già selezionati. Anche con pochi visitatori, i dati mancanti vengono distinti da uno zero reale.
+- **Verifiche più accurate:** Gli errori trovati su siti reali sono stati corretti; i confronti usano le pagine di ciascuna verifica e la verifica resta registrata se l’avvio non riesce. Anche i messaggi di errore nella cronologia delle verifiche rientrano nello schermo.
+- **Menu e tastiera:** Schermate, report ed elenchi dei paesi restano nei limiti del telefono; i menu restano visibili, il focus resta nella finestra aperta ed Esc chiude solo l’elenco in primo piano senza cancellare il testo; i lettori di schermo annunciano le selezioni e Analytics mostra i canali nella tua lingua. Sul telefono sono visibili l’ora di aggiornamento, il tipo di rapporto e le etichette di ogni riga del monitoraggio delle posizioni.
+- **Correzioni quotidiane:** Il pacchetto diagnostico nell’Aiuto descrive meglio il problema e non include gli indirizzi delle tue pagine. Sono stati corretti 25 problemi trovati con dati reali nella dashboard, nel rendimento di ricerca, nelle posizioni, nelle ricerche salvate, in Analytics, nei report, nella verifica, nelle impostazioni, nelle connessioni, nell’Aiuto e nei plurali inglesi. Tutte le schermate sono state riviste altre due volte con dati reali, anche nella parte inferiore delle pagine. I conteggi delle verifiche nel pannello spiegano cosa contano e i nomi dei problemi appaiono per intero. Un elenco vuoto di parole salvate lo indica subito. Il monitoraggio delle posizioni parla di posizioni medie; Aiuto e comandi per cambiare pagina usano i nomi dei menu.
+- **Numeri più precisi:** Le misure mancanti non contano come zero e i dati Analytics limitati non danno conclusioni certe; le posizioni usano le stesse date, priorità e limiti delle stime sono spiegati e i filtri non cambiano il guadagno mensile stimato. Opportunità spiega le ricerche nascoste da Google e non suggerisce più di passare a 90 giorni quando sono già selezionati. Anche con pochi visitatori, i dati mancanti vengono distinti da uno zero reale. Analytics spiega una misura sconosciuta una sola volta; le tabelle vuote nascondono i pulsanti per la pagina precedente e successiva.
 - **Stato della connessione:** La scelta della proprietà è distinta dall’accesso verificato e i vecchi risultati non sono attuali dopo un cambio di account; le connessioni Google senza risposta smettono di attendere, gli errori temporanei invitano a riprovare e i servizi disattivati indicano cosa attivare.
 - **Dati salvati:** Aggiungere o rimuovere etichette non lascia modifiche a metà, le etichette in uso non si possono eliminare, lo storico resta legato alla proprietà corretta e le attività in attesa seguono l’ordine giusto.
-- **Avvio Windows:** I file di lavoro vengono salvati nella cartella utente; le connessioni riparate dell’assistente restano valide al riavvio e il controllo iniziale non si blocca più.
+- **Avvio Windows:** I file di lavoro vengono salvati nella cartella utente; le connessioni riparate dell’assistente restano valide al riavvio e il controllo iniziale non si blocca più. Un collegamento inutilizzabile alle impostazioni Windows viene nascosto.
 
 ### 🔒 Sicurezza
 

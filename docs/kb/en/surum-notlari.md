@@ -1,16 +1,16 @@
 ---
 title: Release notes
-description: seowatcher 0.8.3 Alpha — complete Google data, visible fetch times, vivid metric colours and 25 fixes found with real data.
+description: seowatcher 0.8.4 Alpha — complete Google data, vivid colours and screens reviewed again with real data for clearer reading on phones.
 updated: 2026-10-28
 ---
 
-The latest release is **0.8.3 Alpha**, October 28, 2026. Your data is kept when you update.
+The latest release is **0.8.4 Alpha**, October 28, 2026. Your data is kept when you update.
 
 For the first move from 2.x to 0.x.x Alpha, run the new installer manually; the old updater does not recognize the lower number as newer.
 
-## 0.8.3 Alpha — 2026-10-28
+## 0.8.4 Alpha — 2026-10-28
 
-This entry brings together features and fixes from 0.5.0 to 0.8.3: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
+This entry brings together features and fixes from 0.5.0 to 0.8.4: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
 
 ### ✨ Highlights
 
@@ -74,13 +74,13 @@ This entry brings together features and fixes from 0.5.0 to 0.8.3: site audits, 
 
 ### 🛠️ Fixes
 
-- **More accurate audits:** Errors found on real sites were fixed; comparisons use each audit’s own pages, and an audit record is kept if startup fails.
-- **Menus and keyboard:** Screens, reports and country lists fit on phones; menus stay on screen, keyboard focus stays in the open window, and Esc closes only the top list while keeping your text; screen readers announce selections, and Analytics shows channel names in your language.
-- **Everyday fixes:** The diagnostics package in Help describes the problem better and leaves out your page addresses. 25 issues found with real data were fixed across the dashboard, search performance, rankings, saved keywords, Analytics, reports, site audit, settings, connections, Help and English plurals.
-- **More accurate numbers:** Missing measurements are not counted as zero, and limited Analytics data is not presented as a firm conclusion; rankings use matching dates, priority tasks and estimate limits are explained, and filtering does not change estimated monthly gains. Opportunities explains searches Google hides and no longer suggests widening to 90 days when 90 days is already selected. Even on sites with few visitors, missing data is distinguished from a real zero.
+- **More accurate audits:** Errors found on real sites were fixed; comparisons use each audit’s own pages, and an audit record is kept if startup fails. Failure messages in audit history also fit the screen.
+- **Menus and keyboard:** Screens, reports and country lists fit on phones; menus stay on screen, keyboard focus stays in the open window, and Esc closes only the top list while keeping your text; screen readers announce selections, and Analytics shows channel names in your language. On phones, the update time, report type and labels on every Rank tracking row are visible.
+- **Everyday fixes:** The diagnostics package in Help describes the problem better and leaves out your page addresses. 25 issues found with real data were fixed across the dashboard, search performance, rankings, saved keywords, Analytics, reports, site audit, settings, connections, Help and English plurals. Every screen was reviewed twice more with real data, including the lower parts of each page. Dashboard audit counts explain what they count, and issue names appear in full. An empty saved-keyword list says so immediately. Rank tracking refers to average positions; Help uses Project context, and page controls say Previous page and Next page.
+- **More accurate numbers:** Missing measurements are not counted as zero, and limited Analytics data is not presented as a firm conclusion; rankings use matching dates, priority tasks and estimate limits are explained, and filtering does not change estimated monthly gains. Opportunities explains searches Google hides and no longer suggests widening to 90 days when 90 days is already selected. Even on sites with few visitors, missing data is distinguished from a real zero. Analytics explains an unknown measurement once; empty tables hide the previous and next page buttons.
 - **Connection status:** Selecting a property is separate from verified access, and old results are not treated as current after an account change; unresponsive Google connections stop waiting, temporary errors suggest trying again, and disabled services explain what to enable.
 - **Saved data:** Adding or removing labels completes in full, labels in use cannot be deleted, historical data stays tied to the right property, and waiting tasks are handled in the right order.
-- **Windows startup:** Working files are saved in your user folder; repaired assistant connections survive a restart, and the startup check no longer hangs.
+- **Windows startup:** Working files are saved in your user folder; repaired assistant connections survive a restart, and the startup check no longer hangs. An unusable Windows settings link is hidden.
 
 ### 🔒 Security
 

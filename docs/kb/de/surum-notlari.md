@@ -1,16 +1,16 @@
 ---
 title: Versionshinweise
-description: seowatcher 0.8.3 Alpha — vollständige Google-Daten, sichtbare Abrufzeit, kräftige Messwertfarben und 25 mit echten Daten gefundene Korrekturen.
+description: seowatcher 0.8.4 Alpha — vollständige Google-Daten, lebendige Farben und erneut mit echten Daten geprüfte, auf dem Handy besser lesbare Ansichten.
 updated: 2026-10-28
 ---
 
-Die neueste Version ist **0.8.3 Alpha** vom 28. Oktober 2026. Ihre Daten bleiben beim Aktualisieren erhalten.
+Die neueste Version ist **0.8.4 Alpha** vom 28. Oktober 2026. Ihre Daten bleiben beim Aktualisieren erhalten.
 
 Für den ersten Wechsel von 2.x zu 0.x.x Alpha das neue Installationsprogramm manuell starten; der alte Updater erkennt die kleinere Nummer nicht als neuer.
 
-## 0.8.3 Alpha — 2026-10-28
+## 0.8.4 Alpha — 2026-10-28
 
-Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.3: Website-Audit, Übersicht, Benachrichtigungen und sechs Sprachen sowie genauere Daten und besser lesbare Bildschirme.
+Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.4: Website-Audit, Übersicht, Benachrichtigungen und sechs Sprachen sowie genauere Daten und besser lesbare Bildschirme.
 
 ### ✨ Höhepunkte
 
@@ -74,13 +74,13 @@ Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.3: Website-
 
 ### 🛠️ Fehlerbehebungen
 
-- **Genauere Audits:** Fehler auf echten Websites wurden behoben; Vergleiche nutzen die Seiten des jeweiligen Audits, und bei Startproblemen bleibt der Audit-Eintrag erhalten.
-- **Menüs und Tastatur:** Ansichten, Berichte und Länderlisten passen aufs Handy; Menüs bleiben im Bildschirm, der Tastaturfokus im offenen Fenster, und Esc schließt nur die oberste Liste und behält Ihre Eingaben; Bildschirmleser melden die Auswahl, Analytics zeigt Kanalnamen in Ihrer Sprache.
-- **Korrekturen im Alltag:** Das Diagnosepaket in der Hilfe beschreibt das Problem besser und enthält Ihre Seitenadressen nicht. 25 mit echten Daten gefundene Probleme wurden behoben: Übersicht, Suchleistung, Positionen, gespeicherte Suchbegriffe, Analytics, Berichte, Website-Audit, Einstellungen, Verbindungen, Hilfe und englische Mehrzahlformen wurden korrigiert.
-- **Genauere Zahlen:** Fehlende Messwerte zählen nicht als null, begrenzte Analytics-Daten gelten nicht als sicheres Ergebnis; Positionen nutzen dieselben Zeiträume, vorrangige Aufgaben und Schätzgrenzen werden erklärt, und Filter ändern den geschätzten monatlichen Zugewinn nicht. Chancen erklärt die von Google verborgenen Suchanfragen und empfiehlt keine Erweiterung auf 90 Tage mehr, wenn bereits 90 Tage gewählt sind. Auch bei wenigen Besuchern werden fehlende Daten von einer echten Null unterschieden.
+- **Genauere Audits:** Fehler auf echten Websites wurden behoben; Vergleiche nutzen die Seiten des jeweiligen Audits, und bei Startproblemen bleibt der Audit-Eintrag erhalten. Auch Fehlermeldungen im Audit-Verlauf passen auf den Bildschirm.
+- **Menüs und Tastatur:** Ansichten, Berichte und Länderlisten passen aufs Handy; Menüs bleiben im Bildschirm, der Tastaturfokus im offenen Fenster, und Esc schließt nur die oberste Liste und behält Ihre Eingaben; Bildschirmleser melden die Auswahl, Analytics zeigt Kanalnamen in Ihrer Sprache. Auf dem Handy sind Aktualisierungszeit, Berichtstyp und die Beschriftungen jeder Zeile der Positionsverfolgung sichtbar.
+- **Korrekturen im Alltag:** Das Diagnosepaket in der Hilfe beschreibt das Problem besser und enthält Ihre Seitenadressen nicht. 25 mit echten Daten gefundene Probleme wurden behoben: Übersicht, Suchleistung, Positionen, gespeicherte Suchbegriffe, Analytics, Berichte, Website-Audit, Einstellungen, Verbindungen, Hilfe und englische Mehrzahlformen wurden korrigiert. Alle Ansichten wurden zweimal zusätzlich mit echten Daten geprüft, auch die unteren Seitenbereiche. Die Audit-Zahlen in der Übersicht erklären, was sie zählen, und Problemnamen werden vollständig angezeigt. Eine leere Liste gespeicherter Suchbegriffe ist sofort als leer erkennbar. Die Positionsverfolgung spricht von durchschnittlichen Positionen; Hilfe und Seitenwechsel verwenden die passenden Menünamen.
+- **Genauere Zahlen:** Fehlende Messwerte zählen nicht als null, begrenzte Analytics-Daten gelten nicht als sicheres Ergebnis; Positionen nutzen dieselben Zeiträume, vorrangige Aufgaben und Schätzgrenzen werden erklärt, und Filter ändern den geschätzten monatlichen Zugewinn nicht. Chancen erklärt die von Google verborgenen Suchanfragen und empfiehlt keine Erweiterung auf 90 Tage mehr, wenn bereits 90 Tage gewählt sind. Auch bei wenigen Besuchern werden fehlende Daten von einer echten Null unterschieden. Analytics erklärt unbekannte Messwerte nur einmal; leere Tabellen blenden die Schaltflächen für die vorherige und nächste Seite aus.
 - **Verbindungsstatus:** Property-Auswahl und bestätigter Zugriff sind getrennt, nach einem Kontowechsel gelten alte Ergebnisse nicht als aktuell; antwortet Google nicht, endet das Warten, vorübergehende Fehler empfehlen einen neuen Versuch und deaktivierte Dienste erklären, was Sie einschalten müssen.
 - **Gespeicherte Daten:** Etiketten werden vollständig zugewiesen oder entfernt, verwendete Etiketten lassen sich nicht löschen, ältere Daten bleiben der richtigen Property zugeordnet und wartende Aufgaben werden richtig sortiert.
-- **Windows-Start:** Arbeitsdateien liegen im Benutzerordner; reparierte Assistentenverbindungen bleiben nach einem Neustart erhalten, und die Startprüfung hängt nicht mehr fest.
+- **Windows-Start:** Arbeitsdateien liegen im Benutzerordner; reparierte Assistentenverbindungen bleiben nach einem Neustart erhalten, und die Startprüfung hängt nicht mehr fest. Ein nicht nutzbarer Link zu den Windows-Einstellungen wird ausgeblendet.
 
 ### 🔒 Sicherheit
 

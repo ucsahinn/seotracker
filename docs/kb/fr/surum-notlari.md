@@ -1,20 +1,20 @@
 ---
 title: Notes de version
-description: seowatcher 0.8.3 Alpha — données Google complètes, heure de récupération visible, couleurs plus vives et 25 corrections issues de données réelles.
+description: seowatcher 0.8.4 Alpha — données Google complètes, couleurs vives et écrans revus avec des données réelles, plus lisibles sur téléphone.
 updated: 2026-10-28
 ---
 
-La dernière version est la **0.8.3 Alpha**, du 28 octobre 2026. Vos données sont conservées lors de la mise à jour.
+La dernière version est la **0.8.4 Alpha**, du 28 octobre 2026. Vos données sont conservées lors de la mise à jour.
 
 Pour passer de 2.x à 0.x.x Alpha, lancez le nouvel installateur manuellement ; l’ancien outil ne reconnaît pas le numéro inférieur comme plus récent.
 
-## 0.8.3 Alpha — 2026-10-28
+## 0.8.4 Alpha — 2026-10-28
 
-Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.3 : audit du site, tableau de bord, notifications et six langues, avec des données plus justes et des écrans plus lisibles.
+Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.4 : audit du site, tableau de bord, notifications et six langues, avec des données plus justes et des écrans plus lisibles.
 
 ### ✨ Points forts
 
-- **Nouvel audit du site:** Il examine votre site page par page et dans son ensemble, avec 202 règles.
+- **Nouvel audit:** Il examine votre site page par page et dans son ensemble, avec 202 règles.
 - **Résultats honnêtes:** Ce qu'il ne peut pas mesurer n'est pas compté comme « réussi » ; sans données, l'écran le dit clairement.
 - **Tâches classées:** Les problèmes des pages qui amènent le plus de visiteurs depuis Google passent en premier.
 - **Six langues:** Utilisez l'application en turc, anglais, allemand, français, italien ou portugais.
@@ -32,7 +32,7 @@ Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.3 : a
 ### 📊 Tableau de bord et rapports
 
 - **Prochaines étapes:** Le tableau de bord propose une courte liste de tâches et un score de préparation pour terminer votre configuration. Ce score n'est pas un résultat SEO.
-- **Rapports prêts à l'emploi:** Votre assistant IA prépare un rapport d'amélioration à partir de vos données d'audit, de recherche et d'Analytics.
+- **Rapports prêts:** Votre assistant IA prépare un rapport d'amélioration à partir de vos données d'audit, de recherche et d'Analytics.
 - **Avancement de l'audit:** Pendant un audit, vous voyez le temps écoulé et l'avancement, puis un court résumé à la fin.
 - **Types de rapports :** Les rapports de recherche et d’audit du site sont séparés ; les anciens rapports de type inconnu sont signalés.
 - **Dates des rapports :** Les rapports de recherche conservent les dates choisies et expliquent les données manquantes et les mesures encore susceptibles de changer.
@@ -54,7 +54,7 @@ Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.3 : a
 
 ### 🌍 Langues
 
-- **Choix de la langue:** Choisissez votre langue dans Réglages → Apparence → Langue ; les nombres et les dates la suivent.
+- **Langue:** Choisissez votre langue dans Réglages → Apparence → Langue ; les nombres et les dates la suivent.
 - **Guide:** Le guide d'utilisation, les règles d'audit et les notes de version existent en six langues.
 - **Confidentialité:** Sur seowatcher.io, la mesure d'audience ne démarre que si vous l'acceptez.
 - **Traductions revues :** Les textes et les guides ont été adaptés aux écrans révisés dans les six langues.
@@ -74,13 +74,13 @@ Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.3 : a
 
 ### 🛠️ Corrections
 
-- **Audits plus précis:** Les erreurs trouvées sur de vrais sites ont été corrigées ; les comparaisons utilisent les pages de chaque audit et un audit reste enregistré si son démarrage échoue.
-- **Menus et clavier:** Écrans, rapports et listes de pays tiennent sur téléphone ; les menus restent visibles, le focus reste dans la fenêtre ouverte et Échap ferme seulement la liste au premier plan sans effacer votre saisie ; les lecteurs d’écran annoncent les choix et Analytics affiche les noms des canaux dans votre langue.
-- **Corrections du quotidien:** Le paquet de diagnostic de l’Aide décrit mieux le problème et ne contient pas les adresses de vos pages. 25 problèmes trouvés avec des données réelles ont été corrigés dans le tableau de bord, les performances de recherche, les positions, les recherches enregistrées, Analytics, les rapports, l’audit, les réglages, les connexions, l’Aide et les pluriels anglais.
-- **Chiffres plus justes:** Les mesures absentes ne comptent pas comme zéro et les données Analytics limitées ne donnent pas de conclusion certaine ; les classements utilisent les mêmes dates, les priorités et limites des estimations sont expliquées, et filtrer ne change pas le gain mensuel estimé. Opportunités explique les recherches masquées par Google et ne propose plus de passer à 90 jours quand cette durée est déjà choisie. Même avec peu de visiteurs, les données manquantes sont distinguées d’un vrai zéro.
+- **Audits plus précis:** Les erreurs trouvées sur de vrais sites ont été corrigées ; les comparaisons utilisent les pages de chaque audit et un audit reste enregistré si son démarrage échoue. Les messages d’échec dans l’historique des audits tiennent aussi à l’écran.
+- **Menus et clavier:** Écrans, rapports et listes de pays tiennent sur téléphone ; les menus restent visibles, le focus reste dans la fenêtre ouverte et Échap ferme seulement la liste au premier plan sans effacer votre saisie ; les lecteurs d’écran annoncent les choix et Analytics affiche les noms des canaux dans votre langue. Sur téléphone, l’heure de mise à jour, le type de rapport et les libellés de chaque ligne du suivi des positions sont visibles.
+- **Corrections quotidiennes:** Le paquet de diagnostic de l’Aide décrit mieux le problème et ne contient pas les adresses de vos pages. 25 problèmes trouvés avec des données réelles ont été corrigés dans le tableau de bord, les performances de recherche, les positions, les recherches enregistrées, Analytics, les rapports, l’audit, les réglages, les connexions, l’Aide et les pluriels anglais. Tous les écrans ont été revus deux fois de plus avec des données réelles, y compris le bas des pages. Les chiffres d’audit du tableau de bord expliquent ce qu’ils comptent et les noms des problèmes apparaissent en entier. Une liste de recherches enregistrées vide l’indique dès l’ouverture. Le suivi des positions parle de positions moyennes ; l’Aide et les changements de page reprennent les noms des menus.
+- **Chiffres plus justes:** Les mesures absentes ne comptent pas comme zéro et les données Analytics limitées ne donnent pas de conclusion certaine ; les classements utilisent les mêmes dates, les priorités et limites des estimations sont expliquées, et filtrer ne change pas le gain mensuel estimé. Opportunités explique les recherches masquées par Google et ne propose plus de passer à 90 jours quand cette durée est déjà choisie. Même avec peu de visiteurs, les données manquantes sont distinguées d’un vrai zéro. Analytics explique une mesure inconnue une seule fois ; les tableaux vides masquent les boutons de page précédente et suivante.
 - **État de connexion:** Le choix d’une propriété est distinct de l’accès vérifié et les anciens résultats ne sont plus actuels après un changement de compte ; une connexion Google sans réponse cesse d’attendre, une erreur passagère invite à réessayer et un service désactivé indique quoi activer.
 - **Données conservées:** L’ajout et le retrait d’étiquettes se terminent entièrement, les étiquettes utilisées ne peuvent pas être supprimées, l’historique reste lié à la bonne propriété et les tâches en attente suivent le bon ordre.
-- **Démarrage Windows:** Les fichiers de travail sont enregistrés dans votre dossier utilisateur ; les connexions réparées de l’assistant sont conservées au redémarrage et le contrôle de démarrage ne reste plus bloqué.
+- **Démarrage Windows:** Les fichiers de travail sont enregistrés dans votre dossier utilisateur ; les connexions réparées de l’assistant sont conservées au redémarrage et le contrôle de démarrage ne reste plus bloqué. Un lien inutilisable vers les réglages Windows est masqué.
 
 ### 🔒 Sécurité
 

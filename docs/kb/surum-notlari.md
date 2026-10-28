@@ -1,16 +1,16 @@
 ---
 title: Sürüm notları
-description: seowatcher 0.8.3 Alpha — eksiksiz Google verisi, görünür alım zamanı, canlı ölçüm renkleri ve gerçek verilerle bulunan 25 düzeltme.
+description: seowatcher 0.8.4 Alpha — eksiksiz Google verisi, canlı renkler ve gerçek verilerle yeniden incelenen, telefonda daha okunaklı ekranlar.
 updated: 2026-10-28
 ---
 
-Son sürüm **0.8.3 Alpha**, 28 Ekim 2026. Güncellerken veriniz korunur.
+Son sürüm **0.8.4 Alpha**, 28 Ekim 2026. Güncellerken veriniz korunur.
 
 2.x serisinden 0.x.x Alpha serisine ilk geçiş için yeni kurulum dosyasını elle çalıştırın; eski otomatik güncelleyici küçük numarayı yeni sürüm olarak tanımaz.
 
-## 0.8.3 Alpha — 2026-10-28
+## 0.8.4 Alpha — 2026-10-28
 
-Bu giriş 0.5.0'dan 0.8.3'e kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
+Bu giriş 0.5.0'dan 0.8.4'e kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
 
 ### ✨ Öne çıkanlar
 
@@ -74,13 +74,13 @@ Bu giriş 0.5.0'dan 0.8.3'e kadar gelen yenilikleri ve düzeltmeleri toplar: sit
 
 ### 🛠️ Düzeltmeler
 
-- **Daha doğru denetim:** Gerçek sitelerdeki hatalar giderildi; karşılaştırmalar her denetimin kendi sayfalarını kullanır, başlatılamayan denetimin kaydı korunur.
-- **Menüler ve klavye:** Telefonda ekranlar, raporlar ve ülke listesi taşmaz; menüler ekrana sığar, klavye odağı açık pencerede kalır, Esc yalnızca üstteki listeyi kapatır ve yazdıklarınızı korur; ekran okuyucular seçimleri, Analytics ise kanal adlarını seçtiğiniz dilde bildirir.
-- **Ekran düzeltmeleri:** Yardım’daki tanılama paketi sorunu daha iyi anlatır ve sayfa adreslerinizi içermez. Gerçek verilerle bulunan 25 sorun giderildi: pano, arama performansı, sıralama, kayıtlı kelimeler, Analytics, raporlar, denetim, ayarlar, bağlantılar, Yardım ve İngilizce çoğullar daha doğru görünür.
-- **Daha doğru sayılar:** Eksik ölçümler sıfır sayılmaz, sınırlı Analytics verisi kesin sonuç gibi sunulmaz; sıralamalar aynı tarihleri kullanır, öncelikli işler ve tahminlerin sınırları açıklanır, filtrelemek aylık kazanç tahminini değiştirmez. Fırsatlar, Google'ın gizlediği aramaları açıklar; 90 gün seçiliyken aynı süreye genişletmenizi önermez. Az ziyaretçili sitelerde de eksik veriyle gerçek sıfır birbirinden ayrılır.
+- **Daha doğru denetim:** Gerçek sitelerdeki hatalar giderildi; karşılaştırmalar her denetimin kendi sayfalarını kullanır, başlatılamayan denetimin kaydı korunur. Denetim geçmişindeki hata açıklamaları da ekrana sığar.
+- **Menüler ve klavye:** Telefonda ekranlar, raporlar ve ülke listesi taşmaz; menüler ekrana sığar, klavye odağı açık pencerede kalır, Esc yalnızca üstteki listeyi kapatır ve yazdıklarınızı korur; ekran okuyucular seçimleri, Analytics ise kanal adlarını seçtiğiniz dilde bildirir. Telefonda güncelleme saati, rapor türü ve Sıralama takibi satırlarının etiketleri görünür.
+- **Ekran düzeltmeleri:** Yardım’daki tanılama paketi sorunu daha iyi anlatır ve sayfa adreslerinizi içermez. Gerçek verilerle bulunan 25 sorun giderildi: pano, arama performansı, sıralama, kayıtlı kelimeler, Analytics, raporlar, denetim, ayarlar, bağlantılar, Yardım ve İngilizce çoğullar daha doğru görünür. Ekranlar gerçek verilerle iki kez daha, sayfaların alt kısımları da dahil incelendi. Panodaki denetim sayılarının neyi saydığı açık, sorun adları tamdır. Boş kayıtlı kelime listesi bunu hemen gösterir. Sıralama takibi ortalama sırayı belirtir; Yardım ve sayfa geçişleri menüdeki adlarla uyumludur.
+- **Daha doğru sayılar:** Eksik ölçümler sıfır sayılmaz, sınırlı Analytics verisi kesin sonuç gibi sunulmaz; sıralamalar aynı tarihleri kullanır, öncelikli işler ve tahminlerin sınırları açıklanır, filtrelemek aylık kazanç tahminini değiştirmez. Fırsatlar, Google'ın gizlediği aramaları açıklar; 90 gün seçiliyken aynı süreye genişletmenizi önermez. Az ziyaretçili sitelerde de eksik veriyle gerçek sıfır birbirinden ayrılır. Analytics bilinmeyen ölçümü bir kez açıklar; boş tablolarda önceki ve sonraki sayfa düğmeleri görünmez.
 - **Bağlantı durumu:** Mülk seçimi ile doğrulanmış erişim ayrıdır, hesap değişince eski sonuçlar güncel sayılmaz; yanıt vermeyen Google bağlantısı beklemede kalmaz, geçici hatada yeniden denemeniz, kapalı hizmette neyi açmanız gerektiği söylenir.
 - **Kayıtların korunması:** Etiket ekleme ve kaldırma yarım kalmaz, kullanılan etiket silinmez; geçmiş veriler doğru mülkle tamamlanır ve bekleyen işler doğru sırada ele alınır.
-- **Windows açılışı:** Çalışma dosyaları kullanıcı klasörüne yazılır; onarılan asistan bağlantısı yeniden açılışta korunur ve başlangıç kontrolü takılı kalmaz.
+- **Windows açılışı:** Çalışma dosyaları kullanıcı klasörüne yazılır; onarılan asistan bağlantısı yeniden açılışta korunur ve başlangıç kontrolü takılı kalmaz. Kullanılamayan Windows ayarı bağlantısı gizlenir.
 
 ### 🔒 Güvenlik
 

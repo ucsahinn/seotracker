@@ -2,13 +2,13 @@
 
 Novidades e correções, da versão mais recente para a mais antiga.
 
-## [0.8.3] Alpha — 2026-10-28
+## [0.8.4] Alpha — 2026-10-28
 
-Esta entrada reúne novidades e correções da 0.5.0 à 0.8.3: auditoria do site, painel, notificações e seis idiomas, com dados mais precisos e telas mais legíveis.
+Esta entrada reúne novidades e correções da 0.5.0 à 0.8.4: auditoria do site, painel, notificações e seis idiomas, com dados mais precisos e telas mais legíveis.
 
 ### ✨ Destaques
 
-- **Nova auditoria do site:** Examina seu site página por página e como um todo, com 202 regras.
+- **Nova auditoria:** Examina seu site página por página e como um todo, com 202 regras.
 - **Resultados honestos:** O que não consegue medir não conta como "aprovado"; sem dados, a tela avisa com clareza.
 - **Tarefas em ordem:** Os problemas das páginas que trazem mais visitantes do Google vêm primeiro.
 - **Seis idiomas:** Use o aplicativo em turco, inglês, alemão, francês, italiano ou português.
@@ -68,13 +68,13 @@ Esta entrada reúne novidades e correções da 0.5.0 à 0.8.3: auditoria do site
 
 ### 🛠️ Correções
 
-- **Auditorias mais precisas:** Erros encontrados em sites reais foram corrigidos; as comparações usam as páginas de cada auditoria e o registro é mantido se a auditoria não conseguir iniciar.
-- **Menus e teclado:** Telas, relatórios e listas de países cabem no celular; os menus ficam visíveis, o foco fica na janela aberta e Esc fecha só a lista da frente sem apagar seu texto; leitores de tela anunciam as seleções e o Analytics mostra os canais no seu idioma.
-- **Correções do dia:** O pacote de diagnóstico da Ajuda descreve melhor o problema e não inclui os endereços das suas páginas. Foram corrigidos 25 problemas encontrados com dados reais no painel, no desempenho de pesquisa, nas posições, nas pesquisas salvas, no Analytics, nos relatórios, na auditoria, nas configurações, nas conexões, na Ajuda e nos plurais em inglês.
-- **Números mais precisos:** Medições ausentes não contam como zero e dados limitados do Analytics não geram conclusões certas; as posições usam as mesmas datas, prioridades e limites das estimativas são explicados e os filtros não mudam o ganho mensal estimado. Oportunidades explica as pesquisas ocultadas pelo Google e não sugere mais ampliar para 90 dias quando esse período já está selecionado. Mesmo com poucos visitantes, dados ausentes são diferenciados de um zero real.
+- **Auditorias mais precisas:** Erros encontrados em sites reais foram corrigidos; as comparações usam as páginas de cada auditoria e o registro é mantido se a auditoria não conseguir iniciar. As mensagens de falha no histórico de auditorias também cabem na tela.
+- **Menus e teclado:** Telas, relatórios e listas de países cabem no celular; os menus ficam visíveis, o foco fica na janela aberta e Esc fecha só a lista da frente sem apagar seu texto; leitores de tela anunciam as seleções e o Analytics mostra os canais no seu idioma. No celular, o horário de atualização, o tipo de relatório e os rótulos de cada linha do acompanhamento de posições ficam visíveis.
+- **Correções do dia:** O pacote de diagnóstico da Ajuda descreve melhor o problema e não inclui os endereços das suas páginas. Foram corrigidos 25 problemas encontrados com dados reais no painel, no desempenho de pesquisa, nas posições, nas pesquisas salvas, no Analytics, nos relatórios, na auditoria, nas configurações, nas conexões, na Ajuda e nos plurais em inglês. Todas as telas foram revistas mais duas vezes com dados reais, incluindo a parte inferior das páginas. Os números de auditoria no painel explicam o que contam, e os nomes dos problemas aparecem por inteiro. Uma lista vazia de palavras salvas informa isso logo ao abrir. O acompanhamento de posições fala de posições médias; a Ajuda e os controles de troca de página usam os nomes dos menus.
+- **Números mais precisos:** Medições ausentes não contam como zero e dados limitados do Analytics não geram conclusões certas; as posições usam as mesmas datas, prioridades e limites das estimativas são explicados e os filtros não mudam o ganho mensal estimado. Oportunidades explica as pesquisas ocultadas pelo Google e não sugere mais ampliar para 90 dias quando esse período já está selecionado. Mesmo com poucos visitantes, dados ausentes são diferenciados de um zero real. O Analytics explica uma medida desconhecida uma única vez; tabelas vazias ocultam os botões de página anterior e próxima.
 - **Estado da conexão:** A escolha da propriedade é separada do acesso verificado e resultados antigos não são atuais após trocar de conta; conexões Google sem resposta param de esperar, erros temporários sugerem tentar novamente e serviços desativados explicam o que ativar.
 - **Dados salvos:** Adicionar ou remover etiquetas não deixa alterações pela metade, etiquetas em uso não podem ser excluídas, o histórico fica ligado à propriedade certa e as tarefas pendentes seguem a ordem correta.
-- **Abertura no Windows:** Os arquivos de trabalho ficam na pasta do usuário; conexões reparadas do assistente são mantidas ao reabrir e a verificação inicial não fica mais travada.
+- **Abertura no Windows:** Os arquivos de trabalho ficam na pasta do usuário; conexões reparadas do assistente são mantidas ao reabrir e a verificação inicial não fica mais travada. Um link inutilizável para as configurações do Windows fica oculto.
 
 ### 🔒 Segurança
 
