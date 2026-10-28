@@ -10,6 +10,8 @@ Analytics shows measured visits, engagement and key events from your GA4 propert
 
 ## Read the scope first
 
+Unknown measurements are shown as **Could not determine traffic for this period**, with known values preserved. Reported restrictions appear beside the metrics; an unknown cause is stated explicitly. Retry or inspect measurement settings; changing the channel is not suggested as a repair for unreadable data. Background notes are collapsed under **Understanding Analytics data**; scope, dates and warnings remain visible.
+
 Organic search includes search engines beyond Google. All traffic changes both the overview and report. Site search always covers measured search-result events from all traffic and has no channel toggle. All hosts and streams in the property are included. Another site or app can contribute to these totals.
 
 The 7, 28 and 90-day windows end yesterday in the property time zone. Yesterday is an elapsed calendar day, not a guarantee that data is final. Recent days may be reprocessed. Current and previous equal-length dates and the time zone are shown. Links accept paired startDate/endDate values; future end dates are clamped to yesterday with a notice. GA4 and Search Console use different calendars and measures. Matching date labels do not guarantee matching time spans.

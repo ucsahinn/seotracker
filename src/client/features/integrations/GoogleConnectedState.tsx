@@ -96,20 +96,22 @@ export function GoogleConnectedState({
           "Bu ekran Google’dan yeni veri istemez. Buradaki okuma bilgisi kayıtlı geçmişe aittir; güncel veriyi raporda görebilirsiniz.",
         )}
       </p>
-      {reportHref && reportLabel ? (
+      <div className="flex flex-wrap gap-3">
+        {reportHref && reportLabel ? (
+          <a
+            href={reportHref}
+            className="link inline-flex min-h-11 items-center text-sm"
+          >
+            {reportLabel}
+          </a>
+        ) : null}
         <a
-          href={reportHref}
+          href="/settings#google"
           className="link inline-flex min-h-11 items-center text-sm"
         >
-          {reportLabel}
+          {t("Kurulumun Google kimlik ayarları")}
         </a>
-      ) : null}
-      <a
-        href="/settings#google"
-        className="link inline-flex min-h-11 items-center text-sm"
-      >
-        {t("Kurulumun Google kimlik ayarları")}
-      </a>
+      </div>
       {canManage || canManageAccounts ? (
         <fieldset
           disabled={disconnecting || disabled}

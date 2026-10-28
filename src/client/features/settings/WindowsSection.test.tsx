@@ -93,3 +93,21 @@ it("offers retry after a save error and reads confirmed state again", async () =
   fireEvent.click(screen.getByRole("button", { name: "Tekrar dene" }));
   await waitFor(() => expect(control.hasAttribute("disabled")).toBe(false));
 });
+
+it("gives Docker and development stop guidance without a tray exit instruction", async () => {
+  native.get.mockResolvedValue({ status: "unsupported" });
+  mount();
+  await screen.findByText(/Bu seçenekler Windows paketinde/);
+  expect(screen.queryByText(/tepsi menüsünden Çıkış/)).toBeNull();
+  expect(
+    screen.getByText(
+      /Docker kapsayıcısını veya geliştirici sunucusunu durdurun/,
+    ),
+  ).toBeDefined();
+});
+
+it("keeps tray exit guidance for a supported Windows installation", async () => {
+  mount();
+  await screen.findByRole("checkbox", { name: "Windows açılınca başlat" });
+  expect(screen.getByText(/tepsi menüsünden Çıkış/)).toBeDefined();
+});

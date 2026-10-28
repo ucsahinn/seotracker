@@ -280,6 +280,9 @@ let alpha3ToAlpha2: Map<string, string> | null = null;
 function alpha2Of(code: string): string | null {
   alpha3ToAlpha2 ??= new Map(
     Object.entries({
+      CRI: "CR",
+      LKA: "LK",
+      ZMB: "ZM",
       TUR: "TR",
       USA: "US",
       GBR: "GB",

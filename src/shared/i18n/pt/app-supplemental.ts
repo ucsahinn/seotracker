@@ -189,4 +189,10 @@ export const ptAppSupplemental: Catalog = {
     "Orçamento de solicitações de aparência na pesquisa: {count}. Não inclui a análise adicional de sobreposições; o uso de cache altera o número real de solicitações de rede.",
   Özet: "Resumo",
   "Uygulama raporu, tür kaydedilmemiş": "Relatório do app, tipo não registrado",
+  "Sayılar sayfa bulgularıdır; aynı sayfada birden çok bulgu olabilir.":
+    "Os números contam ocorrências por página; uma página pode ter mais de uma.",
+  "Tarama sınırı: {count} sayfa": "Limite de rastreamento: {count} páginas",
+  "Tarama sınırı kaydedilmemiş.":
+    "O limite de rastreamento não foi registrado.",
+  "Kapsam ayrıntıları": "Detalhes do escopo",
 };

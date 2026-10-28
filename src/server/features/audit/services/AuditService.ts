@@ -219,6 +219,16 @@ async function getHistory(projectId: string) {
   return auditList.map((audit) => {
     const parsedConfig = parseAuditConfig(audit.config);
     const ranLighthouse = parsedConfig?.lighthouseStrategy !== "none";
+    // Optional on older history responses already held in the client cache.
+    const evidence: {
+      maxPages?: number;
+      errorCode?: string | null;
+      failedPhase?: string | null;
+    } = {
+      maxPages: parsedConfig?.maxPages,
+      errorCode: storedAuditErrorCode(audit),
+      failedPhase: audit.failedPhase,
+    };
 
     return {
       id: audit.id,
@@ -227,6 +237,7 @@ async function getHistory(projectId: string) {
       pagesCrawled: audit.pagesCrawled,
       pagesTotal: audit.pagesTotal,
       ranLighthouse,
+      ...evidence,
       startedAt: audit.startedAt,
       completedAt: audit.completedAt,
       // Zero is a real answer here — a clean audit — so the absent row and

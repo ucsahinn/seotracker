@@ -5,6 +5,7 @@ import { pointsDelta } from "@/shared/delta";
 import { AnimatedNumber } from "@/client/components/AnimatedNumber";
 import { DATA_SERIES } from "@/client/components/Chart";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { getGa4DashboardReport } from "@/serverFunctions/ga4";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { countComparison, DeltaBadge } from "@/client/components/MetricTile";
@@ -18,7 +19,7 @@ import {
 } from "@/client/lib/format";
 import { OrganicTrendChart } from "./OrganicTrendChart";
 import { ga4OverviewQuery } from "@/client/features/dashboard/ga4OverviewQuery";
-import { Ga4Provenance } from "@/client/features/dashboard/Ga4Provenance";
+import { MeasurementWarning } from "./MeasurementWarning";
 import { t } from "@/shared/i18n";
 
 /** The selected property's daily sessions and period totals, above its detailed report. */
@@ -29,6 +30,7 @@ export function OrganicTrendPanel({
   startDate,
   endDate,
   onOpenHealth,
+  onMeasurementUnknownChange,
 }: {
   projectId: string;
   windowDays: number;
@@ -36,6 +38,7 @@ export function OrganicTrendPanel({
   startDate?: string;
   endDate?: string;
   onOpenHealth?: () => void;
+  onMeasurementUnknownChange?: (unknown: boolean) => void;
 }) {
   const defaults = ga4OverviewQuery(projectId, windowDays);
   const query = useQuery(
@@ -58,6 +61,12 @@ export function OrganicTrendPanel({
         },
   );
 
+  const measurementUnknown =
+    query.isError ||
+    (query.data?.connected === true && query.data.totals.sessions === null);
+  useEffect(() => {
+    onMeasurementUnknownChange?.(measurementUnknown);
+  }, [measurementUnknown, onMeasurementUnknownChange]);
   if (query.isPending) return <div className="skeleton h-40" aria-busy />;
   // A failure is said here too: the tables below read other queries, and can
   // succeed while this one fails, which left a silent gap above them.
@@ -155,6 +164,22 @@ export function OrganicTrendPanel({
       </div>
 
       <div className="px-4 py-3">
+        <p className="mb-2 text-xs text-muted">
+          {formatDate(query.data.resolvedDateRange.startDate)} –{" "}
+          {formatDate(query.data.resolvedDateRange.endDate)} ·{" "}
+          {query.data.propertyTimeZone ?? t("Saat dilimi bilinmiyor")}
+        </p>
+        <p className="mb-2 text-xs text-muted">
+          {t(
+            "Mülk kapsamı: tüm ana makineler ve akışlar. Bu toplam yalnızca projenin sitesine ait olmayabilir.",
+          )}
+        </p>
+        <MeasurementWarning
+          reports={query.data.reportMetadata.reports}
+          unknown={totals.sessions === null || totals.keyEvents === null}
+          onRetry={() => void query.refetch()}
+          onOpenHealth={onOpenHealth}
+        />
         {query.data.fetchedAt ? (
           <p className="mb-2 text-xs text-muted">
             {t("Veri alındı: {time}", {
@@ -174,41 +199,6 @@ export function OrganicTrendPanel({
             (report) => report.dataTruncationReasons ?? [],
           )}
         />
-        <p className="mb-2 text-xs text-muted">
-          {t(
-            "Mülk kapsamı: tüm ana makineler ve akışlar. Bu toplam yalnızca projenin sitesine ait olmayabilir.",
-          )}
-        </p>
-        <p className="mb-2 text-sm">
-          {totals.sessions === null || totals.keyEvents === null
-            ? t(
-                "Trafik veya sonuç ölçümü okunamadı; dönüşüm yorumu yapılamıyor.",
-              )
-            : t(
-                "Bu dönemde {sessions} oturum ve {events} anahtar olay kaydedildi.",
-                {
-                  sessions: formatCount(totals.sessions),
-                  events: formatCount(totals.keyEvents),
-                },
-              )}
-        </p>
-        {totals.sessions !== null &&
-        totals.sessions > 0 &&
-        totals.sessions < 30 ? (
-          <p className="mb-2 max-w-prose text-sm text-muted">
-            {t(
-              "Az sayıda oturumda tek bir ziyaret bile oranları belirgin değiştirir. Yüzde değişimini tek başına başarı veya kayıp saymayın.",
-            )}
-          </p>
-        ) : null}
-        {totals.keyEvents === 0 ? (
-          <p className="mb-2 max-w-prose text-sm text-muted">
-            {t(
-              "Anahtar olay kaydedilmedi. Form gönderme gibi hedefler tanımlı değilse bu sayı sıfır kalır; ölçüm durumunu kontrol edin.",
-            )}
-          </p>
-        ) : null}
-        <Ga4Provenance report={query.data} />
         {query.data.warnings.includes("property_time_zone_changed") ? (
           <p role="status" className="text-xs text-muted">
             {t(
@@ -216,11 +206,6 @@ export function OrganicTrendPanel({
             )}
           </p>
         ) : null}
-        <p className="mt-2 text-xs text-muted">
-          {t(
-            "Son günler yeniden işlenebilir; dün, tamamlanmış bir takvim günüdür, kesinleşmiş veri garantisi değildir.",
-          )}
-        </p>
         {query.data.warnings.includes("end_date_clamped") ? (
           <p role="status" className="text-xs text-muted">
             {t(
@@ -228,41 +213,85 @@ export function OrganicTrendPanel({
             )}
           </p>
         ) : null}
-        <p className="mt-2 text-xs text-muted">
-          {t(
-            "Satış ölçümü doğrulanmadı; sıfır satış, mağaza olmadığı anlamına gelmez.",
-          )}
-        </p>
-        {!limited &&
-        query.data.diagnostics.some(
-          (d) => d.code === "key_events_sharp_decline",
-        ) ? (
-          <p className="mt-2 text-sm text-[var(--ink-warning)]">
+        {hasSessions ? (
+          <div className="py-3">
+            <OrganicTrendChart rows={rows} />
+          </div>
+        ) : (
+          <p className="py-6 text-sm text-muted">
+            {t("Gösterilecek oturum verisi yok.")}
+          </p>
+        )}
+        <details>
+          <summary className="min-h-11 cursor-pointer py-3 text-sm">
+            {t("Analytics verisini yorumlama")}
+          </summary>
+          <p className="mb-2 text-sm">
+            {totals.sessions === null || totals.keyEvents === null
+              ? t(
+                  "Trafik veya sonuç ölçümü okunamadı; dönüşüm yorumu yapılamıyor.",
+                )
+              : t(
+                  "Bu dönemde {sessions} oturum ve {events} anahtar olay kaydedildi.",
+                  {
+                    sessions: formatCount(totals.sessions),
+                    events: formatCount(totals.keyEvents),
+                  },
+                )}
+          </p>
+          {totals.sessions !== null &&
+          totals.sessions > 0 &&
+          totals.sessions < 30 ? (
+            <p className="mb-2 max-w-prose text-sm text-muted">
+              {t(
+                "Az sayıda oturumda tek bir ziyaret bile oranları belirgin değiştirir. Yüzde değişimini tek başına başarı veya kayıp saymayın.",
+              )}
+            </p>
+          ) : null}
+          {totals.keyEvents === 0 ? (
+            <p className="mb-2 max-w-prose text-sm text-muted">
+              {t(
+                "Anahtar olay kaydedilmedi. Form gönderme gibi hedefler tanımlı değilse bu sayı sıfır kalır; ölçüm durumunu kontrol edin.",
+              )}
+            </p>
+          ) : null}
+          <p className="mb-2 text-xs text-muted">{deltaTitle}</p>
+          <p className="text-xs text-muted">
             {t(
-              "Anahtar olaylar önceki döneme göre en az yarıya düştü. Bu bir gözlemdir; nedenini belirlemek için olayları ve ölçüm ayarlarını inceleyin.",
+              "Google arama tıklamaları ile organik oturumlar farklı ölçümlerdir; Analytics diğer arama motorlarını da kapsar.",
             )}
           </p>
-        ) : null}
-        {onOpenHealth ? (
-          <button
-            type="button"
-            className="btn btn-sm mt-2 min-h-11"
-            onClick={onOpenHealth}
-          >
-            {t("Ölçüm durumunu kontrol et")}
-          </button>
-        ) : null}
+          <p className="mt-2 text-xs text-muted">
+            {t(
+              "Son günler yeniden işlenebilir; dün, tamamlanmış bir takvim günüdür, kesinleşmiş veri garantisi değildir.",
+            )}
+          </p>
+          <p className="mt-2 text-xs text-muted">
+            {t(
+              "Satış ölçümü doğrulanmadı; sıfır satış, mağaza olmadığı anlamına gelmez.",
+            )}
+          </p>
+          {!limited &&
+          query.data.diagnostics.some(
+            (d) => d.code === "key_events_sharp_decline",
+          ) ? (
+            <p className="mt-2 text-sm text-[var(--ink-warning)]">
+              {t(
+                "Anahtar olaylar önceki döneme göre en az yarıya düştü. Bu bir gözlemdir; nedenini belirlemek için olayları ve ölçüm ayarlarını inceleyin.",
+              )}
+            </p>
+          ) : null}
+          {onOpenHealth ? (
+            <button
+              type="button"
+              className="btn btn-sm mt-2 min-h-11"
+              onClick={onOpenHealth}
+            >
+              {t("Ölçüm durumunu kontrol et")}
+            </button>
+          ) : null}
+        </details>
       </div>
-      {hasSessions ? (
-        <div className="px-2 py-3">
-          <OrganicTrendChart rows={rows} />
-        </div>
-      ) : (
-        /* A flat line along zero is a shape that looks like an answer. */
-        <p className="px-4 py-6 text-sm text-muted">
-          {t("Gösterilecek oturum verisi yok.")}
-        </p>
-      )}
       <details className="px-4 pb-4">
         <summary className="min-h-11 cursor-pointer py-3 text-sm">
           {t("Günlük değerler")}

@@ -28,6 +28,8 @@ Düşük dönüşüm filtresi en az 30 oturumlu en az dört uygun satırın orta
 
 ## Paylaşım, ölçüm ve kota
 
+Ölçüm bilinmiyorsa boş dönem sonucu çıkarılmaz: **Bu dönemin trafiği belirlenemedi** gösterilir. Bilinen sayılar korunur. Bildirilen kısıt nedenleri ölçümlerin yanında yer alır; neden bilinmiyorsa açıkça belirtilir. Yeniden deneme veya ölçüm kontrolü sunulur; kanal değiştirmek okuma hatasının çözümü olarak önerilmez. Genel notlar **Analytics verisini yorumlama** bölümündedir; kapsam, dönem ve uyarılar görünür kalır.
+
 Rapor, kanal, tarihler, kırılım, satır boyutu ve sayfalama URL'de korunur. host/path bağlantı filtresi birebir, yalnızca listelenen satırlarda çalışır; URL çeşitlerini birleştirmez. CSV ve E-Tablolar aynı filtrelenmiş satırları ham sayılarla aktarır. ga4_scope_json sütunu kaynak, mülk, tarihler, saat dilimi, para birimi, kalite, sayfa ve filtre bilgisini taşır.
 
 Ölçüm durumu yalnızca GA4 yönetim ayarlarını okur. “Kontrol edilen ayarlarda eksik bulunmadı” etiketin veri gönderdiğini kanıtlamaz; bağlantılı doğrulama adımlarını izleyin. Eksik envanterde sayılar en az olarak gösterilir. Gelişmiş ölçümün ana anahtarı kapalıysa etkin alt seçenek sayısı sıfırdır. Kontrol, hesap ayarlarını değiştirmez.

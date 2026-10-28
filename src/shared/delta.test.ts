@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import { setLocale } from "./i18n";
+import { afterEach, describe, expect, it } from "vitest";
 import { fractionalChange, placesDelta, pointsDelta } from "./delta";
 
 describe("fractionalChange", () => {
@@ -24,4 +25,12 @@ it("distinguishes unchanged rates, including zero, from missing evidence", () =>
   expect(pointsDelta(0, 0)).toMatchObject({ neutral: true });
   expect(pointsDelta(0.5, 0.5)).toMatchObject({ neutral: true });
   expect(pointsDelta(0.5, null)).toBeNull();
+});
+
+afterEach(() => setLocale("tr"));
+it("distinguishes percentage-point changes from relative percent changes in both UI languages", () => {
+  setLocale("tr");
+  expect(pointsDelta(0.018, 0.2)?.text).toBe("-18,2 yüzde puan");
+  setLocale("en");
+  expect(pointsDelta(0.018, 0.2)?.text).toBe("-18.2 percentage points");
 });

@@ -51,6 +51,8 @@ export function ResultsView({
   onTabChange,
   tab,
   severity,
+  issueType,
+  onIssueTypeChange,
   pageUrl,
   onPageUrlChange,
   justCompleted = false,
@@ -61,6 +63,8 @@ export function ResultsView({
   data: AuditResultsData;
   tab: ResultsTab;
   severity?: IssueSeverity;
+  issueType?: string;
+  onIssueTypeChange?: (issueType: string | null) => void;
   pageUrl?: string;
   onPageUrlChange?: (url: string | undefined) => void;
   /** This screen watched the audit finish; the score marks the moment once. */
@@ -361,6 +365,8 @@ export function ResultsView({
                 <IssuesView
                   issues={issues}
                   initialSeverity={severity}
+                  initialIssueType={issueType}
+                  onIssueTypeChange={onIssueTypeChange}
                   onSeverityChange={onSeverityChange}
                   focusUrl={issueFocusUrl}
                   onClearFocus={() => {

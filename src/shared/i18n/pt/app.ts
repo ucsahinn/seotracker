@@ -347,4 +347,26 @@ export const ptApp: Catalog = {
   "Aylık müşteri değerlendirmesi": "Revisão mensal do cliente",
 
   "Bu sitenin son tamamlanan denetimi": "Última auditoria concluída deste site",
+  "Bunlar kaydedilen pazar tercihleridir. Arşivdeki sıralamalar tüm ülkeleri ve cihazları kapsar; bu tercihler sıralamaları filtrelemez.":
+    "Estas são preferências de mercado salvas. As posições arquivadas abrangem todos os países e dispositivos; essas preferências não filtram as posições.",
+  "Dil, seçilen ülkeye göre belirlenir. Bu, arayüz dilini değiştirmez.":
+    "O idioma depende do país selecionado. Isso não altera o idioma da interface.",
+  "Hedefinizi ekleyin": "Adicione seu objetivo",
+  "Tarayıcı sekmesini kapatmak uygulamayı durdurmaz. Tamamen kapatmak için kurulumunuza göre Docker kapsayıcısını veya geliştirici sunucusunu durdurun. Bilgisayar uyurken denetimler çalışmaz.":
+    "Fechar a aba do navegador não encerra o aplicativo. Para encerrá-lo, pare o contêiner Docker ou o servidor de desenvolvimento, conforme sua instalação. As auditorias não são executadas enquanto o computador está em suspensão.",
+  "Burada kayıtlı mülk seçimleri gösterilir; Google erişimi bu kontrolde sınanmaz. Güncel bir okuma denemek için Bağlantıları açın, seçili mülkün raporuna gidin ve Yenile düğmesine basın.":
+    "Estas são as propriedades salvas; esta verificação não testa o acesso ao Google. Para tentar uma leitura atual, abra Conexões, vá ao relatório da propriedade selecionada e pressione Atualizar.",
+  "Kaydedilmiş rapor": "Relatório salvo",
+  "Eski rapor · kaynak ve tarih doğrulanmamış":
+    "Relatório antigo · fonte e data não verificadas",
+  "Kaynak site: {domain}": "Site de origem: {domain}",
+  "Kaynak site doğrulanamadı. Bu rapor başka bir siteye ait olabilir.":
+    "Não foi possível verificar o site de origem. Este relatório pode se referir a outro site.",
+  "Bu rapor projenin sitesine ait değil: {domain}.":
+    "Este relatório não é sobre o site do projeto: {domain}.",
+  "Dosya kaydı: {date}": "Arquivo salvo: {date}",
+  "Bugün karar vermeden önce raporun içindeki siteyi, ölçüm tarihini ve veri sınırlarını kontrol edin.":
+    "Antes de tomar decisões hoje, confira o site, a data da medição e os limites dos dados no relatório.",
+  "Güncel bir denetim raporu oluştur":
+    "Criar um relatório de auditoria atualizado",
 };

@@ -12,6 +12,8 @@ Analytics mostra visitas, engajamento e eventos principais medidos na propriedad
 
 ## Leia primeiro o escopo
 
+Se as medições forem desconhecidas, o tráfego é indicado como não determinável; os valores conhecidos são preservados. As restrições informadas aparecem junto às métricas. Quando a causa é desconhecida, isso é dito explicitamente. Pode tentar novamente ou verificar as configurações; mudar de canal não é sugerido como solução para um erro de leitura. As notas gerais ficam recolhidas em **Compreender os dados do Analytics**; escopo, período e avisos permanecem visíveis.
+
 A busca orgânica inclui mecanismos além do Google. Todo o tráfego altera o resumo e o relatório juntos. A pesquisa interna sempre mostra eventos medidos de resultados de pesquisa em todos os canais, sem seletor de canal. Todos os hosts e fluxos da propriedade estão incluídos. Outros sites ou aplicativos podem contribuir para os totais.
 
 Os períodos de 7, 28 e 90 dias terminam ontem no fuso da propriedade. Ontem é um dia de calendário encerrado, sem garantia de dados definitivos. Dias recentes podem ser reprocessados. As datas efetivas, o período anterior de mesma duração e o fuso são exibidos. Links aceitam startDate/endDate juntos; uma data final futura é limitada a ontem com aviso. GA4 e Search Console usam calendários e medidas diferentes. Datas iguais não garantem intervalos temporais idênticos.

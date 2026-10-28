@@ -18,13 +18,13 @@ Projede henüz rapor yoksa arama, tür ve sayfalama yerine ilk raporu hazırlama
 
 ## Listeyi okuma
 
-Üstte **Son güncellenen rapor** vardır: başlık, kayıtlı özet, kaydetme zamanı, açma ve HTML indirme düğmeleri. Özet yoksa açıkça belirtilir. Yapılandırılmış veri dönemi eski raporlarda bulunmadığı için dönem ve veri sınırları belgenin içinde kontrol edilir; başlıktan veya HTML'den tahmin edilmez.
+Üstte **Kaydedilmiş rapor** vardır: başlık, kayıtlı özet, kaydetme zamanı, açma ve HTML indirme düğmeleri. Özet yoksa açıkça belirtilir. Yapılandırılmış veri dönemi eski raporlarda bulunmadığı için dönem ve veri sınırları belgenin içinde kontrol edilir; başlıktan veya HTML'den tahmin edilmez.
 
 Arama başlık ve kayıtlı özeti tarar. Tür düğmeleri, arama ve Son 7 gün süzgecinden sonraki sayıları gösterir; seçili türden önce hesaplanır. Son 7 gün, o sürede yazılan veya güncellenen ayrı dosyalar demektir, düzenleme sayısı ya da Google verisinin güncelliği değildir. Sonuç sayısı ve projedeki toplam ayrı gösterilir.
 
 Liste sunucudan 25 kayıtlık sayfalar alır; 100. rapordan sonrası da aranabilir ve açılabilir. **Önceki** ve **Sonraki** ile ilerleyin. Varsayılan sıra son güncellemedir; eski bir dosya güncellenince yukarı çıkar. Oluşturulma zamanı veya başlığa göre de sıralanır. Arama, tür, Son 7 gün, sıralama ve sayfa URL'de kalır; geri dönme ve yenileme bu seçimi korur.
 
-Uygulamanın eski Arama ve Denetim belgeleri aynı oluşturucu işaretini taşır. Bu yüzden **Uygulama raporu, tür kaydedilmemiş** yazılır; hepsi Denetim sayılmaz. Asistan becerisi ve şablon adı kayıtlıysa görünür. Dosya sayısı SEO başarısı değildir. Boyut, kayıtlı HTML'nin bayt sayısıdır; indirmedeki güvenlik başlıkları dosyayı biraz büyütebilir.
+Uygulamanın eski Arama ve Denetim belgeleri aynı oluşturucu işaretini taşır. Bu yüzden **Eski rapor · kaynak ve tarih doğrulanmamış** yazılır; hepsi Denetim sayılmaz. Asistan becerisi ve şablon adı kayıtlıysa görünür. Dosya sayısı SEO başarısı değildir. Boyut, kayıtlı HTML'nin bayt sayısıdır; indirmedeki güvenlik başlıkları dosyayı biraz büyütebilir.
 
 ## Açma, indirme ve yazdırma
 
@@ -53,3 +53,5 @@ Bir rapor en çok 500.000 bayt, başlık 120 ve özet 2.500 karakterdir. Projede
 Yeni yerel raporlarda Arama performansı ve Site denetimi ayrı türler olarak kaydedilir. Eski uygulama raporlarının türü başlıktan tahmin edilmez. Arama raporunun kaynak kimliği mülk, kesin tarihler ve filtrelerden; denetim raporununki denetim kimliğinden oluşur. Aynı kaynak başka bir dilde yeniden hazırlanırsa aynı kayıt güncellenir ve raporun dili değişebilir. Ajan raporlarıyla başlık çakışmaları reddedilir; eski bir belge aynı başlığı kullanıyorsa o belge korunur ve yeni kayıt reddedilir.
 
 Native raporları kaynak ekranından yeniden hazırlayın; ajanlar `save_report` ile içeriklerini değiştiremez. Eksik kaynak verisi sıfır kabul edilmez. Denetim yöntemi kullanılan GSC trafik dönemini, kaynağın satır sınırını ve mevcut kayıtlı mobil CrUX ölçümünü belirtir.
+
+Üstteki **Kaydedilmiş rapor**, sitenin güncel özeti değildir. Kaynak denetimin sitesi doğrulanabiliyorsa gösterilir; projenin sitesiyle farklıysa uyarılır. Kaynak doğrulanamıyorsa başka bir siteye ait olabileceği açıkça yazılır. **Eski rapor · kaynak ve tarih doğrulanmamış** belgelerinin türü başlıktan tahmin edilmez. Bugünkü kararlar için **Güncel bir denetim raporu oluştur** bağlantısından projenin sitesini denetleyin. Eski dosya değiştirilmez.

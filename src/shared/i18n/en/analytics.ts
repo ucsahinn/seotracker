@@ -5,6 +5,11 @@ import type { Catalog } from "@/shared/i18n";
  * Keys are the Turkish source strings exactly as passed to t().
  */
 export const enAnalytics: Catalog = {
+  "Analytics verisini yorumlama": "Understanding Analytics data",
+  "Bu dönemin trafiği belirlenemedi":
+    "Could not determine traffic for this period",
+  "Bazı ölçümler belirlenemedi. Nedeni bilinmiyor; bu, hiç ziyaret olmadığı anlamına gelmez.":
+    "Some measurements could not be determined. The cause is unknown; this does not mean there were no visits.",
   "Analytics adres grubu": "Analytics address group",
   "Analytics adres grubunu incele": "Inspect Analytics address group",
   "Analytics adres grubu birebir eşleştirilemiyor.":
@@ -749,7 +754,10 @@ export const enAnalytics: Catalog = {
     "Users may recur across categories. These counts are not a unique property total.",
   "Toplam etkileşim süresi": "Total engagement time",
   "Diğer ölçümler": "Other metrics",
-  "Listelenen {count} satırda": "Across the {count} listed rows",
+  "Listelenen {count} satırda": {
+    one: "Across the {count} listed row",
+    other: "Across the {count} listed rows",
+  },
   "Filtreleme, sıralama ve dışa aktarma bu sayfadaki satırları kapsar.":
     "Filtering, sorting and exports cover rows on this page only.",
   "Birebir sayfa filtresi yalnızca listelenen satırlara uygulanır; diğer sayfalarda da arayın.":

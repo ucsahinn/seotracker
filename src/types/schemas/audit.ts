@@ -63,6 +63,7 @@ export type AuditTab = (typeof auditTabs)[number];
 export const auditSearchSchema = z.object({
   auditId: z.string().optional().catch(undefined),
   pageUrl: z.string().url().max(2048).optional().catch(undefined),
+  issueType: z.string().min(1).max(120).optional().catch(undefined),
   tab: z.enum(auditTabs).catch("todo").default("todo"),
   // Opens the issue list already narrowed, e.g. from the dashboard bar.
   severity: z.enum(["critical", "warning", "info"]).optional().catch(undefined),

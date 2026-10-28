@@ -10,7 +10,7 @@ import {
   DeleteSavedKeywordsModal,
   RemoveSavedKeywordsError,
 } from "@/client/features/saved-keywords/SavedKeywordsModals";
-import { TablePagination } from "@/client/components/table/TablePagination";
+import { SavedKeywordsPagination } from "./SavedKeywordsPagination";
 import { SavedKeywordsSummary } from "@/client/features/saved-keywords/SavedKeywordsSummary";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { SavedKeywordsTable } from "@/client/features/saved-keywords/SavedKeywordsTable";
@@ -238,7 +238,8 @@ export function SavedKeywordsPage(props: SavedPageProps) {
             />
           )}
         </div>
-        <TablePagination
+        <SavedKeywordsPagination
+          hasActiveFilters={active}
           page={search.page}
           pageSize={search.pageSize}
           pageSizes={SAVED_KEYWORD_PAGE_SIZES}

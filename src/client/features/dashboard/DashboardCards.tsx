@@ -102,7 +102,7 @@ function RunningAuditCard({
       stamp={
         audit.status === "completed"
           ? t("{count} sayfa tarandı · {date}", {
-              count: formatCount(audit.pagesCrawled),
+              count: audit.pagesCrawled,
               date: formatDay(audit.startedAt),
             })
           : audit.status === "running"
@@ -219,7 +219,7 @@ function RunningAuditCard({
                   <span className="shrink-0 tabular-nums text-muted">
                     {issue.siteLevel
                       ? t("Site geneli")
-                      : t("{count} sayfa", { count: formatCount(issue.count) })}
+                      : t("{count} sayfa", { count: issue.count })}
                   </span>
                 </Link>
               </li>
@@ -235,9 +235,7 @@ function RunningAuditCard({
                   className="text-xs text-muted underline decoration-base-content/25 underline-offset-4 hover:text-base-content"
                 >
                   {t("+ {count} kontrol türü daha", {
-                    count: formatCount(
-                      audit.totalIssueTypes - audit.topIssues.length,
-                    ),
+                    count: audit.totalIssueTypes - audit.topIssues.length,
                   })}
                 </Link>
               </li>
@@ -279,7 +277,7 @@ function RunningAuditCard({
                     </span>
                     <span className="shrink-0 tabular-nums text-muted">
                       {t("{count} sorun", {
-                        count: formatCount(page.issueCount),
+                        count: page.issueCount,
                       })}
                     </span>
                   </Link>

@@ -20,7 +20,9 @@ const input = (overrides: Record<string, unknown> = {}) =>
 
 beforeAll(async () => {
   await client.executeMultiple(`CREATE TABLE reports (id TEXT PRIMARY KEY, project_id TEXT, title TEXT, summary TEXT, html TEXT, skill TEXT, template_id TEXT, created_by TEXT, created_by_user_id TEXT, size_bytes INTEGER, created_at TEXT, updated_at TEXT, native_kind TEXT, native_identity TEXT);
-  CREATE TABLE report_templates (id TEXT PRIMARY KEY, project_id TEXT, name TEXT);`);
+  CREATE TABLE report_templates (id TEXT PRIMARY KEY, project_id TEXT, name TEXT);
+  CREATE TABLE audits (id TEXT PRIMARY KEY, project_id TEXT, start_url TEXT);
+  CREATE TABLE projects (id TEXT PRIMARY KEY, domain TEXT);`);
   await client.batch(
     Array.from({ length: 1001 }, (_, index) => ({
       sql: "INSERT INTO reports (id, project_id, title, summary, html, skill, template_id, created_by, created_by_user_id, size_bytes, created_at, updated_at) VALUES (?, 'p', ?, ?, '<html></html>', NULL, NULL, 'app:site-audit', 'u', 13, '2025-01-01', ?)",
@@ -106,4 +108,18 @@ it("filters persisted native kinds independently of a shared app creator", async
   expect(result.totalMatching).toBe(1);
   expect(result.reports[0]?.id).toBe("native-search");
   expect(result.reports[0]?.nativeIdentity).toBe("s1");
+});
+
+it("F14 reads source only from a server-stamped, project-scoped audit identity", async () => {
+  await client.executeMultiple(`INSERT INTO projects (id, domain) VALUES ('source', 'vaultpilot.io');
+    INSERT INTO audits (id, project_id, start_url) VALUES ('source-audit', 'source', 'https://detaydepo.com/'), ('foreign-audit', 'foreign', 'https://private.example/');
+    INSERT INTO reports (id, project_id, title, native_kind, native_identity, updated_at) VALUES
+    ('source-report', 'source', 'vaultpilot.io misleading title', 'site-audit-export', 'source-audit', '2026-10-26'),
+    ('foreign-report', 'source', 'foreign', 'site-audit-export', 'foreign-audit', '2026-10-25');`);
+  const result = await listReportInventory(input({ projectId: "source" }));
+  expect(result.latest?.sourceUrl).toBe("https://detaydepo.com/");
+  expect(result.latest?.projectDomain).toBe("vaultpilot.io");
+  await client.execute("DELETE FROM reports WHERE id = 'source-report'");
+  const foreign = await listReportInventory(input({ projectId: "source" }));
+  expect(foreign.latest?.sourceUrl).toBeNull();
 });

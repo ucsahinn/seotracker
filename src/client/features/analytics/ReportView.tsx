@@ -5,7 +5,8 @@ import { EmptyState } from "@/client/components/EmptyState";
 import { HelpTip } from "@/client/components/HelpTip";
 import { TableExportMenu } from "@/client/components/table/TableBulkActionBar";
 import { useLocalSort } from "@/client/components/table/useLocalSort";
-import { ReportEmptyState } from "@/client/features/analytics/ReportEmptyState";
+import { ReportZeroRows } from "./ReportZeroRows";
+import { ReportListScope } from "./ReportListScope";
 import { ReportSummary } from "@/client/features/analytics/ReportSummary";
 import {
   columnLabel,
@@ -92,6 +93,8 @@ export function ReportView({
   organicOnly,
   onOrganicOnlyChange,
   onOpenHealth,
+  onRetry,
+  measurementUnknown = false,
   exactPage,
   onClearPageGroup,
   onClearExactPage,
@@ -107,6 +110,8 @@ export function ReportView({
   onOrganicOnlyChange: (next: boolean) => void;
   /** Switches to the setup check; offered where a property setting explains an empty tab. */
   onOpenHealth?: () => void;
+  onRetry?: () => void;
+  measurementUnknown?: boolean;
 }) {
   // Hide the repeated host in a single-host table; exports keep it.
   const singleHost =
@@ -222,33 +227,29 @@ export function ReportView({
   );
   if (result.rows.length === 0) {
     return (
-      <div className="space-y-3" id="analytics-report">
-        <AnalyticsEvidence result={result} onOpenHealth={onOpenHealth} />
+      <ReportZeroRows
+        {...{
+          result,
+          kind,
+          organicOnly,
+          onOrganicOnlyChange,
+          onOpenHealth,
+          onRetry,
+          measurementUnknown,
+        }}
+      >
         {pageScope}
-        <ReportEmptyState
-          pageGroup={Boolean(result.pageGroup)}
-          kind={kind}
-          organicOnly={organicOnly}
-          emptyReason={result.emptyReason}
-          onShowAllTraffic={() => onOrganicOnlyChange(false)}
-          onOpenHealth={onOpenHealth}
-        />
-      </div>
+      </ReportZeroRows>
     );
   }
   return (
     <div className="space-y-3" id="analytics-report">
       <AnalyticsEvidence result={result} onOpenHealth={onOpenHealth} />
-      <p role="status" className="text-xs text-muted">
-        {scope} ·{" "}
-        {t(
-          "Filtreleme, sıralama ve dışa aktarma bu sayfadaki satırları kapsar.",
-        )}{" "}
-        {t("{shown} / {count} satır", {
-          shown: formatCount(rows.length),
-          count: result.rows.length,
-        })}
-      </p>
+      <ReportListScope
+        scope={scope}
+        shown={rows.length}
+        total={result.rows.length}
+      />
       {pageScope}
       <ReportSummary
         plan={plan}

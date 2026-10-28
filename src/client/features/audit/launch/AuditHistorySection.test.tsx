@@ -33,7 +33,9 @@ const audit = (id: string, startedAt: string, critical: number) => ({
   issues: { critical, warning: 0, info: 0 },
 });
 
-function renderSection(history: ReturnType<typeof audit>[]) {
+function renderSection(
+  history: React.ComponentProps<typeof AuditHistorySection>["history"],
+) {
   render(
     <AuditHistorySection
       projectId="p1"
@@ -46,6 +48,60 @@ function renderSection(history: ReturnType<typeof audit>[]) {
 }
 
 describe("AuditHistorySection", () => {
+  it("F16 shows informational page findings as a separate severity", () => {
+    const row = audit("info", "2026-02-01T10:00:00Z", 0);
+    renderSection([{ ...row, issues: { ...row.issues, info: 13 } }]);
+    expect(screen.getByRole("columnheader", { name: "Bilgi" })).toBeTruthy();
+    expect(screen.getByRole("cell", { name: "13" })).toBeTruthy();
+    expect(screen.getByText(/Sayılar sayfa bulgularıdır/)).toBeTruthy();
+  });
+  it("F17 shows the stored page limit with a scope link", () => {
+    renderSection([
+      { ...audit("limited", "2026-02-01T10:00:00Z", 0), maxPages: 20 },
+    ]);
+    expect(screen.getByText("Tarama sınırı: 20 sayfa")).toBeTruthy();
+    expect(
+      screen
+        .getByRole("link", { name: "Kapsam ayrıntıları" })
+        .getAttribute("href"),
+    ).toContain("tab=checks");
+  });
+  it("F18 gives an explicit unknown reason and recovery for a legacy failure", () => {
+    render(
+      <AuditHistorySection
+        projectId="p1"
+        history={[
+          { ...audit("failed", "2026-02-01T10:00:00Z", 0), status: "failed" },
+        ]}
+        isLoading={false}
+        onDelete={vi.fn()}
+        onRerun={vi.fn()}
+      />,
+    );
+    expect(screen.getByText("Nedeni belirlenemedi.")).toBeTruthy();
+    expect(screen.getByText(/Denetimi yeniden başlatın/)).toBeTruthy();
+  });
+  it("F18 uses the recorded failure code rather than guessing from the page count", () => {
+    render(
+      <AuditHistorySection
+        projectId="p1"
+        history={[
+          {
+            ...audit("oom", "2026-02-01T10:00:00Z", 0),
+            status: "failed",
+            errorCode: "oom",
+          },
+        ]}
+        isLoading={false}
+        onDelete={vi.fn()}
+        onRerun={vi.fn()}
+      />,
+    );
+    expect(
+      screen.getByText(/Denetim, uygulamanın kullanabildiği belleğe sığmadı/),
+    ).toBeTruthy();
+    expect(screen.getByText("Daha az sayfayla yeniden başlatın.")).toBeTruthy();
+  });
   it("shows crawled pages rather than the reservation for a failed audit", () => {
     const failed = {
       ...audit("failed", "2026-02-01T10:00:00Z", 0),

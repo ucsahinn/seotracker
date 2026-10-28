@@ -22,6 +22,8 @@ const SEVERITY_ORDER: IssueSeverity[] = ["critical", "warning", "info"];
 export function IssuesView({
   issues,
   initialSeverity,
+  initialIssueType,
+  onIssueTypeChange,
   onSeverityChange,
   focusUrl,
   onClearFocus,
@@ -30,6 +32,8 @@ export function IssuesView({
   issues: AuditIssueRow[];
   /** Open with one severity already chosen (a link from the dashboard bar). */
   initialSeverity?: IssueSeverity;
+  initialIssueType?: string;
+  onIssueTypeChange?: (issueType: string | null) => void;
   /** Mirrors the chosen severity into the URL, so a cleared filter stays cleared. */
   onSeverityChange?: (severity: IssueSeverity | null) => void;
   /**
@@ -56,7 +60,16 @@ export function IssuesView({
     setSeverityState(next);
     onSeverityChange?.(next);
   };
-  const [issueType, setIssueType] = useState<string | null>(null);
+  const [localIssueType, setLocalIssueType] = useState<string | null>(
+    initialIssueType ?? null,
+  );
+  const issueType = onIssueTypeChange
+    ? (initialIssueType ?? null)
+    : localIssueType;
+  const setIssueType = (next: string | null) => {
+    setLocalIssueType(next);
+    onIssueTypeChange?.(next);
+  };
 
   /*
    * The ring and the bars are drawn from every group, not the narrowed ones:

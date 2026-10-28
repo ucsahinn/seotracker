@@ -80,7 +80,13 @@ export function KpiTiles({
         metric="ctr"
         label={t("Tıklama oranı")}
         trend={days.map((p) => p.ctr)}
-        hint={t("Gösterimlerin yüzde kaçı tıklamaya döndü.")}
+        hint={
+          t("Gösterimlerin yüzde kaçı tıklamaya döndü.") +
+          " " +
+          t(
+            "Oran değişimi yüzde puanla gösterilir: iki dönemin yüzdeleri arasındaki farktır.",
+          )
+        }
         value={current.ctr === null ? null : formatPercent(current.ctr)}
         animateTo={
           current.ctr === null

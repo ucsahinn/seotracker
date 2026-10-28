@@ -18,7 +18,7 @@ export const UNKNOWN_APP_KIND = "app-kind-unknown";
 const KIND_LABELS: Record<string, string> = {
   "search-performance-export": "Arama performansı raporu",
   [AUDIT_EXPORT_KIND]: "Site denetimi raporu",
-  [UNKNOWN_APP_KIND]: "Uygulama raporu, tür kaydedilmemiş",
+  [UNKNOWN_APP_KIND]: "Eski rapor · kaynak ve tarih doğrulanmamış",
   __other: "Diğer türler",
   "seo-audit": "SEO denetimi",
   "seo-check-in": "Dönem karşılaştırması",

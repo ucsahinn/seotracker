@@ -51,3 +51,30 @@ it("guards client-3: locks the general-settings draft until a pending normalized
   await waitFor(() => expect(name.closest("fieldset")?.disabled).toBe(false));
   client.clear();
 });
+
+it("distinguishes saved market preferences from the global ranking archive", async () => {
+  api.getProjects.mockResolvedValue([
+    {
+      id: "market",
+      name: "Acme",
+      domain: null,
+      locationCode: 2792,
+      languageCode: "tr",
+      createdAt: "2026-01-01",
+    },
+  ]);
+  const client = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+  });
+  render(
+    <QueryClientProvider client={client}>
+      <ProjectGeneralSettings projectId="market" />
+    </QueryClientProvider>,
+  );
+  expect(
+    await screen.findByText(
+      /Arşivdeki sıralamalar tüm ülkeleri ve cihazları kapsar/,
+    ),
+  ).toBeDefined();
+  client.clear();
+});

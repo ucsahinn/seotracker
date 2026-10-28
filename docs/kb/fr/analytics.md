@@ -12,6 +12,8 @@ Analytics présente les visites, l’engagement et les événements clés mesur�
 
 ## Lire le périmètre
 
+Si les mesures sont inconnues, le trafic est indiqué comme impossible à déterminer ; les valeurs connues sont conservées. Les restrictions signalées apparaissent près des mesures. Si la cause est inconnue, cela est dit clairement. Vous pouvez réessayer ou vérifier les paramètres ; changer de canal n’est pas proposé pour réparer une erreur de lecture. Les notes générales sont repliées dans **Comprendre les données Analytics** ; le périmètre, la période et les avertissements restent visibles.
+
 La recherche naturelle inclut les moteurs autres que Google. Tout le trafic modifie ensemble la synthèse et le rapport. La recherche interne couvre toujours les événements de résultats mesurés sur tous les canaux, sans sélecteur de canal. Tous les hôtes et flux de la propriété sont inclus. D’autres sites ou applications peuvent contribuer aux totaux.
 
 Les périodes de 7, 28 et 90 jours se terminent hier dans le fuseau de la propriété. Hier est un jour calendaire écoulé, sans garantie de données définitives. Les jours récents peuvent être retraités. Les dates courantes, la période précédente de même durée et le fuseau sont affichés. Les liens acceptent startDate/endDate ensemble ; une fin future est ramenée à hier avec un avertissement. GA4 et Search Console utilisent des calendriers et mesures différents. Des dates identiques ne garantissent pas le même intervalle temporel.

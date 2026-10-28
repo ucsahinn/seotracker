@@ -147,11 +147,7 @@ export function WindowsSection() {
           {t("Tekrar dene")}
         </button>
       ) : null}
-      <p className="max-w-prose text-sm text-subtle">
-        {t(
-          "Tarayıcı sekmesini kapatmak uygulamayı durdurmaz. Tamamen kapatmak için tepsi menüsünden Çıkış deyin. Bilgisayar uyurken denetimler çalışmaz.",
-        )}
-      </p>
+      <WindowsStopHelp status={status.data?.status} />
     </section>
   );
 }
@@ -202,5 +198,20 @@ function WindowsToggle({
         />
       </label>
     </div>
+  );
+}
+
+function WindowsStopHelp({ status }: { status: string | undefined }) {
+  if (!status) return null;
+  return (
+    <p className="max-w-prose text-sm text-subtle">
+      {status === "unsupported"
+        ? t(
+            "Tarayıcı sekmesini kapatmak uygulamayı durdurmaz. Tamamen kapatmak için kurulumunuza göre Docker kapsayıcısını veya geliştirici sunucusunu durdurun. Bilgisayar uyurken denetimler çalışmaz.",
+          )
+        : t(
+            "Tarayıcı sekmesini kapatmak uygulamayı durdurmaz. Tamamen kapatmak için tepsi menüsünden Çıkış deyin. Bilgisayar uyurken denetimler çalışmaz.",
+          )}
+    </p>
   );
 }

@@ -40,10 +40,12 @@ export function DashboardVerdict({
     );
   const w = view.window;
   const sampleNote = searchSampleNote(view, "previous");
-  const excluded = Math.max(
-    0,
-    Math.round((Date.parse(w.freshEndDate) - Date.parse(w.endDate)) / 86400000),
-  );
+  const excludedStart = new Date(Date.parse(w.endDate) + 86400000)
+    .toISOString()
+    .slice(0, 10);
+  const hasExcludedDays = w.freshEndDate > w.endDate;
+  const hasProvisionalData =
+    w.lastDataDate !== null && w.lastDataDate > w.endDate;
   return (
     <section className="space-y-2" aria-label={t("Arama özeti")}>
       <div className="flex flex-wrap items-baseline gap-2">
@@ -96,15 +98,23 @@ export function DashboardVerdict({
           })}
         </p>
         <p>
-          {t("Son veri günü: {date}. Son {count} gün toplamlara dahil değil.", {
-            date: w.lastDataDate ? formatDate(w.lastDataDate) : "–",
-            count: formatCount(excluded),
-          })}
+          {t("Toplamların son günü: {date}.", { date: formatDate(w.endDate) })}{" "}
+          {hasProvisionalData
+            ? t("Geçici verinin son günü: {date}.", {
+                date: formatDate(w.lastDataDate!),
+              })
+            : t("Bu dönemden sonra geçici veri alınmadı.")}{" "}
+          {hasExcludedDays
+            ? t("{start} – {end} toplamlara dahil değil.", {
+                start: formatDate(excludedStart),
+                end: formatDate(w.freshEndDate),
+              })
+            : null}
         </p>
       </div>
       <details className="text-xs text-muted">
         <summary className="min-h-11 cursor-pointer py-3 focus-visible:outline-offset-[-2px]">
-          {t("Veri hakkında")}
+          {t("Search Console veri kapsamı")}
         </summary>
         <div className="space-y-2 pb-3">
           {w.incompleteSource === "assumed" ? (

@@ -3,6 +3,9 @@ import type { Catalog } from "@/shared/i18n";
 
 /** Italian for the Search performance screen, its to-do copy and the printable report. */
 export const itSearch: Catalog = {
+  "Arşivde en çok gösterim": "Più impressioni in questo archivio",
+  "{date} tarihli geçmiş bu bilgisayarda saklı; Google'ın 16 ay sınırı buna uygulanmaz.":
+    "Lo storico del {date} è conservato su questo computer; il limite di 16 mesi di Google non si applica.",
   "Marka adları kaydedildi": "Nomi del brand salvati",
   "Marka adları kaydedilemedi": "Impossibile salvare i nomi del brand",
   "Sitenizin adını ve insanların onu nasıl yazdığını girin. Bu kelimeleri içeren aramalar marka araması sayılır.":
@@ -843,4 +846,22 @@ export const itSearch: Catalog = {
   "Google verisi alındı: {date}": "Dati Google acquisiti: {date}",
   "Google anonim sorguları gizler. API, arama türü başına günde en fazla {limit} satır sunar; sorgu ve sayfa ayrıntılarında başka satırları da atlayabilir. Tam sayfalama, tüm aramaların listelendiği anlamına gelmez.":
     "Google nasconde le query anonimizzate. L’API fornisce al massimo {limit} righe al giorno per tipo di ricerca e può omettere altri dettagli su query e pagine. La paginazione completa non significa che ogni ricerca sia elencata.",
+  // Dashboard source scope and measured next steps.
+  "Toplamların son günü: {date}.": "Totali fino al: {date}.",
+  "Geçici verinin son günü: {date}.": "Dati provvisori fino al: {date}.",
+  "Bu dönemden sonra geçici veri alınmadı.":
+    "Non sono stati ricevuti dati provvisori dopo questo periodo.",
+  "{start} – {end} toplamlara dahil değil.":
+    "Il periodo {start} – {end} è escluso dai totali.",
+  "Search Console veri kapsamı": "Ambito dei dati di Search Console",
+  "{issue} — {scope}": "{issue} — {scope}",
+  "{count} uyarı türünü inceleyin": "Esamina {count} tipi di avvisi",
+  "Uyarı bulgularını inceleyin": "Esamina gli avvisi rilevati",
+  "{types} uyarı türü / {findings} sayfa bulgusu. Etkilenen sayfaları inceleyin.":
+    "{types} tipi di avvisi / {findings} riscontri sulle pagine. Esamina le pagine interessate.",
+  "{findings} sayfa bulgusu. Etkilenen sayfaları inceleyin.":
+    "{findings} riscontri sulle pagine. Esamina le pagine interessate.",
+  "{value} yüzde puan": "{value} punti percentuali",
+  "Oran değişimi yüzde puanla gösterilir: iki dönemin yüzdeleri arasındaki farktır.":
+    "La variazione del tasso è espressa in punti percentuali: la differenza tra le percentuali dei due periodi.",
 };

@@ -1,23 +1,10 @@
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { Link } from "@tanstack/react-router";
-import {
-  ArrowDown,
-  ArrowUp,
-  Eye,
-  RotateCw,
-  ScanSearch,
-  Trash2,
-} from "lucide-react";
+import { Eye, RotateCw, ScanSearch, Trash2 } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
-import { formatCount, formatSignedPercent } from "@/client/lib/format";
+import { formatCount } from "@/client/lib/format";
 import { useState } from "react";
-import {
-  auditSites,
-  issueDelta,
-  previousAuditIds,
-  siteHost,
-  type IssueDelta,
-} from "./auditDelta";
+import { auditSites, previousAuditIds, siteHost } from "./auditDelta";
 import type { getAuditHistory } from "@/serverFunctions/audit";
 import { RowActions } from "@/client/components/table/RowActions";
 import { formatDateTime, StatusBadge } from "@/client/features/audit/shared";
@@ -30,6 +17,9 @@ import {
   useLocalSort,
 } from "@/client/components/table/useLocalSort";
 import { t } from "@/shared/i18n";
+
+import { AuditHistorySeverityCell } from "./AuditHistorySeverityCell";
+import { describeAuditFailure } from "../results/auditFailureCopy";
 
 type HistoryRow = Awaited<ReturnType<typeof getAuditHistory>>[number];
 
@@ -162,6 +152,11 @@ export function AuditHistorySection({
         <p className="text-xs text-muted sm:hidden">
           {t("Tüm sütunları ve işlemleri görmek için tabloyu yana kaydırın.")}
         </p>
+        <p className="text-xs text-muted">
+          {t(
+            "Sayılar sayfa bulgularıdır; aynı sayfada birden çok bulgu olabilir.",
+          )}
+        </p>
         <div
           className="overflow-x-auto"
           role="region"
@@ -215,6 +210,7 @@ export function AuditHistorySection({
                     align="right"
                   />
                 </th>
+                <th className="text-right">{t("Bilgi")}</th>
                 <th className="normal-case">
                   {/* Configuration records a request, not a successful measurement. */}
                   <span>{t("Hız ölçümü istendi")}</span>
@@ -258,20 +254,49 @@ export function AuditHistorySection({
                   </td>
                   <td>
                     <StatusBadge status={audit.status} />
+                    {audit.status === "completed" ? (
+                      <div className="space-y-1 text-xs text-muted">
+                        <p>
+                          {audit.maxPages
+                            ? t("Tarama sınırı: {count} sayfa", {
+                                count: formatCount(audit.maxPages),
+                              })
+                            : t("Tarama sınırı kaydedilmemiş.")}
+                        </p>
+                        <Link
+                          to="/p/$projectId/audit"
+                          params={{ projectId }}
+                          search={{ auditId: audit.id, tab: "checks" }}
+                          className="link link-hover"
+                        >
+                          {t("Kapsam ayrıntıları")}
+                        </Link>
+                      </div>
+                    ) : null}
+                    {audit.status === "failed" ? (
+                      <FailureReason audit={audit} />
+                    ) : null}
                   </td>
                   <td>{formatCount(audit.pagesCrawled)}</td>
                   <td className="text-right">
-                    <SeverityCell
+                    <AuditHistorySeverityCell
                       row={audit}
                       previous={byId.get(previousIds.get(audit.id) ?? "")}
                       severity="critical"
                     />
                   </td>
                   <td className="text-right">
-                    <SeverityCell
+                    <AuditHistorySeverityCell
                       row={audit}
                       previous={byId.get(previousIds.get(audit.id) ?? "")}
                       severity="warning"
+                    />
+                  </td>
+                  <td className="text-right">
+                    <AuditHistorySeverityCell
+                      row={audit}
+                      previous={byId.get(previousIds.get(audit.id) ?? "")}
+                      severity="info"
                     />
                   </td>
                   <td>
@@ -318,69 +343,14 @@ export function AuditHistorySection({
   );
 }
 
-const CHIP = {
-  critical: "border-error/30 bg-error/10 text-[var(--ink-error)]",
-  warning: "border-warning/30 bg-warning/10 text-[var(--ink-warning)]",
-};
-
-function SeverityCell({
-  row,
-  previous,
-  severity,
-}: {
-  row: HistoryRow;
-  previous: HistoryRow | undefined;
-  severity: "critical" | "warning";
-}) {
-  // Counts of a crawl that is still running or failed are partial.
-  if (row.status !== "completed") return <span className="text-subtle">–</span>;
-  const count = row.issues[severity];
-  const delta = previous ? issueDelta(count, previous.issues[severity]) : null;
-
+function FailureReason({ audit }: { audit: HistoryRow }) {
+  const copy = describeAuditFailure(audit);
   return (
-    <div className="flex flex-col items-end gap-0.5">
-      {count > 0 ? (
-        <span
-          className={`inline-flex rounded-full border px-2 text-xs font-medium ${CHIP[severity]}`}
-        >
-          {formatCount(count)}
-        </span>
-      ) : (
-        <span className="text-xs text-muted">0</span>
-      )}
-      {delta && delta.diff !== 0 ? (
-        <DeltaText delta={delta} current={count} />
-      ) : null}
+    <div className="max-w-xs space-y-1 whitespace-normal text-xs text-muted">
+      <p>{t(copy.cause)}</p>
+      {copy.side === "Nedeni belirlenemedi." ? <p>{t(copy.side)}</p> : null}
+      <p>{t(copy.action)}</p>
     </div>
-  );
-}
-
-/** Fewer issues is the good direction; the arrow carries it, not the tint. */
-function DeltaText({ delta, current }: { delta: IssueDelta; current: number }) {
-  const fewer = delta.diff < 0;
-  const Icon = fewer ? ArrowDown : ArrowUp;
-  const before = current - delta.diff;
-  /*
-   * Counts, not a percentage, on a small base: 1 -> 0 printed "-%100,0",
-   * which reads as a site transformed. The percentage only once the earlier
-   * count is large enough for it to mean something.
-   */
-  const percent =
-    delta.fraction === null || before < 20
-      ? null
-      : formatSignedPercent(delta.fraction);
-
-  return (
-    <span
-      className={`inline-flex items-center gap-0.5 text-xs ${
-        fewer ? "text-[var(--ink-success)]" : "text-[var(--ink-error)]"
-      }`}
-      title={t("Aynı siteye ait bir önceki denetime göre")}
-    >
-      <Icon className="size-3" aria-hidden />
-      <span className="sr-only">{fewer ? t("azaldı") : t("arttı")} </span>
-      {percent ?? `${formatCount(before)} → ${formatCount(current)}`}
-    </span>
   );
 }
 

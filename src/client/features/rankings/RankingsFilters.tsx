@@ -9,6 +9,7 @@ import {
   Trophy,
 } from "lucide-react";
 import { FilterChips } from "@/client/features/search-performance/FilterChips";
+import { RankingMovementChips } from "./RankingMovementChips";
 import type { BandId } from "@/shared/positionBands";
 import type { ChipId } from "./positionBands";
 import type { MoveId } from "./rankingMoves";
@@ -26,7 +27,17 @@ export function RankingsFilters({
   setPage,
   reset,
 }: {
-  data: RankingArchiveData | undefined;
+  data:
+    | Pick<
+        RankingArchiveData,
+        | "comparableCount"
+        | "moveCounts"
+        | "chipCounts"
+        | "highImpressions"
+        | "totalMatching"
+        | "totalObserved"
+      >
+    | undefined;
   search: string;
   band?: BandId;
   chip?: ChipId;
@@ -61,7 +72,8 @@ export function RankingsFilters({
       </div>
       {data ? (
         <>
-          <FilterChips<MoveId>
+          <RankingMovementChips
+            comparable={data.comparableCount > 0}
             label={t("Değişim filtreleri")}
             active={move}
             onChange={(next) => {
@@ -111,7 +123,7 @@ export function RankingsFilters({
             chips={[
               {
                 id: "highImpressions",
-                label: t("Gösterimi yüksek"),
+                label: t("Arşivde en çok gösterim"),
                 icon: Eye,
                 count: data.chipCounts.highImpressions,
                 hint: t(

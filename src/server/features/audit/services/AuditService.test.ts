@@ -1,8 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { AUDIT_LIMITS } from "@/server/features/audit/services/audit-capacity";
+import type * as UrlPolicy from "@/server/lib/audit/url-policy";
 
 const mocks = vi.hoisted(() => ({
   createAudit: vi.fn(),
+  getAuditsByProject: vi.fn(),
+  getIssueCountsByAudit: vi.fn(),
   getAuditForProject: vi.fn(),
   r2List: vi.fn(),
   r2Delete: vi.fn(),
@@ -25,6 +28,8 @@ vi.mock("cloudflare:workers", () => ({
 vi.mock("@/server/features/audit/repositories/AuditRepository", () => ({
   AuditRepository: {
     createAudit: mocks.createAudit,
+    getAuditsByProject: mocks.getAuditsByProject,
+    getIssueCountsByAudit: mocks.getIssueCountsByAudit,
     getAuditForProject: mocks.getAuditForProject,
     deleteAuditForProject: mocks.deleteAuditForProject,
     getAuditUsageForOrganization: mocks.getAuditUsageForOrganization,
@@ -33,7 +38,9 @@ vi.mock("@/server/features/audit/repositories/AuditRepository", () => ({
 vi.mock("@/server/features/lighthouse/pagespeed-config", () => ({
   getPageSpeedApiKey: vi.fn().mockResolvedValue("key"),
 }));
-vi.mock("@/server/lib/audit/url-policy", () => ({
+// Only the network-facing checks are stubbed; redaction stays real.
+vi.mock("@/server/lib/audit/url-policy", async (importOriginal) => ({
+  ...(await importOriginal<typeof UrlPolicy>()),
   normalizeAndValidateStartUrl: vi.fn(async (url: string) => url),
   resolveStartUrlRedirects: vi.fn(async (url: string) => url),
 }));
@@ -200,4 +207,29 @@ describe("AuditService.remove", () => {
       expect(mocks.deleteAuditForProject).toHaveBeenCalledTimes(2);
     });
   });
+});
+
+it("F17/F18 history retains stored scope and safe failure codes without raw diagnostics", async () => {
+  mocks.getAuditsByProject.mockResolvedValue([
+    {
+      id: "a",
+      startUrl: "https://example.com",
+      status: "failed",
+      pagesCrawled: 7,
+      pagesTotal: 144,
+      config: JSON.stringify({ maxPages: 20, lighthouseStrategy: "none" }),
+      errorCode: "oom",
+      errorDetail: "private diagnostic",
+      failedPhase: "crawling",
+    },
+  ]);
+  mocks.getIssueCountsByAudit.mockResolvedValue(new Map());
+  const [row] = await AuditService.getHistory("p");
+  expect(row).toMatchObject({
+    maxPages: 20,
+    errorCode: "oom",
+    failedPhase: "crawling",
+    issues: { critical: 0, warning: 0, info: 0 },
+  });
+  expect(row).not.toHaveProperty("errorDetail");
 });

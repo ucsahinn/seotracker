@@ -1,6 +1,6 @@
 import { and, asc, count, desc, eq, gte, notInArray, sql } from "drizzle-orm";
 import { db } from "@/db";
-import { reports, reportTemplates } from "@/db/schema";
+import { audits, projects, reports, reportTemplates } from "@/db/schema";
 import { reportSearchPattern } from "@/shared/reportSearch";
 import { metadataColumns } from "./ReportRepository";
 import {
@@ -97,8 +97,22 @@ export async function listReportInventory(input: ReportInventoryInput) {
     .limit(REPORT_INVENTORY_PAGE_SIZE)
     .offset((page - 1) * REPORT_INVENTORY_PAGE_SIZE);
   const [latest] = await db
-    .select(metadataColumns)
+    .select({
+      ...metadataColumns,
+      sourceUrl: audits.startUrl,
+      projectDomain: projects.domain,
+    })
     .from(reports)
+    // Only server-stamped audit identities establish provenance, never titles.
+    .leftJoin(
+      audits,
+      and(
+        eq(reports.nativeKind, "site-audit-export"),
+        eq(reports.nativeIdentity, audits.id),
+        eq(reports.projectId, audits.projectId),
+      ),
+    )
+    .leftJoin(projects, eq(reports.projectId, projects.id))
     .where(projectScope)
     .orderBy(desc(reports.updatedAt), desc(reports.id))
     .limit(1);

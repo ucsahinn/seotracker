@@ -1,3 +1,4 @@
+import { setLocale } from "@/shared/i18n";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { AuditHealthCard } from "./DashboardCards";
@@ -203,4 +204,31 @@ it("does not turn a partial or capped no-findings crawl into unconditional healt
   );
   expect(screen.queryByText(HEALTHY)).toBeNull();
   expect(screen.getByText(/Ölçülmeyen kontroller var/)).toBeDefined();
+});
+
+it("uses singular English page and issue counts in real one-page audit findings", () => {
+  setLocale("en");
+  try {
+    render(
+      <AuditHealthCard
+        projectId="p1"
+        audit={audit({
+          pagesCrawled: 1,
+          totalIssueTypes: 1,
+          topIssues: [
+            {
+              issueType: "missing_meta_description",
+              count: 1,
+              severity: "warning",
+            },
+          ],
+          topPages: [{ pageUrl: "https://example.com/", issueCount: 1 }],
+        })}
+      />,
+    );
+    expect(screen.getByText("1 page")).toBeDefined();
+    expect(screen.getByText("1 issue")).toBeDefined();
+  } finally {
+    setLocale("tr");
+  }
 });

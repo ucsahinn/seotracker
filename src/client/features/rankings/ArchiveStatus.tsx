@@ -129,7 +129,7 @@ export function ArchiveStatus({
      */
     return (
       <p className="text-xs text-muted">
-        {lastChecked ? `${lastChecked} ` : ""}
+        {lastChecked ? `${lastChecked}. ` : ""}
         {data.scannedThrough
           ? t(
               "{date} tarihine kadar kontrol edildi, kelime verisi bulunamadı.",
@@ -149,35 +149,48 @@ export function ArchiveStatus({
   // Row counts are storage plumbing; the dates are what an owner reads.
   const rows = formatNumber(data.rowCount);
   const summary =
-    data.earliestDate && data.lastDate
+    data.earliestDate && data.earliestDate === data.lastDate
       ? t(
-          "Bu bilgisayarda {start} – {end} arasının geçmişi saklı; Google'ın 16 ay sınırı buna uygulanmaz.",
-          {
-            start: formatDate(data.earliestDate),
-            end: formatDate(data.lastDate),
-          },
+          "{date} tarihli geçmiş bu bilgisayarda saklı; Google'ın 16 ay sınırı buna uygulanmaz.",
+          { date: formatDate(data.earliestDate) },
         )
-      : t("Arşiv {rows} satır.", { rows });
+      : data.earliestDate && data.lastDate
+        ? t(
+            "Bu bilgisayarda {start} – {end} arasının geçmişi saklı; Google'ın 16 ay sınırı buna uygulanmaz.",
+            {
+              start: formatDate(data.earliestDate),
+              end: formatDate(data.lastDate),
+            },
+          )
+        : t("Arşiv {rows} satır.", { rows });
 
   return (
-    <p className="text-xs text-muted">
-      {summary}
-      {lastChecked ? ` ${lastChecked}` : ""}
-      {` ${t("Google anonim sorguları gizler ve günlük satırları sınırlar; bu arşiv tüm aramaları içermez.")}`}
-      {data.scannedThrough
-        ? ` ${t("Taranan son gün: {date}", { date: formatDate(data.scannedThrough) })}`
-        : ""}
-      {/* `newDays`, not the days written. A caught-up archive re-reads the
+    <div className="space-y-1 text-xs text-muted">
+      <p>{summary}</p>
+      {lastChecked ? <p>{lastChecked}</p> : null}
+      <p>
+        {` ${t("Google anonim sorguları gizler ve günlük satırları sınırlar; bu arşiv tüm aramaları içermez.")}`}
+      </p>
+      {data.scannedThrough ? (
+        <p>
+          {t("Taranan son gün: {date}", {
+            date: formatDate(data.scannedThrough),
+          })}
+        </p>
+      ) : null}
+      <p>
+        {/* `newDays`, not the days written. A caught-up archive re-reads the
           three days Search Console is still revising on every open, and
           reporting that as days added claimed growth that never happened. */}
-      {data.newDays > 0
-        ? ` ${t("Bu açılışta {count} gün eklendi.", { count: formatNumber(data.newDays) })}`
-        : ""}
-      {/* The backfill walks oldest to newest, so what is left is the recent
+        {data.newDays > 0
+          ? ` ${t("Bu açılışta {count} gün eklendi.", { count: formatNumber(data.newDays) })}`
+          : ""}
+        {/* The backfill walks oldest to newest, so what is left is the recent
           end, not the old one. */}
-      {data.hasMore
-        ? ` ${t("Bu sayfa açıkken kalan günler otomatik yüklenir; bağlantı veya kota hatasında beklenir.")}`
-        : ""}
-    </p>
+        {data.hasMore
+          ? ` ${t("Bu sayfa açıkken kalan günler otomatik yüklenir; bağlantı veya kota hatasında beklenir.")}`
+          : ""}
+      </p>
+    </div>
   );
 }

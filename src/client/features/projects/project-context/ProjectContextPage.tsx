@@ -168,9 +168,16 @@ function ProjectContextContent({
           {context.missingSections[0] ? (
             <a
               className="link inline-flex min-h-11 items-center"
-              href={"#context-" + context.missingSections[0]}
+              href={
+                "#context-" +
+                (context.missingSections.includes("current_goal")
+                  ? "current_goal"
+                  : context.missingSections[0])
+              }
             >
-              {t("İlk boş bölümü doldur")}
+              {context.missingSections.includes("current_goal")
+                ? t("Hedefinizi ekleyin")
+                : t("İlk boş bölümü doldur")}
             </a>
           ) : null}
         </section>

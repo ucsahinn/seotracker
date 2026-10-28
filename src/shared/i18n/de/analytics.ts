@@ -1,6 +1,11 @@
 import type { Catalog } from "@/shared/i18n";
 
 export const deAnalytics: Catalog = {
+  "Analytics verisini yorumlama": "Analytics-Daten verstehen",
+  "Bu dönemin trafiği belirlenemedi":
+    "Der Traffic für diesen Zeitraum konnte nicht ermittelt werden",
+  "Bazı ölçümler belirlenemedi. Nedeni bilinmiyor; bu, hiç ziyaret olmadığı anlamına gelmez.":
+    "Einige Messwerte konnten nicht ermittelt werden. Die Ursache ist unbekannt; das bedeutet nicht, dass es keine Besuche gab.",
   "Analytics adres grubu": "Analytics-Adressgruppe",
   "Analytics adres grubunu incele": "Analytics-Adressgruppe prüfen",
   "Analytics adres grubu birebir eşleştirilemiyor.":

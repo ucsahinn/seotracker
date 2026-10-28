@@ -6,6 +6,9 @@ import type { Catalog } from "@/shared/i18n";
  * Google concepts use Search Console's own English UI names.
  */
 export const enSearch: Catalog = {
+  "Arşivde en çok gösterim": "Most impressions in this archive",
+  "{date} tarihli geçmiş bu bilgisayarda saklı; Google'ın 16 ay sınırı buna uygulanmaz.":
+    "History for {date} is stored on this computer; Google's 16-month limit does not apply to it.",
   // search-performance/searchAppearance.ts (Search Console's own English names)
   "AMP sayfası": "AMP article",
   "AMP haber kutusu": "AMP top stories",
@@ -1560,9 +1563,9 @@ export const enSearch: Catalog = {
     "Search Console can only read {start} onwards. This archive period cannot be opened in full.",
   // Real-data dashboard and search explanations.
   "Önceki dönemde {clicks} tıklama, {impressions} gösterim vardı.":
-    "The previous period had {clicks} clicks and {impressions} impressions.",
+    "Previous period — clicks: {clicks}; impressions: {impressions}.",
   "Geçen yıl aynı dönemde {clicks} tıklama, {impressions} gösterim vardı.":
-    "The same period last year had {clicks} clicks and {impressions} impressions.",
+    "Same period last year — clicks: {clicks}; impressions: {impressions}.",
   "Az veride yüzdeler ve ortalamalar hızla değişir; tek başına büyüme veya kayıp kanıtı değildir.":
     "With little data, percentages and averages change quickly; they alone do not establish growth or loss.",
   "Bu liste, ortalama sırası yuvarlanarak 4–20 aralığında olan ve bu dönemde en az {count} gösterim alan sorguları kapsar. Eşiğin altındaki sorgular Sorgular sekmesinde incelenebilir.":
@@ -1580,7 +1583,11 @@ export const enSearch: Catalog = {
   "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; mevcut sıraları aşağıdaki listeden inceleyin.":
     "No queries were observed in both periods. Rises and falls cannot be calculated yet; review current positions in the list below.",
   "{count} sorgunun mevcut sırası gösteriliyor. Önceki dönemle karşılaştırılabilecek sorgu yok.":
-    "Current positions for {count} queries. No queries can be compared with the previous period.",
+    {
+      one: "Current positions for {count} query. No queries can be compared with the previous period.",
+      other:
+        "Current positions for {count} queries. No queries can be compared with the previous period.",
+    },
   "Tüm kayıtlı kelimeler bu dönemde gözlendi.":
     "All saved keywords were observed in this period.",
   "Ek kazanç hesaplanmayan: {zero}; gösterimi yetersiz: {small}; karşılaştırılacak tıklama oranı olmayan: {curve}; tahmine uygun araması olmayan sayfa: {pairs}.":
@@ -1605,4 +1612,22 @@ export const enSearch: Catalog = {
   "Google verisi alındı: {date}": "Google data acquired: {date}",
   "Google anonim sorguları gizler. API, arama türü başına günde en fazla {limit} satır sunar; sorgu ve sayfa ayrıntılarında başka satırları da atlayabilir. Tam sayfalama, tüm aramaların listelendiği anlamına gelmez.":
     "Google hides anonymized queries. The API exposes at most {limit} rows per day per search type and can omit additional query and page detail. Full pagination does not mean every search is listed.",
+  // Dashboard source scope and measured next steps.
+  "Toplamların son günü: {date}.": "Totals through: {date}.",
+  "Geçici verinin son günü: {date}.": "Provisional data through: {date}.",
+  "Bu dönemden sonra geçici veri alınmadı.":
+    "No provisional data was received after this period.",
+  "{start} – {end} toplamlara dahil değil.":
+    "{start} – {end} is excluded from totals.",
+  "Search Console veri kapsamı": "Search Console data scope",
+  "{issue} — {scope}": "{issue} — {scope}",
+  "{count} uyarı türünü inceleyin": "Review {count} warning types",
+  "Uyarı bulgularını inceleyin": "Review warning findings",
+  "{types} uyarı türü / {findings} sayfa bulgusu. Etkilenen sayfaları inceleyin.":
+    "{types} warning types / {findings} page findings. Review the affected pages.",
+  "{findings} sayfa bulgusu. Etkilenen sayfaları inceleyin.":
+    "{findings} page findings. Review the affected pages.",
+  "{value} yüzde puan": "{value} percentage points",
+  "Oran değişimi yüzde puanla gösterilir: iki dönemin yüzdeleri arasındaki farktır.":
+    "Rate changes are shown in percentage points: the difference between the two periods’ percentages.",
 };

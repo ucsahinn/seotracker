@@ -12,6 +12,8 @@ Analytics mostra visite, coinvolgimento ed eventi chiave misurati nella propriet
 
 ## Leggi prima l’ambito
 
+Se le misurazioni sono sconosciute, il traffico viene indicato come non determinabile; i valori noti restano visibili. Le limitazioni segnalate appaiono accanto alle metriche. Se la causa è sconosciuta, viene dichiarato. Puoi riprovare o controllare le impostazioni; cambiare canale non viene proposto come rimedio a un errore di lettura. Le note generali sono raccolte nella sezione chiusa **Capire i dati di Analytics**; ambito, periodo e avvisi restano visibili.
+
 La ricerca organica include motori diversi da Google. Tutto il traffico cambia insieme riepilogo e report. La ricerca interna mostra sempre gli eventi misurati dei risultati di ricerca su tutti i canali, senza selettore di canale. Sono inclusi tutti gli host e gli stream della proprietà. Anche altri siti o app possono contribuire ai totali.
 
 I periodi di 7, 28 e 90 giorni terminano ieri nel fuso della proprietà. Ieri è un giorno di calendario concluso, non una garanzia di dati definitivi. I giorni recenti possono essere rielaborati. Sono mostrati date effettive, periodo precedente di pari durata e fuso. I link accettano startDate/endDate insieme; una fine futura viene limitata a ieri con un avviso. GA4 e Search Console usano calendari e misure diversi. Date uguali non garantiscono intervalli temporali identici.

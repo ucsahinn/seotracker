@@ -29,3 +29,27 @@ it("provides a concrete report destination without claiming a fresh access check
   ).toBeDefined();
   expect(screen.getByText(/Son başarılı Google okuması/)).toBeDefined();
 });
+
+it("separates report and credential destinations with a wrapping gap", () => {
+  render(
+    <GoogleConnectedState
+      property="example.com"
+      reportHref="/p/p1/search-performance"
+      reportLabel="Arama performansı"
+      canManage={false}
+      canManageAccounts={false}
+      disabled={false}
+      disconnecting={false}
+      onChange={() => {}}
+      onDisconnect={() => {}}
+    />,
+  );
+  const report = screen.getByRole("link", { name: "Arama performansı" });
+  const credentials = screen.getByRole("link", {
+    name: "Kurulumun Google kimlik ayarları",
+  });
+  expect(report.parentElement).toBe(credentials.parentElement);
+  expect(report.parentElement?.className).toMatch(/flex-wrap/);
+  expect(report.parentElement?.className).toMatch(/gap-3/);
+  expect(report.className).toContain("min-h-11");
+});

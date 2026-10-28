@@ -6,12 +6,14 @@ vi.mock("@tanstack/react-router", () => ({
   Link: ({
     children,
     to,
+    search,
     ...rest
   }: {
     children: React.ReactNode;
     to: string;
+    search?: Record<string, string>;
   }) => (
-    <a href={to} {...rest}>
+    <a href={to} data-search={JSON.stringify(search)} {...rest}>
       {children}
     </a>
   ),
@@ -33,22 +35,32 @@ function audit(
 }
 
 describe("NextStepsCard", () => {
-  it("does not describe performance warnings as a Google comprehension problem", () => {
+  it("names the measured warning, its affected pages, and its exact issue target", () => {
     render(
       <NextStepsCard
         projectId="p1"
         gscConnected
         audit={audit({
+          severityTotals: { critical: 0, warning: 32, info: 0 },
           severityCheckTypes: { critical: 0, warning: 6, info: 0 },
+          topIssues: [
+            { issueType: "lh-render-blocking", severity: "warning", count: 14 },
+          ],
         })}
       />,
     );
     expect(
-      screen.getByText(/hız, kullanılabilirlik veya arama görünürlüğü/),
+      screen.getByText(
+        /Sayfanın ilk görünümünü engelleyen dosyalar var — 14 sayfa/,
+      ),
     ).toBeDefined();
+    expect(screen.getByText(/6 uyarı türü.*32 sayfa bulgusu/)).toBeDefined();
     expect(
-      screen.queryByText(/Google'ın sayfayı anlamasını zorlaştırıyor/),
-    ).toBeNull();
+      screen
+        .getByText(/14 sayfa/)
+        .closest("a")
+        ?.getAttribute("data-search"),
+    ).toContain("lh-render-blocking");
   });
   it("words the shared setup verdict and names what is missing", () => {
     const setup = {

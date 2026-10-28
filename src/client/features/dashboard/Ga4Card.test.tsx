@@ -87,3 +87,10 @@ it("retains a measured quiet commerce period and explicitly names an unknown cur
   expect(screen.getByText(/para birimi bilinmiyor/)).toBeDefined();
   expect(screen.queryByText(/Satış ölçümü doğrulanmadı/)).toBeNull();
 });
+
+it("qualifies dashboard Analytics totals as property-wide", () => {
+  render(<Ga4Card projectId="p1" connected />);
+  expect(
+    screen.getByText(/Mülk kapsamı: tüm ana makineler ve akışlar/),
+  ).toBeDefined();
+});

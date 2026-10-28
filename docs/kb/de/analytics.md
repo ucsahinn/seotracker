@@ -12,6 +12,8 @@ Analytics zeigt gemessene Besuche, Interaktionen und Schlüsselereignisse Ihrer 
 
 ## Zuerst den Umfang prüfen
 
+Bei unbekannten Messwerten wird der Traffic als nicht ermittelbar angezeigt; bekannte Werte bleiben erhalten. Gemeldete Einschränkungen stehen bei den Messwerten. Ist die Ursache unbekannt, wird dies ausdrücklich gesagt. Erneut versuchen oder die Messeinstellungen prüfen; ein Kanalwechsel wird nicht als Lösung für einen Lesefehler angeboten. Allgemeine Hinweise stehen eingeklappt unter **Analytics-Daten verstehen**; Umfang, Zeitraum und Warnungen bleiben sichtbar.
+
 Organische Suche umfasst auch andere Suchmaschinen als Google. Gesamter Traffic ändert Übersicht und Bericht gemeinsam. Die interne Suche zeigt immer gemessene Suchergebnis-Ereignisse aller Kanäle; hier gibt es keinen Kanalumschalter. Alle Hosts und Streams der Property sind enthalten. Weitere Websites oder Apps können zu den Summen beitragen.
 
 Die Zeiträume von 7, 28 und 90 Tagen enden gestern in der Zeitzone der Property. Gestern ist ein abgelaufener Kalendertag, keine Garantie für endgültige Daten. Aktuelle Tage können neu verarbeitet werden. Aktueller Zeitraum, gleich langer Vorzeitraum und Zeitzone werden angezeigt. Links akzeptieren startDate/endDate gemeinsam; ein zukünftiges Enddatum wird mit Hinweis auf gestern begrenzt. GA4 und Search Console verwenden verschiedene Kalender und Messwerte. Gleiche Datumsangaben garantieren keine identischen Zeitspannen.

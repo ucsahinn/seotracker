@@ -38,7 +38,9 @@ export function pointsDelta(
   if (magnitude === formatDecimal(0))
     return { text: t("Değişmedi"), improved: false, neutral: true };
   return {
-    text: t("{value} puan", { value: `${points > 0 ? "+" : "-"}${magnitude}` }),
+    text: t("{value} yüzde puan", {
+      value: `${points > 0 ? "+" : "-"}${magnitude}`,
+    }),
     improved: higherIsBetter ? points > 0 : points < 0,
   };
 }

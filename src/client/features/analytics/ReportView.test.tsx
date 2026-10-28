@@ -16,6 +16,34 @@ const base = {
   emptyReason: null,
 } as const;
 
+it("does not call unknown activity an empty period or suggest channel switching as repair", () => {
+  const onOpenHealth = vi.fn();
+  render(
+    <ReportView
+      kind="landing_pages"
+      organicOnly
+      onOrganicOnlyChange={vi.fn()}
+      onOpenHealth={onOpenHealth}
+      result={{
+        ...base,
+        dimensions: ["landingPage"],
+        metrics: ["sessions"],
+        rows: [],
+        rowCount: 0,
+        totalRowCount: 0,
+        activityStatus: "unknown",
+      }}
+    />,
+  );
+  expect(screen.getByText("Bu dönemin trafiği belirlenemedi")).toBeTruthy();
+  expect(screen.queryByText("Bu dönemde veri yok")).toBeNull();
+  expect(screen.queryByRole("button", { name: "Tüm trafiğe bak" })).toBeNull();
+  fireEvent.click(
+    screen.getByRole("button", { name: "Ölçüm durumunu kontrol et" }),
+  );
+  expect(onOpenHealth).toHaveBeenCalledOnce();
+});
+
 it("discloses incomplete address groups and offers to remove the server filter", () => {
   const onClearPageGroup = vi.fn();
   render(

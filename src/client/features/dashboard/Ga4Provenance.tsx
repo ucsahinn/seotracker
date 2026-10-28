@@ -10,6 +10,11 @@ export function Ga4Provenance({ report }: { report: Report }) {
   return (
     <div className="space-y-2 text-xs text-muted">
       <p>
+        {t(
+          "Mülk kapsamı: tüm ana makineler ve akışlar. Bu toplam yalnızca projenin sitesine ait olmayabilir.",
+        )}
+      </p>
+      <p>
         {formatDate(report.resolvedDateRange.startDate)} –{" "}
         {formatDate(report.resolvedDateRange.endDate)} ·{" "}
         {report.propertyTimeZone ?? t("Saat dilimi bilinmiyor")}

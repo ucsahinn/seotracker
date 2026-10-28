@@ -104,3 +104,26 @@ describe("IssuesView severity in the URL", () => {
     expect(onSeverityChange).toHaveBeenCalledWith(null);
   });
 });
+
+it("opens only the linked issue type and clears that type from the URL", () => {
+  const onIssueTypeChange = vi.fn();
+  render(
+    <IssuesView
+      issues={issues}
+      initialIssueType="images-missing-alt"
+      onIssueTypeChange={onIssueTypeChange}
+      onClearFocus={() => {}}
+      onShowPages={() => {}}
+    />,
+  );
+  expect(screen.getAllByRole("button", { expanded: true })).toHaveLength(1);
+  expect(screen.queryAllByRole("button", { expanded: false })).toHaveLength(0);
+  const chip = screen
+    .getAllByRole("button")
+    .find((button) =>
+      button.getAttribute("aria-label")?.endsWith("seçimini kaldır"),
+    );
+  if (!chip) throw new Error("Missing linked issue filter chip");
+  fireEvent.click(chip);
+  expect(onIssueTypeChange).toHaveBeenCalledWith(null);
+});

@@ -870,7 +870,7 @@ export const enApp: Catalog = {
   Sıralama: "Sort order",
   "Oluşturulma zamanı": "Created at",
   "{matching} sonuç / projedeki {total} rapor":
-    "{matching} results / {total} reports in the project",
+    "Results: {matching} / reports in the project: {total}",
   "Son 7 gün, bu sürede kaydedilen veya güncellenen ayrı dosyaları süzer; kaynak verinin güncelliğini göstermez. Arama başlık ve kayıtlı özeti tarar.":
     "Last 7 days filters distinct files saved or updated during that time; it does not indicate how current the source data is. Search covers titles and saved summaries.",
   "Tür sayıları arama ve Son 7 gün süzgecine göredir; seçili türden önce hesaplanır.":
@@ -1083,4 +1083,25 @@ export const enApp: Catalog = {
   "Uygulama raporu, tür kaydedilmemiş": "Application report, type not recorded",
 
   "Bu sitenin son tamamlanan denetimi": "Last completed audit for this site",
+  "Bunlar kaydedilen pazar tercihleridir. Arşivdeki sıralamalar tüm ülkeleri ve cihazları kapsar; bu tercihler sıralamaları filtrelemez.":
+    "These are saved market preferences. Archived positions cover all countries and devices; these preferences do not filter rankings.",
+  "Dil, seçilen ülkeye göre belirlenir. Bu, arayüz dilini değiştirmez.":
+    "Language follows the selected country. This does not change the interface language.",
+  "Hedefinizi ekleyin": "Add your goal",
+  "Tarayıcı sekmesini kapatmak uygulamayı durdurmaz. Tamamen kapatmak için kurulumunuza göre Docker kapsayıcısını veya geliştirici sunucusunu durdurun. Bilgisayar uyurken denetimler çalışmaz.":
+    "Closing the browser tab does not stop the app. To shut it down, stop the Docker container or development server, depending on your installation. Audits do not run while the computer is asleep.",
+  "Burada kayıtlı mülk seçimleri gösterilir; Google erişimi bu kontrolde sınanmaz. Güncel bir okuma denemek için Bağlantıları açın, seçili mülkün raporuna gidin ve Yenile düğmesine basın.":
+    "These are saved property selections; this check does not test Google access. To try a current read, open Connections, go to the selected property’s report and press Refresh.",
+  "Kaydedilmiş rapor": "Saved report",
+  "Eski rapor · kaynak ve tarih doğrulanmamış":
+    "Legacy report · source and date unverified",
+  "Kaynak site: {domain}": "Source site: {domain}",
+  "Kaynak site doğrulanamadı. Bu rapor başka bir siteye ait olabilir.":
+    "The source site could not be verified. This report may concern another site.",
+  "Bu rapor projenin sitesine ait değil: {domain}.":
+    "This report is not about the project site: {domain}.",
+  "Dosya kaydı: {date}": "File saved: {date}",
+  "Bugün karar vermeden önce raporun içindeki siteyi, ölçüm tarihini ve veri sınırlarını kontrol edin.":
+    "Before making decisions today, check the site, measurement date and data limits inside the report.",
+  "Güncel bir denetim raporu oluştur": "Create a current audit report",
 };

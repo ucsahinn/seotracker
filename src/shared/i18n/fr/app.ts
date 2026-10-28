@@ -347,4 +347,25 @@ export const frApp: Catalog = {
     "Les archives ne confirment pas tous ces jours. Actualisez-les dans Suivi des classements pour les jours manquants ou limités.",
 
   "Bu sitenin son tamamlanan denetimi": "Dernier audit terminé pour ce site",
+  "Bunlar kaydedilen pazar tercihleridir. Arşivdeki sıralamalar tüm ülkeleri ve cihazları kapsar; bu tercihler sıralamaları filtrelemez.":
+    "Il s’agit de préférences de marché enregistrées. Les positions archivées couvrent tous les pays et appareils ; ces préférences ne filtrent pas les classements.",
+  "Dil, seçilen ülkeye göre belirlenir. Bu, arayüz dilini değiştirmez.":
+    "La langue dépend du pays sélectionné. Cela ne change pas la langue de l’interface.",
+  "Hedefinizi ekleyin": "Ajouter votre objectif",
+  "Tarayıcı sekmesini kapatmak uygulamayı durdurmaz. Tamamen kapatmak için kurulumunuza göre Docker kapsayıcısını veya geliştirici sunucusunu durdurun. Bilgisayar uyurken denetimler çalışmaz.":
+    "Fermer l’onglet du navigateur n’arrête pas l’application. Pour l’arrêter, arrêtez le conteneur Docker ou le serveur de développement, selon votre installation. Les audits ne s’exécutent pas lorsque l’ordinateur est en veille.",
+  "Burada kayıtlı mülk seçimleri gösterilir; Google erişimi bu kontrolde sınanmaz. Güncel bir okuma denemek için Bağlantıları açın, seçili mülkün raporuna gidin ve Yenile düğmesine basın.":
+    "Les propriétés affichées sont celles enregistrées ; ce contrôle ne teste pas l’accès à Google. Pour tenter une lecture actuelle, ouvrez Connexions, accédez au rapport de la propriété sélectionnée et cliquez sur Actualiser.",
+  "Kaydedilmiş rapor": "Rapport enregistré",
+  "Eski rapor · kaynak ve tarih doğrulanmamış":
+    "Ancien rapport · source et date non vérifiées",
+  "Kaynak site: {domain}": "Site source : {domain}",
+  "Kaynak site doğrulanamadı. Bu rapor başka bir siteye ait olabilir.":
+    "Le site source n’a pas pu être vérifié. Ce rapport peut concerner un autre site.",
+  "Bu rapor projenin sitesine ait değil: {domain}.":
+    "Ce rapport ne concerne pas le site du projet : {domain}.",
+  "Dosya kaydı: {date}": "Fichier enregistré le {date}",
+  "Bugün karar vermeden önce raporun içindeki siteyi, ölçüm tarihini ve veri sınırlarını kontrol edin.":
+    "Avant de prendre une décision aujourd’hui, vérifiez le site, la date des mesures et les limites des données dans le rapport.",
+  "Güncel bir denetim raporu oluştur": "Créer un rapport d’audit à jour",
 };

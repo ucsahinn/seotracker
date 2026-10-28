@@ -90,7 +90,13 @@ export const listReportInventory = createServerFn({ method: "POST" })
     return {
       ...result,
       reports: named.slice(0, result.reports.length),
-      latest: result.latest ? named[named.length - 1] : null,
+      latest: result.latest
+        ? {
+            ...named[named.length - 1],
+            sourceUrl: result.latest.sourceUrl,
+            projectDomain: result.latest.projectDomain,
+          }
+        : null,
     };
   });
 export type ReportInventory = Awaited<ReturnType<typeof listReportInventory>>;

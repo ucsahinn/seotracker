@@ -3,6 +3,9 @@ import type { Catalog } from "@/shared/i18n";
 
 /** French for the Search performance screen, its to-do copy and the printable report. */
 export const frSearch: Catalog = {
+  "Arşivde en çok gösterim": "Le plus d’impressions dans cette archive",
+  "{date} tarihli geçmiş bu bilgisayarda saklı; Google'ın 16 ay sınırı buna uygulanmaz.":
+    "L’historique du {date} est conservé sur cet ordinateur ; la limite de 16 mois de Google ne s’y applique pas.",
   "Marka adları kaydedildi": "Noms de marque enregistrés",
   "Marka adları kaydedilemedi": "Impossible d'enregistrer les noms de marque",
   "Sitenizin adını ve insanların onu nasıl yazdığını girin. Bu kelimeleri içeren aramalar marka araması sayılır.":
@@ -845,4 +848,22 @@ export const frSearch: Catalog = {
   "Google verisi alındı: {date}": "Données Google récupérées : {date}",
   "Google anonim sorguları gizler. API, arama türü başına günde en fazla {limit} satır sunar; sorgu ve sayfa ayrıntılarında başka satırları da atlayabilir. Tam sayfalama, tüm aramaların listelendiği anlamına gelmez.":
     "Google masque les requêtes anonymisées. L’API fournit au plus {limit} lignes par jour et par type de recherche et peut omettre d’autres détails sur les requêtes et les pages. Une pagination complète ne signifie pas que toutes les recherches sont répertoriées.",
+  // Dashboard source scope and measured next steps.
+  "Toplamların son günü: {date}.": "Totaux jusqu’au : {date}.",
+  "Geçici verinin son günü: {date}.": "Données provisoires jusqu’au : {date}.",
+  "Bu dönemden sonra geçici veri alınmadı.":
+    "Aucune donnée provisoire reçue après cette période.",
+  "{start} – {end} toplamlara dahil değil.":
+    "La période du {start} au {end} est exclue des totaux.",
+  "Search Console veri kapsamı": "Périmètre des données Search Console",
+  "{issue} — {scope}": "{issue} — {scope}",
+  "{count} uyarı türünü inceleyin": "Examiner {count} types d’avertissements",
+  "Uyarı bulgularını inceleyin": "Examiner les avertissements",
+  "{types} uyarı türü / {findings} sayfa bulgusu. Etkilenen sayfaları inceleyin.":
+    "{types} types d’avertissements / {findings} constats sur les pages. Examinez les pages concernées.",
+  "{findings} sayfa bulgusu. Etkilenen sayfaları inceleyin.":
+    "{findings} constats sur les pages. Examinez les pages concernées.",
+  "{value} yüzde puan": "{value} points de pourcentage",
+  "Oran değişimi yüzde puanla gösterilir: iki dönemin yüzdeleri arasındaki farktır.":
+    "La variation du taux est exprimée en points de pourcentage : la différence entre les pourcentages des deux périodes.",
 };

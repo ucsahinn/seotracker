@@ -347,4 +347,25 @@ export const deApp: Catalog = {
 
   "Bu sitenin son tamamlanan denetimi":
     "Letztes abgeschlossenes Audit dieser Website",
+  "Bunlar kaydedilen pazar tercihleridir. Arşivdeki sıralamalar tüm ülkeleri ve cihazları kapsar; bu tercihler sıralamaları filtrelemez.":
+    "Dies sind gespeicherte Markteinstellungen. Archivierte Positionen umfassen alle Länder und Geräte; diese Einstellungen filtern die Rankings nicht.",
+  "Dil, seçilen ülkeye göre belirlenir. Bu, arayüz dilini değiştirmez.":
+    "Die Sprache richtet sich nach dem ausgewählten Land. Die Sprache der Benutzeroberfläche bleibt gleich.",
+  "Hedefinizi ekleyin": "Ziel hinzufügen",
+  "Tarayıcı sekmesini kapatmak uygulamayı durdurmaz. Tamamen kapatmak için kurulumunuza göre Docker kapsayıcısını veya geliştirici sunucusunu durdurun. Bilgisayar uyurken denetimler çalışmaz.":
+    "Das Schließen des Browser-Tabs beendet die App nicht. Beenden Sie je nach Installation den Docker-Container oder den Entwicklungsserver. Im Ruhezustand des Computers laufen keine Prüfungen.",
+  "Burada kayıtlı mülk seçimleri gösterilir; Google erişimi bu kontrolde sınanmaz. Güncel bir okuma denemek için Bağlantıları açın, seçili mülkün raporuna gidin ve Yenile düğmesine basın.":
+    "Hier sehen Sie gespeicherte Property-Auswahlen; dieser Check prüft den Google-Zugriff nicht. Für einen aktuellen Leseversuch öffnen Sie Verbindungen, gehen zum Bericht der ausgewählten Property und klicken auf Aktualisieren.",
+  "Kaydedilmiş rapor": "Gespeicherter Bericht",
+  "Eski rapor · kaynak ve tarih doğrulanmamış":
+    "Älterer Bericht · Quelle und Datum nicht bestätigt",
+  "Kaynak site: {domain}": "Quellwebsite: {domain}",
+  "Kaynak site doğrulanamadı. Bu rapor başka bir siteye ait olabilir.":
+    "Die Quellwebsite konnte nicht bestätigt werden. Dieser Bericht kann eine andere Website betreffen.",
+  "Bu rapor projenin sitesine ait değil: {domain}.":
+    "Dieser Bericht betrifft nicht die Projektwebsite: {domain}.",
+  "Dosya kaydı: {date}": "Datei gespeichert: {date}",
+  "Bugün karar vermeden önce raporun içindeki siteyi, ölçüm tarihini ve veri sınırlarını kontrol edin.":
+    "Prüfen Sie die Website, das Messdatum und die Datengrenzen im Bericht, bevor Sie heute Entscheidungen treffen.",
+  "Güncel bir denetim raporu oluştur": "Aktuellen Prüfbericht erstellen",
 };

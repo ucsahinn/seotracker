@@ -3,6 +3,9 @@ import type { Catalog } from "@/shared/i18n";
 
 /** Portuguese (Portugal) for the Search performance screen, its to-do copy and the printable report. */
 export const ptSearch: Catalog = {
+  "Arşivde en çok gösterim": "Mais impressões neste arquivo",
+  "{date} tarihli geçmiş bu bilgisayarda saklı; Google'ın 16 ay sınırı buna uygulanmaz.":
+    "O histórico de {date} está guardado neste computador; o limite de 16 meses do Google não se aplica.",
   "Marka adları kaydedildi": "Nomes da marca salvos",
   "Marka adları kaydedilemedi": "Não foi possível salvar os nomes da marca",
   "Sitenizin adını ve insanların onu nasıl yazdığını girin. Bu kelimeleri içeren aramalar marka araması sayılır.":
@@ -852,4 +855,22 @@ export const ptSearch: Catalog = {
   "Google verisi alındı: {date}": "Dados Google obtidos: {date}",
   "Google anonim sorguları gizler. API, arama türü başına günde en fazla {limit} satır sunar; sorgu ve sayfa ayrıntılarında başka satırları da atlayabilir. Tam sayfalama, tüm aramaların listelendiği anlamına gelmez.":
     "O Google oculta consultas anonimizadas. A API disponibiliza no máximo {limit} linhas por dia e tipo de pesquisa e pode omitir outros detalhes de consultas e páginas. A paginação completa não significa que todas as pesquisas estejam listadas.",
+  // Dashboard source scope and measured next steps.
+  "Toplamların son günü: {date}.": "Totais até: {date}.",
+  "Geçici verinin son günü: {date}.": "Dados provisórios até: {date}.",
+  "Bu dönemden sonra geçici veri alınmadı.":
+    "Não foram recebidos dados provisórios após este período.",
+  "{start} – {end} toplamlara dahil değil.":
+    "O período de {start} a {end} está excluído dos totais.",
+  "Search Console veri kapsamı": "Âmbito dos dados do Search Console",
+  "{issue} — {scope}": "{issue} — {scope}",
+  "{count} uyarı türünü inceleyin": "Rever {count} tipos de avisos",
+  "Uyarı bulgularını inceleyin": "Rever os avisos encontrados",
+  "{types} uyarı türü / {findings} sayfa bulgusu. Etkilenen sayfaları inceleyin.":
+    "{types} tipos de avisos / {findings} ocorrências em páginas. Reveja as páginas afetadas.",
+  "{findings} sayfa bulgusu. Etkilenen sayfaları inceleyin.":
+    "{findings} ocorrências em páginas. Reveja as páginas afetadas.",
+  "{value} yüzde puan": "{value} pontos percentuais",
+  "Oran değişimi yüzde puanla gösterilir: iki dönemin yüzdeleri arasındaki farktır.":
+    "A variação da taxa é apresentada em pontos percentuais: a diferença entre as percentagens dos dois períodos.",
 };

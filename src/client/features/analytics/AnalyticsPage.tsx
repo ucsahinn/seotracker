@@ -1,4 +1,5 @@
 import { useIsFetching, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useCallback, useState } from "react";
 import { useAnalyticsQuota } from "./useAnalyticsQuota";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
@@ -92,6 +93,23 @@ export function AnalyticsPage({
     onScopeChange({ acquisition: next, offset: 0 });
   const kind = view === HEALTH ? "landing_pages" : view;
   const effectiveChannel = kind === "site_search" ? "all" : channel;
+  const measurementKey = JSON.stringify([
+    projectId,
+    windowDays,
+    effectiveChannel,
+    scope.startDate,
+    scope.endDate,
+  ]);
+  const [measurement, setMeasurement] = useState({
+    key: measurementKey,
+    unknown: false,
+  });
+  const onMeasurementUnknownChange = useCallback(
+    (unknown: boolean) => {
+      setMeasurement({ key: measurementKey, unknown });
+    },
+    [measurementKey],
+  );
 
   // Asked first: with no property there is nothing to filter, tab through or
   // measure, so the whole screen becomes the one connect step.
@@ -226,13 +244,15 @@ export function AnalyticsPage({
       />
 
       <div className="space-y-4">
-        <p className="max-w-[75ch] text-sm text-muted">
-          {view === HEALTH
-            ? t(
-                "Bu kontrol yalnızca mülk ayarlarını okur; etiketin veri gönderdiğini doğrulamaz.",
-              )
-            : t(REPORT_QUESTIONS[kind])}
-        </p>
+        {view !== "landing_pages" ? (
+          <p className="max-w-[75ch] text-sm text-muted">
+            {view === HEALTH
+              ? t(
+                  "Bu kontrol yalnızca mülk ayarlarını okur; etiketin veri gönderdiğini doğrulamaz.",
+                )
+              : t(REPORT_QUESTIONS[kind])}
+          </p>
+        ) : null}
         {/* The report query keeps its last result while the health tab is
             open, so without this branch the two panels stacked and the page
             said "Google Analytics bağlı değil" twice. */}
@@ -249,6 +269,7 @@ export function AnalyticsPage({
                 startDate={scope.startDate}
                 endDate={scope.endDate}
                 onOpenHealth={() => setView(HEALTH)}
+                onMeasurementUnknownChange={onMeasurementUnknownChange}
               />
             }
             {reportQuery.isPending ? (
@@ -285,6 +306,10 @@ export function AnalyticsPage({
                 key={`${kind}-${effectiveChannel}-${windowDays}-${rowLimit}-${breakdown}-${acquisition}-${offset}-${scope.startDate}-${scope.endDate}-${scope.pageGroup}`}
                 kind={kind}
                 result={result}
+                measurementUnknown={
+                  measurement.key === measurementKey && measurement.unknown
+                }
+                onRetry={() => void refreshVisible()}
                 configurationState={
                   cachedHealth.data?.status === "ok" &&
                   cachedHealth.data.propertyId ===

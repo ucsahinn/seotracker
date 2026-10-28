@@ -38,7 +38,7 @@ export const Route = createFileRoute<"/_project/p/$projectId/audit/">(
 
 function SiteAuditPage() {
   const { projectId } = Route.useParams();
-  const { auditId, tab, severity, pageUrl } = Route.useSearch();
+  const { auditId, tab, severity, pageUrl, issueType } = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
 
   /*
@@ -75,17 +75,27 @@ function SiteAuditPage() {
       projectId={projectId}
       auditId={auditId}
       tab={tab}
+      issueType={issueType}
       severity={severity}
       pageUrl={pageUrl}
       onPageUrlChange={(url) =>
         setSearchParams({ pageUrl: url }, { replace: true })
       }
-      onBack={() => setSearchParams({ auditId: undefined, pageUrl: undefined })}
+      onBack={() =>
+        setSearchParams({
+          auditId: undefined,
+          pageUrl: undefined,
+          issueType: undefined,
+        })
+      }
       onTabChange={(nextTab, options) =>
         setSearchParams({ tab: nextTab }, options)
       }
       // A filter tweak is not a navigation: replace, so Back is not a stack of
       // every severity click.
+      onIssueTypeChange={(next) =>
+        setSearchParams({ issueType: next ?? undefined }, { replace: true })
+      }
       onSeverityChange={(next) =>
         setSearchParams({ severity: next ?? undefined }, { replace: true })
       }
@@ -98,6 +108,8 @@ function AuditDetail({
   auditId,
   tab,
   severity,
+  issueType,
+  onIssueTypeChange,
   pageUrl,
   onPageUrlChange,
   onBack,
@@ -108,6 +120,8 @@ function AuditDetail({
   auditId: string;
   tab: AuditTab;
   severity: IssueSeverity | undefined;
+  issueType?: string;
+  onIssueTypeChange: (issueType: string | null) => void;
   pageUrl?: string;
   onPageUrlChange: (url: string | undefined) => void;
   onBack: () => void;
@@ -290,6 +304,8 @@ function AuditDetail({
           projectId={projectId}
           data={resultsQuery.data}
           tab={tab}
+          issueType={issueType}
+          onIssueTypeChange={onIssueTypeChange}
           severity={severity}
           pageUrl={pageUrl}
           onPageUrlChange={onPageUrlChange}

@@ -19,6 +19,11 @@ const make = (
 ) => ({ templateName, skill, updatedAt, sizeBytes: 10 });
 
 describe("report stats", () => {
+  it("F15 labels unverified legacy app exports consistently in chips and filters", () => {
+    expect(kindLabel(UNKNOWN_APP_KIND)).toBe(
+      "Eski rapor · kaynak ve tarih doğrulanmamış",
+    );
+  });
   it("uses persisted native identity before presentation (previously native Search was unknown)", () => {
     const search = {
       ...make("Template", null),

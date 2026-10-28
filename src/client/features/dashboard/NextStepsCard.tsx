@@ -1,3 +1,5 @@
+import { warningAction } from "./warningAction";
+import type { DashboardAuditSummary } from "@/types/schemas/dashboard";
 import { Link } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -82,6 +84,7 @@ export function NextStepsCard({
     failedPhase?: string | null;
     severityTotals: { critical: number; warning: number; info: number };
     severityCheckTypes?: { critical: number; warning: number; info: number };
+    topIssues?: DashboardAuditSummary["topIssues"];
   } | null;
 }) {
   const steps = buildPanelActions({
@@ -258,6 +261,7 @@ export function buildPanelActions({
     failedPhase?: string | null;
     severityTotals: { critical: number; warning: number; info: number };
     severityCheckTypes?: { critical: number; warning: number; info: number };
+    topIssues?: DashboardAuditSummary["topIssues"];
   } | null;
 }): PanelAction[] {
   const steps: PanelAction[] = [];
@@ -374,6 +378,10 @@ export function buildPanelActions({
     });
   }
 
+  if (audit.status === "completed" && findingTypes.warning > 0) {
+    steps.push(warningAction(audit, params));
+  }
+
   for (const item of searchTodo.slice(0, 1)) {
     const copy = describeTodo(item);
     steps.push({
@@ -413,23 +421,6 @@ export function buildPanelActions({
       to: "/p/$projectId/audit",
       params,
       cta: t("Başlat"),
-    });
-  }
-
-  if (audit.status === "completed" && findingTypes.warning > 0) {
-    steps.push({
-      key: "warnings",
-      icon: TriangleAlert,
-      title: t("{count} kontrolde uyarı", {
-        count: formatCount(findingTypes.warning),
-      }),
-      detail: t(
-        "Bu bulgular hız, kullanılabilirlik veya arama görünürlüğü ile ilgili olabilir. Ayrıntılarda etkilenen sayfaları inceleyin.",
-      ),
-      to: "/p/$projectId/audit",
-      params,
-      search: { auditId: audit.auditId, tab: "issues", severity: "warning" },
-      cta: t("Gör"),
     });
   }
 

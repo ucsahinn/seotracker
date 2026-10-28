@@ -93,7 +93,7 @@ export function PositionBandBars({
         {paired === 0
           ? t(
               "{count} sorgunun mevcut sırası gösteriliyor. Önceki dönemle karşılaştırılabilecek sorgu yok.",
-              { count: formatCount(total) },
+              { count: total },
             )
           : t(
               "{count} sorgu; aynı {paired} sorguda net değişim. Çubuklar en büyük gruba görelidir.",

@@ -215,7 +215,7 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
             <ProjectMarketFields value={market} onChange={setMarket} />
             <span className="text-xs text-muted">
               {t(
-                "Kaydettiğiniz anahtar kelimeler bu ülke ve dile göre saklanır.",
+                "Bunlar kaydedilen pazar tercihleridir. Arşivdeki sıralamalar tüm ülkeleri ve cihazları kapsar; bu tercihler sıralamaları filtrelemez.",
               )}
             </span>
           </div>

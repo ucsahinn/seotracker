@@ -3,6 +3,9 @@ import type { Catalog } from "@/shared/i18n";
 
 /** German for the Search performance screen, its to-do copy and the printable report. */
 export const deSearch: Catalog = {
+  "Arşivde en çok gösterim": "Meiste Impressionen in diesem Archiv",
+  "{date} tarihli geçmiş bu bilgisayarda saklı; Google'ın 16 ay sınırı buna uygulanmaz.":
+    "Der Verlauf vom {date} ist auf diesem Computer gespeichert; Googles Grenze von 16 Monaten gilt dafür nicht.",
   "Marka adları kaydedildi": "Markennamen gespeichert",
   "Marka adları kaydedilemedi": "Markennamen konnten nicht gespeichert werden",
   "Sitenizin adını ve insanların onu nasıl yazdığını girin. Bu kelimeleri içeren aramalar marka araması sayılır.":
@@ -855,4 +858,22 @@ export const deSearch: Catalog = {
   "Google verisi alındı: {date}": "Google-Daten abgerufen: {date}",
   "Google anonim sorguları gizler. API, arama türü başına günde en fazla {limit} satır sunar; sorgu ve sayfa ayrıntılarında başka satırları da atlayabilir. Tam sayfalama, tüm aramaların listelendiği anlamına gelmez.":
     "Google verbirgt anonymisierte Suchanfragen. Die API liefert höchstens {limit} Zeilen pro Tag und Suchtyp und kann weitere Suchanfragen- und Seitendetails auslassen. Vollständige Paginierung bedeutet nicht, dass jede Suche aufgeführt wird.",
+  // Dashboard source scope and measured next steps.
+  "Toplamların son günü: {date}.": "Summen bis: {date}.",
+  "Geçici verinin son günü: {date}.": "Vorläufige Daten bis: {date}.",
+  "Bu dönemden sonra geçici veri alınmadı.":
+    "Nach diesem Zeitraum wurden keine vorläufigen Daten empfangen.",
+  "{start} – {end} toplamlara dahil değil.":
+    "{start} – {end} ist nicht in den Summen enthalten.",
+  "Search Console veri kapsamı": "Datenumfang der Search Console",
+  "{issue} — {scope}": "{issue} — {scope}",
+  "{count} uyarı türünü inceleyin": "{count} Warnungstypen prüfen",
+  "Uyarı bulgularını inceleyin": "Warnbefunde prüfen",
+  "{types} uyarı türü / {findings} sayfa bulgusu. Etkilenen sayfaları inceleyin.":
+    "{types} Warnungstypen / {findings} Seitenbefunde. Prüfen Sie die betroffenen Seiten.",
+  "{findings} sayfa bulgusu. Etkilenen sayfaları inceleyin.":
+    "{findings} Seitenbefunde. Prüfen Sie die betroffenen Seiten.",
+  "{value} yüzde puan": "{value} Prozentpunkte",
+  "Oran değişimi yüzde puanla gösterilir: iki dönemin yüzdeleri arasındaki farktır.":
+    "Änderungen der Rate werden in Prozentpunkten angegeben: der Differenz zwischen den Prozentwerten beider Zeiträume.",
 };

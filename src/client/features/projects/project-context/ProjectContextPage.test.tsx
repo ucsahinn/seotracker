@@ -142,3 +142,21 @@ describe("ProjectContextPage", () => {
     ).toBeDefined();
   });
 });
+
+it("takes the owner to the missing goal requested by the summary", async () => {
+  getProjectContext.mockResolvedValue(emptyContext);
+  const client = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+  });
+  render(
+    <QueryClientProvider client={client}>
+      <ProjectContextPage projectId="goal" projectName="Acme" />
+    </QueryClientProvider>,
+  );
+  expect(
+    (
+      await screen.findByRole("link", { name: "Hedefinizi ekleyin" })
+    ).getAttribute("href"),
+  ).toBe("#context-current_goal");
+  client.clear();
+});

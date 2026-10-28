@@ -348,4 +348,25 @@ export const itApp: Catalog = {
 
   "Bu sitenin son tamamlanan denetimi":
     "Ultimo controllo completato per questo sito",
+  "Bunlar kaydedilen pazar tercihleridir. Arşivdeki sıralamalar tüm ülkeleri ve cihazları kapsar; bu tercihler sıralamaları filtrelemez.":
+    "Queste sono preferenze di mercato salvate. Le posizioni archiviate coprono tutti i paesi e dispositivi; queste preferenze non filtrano le posizioni.",
+  "Dil, seçilen ülkeye göre belirlenir. Bu, arayüz dilini değiştirmez.":
+    "La lingua dipende dal paese selezionato. La lingua dell’interfaccia non cambia.",
+  "Hedefinizi ekleyin": "Aggiungi il tuo obiettivo",
+  "Tarayıcı sekmesini kapatmak uygulamayı durdurmaz. Tamamen kapatmak için kurulumunuza göre Docker kapsayıcısını veya geliştirici sunucusunu durdurun. Bilgisayar uyurken denetimler çalışmaz.":
+    "Chiudere la scheda del browser non arresta l’app. Per arrestarla, ferma il contenitore Docker o il server di sviluppo, in base all’installazione. Le analisi non vengono eseguite mentre il computer è in sospensione.",
+  "Burada kayıtlı mülk seçimleri gösterilir; Google erişimi bu kontrolde sınanmaz. Güncel bir okuma denemek için Bağlantıları açın, seçili mülkün raporuna gidin ve Yenile düğmesine basın.":
+    "Qui sono mostrate le proprietà salvate; questo controllo non verifica l’accesso a Google. Per tentare una lettura attuale, apri Connessioni, vai al rapporto della proprietà selezionata e premi Aggiorna.",
+  "Kaydedilmiş rapor": "Report salvato",
+  "Eski rapor · kaynak ve tarih doğrulanmamış":
+    "Report precedente · fonte e data non verificate",
+  "Kaynak site: {domain}": "Sito di origine: {domain}",
+  "Kaynak site doğrulanamadı. Bu rapor başka bir siteye ait olabilir.":
+    "Non è stato possibile verificare il sito di origine. Questo report potrebbe riguardare un altro sito.",
+  "Bu rapor projenin sitesine ait değil: {domain}.":
+    "Questo report non riguarda il sito del progetto: {domain}.",
+  "Dosya kaydı: {date}": "File salvato: {date}",
+  "Bugün karar vermeden önce raporun içindeki siteyi, ölçüm tarihini ve veri sınırlarını kontrol edin.":
+    "Prima di prendere decisioni oggi, verifica il sito, la data delle misurazioni e i limiti dei dati nel report.",
+  "Güncel bir denetim raporu oluştur": "Crea un report di verifica aggiornato",
 };

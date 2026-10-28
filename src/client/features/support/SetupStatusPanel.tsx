@@ -293,7 +293,7 @@ function StatusBody({
         <h3 className="text-xs font-medium text-muted">{t("Projeler")}</h3>
         <p className="text-xs text-muted">
           {t(
-            "Burada kayıtlı mülk seçimleri gösterilir; Google erişimi bu kontrolde sınanmaz. Erişimi proje bağlantılarından doğrulayın.",
+            "Burada kayıtlı mülk seçimleri gösterilir; Google erişimi bu kontrolde sınanmaz. Güncel bir okuma denemek için Bağlantıları açın, seçili mülkün raporuna gidin ve Yenile düğmesine basın.",
           )}
         </p>
         {projects.length === 0 ? (
