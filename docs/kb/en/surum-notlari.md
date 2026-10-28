@@ -1,16 +1,16 @@
 ---
 title: Release notes
-description: seowatcher 0.8.2 Alpha — more accurate comparisons, easier menus, protected records and Windows startup fixes.
+description: seowatcher 0.8.3 Alpha — complete Google data, visible fetch times, vivid metric colours and 25 fixes found with real data.
 updated: 2026-10-28
 ---
 
-The latest release is **0.8.2 Alpha**, October 28, 2026. Your data is kept when you update.
+The latest release is **0.8.3 Alpha**, October 28, 2026. Your data is kept when you update.
 
 For the first move from 2.x to 0.x.x Alpha, run the new installer manually; the old updater does not recognize the lower number as newer.
 
-## 0.8.2 Alpha — 2026-10-28
+## 0.8.3 Alpha — 2026-10-28
 
-This entry brings together features and fixes from 0.5.0 to 0.8.2: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
+This entry brings together features and fixes from 0.5.0 to 0.8.3: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
 
 ### ✨ Highlights
 
@@ -37,6 +37,7 @@ This entry brings together features and fixes from 0.5.0 to 0.8.2: site audits, 
 - **Report types:** Search reports and site audit reports are shown separately; older reports with no known type are clearly marked.
 - **Report dates:** Search reports keep your selected dates and explain missing data and measurements that may change later.
 - **Audit sources:** Audit reports say which traffic and speed measurements were actually used.
+- **Complete Google data:** All rows Google makes available are fetched, and you can see when they were fetched. The ranking archive advances while the page is open, and unfinished days are marked as incomplete.
 
 ### 🔔 Notifications and announcements
 
@@ -63,6 +64,7 @@ This entry brings together features and fixes from 0.5.0 to 0.8.2: site audits, 
 - **Light theme:** A darker background, lighter cards and stronger orange accents make reading easier.
 - **Cards and numbers:** Summary cards are simpler, and changing numbers respect your reduced-motion preference.
 - **Help and notes:** Help and release notes make it easier to find the information you need.
+- **Data colours:** Clicks are blue, impressions violet, click rate teal, position ochre, sessions green and conversions rose. Cards and charts use the same, more vivid colours in both themes.
 
 ### 🗂️ Projects and saved searches
 
@@ -74,8 +76,8 @@ This entry brings together features and fixes from 0.5.0 to 0.8.2: site audits, 
 
 - **More accurate audits:** Errors found on real sites were fixed; comparisons use each audit’s own pages, and an audit record is kept if startup fails.
 - **Menus and keyboard:** Screens, reports and country lists fit on phones; menus stay on screen, keyboard focus stays in the open window, and Esc closes only the top list while keeping your text; screen readers announce selections, and Analytics shows channel names in your language.
-- **Problem reports:** The diagnostics package in Help describes the problem better and leaves out your page addresses.
-- **More accurate numbers:** Missing measurements are not counted as zero, and limited Analytics data is not presented as a firm conclusion; rankings use matching dates, priority tasks and estimate limits are explained, and filtering does not change estimated monthly gains.
+- **Everyday fixes:** The diagnostics package in Help describes the problem better and leaves out your page addresses. 25 issues found with real data were fixed across the dashboard, search performance, rankings, saved keywords, Analytics, reports, site audit, settings, connections, Help and English plurals.
+- **More accurate numbers:** Missing measurements are not counted as zero, and limited Analytics data is not presented as a firm conclusion; rankings use matching dates, priority tasks and estimate limits are explained, and filtering does not change estimated monthly gains. Opportunities explains searches Google hides and no longer suggests widening to 90 days when 90 days is already selected. Even on sites with few visitors, missing data is distinguished from a real zero.
 - **Connection status:** Selecting a property is separate from verified access, and old results are not treated as current after an account change; unresponsive Google connections stop waiting, temporary errors suggest trying again, and disabled services explain what to enable.
 - **Saved data:** Adding or removing labels completes in full, labels in use cannot be deleted, historical data stays tied to the right property, and waiting tasks are handled in the right order.
 - **Windows startup:** Working files are saved in your user folder; repaired assistant connections survive a restart, and the startup check no longer hangs.

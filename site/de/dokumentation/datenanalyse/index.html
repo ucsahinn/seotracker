@@ -99,7 +99,7 @@
       property="og:image:alt"
       content="seowatcher-Karte: das Dashboard der App mit Daten aus Search Console, Analytics 4 und dem Website-Audit, dazu eine Download-Schaltfläche für Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-28" />
     <meta
       property="og:url"
       content="https://seowatcher.io/de/dokumentation/datenanalyse/"
@@ -158,7 +158,7 @@
             "description": "Analytics zeigt gemessene Besuche, Interaktionen und Schlüsselereignisse Ihrer GA4-Property.",
             "url": "https://seowatcher.io/de/dokumentation/datenanalyse/",
             "inLanguage": "de",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-28",
             "articleSection": "Bildschirme",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -193,7 +193,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.2" defer></script>
+    <script src="/assets/docs.js?v=0.8.3" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1539,9 +1539,9 @@
         </p>
         <p>
           Links aus Chancen öffnen mit <code>pageGroup</code> dieselbe
-          normalisierte Adressgruppe und die Quelldaten. Der Server filtert vor
-          der Seiteneinteilung mit 50/100/200 Zeilen dieselben höchstens 1.000
-          organischen Einstiegsseiten wie Chancen. Abfrageparameter und
+          normalisierte Adressgruppe und die Quelldaten. Der Server liest alle
+          organischen Einstiegsseiten seitenweise von Google und filtert sie vor
+          der Bildschirmeinteilung mit 50/100/200 Zeilen. Abfrageparameter und
           abschließende Schrägstriche gehören zur selben Gruppe; andere Hosts
           und Pfade mit anderer Großschreibung bleiben getrennt. Bei Quellen-
           oder Qualitätsgrenzen wird die vollständige Gruppe als nicht bestätigt
@@ -1557,6 +1557,16 @@
           interne Suche, Zielgruppen und Messeinstellungen.
         </p>
         <h2 id="zuerst-den-umfang-prufen">Zuerst den Umfang prüfen</h2>
+        <p>
+          Bei unbekannten Messwerten wird der Traffic als nicht ermittelbar
+          angezeigt; bekannte Werte bleiben erhalten. Gemeldete Einschränkungen
+          stehen bei den Messwerten. Ist die Ursache unbekannt, wird dies
+          ausdrücklich gesagt. Erneut versuchen oder die Messeinstellungen
+          prüfen; ein Kanalwechsel wird nicht als Lösung für einen Lesefehler
+          angeboten. Allgemeine Hinweise stehen eingeklappt unter
+          <strong>Analytics-Daten verstehen</strong>; Umfang, Zeitraum und
+          Warnungen bleiben sichtbar.
+        </p>
         <p>
           Organische Suche umfasst auch andere Suchmaschinen als Google.
           Gesamter Traffic ändert Übersicht und Bericht gemeinsam. Die interne
@@ -1650,7 +1660,7 @@
           >
         </nav>
         <p class="meta">
-          Zuletzt aktualisiert: 27 Oktober 2026. Fehler entdeckt?
+          Zuletzt aktualisiert: 28 Oktober 2026. Fehler entdeckt?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

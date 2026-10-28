@@ -99,7 +99,7 @@
       property="og:image:alt"
       content="seowatcher tanıtım kartı: Search Console, Analytics 4 ve site denetimi verilerini gösteren uygulama paneli ve Windows için indirme düğmesi"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-28" />
     <meta
       property="og:url"
       content="https://seowatcher.io/kilavuz/arama-performansi/"
@@ -158,7 +158,7 @@
             "description": "Google'da kaç kez göründüğünüzü, kaç tıklama aldığınızı ve önce neyi düzeltmeniz gerektiğini görürsünüz. Sayılar Search Console'dan gelir. Kazanç rakamları bir üst sınırdır.",
             "url": "https://seowatcher.io/kilavuz/arama-performansi/",
             "inLanguage": "tr",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-28",
             "articleSection": "Ekranlar",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -193,7 +193,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.2" defer></script>
+    <script src="/assets/docs.js?v=0.8.3" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1537,6 +1537,43 @@
           gizli sorgulardandır.
         </p>
         <p>
+          <strong>API sınırları ve güncellik.</strong> Uygulama sorgu, sayfa ve
+          sorgu-sayfa tablolarını 25.000 satırlık sayfalarla, Google daha fazla
+          satır döndürmeyene kadar okur; iki sayfada durmaz. Google arama türü
+          başına günde en fazla 50.000 satır sunar ve sorgu/sayfa ayrıntılarında
+          başka satırları da atlayabilir. Bütün sayfaların okunması, bütün
+          aramaların bilindiği anlamına gelmez. Site toplamları bu ayrıntı
+          tablolarından toplanmaz. <strong>Veri hakkında</strong> bölümünde en
+          eski yanıtın alınma zamanı gösterilir. Yanıtlar en fazla on dakika
+          önbellekte tutulur; yenileme bu önbelleği atlar.
+        </p>
+        <p>
+          Search Analytics istek başlangıçları kurulumun çalışan sunucu
+          örneğinde saniyede en fazla on kez yapılır. Google kota hatası verirse
+          yeni okumalar on beş dakika bekler; arşivin kaydedilmiş ilerlemesi
+          korunur. Arşiv tam 16 takvim ayı geriye gider, eksik aralıkları
+          sonraki çalışmalarda tamamlar ve tek günlük yeniden okumada Google’ın
+          sunduğu 50.000 satıra kadar ulaşır. Uygulama kapalıyken arşiv
+          eşitlemesi çalışmaz. URL Denetimi ayrı kalır: sonuçlar önbellekten
+          okunur, yalnızca açık düğmeyle yenilenir ve mülk başına günlük 2.000
+          istek sınırı korunur.
+        </p>
+        <p>
+          Kaynaklar:
+          <a
+            href="https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Google’ın tam veri alma kılavuzu</a
+          >,
+          <a
+            href="https://developers.google.com/webmaster-tools/limits"
+            target="_blank"
+            rel="noopener noreferrer"
+            >API kotaları</a
+          >.
+        </p>
+        <p>
           <strong>Üst sınır.</strong> Kazanç rakamı &quot;en fazla bu
           kadar&quot; demektir. Her arama bir basamak yükselirse sitenizin kendi
           tıklama oranlarıyla alacağı ek tıklamadır. Gerçek sonuç rakiplere ve
@@ -2080,6 +2117,20 @@
           sunucuya gönderir ve yenileme sırasında kullanılamaz. Tarihler
           sabittir; Google yeniden okunan ölçümleri düzeltebilir.
         </p>
+        <h2 id="az-veriyle-yorum">Az veriyle yorum</h2>
+        <p>
+          Karşılaştırma dönemindeki tıklama sayısı analiz eşiğinin altındaysa
+          özet yüzdeden önce gerçek tıklama ve gösterim sayılarını verir. Az
+          veride yüzdeler ve ortalamalar tek başına büyüme veya kayıp kanıtı
+          değildir. Boş fırsat listesi, hiçbir sorgunun 4–20. sırada olmadığını
+          söylemez: döneme göre ölçeklenen gösterim eşiği ve marka sorgularının
+          dışlanması da geçerlidir.
+        </p>
+        <p>
+          Yapılacaklar boşsa görünen sorguları açıp inceleyebilirsiniz. Son 3 ay
+          zaten seçiliyken daha uzun dönem önerilmez. Google’ın gizlediği
+          sorguların sonradan paylaşılacağı varsayılmaz.
+        </p>
         <nav class="pager" aria-label="Önceki ve sonraki sayfa">
           <a class="pager-prev" rel="prev" href="/kilavuz/panel/"
             ><span>Önceki</span><strong>Panel</strong></a
@@ -2088,7 +2139,7 @@
           >
         </nav>
         <p class="meta">
-          Son güncelleme: 27 Ekim 2026. Bir hata görürseniz
+          Son güncelleme: 28 Ekim 2026. Bir hata görürseniz
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -2108,6 +2159,7 @@
           </li>
           <li><a href="#sik-sorulanlar">Sık sorulanlar</a></li>
           <li><a href="#sinirlar">Sınırlar</a></li>
+          <li><a href="#az-veriyle-yorum">Az veriyle yorum</a></li>
         </ol>
       </nav>
     </main>

@@ -56,7 +56,7 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="seowatcher card: the app's dashboard with Search Console, Analytics 4 and site audit data, and a download button for Windows" />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-28" />
     <meta property="og:url" content="https://seowatcher.io/en/docs/dashboard/" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:locale:alternate" content="tr_TR" />
@@ -70,8 +70,8 @@
     <meta name="twitter:image" content="https://seowatcher.io/assets/og-en.png" />
     <meta name="twitter:image:alt" content="seowatcher card: the app's dashboard with Search Console, Analytics 4 and site audit data, and a download button for Windows" />
     <meta name="color-scheme" content="dark" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/dashboard/#article","headline":"Dashboard","description":"The Dashboard brings together search traffic, measured next tasks and source limitations.","url":"https://seowatcher.io/en/docs/dashboard/","inLanguage":"en","dateModified":"2026-10-27","articleSection":"Screens","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/dashboard/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/dashboard/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Dashboard","item":"https://seowatcher.io/en/docs/dashboard/"}]}]}</script>
-    <script src="/assets/docs.js?v=0.8.2" defer></script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/dashboard/#article","headline":"Dashboard","description":"The Dashboard brings together search traffic, measured next tasks and source limitations.","url":"https://seowatcher.io/en/docs/dashboard/","inLanguage":"en","dateModified":"2026-10-28","articleSection":"Screens","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/dashboard/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/dashboard/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Dashboard","item":"https://seowatcher.io/en/docs/dashboard/"}]}]}</script>
+    <script src="/assets/docs.js?v=0.8.3" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1226,15 +1226,18 @@
 <h2 id="query-estimates">Query estimates</h2>
 <p>Eligible queries have enough impressions and a rounded average position of 4–20. Extra clicks model movement to the next position band and are an upper bound, not measured traffic. Known and unknown estimates are counted over the whole eligible set before the top four rows are shown. All-unknown never becomes a zero bound. Confirmed, suggested and absent brand separation are disclosed. Do not add this query estimate to the page-based Opportunities total, which has a different unit and period basis.</p>
 <h2 id="own-site-audit">Own-site audit</h2>
-<p>Only crawls matching the project domain are selected. A newer crawl of another site is ignored. The last completed snapshot and a newer running or failed attempt are identified separately. Without a domain, the Dashboard links to project settings. The card names the audit ID, start address, date, measured checks and any page cap.</p>
+<p>Only crawls matching the project domain are selected. A newer crawl of another site is ignored. The last completed snapshot and a newer running or failed attempt are identified separately. Without a domain, the Dashboard links to project settings. The card names the start address, date, measured checks and any page cap.</p>
 <p>Unique affected pages, failed check types and severity page–type pairs are different units. One page can fail three checks. Information notes sit outside the critical/warning bar. Health wording applies only to measured scope. Missing measurements or a page cap cannot certify the entire site. Comparisons require matching start scope, settings, crawled URL sets and usable measurements. Only checks measured in both crawls produce changes; a narrower or unreadable crawl cannot count as a fix. Unknown scope is explained. Worst-page links open the same audit’s issues focused on the selected URL.</p>
 <h2 id="analytics-outcomes">Analytics outcomes</h2>
 <p>Organic sessions, active users, engagement and key events come from Google Analytics. Actual dates and the property time zone are visible. Sessions differ from Google clicks and include other organic search engines. Unknown or restricted sessions never mean zero traffic; other readable metrics remain visible. Privacy thresholds, sampling and access restrictions are disclosed. Unreliable comparisons are withheld and missing limited daily values remain gaps.</p>
 <p>Positive commerce evidence in either period keeps revenue and orders visible, including a measured quiet zero period. With no such evidence, sales measurement is described as unverified. Unknown currency is explicitly labelled.</p>
 <h2 id="limits">Limits</h2>
-<p>The Dashboard has no keyword volume, backlink or competitor-ranking data. Every result depends on its source window and coverage. Reconcile real Google data using identical dates and filters.</p> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/projects/"><span>Previous</span><strong>Projects</strong></a><a class="pager-next" rel="next" href="/en/docs/search-performance/"><span>Next</span><strong>Search performance</strong></a></nav>
+<p>The Dashboard has no keyword volume, backlink or competitor-ranking data. Every result depends on its source window and coverage. Reconcile real Google data using identical dates and filters.</p>
+<h2 id="interpreting-small-samples">Interpreting small samples</h2>
+<p>When the comparison period has fewer clicks than the analysis threshold, the summary leads with actual clicks and impressions. Percentages and averages alone do not establish growth or loss with little data. An empty opportunity list does not mean no query ranks at 4–20: the period-scaled impression threshold and brand exclusion also apply.</p>
+<p>The audit identifier stays in navigation; the card shows the starting URL. Unknown sessions call for checking source warnings in the Analytics report, connection access and the site tag. The sales measurement note is inside the Organic revenue disclosure.</p> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/projects/"><span>Previous</span><strong>Projects</strong></a><a class="pager-next" rel="next" href="/en/docs/search-performance/"><span>Next</span><strong>Search performance</strong></a></nav>
         <p class="meta">
-          Last updated: October 27, 2026. Spotted a mistake?
+          Last updated: October 28, 2026. Spotted a mistake?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1243,7 +1246,7 @@
           >.
         </p>
       </article>
-      <nav class="toc" aria-label="On this page"><p class="toc-label">On this page</p><ol><li><a href="#search-summary">Search summary</a></li><li><a href="#next-tasks-and-setup">Next tasks and setup</a></li><li><a href="#query-estimates">Query estimates</a></li><li><a href="#own-site-audit">Own-site audit</a></li><li><a href="#analytics-outcomes">Analytics outcomes</a></li><li><a href="#limits">Limits</a></li></ol></nav>
+      <nav class="toc" aria-label="On this page"><p class="toc-label">On this page</p><ol><li><a href="#search-summary">Search summary</a></li><li><a href="#next-tasks-and-setup">Next tasks and setup</a></li><li><a href="#query-estimates">Query estimates</a></li><li><a href="#own-site-audit">Own-site audit</a></li><li><a href="#analytics-outcomes">Analytics outcomes</a></li><li><a href="#limits">Limits</a></li><li><a href="#interpreting-small-samples">Interpreting small samples</a></li></ol></nav>
     </main>
     <footer>
       <div class="wrap">

@@ -96,7 +96,7 @@
       property="og:image:alt"
       content="Cartão do seowatcher: o painel do aplicativo com dados do Search Console, do Analytics 4 e da auditoria do site, e um botão para baixar para Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-28" />
     <meta property="og:url" content="https://seowatcher.io/pt/guias/analise/" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:locale:alternate" content="tr_TR" />
@@ -152,7 +152,7 @@
             "description": "Analytics mostra visitas, engajamento e eventos principais medidos na propriedade GA4.",
             "url": "https://seowatcher.io/pt/guias/analise/",
             "inLanguage": "pt",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-28",
             "articleSection": "Telas",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -187,7 +187,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.2" defer></script>
+    <script src="/assets/docs.js?v=0.8.3" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1523,14 +1523,14 @@
         <p>
           Os links de Oportunidades abrem o mesmo grupo de endereços
           normalizados e as datas da fonte com <code>pageGroup</code>. O
-          servidor filtra as mesmas, no máximo, 1.000 linhas de páginas de
-          destino orgânicas antes da paginação de 50/100/200 linhas. Parâmetros
-          de consulta e barras finais pertencem ao mesmo grupo; hosts diferentes
-          e caminhos com maiúsculas diferentes ficam separados. Limites da fonte
-          ou de qualidade impedem confirmar o grupo completo e são informados.
-          Um resultado vazio não prova ausência de tráfego. O resumo mantém o
-          escopo da propriedade. O filtro pode ser removido; URL, navegação
-          Voltar e exportações preservam seu escopo.
+          servidor lê todas as linhas de páginas de destino orgânicas do Google,
+          página por página, antes do filtro e da paginação de 50/100/200 linhas
+          na tela. Parâmetros de consulta e barras finais pertencem ao mesmo
+          grupo; hosts diferentes e caminhos com maiúsculas diferentes ficam
+          separados. Limites da fonte ou de qualidade impedem confirmar o grupo
+          completo e são informados. Um resultado vazio não prova ausência de
+          tráfego. O resumo mantém o escopo da propriedade. O filtro pode ser
+          removido; URL, navegação Voltar e exportações preservam seu escopo.
         </p>
         <p>
           Analytics mostra visitas, engajamento e eventos principais medidos na
@@ -1539,6 +1539,16 @@
           público e configurações de medição.
         </p>
         <h2 id="leia-primeiro-o-escopo">Leia primeiro o escopo</h2>
+        <p>
+          Se as medições forem desconhecidas, o tráfego é indicado como não
+          determinável; os valores conhecidos são preservados. As restrições
+          informadas aparecem junto às métricas. Quando a causa é desconhecida,
+          isso é dito explicitamente. Pode tentar novamente ou verificar as
+          configurações; mudar de canal não é sugerido como solução para um erro
+          de leitura. As notas gerais ficam recolhidas em
+          <strong>Compreender os dados do Analytics</strong>; escopo, período e
+          avisos permanecem visíveis.
+        </p>
         <p>
           A busca orgânica inclui mecanismos além do Google. Todo o tráfego
           altera o resumo e o relatório juntos. A pesquisa interna sempre mostra
@@ -1624,7 +1634,7 @@
           >
         </nav>
         <p class="meta">
-          Última atualização: 27 de outubro de 2026. Viu algum erro?
+          Última atualização: 28 de outubro de 2026. Viu algum erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

@@ -99,7 +99,7 @@
       property="og:image:alt"
       content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-28" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/guides/tableau-de-bord/"
@@ -158,7 +158,7 @@
             "description": "Le tableau de bord réunit le trafic de recherche, les prochaines tâches étayées et les limites des sources.",
             "url": "https://seowatcher.io/fr/guides/tableau-de-bord/",
             "inLanguage": "fr",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-28",
             "articleSection": "Les écrans",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -193,7 +193,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.2" defer></script>
+    <script src="/assets/docs.js?v=0.8.3" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1587,8 +1587,8 @@
           plus récent d’un autre site est ignoré. Le dernier instantané terminé
           et une tentative plus récente en cours ou échouée sont identifiés
           séparément. Sans domaine, un lien mène aux paramètres. La carte
-          indique l’identifiant, l’adresse de départ, la date, les contrôles
-          mesurés et une éventuelle limite de pages.
+          indique l’adresse de départ, la date, les contrôles mesurés et une
+          éventuelle limite de pages.
         </p>
         <p>
           Les pages uniques touchées, les types de contrôles et les couples
@@ -1625,6 +1625,23 @@
           ni classement concurrent. Comparez les données Google avec les mêmes
           dates et filtres.
         </p>
+        <h2 id="interpreter-peu-de-donnees">Interpréter peu de données</h2>
+        <p>
+          Si les clics de la période de comparaison sont sous le seuil
+          d’analyse, le résumé présente d’abord les clics et impressions réels.
+          Avec peu de données, les pourcentages et moyennes ne prouvent pas à
+          eux seuls une croissance ou une perte. Une liste d’opportunités vide
+          ne signifie pas qu’aucune requête n’est en position 4–20 : le seuil
+          d’impressions adapté à la période et l’exclusion des requêtes de
+          marque s’appliquent aussi.
+        </p>
+        <p>
+          L’identifiant d’audit reste dans la navigation ; la carte affiche
+          l’adresse de départ. Si les sessions sont inconnues, vérifiez les
+          avertissements de source du rapport Analytics, les droits d’accès et
+          la balise du site. La note sur les ventes figure dans l’explication
+          dépliable du revenu organique.
+        </p>
         <nav class="pager" aria-label="Page précédente et suivante">
           <a class="pager-prev" rel="prev" href="/fr/guides/projets/"
             ><span>Précédent</span><strong>Projets</strong></a
@@ -1636,7 +1653,7 @@
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 27 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 28 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1659,6 +1676,9 @@
             <a href="#audit-du-site-du-projet">Audit du site du projet</a>
           </li>
           <li><a href="#resultats-analytics">Résultats Analytics</a></li>
+          <li>
+            <a href="#interpreter-peu-de-donnees">Interpréter peu de données</a>
+          </li>
         </ol>
       </nav>
     </main>

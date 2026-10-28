@@ -1,16 +1,16 @@
 ---
 title: Note di versione
-description: seowatcher 0.8.2 Alpha — confronti più precisi, menu più comodi, dati protetti e correzioni all’avvio su Windows.
+description: seowatcher 0.8.3 Alpha — dati Google completi, ora di recupero visibile, colori più vivaci e 25 correzioni trovate con dati reali.
 updated: 2026-10-28
 ---
 
-L’ultima versione è la **0.8.2 Alpha**, del 28 ottobre 2026. I dati restano intatti durante l’aggiornamento.
+L’ultima versione è la **0.8.3 Alpha**, del 28 ottobre 2026. I dati restano intatti durante l’aggiornamento.
 
 Per passare da 2.x a 0.x.x Alpha, avviare manualmente il nuovo programma di installazione; il vecchio aggiornamento non riconosce il numero inferiore come più recente.
 
-## 0.8.2 Alpha — 2026-10-28
+## 0.8.3 Alpha — 2026-10-28
 
-Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.2: verifica del sito, dashboard, notifiche e sei lingue, con dati più precisi e schermate più leggibili.
+Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.3: verifica del sito, dashboard, notifiche e sei lingue, con dati più precisi e schermate più leggibili.
 
 ### ✨ In evidenza
 
@@ -37,6 +37,7 @@ Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.2: verifica del s
 - **Tipi di report:** I report di ricerca e di verifica del sito sono distinti; i vecchi report di tipo sconosciuto sono indicati chiaramente.
 - **Date dei report:** I report di ricerca mantengono le date scelte e spiegano i dati mancanti e le misure che possono ancora cambiare.
 - **Fonti della verifica:** I report di verifica indicano quali dati di traffico e velocità sono stati realmente usati.
+- **Dati Google completi:** Vengono recuperate tutte le righe fornite da Google e puoi vedere quando sono state recuperate. L’archivio delle posizioni prosegue mentre la pagina è aperta; i giorni incompleti sono segnalati.
 
 ### 🔔 Notifiche e annunci
 
@@ -63,6 +64,7 @@ Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.2: verifica del s
 - **Tema chiaro:** Uno sfondo più scuro, schede più chiare e accenti arancioni più visibili facilitano la lettura.
 - **Schede e numeri:** Le schede riepilogative sono più semplici; i numeri animati rispettano la preferenza per il movimento ridotto.
 - **Aiuto e versioni:** Nelle schermate di aiuto e delle note di versione è più facile trovare le informazioni desiderate.
+- **Colori dei dati:** Clic blu, impressioni viola, tasso di clic turchese, posizione ocra, sessioni verdi e conversioni rosa: schede e grafici usano gli stessi colori più vivaci in entrambi i temi.
 
 ### 🗂️ Progetti e ricerche salvate
 
@@ -74,8 +76,8 @@ Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.2: verifica del s
 
 - **Verifiche più accurate:** Gli errori trovati su siti reali sono stati corretti; i confronti usano le pagine di ciascuna verifica e la verifica resta registrata se l’avvio non riesce.
 - **Menu e tastiera:** Schermate, report ed elenchi dei paesi restano nei limiti del telefono; i menu restano visibili, il focus resta nella finestra aperta ed Esc chiude solo l’elenco in primo piano senza cancellare il testo; i lettori di schermo annunciano le selezioni e Analytics mostra i canali nella tua lingua.
-- **Segnalazione problemi:** Il pacchetto diagnostico nell’Aiuto descrive meglio il problema e non include gli indirizzi delle tue pagine.
-- **Numeri più precisi:** Le misure mancanti non contano come zero e i dati Analytics limitati non danno conclusioni certe; le posizioni usano le stesse date, priorità e limiti delle stime sono spiegati e i filtri non cambiano il guadagno mensile stimato.
+- **Correzioni quotidiane:** Il pacchetto diagnostico nell’Aiuto descrive meglio il problema e non include gli indirizzi delle tue pagine. Sono stati corretti 25 problemi trovati con dati reali nella dashboard, nel rendimento di ricerca, nelle posizioni, nelle ricerche salvate, in Analytics, nei report, nella verifica, nelle impostazioni, nelle connessioni, nell’Aiuto e nei plurali inglesi.
+- **Numeri più precisi:** Le misure mancanti non contano come zero e i dati Analytics limitati non danno conclusioni certe; le posizioni usano le stesse date, priorità e limiti delle stime sono spiegati e i filtri non cambiano il guadagno mensile stimato. Opportunità spiega le ricerche nascoste da Google e non suggerisce più di passare a 90 giorni quando sono già selezionati. Anche con pochi visitatori, i dati mancanti vengono distinti da uno zero reale.
 - **Stato della connessione:** La scelta della proprietà è distinta dall’accesso verificato e i vecchi risultati non sono attuali dopo un cambio di account; le connessioni Google senza risposta smettono di attendere, gli errori temporanei invitano a riprovare e i servizi disattivati indicano cosa attivare.
 - **Dati salvati:** Aggiungere o rimuovere etichette non lascia modifiche a metà, le etichette in uso non si possono eliminare, lo storico resta legato alla proprietà corretta e le attività in attesa seguono l’ordine giusto.
 - **Avvio Windows:** I file di lavoro vengono salvati nella cartella utente; le connessioni riparate dell’assistente restano valide al riavvio e il controllo iniziale non si blocca più.

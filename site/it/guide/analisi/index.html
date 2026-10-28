@@ -96,7 +96,7 @@
       property="og:image:alt"
       content="Scheda di seowatcher: la dashboard dell’app con i dati di Search Console, Analytics 4 e dell’audit del sito, e un pulsante per scaricarla su Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-28" />
     <meta property="og:url" content="https://seowatcher.io/it/guide/analisi/" />
     <meta property="og:locale" content="it_IT" />
     <meta property="og:locale:alternate" content="tr_TR" />
@@ -152,7 +152,7 @@
             "description": "Analytics mostra visite, coinvolgimento ed eventi chiave misurati nella proprietà GA4.",
             "url": "https://seowatcher.io/it/guide/analisi/",
             "inLanguage": "it",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-28",
             "articleSection": "Schermate",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -187,7 +187,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.2" defer></script>
+    <script src="/assets/docs.js?v=0.8.3" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1537,14 +1537,15 @@
         <p>
           I link da Opportunità aprono lo stesso gruppo di indirizzi
           normalizzati e le date della fonte tramite <code>pageGroup</code>. Il
-          server filtra le stesse massimo 1.000 righe di pagine di destinazione
-          organiche prima della paginazione da 50/100/200 righe. Parametri di
-          ricerca e barre finali condividono un gruppo; host diversi e percorsi
-          con maiuscole diverse restano separati. Limiti della fonte o di
-          qualità impediscono di confermare l’intero gruppo e vengono segnalati.
-          Un risultato vuoto non dimostra l’assenza di traffico. Il riepilogo
-          mantiene l’ambito della proprietà. Il filtro si può rimuovere; URL,
-          navigazione Indietro ed esportazioni ne conservano l’ambito.
+          server legge tutte le righe delle pagine di destinazione organiche da
+          Google, pagina per pagina, prima del filtro e della paginazione da
+          50/100/200 righe sullo schermo. Parametri di ricerca e barre finali
+          condividono un gruppo; host diversi e percorsi con maiuscole diverse
+          restano separati. Limiti della fonte o di qualità impediscono di
+          confermare l’intero gruppo e vengono segnalati. Un risultato vuoto non
+          dimostra l’assenza di traffico. Il riepilogo mantiene l’ambito della
+          proprietà. Il filtro si può rimuovere; URL, navigazione Indietro ed
+          esportazioni ne conservano l’ambito.
         </p>
         <p>
           Analytics mostra visite, coinvolgimento ed eventi chiave misurati
@@ -1553,6 +1554,16 @@
           pubblico e impostazioni di misurazione.
         </p>
         <h2 id="leggi-prima-l-ambito">Leggi prima l’ambito</h2>
+        <p>
+          Se le misurazioni sono sconosciute, il traffico viene indicato come
+          non determinabile; i valori noti restano visibili. Le limitazioni
+          segnalate appaiono accanto alle metriche. Se la causa è sconosciuta,
+          viene dichiarato. Puoi riprovare o controllare le impostazioni;
+          cambiare canale non viene proposto come rimedio a un errore di
+          lettura. Le note generali sono raccolte nella sezione chiusa
+          <strong>Capire i dati di Analytics</strong>; ambito, periodo e avvisi
+          restano visibili.
+        </p>
         <p>
           La ricerca organica include motori diversi da Google. Tutto il
           traffico cambia insieme riepilogo e report. La ricerca interna mostra
@@ -1638,7 +1649,7 @@
           >
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 27 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 28 ottobre 2026. Se si nota un errore,
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

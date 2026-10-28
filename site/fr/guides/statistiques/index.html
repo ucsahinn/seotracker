@@ -99,7 +99,7 @@
       property="og:image:alt"
       content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-28" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/guides/statistiques/"
@@ -158,7 +158,7 @@
             "description": "Analytics présente les visites, l’engagement et les événements clés mesurés dans votre propriété GA4.",
             "url": "https://seowatcher.io/fr/guides/statistiques/",
             "inLanguage": "fr",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-28",
             "articleSection": "Les écrans",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -193,7 +193,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.2" defer></script>
+    <script src="/assets/docs.js?v=0.8.3" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1531,15 +1531,15 @@
         <p>
           Les liens depuis Opportunités ouvrent le même groupe d’adresses
           normalisées et les dates sources via <code>pageGroup</code>. Le
-          serveur filtre les mêmes 1 000 lignes de pages de destination
-          organiques au maximum avant la pagination de 50/100/200 lignes. Les
-          paramètres de requête et barres obliques finales partagent un groupe ;
-          les hôtes différents et chemins sensibles à la casse restent séparés.
-          Une limite de source ou de qualité empêche de confirmer le groupe
-          complet et est signalée. Un résultat vide ne prouve pas l’absence de
-          trafic. La synthèse conserve la portée de la propriété. Le filtre peut
-          être retiré ; l’URL, le retour arrière et les exports préservent sa
-          portée.
+          serveur lit toutes les lignes de pages de destination organiques de
+          Google, page par page, avant de les filtrer pour la pagination de
+          50/100/200 lignes à l’écran. Les paramètres de requête et barres
+          obliques finales partagent un groupe ; les hôtes différents et chemins
+          sensibles à la casse restent séparés. Une limite de source ou de
+          qualité empêche de confirmer le groupe complet et est signalée. Un
+          résultat vide ne prouve pas l’absence de trafic. La synthèse conserve
+          la portée de la propriété. Le filtre peut être retiré ; l’URL, le
+          retour arrière et les exports préservent sa portée.
         </p>
         <p>
           Analytics présente les visites, l’engagement et les événements clés
@@ -1549,6 +1549,16 @@
           mesure.
         </p>
         <h2 id="lire-le-perimetre">Lire le périmètre</h2>
+        <p>
+          Si les mesures sont inconnues, le trafic est indiqué comme impossible
+          à déterminer ; les valeurs connues sont conservées. Les restrictions
+          signalées apparaissent près des mesures. Si la cause est inconnue,
+          cela est dit clairement. Vous pouvez réessayer ou vérifier les
+          paramètres ; changer de canal n’est pas proposé pour réparer une
+          erreur de lecture. Les notes générales sont repliées dans
+          <strong>Comprendre les données Analytics</strong> ; le périmètre, la
+          période et les avertissements restent visibles.
+        </p>
         <p>
           La recherche naturelle inclut les moteurs autres que Google. Tout le
           trafic modifie ensemble la synthèse et le rapport. La recherche
@@ -1635,7 +1645,7 @@
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 27 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 28 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

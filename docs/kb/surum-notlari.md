@@ -1,16 +1,16 @@
 ---
 title: Sürüm notları
-description: seowatcher 0.8.2 Alpha — daha doğru karşılaştırmalar, daha kullanışlı menüler, korunan kayıtlar ve Windows açılış düzeltmeleri.
+description: seowatcher 0.8.3 Alpha — eksiksiz Google verisi, görünür alım zamanı, canlı ölçüm renkleri ve gerçek verilerle bulunan 25 düzeltme.
 updated: 2026-10-28
 ---
 
-Son sürüm **0.8.2 Alpha**, 28 Ekim 2026. Güncellerken veriniz korunur.
+Son sürüm **0.8.3 Alpha**, 28 Ekim 2026. Güncellerken veriniz korunur.
 
 2.x serisinden 0.x.x Alpha serisine ilk geçiş için yeni kurulum dosyasını elle çalıştırın; eski otomatik güncelleyici küçük numarayı yeni sürüm olarak tanımaz.
 
-## 0.8.2 Alpha — 2026-10-28
+## 0.8.3 Alpha — 2026-10-28
 
-Bu giriş 0.5.0'dan 0.8.2'ye kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
+Bu giriş 0.5.0'dan 0.8.3'e kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
 
 ### ✨ Öne çıkanlar
 
@@ -37,6 +37,7 @@ Bu giriş 0.5.0'dan 0.8.2'ye kadar gelen yenilikleri ve düzeltmeleri toplar: si
 - **Rapor türleri:** Arama raporları ile site denetimi raporları ayrı gösterilir; türü bilinmeyen eski raporlar açıkça belirtilir.
 - **Rapor tarihleri:** Arama raporu seçtiğiniz tarihleri korur; eksik verileri ve sonradan değişebilecek ölçümleri açıklar.
 - **Denetim kaynakları:** Denetim raporu hangi trafik ve hız verilerinin gerçekten kullanıldığını söyler.
+- **Eksiksiz Google verisi:** Google'ın sunduğu tüm satırlar alınır; verinin ne zaman alındığını görürsünüz. Sıralama arşivi sayfa açıkken ilerler, yarım kalan günler eksik olarak belirtilir.
 
 ### 🔔 Bildirimler ve duyurular
 
@@ -63,6 +64,7 @@ Bu giriş 0.5.0'dan 0.8.2'ye kadar gelen yenilikleri ve düzeltmeleri toplar: si
 - **Açık tema:** Daha koyu zemin, daha açık kartlar ve daha belirgin turuncu vurgular okumayı kolaylaştırır.
 - **Kartlar ve sayılar:** Özet kartları sadeleştirildi; değişen sayılar hareketi azaltma tercihinize uyar.
 - **Yardım ve notlar:** Yardım ve sürüm notları ekranlarında aradığınız bilgiyi bulmak kolaylaştı.
+- **Verinin renkleri:** Tıklama mavi, gösterim mor, tıklama oranı turkuaz, sıra hardal, oturum yeşil ve dönüşüm gül rengindedir. Kartlar ve grafikler iki temada da aynı, daha canlı renkleri kullanır.
 
 ### 🗂️ Projeler ve kayıtlar
 
@@ -74,8 +76,8 @@ Bu giriş 0.5.0'dan 0.8.2'ye kadar gelen yenilikleri ve düzeltmeleri toplar: si
 
 - **Daha doğru denetim:** Gerçek sitelerdeki hatalar giderildi; karşılaştırmalar her denetimin kendi sayfalarını kullanır, başlatılamayan denetimin kaydı korunur.
 - **Menüler ve klavye:** Telefonda ekranlar, raporlar ve ülke listesi taşmaz; menüler ekrana sığar, klavye odağı açık pencerede kalır, Esc yalnızca üstteki listeyi kapatır ve yazdıklarınızı korur; ekran okuyucular seçimleri, Analytics ise kanal adlarını seçtiğiniz dilde bildirir.
-- **Sorun bildirme:** Yardım’daki tanılama paketi sorunu daha iyi anlatır ve sayfa adreslerinizi içermez.
-- **Daha doğru sayılar:** Eksik ölçümler sıfır sayılmaz, sınırlı Analytics verisi kesin sonuç gibi sunulmaz; sıralamalar aynı tarihleri kullanır, öncelikli işler ve tahminlerin sınırları açıklanır, filtrelemek aylık kazanç tahminini değiştirmez.
+- **Ekran düzeltmeleri:** Yardım’daki tanılama paketi sorunu daha iyi anlatır ve sayfa adreslerinizi içermez. Gerçek verilerle bulunan 25 sorun giderildi: pano, arama performansı, sıralama, kayıtlı kelimeler, Analytics, raporlar, denetim, ayarlar, bağlantılar, Yardım ve İngilizce çoğullar daha doğru görünür.
+- **Daha doğru sayılar:** Eksik ölçümler sıfır sayılmaz, sınırlı Analytics verisi kesin sonuç gibi sunulmaz; sıralamalar aynı tarihleri kullanır, öncelikli işler ve tahminlerin sınırları açıklanır, filtrelemek aylık kazanç tahminini değiştirmez. Fırsatlar, Google'ın gizlediği aramaları açıklar; 90 gün seçiliyken aynı süreye genişletmenizi önermez. Az ziyaretçili sitelerde de eksik veriyle gerçek sıfır birbirinden ayrılır.
 - **Bağlantı durumu:** Mülk seçimi ile doğrulanmış erişim ayrıdır, hesap değişince eski sonuçlar güncel sayılmaz; yanıt vermeyen Google bağlantısı beklemede kalmaz, geçici hatada yeniden denemeniz, kapalı hizmette neyi açmanız gerektiği söylenir.
 - **Kayıtların korunması:** Etiket ekleme ve kaldırma yarım kalmaz, kullanılan etiket silinmez; geçmiş veriler doğru mülkle tamamlanır ve bekleyen işler doğru sırada ele alınır.
 - **Windows açılışı:** Çalışma dosyaları kullanıcı klasörüne yazılır; onarılan asistan bağlantısı yeniden açılışta korunur ve başlangıç kontrolü takılı kalmaz.

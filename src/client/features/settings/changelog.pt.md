@@ -2,9 +2,9 @@
 
 Novidades e correções, da versão mais recente para a mais antiga.
 
-## [0.8.2] Alpha — 2026-10-28
+## [0.8.3] Alpha — 2026-10-28
 
-Esta entrada reúne novidades e correções da 0.5.0 à 0.8.2: auditoria do site, painel, notificações e seis idiomas, com dados mais precisos e telas mais legíveis.
+Esta entrada reúne novidades e correções da 0.5.0 à 0.8.3: auditoria do site, painel, notificações e seis idiomas, com dados mais precisos e telas mais legíveis.
 
 ### ✨ Destaques
 
@@ -31,6 +31,7 @@ Esta entrada reúne novidades e correções da 0.5.0 à 0.8.2: auditoria do site
 - **Tipos de relatório:** Relatórios de pesquisa e de auditoria do site aparecem separados; relatórios antigos sem tipo conhecido são sinalizados.
 - **Datas dos relatórios:** Os relatórios de pesquisa mantêm as datas escolhidas e explicam dados ausentes e medições que ainda podem mudar.
 - **Fontes da auditoria:** Os relatórios de auditoria informam quais dados de tráfego e velocidade foram realmente usados.
+- **Dados Google completos:** Todas as linhas fornecidas pelo Google são buscadas, e você vê quando isso aconteceu. O arquivo de posições continua avançando enquanto a página está aberta; os dias incompletos são sinalizados.
 
 ### 🔔 Notificações e anúncios
 
@@ -57,6 +58,7 @@ Esta entrada reúne novidades e correções da 0.5.0 à 0.8.2: auditoria do site
 - **Tema claro:** Fundo mais escuro, cartões mais claros e destaques laranja mais visíveis facilitam a leitura.
 - **Cartões e números:** Os cartões de resumo estão mais simples; os números animados respeitam sua preferência por movimento reduzido.
 - **Ajuda e versões:** As telas de ajuda e de notas da versão facilitam encontrar as informações desejadas.
+- **Cores dos dados:** Cliques em azul, impressões em violeta, taxa de cliques em turquesa, posição em ocre, sessões em verde e conversões em rosa: cartões e gráficos usam as mesmas cores mais vivas nos dois temas.
 
 ### 🗂️ Projetos e pesquisas salvas
 
@@ -68,8 +70,8 @@ Esta entrada reúne novidades e correções da 0.5.0 à 0.8.2: auditoria do site
 
 - **Auditorias mais precisas:** Erros encontrados em sites reais foram corrigidos; as comparações usam as páginas de cada auditoria e o registro é mantido se a auditoria não conseguir iniciar.
 - **Menus e teclado:** Telas, relatórios e listas de países cabem no celular; os menus ficam visíveis, o foco fica na janela aberta e Esc fecha só a lista da frente sem apagar seu texto; leitores de tela anunciam as seleções e o Analytics mostra os canais no seu idioma.
-- **Relato de problemas:** O pacote de diagnóstico da Ajuda descreve melhor o problema e não inclui os endereços das suas páginas.
-- **Números mais precisos:** Medições ausentes não contam como zero e dados limitados do Analytics não geram conclusões certas; as posições usam as mesmas datas, prioridades e limites das estimativas são explicados e os filtros não mudam o ganho mensal estimado.
+- **Correções do dia:** O pacote de diagnóstico da Ajuda descreve melhor o problema e não inclui os endereços das suas páginas. Foram corrigidos 25 problemas encontrados com dados reais no painel, no desempenho de pesquisa, nas posições, nas pesquisas salvas, no Analytics, nos relatórios, na auditoria, nas configurações, nas conexões, na Ajuda e nos plurais em inglês.
+- **Números mais precisos:** Medições ausentes não contam como zero e dados limitados do Analytics não geram conclusões certas; as posições usam as mesmas datas, prioridades e limites das estimativas são explicados e os filtros não mudam o ganho mensal estimado. Oportunidades explica as pesquisas ocultadas pelo Google e não sugere mais ampliar para 90 dias quando esse período já está selecionado. Mesmo com poucos visitantes, dados ausentes são diferenciados de um zero real.
 - **Estado da conexão:** A escolha da propriedade é separada do acesso verificado e resultados antigos não são atuais após trocar de conta; conexões Google sem resposta param de esperar, erros temporários sugerem tentar novamente e serviços desativados explicam o que ativar.
 - **Dados salvos:** Adicionar ou remover etiquetas não deixa alterações pela metade, etiquetas em uso não podem ser excluídas, o histórico fica ligado à propriedade certa e as tarefas pendentes seguem a ordem correta.
 - **Abertura no Windows:** Os arquivos de trabalho ficam na pasta do usuário; conexões reparadas do assistente são mantidas ao reabrir e a verificação inicial não fica mais travada.

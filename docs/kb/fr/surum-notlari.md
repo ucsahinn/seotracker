@@ -1,16 +1,16 @@
 ---
 title: Notes de version
-description: seowatcher 0.8.2 Alpha — des comparaisons plus justes, des menus plus pratiques, des données préservées et un démarrage Windows corrigé.
+description: seowatcher 0.8.3 Alpha — données Google complètes, heure de récupération visible, couleurs plus vives et 25 corrections issues de données réelles.
 updated: 2026-10-28
 ---
 
-La dernière version est la **0.8.2 Alpha**, du 28 octobre 2026. Vos données sont conservées lors de la mise à jour.
+La dernière version est la **0.8.3 Alpha**, du 28 octobre 2026. Vos données sont conservées lors de la mise à jour.
 
 Pour passer de 2.x à 0.x.x Alpha, lancez le nouvel installateur manuellement ; l’ancien outil ne reconnaît pas le numéro inférieur comme plus récent.
 
-## 0.8.2 Alpha — 2026-10-28
+## 0.8.3 Alpha — 2026-10-28
 
-Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.2 : audit du site, tableau de bord, notifications et six langues, avec des données plus justes et des écrans plus lisibles.
+Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.3 : audit du site, tableau de bord, notifications et six langues, avec des données plus justes et des écrans plus lisibles.
 
 ### ✨ Points forts
 
@@ -37,6 +37,7 @@ Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.2 : a
 - **Types de rapports :** Les rapports de recherche et d’audit du site sont séparés ; les anciens rapports de type inconnu sont signalés.
 - **Dates des rapports :** Les rapports de recherche conservent les dates choisies et expliquent les données manquantes et les mesures encore susceptibles de changer.
 - **Sources utilisées :** Les rapports d’audit précisent les données de trafic et de vitesse réellement utilisées.
+- **Données Google complètes:** Toutes les lignes fournies par Google sont récupérées et leur heure de récupération est visible. Les archives des positions continuent de se remplir quand la page est ouverte ; les jours incomplets sont signalés.
 
 ### 🔔 Notifications et annonces
 
@@ -63,6 +64,7 @@ Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.2 : a
 - **Thème clair :** Un fond plus sombre, des cartes plus claires et des accents orange plus visibles facilitent la lecture.
 - **Cartes et chiffres :** Les cartes récapitulatives sont simplifiées ; les chiffres animés respectent votre préférence de réduction des mouvements.
 - **Aide et versions :** Les écrans d’aide et de notes de version facilitent la recherche d’informations.
+- **Couleurs des données:** Clics bleus, impressions violettes, taux de clic turquoise, position ocre, sessions vertes et conversions roses : cartes et graphiques gardent les mêmes couleurs, plus vives, dans les deux thèmes.
 
 ### 🗂️ Projets et recherches enregistrées
 
@@ -74,8 +76,8 @@ Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.2 : a
 
 - **Audits plus précis:** Les erreurs trouvées sur de vrais sites ont été corrigées ; les comparaisons utilisent les pages de chaque audit et un audit reste enregistré si son démarrage échoue.
 - **Menus et clavier:** Écrans, rapports et listes de pays tiennent sur téléphone ; les menus restent visibles, le focus reste dans la fenêtre ouverte et Échap ferme seulement la liste au premier plan sans effacer votre saisie ; les lecteurs d’écran annoncent les choix et Analytics affiche les noms des canaux dans votre langue.
-- **Signalement de problèmes:** Le paquet de diagnostic de l’Aide décrit mieux le problème et ne contient pas les adresses de vos pages.
-- **Chiffres plus justes:** Les mesures absentes ne comptent pas comme zéro et les données Analytics limitées ne donnent pas de conclusion certaine ; les classements utilisent les mêmes dates, les priorités et limites des estimations sont expliquées, et filtrer ne change pas le gain mensuel estimé.
+- **Corrections du quotidien:** Le paquet de diagnostic de l’Aide décrit mieux le problème et ne contient pas les adresses de vos pages. 25 problèmes trouvés avec des données réelles ont été corrigés dans le tableau de bord, les performances de recherche, les positions, les recherches enregistrées, Analytics, les rapports, l’audit, les réglages, les connexions, l’Aide et les pluriels anglais.
+- **Chiffres plus justes:** Les mesures absentes ne comptent pas comme zéro et les données Analytics limitées ne donnent pas de conclusion certaine ; les classements utilisent les mêmes dates, les priorités et limites des estimations sont expliquées, et filtrer ne change pas le gain mensuel estimé. Opportunités explique les recherches masquées par Google et ne propose plus de passer à 90 jours quand cette durée est déjà choisie. Même avec peu de visiteurs, les données manquantes sont distinguées d’un vrai zéro.
 - **État de connexion:** Le choix d’une propriété est distinct de l’accès vérifié et les anciens résultats ne sont plus actuels après un changement de compte ; une connexion Google sans réponse cesse d’attendre, une erreur passagère invite à réessayer et un service désactivé indique quoi activer.
 - **Données conservées:** L’ajout et le retrait d’étiquettes se terminent entièrement, les étiquettes utilisées ne peuvent pas être supprimées, l’historique reste lié à la bonne propriété et les tâches en attente suivent le bon ordre.
 - **Démarrage Windows:** Les fichiers de travail sont enregistrés dans votre dossier utilisateur ; les connexions réparées de l’assistant sont conservées au redémarrage et le contrôle de démarrage ne reste plus bloqué.

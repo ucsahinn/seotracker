@@ -96,7 +96,7 @@
       property="og:image:alt"
       content="seowatcher tanıtım kartı: Search Console, Analytics 4 ve site denetimi verilerini gösteren uygulama paneli ve Windows için indirme düğmesi"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-28" />
     <meta property="og:url" content="https://seowatcher.io/kilavuz/analitik/" />
     <meta property="og:locale" content="tr_TR" />
     <meta property="og:locale:alternate" content="en_US" />
@@ -152,7 +152,7 @@
             "description": "Bu ekran GA4 mülkünde ölçülen ziyaretleri, etkileşimi ve anahtar olayları gösterir.",
             "url": "https://seowatcher.io/kilavuz/analitik/",
             "inLanguage": "tr",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-28",
             "articleSection": "Ekranlar",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -187,7 +187,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.2" defer></script>
+    <script src="/assets/docs.js?v=0.8.3" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1526,8 +1526,8 @@
         <p>
           Fırsatlar bağlantıları <code>pageGroup</code> ile aynı
           normalleştirilmiş adres grubunu ve kaynak tarihlerini açar. Bu sunucu
-          filtresi, Fırsatlar ile aynı en fazla 1.000 organik giriş sayfası
-          satırını kullanır ve 50/100/200 satırlık sayfalamadan önce uygulanır.
+          filtresi tüm organik giriş sayfası satırlarını Google’dan sayfa sayfa
+          okur ve 50/100/200 satırlık ekran sayfalamasından önce uygulanır.
           Sorgu dizeleri ve sondaki eğik çizgiler aynı grupta, farklı ana
           makineler ve büyük/küçük harfi farklı yollar ayrı kalır. Kaynak sınırı
           veya kalite kısıtı varsa grubun tamamının doğrulanamadığı belirtilir;
@@ -1544,6 +1544,16 @@
           bölümünde bilinmeyen günler sıfırdan ayrılır. Örnekleme, gizlilik
           eşiği ve erişim kısıtları varsa karşılaştırma veya güçlü öneri
           gösterilmez.
+        </p>
+        <p>
+          Az sayıda oturumda tek bir ziyaret bile oranları belirgin
+          değiştirebilir; yüzde değişimini tek başına başarı veya kayıp
+          saymayın. Sıfır anahtar olay, hedeflerin tanımlı olmadığı anlamına da
+          gelebilir. Organik rapor boşsa <strong>Tüm trafiğe bak</strong> ile
+          kapsamı genişletin veya <strong>Ölçüm durumunu kontrol et</strong> ile
+          ayarları inceleyin. Bağlantı kurmak geçmiş veriyi değiştirmez. Boş
+          raporda satır filtreleri gösterilmez; yinelenen kapsam ve veri işleme
+          notları <strong>Veri ayrıntıları</strong> içinde kalır.
         </p>
         <p>
           Sayfa boyutu 50, 100 veya 200 satırdır; Önceki/Sonraki sayfa kalan
@@ -1563,6 +1573,16 @@
           eksik içerik kanıtı değildir.
         </p>
         <h2 id="paylasim-olcum-ve-kota">Paylaşım, ölçüm ve kota</h2>
+        <p>
+          Ölçüm bilinmiyorsa boş dönem sonucu çıkarılmaz:
+          <strong>Bu dönemin trafiği belirlenemedi</strong> gösterilir. Bilinen
+          sayılar korunur. Bildirilen kısıt nedenleri ölçümlerin yanında yer
+          alır; neden bilinmiyorsa açıkça belirtilir. Yeniden deneme veya ölçüm
+          kontrolü sunulur; kanal değiştirmek okuma hatasının çözümü olarak
+          önerilmez. Genel notlar
+          <strong>Analytics verisini yorumlama</strong> bölümündedir; kapsam,
+          dönem ve uyarılar görünür kalır.
+        </p>
         <p>
           Rapor, kanal, tarihler, kırılım, satır boyutu ve sayfalama URL'de
           korunur. host/path bağlantı filtresi birebir, yalnızca listelenen
@@ -1598,7 +1618,7 @@
           >
         </nav>
         <p class="meta">
-          Son güncelleme: 27 Ekim 2026. Bir hata görürseniz
+          Son güncelleme: 28 Ekim 2026. Bir hata görürseniz
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

@@ -96,7 +96,7 @@
       property="og:image:alt"
       content="seowatcher tanıtım kartı: Search Console, Analytics 4 ve site denetimi verilerini gösteren uygulama paneli ve Windows için indirme düğmesi"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-28" />
     <meta property="og:url" content="https://seowatcher.io/kilavuz/raporlar/" />
     <meta property="og:locale" content="tr_TR" />
     <meta property="og:locale:alternate" content="en_US" />
@@ -152,7 +152,7 @@
             "description": "Denetimden ya da Arama performansı ekranından indirdiğiniz ve asistanınıza yazdırdığınız her rapor tek bir HTML dosyasıdır. Telefonda açarsınız, yazdırırsınız, e-postayla gönderirsiniz.",
             "url": "https://seowatcher.io/kilavuz/raporlar/",
             "inLanguage": "tr",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-28",
             "articleSection": "Ekranlar",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -187,7 +187,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.2" defer></script>
+    <script src="/assets/docs.js?v=0.8.3" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1514,13 +1514,20 @@
           kaydedilen dosyayı listeden tekrar indirebilirsiniz. Kaynak bağlantısı
           kesilse de kayıtlı raporlar okunabilir.
         </p>
+        <p>
+          Projede henüz rapor yoksa arama, tür ve sayfalama yerine ilk raporu
+          hazırlama bağlantıları gösterilir. Kayıtlı raporlar yalnızca bir
+          filtre nedeniyle görünmüyorsa filtre temizleme düğmesi kalır. Eski
+          uygulama raporlarının başlığına eklenmiş teknik kimlik listede ve son
+          rapor özetinde gizlenir; kayıtlı başlık ve dosya değişmez.
+        </p>
         <h2 id="listeyi-okuma">Listeyi okuma</h2>
         <p>
-          Üstte <strong>Son güncellenen rapor</strong> vardır: başlık, kayıtlı
-          özet, kaydetme zamanı, açma ve HTML indirme düğmeleri. Özet yoksa
-          açıkça belirtilir. Yapılandırılmış veri dönemi eski raporlarda
-          bulunmadığı için dönem ve veri sınırları belgenin içinde kontrol
-          edilir; başlıktan veya HTML'den tahmin edilmez.
+          Üstte <strong>Kaydedilmiş rapor</strong> vardır: başlık, kayıtlı özet,
+          kaydetme zamanı, açma ve HTML indirme düğmeleri. Özet yoksa açıkça
+          belirtilir. Yapılandırılmış veri dönemi eski raporlarda bulunmadığı
+          için dönem ve veri sınırları belgenin içinde kontrol edilir; başlıktan
+          veya HTML'den tahmin edilmez.
         </p>
         <p>
           Arama başlık ve kayıtlı özeti tarar. Tür düğmeleri, arama ve Son 7 gün
@@ -1540,10 +1547,11 @@
         <p>
           Uygulamanın eski Arama ve Denetim belgeleri aynı oluşturucu işaretini
           taşır. Bu yüzden
-          <strong>Uygulama raporu, tür kaydedilmemiş</strong> yazılır; hepsi
-          Denetim sayılmaz. Asistan becerisi ve şablon adı kayıtlıysa görünür.
-          Dosya sayısı SEO başarısı değildir. Boyut, kayıtlı HTML'nin bayt
-          sayısıdır; indirmedeki güvenlik başlıkları dosyayı biraz büyütebilir.
+          <strong>Eski rapor · kaynak ve tarih doğrulanmamış</strong> yazılır;
+          hepsi Denetim sayılmaz. Asistan becerisi ve şablon adı kayıtlıysa
+          görünür. Dosya sayısı SEO başarısı değildir. Boyut, kayıtlı HTML'nin
+          bayt sayısıdır; indirmedeki güvenlik başlıkları dosyayı biraz
+          büyütebilir.
         </p>
         <h2 id="acma-indirme-ve-yazdirma">Açma, indirme ve yazdırma</h2>
         <p>
@@ -1628,6 +1636,16 @@
           dönemini, kaynağın satır sınırını ve mevcut kayıtlı mobil CrUX
           ölçümünü belirtir.
         </p>
+        <p>
+          Üstteki <strong>Kaydedilmiş rapor</strong>, sitenin güncel özeti
+          değildir. Kaynak denetimin sitesi doğrulanabiliyorsa gösterilir;
+          projenin sitesiyle farklıysa uyarılır. Kaynak doğrulanamıyorsa başka
+          bir siteye ait olabileceği açıkça yazılır.
+          <strong>Eski rapor · kaynak ve tarih doğrulanmamış</strong>
+          belgelerinin türü başlıktan tahmin edilmez. Bugünkü kararlar için
+          <strong>Güncel bir denetim raporu oluştur</strong> bağlantısından
+          projenin sitesini denetleyin. Eski dosya değiştirilmez.
+        </p>
         <nav class="pager" aria-label="Önceki ve sonraki sayfa">
           <a class="pager-prev" rel="prev" href="/kilavuz/dizin-durumu/"
             ><span>Önceki</span><strong>Dizin durumu</strong></a
@@ -1636,7 +1654,7 @@
           >
         </nav>
         <p class="meta">
-          Son güncelleme: 27 Ekim 2026. Bir hata görürseniz
+          Son güncelleme: 28 Ekim 2026. Bir hata görürseniz
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
