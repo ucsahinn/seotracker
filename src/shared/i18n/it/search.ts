@@ -836,4 +836,11 @@ export const itSearch: Catalog = {
   "Liste güncellendi: {date}": "Elenco aggiornato: {date}",
   "{count} kontrolde kritik sorun": "Problemi critici in {count} controlli",
   "{count} kontrolde uyarı": "Avvisi in {count} controlli",
+  "Google anonim sorguları gizler ve günlük satırları sınırlar; bu arşiv tüm aramaları içermez.":
+    "Google nasconde le query anonimizzate e limita le righe giornaliere; questo archivio non contiene tutte le ricerche.",
+  "Bu sayfa açıkken kalan günler otomatik yüklenir; bağlantı veya kota hatasında beklenir.":
+    "I giorni rimanenti vengono caricati automaticamente mentre questa pagina è aperta; gli errori di connessione o quota sospendono la sincronizzazione.",
+  "Google verisi alındı: {date}": "Dati Google acquisiti: {date}",
+  "Google anonim sorguları gizler. API, arama türü başına günde en fazla {limit} satır sunar; sorgu ve sayfa ayrıntılarında başka satırları da atlayabilir. Tam sayfalama, tüm aramaların listelendiği anlamına gelmez.":
+    "Google nasconde le query anonimizzate. L’API fornisce al massimo {limit} righe al giorno per tipo di ricerca e può omettere altri dettagli su query e pagine. La paginazione completa non significa che ogni ricerca sia elencata.",
 };

@@ -1,6 +1,9 @@
 import { GscHistoryRepository } from "@/server/features/gsc/repositories/GscHistoryRepository";
 import type { GscDailyRow } from "@/server/features/gsc/repositories/GscHistoryRepository";
-import { GSC_MAX_ROW_LIMIT } from "@/server/features/gsc/searchAnalytics";
+import {
+  GSC_MAX_ROW_LIMIT,
+  sixteenMonthFloor,
+} from "@/server/features/gsc/searchAnalytics";
 import { GscApiError, GscNotConnectedError } from "@/server/lib/gscErrors";
 import { GscService } from "@/server/features/gsc/services/GscService";
 import { isExpectedGrantFailure } from "@/server/features/gsc/services/GscService";
@@ -17,14 +20,11 @@ import { t } from "@/shared/i18n";
  * Google serves the last 16 months and deletes what falls off the back, so the
  * only way to have a longer history is to keep it. Nothing here is scheduled:
  * Docker never fires a cron, and a laptop is asleep half the time. Instead the
- * archive catches up whenever the operator opens the page — it asks how far it
- * got last time and fetches the days since. Because Google keeps 16 months, any
- * gap shorter than that is recoverable, which makes an unscheduled catch-up as
- * complete as a nightly job would have been.
+ * archive catches up while the rankings page is open — it asks how far it got
+ * last time and fetches the days since. Google keeps 16 calendar months; days
+ * missed beyond that retention cannot be recovered by opening the app later.
  */
 
-/** Google's own retention limit, and therefore the furthest a backfill reaches. */
-const MAX_HISTORY_DAYS = 480;
 /** Days per chunk. Each chunk is one or more API calls. */
 const CHUNK_DAYS = 30;
 /**
@@ -48,7 +48,9 @@ const MAX_REQUESTS_PER_CHUNK = 12;
  * A window re-read after overflowing is a single day, which cannot be split
  * further, so it gets a deeper page budget instead.
  */
-const MAX_REQUESTS_PER_RETRY_DAY = 36;
+// Google exposes up to 50,000 rows per day per search type. Include one
+// terminal-page probe when all 50 pages are full; 36 silently lost 14,000 rows.
+const MAX_REQUESTS_PER_RETRY_DAY = 51;
 /** Chunks per catch-up, so opening the page cannot stall for minutes. */
 const MAX_CHUNKS_PER_RUN = 4;
 
@@ -81,9 +83,7 @@ function latestAvailableDate(today: Date): string {
  * The upsert makes re-fetching the window free.
  */
 function resolveStart(lastDate: string | null, today: Date): string {
-  const floor = new Date(`${gscToday(today)}T12:00:00Z`);
-  floor.setUTCDate(floor.getUTCDate() - MAX_HISTORY_DAYS);
-  const earliest = isoDate(floor);
+  const earliest = sixteenMonthFloor(new Date(`${gscToday(today)}T12:00:00Z`));
   if (!lastDate) return earliest;
   const resume = addDays(lastDate, -GSC_DATA_LAG_DAYS);
   return resume < earliest ? earliest : resume;
@@ -253,9 +253,9 @@ function recordWindow(
 }
 
 /**
- * What is still partial after one retry day. A single day that still
- * overflows is past what the page budget can read and cannot be split
- * further, so it is reported through `truncatedChunks` and not retried forever.
+ * What is still partial after one retry day. A completed day advances the
+ * retry cursor. An overflowing day must keep its cursor
+ * so that the archive never declares that day completely acquired.
  */
 function remainingAfterRetry(
   incomplete: { from: string; through: string },
@@ -264,6 +264,23 @@ function remainingAfterRetry(
   return rangeEnd >= incomplete.through
     ? null
     : { from: addDays(rangeEnd, 1), through: incomplete.through };
+}
+
+/** Clamp persisted retries after a sleep longer than Google's retention. */
+function readableIncomplete(
+  state: {
+    incompleteFrom: string | null;
+    incompleteThrough: string | null;
+  } | null,
+  today: Date,
+): { from: string; through: string } | null {
+  if (!state?.incompleteFrom || !state.incompleteThrough) return null;
+  const floor = resolveStart(null, today);
+  if (state.incompleteThrough < floor) return null;
+  return {
+    from: state.incompleteFrom < floor ? floor : state.incompleteFrom,
+    through: state.incompleteThrough,
+  };
 }
 
 /**
@@ -334,10 +351,10 @@ async function backfill(input: {
    * for the budget; the forward cursors above have already moved past them,
    * so "scanned through" and "completely archived" stay different claims.
    */
-  let incomplete =
-    state?.incompleteFrom && state.incompleteThrough
-      ? { from: state.incompleteFrom, through: state.incompleteThrough }
-      : null;
+  // A machine may have been off beyond Google's retention. Never send expired
+  // retry days: the API clamps them, which could replace a different day's rows
+  // or reject the range forever before the forward sweep can resume.
+  let incomplete = readableIncomplete(state, today);
   /** The property every page of this run came from; null until Google answers. */
   let siteUrl: string | null = initialSiteUrl;
   const outcome: BackfillOutcome = {
@@ -410,7 +427,10 @@ async function backfill(input: {
       });
 
       if (incomplete) {
-        incomplete = remainingAfterRetry(incomplete, rangeEnd);
+        // Retain a day if even its deeper budget overflows. Advancing here
+        // permanently discarded its tail while claiming no work remained.
+        if (!truncated) incomplete = remainingAfterRetry(incomplete, rangeEnd);
+        else break;
       } else {
         // A multi-day window that overflowed can still be narrowed, so it is
         // remembered rather than counted as archived.

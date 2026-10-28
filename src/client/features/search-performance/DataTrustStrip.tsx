@@ -11,7 +11,12 @@ import {
 import type { LucideIcon } from "lucide-react";
 import type { SearchPerformanceView } from "@/shared/searchPerformanceView";
 import type { CompareMode } from "@/client/features/search-performance/searchTabs";
-import { formatCount, formatDate, formatPercent } from "@/client/lib/format";
+import {
+  formatCount,
+  formatDate,
+  formatDateTime,
+  formatPercent,
+} from "@/client/lib/format";
 
 function Item({
   icon: Icon,
@@ -185,6 +190,13 @@ export function DataTrustStrip({
                 })}
           </Item>
           <Item icon={Globe}>
+            {view.quota.fetchedAt && (
+              <span>
+                {t("Google verisi alındı: {date}", {
+                  date: formatDateTime(view.quota.fetchedAt),
+                })}{" "}
+              </span>
+            )}
             {view.quota.requests > 0
               ? t("Bu görünüm için Google'a {count} istek gönderildi.", {
                   count: view.quota.requests,
@@ -195,6 +207,12 @@ export function DataTrustStrip({
             <span className="text-subtle">
               {t("Mülk: {site}", { site: view.siteUrl })}
             </span>
+          </Item>
+          <Item icon={EyeOff}>
+            {t(
+              "Google anonim sorguları gizler. API, arama türü başına günde en fazla {limit} satır sunar; sorgu ve sayfa ayrıntılarında başka satırları da atlayabilir. Tam sayfalama, tüm aramaların listelendiği anlamına gelmez.",
+              { limit: formatCount(50_000) },
+            )}
           </Item>
         </ul>
       </details>

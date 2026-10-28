@@ -845,4 +845,11 @@ export const ptSearch: Catalog = {
   "{count} kontrolde kritik sorun":
     "Problemas críticos em {count} verificações",
   "{count} kontrolde uyarı": "Avisos em {count} verificações",
+  "Google anonim sorguları gizler ve günlük satırları sınırlar; bu arşiv tüm aramaları içermez.":
+    "O Google oculta consultas anonimizadas e limita as linhas diárias; este arquivo não contém todas as pesquisas.",
+  "Bu sayfa açıkken kalan günler otomatik yüklenir; bağlantı veya kota hatasında beklenir.":
+    "Os dias restantes são carregados automaticamente enquanto esta página estiver aberta; erros de ligação ou quota suspendem a sincronização.",
+  "Google verisi alındı: {date}": "Dados Google obtidos: {date}",
+  "Google anonim sorguları gizler. API, arama türü başına günde en fazla {limit} satır sunar; sorgu ve sayfa ayrıntılarında başka satırları da atlayabilir. Tam sayfalama, tüm aramaların listelendiği anlamına gelmez.":
+    "O Google oculta consultas anonimizadas. A API disponibiliza no máximo {limit} linhas por dia e tipo de pesquisa e pode omitir outros detalhes de consultas e páginas. A paginação completa não significa que todas as pesquisas estejam listadas.",
 };

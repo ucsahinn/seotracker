@@ -1,6 +1,11 @@
 import type { ReportResult } from "./ReportView";
 import { DataTruncationNotice } from "./DataTruncationNotice";
-import { formatCount, formatDate, formatPercent } from "@/shared/format";
+import {
+  formatCount,
+  formatDate,
+  formatDateTime,
+  formatPercent,
+} from "@/shared/format";
 import { t } from "@/shared/i18n";
 
 const diagnosticCopy: Record<string, string> = {
@@ -36,6 +41,11 @@ export function AnalyticsEvidence({
           .slice(0, 2);
   return (
     <div className="space-y-2 text-xs text-muted">
+      {result.fetchedAt ? (
+        <p>
+          {t("Veri alındı: {time}", { time: formatDateTime(result.fetchedAt) })}
+        </p>
+      ) : null}
       {result.warnings?.includes("property_time_zone_changed") ? (
         <p role="status">
           {t(

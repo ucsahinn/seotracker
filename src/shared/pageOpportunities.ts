@@ -122,7 +122,6 @@ type PageOpportunityResult = {
 };
 
 /** Queries kept per page for the detail panel. */
-const QUERIES_PER_PAGE = 10;
 
 function zeroByWork(): Record<WorkKind, number> {
   return { snippet: 0, page1: 0, page2: 0, deep: 0 };
@@ -365,13 +364,9 @@ export function pageOpportunities(input: {
         rows.reduce((sum, row) => sum + row.impressions, 0) -
         comparableImpressions,
       queryCount: queries.length,
-      otherQueryGain: queries
-        .slice(QUERIES_PER_PAGE)
-        .reduce((sum, query) => sum + (query.allocatedGain ?? 0), 0),
-      otherQueryGainPerMonth: queries
-        .slice(QUERIES_PER_PAGE)
-        .reduce((sum, query) => sum + (query.gainPerMonth ?? 0), 0),
-      queries: queries.slice(0, QUERIES_PER_PAGE),
+      otherQueryGain: 0,
+      otherQueryGainPerMonth: 0,
+      queries,
       capped: gain < raw,
     });
   }

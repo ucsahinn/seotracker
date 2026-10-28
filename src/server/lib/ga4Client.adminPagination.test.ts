@@ -24,7 +24,7 @@ const keyEventPage = (name: string, nextPageToken?: string) =>
     nextPageToken,
   });
 
-it("follows nextPageToken and flags a list as incomplete when the page budget runs out", async () => {
+it("follows every nextPageToken beyond the former five-page cap", async () => {
   const client = createGa4AdminClient({ userId: "u1", ga4AccountId: "acct" });
   mocks.fetch
     .mockResolvedValueOnce(keyEventPage("a", "more"))
@@ -40,12 +40,24 @@ it("follows nextPageToken and flags a list as incomplete when the page budget ru
   ).toContain("pageToken=more");
 
   mocks.fetch.mockReset();
-  mocks.fetch.mockImplementation(() =>
-    Promise.resolve(keyEventPage("x", "more")),
-  );
-  const truncated = await client.listKeyEvents("properties/11");
-  expect(truncated.complete).toBe(false);
-  expect(mocks.fetch).toHaveBeenCalledTimes(5);
+  let page = 0;
+  mocks.fetch.mockImplementation(() => {
+    page += 1;
+    return Promise.resolve(
+      keyEventPage(String(page), page < 7 ? String(page) : undefined),
+    );
+  });
+  const complete = await client.listKeyEvents("properties/11");
+  expect(complete.complete).toBe(true);
+  expect(complete.items.map((event) => event.eventName)).toEqual([
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+  ]);
 });
 
 // Access persistence is tested with real SQLite in GoogleAccessRepository.test.ts.
@@ -54,3 +66,37 @@ vi.mock("@/server/features/google/GoogleAccessService", () => ({
   observeGoogleAccess: async (_scope: object, read: () => Promise<unknown>) =>
     read(),
 }));
+
+it("rejects repeated Admin tokens rather than looping or claiming completeness", async () => {
+  mocks.fetch.mockImplementation(() =>
+    Promise.resolve(keyEventPage("a", "repeat")),
+  );
+  await expect(
+    createGa4AdminClient({ userId: "u1" }).listKeyEvents("properties/11"),
+  ).rejects.toThrow();
+  expect(mocks.fetch).toHaveBeenCalledTimes(2);
+});
+
+it("discovers properties beyond the former hundred-page budget", async () => {
+  let page = 0;
+  mocks.fetch.mockImplementation(() => {
+    page += 1;
+    return Promise.resolve(
+      Response.json({
+        accountSummaries: [
+          {
+            account: "accounts/1",
+            displayName: "Account",
+            propertySummaries: [
+              { property: "properties/" + page, displayName: String(page) },
+            ],
+          },
+        ],
+        ...(page < 101 ? { nextPageToken: String(page) } : {}),
+      }),
+    );
+  });
+  const result = await createGa4AdminClient({ userId: "u1" }).listProperties();
+  expect(result).toHaveLength(101);
+  expect(result[100]?.propertyId).toBe("properties/101");
+});

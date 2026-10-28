@@ -8,7 +8,7 @@ import { t } from "@/shared/i18n";
  * dates: the table's window and the archive's span are different things.
  */
 import { AlertCircle } from "lucide-react";
-import { formatDate, formatNumber } from "@/client/lib/format";
+import { formatDate, formatDateTime, formatNumber } from "@/client/lib/format";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { Link } from "@tanstack/react-router";
 
@@ -29,6 +29,7 @@ export function ArchiveStatus({
       lastDate: string | null;
       /** How far the sweep has looked, data or not. */
       scannedThrough: string | null;
+      lastRunAt?: string | null;
       rowCount: number;
       newDays: number;
       hasMore: boolean;
@@ -63,6 +64,9 @@ export function ArchiveStatus({
 
   const data = sync.data;
   if (!data) return null;
+  const lastChecked = data.lastRunAt
+    ? t("Son kontrol: {date}", { date: formatDateTime(data.lastRunAt) })
+    : null;
 
   // Setup being unfinished is not a sync failure, so it gets a plain
   // instruction rather than a warning alert.
@@ -93,6 +97,7 @@ export function ArchiveStatus({
                 )
               : null}
           {data.lastDate ? ` ${formatDate(data.lastDate)}` : ""}
+          {lastChecked ? ` ${lastChecked}` : ""}
         </span>
         {data.errorCode === "auth" ? (
           <Link
@@ -124,6 +129,7 @@ export function ArchiveStatus({
      */
     return (
       <p className="text-xs text-muted">
+        {lastChecked ? `${lastChecked} ` : ""}
         {data.scannedThrough
           ? t(
               "{date} tarihine kadar kontrol edildi, kelime verisi bulunamadı.",
@@ -131,7 +137,7 @@ export function ArchiveStatus({
             )
           : t("Veri yükleme henüz başlamadı.")}
         {data.hasMore
-          ? ` ${t("Kalan günler sonraki açılışlarda yüklenecek.")}`
+          ? ` ${t("Bu sayfa açıkken kalan günler otomatik yüklenir; bağlantı veya kota hatasında beklenir.")}`
           : ""}
       </p>
     );
@@ -156,6 +162,8 @@ export function ArchiveStatus({
   return (
     <p className="text-xs text-muted">
       {summary}
+      {lastChecked ? ` ${lastChecked}` : ""}
+      {` ${t("Google anonim sorguları gizler ve günlük satırları sınırlar; bu arşiv tüm aramaları içermez.")}`}
       {data.scannedThrough
         ? ` ${t("Taranan son gün: {date}", { date: formatDate(data.scannedThrough) })}`
         : ""}
@@ -168,7 +176,7 @@ export function ArchiveStatus({
       {/* The backfill walks oldest to newest, so what is left is the recent
           end, not the old one. */}
       {data.hasMore
-        ? ` ${t("Kalan günler için devam edin; birden fazla çalıştırma gerekebilir.")}`
+        ? ` ${t("Bu sayfa açıkken kalan günler otomatik yüklenir; bağlantı veya kota hatasında beklenir.")}`
         : ""}
     </p>
   );

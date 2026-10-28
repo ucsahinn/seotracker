@@ -45,17 +45,20 @@ export async function cachedSearchAnalytics<T>(
     // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- one key, one request shape: the value stored under it came from the same `load` type
     return hit.value as T;
   }
+  // A slow multi-page acquisition must not receive a brand-new ten-minute
+  // lease when it finishes: the first rows are already that much older.
+  const storedAt = now();
   const value = await load();
   const rows = rowsOf(value);
   evict(key);
   // A single answer larger than the whole budget is served, never held.
-  if (rows > MAX_CACHED_ROWS) return value;
+  if (rows > MAX_CACHED_ROWS || now() - storedAt >= TTL_MS) return value;
   while (heldRows + rows > MAX_CACHED_ROWS && entries.size > 0) {
     const oldest = entries.keys().next().value;
     if (oldest === undefined) break;
     evict(oldest);
   }
-  entries.set(key, { value, rows, storedAt: now() });
+  entries.set(key, { value, rows, storedAt });
   heldRows += rows;
   return value;
 }

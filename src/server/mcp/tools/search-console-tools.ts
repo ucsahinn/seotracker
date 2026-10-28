@@ -37,6 +37,8 @@ import type { SearchInsights, TodoItem } from "@/shared/searchInsights";
 import { gscToday } from "@/shared/dataFreshness";
 
 const TEXT_SUMMARY_ROWS = 15;
+const DATA_LIMIT_NOTICE =
+  "Google withholds anonymized queries, exposes at most 50,000 rows per day per search type, and can omit additional query/page detail. Reading every returned page does not recover withheld rows.";
 
 type GscPerfRow = {
   keys?: string[];
@@ -263,7 +265,7 @@ export const getSearchConsolePerformanceTool = {
   config: {
     title: "Get Google Search Console performance",
     description:
-      "Query the connected Search Console property's Search Analytics: clicks, impressions, CTR, and average position by query/page/country/device/date. First-party data — use it for what already ranks, near-ranking queries, and pages with real demand. Google sorts by clicks and can't filter by position, so minPosition/maxPosition/minImpressions are applied server-side over the top 1000 rows of the window — use them instead of fetching everything. ctr is a 0-1 fraction; position is a 1-based average and is omitted from rows when type is 'discover' or 'googleNews' (Google does not report it there — treat it as unavailable, not a failure); dates are Pacific Time; the last ~3 days may be incomplete. A page or query table is NOT the site total: Google counts every result a page appears in separately, so summing rows overstates impressions and clicks; for site totals use dimensions ['date'] (or no dimensions) and never sum a page/query table. Read-only.",
+      "Query the connected Search Console property's Search Analytics: clicks, impressions, CTR, and average position by query/page/country/device/date. First-party data — use it for what already ranks, near-ranking queries, and pages with real demand. Google sorts by clicks and cannot filter by position. Metric filters scan successive pages until the output page fills or Google returns no more rows; use nextStartRow to continue. ctr is a 0-1 fraction; position is a 1-based average and is omitted from rows when type is 'discover' or 'googleNews' (Google does not report it there — treat it as unavailable, not a failure); dates are Pacific Time; the last ~3 days may be incomplete. A page or query table is NOT the site total: Google counts every result a page appears in separately, so summing rows overstates impressions and clicks; for site totals use dimensions ['date'] (or no dimensions) and never sum a page/query table. Read-only.",
     inputSchema: perfInputSchema,
     outputSchema: {
       ok: z.boolean(),
@@ -293,6 +295,8 @@ export const getSearchConsolePerformanceTool = {
         .optional(),
       hasMore: z.boolean().optional(),
       nextStartRow: z.number().optional(),
+      fetchedAt: z.string().optional(),
+      dataLimitNotice: z.string().optional(),
       ...optionalMetaOutputSchema,
     },
     annotations: {
@@ -369,6 +373,7 @@ export const getSearchConsolePerformanceTool = {
 
     try {
       const requestedLimit = args.rowLimit ?? GSC_DEFAULT_ROW_LIMIT;
+      const fetchedAt = new Date().toISOString();
       const metricFilter = pickMetricFilter(args);
       // Google can't filter by position or impressions, so with a metric filter
       // we fetch the full window and filter here; fetched == returned otherwise.
@@ -390,20 +395,49 @@ export const getSearchConsolePerformanceTool = {
       // Discover and Google News do not measure position. The shared client
       // retains a numeric fallback for other consumers; omit it on this surface
       // before filtering so an unmeasured row cannot satisfy a position bound.
-      const fetched =
+      let fetched =
         args.type === "discover" || args.type === "googleNews"
           ? result.rows.map(({ position: _position, ...row }) => row)
           : result.rows;
-      const kept = metricFilter
+      let kept = metricFilter
         ? fetched.filter((row) => matchesMetricFilter(row, metricFilter))
         : fetched;
+      // A full page without matches is not an empty filtered table. Continue
+      // sequentially until the requested output page fills or Google ends.
+      let lastPageSize = fetched.length;
+      while (kept.length < requestedLimit && lastPageSize >= fetchLimit) {
+        if (!metricFilter) break;
+        const next = await GscService.getPerformance({
+          projectId: args.projectId,
+          dimensions: args.dimensions,
+          startDate: result.request.startDate,
+          endDate: result.request.endDate,
+          filters: args.filters,
+          rowLimit: fetchLimit,
+          startRow: startRow + fetched.length,
+          type: args.type,
+          dataState: args.dataState,
+        });
+        if (next.siteUrl !== result.siteUrl)
+          throw new Error("Search Console property changed during pagination");
+        const page =
+          args.type === "discover" || args.type === "googleNews"
+            ? next.rows.map(({ position: _position, ...row }) => row)
+            : next.rows;
+        lastPageSize = page.length;
+        fetched = [...fetched, ...page];
+        kept = [
+          ...kept,
+          ...page.filter((row) => matchesMetricFilter(row, metricFilter)),
+        ];
+      }
       const rows = kept.slice(0, requestedLimit).map(roundMetrics);
       // Pagination stays in Google's row space: the next page starts right after
       // the last row we returned (which may be well past rows.length when a
       // metric filter dropped rows before it).
       const lastReturned = kept[rows.length - 1];
       const truncated = kept.length > rows.length;
-      const hasMore = truncated || fetched.length >= fetchLimit;
+      const hasMore = truncated || lastPageSize >= fetchLimit;
       const nextStartRow =
         truncated && lastReturned
           ? startRow + fetched.indexOf(lastReturned) + 1
@@ -421,7 +455,7 @@ export const getSearchConsolePerformanceTool = {
           : `${header}\nNo rows for this query/date range.`;
 
       return mcpResponse({
-        text,
+        text: `${text}\nGoogle data acquisition started: ${fetchedAt}. ${DATA_LIMIT_NOTICE}`,
         meta,
         structuredContent: {
           ok: true,
@@ -433,6 +467,8 @@ export const getSearchConsolePerformanceTool = {
           rows,
           hasMore,
           nextStartRow: hasMore ? nextStartRow : undefined,
+          fetchedAt,
+          dataLimitNotice: DATA_LIMIT_NOTICE,
         },
       });
     } catch (error) {
@@ -654,9 +690,6 @@ const summaryInputSchema = {
 
 type SummaryArgs = z.infer<z.ZodObject<typeof summaryInputSchema>>;
 
-/** Rows per list in the structured answer; the screen holds the rest. */
-const SUMMARY_LIST_LIMIT = 20;
-
 const pct = (value: number | null) =>
   value === null ? "unknown" : `${(value * 100).toFixed(1)}%`;
 const signed = (value: number | null, digits = 0) =>
@@ -711,7 +744,7 @@ export const getSearchSummaryTool = {
   config: {
     title: "Get Search Console summary and to-do list",
     description:
-      "The Search performance screen in one call: the window of complete days (Pacific dates, ending before the first day Google is still counting), site totals from Search Console's own property aggregate (never summed from query or page rows) with the change against the previous equal-length period and the same weeks a year ago, the share of clicks from anonymized queries, and a to-do list ranked by estimated clicks: striking-distance queries (the query's own position 4-20, brand queries excluded, gain at the site's own non-brand CTR one band up per query: 4-5 -> 2-3, 6-10 -> 4-5, 11-20 -> 6-10), snippets far below the site's CTR for their position, declining queries and pages, content decay against the best of the four previous quarters, pages with impressions and no clicks, lost queries, device/country CTR gaps, and the latest unusual drop. A null or 'unknown' value means Search Console does not say; never read it as zero. Brand queries are split out with the confirmed brand terms, or until some are confirmed, with terms suggested from the domain and project name; brand.source says which (confirmed; suggested = applied but unconfirmed; none = no brand split). Free; about 14 Search Analytics requests on a cold call, cached for minutes after. Read-only.",
+      "The Search performance screen in one call: the window of complete days (Pacific dates, ending before the first day Google is still counting), site totals from Search Console's own property aggregate (never summed from query or page rows) with the change against the previous equal-length period and the same weeks a year ago, the share of clicks from anonymized queries, and a to-do list ranked by estimated clicks: striking-distance queries (the query's own position 4-20, brand queries excluded, gain at the site's own non-brand CTR one band up per query: 4-5 -> 2-3, 6-10 -> 4-5, 11-20 -> 6-10), snippets far below the site's CTR for their position, declining queries and pages, content decay against the best of the four previous quarters, pages with impressions and no clicks, lost queries, device/country CTR gaps, and the latest unusual drop. A null or 'unknown' value means Search Console does not say; never read it as zero. Brand queries are split out with the confirmed brand terms, or until some are confirmed, with terms suggested from the domain and project name; brand.source says which (confirmed; suggested = applied but unconfirmed; none = no brand split). Free; about 14 Search Analytics requests on a small site; larger tables consume every available page, cached for ten minutes after. Read-only.",
     inputSchema: summaryInputSchema,
     outputSchema: {
       ok: z.boolean(),
@@ -731,6 +764,8 @@ export const getSearchSummaryTool = {
         })
         .optional(),
       requests: z.number().optional(),
+      fetchedAt: z.string().optional(),
+      dataLimitNotice: z.string().optional(),
       ...optionalMetaOutputSchema,
     },
     annotations: {
@@ -764,6 +799,7 @@ export const getSearchSummaryTool = {
       const { current, vsPrevious, vsYoy, provisional } = view.totals;
       const hidden = view.coverage.hiddenQueries;
       const lines = [
+        `Oldest Google response acquired: ${view.quota.fetchedAt ?? "unknown"}. ${DATA_LIMIT_NOTICE}`,
         `${view.siteUrl} · ${view.window.startDate}..${view.window.endDate} (${view.window.days} complete days, Pacific; first incomplete day ${view.window.firstIncompleteDate ?? "none"}, ${view.window.incompleteSource})`,
         `Clicks ${current.clicks} (${signed(vsPrevious?.clicks.change ?? null)} vs previous, ${signed(vsYoy?.clicks.change ?? null)} vs a year ago) · impressions ${current.impressions} · CTR ${pct(current.ctr)} · position ${current.position?.toFixed(1) ?? "unknown"} (${signed(vsPrevious?.position.change ?? null, 1)} places)`,
         ...(provisional
@@ -774,9 +810,7 @@ export const getSearchSummaryTool = {
         `Anonymized queries: ${pct(hidden.clickShare)} of clicks${hidden.exact ? "" : " (includes rows past the row limit)"}.`,
         describeBrand(view.insights.brandState),
         "To do, ranked by estimated clicks:",
-        ...view.todo
-          .slice(0, SUMMARY_LIST_LIMIT)
-          .map((item, i) => `${i + 1}. ${describeTodo(item)}`),
+        ...view.todo.map((item, i) => `${i + 1}. ${describeTodo(item)}`),
       ];
       return mcpResponse({
         text: lines.join("\n"),
@@ -786,14 +820,16 @@ export const getSearchSummaryTool = {
           window: view.window,
           totals: view.totals,
           hiddenQueries: hidden,
-          todo: view.todo.slice(0, SUMMARY_LIST_LIMIT),
-          striking: view.insights.striking.rows.slice(0, SUMMARY_LIST_LIMIT),
-          anomalies: view.insights.anomalies.slice(0, SUMMARY_LIST_LIMIT),
+          todo: view.todo,
+          striking: view.insights.striking.rows,
+          anomalies: view.insights.anomalies,
           brand: {
             source: view.insights.brandState.source,
             terms: view.insights.brandState.terms,
           },
           requests: view.quota.requests,
+          fetchedAt: view.quota.fetchedAt,
+          dataLimitNotice: DATA_LIMIT_NOTICE,
         },
       });
     } catch (error) {

@@ -208,6 +208,7 @@ async function getTrackedQueries(input: {
   /** Inclusive upper bound; omitted means "through the newest day". */
   until?: string;
   limit?: number;
+  offset?: number;
 }) {
   return db
     .select({
@@ -234,7 +235,8 @@ async function getTrackedQueries(input: {
       desc(sql`sum(${gscQueryDaily.impressions})`),
       asc(gscQueryDaily.query),
     )
-    .limit(input.limit ?? -1);
+    .limit(input.limit ?? -1)
+    .offset(input.offset ?? 0);
 }
 
 /**

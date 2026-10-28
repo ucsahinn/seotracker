@@ -34,6 +34,7 @@ import { AnalyticsPageScope } from "./AnalyticsPageScope";
 import { t } from "@/shared/i18n";
 
 export type ReportResult = {
+  fetchedAt?: string;
   propertyDisplayName: string | null;
   dateRange: { startDate: string; endDate: string };
   dimensions: string[];

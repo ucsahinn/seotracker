@@ -16,6 +16,47 @@ vi.mock("@/server/features/projects/services/ProjectService", () => ({
   },
 }));
 
+it("makes the archive summary beyond its first output page reachable", async () => {
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(new Date("2026-10-28T12:00:00Z"));
+  try {
+    testDb.database.exec(
+      "INSERT INTO gsc_connections (id, project_id, organization_id, site_url, connected_by_user_id) VALUES ('cp', 'pp', 'o1', 'sc-domain:pages.test', 'u1')",
+    );
+    await GscHistoryRepository.upsertDailyRows(
+      "pp",
+      "sc-domain:pages.test",
+      ["a", "b", "c"].map((query) => ({
+        date: "2026-10-01",
+        query,
+        clicks: 1,
+        impressions: 10,
+        ctr: 0.1,
+        position: 5,
+      })),
+    );
+    const first = await getRankingHistoryTool.handler(
+      { projectId: "pp", days: 900, limit: 2 },
+      makeToolContext(),
+    );
+    expect(first.structuredContent).toMatchObject({
+      hasMore: true,
+      nextOffset: 2,
+      rows: [{ query: "a" }, { query: "b" }],
+    });
+    const last = await getRankingHistoryTool.handler(
+      { projectId: "pp", days: 900, limit: 2, offset: 2 },
+      makeToolContext(),
+    );
+    expect(last.structuredContent).toMatchObject({
+      hasMore: false,
+      rows: [{ query: "c" }],
+    });
+  } finally {
+    vi.useRealTimers();
+  }
+});
+
 it("NUM-02: MCP summary and detail share the UI's complete 90-day archive window", async () => {
   vi.useFakeTimers();
   vi.setSystemTime(new Date("2026-10-28T12:00:00Z"));

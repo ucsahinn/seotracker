@@ -10,6 +10,7 @@ import { countComparison, DeltaBadge } from "@/client/components/MetricTile";
 import {
   formatCount,
   formatDate,
+  formatDateTime,
   formatMoney,
   formatDecimal,
   formatPercent,
@@ -151,6 +152,20 @@ export function OrganicTrendPanel({
       </div>
 
       <div className="px-4 py-3">
+        {query.data.fetchedAt ? (
+          <p className="mb-2 text-xs text-muted">
+            {t("Veri alındı: {time}", {
+              time: formatDateTime(query.data.fetchedAt),
+            })}
+          </p>
+        ) : null}
+        {limited ? (
+          <p role="status" className="mb-2 text-xs text-[var(--ink-warning)]">
+            {t(
+              "Analytics verisi sınırlı veya eksik. Bilinmeyen değerler çizilmez; dönem karşılaştırması gösterilmez.",
+            )}
+          </p>
+        ) : null}
         <DataTruncationNotice
           reasons={query.data.reportMetadata.reports.flatMap(
             (report) => report.dataTruncationReasons ?? [],

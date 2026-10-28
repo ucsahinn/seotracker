@@ -2,6 +2,7 @@ import type { Ga4ReportInput } from "./Ga4ReportingService";
 import type { NormalizedGa4Report } from "./Ga4ReportNormalization";
 import { inclusiveGa4Days, shiftGa4Date } from "./Ga4Dates";
 
+/** Rows per request, not a total cap: complete reports follow every offset. */
 export const COMPLETE_REPORT_LIMIT = 1_000;
 
 type DateRange = { startDate: string; endDate: string };

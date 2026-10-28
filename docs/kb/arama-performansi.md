@@ -18,6 +18,12 @@ Seçtiğiniz filtreler adres çubuğuna yazılır. İsterseniz o görünümü ba
 
 **Gizli sorgu.** Google, çok az aranan sorguları gizlilik için listelemez. Ama bu sorguların tıklamalarını site toplamına katar. Bu yüzden sorgu tablosunun toplamı site toplamından küçüktür. Fark gizli sorgulardandır.
 
+**API sınırları ve güncellik.** Uygulama sorgu, sayfa ve sorgu-sayfa tablolarını 25.000 satırlık sayfalarla, Google daha fazla satır döndürmeyene kadar okur; iki sayfada durmaz. Google arama türü başına günde en fazla 50.000 satır sunar ve sorgu/sayfa ayrıntılarında başka satırları da atlayabilir. Bütün sayfaların okunması, bütün aramaların bilindiği anlamına gelmez. Site toplamları bu ayrıntı tablolarından toplanmaz. **Veri hakkında** bölümünde en eski yanıtın alınma zamanı gösterilir. Yanıtlar en fazla on dakika önbellekte tutulur; yenileme bu önbelleği atlar.
+
+Search Analytics istek başlangıçları kurulumun çalışan sunucu örneğinde saniyede en fazla on kez yapılır. Google kota hatası verirse yeni okumalar on beş dakika bekler; arşivin kaydedilmiş ilerlemesi korunur. Arşiv tam 16 takvim ayı geriye gider, eksik aralıkları sonraki çalışmalarda tamamlar ve tek günlük yeniden okumada Google’ın sunduğu 50.000 satıra kadar ulaşır. Uygulama kapalıyken arşiv eşitlemesi çalışmaz. URL Denetimi ayrı kalır: sonuçlar önbellekten okunur, yalnızca açık düğmeyle yenilenir ve mülk başına günlük 2.000 istek sınırı korunur.
+
+Kaynaklar: [Google’ın tam veri alma kılavuzu](https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data), [API kotaları](https://developers.google.com/webmaster-tools/limits).
+
 **Üst sınır.** Kazanç rakamı "en fazla bu kadar" demektir. Her arama bir basamak yükselirse sitenizin kendi tıklama oranlarıyla alacağı ek tıklamadır. Gerçek sonuç rakiplere ve Google'a bağlıdır, çoğu zaman bundan küçüktür.
 
 ## Ekranda neler var

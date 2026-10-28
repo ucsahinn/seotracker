@@ -13,6 +13,7 @@ import { GscApiError, GscTokenError } from "./gscErrors";
 import { fetchWithRetry } from "./fetchRetry";
 import { preserveGoogleTokenFailure } from "./googleTokenErrors";
 import { t } from "@/shared/i18n";
+import { runSearchAnalyticsRequest } from "@/server/features/gsc/searchAnalyticsQuota";
 
 export { GscApiError, GscTokenError } from "./gscErrors";
 
@@ -332,7 +333,11 @@ export function createGscClient(opts: {
       userId: opts.userId,
       accountId: opts.gscAccountId ?? "",
     });
-    return observeGoogleAccess(scope, () => requestRaw<T>(url, init));
+    return observeGoogleAccess(scope, () =>
+      url.endsWith("/searchAnalytics/query")
+        ? runSearchAnalyticsRequest(() => requestRaw<T>(url, init))
+        : requestRaw<T>(url, init),
+    );
   }
 
   return {

@@ -100,8 +100,6 @@ export const INSIGHT_RULES = {
   anomalyMinDeviation: 5,
   anomalyMinRelative: 0.25,
   longTailMinWords: 4,
-  listLimit: 100,
-  todoLimit: 30,
 } as const;
 
 /** A 28-day threshold re-expressed for a window of `days` days. */
@@ -521,7 +519,7 @@ function isStriking(row: MetricRow, minImpressions: number): boolean {
 }
 
 export type StrikingResult = {
-  /** The largest gains first, at most `INSIGHT_RULES.listLimit`. */
+  /** Every qualifying query, largest gains first. */
   rows: StrikingQuery[];
   /** Every striking query, not only the rows listed. */
   total: number;
@@ -573,7 +571,7 @@ export function strikingDistance(
       b.impressions - a.impressions,
   );
   return {
-    rows: rows.slice(0, INSIGHT_RULES.listLimit),
+    rows,
     total: rows.length,
     estimate: {
       knownGainCount: rows.filter((row) => row.potentialClicks !== null).length,
@@ -643,7 +641,7 @@ export function underperformingSnippets(input: {
     });
   }
   out.sort((a, b) => b.gainClicks - a.gainClicks);
-  return out.slice(0, INSIGHT_RULES.listLimit);
+  return out;
 }
 
 // ---------------------------------------------------------------------------
@@ -711,8 +709,8 @@ export function movers(
   growing.sort((a, b) => b.clickChange - a.clickChange);
   declining.sort((a, b) => a.clickChange - b.clickChange);
   return {
-    growing: growing.slice(0, INSIGHT_RULES.listLimit),
-    declining: declining.slice(0, INSIGHT_RULES.listLimit),
+    growing,
+    declining,
     complete: !current.truncated && !previous.truncated,
   };
 }
@@ -741,14 +739,12 @@ export function appearedOnlyIn(
       (r) => r.impressions >= minImpressions && !seen.has(r.key),
     ),
     (a, b) => b.clicks - a.clicks || b.impressions - a.impressions,
-  )
-    .slice(0, INSIGHT_RULES.listLimit)
-    .map((r) => ({
-      query: r.key,
-      clicks: r.clicks,
-      impressions: r.impressions,
-      position: r.position,
-    }));
+  ).map((r) => ({
+    query: r.key,
+    clicks: r.clicks,
+    impressions: r.impressions,
+    position: r.position,
+  }));
 }
 
 // ---------------------------------------------------------------------------
@@ -828,7 +824,7 @@ export function contentDecay(quarters: readonly DecayQuarter[]): DecayRow[] {
     });
   }
   out.sort((a, b) => b.lostClicks - a.lostClicks);
-  return out.slice(0, INSIGHT_RULES.listLimit);
+  return out;
 }
 
 // ---------------------------------------------------------------------------
@@ -853,7 +849,7 @@ export function zeroClickPages(
     impressions: r.impressions,
     position: r.position,
   }));
-  return { rows: rows.slice(0, INSIGHT_RULES.listLimit), total: rows.length };
+  return { rows, total: rows.length };
 }
 
 // ---------------------------------------------------------------------------
@@ -1107,7 +1103,7 @@ function lens(
     clickShare: all.clicks > 0 ? metrics.clicks / all.clicks : null,
     impressionShare:
       all.impressions > 0 ? metrics.impressions / all.impressions : null,
-    top: sort(rows, (a, b) => b.impressions - a.impressions).slice(0, 20),
+    top: sort(rows, (a, b) => b.impressions - a.impressions),
   };
 }
 
@@ -1445,9 +1441,6 @@ function zeroClickEstimate(
   return Math.round(row.impressions * rate);
 }
 
-/** How many of each kind make the list, so one kind cannot crowd out the rest. */
-const TODO_PER_KIND = 8;
-
 /**
  * One ranked list from every insight: estimated clicks first (largest gain
  * on top), then the items whose gain cannot be estimated.
@@ -1463,7 +1456,7 @@ export function buildTodo(
   const items: TodoItem[] = [];
   const minStriking = insights.thresholds.strikingMinImpressions;
 
-  for (const row of insights.striking.rows.slice(0, TODO_PER_KIND)) {
+  for (const row of insights.striking.rows) {
     items.push({
       kind: "striking",
       id: `striking:${row.query}`,
@@ -1481,7 +1474,7 @@ export function buildTodo(
             : "medium",
     });
   }
-  for (const row of insights.snippets.slice(0, TODO_PER_KIND)) {
+  for (const row of insights.snippets) {
     items.push({
       kind: "snippet",
       id: `snippet:${row.query}`,
@@ -1499,12 +1492,14 @@ export function buildTodo(
     });
   }
   const declining = [
-    ...insights.movers.queries.declining
-      .slice(0, TODO_PER_KIND)
-      .map((row) => ({ row, kind: "decliningQuery" as const })),
-    ...insights.movers.pages.declining
-      .slice(0, TODO_PER_KIND)
-      .map((row) => ({ row, kind: "decliningPage" as const })),
+    ...insights.movers.queries.declining.map((row) => ({
+      row,
+      kind: "decliningQuery" as const,
+    })),
+    ...insights.movers.pages.declining.map((row) => ({
+      row,
+      kind: "decliningPage" as const,
+    })),
   ];
   for (const { row, kind } of declining) {
     items.push({
@@ -1519,7 +1514,7 @@ export function buildTodo(
       confidence: "medium",
     });
   }
-  for (const row of (insights.decay ?? []).slice(0, TODO_PER_KIND)) {
+  for (const row of insights.decay ?? []) {
     items.push({
       kind: "decay",
       id: `decay:${row.page}`,
@@ -1536,7 +1531,7 @@ export function buildTodo(
     });
   }
   const curve = insights.ctrCurve.nonBrand ?? insights.ctrCurve.all;
-  for (const row of insights.zeroClickPages.rows.slice(0, TODO_PER_KIND)) {
+  for (const row of insights.zeroClickPages.rows) {
     items.push({
       kind: "zeroClickPage",
       id: `zeroClickPage:${row.page}`,
@@ -1547,7 +1542,7 @@ export function buildTodo(
       confidence: "low",
     });
   }
-  for (const row of (insights.lostQueries ?? []).slice(0, TODO_PER_KIND)) {
+  for (const row of insights.lostQueries ?? []) {
     if (row.clicks === 0) continue;
     items.push({
       kind: "lostQuery",
@@ -1622,5 +1617,5 @@ export function buildTodo(
       (b.estimatedClicks ?? -1) - (a.estimatedClicks ?? -1) ||
       rank[a.confidence] - rank[b.confidence],
   );
-  return items.slice(0, INSIGHT_RULES.todoLimit);
+  return items;
 }

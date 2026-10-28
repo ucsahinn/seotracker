@@ -124,6 +124,7 @@ export const getGa4DashboardReport = createServerFn({ method: "POST" })
       });
       return {
         connected: true as const,
+        fetchedAt: overview.fetchedAt,
         // The dates the report covers, so the card can name its own window
         // instead of carrying a literal that can drift from it. The previous
         // window comes too: a delta badge that does not say what it is

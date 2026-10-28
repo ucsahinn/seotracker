@@ -16,7 +16,7 @@ The 7, 28 and 90-day windows end yesterday in the property time zone. Yesterday 
 
 ## Inspect outcomes and rows
 
-Opportunities links open the same normalized address group and source dates using `pageGroup`. This server filter uses the same bounded source as Opportunities, up to 1,000 organic landing-page rows, before the 50/100/200-row pagination. Query strings and trailing slashes share a group; different hosts and case-sensitive paths remain separate. A source cap or quality restriction is disclosed as an unverified complete group; an empty result does not prove no traffic. The overview retains its property scope. You can remove the group filter; the URL, Back navigation and exports preserve the group scope.
+Opportunities links open the same normalized address group and source dates using `pageGroup`. This server filter reads every organic landing-page row from Google, page by page, before the 50/100/200-row screen pagination. Query strings and trailing slashes share a group; different hosts and case-sensitive paths remain separate. A source cap or quality restriction is disclosed as an unverified complete group; an empty result does not prove no traffic. The overview retains its property scope. You can remove the group filter; the URL, Back navigation and exports preserve the group scope.
 
 The overview follows the selected scope: sessions, engagement rate, key events and purchase revenue. Key events are not unique customers. Zero revenue does not prove there is no shop. Unknown currency is named beside the amount. Engagement duration is total time, not the average per user. Daily values distinguish unknown days from zero. Quality restrictions qualify the data and suppress confident comparisons or advice.
 

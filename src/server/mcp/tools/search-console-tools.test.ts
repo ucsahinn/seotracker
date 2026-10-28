@@ -1,3 +1,4 @@
+import type { GscPerformanceInput } from "@/server/features/gsc/searchAnalytics";
 /* eslint-disable max-lines */
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { GscApiError, GscNotConnectedError } from "@/server/lib/gscErrors";
@@ -62,6 +63,36 @@ const gscRow = (position: number, impressions = 100) => ({
   impressions,
   ctr: 0.041237113402061855,
   position,
+});
+
+it("continues metric filtering past an entire page with no matches", async () => {
+  mocks.getProjectForOrganization.mockResolvedValue({ id: "project_1" });
+  mocks.hasSelfHostedGoogleOAuthConfig.mockResolvedValue(true);
+  mocks.hasServiceAccount.mockResolvedValue(false);
+  mocks.GscService.getPerformance.mockImplementation(
+    async (input: GscPerformanceInput) => ({
+      siteUrl: "sc-domain:example.com",
+      request: { ...input, startDate: "2026-10-01", endDate: "2026-10-24" },
+      rows:
+        (input.startRow ?? 0) === 0
+          ? Array.from({ length: 1000 }, () => gscRow(1))
+          : [gscRow(8)],
+    }),
+  );
+  const result =
+    await searchConsoleTools.getSearchConsolePerformanceTool.handler(
+      { projectId: "project_1", rowLimit: 2, minPosition: 5 },
+      toolContext,
+    );
+  expect(result.structuredContent).toMatchObject({
+    rowCount: 1,
+    rows: [{ keys: ["q8"] }],
+    hasMore: false,
+  });
+  expect(mocks.GscService.getPerformance).toHaveBeenNthCalledWith(
+    2,
+    expect.objectContaining({ startRow: 1000 }),
+  );
 });
 
 describe("search console MCP tools", () => {

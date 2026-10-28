@@ -42,7 +42,7 @@ describe("Ga4OrganicOverviewService", () => {
     mocks.getByProjectId.mockResolvedValue(connection);
   });
 
-  it("returns an equal-length comparison and flags a truncated trend", async () => {
+  it("returns an equal-length comparison and consumes every trend page", async () => {
     mocks.runReport
       .mockResolvedValueOnce({
         dimensionHeaders: [],
@@ -99,7 +99,26 @@ describe("Ga4OrganicOverviewService", () => {
             ]),
           },
         ],
-        rowCount: 1200,
+        rowCount: 2,
+      })
+      .mockResolvedValueOnce({
+        dimensionHeaders: [{ name: "yearWeek" }],
+        metricHeaders,
+        rows: [
+          {
+            dimensionValues: [{ value: "202632" }],
+            metricValues: metricValues([
+              "20",
+              "15",
+              "10",
+              "0.5",
+              "2",
+              "1",
+              "50",
+            ]),
+          },
+        ],
+        rowCount: 2,
       });
     const result = await Ga4OrganicOverviewService.getOrganicOverview(
       {
@@ -126,8 +145,12 @@ describe("Ga4OrganicOverviewService", () => {
       sessions: 100,
     });
     expect(result.diagnostics).toEqual([]);
-    expect(result.warnings).toEqual(["trend_truncated"]);
-    expect(mocks.runReport).toHaveBeenCalledTimes(3);
+    expect(result.trend.map((row) => row.yearWeek)).toEqual([
+      "202631",
+      "202632",
+    ]);
+    expect(result.warnings).toEqual([]);
+    expect(mocks.runReport).toHaveBeenCalledTimes(4);
   });
 
   it("treats a headerless previous-period response as empty instead of malformed", async () => {

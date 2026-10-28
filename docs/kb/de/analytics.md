@@ -6,7 +6,7 @@ route: /p/<proje>/analytics
 updated: 2026-10-27
 ---
 
-Links aus Chancen öffnen mit `pageGroup` dieselbe normalisierte Adressgruppe und die Quelldaten. Der Server filtert vor der Seiteneinteilung mit 50/100/200 Zeilen dieselben höchstens 1.000 organischen Einstiegsseiten wie Chancen. Abfrageparameter und abschließende Schrägstriche gehören zur selben Gruppe; andere Hosts und Pfade mit anderer Großschreibung bleiben getrennt. Bei Quellen- oder Qualitätsgrenzen wird die vollständige Gruppe als nicht bestätigt gekennzeichnet. Ein leeres Ergebnis beweist keinen fehlenden Traffic. Die Übersicht bleibt auf Property-Ebene. Der Gruppenfilter lässt sich entfernen; URL, Zurück-Navigation und Exporte erhalten den Gruppenumfang.
+Links aus Chancen öffnen mit `pageGroup` dieselbe normalisierte Adressgruppe und die Quelldaten. Der Server liest alle organischen Einstiegsseiten seitenweise von Google und filtert sie vor der Bildschirmeinteilung mit 50/100/200 Zeilen. Abfrageparameter und abschließende Schrägstriche gehören zur selben Gruppe; andere Hosts und Pfade mit anderer Großschreibung bleiben getrennt. Bei Quellen- oder Qualitätsgrenzen wird die vollständige Gruppe als nicht bestätigt gekennzeichnet. Ein leeres Ergebnis beweist keinen fehlenden Traffic. Die Übersicht bleibt auf Property-Ebene. Der Gruppenfilter lässt sich entfernen; URL, Zurück-Navigation und Exporte erhalten den Gruppenumfang.
 
 Analytics zeigt gemessene Besuche, Interaktionen und Schlüsselereignisse Ihrer GA4-Property. Die Berichtsauswahl umfasst Einstiegsseiten, Seiten, Akquisition, Schlüsselereignisse, E-Commerce, interne Suche, Zielgruppen und Messeinstellungen.
 

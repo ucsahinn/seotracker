@@ -89,6 +89,36 @@ beforeEach(() => {
 });
 
 describe("backfill", () => {
+  it("starts at the exact calendar retention floor instead of losing the oldest days", async () => {
+    await GscHistoryService.backfill({ projectId: "p1", today: TODAY });
+    expect(requestAt(0).startDate).toBe("2025-02-28");
+  });
+
+  it("finishes a retry day beyond the former 36-page cap", async () => {
+    mocks.getArchiveState.mockResolvedValue({
+      lastDate: "2026-06-27",
+      incompleteFrom: "2026-06-01",
+      incompleteThrough: "2026-06-01",
+    });
+    const page = Array.from({ length: GSC_MAX_ROW_LIMIT }, (_, i) =>
+      performanceRow("2026-06-01", `q${i}`, 4),
+    );
+    for (let i = 0; i < 37; i += 1)
+      mocks.getPerformance.mockResolvedValueOnce({ siteUrl: SITE, rows: page });
+    const outcome = await GscHistoryService.backfill({
+      projectId: "p1",
+      today: TODAY,
+    });
+    expect(outcome.truncatedChunks).toBe(0);
+    expect(mocks.replaceDailyRows).toHaveBeenCalledWith(
+      "p1",
+      SITE,
+      expect.arrayContaining([expect.objectContaining({ query: "q999" })]),
+      "2026-06-01",
+      "2026-06-01",
+    );
+    expect(outcome.incomplete).toBeNull();
+  });
   it("asks Google for the day dimension, or it would store one aggregate", async () => {
     mocks.getPerformance.mockResolvedValue({
       siteUrl: SITE,

@@ -87,6 +87,21 @@ beforeEach(() => {
 });
 
 describe("SearchPerformanceService.getView", () => {
+  it("reports the oldest acquisition in a view assembled from fresh and cached tables", async () => {
+    const original = queryAnalytics.getMockImplementation()!;
+    queryAnalytics.mockImplementation(async (input) => ({
+      ...(await original(input)),
+      fetchedAt:
+        input.dimensions?.[0] === "date"
+          ? "2026-10-26T18:51:00Z"
+          : "2026-10-26T19:00:00Z",
+    }));
+    const view = await SearchPerformanceService.getView({
+      projectId: "p1",
+      filters: { dateRange: "last_7_days", searchType: "web" },
+    });
+    expect(view.quota.fetchedAt).toBe("2026-10-26T18:51:00Z");
+  });
   it("P1-3: request normalization cannot erase an archived Pacific-floor observation", async () => {
     vi.setSystemTime(new Date("2026-10-27T01:00:00Z"));
     const segment = {

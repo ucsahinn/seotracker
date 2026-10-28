@@ -77,17 +77,13 @@ import type {
  *   1  countries, all of them (device filter only)
  *   1  search appearance
  *   2x query, page and query+page for the window, and query and page for the
- *      previous period: one request each per 25,000 rows, at most
- *      ROW_PAGES requests each
+ *      previous period: one request per 25,000 rows until exhausted
  *   5  page tables for the five 13-week quarters behind content decay
  * A small site costs 14 requests on a cold view; a filter change re-asks
  * only what the filter changes. Google's limits are per minute and per day
  * in the thousands (developers.google.com/webmaster-tools/limits), and
  * nothing here loops on render.
  */
-
-/** 25,000-row requests per table: 50,000 rows, Google's daily per-type ceiling. */
-const ROW_PAGES = 2;
 
 export type SearchFilters = {
   dateRange: SearchPerformanceDateRange;
@@ -107,14 +103,13 @@ type Scope = { projectId: string; filters: SearchFilters; fresh?: boolean };
 
 /**
  * One Search Analytics request for the view: always dataState=all, the
- * scope's search type, and `maxPages` 25,000-row pages at most.
+ * scope's search type, consuming every 25,000-row page Google exposes.
  */
 function ask(
   scope: Scope,
   span: DateSpan,
   dimensions: GscDimension[],
   gscFilters: GscPerformanceFilter[],
-  maxPages = 1,
 ): Promise<GscAnalyticsResult> {
   return GscService.queryAnalytics({
     projectId: scope.projectId,
@@ -124,7 +119,6 @@ function ask(
     filters: gscFilters,
     type: scope.filters.searchType,
     dataState: "all",
-    maxPages,
     fresh: scope.fresh,
   });
 }
@@ -363,14 +357,14 @@ async function getView(input: {
     notesAndMarks,
     weekly,
   ] = await Promise.all([
-    ask(scope, current, ["query"], gscFilters, ROW_PAGES),
-    ask(scope, current, ["page"], gscFilters, ROW_PAGES),
-    ask(scope, current, ["query", "page"], gscFilters, ROW_PAGES),
+    ask(scope, current, ["query"], gscFilters),
+    ask(scope, current, ["page"], gscFilters),
+    ask(scope, current, ["query", "page"], gscFilters),
     previous.startDate >= window.floorDate
-      ? ask(scope, previous, ["query"], gscFilters, ROW_PAGES)
+      ? ask(scope, previous, ["query"], gscFilters)
       : Promise.resolve(null),
     previous.startDate >= window.floorDate
-      ? ask(scope, previous, ["page"], gscFilters, ROW_PAGES)
+      ? ask(scope, previous, ["page"], gscFilters)
       : Promise.resolve(null),
     optional(ask(scope, current, ["device"], countryOnly)),
     optional(ask(scope, current, ["country"], deviceFilters)),
@@ -387,7 +381,7 @@ async function getView(input: {
         : Promise.all(
             decaySpans(window.endDate).map(async (span) => ({
               span,
-              result: await ask(scope, span, ["page"], gscFilters, ROW_PAGES),
+              result: await ask(scope, span, ["page"], gscFilters),
             })),
           ),
     ),
@@ -595,7 +589,29 @@ async function getView(input: {
       countryBase: countryBase.metrics,
     }),
     annotations: notesAndMarks,
-    quota: { requests },
+    quota: {
+      requests,
+      // The oldest acquisition in a mixed fresh/cached view, never render time.
+      fetchedAt: [
+        series,
+        queries,
+        pages,
+        queryPages,
+        previousQueries,
+        previousPages,
+        devices,
+        countries,
+        appearance,
+        ...(decay ?? []).map((quarter) => quarter.result),
+      ]
+        .map((answer) => answer?.fetchedAt)
+        .filter((value): value is string => typeof value === "string")
+        .reduce<string | undefined>(
+          (oldest, value) =>
+            oldest === undefined || value < oldest ? value : oldest,
+          undefined,
+        ),
+    },
   };
 }
 
@@ -635,9 +651,9 @@ async function tableRows(input: TableQuery): Promise<{
   );
   const gscFilters = filterSet(input.filters).filters;
   const [current, previous] = await Promise.all([
-    ask(input, window, [input.dimension], gscFilters, ROW_PAGES),
+    ask(input, window, [input.dimension], gscFilters),
     window.previous.startDate >= window.floorDate
-      ? ask(input, window.previous, [input.dimension], gscFilters, ROW_PAGES)
+      ? ask(input, window.previous, [input.dimension], gscFilters)
       : Promise.resolve(null),
   ]);
   const before = new Map(
@@ -764,7 +780,7 @@ async function getDrilldown(input: {
     },
   ];
   const [pairs, series, before] = await Promise.all([
-    ask(input, window, ["query", "page"], gscFilters, ROW_PAGES),
+    ask(input, window, ["query", "page"], gscFilters),
     ask(input, window, ["date"], keyFilters),
     // The same key the period before, for the panel's changes. Optional: a
     // refusal leaves the panel without deltas, not without numbers.

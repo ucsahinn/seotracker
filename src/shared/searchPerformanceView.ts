@@ -207,7 +207,7 @@ export type SearchPerformanceView = {
   todo: TodoItem[];
   annotations: SearchAnnotation[];
   /** Google requests this view cost; cached answers cost none. */
-  quota: { requests: number };
+  quota: { requests: number; fetchedAt?: string };
 };
 
 export type WeeklyPositionDistribution = {

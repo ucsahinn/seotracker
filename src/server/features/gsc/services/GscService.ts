@@ -184,13 +184,16 @@ export type GscAnalyticsResult = {
   truncated: boolean;
   /** Requests this answer took (0 when it came from the cache). */
   requests: number;
+  /** Acquisition start, retained when the answer is served from cache. */
+  fetchedAt?: string;
   aggregationType: string | null;
   firstIncompleteDate: string | null;
 };
 
 /**
  * `searchAnalytics.query`, paged through `startRow` until Google runs out or
- * `maxPages` is spent.
+ * an explicitly supplied `maxPages` is spent. Without a budget, consume
+ * every page Google exposes for the requested window.
  *
  * Google: rowLimit "Valid range is 1–25,000", startRow "Zero-based index of
  * the first row", and "If startRow exceeds the number of results ... the
@@ -212,16 +215,17 @@ async function queryAnalytics(
   if (!connection) {
     throw new GscNotConnectedError(input.projectId);
   }
-  const pageSize = Math.min(
-    input.rowLimit ?? GSC_API_MAX_ROW_LIMIT,
-    GSC_API_MAX_ROW_LIMIT,
-  );
-  const maxPages = Math.max(1, input.maxPages ?? 1);
+  const maxPages = Math.max(1, input.maxPages ?? Number.POSITIVE_INFINITY);
   const request = buildSearchAnalyticsRequest(
-    { ...input, rowLimit: pageSize, startRow: undefined },
+    {
+      ...input,
+      rowLimit: input.rowLimit ?? GSC_API_MAX_ROW_LIMIT,
+      startRow: undefined,
+    },
     new Date(),
     { maxRowLimit: GSC_API_MAX_ROW_LIMIT },
   );
+  const pageSize = request.rowLimit ?? GSC_API_MAX_ROW_LIMIT;
   const generation = await GoogleAccessRepository.generation();
   const key = JSON.stringify([
     generation,
@@ -238,6 +242,7 @@ async function queryAnalytics(
     (value: GscAnalyticsResult) => value.rows.length,
     async () => {
       loaded = true;
+      const fetchedAt = new Date().toISOString();
       const client = createGscClient({
         userId: connection.connectedByUserId,
         gscAccountId: connection.gscAccountId ?? undefined,
@@ -266,6 +271,7 @@ async function queryAnalytics(
         rows,
         truncated,
         requests,
+        fetchedAt,
         aggregationType,
         firstIncompleteDate,
       };

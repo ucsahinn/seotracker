@@ -848,4 +848,11 @@ export const deSearch: Catalog = {
   "Liste güncellendi: {date}": "Liste aktualisiert: {date}",
   "{count} kontrolde kritik sorun": "Kritische Probleme in {count} Prüfungen",
   "{count} kontrolde uyarı": "Warnungen in {count} Prüfungen",
+  "Google anonim sorguları gizler ve günlük satırları sınırlar; bu arşiv tüm aramaları içermez.":
+    "Google blendet anonymisierte Suchanfragen aus und begrenzt die täglichen Zeilen; dieses Archiv enthält nicht alle Suchanfragen.",
+  "Bu sayfa açıkken kalan günler otomatik yüklenir; bağlantı veya kota hatasında beklenir.":
+    "Solange diese Seite geöffnet ist, werden die verbleibenden Tage automatisch geladen; bei Verbindungs- oder Kontingentfehlern pausiert die Synchronisierung.",
+  "Google verisi alındı: {date}": "Google-Daten abgerufen: {date}",
+  "Google anonim sorguları gizler. API, arama türü başına günde en fazla {limit} satır sunar; sorgu ve sayfa ayrıntılarında başka satırları da atlayabilir. Tam sayfalama, tüm aramaların listelendiği anlamına gelmez.":
+    "Google verbirgt anonymisierte Suchanfragen. Die API liefert höchstens {limit} Zeilen pro Tag und Suchtyp und kann weitere Suchanfragen- und Seitendetails auslassen. Vollständige Paginierung bedeutet nicht, dass jede Suche aufgeführt wird.",
 };

@@ -6,7 +6,7 @@ route: /p/<proje>/analytics
 updated: 2026-10-27
 ---
 
-Os links de Oportunidades abrem o mesmo grupo de endereços normalizados e as datas da fonte com `pageGroup`. O servidor filtra as mesmas, no máximo, 1.000 linhas de páginas de destino orgânicas antes da paginação de 50/100/200 linhas. Parâmetros de consulta e barras finais pertencem ao mesmo grupo; hosts diferentes e caminhos com maiúsculas diferentes ficam separados. Limites da fonte ou de qualidade impedem confirmar o grupo completo e são informados. Um resultado vazio não prova ausência de tráfego. O resumo mantém o escopo da propriedade. O filtro pode ser removido; URL, navegação Voltar e exportações preservam seu escopo.
+Os links de Oportunidades abrem o mesmo grupo de endereços normalizados e as datas da fonte com `pageGroup`. O servidor lê todas as linhas de páginas de destino orgânicas do Google, página por página, antes do filtro e da paginação de 50/100/200 linhas na tela. Parâmetros de consulta e barras finais pertencem ao mesmo grupo; hosts diferentes e caminhos com maiúsculas diferentes ficam separados. Limites da fonte ou de qualidade impedem confirmar o grupo completo e são informados. Um resultado vazio não prova ausência de tráfego. O resumo mantém o escopo da propriedade. O filtro pode ser removido; URL, navegação Voltar e exportações preservam seu escopo.
 
 Analytics mostra visitas, engajamento e eventos principais medidos na propriedade GA4. O seletor oferece páginas de destino, páginas, aquisição, eventos principais, comércio eletrônico, pesquisa interna, público e configurações de medição.
 

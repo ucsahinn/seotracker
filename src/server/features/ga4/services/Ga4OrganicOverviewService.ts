@@ -7,6 +7,7 @@ import {
   OVERVIEW_METRICS,
 } from "./Ga4ReportDefinitions";
 import { normalizeGa4Response } from "./Ga4ReportNormalization";
+import { runCompleteGa4Report } from "./Ga4Pagination";
 import { comparisonValue, previousPeriod } from "./Ga4ReportEnhancements";
 import { Ga4ReportError } from "@/server/lib/ga4Errors";
 import { resolveGa4DateRange } from "./Ga4ReportingService";
@@ -127,7 +128,7 @@ async function getOrganicOverview(
       await Promise.all([
         trackedReport(currentRequest),
         trackedReport(previousRequest),
-        trackedReport(trendRequest),
+        runCompleteGa4Report({ runReport: trackedReport }, trendRequest),
       ]);
     const current = normalizeGa4Response(currentResponse, currentRequest);
     const previous = normalizeGa4Response(previousResponse, previousRequest);
@@ -140,6 +141,7 @@ async function getOrganicOverview(
     );
     return {
       status: "ok" as const,
+      fetchedAt: new Date().toISOString(),
       source: {
         provider: "google_analytics" as const,
         propertyId: connection.propertyId,

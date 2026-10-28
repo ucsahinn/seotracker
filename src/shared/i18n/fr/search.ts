@@ -838,4 +838,11 @@ export const frSearch: Catalog = {
   "{count} kontrolde kritik sorun":
     "Problèmes critiques dans {count} contrôles",
   "{count} kontrolde uyarı": "Avertissements dans {count} contrôles",
+  "Google anonim sorguları gizler ve günlük satırları sınırlar; bu arşiv tüm aramaları içermez.":
+    "Google masque les requêtes anonymisées et limite les lignes quotidiennes ; cette archive ne contient pas toutes les recherches.",
+  "Bu sayfa açıkken kalan günler otomatik yüklenir; bağlantı veya kota hatasında beklenir.":
+    "Les jours restants se chargent automatiquement tant que cette page est ouverte ; une erreur de connexion ou de quota suspend la synchronisation.",
+  "Google verisi alındı: {date}": "Données Google récupérées : {date}",
+  "Google anonim sorguları gizler. API, arama türü başına günde en fazla {limit} satır sunar; sorgu ve sayfa ayrıntılarında başka satırları da atlayabilir. Tam sayfalama, tüm aramaların listelendiği anlamına gelmez.":
+    "Google masque les requêtes anonymisées. L’API fournit au plus {limit} lignes par jour et par type de recherche et peut omettre d’autres détails sur les requêtes et les pages. Une pagination complète ne signifie pas que toutes les recherches sont répertoriées.",
 };

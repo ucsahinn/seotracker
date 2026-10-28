@@ -56,6 +56,20 @@ function healthyCurveRows(): MetricRow[] {
 }
 
 describe("thresholds", () => {
+  it("keeps every qualifying query after ranking instead of silently dropping the long tail", () => {
+    const queries = Array.from({ length: 150 }, (_, i) =>
+      row(`query ${i}`, 2, 200, 8),
+    );
+    const result = strikingDistance(
+      queries,
+      [],
+      ctrCurve(healthyCurveRows(), 500),
+      50,
+      [],
+    );
+    expect(result.total).toBe(150);
+    expect(result.rows).toHaveLength(150);
+  });
   it("scale a 28-day threshold to the window shown", () => {
     expect(scaleThreshold(50, 28)).toBe(50);
     expect(scaleThreshold(50, 7)).toBe(13);
@@ -117,12 +131,12 @@ describe("striking distance", () => {
     });
   });
 
-  it("totals the gain over every striking query, not only the listed hundred", () => {
+  it("lists and totals every striking query, with no list cap", () => {
     const queries = Array.from({ length: 150 }, (_, i) =>
       row(`q${i}`, 0, 100, 7),
     );
     const result = strikingDistance(queries, [], curve, 50);
-    expect(result.rows).toHaveLength(100);
+    expect(result.rows).toHaveLength(150);
     expect(result.total).toBe(150);
     // One band up from 7 is "4-5" (8%): 8 clicks each.
     expect(result.totalGain).toBe(150 * 8);

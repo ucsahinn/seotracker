@@ -42,8 +42,7 @@ async function getMeasurementHealth(projectId: string) {
     const keyEvents = keyEventList.items;
     const customDimensions = dimensionList.items;
     const customMetrics = metricList.items;
-    // Lists are capped by a request budget; name every one that was cut short
-    // so a partial page is never read as the whole inventory.
+    // Preserve the completeness contract for alternate Admin client adapters.
     const incompleteLists = [
       ...(streamList.complete ? [] : ["data_streams"]),
       ...(keyEventList.complete ? [] : ["key_events"]),

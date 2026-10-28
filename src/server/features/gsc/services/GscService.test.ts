@@ -639,6 +639,46 @@ describe("GscService.queryAnalytics", () => {
     expect(result.rows).toHaveLength(3);
   });
 
+  it("consumes every page by default, including the empty page after a full final page", async () => {
+    mocks.queryPage.mockImplementation((_site, body) =>
+      Promise.resolve(
+        analyticsPage((body.startRow ?? 0) < 6 ? 2 : 0, body.startRow ?? 0),
+      ),
+    );
+    const result = await GscService.queryAnalytics({
+      projectId: "p1",
+      startDate: "2026-10-01",
+      endDate: "2026-10-28",
+      rowLimit: 2,
+    });
+    expect(result.rows.map((row) => row.keys?.[0])).toEqual([
+      "k0",
+      "k1",
+      "k2",
+      "k3",
+      "k4",
+      "k5",
+    ]);
+    expect(result.truncated).toBe(false);
+    expect(result.requests).toBe(4);
+  });
+
+  it("uses the clamped request page size for offsets and termination", async () => {
+    mocks.queryPage
+      .mockResolvedValueOnce(analyticsPage(1, 0))
+      .mockResolvedValueOnce(analyticsPage(0, 1));
+    const result = await GscService.queryAnalytics({
+      projectId: "p1",
+      startDate: "2026-10-01",
+      endDate: "2026-10-28",
+      rowLimit: 0,
+    });
+    expect(mocks.queryPage.mock.calls.map(([, body]) => body.startRow)).toEqual(
+      [undefined, 1],
+    );
+    expect(result.truncated).toBe(false);
+  });
+
   it("says the set is truncated when the page budget ends on a full page", async () => {
     mocks.queryPage.mockResolvedValue(analyticsPage(2, 0));
     const result = await GscService.queryAnalytics({
@@ -658,10 +698,12 @@ describe("GscService.queryAnalytics", () => {
       startDate: "2026-10-01",
       endDate: "2026-10-28",
     };
-    await GscService.queryAnalytics(input);
+    const first = await GscService.queryAnalytics(input);
     const again = await GscService.queryAnalytics(input);
     expect(mocks.queryPage).toHaveBeenCalledTimes(1);
     expect(again.requests).toBe(0);
+    expect(first.fetchedAt).toBeTruthy();
+    expect(again.fetchedAt).toBe(first.fetchedAt);
   });
 });
 

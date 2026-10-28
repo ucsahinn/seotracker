@@ -69,23 +69,19 @@ describe("Analytics address groups", () => {
     );
   });
 
-  it("discloses a capped source instead of claiming a complete group", async () => {
+  it("rejects a stalled source instead of presenting a partial group", async () => {
     mocks.runReport.mockResolvedValue({
       ...landingHeaders,
       rows: [],
       rowCount: 1001,
     });
-    const result = await Ga4ReportingService.runReport({
-      projectId: "project_1",
-      kind: "landing_pages",
-      pageGroup: "example.com/a",
-    });
-    expect(result.pageGroup).toMatchObject({
-      complete: false,
-      sourceTotalRowCount: 1001,
-    });
-    expect(result.reportMetadata.hasLimitedData).toBe(true);
-    expect(result.rows).toEqual([]);
+    await expect(
+      Ga4ReportingService.runReport({
+        projectId: "project_1",
+        kind: "landing_pages",
+        pageGroup: "example.com/a",
+      }),
+    ).rejects.toMatchObject({ code: "ga4_malformed_response" });
   });
 
   it.each(["https://example.com/a", "(not set)"])(

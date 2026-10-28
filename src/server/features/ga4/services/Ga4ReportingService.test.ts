@@ -350,7 +350,7 @@ describe("Ga4ReportingService", () => {
       async ({ offset, hasMore, nextOffset }) => {
         mocks.runReport
           .mockResolvedValueOnce(acquisitionResponse(0, 1_000))
-          .mockResolvedValueOnce(acquisitionResponse(offset, 100));
+          .mockResolvedValueOnce(acquisitionResponse(1000, 100));
 
         const result = await Ga4ReportingService.runReport(
           {
@@ -366,8 +366,8 @@ describe("Ga4ReportingService", () => {
 
         expect(mocks.runReport).toHaveBeenCalledTimes(2);
         expect(mocks.runReport.mock.calls[1]?.[0]).toMatchObject({
-          offset: String(offset),
-          limit: "100",
+          offset: "1000",
+          limit: "1000",
         });
         expect(result.rows).toHaveLength(100);
         expect(result.rows[0]?.sessionSourceMedium).toBe(
@@ -381,8 +381,8 @@ describe("Ga4ReportingService", () => {
         });
         expect(result).toMatchObject({
           diagnosticCoverage: {
-            complete: false,
-            fetchedRowCount: 1_000,
+            complete: true,
+            fetchedRowCount: 1_100,
             totalRowCount: 1_100,
           },
         });

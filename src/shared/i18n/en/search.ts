@@ -1598,4 +1598,11 @@ export const enSearch: Catalog = {
   "Liste güncellendi: {date}": "List updated: {date}",
   "{count} kontrolde kritik sorun": "Critical issues in {count} checks",
   "{count} kontrolde uyarı": "Warnings in {count} checks",
+  "Google anonim sorguları gizler ve günlük satırları sınırlar; bu arşiv tüm aramaları içermez.":
+    "Google hides anonymized queries and limits daily rows; this archive does not contain every search.",
+  "Bu sayfa açıkken kalan günler otomatik yüklenir; bağlantı veya kota hatasında beklenir.":
+    "Remaining days load automatically while this page is open; connection or quota errors pause the sync.",
+  "Google verisi alındı: {date}": "Google data acquired: {date}",
+  "Google anonim sorguları gizler. API, arama türü başına günde en fazla {limit} satır sunar; sorgu ve sayfa ayrıntılarında başka satırları da atlayabilir. Tam sayfalama, tüm aramaların listelendiği anlamına gelmez.":
+    "Google hides anonymized queries. The API exposes at most {limit} rows per day per search type and can omit additional query and page detail. Full pagination does not mean every search is listed.",
 };

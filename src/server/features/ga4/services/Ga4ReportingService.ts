@@ -22,6 +22,7 @@ import {
   supportsComparison,
 } from "./Ga4ReportEnhancements";
 import { normalizeGa4Response } from "./Ga4ReportNormalization";
+import { runCompleteGa4Report } from "./Ga4Pagination";
 import { ga4DateInTimeZone, shiftGa4Date } from "./Ga4Dates";
 import { DEFAULT_WINDOW_DAYS, GA4_DATA_LAG_DAYS } from "@/shared/dataFreshness";
 
@@ -238,8 +239,7 @@ async function runReport(input: Ga4ReportInput, opts: { now?: Date } = {}) {
       "pageGroup must be a canonical landing-page key.",
     );
   }
-  // Use the same bounded source universe as Opportunities, then match before
-  // UI pagination. A capped source cannot prove that all variants are present.
+  // Aggregate and match only after consuming the entire source report.
   const fetchCompleteReport =
     needsCompleteReport(input) || input.pageGroup !== undefined;
   const reportConfiguration = getGa4ReportConfiguration({
@@ -299,8 +299,12 @@ async function runReport(input: Ga4ReportInput, opts: { now?: Date } = {}) {
       },
     };
     const [response, previousResponse] = await Promise.all([
-      trackedClient.runReport(request),
-      previousRequest ? trackedClient.runReport(previousRequest) : null,
+      fetchCompleteReport
+        ? runCompleteGa4Report(trackedClient, request)
+        : trackedClient.runReport(request),
+      previousRequest
+        ? runCompleteGa4Report(trackedClient, previousRequest)
+        : null,
     ]);
     const source = normalizeGa4Response(response, request);
     const groupRows =
@@ -366,6 +370,7 @@ async function runReport(input: Ga4ReportInput, opts: { now?: Date } = {}) {
     );
     return {
       status: "ok",
+      fetchedAt: new Date().toISOString(),
       source: {
         provider: "google_analytics",
         propertyId: connection.propertyId,

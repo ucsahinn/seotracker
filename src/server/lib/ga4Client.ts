@@ -29,9 +29,6 @@ const GA4_ADMIN_ALPHA_API_BASE =
   "https://analyticsadmin.googleapis.com/v1alpha";
 const GOOGLE_USERINFO_URL = "https://openidconnect.googleapis.com/v1/userinfo";
 const GA4_DATA_API_BASE = "https://analyticsdata.googleapis.com/v1beta";
-const MAX_ACCOUNT_SUMMARY_PAGES = 100;
-/** Request budget per Admin list: 5 pages of 200 items. */
-const MAX_ADMIN_LIST_PAGES = 5;
 const MAX_ERROR_BODY_LENGTH = 8_000;
 /** Per-attempt deadline; token acquisition has its own 30 second deadline. */
 const GA4_REQUEST_TIMEOUT_MS = 30_000;
@@ -279,9 +276,8 @@ export function createGa4AdminClient(opts: {
   }
 
   /**
-   * Follows nextPageToken up to a fixed request budget. `complete: false`
-   * means Google still had more pages: callers must not present `items` as
-   * the whole inventory.
+   * Consume every Admin page sequentially. A repeated token is a protocol
+   * failure, never a reason to label a partial inventory complete.
    */
   async function listAll<T>(
     url: URL,
@@ -289,13 +285,17 @@ export function createGa4AdminClient(opts: {
   ): Promise<{ items: T[]; complete: boolean }> {
     url.searchParams.set("pageSize", "200");
     const items: T[] = [];
-    for (let page = 0; page < MAX_ADMIN_LIST_PAGES; page += 1) {
+    const seenTokens = new Set<string>();
+    while (true) {
       const parsed = parsePage(await request(url.toString()));
       items.push(...parsed.items);
       if (!parsed.nextPageToken) return { items, complete: true };
+      if (seenTokens.has(parsed.nextPageToken)) {
+        throw new Ga4MalformedResponseError();
+      }
+      seenTokens.add(parsed.nextPageToken);
       url.searchParams.set("pageToken", parsed.nextPageToken);
     }
-    return { items, complete: false };
   }
 
   return {
@@ -309,8 +309,9 @@ export function createGa4AdminClient(opts: {
     async listProperties(): Promise<Ga4PropertySummary[]> {
       const properties: Ga4PropertySummary[] = [];
       let pageToken: string | undefined;
+      const seenTokens = new Set<string>();
 
-      for (let page = 0; page < MAX_ACCOUNT_SUMMARY_PAGES; page += 1) {
+      while (true) {
         const url = new URL(`${GA4_ADMIN_API_BASE}/accountSummaries`);
         url.searchParams.set("pageSize", "200");
         if (pageToken) url.searchParams.set("pageToken", pageToken);
@@ -329,11 +330,9 @@ export function createGa4AdminClient(opts: {
 
         pageToken = response.nextPageToken || undefined;
         if (!pageToken) return properties;
+        if (seenTokens.has(pageToken)) throw new Ga4MalformedResponseError();
+        seenTokens.add(pageToken);
       }
-
-      throw new Error(
-        "Google Analytics property discovery exceeded 100 pages.",
-      );
     },
 
     async getProperty(propertyId: string): Promise<Ga4Property> {

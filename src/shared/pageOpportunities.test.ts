@@ -79,6 +79,15 @@ function run(
 }
 
 describe("pageOpportunities", () => {
+  it("retains every contributing query on an opportunity page", () => {
+    const queries = Array.from({ length: 15 }, (_, i) =>
+      qp("/all", `query ${i}`, 8, 1000, 10),
+    );
+    const page = run(queries).pages[0];
+    expect(page?.queryCount).toBe(15);
+    expect(page?.queries).toHaveLength(15);
+    expect(page?.otherQueryGain).toBe(0);
+  });
   it("keeps mixed target coverage separate from genuine measured zero", () => {
     const rows = [
       qp("/known", "supported", 5, 1000, 40),

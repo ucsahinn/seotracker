@@ -6,7 +6,7 @@ route: /p/<proje>/analytics
 updated: 2026-10-27
 ---
 
-I link da Opportunità aprono lo stesso gruppo di indirizzi normalizzati e le date della fonte tramite `pageGroup`. Il server filtra le stesse massimo 1.000 righe di pagine di destinazione organiche prima della paginazione da 50/100/200 righe. Parametri di ricerca e barre finali condividono un gruppo; host diversi e percorsi con maiuscole diverse restano separati. Limiti della fonte o di qualità impediscono di confermare l’intero gruppo e vengono segnalati. Un risultato vuoto non dimostra l’assenza di traffico. Il riepilogo mantiene l’ambito della proprietà. Il filtro si può rimuovere; URL, navigazione Indietro ed esportazioni ne conservano l’ambito.
+I link da Opportunità aprono lo stesso gruppo di indirizzi normalizzati e le date della fonte tramite `pageGroup`. Il server legge tutte le righe delle pagine di destinazione organiche da Google, pagina per pagina, prima del filtro e della paginazione da 50/100/200 righe sullo schermo. Parametri di ricerca e barre finali condividono un gruppo; host diversi e percorsi con maiuscole diverse restano separati. Limiti della fonte o di qualità impediscono di confermare l’intero gruppo e vengono segnalati. Un risultato vuoto non dimostra l’assenza di traffico. Il riepilogo mantiene l’ambito della proprietà. Il filtro si può rimuovere; URL, navigazione Indietro ed esportazioni ne conservano l’ambito.
 
 Analytics mostra visite, coinvolgimento ed eventi chiave misurati nella proprietà GA4. Il selettore offre pagine di destinazione, pagine, acquisizione, eventi chiave, e-commerce, ricerca interna, pubblico e impostazioni di misurazione.
 

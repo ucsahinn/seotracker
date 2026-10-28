@@ -394,3 +394,38 @@ describe("SearchOpportunityService", () => {
     expect(mocks.runGa4Report).not.toHaveBeenCalled();
   });
 });
+
+it("joins converting landing pages from later GA4 pages before ranking opportunities", async () => {
+  mocks.getGa4Connection.mockResolvedValue({
+    propertyTimeZone: "America/New_York",
+  });
+  mocks.getGscConnection.mockResolvedValue({ siteUrl: "https://example.com/" });
+  mocks.listBrandTerms.mockResolvedValue([]);
+  mocks.getProjectIdentity.mockResolvedValue({ domain: null, name: null });
+  gsc([row(["q", "https://example.com/later"], 5, 1000, 40)]);
+  mocks.runGa4Report
+    .mockResolvedValueOnce(
+      makeGa4ReportResult({
+        rows: [ga4Row("/first", 10, 0)],
+        rowCount: 1,
+        totalRowCount: 2,
+        pageInfo: { offset: 0, limit: 1000, hasMore: true, nextOffset: 1 },
+      }),
+    )
+    .mockResolvedValueOnce(
+      makeGa4ReportResult({
+        rows: [ga4Row("/later", 200, 5)],
+        rowCount: 1,
+        totalRowCount: 2,
+        pageInfo: { offset: 1, limit: 1000, hasMore: false, nextOffset: null },
+      }),
+    );
+  const result = await SearchOpportunityService.getOpportunities(
+    { projectId: "p", quick: "converts" },
+    NOW,
+  );
+  expect(result.rows.map((item) => item.page)).toEqual([
+    "https://example.com/later",
+  ]);
+  expect(result.rows[0]?.ga4?.keyEvents).toBe(5);
+});

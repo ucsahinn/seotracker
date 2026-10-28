@@ -82,6 +82,7 @@ export const getGa4Report = createServerFn({ method: "POST" })
        */
       return {
         status: "ok" as const,
+        fetchedAt: report.fetchedAt,
         propertyDisplayName: report.source.propertyDisplayName ?? null,
         dateRange: report.request.resolvedDateRange,
         requestedDateRange: report.request.requestedDateRange,

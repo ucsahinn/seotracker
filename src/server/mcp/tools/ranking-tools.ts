@@ -62,7 +62,17 @@ const historyInputSchema = {
     .min(1)
     .max(100)
     .optional()
-    .describe("Maximum queries in the summary. Default 25."),
+    .describe(
+      "Queries per output page. Default 25; continue with nextOffset when hasMore is true.",
+    ),
+  offset: z
+    .number()
+    .int()
+    .min(0)
+    .optional()
+    .describe(
+      "Summary pagination offset. Default 0; ignored for a single query's series.",
+    ),
 } as const;
 
 type HistoryArgs = z.infer<z.ZodObject<typeof historyInputSchema>>;
@@ -79,6 +89,8 @@ export const getRankingHistoryTool = {
       startDate: z.string(),
       endDate: z.string(),
       rows: z.array(z.record(z.string(), z.unknown())),
+      hasMore: z.boolean().optional(),
+      nextOffset: z.number().optional(),
       ...optionalMetaOutputSchema,
     },
     annotations: {
@@ -131,12 +143,17 @@ export const getRankingHistoryTool = {
     const connected = await GscConnectionRepository.getByProjectId(
       args.projectId,
     );
-    const rows = await GscHistoryService.getTrackedQueries({
+    const limit = args.limit ?? 25;
+    const offset = args.offset ?? 0;
+    const fetched = await GscHistoryService.getTrackedQueries({
       projectId: args.projectId,
       since: range.startDate,
       until: range.endDate,
-      limit: args.limit ?? 25,
+      limit: limit + 1,
+      offset,
     });
+    const rows = fetched.slice(0, limit);
+    const hasMore = fetched.length > limit;
     const text =
       rows.length === 0
         ? connected
@@ -150,9 +167,19 @@ export const getRankingHistoryTool = {
             )
             .join("\n");
     return mcpResponse({
-      text,
+      text:
+        text +
+        (hasMore
+          ? `\nMore archived queries available; continue with offset ${offset + rows.length}.`
+          : ""),
       meta,
-      structuredContent: { days, ...range, rows },
+      structuredContent: {
+        days,
+        ...range,
+        rows,
+        hasMore,
+        nextOffset: hasMore ? offset + rows.length : undefined,
+      },
     });
   }),
 };
@@ -196,7 +223,7 @@ export const getCannibalizationTool = {
   config: {
     title: "Get keyword cannibalization",
     description:
-      "Queries where more than one of this site's own pages competes for the same result. Search Console reports a query's position without saying which page earned it, so a split looks healthy there and is only visible once the pages are compared. Names the page Google favours, the pages chasing it, and the share of impressions going to the wrong one. Read-only; costs one Search Console call.",
+      "Queries where more than one of this site's own pages competes for the same result. Names the page Google favours, the pages chasing it, and their impression share. Reads every available Search Analytics page, one request per 25,000 rows plus a terminal probe for a full final page; cached for ten minutes. Google can withhold anonymized queries and other query/page rows. Read-only.",
     inputSchema: cannibalizationInputSchema,
     outputSchema: {
       rows: z.array(z.record(z.string(), z.unknown())),

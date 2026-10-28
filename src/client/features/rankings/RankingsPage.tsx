@@ -18,6 +18,7 @@ import { TrackedQueriesTable } from "./TrackedQueriesTable";
 import { PositionBandBars } from "./PositionBandBars";
 import { MoversCard } from "./MoversCard";
 import { ArchiveStatus } from "./ArchiveStatus";
+import { archiveSyncInterval } from "./archiveSyncInterval";
 import { EmptyArchivePanel, NotConnectedPanel } from "./EmptyArchivePanel";
 import {
   getQueryHistory,
@@ -71,6 +72,8 @@ export function RankingsPage({
     },
     staleTime: 15 * 60_000,
     retry: false,
+    refetchInterval: (query) =>
+      archiveSyncInterval(query.state.data, query.state.status === "error"),
   });
   const tracked = useQuery({
     queryKey: [

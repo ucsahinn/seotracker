@@ -1,4 +1,4 @@
-import { COMPLETE_REPORT_LIMIT } from "./Ga4ReportEnhancements";
+import { readAnalytics } from "./readOpportunityAnalytics";
 import {
   normalizePageKey,
   joinPrecisionFor,
@@ -19,9 +19,7 @@ import {
 import { completeSearchSeries } from "@/server/features/gsc/services/completeSearchSeries";
 import { allocateGain } from "@/shared/opportunityAllocation";
 import { SearchSettingsRepository } from "@/server/features/gsc/repositories/SearchSettingsRepository";
-import { Ga4ReportingService } from "@/server/features/ga4/services/Ga4ReportingService";
 import { Ga4ReportError } from "@/server/lib/ga4Errors";
-import { Ga4ConnectionRepository } from "@/server/features/ga4/repositories/Ga4ConnectionRepository";
 import { GSC_TIME_ZONE, isoDaysInclusive } from "@/shared/dataFreshness";
 import {
   pageOpportunities,
@@ -132,48 +130,6 @@ function toQueryPageRows(
   return out;
 }
 
-/**
- * Analytics for the same days, joined by host and path. Analytics is the
- * secondary factor here, so a project without it still gets every estimate;
- * a GA4 failure (quota, permissions) becomes a note instead of an empty
- * screen.
- */
-async function readAnalytics(
-  projectId: string,
-  dates: { startDate: string; endDate: string },
-) {
-  const connection = await Ga4ConnectionRepository.getByProjectId(projectId);
-  if (!connection) return { state: "not_connected" as const };
-  try {
-    const report = await Ga4ReportingService.runReport({
-      projectId,
-      kind: "landing_pages",
-      startDate: dates.startDate,
-      endDate: dates.endDate,
-      limit: COMPLETE_REPORT_LIMIT,
-      offset: 0,
-      channel: "organic_search",
-    });
-    return {
-      state: "connected" as const,
-      report: {
-        ...report,
-        reportMetadata: {
-          ...report.reportMetadata,
-          hasLimitedData:
-            report.reportMetadata.hasLimitedData ||
-            report.totalRowCount > report.rows.length,
-        },
-      },
-    };
-  } catch (error) {
-    if (error instanceof Ga4ReportError) {
-      return { state: "unavailable" as const, code: error.code };
-    }
-    throw error;
-  }
-}
-
 async function getOpportunities(
   input: SearchOpportunityInput,
   opts: { now?: Date } = {},
@@ -218,7 +174,6 @@ async function getOpportunities(
       filters: [],
       type: "web",
       dataState: "all",
-      maxPages: 2,
     });
   const [queries, pages, queryPages, confirmedTerms, identity, analytics] =
     await Promise.all([
