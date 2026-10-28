@@ -1,6 +1,13 @@
 import type { Catalog } from "@/shared/i18n";
 
 export const deNotifications: Catalog = {
+  "Geri döndüğünüzde kaçırdığınız bir veya iki bildirim ayrı ayrı, üç veya daha fazlası özet olarak gösterilir.":
+    "Wenn Sie zurückkehren, werden eine oder zwei verpasste Benachrichtigungen einzeln angezeigt, drei oder mehr als Zusammenfassung.",
+  "Siz yokken {count} bildirim geldi": {
+    one: "Während Ihrer Abwesenheit ist {count} Benachrichtigung eingegangen",
+    other:
+      "Während Ihrer Abwesenheit sind {count} Benachrichtigungen eingegangen",
+  },
   Bildirimler: "Benachrichtigungen",
   "Uygulama açıkken bildirimler kendi popup'ı olarak görünür; sekme arka plandayken zil geçmişinde tutulur. Önemli bildirimlerin sesini buradan açıp kapatabilirsiniz.":
     "Bei geöffneter App erscheinen Hinweise als eigene Pop-ups. In einem Hintergrund-Tab bleiben sie im Verlauf unter dem Glockensymbol. Hier können Sie den Ton wichtiger Hinweise ein- oder ausschalten.",

@@ -158,3 +158,7 @@ Ist das Symbol nicht zu sehen, klicken Sie in der Taskleiste auf den Pfeil ^.
 - **Der Browser hat sich nicht geöffnet.** Doppelklicken Sie auf das Symbol oder tippen Sie die Adresse von Hand ein: `http://127.0.0.1:3001`
 
 <!-- Kaynaklar: packaging/windows/README.md; packaging/windows/launcher/SeoWatcher.cs (menü, port seçimi, dosyalar); packaging/windows/seowatcher.iss (kurulum yeri, görevler, kaldırma); .github/workflows/release-windows.yml (SHA256SUMS) -->
+
+## Windows-Benachrichtigungen
+
+Klicken Sie mit der rechten Maustaste auf das seowatcher-Symbol im Infobereich und wählen Sie **Windows bildirimleri** (standardmäßig aktiv). Solange der Starter läuft, erscheinen abgeschlossene oder fehlgeschlagene Prüfungen aller Projekte und neue Ankündigungen nach etwa 90 Sekunden als Windows-Sprechblase, auch bei geschlossenem Browser oder im Hintergrund. Ein Klick öffnet die zugehörige Seite; mehrere Ereignisse werden zusammengefasst. Der erste Start überspringt alte Ereignisse; ein Neustart wiederholt erfasste Ereignisse nicht. Bei ausgeschalteten Meldungen empfangene Ereignisse werden nicht nachgeholt. Neue Versionen folgen weiterhin der Update-Einstellung. Der Windows-Fokusmodus kann Meldungen ausblenden. Bei geschlossenem Starter erscheinen keine Meldungen. Diese Funktion ist in Docker nicht verfügbar.

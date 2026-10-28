@@ -1,6 +1,12 @@
 import type { Catalog } from "@/shared/i18n";
 
 export const itNotifications: Catalog = {
+  "Geri döndüğünüzde kaçırdığınız bir veya iki bildirim ayrı ayrı, üç veya daha fazlası özet olarak gösterilir.":
+    "Al ritorno, una o due notifiche perse vengono mostrate singolarmente; tre o più vengono mostrate in un riepilogo.",
+  "Siz yokken {count} bildirim geldi": {
+    one: "È arrivata {count} notifica mentre eri via",
+    other: "Sono arrivate {count} notifiche mentre eri via",
+  },
   Bildirimler: "Notifiche",
   "Uygulama açıkken bildirimler kendi popup'ı olarak görünür; sekme arka plandayken zil geçmişinde tutulur. Önemli bildirimlerin sesini buradan açıp kapatabilirsiniz.":
     "Con l’app aperta, gli avvisi compaiono nei popup dell’app. In una scheda in background, restano nella cronologia della campana. Qui puoi attivare o disattivare il suono degli avvisi importanti.",

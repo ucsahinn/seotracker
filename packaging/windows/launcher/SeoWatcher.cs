@@ -614,12 +614,145 @@ namespace SeoWatcher
     /// that last ran. Hand-written JSON on purpose: no serializer dependency,
     /// three flat fields. Every change re-reads the file first, so a port the
     /// user typed in while the app runs is not overwritten.</summary>
+    internal sealed class WindowsEvent
+    {
+        public readonly string Title, Text, Path;
+        public WindowsEvent(string title, string text, string path) { Title = title; Text = text; Path = path; }
+    }
+
+    internal sealed class EventNotificationState
+    {
+        public string AuditCursor;
+        private bool announcementsReady;
+        private readonly HashSet<string> seen = new HashSet<string>();
+
+        // Resolve the framework JSON parser without changing installer references.
+        private static object Serializer()
+        {
+            return System.Reflection.Assembly.Load("System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35")
+                .CreateInstance("System.Web.Script.Serialization.JavaScriptSerializer");
+        }
+        internal static string Json(object value)
+        {
+            object serializer = Serializer();
+            return (string)serializer.GetType().GetMethod("Serialize", new Type[] { typeof(object) }).Invoke(serializer, new object[] { value });
+        }
+        internal static Dictionary<string, object> Object(string json)
+        {
+            object serializer = Serializer();
+            var value = serializer.GetType().GetMethod("DeserializeObject").Invoke(serializer, new object[] { json }) as Dictionary<string, object>;
+            if (value == null) throw new FormatException("Expected JSON object");
+            return value;
+        }
+        private static string Text(Dictionary<string, object> row, string key)
+        {
+            object value;
+            if (!row.TryGetValue(key, out value) || !(value is string)) throw new FormatException("Missing event field");
+            return (string)value;
+        }
+        private static object[] Rows(Dictionary<string, object> feed, string key)
+        {
+            object value;
+            if (!feed.TryGetValue(key, out value) || !(value is object[])) throw new FormatException("Missing event list");
+            return (object[])value;
+        }
+        public static EventNotificationState Parse(string json)
+        {
+            var data = Object(json);
+            var state = new EventNotificationState();
+            state.AuditCursor = data["auditCursor"] as string;
+            state.announcementsReady = (bool)data["announcementsReady"];
+            foreach (object id in Rows(data, "seen")) state.seen.Add((string)id);
+            return state;
+        }
+        public string ToJson()
+        {
+            return Json(new Dictionary<string, object> { { "auditCursor", AuditCursor }, { "announcementsReady", announcementsReady }, { "seen", new List<string>(seen).ToArray() } });
+        }
+        public List<WindowsEvent> AcceptAudits(string json)
+        {
+            var feed = Object(json);
+            var cursor = feed["cursor"] as Dictionary<string, object>;
+            if (cursor == null) throw new FormatException("Missing audit cursor");
+            Text(cursor, "finishedAt"); Text(cursor, "id");
+            var events = new List<WindowsEvent>();
+            foreach (object value in Rows(feed, "events"))
+            {
+                var row = value as Dictionary<string, object>;
+                if (row == null) throw new FormatException("Invalid audit");
+                string outcome = Text(row, "outcome"), path = Text(row, "path");
+                if ((outcome != "completed" && outcome != "failed") || !path.StartsWith("/p/", StringComparison.Ordinal) || path.Contains("\\")) throw new FormatException("Invalid audit outcome");
+                var counts = row["issueCounts"] as Dictionary<string, object>;
+                if (counts == null) throw new FormatException("Missing issue counts");
+                events.Add(new WindowsEvent(outcome == "completed" ? "Site denetimi tamamlandı" : "Site denetimi başarısız",
+                    Text(row, "projectName") + ": " + row["pagesCrawled"] + " sayfa; " + counts["critical"] + " kritik, " + counts["warning"] + " uyarı, " + counts["info"] + " bilgi. Sonucu açmak için tıklayın.", path));
+            }
+            bool baseline = AuditCursor == null;
+            AuditCursor = Json(cursor);
+            return baseline ? new List<WindowsEvent>() : events;
+        }
+        public List<WindowsEvent> AcceptAnnouncements(string json)
+        {
+            var ids = new List<string>();
+            foreach (object value in Rows(Object(json), "announcements"))
+            {
+                var row = value as Dictionary<string, object>;
+                if (row == null) throw new FormatException("Invalid announcement");
+                string id = Text(row, "id");
+                Guid parsedId;
+                if (!Guid.TryParse(id, out parsedId)) throw new FormatException("Invalid announcement id");
+                DateTimeOffset published;
+                if (!DateTimeOffset.TryParse(Text(row, "publish_at"), out published)) throw new FormatException("Invalid publish time");
+                object expiry;
+                DateTimeOffset expires;
+                if (!row.TryGetValue("expires_at", out expiry)) throw new FormatException("Missing expiry");
+                if (expiry != null && !DateTimeOffset.TryParse(expiry as string, out expires)) throw new FormatException("Invalid expiry");
+                if (published > DateTimeOffset.UtcNow || (expiry != null && DateTimeOffset.Parse((string)expiry) <= DateTimeOffset.UtcNow)) continue;
+                ids.Add(id);
+            }
+            var events = new List<WindowsEvent>();
+            foreach (string id in ids)
+                if (seen.Add(id) && announcementsReady) events.Add(new WindowsEvent("Yeni seowatcher duyurusu", "Duyuruyu okumak için tıklayın.", "/announcements"));
+            announcementsReady = true;
+            return events;
+        }
+        public static List<WindowsEvent> Summary(List<WindowsEvent> events)
+        {
+            if (events.Count <= 1) return events;
+            return new List<WindowsEvent> { new WindowsEvent("seowatcher: " + events.Count + " yeni bildirim", "Yeni denetim sonuçları veya duyurular var. Uygulamayı açmak için tıklayın.", "/") };
+        }
+        public static string Download(string url)
+        {
+            var elapsed = Stopwatch.StartNew();
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Timeout = 8000;
+            request.ReadWriteTimeout = 8000;
+            request.AllowAutoRedirect = false;
+            request.Proxy = null;
+            using (var response = request.GetResponse())
+            using (var reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+            {
+                var buffer = new char[4096];
+                var result = new StringBuilder();
+                int count;
+                while ((count = reader.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    if (elapsed.Elapsed > TimeSpan.FromSeconds(15)) throw new TimeoutException("Notification feed timed out");
+                    if (result.Length + count > 1024 * 1024) throw new IOException("Notification feed too large");
+                    result.Append(buffer, 0, count);
+                }
+                return result.ToString();
+            }
+        }
+    }
+
     internal sealed class Config
     {
         public const int DefaultPort = 3001;
         public int Port = DefaultPort;
         // Download and install a newer release by itself (verified by SHA-256).
         public bool AutoUpdate = true;
+        public bool WindowsNotifications = true;
         // The version that ran last; a lower one means an update just finished.
         public string LastVersion;
 
@@ -639,6 +772,8 @@ namespace SeoWatcher
                     }
                     var a = System.Text.RegularExpressions.Regex.Match(text, "\"autoUpdate\"\\s*:\\s*(true|false)");
                     if (a.Success) cfg.AutoUpdate = a.Groups[1].Value == "true";
+                    var n = System.Text.RegularExpressions.Regex.Match(text, "\"windowsNotifications\"\\s*:\\s*(true|false)");
+                    if (n.Success) cfg.WindowsNotifications = n.Groups[1].Value == "true";
                     var v = System.Text.RegularExpressions.Regex.Match(text, "\"lastVersion\"\\s*:\\s*\"([0-9.]{1,32})\"");
                     if (v.Success) cfg.LastVersion = v.Groups[1].Value;
                 }
@@ -652,6 +787,7 @@ namespace SeoWatcher
             Directory.CreateDirectory(Paths.DataRoot);
             string text = "{\n  \"port\": " + Port + ",\n  \"autoUpdate\": " + (AutoUpdate ? "true" : "false")
                 + (LastVersion != null ? ",\n  \"lastVersion\": \"" + LastVersion + "\"" : "") + "\n}\n";
+            text = text.Replace("\n}", ",\n  \"windowsNotifications\": " + (WindowsNotifications ? "true" : "false") + "\n}");
             // Written next to the file and swapped in, so a crash or a full disk
             // cannot leave a half-written config.json behind.
             string tmp = Paths.ConfigFile + ".tmp";
@@ -1691,6 +1827,10 @@ namespace SeoWatcher
         private readonly ToolStripMenuItem autostartItem;
         private readonly ToolStripMenuItem autoUpdateItem;
         private readonly System.Threading.Timer updateTimer;
+        private readonly System.Threading.Timer notificationTimer;
+        private readonly ToolStripMenuItem notificationsItem;
+        private bool pollingNotifications;
+        private static string NotificationFile { get { return Path.Combine(Paths.DataRoot, "notification-state.json"); } }
         private readonly Server server = new Server();
         private StartupProgressWindow startupProgress;
         private readonly WindowsSettingsBridge nativeSettings;
@@ -1745,6 +1885,11 @@ namespace SeoWatcher
             restartItem = new ToolStripMenuItem("Yeniden başlat", null, (s, e) => Restart());
             autostartItem = new ToolStripMenuItem("Windows açılınca başlat", null, (s, e) => ToggleAutostart());
             autoUpdateItem = new ToolStripMenuItem("Güncellemeleri kendiliğinden kur", null, (s, e) => ToggleAutoUpdate()) { Checked = config.AutoUpdate };
+            notificationsItem = new ToolStripMenuItem("Windows bildirimleri", null, (s, e) =>
+            {
+                try { notificationsItem.Checked = Config.Update(c => c.WindowsNotifications = !c.WindowsNotifications).WindowsNotifications; }
+                catch { Balloon("Ayar kaydedilemedi", "Windows bildirimleri ayarı kaydedilemedi. Tekrar deneyin.", ToolTipIcon.Warning, 8000, null); }
+            }) { Checked = config.WindowsNotifications };
             repairItem = new ToolStripMenuItem("Kurulumu onar", null, (s, e) => RepairInstall());
             copyDiagItem = new ToolStripMenuItem("Tanı bilgisini kopyala", null, (s, e) => PrepareReport(false));
             reportItem = new ToolStripMenuItem("Sorunu bildir (GitHub)", null, (s, e) => PrepareReport(true));
@@ -1759,6 +1904,7 @@ namespace SeoWatcher
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add(autostartItem);
             menu.Items.Add(autoUpdateItem);
+            menu.Items.Add(notificationsItem);
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add(repairItem);
             menu.Items.Add(copyDiagItem);
@@ -1824,6 +1970,57 @@ namespace SeoWatcher
             // a laptop that sleeps through the night still checks daily, and a
             // check that failed (offline) is retried an hour later.
             updateTimer = new System.Threading.Timer(_ => Invoke(UpdateTick), null, TimeSpan.FromMinutes(2), TimeSpan.FromHours(1));
+            notificationTimer = new System.Threading.Timer(_ => Invoke(PollNotifications), null, TimeSpan.FromSeconds(90), TimeSpan.FromSeconds(90));
+        }
+
+        private void PollNotifications()
+        {
+            if (quitting || url == null || pollingNotifications) return;
+            pollingNotifications = true;
+            string baseUrl = url;
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                var events = new List<WindowsEvent>();
+                EventNotificationState state = null;
+                try
+                {
+                    try { state = File.Exists(NotificationFile) ? EventNotificationState.Parse(File.ReadAllText(NotificationFile)) : new EventNotificationState(); }
+                    catch { state = new EventNotificationState(); LauncherLog.Write("Notification state reset to a silent baseline"); }
+                    // Each source can fail independently; an offline feed must
+                    // not prevent local audit completion notifications.
+                    try
+                    {
+                        string cursor = state.AuditCursor == null ? "" : "?cursor=" + Uri.EscapeDataString(state.AuditCursor);
+                        events.AddRange(state.AcceptAudits(EventNotificationState.Download(baseUrl.TrimEnd('/') + "/api/audit-notifications" + cursor)));
+                    }
+                    catch { LauncherLog.Write("Audit notification poll unavailable"); }
+                    try { events.AddRange(state.AcceptAnnouncements(EventNotificationState.Download("https://seowatcher-announcements.vitalikai07.workers.dev/api/announcements"))); }
+                    catch { LauncherLog.Write("Announcement notification poll unavailable"); }
+                }
+                catch { LauncherLog.Write("Notification state unavailable"); }
+                Invoke(() =>
+                {
+                    pollingNotifications = false;
+                    if (quitting || url != baseUrl || state == null) return;
+                    try
+                    {
+                        Directory.CreateDirectory(Paths.DataRoot);
+                        string tmp = NotificationFile + ".tmp";
+                        File.WriteAllText(tmp, state.ToJson(), new UTF8Encoding(false));
+                        if (File.Exists(NotificationFile)) File.Replace(tmp, NotificationFile, null);
+                        else File.Move(tmp, NotificationFile);
+                    }
+                    catch { LauncherLog.Write("Notification state could not be saved"); return; }
+                    // Advance cursors while muted, so turning notifications on
+                    // never replays a backlog from the muted period.
+                    if (!Config.Load().WindowsNotifications) return;
+                    foreach (var item in EventNotificationState.Summary(events))
+                    {
+                        string target = baseUrl.TrimEnd('/') + item.Path;
+                        Balloon(item.Title, item.Text, ToolTipIcon.Info, 10000, () => Browser.Open(target));
+                    }
+                });
+            });
         }
 
         // ---- Balloons -------------------------------------------------------
@@ -2287,6 +2484,7 @@ namespace SeoWatcher
 
         private void RefreshSettings()
         {
+            notificationsItem.Checked = Config.Load().WindowsNotifications;
             autoUpdateItem.Checked = Config.Load().AutoUpdate;
             bool machine = Autostart.IsEnabledForAllUsers();
             autostartItem.Checked = machine || Autostart.IsEnabled();
@@ -2504,6 +2702,7 @@ namespace SeoWatcher
             if (nativeSettings != null) nativeSettings.Dispose();
             LauncherLog.Write("quit");
             try { if (updateTimer != null) updateTimer.Dispose(); } catch { }
+            try { if (notificationTimer != null) notificationTimer.Dispose(); } catch { }
             tray.Visible = false;
             server.Stop();
             ExitThread();

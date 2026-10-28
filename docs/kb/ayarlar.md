@@ -25,3 +25,7 @@ PageSpeed anahtarı başarı garantisi vermez. Anahtarsız denetim en fazla 50 s
 ## Sürüm kontrolü
 
 **Uygulama içi sürüm kontrolü** en çok altı saatte bir GitHub'a bakar. Windows tepsisi bağımsız olarak günlük kontrol yapabilir; otomatik kurulum için **Windows** bölümünü kullanın. Son başarılı kontrol tarihi sürüm bilgisinin yaşını gösterir. GitHub sınır/erişim hatasında bekleyin ve yeniden deneyin; 404 için Yardım tanılamasını kullanın. Ayar okunamazsa anahtar değiştirilemez.
+
+## Windows bildirimleri
+
+Tepsideki seowatcher simgesine sağ tıklayın ve **Windows bildirimleri** seçeneğini kullanın (varsayılan açık). Başlatıcı çalışırken, tarayıcı kapalı veya arka planda olsa da tüm projelerin tamamlanan/başarısız denetimleri ve yeni duyurular yaklaşık 90 saniyede Windows baloncuğu olarak görünür. Tıklamak ilgili sayfayı açar; birden fazla olay tek özette toplanır. İlk kullanım geçmiş olayları göstermez; yeniden başlatmak görülen olayları tekrarlamaz. Kapalıyken gelen olaylar sonradan gösterilmez. Yeni sürüm bildirimleri mevcut güncelleme ayarını izler. Windows Odaklanma/Rahatsız etmeyin bildirimleri gizleyebilir. Başlatıcı kapalıysa bildirim gelmez. Docker sürümünde bu özellik yoktur.

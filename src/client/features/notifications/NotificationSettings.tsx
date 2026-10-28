@@ -22,6 +22,9 @@ export function NotificationSettings() {
       <p className="text-sm text-muted">
         {t(
           "Uygulama açıkken bildirimler ekranda görünür; sekme arka plandayken bildirim geçmişinde saklanır. Önemli bildirimlerin sesini buradan açıp kapatabilirsiniz.",
+        )}{" "}
+        {t(
+          "Geri döndüğünüzde kaçırdığınız bir veya iki bildirim ayrı ayrı, üç veya daha fazlası özet olarak gösterilir.",
         )}
       </p>
       <div className="flex flex-wrap items-center justify-between gap-3">

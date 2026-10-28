@@ -19,6 +19,7 @@ import { Route as AppProjectsRouteImport } from './routes/_app/projects'
 import { Route as AppReleaseNotesRouteImport } from './routes/_app/release-notes'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
 import { Route as AppSupportRouteImport } from './routes/_app/support'
+import { Route as ApiAuditNotificationsRouteImport } from './routes/api/audit-notifications'
 import { Route as ApiHealthRouteImport } from './routes/api/health'
 import { Route as RReportIdRouteImport } from './routes/r/$reportId'
 import { Route as AppSettingsIndexRouteImport } from './routes/_app/settings/index'
@@ -91,6 +92,11 @@ const AppSupportRoute = AppSupportRouteImport.update({
   id: '/support',
   path: '/support',
   getParentRoute: () => AppRouteRoute,
+} as any)
+const ApiAuditNotificationsRoute = ApiAuditNotificationsRouteImport.update({
+  id: '/api/audit-notifications',
+  path: '/api/audit-notifications',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiHealthRoute = ApiHealthRouteImport.update({
   id: '/api/health',
@@ -236,6 +242,7 @@ export interface FileRoutesByFullPath {
   '/release-notes': typeof AppReleaseNotesRoute
   '/settings': typeof AppSettingsRouteWithChildren
   '/support': typeof AppSupportRoute
+  '/api/audit-notifications': typeof ApiAuditNotificationsRoute
   '/api/health': typeof ApiHealthRoute
   '/r/$reportId': typeof RReportIdRoute
   '/p/$projectId': typeof ProjectPProjectIdRouteRouteWithChildren
@@ -269,6 +276,7 @@ export interface FileRoutesByTo {
   '/projects': typeof AppProjectsRoute
   '/release-notes': typeof AppReleaseNotesRoute
   '/support': typeof AppSupportRoute
+  '/api/audit-notifications': typeof ApiAuditNotificationsRoute
   '/api/health': typeof ApiHealthRoute
   '/r/$reportId': typeof RReportIdRoute
   '/settings': typeof AppSettingsIndexRoute
@@ -302,6 +310,7 @@ export interface FileRoutesById {
   '/_app/release-notes': typeof AppReleaseNotesRoute
   '/_app/settings': typeof AppSettingsRouteWithChildren
   '/_app/support': typeof AppSupportRoute
+  '/api/audit-notifications': typeof ApiAuditNotificationsRoute
   '/api/health': typeof ApiHealthRoute
   '/r/$reportId': typeof RReportIdRoute
   '/_app/': typeof AppIndexRoute
@@ -339,6 +348,7 @@ export interface FileRouteTypes {
     | '/release-notes'
     | '/settings'
     | '/support'
+    | '/api/audit-notifications'
     | '/api/health'
     | '/r/$reportId'
     | '/p/$projectId'
@@ -372,6 +382,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/release-notes'
     | '/support'
+    | '/api/audit-notifications'
     | '/api/health'
     | '/r/$reportId'
     | '/settings'
@@ -404,6 +415,7 @@ export interface FileRouteTypes {
     | '/_app/release-notes'
     | '/_app/settings'
     | '/_app/support'
+    | '/api/audit-notifications'
     | '/api/health'
     | '/r/$reportId'
     | '/_app/'
@@ -434,6 +446,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AppRouteRoute: typeof AppRouteRouteWithChildren
   ProjectRouteRoute: typeof ProjectRouteRouteWithChildren
+  ApiAuditNotificationsRoute: typeof ApiAuditNotificationsRoute
   ApiHealthRoute: typeof ApiHealthRoute
   RReportIdRoute: typeof RReportIdRoute
   ApiGa4OauthCallbackRoute: typeof ApiGa4OauthCallbackRoute
@@ -511,6 +524,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/support'
       preLoaderRoute: typeof AppSupportRouteImport
       parentRoute: typeof AppRouteRoute
+    }
+    '/api/audit-notifications': {
+      id: '/api/audit-notifications'
+      path: '/api/audit-notifications'
+      fullPath: '/api/audit-notifications'
+      preLoaderRoute: typeof ApiAuditNotificationsRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/health': {
       id: '/api/health'
@@ -814,6 +834,7 @@ const ProjectRouteRouteWithChildren = ProjectRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   AppRouteRoute: AppRouteRouteWithChildren,
   ProjectRouteRoute: ProjectRouteRouteWithChildren,
+  ApiAuditNotificationsRoute: ApiAuditNotificationsRoute,
   ApiHealthRoute: ApiHealthRoute,
   RReportIdRoute: RReportIdRoute,
   ApiGa4OauthCallbackRoute: ApiGa4OauthCallbackRoute,

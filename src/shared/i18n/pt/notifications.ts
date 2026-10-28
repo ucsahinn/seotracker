@@ -1,6 +1,12 @@
 import type { Catalog } from "@/shared/i18n";
 
 export const ptNotifications: Catalog = {
+  "Geri döndüğünüzde kaçırdığınız bir veya iki bildirim ayrı ayrı, üç veya daha fazlası özet olarak gösterilir.":
+    "Ao voltar, uma ou duas notificações perdidas aparecem separadamente; três ou mais aparecem em um resumo.",
+  "Siz yokken {count} bildirim geldi": {
+    one: "Chegou {count} notificação enquanto você estava ausente",
+    other: "Chegaram {count} notificações enquanto você estava ausente",
+  },
   Bildirimler: "Notificações",
   "Uygulama açıkken bildirimler kendi popup'ı olarak görünür; sekme arka plandayken zil geçmişinde tutulur. Önemli bildirimlerin sesini buradan açıp kapatabilirsiniz.":
     "Com o app aberto, os alertas aparecem nos pop-ups do próprio app. Em uma aba em segundo plano, eles ficam no histórico do sino. Ative ou desative aqui o som dos alertas importantes.",

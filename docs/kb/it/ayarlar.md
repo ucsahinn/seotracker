@@ -25,3 +25,7 @@ Scegli il progetto in Limiti. Controllo URL conta i tentativi locali della propr
 ## Versioni
 
 Il controllo nell'app consulta GitHub al massimo ogni sei ore. L'app Windows può controllare ogni giorno indipendentemente; l'installazione automatica si gestisce in Windows. La data dell'ultimo successo qualifica la versione nota. Attendi in caso di limiti/restrizioni e riprova; usa la diagnostica Aiuto per una fonte assente. Un'impostazione illeggibile non può essere modificata.
+
+## Notifiche di Windows
+
+Fai clic destro sull’icona seowatcher nell’area di notifica e usa **Windows bildirimleri** (attiva per impostazione predefinita). Finché il programma di avvio è in esecuzione, le verifiche completate o non riuscite di tutti i progetti e i nuovi annunci appaiono come fumetti Windows entro circa 90 secondi, anche con il browser chiuso o in secondo piano. Un clic apre la pagina relativa; più eventi vengono riuniti. Il primo avvio ignora gli eventi precedenti; il riavvio non ripete quelli già ricevuti. Gli eventi ricevuti con le notifiche disattivate non vengono mostrati in seguito. Le nuove versioni seguono l’impostazione di aggiornamento esistente. La modalità Concentrazione/Non disturbare può nascondere le notifiche. Nessuna notifica con il programma di avvio chiuso. Questa funzione non è disponibile in Docker.

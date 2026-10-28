@@ -1,6 +1,12 @@
 import type { Catalog } from "@/shared/i18n";
 
 export const frNotifications: Catalog = {
+  "Geri döndüğünüzde kaçırdığınız bir veya iki bildirim ayrı ayrı, üç veya daha fazlası özet olarak gösterilir.":
+    "À votre retour, une ou deux notifications manquées s’affichent séparément ; à partir de trois, un résumé s’affiche.",
+  "Siz yokken {count} bildirim geldi": {
+    one: "{count} notification est arrivée pendant votre absence",
+    other: "{count} notifications sont arrivées pendant votre absence",
+  },
   Bildirimler: "Notifications",
   "Uygulama açıkken bildirimler kendi popup'ı olarak görünür; sekme arka plandayken zil geçmişinde tutulur. Önemli bildirimlerin sesini buradan açıp kapatabilirsiniz.":
     "Lorsque l’application est ouverte, les alertes apparaissent dans ses propres fenêtres. Dans un onglet en arrière-plan, elles restent dans l’historique de la cloche. Vous pouvez régler ici le son des alertes importantes.",

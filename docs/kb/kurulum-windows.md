@@ -156,3 +156,7 @@ Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın.
 - **Tarayıcı açılmadı.** Simgeye çift tıklayın ya da adresi elle yazın: `http://127.0.0.1:3001`
 
 <!-- Kaynaklar: packaging/windows/README.md; packaging/windows/launcher/SeoWatcher.cs (menü, port seçimi, dosyalar); packaging/windows/seowatcher.iss (kurulum yeri, görevler, kaldırma); .github/workflows/release-windows.yml (SHA256SUMS) -->
+
+## Windows bildirimleri
+
+Tepsideki seowatcher simgesine sağ tıklayın ve **Windows bildirimleri** seçeneğini kullanın (varsayılan açık). Başlatıcı çalışırken, tarayıcı kapalı veya arka planda olsa da tüm projelerin tamamlanan/başarısız denetimleri ve yeni duyurular yaklaşık 90 saniyede Windows baloncuğu olarak görünür. Tıklamak ilgili sayfayı açar; birden fazla olay tek özette toplanır. İlk kullanım geçmiş olayları göstermez; yeniden başlatmak görülen olayları tekrarlamaz. Kapalıyken gelen olaylar sonradan gösterilmez. Yeni sürüm bildirimleri mevcut güncelleme ayarını izler. Windows Odaklanma/Rahatsız etmeyin bildirimleri gizleyebilir. Başlatıcı kapalıysa bildirim gelmez. Docker sürümünde bu özellik yoktur.

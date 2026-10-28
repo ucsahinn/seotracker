@@ -158,3 +158,7 @@ Si l'icône n'est pas visible, cliquez sur la flèche ^ de la barre des tâches.
 - **Le navigateur ne s'est pas ouvert.** Double-cliquez sur l'icône ou saisissez l'adresse à la main : `http://127.0.0.1:3001`
 
 <!-- Kaynaklar: packaging/windows/README.md; packaging/windows/launcher/SeoWatcher.cs (menü, port seçimi, dosyalar); packaging/windows/seowatcher.iss (kurulum yeri, görevler, kaldırma); .github/workflows/release-windows.yml (SHA256SUMS) -->
+
+## Notifications Windows
+
+Faites un clic droit sur l’icône seowatcher dans la zone de notification et utilisez **Windows bildirimleri** (activé par défaut). Tant que le lanceur fonctionne, les audits terminés ou échoués de tous les projets et les nouvelles annonces apparaissent en bulles Windows sous environ 90 secondes, même avec le navigateur fermé ou en arrière-plan. Un clic ouvre la page concernée ; plusieurs événements sont regroupés. Le premier lancement ignore les anciens événements ; un redémarrage ne répète pas ceux déjà reçus. Les événements reçus pendant la désactivation ne sont pas affichés ensuite. Les nouvelles versions suivent le réglage de mise à jour existant. Le mode Concentration/Ne pas déranger peut masquer les notifications. Aucune notification si le lanceur est fermé. Cette fonction est absente de Docker.

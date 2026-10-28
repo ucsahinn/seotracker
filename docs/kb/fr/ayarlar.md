@@ -25,3 +25,7 @@ Choisissez le projet dans Limites. L'inspection d'URL compte les requêtes local
 ## Versions
 
 Le contrôle dans l'application consulte GitHub au plus toutes les six heures. L'application Windows peut vérifier quotidiennement de manière indépendante. Son installation automatique se règle dans Windows. La date du dernier succès indique l'âge de la version connue. Attendez en cas de limite/restriction, puis réessayez; utilisez le diagnostic Aide pour une source absente. Un réglage illisible ne peut pas être modifié.
+
+## Notifications Windows
+
+Faites un clic droit sur l’icône seowatcher dans la zone de notification et utilisez **Windows bildirimleri** (activé par défaut). Tant que le lanceur fonctionne, les audits terminés ou échoués de tous les projets et les nouvelles annonces apparaissent en bulles Windows sous environ 90 secondes, même avec le navigateur fermé ou en arrière-plan. Un clic ouvre la page concernée ; plusieurs événements sont regroupés. Le premier lancement ignore les anciens événements ; un redémarrage ne répète pas ceux déjà reçus. Les événements reçus pendant la désactivation ne sont pas affichés ensuite. Les nouvelles versions suivent le réglage de mise à jour existant. Le mode Concentration/Ne pas déranger peut masquer les notifications. Aucune notification si le lanceur est fermé. Cette fonction est absente de Docker.

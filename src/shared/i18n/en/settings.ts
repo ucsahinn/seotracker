@@ -5,6 +5,12 @@ import type { Catalog } from "@/shared/i18n";
  * Keys are the Turkish source strings exactly as passed to t().
  */
 export const enSettings: Catalog = {
+  "Geri döndüğünüzde kaçırdığınız bir veya iki bildirim ayrı ayrı, üç veya daha fazlası özet olarak gösterilir.":
+    "When you return, one or two missed notifications appear individually; three or more appear as a summary.",
+  "Siz yokken {count} bildirim geldi": {
+    one: "{count} notification arrived while you were away",
+    other: "{count} notifications arrived while you were away",
+  },
   "Sürüm kaynağına ulaşılamadı: depo bulunamadı ya da gizli.":
     "Could not reach the release source: the repository was not found or is private.",
   "Sürüm kaynağına ulaşılamadı: depo bulunamadı ya da gizli (GitHub 404). Yardım ekranından tanılama paketini indirip sorunu bildirin.":

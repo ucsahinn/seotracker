@@ -46,6 +46,13 @@ $testLibrary = Join-Path $testDir 'launcher-validation.dll'
 & $compiler.FullName /nologo /target:library /r:System.Windows.Forms.dll /r:System.Drawing.dll "/out:$testLibrary" $launcherSource $bridgeSource $progressSource
 if ($LASTEXITCODE -ne 0) { throw 'Launcher integration compilation failed.' }
 Write-Host 'Launcher integration compilation passed.'
+$notificationTests = Join-Path $repoRoot 'packaging\windows\launcher\EventNotifications.Tests.cs'
+$notificationExe = Join-Path $testDir 'event-notifications-tests.exe'
+& $compiler.FullName /nologo /target:exe /main:SeoWatcher.EventNotificationsTests /r:System.Windows.Forms.dll /r:System.Drawing.dll "/out:$notificationExe" $launcherSource $bridgeSource $progressSource $notificationTests
+if ($LASTEXITCODE -ne 0) { throw 'Event notification test compilation failed.' }
+& $notificationExe
+if ($LASTEXITCODE -ne 0) { throw 'Event notification tests failed.' }
+Remove-Item -LiteralPath $notificationExe
 $pnpmCommand = (Get-Command pnpm.cmd -ErrorAction Stop).Source
 & $pnpmCommand exec tsx (Join-Path $PSScriptRoot 'probe-windows-settings.ts') $testExe
 if ($LASTEXITCODE -ne 0) { throw 'TypeScript/native bridge consumer probe failed.' }

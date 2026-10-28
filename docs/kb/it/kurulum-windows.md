@@ -158,3 +158,7 @@ Se l'icona non si vede, fare clic sulla freccia ^ nella barra delle applicazioni
 - **Il browser non si è aperto.** Fare doppio clic sull'icona oppure scrivere a mano l'indirizzo: `http://127.0.0.1:3001`
 
 <!-- Kaynaklar: packaging/windows/README.md; packaging/windows/launcher/SeoWatcher.cs (menü, port seçimi, dosyalar); packaging/windows/seowatcher.iss (kurulum yeri, görevler, kaldırma); .github/workflows/release-windows.yml (SHA256SUMS) -->
+
+## Notifiche di Windows
+
+Fai clic destro sull’icona seowatcher nell’area di notifica e usa **Windows bildirimleri** (attiva per impostazione predefinita). Finché il programma di avvio è in esecuzione, le verifiche completate o non riuscite di tutti i progetti e i nuovi annunci appaiono come fumetti Windows entro circa 90 secondi, anche con il browser chiuso o in secondo piano. Un clic apre la pagina relativa; più eventi vengono riuniti. Il primo avvio ignora gli eventi precedenti; il riavvio non ripete quelli già ricevuti. Gli eventi ricevuti con le notifiche disattivate non vengono mostrati in seguito. Le nuove versioni seguono l’impostazione di aggiornamento esistente. La modalità Concentrazione/Non disturbare può nascondere le notifiche. Nessuna notifica con il programma di avvio chiuso. Questa funzione non è disponibile in Docker.

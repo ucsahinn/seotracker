@@ -129,9 +129,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <ClientOnly>
           <QueryClientProvider client={queryClient}>
             <>
+              {/* Sonner must subscribe before child effects can emit a toast. */}
+              <Toaster position="bottom-right" />
               {children}
               <ExportToSheetsModal />
-              <Toaster position="bottom-right" />
               {showDevtools ? (
                 <TanStackDevtools
                   config={{ position: "bottom-right" }}

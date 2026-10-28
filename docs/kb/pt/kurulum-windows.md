@@ -157,3 +157,7 @@ Quando o número muda, atualize também no Google os dois endereços de redireci
 - **O navegador não abriu.** Dê um duplo clique no ícone ou digite o endereço à mão: `http://127.0.0.1:3001`
 
 <!-- Kaynaklar: packaging/windows/README.md; packaging/windows/launcher/SeoWatcher.cs (menü, port seçimi, dosyalar); packaging/windows/seowatcher.iss (kurulum yeri, görevler, kaldırma); .github/workflows/release-windows.yml (SHA256SUMS) -->
+
+## Notificações do Windows
+
+Clique com o botão direito no ícone do seowatcher na bandeja e use **Windows bildirimleri** (ativada por padrão). Enquanto o inicializador estiver em execução, auditorias concluídas ou com falha de todos os projetos e novos anúncios aparecem como balões do Windows em cerca de 90 segundos, mesmo com o navegador fechado ou em segundo plano. Um clique abre a página correspondente; vários eventos são agrupados. O primeiro uso ignora eventos antigos; reiniciar não repete eventos já recebidos. Eventos recebidos durante o silêncio não são exibidos depois. Novas versões seguem a configuração de atualização existente. O modo Foco/Não incomodar pode ocultar notificações. Com o inicializador fechado, não há notificações. Este recurso não está disponível no Docker.

@@ -157,3 +157,7 @@ When the number changes, also update the two redirect addresses at Google with t
 - **The browser did not open.** Double-click the icon or type the address by hand: `http://127.0.0.1:3001`
 
 <!-- Kaynaklar: packaging/windows/README.md; packaging/windows/launcher/SeoWatcher.cs (menü, port seçimi, dosyalar); packaging/windows/seowatcher.iss (kurulum yeri, görevler, kaldırma); .github/workflows/release-windows.yml (SHA256SUMS) -->
+
+## Windows notifications
+
+Right-click the seowatcher tray icon and use **Windows bildirimleri** (Windows notifications, on by default). While the launcher runs, completed/failed audits from all projects and new announcements appear as Windows balloons within about 90 seconds, even with the browser closed or in the background. Click to open the relevant page; several events form one summary. First use skips old events; restarting does not replay seen events. Events received while muted are not replayed later. New-version notifications follow the existing update setting. Windows Focus/Do not disturb can hide notifications. No notifications appear when the launcher is closed. This feature is unavailable in Docker.

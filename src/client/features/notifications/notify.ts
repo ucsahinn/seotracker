@@ -4,7 +4,9 @@ import { t } from "@/shared/i18n";
 import { getNotificationPrefs } from "./prefs";
 import {
   addNotification,
+  getNotifications,
   markNotificationRead,
+  NOTIFICATION_CAP,
   type AppNotification,
   type NewNotification,
 } from "./store";
@@ -40,13 +42,47 @@ function showToast(item: AppNotification): void {
   else toast.success(item.title, options);
 }
 
+// Only eligible events from this page lifetime are replayed, never old history.
+const pending = new Set<string>();
+
+function flushMissedNotifications(): void {
+  if (document.visibilityState !== "visible") return;
+  document.removeEventListener("visibilitychange", flushMissedNotifications);
+  const items = getNotifications().filter(
+    (item) => pending.has(item.id) && !item.read,
+  );
+  pending.clear();
+  if (items.length >= 3) {
+    toast.success(
+      t("Siz yokken {count} bildirim geldi", { count: items.length }),
+      {
+        action: {
+          label: t("Bildirimler"),
+          onClick: () => navigate("/notifications"),
+        },
+      },
+    );
+  } else {
+    items.forEach(showToast);
+  }
+  const important = items.filter((item) => item.importance === "high");
+  if (important.length && getNotificationPrefs().sound) {
+    playTone(
+      important.some((item) => ERROR_KINDS.has(item.kind))
+        ? "error"
+        : "success",
+    );
+  }
+}
+
 /**
  * The single way the app tells the operator something happened.
  *
- * Every event is stored for the bell and shown as an in-app toast while the
- * app is visible. OS/browser notifications are intentionally never created,
- * so the same event cannot appear as overlapping popups. High importance
- * events also play a short tone when sounds are on. A repeat of a stored
+ * Every event is stored for the bell. Eligible events received while hidden
+ * are shown on return, individually or as a summary. OS/browser notifications
+ * are intentionally never created, so the same event cannot appear as
+ * overlapping popups. High importance events also play a short tone when
+ * sounds are on. A repeat of a stored
  * `dedupeKey` does nothing at all.
  */
 export function notify(
@@ -59,12 +95,19 @@ export function notify(
   const prefs = getNotificationPrefs();
   const hidden =
     typeof document !== "undefined" && document.visibilityState === "hidden";
-  // The bell history is kept even when the app is in a background tab. Only
-  // the app's own popup is shown, and only while its interface is visible
-  // and the operator is not already looking at what it announces.
-  if (!hidden && options.toast !== false) showToast(item);
+  if (options.toast !== false) {
+    if (hidden) {
+      pending.add(item.id);
+      // Match the bell's bound even if the tab stays hidden for a long time.
+      if (pending.size > NOTIFICATION_CAP)
+        pending.delete(pending.values().next().value!);
+      document.addEventListener("visibilitychange", flushMissedNotifications);
+    } else {
+      showToast(item);
+    }
+  }
 
-  if (item.importance === "high" && prefs.sound) {
+  if (!hidden && item.importance === "high" && prefs.sound) {
     playTone(ERROR_KINDS.has(item.kind) ? "error" : "success");
   }
   return item;
