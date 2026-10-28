@@ -819,8 +819,8 @@ export const frSearch: Catalog = {
     "Ces constats peuvent concerner la vitesse, l’ergonomie ou la visibilité dans les recherches. Consultez les pages concernées dans les détails.",
   "Oturum sayısı bilinmiyor. Analytics raporunu açarak kaynak uyarılarını inceleyin; bağlantı erişimini ve sitedeki Analytics etiketini kontrol edin.":
     "Le nombre de sessions est inconnu. Ouvrez le rapport Analytics pour examiner les avertissements de la source ; vérifiez les droits d’accès et la balise Analytics sur le site.",
-  "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; mevcut sıraları aşağıdaki listeden inceleyin.":
-    "Aucune requête n’a été observée sur les deux périodes. Les hausses et baisses ne peuvent pas encore être calculées ; consultez les positions actuelles ci-dessous.",
+  "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; seçili dönemin ortalama sıralarını aşağıdaki listeden inceleyin.":
+    "Aucune requête n’a été observée sur les deux périodes. Les hausses et baisses ne peuvent pas encore être calculées ; consultez ci-dessous les positions moyennes de la période choisie.",
   "Seçili dönemdeki ortalama sıralar: {count} sorgu. Önceki dönemle karşılaştırılabilecek sorgu yok.":
     {
       one: "Positions moyennes sur la période sélectionnée pour {count} requête. Aucune requête ne peut être comparée à la période précédente.",

@@ -311,6 +311,11 @@ export function Ga4Card({
            * every install on every dashboard load.
            */}
           {report.trend.some((row) => row.sessions !== null) ? (
+            <p className="text-xs font-medium text-muted">
+              {t("Günlük organik oturumlar")}
+            </p>
+          ) : null}
+          {report.trend.some((row) => row.sessions !== null) ? (
             <Chart
               metric="sessions"
               height={96}

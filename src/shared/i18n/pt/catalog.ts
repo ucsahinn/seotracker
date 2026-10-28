@@ -142,6 +142,7 @@ export const ptCatalog = {
   Oturum: "Sessões",
   "Etkileşim oranı": "Taxa de engajamento",
   "Organik gelir": "Receita orgânica",
+  "Günlük organik oturumlar": "Sessões orgânicas por dia",
   "Bu aralıkta organik oturum yok, grafik boş.":
     "Não há sessões orgânicas neste intervalo, portanto o gráfico está vazio.",
   "{days} günde toplam {total} organik oturum. En yüksek gün {day}, {peak} oturum.":

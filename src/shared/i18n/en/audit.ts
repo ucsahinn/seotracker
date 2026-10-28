@@ -2372,8 +2372,8 @@ export const enAudit: Catalog = {
   "Tüm sütunları ve işlemleri görmek için tabloyu yana kaydırın.":
     "Scroll sideways to see all columns and actions.",
   "Hız ölçümü istendi": "Speed measurement requested",
-  "Sayılar sayfa bulgularıdır; aynı sayfada birden çok bulgu olabilir.":
-    "Counts are page findings; a page can have more than one finding.",
+  "Sayılar kaydedilen tüm bulgulardır: sayfa bulguları ve site geneli kontroller birlikte; aynı sayfada birden çok bulgu olabilir.":
+    "Counts include every recorded finding: page findings and site-wide checks together; a page can have more than one finding.",
   "Tarama sınırı: {count} sayfa": "Crawl limit: {count} pages",
   "Tarama sınırı kaydedilmemiş.": "The crawl limit was not recorded.",
   "Kapsam ayrıntıları": "Scope details",

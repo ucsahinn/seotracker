@@ -188,8 +188,8 @@ export const itAppSupplemental: Catalog = {
     "Budget di richieste per l’aspetto nella ricerca: {count}. Non include l’analisi aggiuntiva delle sovrapposizioni; l’uso della cache cambia il numero effettivo di richieste di rete.",
   Özet: "Riepilogo",
   "Uygulama raporu, tür kaydedilmemiş": "Report dell’app, tipo non salvato",
-  "Sayılar sayfa bulgularıdır; aynı sayfada birden çok bulgu olabilir.":
-    "I conteggi indicano i problemi rilevati per pagina; una pagina può averne più di uno.",
+  "Sayılar kaydedilen tüm bulgulardır: sayfa bulguları ve site geneli kontroller birlikte; aynı sayfada birden çok bulgu olabilir.":
+    "I conteggi includono tutti i problemi registrati: quelli delle pagine e i controlli sull’intero sito; una pagina può averne più di uno.",
   "Tarama sınırı: {count} sayfa": "Limite di scansione: {count} pagine",
   "Tarama sınırı kaydedilmemiş.":
     "Il limite di scansione non è stato registrato.",

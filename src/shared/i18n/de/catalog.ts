@@ -143,6 +143,7 @@ export const deCatalog = {
   Oturum: "Sitzungen",
   "Etkileşim oranı": "Interaktionsrate",
   "Organik gelir": "Organischer Umsatz",
+  "Günlük organik oturumlar": "Organische Sitzungen pro Tag",
   "Bu aralıkta organik oturum yok, grafik boş.":
     "Keine organischen Sitzungen in diesem Zeitraum, daher ist das Diagramm leer.",
   "{days} günde toplam {total} organik oturum. En yüksek gün {day}, {peak} oturum.":

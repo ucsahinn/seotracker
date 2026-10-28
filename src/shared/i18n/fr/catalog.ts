@@ -144,6 +144,7 @@ export const frCatalog = {
   Oturum: "Sessions",
   "Etkileşim oranı": "Taux d'engagement",
   "Organik gelir": "Revenus organiques",
+  "Günlük organik oturumlar": "Sessions organiques par jour",
   "Bu aralıkta organik oturum yok, grafik boş.":
     "Aucune session organique sur cette période, le graphique est donc vide.",
   "{days} günde toplam {total} organik oturum. En yüksek gün {day}, {peak} oturum.":

@@ -830,8 +830,8 @@ export const deSearch: Catalog = {
     "Diese Befunde können Geschwindigkeit, Bedienbarkeit oder Sichtbarkeit in der Suche betreffen. Prüfen Sie die betroffenen Seiten in den Details.",
   "Oturum sayısı bilinmiyor. Analytics raporunu açarak kaynak uyarılarını inceleyin; bağlantı erişimini ve sitedeki Analytics etiketini kontrol edin.":
     "Die Anzahl der Sitzungen ist unbekannt. Öffnen Sie den Analytics-Bericht und prüfen Sie die Quellenwarnungen, die Zugriffsrechte der Verbindung und das Analytics-Tag auf Ihrer Website.",
-  "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; mevcut sıraları aşağıdaki listeden inceleyin.":
-    "Keine Suchanfrage wurde in beiden Zeiträumen beobachtet. Anstiege und Rückgänge lassen sich noch nicht berechnen; prüfen Sie die aktuellen Positionen unten.",
+  "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; seçili dönemin ortalama sıralarını aşağıdaki listeden inceleyin.":
+    "Keine Suchanfrage wurde in beiden Zeiträumen beobachtet. Anstiege und Rückgänge lassen sich noch nicht berechnen; prüfen Sie unten die durchschnittlichen Positionen im gewählten Zeitraum.",
   "Seçili dönemdeki ortalama sıralar: {count} sorgu. Önceki dönemle karşılaştırılabilecek sorgu yok.":
     {
       one: "Durchschnittliche Positionen im gewählten Zeitraum: {count} Suchanfrage. Keine Suchanfrage lässt sich mit dem vorherigen Zeitraum vergleichen.",

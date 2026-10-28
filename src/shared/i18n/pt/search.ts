@@ -826,8 +826,8 @@ export const ptSearch: Catalog = {
     "Estes resultados podem envolver velocidade, usabilidade ou visibilidade na busca. Confira as páginas afetadas nos detalhes.",
   "Oturum sayısı bilinmiyor. Analytics raporunu açarak kaynak uyarılarını inceleyin; bağlantı erişimini ve sitedeki Analytics etiketini kontrol edin.":
     "O número de sessões é desconhecido. Abra o relatório do Analytics para conferir os avisos da fonte; verifique as permissões da conexão e a tag do Analytics no site.",
-  "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; mevcut sıraları aşağıdaki listeden inceleyin.":
-    "Nenhuma consulta foi observada nos dois períodos. Ainda não é possível calcular subidas e descidas; consulte as posições atuais na lista abaixo.",
+  "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; seçili dönemin ortalama sıralarını aşağıdaki listeden inceleyin.":
+    "Nenhuma consulta foi observada nos dois períodos. Ainda não é possível calcular subidas e descidas; consulte na lista abaixo as posições médias do período selecionado.",
   "Seçili dönemdeki ortalama sıralar: {count} sorgu. Önceki dönemle karşılaştırılabilecek sorgu yok.":
     {
       one: "Posições médias no período selecionado para {count} consulta. Nenhuma consulta pode ser comparada com o período anterior.",

@@ -80,7 +80,7 @@ describe("AuditHistorySection", () => {
     renderSection([{ ...row, issues: { ...row.issues, info: 13 } }]);
     expect(screen.getByRole("columnheader", { name: "Bilgi" })).toBeTruthy();
     expect(screen.getByRole("cell", { name: "13" })).toBeTruthy();
-    expect(screen.getByText(/Sayılar sayfa bulgularıdır/)).toBeTruthy();
+    expect(screen.getByText(/site geneli kontroller birlikte/)).toBeTruthy();
   });
   it("F17 shows the stored page limit with a scope link", () => {
     renderSection([

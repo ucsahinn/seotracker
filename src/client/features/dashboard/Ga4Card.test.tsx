@@ -94,3 +94,13 @@ it("qualifies dashboard Analytics totals as property-wide", () => {
     screen.getByText(/Mülk kapsamı: tüm ana makineler ve akışlar/),
   ).toBeDefined();
 });
+
+it("names the sessions trend so it is not read as the revenue above it", () => {
+  mocks.query.mockReturnValue({
+    data: report({ trend: [{ date: "2026-10-01", sessions: 4 }] }),
+    isPending: false,
+    isError: false,
+  });
+  render(<Ga4Card projectId="p1" connected />);
+  expect(screen.getByText("Günlük organik oturumlar")).toBeTruthy();
+});

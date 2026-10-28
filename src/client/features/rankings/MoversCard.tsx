@@ -100,7 +100,7 @@ export function MoversCard({
       {comparableCount === 0 ? (
         <p className="mt-3 text-sm text-muted">
           {t(
-            "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; mevcut sıraları aşağıdaki listeden inceleyin.",
+            "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; seçili dönemin ortalama sıralarını aşağıdaki listeden inceleyin.",
           )}
         </p>
       ) : (

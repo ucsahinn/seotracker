@@ -1580,8 +1580,8 @@ export const enSearch: Catalog = {
     "These findings may concern speed, usability or search visibility. Review the affected pages in the details.",
   "Oturum sayısı bilinmiyor. Analytics raporunu açarak kaynak uyarılarını inceleyin; bağlantı erişimini ve sitedeki Analytics etiketini kontrol edin.":
     "The session count is unknown. Open the Analytics report to review source warnings; check connection access and the Analytics tag on your site.",
-  "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; mevcut sıraları aşağıdaki listeden inceleyin.":
-    "No queries were observed in both periods. Rises and falls cannot be calculated yet; review current positions in the list below.",
+  "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; seçili dönemin ortalama sıralarını aşağıdaki listeden inceleyin.":
+    "No queries were observed in both periods. Rises and falls cannot be calculated yet; review the average positions for the selected period in the list below.",
   "Seçili dönemdeki ortalama sıralar: {count} sorgu. Önceki dönemle karşılaştırılabilecek sorgu yok.":
     {
       one: "Average positions in the selected period for {count} query. No queries can be compared with the previous period.",

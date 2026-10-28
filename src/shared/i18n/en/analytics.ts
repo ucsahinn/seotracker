@@ -86,6 +86,7 @@ export const enAnalytics: Catalog = {
   Oturum: "Sessions",
   "Etkileşim oranı": "Engagement rate",
   "Organik gelir": "Organic revenue",
+  "Günlük organik oturumlar": "Daily organic sessions",
   "Bu aralıkta organik oturum yok, grafik boş.":
     "No organic sessions in this range, so the chart is empty.",
   "{days} günde toplam {total} organik oturum. En yüksek gün {day}, {peak} oturum.":

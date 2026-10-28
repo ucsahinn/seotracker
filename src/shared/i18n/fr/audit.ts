@@ -1131,8 +1131,8 @@ export const frAudit: Catalog = {
   "Tüm sütunları ve işlemleri görmek için tabloyu yana kaydırın.":
     "Faites défiler le tableau horizontalement pour voir toutes les colonnes et actions.",
   "Hız ölçümü istendi": "Mesure de vitesse demandée",
-  "Sayılar sayfa bulgularıdır; aynı sayfada birden çok bulgu olabilir.":
-    "Les nombres comptent les constats par page ; une page peut en avoir plusieurs.",
+  "Sayılar kaydedilen tüm bulgulardır: sayfa bulguları ve site geneli kontroller birlikte; aynı sayfada birden çok bulgu olabilir.":
+    "Les nombres comptent tous les constats enregistrés : constats de page et vérifications du site ensemble ; une page peut en avoir plusieurs.",
   "Tarama sınırı: {count} sayfa": "Limite d’exploration : {count} pages",
   "Tarama sınırı kaydedilmemiş.":
     "La limite d’exploration n’a pas été enregistrée.",

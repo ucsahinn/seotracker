@@ -818,8 +818,8 @@ export const itSearch: Catalog = {
     "Questi risultati possono riguardare velocità, usabilità o visibilità nella ricerca. Esamina le pagine interessate nei dettagli.",
   "Oturum sayısı bilinmiyor. Analytics raporunu açarak kaynak uyarılarını inceleyin; bağlantı erişimini ve sitedeki Analytics etiketini kontrol edin.":
     "Il numero di sessioni è sconosciuto. Apri il report Analytics per leggere gli avvisi della fonte; controlla i permessi della connessione e il tag Analytics sul sito.",
-  "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; mevcut sıraları aşağıdaki listeden inceleyin.":
-    "Nessuna query è stata osservata in entrambi i periodi. Non è ancora possibile calcolare salite e discese; consulta le posizioni attuali qui sotto.",
+  "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; seçili dönemin ortalama sıralarını aşağıdaki listeden inceleyin.":
+    "Nessuna query è stata osservata in entrambi i periodi. Non è ancora possibile calcolare salite e discese; consulta qui sotto le posizioni medie del periodo selezionato.",
   "Seçili dönemdeki ortalama sıralar: {count} sorgu. Önceki dönemle karşılaştırılabilecek sorgu yok.":
     "Posizioni medie nel periodo selezionato per {count} query. Nessuna query è confrontabile con il periodo precedente.",
   "Tüm kayıtlı kelimeler bu dönemde gözlendi.":

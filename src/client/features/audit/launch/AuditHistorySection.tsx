@@ -154,7 +154,7 @@ export function AuditHistorySection({
         </p>
         <p className="text-xs text-muted">
           {t(
-            "Sayılar sayfa bulgularıdır; aynı sayfada birden çok bulgu olabilir.",
+            "Sayılar kaydedilen tüm bulgulardır: sayfa bulguları ve site geneli kontroller birlikte; aynı sayfada birden çok bulgu olabilir.",
           )}
         </p>
         <div

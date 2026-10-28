@@ -1129,8 +1129,8 @@ export const deAudit: Catalog = {
   "Tüm sütunları ve işlemleri görmek için tabloyu yana kaydırın.":
     "Scrollen Sie seitlich, um alle Spalten und Aktionen zu sehen.",
   "Hız ölçümü istendi": "Geschwindigkeitsmessung angefordert",
-  "Sayılar sayfa bulgularıdır; aynı sayfada birden çok bulgu olabilir.":
-    "Gezählt werden Befunde auf Seiten; eine Seite kann mehrere Befunde haben.",
+  "Sayılar kaydedilen tüm bulgulardır: sayfa bulguları ve site geneli kontroller birlikte; aynı sayfada birden çok bulgu olabilir.":
+    "Gezählt werden alle erfassten Befunde: Seitenbefunde und websiteweite Prüfungen zusammen; eine Seite kann mehrere Befunde haben.",
   "Tarama sınırı: {count} sayfa": "Crawling-Limit: {count} Seiten",
   "Tarama sınırı kaydedilmemiş.": "Das Crawling-Limit wurde nicht gespeichert.",
   "Kapsam ayrıntıları": "Details zum Prüfumfang",
