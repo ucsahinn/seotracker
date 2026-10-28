@@ -232,6 +232,8 @@ function Report({
           pagesConsidered={totals.pagesConsidered}
           curveInsufficient={data.method.curveInsufficient}
           unknownPages={totals.unknownPages}
+          hiddenQueryPages={totals.reasons.missingQueryPairs}
+          days={data.request.days}
         />
         <OpportunityMethod data={data} projectId={projectId} />
       </div>

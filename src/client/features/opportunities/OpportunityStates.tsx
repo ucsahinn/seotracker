@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ChevronDown, Target } from "lucide-react";
 import { useEffect, useState } from "react";
 import { EmptyState } from "@/client/components/EmptyState";
-import { formatDate } from "@/client/lib/format";
+import { formatCount, formatDate } from "@/client/lib/format";
 
 export const INTRO_STORAGE_KEY = "seotracker:opportunities-intro-collapsed";
 
@@ -109,12 +109,17 @@ export function NoOpportunities({
   pagesConsidered,
   curveInsufficient,
   unknownPages = 0,
+  hiddenQueryPages = 0,
+  days,
 }: {
   dateRange: { startDate: string; endDate: string };
   pagesConsidered: number;
   /** The site has too few queries per position band for any estimate. */
   curveInsufficient: boolean;
   unknownPages?: number;
+  /** Pages with impressions but no query rows: Google withheld the queries. */
+  hiddenQueryPages?: number;
+  days: number;
 }) {
   const period = {
     start: formatDate(dateRange.startDate),
@@ -135,11 +140,32 @@ export function NoOpportunities({
   }
 
   if (unknownPages > 0) {
+    // 90 days is the longest window this screen offers; suggesting it when it
+    // is already selected sends the operator round in a circle.
+    const widen =
+      days < 90
+        ? ` ${t("Daha uzun bir dönem seçmek daha çok arama gösterebilir.")}`
+        : "";
+    if (hiddenQueryPages * 2 >= unknownPages) {
+      return (
+        <EmptyState
+          icon={Target}
+          title={t("Google bu sayfaların aramalarını göstermiyor")}
+          description={`${period.start} – ${period.end}. ${t(
+            "{hidden} sayfa gösterim aldı ama Search Console hangi aramalardan geldiğini vermedi: Google az aranan sorguları gizlilik için gizler. Arama bilinmeden kazanç hesaplanmaz. Bu bir hata değildir; site daha çok gösterim aldıkça tahminler kendiliğinden çıkar.",
+            { hidden: formatCount(hiddenQueryPages) },
+          )}${widen}`}
+        />
+      );
+    }
     return (
       <EmptyState
         icon={Target}
         title={t("Hesaplanamayan kapsam")}
-        description={`${period.start} – ${period.end}. ${t("Bazı sorgular veya hedef oranları eksik. Mülkü Arama performansında kontrol edin veya dönemi 90 güne genişletin.")}`}
+        description={`${period.start} – ${period.end}. ${t(
+          "{count} sayfanın aramaları tahmin için yeterli gösterim almadı ya da sitenizde karşılaştırılacak sıra verisi yok.",
+          { count: formatCount(unknownPages) },
+        )}${widen}`}
       />
     );
   }

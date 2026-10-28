@@ -1450,8 +1450,8 @@ export const enSearch: Catalog = {
     "Average position {position}; {impressions} impressions and {clicks} clicks measured. Up to +{gain} clicks scaled to 30 days for estimable queries (upper bound); no guarantee of results.",
   "Hesaplanan kazanç yalnızca alınan ve tanımlanabilen aramaları kapsar; gizli sorguların payı bilinmiyor. Panelin sorgu tahminiyle toplanmaz.":
     "The estimate covers only fetched, identifiable queries; the share of hidden queries is unknown. Do not add it to the dashboard query estimate.",
-  "Ölçülen sıfır: {zero}; yetersiz gösterim: {small}; eksik hedef oranı: {curve}; eksik sorgu eşleşmesi: {pairs}.":
-    "Measured zero: {zero}; too few impressions: {small}; missing target rate: {curve}; missing query matches: {pairs}.",
+  "Ölçülen sıfır: {zero}; yetersiz gösterim: {small}; eksik hedef oranı: {curve}; Google'ın aramalarını gizlediği sayfa: {pairs}.":
+    "Measured zero: {zero}; too few impressions: {small}; missing target rate: {curve}; pages whose searches Google withheld: {pairs}.",
   "Search Console satır sınırına ulaşıldı; toplamlar tüm siteyi kapsamaz.":
     "Search Console row limit reached; totals do not cover the entire site.",
   "Aynı takvim günleri farklı saat dilimlerinde aynı an aralığı değildir. Analytics, tüm Organic Search kanalını kapsar.":
@@ -1470,8 +1470,16 @@ export const enSearch: Catalog = {
     "Upper bound scaled to 30 days; bars compare with the largest work category. A page can count in several categories. Selection applies to all estimable pages.",
   "Hesaplanamayan kapsam": "Unestimable scope",
   Sırala: "Sort",
-  "Bazı sorgular veya hedef oranları eksik. Mülkü Arama performansında kontrol edin veya dönemi 90 güne genişletin.":
-    "Some queries or target rates are missing. Check the property in Search performance or widen the period to 90 days.",
+  "Daha uzun bir dönem seçmek daha çok arama gösterebilir.":
+    "A longer period may show more searches.",
+  "Google bu sayfaların aramalarını göstermiyor":
+    "Google does not show the searches for these pages",
+  "{hidden} sayfa gösterim aldı ama Search Console hangi aramalardan geldiğini vermedi: Google az aranan sorguları gizlilik için gizler. Arama bilinmeden kazanç hesaplanmaz. Bu bir hata değildir; site daha çok gösterim aldıkça tahminler kendiliğinden çıkar.":
+    "{hidden} pages received impressions, but Search Console did not say which searches they came from: Google withholds rarely searched queries for privacy. Without the searches, no gain can be estimated. This is not an error; estimates appear on their own as the site gets more impressions.",
+  "{count} sayfanın aramaları tahmin için yeterli gösterim almadı ya da sitenizde karşılaştırılacak sıra verisi yok.":
+    "The searches for {count} pages had too few impressions for an estimate, or your site has no position data to compare against.",
+  "Tahmini değiştirmez; yanında bir etiket olarak durur. Bu dönemde tahmin edilebilen sayfa olmadığı için eşleştirilecek bir şey yok.":
+    "It does not change the estimate; it sits next to it as a label. No page could be estimated in this period, so there is nothing to match.",
 
   // Rankings archive scope and comparison evidence.
   "Son 5 yıllık arşiv": "Last 5 years of archive",

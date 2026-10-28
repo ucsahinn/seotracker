@@ -21,7 +21,7 @@ export function OpportunityMethod({
       </p>
       <p>
         {t(
-          "Ölçülen sıfır: {zero}; yetersiz gösterim: {small}; eksik hedef oranı: {curve}; eksik sorgu eşleşmesi: {pairs}.",
+          "Ölçülen sıfır: {zero}; yetersiz gösterim: {small}; eksik hedef oranı: {curve}; Google'ın aramalarını gizlediği sayfa: {pairs}.",
           {
             zero: formatCount(data.totals.reasons.calculableZero),
             small: formatCount(data.totals.reasons.belowThreshold),
@@ -105,14 +105,18 @@ export function OpportunityMethod({
                     ? "Analytics izni veya mülk erişimi yok. Bağlantıları ayarla ekranında erişimi doğrulayın."
                     : "Analytics yanıtı okunamadı. İnternet bağlantısını kontrol edip Yenile’ye basın.",
               )
-            : t(
-                "Tahmini değiştirmez; yanında bir etiket olarak durur. Bir sayfa en az {sessions} organik oturum aldıysa dönüşümlerine bakılır, daha azında oran gürültüdür. {matched} / {total} sayfanın Analytics karşılığı var.",
-                {
-                  sessions: formatCount(method.valueMinSessions),
-                  matched: formatCount(coverage.matchedRows),
-                  total: formatCount(data.totalCandidateRows),
-                },
-              )}
+            : data.totalCandidateRows === 0
+              ? t(
+                  "Tahmini değiştirmez; yanında bir etiket olarak durur. Bu dönemde tahmin edilebilen sayfa olmadığı için eşleştirilecek bir şey yok.",
+                )
+              : t(
+                  "Tahmini değiştirmez; yanında bir etiket olarak durur. Bir sayfa en az {sessions} organik oturum aldıysa dönüşümlerine bakılır, daha azında oran gürültüdür. {matched} / {total} sayfanın Analytics karşılığı var.",
+                  {
+                    sessions: formatCount(method.valueMinSessions),
+                    matched: formatCount(coverage.matchedRows),
+                    total: formatCount(data.totalCandidateRows),
+                  },
+                )}
       </p>
       {analytics.code ? (
         <p>

@@ -688,8 +688,8 @@ export const itSearch: Catalog = {
     "Posizione media {position}; {impressions} impressioni e {clicks} clic misurati. Fino a +{gain} clic su base di 30 giorni per le query valutabili (limite massimo), senza garanzia di risultato.",
   "Hesaplanan kazanç yalnızca alınan ve tanımlanabilen aramaları kapsar; gizli sorguların payı bilinmiyor. Panelin sorgu tahminiyle toplanmaz.":
     "La stima copre solo le query ricevute e identificabili; la quota delle query nascoste è sconosciuta. Non sommarla alla stima per query del pannello.",
-  "Ölçülen sıfır: {zero}; yetersiz gösterim: {small}; eksik hedef oranı: {curve}; eksik sorgu eşleşmesi: {pairs}.":
-    "Zero misurato: {zero}; impressioni insufficienti: {small}; tasso obiettivo assente: {curve}; query non abbinate: {pairs}.",
+  "Ölçülen sıfır: {zero}; yetersiz gösterim: {small}; eksik hedef oranı: {curve}; Google'ın aramalarını gizlediği sayfa: {pairs}.":
+    "Zero misurato: {zero}; impressioni insufficienti: {small}; tasso obiettivo mancante: {curve}; pagine di cui Google nasconde le ricerche: {pairs}.",
   "Search Console satır sınırına ulaşıldı; toplamlar tüm siteyi kapsamaz.":
     "Raggiunto il limite di righe Search Console; i totali non coprono l’intero sito.",
   "Aynı takvim günleri farklı saat dilimlerinde aynı an aralığı değildir. Analytics, tüm Organic Search kanalını kapsar.":
@@ -708,8 +708,16 @@ export const itSearch: Catalog = {
     "Limite massimo su base di 30 giorni; le barre sono relative alla categoria principale. Una pagina può rientrare in più categorie. La selezione riguarda tutte le pagine valutabili.",
   "Hesaplanamayan kapsam": "Ambito non calcolabile",
   Sırala: "Ordina",
-  "Bazı sorgular veya hedef oranları eksik. Mülkü Arama performansında kontrol edin veya dönemi 90 güne genişletin.":
-    "Mancano alcune query o tassi obiettivo. Verifica la proprietà in Rendimento di ricerca o amplia il periodo a 90 giorni.",
+  "Daha uzun bir dönem seçmek daha çok arama gösterebilir.":
+    "Un periodo più lungo può mostrare più ricerche.",
+  "Google bu sayfaların aramalarını göstermiyor":
+    "Google non mostra le ricerche di queste pagine",
+  "{hidden} sayfa gösterim aldı ama Search Console hangi aramalardan geldiğini vermedi: Google az aranan sorguları gizlilik için gizler. Arama bilinmeden kazanç hesaplanmaz. Bu bir hata değildir; site daha çok gösterim aldıkça tahminler kendiliğinden çıkar.":
+    "{hidden} pagine hanno ricevuto impressioni, ma Search Console non ha indicato da quali ricerche: Google nasconde le query poco cercate per tutelare la privacy. Senza le ricerche non è possibile stimare alcun guadagno. Non è un errore; le stime compariranno da sole quando il sito riceverà più impressioni.",
+  "{count} sayfanın aramaları tahmin için yeterli gösterim almadı ya da sitenizde karşılaştırılacak sıra verisi yok.":
+    "Le ricerche di {count} pagine hanno ricevuto troppe poche impressioni per una stima, oppure il tuo sito non ha dati di posizione con cui confrontarle.",
+  "Tahmini değiştirmez; yanında bir etiket olarak durur. Bu dönemde tahmin edilebilen sayfa olmadığı için eşleştirilecek bir şey yok.":
+    "Non modifica la stima; è un'etichetta accanto. In questo periodo nessuna pagina è stimabile, quindi non c'è nulla da abbinare.",
 
   // Rankings archive scope and comparison evidence.
   "Son 5 yıllık arşiv": "Ultimi 5 anni di archivio",

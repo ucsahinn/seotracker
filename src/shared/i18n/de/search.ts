@@ -700,8 +700,8 @@ export const deSearch: Catalog = {
     "Durchschnittliche Position {position}; {impressions} Impressionen und {clicks} Klicks gemessen. Bis zu +{gain} Klicks auf 30 Tage skaliert für berechenbare Suchanfragen (Obergrenze); keine Ergebnisgarantie.",
   "Hesaplanan kazanç yalnızca alınan ve tanımlanabilen aramaları kapsar; gizli sorguların payı bilinmiyor. Panelin sorgu tahminiyle toplanmaz.":
     "Die Schätzung umfasst nur abgerufene, identifizierbare Suchanfragen; der Anteil verborgener Anfragen ist unbekannt. Nicht zur Suchanfrageschätzung der Übersicht addieren.",
-  "Ölçülen sıfır: {zero}; yetersiz gösterim: {small}; eksik hedef oranı: {curve}; eksik sorgu eşleşmesi: {pairs}.":
-    "Gemessene Null: {zero}; zu wenige Impressionen: {small}; fehlende Zielrate: {curve}; fehlende Suchanfragenzuordnung: {pairs}.",
+  "Ölçülen sıfır: {zero}; yetersiz gösterim: {small}; eksik hedef oranı: {curve}; Google'ın aramalarını gizlediği sayfa: {pairs}.":
+    "Gemessene Null: {zero}; zu wenige Impressionen: {small}; fehlende Zielrate: {curve}; Seiten, deren Suchanfragen Google zurückhält: {pairs}.",
   "Search Console satır sınırına ulaşıldı; toplamlar tüm siteyi kapsamaz.":
     "Search Console-Zeilenlimit erreicht; die Summen umfassen nicht die gesamte Website.",
   "Aynı takvim günleri farklı saat dilimlerinde aynı an aralığı değildir. Analytics, tüm Organic Search kanalını kapsar.":
@@ -720,8 +720,16 @@ export const deSearch: Catalog = {
     "Auf 30 Tage skalierte Obergrenze; Balken beziehen sich auf die größte Arbeitskategorie. Eine Seite kann in mehreren Kategorien zählen. Die Auswahl gilt für alle berechenbaren Seiten.",
   "Hesaplanamayan kapsam": "Nicht berechenbarer Umfang",
   Sırala: "Sortieren",
-  "Bazı sorgular veya hedef oranları eksik. Mülkü Arama performansında kontrol edin veya dönemi 90 güne genişletin.":
-    "Einige Suchanfragen oder Zielraten fehlen. Prüfen Sie die Property unter Suchleistung oder erweitern Sie den Zeitraum auf 90 Tage.",
+  "Daha uzun bir dönem seçmek daha çok arama gösterebilir.":
+    "Ein längerer Zeitraum kann mehr Suchanfragen zeigen.",
+  "Google bu sayfaların aramalarını göstermiyor":
+    "Google zeigt die Suchanfragen dieser Seiten nicht",
+  "{hidden} sayfa gösterim aldı ama Search Console hangi aramalardan geldiğini vermedi: Google az aranan sorguları gizlilik için gizler. Arama bilinmeden kazanç hesaplanmaz. Bu bir hata değildir; site daha çok gösterim aldıkça tahminler kendiliğinden çıkar.":
+    "{hidden} Seiten erhielten Impressionen, aber die Search Console hat nicht angegeben, über welche Suchanfragen: Google hält selten gesuchte Anfragen aus Datenschutzgründen zurück. Ohne die Suchanfragen lässt sich kein Zuwachs schätzen. Das ist kein Fehler; Schätzungen erscheinen von selbst, sobald die Website mehr Impressionen erhält.",
+  "{count} sayfanın aramaları tahmin için yeterli gösterim almadı ya da sitenizde karşılaştırılacak sıra verisi yok.":
+    "Die Suchanfragen von {count} Seiten hatten zu wenige Impressionen für eine Schätzung, oder Ihre Website hat keine Positionsdaten zum Vergleich.",
+  "Tahmini değiştirmez; yanında bir etiket olarak durur. Bu dönemde tahmin edilebilen sayfa olmadığı için eşleştirilecek bir şey yok.":
+    "Ändert die Schätzung nicht; steht als Kennzeichnung daneben. In diesem Zeitraum ließ sich keine Seite schätzen, daher gibt es nichts abzugleichen.",
 
   // Rankings archive scope and comparison evidence.
   "Son 5 yıllık arşiv": "Letzte 5 Archivjahre",

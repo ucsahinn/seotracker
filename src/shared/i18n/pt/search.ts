@@ -696,8 +696,8 @@ export const ptSearch: Catalog = {
     "Posição média {position}; {impressions} impressões e {clicks} cliques medidos. Até +{gain} cliques ajustados para 30 dias nas consultas calculáveis (limite máximo), sem garantia de resultado.",
   "Hesaplanan kazanç yalnızca alınan ve tanımlanabilen aramaları kapsar; gizli sorguların payı bilinmiyor. Panelin sorgu tahminiyle toplanmaz.":
     "A estimativa cobre apenas consultas recebidas e identificáveis; a parcela de consultas ocultas é desconhecida. Não a some à estimativa por consulta do painel.",
-  "Ölçülen sıfır: {zero}; yetersiz gösterim: {small}; eksik hedef oranı: {curve}; eksik sorgu eşleşmesi: {pairs}.":
-    "Zero medido: {zero}; impressões insuficientes: {small}; taxa-alvo ausente: {curve}; consultas sem correspondência: {pairs}.",
+  "Ölçülen sıfır: {zero}; yetersiz gösterim: {small}; eksik hedef oranı: {curve}; Google'ın aramalarını gizlediği sayfa: {pairs}.":
+    "Zero medido: {zero}; poucas impressões: {small}; taxa-alvo em falta: {curve}; páginas cujas pesquisas o Google oculta: {pairs}.",
   "Search Console satır sınırına ulaşıldı; toplamlar tüm siteyi kapsamaz.":
     "O limite de linhas do Search Console foi atingido; os totais não cobrem todo o site.",
   "Aynı takvim günleri farklı saat dilimlerinde aynı an aralığı değildir. Analytics, tüm Organic Search kanalını kapsar.":
@@ -716,8 +716,16 @@ export const ptSearch: Catalog = {
     "Limite máximo ajustado para 30 dias; as barras comparam com a maior categoria de trabalho. Uma página pode contar em várias categorias. A seleção abrange todas as páginas calculáveis.",
   "Hesaplanamayan kapsam": "Escopo não calculável",
   Sırala: "Ordenar",
-  "Bazı sorgular veya hedef oranları eksik. Mülkü Arama performansında kontrol edin veya dönemi 90 güne genişletin.":
-    "Algumas consultas ou taxas-alvo estão ausentes. Confira a propriedade em Desempenho da pesquisa ou amplie o período para 90 dias.",
+  "Daha uzun bir dönem seçmek daha çok arama gösterebilir.":
+    "Um período mais longo pode mostrar mais pesquisas.",
+  "Google bu sayfaların aramalarını göstermiyor":
+    "O Google não mostra as pesquisas destas páginas",
+  "{hidden} sayfa gösterim aldı ama Search Console hangi aramalardan geldiğini vermedi: Google az aranan sorguları gizlilik için gizler. Arama bilinmeden kazanç hesaplanmaz. Bu bir hata değildir; site daha çok gösterim aldıkça tahminler kendiliğinden çıkar.":
+    "{hidden} páginas receberam impressões, mas o Search Console não indicou de que pesquisas vieram: o Google oculta consultas pouco pesquisadas por privacidade. Sem as pesquisas, não é possível estimar ganho. Isto não é um erro; as estimativas surgem sozinhas à medida que o site recebe mais impressões.",
+  "{count} sayfanın aramaları tahmin için yeterli gösterim almadı ya da sitenizde karşılaştırılacak sıra verisi yok.":
+    "As pesquisas de {count} páginas receberam poucas impressões para uma estimativa, ou o seu site não tem dados de posição para comparar.",
+  "Tahmini değiştirmez; yanında bir etiket olarak durur. Bu dönemde tahmin edilebilen sayfa olmadığı için eşleştirilecek bir şey yok.":
+    "Não altera a estimativa; fica ao lado como etiqueta. Nenhuma página pôde ser estimada neste período, por isso não há nada a corresponder.",
 
   // Rankings archive scope and comparison evidence.
   "Son 5 yıllık arşiv": "Últimos 5 anos do arquivo",
