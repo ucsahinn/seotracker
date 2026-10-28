@@ -178,6 +178,7 @@ export function DrilldownPanel({
                   whether this query or page is the one that moved. */}
               <div className="grid grid-cols-2 gap-px overflow-hidden rounded-box border border-[var(--hairline)] bg-[var(--hairline)] [&>*]:bg-base-100">
                 <MetricTile
+                  metric="clicks"
                   label={t("Tıklama")}
                   value={formatCount(data.totals.clicks)}
                   delta={
@@ -188,6 +189,7 @@ export function DrilldownPanel({
                   deltaTitle={deltaTitle}
                 />
                 <MetricTile
+                  metric="impressions"
                   label={t("Gösterim")}
                   value={formatCount(data.totals.impressions)}
                   delta={
@@ -201,6 +203,7 @@ export function DrilldownPanel({
                   deltaTitle={deltaTitle}
                 />
                 <MetricTile
+                  metric="ctr"
                   label={t("Tıklama oranı")}
                   value={
                     data.totals.ctr === null
@@ -212,6 +215,7 @@ export function DrilldownPanel({
                   trend={data.daily.map((d) => d.ctr)}
                 />
                 <MetricTile
+                  metric="position"
                   label={t("Ortalama sıra")}
                   value={
                     data.totals.position === null

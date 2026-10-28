@@ -59,6 +59,7 @@ export function KpiTiles({
   return (
     <MetricRow>
       <MetricTile
+        metric="clicks"
         label={t("Tıklama")}
         trend={days.map((p) => p.clicks)}
         value={formatCount(current.clicks)}
@@ -67,6 +68,7 @@ export function KpiTiles({
         deltaTitle={deltaTitle}
       />
       <MetricTile
+        metric="impressions"
         label={t("Gösterim")}
         trend={days.map((p) => p.impressions)}
         value={formatCount(current.impressions)}
@@ -75,6 +77,7 @@ export function KpiTiles({
         deltaTitle={deltaTitle}
       />
       <MetricTile
+        metric="ctr"
         label={t("Tıklama oranı")}
         trend={days.map((p) => p.ctr)}
         hint={t("Gösterimlerin yüzde kaçı tıklamaya döndü.")}
@@ -88,6 +91,7 @@ export function KpiTiles({
         deltaTitle={deltaTitle}
       />
       <MetricTile
+        metric="position"
         label={t("Ortalama sıra")}
         trend={days.map((p) => p.position)}
         hint={t("Düşük sayı daha iyi: 1, listenin en üstü demek.")}

@@ -51,12 +51,12 @@
 :root {
   /* Categorical data ink: also opaque marks, never interactive accents.
      Each holds >=4.5:1 on base-100, base-200 and its 8% metric wash. */
-  --data-clicks: oklch(43% 0.1 250);
-  --data-impressions: oklch(43% 0.12 300);
-  --data-ctr: oklch(43% 0.08 185);
-  --data-position: oklch(43% 0.09 90);
-  --data-sessions: oklch(43% 0.1 155);
-  --data-conversions: oklch(43% 0.13 350);
+  --data-clicks: oklch(45% 0.17 255);
+  --data-impressions: oklch(45% 0.19 300);
+  --data-ctr: oklch(45% 0.11 185);
+  --data-position: oklch(48% 0.12 75);
+  --data-sessions: oklch(45% 0.14 150);
+  --data-conversions: oklch(46% 0.19 355);
   --surface-panel: oklch(95.5% 0.012 70);
   --metric-color: var(--data-clicks);
   /* Hairlines. Alpha over the surface rather than a fixed grey, so they stay
@@ -121,12 +121,12 @@
 }
 
 html[data-theme="seotracker-dark"] {
-  --data-clicks: oklch(78% 0.1 250);
-  --data-impressions: oklch(78% 0.12 300);
-  --data-ctr: oklch(78% 0.08 185);
-  --data-position: oklch(78% 0.09 90);
-  --data-sessions: oklch(78% 0.1 155);
-  --data-conversions: oklch(78% 0.13 350);
+  --data-clicks: oklch(76% 0.15 250);
+  --data-impressions: oklch(76% 0.17 300);
+  --data-ctr: oklch(80% 0.13 185);
+  --data-position: oklch(82% 0.14 80);
+  --data-sessions: oklch(78% 0.16 150);
+  --data-conversions: oklch(76% 0.17 355);
   --surface-panel: oklch(23% 0.016 60);
   --hairline: oklch(100% 0 0 / 0.09);
   --hairline-strong: oklch(100% 0 0 / 0.15);
@@ -748,13 +748,22 @@ h3 {
   );
 }
 .metric-tile[data-metric] {
-  background-color: color-mix(
-    in oklab,
-    var(--metric-color) 8%,
-    var(--surface-panel)
+  /* A wash that deepens toward the bottom and a solid edge on top: the tile
+     reads as the metric it measures before a word of it is read. */
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--metric-color) 6%, var(--surface-panel)) 0%,
+    color-mix(in oklab, var(--metric-color) 16%, var(--surface-panel)) 100%
   );
-  box-shadow: inset 0 1px 0
-    color-mix(in oklab, var(--metric-color) 35%, transparent);
+  box-shadow:
+    inset 0 3px 0 var(--metric-color),
+    inset 0 -1px 0 color-mix(in oklab, var(--metric-color) 25%, transparent);
+}
+.sparkline-area {
+  fill: color-mix(in oklab, currentColor 18%, transparent);
+}
+.metric-tile[data-metric] .sparkline-area {
+  fill: color-mix(in oklab, var(--metric-color) 22%, transparent);
 }
 .metric-tile[data-metric] .metric-value {
   color: var(--metric-color);

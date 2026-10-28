@@ -62,6 +62,7 @@ export function DashboardMetrics({
     <div className="space-y-2">
       <MetricRow>
         <MetricTile
+          metric="clicks"
           label={t("Tıklama")}
           value={current ? formatCount(current.clicks) : null}
           animateTo={
@@ -74,6 +75,7 @@ export function DashboardMetrics({
           hint={t("Google aramasından sitenize gelen tıklamalar.")}
         />
         <MetricTile
+          metric="impressions"
           label={t("Gösterim")}
           value={current ? formatCount(current.impressions) : null}
           animateTo={
@@ -88,6 +90,7 @@ export function DashboardMetrics({
           hint={t("Sitenizin Google sonuçlarında gösterilme sayısı.")}
         />
         <MetricTile
+          metric="ctr"
           label={t("Tıklama oranı")}
           value={current?.ctr == null ? null : formatPercent(current.ctr)}
           trend={days?.map((p) => p.ctr)}
@@ -97,6 +100,7 @@ export function DashboardMetrics({
           hint={t("Gösterimlerin yüzde kaçı tıklamaya döndü.")}
         />
         <MetricTile
+          metric="position"
           label={t("Ortalama sıra")}
           value={
             current?.position == null ? null : formatDecimal(current.position)
