@@ -17,7 +17,12 @@ import { sortBy } from "remeda";
  */
 const D1_MAX_BOUND_PARAMETERS = 100;
 
-export async function createTestDb() {
+export async function createTestDb(
+  options: {
+    atomicBatches?: boolean;
+    beforeQuery?: (query: string) => void | Promise<void>;
+  } = {},
+) {
   const database = new DatabaseSync(":memory:");
   const files = sortBy(
     readdirSync("drizzle").filter((name) => name.endsWith(".sql")),
@@ -31,6 +36,7 @@ export async function createTestDb() {
 
   const db = drizzle(
     async (query, params, method) => {
+      if (options.beforeQuery) await options.beforeQuery(query);
       // D1 rejects a statement with more than 100 bound values ("too many SQL
       // variables"); plain SQLite allows far more, so enforce it here.
       if (params.length > D1_MAX_BOUND_PARAMETERS)
@@ -66,11 +72,35 @@ export async function createTestDb() {
     { schema: await import("@/db/schema") },
   );
 
-  // Same contract as the real module (statements run in order); atomicity is
-  // not what these tests look at.
+  // Atomic batches are opt-in for tests that exercise concurrent mutations.
+  let batchTail = Promise.resolve();
+  async function batch(statements: readonly Promise<unknown>[]) {
+    const results: unknown[] = [];
+    if (!options.atomicBatches) {
+      for (const statement of statements) results.push(await statement);
+      return results;
+    }
+    const previous = batchTail;
+    let release!: () => void;
+    batchTail = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    await previous;
+    database.exec("BEGIN");
+    try {
+      for (const statement of statements) results.push(await statement);
+      database.exec("COMMIT");
+      return results;
+    } catch (error) {
+      database.exec("ROLLBACK");
+      throw error;
+    } finally {
+      release();
+    }
+  }
   const runBatchModule = {
     runBatch: async (build: (tx: typeof db) => readonly Promise<unknown>[]) => {
-      for (const statement of build(db)) await statement;
+      await batch(build(db));
     },
     executeInBatches: async <T>(
       items: T[],
@@ -80,5 +110,5 @@ export async function createTestDb() {
     },
   };
 
-  return { database, db, runBatchModule };
+  return { database, db, batch, runBatchModule };
 }

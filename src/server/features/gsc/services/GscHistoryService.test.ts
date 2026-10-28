@@ -1,10 +1,19 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { GSC_MAX_ROW_LIMIT } from "@/server/features/gsc/searchAnalytics";
 import type { GscPerformanceInput } from "@/server/features/gsc/searchAnalytics";
+import type { GscHistoryRepository } from "../repositories/GscHistoryRepository";
 
 const mocks = vi.hoisted(() => ({
-  getArchiveState: vi.fn(),
-  getProperty: vi.fn(),
+  getBackfillSnapshot: vi.fn(),
+  getArchiveState:
+    vi.fn<
+      () => Promise<Partial<
+        NonNullable<
+          Awaited<ReturnType<typeof GscHistoryRepository.getArchiveState>>
+        >
+      > | null>
+    >(),
+  getProperty: vi.fn<() => Promise<string | null>>(),
   markCoverage: vi.fn(),
   getCoverage: vi.fn(),
   upsertDailyRows: vi.fn(),
@@ -65,6 +74,10 @@ function performanceRow(date: string, query: string, position: number) {
 }
 
 beforeEach(() => {
+  mocks.getBackfillSnapshot.mockImplementation(async () => ({
+    state: await mocks.getArchiveState(),
+    siteUrl: await mocks.getProperty(),
+  }));
   mocks.getArchiveState.mockResolvedValue(null);
   mocks.getProperty.mockResolvedValue(SITE);
   mocks.upsertDailyRows.mockResolvedValue(undefined);
@@ -173,7 +186,7 @@ describe("backfill", () => {
     mocks.getArchiveState.mockResolvedValue({
       earliestDate: "2026-05-01",
       lastDate: "2026-05-20",
-      error: null,
+      lastError: null,
     });
 
     await GscHistoryService.backfill({ projectId: "p1", today: TODAY });

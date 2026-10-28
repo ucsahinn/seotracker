@@ -214,10 +214,12 @@ export function SavedKeywordsBulkTagsModal({
                   <button
                     key={tag.id}
                     type="button"
+                    aria-pressed={checked}
                     onClick={() => handleToggleAdd(tag)}
                     className="flex w-full items-center gap-2 px-3 py-1.5 text-left hover:bg-base-200"
                   >
                     <span
+                      aria-hidden="true"
                       className={`flex size-4 shrink-0 items-center justify-center rounded-field border ${
                         checked
                           ? "border-primary bg-primary text-primary-content"
@@ -227,6 +229,7 @@ export function SavedKeywordsBulkTagsModal({
                       {checked ? <Check className="size-3" /> : null}
                     </span>
                     <span
+                      aria-hidden="true"
                       className={`size-2 shrink-0 rounded-full ${tagDotClass(color)}`}
                     />
                     <span className="flex-1 truncate text-sm">{tag.name}</span>
@@ -318,6 +321,7 @@ function SegmentButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
+      aria-pressed={active}
       className={`inline-flex items-center gap-1.5 rounded-field px-3 py-1 text-sm transition ${
         active
           ? "bg-base-100 font-medium shadow-sm"

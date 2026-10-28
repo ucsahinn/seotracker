@@ -179,6 +179,7 @@ export function ProjectSwitcher({
   const handleRootKeyDown = (event: React.KeyboardEvent) => {
     if (event.key !== "Escape" || !open) return;
     event.preventDefault();
+    event.stopPropagation();
     closePanel();
     triggerRef.current?.focus();
   };

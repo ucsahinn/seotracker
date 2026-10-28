@@ -1,6 +1,7 @@
-import { and, asc, count, eq, inArray, notInArray } from "drizzle-orm";
+import { and, asc, count, eq, inArray, notExists } from "drizzle-orm";
 import { db } from "@/db";
 import { runBatch } from "@/db/runBatch";
+import { replaceTagAssignments } from "./replaceTagAssignments";
 import {
   savedKeywordTagAssignments,
   savedKeywordTags,
@@ -16,7 +17,6 @@ export type SavedKeywordTagRecord = typeof savedKeywordTags.$inferSelect;
 const QUERY_CHUNK_SIZE = 80;
 const DELETE_PAIR_CHUNK_SIZE = 45;
 const ASSIGNMENT_INSERT_CHUNK_SIZE = 40;
-const REPLACE_DELETE_KEYWORD_CHUNK_SIZE = 70;
 
 async function getTagFilterIds(params: {
   projectId: string;
@@ -147,40 +147,22 @@ async function replaceTagsForSavedKeywords(params: {
   savedKeywordIds: string[];
   tagNames: string[];
 }) {
-  const addResult = await addTagsToSavedKeywords(params);
-  const keepTagIds = addResult.tags.map((tag) => tag.id);
+  const savedKeywordRows = await listSavedKeywordRowsByIds(
+    params.projectId,
+    params.savedKeywordIds,
+  );
+  const tags =
+    savedKeywordRows.length > 0
+      ? await upsertSavedKeywordTags(params.projectId, params.tagNames)
+      : [];
+  const addResult = { savedKeywordCount: savedKeywordRows.length, tags };
+  const keepTagIds = tags.map((tag) => tag.id);
   if (addResult.savedKeywordCount === 0 || keepTagIds.length === 0) {
     return { ...addResult, removedCount: 0 };
   }
 
-  let removedCount = 0;
-  for (
-    let i = 0;
-    i < params.savedKeywordIds.length;
-    i += REPLACE_DELETE_KEYWORD_CHUNK_SIZE
-  ) {
-    const chunk = params.savedKeywordIds.slice(
-      i,
-      i + REPLACE_DELETE_KEYWORD_CHUNK_SIZE,
-    );
-    const savedKeywordRows = await listSavedKeywordRowsByIds(
-      params.projectId,
-      chunk,
-    );
-    const savedKeywordIds = savedKeywordRows.map((row) => row.id);
-    if (savedKeywordIds.length === 0) continue;
-
-    const deleted = await db
-      .delete(savedKeywordTagAssignments)
-      .where(
-        and(
-          inArray(savedKeywordTagAssignments.savedKeywordId, savedKeywordIds),
-          notInArray(savedKeywordTagAssignments.tagId, keepTagIds),
-        ),
-      )
-      .returning({ id: savedKeywordTagAssignments.savedKeywordId });
-    removedCount += deleted.length;
-  }
+  const savedKeywordIds = savedKeywordRows.map((row) => row.id);
+  const removedCount = await replaceTagAssignments(savedKeywordIds, keepTagIds);
 
   return { ...addResult, removedCount };
 }
@@ -368,38 +350,42 @@ async function deleteSavedKeywordTag(params: {
   | { status: "not_found" }
   | { status: "in_use"; assignmentCount: number }
 > {
-  const [tag] = await db
-    .select({ id: savedKeywordTags.id })
-    .from(savedKeywordTags)
-    .where(
-      and(
-        eq(savedKeywordTags.projectId, params.projectId),
-        eq(savedKeywordTags.id, params.tagId),
-      ),
-    );
-  if (!tag) return { status: "not_found" };
-
-  // Guard: refuse to delete a tag that's still attached to saved keywords.
-  // FK cascade would otherwise silently drop assignments.
-  const [{ value: assignmentCount } = { value: 0 }] = await db
-    .select({ value: count() })
-    .from(savedKeywordTagAssignments)
-    .where(eq(savedKeywordTagAssignments.tagId, params.tagId));
-
-  if (assignmentCount > 0) {
-    return { status: "in_use", assignmentCount };
-  }
-
   const deleted = await db
     .delete(savedKeywordTags)
     .where(
       and(
         eq(savedKeywordTags.projectId, params.projectId),
         eq(savedKeywordTags.id, params.tagId),
+        notExists(
+          db
+            .select({ id: savedKeywordTagAssignments.tagId })
+            .from(savedKeywordTagAssignments)
+            .where(eq(savedKeywordTagAssignments.tagId, savedKeywordTags.id)),
+        ),
       ),
     )
     .returning({ id: savedKeywordTags.id });
-  return deleted.length > 0 ? { status: "deleted" } : { status: "not_found" };
+  if (deleted.length > 0) return { status: "deleted" };
+
+  const [tag] = await db
+    .select({ assignmentCount: count(savedKeywordTagAssignments.tagId) })
+    .from(savedKeywordTags)
+    .leftJoin(
+      savedKeywordTagAssignments,
+      eq(savedKeywordTagAssignments.tagId, savedKeywordTags.id),
+    )
+    .where(
+      and(
+        eq(savedKeywordTags.projectId, params.projectId),
+        eq(savedKeywordTags.id, params.tagId),
+      ),
+    )
+    .groupBy(savedKeywordTags.id);
+  if (!tag) return { status: "not_found" };
+
+  // The guarded mutation observed an assignment even if another caller has
+  // since removed it. Never report a deletion that did not happen.
+  return { status: "in_use", assignmentCount: tag.assignmentCount };
 }
 
 export const SavedKeywordTagsRepository = {

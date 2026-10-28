@@ -1,12 +1,12 @@
 import type { KeyboardEvent as ReactKeyboardEvent, ReactNode } from "react";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { MoreHorizontal } from "lucide-react";
 
 /**
  * Kebab actions menu rendered through a portal in fixed position, so it can't
  * be clipped by overflow containers (scrollable tables, overflow-hidden
- * cards). Opens below the trigger, right-aligned. Closes on outside click,
+ * cards). Opens below or above the trigger within the viewport. Closes on outside click,
  * Escape, Tab, scroll, and resize.
  *
  * Keyboard: opening moves focus to the first item (the menu lives at the end
@@ -42,6 +42,35 @@ export function PortalMenu({
     setIsOpen(false);
     buttonRef.current?.focus();
   };
+
+  useLayoutEffect(() => {
+    const menu = menuRef.current;
+    const trigger = buttonRef.current;
+    if (!isOpen || !menu || !trigger) return;
+    const rect = trigger.getBoundingClientRect();
+    const measured = menu.getBoundingClientRect();
+    const margin = 8;
+    const maxHeight = Math.max(0, window.innerHeight - margin * 2);
+    const height = Math.min(measured.height, maxHeight);
+    const below = rect.bottom + 4;
+    const preferred =
+      below + height <= window.innerHeight - margin
+        ? below
+        : rect.top - 4 - height;
+    setPosition({
+      top: Math.max(
+        margin,
+        Math.min(preferred, window.innerHeight - margin - height),
+      ),
+      left: Math.max(
+        margin,
+        Math.min(
+          rect.right - measured.width,
+          window.innerWidth - margin - measured.width,
+        ),
+      ),
+    });
+  }, [isOpen]);
 
   useEffect(() => {
     const menu = menuRef.current;
@@ -140,8 +169,15 @@ export function PortalMenu({
               role="menu"
               aria-label={ariaLabel}
               onKeyDown={moveFocus}
-              className={`menu fixed z-[1000] -translate-x-full rounded-box border border-base-300 bg-base-100 p-2 shadow-lg ${menuClassName}`}
-              style={{ top: position.top, left: position.left }}
+              className={`menu fixed z-[1000] rounded-box border border-base-300 bg-base-100 p-2 shadow-lg ${menuClassName}`}
+              style={{
+                top: position.top,
+                left: position.left,
+                maxHeight: Math.max(0, window.innerHeight - 16),
+                maxWidth: Math.max(0, window.innerWidth - 16),
+                overflowY: "auto",
+                flexWrap: "nowrap",
+              }}
             >
               {children(closeAndRefocus)}
             </ul>,

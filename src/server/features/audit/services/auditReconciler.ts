@@ -11,7 +11,7 @@
  *     error is copied into the row before Workflows retention deletes it.
  */
 import { env } from "cloudflare:workers";
-import { and, eq, lt } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { audits, projects } from "@/db/schema";
 import { getAuditHeartbeat } from "@/server/features/audit/auditHeartbeat";
@@ -193,16 +193,10 @@ export async function reconcileStaleAudits() {
 }
 
 /**
- * Running audits started before the cutoff — watchdog candidates. Timestamps
- * are stored as text, so this compares lexicographically: PG rows use ISO
- * with a "T", D1-default rows use "YYYY-MM-DD HH:MM:SS" (space < "T", so a
- * same-day ISO cutoff would misorder against D1 rows without the reformat).
+ * Running audits started before the cutoff — watchdog candidates. Normalize
+ * both ISO and legacy SQLite timestamps before comparison and ordering.
  */
 async function getStaleRunningAudits(cutoff: Date, limit: number) {
-  const iso = cutoff.toISOString();
-  // D1 stores timestamps in SQLite's "YYYY-MM-DD HH:MM:SS" form, so compare in
-  // the same shape (a same-day ISO cutoff would misorder against those rows).
-  const startedBefore = iso.replace("T", " ").slice(0, 19);
   // Oldest first: genuinely dead audits age past the cutoff and stay there,
   // while long-but-live crawls are the newest of the stale set — without a
   // deterministic order they could occupy the whole batch every sweep and
@@ -210,9 +204,9 @@ async function getStaleRunningAudits(cutoff: Date, limit: number) {
   return db.query.audits.findMany({
     where: and(
       eq(audits.status, "running"),
-      lt(audits.startedAt, startedBefore),
+      sql`julianday(${audits.startedAt}) < julianday(${cutoff.toISOString()})`,
     ),
-    orderBy: audits.startedAt,
+    orderBy: sql`julianday(${audits.startedAt})`,
     columns: {
       id: true,
       workflowInstanceId: true,

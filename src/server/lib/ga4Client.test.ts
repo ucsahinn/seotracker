@@ -147,8 +147,8 @@ describe("ga4Client admin API", () => {
     ).rejects.toMatchObject({ status: 401 });
   });
 
-  it("throws a token error when Better Auth cannot mint an access token", async () => {
-    mocks.getAccessToken.mockRejectedValue(new Error("revoked"));
+  it("ERR-03 still requires credential repair for a structured invalid grant", async () => {
+    mocks.getAccessToken.mockRejectedValue({ error: "invalid_grant" });
     await expect(
       createGa4AdminClient({
         userId: "u1",

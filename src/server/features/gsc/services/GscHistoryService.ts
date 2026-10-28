@@ -320,7 +320,8 @@ async function backfill(input: {
   today?: Date;
 }): Promise<BackfillOutcome> {
   const today = input.today ?? new Date();
-  const state = await GscHistoryRepository.getArchiveState(input.projectId);
+  const { state, siteUrl: initialSiteUrl } =
+    await GscHistoryRepository.getBackfillSnapshot(input.projectId);
   const endDate = latestAvailableDate(today);
   let cursor = resolveCursor(state, today);
 
@@ -338,9 +339,7 @@ async function backfill(input: {
       ? { from: state.incompleteFrom, through: state.incompleteThrough }
       : null;
   /** The property every page of this run came from; null until Google answers. */
-  let siteUrl: string | null = await GscHistoryRepository.getProperty(
-    input.projectId,
-  );
+  let siteUrl: string | null = initialSiteUrl;
   const outcome: BackfillOutcome = {
     daysFetched: 0,
     newDays: 0,

@@ -24,6 +24,17 @@ $updatePolicyArgs = @(
 if ($LASTEXITCODE -ne 0) { throw 'Update version policy test compilation failed.' }
 & $updatePolicyExe
 if ($LASTEXITCODE -ne 0) { throw 'Update version policy tests failed.' }
+$runtimeSafetyTests = Join-Path $repoRoot 'packaging\windows\launcher\RuntimeSafety.Tests.cs'
+$runtimeSafetyExe = Join-Path $testDir 'runtime-safety-tests.exe'
+$runtimeSafetyArgs = @(
+  '/nologo', '/target:exe', '/main:SeoWatcher.RuntimeSafetyTests',
+  '/r:System.Windows.Forms.dll', '/r:System.Drawing.dll', "/out:$runtimeSafetyExe",
+  $launcherSource, $bridgeSource, $progressSource, $runtimeSafetyTests
+)
+& $compiler.FullName @runtimeSafetyArgs
+if ($LASTEXITCODE -ne 0) { throw 'Runtime safety test compilation failed.' }
+& $runtimeSafetyExe
+if ($LASTEXITCODE -ne 0) { throw 'Runtime safety tests failed.' }
 $progressTests = Join-Path $repoRoot 'packaging\windows\launcher\StartupProgress.Tests.cs'
 $progressExe = Join-Path $testDir 'startup-progress-tests.exe'
 & $compiler.FullName /nologo /target:exe /r:System.Windows.Forms.dll /r:System.Drawing.dll "/out:$progressExe" $progressSource $progressTests
@@ -38,4 +49,4 @@ Write-Host 'Launcher integration compilation passed.'
 $pnpmCommand = (Get-Command pnpm.cmd -ErrorAction Stop).Source
 & $pnpmCommand exec tsx (Join-Path $PSScriptRoot 'probe-windows-settings.ts') $testExe
 if ($LASTEXITCODE -ne 0) { throw 'TypeScript/native bridge consumer probe failed.' }
-Remove-Item -LiteralPath $testExe, $testLibrary, $updatePolicyExe, $progressExe
+Remove-Item -LiteralPath $testExe, $testLibrary, $updatePolicyExe, $runtimeSafetyExe, $progressExe

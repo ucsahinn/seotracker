@@ -139,6 +139,9 @@ namespace SeoWatcher
         public static readonly string McpToken = Path.Combine(DataRoot, "mcp-token");
         public static readonly string ServerEnv = Path.Combine(DataRoot, "server.env");
         public static readonly string ConfigFile = Path.Combine(DataRoot, "config.json");
+        public static string RuntimeDir { get { return Path.Combine(DataRoot, "runtime"); } }
+        public static string RuntimeMainConfig { get { return Path.Combine(RuntimeDir, "dist", "server", "wrangler.json"); } }
+        public static string RuntimeAuditConfig { get { return Path.Combine(RuntimeDir, "dist", "seotracker_audit", "wrangler.json"); } }
 
         public static string Version()
         {
@@ -330,6 +333,11 @@ namespace SeoWatcher
         /// the environment wrangler sets up. Returns "ok" or "hata: <detail>".</summary>
         public static string WorkerdProbe()
         {
+            return WorkerdProbe(() => false, 20000);
+        }
+
+        public static string WorkerdProbe(Func<bool> cancelled, int timeoutMilliseconds)
+        {
             if (!File.Exists(Paths.WorkerdExe)) return "hata: workerd.exe bulunamadı";
             try
             {
@@ -345,9 +353,22 @@ namespace SeoWatcher
                 };
                 using (var p = Process.Start(psi))
                 {
-                    string stdout = p.StandardOutput.ReadToEnd().Trim();
-                    string stderr = p.StandardError.ReadToEnd().Trim();
-                    if (!p.WaitForExit(20000)) { try { p.Kill(); } catch { } return "hata: 20 saniyede yanıt vermedi"; }
+                    var stdoutTask = p.StandardOutput.ReadToEndAsync();
+                    var stderrTask = p.StandardError.ReadToEndAsync();
+                    var elapsed = Stopwatch.StartNew();
+                    while (!p.WaitForExit(50))
+                    {
+                        if (cancelled() || elapsed.ElapsedMilliseconds >= timeoutMilliseconds)
+                        {
+                            p.Kill();
+                            if (!p.WaitForExit(2000)) return "hata: motor durdurulamadı";
+                            return cancelled() ? "hata: motor denemesi iptal edildi" : "hata: motor denemesi zaman aşımına uğradı";
+                        }
+                    }
+                    if (!System.Threading.Tasks.Task.WaitAll(new System.Threading.Tasks.Task[] { stdoutTask, stderrTask }, 2000))
+                        return "hata: motor çıktı akışları kapanmadı";
+                    string stdout = stdoutTask.Result.Trim();
+                    string stderr = stderrTask.Result.Trim();
                     if (p.ExitCode == 0) return "ok";
                     string detail = (stderr.Length > 0 ? stderr : stdout).Replace("\r", " ").Replace("\n", " ");
                     if (detail.Length > 300) detail = detail.Substring(detail.Length - 300);
@@ -923,7 +944,7 @@ namespace SeoWatcher
         /// <summary>Returns the missing package files, empty when it is complete.</summary>
         public static List<string> Run()
         {
-            foreach (var cfg in new[] { Paths.MainConfig, Paths.AuditConfig })
+            foreach (var cfg in new[] { Paths.RuntimeMainConfig, Paths.RuntimeAuditConfig })
             {
                 try
                 {
@@ -970,16 +991,31 @@ namespace SeoWatcher
         public static string EnsureMcpToken()
         {
             Directory.CreateDirectory(Paths.DataRoot);
-            string value = File.Exists(Paths.McpToken) ? File.ReadAllText(Paths.McpToken).Trim() : "";
+            string stored = File.Exists(Paths.McpToken) ? File.ReadAllText(Paths.McpToken) : "";
+            string value = stored.Trim();
             // The value lands in server.env as a line: anything that is not a
             // token character (a pasted newline, a quote) is dropped first.
             value = System.Text.RegularExpressions.Regex.Replace(value, "[^A-Za-z0-9_-]", "");
             if (value.Length < 16)
             {
                 value = Convert.ToBase64String(RandomBytes(24)).Replace("+", "").Replace("/", "").Replace("=", "");
-                WriteAtomically(Paths.McpToken, value);
             }
-            return value;
+            if (value != stored)
+            {
+                string tmp = Paths.McpToken + "." + Guid.NewGuid().ToString("N") + ".tmp";
+                try
+                {
+                    File.WriteAllText(tmp, value, new UTF8Encoding(false));
+                    if (File.Exists(Paths.McpToken)) File.Replace(tmp, Paths.McpToken, null);
+                    else File.Move(tmp, Paths.McpToken);
+                }
+                catch (Exception ex)
+                {
+                    throw new IOException("MCP token dosyası kaydedilemedi. Veri klasörünün yazılabilir olduğunu kontrol edip yeniden başlatın.", ex);
+                }
+                finally { if (File.Exists(tmp)) File.Delete(tmp); }
+            }
+            return File.ReadAllText(Paths.McpToken);
         }
 
         private static byte[] RandomBytes(int count)
@@ -1152,6 +1188,7 @@ namespace SeoWatcher
         public event Action<string> Crashed;
 
         private readonly object gate = new object();
+        private readonly object probeGate = new object();
         private int generation;
         private KillOnCloseJob job;
         private Process process;
@@ -1199,6 +1236,9 @@ namespace SeoWatcher
                 oldLog = log;
                 log = null;
             }
+            // The probe runs before the server job exists. Wait for its
+            // generation cancellation to reap it before a replacement starts.
+            lock (probeGate) { }
             if (oldJob != null)
             {
                 oldJob.KillAllAndWait(10000);
@@ -1213,6 +1253,15 @@ namespace SeoWatcher
         private bool IsCurrent(int gen)
         {
             lock (gate) { return gen == generation; }
+        }
+
+        private string ProbeEngine(int gen)
+        {
+            lock (probeGate)
+            {
+                if (!IsCurrent(gen)) return "hata: motor denemesi iptal edildi";
+                return Diag.WorkerdProbe(() => !IsCurrent(gen), 20000);
+            }
         }
 
         private void Run(Config cfg, int gen)
@@ -1238,7 +1287,8 @@ namespace SeoWatcher
                     if (!engineHasOwnCrt) throw new InvalidOperationException(RuntimeCrashMessage + vcProblem);
                 }
                 Diag.EnableEngineDumps();
-                string probe = Diag.WorkerdProbe();
+                string probe = ProbeEngine(gen);
+                if (!IsCurrent(gen)) return;
                 LauncherLog.Write("preflight: workerd " + probe);
                 if (!probe.StartsWith("ok"))
                 {
@@ -1271,7 +1321,7 @@ namespace SeoWatcher
                 LauncherLog.Write("port " + Port + (Port != cfg.Port ? " (" + cfg.Port + " is taken)" : "") + ", data " + Paths.PersistDir);
                 int migrateExit = RunAndWait(
                     "\"" + Paths.WranglerJs + "\" d1 migrations apply DB --local" +
-                    " -c \"" + Paths.MainConfig + "\"" +
+                    " -c \"" + Paths.RuntimeMainConfig + "\"" +
                     " --persist-to \"" + Paths.PersistDir + "\"",
                     Paths.MigrateLog, runJob, gen);
                 if (!IsCurrent(gen)) return;
@@ -1296,8 +1346,8 @@ namespace SeoWatcher
 
                     process = StartNode(
                         "\"" + Paths.WranglerJs + "\" dev" +
-                        " -c \"" + Paths.MainConfig + "\"" +
-                        " -c \"" + Paths.AuditConfig + "\"" +
+                        " -c \"" + Paths.RuntimeMainConfig + "\"" +
+                        " -c \"" + Paths.RuntimeAuditConfig + "\"" +
                         " --ip 127.0.0.1 --port " + Port +
                         " --persist-to \"" + Paths.PersistDir + "\"" +
                         " --env-file \"" + Paths.ServerEnv + "\"" +
@@ -1324,7 +1374,8 @@ namespace SeoWatcher
                         if (!IsCurrent(gen)) return;
                         if (runtimeCrashed)
                         {
-                            string after = Diag.WorkerdProbe();
+                            string after = ProbeEngine(gen);
+                            if (!IsCurrent(gen)) return;
                             LauncherLog.Write("workerd probe after crash: " + after);
                             LauncherLog.Write("event log: " + Diag.FaultingModules());
                             LauncherLog.Write("dumps: " + Diag.Dumps());
@@ -1386,6 +1437,10 @@ namespace SeoWatcher
 
         private void WriteServerEnv(string secret, string token)
         {
+            // Preserve the built layout so bundle, asset and migration paths
+            // remain relative, while Wrangler writes only in per-user storage.
+            CopyRuntimeTree(Path.Combine(Paths.AppDir, "dist"), Path.Combine(Paths.RuntimeDir, "dist"));
+            CopyRuntimeTree(Path.Combine(Paths.AppDir, "drizzle"), Path.Combine(Paths.RuntimeDir, "drizzle"));
             var sb = new StringBuilder();
             sb.Append("AUTH_MODE=local_noauth\n");
             sb.Append("BETTER_AUTH_SECRET=").Append(secret).Append('\n');
@@ -1409,17 +1464,33 @@ namespace SeoWatcher
             WriteAuditWorkerVars(env);
         }
 
+        private static void CopyRuntimeTree(string source, string target)
+        {
+            Directory.CreateDirectory(target);
+            foreach (string file in Directory.GetFiles(source))
+            {
+                string name = Path.GetFileName(file);
+                if (name.StartsWith(".dev.vars", StringComparison.OrdinalIgnoreCase) || name.StartsWith(".env", StringComparison.OrdinalIgnoreCase)) continue;
+                File.Copy(file, Path.Combine(target, name), true);
+            }
+            foreach (string dir in Directory.GetDirectories(source))
+            {
+                if (Path.GetFileName(dir) == ".wrangler") continue;
+                CopyRuntimeTree(dir, Path.Combine(target, Path.GetFileName(dir)));
+            }
+        }
+
         /// <summary>`wrangler dev --env-file` reaches only the primary worker.
         /// The audit worker is a separate worker with its own bindings, and it
         /// reads the same instance key (a saved PageSpeed key is sealed with
         /// it); without a copy next to its config the audit failed at the speed
         /// phase with "No instance encryption key". Wrangler reads `.dev.vars`
-        /// beside each worker's config, so write one there on every start. The
+        /// beside each worker's per-user config, so write one there on every start. The
         /// file holds the secrets, so it is restricted to the current user,
         /// and its contents are never logged.</summary>
         private static void WriteAuditWorkerVars(string env)
         {
-            string path = Path.Combine(Path.GetDirectoryName(Paths.AuditConfig), ".dev.vars");
+            string path = Path.Combine(Path.GetDirectoryName(Paths.RuntimeAuditConfig), ".dev.vars");
             File.WriteAllText(path, env, new UTF8Encoding(false));
             try
             {
@@ -1431,8 +1502,7 @@ namespace SeoWatcher
             }
             catch (Exception ex)
             {
-                // A per-user install is private already; the all-users one is
-                // not, so say so rather than fail the start.
+                // The workspace is inside the current user's data directory.
                 LauncherLog.Write("audit worker vars: could not restrict access (" + ex.GetType().Name + ")");
             }
         }
@@ -1504,7 +1574,7 @@ namespace SeoWatcher
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 RedirectStandardInput = true,
-                WorkingDirectory = Paths.AppDir,
+                WorkingDirectory = Paths.RuntimeDir,
                 StandardOutputEncoding = Encoding.UTF8,
                 StandardErrorEncoding = Encoding.UTF8,
             };

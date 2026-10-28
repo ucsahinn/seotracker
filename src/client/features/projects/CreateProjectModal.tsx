@@ -96,7 +96,6 @@ export function CreateProjectModal({
             }}
             placeholder="Acme Inc."
             maxLength={120}
-            autoFocus
             aria-invalid={nameError ? true : undefined}
             aria-describedby={
               nameError ? "create-project-name-error" : undefined

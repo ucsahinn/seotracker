@@ -4,6 +4,7 @@ import {
   clearServiceAccountTokenCache,
   getServiceAccountToken,
 } from "./googleServiceAccountToken";
+import { isGoogleCredentialRejection } from "./googleTokenErrors";
 
 const repo = vi.hoisted(() => ({
   get: vi.fn(),
@@ -45,6 +46,74 @@ beforeEach(() => {
 });
 
 describe("getServiceAccountToken", () => {
+  it.each([
+    [400, "invalid_grant", true],
+    [503, "temporarily_unavailable", false],
+    [503, "invalid_grant", false],
+  ])(
+    "ERR-03 classifies actual token responses (%s, %s) without exposing response details",
+    async (status, reason, rejected) => {
+      repo.getStatus.mockResolvedValue({ updatedAt: "failure-revision" });
+      repo.get.mockResolvedValue(account("failure-revision"));
+      vi.stubGlobal(
+        "fetch",
+        vi
+          .fn()
+          .mockResolvedValue(
+            Response.json(
+              { error: reason, error_description: "private detail" },
+              { status },
+            ),
+          ),
+      );
+      try {
+        const error = await getServiceAccountToken(
+          GSC_SERVICE_ACCOUNT_SCOPE,
+        ).catch((caught: unknown) => caught);
+        expect(isGoogleCredentialRejection(error)).toBe(rejected);
+        expect(error).toMatchObject({ status, reason });
+        expect(String(error)).not.toContain("private detail");
+      } finally {
+        vi.unstubAllGlobals();
+      }
+    },
+  );
+  it("ERR-02 aborts a stalled token mint after 30 seconds", async () => {
+    repo.getStatus.mockResolvedValue({ updatedAt: "timeout-revision" });
+    repo.get.mockResolvedValue(account("timeout-revision"));
+    vi.useFakeTimers();
+    vi.spyOn(AbortSignal, "timeout").mockImplementation((ms) => {
+      const controller = new AbortController();
+      setTimeout(
+        () => controller.abort(new DOMException("timeout", "TimeoutError")),
+        ms,
+      );
+      return controller.signal;
+    });
+    const endpoint = vi.fn<typeof fetch>(
+      (_url, init) =>
+        new Promise((_resolve, reject) => {
+          init?.signal?.addEventListener(
+            "abort",
+            () => reject(init.signal?.reason),
+            { once: true },
+          );
+        }),
+    );
+    vi.stubGlobal("fetch", endpoint);
+    try {
+      const assertion = expect(
+        getServiceAccountToken(GSC_SERVICE_ACCOUNT_SCOPE),
+      ).rejects.toMatchObject({ name: "TimeoutError" });
+      await vi.advanceTimersByTimeAsync(30_001);
+      await assertion;
+      expect(endpoint).toHaveBeenCalledOnce();
+    } finally {
+      vi.useRealTimers();
+      vi.restoreAllMocks();
+      vi.unstubAllGlobals();
+    }
+  });
   it("does not let a mint started before a credential replacement refill the cache", async () => {
     const endpoint = controlledTokenEndpoint();
     repo.getStatus.mockResolvedValue({ updatedAt: "rev1" });

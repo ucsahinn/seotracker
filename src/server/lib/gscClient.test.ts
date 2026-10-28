@@ -1,4 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { createGscClient as clientForRegression } from "./gscClient";
+import { googleFailureReason } from "@/server/features/google/googleFailureReason";
+import { googleAppError as appErrorForRegression } from "./errors";
 
 const mocks = vi.hoisted(() => ({
   getAccessToken: vi.fn(),
@@ -25,6 +28,24 @@ function jsonResponse(body: unknown, status = 200) {
 }
 
 describe("gscClient", () => {
+  it.each([
+    new TypeError("fetch failed"),
+    new DOMException("timeout", "TimeoutError"),
+  ])(
+    "ERR-03 does not request reconnection for token outages: %s",
+    async (cause) => {
+      mocks.hasServiceAccount.mockResolvedValue(true);
+      mocks.getServiceAccountToken.mockRejectedValueOnce(cause);
+      const error = await clientForRegression({ userId: "u" })
+        .listSites()
+        .catch((caught: unknown) => caught);
+      expect(googleFailureReason(error)).toBe(
+        cause.name === "TimeoutError" ? "timeout" : "unknown",
+      );
+      expect(appErrorForRegression(error)?.code).toBe("UPSTREAM_UNAVAILABLE");
+      expect(mocks.fetch).not.toHaveBeenCalled();
+    },
+  );
   beforeEach(() => {
     mocks.getAccessToken.mockReset();
     mocks.getAccessToken.mockResolvedValue({ accessToken: "tok_123" });
@@ -273,8 +294,8 @@ describe("gscClient", () => {
     expect(clientError.message).toContain("Network connection lost.");
   });
 
-  it("throws GscTokenError when no access token can be minted", async () => {
-    mocks.getAccessToken.mockRejectedValue(new Error("revoked"));
+  it("ERR-03 still requires credential repair for a structured invalid grant", async () => {
+    mocks.getAccessToken.mockRejectedValue({ error: "invalid_grant" });
     const { createGscClient, GscTokenError } = await import("./gscClient");
     await expect(
       createGscClient({ userId: "u1" }).listSites(),

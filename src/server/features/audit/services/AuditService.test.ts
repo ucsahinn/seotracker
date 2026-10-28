@@ -65,6 +65,27 @@ beforeEach(() => {
 // The usage read happens after this audit's own row is inserted, so the count
 // already includes it: exactly the limit passes, one more refuses.
 describe("AuditService.startAudit limits", () => {
+  it("ERR-01 preserves tracking when an accepted create cannot be confirmed stopped", async () => {
+    mocks.workflowCreate.mockRejectedValueOnce(new Error("response lost"));
+    mocks.workflowGet.mockResolvedValueOnce({
+      terminate: vi.fn().mockRejectedValue(new Error("unavailable")),
+      status: vi.fn().mockRejectedValue(new Error("unavailable")),
+    });
+    await expect(start()).rejects.toMatchObject({ code: "CONFLICT" });
+    expect(mocks.createAudit).toHaveBeenCalledOnce();
+    expect(mocks.deleteAuditForProject).not.toHaveBeenCalled();
+  });
+
+  it("ERR-01 rolls back an accepted create only after confirmed termination", async () => {
+    const failure = new Error("response lost");
+    mocks.workflowCreate.mockRejectedValueOnce(failure);
+    mocks.workflowGet.mockResolvedValueOnce({
+      terminate: vi.fn().mockResolvedValue(undefined),
+    });
+    await expect(start()).rejects.toBe(failure);
+    expect(mocks.deleteAuditForProject).toHaveBeenCalledOnce();
+  });
+
   it("allows the maximum number of running audits and refuses one more", async () => {
     mocks.getAuditUsageForOrganization.mockResolvedValue({
       runningCount: AUDIT_LIMITS.maxRunningAudits,

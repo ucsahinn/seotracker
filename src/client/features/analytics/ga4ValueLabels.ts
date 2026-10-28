@@ -1,6 +1,6 @@
 import { deviceLabel } from "@/client/features/search-performance/deviceShare";
 import { formatRegionName } from "@/client/lib/format";
-import { getLocale } from "@/shared/i18n";
+import { getLocale, t } from "@/shared/i18n";
 
 /**
  * GA4 dimension values, in the UI's language.
@@ -12,36 +12,35 @@ import { getLocale } from "@/shared/i18n";
  * what Google sent. Anything not listed passes through unchanged.
  *
  * In English the raw value is already Google's own name, so it is shown
- * as is and the Turkish maps below are skipped (hence `i18n-ignore`: they
- * are Turkish-only, not catalog keys).
+ * as is. Other locales translate the source labels at render time.
  */
 
 /** GA4's default channel groups. */
 const CHANNEL_LABELS: Record<string, string> = {
   "Organic Search": "Organik arama",
-  Direct: "Doğrudan", // i18n-ignore
-  Referral: "Yönlendirme", // i18n-ignore
+  Direct: "Doğrudan",
+  Referral: "Yönlendirme trafiği",
   "Organic Social": "Organik sosyal",
-  "Paid Search": "Ücretli arama", // i18n-ignore
-  "Paid Social": "Ücretli sosyal", // i18n-ignore
+  "Paid Search": "Ücretli arama",
+  "Paid Social": "Ücretli sosyal",
   Email: "E-posta",
-  Display: "Görüntülü reklam", // i18n-ignore
-  Affiliates: "Satış ortakları", // i18n-ignore
+  Display: "Görüntülü reklam",
+  Affiliates: "Satış ortakları",
   "Organic Video": "Organik video",
-  "Paid Video": "Ücretli video", // i18n-ignore
-  "Organic Shopping": "Organik alışveriş", // i18n-ignore
-  "Paid Shopping": "Ücretli alışveriş", // i18n-ignore
-  "Paid Other": "Diğer ücretli", // i18n-ignore
-  "Cross-network": "Ağlar arası", // i18n-ignore
+  "Paid Video": "Ücretli video",
+  "Organic Shopping": "Organik alışveriş",
+  "Paid Shopping": "Ücretli alışveriş",
+  "Paid Other": "Diğer ücretli",
+  "Cross-network": "Ağlar arası",
   Audio: "Ses",
   SMS: "SMS",
-  "Mobile Push Notifications": "Mobil anlık bildirim", // i18n-ignore
-  Unassigned: "Atanmamış", // i18n-ignore
+  "Mobile Push Notifications": "Mobil anlık bildirim",
+  Unassigned: "Atanmamış",
 };
 
 const VISITOR_LABELS: Record<string, string> = {
   new: "Yeni",
-  returning: "Geri dönen", // i18n-ignore
+  returning: "Geri dönen",
 };
 
 /*
@@ -77,7 +76,7 @@ function countryLabel(value: string): string {
 
 function fromMap(labels: Record<string, string>, value: string): string {
   if (getLocale() === "en") return value;
-  return labels[value] ?? value;
+  return labels[value] ? t(labels[value]) : value;
 }
 
 export function ga4ValueLabel(field: string, value: string): string {

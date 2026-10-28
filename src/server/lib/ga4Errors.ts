@@ -63,6 +63,7 @@ export class Ga4ReportError extends Error {
     public readonly upstream: {
       status: number;
       reason: string | null;
+      api?: "Admin" | "Data";
     } | null = null,
   ) {
     super(message);

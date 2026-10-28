@@ -117,12 +117,13 @@ type HistoryAudit = {
 /** What each audit measured: the context its own breakdown is built with. */
 async function measurementContexts(
   chosen: HistoryAudit[],
-  googleInspected: boolean | null,
+  googleInspected: (auditId: string) => Promise<boolean | null>,
 ): Promise<Map<string, CheckContext>> {
   const ids = chosen.map((audit) => audit.id);
-  const [scored, facts] = await Promise.all([
+  const [scored, facts, inspected] = await Promise.all([
     getAuditIdsWithLighthouseScores(ids),
     Promise.all(ids.map((id) => AuditSiteFactsRepository.getSiteFacts(id))),
+    Promise.all(ids.map(googleInspected)),
   ]);
   return new Map(
     chosen.map((audit, index) => [
@@ -131,7 +132,7 @@ async function measurementContexts(
         pagesCrawled: audit.pagesCrawled,
         hasLighthouse: scored.has(audit.id),
         siteFacts: facts[index],
-        googleInspected,
+        googleInspected: inspected[index],
         analyticsCompared: audit.analyticsCompared,
       },
     ]),
@@ -141,7 +142,7 @@ async function measurementContexts(
 async function scoreHistory(
   projectId: string,
   current: { id: string; startUrl: string; startedAt: string },
-  googleInspected: Promise<boolean | null>,
+  googleInspected: (auditId: string) => Promise<boolean | null>,
 ) {
   const key = siteKey(current.startUrl);
   const audits = await AuditRepository.getAuditsByProject(projectId);
@@ -160,7 +161,7 @@ async function scoreHistory(
   ];
   const [summaries, contexts] = await Promise.all([
     getIssueTypeSummaries(chosen.map((a) => a.id)),
-    googleInspected.then((inspected) => measurementContexts(chosen, inspected)),
+    measurementContexts(chosen, googleInspected),
   ]);
   const findingsById = new Map(
     chosen.map((audit) => [
@@ -399,9 +400,18 @@ export async function getAuditInsights(input: {
   if (!audit) throw new AppError("NOT_FOUND");
 
   const startPage = await getStartPageDetails(audit.id, audit.startUrl);
-  const googleInspected = getIndexCoverage(input)
-    .then((coverage) => coverage.asked > 0)
-    .catch(() => null);
+  // At most HISTORY_SIZE audit populations; reuse the selected audit's read.
+  const inspections = new Map<string, Promise<boolean | null>>();
+  const googleInspected = (auditId: string) => {
+    let pending = inspections.get(auditId);
+    if (!pending) {
+      pending = getIndexCoverage({ projectId: input.projectId, auditId })
+        .then((coverage) => coverage.asked > 0)
+        .catch(() => null);
+      inspections.set(auditId, pending);
+    }
+    return pending;
+  };
   const [scores, traffic, measured, analyticsTags, schemaTypes, inspected] =
     await Promise.all([
       scoreHistory(input.projectId, audit, googleInspected),
@@ -409,7 +419,7 @@ export async function getAuditInsights(input: {
       startPageSpeed(audit.startUrl, audit.id, startPage?.id ?? null),
       getAnalyticsTagCounts(audit.id),
       getSchemaTypeCounts(audit.id),
-      googleInspected,
+      googleInspected(audit.id),
     ]);
 
   return {

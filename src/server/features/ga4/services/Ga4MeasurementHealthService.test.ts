@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { makeGa4Connection } from "./ga4-test-fixtures";
 import { Ga4MeasurementHealthService } from "./Ga4MeasurementHealthService";
+import { Ga4AdminApiError } from "@/server/lib/ga4Errors";
+import { googleAppError } from "@/server/lib/errors";
 
 const mocks = vi.hoisted(() => ({
   getByProjectId: vi.fn(),
@@ -25,6 +27,25 @@ vi.mock("@/server/lib/ga4Client", () => ({
 }));
 
 describe("Ga4MeasurementHealthService", () => {
+  it("ERR-04 preserves disabled Admin API identity through measurement health and direct translation", async () => {
+    const upstream = new Ga4AdminApiError(403, "disabled", "SERVICE_DISABLED");
+    mocks.listDataStreams.mockRejectedValueOnce(upstream);
+    const error = await Ga4MeasurementHealthService.getMeasurementHealth(
+      "project_1",
+    ).catch((caught: unknown) => caught);
+    expect(error).toMatchObject({
+      code: "ga4_upstream_unavailable",
+      upstream: { status: 403, reason: "SERVICE_DISABLED" },
+    });
+    expect(googleAppError(upstream)?.message).toContain("Analytics Admin API");
+    expect(googleAppError(error)?.message).toContain("Analytics Admin API");
+    mocks.listDataStreams.mockRejectedValueOnce(
+      new Ga4AdminApiError(403, "denied", "PERMISSION_DENIED"),
+    );
+    await expect(
+      Ga4MeasurementHealthService.getMeasurementHealth("project_1"),
+    ).rejects.toMatchObject({ code: "ga4_property_inaccessible" });
+  });
   beforeEach(() => {
     mocks.getByProjectId.mockResolvedValue(makeGa4Connection());
     mocks.listDataStreams.mockResolvedValue({

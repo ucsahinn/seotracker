@@ -11,6 +11,7 @@ import {
 import { GSC_OAUTH_PROVIDER_ID, GSC_SERVICE_ACCOUNT_SCOPE } from "@/shared/gsc";
 import { GscApiError, GscTokenError } from "./gscErrors";
 import { fetchWithRetry } from "./fetchRetry";
+import { preserveGoogleTokenFailure } from "./googleTokenErrors";
 import { t } from "@/shared/i18n";
 
 export { GscApiError, GscTokenError } from "./gscErrors";
@@ -220,6 +221,7 @@ export function createGscClient(opts: {
       try {
         return await getServiceAccountToken(GSC_SERVICE_ACCOUNT_SCOPE);
       } catch (error) {
+        preserveGoogleTokenFailure(error);
         throw new GscTokenError(
           t(
             "Hizmet hesabı Search Console'a bağlanamadı. Anahtar dosyasını yeniden yükleyin.",
@@ -245,6 +247,7 @@ export function createGscClient(opts: {
         },
       });
     } catch (error) {
+      preserveGoogleTokenFailure(error);
       throw new GscTokenError(
         t(
           "Search Console erişim anahtarı alınamadı (yetki iptal edilmiş ya da süresi dolmuş olabilir).",

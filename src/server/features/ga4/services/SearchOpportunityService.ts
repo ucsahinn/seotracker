@@ -154,7 +154,18 @@ async function readAnalytics(
       offset: 0,
       channel: "organic_search",
     });
-    return { state: "connected" as const, report };
+    return {
+      state: "connected" as const,
+      report: {
+        ...report,
+        reportMetadata: {
+          ...report.reportMetadata,
+          hasLimitedData:
+            report.reportMetadata.hasLimitedData ||
+            report.totalRowCount > report.rows.length,
+        },
+      },
+    };
   } catch (error) {
     if (error instanceof Ga4ReportError) {
       return { state: "unavailable" as const, code: error.code };
@@ -267,8 +278,21 @@ async function getOpportunities(
     (totals) => totals.keyEvents !== null && totals.keyEvents > 0,
   );
   const minSessions = scaleThreshold(VALUE_MIN_SESSIONS_28D, days);
+  const totalGain = result.pages.reduce((sum, page) => sum + page.gain, 0);
+  const monthlyPages = allocateGain(
+    result.pages.map((page) => page.gain),
+    perMonth(totalGain, days),
+  );
 
-  const candidates: OpportunityRow[] = result.pages.map((page) => {
+  const candidates: OpportunityRow[] = result.pages.map((page, index) => {
+    const gainPerMonth = monthlyPages[index];
+    const monthlyQueries = allocateGain(
+      [
+        ...page.queries.map((query) => query.allocatedGain ?? 0),
+        page.otherQueryGain ?? 0,
+      ],
+      gainPerMonth,
+    );
     const normalizedPage = normalizePageKey(page.page);
     const totals = normalizedPage ? ga4ByPage.get(normalizedPage) : undefined;
     const ga4: Ga4PageValue | null = totals
@@ -285,9 +309,14 @@ async function getOpportunities(
       : null;
     return {
       ...page,
+      queries: page.queries.map((query, queryIndex) => ({
+        ...query,
+        gainPerMonth: monthlyQueries[queryIndex],
+      })),
+      otherQueryGainPerMonth: monthlyQueries[page.queries.length],
       normalizedPage,
       band: bandOf(page.position),
-      gainPerMonth: perMonth(page.gain, days),
+      gainPerMonth,
       joinStatus: ga4 ? "joined" : "gsc_only",
       ga4,
       value:
@@ -314,7 +343,6 @@ async function getOpportunities(
     page2: workTotals("page2"),
     deep: workTotals("deep"),
   };
-  const totalGain = candidates.reduce((sum, row) => sum + row.gain, 0);
   const monthlyWork = allocateGain(
     WORK_KINDS.map((kind) => byWork[kind].gain),
     perMonth(totalGain, days),

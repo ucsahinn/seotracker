@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { UpstreamNetworkError } from "@/server/lib/fetchRetry";
+import { googleFailureReason } from "@/server/features/google/googleFailureReason";
 import {
   Ga4AdminApiError,
   Ga4DataApiError,
@@ -20,7 +22,19 @@ const MALFORMED = "Google Analytics returned an invalid report.";
  */
 export function mapGa4ReportError(error: unknown): never {
   if (error instanceof Ga4ReportError) throw error;
+  if (error instanceof UpstreamNetworkError) {
+    throw new Ga4ReportError("ga4_upstream_unreachable", error.message, null, {
+      status: 0,
+      reason: error.reason === "timeout" ? "TIMEOUT" : null,
+    });
+  }
   if (error instanceof Ga4TokenError) {
+    if (googleFailureReason(error) !== "invalid_grant") {
+      throw new Ga4ReportError(
+        "ga4_upstream_unreachable",
+        "Google token acquisition is temporarily unavailable. Retry shortly.",
+      );
+    }
     throw new Ga4ReportError("ga4_reconnect_required", RECONNECT);
   }
   if (
@@ -37,7 +51,11 @@ export function mapGa4ReportError(error: unknown): never {
 
   const upstream = {
     status: error.status,
-    reason: error instanceof Ga4DataApiError ? error.upstreamReason : null,
+    reason: error.upstreamReason,
+    api:
+      error instanceof Ga4AdminApiError
+        ? ("Admin" as const)
+        : ("Data" as const),
   };
   const fail = (
     code: ConstructorParameters<typeof Ga4ReportError>[0],
@@ -59,10 +77,11 @@ export function mapGa4ReportError(error: unknown): never {
     case 401:
       return fail("ga4_reconnect_required", RECONNECT);
     case 403:
-      return upstream.reason === "SERVICE_DISABLED"
+      return upstream.reason === "SERVICE_DISABLED" ||
+        upstream.reason === "API_DISABLED"
         ? fail(
             "ga4_upstream_unavailable",
-            "The Google Analytics Data API is not enabled for this OAuth application.",
+            `The Google Analytics ${upstream.api} API is not enabled. Enable it in Google Cloud Console and retry.`,
           )
         : fail(
             "ga4_property_inaccessible",

@@ -15,6 +15,7 @@ import { gscArchiveState, gscConnections, gscQueryDaily } from "@/db/schema";
 import { archiveCoverage } from "./archiveCoverage";
 import { replaceDailyRows } from "./replaceDailyRows";
 import { addIsoDays } from "@/shared/dataFreshness";
+import { getBackfillSnapshot } from "./gscBackfillSnapshot";
 
 export type GscDailyRow = {
   date: string;
@@ -439,6 +440,7 @@ async function getCoverage(input: {
 }
 
 export const GscHistoryRepository = {
+  getBackfillSnapshot,
   replaceDailyRows,
   markCoverage,
   getCoverage,

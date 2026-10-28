@@ -17,6 +17,7 @@ import {
 } from "@/server/lib/googleServiceAccountToken";
 import { GA4_OAUTH_PROVIDER_ID, GA4_SERVICE_ACCOUNT_SCOPE } from "@/shared/ga4";
 import { t } from "@/shared/i18n";
+import { preserveGoogleTokenFailure } from "./googleTokenErrors";
 import {
   fetchWithRetry,
   networkErrorReason,
@@ -32,6 +33,8 @@ const MAX_ACCOUNT_SUMMARY_PAGES = 100;
 /** Request budget per Admin list: 5 pages of 200 items. */
 const MAX_ADMIN_LIST_PAGES = 5;
 const MAX_ERROR_BODY_LENGTH = 8_000;
+/** Per-attempt deadline; token acquisition has its own 30 second deadline. */
+const GA4_REQUEST_TIMEOUT_MS = 30_000;
 const propertyIdSchema = z.string().regex(/^properties\/\d+$/);
 const dataStreamNameSchema = z
   .string()
@@ -151,6 +154,7 @@ async function getGa4AccessToken(opts: {
     try {
       return await getServiceAccountToken(GA4_SERVICE_ACCOUNT_SCOPE);
     } catch (error) {
+      preserveGoogleTokenFailure(error);
       throw new Ga4TokenError(
         t("Hizmet hesabı Google Analytics için erişim anahtarı alamadı."),
         error,
@@ -170,6 +174,7 @@ async function getGa4AccessToken(opts: {
       },
     });
   } catch (error) {
+    preserveGoogleTokenFailure(error);
     throw new Ga4TokenError(
       t(
         "Google Analytics erişim anahtarı alınamadı (yetki iptal edilmiş ya da süresi dolmuş olabilir).",
@@ -227,7 +232,10 @@ export function createGa4AdminClient(opts: {
       response = await fetchWithRetry(
         url,
         { headers: { Authorization: `Bearer ${token}` } },
-        { service: "Google Analytics Admin API" },
+        {
+          service: "Google Analytics Admin API",
+          timeoutMs: GA4_REQUEST_TIMEOUT_MS,
+        },
       );
     } catch (error) {
       if (isAbortError(error)) throw error;
@@ -559,7 +567,10 @@ export function createGa4DataClient(opts: {
               },
               body: JSON.stringify(request),
             },
-            { service: "Google Analytics Data API" },
+            {
+              service: "Google Analytics Data API",
+              timeoutMs: GA4_REQUEST_TIMEOUT_MS,
+            },
           );
         } catch (error) {
           if (isAbortError(error)) throw error;

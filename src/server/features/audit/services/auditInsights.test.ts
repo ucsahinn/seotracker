@@ -1,6 +1,11 @@
 import { GscService } from "@/server/features/gsc/services/GscService";
 import { describe, expect, it, vi } from "vitest";
-import { auditIssues, audits } from "@/db/schema";
+import {
+  auditIssues,
+  auditPages,
+  audits,
+  gscUrlInspections,
+} from "@/db/schema";
 import type * as AuditRepositoryModule from "@/server/features/audit/repositories/AuditRepository";
 import { AuditSiteFactsRepository } from "@/server/features/audit/repositories/AuditSiteFactsRepository";
 import { unknownFacts } from "@/server/lib/audit/site-probes/site-facts-fixture";
@@ -17,9 +22,6 @@ vi.mock("@/server/features/gsc/services/GscService", () => ({
   GscService: {
     getPerformance: vi.fn(async () => Promise.reject(new Error())),
   },
-}));
-vi.mock("@/server/features/gsc/services/GscIndexCoverageService", () => ({
-  getIndexCoverage: vi.fn(async () => Promise.reject(new Error())),
 }));
 vi.mock("@/server/lib/r2", () => ({ getJsonFromR2: vi.fn() }));
 // findFirst goes through drizzle's `get`, which the test database does not
@@ -61,6 +63,44 @@ const issue = (auditId: string, issueType: string, pageId: string) => ({
 });
 
 describe("getAuditInsights changes", () => {
+  it("NUM-03: does not copy the selected audit's Google measurement into earlier audits", async () => {
+    await testDb.db
+      .insert(audits)
+      .values([
+        audit("google-old", "2026-10-25T00:00:00Z"),
+        audit("google-new", "2026-10-26T00:00:00Z"),
+      ]);
+    await testDb.db
+      .insert(auditIssues)
+      .values(issue("google-new", "google-blocked-by-meta", "new-page"));
+    await testDb.db.insert(auditPages).values([
+      { id: "old-page", auditId: "google-old", url: "https://example.com/old" },
+      { id: "new-page", auditId: "google-new", url: "https://example.com/new" },
+    ]);
+    await testDb.db.insert(gscUrlInspections).values({
+      projectId: "p1",
+      url: "https://example.com/new",
+      verdict: "FAIL",
+    });
+    const newer = await getAuditInsights({
+      projectId: "p1",
+      auditId: "google-new",
+    });
+    expect(newer.googleInspected).toBe(true);
+    expect(newer.changes).toMatchObject({ added: [], partial: true });
+    const before = newer.history.find(
+      (point) => point.auditId === "google-old",
+    );
+    const after = newer.history.find((point) => point.auditId === "google-new");
+    expect(after?.score).toBe(before?.score);
+    expect(after?.partial).toBe(true);
+    const older = await getAuditInsights({
+      projectId: "p1",
+      auditId: "google-old",
+    });
+    expect(older.googleInspected).toBe(false);
+  });
+
   /*
    * The older audit predates the site facts, so it never ran
    * twitter-card-missing: failing it now is not a new problem, and the

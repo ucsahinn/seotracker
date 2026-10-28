@@ -4,6 +4,32 @@ import { fetchWithRetry, UpstreamNetworkError } from "./fetchRetry";
 const fetchMock = vi.fn<typeof fetch>();
 const options = { service: "Test API", retryDelaysMs: [0, 0] };
 
+it("ERR-02 preserves caller cancellation when adding a request deadline", async () => {
+  stub();
+  const controller = new AbortController();
+  fetchMock.mockImplementation(
+    (_url, init) =>
+      new Promise((_resolve, reject) => {
+        init?.signal?.addEventListener(
+          "abort",
+          () => reject(init.signal?.reason),
+          { once: true },
+        );
+      }),
+  );
+  const result = fetchWithRetry(
+    "https://x.test/",
+    { signal: controller.signal },
+    { ...options, timeoutMs: 30_000 },
+  );
+  const assertion = expect(result).rejects.toMatchObject({
+    name: "AbortError",
+  });
+  controller.abort();
+  await assertion;
+  expect(fetchMock).toHaveBeenCalledOnce();
+});
+
 afterEach(() => vi.unstubAllGlobals());
 
 function stub() {

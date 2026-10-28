@@ -1,5 +1,5 @@
 import { searchFold } from "@/client/lib/searchFold";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { Check, Search } from "lucide-react";
 import { formatRegionName } from "@/shared/format";
 import { LOCATION_OPTIONS } from "@/shared/keyword-locations";
@@ -41,6 +41,7 @@ export function LocationSelect({
   options = LOCATION_OPTIONS,
   className = "w-full",
 }: Props) {
+  const listId = useId();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -144,6 +145,15 @@ export function LocationSelect({
             <input
               ref={inputRef}
               type="text"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-expanded={open}
+              aria-controls={listId}
+              aria-activedescendant={
+                filtered[activeIndex]
+                  ? `${listId}-${filtered[activeIndex].code}`
+                  : undefined
+              }
               className="grow min-w-0 bg-transparent text-sm outline-none placeholder:text-muted"
               placeholder={t("Ülke ara")}
               aria-label={t("Ülke ara")}
@@ -158,6 +168,7 @@ export function LocationSelect({
 
           <ul
             ref={listRef}
+            id={listId}
             role="listbox"
             className="menu mt-2 max-h-64 w-full flex-nowrap overflow-y-auto p-0"
           >
@@ -172,6 +183,7 @@ export function LocationSelect({
                   <li key={option.code} role="presentation">
                     <div
                       role="option"
+                      id={`${listId}-${option.code}`}
                       aria-selected={isSelected}
                       className={`flex w-full cursor-pointer items-center ${index === activeIndex ? "menu-focus" : ""}`}
                       onClick={() => select(option)}

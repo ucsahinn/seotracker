@@ -6,6 +6,7 @@ import {
 import { GscApiError, GscTokenError } from "@/server/lib/gscErrors";
 import { UpstreamNetworkError } from "@/server/lib/fetchRetry";
 import { z } from "zod";
+import { isGoogleCredentialRejection } from "@/server/lib/googleTokenErrors";
 
 export type GoogleFailureReason =
   | "invalid_grant"
@@ -23,7 +24,9 @@ const errorBody = z.object({
 /** Only allowlisted codes cross the browser boundary, never upstream text. */
 export function googleFailureReason(error: unknown): GoogleFailureReason {
   if (error instanceof Ga4TokenError || error instanceof GscTokenError)
-    return "invalid_grant";
+    return error.cause === undefined || isGoogleCredentialRejection(error.cause)
+      ? "invalid_grant"
+      : googleFailureReason(error.cause);
   if (
     error instanceof Error &&
     (error.name === "TimeoutError" || error.name === "AbortError")

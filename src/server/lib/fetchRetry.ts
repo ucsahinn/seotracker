@@ -81,7 +81,14 @@ export async function fetchWithRetry(
       const response = await fetch(url, {
         ...init,
         ...(options.timeoutMs
-          ? { signal: AbortSignal.timeout(options.timeoutMs) }
+          ? {
+              signal: init.signal
+                ? AbortSignal.any([
+                    init.signal,
+                    AbortSignal.timeout(options.timeoutMs),
+                  ])
+                : AbortSignal.timeout(options.timeoutMs),
+            }
           : {}),
       });
       if (!RETRYABLE_STATUSES.has(response.status) || attempt === attempts) {

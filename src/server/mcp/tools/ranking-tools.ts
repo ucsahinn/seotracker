@@ -11,6 +11,7 @@
  * surface a strictly smaller product than the screens beside it.
  */
 import { z } from "zod";
+import { gscHistoryWindow } from "@/shared/dataFreshness";
 import type { CannibalizedQuery } from "@/server/features/gsc/cannibalization";
 import { getCannibalization } from "@/server/features/gsc/services/CannibalizationService";
 import { GscConnectionRepository } from "@/server/features/gsc/repositories/GscConnectionRepository";
@@ -20,12 +21,6 @@ import { mcpResponse } from "@/server/mcp/formatters";
 import { optionalMetaOutputSchema } from "@/server/mcp/output-schemas";
 import { withMcpProjectAuth } from "@/server/mcp/project-auth";
 import { projectIdSchema } from "@/server/mcp/schemas";
-
-function sinceDate(days: number): string {
-  const since = new Date();
-  since.setUTCDate(since.getUTCDate() - days);
-  return since.toISOString().slice(0, 10);
-}
 
 function round(value: number | null | undefined, digits = 1): number | null {
   if (value == null || !Number.isFinite(value)) return null;
@@ -81,6 +76,8 @@ export const getRankingHistoryTool = {
     inputSchema: historyInputSchema,
     outputSchema: {
       days: z.number(),
+      startDate: z.string(),
+      endDate: z.string(),
       rows: z.array(z.record(z.string(), z.unknown())),
       ...optionalMetaOutputSchema,
     },
@@ -92,6 +89,7 @@ export const getRankingHistoryTool = {
   },
   handler: withMcpProjectAuth(async (args: HistoryArgs, context) => {
     const days = args.days ?? 90;
+    const range = gscHistoryWindow(days);
     const meta = buildProjectMeta(
       context,
       args.projectId,
@@ -102,7 +100,8 @@ export const getRankingHistoryTool = {
       const rows = await GscHistoryService.getQueryHistory({
         projectId: args.projectId,
         query: args.query,
-        since: sinceDate(days),
+        since: range.startDate,
+        until: range.endDate,
       });
       const text =
         rows.length === 0
@@ -114,7 +113,11 @@ export const getRankingHistoryTool = {
                   `- ${row.date}  pos:${round(row.position)}  clicks:${row.clicks}  impressions:${row.impressions}`,
               )
               .join("\n");
-      return mcpResponse({ text, meta, structuredContent: { days, rows } });
+      return mcpResponse({
+        text,
+        meta,
+        structuredContent: { days, ...range, rows },
+      });
     }
 
     /*
@@ -130,7 +133,8 @@ export const getRankingHistoryTool = {
     );
     const rows = await GscHistoryService.getTrackedQueries({
       projectId: args.projectId,
-      since: sinceDate(days),
+      since: range.startDate,
+      until: range.endDate,
       limit: args.limit ?? 25,
     });
     const text =
@@ -145,7 +149,11 @@ export const getRankingHistoryTool = {
                 `- ${row.query}  pos:${round(row.position)}  clicks:${row.clicks}  impressions:${row.impressions}  days:${row.days} (${row.firstDate} to ${row.lastDate})`,
             )
             .join("\n");
-    return mcpResponse({ text, meta, structuredContent: { days, rows } });
+    return mcpResponse({
+      text,
+      meta,
+      structuredContent: { days, ...range, rows },
+    });
   }),
 };
 

@@ -4,6 +4,7 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
   type RefObject,
 } from "react";
+import { createPortal } from "react-dom";
 import { Sidebar } from "@/client/components/Sidebar";
 import { t } from "@/shared/i18n";
 
@@ -42,6 +43,7 @@ export function MobileSidebarDrawer({
   /** The button that opened the drawer; gets focus back on close. */
   openerRef: RefObject<HTMLButtonElement | null>;
 }) {
+  const root = useRef<HTMLDivElement>(null);
   const panel = useRef<HTMLDivElement>(null);
   // Read through a ref so a new onClose identity on each parent render does
   // not re-run the effect below and steal focus back to the panel.
@@ -51,21 +53,31 @@ export function MobileSidebarDrawer({
   useEffect(() => {
     if (!open) return;
     const opener = openerRef.current;
+    const inerted: Element[] = [];
+    for (const sibling of document.body.children) {
+      if (sibling === root.current) continue;
+      if (sibling.querySelector("[data-sonner-toaster]")) continue;
+      if (sibling.hasAttribute("inert")) continue;
+      sibling.setAttribute("inert", "");
+      inerted.push(sibling);
+    }
     panel.current?.focus();
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onCloseRef.current();
+      if (event.key === "Escape" && !event.defaultPrevented)
+        onCloseRef.current();
     };
     document.addEventListener("keydown", closeOnEscape);
     return () => {
       document.removeEventListener("keydown", closeOnEscape);
+      for (const sibling of inerted) sibling.removeAttribute("inert");
       opener?.focus();
     };
   }, [open, openerRef]);
 
   if (!open) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 md:hidden">
+  return createPortal(
+    <div ref={root} className="fixed inset-0 z-50 md:hidden">
       <button
         type="button"
         tabIndex={-1}
@@ -85,6 +97,7 @@ export function MobileSidebarDrawer({
       >
         <Sidebar projectId={projectId} onNavigate={onClose} onClose={onClose} />
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

@@ -9,6 +9,7 @@ import {
 import { GscApiError, GscTokenError } from "@/server/lib/gscErrors";
 import { UpstreamNetworkError } from "@/server/lib/fetchRetry";
 import { t } from "@/shared/i18n";
+import { googleFailureReason } from "@/server/features/google/googleFailureReason";
 
 export class AppError extends Error {
   constructor(
@@ -72,11 +73,18 @@ export function googleAppError(error: unknown): AppError | null {
         ? unreachableCopy(error.message.replace(/^.*?reached: /, ""))
         : ga4StatusCopy(
             error.status,
-            error instanceof Ga4DataApiError ? error.upstreamReason : null,
+            error.upstreamReason,
+            error instanceof Ga4AdminApiError ? "Admin" : "Data",
           ),
     );
   }
   if (error instanceof GscTokenError || error instanceof Ga4TokenError) {
+    if (googleFailureReason(error) !== "invalid_grant") {
+      return new AppError(
+        "UPSTREAM_UNAVAILABLE",
+        unreachableCopy(googleFailureReason(error)),
+      );
+    }
     // Already a translated, hand-written sentence (gscClient/ga4Client).
     return new AppError("UPSTREAM_UNAVAILABLE", error.message);
   }
@@ -131,8 +139,19 @@ function gscStatusCopy(status: number): string {
   );
 }
 
-function ga4StatusCopy(status: number, reason: string | null): string {
-  if (status === 403 && reason === "SERVICE_DISABLED") {
+function ga4StatusCopy(
+  status: number,
+  reason: string | null,
+  api: "Admin" | "Data" = "Data",
+): string {
+  if (
+    status === 403 &&
+    (reason === "SERVICE_DISABLED" || reason === "API_DISABLED")
+  ) {
+    if (api === "Admin")
+      return t(
+        'Google Analytics Admin API bu Google Cloud projesinde kapalı. Google Cloud Console\'da "Google Analytics Admin API"yi etkinleştirip tekrar deneyin.',
+      );
     return t(
       'Google Analytics Data API bu Google Cloud projesinde kapalı. Google Cloud Console\'da "Google Analytics Data API"yi etkinleştirip tekrar deneyin.',
     );
@@ -183,7 +202,11 @@ function ga4ReportCopy(error: Ga4ReportError): string {
     return unreachableCopy(error.message.replace(/^.*?reached: /, ""));
   }
   if (error.upstream) {
-    return ga4StatusCopy(error.upstream.status, error.upstream.reason);
+    return ga4StatusCopy(
+      error.upstream.status,
+      error.upstream.reason,
+      error.upstream.api,
+    );
   }
   if (error.code === "ga4_reconnect_required") return ga4StatusCopy(401, null);
   if (error.code === "ga4_property_inaccessible") {

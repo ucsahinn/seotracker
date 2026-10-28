@@ -21,6 +21,7 @@ import {
   signAssertion,
 } from "@/server/lib/googleServiceAccountKey";
 import { t } from "@/shared/i18n";
+import { GoogleTokenEndpointError } from "./googleTokenErrors";
 
 /** Re-mint this long before expiry, so a call never races the deadline. */
 const EXPIRY_MARGIN_MS = 60_000;
@@ -146,6 +147,7 @@ async function mintToken(scope: string, startedIn: number): Promise<string> {
   });
 
   const response = await fetch(GOOGLE_TOKEN_URI, {
+    signal: AbortSignal.timeout(30_000),
     method: "POST",
     headers: { "content-type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
@@ -155,18 +157,12 @@ async function mintToken(scope: string, startedIn: number): Promise<string> {
   });
 
   if (!response.ok) {
-    /*
-     * Google's body here names the cause precisely ("invalid_grant" for a
-     * deleted account, "unauthorized_client" for a disabled key) and carries
-     * no credential of ours, so a short excerpt is worth more to the operator
-     * than a generic failure.
-     */
-    const detail = (await response.text().catch(() => "")).slice(0, 200);
-    throw new GoogleServiceAccountError(
-      t(
-        "Google hizmet hesabı için erişim anahtarı vermedi ({status}). {detail}",
-        { status: response.status, detail },
-      ),
+    const body = z
+      .object({ error: z.string() })
+      .safeParse(await response.json().catch(() => null));
+    throw new GoogleTokenEndpointError(
+      response.status,
+      body.success ? body.data.error : null,
     );
   }
 

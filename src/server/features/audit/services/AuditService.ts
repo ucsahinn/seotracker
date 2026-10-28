@@ -76,6 +76,7 @@ async function startAudit(input: {
     lighthouseTotal: reservation.lighthouseTotal,
   });
 
+  let workflowCreationAttempted = false;
   try {
     // Concurrency and capacity are enforced after the insert, not before: a
     // pre-insert read is a check-then-act race, so parallel requests would all
@@ -94,6 +95,7 @@ async function startAudit(input: {
       throw new AppError("AUDIT_CAPACITY_REACHED");
     }
 
+    workflowCreationAttempted = true;
     await env.SITE_AUDIT_WORKFLOW.create({
       id: auditId,
       params: {
@@ -105,12 +107,9 @@ async function startAudit(input: {
       },
     });
   } catch (error) {
-    try {
-      const instance = await env.SITE_AUDIT_WORKFLOW.get(auditId);
-      await instance.terminate();
-    } catch {
-      // The workflow may never have been created, or may already be gone.
-    }
+    // A lost create response can hide a live worker. Keep its tracking row
+    // until stopping is confirmed. Capacity failures have no worker to stop.
+    if (workflowCreationAttempted) await stopWorkflow(auditId, auditId);
 
     await AuditRepository.deleteAuditForProject(auditId, input.projectId);
     throw error;
