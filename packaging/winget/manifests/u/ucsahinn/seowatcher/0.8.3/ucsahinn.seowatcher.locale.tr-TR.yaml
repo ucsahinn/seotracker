@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.6.0.schema.json
 PackageIdentifier: ucsahinn.seowatcher
-PackageVersion: 0.8.2
+PackageVersion: 0.8.3
 PackageLocale: tr-TR
 Publisher: seowatcher
 PublisherUrl: https://seowatcher.io
@@ -19,7 +19,7 @@ Tags:
   - google-analytics
   - site-audit
   - self-hosted
-ReleaseNotesUrl: https://github.com/ucsahinn/seotracker/releases/tag/v0.8.2
+ReleaseNotesUrl: https://github.com/ucsahinn/seotracker/releases/tag/v0.8.3
 Documentations:
   - DocumentLabel: Kılavuz
     DocumentUrl: https://seowatcher.io/kilavuz/
