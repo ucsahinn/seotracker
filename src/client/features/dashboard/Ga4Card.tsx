@@ -209,6 +209,7 @@ export function Ga4Card({
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <Stat
+              metric="sessions"
               label={t("Oturum")}
               value={statValue(report.totals.sessions, formatCount)}
               animateTo={count(report.totals.sessions, formatCount)}
@@ -238,6 +239,7 @@ export function Ga4Card({
               })()}
             />
             <Stat
+              metric="conversions"
               label={t("Anahtar olay")}
               help={t(GA4_HELP.keyEvents)}
               value={statValue(report.totals.keyEvents, formatCount)}
@@ -310,6 +312,7 @@ export function Ga4Card({
            */}
           {report.trend.some((row) => row.sessions !== null) ? (
             <Chart
+              metric="sessions"
               height={96}
               summary={trendSummary(report.trend)}
               className="[&_figcaption]:hidden"

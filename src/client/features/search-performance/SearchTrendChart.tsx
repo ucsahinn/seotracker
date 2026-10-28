@@ -145,6 +145,7 @@ export function SearchTrendPanel({
       ) : (
         <div className="px-2 pt-3">
           <Chart
+            metric={metric}
             height={240}
             table={{
               caption: t("{metric} ({grain})", {
@@ -302,7 +303,7 @@ export function SearchTrendPanel({
                 <Line
                   type="monotone"
                   dataKey="compare"
-                  stroke="var(--text-muted)"
+                  stroke={CHART_SERIES.comparison}
                   strokeWidth={1.75}
                   strokeDasharray="5 4"
                   dot={false}
@@ -314,7 +315,6 @@ export function SearchTrendPanel({
                 type="monotone"
                 dataKey="tail"
                 stroke={CHART_SERIES.primary}
-                strokeOpacity={0.55}
                 strokeWidth={1.5}
                 strokeDasharray="4 3"
                 dot={granularity === "day" ? false : periodDot(points, true)}
@@ -326,7 +326,6 @@ export function SearchTrendPanel({
                 type="monotone"
                 dataKey="lead"
                 stroke={CHART_SERIES.primary}
-                strokeOpacity={0.55}
                 strokeWidth={1.5}
                 strokeDasharray="4 3"
                 dot={false}
@@ -352,6 +351,7 @@ export function SearchTrendPanel({
 
       <div className="flex flex-col gap-2 px-4 pb-3 pt-1 text-xs text-muted">
         <TrendLegend
+          metric={metric}
           label={label}
           compareLabel={showsCompare ? compareLabel : null}
           unsettled={unsettled.length > 0}

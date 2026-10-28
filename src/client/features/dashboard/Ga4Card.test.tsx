@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { beforeEach, expect, it, vi } from "vitest";
 import { Ga4Card } from "./Ga4Card";
+import type * as ChartModule from "@/client/components/Chart";
 const mocks = vi.hoisted(() => ({
   query: vi.fn<
     () => {
@@ -18,7 +19,8 @@ vi.mock("@tanstack/react-router", () => ({
 vi.mock("@/client/lib/useReducedMotion", () => ({
   useReducedMotion: () => true,
 }));
-vi.mock("@/client/components/Chart", () => ({
+vi.mock("@/client/components/Chart", async (importOriginal) => ({
+  ...(await importOriginal<typeof ChartModule>()),
   Chart: () => null,
   CHART_SERIES: { primary: "currentColor" },
 }));

@@ -28,6 +28,7 @@ export function OrganicTrendChart({ rows }: { rows: TrendRow[] }) {
 
   return (
     <Chart
+      metric="sessions"
       height={180}
       summary={
         rows.some((row) => row.sessions === null)

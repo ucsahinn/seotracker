@@ -1,4 +1,5 @@
 import { t } from "@/shared/i18n";
+import { DATA_SERIES } from "@/client/components/Chart";
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { ArrowDown, ArrowUp } from "lucide-react";
@@ -137,7 +138,7 @@ export function PositionBandBars({
                   style={{
                     width: `${(count / max) * 100}%`,
                     transform: drawn || reduced ? "scaleX(1)" : "scaleX(0)",
-                    backgroundColor: "var(--ink-primary)",
+                    backgroundColor: DATA_SERIES.position,
                   }}
                 />
               </span>

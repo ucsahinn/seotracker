@@ -1,4 +1,5 @@
 import { t } from "@/shared/i18n";
+import { DATA_SERIES } from "@/client/components/Chart";
 import { OpportunityAnalyticsLink } from "./OpportunityAnalyticsLink";
 import { copyText } from "@/client/lib/copyText";
 import { Link } from "@tanstack/react-router";
@@ -22,11 +23,34 @@ import {
   formatPercent,
 } from "@/client/lib/format";
 
-function Fact({ label, value }: { label: string; value: string }) {
+function Fact({
+  label,
+  value,
+  metric,
+}: {
+  label: string;
+  value: string;
+  metric?: keyof typeof DATA_SERIES;
+}) {
+  const style:
+    | (React.CSSProperties & { "--metric-color": string })
+    | undefined = metric
+    ? { "--metric-color": DATA_SERIES[metric] }
+    : undefined;
   return (
-    <div className="rounded-field bg-base-200 px-3 py-2">
+    <div
+      className={
+        metric
+          ? "metric-tile rounded-field px-3 py-2"
+          : "rounded-field bg-base-200 px-3 py-2"
+      }
+      data-metric={metric}
+      style={style}
+    >
       <dt className="text-xs text-muted">{label}</dt>
-      <dd className="text-sm font-semibold tabular-nums">{value}</dd>
+      <dd className="metric-value text-sm font-semibold tabular-nums">
+        {value}
+      </dd>
     </div>
   );
 }
@@ -126,6 +150,7 @@ export function OpportunityDetail({
 
       <dl className="grid grid-cols-1 gap-2 sm:grid-cols-3">
         <Fact
+          metric="impressions"
           label={t("Ölçülen gösterim (30 güne ölçekli)")}
           value={t("ayda {count} gösterim", {
             count: formatCount(monthlyImpressions(row, days)),
@@ -135,7 +160,11 @@ export function OpportunityDetail({
           label={t("Değer (Analytics)")}
           value={value ?? t("Analytics'te karşılığı yok")}
         />
-        <Fact label={t("Ortalama sıra")} value={formatDecimal(row.position)} />
+        <Fact
+          metric="position"
+          label={t("Ortalama sıra")}
+          value={formatDecimal(row.position)}
+        />
       </dl>
       {row.joinPrecision && row.joinPrecision !== "exact" ? (
         <p className="text-xs text-muted">

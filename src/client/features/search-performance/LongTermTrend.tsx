@@ -149,6 +149,7 @@ export function LongTermTrend({
     <div className="px-2">
       {failure}
       <Chart
+        metric="clicks"
         height={180}
         summary={t("{count} aylık tıklama, {start} – {end}.", {
           count: bars.length,

@@ -14,19 +14,19 @@ import {
   ChartTooltip,
   CHART_AXIS,
   CHART_GRID,
+  DATA_SERIES,
 } from "@/client/components/Chart";
 import { formatCount, formatDay, formatPercent } from "@/client/lib/format";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import type { SearchPerformanceView } from "@/shared/searchPerformanceView";
 import { BAND_IDS, BAND_LABELS, type BandId } from "@/shared/positionBands";
 
-/* Ordinal bands on one hue, darkest for the top of the page. */
+/* Bands share the position hue; patterns distinguish them without fading marks. */
 const BUCKET_FILL: Record<BandId, string> = {
-  top3: "var(--color-primary)",
-  top10: "color-mix(in oklab, var(--color-primary) 70%, var(--color-base-100))",
-  top20: "color-mix(in oklab, var(--color-primary) 45%, var(--color-base-100))",
-  beyond:
-    "color-mix(in oklab, var(--color-primary) 22%, var(--color-base-100))",
+  top3: DATA_SERIES.position,
+  top10: `repeating-linear-gradient(0deg, ${DATA_SERIES.position} 0 3px, var(--color-base-100) 3px 5px)`,
+  top20: `repeating-linear-gradient(90deg, ${DATA_SERIES.position} 0 3px, var(--color-base-100) 3px 5px)`,
+  beyond: `repeating-linear-gradient(45deg, ${DATA_SERIES.position} 0 3px, var(--color-base-100) 3px 5px)`,
 };
 
 function bucketLabel(band: BandId): string {
@@ -102,6 +102,7 @@ export function PositionDistribution({
   view: SearchPerformanceView;
 }) {
   const reduced = useReducedMotion();
+  const patternId = React.useId();
   const current = toBands(view.insights.positionDistribution, (r) => r.clicks);
   const total = current.reduce((sum, b) => sum + b.queries, 0);
   const totalClicks = current.reduce((sum, b) => sum + b.clicks, 0);
@@ -147,7 +148,7 @@ export function PositionDistribution({
                 </span>
                 <span className="h-1 overflow-hidden rounded-full bg-[var(--mark-track)]">
                   <span
-                    className="block h-full rounded-full bg-[var(--ink-success)]"
+                    className="block h-full rounded-full bg-[var(--data-clicks)]"
                     style={{ width: `${clickShare * 100}%` }}
                   />
                 </span>
@@ -171,14 +172,14 @@ export function PositionDistribution({
         <span className="inline-flex items-center gap-1.5">
           <span
             aria-hidden
-            className="inline-block h-2.5 w-4 rounded-full bg-primary"
+            className="inline-block h-2.5 w-4 rounded-full bg-[var(--data-position)]"
           />
           {t("Sorgu sayısı")}
         </span>
         <span className="inline-flex items-center gap-1.5">
           <span
             aria-hidden
-            className="inline-block h-1 w-4 rounded-full bg-[var(--ink-success)]"
+            className="inline-block h-1 w-4 rounded-full bg-[var(--data-clicks)]"
           />
           {t("Tıklama payı")}
         </span>
@@ -196,6 +197,7 @@ export function PositionDistribution({
             {t("Haftalara göre sorgu dağılımı")}
           </h4>
           <Chart
+            metric="position"
             height={200}
             summary={t(
               "{count} haftada, sıra aralıklarının sorgular içindeki payı.",
@@ -217,6 +219,23 @@ export function PositionDistribution({
               stackOffset="expand"
               margin={{ top: 8, right: 8, bottom: 0, left: 0 }}
             >
+              <defs>
+                {buckets
+                  .filter((id) => id !== "top3")
+                  .map((id) => (
+                    <pattern
+                      key={id}
+                      id={`${patternId}-${id}`}
+                      width={5}
+                      height={5}
+                      patternUnits="userSpaceOnUse"
+                      patternTransform={`rotate(${id === "top10" ? 90 : id === "top20" ? 0 : 45})`}
+                    >
+                      <rect width={5} height={5} fill="var(--color-base-100)" />
+                      <rect width={3} height={5} fill={DATA_SERIES.position} />
+                    </pattern>
+                  ))}
+              </defs>
               <CartesianGrid {...CHART_GRID} />
               <XAxis
                 dataKey="week"
@@ -243,7 +262,7 @@ export function PositionDistribution({
                         ...buckets.map((id) => ({
                           label: bucketLabel(id),
                           value: formatCount(week[id]),
-                          color: BUCKET_FILL[id],
+                          color: DATA_SERIES.position,
                         })),
                         ...(complete[index]
                           ? []
@@ -265,7 +284,11 @@ export function PositionDistribution({
                   key={id}
                   dataKey={id}
                   stackId="buckets"
-                  fill={BUCKET_FILL[id]}
+                  fill={
+                    id === "top3"
+                      ? DATA_SERIES.position
+                      : `url(#${patternId}-${id})`
+                  }
                   stroke="var(--color-base-100)"
                   strokeWidth={1}
                   isAnimationActive={!reduced}

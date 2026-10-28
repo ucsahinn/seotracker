@@ -3,6 +3,7 @@ import { GA4_HELP } from "@/client/features/analytics/metricHelp";
 import { HeaderHelpLabel } from "@/client/features/saved-keywords/components/HeaderHelpLabel";
 import { pointsDelta } from "@/shared/delta";
 import { AnimatedNumber } from "@/client/components/AnimatedNumber";
+import { DATA_SERIES } from "@/client/components/Chart";
 import { useQuery } from "@tanstack/react-query";
 import { getGa4DashboardReport } from "@/serverFunctions/ga4";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
@@ -111,6 +112,7 @@ export function OrganicTrendPanel({
         </div>
         <div className="grid w-full grid-cols-2 gap-4 sm:w-auto sm:grid-cols-4">
           <Total
+            metric="sessions"
             label={t("Oturum")}
             value={totals.sessions}
             previous={limited ? null : prevTotals.sessions}
@@ -127,6 +129,7 @@ export function OrganicTrendPanel({
             rate
           />
           <Total
+            metric="conversions"
             label={t("Anahtar olay")}
             help={t(GA4_HELP.keyEvents)}
             value={totals.keyEvents}
@@ -301,9 +304,11 @@ function Total({
   deltaTitle,
   format,
   help,
+  metric,
   rate = false,
 }: {
   label: string;
+  metric?: keyof typeof DATA_SERIES;
   help?: string;
   /** A rate moves in points ("-0,3 puan"), as CTR does, not as a percentage of itself. */
   rate?: boolean;
@@ -319,8 +324,21 @@ function Total({
       : rate
         ? pointsDelta(value, previous)
         : countComparison(value, previous, format);
+  const style:
+    | (React.CSSProperties & { "--metric-color": string })
+    | undefined = metric
+    ? { "--metric-color": DATA_SERIES[metric] }
+    : undefined;
   return (
-    <div className="min-w-0 text-left">
+    <div
+      className={
+        metric
+          ? "metric-tile min-w-0 rounded-field p-2 text-left"
+          : "min-w-0 text-left"
+      }
+      data-metric={metric}
+      style={style}
+    >
       <p className="text-xs text-muted">
         {help ? <HeaderHelpLabel label={label} helpText={help} /> : label}
       </p>
@@ -328,7 +346,9 @@ function Total({
         {value === null ? (
           t("Bilinmiyor")
         ) : (
-          <AnimatedNumber value={value} format={format} />
+          <span className="metric-value">
+            <AnimatedNumber value={value} format={format} />
+          </span>
         )}
         {change === null ? null : (
           <DeltaBadge value={change} title={deltaTitle} />

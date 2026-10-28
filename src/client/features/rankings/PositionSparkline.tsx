@@ -121,7 +121,7 @@ export function PositionSparkline({
         <path
           d={path}
           fill="none"
-          stroke="var(--ink-primary)"
+          stroke="var(--data-position)"
           strokeWidth={2}
           strokeLinejoin="round"
           strokeLinecap="round"
@@ -134,7 +134,7 @@ export function PositionSparkline({
               cx={xOf(i)}
               cy={yOf(row.position)}
               r={i === at ? 4 : 2}
-              fill="var(--ink-primary)"
+              fill="var(--data-position)"
             />
           ) : null;
         })}

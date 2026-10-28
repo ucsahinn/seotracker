@@ -239,6 +239,7 @@ export function DrilldownPanel({
                     {t("Günlük tıklama")}
                   </figcaption>
                   <Chart
+                    metric="clicks"
                     height={110}
                     summary={t("{key} için günlük tıklama, toplam {total}.", {
                       key: target.key,

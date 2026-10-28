@@ -6,7 +6,7 @@ import {
   type MetricId,
 } from "@/client/features/search-performance/trendPoints";
 import type { Granularity } from "@/client/features/search-performance/searchTabs";
-import { CHART_SERIES } from "@/client/components/Chart";
+import { CHART_SERIES, DATA_SERIES } from "@/client/components/Chart";
 
 /**
  * The fills the trend draws with: the settled area fades to nothing at the
@@ -74,12 +74,14 @@ export function periodDot(
 }
 
 export function TrendLegend({
+  metric,
   label,
   compareLabel,
   unsettled,
   granularity,
   compareOff,
 }: {
+  metric: MetricId;
   label: string;
   compareLabel: string | null;
   unsettled: boolean;
@@ -91,7 +93,8 @@ export function TrendLegend({
       <li className="inline-flex items-center gap-1.5">
         <span
           aria-hidden
-          className="inline-block h-0.5 w-5 rounded-full bg-primary"
+          className="inline-block h-0.5 w-5 rounded-full"
+          style={{ backgroundColor: DATA_SERIES[metric] }}
         />
         {label}
       </li>
@@ -99,7 +102,8 @@ export function TrendLegend({
         <li className="inline-flex items-center gap-1.5">
           <span
             aria-hidden
-            className="inline-block w-5 border-t-2 border-dashed border-[var(--text-subtle)]"
+            className="inline-block w-5 border-t-2 border-dashed"
+            style={{ borderColor: DATA_SERIES[metric] }}
           />
           {compareLabel}
         </li>

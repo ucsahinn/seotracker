@@ -1,4 +1,5 @@
 import { sortBy } from "remeda";
+import type { DATA_SERIES } from "@/client/components/Chart";
 import {
   numeric,
   type ReportRow,
@@ -15,6 +16,7 @@ import { t } from "@/shared/i18n";
 /* --- KPI strip for the small reports ------------------------------- */
 
 export type Kpi = {
+  metric?: keyof typeof DATA_SERIES;
   label: string;
   value: string;
   hint?: string;
@@ -58,7 +60,12 @@ export function buildKpis(
     const total = sumOf(rows, "keyEvents");
     const top = leader(rows, "eventName", "keyEvents");
     return [
-      { label: t("Anahtar olay"), ...numericKpi(total), hint: scope },
+      {
+        metric: "conversions",
+        label: t("Anahtar olay"),
+        ...numericKpi(total),
+        hint: scope,
+      },
       { label: t("Olay türü"), ...numericKpi(rows.length) },
       {
         label: t("En çok tetiklenen"),

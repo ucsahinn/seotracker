@@ -130,7 +130,7 @@ function WorstPageRow({
           <SeverityCount severity="warning" count={page.warning} />
           <SeverityCount severity="info" count={page.info} />
           {clicks !== null ? (
-            <span className="tabular-nums text-subtle">
+            <span className="tabular-nums text-[var(--data-clicks)]">
               {t("{count} tıklama", { count: formatCount(clicks) })}
             </span>
           ) : null}
@@ -141,8 +141,16 @@ function WorstPageRow({
         </span>
         <span className="col-span-2 h-1 overflow-hidden rounded-full bg-[var(--mark-track)]">
           <span
-            className="block h-full rounded-full bg-base-content/40"
-            style={{ width: `${Math.max(4, share * 100)}%` }}
+            className="block h-full rounded-full"
+            style={{
+              width: `${Math.max(4, share * 100)}%`,
+              backgroundColor:
+                page.critical > 0
+                  ? "var(--ink-error)"
+                  : page.warning > 0
+                    ? "var(--ink-warning)"
+                    : "var(--ink-info)",
+            }}
           />
         </span>
       </button>

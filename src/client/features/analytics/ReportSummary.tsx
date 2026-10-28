@@ -1,4 +1,5 @@
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
+import { DATA_SERIES } from "@/client/components/Chart";
 import type { SummaryPlan } from "./reportBuckets";
 import type { Kpi } from "./reportKpis";
 import { formatGa4Metric } from "./ReportTable";
@@ -27,6 +28,7 @@ export function ReportSummary({
           {kpis.map((k) => (
             <MetricTile
               key={k.label}
+              metric={k.metric}
               label={k.label}
               value={k.value}
               animateTo={k.animateTo}
@@ -65,8 +67,16 @@ export function ReportSummary({
                 </span>
                 <span aria-hidden className="mt-1 block h-1.5 w-full">
                   <span
-                    className="block h-full origin-left rounded-full bg-primary motion-safe:transition-transform"
-                    style={{ transform: "scaleX(" + s.value / max + ")" }}
+                    className="block h-full origin-left rounded-full motion-safe:transition-transform"
+                    style={{
+                      transform: "scaleX(" + s.value / max + ")",
+                      backgroundColor:
+                        plan.field === "sessions"
+                          ? DATA_SERIES.sessions
+                          : plan.field === "keyEvents"
+                            ? DATA_SERIES.conversions
+                            : "var(--color-base-content)",
+                    }}
                   />
                 </span>
               </button>

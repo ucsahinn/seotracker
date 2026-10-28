@@ -1,4 +1,5 @@
 import { t } from "@/shared/i18n";
+import { DATA_SERIES } from "@/client/components/Chart";
 import type { ReactNode } from "react";
 import { sort } from "remeda";
 import { AlertTriangle } from "lucide-react";
@@ -45,16 +46,29 @@ function Stat({
   label,
   value,
   detail,
+  metric,
 }: {
   label: string;
   value: string;
+  metric?: keyof typeof DATA_SERIES;
   /** The proportion that makes the number weighable. */
   detail?: string;
 }) {
+  const style:
+    | (React.CSSProperties & { "--metric-color": string })
+    | undefined = metric
+    ? { "--metric-color": DATA_SERIES[metric] }
+    : undefined;
   return (
-    <div className="min-w-0 px-4 py-3">
+    <div
+      className={metric ? "metric-tile min-w-0 px-4 py-3" : "min-w-0 px-4 py-3"}
+      data-metric={metric}
+      style={style}
+    >
       <dt className="text-xs text-muted">{label}</dt>
-      <dd className="mt-0.5 text-xl font-semibold tabular-nums">{value}</dd>
+      <dd className="metric-value mt-0.5 text-xl font-semibold tabular-nums">
+        {value}
+      </dd>
       {detail ? (
         <dd className="text-xs tabular-nums text-muted">{detail}</dd>
       ) : null}
@@ -157,6 +171,7 @@ function CannibalizationSummary({
           }
         />
         <Stat
+          metric="impressions"
           label={t("Ana sayfa dışına giden gösterim")}
           value={formatNumber(data.splitImpressions)}
           detail={

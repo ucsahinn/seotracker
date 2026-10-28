@@ -7,7 +7,7 @@ export function ShareBar({ share }: { share: number | null }) {
   return (
     <span className="mt-1 block h-1 overflow-hidden rounded-full bg-[var(--mark-track)]">
       <span
-        className="block h-full rounded-full bg-primary/80"
+        className="block h-full rounded-full bg-[var(--data-clicks)]"
         style={{ width: `${Math.max(0, Math.min(1, share ?? 0)) * 100}%` }}
       />
     </span>

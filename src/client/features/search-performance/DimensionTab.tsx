@@ -242,7 +242,7 @@ export function DimensionTab({
                         </button>
                         <span
                           aria-hidden
-                          className="mt-1 block h-1 rounded-full bg-primary/70"
+                          className="mt-1 block h-1 rounded-full bg-[var(--data-clicks)]"
                           style={{
                             width: `${Math.max(share * 100, row.clicks > 0 ? 1 : 0)}%`,
                           }}

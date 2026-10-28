@@ -238,7 +238,7 @@ export function SavedKeywordsSummary({
                     className={
                       band.id === "none"
                         ? "block h-full rounded-full"
-                        : "block h-full rounded-full bg-primary"
+                        : "block h-full rounded-full bg-[var(--data-position)]"
                     }
                     style={{
                       backgroundImage:

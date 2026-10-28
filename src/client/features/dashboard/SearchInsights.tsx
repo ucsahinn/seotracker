@@ -144,6 +144,7 @@ export function SearchInsights({
               ) : null}
             </div>
             <Chart
+              metric="clicks"
               height={120}
               summary={[
                 t("Son {days} günde {total} tıklama.", {
