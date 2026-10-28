@@ -28,15 +28,19 @@ const KIND_ICONS: Record<string, LucideIcon> = {
 export function ReportKindChip({
   kind,
   isTemplate,
+  wrap = false,
 }: {
   kind: string;
   isTemplate: boolean;
+  wrap?: boolean;
 }) {
   const Icon = KIND_ICONS[kind] ?? (isTemplate ? LayoutTemplate : Sparkles);
   return (
     <span className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-base-300 px-2 py-0.5 text-xs text-muted">
       <Icon aria-hidden className="size-3.5 shrink-0" />
-      <span className="truncate">{kindLabel(kind)}</span>
+      <span className={wrap ? "min-w-0 whitespace-normal" : "truncate"}>
+        {kindLabel(kind)}
+      </span>
     </span>
   );
 }

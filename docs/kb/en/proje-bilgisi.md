@@ -1,12 +1,12 @@
 ---
-title: Project info
-description: Project info stores local notes that you and a connected assistant can use. Filled text is not verified, and not every assistant necessarily reads it.
+title: Project context
+description: Project context stores local notes that you and a connected assistant can use. Filled text is not verified, and not every assistant necessarily reads it.
 screen: Proje bilgisi
 route: /p/<proje>/context
 updated: 2026-10-27
 ---
 
-Project info stores local notes that you and a connected assistant can use. Filled text is not verified, and not every assistant necessarily reads it.
+Project context stores local notes that you and a connected assistant can use. Filled text is not verified, and not every assistant necessarily reads it.
 
 ## Start with the goal
 

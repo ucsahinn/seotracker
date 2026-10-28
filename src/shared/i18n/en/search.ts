@@ -1538,8 +1538,8 @@ export const enSearch: Catalog = {
     "Only queries observed in both periods.",
   "Gösterime göre üst çeyrek eşiği; eşitlikler dahil: {count}":
     "Top quartile impression threshold, including ties: {count}",
-  "{matching} / {total} sorgu filtreyle eşleşiyor.":
-    "{matching} / {total} queries match the filters.",
+  "Filtreyle eşleşen sorgular: {matching} / {total}":
+    "Matching queries: {matching} / {total}",
   "Filtreleri kaldırın, dönemi genişletin veya arşivi doldurmaya devam edin.":
     "Clear filters, widen the period or continue filling the archive.",
   "Bu dönemde gözlenmeyen: {count}. Bu, sıra kaybı anlamına gelmez.":
@@ -1582,11 +1582,11 @@ export const enSearch: Catalog = {
     "The session count is unknown. Open the Analytics report to review source warnings; check connection access and the Analytics tag on your site.",
   "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; mevcut sıraları aşağıdaki listeden inceleyin.":
     "No queries were observed in both periods. Rises and falls cannot be calculated yet; review current positions in the list below.",
-  "{count} sorgunun mevcut sırası gösteriliyor. Önceki dönemle karşılaştırılabilecek sorgu yok.":
+  "Seçili dönemdeki ortalama sıralar: {count} sorgu. Önceki dönemle karşılaştırılabilecek sorgu yok.":
     {
-      one: "Current positions for {count} query. No queries can be compared with the previous period.",
+      one: "Average positions in the selected period for {count} query. No queries can be compared with the previous period.",
       other:
-        "Current positions for {count} queries. No queries can be compared with the previous period.",
+        "Average positions in the selected period for {count} queries. No queries can be compared with the previous period.",
     },
   "Tüm kayıtlı kelimeler bu dönemde gözlendi.":
     "All saved keywords were observed in this period.",

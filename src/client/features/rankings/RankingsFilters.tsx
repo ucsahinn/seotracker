@@ -141,7 +141,7 @@ export function RankingsFilters({
             ]}
           />
           <p className="text-xs text-muted">
-            {t("{matching} / {total} sorgu filtreyle eşleşiyor.", {
+            {t("Filtreyle eşleşen sorgular: {matching} / {total}", {
               matching: formatCount(data.totalMatching),
               total: formatCount(data.totalObserved),
             })}

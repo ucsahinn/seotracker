@@ -3,6 +3,7 @@ import { getGoogleOAuthClientStatus } from "@/serverFunctions/googleOAuthClient"
 import { getGoogleServiceAccountStatus } from "@/serverFunctions/googleServiceAccount";
 import { getPageSpeedKeyStatus } from "@/serverFunctions/pagespeedKey";
 import { getUpdateStatus } from "@/serverFunctions/updateCheck";
+import { getWindowsSettings } from "@/serverFunctions/windowsSettings";
 
 /*
  * One definition per status read, shared by the settings sections that edit
@@ -33,4 +34,11 @@ export const updateStatusOptions = () =>
   queryOptions({
     queryKey: ["updateStatus"],
     queryFn: () => getUpdateStatus(),
+  });
+
+export const windowsSettingsOptions = () =>
+  queryOptions({
+    queryKey: ["windowsSettings"],
+    queryFn: () => getWindowsSettings(),
+    retry: false,
   });

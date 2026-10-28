@@ -151,10 +151,10 @@ export function ReportTable({
                     key={field}
                     className={
                       isDimension
-                        ? "max-w-40 whitespace-normal break-all sm:max-w-md sm:truncate"
+                        ? "max-w-40 whitespace-normal break-all align-top sm:max-w-md sm:truncate"
                         : index >= dimensionCount + 2
-                          ? "hidden text-right tabular-nums sm:table-cell"
-                          : "text-right tabular-nums"
+                          ? "hidden text-right tabular-nums align-top sm:table-cell"
+                          : "text-right tabular-nums align-top"
                     }
                     title={isDimension ? String(row[field] ?? "") : undefined}
                   >

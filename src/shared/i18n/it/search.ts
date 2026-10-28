@@ -776,8 +776,8 @@ export const itSearch: Catalog = {
     "Solo le query osservate in entrambi i periodi.",
   "Gösterime göre üst çeyrek eşiği; eşitlikler dahil: {count}":
     "Soglia del quartile superiore per impressioni, parità incluse: {count}",
-  "{matching} / {total} sorgu filtreyle eşleşiyor.":
-    "{matching} / {total} query corrispondono ai filtri.",
+  "Filtreyle eşleşen sorgular: {matching} / {total}":
+    "Query corrispondenti ai filtri: {matching} / {total}",
   "Filtreleri kaldırın, dönemi genişletin veya arşivi doldurmaya devam edin.":
     "Rimuovi i filtri, amplia il periodo o continua a riempire l’archivio.",
   "Bu dönemde gözlenmeyen: {count}. Bu, sıra kaybı anlamına gelmez.":
@@ -820,8 +820,8 @@ export const itSearch: Catalog = {
     "Il numero di sessioni è sconosciuto. Apri il report Analytics per leggere gli avvisi della fonte; controlla i permessi della connessione e il tag Analytics sul sito.",
   "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; mevcut sıraları aşağıdaki listeden inceleyin.":
     "Nessuna query è stata osservata in entrambi i periodi. Non è ancora possibile calcolare salite e discese; consulta le posizioni attuali qui sotto.",
-  "{count} sorgunun mevcut sırası gösteriliyor. Önceki dönemle karşılaştırılabilecek sorgu yok.":
-    "Posizioni attuali di {count} query. Nessuna è confrontabile con il periodo precedente.",
+  "Seçili dönemdeki ortalama sıralar: {count} sorgu. Önceki dönemle karşılaştırılabilecek sorgu yok.":
+    "Posizioni medie nel periodo selezionato per {count} query. Nessuna query è confrontabile con il periodo precedente.",
   "Tüm kayıtlı kelimeler bu dönemde gözlendi.":
     "Tutte le parole chiave salvate sono state osservate in questo periodo.",
   "Ek kazanç hesaplanmayan: {zero}; gösterimi yetersiz: {small}; karşılaştırılacak tıklama oranı olmayan: {curve}; tahmine uygun araması olmayan sayfa: {pairs}.":

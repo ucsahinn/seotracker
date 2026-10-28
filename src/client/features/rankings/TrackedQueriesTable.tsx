@@ -198,6 +198,7 @@ export function TrackedQueriesTable({
               <td
                 className={`text-right tabular-nums ${positionInk(row.position)}`}
               >
+                <span className="sm:hidden">{t("Ortalama sıra")}: </span>
                 {/* The week-by-week line, inverted: up means a better rank. */}
                 <span className="inline-flex items-center justify-end gap-2">
                   {row.trend && row.trend.length > 1 ? (
@@ -209,7 +210,19 @@ export function TrackedQueriesTable({
                 </span>
               </td>
               <td className="text-right tabular-nums">
-                <PositionChange delta={row.delta} />
+                <span className="sm:hidden">{t("Değişim")}: </span>
+                {row.delta === null ? (
+                  <>
+                    <span className="text-subtle sm:hidden">
+                      {t("Karşılaştırma yok")}
+                    </span>
+                    <span className="hidden sm:inline">
+                      <PositionChange delta={null} />
+                    </span>
+                  </>
+                ) : (
+                  <PositionChange delta={row.delta} />
+                )}
               </td>
               <td className="text-right tabular-nums">
                 <span className="sm:hidden">{t("Gösterim")}: </span>

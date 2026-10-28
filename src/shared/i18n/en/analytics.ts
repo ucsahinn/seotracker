@@ -5,6 +5,12 @@ import type { Catalog } from "@/shared/i18n";
  * Keys are the Turkish source strings exactly as passed to t().
  */
 export const enAnalytics: Catalog = {
+  "Etkilenen benzersiz sayfa: {pages} · Kontrol türü: {types}.":
+    "Distinct affected pages: {pages} · Check types: {types}.",
+  "Sayfa bulguları": "Page findings",
+  "Her sayfa ve kontrol türü çifti bir bulgudur; aynı sayfa birden fazla kez sayılabilir.":
+    "Each page and check-type pair counts as one finding; the same page may be counted more than once.",
+  "Site geneli kontroller": "Site-wide checks",
   "Analytics verisini yorumlama": "Understanding Analytics data",
   "Bu dönemin trafiği belirlenemedi":
     "Could not determine traffic for this period",
@@ -602,8 +608,6 @@ export const enAnalytics: Catalog = {
     "Cannot compare: crawl scopes differ or are unknown.",
   "{measured} / {total} kontrol ölçüldü.":
     "{measured} / {total} checks measured.",
-  "{types} kontrol türünde {pages} sayfa etkileniyor.":
-    "{pages} pages affected across {types} check types.",
   "Taranan kapsamda sorun bulunamadı.":
     "No issues found within the crawled scope.",
   "Ölçülmeyen kontroller var; tüm site için sağlıklı sonucu çıkarılamaz. Ayrıntılarda kapsamı kontrol edin.":
@@ -688,8 +692,6 @@ export const enAnalytics: Catalog = {
     "At most {clicks} extra clicks across {known} estimable queries (upper bound); {unknown} queries could not be estimated.",
   "Bu bir tahmindir; sayfa bazlı Fırsatlar toplamına eklenmez.":
     "This is an estimate; do not add it to the page-based Opportunities total.",
-  "Birim: sayfa ve kontrol türü çifti; benzersiz sayfa sayısı değildir.":
-    "Unit: page and check-type pair; this is not a unique-page count.",
   "{count} kritik kontrol türü": "{count} critical check types",
   "{count} uyarı kontrol türü": "{count} warning check types",
   "Site geneli": "Site-wide",

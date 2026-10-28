@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { SeverityBar } from "@/client/features/dashboard/SeverityBar";
 
@@ -18,6 +18,25 @@ vi.mock("@tanstack/react-router", () => ({
 }));
 
 describe("SeverityBar", () => {
+  it("separates page findings and their counting unit from site-wide checks", () => {
+    render(
+      <SeverityBar
+        projectId="p1"
+        auditId="a1"
+        totals={{ critical: 0, warning: 32, info: 7 }}
+        siteTotals={{ critical: 0, warning: 0, info: 3 }}
+      />,
+    );
+    const pages = screen.getByRole("group", { name: "Sayfa bulguları" });
+    const site = screen.getByRole("group", { name: "Site geneli kontroller" });
+    expect(within(pages).getByText("32 uyarı")).toBeDefined();
+    expect(within(pages).getByText("7 bilgi")).toBeDefined();
+    expect(
+      within(pages).getByText(/aynı sayfa birden fazla kez sayılabilir/),
+    ).toBeDefined();
+    expect(within(site).getByText(/3 bilgi/)).toBeDefined();
+    expect(within(site).queryByText(/aynı sayfa/)).toBeNull();
+  });
   it("does not show an unlabelled 100 percent beside warning counts or an empty site-wide tally", () => {
     render(
       <SeverityBar

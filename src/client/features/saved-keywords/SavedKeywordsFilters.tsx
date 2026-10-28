@@ -8,6 +8,7 @@ import type { SavedKeywordsFilterForm } from "./useSavedKeywordsFilters";
 import { t } from "@/shared/i18n";
 
 export function SavedKeywordsFilters({
+  tagsOnly = false,
   filtersForm,
   activeFilterCount,
   showFilters,
@@ -21,6 +22,7 @@ export function SavedKeywordsFilters({
   onUpdateTag,
   onDeleteTag,
 }: {
+  tagsOnly?: boolean;
   filtersForm: SavedKeywordsFilterForm;
   activeFilterCount: number;
   showFilters: boolean;
@@ -41,22 +43,24 @@ export function SavedKeywordsFilters({
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-base-300 px-4 py-2.5">
-        <button
-          type="button"
-          className={`btn btn-ghost btn-sm min-h-11 gap-1.5 ${showFilters ? "btn-active" : ""}`}
-          onClick={onToggleFilters}
-          title={t("Tablo filtrelerini aç/kapat")}
-          aria-expanded={showFilters}
-          aria-controls="saved-advanced-filters"
-        >
-          <SlidersHorizontal className="size-3.5" />
-          {t("Filtreler")}
-          {activeFilterCount > 0 ? (
-            <span className="badge badge-xs badge-primary border-0 text-primary-content">
-              {formatCount(activeFilterCount)}
-            </span>
-          ) : null}
-        </button>
+        {!tagsOnly ? (
+          <button
+            type="button"
+            className={`btn btn-ghost btn-sm min-h-11 gap-1.5 ${showFilters ? "btn-active" : ""}`}
+            onClick={onToggleFilters}
+            title={t("Tablo filtrelerini aç/kapat")}
+            aria-expanded={showFilters}
+            aria-controls="saved-advanced-filters"
+          >
+            <SlidersHorizontal className="size-3.5" />
+            {t("Filtreler")}
+            {activeFilterCount > 0 ? (
+              <span className="badge badge-xs badge-primary border-0 text-primary-content">
+                {formatCount(activeFilterCount)}
+              </span>
+            ) : null}
+          </button>
+        ) : null}
         <SavedKeywordsTagFilter
           availableTags={availableTags}
           selectedTagIds={selectedTagIds}
@@ -68,7 +72,7 @@ export function SavedKeywordsFilters({
         />
       </div>
 
-      {showFilters ? (
+      {showFilters && !tagsOnly ? (
         <div id="saved-advanced-filters">
           <SavedKeywordsFilterPanel
             form={filtersForm}

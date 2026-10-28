@@ -25,6 +25,7 @@ import {
 } from "./useSavedWatchlistPage";
 export function SavedKeywordsPage(props: SavedPageProps) {
   const { projectId, search, update } = props;
+  const watchlist = useSavedWatchlistPage(props);
   const {
     showFilters,
     setShowFilters,
@@ -62,7 +63,37 @@ export function SavedKeywordsPage(props: SavedPageProps) {
     active,
     positions,
     detail,
-  } = useSavedWatchlistPage(props);
+  } = watchlist;
+  const emptyInventory = hasEmptyInventory(watchlist);
+  const filterControls = (
+    <SavedKeywordsFilters
+      tagsOnly={emptyInventory}
+      filtersForm={filters.filtersForm}
+      activeFilterCount={filters.activeFilterCount}
+      showFilters={showFilters}
+      onToggleFilters={() => setShowFilters((v) => !v)}
+      onResetAllFilters={clear}
+      availableTags={availableTags}
+      selectedTagIds={search.tags}
+      busyTagIds={tagManage.busyTagIds}
+      onToggleTagFilter={(id) =>
+        update({
+          tags: search.tags.includes(id)
+            ? search.tags.filter((x) => x !== id)
+            : [...search.tags, id],
+          page: 1,
+        })
+      }
+      onClearTagSelection={() => update({ tags: [], page: 1 })}
+      onUpdateTag={(input) => void tagManage.updateTag(input)}
+      onDeleteTag={(id) =>
+        void tagManage.deleteTag(id).then((ok) => {
+          if (ok)
+            update({ tags: search.tags.filter((x) => x !== id), page: 1 });
+        })
+      }
+    />
+  );
   return (
     <PageShell>
       <SavedKeywordsHeader
@@ -107,53 +138,34 @@ export function SavedKeywordsPage(props: SavedPageProps) {
         />
       ) : null}
       <div className="rounded-box border border-base-300 bg-base-100">
-        <div className="p-4">
-          <filters.filtersForm.Field name="include">
-            {(field) => (
-              <label className="block space-y-1 text-sm">
-                <span>{t("Kelime ara; tüm terimler eşleşir")}</span>
-                <input
-                  className="input min-h-11 w-full"
-                  value={field.state.value}
-                  onChange={(event) => field.handleChange(event.target.value)}
-                  placeholder={t("Terimleri virgülle ayırın")}
-                />
-              </label>
-            )}
-          </filters.filtersForm.Field>
-        </div>
-        <SavedKeywordsFilters
-          filtersForm={filters.filtersForm}
-          activeFilterCount={filters.activeFilterCount}
-          showFilters={showFilters}
-          onToggleFilters={() => setShowFilters((v) => !v)}
-          onResetAllFilters={clear}
-          availableTags={availableTags}
-          selectedTagIds={search.tags}
-          busyTagIds={tagManage.busyTagIds}
-          onToggleTagFilter={(id) =>
-            update({
-              tags: search.tags.includes(id)
-                ? search.tags.filter((x) => x !== id)
-                : [...search.tags, id],
-              page: 1,
-            })
-          }
-          onClearTagSelection={() => update({ tags: [], page: 1 })}
-          onUpdateTag={(input) => void tagManage.updateTag(input)}
-          onDeleteTag={(id) =>
-            void tagManage.deleteTag(id).then((ok) => {
-              if (ok)
-                update({ tags: search.tags.filter((x) => x !== id), page: 1 });
-            })
-          }
-        />
+        {!emptyInventory ? (
+          <>
+            <div className="p-4">
+              <filters.filtersForm.Field name="include">
+                {(field) => (
+                  <label className="block space-y-1 text-sm">
+                    <span>{t("Kelime ara; tüm terimler eşleşir")}</span>
+                    <input
+                      className="input min-h-11 w-full"
+                      value={field.state.value}
+                      onChange={(event) =>
+                        field.handleChange(event.target.value)
+                      }
+                      placeholder={t("Terimleri virgülle ayırın")}
+                    />
+                  </label>
+                )}
+              </filters.filtersForm.Field>
+            </div>
+            {filterControls}
+          </>
+        ) : null}
         <div className="space-y-3 p-4" aria-busy={pending || query.isFetching}>
           {removeError ? (
             <RemoveSavedKeywordsError message={removeError} />
           ) : null}
           <div className="flex flex-wrap items-center gap-3 text-sm text-muted">
-            {data && !query.isError ? (
+            {data && !query.isError && !emptyInventory ? (
               <SavedKeywordsStatus
                 totalCount={totalCount}
                 totalBase={data.totalSavedMatching}
@@ -238,6 +250,7 @@ export function SavedKeywordsPage(props: SavedPageProps) {
             />
           )}
         </div>
+        {emptyInventory && availableTags.length > 0 ? filterControls : null}
         <SavedKeywordsPagination
           hasActiveFilters={active}
           page={search.page}
@@ -310,6 +323,28 @@ export function SavedKeywordsPage(props: SavedPageProps) {
         />
       ) : null}
     </PageShell>
+  );
+}
+
+function hasEmptyInventory({
+  data,
+  active,
+  pending,
+  invalid,
+  stale,
+  query,
+}: ReturnType<typeof useSavedWatchlistPage>) {
+  return (
+    !!data &&
+    data.totalSavedMatching === 0 &&
+    !active &&
+    !pending &&
+    !invalid &&
+    !stale &&
+    !query.isPending &&
+    !query.isFetching &&
+    !query.isError &&
+    !query.isPlaceholderData
   );
 }
 

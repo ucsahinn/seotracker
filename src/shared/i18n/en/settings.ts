@@ -498,7 +498,7 @@ export const enSettings: Catalog = {
     "Not used, a service account is connected",
   "Uygulamanın durumu": "App health",
   "Bu kurulumun kendisi. Bir projenin kurulum listesi Panel'de ve Proje bilgisi'nde.":
-    "This install itself. A project's setup checklist is on the Dashboard and in Project info.",
+    "This install itself. A project's setup checklist is on the Dashboard and in Project context.",
   // Translation pass for project, report, saved keyword, settings and help updates.
   "PowerShell: parolayı ekrana yazdırmadan panoya kopyalayın. Yalnızca MCP istemcinizin yerel gizli başlık alanına yapıştırın, ardından panoyu temizleyin. Sohbete yapıştırmayın.":
     "PowerShell: copy the password to the clipboard without displaying it. Paste it only into your MCP client's local secret header field, then clear the clipboard. Do not paste it into chat.",

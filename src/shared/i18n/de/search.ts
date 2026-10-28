@@ -788,8 +788,8 @@ export const deSearch: Catalog = {
     "Nur in beiden Zeiträumen beobachtete Suchanfragen.",
   "Gösterime göre üst çeyrek eşiği; eşitlikler dahil: {count}":
     "Impressionsschwelle des oberen Viertels, Gleichstände eingeschlossen: {count}",
-  "{matching} / {total} sorgu filtreyle eşleşiyor.":
-    "{matching} / {total} Suchanfragen entsprechen den Filtern.",
+  "Filtreyle eşleşen sorgular: {matching} / {total}":
+    "Passende Suchanfragen: {matching} / {total}",
   "Filtreleri kaldırın, dönemi genişletin veya arşivi doldurmaya devam edin.":
     "Filter entfernen, Zeitraum erweitern oder Archiv weiter füllen.",
   "Bu dönemde gözlenmeyen: {count}. Bu, sıra kaybı anlamına gelmez.":
@@ -832,8 +832,12 @@ export const deSearch: Catalog = {
     "Die Anzahl der Sitzungen ist unbekannt. Öffnen Sie den Analytics-Bericht und prüfen Sie die Quellenwarnungen, die Zugriffsrechte der Verbindung und das Analytics-Tag auf Ihrer Website.",
   "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; mevcut sıraları aşağıdaki listeden inceleyin.":
     "Keine Suchanfrage wurde in beiden Zeiträumen beobachtet. Anstiege und Rückgänge lassen sich noch nicht berechnen; prüfen Sie die aktuellen Positionen unten.",
-  "{count} sorgunun mevcut sırası gösteriliyor. Önceki dönemle karşılaştırılabilecek sorgu yok.":
-    "Aktuelle Positionen für {count} Suchanfragen. Keine Suchanfrage lässt sich mit dem vorherigen Zeitraum vergleichen.",
+  "Seçili dönemdeki ortalama sıralar: {count} sorgu. Önceki dönemle karşılaştırılabilecek sorgu yok.":
+    {
+      one: "Durchschnittliche Positionen im gewählten Zeitraum: {count} Suchanfrage. Keine Suchanfrage lässt sich mit dem vorherigen Zeitraum vergleichen.",
+      other:
+        "Durchschnittliche Positionen im gewählten Zeitraum: {count} Suchanfragen. Keine Suchanfrage lässt sich mit dem vorherigen Zeitraum vergleichen.",
+    },
   "Tüm kayıtlı kelimeler bu dönemde gözlendi.":
     "Alle gespeicherten Keywords wurden in diesem Zeitraum beobachtet.",
   "Ek kazanç hesaplanmayan: {zero}; gösterimi yetersiz: {small}; karşılaştırılacak tıklama oranı olmayan: {curve}; tahmine uygun araması olmayan sayfa: {pairs}.":

@@ -242,6 +242,13 @@ export function ReportsList({
                     <div className="mt-1 text-xs text-muted md:hidden">
                       {formatDateTime(report.updatedAt)}
                     </div>
+                    <div className="mt-2 md:hidden">
+                      <ReportKindChip
+                        kind={reportKind(report)}
+                        isTemplate={hasTemplate(report)}
+                        wrap
+                      />
+                    </div>
                     {report.templateName ? (
                       <div className="mt-1 text-xs text-muted">
                         {t("Şablon")}: {report.templateName}

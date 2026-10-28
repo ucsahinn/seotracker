@@ -252,7 +252,7 @@ export function AuditHistorySection({
                       />
                     </div>
                   </td>
-                  <td>
+                  <td className="min-w-64">
                     <StatusBadge status={audit.status} />
                     {audit.status === "completed" ? (
                       <div className="space-y-1 text-xs text-muted">

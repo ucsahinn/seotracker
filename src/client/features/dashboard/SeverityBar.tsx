@@ -98,57 +98,68 @@ export function SeverityBar({
           />
         ))}
       </div>
-      <p className="mt-2 text-xs text-muted">
-        {t(
-          "Birim: sayfa ve kontrol türü çifti; benzersiz sayfa sayısı değildir.",
-        )}
-      </p>
+      <div role="group" aria-label={t("Sayfa bulguları")}>
+        <h3 className="mt-2 text-xs font-medium text-muted">
+          {t("Sayfa bulguları")}
+        </h3>
+        <p className="mt-1 text-xs text-muted">
+          {t(
+            "Her sayfa ve kontrol türü çifti bir bulgudur; aynı sayfa birden fazla kez sayılabilir.",
+          )}
+        </p>
+        <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
+          {present.map((segment) => (
+            <li key={segment.key}>
+              <Link
+                to="/p/$projectId/audit"
+                params={{ projectId }}
+                search={{
+                  auditId,
+                  tab: "issues" as const,
+                  severity: segment.key,
+                }}
+                className="flex items-center gap-1.5 rounded-field py-0.5 transition-colors hover:text-base-content"
+                title={t(segment.hint)}
+              >
+                <span
+                  className={`size-1.5 rounded-full ${segment.fill}`}
+                  aria-hidden
+                />
+                <span className="tabular-nums">
+                  {t(segment.legend, {
+                    count: formatCount(totals[segment.key]),
+                  })}
+                </span>
+              </Link>
+            </li>
+          ))}
+          {totals.info > 0 ? (
+            <li className="py-0.5 tabular-nums">
+              {t("{count} bilgi", { count: formatCount(totals.info) })}
+            </li>
+          ) : null}
+          <li>
+            <HelpTip label={t("Önem düzeyi")}>
+              {t(
+                "Kritik sorunlar sayfanın aramada görünmesini engelleyebilir, uyarılar sıralamayı zamanla aşındırır, bilgi notları ise küçük iyileştirmelerdir. Çubuğa ya da altındaki etiketlerden birine tıklarsanız sorun listesine geçersiniz.",
+              )}
+            </HelpTip>
+          </li>
+        </ul>
+      </div>
       {siteTotals &&
       siteTotals.critical + siteTotals.warning + siteTotals.info > 0 ? (
-        <p className="mt-2 text-xs text-muted">
-          {t("Site geneli")}:{" "}
-          {t("{count} kritik", { count: formatCount(siteTotals.critical) })} ·{" "}
-          {t("{count} uyarı", { count: formatCount(siteTotals.warning) })} ·{" "}
-          {t("{count} bilgi", { count: formatCount(siteTotals.info) })}
-        </p>
+        <div role="group" aria-label={t("Site geneli kontroller")}>
+          <h3 className="mt-3 text-xs font-medium text-muted">
+            {t("Site geneli kontroller")}
+          </h3>
+          <p className="mt-1 text-xs text-muted">
+            {t("{count} kritik", { count: formatCount(siteTotals.critical) })} ·{" "}
+            {t("{count} uyarı", { count: formatCount(siteTotals.warning) })} ·{" "}
+            {t("{count} bilgi", { count: formatCount(siteTotals.info) })}
+          </p>
+        </div>
       ) : null}
-      {totals.info > 0 ? (
-        <p className="mt-2 text-xs text-muted">
-          {t("{count} bilgi", { count: formatCount(totals.info) })}
-        </p>
-      ) : null}
-      <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
-        {present.map((segment) => (
-          <li key={segment.key}>
-            <Link
-              to="/p/$projectId/audit"
-              params={{ projectId }}
-              search={{
-                auditId,
-                tab: "issues" as const,
-                severity: segment.key,
-              }}
-              className="flex items-center gap-1.5 rounded-field py-0.5 transition-colors hover:text-base-content"
-              title={t(segment.hint)}
-            >
-              <span
-                className={`size-1.5 rounded-full ${segment.fill}`}
-                aria-hidden
-              />
-              <span className="tabular-nums">
-                {t(segment.legend, { count: formatCount(totals[segment.key]) })}
-              </span>
-            </Link>
-          </li>
-        ))}
-        <li>
-          <HelpTip label={t("Önem düzeyi")}>
-            {t(
-              "Kritik sorunlar sayfanın aramada görünmesini engelleyebilir, uyarılar sıralamayı zamanla aşındırır, bilgi notları ise küçük iyileştirmelerdir. Çubuğa ya da altındaki etiketlerden birine tıklarsanız sorun listesine geçersiniz.",
-            )}
-          </HelpTip>
-        </li>
-      </ul>
     </div>
   );
 }

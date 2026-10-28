@@ -232,3 +232,38 @@ it("uses singular English page and issue counts in real one-page audit findings"
     setLocale("tr");
   }
 });
+
+// H01: unique affected pages must not read like the repeated page findings.
+it("labels affected pages as distinct from finding counts", () => {
+  render(
+    <AuditHealthCard
+      projectId="p1"
+      audit={audit({ affectedPages: 20, totalIssueTypes: 11 })}
+    />,
+  );
+  expect(
+    screen.getByText("Etkilenen benzersiz sayfa: 20 · Kontrol türü: 11."),
+  ).toBeDefined();
+});
+
+// H02: ellipsis hides the actionable noindex qualifier on narrow cards.
+it("allows the complete issue title to wrap while preserving its linked severity and count", () => {
+  render(
+    <AuditHealthCard
+      projectId="p1"
+      audit={audit({
+        totalIssueTypes: 1,
+        topIssues: [{ issueType: "noindex-page", severity: "info", count: 3 }],
+      })}
+    />,
+  );
+  const title = screen.getByText(
+    "Sayfa arama sonuçlarından gizlenmiş (noindex)",
+  );
+  expect(title.classList.contains("truncate")).toBe(false);
+  expect(title.classList.contains("whitespace-normal")).toBe(true);
+  const link = title.closest("a");
+  expect(link?.textContent).toContain("Bilgi:");
+  expect(link?.textContent).toContain("3 sayfa");
+  expect(link?.getAttribute("data-audit-id")).toBe("audit-1");
+});

@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { setLocale } from "@/shared/i18n";
 import { bandChanges, PositionBandBars } from "./PositionBandBars";
 
 const rows = [
@@ -9,13 +10,39 @@ const rows = [
   { position: 21 },
 ];
 
+afterEach(() => setLocale("tr"));
+
 describe("PositionBandBars", () => {
-  it("describes current positions without inventing a zero-query net change", () => {
+  it.each([
+    [1, "Average positions in the selected period for 1 query."],
+    [4, "Average positions in the selected period for 4 queries."],
+  ])(
+    "describes period averages for %i observed queries in English",
+    (count, caption) => {
+      setLocale("en");
+      render(
+        <PositionBandBars
+          rows={rows.slice(0, count)}
+          active={undefined}
+          onChange={vi.fn()}
+        />,
+      );
+      expect(
+        screen.getByText(
+          `${caption} No queries can be compared with the previous period.`,
+        ),
+      ).toBeDefined();
+    },
+  );
+  it("describes selected-period averages without inventing a zero-query net change", () => {
     render(
       <PositionBandBars rows={rows} active={undefined} onChange={vi.fn()} />,
     );
     expect(
       screen.getByText(/Önceki dönemle karşılaştırılabilecek sorgu yok/),
+    ).toBeDefined();
+    expect(
+      screen.getByText(/Seçili dönemdeki ortalama sıralar: 4 sorgu/),
     ).toBeDefined();
     expect(screen.queryByText(/aynı 0 sorguda net değişim/)).toBeNull();
   });

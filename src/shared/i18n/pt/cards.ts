@@ -2,6 +2,12 @@ import type { Catalog } from "@/shared/i18n";
 
 /** Portuguese for the cards and stats review: Opportunities, rankings, saved keywords and the setup verdict. */
 export const ptCards: Catalog = {
+  "Etkilenen benzersiz sayfa: {pages} · Kontrol türü: {types}.":
+    "Páginas distintas afetadas: {pages} · Tipos de verificação: {types}.",
+  "Sayfa bulguları": "Resultados por página",
+  "Her sayfa ve kontrol türü çifti bir bulgudur; aynı sayfa birden fazla kez sayılabilir.":
+    "Cada par de página e tipo de verificação conta como um resultado; a mesma página pode ser contada mais do que uma vez.",
+  "Site geneli kontroller": "Verificações de todo o site",
   "Her sayfanın ayda kaç tıklama daha getirebileceği ve bunun için ne yapmanız gerektiği.":
     "Quantos cliques a mais por mês cada página pode trazer e o que fazer para os obter.",
   "{start} – {end}": "{start} – {end}",
@@ -212,8 +218,6 @@ export const ptCards: Catalog = {
     "Não é possível comparar: os âmbitos dos rastreios diferem ou são desconhecidos.",
   "{measured} / {total} kontrol ölçüldü.":
     "{measured} / {total} verificações medidas.",
-  "{types} kontrol türünde {pages} sayfa etkileniyor.":
-    "{pages} páginas afetadas em {types} tipos de verificação.",
   "Taranan kapsamda sorun bulunamadı.":
     "Não foram encontrados problemas no âmbito rastreado.",
   "Ölçülmeyen kontroller var; tüm site için sağlıklı sonucu çıkarılamaz. Ayrıntılarda kapsamı kontrol edin.":
@@ -300,8 +304,6 @@ export const ptCards: Catalog = {
     "No máximo {clicks} cliques adicionais em {known} consultas estimáveis (limite superior); {unknown} consultas sem estimativa.",
   "Bu bir tahmindir; sayfa bazlı Fırsatlar toplamına eklenmez.":
     "É uma estimativa; não a some ao total de oportunidades por página.",
-  "Birim: sayfa ve kontrol türü çifti; benzersiz sayfa sayısı değildir.":
-    "Unidade: par de página e tipo de verificação, não contagem de páginas únicas.",
   "{count} kritik kontrol türü": "{count} tipos de verificação críticos",
   "{count} uyarı kontrol türü": "{count} tipos de verificação com avisos",
   "Site geneli": "Todo o site",

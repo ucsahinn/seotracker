@@ -2,23 +2,17 @@ import { useId } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { t } from "@/shared/i18n";
-import {
-  getWindowsSettings,
-  setWindowsSetting,
-} from "@/serverFunctions/windowsSettings";
+import { setWindowsSetting } from "@/serverFunctions/windowsSettings";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import type { WindowsSetting } from "@/shared/windows-settings";
+import { windowsSettingsOptions } from "./settingsQueries";
 
-const KEY = ["windowsSettings"] as const;
+const KEY = windowsSettingsOptions().queryKey;
 
 /** Preferences come from the tray process and are confirmed before rendering. */
 export function WindowsSection() {
   const queryClient = useQueryClient();
-  const status = useQuery({
-    queryKey: KEY,
-    queryFn: () => getWindowsSettings(),
-    retry: false,
-  });
+  const status = useQuery(windowsSettingsOptions());
   const save = useMutation({
     mutationFn: (data: { setting: WindowsSetting; enabled: boolean }) =>
       setWindowsSetting({ data }),

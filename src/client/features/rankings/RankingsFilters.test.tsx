@@ -1,17 +1,20 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { expect, it, vi } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
+import { setLocale } from "@/shared/i18n";
 import { RankingsFilters } from "./RankingsFilters";
 import type { RankingArchiveData } from "./RankingSourceEvidence";
 
-function mount(comparableCount: number) {
+afterEach(() => setLocale("tr"));
+
+function mount(comparableCount: number, totalMatching = 1, totalObserved = 1) {
   // Only the filter counts are consumed by this component.
   const data = {
     comparableCount,
     moveCounts: { risers: 0, fallers: 0, lost: 0, top10: 1 },
     chipCounts: { firstPage: 1, highImpressions: 1, noClicks: 1 },
     highImpressions: 1,
-    totalMatching: 1,
-    totalObserved: 1,
+    totalMatching,
+    totalObserved,
   } satisfies Pick<
     RankingArchiveData,
     | "comparableCount"
@@ -35,6 +38,19 @@ function mount(comparableCount: number) {
   );
   return setMove;
 }
+
+it.each([
+  [0, 1, "Matching queries: 0 / 1"],
+  [1, 1, "Matching queries: 1 / 1"],
+  [2, 23, "Matching queries: 2 / 23"],
+])(
+  "labels matching and total query counts (%i / %i)",
+  (matching, total, text) => {
+    setLocale("en");
+    mount(0, matching, total);
+    expect(screen.getByText(text)).toBeDefined();
+  },
+);
 
 it("shows unknown movement as a dash while keeping current top ten selectable", () => {
   const setMove = mount(0);

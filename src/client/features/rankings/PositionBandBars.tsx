@@ -92,7 +92,7 @@ export function PositionBandBars({
       <p className="mt-0.5 text-xs text-muted">
         {paired === 0
           ? t(
-              "{count} sorgunun mevcut sırası gösteriliyor. Önceki dönemle karşılaştırılabilecek sorgu yok.",
+              "Seçili dönemdeki ortalama sıralar: {count} sorgu. Önceki dönemle karşılaştırılabilecek sorgu yok.",
               { count: total },
             )
           : t(

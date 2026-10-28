@@ -2,6 +2,12 @@ import type { Catalog } from "@/shared/i18n";
 
 /** German for the cards and stats review: Opportunities, rankings, saved keywords and the setup verdict. */
 export const deCards: Catalog = {
+  "Etkilenen benzersiz sayfa: {pages} · Kontrol türü: {types}.":
+    "Betroffene einzelne Seiten: {pages} · Prüfungsarten: {types}.",
+  "Sayfa bulguları": "Befunde auf Seiten",
+  "Her sayfa ve kontrol türü çifti bir bulgudur; aynı sayfa birden fazla kez sayılabilir.":
+    "Jede Kombination aus Seite und Prüfungsart zählt als ein Befund; dieselbe Seite kann mehrfach gezählt werden.",
+  "Site geneli kontroller": "Websiteweite Prüfungen",
   "Her sayfanın ayda kaç tıklama daha getirebileceği ve bunun için ne yapmanız gerektiği.":
     "Wie viele Klicks pro Monat jede Seite zusätzlich bringen könnte und was dafür zu tun ist.",
   "{start} – {end}": "{start} – {end}",
@@ -211,8 +217,6 @@ export const deCards: Catalog = {
     "Kein Vergleich möglich: Der Umfang der Crawls ist unterschiedlich oder unbekannt.",
   "{measured} / {total} kontrol ölçüldü.":
     "{measured} / {total} Prüfungen gemessen.",
-  "{types} kontrol türünde {pages} sayfa etkileniyor.":
-    "{pages} Seiten in {types} Prüfungsarten betroffen.",
   "Taranan kapsamda sorun bulunamadı.":
     "Im gecrawlten Bereich wurden keine Probleme gefunden.",
   "Ölçülmeyen kontroller var; tüm site için sağlıklı sonucu çıkarılamaz. Ayrıntılarda kapsamı kontrol edin.":
@@ -300,8 +304,6 @@ export const deCards: Catalog = {
     "Höchstens {clicks} zusätzliche Klicks aus {known} schätzbaren Suchanfragen (Obergrenze); {unknown} Suchanfragen nicht schätzbar.",
   "Bu bir tahmindir; sayfa bazlı Fırsatlar toplamına eklenmez.":
     "Dies ist eine Schätzung. Sie wird nicht zur seitenbasierten Chancensumme addiert.",
-  "Birim: sayfa ve kontrol türü çifti; benzersiz sayfa sayısı değildir.":
-    "Einheit: Paar aus Seite und Prüfungsart, nicht die Anzahl eindeutiger Seiten.",
   "{count} kritik kontrol türü": "{count} kritische Prüfungsarten",
   "{count} uyarı kontrol türü": "{count} Prüfungsarten mit Warnungen",
   "Site geneli": "Websiteweit",

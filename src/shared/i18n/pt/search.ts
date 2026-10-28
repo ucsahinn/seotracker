@@ -784,8 +784,8 @@ export const ptSearch: Catalog = {
     "Apenas consultas observadas em ambos os períodos.",
   "Gösterime göre üst çeyrek eşiği; eşitlikler dahil: {count}":
     "Limiar do quartil superior por impressões, incluindo empates: {count}",
-  "{matching} / {total} sorgu filtreyle eşleşiyor.":
-    "{matching} / {total} consultas correspondem aos filtros.",
+  "Filtreyle eşleşen sorgular: {matching} / {total}":
+    "Consultas que correspondem aos filtros: {matching} / {total}",
   "Filtreleri kaldırın, dönemi genişletin veya arşivi doldurmaya devam edin.":
     "Limpe os filtros, alargue o período ou continue a preencher o arquivo.",
   "Bu dönemde gözlenmeyen: {count}. Bu, sıra kaybı anlamına gelmez.":
@@ -828,8 +828,12 @@ export const ptSearch: Catalog = {
     "O número de sessões é desconhecido. Abra o relatório do Analytics para conferir os avisos da fonte; verifique as permissões da conexão e a tag do Analytics no site.",
   "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; mevcut sıraları aşağıdaki listeden inceleyin.":
     "Nenhuma consulta foi observada nos dois períodos. Ainda não é possível calcular subidas e descidas; consulte as posições atuais na lista abaixo.",
-  "{count} sorgunun mevcut sırası gösteriliyor. Önceki dönemle karşılaştırılabilecek sorgu yok.":
-    "Posições atuais de {count} consultas. Nenhuma pode ser comparada com o período anterior.",
+  "Seçili dönemdeki ortalama sıralar: {count} sorgu. Önceki dönemle karşılaştırılabilecek sorgu yok.":
+    {
+      one: "Posições médias no período selecionado para {count} consulta. Nenhuma consulta pode ser comparada com o período anterior.",
+      other:
+        "Posições médias no período selecionado para {count} consultas. Nenhuma consulta pode ser comparada com o período anterior.",
+    },
   "Tüm kayıtlı kelimeler bu dönemde gözlendi.":
     "Todas as palavras-chave guardadas foram observadas neste período.",
   "Ek kazanç hesaplanmayan: {zero}; gösterimi yetersiz: {small}; karşılaştırılacak tıklama oranı olmayan: {curve}; tahmine uygun araması olmayan sayfa: {pairs}.":

@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it, vi } from "vitest";
 import { SetupStatusPanel } from "./SetupStatusPanel";
+import { setLocale } from "@/shared/i18n";
 
 vi.mock("@tanstack/react-router", () => ({
   Link: ({ children }: { children: React.ReactNode }) => <a>{children}</a>,
@@ -39,4 +40,19 @@ it("explains the Connections to report to Refresh path for a current Google read
   expect(
     screen.queryByText(/Erişimi proje bağlantılarından doğrulayın/),
   ).toBeNull();
+});
+
+it("names the current Project context destination in English Help", () => {
+  setLocale("en");
+  try {
+    render(<SetupStatusPanel />);
+    expect(
+      screen.getByText(
+        "This install itself. A project's setup checklist is on the Dashboard and in Project context.",
+      ),
+    ).toBeDefined();
+    expect(screen.queryByText(/Project info/)).toBeNull();
+  } finally {
+    setLocale("tr");
+  }
 });

@@ -777,8 +777,8 @@ export const frSearch: Catalog = {
     "Uniquement les requêtes observées sur les deux périodes.",
   "Gösterime göre üst çeyrek eşiği; eşitlikler dahil: {count}":
     "Seuil du quart supérieur des impressions, égalités incluses : {count}",
-  "{matching} / {total} sorgu filtreyle eşleşiyor.":
-    "{matching} / {total} requêtes correspondent aux filtres.",
+  "Filtreyle eşleşen sorgular: {matching} / {total}":
+    "Requêtes correspondant aux filtres : {matching} / {total}",
   "Filtreleri kaldırın, dönemi genişletin veya arşivi doldurmaya devam edin.":
     "Effacez les filtres, élargissez la période ou continuez à remplir l’archive.",
   "Bu dönemde gözlenmeyen: {count}. Bu, sıra kaybı anlamına gelmez.":
@@ -821,8 +821,12 @@ export const frSearch: Catalog = {
     "Le nombre de sessions est inconnu. Ouvrez le rapport Analytics pour examiner les avertissements de la source ; vérifiez les droits d’accès et la balise Analytics sur le site.",
   "İki dönemde de gözlenen sorgu yok. Yükseliş veya düşüş henüz hesaplanamaz; mevcut sıraları aşağıdaki listeden inceleyin.":
     "Aucune requête n’a été observée sur les deux périodes. Les hausses et baisses ne peuvent pas encore être calculées ; consultez les positions actuelles ci-dessous.",
-  "{count} sorgunun mevcut sırası gösteriliyor. Önceki dönemle karşılaştırılabilecek sorgu yok.":
-    "Positions actuelles de {count} requêtes. Aucune ne peut être comparée à la période précédente.",
+  "Seçili dönemdeki ortalama sıralar: {count} sorgu. Önceki dönemle karşılaştırılabilecek sorgu yok.":
+    {
+      one: "Positions moyennes sur la période sélectionnée pour {count} requête. Aucune requête ne peut être comparée à la période précédente.",
+      other:
+        "Positions moyennes sur la période sélectionnée pour {count} requêtes. Aucune requête ne peut être comparée à la période précédente.",
+    },
   "Tüm kayıtlı kelimeler bu dönemde gözlendi.":
     "Tous les mots-clés enregistrés ont été observés sur cette période.",
   "Ek kazanç hesaplanmayan: {zero}; gösterimi yetersiz: {small}; karşılaştırılacak tıklama oranı olmayan: {curve}; tahmine uygun araması olmayan sayfa: {pairs}.":

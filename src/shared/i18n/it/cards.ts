@@ -2,6 +2,12 @@ import type { Catalog } from "@/shared/i18n";
 
 /** Italian for the cards and stats review: Opportunities, rankings, saved keywords and the setup verdict. */
 export const itCards: Catalog = {
+  "Etkilenen benzersiz sayfa: {pages} · Kontrol türü: {types}.":
+    "Pagine distinte interessate: {pages} · Tipi di controllo: {types}.",
+  "Sayfa bulguları": "Riscontri sulle pagine",
+  "Her sayfa ve kontrol türü çifti bir bulgudur; aynı sayfa birden fazla kez sayılabilir.":
+    "Ogni coppia di pagina e tipo di controllo conta come un riscontro; la stessa pagina può essere conteggiata più volte.",
+  "Site geneli kontroller": "Controlli sull’intero sito",
   "Her sayfanın ayda kaç tıklama daha getirebileceği ve bunun için ne yapmanız gerektiği.":
     "Quanti clic in più al mese potrebbe portare ogni pagina e cosa fare per ottenerli.",
   "{start} – {end}": "{start} – {end}",
@@ -212,8 +218,6 @@ export const itCards: Catalog = {
     "Confronto non disponibile: gli ambiti delle scansioni sono diversi o sconosciuti.",
   "{measured} / {total} kontrol ölçüldü.":
     "{measured} / {total} controlli misurati.",
-  "{types} kontrol türünde {pages} sayfa etkileniyor.":
-    "{pages} pagine interessate da {types} tipi di controllo.",
   "Taranan kapsamda sorun bulunamadı.":
     "Nessun problema rilevato nell’ambito scansionato.",
   "Ölçülmeyen kontroller var; tüm site için sağlıklı sonucu çıkarılamaz. Ayrıntılarda kapsamı kontrol edin.":
@@ -300,8 +304,6 @@ export const itCards: Catalog = {
     "Al massimo {clicks} clic aggiuntivi per {known} query stimabili (limite superiore); {unknown} query non stimabili.",
   "Bu bir tahmindir; sayfa bazlı Fırsatlar toplamına eklenmez.":
     "È una stima; non va sommata al totale delle opportunità per pagina.",
-  "Birim: sayfa ve kontrol türü çifti; benzersiz sayfa sayısı değildir.":
-    "Unità: coppia pagina e tipo di controllo, non numero di pagine uniche.",
   "{count} kritik kontrol türü": "{count} tipi di controllo critici",
   "{count} uyarı kontrol türü": "{count} tipi di controllo con avvisi",
   "Site geneli": "Intero sito",

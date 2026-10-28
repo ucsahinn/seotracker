@@ -1,6 +1,7 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { AuditHistorySection } from "./AuditHistorySection";
+import { describeAuditFailure } from "../results/auditFailureCopy";
 
 vi.mock("@tanstack/react-router", () => ({
   Link: ({
@@ -48,6 +49,32 @@ function renderSection(
 }
 
 describe("AuditHistorySection", () => {
+  it("H08 reserves readable status width for long failure recovery and completed scope text", () => {
+    const failed = {
+      ...audit("secret", "2026-10-25T10:00:00Z", 0),
+      status: "failed" as const,
+      errorCode: "missing_secret",
+      pagesCrawled: 7,
+    };
+    renderSection([
+      { ...audit("completed", "2026-10-28T10:00:00Z", 2), maxPages: 20 },
+      failed,
+    ]);
+    const copy = describeAuditFailure(failed);
+    const cause = screen.getByText(copy.cause);
+    const statusCell = cause.closest("td")!;
+    expect(statusCell.classList.contains("min-w-64")).toBe(true);
+    expect(within(statusCell).getByText(copy.action)).toBeTruthy();
+    const completedCell = screen
+      .getByText("Tarama sınırı: 20 sayfa")
+      .closest("td")!;
+    expect(completedCell.classList.contains("min-w-64")).toBe(true);
+    const region = screen.getByRole("region", { name: "Önceki denetimler" });
+    expect(region.classList.contains("overflow-x-auto")).toBe(true);
+    expect(region.contains(statusCell)).toBe(true);
+    expect(screen.getByRole("cell", { name: "7" })).toBeTruthy();
+    expect(screen.getByRole("cell", { name: "20" })).toBeTruthy();
+  });
   it("F16 shows informational page findings as a separate severity", () => {
     const row = audit("info", "2026-02-01T10:00:00Z", 0);
     renderSection([{ ...row, issues: { ...row.issues, info: 13 } }]);

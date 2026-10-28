@@ -18,7 +18,7 @@ Clicks count visits from Google search results; impressions count appearances in
 
 Up to three tasks come from connection problems, measured audit findings, actual search tasks or an old crawl. Being connected alone does not generate an opportunity. A failed audit read never becomes first-use advice. No priority task within measured scope does not certify every source as healthy.
 
-Setup uses the same six signals as Project information. Missing and unreadable signals are separate. An own-site completed audit becomes stale at exactly seven days. Setup preferences is a collapsed optional tour, without another readiness score. Deferred steps remain restorable when no active steps remain.
+Setup uses the same six signals as Project context. Missing and unreadable signals are separate. An own-site completed audit becomes stale at exactly seven days. Setup preferences is a collapsed optional tour, without another readiness score. Deferred steps remain restorable when no active steps remain.
 
 ## Query estimates
 

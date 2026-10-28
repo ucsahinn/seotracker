@@ -9,13 +9,13 @@ it.each([1, 2])(
     setLocale("en");
     expect(
       t(
-        "{count} sorgunun mevcut sırası gösteriliyor. Önceki dönemle karşılaştırılabilecek sorgu yok.",
+        "Seçili dönemdeki ortalama sıralar: {count} sorgu. Önceki dönemle karşılaştırılabilecek sorgu yok.",
         { count },
       ),
     ).toBe(
       count === 1
-        ? "Current positions for 1 query. No queries can be compared with the previous period."
-        : "Current positions for 2 queries. No queries can be compared with the previous period.",
+        ? "Average positions in the selected period for 1 query. No queries can be compared with the previous period."
+        : "Average positions in the selected period for 2 queries. No queries can be compared with the previous period.",
     );
     expect(t("Listelenen {count} satırda", { count })).toBe(
       count === 1 ? "Across the 1 listed row" : "Across the 2 listed rows",

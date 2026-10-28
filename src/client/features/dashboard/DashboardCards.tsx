@@ -135,7 +135,7 @@ function RunningAuditCard({
         ) : null}
         {audit.affectedPages !== undefined ? (
           <p className="mb-3 text-sm">
-            {t("{types} kontrol türünde {pages} sayfa etkileniyor.", {
+            {t("Etkilenen benzersiz sayfa: {pages} · Kontrol türü: {types}.", {
               types: formatCount(audit.totalIssueTypes),
               pages: formatCount(audit.affectedPages),
             })}
@@ -193,11 +193,11 @@ function RunningAuditCard({
                   to="/p/$projectId/audit"
                   params={{ projectId }}
                   search={{ auditId: audit.auditId, tab: "issues" as const }}
-                  className="flex items-center justify-between gap-2 rounded-field min-h-11 px-1 py-2 text-sm focus-visible:outline-offset-[-2px] transition-colors hover:bg-base-200/60"
+                  className="flex items-start justify-between gap-2 rounded-field min-h-11 px-1 py-2 text-sm focus-visible:outline-offset-[-2px] transition-colors hover:bg-base-200/60"
                 >
-                  <span className="flex min-w-0 items-center gap-2">
+                  <span className="flex min-w-0 items-start gap-2">
                     <span
-                      className={`size-2 shrink-0 rounded-full ${
+                      className={`mt-1.5 size-2 shrink-0 rounded-full ${
                         issue.severity === "critical"
                           ? "bg-error"
                           : issue.severity === "warning"
@@ -212,7 +212,7 @@ function RunningAuditCard({
                     <span className="sr-only">
                       {t(SEVERITY_LABEL[issue.severity])}:{" "}
                     </span>
-                    <span className="truncate">
+                    <span className="min-w-0 whitespace-normal break-words">
                       {issueTitle(issue.issueType)}
                     </span>
                   </span>

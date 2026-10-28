@@ -2,6 +2,12 @@ import type { Catalog } from "@/shared/i18n";
 
 /** French for the cards and stats review: Opportunities, rankings, saved keywords and the setup verdict. */
 export const frCards: Catalog = {
+  "Etkilenen benzersiz sayfa: {pages} · Kontrol türü: {types}.":
+    "Pages distinctes concernées : {pages} · Types de contrôles : {types}.",
+  "Sayfa bulguları": "Constats sur les pages",
+  "Her sayfa ve kontrol türü çifti bir bulgudur; aynı sayfa birden fazla kez sayılabilir.":
+    "Chaque paire page et type de contrôle compte pour un constat ; une même page peut être comptée plusieurs fois.",
+  "Site geneli kontroller": "Contrôles à l’échelle du site",
   "Her sayfanın ayda kaç tıklama daha getirebileceği ve bunun için ne yapmanız gerektiği.":
     "Combien de clics par mois chaque page pourrait apporter en plus, et ce qu'il faut faire pour les obtenir.",
   "{start} – {end}": "{start} – {end}",
@@ -212,8 +218,6 @@ export const frCards: Catalog = {
     "Comparaison impossible : les périmètres des explorations diffèrent ou sont inconnus.",
   "{measured} / {total} kontrol ölçüldü.":
     "{measured} / {total} contrôles mesurés.",
-  "{types} kontrol türünde {pages} sayfa etkileniyor.":
-    "{pages} pages concernées par {types} types de contrôles.",
   "Taranan kapsamda sorun bulunamadı.":
     "Aucun problème trouvé dans le périmètre exploré.",
   "Ölçülmeyen kontroller var; tüm site için sağlıklı sonucu çıkarılamaz. Ayrıntılarda kapsamı kontrol edin.":
@@ -300,8 +304,6 @@ export const frCards: Catalog = {
     "Au plus {clicks} clics supplémentaires pour {known} requêtes estimables (plafond) ; {unknown} requêtes sans estimation.",
   "Bu bir tahmindir; sayfa bazlı Fırsatlar toplamına eklenmez.":
     "C’est une estimation ; ne l’ajoutez pas au total des opportunités par page.",
-  "Birim: sayfa ve kontrol türü çifti; benzersiz sayfa sayısı değildir.":
-    "Unité : couple page et type de contrôle, pas un nombre de pages uniques.",
   "{count} kritik kontrol türü": "{count} types de contrôles critiques",
   "{count} uyarı kontrol türü":
     "{count} types de contrôles avec avertissements",

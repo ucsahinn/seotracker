@@ -20,7 +20,7 @@ import { t } from "@/shared/i18n";
 import { fillParts } from "./fillParts";
 import { SectionHeaderRow } from "./SectionBadge";
 import { unreadableBadge, updateBadge } from "./sectionStatus";
-import { updateStatusOptions } from "./settingsQueries";
+import { updateStatusOptions, windowsSettingsOptions } from "./settingsQueries";
 import { notifyUpdateAvailable } from "@/client/features/notifications/useBackgroundNotifications";
 
 const STATUS_KEY = updateStatusOptions().queryKey;
@@ -268,12 +268,7 @@ export function UpdateSection({ version }: { version: string }) {
           })}
         </p>
       ) : null}
-      <a
-        href="#windows"
-        className="link inline-flex min-h-11 items-center text-sm"
-      >
-        {t("Windows otomatik kurulum ayarları")}
-      </a>
+      <WindowsSettingsLink />
       <div className="flex flex-wrap items-center justify-between gap-3">
         <label className="flex cursor-pointer items-center gap-2 text-sm">
           <input
@@ -325,5 +320,18 @@ export function UpdateSection({ version }: { version: string }) {
           : ""}
       </p>
     </section>
+  );
+}
+
+function WindowsSettingsLink() {
+  const settings = useQuery(windowsSettingsOptions());
+  if (settings.isError || settings.data?.status !== "ready") return null;
+  return (
+    <a
+      href="#windows"
+      className="link inline-flex min-h-11 items-center text-sm"
+    >
+      {t("Windows otomatik kurulum ayarları")}
+    </a>
   );
 }
