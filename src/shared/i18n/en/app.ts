@@ -975,7 +975,7 @@ export const enApp: Catalog = {
     "Observed days for matching keywords: {observed} / {requested}",
   "Son doğrulanmış yanıt gösteriliyor; liste yenilenirken işlem yapmayın.":
     "Showing the last verified response; do not perform actions while the list is refreshing.",
-  "Sıralamalar'da arşivi güncelle": "Update the archive in Rank tracking",
+  "Sıralama takibi'nde arşivi güncelle": "Update the archive in Rank tracking",
   "Gerileyenleri incele": "Review declines",
   "Metin ve etiket filtresine uyan kayıtlar":
     "Records matching the text and tag filters",
@@ -1006,13 +1006,13 @@ export const enApp: Catalog = {
     "Could not read the Search Console connection. Check the connection or try again.",
   "Kelimeleriniz kayıtlı. Güncel sıra verisi için Search Console bağlantısı gerekiyor.":
     "Your keywords are saved. A Search Console connection is required for current position data.",
-  "Search Console bağlı; bu aralık henüz arşive alınmadı. Sıralamalar'dan arşivi güncelleyin.":
+  "Search Console bağlı; bu aralık henüz arşive alınmadı. Sıralama takibi'nden arşivi güncelleyin.":
     "Search Console is connected; this period has not been archived yet. Update the archive in Rank tracking.",
   "Son arşiv aktarımı tamamlanamadı. Sıralamalar ekranında hatayı inceleyip yeniden deneyin.":
     "The latest archive import could not complete. Review the error in Rank tracking and try again.",
-  "Arşiv bu tarihlerin tümünü doğrulamıyor. Eksik veya sınırlı günler için Sıralamalar'dan arşivi güncelleyin.":
+  "Arşiv bu tarihlerin tümünü doğrulamıyor. Eksik veya sınırlı günler için Sıralama takibi'nden arşivi güncelleyin.":
     "The archive does not verify all these dates. Update the archive in Rank tracking for missing or limited days.",
-  "Arşiv seçilen dönemin sonuna ulaşmadı. Sıralamalar'dan arşivi güncelleyin.":
+  "Arşiv seçilen dönemin sonuna ulaşmadı. Sıralama takibi'nden arşivi güncelleyin.":
     "The archive has not reached the end of the selected period. Update the archive in Rank tracking.",
   "Bu tarihlerde okunan arşivde eşleşen sorgu yok. Bu, Google'da görünmediğiniz anlamına gelmez.":
     "No matching queries were found in the archive data read for these dates. This does not mean you did not appear on Google.",

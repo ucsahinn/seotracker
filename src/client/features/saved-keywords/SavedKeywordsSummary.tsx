@@ -113,7 +113,7 @@ export function SavedKeywordsSummary({
               params={{ projectId }}
               className="btn btn-outline min-h-11"
             >
-              {t("Sıralamalar'da arşivi güncelle")}
+              {t("Sıralama takibi'nde arşivi güncelle")}
             </Link>
           ) : data.downSignificant > 0 ? (
             <button className="btn btn-outline min-h-11" onClick={onFallers}>
@@ -353,7 +353,7 @@ function archiveReason(
           )
         : !data.status?.lastRunAt
           ? t(
-              "Search Console bağlı; bu aralık henüz arşive alınmadı. Sıralamalar'dan arşivi güncelleyin.",
+              "Search Console bağlı; bu aralık henüz arşive alınmadı. Sıralama takibi'nden arşivi güncelleyin.",
             )
           : data.status?.lastError
             ? t(
@@ -361,11 +361,11 @@ function archiveReason(
               )
             : partial
               ? t(
-                  "Arşiv bu tarihlerin tümünü doğrulamıyor. Eksik veya sınırlı günler için Sıralamalar'dan arşivi güncelleyin.",
+                  "Arşiv bu tarihlerin tümünü doğrulamıyor. Eksik veya sınırlı günler için Sıralama takibi'nden arşivi güncelleyin.",
                 )
               : archiveStale
                 ? t(
-                    "Arşiv seçilen dönemin sonuna ulaşmadı. Sıralamalar'dan arşivi güncelleyin.",
+                    "Arşiv seçilen dönemin sonuna ulaşmadı. Sıralama takibi'nden arşivi güncelleyin.",
                   )
                 : data.totalObservedMatching === 0
                   ? t(

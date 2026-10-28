@@ -23,6 +23,15 @@ export function ReportZeroRows({
       result.sampled ||
       result.thresholded,
     );
+  const meta = result.reportMetadata;
+  // The trend card already explains an unknown measurement; repeat it here
+  // only when this table has a reason of its own.
+  const ownReason = Boolean(
+    meta?.restrictedMetrics?.length ||
+    meta?.subjectToThresholding ||
+    meta?.sampling?.length ||
+    meta?.dataLossFromOtherRow,
+  );
   return (
     <div className="space-y-3" id="analytics-report">
       <AnalyticsEvidence result={result} onOpenHealth={onOpenHealth} />
@@ -32,12 +41,24 @@ export function ReportZeroRows({
           <p className="text-lg font-semibold">
             {t("Bu dönemin trafiği belirlenemedi")}
           </p>
-          <MeasurementWarning
-            reports={result.reportMetadata ? [result.reportMetadata] : []}
-            unknown
-            onRetry={onRetry}
-            onOpenHealth={onOpenHealth}
-          />
+          {measurementUnknown && !ownReason ? (
+            onRetry ? (
+              <button
+                type="button"
+                className="btn btn-sm min-h-11"
+                onClick={onRetry}
+              >
+                {t("Yeniden dene")}
+              </button>
+            ) : null
+          ) : (
+            <MeasurementWarning
+              reports={meta ? [meta] : []}
+              unknown
+              onRetry={onRetry}
+              onOpenHealth={onOpenHealth}
+            />
+          )}
         </>
       ) : (
         <ReportEmptyState

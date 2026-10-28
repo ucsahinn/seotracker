@@ -94,13 +94,13 @@ export function RefreshButton({
   const flash = useFlashOnChange(updated ? (dataUpdatedAt ?? null) : null);
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2">
       {updated ? (
         // Remounted by the key when the time changes, so the tint marks a
         // refresh that landed and never plays on first paint.
         <span
           key={flash.key}
-          className={`hidden px-1 text-xs text-subtle tabular-nums sm:inline ${flash.className}`}
+          className={`px-1 text-xs text-subtle tabular-nums ${flash.className}`}
         >
           {t("Güncellendi: {time}", { time: updated })}
         </span>

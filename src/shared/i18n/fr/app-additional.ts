@@ -2,7 +2,7 @@ import type { Catalog } from "@/shared/i18n";
 
 /** Additional app-wide labels. */
 export const frAppAdditional: Catalog = {
-  "Arşiv seçilen dönemin sonuna ulaşmadı. Sıralamalar'dan arşivi güncelleyin.":
+  "Arşiv seçilen dönemin sonuna ulaşmadı. Sıralama takibi'nden arşivi güncelleyin.":
     "Les archives n'atteignent pas la fin de la période sélectionnée. Actualisez-les dans Suivi des classements.",
   "Bu tarihlerde okunan arşivde eşleşen sorgu yok. Bu, Google'da görünmediğiniz anlamına gelmez.":
     "Aucune requête correspondante dans les archives lues sur ces dates. Cela ne signifie pas que vous n'apparaissez pas sur Google.",

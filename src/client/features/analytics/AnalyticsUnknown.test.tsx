@@ -82,5 +82,15 @@ it("uses unknown overview traffic to guard the empty detail report on the real p
       "Ziyaretçiler siteye hangi sayfadan giriyor ve o sayfada kalıp bir sonuca ulaşıyor mu?",
     ),
   ).toBeNull();
+  // The trend card explains the unknown state once; the empty table neither
+  // repeats it nor offers paging over zero rows.
+  expect(
+    screen.getAllByText(
+      "Bazı ölçümler belirlenemedi. Nedeni bilinmiyor; bu, hiç ziyaret olmadığı anlamına gelmez.",
+    ),
+  ).toHaveLength(1);
+  expect(
+    screen.queryByRole("navigation", { name: "Rapor sayfaları" }),
+  ).toBeNull();
   client.clear();
 });

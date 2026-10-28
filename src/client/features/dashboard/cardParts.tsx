@@ -94,7 +94,7 @@ export function Stat({
           <AnimatedNumber
             value={animateTo.value}
             format={animateTo.format}
-            accessibleText={`${value} ${label}`}
+            accessibleText={`${label}: ${value}`}
           />
         ) : (
           value

@@ -52,6 +52,11 @@ const REPORT_QUESTIONS: Record<Ga4ReportKindName, string> = {
     "Ziyaretçileriniz hangi cihazlardan geliyor ve cihaza göre deneyim nasıl değişiyor?",
 };
 
+// An empty first page has nothing to page through.
+function hasPages(result: { rowCount: number }, offset: number) {
+  return result.rowCount > 0 || offset > 0;
+}
+
 export function AnalyticsPage({
   projectId,
   windowDays,
@@ -338,7 +343,9 @@ export function AnalyticsPage({
             ) : null}
           </>
         )}
-        {view !== HEALTH && result?.status === "ok" ? (
+        {view !== HEALTH &&
+        result?.status === "ok" &&
+        hasPages(result, offset) ? (
           <nav
             aria-label={t("Rapor sayfaları")}
             className="flex flex-wrap items-center justify-between gap-3"

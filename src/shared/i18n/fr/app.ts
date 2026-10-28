@@ -307,7 +307,7 @@ export const frApp: Catalog = {
     "Jours observés pour les mots-clés correspondants : {observed} / {requested}",
   "Son doğrulanmış yanıt gösteriliyor; liste yenilenirken işlem yapmayın.":
     "La dernière réponse vérifiée est affichée ; n'effectuez aucune opération pendant l'actualisation de la liste.",
-  "Sıralamalar'da arşivi güncelle":
+  "Sıralama takibi'nde arşivi güncelle":
     "Actualiser les archives dans Suivi des classements",
   "Gerileyenleri incele": "Examiner les baisses",
   "Metin ve etiket filtresine uyan kayıtlar":
@@ -339,11 +339,11 @@ export const frApp: Catalog = {
     "Impossible de lire la connexion Search Console. Vérifiez la connexion ou réessayez.",
   "Kelimeleriniz kayıtlı. Güncel sıra verisi için Search Console bağlantısı gerekiyor.":
     "Vos mots-clés sont enregistrés. Une connexion Search Console est nécessaire pour obtenir des positions récentes.",
-  "Search Console bağlı; bu aralık henüz arşive alınmadı. Sıralamalar'dan arşivi güncelleyin.":
+  "Search Console bağlı; bu aralık henüz arşive alınmadı. Sıralama takibi'nden arşivi güncelleyin.":
     "Search Console est connecté ; cette période n'est pas encore archivée. Actualisez les archives dans Suivi des classements.",
   "Son arşiv aktarımı tamamlanamadı. Sıralamalar ekranında hatayı inceleyip yeniden deneyin.":
     "Le dernier import des archives n'a pas pu aboutir. Consultez l'erreur dans Suivi des classements et réessayez.",
-  "Arşiv bu tarihlerin tümünü doğrulamıyor. Eksik veya sınırlı günler için Sıralamalar'dan arşivi güncelleyin.":
+  "Arşiv bu tarihlerin tümünü doğrulamıyor. Eksik veya sınırlı günler için Sıralama takibi'nden arşivi güncelleyin.":
     "Les archives ne confirment pas tous ces jours. Actualisez-les dans Suivi des classements pour les jours manquants ou limités.",
 
   "Bu sitenin son tamamlanan denetimi": "Dernier audit terminé pour ce site",

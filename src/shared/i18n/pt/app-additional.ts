@@ -276,7 +276,7 @@ export const ptAppAdditional: Catalog = {
     "Dias observados nas palavras-chave correspondentes: {observed} / {requested}",
   "Son doğrulanmış yanıt gösteriliyor; liste yenilenirken işlem yapmayın.":
     "A última resposta verificada é exibida; não realize operações enquanto a lista é atualizada.",
-  "Sıralamalar'da arşivi güncelle":
+  "Sıralama takibi'nde arşivi güncelle":
     "Atualizar o arquivo em Acompanhamento de posições",
   "Gerileyenleri incele": "Examinar as quedas",
   "Metin ve etiket filtresine uyan kayıtlar":
@@ -308,13 +308,13 @@ export const ptAppAdditional: Catalog = {
     "Não foi possível ler a conexão com o Search Console. Confira a conexão ou tente novamente.",
   "Kelimeleriniz kayıtlı. Güncel sıra verisi için Search Console bağlantısı gerekiyor.":
     "Suas palavras-chave estão salvas. A conexão com o Search Console é necessária para obter dados atuais de posição.",
-  "Search Console bağlı; bu aralık henüz arşive alınmadı. Sıralamalar'dan arşivi güncelleyin.":
+  "Search Console bağlı; bu aralık henüz arşive alınmadı. Sıralama takibi'nden arşivi güncelleyin.":
     "O Search Console está conectado; este intervalo ainda não foi arquivado. Atualize o arquivo em Acompanhamento de posições.",
   "Son arşiv aktarımı tamamlanamadı. Sıralamalar ekranında hatayı inceleyip yeniden deneyin.":
     "A última importação para o arquivo não foi concluída. Examine o erro em Acompanhamento de posições e tente novamente.",
-  "Arşiv bu tarihlerin tümünü doğrulamıyor. Eksik veya sınırlı günler için Sıralamalar'dan arşivi güncelleyin.":
+  "Arşiv bu tarihlerin tümünü doğrulamıyor. Eksik veya sınırlı günler için Sıralama takibi'nden arşivi güncelleyin.":
     "O arquivo não confirma todas estas datas. Atualize o arquivo em Acompanhamento de posições para os dias ausentes ou limitados.",
-  "Arşiv seçilen dönemin sonuna ulaşmadı. Sıralamalar'dan arşivi güncelleyin.":
+  "Arşiv seçilen dönemin sonuna ulaşmadı. Sıralama takibi'nden arşivi güncelleyin.":
     "O arquivo não chegou ao fim do período selecionado. Atualize o arquivo em Acompanhamento de posições.",
   "Bu tarihlerde okunan arşivde eşleşen sorgu yok. Bu, Google'da görünmediğiniz anlamına gelmez.":
     "Não há consultas correspondentes no arquivo lido para estas datas. Isso não significa que você não aparece no Google.",

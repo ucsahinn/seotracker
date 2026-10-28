@@ -306,7 +306,7 @@ export const deApp: Catalog = {
     "Beobachtete Tage für passende Suchbegriffe: {observed} / {requested}",
   "Son doğrulanmış yanıt gösteriliyor; liste yenilenirken işlem yapmayın.":
     "Die letzte bestätigte Antwort wird angezeigt; nehmen Sie während der Listenaktualisierung keine Änderungen vor.",
-  "Sıralamalar'da arşivi güncelle":
+  "Sıralama takibi'nde arşivi güncelle":
     "Archiv unter „Ranking-Verfolgung“ aktualisieren",
   "Gerileyenleri incele": "Rückgänge prüfen",
   "Metin ve etiket filtresine uyan kayıtlar":
@@ -338,11 +338,11 @@ export const deApp: Catalog = {
     "Die Search Console-Verbindung konnte nicht gelesen werden. Prüfen Sie die Verbindung oder versuchen Sie es erneut.",
   "Kelimeleriniz kayıtlı. Güncel sıra verisi için Search Console bağlantısı gerekiyor.":
     "Ihre Suchbegriffe sind gespeichert. Für aktuelle Positionsdaten ist eine Search Console-Verbindung erforderlich.",
-  "Search Console bağlı; bu aralık henüz arşive alınmadı. Sıralamalar'dan arşivi güncelleyin.":
+  "Search Console bağlı; bu aralık henüz arşive alınmadı. Sıralama takibi'nden arşivi güncelleyin.":
     "Search Console ist verbunden; dieser Zeitraum ist noch nicht archiviert. Aktualisieren Sie das Archiv unter „Ranking-Verfolgung“.",
   "Son arşiv aktarımı tamamlanamadı. Sıralamalar ekranında hatayı inceleyip yeniden deneyin.":
     "Der letzte Archivimport konnte nicht abgeschlossen werden. Prüfen Sie den Fehler unter „Ranking-Verfolgung“ und versuchen Sie es erneut.",
-  "Arşiv bu tarihlerin tümünü doğrulamıyor. Eksik veya sınırlı günler için Sıralamalar'dan arşivi güncelleyin.":
+  "Arşiv bu tarihlerin tümünü doğrulamıyor. Eksik veya sınırlı günler için Sıralama takibi'nden arşivi güncelleyin.":
     "Das Archiv bestätigt nicht alle diese Tage. Aktualisieren Sie es unter „Ranking-Verfolgung“ für fehlende oder eingeschränkte Tage.",
 
   "Bu sitenin son tamamlanan denetimi":

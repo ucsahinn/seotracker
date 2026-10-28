@@ -297,7 +297,7 @@ export function ReportsList({
           disabled={pending || inventory.page <= 1}
           onClick={() => onChange({ ...filters, page: inventory.page - 1 })}
         >
-          {t("Önceki")}
+          {t("Önceki sayfa")}
         </button>
         <span className="text-sm text-muted">
           {t("{start}–{end} / {total}", {
@@ -321,7 +321,7 @@ export function ReportsList({
           disabled={pending || inventory.page >= inventory.pageCount}
           onClick={() => onChange({ ...filters, page: inventory.page + 1 })}
         >
-          {t("Sonraki")}
+          {t("Sonraki sayfa")}
         </button>
       </nav>
     </div>

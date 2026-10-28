@@ -273,7 +273,7 @@ export const itAppAdditional: Catalog = {
     "Giorni osservati per le parole chiave corrispondenti: {observed} / {requested}",
   "Son doğrulanmış yanıt gösteriliyor; liste yenilenirken işlem yapmayın.":
     "È mostrata l’ultima risposta verificata; non eseguire operazioni durante l’aggiornamento dell’elenco.",
-  "Sıralamalar'da arşivi güncelle":
+  "Sıralama takibi'nde arşivi güncelle":
     "Aggiorna l’archivio in Monitoraggio del posizionamento",
   "Gerileyenleri incele": "Esamina i cali",
   "Metin ve etiket filtresine uyan kayıtlar":
@@ -306,13 +306,13 @@ export const itAppAdditional: Catalog = {
     "Impossibile leggere la connessione a Search Console. Controlla la connessione o riprova.",
   "Kelimeleriniz kayıtlı. Güncel sıra verisi için Search Console bağlantısı gerekiyor.":
     "Le parole chiave sono salvate. Per dati aggiornati sulle posizioni è necessaria la connessione a Search Console.",
-  "Search Console bağlı; bu aralık henüz arşive alınmadı. Sıralamalar'dan arşivi güncelleyin.":
+  "Search Console bağlı; bu aralık henüz arşive alınmadı. Sıralama takibi'nden arşivi güncelleyin.":
     "Search Console è collegato; questo intervallo non è ancora archiviato. Aggiorna l’archivio da Monitoraggio del posizionamento.",
   "Son arşiv aktarımı tamamlanamadı. Sıralamalar ekranında hatayı inceleyip yeniden deneyin.":
     "L’ultima importazione nell’archivio non è stata completata. Esamina l’errore in Monitoraggio del posizionamento e riprova.",
-  "Arşiv bu tarihlerin tümünü doğrulamıyor. Eksik veya sınırlı günler için Sıralamalar'dan arşivi güncelleyin.":
+  "Arşiv bu tarihlerin tümünü doğrulamıyor. Eksik veya sınırlı günler için Sıralama takibi'nden arşivi güncelleyin.":
     "L’archivio non conferma tutte queste date. Aggiornalo da Monitoraggio del posizionamento per i giorni mancanti o limitati.",
-  "Arşiv seçilen dönemin sonuna ulaşmadı. Sıralamalar'dan arşivi güncelleyin.":
+  "Arşiv seçilen dönemin sonuna ulaşmadı. Sıralama takibi'nden arşivi güncelleyin.":
     "L’archivio non ha raggiunto la fine del periodo selezionato. Aggiornalo da Monitoraggio del posizionamento.",
   "Bu tarihlerde okunan arşivde eşleşen sorgu yok. Bu, Google'da görünmediğiniz anlamına gelmez.":
     "Nessuna query corrispondente nell’archivio letto per queste date. Questo non significa che tu non compaia su Google.",

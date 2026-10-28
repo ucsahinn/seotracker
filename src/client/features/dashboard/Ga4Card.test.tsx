@@ -61,7 +61,7 @@ it("keeps readable key events when sessions are restricted, rather than calling 
     screen.queryByText("Bu aralıkta organik arama trafiği kaydedilmemiş."),
   ).toBeNull();
   expect(screen.getByText("Anahtar olay")).toBeDefined();
-  const spoken = screen.getByText("7 Anahtar olay");
+  const spoken = screen.getByText("Anahtar olay: 7");
   expect(spoken.closest("[aria-hidden]")).toBeNull();
   expect(
     screen.getByText("7").closest("[aria-hidden]")?.getAttribute("aria-hidden"),
