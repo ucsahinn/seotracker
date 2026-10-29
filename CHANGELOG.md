@@ -37,7 +37,7 @@ Her sürümde eklenen yenilikler ve düzeltmeler, en yeni sürümden başlayarak
 
 **v2.4.3 veya daha eski bir Windows kurulumunuz varsa:** Eski güncelleyici 0.x numarasını daha küçük sayıp yeni sürüm olarak görmez, bu yüzden kendiliğinden güncellenmez. En son sürümün kurulum dosyasını GitHub sürüm sayfasından bir kez elle çalıştırın. Verileriniz ve Google bağlantılarınız korunur. Sonraki güncellemeler her zamanki gibi gelir.
 
-## [0.8.5] Alpha — 2026-10-28
+## [0.8.5] Alpha — 2026-10-29
 
 Bu giriş 0.5.0'dan 0.8.5'e kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
 

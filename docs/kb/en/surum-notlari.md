@@ -4,11 +4,11 @@ description: seowatcher 0.8.4 Alpha — complete Google data, vivid colours and 
 updated: 2026-10-29
 ---
 
-The latest release is **0.8.5 Alpha**, October 28, 2026. Your data is kept when you update.
+The latest release is **0.8.5 Alpha**, October 29, 2026. Your data is kept when you update.
 
 For the first move from 2.x to 0.x.x Alpha, run the new installer manually; the old updater does not recognize the lower number as newer.
 
-## 0.8.5 Alpha — 2026-10-28
+## 0.8.5 Alpha — 2026-10-29
 
 This entry brings together features and fixes from 0.5.0 to 0.8.5: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
 

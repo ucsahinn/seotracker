@@ -2,7 +2,7 @@
 
 Nouveautés et corrections, de la version la plus récente à la plus ancienne.
 
-## [0.8.5] Alpha — 2026-10-28
+## [0.8.5] Alpha — 2026-10-29
 
 Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.5 : audit du site, tableau de bord, notifications et six langues, avec des données plus justes et des écrans plus lisibles.
 

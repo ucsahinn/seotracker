@@ -69,7 +69,7 @@ describe("changelog", () => {
   // date, so each entry maps to a real tag.
   it("keeps exactly three releases, each dated by its highest published version", () => {
     const dates = {
-      "0.8.5": "2026-10-28",
+      "0.8.5": "2026-10-29",
       "0.4.3": "2026-10-23",
       "0.2.1": "2026-10-04",
     };

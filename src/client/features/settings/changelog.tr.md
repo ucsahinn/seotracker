@@ -2,7 +2,7 @@
 
 Yenilikler ve düzeltmeler, en yeni sürümden başlayarak listelenir.
 
-## [0.8.5] Alpha — 2026-10-28
+## [0.8.5] Alpha — 2026-10-29
 
 Bu giriş 0.5.0'dan 0.8.5'e kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
 

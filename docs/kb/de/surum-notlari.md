@@ -4,11 +4,11 @@ description: seowatcher 0.8.4 Alpha — vollständige Google-Daten, lebendige Fa
 updated: 2026-10-29
 ---
 
-Die neueste Version ist **0.8.5 Alpha** vom 28. Oktober 2026. Ihre Daten bleiben beim Aktualisieren erhalten.
+Die neueste Version ist **0.8.5 Alpha** vom 29. Oktober 2026. Ihre Daten bleiben beim Aktualisieren erhalten.
 
 Für den ersten Wechsel von 2.x zu 0.x.x Alpha das neue Installationsprogramm manuell starten; der alte Updater erkennt die kleinere Nummer nicht als neuer.
 
-## 0.8.5 Alpha — 2026-10-28
+## 0.8.5 Alpha — 2026-10-29
 
 Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.5: Website-Audit, Übersicht, Benachrichtigungen und sechs Sprachen sowie genauere Daten und besser lesbare Bildschirme.
 

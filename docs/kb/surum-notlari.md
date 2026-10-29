@@ -4,11 +4,11 @@ description: seowatcher 0.8.4 Alpha — eksiksiz Google verisi, canlı renkler v
 updated: 2026-10-29
 ---
 
-Son sürüm **0.8.5 Alpha**, 28 Ekim 2026. Güncellerken veriniz korunur.
+Son sürüm **0.8.5 Alpha**, 29 Ekim 2026. Güncellerken veriniz korunur.
 
 2.x serisinden 0.x.x Alpha serisine ilk geçiş için yeni kurulum dosyasını elle çalıştırın; eski otomatik güncelleyici küçük numarayı yeni sürüm olarak tanımaz.
 
-## 0.8.5 Alpha — 2026-10-28
+## 0.8.5 Alpha — 2026-10-29
 
 Bu giriş 0.5.0'dan 0.8.5'e kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
 

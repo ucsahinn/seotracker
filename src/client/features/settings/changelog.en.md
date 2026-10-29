@@ -2,7 +2,7 @@
 
 New features and fixes, newest release first.
 
-## [0.8.5] Alpha — 2026-10-28
+## [0.8.5] Alpha — 2026-10-29
 
 This entry brings together features and fixes from 0.5.0 to 0.8.5: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
 

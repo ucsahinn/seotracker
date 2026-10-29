@@ -4,11 +4,11 @@ description: seowatcher 0.8.4 Alpha — dados Google completos, cores vivas e te
 updated: 2026-10-29
 ---
 
-A versão mais recente é a **0.8.5 Alpha**, de 28 de outubro de 2026. Os dados são mantidos na atualização.
+A versão mais recente é a **0.8.5 Alpha**, de 29 de outubro de 2026. Os dados são mantidos na atualização.
 
 Para passar de 2.x para 0.x.x Alpha, execute o novo instalador manualmente; o atualizador antigo não reconhece o número menor como mais recente.
 
-## 0.8.5 Alpha — 2026-10-28
+## 0.8.5 Alpha — 2026-10-29
 
 Esta entrada reúne novidades e correções da 0.5.0 à 0.8.5: auditoria do site, painel, notificações e seis idiomas, com dados mais precisos e telas mais legíveis.
 
