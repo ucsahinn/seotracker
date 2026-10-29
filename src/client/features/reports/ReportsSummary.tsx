@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { FactStrip } from "@/client/components/FactStrip";
 import { ReportDownloadButton } from "./ReportDownloadButton";
 import { ReportKindChip } from "./ReportKindChip";
 import {
@@ -83,46 +82,55 @@ export function ReportsSummary({
       >
         {displayReportTitle(latest)}
       </Link>
-      <FactStrip
-        label={t("Kaydedilmiş rapor")}
-        facts={[
-          { label: t("Etkin proje"), value: projectSite ?? projectId },
-          {
-            label: t("Kaynak"),
-            value: source ?? t("Doğrulanmadı"),
-            tone: !source || mismatch ? "warning" : undefined,
-          },
-          {
-            label: t("Güncellendi"),
-            value: formatDateTime(latest.updatedAt),
-            hint: t("Dosya kaydı"),
-          },
-        ]}
-        detailsLabel={t("Ayrıntılar")}
-        details={
-          <>
-            <p>
-              {source
-                ? t("Kaynak site: {domain}", { domain: source })
-                : t(
-                    "Kaynak site doğrulanamadı. Bu rapor başka bir siteye ait olabilir.",
-                  )}
-            </p>
-            {legacy ? (
-              <p>{t("Eski rapor · kaynak ve tarih doğrulanmamış")}</p>
-            ) : null}
-            <p>
-              {t(
-                "Bugün karar vermeden önce raporun içindeki siteyi, ölçüm tarihini ve veri sınırlarını kontrol edin.",
-              )}
-            </p>
-          </>
-        }
-      />
+      {/* Facts sit on the card itself; a bordered strip inside the bordered
+          card was a box in a box. */}
+      <dl className="grid gap-x-8 gap-y-3 text-sm sm:grid-cols-3">
+        <div className="min-w-0">
+          <dt className="text-xs text-muted">{t("Etkin proje")}</dt>
+          <dd className="truncate font-medium">{projectSite ?? projectId}</dd>
+        </div>
+        <div className="min-w-0">
+          <dt className="text-xs text-muted">{t("Kaynak")}</dt>
+          <dd
+            className={`truncate font-medium ${
+              !source || mismatch ? "text-[var(--ink-warning)]" : ""
+            }`}
+          >
+            {source ?? t("Doğrulanmadı")}
+          </dd>
+        </div>
+        <div className="min-w-0">
+          <dt className="text-xs text-muted">{t("Güncellendi")}</dt>
+          <dd className="font-medium">
+            {formatDateTime(latest.updatedAt)}{" "}
+            <span className="text-xs font-normal text-muted">
+              {t("Dosya kaydı")}
+            </span>
+          </dd>
+        </div>
+      </dl>
       <details className="max-w-prose text-sm text-muted">
-        <summary className="cursor-pointer py-2 font-medium">
-          {t("Özet")}
-        </summary>
+        <summary className="cursor-pointer py-2">{t("Ayrıntılar")}</summary>
+        <div className="space-y-1.5 pb-2">
+          <p>
+            {source
+              ? t("Kaynak site: {domain}", { domain: source })
+              : t(
+                  "Kaynak site doğrulanamadı. Bu rapor başka bir siteye ait olabilir.",
+                )}
+          </p>
+          {legacy ? (
+            <p>{t("Eski rapor · kaynak ve tarih doğrulanmamış")}</p>
+          ) : null}
+          <p>
+            {t(
+              "Bugün karar vermeden önce raporun içindeki siteyi, ölçüm tarihini ve veri sınırlarını kontrol edin.",
+            )}
+          </p>
+        </div>
+      </details>
+      <details className="max-w-prose text-sm text-muted">
+        <summary className="cursor-pointer py-2">{t("Özet")}</summary>
         <p className="mt-1.5 whitespace-pre-line leading-relaxed">
           {latest.summary ||
             t(
@@ -130,18 +138,14 @@ export function ReportsSummary({
             )}
         </p>
       </details>
-      <div className="flex flex-wrap gap-2">
-        <Link
-          to="/p/$projectId/audit"
-          params={{ projectId }}
-          className="btn min-h-11"
-        >
-          {t("Site denetimlerini aç")}
-        </Link>
+      {/* The screen's one primary action is the header's report command;
+          here the two report actions are secondary and the cross-link is
+          tertiary. */}
+      <div className="flex flex-wrap items-start gap-2">
         <Link
           to="/p/$projectId/reports/$reportId"
           params={{ projectId, reportId: latest.id }}
-          className="btn btn-primary min-h-11"
+          className="btn btn-sm min-h-11"
         >
           {t("Raporu aç")}
         </Link>
@@ -150,6 +154,13 @@ export function ReportsSummary({
           title={latest.title}
           label={t("HTML olarak indir")}
         />
+        <Link
+          to="/p/$projectId/audit"
+          params={{ projectId }}
+          className="btn btn-ghost btn-sm min-h-11"
+        >
+          {t("Site denetimlerini aç")}
+        </Link>
       </div>
     </section>
   );

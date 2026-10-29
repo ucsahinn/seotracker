@@ -26,7 +26,8 @@ it("keeps secondary source facts in one closed disclosure", () => {
   expect(container.querySelectorAll("details")).toHaveLength(1);
 });
 
-it("gives the native summary a visible decorative expand indicator", () => {
+// The chevron is the shared summary marker in app.css, which jsdom does not apply.
+it("puts the details behind a closed native summary", () => {
   const { container } = render(
     <FactStrip
       label="Scope"
@@ -37,6 +38,5 @@ it("gives the native summary a visible decorative expand indicator", () => {
   );
   const summary = screen.getByText("Details");
   expect(summary.tagName).toBe("SUMMARY");
-  expect(summary.querySelector('svg[aria-hidden="true"]')).not.toBeNull();
   expect(container.querySelector("details")?.open).toBe(false);
 });

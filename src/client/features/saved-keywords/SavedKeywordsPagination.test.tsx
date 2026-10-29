@@ -24,8 +24,13 @@ it("preserves pagination for a populated unfiltered list", () => {
   ).toBe(false);
 });
 
+/*
+ * A list with nothing to page shows no pager, filtered or not: the shared
+ * pager hides itself when one page holds everything, and a zero-match
+ * filtered list offers "Tümünü temizle" in its empty state instead.
+ */
 it.each([false, true])(
-  "hides empty inventory controls but preserves a zero-match filtered list (filters: %s)",
+  "hides the pager for an empty list (filters: %s)",
   (hasActiveFilters) => {
     const { container } = render(
       <SavedKeywordsPagination
@@ -40,7 +45,6 @@ it.each([false, true])(
         onPageSizeChange={vi.fn()}
       />,
     );
-    if (hasActiveFilters) expect(screen.getByRole("combobox")).toBeTruthy();
-    else expect(container.childElementCount).toBe(0);
+    expect(container.childElementCount).toBe(0);
   },
 );

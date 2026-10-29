@@ -5,9 +5,9 @@ kind: sorun-giderme
 updated: 2026-10-27
 ---
 
-A interface do aplicativo existe em seis idiomas: turco, inglês, alemão, francês, italiano e português. O idioma é escolhido em Configurações → Aparência → Idioma. Este guia mostra botões e telas com o nome que eles têm na interface em português. O menu da bandeja do Windows só existe em turco. Ali o nome em turco vem com o significado em português entre parênteses.
-
 Esta página diz, em poucas palavras, o que fazer quando algo não funciona. Primeiro, olhe o cartão "Status do app" na tela **Ajuda** do aplicativo. O cartão olha esta instalação em si e confere quatro coisas: login e acesso, login do Google, a chave do PageSpeed e o banco de dados. Se ele disser "N itens precisam de atenção", o botão ao lado leva à configuração certa. A lista abaixo vai do problema mais comum ao mais raro.
+
+A interface do aplicativo existe em seis idiomas: turco, inglês, alemão, francês, italiano e português. O idioma é escolhido em Configurações → Aparência → Idioma. Este guia mostra botões e telas com o nome que eles têm na interface em português. O menu da bandeja do Windows só existe em turco. Ali o nome em turco vem com o significado em português entre parênteses.
 
 ## A página não abre
 

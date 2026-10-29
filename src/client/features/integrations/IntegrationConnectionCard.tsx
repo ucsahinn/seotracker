@@ -43,12 +43,12 @@ export function IntegrationConnectionCard({
     <div
       ref={card}
       tabIndex={-1}
-      className="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]"
+      className="overflow-hidden rounded-box border border-[var(--hairline)] bg-base-100 shadow-[var(--shadow-raise)]"
     >
-      <div className="flex flex-col items-start justify-between gap-3 p-5 sm:flex-row sm:gap-4 sm:p-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 px-5 pt-5 sm:px-6 sm:pt-6">
         <div className="flex min-w-0 items-center gap-2.5">
           {icon ? (
-            <span className="grid size-8 shrink-0 place-items-center rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
+            <span className="grid size-8 shrink-0 place-items-center rounded-field bg-base-200">
               {icon}
             </span>
           ) : null}
@@ -56,7 +56,7 @@ export function IntegrationConnectionCard({
         </div>
         {status ? <ConnectionStatusPill status={status} /> : null}
       </div>
-      <div className="border-t border-base-300 p-5 sm:p-6">{children}</div>
+      <div className="p-5 pt-4 sm:p-6 sm:pt-4">{children}</div>
     </div>
   );
 }
@@ -67,7 +67,8 @@ function ConnectionStatusPill({
   status: IntegrationConnectionStatus;
 }) {
   if (status === "connected") {
-    return <StatusPill tone="neutral" label={t("Mülk seçili")} />;
+    // A chosen property is the healthy state; grey read as "something off".
+    return <StatusPill tone="success" label={t("Mülk seçili")} />;
   }
   // "setup_required" says nothing the setup banner beside it does not, so it
   // gets no pill of its own.

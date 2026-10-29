@@ -6,9 +6,9 @@ route: /support
 updated: 2026-10-27
 ---
 
-The app's interface comes in six languages: Turkish, English, German, French, Italian and Portuguese. This guide uses the English names; to switch, go to **Settings → Appearance → Language**.
-
 This is the first place to look when something goes wrong. The screen checks your setup, tells you what is missing and takes you to the right setting.
+
+The app's interface comes in six languages: Turkish, English, German, French, Italian and Portuguese. This guide uses the English names; to switch, go to **Settings → Appearance → Language**.
 
 ## What is on the screen
 

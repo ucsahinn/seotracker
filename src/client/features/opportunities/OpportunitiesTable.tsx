@@ -1,5 +1,4 @@
 import { t } from "@/shared/i18n";
-import { OpportunityAnalyticsLink } from "./OpportunityAnalyticsLink";
 import { useMemo, useState, type MouseEvent } from "react";
 import { Target } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
@@ -16,13 +15,9 @@ import {
 } from "@/client/features/opportunities/opportunityLogic";
 import { buildCsv, downloadCsv, type CsvValue } from "@/client/lib/csv";
 import { exportTableToSheets } from "@/client/lib/exportToSheets";
-import {
-  formatNumber,
-  formatCount,
-  formatDecimal,
-  formatPercent,
-} from "@/client/lib/format";
+import { formatNumber } from "@/client/lib/format";
 import type { OpportunityReport } from "./report";
+import { PhoneList } from "./OpportunityPhoneList";
 
 // Turkish, translated with t() when an export is built.
 const OPPORTUNITY_HEADERS = [
@@ -78,12 +73,17 @@ export function OpportunitiesTable({
       }),
     [setOpenPage, maxGain, projectId, report?.request.dateRange],
   );
+  // A column of "Kazanç bilinmiyor" on every row is a 180px hole before the
+  // page; one line above the table says it instead.
+  const gainUnknown =
+    rows.length > 0 && rows.every((row) => row.gainPerMonth === null);
   const table = useAppTable({
     data: rows,
     columns,
     withSorting: true,
     // The estimate is the point of the screen, so it is the default order.
     initialState: { sorting: [{ id: "gainPerMonth", desc: true }] },
+    state: { columnVisibility: { gainPerMonth: !gainUnknown } },
   });
 
   const opened =
@@ -150,8 +150,8 @@ export function OpportunitiesTable({
   ]);
 
   return (
-    <div className="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-base-300 px-3 py-2">
+    <div className="overflow-hidden rounded-box border border-[var(--hairline)] bg-base-100 shadow-[var(--shadow-raise)]">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--hairline)] px-3 py-2">
         <label className="text-xs text-muted sm:hidden">
           {t("Sırala")}
           <select
@@ -175,6 +175,17 @@ export function OpportunitiesTable({
           </select>
         </label>
         <p className="text-xs text-muted">
+          {gainUnknown ? (
+            <>
+              <span className="font-medium text-base-content">
+                {t("Kazanç bilinmiyor")}
+              </span>
+              {" · "}
+              {t(
+                "Listedeki hiçbir sayfa için ek tıklama hesaplanamadı; bu, sıfır kazanç demek değildir.",
+              )}{" "}
+            </>
+          ) : null}
           {t("Ölçülen aramaları incelemek için bir satıra tıklayın.")}
         </p>
         <TableExportMenu
@@ -201,71 +212,19 @@ export function OpportunitiesTable({
           ]}
         />
       </div>
-      <div className="divide-y divide-base-300 sm:hidden">
-        {table.getRowModel().rows.map(({ original: row }) => (
-          <article key={row.page} className="space-y-2 p-3">
-            <p className="break-all text-sm font-medium">{row.page}</p>
-            <p className="text-sm">
-              {row.gainPerMonth === null
-                ? t("Kazanç bilinmiyor")
-                : t("En fazla +{gain} tıklama / 30 gün (üst sınır)", {
-                    gain: formatCount(row.gainPerMonth),
-                  })}{" "}
-              · {t(rowAction(row))}
-            </p>
-            {row.brandOnly ? (
-              <p className="text-xs text-muted">
-                {t("Yalnızca marka aramaları")}
-              </p>
-            ) : null}
-            <p className="text-xs text-muted">
-              {t("Sıra")}: {formatDecimal(row.position)} · {t("Tıklama oranı")}:{" "}
-              {formatPercent(row.ctr)}
-            </p>
-            <p className="text-xs text-muted">
-              {t("Tıklama")}: {formatCount(row.clicks)} · {t("Gösterim")}:{" "}
-              {formatCount(row.impressions)}
-            </p>
-            <button
-              type="button"
-              aria-haspopup="dialog"
-              className="btn btn-sm min-h-11"
-              onClick={() => setOpenPage(row.page)}
-            >
-              {t("Ayrıntı")}
-            </button>
-            <OpportunityAnalyticsLink
-              row={row}
-              projectId={projectId}
-              dateRange={report?.request.dateRange}
-              compact
-            />
-          </article>
-        ))}
-        {rows.length === 0 ? (
-          <EmptyState
-            compact
-            icon={Target}
-            title={t("Bu filtreye uyan sayfa yok")}
-            action={
-              onReset ? (
-                <button
-                  type="button"
-                  className="btn min-h-11"
-                  onClick={onReset}
-                >
-                  {t("Filtreleri kaldır")}
-                </button>
-              ) : undefined
-            }
-          />
-        ) : null}
-      </div>
+      <PhoneList
+        rows={table.getRowModel().rows.map((row) => row.original)}
+        gainUnknown={gainUnknown}
+        projectId={projectId}
+        dateRange={report?.request.dateRange}
+        onOpen={setOpenPage}
+        onReset={onReset}
+      />
       <div className="hidden sm:block">
         <AppDataTable
           table={table}
           caption={t("Fırsatlar")}
-          className="table table-sm"
+          className="table table-sm [&_td]:py-1.5"
           wrapperClassName="overflow-x-auto"
           getRowProps={(row) => ({
             className: "cursor-pointer hover:bg-base-200/60",

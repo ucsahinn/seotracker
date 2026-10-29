@@ -5,6 +5,8 @@ kind: nasil-yapilir
 updated: 2026-10-27
 ---
 
+Agent setup connects an AI assistant such as Claude Code, Codex or Cursor to seowatcher over MCP (Model Context Protocol). Once connected, the assistant reads your Search Console, Analytics and audit data from the app on your computer, runs audits and writes reports. What the assistant reads can go to that assistant's provider.
+
 ## Connect your agent
 
 Open Agent setup in the running application. Choose Claude Code, Codex or Other and copy the setup prompt. Arrow keys, Home and End select the client without copying. The prompt contains no actual token; the agent uses the local installation secret. From-scratch installation is a separate option.

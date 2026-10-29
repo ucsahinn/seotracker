@@ -55,11 +55,22 @@ export function AuditFreshnessCard({ projectId }: { projectId: string }) {
     return null;
 
   return (
-    <div className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4 shadow-[var(--shadow-raise)] sm:p-5">
+    // A note that the comparison is unavailable is a footnote to the audit
+    // card above, not a card of its own hanging under one column.
+    <div
+      className={
+        data.isStale || hasChanges
+          ? "space-y-3 rounded-box border border-base-300 bg-base-100 p-4 shadow-[var(--shadow-raise)] sm:p-5"
+          : "space-y-2 px-1"
+      }
+    >
       {data.isStale ? (
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-sm">
-            <CalendarClock className="size-4 shrink-0 text-warning" />
+            <CalendarClock
+              className="size-4 shrink-0 text-[var(--ink-warning)]"
+              aria-hidden
+            />
             <span>
               {t(
                 "Son denetimin üzerinden {count} gün geçti. Sitede değişiklik yaptıysanız yeni bir denetim başlatmak iyi olur.",
@@ -71,7 +82,8 @@ export function AuditFreshnessCard({ projectId }: { projectId: string }) {
             to="/p/$projectId/audit"
             params={{ projectId }}
             search={{}}
-            className="btn btn-primary btn-sm"
+            // Secondary: the header's Denetimler is the screen's one primary.
+            className="btn btn-sm"
           >
             {t("Denetimi başlat")}
           </Link>
@@ -154,11 +166,11 @@ function IssueDeltaList({
 }) {
   return (
     <div className="space-y-2">
-      <h3 className="text-xs font-medium text-muted">{title}</h3>
+      <h3 className="text-[13px] font-semibold text-base-content">{title}</h3>
       {items.length === 0 ? (
         <p className="text-sm text-muted">{emptyLabel}</p>
       ) : (
-        <ul className="space-y-1.5">
+        <ul className="space-y-0.5">
           {items.slice(0, 4).map((item) => {
             const label = (
               <>
@@ -188,7 +200,7 @@ function IssueDeltaList({
                     to="/p/$projectId/audit"
                     params={{ projectId }}
                     search={{ auditId, tab: "issues" as const }}
-                    className="flex items-baseline justify-between gap-2 rounded-field min-h-11 px-1 py-2 text-sm focus-visible:outline-offset-[-2px] transition-colors hover:bg-base-200/60"
+                    className="flex items-baseline justify-between gap-2 rounded-field min-h-10 px-1 py-2 text-sm focus-visible:outline-offset-[-2px] transition-colors hover:bg-base-200/60"
                   >
                     {label}
                   </Link>

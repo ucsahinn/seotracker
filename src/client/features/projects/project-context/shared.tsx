@@ -76,24 +76,36 @@ const AUTHOR_LABELS: Record<ContextAuthor, string> = {
   mcp: "yapay zeka istemciniz",
 };
 
+function provenanceText(by: ContextAuthor, at?: string) {
+  return at
+    ? t("{author} güncelledi · {time}", {
+        author: t(AUTHOR_LABELS[by]),
+        time: formatDateTime(at),
+      })
+    : t("{author} ekledi", { author: t(AUTHOR_LABELS[by]) });
+}
+
+/** Who last wrote this and when, as a labelled fact (no disclosure). */
+export function ProvenanceFacts({
+  by,
+  at,
+}: {
+  by: ContextAuthor;
+  at?: string;
+}) {
+  return (
+    <FactStrip
+      label={t("Kaynak")}
+      facts={[{ label: t("Kaynak"), value: provenanceText(by, at) }]}
+    />
+  );
+}
+
 export function Provenance({ by, at }: { by: ContextAuthor; at?: string }) {
   return (
-    <details className="text-sm text-muted">
-      <summary className="cursor-pointer py-2">{t("Kaynak")}</summary>
-      <FactStrip
-        label={t("Kaynak")}
-        facts={[
-          {
-            label: t("Kaynak"),
-            value: at
-              ? t("{author} güncelledi · {time}", {
-                  author: t(AUTHOR_LABELS[by]),
-                  time: formatDateTime(at),
-                })
-              : t("{author} ekledi", { author: t(AUTHOR_LABELS[by]) }),
-          },
-        ]}
-      />
+    <details className="text-xs text-subtle">
+      <summary className="cursor-pointer py-1">{t("Kaynak")}</summary>
+      <ProvenanceFacts by={by} at={at} />
     </details>
   );
 }
@@ -130,14 +142,14 @@ export function SectionHeader({
  */
 export function EmptyListNote({ children }: { children: ReactNode }) {
   return (
-    <p className="rounded-box border border-dashed border-base-300 px-4 py-3 text-sm text-muted">
+    <p className="rounded-box border border-dashed border-[var(--hairline-strong)] px-4 py-3 text-sm text-muted">
       {children}
     </p>
   );
 }
 
 export const listClass =
-  "divide-y divide-base-300 overflow-hidden rounded-box border border-base-300";
+  "divide-y divide-[var(--hairline)] overflow-hidden rounded-box border border-[var(--hairline)]";
 
 /** Row actions and footer buttons shared by the inline competitor/page forms. */
 export function RowActions({ children }: { children: ReactNode }) {
@@ -166,7 +178,7 @@ export function ConfirmDeleteButton({
       <>
         <button
           type="button"
-          className="btn btn-error btn-xs min-h-11 min-w-11"
+          className="btn btn-error btn-xs min-h-11 min-w-11 sm:min-h-8 sm:min-w-8"
           disabled={pending}
           onClick={() => {
             setConfirming(false);
@@ -182,7 +194,7 @@ export function ConfirmDeleteButton({
         </button>
         <button
           type="button"
-          className="btn btn-ghost btn-xs min-h-11 min-w-11"
+          className="btn btn-ghost btn-xs min-h-11 min-w-11 sm:min-h-8 sm:min-w-8"
           onClick={() => {
             setConfirming(false);
             requestAnimationFrame(() => trigger.current?.focus());
@@ -197,7 +209,7 @@ export function ConfirmDeleteButton({
   return (
     <button
       type="button"
-      className="btn btn-ghost btn-xs min-h-11 min-w-11 text-[var(--ink-error)]"
+      className="btn btn-ghost btn-xs min-h-11 min-w-11 sm:min-h-8 sm:min-w-8 text-[var(--ink-error)]"
       ref={trigger}
       aria-label={label}
       disabled={pending}
@@ -224,7 +236,7 @@ export function FormActions({
     <div className="flex justify-end gap-2">
       <button
         type="button"
-        className="btn btn-ghost btn-xs min-h-11 min-w-11"
+        className="btn btn-ghost btn-xs min-h-11 min-w-11 sm:min-h-8 sm:min-w-8"
         onClick={onCancel}
         disabled={pending}
       >
@@ -232,7 +244,7 @@ export function FormActions({
       </button>
       <button
         type="submit"
-        className="btn btn-primary btn-xs min-h-11 min-w-11"
+        className="btn btn-primary btn-xs min-h-11 min-w-11 sm:min-h-8 sm:min-w-8"
         disabled={disabled || pending}
       >
         {t("Kaydet")}

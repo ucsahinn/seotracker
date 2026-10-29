@@ -54,7 +54,7 @@
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://seowatcher.io/kilavuz/pagespeed-anahtari/"
+      href="https://seowatcher.io/en/docs/pagespeed-key/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -107,7 +107,7 @@
       property="og:image:alt"
       content="seowatcher-Karte: das Dashboard der App mit Daten aus Search Console, Analytics 4 und dem Website-Audit, dazu eine Download-Schaltfläche für Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/de/dokumentation/pagespeed-schluessel/"
@@ -145,7 +145,9 @@
             "@id": "https://seowatcher.io/#website",
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
-            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+            "alternateName": ["seotracker"],
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
+            "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
             "@type": "SoftwareApplication",
@@ -169,7 +171,8 @@
             "description": "PageSpeed-Schlüssel speichern und Testanfragen sowie Prüfungszähler verstehen.",
             "url": "https://seowatcher.io/de/dokumentation/pagespeed-schluessel/",
             "inLanguage": "de",
-            "dateModified": "2026-10-27",
+            "datePublished": "2026-10-23",
+            "dateModified": "2026-10-29",
             "articleSection": "Erste Schritte",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -204,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.5" defer></script>
+    <script src="/assets/docs.js?v=0.8.6" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1471,6 +1474,11 @@
           <p class="nav-group">Erste Schritte</p>
           <ul>
             <li>
+              <a href="/de/dokumentation/was-ist-seowatcher/"
+                >Was ist seowatcher?</a
+              >
+            </li>
+            <li>
               <a href="/de/dokumentation/installation-unter-windows/"
                 >Installation unter Windows</a
               >
@@ -1550,6 +1558,13 @@
           PageSpeed-Schlüssel speichern und Testanfragen sowie Prüfungszähler
           verstehen.
         </p>
+        <p>
+          Ein PageSpeed-Insights-API-Schlüssel lässt das Website-Audit die
+          Geschwindigkeit Ihrer Seiten mit Googles PageSpeed Insights messen.
+          Sie erstellen den Schlüssel kostenlos in Google Cloud, und er ist
+          optional: Ohne Schlüssel versucht die App, pro Audit höchstens 50
+          Seiten zu messen.
+        </p>
         <h2 id="schlussel-einrichten">Schlüssel einrichten</h2>
         <p>
           Aktivieren Sie PageSpeed Insights API in Google Cloud. Erstellen Sie
@@ -1592,7 +1607,7 @@
           >
         </nav>
         <p class="meta">
-          Zuletzt aktualisiert: 27 Oktober 2026. Fehler entdeckt?
+          Zuletzt aktualisiert: 29 Oktober 2026. Fehler entdeckt?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

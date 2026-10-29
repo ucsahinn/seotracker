@@ -1,12 +1,14 @@
 import { CheckCheck } from "lucide-react";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { FactStrip } from "@/client/components/FactStrip";
+import { formatCount } from "@/shared/format";
 import { t } from "@/shared/i18n";
 import { NotificationHistory } from "./NotificationHistory";
 import { markAllNotificationsRead, useNotifications } from "./store";
 
 export function NotificationsPage() {
   const items = useNotifications();
+  const unread = items.filter((item) => !item.read).length;
   return (
     <PageShell width="reading">
       <PageHeader
@@ -29,17 +31,23 @@ export function NotificationsPage() {
           </p>
         }
       />
-      <div>
-        <button
-          type="button"
-          className="btn btn-ghost btn-sm mb-3"
-          disabled={!items.some((item) => !item.read)}
-          onClick={markAllNotificationsRead}
-        >
-          <CheckCheck className="size-4" aria-hidden />
-          {t("Tümünü okundu işaretle")}
-        </button>
-        <NotificationHistory />
+      <div className="space-y-2">
+        {unread > 0 ? (
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="text-sm text-muted" role="status">
+              {t("{count} okunmamış", { count: formatCount(unread) })}
+            </p>
+            <button
+              type="button"
+              className="btn btn-sm"
+              onClick={markAllNotificationsRead}
+            >
+              <CheckCheck className="size-4" aria-hidden />
+              {t("Tümünü okundu işaretle")}
+            </button>
+          </div>
+        ) : null}
+        <NotificationHistory framed />
       </div>
     </PageShell>
   );

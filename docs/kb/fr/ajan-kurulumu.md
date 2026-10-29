@@ -5,6 +5,8 @@ kind: nasil-yapilir
 updated: 2026-10-27
 ---
 
+L'installation de l'assistant connecte un assistant IA comme Claude Code, Codex ou Cursor à seowatcher via MCP (Model Context Protocol). Une fois connecté, l'assistant lit vos données Search Console, Analytics et d'audit depuis l'application sur votre ordinateur, lance des audits et rédige des rapports. Ce que lit l'assistant peut partir chez son fournisseur.
+
 ## Connecter l'agent
 
 Ouvrez la configuration de l'agent. Choisissez Claude Code, Codex ou Autre et copiez les instructions. Les flèches, Début et Fin changent le choix sans copier. Le texte ne contient aucun jeton réel; l'agent utilise le secret local. L'installation complète reste une option séparée.

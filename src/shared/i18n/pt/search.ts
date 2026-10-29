@@ -3,6 +3,12 @@ import type { Catalog } from "@/shared/i18n";
 
 /** Portuguese (Portugal) for the Search performance screen, its to-do copy and the printable report. */
 export const ptSearch: Catalog = {
+  "Listedeki hiçbir sayfa için ek tıklama hesaplanamadı; bu, sıfır kazanç demek değildir.":
+    "Não foi possível estimar cliques adicionais para nenhuma página da lista; isso não significa ganho zero.",
+  "Değişim sütunu gizlendi: önceki dönemde bu sorguların hiçbiri için veri yok.":
+    "Coluna «Variação» oculta: nenhuma destas consultas tem dados no período anterior.",
+  "Dönem ortalaması ve grubu (1-3, 4-10, 11-20, 21+). Yanındaki çizgi haftalık sırayı gösterir; çizginin yükselmesi sıranın iyileştiği demektir.":
+    "Média do período e a sua faixa (1-3, 4-10, 11-20, 21+). A linha ao lado mostra a posição semanal; uma linha a subir significa que a posição melhorou.",
   "{count} sorgu gözlendi.": "Consultas observadas: {count}.",
   "En çok gösterilenler": "Consultas mais exibidas",
   "Tam yanıtlı gün: {current}/{days}; önceki dönem: {previous}/{days}.":

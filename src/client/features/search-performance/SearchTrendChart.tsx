@@ -122,8 +122,8 @@ export function SearchTrendPanel({
 
   return (
     <section className="overflow-hidden rounded-box border border-[var(--hairline)] bg-base-100 shadow-[var(--shadow-raise)]">
-      <div className="flex flex-col gap-3 border-b border-[var(--hairline)] px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
-        <h2 className="text-sm font-medium">{t("Zaman içinde")}</h2>
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 border-b border-[var(--hairline)] px-4 py-3">
+        <h2 className="text-sm font-semibold">{t("Zaman içinde")}</h2>
         <TrendControls
           metric={metric}
           onMetric={setMetric}
@@ -144,6 +144,11 @@ export function SearchTrendPanel({
         </p>
       ) : (
         <div className="px-2 pt-3">
+          {/* The y axis names its metric: the ticks alone ("0 1 2 3")
+              never said whether they were clicks or impressions. */}
+          <p aria-hidden className="px-2 pb-1 text-xs font-medium text-muted">
+            {label}
+          </p>
           <Chart
             metric={metric}
             height={240}
@@ -189,7 +194,7 @@ export function SearchTrendPanel({
           >
             <ComposedChart
               data={chartData}
-              margin={{ top: 18, right: 12, bottom: 0, left: 0 }}
+              margin={{ top: 18, right: 28, bottom: 0, left: 0 }}
             >
               <TrendDefs />
               <CartesianGrid {...CHART_GRID} />
@@ -203,26 +208,24 @@ export function SearchTrendPanel({
                     value: t("Kesinleşmedi"),
                     position: "insideTopRight",
                     fill: "var(--text-muted)",
-                    fontSize: 10,
+                    fontSize: 12,
                   }}
                 />
               ) : null}
-              {marks.map((mark) => (
+              {/* Several events on one day share one rule and one label
+                  ("2–4"); stacked labels printed on top of each other. */}
+              {markGroups(marks).map((group) => (
                 <ReferenceLine
-                  key={`${mark.annotation.kind}-${mark.n}`}
-                  x={mark.x}
-                  stroke={
-                    mark.annotation.kind === "note"
-                      ? "var(--color-primary)"
-                      : "currentColor"
-                  }
+                  key={group.x}
+                  x={group.x}
+                  stroke={group.note ? "var(--color-primary)" : "currentColor"}
                   strokeOpacity={0.6}
                   strokeDasharray="3 4"
                   label={{
-                    value: String(mark.n),
+                    value: group.label,
                     position: "top",
                     fill: "currentColor",
-                    fontSize: 11,
+                    fontSize: 12,
                     fontWeight: 600,
                   }}
                 />
@@ -368,4 +371,21 @@ export function SearchTrendPanel({
       </div>
     </section>
   );
+}
+
+function markGroups(
+  marks: ReadonlyArray<{ n: number; x: string; annotation: { kind: string } }>,
+): Array<{ x: string; label: string; note: boolean }> {
+  const groups = new Map<string, { ns: number[]; note: boolean }>();
+  for (const mark of marks) {
+    const group = groups.get(mark.x) ?? { ns: [], note: false };
+    group.ns.push(mark.n);
+    group.note ||= mark.annotation.kind === "note";
+    groups.set(mark.x, group);
+  }
+  return [...groups].map(([x, { ns, note }]) => ({
+    x,
+    note,
+    label: ns.length === 1 ? String(ns[0]) : `${ns[0]}–${ns[ns.length - 1]}`,
+  }));
 }

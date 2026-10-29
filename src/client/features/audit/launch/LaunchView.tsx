@@ -53,21 +53,6 @@ export function LaunchView({ projectId, onAuditStarted }: LaunchViewProps) {
         maxPagesLimit={controller.maxPagesLimit}
       />
 
-      {/* Quotas are reference, not the task: closed, so the history starts
-          right under the form. */}
-      <details className="-mt-2">
-        <summary className="link cursor-pointer text-sm">
-          {t("Kotalar")}
-        </summary>
-        <div className="mt-3">
-          <QuotaCard
-            projectId={projectId}
-            kinds={["pagespeed", "url_inspection"]}
-            title={t("Güncel durum")}
-          />
-        </div>
-      </details>
-
       <AuditHistorySection
         projectId={projectId}
         projectDomain={controller.projectDomain}
@@ -81,6 +66,19 @@ export function LaunchView({ projectId, onAuditStarted }: LaunchViewProps) {
         onRerun={controller.rerunAudit}
         isRerunPending={controller.isStarting}
       />
+
+      {/* Quotas are reference, not the task: a closed disclosure at the foot
+          of the page, styled like every other disclosure. */}
+      <details>
+        <summary className="min-h-11 cursor-pointer py-3 text-sm">
+          {t("Kotalar")}
+        </summary>
+        <QuotaCard
+          projectId={projectId}
+          kinds={["pagespeed", "url_inspection"]}
+          title={t("Güncel durum")}
+        />
+      </details>
 
       {pendingDelete ? (
         <ConfirmDeleteModal

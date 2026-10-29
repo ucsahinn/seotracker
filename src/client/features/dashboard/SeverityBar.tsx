@@ -73,45 +73,42 @@ export function SeverityBar({
   );
 
   return (
-    <div className="pt-1">
-      <div
-        className="flex h-2 origin-left gap-0.5 overflow-hidden rounded-full transition-transform duration-700 ease-out motion-reduce:transition-none"
-        style={{ transform: drawn || reduced ? "scaleX(1)" : "scaleX(0)" }}
-      >
-        {present.map((segment) => (
-          <Link
-            key={segment.key}
-            to="/p/$projectId/audit"
-            params={{ projectId }}
-            search={{ auditId, tab: "issues" as const, severity: segment.key }}
-            className={`${segment.fill} min-w-1 transition-opacity hover:opacity-70`}
-            style={{ flexGrow: totals[segment.key] }}
-            title={t("{severity}: {count} bulgu. {hint}", {
-              severity: t(segment.label),
-              count: formatCount(totals[segment.key]),
-              hint: t(segment.hint),
-            })}
-            // The legend below carries the same links with a readable hit
-            // area, so the thin bar is a pointer shortcut only.
-            aria-hidden
-            tabIndex={-1}
-          />
-        ))}
-      </div>
+    <div>
+      {/* Heading first, then the bar it names, then the legend that reads
+        it, then the method note: a bar above its own title read as a stray
+        progress meter. */}
       <div role="group" aria-label={t("Sayfa bulguları")}>
-        <h3 className="mt-2 text-xs font-medium text-muted">
+        <h3 className="text-[13px] font-semibold text-base-content">
           {t("Sayfa bulguları")}
         </h3>
-        <details className="text-sm text-muted">
-          <summary className="min-h-11 cursor-pointer py-3">
-            {t("Veri hakkında")}
-          </summary>
-          <p className="max-w-prose leading-relaxed">
-            {t(
-              "Her sayfa ve kontrol türü çifti bir bulgudur; aynı sayfa birden fazla kez sayılabilir.",
-            )}
-          </p>
-        </details>
+        <div
+          className="mt-2 flex h-2 origin-left gap-0.5 overflow-hidden rounded-full transition-transform duration-700 ease-out motion-reduce:transition-none"
+          style={{ transform: drawn || reduced ? "scaleX(1)" : "scaleX(0)" }}
+        >
+          {present.map((segment) => (
+            <Link
+              key={segment.key}
+              to="/p/$projectId/audit"
+              params={{ projectId }}
+              search={{
+                auditId,
+                tab: "issues" as const,
+                severity: segment.key,
+              }}
+              className={`${segment.fill} min-w-1 transition-opacity hover:opacity-70`}
+              style={{ flexGrow: totals[segment.key] }}
+              title={t("{severity}: {count} bulgu. {hint}", {
+                severity: t(segment.label),
+                count: formatCount(totals[segment.key]),
+                hint: t(segment.hint),
+              })}
+              // The legend below carries the same links with a readable hit
+              // area, so the thin bar is a pointer shortcut only.
+              aria-hidden
+              tabIndex={-1}
+            />
+          ))}
+        </div>
         <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
           {present.map((segment) => (
             <li key={segment.key}>
@@ -151,11 +148,21 @@ export function SeverityBar({
             </HelpTip>
           </li>
         </ul>
+        <details className="mt-1 text-sm text-muted">
+          <summary className="min-h-11 cursor-pointer py-3">
+            {t("Veri hakkında")}
+          </summary>
+          <p className="max-w-prose leading-relaxed">
+            {t(
+              "Her sayfa ve kontrol türü çifti bir bulgudur; aynı sayfa birden fazla kez sayılabilir.",
+            )}
+          </p>
+        </details>
       </div>
       {siteTotals &&
       siteTotals.critical + siteTotals.warning + siteTotals.info > 0 ? (
         <div role="group" aria-label={t("Site geneli kontroller")}>
-          <h3 className="mt-3 text-xs font-medium text-muted">
+          <h3 className="mt-3 text-[13px] font-semibold text-base-content">
             {t("Site geneli kontroller")}
           </h3>
           <p className="mt-1 text-xs text-muted">

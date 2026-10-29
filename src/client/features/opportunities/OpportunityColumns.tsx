@@ -9,11 +9,38 @@ import { nullableNumberSort } from "@/client/features/audit/results/AuditResults
 import {
   pathOf,
   rowAction,
+  splitUrl,
   workColor,
   type OpportunityRow,
 } from "@/client/features/opportunities/opportunityLogic";
 import { formatCount, formatDecimal, formatPercent } from "@/client/lib/format";
 import { BAND_LABELS } from "@/shared/positionBands";
+import { Fragment } from "react";
+
+/** The host dimmed, the path in full ink: every row repeats the host. */
+export function UrlText({ url }: { url: string }) {
+  const { host, rest } = splitUrl(url);
+  return (
+    <>
+      <span className="text-muted">{host}</span>
+      <PathBreaks path={rest} />
+    </>
+  );
+}
+
+/**
+ * A path that wraps only after a "/": on a phone a long address broke in the
+ * middle of a word. Pair it with `break-words`, which still splits a segment
+ * that is wider than the line on its own.
+ */
+export function PathBreaks({ path }: { path: string }) {
+  return path.split(/(?<=\/)/).map((part, index) => (
+    <Fragment key={index}>
+      {index > 0 ? <wbr /> : null}
+      {part}
+    </Fragment>
+  ));
+}
 
 /** The page's non-brand click-through against the site's at that position, in points. */
 function CtrGap({ row }: { row: OpportunityRow }) {
@@ -115,7 +142,7 @@ export function buildOpportunityColumns(
         const safe = getSafeExternalUrl(url);
         const work = row.original.work;
         return (
-          <span className="flex min-w-0 items-center gap-2">
+          <span className="flex min-w-0 items-center gap-1">
             <span className="min-w-0">
               {/* The way in for keyboard and screen readers; clicking
                   anywhere else on the row does the same for a mouse. */}
@@ -123,10 +150,11 @@ export function buildOpportunityColumns(
                 type="button"
                 aria-haspopup="dialog"
                 onClick={() => onOpen(row.original)}
+                aria-label={pathOf(url)}
                 className="link link-hover block max-w-full truncate text-left"
                 title={url}
               >
-                {pathOf(url)}
+                <UrlText url={url} />
               </button>
               <span className="flex items-center gap-1.5 text-xs text-muted">
                 <span
@@ -134,17 +162,17 @@ export function buildOpportunityColumns(
                   className="inline-block size-2 shrink-0 rounded-full"
                   style={{ backgroundColor: workColor(work) }}
                 />
-                {t(rowAction(row.original))}
-              </span>
-              {row.original.brandOnly ? (
-                <span className="block text-xs text-muted">
-                  {t("Yalnızca marka aramaları")}
+                <span className="truncate">
+                  {t(rowAction(row.original))}
+                  {row.original.brandOnly
+                    ? ` · ${t("Yalnızca marka aramaları")}`
+                    : null}
                 </span>
-              ) : null}
+              </span>
             </span>
             <button
               type="button"
-              className="flex size-11 shrink-0 items-center justify-center text-muted hover:text-base-content"
+              className="flex size-8 shrink-0 items-center justify-center rounded-field text-muted hover:bg-base-200 hover:text-base-content"
               aria-label={t("Adresi kopyala")}
               title={t("Adresi kopyala")}
               onClick={() => void copyText(url, t("Adres kopyalandı"))}
@@ -156,7 +184,7 @@ export function buildOpportunityColumns(
                 href={safe}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="flex size-11 shrink-0 items-center justify-center text-muted hover:text-base-content"
+                className="flex size-8 shrink-0 items-center justify-center rounded-field text-muted hover:bg-base-200 hover:text-base-content"
                 aria-label={t("Sayfayı yeni sekmede aç")}
                 title={t("Sayfayı yeni sekmede aç")}
               >
@@ -180,9 +208,9 @@ export function buildOpportunityColumns(
         />
       ),
       cell: ({ getValue, row }) => (
-        <span className="block">
+        <span className="whitespace-nowrap">
           {formatDecimal(getValue())}
-          <span className="block text-xs text-muted">
+          <span className="ml-1.5 text-xs text-muted">
             {BAND_LABELS[row.original.band]}
           </span>
         </span>
@@ -259,25 +287,27 @@ export function buildOpportunityColumns(
           );
         const signal = row.original.value;
         return (
-          <span className="block">
-            {formatCount(value)}
+          <span className="flex flex-col items-end">
+            <span className="whitespace-nowrap">
+              {signal ? (
+                <span
+                  className={`mr-1.5 text-xs ${
+                    signal === "converts"
+                      ? "text-[var(--ink-success)]"
+                      : "text-muted"
+                  }`}
+                >
+                  {t(VALUE_SHORT[signal])}
+                </span>
+              ) : null}
+              {formatCount(value)}
+            </span>
             {analyticsScope ? (
               <OpportunityAnalyticsLink
                 row={row.original}
                 {...analyticsScope}
                 compact
               />
-            ) : null}
-            {signal ? (
-              <span
-                className={`block text-xs ${
-                  signal === "converts"
-                    ? "text-[var(--ink-success)]"
-                    : "text-muted"
-                }`}
-              >
-                {t(VALUE_SHORT[signal])}
-              </span>
             ) : null}
           </span>
         );

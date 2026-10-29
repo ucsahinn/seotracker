@@ -5,9 +5,9 @@ kind: nasil-yapilir
 updated: 2026-10-23
 ---
 
-L'interface de l'application existe en six langues : turc, anglais, allemand, français, italien et portugais. La langue se choisit dans Paramètres → Apparence → Langue. Ce guide donne les boutons et les écrans sous le nom qu'ils portent dans l'interface en français. L'assistant d'installation n'existe qu'en turc et en anglais, et le menu de la zone de notification qu'en turc. Là, le nom affiché est suivi de sa traduction française entre parenthèses.
-
 À la fin de cette page, l'application sera installée et ouverte dans votre navigateur. Comptez deux minutes. Elle s'installe pour votre seul compte utilisateur, sans droits d'administrateur. Une autorisation n'est demandée qu'une fois, si le composant Visual C++ est absent.
+
+L'interface de l'application existe en six langues : turc, anglais, allemand, français, italien et portugais. La langue se choisit dans Paramètres → Apparence → Langue. Ce guide donne les boutons et les écrans sous le nom qu'ils portent dans l'interface en français. L'assistant d'installation n'existe qu'en turc et en anglais, et le menu de la zone de notification qu'en turc. Là, le nom affiché est suivi de sa traduction française entre parenthèses.
 
 ## Ce qu'il vous faut
 

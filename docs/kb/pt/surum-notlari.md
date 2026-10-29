@@ -1,16 +1,16 @@
 ---
 title: Notas da versão
-description: seowatcher 0.8.4 Alpha — dados Google completos, cores vivas e telas revistas com dados reais, mais legíveis no celular.
+description: seowatcher 0.8.6 Alpha (29 de outubro de 2026): nova auditoria do site com 202 regras, seis idiomas, notificações e dados do Google mais precisos.
 updated: 2026-10-29
 ---
 
-A versão mais recente é a **0.8.5 Alpha**, de 29 de outubro de 2026. Os dados são mantidos na atualização.
+A versão mais recente é a **0.8.6 Alpha**, de 29 de outubro de 2026. Os dados são mantidos na atualização.
 
 Para passar de 2.x para 0.x.x Alpha, execute o novo instalador manualmente; o atualizador antigo não reconhece o número menor como mais recente.
 
-## 0.8.5 Alpha — 2026-10-29
+## 0.8.6 Alpha — 2026-10-29
 
-Esta entrada reúne novidades e correções da 0.5.0 à 0.8.5: auditoria do site, painel, notificações e seis idiomas, com dados mais precisos e telas mais legíveis.
+Esta entrada reúne novidades e correções da 0.5.0 à 0.8.6: auditoria do site, painel, notificações e seis idiomas, com dados mais precisos e telas mais legíveis.
 
 ### ✨ Destaques
 
@@ -66,6 +66,8 @@ Esta entrada reúne novidades e correções da 0.5.0 à 0.8.5: auditoria do site
 - **Ajuda e versões:** As telas de ajuda e de notas da versão facilitam encontrar as informações desejadas.
 - **Cores dos dados:** Cliques em azul, impressões em violeta, taxa de cliques em turquesa, posição em ocre, sessões em verde e conversões em rosa: cartões e gráficos usam as mesmas cores mais vivas nos dois temas.
 - **Telas mais tranquilas:** Fonte, período e atualização dos dados aparecem juntos com rótulos curtos. Abra as explicações longas quando precisar; nomes curtos e botões claros facilitam as ações.
+- **No celular:** As listas aparecem como linhas legíveis em vez de tabelas no celular; consultas e rótulos não são mais cortados.
+- **Visual único:** Botões, seções expansíveis, notificações e cartões têm a mesma aparência em todas as telas; listas de uma única página não mostram mais botões de página.
 
 ### 🗂️ Projetos e pesquisas salvas
 

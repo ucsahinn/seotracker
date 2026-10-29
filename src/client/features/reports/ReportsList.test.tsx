@@ -112,11 +112,12 @@ it("H07 labels each mobile report with its kind and the full legacy qualificatio
     ["October report", "Eski rapor"],
     ["Current report", "Site denetimi raporu"],
   ]) {
-    const titleCell = screen.getByRole("link", { name: title }).closest("td")!;
-    const mobileLabel = within(titleCell).getByText(label);
-    expect(mobileLabel.closest(".md\\:hidden")).toBeTruthy();
+    // On phones the kind sits on the row's meta line under the full-width title.
+    const row = screen.getByRole("link", { name: title }).closest("tr")!;
+    const mobileLabel = within(
+      row.querySelector<HTMLElement>(".md\\:hidden")!,
+    ).getByText(label);
     expect(mobileLabel.classList.contains("truncate")).toBe(false);
-    const row = titleCell.closest("tr")!;
     const desktopCell = row.querySelector<HTMLTableCellElement>(
       "td.hidden.md\\:table-cell",
     )!;

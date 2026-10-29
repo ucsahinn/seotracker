@@ -5,9 +5,9 @@ kind: nasil-yapilir
 updated: 2026-10-23
 ---
 
-L'interfaccia dell'app esiste in sei lingue: turco, inglese, tedesco, francese, italiano e portoghese. La lingua si sceglie in Impostazioni → Aspetto → Lingua. In questa guida pulsanti e schermate hanno il nome che portano nell'interfaccia in italiano. La procedura di installazione esiste solo in turco e in inglese, il menu dell'area di notifica solo in turco. Lì il nome mostrato è seguito dal significato italiano tra parentesi.
-
 Al termine l'app sarà installata sul computer e aperta nel browser. L'installazione richiede due minuti. Viene installata solo per il proprio account utente e non servono i permessi di amministratore. Se manca il componente Visual C++, il permesso viene chiesto una sola volta.
+
+L'interfaccia dell'app esiste in sei lingue: turco, inglese, tedesco, francese, italiano e portoghese. La lingua si sceglie in Impostazioni → Aspetto → Lingua. In questa guida pulsanti e schermate hanno il nome che portano nell'interfaccia in italiano. La procedura di installazione esiste solo in turco e in inglese, il menu dell'area di notifica solo in turco. Lì il nome mostrato è seguito dal significato italiano tra parentesi.
 
 ## Cosa serve
 

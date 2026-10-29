@@ -108,22 +108,12 @@ export function MoversCard({
   return (
     <section
       aria-label={t("Yükselenler ve düşenler")}
-      className="rounded-box border border-base-300 bg-base-100 px-4 py-4"
+      className="rounded-box border border-[var(--hairline)] bg-base-100 p-4 shadow-[var(--shadow-raise)]"
     >
       <h2 className="text-base font-semibold">
         {t("Yükselenler ve düşenler")}
       </h2>
       <>
-        <details className="mt-2 max-w-prose text-sm text-muted">
-          <summary className="min-h-11 cursor-pointer">
-            {t("Ayrıntılar")}
-          </summary>
-          <p>
-            {t(
-              "Öncelik: mutlak sıra değişimi × kayıtlı gösterim. Bu bir inceleme sırasıdır, kayıp tıklama tahmini değildir.",
-            )}
-          </p>
-        </details>
         <div className="mt-3 flex flex-col gap-6 md:flex-row">
           <MoverList
             title={t("En çok yükselenler")}
@@ -146,12 +136,22 @@ export function MoversCard({
         </div>
         {Math.max(movers.risers.length, movers.fallers.length) > 3 ? (
           <button
-            className="btn btn-ghost min-h-11"
+            className="btn btn-ghost btn-sm mt-3"
             onClick={() => setExpanded(!expanded)}
           >
             {t(expanded ? "Daha az göster" : "Daha fazla hareket göster")}
           </button>
         ) : null}
+        <details className="mt-3 max-w-prose text-sm text-muted">
+          <summary className="min-h-11 cursor-pointer">
+            {t("Ayrıntılar")}
+          </summary>
+          <p>
+            {t(
+              "Öncelik: mutlak sıra değişimi × kayıtlı gösterim. Bu bir inceleme sırasıdır, kayıp tıklama tahmini değildir.",
+            )}
+          </p>
+        </details>
       </>
     </section>
   );

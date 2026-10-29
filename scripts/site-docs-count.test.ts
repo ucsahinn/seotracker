@@ -42,13 +42,28 @@ test("every translated audit guide lists each rule registered by the app", () =>
   }
 });
 
-test("every 0.8.5 release note uses the current audit rule count", () => {
+test("every 0.8.6 release note uses the current audit rule count", () => {
   for (const language of languages) {
     const source = readFileSync(releaseNotesPath(language), "utf8");
-    const latest = source.split(/^## 0\.8\.5 Alpha/m)[1]?.split(/^## /m)[0];
+    const latest = source.split(/^## 0\.8\.6 Alpha/m)[1]?.split(/^## /m)[0];
 
-    expect(latest, `${language} 0.8.5 notes`).toBeDefined();
-    expect(latest, `${language} 0.8.5 notes`).toContain(String(ruleCount));
-    expect(latest, `${language} 0.8.5 notes`).not.toContain("201");
+    expect(latest, `${language} 0.8.6 notes`).toBeDefined();
+    expect(latest, `${language} 0.8.6 notes`).toContain(String(ruleCount));
+    expect(latest, `${language} 0.8.6 notes`).not.toContain("201");
+  }
+});
+
+test("every edition's overview page states the current version and rule count", () => {
+  const { version } = JSON.parse(
+    readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+  ) as { version: string };
+  for (const language of languages) {
+    const suffix = language === "tr" ? "" : `${language}/`;
+    const source = readFileSync(
+      new URL(`../docs/kb/${suffix}seowatcher-nedir.md`, import.meta.url),
+      "utf8",
+    );
+    expect(source, language).toContain(`${version} Alpha`);
+    expect(source, language).toContain(`| ${ruleCount} `);
   }
 });

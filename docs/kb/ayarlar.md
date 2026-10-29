@@ -6,6 +6,8 @@ route: /settings
 updated: 2026-10-27
 ---
 
+Ayarlar; bu tarayıcıya (görünüm ve dil), tüm kuruluma (Google kimlikleri, PageSpeed anahtarı, sınırlar ve güncellemeler) uygulanan seçimleri tutar. Projenin adı, alan adı ve Google mülkleri **Proje ayarları** içindedir. Bu sayfa her ayarın kapsamını ve nereden değiştirileceğini anlatır.
+
 ## Kapsam ve kullanım
 
 Görünüm bu tarayıcıda saklanır. Dil listesinden seçiminizi yapın ve **Dili uygula** düğmesine basın; yalnızca listede gezinmek sayfayı yenilemez. Projenin ülke/dil varsayılanı ayrı bir ayardır.

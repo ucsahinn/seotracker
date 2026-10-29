@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { FileText, Trash2 } from "lucide-react";
+import { Check, FileText, Search, Trash2 } from "lucide-react";
+import { HelpTip } from "@/client/components/HelpTip";
 import { EmptyState } from "@/client/components/EmptyState";
 import { RowActions } from "@/client/components/table/RowActions";
 import { ReportDownloadButton } from "./ReportDownloadButton";
@@ -81,21 +82,27 @@ export function ReportsList({
   }
   return (
     <div className="space-y-4" aria-busy={pending}>
+      {/* Search keeps a reading width instead of stretching 1000px; every
+          control in the row carries a visible label and one height. */}
       <div className="flex flex-wrap items-end gap-3">
-        <label className="flex w-full min-w-0 flex-none flex-col gap-1 text-sm sm:w-auto sm:flex-1">
+        <label className="flex w-full min-w-0 flex-col gap-1 text-xs text-muted sm:w-80">
           {t("Raporlarda ara")}
-          <input
-            type="search"
-            className="input input-bordered min-h-11 w-full"
-            maxLength={200}
-            value={filters.query}
-            onChange={(event) => update({ query: event.target.value })}
-          />
+          <span className="input input-bordered flex min-h-11 w-full items-center gap-2 text-sm text-base-content">
+            <Search aria-hidden className="size-4 shrink-0 text-subtle" />
+            <input
+              type="search"
+              className="min-w-0 grow"
+              placeholder={t("Başlık veya özet")}
+              maxLength={200}
+              value={filters.query}
+              onChange={(event) => update({ query: event.target.value })}
+            />
+          </span>
         </label>
-        <label className="flex flex-col gap-1 text-sm">
+        <label className="flex flex-col gap-1 text-xs text-muted">
           {t("Sıralama")}
           <select
-            className="select select-bordered min-h-11"
+            className="select select-bordered min-h-11 text-sm text-base-content"
             value={filters.sort}
             onChange={(event) =>
               update({
@@ -110,14 +117,25 @@ export function ReportsList({
             <option value="title">{t("Başlık")}</option>
           </select>
         </label>
-        <button
-          type="button"
-          className="btn min-h-11"
-          aria-pressed={filters.recent}
-          onClick={() => update({ recent: !filters.recent })}
-        >
-          {t("Son 7 gün")}
-        </button>
+        <div className="flex flex-col gap-1 text-xs text-muted">
+          <span className="inline-flex items-center gap-1">
+            {t("Dönem")}
+            <HelpTip label={t("Son 7 gün")}>
+              {t(
+                "Son 7 gün, bu sürede kaydedilen veya güncellenen ayrı dosyaları süzer; kaynak verinin güncelliğini göstermez. Arama başlık ve kayıtlı özeti tarar.",
+              )}
+            </HelpTip>
+          </span>
+          <button
+            type="button"
+            className={`btn min-h-11 gap-1.5 ${filters.recent ? "btn-active" : ""}`}
+            aria-pressed={filters.recent}
+            onClick={() => update({ recent: !filters.recent })}
+          >
+            {filters.recent ? <Check aria-hidden className="size-4" /> : null}
+            {t("Son 7 gün")}
+          </button>
+        </div>
         {filters.query || filters.kind || filters.recent ? (
           <button
             type="button"
@@ -128,65 +146,22 @@ export function ReportsList({
           </button>
         ) : null}
       </div>
+      <KindChips
+        facets={inventory.facets}
+        selected={filters.kind || ""}
+        onSelect={(kind) => update({ kind })}
+      />
+      {/* Said once for the list, not under every title. */}
       <p className="text-sm text-muted">
         {t("{matching} sonuç / projedeki {total} rapor", {
           matching: formatCount(inventory.totalMatching),
           total: formatCount(inventory.totalProject),
         })}
+        <span className="text-subtle">
+          {" · "}
+          {t("Veri dönemi: raporun içinde kontrol edin.")}
+        </span>
       </p>
-      {filters.recent || filters.query ? (
-        <details className="max-w-prose text-sm text-muted">
-          <summary className="cursor-pointer py-2">{t("Ayrıntılar")}</summary>
-          {t(
-            "Son 7 gün, bu sürede kaydedilen veya güncellenen ayrı dosyaları süzer; kaynak verinin güncelliğini göstermez. Arama başlık ve kayıtlı özeti tarar.",
-          )}
-        </details>
-      ) : null}
-      <div
-        className="flex flex-wrap gap-2"
-        role="group"
-        aria-label={t("Türe göre raporlar")}
-      >
-        <button
-          type="button"
-          className="btn btn-sm min-h-11"
-          aria-pressed={!filters.kind}
-          onClick={() => update({ kind: "" })}
-        >
-          {t("Tümü")}
-        </button>
-        {inventory.facets.map((facet) => (
-          <button
-            key={facet.key}
-            type="button"
-            aria-pressed={filters.kind === facet.key}
-            className={
-              "btn btn-sm min-h-11 " +
-              (filters.kind === facet.key ? "btn-primary" : "btn-ghost")
-            }
-            onClick={() =>
-              update({ kind: filters.kind === facet.key ? "" : facet.key })
-            }
-          >
-            <span title={facet.name ?? kindLabel(facet.key)}>
-              {facet.key === UNKNOWN_APP_KIND
-                ? t("Eski rapor")
-                : (facet.name ?? kindLabel(facet.key))}
-            </span>{" "}
-            ({formatCount(facet.value)})
-          </button>
-        ))}
-      </div>
-      {inventory.facets.length > 1 ? (
-        <details className="max-w-prose text-sm text-muted">
-          <summary className="cursor-pointer py-2">
-            {t("Türe göre raporlar")}
-          </summary>
-          {t(
-            "Tür sayıları arama ve Son 7 gün süzgecine göredir; seçili türden önce hesaplanır.",
-          )}
-        </details>
-      ) : null}
       {inventory.reports.length === 0 ? (
         <EmptyState
           compact
@@ -213,8 +188,10 @@ export function ReportsList({
         />
       ) : (
         <div className="overflow-x-auto rounded-box border border-[var(--hairline)]">
-          <table className="table">
-            <thead>
+          {/* Below md each record is a stacked row: the title gets the full
+              width, then one line with kind, date and actions. */}
+          <table className="table max-md:block">
+            <thead className="max-md:hidden">
               <tr>
                 <th>{t("Rapor")}</th>
                 <th className="hidden md:table-cell">{t("Tür")}</th>
@@ -226,16 +203,21 @@ export function ReportsList({
                 >
                   {t("Güncellendi")}
                 </th>
-                <th className="hidden lg:table-cell">{t("Boyut")}</th>
+                <th className="hidden text-right lg:table-cell">
+                  {t("Boyut")}
+                </th>
                 <th>
                   <span className="sr-only">{t("İşlemler")}</span>
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="max-md:block">
               {inventory.reports.map((report) => (
-                <tr key={report.id}>
-                  <td className="max-w-[420px]">
+                <tr
+                  key={report.id}
+                  className="max-md:flex max-md:flex-col max-md:gap-2 max-md:py-3"
+                >
+                  <td className="max-w-[420px] max-md:max-w-none max-md:py-0">
                     <Link
                       to="/p/$projectId/reports/$reportId"
                       params={{ projectId, reportId: report.id }}
@@ -245,19 +227,6 @@ export function ReportsList({
                     </Link>
                     <div className="mt-1 text-xs text-muted">
                       {formatCreatedBy(report)}
-                    </div>
-                    <div className="mt-1 text-xs text-subtle">
-                      {t("Veri dönemi: raporun içinde kontrol edin.")}
-                    </div>
-                    <div className="mt-1 text-xs text-muted md:hidden">
-                      {formatDateTime(report.updatedAt)}
-                    </div>
-                    <div className="mt-2 md:hidden">
-                      <ReportKindChip
-                        kind={reportKind(report)}
-                        isTemplate={hasTemplate(report)}
-                        wrap
-                      />
                     </div>
                     {report.templateName ? (
                       <div className="mt-1 text-xs text-muted">
@@ -274,28 +243,41 @@ export function ReportsList({
                   <td className="hidden whitespace-nowrap text-muted md:table-cell">
                     {formatDateTime(report.updatedAt)}
                   </td>
-                  <td className="hidden text-muted lg:table-cell">
+                  <td className="hidden text-right tabular-nums text-muted lg:table-cell">
                     {formatBytes(report.sizeBytes)}
                   </td>
-                  <td>
-                    <div className="flex flex-wrap items-center justify-end gap-1">
-                      <ReportDownloadButton
-                        reportId={report.id}
-                        title={report.title}
-                      />
-                      <RowActions
-                        label={t("{title} için işlemler", {
-                          title: report.title,
-                        })}
-                        actions={[
-                          {
-                            label: t("Sil"),
-                            icon: Trash2,
-                            destructive: true,
-                            onSelect: () => onDelete(report),
-                          },
-                        ]}
-                      />
+                  <td className="max-md:py-0">
+                    <div className="flex items-center justify-between gap-2 md:justify-end md:gap-1">
+                      <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2 text-xs text-muted md:hidden">
+                        <ReportKindChip
+                          kind={reportKind(report)}
+                          isTemplate={hasTemplate(report)}
+                          wrap
+                        />
+                        <span className="whitespace-nowrap">
+                          {formatDateTime(report.updatedAt)}
+                        </span>
+                      </div>
+                      <div className="ml-auto flex shrink-0 items-center gap-1">
+                        <ReportDownloadButton
+                          reportId={report.id}
+                          title={report.title}
+                          iconOnPhone
+                        />
+                        <RowActions
+                          label={t("{title} için işlemler", {
+                            title: report.title,
+                          })}
+                          actions={[
+                            {
+                              label: t("Sil"),
+                              icon: Trash2,
+                              destructive: true,
+                              onSelect: () => onDelete(report),
+                            },
+                          ]}
+                        />
+                      </div>
                     </div>
                   </td>
                 </tr>
@@ -304,43 +286,110 @@ export function ReportsList({
           </table>
         </div>
       )}
-      <nav
-        aria-label={t("Rapor sayfaları")}
-        className="flex flex-wrap items-center justify-between gap-2"
-      >
-        <button
-          type="button"
-          className="btn min-h-11"
-          disabled={pending || inventory.page <= 1}
-          onClick={() => onChange({ ...filters, page: inventory.page - 1 })}
+      {/* One page: the count above already says how many; no dead buttons. */}
+      {inventory.pageCount > 1 || inventory.page > 1 ? (
+        <nav
+          aria-label={t("Rapor sayfaları")}
+          className="flex flex-wrap items-center justify-end gap-2"
         >
-          {t("Önceki sayfa")}
-        </button>
-        <span className="text-sm text-muted">
-          {t("{start}–{end} / {total}", {
-            start: formatCount(
-              inventory.totalMatching
-                ? (inventory.page - 1) * REPORT_INVENTORY_PAGE_SIZE + 1
-                : 0,
-            ),
-            end: formatCount(
-              Math.min(
-                inventory.page * REPORT_INVENTORY_PAGE_SIZE,
-                inventory.totalMatching,
+          <button
+            type="button"
+            className="btn btn-ghost btn-sm min-h-11 sm:min-h-0"
+            disabled={pending || inventory.page <= 1}
+            onClick={() => onChange({ ...filters, page: inventory.page - 1 })}
+          >
+            {t("Önceki sayfa")}
+          </button>
+          <span className="order-first mr-2 text-xs text-muted">
+            {t("{start}–{end} / {total}", {
+              start: formatCount(
+                inventory.totalMatching
+                  ? (inventory.page - 1) * REPORT_INVENTORY_PAGE_SIZE + 1
+                  : 0,
               ),
-            ),
-            total: formatCount(inventory.totalMatching),
-          })}
-        </span>
-        <button
-          type="button"
-          className="btn min-h-11"
-          disabled={pending || inventory.page >= inventory.pageCount}
-          onClick={() => onChange({ ...filters, page: inventory.page + 1 })}
-        >
-          {t("Sonraki sayfa")}
-        </button>
-      </nav>
+              end: formatCount(
+                Math.min(
+                  inventory.page * REPORT_INVENTORY_PAGE_SIZE,
+                  inventory.totalMatching,
+                ),
+              ),
+              total: formatCount(inventory.totalMatching),
+            })}
+          </span>
+          <button
+            type="button"
+            className="btn btn-sm min-h-11 sm:min-h-0"
+            disabled={pending || inventory.page >= inventory.pageCount}
+            onClick={() => onChange({ ...filters, page: inventory.page + 1 })}
+          >
+            {t("Sonraki sayfa")}
+          </button>
+        </nav>
+      ) : null}
+    </div>
+  );
+}
+
+/** One pill per report kind; the pressed one is the active filter. */
+function KindChips({
+  facets,
+  selected,
+  onSelect,
+}: {
+  facets: ReportInventory["facets"];
+  selected: string;
+  onSelect: (kind: string) => void;
+}) {
+  return (
+    <div
+      className="flex flex-wrap items-center gap-2"
+      role="group"
+      aria-label={t("Türe göre raporlar")}
+    >
+      {[
+        {
+          key: "",
+          label: t("Tümü"),
+          title: undefined as string | undefined,
+          count: null as number | null,
+        },
+        ...facets.map((facet) => ({
+          key: facet.key,
+          label:
+            facet.key === UNKNOWN_APP_KIND
+              ? t("Eski rapor")
+              : (facet.name ?? kindLabel(facet.key)),
+          title: facet.name ?? kindLabel(facet.key),
+          count: facet.value,
+        })),
+      ].map((chip) => {
+        const on = selected === chip.key;
+        return (
+          <button
+            key={chip.key || "all"}
+            type="button"
+            aria-pressed={on}
+            className={`btn btn-sm min-h-11 sm:min-h-0 gap-1.5 rounded-full ${
+              on ? "btn-active" : "btn-ghost border-[var(--control-border)]"
+            }`}
+            onClick={() => onSelect(on || !chip.key ? "" : chip.key)}
+          >
+            <span title={chip.title}>{chip.label}</span>
+            {chip.count === null ? null : (
+              <span className="tabular-nums text-muted">
+                {formatCount(chip.count)}
+              </span>
+            )}
+          </button>
+        );
+      })}
+      {facets.length > 1 ? (
+        <HelpTip label={t("Türe göre raporlar")}>
+          {t(
+            "Tür sayıları arama ve Son 7 gün süzgecine göredir; seçili türden önce hesaplanır.",
+          )}
+        </HelpTip>
+      ) : null}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { formatCount } from "@/shared/format";
+import type { ReactNode } from "react";
 import { SlidersHorizontal } from "lucide-react";
 import { SavedKeywordsFilterPanel } from "./SavedKeywordsFilterPanel";
 import { SavedKeywordsTagFilter } from "./SavedKeywordsTagFilter";
@@ -21,7 +22,10 @@ export function SavedKeywordsFilters({
   onClearTagSelection,
   onUpdateTag,
   onDeleteTag,
+  search,
 }: {
+  /** The keyword search, set on the same row as the filter buttons. */
+  search?: ReactNode;
   tagsOnly?: boolean;
   filtersForm: SavedKeywordsFilterForm;
   activeFilterCount: number;
@@ -42,11 +46,17 @@ export function SavedKeywordsFilters({
 }) {
   return (
     <>
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-base-300 px-4 py-2.5">
+      {/* Search, Filtreler and Etiketler on one row, as one kind of control:
+          a ghost text button beside a bordered dropdown read as two
+          different things. */}
+      <div className="flex flex-wrap items-end gap-3 border-b border-[var(--hairline)] p-4">
+        {search && !tagsOnly ? (
+          <div className="min-w-0 flex-1 basis-64">{search}</div>
+        ) : null}
         {!tagsOnly ? (
           <button
             type="button"
-            className={`btn btn-ghost btn-sm min-h-11 gap-1.5 ${showFilters ? "btn-active" : ""}`}
+            className={`btn btn-sm gap-1.5 ${showFilters ? "btn-active" : ""}`}
             onClick={onToggleFilters}
             title={t("Tablo filtrelerini aç/kapat")}
             aria-expanded={showFilters}

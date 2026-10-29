@@ -162,7 +162,7 @@ export const enAudit: Catalog = {
     "Density per audit: issues per hundred pages",
   Tarih: "Date",
   Sayfa: "Page",
-  "{density} ({total} toplam)": "{density} ({total} total)",
+  "{total} toplam": "{total} total",
   "{date} · {count} sayfa": {
     one: "{date} · {count} page",
     other: "{date} · {count} pages",
@@ -2377,4 +2377,5 @@ export const enAudit: Catalog = {
   "Tarama sınırı: {count} sayfa": "Crawl limit: {count} pages",
   "Tarama sınırı kaydedilmemiş.": "The crawl limit was not recorded.",
   "Kapsam ayrıntıları": "Scope details",
+  "Tarama bittikten sonra çalışır.": "Runs after the crawl finishes.",
 };

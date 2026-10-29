@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { Check } from "lucide-react";
 import { CopyButton } from "@/client/components/CopyButton";
 import { captureClientEvent } from "@/client/lib/observability";
 import {
@@ -69,15 +70,11 @@ export function ConnectAgentCard({
 
   return (
     <section
-      className={`rounded-box border border-base-300 bg-base-100 ${
-        lead ? "p-5" : "p-4"
+      className={`rounded-box border border-base-300 bg-base-100 p-5 ${
+        lead ? "shadow-[var(--shadow-raise)]" : ""
       }`}
     >
-      <h2
-        className={!lead ? "text-sm font-semibold" : "text-base font-semibold"}
-      >
-        {t("Ajanınızı bağlayın")}
-      </h2>
+      <h2 className="text-base font-semibold">{t("Ajanınızı bağlayın")}</h2>
       <p className="mt-2 text-sm leading-relaxed text-muted">
         {!lead
           ? `${t("Uygulama kurulu, Google ve PageSpeed hazırsa yalnızca bu adım yeter.")} `
@@ -87,7 +84,7 @@ export function ConnectAgentCard({
         )}
       </p>
       <div
-        className="join mt-4"
+        className="mt-4 flex w-full gap-0.5 rounded-field border border-[var(--control-border)] p-0.5 sm:inline-flex sm:w-auto"
         role="radiogroup"
         aria-label={t("Hangi ajanı kullanıyorsunuz?")}
       >
@@ -126,11 +123,17 @@ export function ConnectAgentCard({
             type="button"
             role="radio"
             aria-checked={item.id === agent}
-            className={`btn min-h-11 join-item btn-sm ${
-              item.id === agent ? "btn-active" : ""
+            className={`flex min-h-11 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-field px-3 text-sm font-medium transition-colors sm:flex-none ${
+              item.id === agent
+                ? "bg-base-200 text-base-content shadow-[var(--shadow-raise)] ring-1 ring-[var(--control-border)]"
+                : "text-muted hover:bg-base-200/60 hover:text-base-content"
             }`}
             onClick={() => setAgent(item.id)}
           >
+            {/* Selection is never colour alone. */}
+            {item.id === agent ? (
+              <Check className="size-3.5 shrink-0" aria-hidden />
+            ) : null}
             {t(item.label)}
           </button>
         ))}
@@ -163,7 +166,7 @@ export function ConnectAgentCard({
           }}
         />
       </div>
-      <p className="mt-5 border-t border-base-300 pt-4 text-sm leading-relaxed text-muted">
+      <p className="mt-5 border-t border-[var(--hairline)] pt-4 text-sm leading-relaxed text-muted">
         {fillParts(
           t(
             "Bağlandıktan sonra ajanınızdan {skill} becerisini kullanmasını isteyin; sıradaki adımı birlikte seçersiniz.",
@@ -181,9 +184,9 @@ export function ConnectAgentCard({
           </>
         )}
       </p>
-      <details className="text-sm text-muted">
-        <summary className="cursor-pointer py-2">{t("Ayrıntılar")}</summary>
-        <p className="mt-2 text-xs text-muted">
+      <details className="mt-3 text-xs text-muted">
+        <summary className="cursor-pointer py-1">{t("Ayrıntılar")}</summary>
+        <p className="max-w-prose text-sm text-muted">
           {t(
             "Claude Code, Codex, Cursor, ChatGPT ve MCP destekleyen diğer uygulamalarla çalışır.",
           )}
@@ -196,8 +199,8 @@ export function ConnectAgentCard({
 export function InstallCard({ lead }: { lead: boolean }) {
   return (
     <section
-      className={`rounded-box border border-base-300 bg-base-100 ${
-        lead ? "p-5 shadow-[var(--shadow-raise)]" : "p-4"
+      className={`rounded-box border border-base-300 bg-base-100 p-5 ${
+        lead ? "shadow-[var(--shadow-raise)]" : ""
       }`}
     >
       {lead ? (
@@ -207,14 +210,20 @@ export function InstallCard({ lead }: { lead: boolean }) {
       ) : null}
       <h2
         className={
-          lead ? "mt-1 text-base font-semibold" : "text-sm font-semibold"
+          lead ? "mt-1 text-base font-semibold" : "text-base font-semibold"
         }
       >
         {t("Sıfırdan kurulum")}
       </h2>
-      <details className="text-sm text-muted">
-        <summary className="cursor-pointer py-2">{t("Ayrıntılar")}</summary>
-        <p className="mt-2 text-sm leading-relaxed text-muted">
+      <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:gap-2">
+        <InstallPromptButton
+          primary={lead}
+          label={t("Sıfırdan kurulum komutunu kopyala")}
+        />
+      </div>
+      <details className="mt-3 text-xs text-muted">
+        <summary className="cursor-pointer py-1">{t("Ayrıntılar")}</summary>
+        <p className="max-w-prose text-sm leading-relaxed text-muted">
           {lead
             ? `${t("Uygulamayı yeni kurduysanız ilk adım bu.")} `
             : `${t("Yeni bir kurulum ya da baştan kontrol için.")} `}
@@ -223,12 +232,6 @@ export function InstallCard({ lead }: { lead: boolean }) {
           )}
         </p>
       </details>
-      <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:gap-2">
-        <InstallPromptButton
-          primary={lead}
-          label={t("Sıfırdan kurulum komutunu kopyala")}
-        />
-      </div>
     </section>
   );
 }

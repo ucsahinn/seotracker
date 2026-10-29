@@ -27,6 +27,7 @@ listeler.
 
 ## Başlangıç
 
+- [seowatcher nedir?](seowatcher-nedir.md): kısa tanım, temel bilgiler, ne yapar ve ne yapmaz, sık sorulanlar
 - [Windows'a kurulum](kurulum-windows.md): kurma, güncelleme, kaldırma, yedekleme, port
 - [Docker ile kurulum](kurulum-docker.md): Mac, Linux, Docker kullananlar
 - [Google'a bağlanma](google-baglantisi.md): OAuth istemcisi adım adım, hizmet hesabı yolu

@@ -39,11 +39,9 @@ export function AnalyticsTotal({
     : undefined;
   return (
     <div
-      className={
-        metric
-          ? "metric-tile min-w-0 rounded-field p-2 text-left"
-          : "min-w-0 text-left"
-      }
+      // Every total gets the same box, so the four labels and values line
+      // up whether or not the metric has a data hue.
+      className="metric-tile stat-tile min-w-0 rounded-field p-2 text-left"
       data-metric={metric}
       style={style}
     >
@@ -52,7 +50,12 @@ export function AnalyticsTotal({
       </p>
       <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-lg font-semibold tabular-nums">
         {value === null ? (
-          t("Bilinmiyor")
+          // A dash at the value's size reads as "no number"; the word stays
+          // for screen readers and on hover.
+          <span className="font-normal text-subtle" title={t("Bilinmiyor")}>
+            <span aria-hidden>–</span>
+            <span className="sr-only">{t("Bilinmiyor")}</span>
+          </span>
         ) : (
           <span className="metric-value">
             <AnimatedNumber value={value} format={format} />

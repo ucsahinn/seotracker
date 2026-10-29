@@ -37,10 +37,10 @@ export function AuditSiteFilter({
               type="button"
               aria-pressed={active}
               onClick={() => onSelect(entry.key)}
-              className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-0.5 text-sm transition-colors ${
+              className={`btn btn-sm min-h-11 gap-1.5 rounded-full font-normal sm:min-h-0 ${
                 active
-                  ? "border-primary bg-primary/5"
-                  : "border-base-300 bg-base-100 hover:border-primary/40"
+                  ? "btn-active"
+                  : "btn-ghost border-[var(--control-border)]"
               }`}
             >
               {entry.label}

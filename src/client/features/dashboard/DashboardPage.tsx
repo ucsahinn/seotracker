@@ -13,17 +13,19 @@ import { projectSetupOptions } from "@/client/features/projects/projectSetupQuer
 import { t } from "@/shared/i18n";
 import { DashboardVerdict } from "./DashboardVerdict";
 import { DashboardMetrics } from "./DashboardMetrics";
-import { NextStepsCard, buildPanelActions } from "./NextStepsCard";
-import { SearchInsights } from "./SearchInsights";
+import { NextStepsCard } from "./NextStepsCard";
+import { ClickTrendCard, StrikingQueriesCard } from "./SearchInsights";
 import { GscCard } from "./DashboardCards";
 import { DashboardAuditPanel } from "./DashboardAuditPanel";
 import { Ga4Card } from "./Ga4Card";
 import { DashboardOnboarding } from "./DashboardOnboarding";
-import { PanelRefreshButton } from "./PanelRefreshButton";
+import { PanelRefreshButton, PanelRefreshStatus } from "./PanelRefreshButton";
+import { useDashboardRefresh } from "./useDashboardRefresh";
 import { useGoogleConfiguration } from "./GoogleSetupBanner";
 import { dashboardSearchViewQuery } from "./dashboardGscReport";
 export function DashboardPage({ projectId }: { projectId: string }) {
   const client = useQueryClient();
+  const refresh = useDashboardRefresh(projectId);
   const activationQuery = useQuery({
     queryKey: ["dashboardActivation", projectId],
     queryFn: () => getDashboardActivation({ data: { projectId } }),
@@ -91,25 +93,24 @@ export function DashboardPage({ projectId }: { projectId: string }) {
   const audit = overview?.audit ?? null;
   const siteSelected = overviewQuery.isError || !!overview?.domain;
   const now = Date.now();
-  const actions = buildPanelActions({
-    projectId,
-    gscConnected: activation.gsc.connected,
-    googleMissing: configured === "missing",
-    audit,
-    overviewUnavailable: overviewQuery.isError,
-    siteSelected,
-    searchUnavailable: searchQuery.isError,
-    searchTodo: view?.todo ?? [],
-    now,
-  });
   return (
     <PageShell>
       <PageHeader
         title={t("Panel")}
-        description={activation.domain ?? undefined}
+        description={
+          <>
+            {activation.domain ? (
+              <>
+                <span>{activation.domain}</span>
+                <span aria-hidden> · </span>
+              </>
+            ) : null}
+            <PanelRefreshStatus refresh={refresh} />
+          </>
+        }
         actions={
           <PageActions>
-            <PanelRefreshButton projectId={projectId} />
+            <PanelRefreshButton refresh={refresh} />
             <Link
               to="/p/$projectId/audit"
               params={{ projectId }}
@@ -120,8 +121,12 @@ export function DashboardPage({ projectId }: { projectId: string }) {
           </PageActions>
         }
       />
+      {/*
+       * No "do this first" chip here any more: it was the first row of
+       * Sıradaki adımlar, a few hundred pixels further down, so the same
+       * finding read three times with the audit list.
+       */}
       <DashboardVerdict
-        action={actions[0]}
         projectId={projectId}
         connected={activation.gsc.connected}
       />
@@ -145,8 +150,12 @@ export function DashboardPage({ projectId }: { projectId: string }) {
       {configured === "pending" ? (
         <div className="skeleton h-8" aria-busy />
       ) : null}
+      {/*
+       * The short cards stack in the narrow column, so the chart beside them
+       * is not left with a hole under "Sıradaki adımlar".
+       */}
       <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
-        <div className="min-w-0 lg:col-start-2 lg:row-start-1">
+        <div className="min-w-0 space-y-5 lg:col-start-2 lg:row-start-1">
           <NextStepsCard
             now={now}
             projectId={projectId}
@@ -159,15 +168,20 @@ export function DashboardPage({ projectId }: { projectId: string }) {
             searchUnavailable={searchQuery.isError}
             searchTodo={view?.todo ?? []}
           />
+          <StrikingQueriesCard
+            projectId={projectId}
+            connected={activation.gsc.connected}
+          />
         </div>
         <div className="min-w-0 lg:col-start-1 lg:row-start-1">
-          <SearchInsights
+          <ClickTrendCard
             projectId={projectId}
             connected={activation.gsc.connected}
           />
         </div>
       </div>
-      <div className="grid items-start gap-5 lg:grid-cols-2">
+      {/* Stretched, so the two cards end on one line. */}
+      <div className="grid items-stretch gap-5 lg:grid-cols-2">
         <DashboardAuditPanel
           projectId={projectId}
           overview={overview}

@@ -14,16 +14,6 @@ export function GoogleCredentialMethods() {
   return (
     <section className="space-y-6">
       <h2 className="text-base font-semibold">{t("Google kimlikleri")}</h2>
-      <details className="text-sm text-muted">
-        <summary className="cursor-pointer py-2">
-          {t("Kimlik yöntemleri")}
-        </summary>
-        <p className="text-sm text-muted">
-          {t(
-            "Google kimlikleri bu kurulumdaki tüm projelerde kullanılır. Hizmet hesabı kayıtlıysa önceliklidir. Projenizin mülkünü Proje ayarları → Bağlantılar bölümünden seçin.",
-          )}
-        </p>
-      </details>
       {oauthFirst ? (
         <>
           <GoogleOAuthClientSection />
@@ -35,6 +25,16 @@ export function GoogleCredentialMethods() {
           <GoogleOAuthClientSection />
         </>
       )}
+      <details className="text-xs text-muted">
+        <summary className="cursor-pointer py-1">
+          {t("Kimlik yöntemleri")}
+        </summary>
+        <p className="text-sm text-muted">
+          {t(
+            "Google kimlikleri bu kurulumdaki tüm projelerde kullanılır. Hizmet hesabı kayıtlıysa önceliklidir. Projenizin mülkünü Proje ayarları → Bağlantılar bölümünden seçin.",
+          )}
+        </p>
+      </details>
     </section>
   );
 }

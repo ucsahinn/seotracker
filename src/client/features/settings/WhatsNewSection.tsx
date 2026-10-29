@@ -33,7 +33,20 @@ export function WhatsNewSection({ version }: { version: string }) {
     <section id="surum-notlari" className="scroll-mt-16 space-y-3">
       <FactStrip
         label={t("Sürüm notları")}
-        facts={[{ label: t("Kurulu sürüm"), value: `v${version}` }]}
+        facts={[
+          {
+            label: t("Kurulu sürüm"),
+            value: `v${version}`,
+            // A neutral qualifier, not an error: the bundle simply carries
+            // notes for other releases.
+            hint:
+              entries.length > 0 && !hasRunning
+                ? t(
+                    "Bu kurulu sürüm için sürüm notu bulunmuyor. Aşağıda bu paketle gelen son notlar var.",
+                  )
+                : undefined,
+          },
+        ]}
         detailsLabel={t("Ayrıntılar")}
         details={
           <p>
@@ -62,12 +75,6 @@ export function WhatsNewSection({ version }: { version: string }) {
             </a>
           }
         />
-      ) : !hasRunning ? (
-        <p className="text-sm text-muted" role="status">
-          {t(
-            "Bu kurulu sürüm için sürüm notu bulunmuyor. Aşağıda bu paketle gelen son notlar var.",
-          )}
-        </p>
       ) : null}
 
       {entries.length > 0 ? (
@@ -182,7 +189,7 @@ function ReleaseNotes({
           <span className="text-xs text-muted">{formatDate(entry.date)}</span>
         ) : null}
         {isRunning ? (
-          <span className="rounded-full border border-base-300 px-2 py-0.5 text-[11px] text-muted">
+          <span className="rounded-full border border-[var(--hairline-strong)] px-2 py-0.5 text-xs text-muted">
             {t("Kurulu sürüm")}
           </span>
         ) : null}
@@ -194,7 +201,7 @@ function ReleaseNotes({
           className="space-y-4 px-4 pb-4 sm:pl-11"
         >
           {entry.intro ? (
-            <p className="max-w-prose text-[15px] leading-relaxed text-base-content">
+            <p className="max-w-prose text-[15px] leading-[1.6] text-base-content">
               <InlineText text={entry.intro} />
             </p>
           ) : null}
@@ -204,12 +211,20 @@ function ReleaseNotes({
             ) : (
               <details
                 key={section.heading}
-                className="border-t border-[var(--hairline)] pt-2"
+                // The first topic starts open so the note shows content, not
+                // a wall of closed headings.
+                open={section === firstTopic(entry) ? true : undefined}
+                className="border-t border-[var(--hairline)]"
               >
-                <summary className="cursor-pointer py-3 text-sm font-semibold">
-                  <h3 className="inline">{section.heading}</h3>
+                <summary className="cursor-pointer py-2.5 text-sm font-semibold">
+                  {/* Note headings lead with emoji that fonts draw in two
+                      styles (colour and text glyphs) side by side; the
+                      topic name alone reads as one list. */}
+                  <h3 className="inline">
+                    {stripLeadingEmoji(section.heading)}
+                  </h3>
                 </summary>
-                <ul className="list-disc space-y-2 pl-5 text-muted marker:text-subtle">
+                <ul className="list-disc space-y-1.5 pb-3 pl-5 text-muted marker:text-subtle">
                   {section.items.map((item, index) =>
                     item.code ? (
                       <li key={index} className="max-w-prose list-none">
@@ -228,7 +243,7 @@ function ReleaseNotes({
                     ) : (
                       <li
                         key={index}
-                        className="max-w-prose text-sm leading-relaxed"
+                        className="max-w-prose text-sm leading-[1.6]"
                       >
                         <InlineText text={item.text} />
                       </li>
@@ -255,6 +270,12 @@ const HIGHLIGHTS: Record<ReturnType<typeof getLocale>, string> = {
   pt: "Destaques", // i18n-ignore
 };
 
+function firstTopic(entry: ChangelogEntry) {
+  return entry.sections.find(
+    (section) => stripLeadingEmoji(section.heading) !== HIGHLIGHTS[getLocale()],
+  );
+}
+
 const CATEGORY_LABELS: Record<ReleaseCategory, string> = {
   feature: "Yenilik",
   fix: "Düzeltme",
@@ -271,13 +292,19 @@ function Highlights({ items }: { items: ChangelogItem[] }) {
       {items.map((item, index) => {
         const lead = /^\*\*([^*]+)\*\*\s*(.*)$/.exec(item.text);
         return (
-          <li key={index} className="py-3 first:pt-0 last:pb-0">
+          <li key={index} className="py-2.5 first:pt-0 last:pb-0">
             <p className="text-sm font-semibold text-base-content">
-              {lead ? lead[1] : <InlineText text={item.text} />}
+              {/* The note's run-in colon reads as a stray once the lead is
+                  its own line. */}
+              {lead ? (
+                lead[1].replace(/\s*:\s*$/, "")
+              ) : (
+                <InlineText text={item.text} />
+              )}
             </p>
             {lead && lead[2] ? (
-              <p className="mt-1 text-sm leading-relaxed text-muted">
-                <InlineText text={lead[2]} />
+              <p className="mt-0.5 text-sm leading-[1.6] text-muted">
+                <InlineText text={lead[2].replace(/^:\s*/, "")} />
               </p>
             ) : null}
           </li>

@@ -6,6 +6,8 @@ route: /settings
 updated: 2026-10-27
 ---
 
+Les Paramètres regroupent les choix qui s'appliquent à ce navigateur (apparence et langue) et à toute l'installation (identifiants Google, clé PageSpeed, limites et mises à jour). Le nom, le domaine et les propriétés Google d'un projet se trouvent dans les **Paramètres du projet**. Cette page explique la portée de chaque réglage et où le modifier.
+
 ## Portée des réglages
 
 L'apparence et la langue concernent ce navigateur. Choisissez la langue, puis appliquez-la avec le bouton. Parcourir la liste ne recharge pas la page. La langue du marché du projet est distincte.

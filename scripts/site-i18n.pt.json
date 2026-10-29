@@ -30,6 +30,7 @@
     "Başvuru": "Ajuda e referência"
   },
   "slugs": {
+    "seowatcher-nedir": "o-que-e-seowatcher",
     "kurulum-windows": "instalar-no-windows",
     "kurulum-docker": "instalar-com-docker",
     "google-baglantisi": "conexao-google",

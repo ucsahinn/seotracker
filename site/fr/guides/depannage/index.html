@@ -51,7 +51,7 @@
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://seowatcher.io/kilavuz/sorun-giderme/"
+      href="https://seowatcher.io/en/docs/troubleshooting/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -101,7 +101,7 @@
       property="og:image:alt"
       content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/guides/depannage/"
@@ -136,7 +136,9 @@
             "@id": "https://seowatcher.io/#website",
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
-            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+            "alternateName": ["seotracker"],
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
+            "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
             "@type": "SoftwareApplication",
@@ -160,7 +162,8 @@
             "description": "Problèmes fréquents par symptôme, cause et solution : port occupé, alerte Windows, erreurs Google, quota, audit bloqué, graphiques vides, assistant 401.",
             "url": "https://seowatcher.io/fr/guides/depannage/",
             "inLanguage": "fr",
-            "dateModified": "2026-10-27",
+            "datePublished": "2026-10-23",
+            "dateModified": "2026-10-29",
             "articleSection": "Aide et référence",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -195,7 +198,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.5" defer></script>
+    <script src="/assets/docs.js?v=0.8.6" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1471,6 +1474,11 @@
           <p class="nav-group">Pour démarrer</p>
           <ul>
             <li>
+              <a href="/fr/guides/quest-ce-que-seowatcher/"
+                >Qu'est-ce que seowatcher ?</a
+              >
+            </li>
+            <li>
               <a href="/fr/guides/installation-sous-windows/"
                 >Installation sous Windows</a
               >
@@ -1540,14 +1548,6 @@
           assistant 401.
         </p>
         <p>
-          L'interface de l'application existe en six langues : turc, anglais,
-          allemand, français, italien et portugais. La langue se choisit dans
-          Paramètres → Apparence → Langue. Ce guide donne les boutons et les
-          écrans sous le nom qu'ils portent dans l'interface en français. Le
-          menu de la zone de notification de Windows n'existe qu'en turc. Là, le
-          nom turc est suivi de sa traduction française entre parenthèses.
-        </p>
-        <p>
           Si quelque chose ne fonctionne pas, regardez d'abord la carte « État
           de l'application » de l'écran <strong>Aide</strong> dans
           l'application. La carte regarde cette installation elle-même et
@@ -1555,6 +1555,14 @@
           PageSpeed et la base de données. Si elle dit « N éléments nécessitent
           votre attention », le bouton à côté vous mène au bon réglage. Les
           problèmes ci-dessous sont classés du plus fréquent au plus rare.
+        </p>
+        <p>
+          L'interface de l'application existe en six langues : turc, anglais,
+          allemand, français, italien et portugais. La langue se choisit dans
+          Paramètres → Apparence → Langue. Ce guide donne les boutons et les
+          écrans sous le nom qu'ils portent dans l'interface en français. Le
+          menu de la zone de notification de Windows n'existe qu'en turc. Là, le
+          nom turc est suivi de sa traduction française entre parenthèses.
         </p>
         <h2 id="la-page-ne-s-ouvre-pas">La page ne s'ouvre pas</h2>
         <p class="callout callout-belirti">
@@ -2410,7 +2418,7 @@
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 27 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

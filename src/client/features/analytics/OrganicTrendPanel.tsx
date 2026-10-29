@@ -91,7 +91,7 @@ export function OrganicTrendPanel({
   const rows = trend;
   const limited =
     query.data.reportMetadata.hasLimitedData || query.data.warnings.length > 0;
-  const hasSessions = rows.some((row) => row.sessions !== null);
+  const unknownTotals = totals.sessions === null || totals.keyEvents === null;
 
   return (
     <section className="overflow-hidden rounded-box border border-base-300 bg-base-100">
@@ -226,121 +226,174 @@ export function OrganicTrendPanel({
             </div>
           }
         />
-        <MeasurementWarning
-          reports={query.data.reportMetadata.reports}
-          unknown={totals.sessions === null || totals.keyEvents === null}
-          onRetry={() => void query.refetch()}
-          onOpenHealth={onOpenHealth}
-        />
-        {hasSessions ? (
-          <div className="py-3">
-            <OrganicTrendChart rows={rows} />
+        {/* The one place the screen explains an unreadable period: the
+            empty table below no longer repeats the heading or the retry. */}
+        {totals.sessions === null ? (
+          <div className="space-y-2">
+            <h3 className="text-base font-semibold">
+              {t("Bu dönemin trafiği belirlenemedi")}
+            </h3>
+            <MeasurementWarning
+              reports={query.data.reportMetadata.reports}
+              unknown
+              onRetry={() => void query.refetch()}
+              onOpenHealth={onOpenHealth}
+            />
           </div>
         ) : (
-          <p className="py-6 text-sm text-muted">
-            {t("Gösterilecek oturum verisi yok.")}
-          </p>
+          <>
+            <MeasurementWarning
+              reports={query.data.reportMetadata.reports}
+              unknown={unknownTotals}
+              onRetry={() => void query.refetch()}
+              onOpenHealth={onOpenHealth}
+            />
+            <SessionsTrend rows={rows} />
+          </>
         )}
-        <details>
-          <summary className="min-h-11 cursor-pointer py-3 text-sm">
-            {t("Analytics verisini yorumlama")}
-          </summary>
-          <p className="mb-2 text-sm">
-            {totals.sessions === null || totals.keyEvents === null
-              ? t(
-                  "Trafik veya sonuç ölçümü okunamadı; dönüşüm yorumu yapılamıyor.",
-                )
-              : t(
-                  "Bu dönemde {sessions} oturum ve {events} anahtar olay kaydedildi.",
-                  {
-                    sessions: formatCount(totals.sessions),
-                    events: formatCount(totals.keyEvents),
-                  },
+        {/* Both disclosures sit together after the content, one hairline
+            above them, instead of two loose rows 60px apart. */}
+        <div className="border-t border-[var(--hairline)] pt-1">
+          <details>
+            <summary className="min-h-11 cursor-pointer py-3 text-sm">
+              {t("Analytics verisini yorumlama")}
+            </summary>
+            <p className="mb-2 text-sm">
+              {totals.sessions === null || totals.keyEvents === null
+                ? t(
+                    "Trafik veya sonuç ölçümü okunamadı; dönüşüm yorumu yapılamıyor.",
+                  )
+                : t(
+                    "Bu dönemde {sessions} oturum ve {events} anahtar olay kaydedildi.",
+                    {
+                      sessions: formatCount(totals.sessions),
+                      events: formatCount(totals.keyEvents),
+                    },
+                  )}
+            </p>
+            {totals.sessions !== null &&
+            totals.sessions > 0 &&
+            totals.sessions < 30 ? (
+              <p className="mb-2 max-w-prose text-sm text-muted">
+                {t(
+                  "Az sayıda oturumda tek bir ziyaret bile oranları belirgin değiştirir. Yüzde değişimini tek başına başarı veya kayıp saymayın.",
                 )}
-          </p>
-          {totals.sessions !== null &&
-          totals.sessions > 0 &&
-          totals.sessions < 30 ? (
-            <p className="mb-2 max-w-prose text-sm text-muted">
+              </p>
+            ) : null}
+            {totals.keyEvents === 0 ? (
+              <p className="mb-2 max-w-prose text-sm text-muted">
+                {t(
+                  "Anahtar olay kaydedilmedi. Form gönderme gibi hedefler tanımlı değilse bu sayı sıfır kalır; ölçüm durumunu kontrol edin.",
+                )}
+              </p>
+            ) : null}
+            <p className="mb-2 text-xs text-muted">{deltaTitle}</p>
+            <p className="text-xs text-muted">
               {t(
-                "Az sayıda oturumda tek bir ziyaret bile oranları belirgin değiştirir. Yüzde değişimini tek başına başarı veya kayıp saymayın.",
+                "Google arama tıklamaları ile organik oturumlar farklı ölçümlerdir; Analytics diğer arama motorlarını da kapsar.",
               )}
             </p>
-          ) : null}
-          {totals.keyEvents === 0 ? (
-            <p className="mb-2 max-w-prose text-sm text-muted">
+            <p className="mt-2 text-xs text-muted">
               {t(
-                "Anahtar olay kaydedilmedi. Form gönderme gibi hedefler tanımlı değilse bu sayı sıfır kalır; ölçüm durumunu kontrol edin.",
+                "Son günler yeniden işlenebilir; dün, tamamlanmış bir takvim günüdür, kesinleşmiş veri garantisi değildir.",
               )}
             </p>
-          ) : null}
-          <p className="mb-2 text-xs text-muted">{deltaTitle}</p>
-          <p className="text-xs text-muted">
-            {t(
-              "Google arama tıklamaları ile organik oturumlar farklı ölçümlerdir; Analytics diğer arama motorlarını da kapsar.",
-            )}
-          </p>
-          <p className="mt-2 text-xs text-muted">
-            {t(
-              "Son günler yeniden işlenebilir; dün, tamamlanmış bir takvim günüdür, kesinleşmiş veri garantisi değildir.",
-            )}
-          </p>
-          <p className="mt-2 text-xs text-muted">
-            {t(
-              "Satış ölçümü doğrulanmadı; sıfır satış, mağaza olmadığı anlamına gelmez.",
-            )}
-          </p>
-          {!limited &&
-          query.data.diagnostics.some(
-            (d) => d.code === "key_events_sharp_decline",
-          ) ? (
-            <p className="mt-2 text-sm text-[var(--ink-warning)]">
+            <p className="mt-2 text-xs text-muted">
               {t(
-                "Anahtar olaylar önceki döneme göre en az yarıya düştü. Bu bir gözlemdir; nedenini belirlemek için olayları ve ölçüm ayarlarını inceleyin.",
+                "Satış ölçümü doğrulanmadı; sıfır satış, mağaza olmadığı anlamına gelmez.",
               )}
             </p>
-          ) : null}
-          {onOpenHealth ? (
-            <button
-              type="button"
-              className="btn btn-sm mt-2 min-h-11"
-              onClick={onOpenHealth}
-            >
-              {t("Ölçüm durumu")}
-            </button>
-          ) : null}
-        </details>
+            {!limited &&
+            query.data.diagnostics.some(
+              (d) => d.code === "key_events_sharp_decline",
+            ) ? (
+              <p className="mt-2 text-sm text-[var(--ink-warning)]">
+                {t(
+                  "Anahtar olaylar önceki döneme göre en az yarıya düştü. Bu bir gözlemdir; nedenini belirlemek için olayları ve ölçüm ayarlarını inceleyin.",
+                )}
+              </p>
+            ) : null}
+            {onOpenHealth ? (
+              <button
+                type="button"
+                className="btn btn-ghost btn-sm mt-2 min-h-11 sm:min-h-0"
+                onClick={onOpenHealth}
+              >
+                {t("Ölçüm durumu")}
+              </button>
+            ) : null}
+          </details>
+          <DailyValues rows={rows} />
+        </div>
       </div>
-      <details className="px-4 pb-4">
-        <summary className="min-h-11 cursor-pointer py-3 text-sm">
-          {t("Günlük değerler")}
-        </summary>
-        <table className="table table-sm">
-          <caption className="text-left text-xs text-muted">
-            {t(
-              "Son günler yeniden işlenebilir; dün, tamamlanmış bir takvim günüdür, kesinleşmiş veri garantisi değildir.",
-            )}
-          </caption>
-          <thead>
-            <tr>
-              <th>{t("Tarih")}</th>
-              <th>{t("Oturum")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((row) => (
-              <tr key={row.date}>
-                <td>{formatDate(row.date)}</td>
-                <td>
-                  {row.sessions === null
-                    ? t("Bilinmiyor")
-                    : formatCount(row.sessions)}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </details>
     </section>
   );
+}
+
+/** The trend as a table, for reading exact days. */
+function DailyValues({
+  rows,
+}: {
+  rows: { date: string; sessions: number | null }[];
+}) {
+  return (
+    <details>
+      <summary className="min-h-11 cursor-pointer py-3 text-sm">
+        {t("Günlük değerler")}
+      </summary>
+      <table className="table table-sm max-w-sm">
+        <caption className="text-left text-xs text-muted">
+          {t(
+            "Son günler yeniden işlenebilir; dün, tamamlanmış bir takvim günüdür, kesinleşmiş veri garantisi değildir.",
+          )}
+        </caption>
+        <thead>
+          <tr>
+            <th>{t("Tarih")}</th>
+            <th className="text-right">{t("Oturum")}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.date}>
+              <td>{formatDate(row.date)}</td>
+              <td className="text-right tabular-nums">
+                {row.sessions === null ? (
+                  <span className="text-subtle" title={t("Bilinmiyor")}>
+                    <span aria-hidden>–</span>
+                    <span className="sr-only">{t("Bilinmiyor")}</span>
+                  </span>
+                ) : (
+                  formatCount(row.sessions)
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </details>
+  );
+}
+
+/** The daily line, or the one sentence that replaces a line with nothing on it. */
+function SessionsTrend({
+  rows,
+}: {
+  rows: { date: string; sessions: number | null }[];
+}) {
+  if (!rows.some((row) => row.sessions !== null))
+    return (
+      <p className="text-sm text-muted">
+        {t("Gösterilecek oturum verisi yok.")}
+      </p>
+    );
+  // A flat line at zero is 180px saying one word; say the word instead.
+  // Only when every day is a measured zero: a gap is not a zero.
+  if (rows.every((row) => row.sessions === 0))
+    return (
+      <p className="text-sm text-muted">
+        {t("Bu dönemde hiç oturum kaydedilmedi.")}
+      </p>
+    );
+  return <OrganicTrendChart rows={rows} />;
 }

@@ -5,9 +5,9 @@ kind: nasil-yapilir
 updated: 2026-10-23
 ---
 
-Die Oberfläche der App gibt es in sechs Sprachen: Türkisch, Englisch, Deutsch, Französisch, Italienisch und Portugiesisch. Die Sprache lässt sich unter Einstellungen → Darstellung → Sprache ändern. Diese Anleitung nennt Schaltflächen und Bildschirme so, wie sie in der deutschen Oberfläche heißen. Den Installationsassistenten gibt es nur auf Türkisch und Englisch, das Tray-Menü in der Taskleiste nur auf Türkisch. Dort steht der Name, den Sie sehen, mit der deutschen Bedeutung in Klammern.
-
 Am Ende ist die App auf Ihrem Computer installiert und im Browser geöffnet. Die Installation dauert zwei Minuten und gilt nur für Ihr eigenes Benutzerkonto. Administratorrechte sind nicht nötig.
+
+Die Oberfläche der App gibt es in sechs Sprachen: Türkisch, Englisch, Deutsch, Französisch, Italienisch und Portugiesisch. Die Sprache lässt sich unter Einstellungen → Darstellung → Sprache ändern. Diese Anleitung nennt Schaltflächen und Bildschirme so, wie sie in der deutschen Oberfläche heißen. Den Installationsassistenten gibt es nur auf Türkisch und Englisch, das Tray-Menü in der Taskleiste nur auf Türkisch. Dort steht der Name, den Sie sehen, mit der deutschen Bedeutung in Klammern.
 
 ## Voraussetzungen
 

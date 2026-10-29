@@ -19,6 +19,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 /** Turkish guide slug -> English URL slug. Keys are the kb file names. */
 export const enSlugs = {
+  "seowatcher-nedir": "what-is-seowatcher",
   "kurulum-windows": "install-windows",
   "kurulum-docker": "install-docker",
   "google-baglantisi": "google-connection",
@@ -54,6 +55,7 @@ export const groups = [
     key: "Başlangıç",
     title: { tr: "Başlangıç", en: "Getting started" },
     slugs: [
+      "seowatcher-nedir",
       "kurulum-windows",
       "kurulum-docker",
       "google-baglantisi",

@@ -2,7 +2,7 @@ import { formatCount } from "@/client/lib/format";
 import { t } from "@/shared/i18n";
 
 /**
- * The evidence strip above already states the row count, so this line only
+ * The evidence strip below the table already states the row count, so this line only
  * speaks when a quick filter narrows the list.
  */
 export function ReportListScope({

@@ -1,9 +1,11 @@
 ---
 title: Google'a bağlanma
-description: Kurulum kimliğini ve proje mülkünü ayrı seçin; kayıt ile veri erişiminin farkını görün.
+description: Search Console ve GA4'ü kendi Google Cloud hizmet hesabınız ya da OAuth istemcinizle bağlayın, sonra her proje için mülkleri seçin.
 kind: nasil-yapilir
 updated: 2026-10-27
 ---
+
+seowatcher, Search Console ve Google Analytics 4 verisini kendi Google Cloud kimliğinizle okur: bir hizmet hesabı ya da bir OAuth istemcisi. Kimliği tüm kurulum için bir kez kaydedersiniz, sonra her proje için bir Search Console ve bir GA4 mülkü seçersiniz.
 
 ## Kimlik ve mülk ayrı seçimlerdir
 

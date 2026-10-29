@@ -49,7 +49,7 @@ export function RankingsFilters({
   reset: () => void;
 }) {
   return (
-    <div className="space-y-3 border-b border-base-300 p-4">
+    <div className="space-y-3 border-b border-[var(--hairline)] p-4">
       <div className="flex flex-wrap items-center gap-3">
         <input
           id="rankings-query-search"
@@ -65,81 +65,86 @@ export function RankingsFilters({
           }}
         />
         {search || band || chip || move ? (
-          <button className="btn btn-ghost min-h-11" onClick={reset}>
+          <button className="btn btn-ghost btn-sm" onClick={reset}>
             {t("Tüm filtreleri kaldır")}
           </button>
         ) : null}
       </div>
       {data ? (
         <>
-          <RankingMovementChips
-            comparable={data.comparableCount > 0}
-            label={t("Değişim filtreleri")}
-            active={move}
-            onChange={(next) => {
-              setMove(next);
-              setPage(1);
-            }}
-            chips={[
-              {
-                id: "risers",
-                label: t("Yükselenler"),
-                icon: ArrowUp,
-                count: data.moveCounts.risers,
-                hint: t(
-                  "Önceki döneme göre en az yarım sıra yükselen sorgular.",
-                ),
-              },
-              {
-                id: "fallers",
-                label: t("Düşenler"),
-                icon: ArrowDown,
-                count: data.moveCounts.fallers,
-                hint: t("Önceki döneme göre en az yarım sıra düşen sorgular."),
-              },
-              {
-                id: "top10",
-                label: t("İlk 10"),
-                icon: Trophy,
-                count: data.moveCounts.top10,
-                hint: t("Dönem ortalaması ilk 10"),
-              },
-              {
-                id: "lost",
-                label: t("İlk 10'dan çıkanlar"),
-                icon: LogOut,
-                count: data.moveCounts.lost,
-                hint: t("Yalnızca iki dönemde de gözlenen sorgular."),
-              },
-            ]}
-          />
-          <FilterChips<ChipId>
-            label={t("Hızlı filtreler")}
-            active={chip}
-            onChange={(next) => {
-              setChip(next);
-              setPage(1);
-            }}
-            chips={[
-              {
-                id: "highImpressions",
-                label: t("En çok gösterilenler"),
-                icon: Eye,
-                count: data.chipCounts.highImpressions,
-                hint: t(
-                  "Gösterime göre üst çeyrek eşiği; eşitlikler dahil: {count}",
-                  { count: formatCount(data.highImpressions) },
-                ),
-              },
-              {
-                id: "noClicks",
-                label: t("Hiç tıklanmayan"),
-                icon: CircleSlash,
-                count: data.chipCounts.noClicks,
-                hint: t("Gösterilmiş ama hiç tıklanmamış sorgular."),
-              },
-            ]}
-          />
+          {/* Movement and quick filters share one row, one chip size. */}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <RankingMovementChips
+              comparable={data.comparableCount > 0}
+              label={t("Değişim filtreleri")}
+              active={move}
+              onChange={(next) => {
+                setMove(next);
+                setPage(1);
+              }}
+              chips={[
+                {
+                  id: "risers",
+                  label: t("Yükselenler"),
+                  icon: ArrowUp,
+                  count: data.moveCounts.risers,
+                  hint: t(
+                    "Önceki döneme göre en az yarım sıra yükselen sorgular.",
+                  ),
+                },
+                {
+                  id: "fallers",
+                  label: t("Düşenler"),
+                  icon: ArrowDown,
+                  count: data.moveCounts.fallers,
+                  hint: t(
+                    "Önceki döneme göre en az yarım sıra düşen sorgular.",
+                  ),
+                },
+                {
+                  id: "top10",
+                  label: t("İlk 10"),
+                  icon: Trophy,
+                  count: data.moveCounts.top10,
+                  hint: t("Dönem ortalaması ilk 10"),
+                },
+                {
+                  id: "lost",
+                  label: t("İlk 10'dan çıkanlar"),
+                  icon: LogOut,
+                  count: data.moveCounts.lost,
+                  hint: t("Yalnızca iki dönemde de gözlenen sorgular."),
+                },
+              ]}
+            />
+            <FilterChips<ChipId>
+              label={t("Hızlı filtreler")}
+              active={chip}
+              onChange={(next) => {
+                setChip(next);
+                setPage(1);
+              }}
+              chips={[
+                {
+                  id: "highImpressions",
+                  label: t("En çok gösterilenler"),
+                  icon: Eye,
+                  count: data.chipCounts.highImpressions,
+                  hint: t(
+                    "Gösterime göre üst çeyrek eşiği; eşitlikler dahil: {count}",
+                    { count: formatCount(data.highImpressions) },
+                  ),
+                },
+                {
+                  id: "noClicks",
+                  label: t("Hiç tıklanmayan"),
+                  icon: CircleSlash,
+                  count: data.chipCounts.noClicks,
+                  hint: t("Gösterilmiş ama hiç tıklanmamış sorgular."),
+                },
+              ]}
+            />
+          </div>
           <p className="text-xs text-muted">
             {t("Filtreyle eşleşen sorgular: {matching} / {total}", {
               matching: formatCount(data.totalMatching),

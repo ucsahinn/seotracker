@@ -43,18 +43,13 @@ export function AnalyticsEvidence({
   return (
     <FactStrip
       label={t("Veri ayrıntıları")}
+      // Source and period already head the trend card above; this strip
+      // names only what is particular to the table (property, channel,
+      // rows). The period stays in the details for when that card is absent.
       facts={[
         {
-          label: t("Kaynak"),
-          value: "Google Analytics",
-          hint: result.propertyDisplayName ?? t("Analytics mülkü"),
-        },
-        {
-          label: t("Dönem"),
-          value:
-            formatDate(result.dateRange.startDate) +
-            " – " +
-            formatDate(result.dateRange.endDate),
+          label: t("Mülk"),
+          value: result.propertyDisplayName ?? t("Analytics mülkü"),
           hint: result.propertyTimeZone ?? t("Saat dilimi bilinmiyor"),
         },
         {
@@ -117,7 +112,7 @@ export function AnalyticsEvidence({
             )}
           </p>
           <p>
-            {formatDate(result.dateRange.startDate)} –{" "}
+            {t("Dönem")}: {formatDate(result.dateRange.startDate)} –{" "}
             {formatDate(result.dateRange.endDate)}
           </p>
           {result.diagnosticCoverage ? (
@@ -169,7 +164,10 @@ export function AnalyticsEvidence({
             </p>
           ))}
           {diagnostics.map((d, i) => (
-            <div key={i} className="rounded-box border border-base-300 p-3">
+            <div
+              key={i}
+              className="space-y-1 border-t border-[var(--hairline)] pt-3"
+            >
               <p>{t(diagnosticCopy[d.code])}</p>
               {d.sessions !== null ? (
                 <p>
@@ -180,14 +178,14 @@ export function AnalyticsEvidence({
               {d.code.startsWith("no_") && onOpenHealth ? (
                 <button
                   type="button"
-                  className="btn btn-sm mt-2 min-h-11"
+                  className="btn btn-sm min-h-11"
                   onClick={onOpenHealth}
                 >
                   {t("Ölçüm durumu")}
                 </button>
               ) : (
                 <a
-                  className="btn btn-sm min-h-11 rounded-full"
+                  className="btn btn-ghost btn-sm min-h-11"
                   href="#analytics-table"
                 >
                   {t("Listele")}

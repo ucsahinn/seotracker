@@ -5,6 +5,8 @@ kind: nasil-yapilir
 updated: 2026-10-27
 ---
 
+Ajan kurulumu, Claude Code, Codex ya da Cursor gibi bir yapay zekâ asistanını MCP (Model Context Protocol) ile seowatcher'a bağlar. Bağlandıktan sonra asistan Search Console, Analytics ve denetim verinizi bilgisayarınızdaki uygulamadan okur, denetimi çalıştırır ve rapor yazar. Asistanın okuduğu veri o asistanın sağlayıcısına gidebilir.
+
 ## Ajanı bağlayın
 
 Çalışan uygulamada **Ajan kurulumu** sayfasını açın. Claude Code, Codex veya Diğer seçeneğini seçip **Kurulum komutunu kopyala** deyin. Seçenekler ok tuşları, Home ve End ile kullanılabilir; seçim komutu kendiliğinden kopyalamaz. Metni ajanınıza verin. Metin gerçek parola içermez; ajan parolayı yalnızca yerel kurulumdan kullanır. **Sıfırdan kurulum** ayrı bir seçenektir.

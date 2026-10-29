@@ -5,6 +5,8 @@ kind: nasil-yapilir
 updated: 2026-10-27
 ---
 
+La configurazione dell'assistente collega a seowatcher un assistente IA come Claude Code, Codex o Cursor tramite MCP (Model Context Protocol). Una volta collegato, l'assistente legge i dati di Search Console, Analytics e dei controlli dall'app sul tuo computer, avvia controlli e scrive report. Ciò che l'assistente legge può arrivare al suo fornitore.
+
 ## Collegare l'agente
 
 Apri Configurazione agente. Scegli Claude Code, Codex o Altro e copia le istruzioni. Frecce, Home e Fine cambiano selezione senza copiare. Il testo non contiene il token reale; l'agente usa il segreto locale. L'installazione da zero resta un'opzione separata.

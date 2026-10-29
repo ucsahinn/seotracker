@@ -6,6 +6,12 @@ import type { Catalog } from "@/shared/i18n";
  * Google concepts use Search Console's own English UI names.
  */
 export const enSearch: Catalog = {
+  "Listedeki hiçbir sayfa için ek tıklama hesaplanamadı; bu, sıfır kazanç demek değildir.":
+    "Extra clicks could not be estimated for any page in the list; this does not mean zero gain.",
+  "Değişim sütunu gizlendi: önceki dönemde bu sorguların hiçbiri için veri yok.":
+    "Change column hidden: none of these queries has data in the previous period.",
+  "Dönem ortalaması ve grubu (1-3, 4-10, 11-20, 21+). Yanındaki çizgi haftalık sırayı gösterir; çizginin yükselmesi sıranın iyileştiği demektir.":
+    "Average for the period and its band (1-3, 4-10, 11-20, 21+). The line beside it shows the weekly position; a rising line means the position improved.",
   "{count} sorgu gözlendi.": "Observed queries: {count}.",
   "En çok gösterilenler": "Most-viewed queries",
   "Tam yanıtlı gün: {current}/{days}; önceki dönem: {previous}/{days}.":

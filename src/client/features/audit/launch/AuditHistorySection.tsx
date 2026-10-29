@@ -1,12 +1,11 @@
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { Link } from "@tanstack/react-router";
-import { Eye, RotateCw, ScanSearch, Trash2 } from "lucide-react";
+import { Eye, ScanSearch } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { formatCount } from "@/client/lib/format";
 import { useState } from "react";
 import { auditSites, previousAuditIds, siteHost } from "./auditDelta";
 import type { getAuditHistory } from "@/serverFunctions/audit";
-import { RowActions } from "@/client/components/table/RowActions";
 import { formatDateTime, StatusBadge } from "@/client/features/audit/shared";
 import { CopyButton } from "@/client/components/CopyButton";
 import { AuditTrendChart } from "./AuditTrendChart";
@@ -19,7 +18,7 @@ import {
 import { t } from "@/shared/i18n";
 
 import { AuditHistorySeverityCell } from "./AuditHistorySeverityCell";
-import { describeAuditFailure } from "../results/auditFailureCopy";
+import { FailureReason, HistoryActions } from "./AuditHistoryRowParts";
 
 type HistoryRow = Awaited<ReturnType<typeof getAuditHistory>>[number];
 
@@ -90,8 +89,9 @@ export function AuditHistorySection({
 
   if (history.length === 0 && !isLoading) {
     return (
-      <section className="rounded-box border border-base-300 bg-base-100 p-4">
+      <section className="rounded-box border border-[var(--hairline)] bg-base-100 p-4">
         <EmptyState
+          compact
           icon={ScanSearch}
           title={t("Henüz denetim yok")}
           description={t(
@@ -110,7 +110,7 @@ export function AuditHistorySection({
      */
     return (
       <section
-        className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4"
+        className="space-y-3 rounded-box border border-[var(--hairline)] bg-base-100 p-4"
         aria-busy
       >
         <div className="skeleton h-5 w-40" />
@@ -149,23 +149,18 @@ export function AuditHistorySection({
         ) : (
           <AuditTrendChart history={history} />
         )}
-        <p className="text-xs text-muted sm:hidden">
-          {t("Tüm sütunları ve işlemleri görmek için tabloyu yana kaydırın.")}
-        </p>
-        <details className="max-w-prose text-sm text-muted">
-          <summary className="cursor-pointer py-1.5">{t("Ayrıntılar")}</summary>
-          {t(
-            "Sayılar kaydedilen tüm bulgulardır: sayfa bulguları ve site geneli kontroller birlikte; aynı sayfada birden çok bulgu olabilir.",
-          )}
-        </details>
         <div
           className="overflow-x-auto"
           role="region"
           aria-label={t("Önceki denetimler")}
           tabIndex={0}
         >
-          <table className="table table-sm">
-            <thead>
+          {/* Below md each audit is a stacked row: date and actions, the
+              address, the status, then a labelled grid of counts. The
+              labels come from data-label through ::before, so a cell's
+              accessible name still carries its column on phones. */}
+          <table className="table table-sm max-md:block">
+            <thead className="max-md:hidden">
               <tr>
                 <th aria-sort={sorting.ariaSort("startedAt")}>
                   <SortableHeader
@@ -185,10 +180,14 @@ export function AuditHistorySection({
                     label={t("Durum")}
                   />
                 </th>
-                <th aria-sort={sorting.ariaSort("pages")}>
+                <th
+                  className="text-right"
+                  aria-sort={sorting.ariaSort("pages")}
+                >
                   <SortableHeader
                     column={sorting.column("pages")}
                     label={t("Taranan sayfa")}
+                    align="right"
                   />
                 </th>
                 <th
@@ -219,10 +218,13 @@ export function AuditHistorySection({
                 <th></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="max-md:block">
               {sorting.apply(history, compareAudits).map((audit) => (
-                <tr key={audit.id} className="hover group">
-                  <td className="text-xs">
+                <tr
+                  key={audit.id}
+                  className="hover group align-top max-md:grid max-md:grid-cols-3 max-md:gap-x-4 max-md:gap-y-2 max-md:border-b max-md:border-[var(--hairline)] max-md:py-3 max-md:last:border-b-0 max-md:[&>td]:p-0"
+                >
+                  <td className="whitespace-nowrap text-sm max-md:col-span-2 max-md:self-center">
                     {/* With the time. Six audits in one day all read
                         "28 Eyl 2026" and could not be told apart. The
                         whole row opens through this link. */}
@@ -235,8 +237,8 @@ export function AuditHistorySection({
                       {formatDateTime(audit.startedAt)}
                     </Link>
                   </td>
-                  <td className="max-w-[220px]">
-                    <div className="flex items-center gap-1">
+                  <td className="max-w-[220px] max-md:col-span-3 max-md:max-w-none">
+                    <div className="flex min-w-0 items-center gap-1">
                       <span
                         className="truncate text-muted"
                         title={audit.startUrl}
@@ -253,63 +255,81 @@ export function AuditHistorySection({
                       />
                     </div>
                   </td>
-                  <td className="min-w-64">
+                  <td className="min-w-64 max-md:col-span-3 max-md:min-w-0">
                     <StatusBadge status={audit.status} />
                     {audit.status === "completed" ? (
-                      <div className="space-y-1 text-xs text-muted">
-                        <p>
+                      // One muted second line: the limit, then the link to
+                      // what the crawl covered.
+                      <p className="mt-1 text-xs text-muted">
+                        <span>
                           {audit.maxPages
                             ? t("Tarama sınırı: {count} sayfa", {
                                 count: formatCount(audit.maxPages),
                               })
                             : t("Tarama sınırı kaydedilmemiş.")}
-                        </p>
+                        </span>
+                        {" · "}
                         <Link
                           to="/p/$projectId/audit"
                           params={{ projectId }}
                           search={{ auditId: audit.id, tab: "checks" }}
-                          className="btn btn-ghost btn-sm mt-1 min-h-11"
+                          className="link link-hover inline-flex items-center max-md:min-h-11"
                         >
                           {t("Kapsam ayrıntıları")}
                         </Link>
-                      </div>
+                      </p>
                     ) : null}
                     {audit.status === "failed" ? (
                       <FailureReason audit={audit} />
                     ) : null}
                   </td>
-                  <td>{formatCount(audit.pagesCrawled)}</td>
-                  <td className="text-right">
+                  <td
+                    data-label={t("Taranan sayfa")}
+                    className="text-right tabular-nums max-md:text-left max-md:before:mb-0.5 max-md:before:block max-md:before:text-xs max-md:before:font-normal max-md:before:text-muted max-md:before:content-[attr(data-label)]"
+                  >
+                    {formatCount(audit.pagesCrawled)}
+                  </td>
+                  <td
+                    data-label={t("Kritik")}
+                    className="text-right max-md:text-left max-md:before:mb-0.5 max-md:before:block max-md:before:text-xs max-md:before:font-normal max-md:before:text-muted max-md:before:content-[attr(data-label)]"
+                  >
                     <AuditHistorySeverityCell
                       row={audit}
                       previous={byId.get(previousIds.get(audit.id) ?? "")}
                       severity="critical"
                     />
                   </td>
-                  <td className="text-right">
+                  <td
+                    data-label={t("Uyarı")}
+                    className="text-right max-md:text-left max-md:before:mb-0.5 max-md:before:block max-md:before:text-xs max-md:before:font-normal max-md:before:text-muted max-md:before:content-[attr(data-label)]"
+                  >
                     <AuditHistorySeverityCell
                       row={audit}
                       previous={byId.get(previousIds.get(audit.id) ?? "")}
                       severity="warning"
                     />
                   </td>
-                  <td className="text-right">
+                  <td
+                    data-label={t("Bilgi")}
+                    className="text-right max-md:text-left max-md:before:mb-0.5 max-md:before:block max-md:before:text-xs max-md:before:font-normal max-md:before:text-muted max-md:before:content-[attr(data-label)]"
+                  >
                     <AuditHistorySeverityCell
                       row={audit}
                       previous={byId.get(previousIds.get(audit.id) ?? "")}
                       severity="info"
                     />
                   </td>
-                  <td>
+                  <td
+                    data-label={t("Hız ölçümü istendi")}
+                    className="text-xs max-md:col-span-2 max-md:before:mb-0.5 max-md:before:block max-md:before:text-xs max-md:before:font-normal max-md:before:text-muted max-md:before:content-[attr(data-label)]"
+                  >
                     {audit.ranLighthouse ? (
-                      <span className="badge badge-ghost badge-xs">
-                        {t("Evet")}
-                      </span>
+                      t("Evet")
                     ) : (
-                      <span className="text-xs text-muted">{t("Hayır")}</span>
+                      <span className="text-muted">{t("Hayır")}</span>
                     )}
                   </td>
-                  <td>
+                  <td className="max-md:col-start-3 max-md:row-start-1">
                     <div className="flex items-center justify-end gap-2">
                       {/* Always visible: the row actions below only appear on
                           hover, and the date link alone did not read as a
@@ -318,7 +338,7 @@ export function AuditHistorySection({
                         to="/p/$projectId/audit"
                         params={{ projectId }}
                         search={{ auditId: audit.id, tab: "pages" }}
-                        className="btn btn-ghost btn-xs gap-1"
+                        className="btn btn-ghost btn-sm min-h-11 gap-1 sm:min-h-0"
                         aria-label={t("{date} denetimini görüntüle", {
                           date: formatDateTime(audit.startedAt),
                         })}
@@ -339,59 +359,16 @@ export function AuditHistorySection({
             </tbody>
           </table>
         </div>
+        <details className="max-w-prose text-sm text-muted">
+          <summary className="min-h-11 cursor-pointer py-3">
+            {t("Ayrıntılar")}
+          </summary>
+          {t(
+            "Sayılar kaydedilen tüm bulgulardır: sayfa bulguları ve site geneli kontroller birlikte; aynı sayfada birden çok bulgu olabilir.",
+          )}
+        </details>
       </div>
     </section>
-  );
-}
-
-function FailureReason({ audit }: { audit: HistoryRow }) {
-  const copy = describeAuditFailure(audit);
-  return (
-    <details className="mt-2 max-w-xs whitespace-normal text-sm text-muted">
-      <summary className="cursor-pointer py-1.5">{t("Ayrıntılar")}</summary>
-      <div className="mt-1.5 space-y-1.5 leading-relaxed">
-        <p>{t(copy.cause)}</p>
-        {copy.side === "Nedeni belirlenemedi." ? <p>{t(copy.side)}</p> : null}
-        <p>{t(copy.action)}</p>
-      </div>
-    </details>
-  );
-}
-
-function HistoryActions({
-  audit,
-  onDelete,
-  onRerun,
-  isRerunPending,
-}: {
-  audit: HistoryRow;
-  onDelete: (auditId: string) => void;
-  onRerun: (audit: HistoryRow) => void;
-  isRerunPending: boolean;
-}) {
-  return (
-    <div className="flex items-center justify-end gap-2 transition-opacity can-hover:opacity-0 can-hover:group-hover:opacity-100 can-hover:group-focus-within:opacity-100">
-      <RowActions
-        label={t("{url} denetimi için işlemler", { url: audit.startUrl })}
-        actions={[
-          {
-            label: t("Aynı ayarlarla yeniden başlat"),
-            icon: RotateCw,
-            onSelect: () => onRerun(audit),
-            disabledReason: isRerunPending
-              ? t("Bir denetim zaten başlatılıyor")
-              : undefined,
-          },
-          {
-            label: t("Denetimi sil"),
-
-            icon: Trash2,
-            destructive: true,
-            onSelect: () => onDelete(audit.id),
-          },
-        ]}
-      />
-    </div>
   );
 }
 

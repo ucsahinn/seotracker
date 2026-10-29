@@ -5,6 +5,8 @@ kind: nasil-yapilir
 updated: 2026-10-27
 ---
 
+Die Assistenten-Einrichtung verbindet einen KI-Assistenten wie Claude Code, Codex oder Cursor über MCP (Model Context Protocol) mit seowatcher. Danach liest der Assistent Ihre Search-Console-, Analytics- und Audit-Daten aus der App auf Ihrem Computer, startet Audits und schreibt Berichte. Was der Assistent liest, kann an dessen Anbieter gehen.
+
 ## Agent verbinden
 
 Öffnen Sie die Agent-Einrichtung. Wählen Sie Claude Code, Codex oder Andere und kopieren Sie den Einrichtungstext. Pfeile, Pos1 und Ende ändern nur die Auswahl. Der Text enthält kein tatsächliches Token; der Agent verwendet das lokale Geheimnis. Eine Neuinstallation ist eine getrennte Option.

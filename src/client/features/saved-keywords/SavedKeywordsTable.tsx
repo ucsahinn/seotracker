@@ -24,8 +24,9 @@ import {
 } from "@/client/components/table/AppDataTable";
 import { SortableHeader } from "@/client/components/table/SortableHeader";
 import type { SavedKeywordRow } from "@/types/keywords";
-import { positionInk } from "@/client/features/rankings/positionBands";
+import { BAND_LABELS, bandOf } from "@/shared/positionBands";
 import { TagChip } from "./TagChip";
+import { SavedChange, SavedMetrics } from "./SavedKeywordMetrics";
 import { Copy, Search as SearchIcon, Trash2 } from "lucide-react";
 import { RowActions } from "@/client/components/table/RowActions";
 import { t } from "@/shared/i18n";
@@ -70,6 +71,11 @@ export function SavedKeywordsTable({
     [evidence],
   );
   const selectAnchorRef = useSelectionAnchor();
+  // "Karşılaştırma yok" on every row is one fact; with no comparable row the
+  // change column goes and a line above the table says it once.
+  const comparable = evidence.some(
+    (row) => placesDelta(row.position, row.previousPosition) !== null,
+  );
   const columns = useMemo<ColumnDef<SavedKeywordRow>[]>(
     () => [
       makeSelectionColumn<SavedKeywordRow>(
@@ -84,15 +90,18 @@ export function SavedKeywordsTable({
           <div>
             <button
               type="button"
-              className="link link-hover min-h-11 break-words text-left font-medium"
+              className="link link-hover min-h-9 break-words text-left font-medium max-sm:min-h-11 max-sm:text-[15px]"
               title={t("Arşiv ayrıntısı")}
               onClick={() => onInspect(row.original)}
             >
               {getValue()}
             </button>
-            <div className="space-y-1 text-xs sm:hidden">
-              <SavedMetrics row={evidenceById.get(row.original.id)} />
-              <TagList tags={row.original.tags} />
+            <div className="mt-1 space-y-2 sm:hidden">
+              <SavedMetrics
+                row={evidenceById.get(row.original.id)}
+                comparable={comparable}
+              />
+              <TagList tags={row.original.tags} hideEmpty />
             </div>
           </div>
         ),
@@ -104,7 +113,11 @@ export function SavedKeywordsTable({
       columnHelper.accessor((row) => positions.get(row.id) ?? null, {
         id: "position",
         header: ({ column }) => (
-          <SortableHeader column={column} label={t("Ortalama sıra")} />
+          <SortableHeader
+            column={column}
+            label={t("Ortalama sıra")}
+            align="right"
+          />
         ),
         cell: ({ row, getValue }) =>
           getValue() === null ? (
@@ -125,26 +138,29 @@ export function SavedKeywordsTable({
               {t("Sıra bilinmiyor")}
             </span>
           ) : (
-            <span className={positionInk(getValue()!)}>
+            <span className="whitespace-nowrap">
               {formatDecimal(getValue()!)}
+              <span className="ml-1.5 text-xs text-muted">
+                {BAND_LABELS[bandOf(getValue()!)]}
+              </span>
             </span>
           ),
         meta: {
-          cellClassName: "hidden sm:table-cell",
-          headerClassName: "hidden sm:table-cell",
+          cellClassName: "hidden text-right tabular-nums sm:table-cell",
+          headerClassName: "hidden text-right sm:table-cell",
         },
       }),
       columnHelper.accessor((row) => evidenceById.get(row.id)?.delta ?? null, {
         id: "delta",
         header: ({ column }) => (
-          <SortableHeader column={column} label={t("Değişim")} />
+          <SortableHeader column={column} label={t("Değişim")} align="right" />
         ),
         cell: ({ row }) => (
           <SavedChange row={evidenceById.get(row.original.id)} />
         ),
         meta: {
-          cellClassName: "hidden sm:table-cell",
-          headerClassName: "hidden sm:table-cell",
+          cellClassName: "hidden text-right tabular-nums sm:table-cell",
+          headerClassName: "hidden text-right sm:table-cell",
         },
       }),
       columnHelper.accessor(
@@ -152,13 +168,17 @@ export function SavedKeywordsTable({
         {
           id: "impressions",
           header: ({ column }) => (
-            <SortableHeader column={column} label={t("Gösterimler")} />
+            <SortableHeader
+              column={column}
+              label={t("Gösterimler")}
+              align="right"
+            />
           ),
           cell: ({ getValue }) =>
             getValue() === null ? "—" : formatCount(getValue()!),
           meta: {
-            cellClassName: "hidden sm:table-cell",
-            headerClassName: "hidden sm:table-cell",
+            cellClassName: "hidden text-right tabular-nums sm:table-cell",
+            headerClassName: "hidden text-right sm:table-cell",
           },
         },
       ),
@@ -209,12 +229,24 @@ export function SavedKeywordsTable({
         meta: { cellClassName: "w-10 text-right" },
       }),
     ],
-    [onInspect, onRemove, positions, selectAnchorRef, evidenceById, blocked],
+    [
+      onInspect,
+      onRemove,
+      positions,
+      selectAnchorRef,
+      evidenceById,
+      blocked,
+      comparable,
+    ],
   );
   const table = useAppTable({
     data: rows,
     columns,
-    state: { rowSelection, sorting },
+    state: {
+      rowSelection,
+      sorting,
+      columnVisibility: { delta: comparable },
+    },
     onRowSelectionChange,
     onSortingChange,
     getRowId: (row) => row.id,
@@ -223,26 +255,41 @@ export function SavedKeywordsTable({
   });
 
   return (
-    <AppDataTable
-      table={table}
-      caption={t("Kayıtlı kelimeler")}
-      className="table table-sm"
-      isLoading={isLoading}
-      loading={<SavedKeywordsSkeleton />}
-      empty={
-        <SavedKeywordsEmptyState
-          projectId={projectId}
-          hasActiveFilters={hasActiveFilters}
-          onClear={onClear}
-        />
-      }
-    />
+    <>
+      {rows.length > 0 && !comparable && !isLoading ? (
+        <p className="text-xs text-muted">
+          {t(
+            "Değişim sütunu gizlendi: önceki dönemde bu sorguların hiçbiri için veri yok.",
+          )}
+        </p>
+      ) : null}
+      <AppDataTable
+        table={table}
+        caption={t("Kayıtlı kelimeler")}
+        className="table table-sm [&_td]:py-1.5"
+        isLoading={isLoading}
+        loading={<SavedKeywordsSkeleton />}
+        empty={
+          <SavedKeywordsEmptyState
+            projectId={projectId}
+            hasActiveFilters={hasActiveFilters}
+            onClear={onClear}
+          />
+        }
+      />
+    </>
   );
 }
 
-function TagList({ tags }: { tags: SavedKeywordRow["tags"] }) {
+function TagList({
+  tags,
+  hideEmpty = false,
+}: {
+  tags: SavedKeywordRow["tags"];
+  hideEmpty?: boolean;
+}) {
   if (tags.length === 0) {
-    return <span className="text-subtle">-</span>;
+    return hideEmpty ? null : <span className="text-subtle">-</span>;
   }
   return (
     <div className="flex flex-wrap gap-1">
@@ -293,7 +340,7 @@ function SavedKeywordsEmptyState({
         title={t("Bu filtrelere uyan kelime yok")}
         description={t("Filtreleri gevşetin ya da temizleyin.")}
         action={
-          <button className="btn btn-outline min-h-11" onClick={onClear}>
+          <button className="btn btn-sm" onClick={onClear}>
             {t("Tümünü temizle")}
           </button>
         }
@@ -311,7 +358,7 @@ function SavedKeywordsEmptyState({
       action={
         connection.isPending ? undefined : connection.isError ? (
           <button
-            className="btn btn-outline min-h-11"
+            className="btn btn-sm"
             onClick={() => void connection.refetch()}
           >
             {t("Bağlantı okunamadı; yeniden dene")}
@@ -337,43 +384,5 @@ function SavedKeywordsEmptyState({
         )
       }
     />
-  );
-}
-
-function SavedChange({ row }: { row?: SavedEvidence }) {
-  const change = placesDelta(row?.position, row?.previousPosition);
-  return (
-    <span
-      className={
-        change && !change.neutral
-          ? change.improved
-            ? "text-[var(--ink-success)]"
-            : "text-[var(--ink-error)]"
-          : "text-muted"
-      }
-    >
-      {change
-        ? (!change.neutral ? (change.improved ? "↑ " : "↓ ") : "") + change.text
-        : t("Karşılaştırma yok")}
-    </span>
-  );
-}
-function SavedMetrics({ row }: { row?: SavedEvidence }) {
-  return (
-    <>
-      <p>
-        {t("Ortalama sıra")}:{" "}
-        {row?.position == null
-          ? t("Sıra bilinmiyor")
-          : formatDecimal(row.position)}
-      </p>
-      <p>
-        <SavedChange row={row} />
-      </p>
-      <p className="text-muted">
-        {t("Gösterimler")}:{" "}
-        {row?.impressions == null ? "—" : formatCount(row.impressions)}
-      </p>
-    </>
   );
 }

@@ -10,7 +10,7 @@ import { useDirtyDraft } from "./DraftGuard";
 import {
   ContextSaveError,
   EmptyListNote,
-  Provenance,
+  ProvenanceFacts,
   useContextUpdate,
   type ProjectContextData,
 } from "./shared";
@@ -44,6 +44,9 @@ export function ProseSections({
   );
 
   useDirtyDraft(changed.length > 0);
+  // One empty note for the whole form; per-section chips would repeat it.
+  const allEmpty =
+    missingSections.length === PROJECT_CONTEXT_SECTION_KEYS.length;
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -89,7 +92,7 @@ export function ProseSections({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {missingSections.length === PROJECT_CONTEXT_SECTION_KEYS.length ? (
+      {allEmpty ? (
         <EmptyListNote>
           {t(
             "Henüz boş. Kendiniz doldurabilir ya da ajanınıza sitenizden taslak çıkarttırıp onaylayabilirsiniz.",
@@ -108,23 +111,12 @@ export function ProseSections({
               >
                 {t(PROJECT_CONTEXT_SECTION_LABELS[key])}
               </label>
-              {section ? (
-                <Provenance by={section.updatedBy} at={section.updatedAt} />
-              ) : (
-                <span className="badge badge-sm border-warning/30 bg-warning/10 text-[var(--ink-warning)]">
+              {section || allEmpty ? null : (
+                <span className="badge badge-ghost badge-sm text-muted">
                   {t("Boş")}
                 </span>
               )}
             </div>
-            <details className="text-sm text-muted">
-              <summary className="cursor-pointer py-2">
-                {t("Ayrıntılar")}
-              </summary>
-              <p id={"hint-" + key} className="max-w-prose leading-relaxed">
-                {t(SECTION_HINTS[key])}{" "}
-                {t("En fazla {count} karakter", { count: PROSE_MAX_CHARS })}
-              </p>
-            </details>
             {key in bases.current &&
             bases.current[key] !== (section?.content ?? null) ? (
               <div
@@ -179,6 +171,24 @@ export function ProseSections({
               placeholder={t(SECTION_PLACEHOLDERS[key])}
               className="textarea textarea-bordered w-full text-sm"
             />
+            <details className="text-xs text-muted">
+              <summary className="cursor-pointer py-1">
+                {t("Ayrıntılar")}
+              </summary>
+              <p
+                id={"hint-" + key}
+                className="max-w-prose pb-1 text-sm leading-relaxed"
+              >
+                {t(SECTION_HINTS[key])}{" "}
+                {t("En fazla {count} karakter", { count: PROSE_MAX_CHARS })}
+              </p>
+              {section ? (
+                <ProvenanceFacts
+                  by={section.updatedBy}
+                  at={section.updatedAt}
+                />
+              ) : null}
+            </details>
           </div>
         );
       })}

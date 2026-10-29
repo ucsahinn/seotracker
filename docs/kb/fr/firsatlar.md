@@ -1,14 +1,14 @@
 ---
 title: Opportunités
-description: Présente les pages observées, les travaux possibles et une limite de clics supplémentaires si les données le permettent.
+description: Quelle page travailler d'abord : les pages déjà visibles dans Google, classées par limite haute de clics supplémentaires, avec le travail suggéré.
 screen: Fırsatlar
 route: /p/<proje>/opportunities
 updated: 2026-10-27
 ---
 
-« Examiner le groupe d’adresses Analytics » dans une ligne ou son détail ouvre les pages de destination organiques avec les dates sources et le groupe normalisé. Sans correspondance d’adresse ou de dates, une explication remplace le lien. Le filtre précède la pagination sur la même source limitée à 1 000 lignes qu’Opportunités. Analytics signale les limites de source et de qualité empêchant de vérifier le groupe complet. Les mesures récupérées peuvent changer ; les mêmes dates peuvent couvrir des périodes différentes dans le fuseau GA4 et le calendrier du Pacifique de Search Console.
+Opportunités classe les pages que Google affiche déjà pour votre site selon le nombre de clics supplémentaires qu'elles pourraient apporter. Le calcul utilise vos propres données Search Console et les taux de clics de votre site. Chaque page reçoit un type de travail suggéré et une limite haute du gain ; ce n'est ni une prévision ni une garantie.
 
-# Utiliser les opportunités
+## Utiliser les opportunités
 
 **À examiner en premier** ouvre la page dont la limite haute de clics supplémentaires est la plus élevée parmi les pages évaluables. L’action proposée reste à examiner ; sa facilité ou sa rapidité n’est pas mesurée.
 
@@ -29,6 +29,8 @@ Sur ordinateur, utilisez le tableau triable ; sur téléphone, les lignes de pag
 Un périmètre non calculable ne signifie pas absence de potentiel. Correspondances manquantes, impressions insuffisantes et taux cibles absents sont distingués du zéro mesuré. L’absence de lignes reçues ne prouve pas l’absence d’impressions.
 
 Analytics ajoute les sessions organiques, les événements clés et la part des sessions avec événement clé mesurés. Aucun événement futur n’est projeté à partir des clics supplémentaires. Une mesure restreinte reste inconnue. Plusieurs URL peuvent partager le même groupe Analytics : ne cumulez pas ses sessions entre les lignes. Quota épuisé : patientez puis actualisez. Autorisation absente : vérifiez la connexion. En cas d’échec d’actualisation, les données précédentes gardent leurs dates et un avertissement.
+
+« Examiner le groupe d’adresses Analytics » dans une ligne ou son détail ouvre les pages de destination organiques avec les dates sources et le groupe normalisé. Sans correspondance d’adresse ou de dates, une explication remplace le lien. Le filtre précède la pagination sur la même source limitée à 1 000 lignes qu’Opportunités. Analytics signale les limites de source et de qualité empêchant de vérifier le groupe complet. Les mesures récupérées peuvent changer ; les mêmes dates peuvent couvrir des périodes différentes dans le fuseau GA4 et le calendrier du Pacifique de Search Console.
 
 ## Export et suivi
 

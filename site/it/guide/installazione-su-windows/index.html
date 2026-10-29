@@ -54,7 +54,7 @@
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://seowatcher.io/kilavuz/kurulum-windows/"
+      href="https://seowatcher.io/en/docs/install-windows/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -107,7 +107,7 @@
       property="og:image:alt"
       content="Scheda di seowatcher: la dashboard dell’app con i dati di Search Console, Analytics 4 e dell’audit del sito, e un pulsante per scaricarla su Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/it/guide/installazione-su-windows/"
@@ -145,7 +145,9 @@
             "@id": "https://seowatcher.io/#website",
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
-            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+            "alternateName": ["seotracker"],
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
+            "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
             "@type": "SoftwareApplication",
@@ -169,7 +171,8 @@
             "description": "Si installa su Windows con un solo file, senza Docker né terminale. Nella stessa pagina: aggiornamento, disinstallazione, copia di sicurezza, porta.",
             "url": "https://seowatcher.io/it/guide/installazione-su-windows/",
             "inLanguage": "it",
-            "dateModified": "2026-10-28",
+            "datePublished": "2026-10-23",
+            "dateModified": "2026-10-29",
             "articleSection": "Per iniziare",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -204,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.5" defer></script>
+    <script src="/assets/docs.js?v=0.8.6" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1476,6 +1479,9 @@
           <summary>Guida</summary>
           <p class="nav-group">Per iniziare</p>
           <ul>
+            <li>
+              <a href="/it/guide/cos-e-seowatcher/">Che cos'è seowatcher?</a>
+            </li>
             <li class="current" aria-current="page">
               <a href="/it/guide/installazione-su-windows/"
                 >Installazione su Windows</a
@@ -1556,6 +1562,13 @@
           sicurezza, porta.
         </p>
         <p>
+          Al termine l'app sarà installata sul computer e aperta nel browser.
+          L'installazione richiede due minuti. Viene installata solo per il
+          proprio account utente e non servono i permessi di amministratore. Se
+          manca il componente Visual C++, il permesso viene chiesto una sola
+          volta.
+        </p>
+        <p>
           L'interfaccia dell'app esiste in sei lingue: turco, inglese, tedesco,
           francese, italiano e portoghese. La lingua si sceglie in Impostazioni
           → Aspetto → Lingua. In questa guida pulsanti e schermate hanno il nome
@@ -1563,13 +1576,6 @@
           installazione esiste solo in turco e in inglese, il menu dell'area di
           notifica solo in turco. Lì il nome mostrato è seguito dal significato
           italiano tra parentesi.
-        </p>
-        <p>
-          Al termine l'app sarà installata sul computer e aperta nel browser.
-          L'installazione richiede due minuti. Viene installata solo per il
-          proprio account utente e non servono i permessi di amministratore. Se
-          manca il componente Visual C++, il permesso viene chiesto una sola
-          volta.
         </p>
         <h2 id="cosa-serve">Cosa serve</h2>
         <ul>
@@ -2097,7 +2103,8 @@
           è disponibile in Docker.
         </p>
         <nav class="pager" aria-label="Pagina precedente e successiva">
-          <span class="pager-prev empty"></span
+          <a class="pager-prev" rel="prev" href="/it/guide/cos-e-seowatcher/"
+            ><span>Precedente</span><strong>Che cos'è seowatcher?</strong></a
           ><a
             class="pager-next"
             rel="next"
@@ -2106,7 +2113,7 @@
           >
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 28 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 29 ottobre 2026. Se si nota un errore,
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

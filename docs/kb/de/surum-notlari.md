@@ -1,16 +1,16 @@
 ---
 title: Versionshinweise
-description: seowatcher 0.8.4 Alpha — vollständige Google-Daten, lebendige Farben und erneut mit echten Daten geprüfte, auf dem Handy besser lesbare Ansichten.
+description: seowatcher 0.8.6 Alpha (29. Oktober 2026): neues Website-Audit mit 202 Regeln, sechs Sprachen, Benachrichtigungen und genauere Google-Daten.
 updated: 2026-10-29
 ---
 
-Die neueste Version ist **0.8.5 Alpha** vom 29. Oktober 2026. Ihre Daten bleiben beim Aktualisieren erhalten.
+Die neueste Version ist **0.8.6 Alpha** vom 29. Oktober 2026. Ihre Daten bleiben beim Aktualisieren erhalten.
 
 Für den ersten Wechsel von 2.x zu 0.x.x Alpha das neue Installationsprogramm manuell starten; der alte Updater erkennt die kleinere Nummer nicht als neuer.
 
-## 0.8.5 Alpha — 2026-10-29
+## 0.8.6 Alpha — 2026-10-29
 
-Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.5: Website-Audit, Übersicht, Benachrichtigungen und sechs Sprachen sowie genauere Daten und besser lesbare Bildschirme.
+Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.6: Website-Audit, Übersicht, Benachrichtigungen und sechs Sprachen sowie genauere Daten und besser lesbare Bildschirme.
 
 ### ✨ Höhepunkte
 
@@ -66,6 +66,8 @@ Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.5: Website-
 - **Hilfe und Versionshinweise:** Die gesuchten Informationen sind in Hilfe und Versionshinweisen leichter zu finden.
 - **Farben der Daten:** Klicks sind blau, Impressionen violett, Klickrate türkis, Position ocker, Sitzungen grün und Conversions rosé. Karten und Diagramme nutzen in beiden Designs dieselben kräftigeren Farben.
 - **Ruhigere Ansichten:** Quelle, Zeitraum und Aktualität stehen mit kurzen Beschriftungen zusammen. Längere Erklärungen öffnen Sie bei Bedarf; kurze Namen und klare Schaltflächen erleichtern die Bedienung.
+- **Auf dem Handy:** Listen erscheinen auf dem Handy als gut lesbare Zeilen statt Tabellen; Suchanfragen und Beschriftungen werden nicht mehr abgeschnitten.
+- **Einheitliches Bild:** Schaltflächen, aufklappbare Abschnitte, Benachrichtigungen und Karten sehen auf jedem Bildschirm gleich aus; einseitige Listen zeigen keine Seitenschaltflächen mehr.
 
 ### 🗂️ Projekte und gespeicherte Suchbegriffe
 

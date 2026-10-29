@@ -6,9 +6,9 @@ route: /support
 updated: 2026-10-27
 ---
 
-L'interfaccia dell'app esiste in sei lingue: turco, inglese, tedesco, francese, italiano e portoghese. La lingua si sceglie in Impostazioni → Aspetto → Lingua. In questa guida pulsanti e schermate hanno il nome che portano nell'interfaccia in italiano. Il menu dell'area di notifica di Windows esiste solo in turco. Lì il nome turco è seguito dal significato italiano tra parentesi.
-
 Se qualcosa va storto, guardare prima qui. La schermata controlla l'installazione, dice che cosa manca e porta all'impostazione giusta.
+
+L'interfaccia dell'app esiste in sei lingue: turco, inglese, tedesco, francese, italiano e portoghese. La lingua si sceglie in Impostazioni → Aspetto → Lingua. In questa guida pulsanti e schermate hanno il nome che portano nell'interfaccia in italiano. Il menu dell'area di notifica di Windows esiste solo in turco. Lì il nome turco è seguito dal significato italiano tra parentesi.
 
 ## Cosa c'è nella schermata
 

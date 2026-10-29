@@ -1439,7 +1439,7 @@ export const ptCatalog = {
     "Densidade por auditoria: problemas por cem páginas",
   Tarih: "Data",
   Sayfa: "Página",
-  "{density} ({total} toplam)": "{density} ({total} no total)",
+  "{total} toplam": "{total} no total",
   "{date} · {count} sayfa": {
     one: "{date} · {count} página",
     other: "{date} · {count} páginas",
@@ -4036,4 +4036,9 @@ export const ptCatalog = {
   "{count} sayfa soruluyor": "Consultando o Google sobre {count} páginas",
   "{pages} sayfa tarandı, {issues} bulgu":
     "{pages} páginas rastreadas, {issues} problemas",
+  "Bu dönemde hiç oturum kaydedilmedi.":
+    "Nenhuma sessão foi registrada neste período.",
+  "Başlık veya özet": "Título ou resumo",
+  "Tarama bittikten sonra çalışır.":
+    "É executado após o término do rastreamento.",
 } as const;

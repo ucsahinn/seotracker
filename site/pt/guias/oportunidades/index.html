@@ -14,7 +14,7 @@
     <title>Oportunidades | Guia do seowatcher</title>
     <meta
       name="description"
-      content="Mostra páginas observadas, possíveis ações e um limite de cliques adicionais quando há dados suficientes."
+      content="Qual página trabalhar primeiro: páginas que o Google já mostra, ordenadas pelo limite de cliques extras do Search Console, com o trabalho sugerido."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -54,7 +54,7 @@
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://seowatcher.io/kilavuz/firsatlar/"
+      href="https://seowatcher.io/en/docs/opportunities/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -91,7 +91,7 @@
     <meta property="og:title" content="Oportunidades | Guia do seowatcher" />
     <meta
       property="og:description"
-      content="Mostra páginas observadas, possíveis ações e um limite de cliques adicionais quando há dados suficientes."
+      content="Qual página trabalhar primeiro: páginas que o Google já mostra, ordenadas pelo limite de cliques extras do Search Console, com o trabalho sugerido."
     />
     <meta
       property="og:image"
@@ -119,7 +119,7 @@
     <meta name="twitter:title" content="Oportunidades | Guia do seowatcher" />
     <meta
       name="twitter:description"
-      content="Mostra páginas observadas, possíveis ações e um limite de cliques adicionais quando há dados suficientes."
+      content="Qual página trabalhar primeiro: páginas que o Google já mostra, ordenadas pelo limite de cliques extras do Search Console, com o trabalho sugerido."
     />
     <meta
       name="twitter:image"
@@ -139,7 +139,9 @@
             "@id": "https://seowatcher.io/#website",
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
-            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+            "alternateName": ["seotracker"],
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
+            "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
             "@type": "SoftwareApplication",
@@ -160,9 +162,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/pt/guias/oportunidades/#article",
             "headline": "Oportunidades",
-            "description": "Mostra páginas observadas, possíveis ações e um limite de cliques adicionais quando há dados suficientes.",
+            "description": "Qual página trabalhar primeiro: páginas que o Google já mostra, ordenadas pelo limite de cliques extras do Search Console, com o trabalho sugerido.",
             "url": "https://seowatcher.io/pt/guias/oportunidades/",
             "inLanguage": "pt",
+            "datePublished": "2026-10-23",
             "dateModified": "2026-10-29",
             "articleSection": "Telas",
             "about": { "@id": "https://seowatcher.io/#app" },
@@ -198,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.5" defer></script>
+    <script src="/assets/docs.js?v=0.8.6" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1461,6 +1464,9 @@
           <p class="nav-group">Primeiros passos</p>
           <ul>
             <li>
+              <a href="/pt/guias/o-que-e-seowatcher/">O que é o seowatcher?</a>
+            </li>
+            <li>
               <a href="/pt/guias/instalar-no-windows/">Instalar no Windows</a>
             </li>
             <li>
@@ -1527,19 +1533,16 @@
       <article id="icerik" data-page="firsatlar">
         <h1>Oportunidades</h1>
         <p class="lede">
-          Mostra páginas observadas, possíveis ações e um limite de cliques
-          adicionais quando há dados suficientes.
+          Qual página trabalhar primeiro: páginas que o Google já mostra,
+          ordenadas pelo limite de cliques extras do Search Console, com o
+          trabalho sugerido.
         </p>
         <p>
-          “Examinar grupo de endereços do Analytics” na linha e nos detalhes
-          abre páginas de destino orgânicas com as datas da fonte e o grupo
-          normalizado. Sem correspondência de endereço ou datas, uma explicação
-          substitui o link. O filtro ocorre antes da paginação sobre as mesmas,
-          no máximo, 1.000 linhas da fonte de Oportunidades. O Analytics informa
-          limites de fonte e qualidade que impedem verificar o grupo completo.
-          As medidas obtidas novamente podem mudar; as mesmas datas podem cobrir
-          intervalos diferentes no fuso GA4 e no calendário do Pacífico do
-          Search Console.
+          Oportunidades ordena as páginas que o Google já mostra para o seu site
+          pela quantidade de cliques extras que poderiam trazer. O cálculo usa
+          os seus próprios dados do Search Console e as taxas de cliques do seu
+          site. Cada página recebe um tipo de trabalho sugerido e um limite
+          máximo de ganho; não é uma previsão nem uma garantia.
         </p>
         <h2 id="como-usar-oportunidades">Como usar Oportunidades</h2>
         <p>
@@ -1600,6 +1603,17 @@
           aguarde e atualize; se faltar permissão, confira a conexão. Quando a
           atualização falha, os dados anteriores permanecem com suas datas
           originais e um aviso.
+        </p>
+        <p>
+          “Examinar grupo de endereços do Analytics” na linha e nos detalhes
+          abre páginas de destino orgânicas com as datas da fonte e o grupo
+          normalizado. Sem correspondência de endereço ou datas, uma explicação
+          substitui o link. O filtro ocorre antes da paginação sobre as mesmas,
+          no máximo, 1.000 linhas da fonte de Oportunidades. O Analytics informa
+          limites de fonte e qualidade que impedem verificar o grupo completo.
+          As medidas obtidas novamente podem mudar; as mesmas datas podem cobrir
+          intervalos diferentes no fuso GA4 e no calendário do Pacífico do
+          Search Console.
         </p>
         <h2 id="exportacao-e-acompanhamento">Exportação e acompanhamento</h2>
         <p>

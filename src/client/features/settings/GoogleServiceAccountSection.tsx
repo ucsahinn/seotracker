@@ -174,8 +174,6 @@ export function GoogleServiceAccountSection() {
         </p>
       ) : null}
 
-      <ServiceAccountInstructions stored={stored} />
-
       {statusQuery.isPending ? <Skeleton variant="form" rows={1} /> : null}
 
       {statusQuery.isError ? (
@@ -193,17 +191,21 @@ export function GoogleServiceAccountSection() {
 
       {stored && !editing ? (
         <div className="space-y-3">
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-box border border-base-300 p-3">
-            <div className="flex min-w-0 items-center gap-2">
-              <CheckCircle2 className="size-4 shrink-0 text-success" />
-              <span
-                className="truncate font-mono text-sm"
-                title={status?.clientEmail ?? undefined}
-              >
-                {status?.clientEmail}
+          <div className="flex flex-col gap-3 rounded-box border border-[var(--hairline)] p-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex min-w-0 flex-1 items-start gap-2">
+              <CheckCircle2
+                className="mt-0.5 size-4 shrink-0 text-[var(--ink-success)]"
+                aria-hidden
+              />
+              <span className="min-w-0 break-words font-mono text-sm">
+                <BreakableEmail email={status?.clientEmail ?? ""} />
               </span>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <CopyButton
+                value={status?.clientEmail ?? ""}
+                successMessage={t("Hizmet hesabı adresi kopyalandı")}
+              />
               <button
                 type="button"
                 className="btn btn-sm"
@@ -224,11 +226,11 @@ export function GoogleServiceAccountSection() {
 
           {/* The step people forget: a stored key alone reaches nothing until
               the account is a user on the property. */}
-          <details className="rounded-box border border-base-300 bg-base-200/40 p-3">
-            <summary className="min-h-11 cursor-pointer py-3 text-sm">
+          <details className="text-sm">
+            <summary className="min-h-11 cursor-pointer py-3 text-sm font-medium">
               {t("Mülk izinlerini ayarla")}
             </summary>
-            <p className="text-sm text-muted">
+            <p className="max-w-prose text-sm text-muted">
               {fillParts(
                 t(
                   "Bu adresi Search Console'da {path} ile mülkünüze ekleyin (yetki: {level}). Eklemeden veri gelmez. Analytics için de GA4 mülkünde {gaPath}'ne aynı adresi Görüntüleyen olarak ekleyin.",
@@ -245,8 +247,8 @@ export function GoogleServiceAccountSection() {
               )}
             </p>
             <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-              <code className="min-w-0 truncate font-mono text-sm text-muted">
-                {status?.clientEmail}
+              <code className="min-w-0 break-words font-mono text-sm text-muted">
+                <BreakableEmail email={status?.clientEmail ?? ""} />
               </code>
               <CopyButton
                 value={status?.clientEmail ?? ""}
@@ -256,6 +258,8 @@ export function GoogleServiceAccountSection() {
           </details>
         </div>
       ) : null}
+
+      <ServiceAccountInstructions stored={stored} />
 
       {showForm ? (
         <div className="space-y-1.5">
@@ -378,6 +382,20 @@ export function GoogleServiceAccountSection() {
       ) : null}
     </section>
   );
+}
+
+/**
+ * A service-account address is one long token. `break-all` split it every few
+ * letters on a phone; this offers a line break only before "@" and after each
+ * "." so it wraps at its natural seams.
+ */
+function BreakableEmail({ email }: { email: string }) {
+  return email.split(/(?=@)|(?<=\.)/).map((part, index) => (
+    <React.Fragment key={index}>
+      {index > 0 ? <wbr /> : null}
+      {part}
+    </React.Fragment>
+  ));
 }
 
 function ServiceAccountInstructions({ stored }: { stored: boolean }) {

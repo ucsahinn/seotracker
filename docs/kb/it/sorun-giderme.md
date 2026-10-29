@@ -5,9 +5,9 @@ kind: sorun-giderme
 updated: 2026-10-27
 ---
 
-L'interfaccia dell'app esiste in sei lingue: turco, inglese, tedesco, francese, italiano e portoghese. La lingua si sceglie in Impostazioni → Aspetto → Lingua. In questa guida pulsanti e schermate hanno il nome che portano nell'interfaccia in italiano. Il menu dell'area di notifica di Windows esiste solo in turco. Lì il nome turco è seguito dal significato italiano tra parentesi.
-
 Se qualcosa non funziona, guardare prima nell'app la scheda "Stato dell'app" della schermata **Aiuto**. La scheda guarda questa installazione in sé e controlla accesso, collegamento con Google, chiave PageSpeed e database. Se dice "N cose richiedono attenzione", il pulsante accanto porta all'impostazione giusta. I problemi qui sotto sono ordinati dal più frequente al più raro.
+
+L'interfaccia dell'app esiste in sei lingue: turco, inglese, tedesco, francese, italiano e portoghese. La lingua si sceglie in Impostazioni → Aspetto → Lingua. In questa guida pulsanti e schermate hanno il nome che portano nell'interfaccia in italiano. Il menu dell'area di notifica di Windows esiste solo in turco. Lì il nome turco è seguito dal significato italiano tra parentesi.
 
 ## La pagina non si apre
 

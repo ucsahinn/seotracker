@@ -6,6 +6,8 @@ route: /settings
 updated: 2026-10-27
 ---
 
+Die Einstellungen enthalten, was für diesen Browser (Darstellung und Sprache) und für die ganze Installation gilt (Google-Zugangsdaten, PageSpeed-Schlüssel, Limits und Updates). Name, Domain und Google-Properties eines Projekts stehen in den **Projekteinstellungen**. Diese Seite erklärt, wofür jede Einstellung gilt und wo Sie sie ändern.
+
 ## Geltungsbereich
 
 Darstellung und Sprache gelten für diesen Browser. Wählen Sie die Sprache und bestätigen Sie mit der Schaltfläche zum Anwenden. Die Projektsprache ist eine getrennte Marktvorgabe.

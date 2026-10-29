@@ -1,14 +1,14 @@
 ---
 title: Fırsatlar
-description: Gözlenen sayfaları, olası işleri ve veri yeterliyse ek tıklama üst sınırını gösterir.
+description: Önce hangi sayfaya bakmalı? Google'da görünen sayfalarınız, Search Console verisinden hesaplanan ek tıklama üst sınırına ve önerilen işe göre sıralanır.
 screen: Fırsatlar
 route: /p/<proje>/opportunities
 updated: 2026-10-27
 ---
 
-Satırdaki ve ayrıntıdaki “Analytics adres grubunu incele” bağlantısı organik giriş sayfalarını kaynak tarihleri ve normalleştirilmiş adres grubu ile açar. Adres veya tarih eşleşmesi yoksa bağlantı yerine eşleşmenin doğrulanamadığı yazılır. Grup, Fırsatlar ile aynı en fazla 1.000 kaynak satırında sayfalama öncesi süzülür. Kaynak veya kalite kısıtı varsa Analytics tam grubun doğrulanamadığını belirtir. Yeniden alınan veriler değişebilir; aynı tarih etiketleri GA4 mülk saat dilimi ile Search Console Pasifik takviminde farklı zaman aralıklarını kapsayabilir.
+Fırsatlar, Google'da zaten görünen sayfalarınızı ne kadar ek tıklama getirebileceklerine göre sıralar. Hesap sizin Search Console verinizden ve sitenizin kendi tıklama oranlarından yapılır. Her sayfa için önerilen bir iş ve kazanç için bir üst sınır gösterilir; bu bir tahmin ya da garanti değildir.
 
-# Fırsatlar nasıl kullanılır?
+## Fırsatlar nasıl kullanılır?
 
 Bu ekran, önce hangi sayfaya bakacağınızı ve hangi işi inceleyeceğinizi gösterir. **Önce şuna bakın** en yüksek hesaplanabilen ek tıklama sınırına sahip sayfayı açar. Bu, işin kolay veya hızlı olduğunun ölçümü değildir.
 
@@ -29,6 +29,8 @@ Masaüstünde sıralanabilir tablo, telefonda adresi saran iş satırları vard�
 **Hesaplanamayan kapsam** kazanç yok demek değildir. Eksik sorgu eşleşmesi, yetersiz gösterim ve eksik hedef oranı ayrı sayılır. Ölçülen sıfır bunlardan ayrıdır. Hiç satır dönmemesi, hiç gösterim olmadığını kanıtlamaz.
 
 Analytics yalnızca ölçülmüş organik oturumları, anahtar olayları ve dönüşen oturum oranını ekler; ek tıklamadan gelecekteki olay sayısı üretilmez. Kısıtlı ölçüm sıfıra çevrilmez. Saat dilimi ve kaynak sınırları açıklanır. Adres varyantları aynı Analytics grubuyla eşleşebilir; bu oturumları URL satırları arasında toplamayın. Kota hatasında bekleyip yenileyin; izin hatasında bağlantı ayarlarını kontrol edin. Yenileme başarısızsa önceki sonuç kendi tarihleriyle ve uyarıyla korunur.
+
+Satırdaki ve ayrıntıdaki “Analytics adres grubunu incele” bağlantısı organik giriş sayfalarını kaynak tarihleri ve normalleştirilmiş adres grubu ile açar. Adres veya tarih eşleşmesi yoksa bağlantı yerine eşleşmenin doğrulanamadığı yazılır. Grup, Fırsatlar ile aynı en fazla 1.000 kaynak satırında sayfalama öncesi süzülür. Kaynak veya kalite kısıtı varsa Analytics tam grubun doğrulanamadığını belirtir. Yeniden alınan veriler değişebilir; aynı tarih etiketleri GA4 mülk saat dilimi ile Search Console Pasifik takviminde farklı zaman aralıklarını kapsayabilir.
 
 ## Dışa aktarma ve takip
 

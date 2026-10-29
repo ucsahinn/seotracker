@@ -5,6 +5,8 @@ kind: nasil-yapilir
 updated: 2026-10-27
 ---
 
+Una chiave API di PageSpeed Insights permette al controllo del sito di misurare la velocità delle pagine con PageSpeed Insights di Google. La chiave si crea gratis in Google Cloud ed è facoltativa: senza chiave, l'app prova a misurare al massimo 50 pagine per controllo.
+
 ## Aggiungere una chiave
 
 Attiva PageSpeed Insights API in Google Cloud, crea una chiave e limita l'accesso a questa API. Salvala in Impostazioni → Misurazione velocità. È cifrata e mai mostrata. Docker accetta PAGESPEED_API_KEY; il valore salvato ha priorità.

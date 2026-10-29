@@ -162,7 +162,7 @@ function ProjectContextContent({
             </button>
           </div>
         ) : null}
-        <section className="space-y-2 rounded-box bg-base-200/40 p-4">
+        <section className="space-y-2 rounded-box border border-[var(--hairline)] bg-base-100 p-4">
           <h2 className="text-sm font-semibold">
             {t("{filled}/{total} bölüm dolu", {
               filled: formatCount(
@@ -222,27 +222,6 @@ function ProjectContextContent({
           missingSections={context.missingSections}
         />
 
-        <details>
-          <summary className="cursor-pointer py-3 text-sm font-medium focus-visible:outline-2 focus-visible:outline-primary">
-            {t("Ajanla taslak hazırla")}
-          </summary>
-          {identityReady ? (
-            <FillWithAgentCard
-              projectName={projectName}
-              projectId={projectId}
-              domain={domain}
-              missingSections={context.missingSections}
-              competitorCount={context.competitors.length}
-              keyPageCount={context.keyPages.length}
-            />
-          ) : (
-            <p role="status" className="text-sm text-muted">
-              {t(
-                "Proje kimliği okunmadan istem hazırlanamaz. Proje listesini yeniden yükleyin.",
-              )}
-            </p>
-          )}
-        </details>
         <CompetitorsSection
           projectId={projectId}
           competitors={context.competitors}
@@ -250,31 +229,54 @@ function ProjectContextContent({
 
         <KeyPagesSection projectId={projectId} keyPages={context.keyPages} />
 
-        <details>
-          <summary className="cursor-pointer py-3 text-sm font-medium focus-visible:outline-2 focus-visible:outline-primary">
-            {t("Özel bölümler")}
-          </summary>
-          <CustomSections
-            projectId={projectId}
-            customSections={context.customSections}
-          />
-        </details>
-        <details>
-          <summary className="cursor-pointer py-3 text-sm font-medium focus-visible:outline-2 focus-visible:outline-primary">
-            {t("Araştırma günlüğü")}
-          </summary>
-          <ResearchLog
-            projectId={projectId}
-            researchLog={context.researchLog}
-            hasMore={context.researchLogHasMore}
-          />
-        </details>
-        <details>
-          <summary className="cursor-pointer py-3 text-sm font-medium focus-visible:outline-2 focus-visible:outline-primary">
-            {t("Kaynak ve kurulum")}
-          </summary>
-          <ContextHealthCard projectId={projectId} context={context} />
-        </details>
+        <div className="divide-y divide-[var(--hairline)] border-t border-[var(--hairline)]">
+          <details>
+            <summary className="cursor-pointer py-3 text-sm font-medium focus-visible:outline-2 focus-visible:outline-primary">
+              {t("Ajanla taslak hazırla")}
+            </summary>
+            {identityReady ? (
+              <FillWithAgentCard
+                projectName={projectName}
+                projectId={projectId}
+                domain={domain}
+                missingSections={context.missingSections}
+                competitorCount={context.competitors.length}
+                keyPageCount={context.keyPages.length}
+              />
+            ) : (
+              <p role="status" className="text-sm text-muted">
+                {t(
+                  "Proje kimliği okunmadan istem hazırlanamaz. Proje listesini yeniden yükleyin.",
+                )}
+              </p>
+            )}
+          </details>
+          <details>
+            <summary className="cursor-pointer py-3 text-sm font-medium focus-visible:outline-2 focus-visible:outline-primary">
+              {t("Özel bölümler")}
+            </summary>
+            <CustomSections
+              projectId={projectId}
+              customSections={context.customSections}
+            />
+          </details>
+          <details>
+            <summary className="cursor-pointer py-3 text-sm font-medium focus-visible:outline-2 focus-visible:outline-primary">
+              {t("Araştırma günlüğü")}
+            </summary>
+            <ResearchLog
+              projectId={projectId}
+              researchLog={context.researchLog}
+              hasMore={context.researchLogHasMore}
+            />
+          </details>
+          <details>
+            <summary className="cursor-pointer py-3 text-sm font-medium focus-visible:outline-2 focus-visible:outline-primary">
+              {t("Kaynak ve kurulum")}
+            </summary>
+            <ContextHealthCard projectId={projectId} context={context} />
+          </details>
+        </div>
       </div>
     </>
   );

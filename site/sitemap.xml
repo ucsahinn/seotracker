@@ -9,7 +9,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/" />
     <image:image>
       <image:loc>https://seowatcher.io/assets/hero-dark-desktop-1120.webp</image:loc>
     </image:image>
@@ -35,7 +35,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/" />
     <image:image>
       <image:loc>https://seowatcher.io/assets/hero-dark-desktop-1120.webp</image:loc>
     </image:image>
@@ -61,7 +61,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/" />
     <image:image>
       <image:loc>https://seowatcher.io/assets/hero-dark-desktop-1120.webp</image:loc>
     </image:image>
@@ -87,7 +87,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/" />
     <image:image>
       <image:loc>https://seowatcher.io/assets/hero-dark-desktop-1120.webp</image:loc>
     </image:image>
@@ -113,7 +113,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/" />
     <image:image>
       <image:loc>https://seowatcher.io/assets/hero-dark-desktop-1120.webp</image:loc>
     </image:image>
@@ -139,7 +139,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/" />
     <image:image>
       <image:loc>https://seowatcher.io/assets/hero-dark-desktop-1120.webp</image:loc>
     </image:image>
@@ -165,7 +165,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/</loc>
@@ -176,7 +176,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/</loc>
@@ -187,7 +187,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/</loc>
@@ -198,7 +198,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/</loc>
@@ -209,7 +209,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/</loc>
@@ -220,18 +220,18 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/ajan-kurulumu/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/ajan-kurulumu/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/agent-setup/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/assistent-einrichten/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/installation-assistant/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/configurazione-assistente/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/configurar-agente/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/ajan-kurulumu/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/agent-setup/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/agent-setup/</loc>
@@ -242,18 +242,18 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/installation-assistant/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/configurazione-assistente/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/configurar-agente/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/ajan-kurulumu/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/agent-setup/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/assistent-einrichten/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/ajan-kurulumu/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/agent-setup/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/assistent-einrichten/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/installation-assistant/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/configurazione-assistente/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/configurar-agente/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/ajan-kurulumu/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/agent-setup/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/installation-assistant/</loc>
@@ -264,7 +264,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/installation-assistant/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/configurazione-assistente/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/configurar-agente/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/ajan-kurulumu/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/agent-setup/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/configurazione-assistente/</loc>
@@ -275,7 +275,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/installation-assistant/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/configurazione-assistente/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/configurar-agente/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/ajan-kurulumu/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/agent-setup/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/configurar-agente/</loc>
@@ -286,7 +286,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/installation-assistant/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/configurazione-assistente/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/configurar-agente/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/ajan-kurulumu/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/agent-setup/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/analitik/</loc>
@@ -297,7 +297,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/statistiques/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/analisi/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/analise/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/analitik/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/analytics/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/analytics/</loc>
@@ -308,7 +308,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/statistiques/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/analisi/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/analise/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/analitik/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/analytics/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/datenanalyse/</loc>
@@ -319,7 +319,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/statistiques/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/analisi/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/analise/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/analitik/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/analytics/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/statistiques/</loc>
@@ -330,7 +330,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/statistiques/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/analisi/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/analise/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/analitik/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/analytics/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/analisi/</loc>
@@ -341,7 +341,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/statistiques/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/analisi/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/analise/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/analitik/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/analytics/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/analise/</loc>
@@ -352,7 +352,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/statistiques/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/analisi/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/analise/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/analitik/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/analytics/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/arama-performansi/</loc>
@@ -363,7 +363,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/performance-de-recherche/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/prestazioni-di-ricerca/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/desempenho-de-busca/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/arama-performansi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/search-performance/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/search-performance/</loc>
@@ -374,7 +374,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/performance-de-recherche/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/prestazioni-di-ricerca/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/desempenho-de-busca/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/arama-performansi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/search-performance/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/suchleistung/</loc>
@@ -385,7 +385,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/performance-de-recherche/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/prestazioni-di-ricerca/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/desempenho-de-busca/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/arama-performansi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/search-performance/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/performance-de-recherche/</loc>
@@ -396,7 +396,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/performance-de-recherche/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/prestazioni-di-ricerca/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/desempenho-de-busca/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/arama-performansi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/search-performance/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/prestazioni-di-ricerca/</loc>
@@ -407,7 +407,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/performance-de-recherche/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/prestazioni-di-ricerca/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/desempenho-de-busca/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/arama-performansi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/search-performance/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/desempenho-de-busca/</loc>
@@ -418,73 +418,73 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/performance-de-recherche/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/prestazioni-di-ricerca/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/desempenho-de-busca/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/arama-performansi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/search-performance/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/ayarlar/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/ayarlar/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/settings/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/einstellungen/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/parametres/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/impostazioni/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/configuracoes/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/ayarlar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/settings/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/settings/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/ayarlar/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/settings/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/einstellungen/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/parametres/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/impostazioni/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/configuracoes/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/ayarlar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/settings/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/einstellungen/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/ayarlar/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/settings/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/einstellungen/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/parametres/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/impostazioni/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/configuracoes/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/ayarlar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/settings/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/parametres/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/ayarlar/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/settings/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/einstellungen/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/parametres/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/impostazioni/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/configuracoes/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/ayarlar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/settings/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/impostazioni/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/ayarlar/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/settings/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/einstellungen/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/parametres/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/impostazioni/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/configuracoes/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/ayarlar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/settings/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/configuracoes/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/ayarlar/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/settings/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/einstellungen/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/parametres/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/impostazioni/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/configuracoes/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/ayarlar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/settings/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/denetim-kurallari/</loc>
@@ -495,7 +495,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/regles-d-audit/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/regole-del-controllo/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/regras-de-auditoria/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/denetim-kurallari/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/audit-rules/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/audit-rules/</loc>
@@ -506,7 +506,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/regles-d-audit/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/regole-del-controllo/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/regras-de-auditoria/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/denetim-kurallari/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/audit-rules/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/audit-regeln/</loc>
@@ -517,7 +517,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/regles-d-audit/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/regole-del-controllo/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/regras-de-auditoria/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/denetim-kurallari/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/audit-rules/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/regles-d-audit/</loc>
@@ -528,7 +528,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/regles-d-audit/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/regole-del-controllo/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/regras-de-auditoria/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/denetim-kurallari/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/audit-rules/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/regole-del-controllo/</loc>
@@ -539,7 +539,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/regles-d-audit/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/regole-del-controllo/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/regras-de-auditoria/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/denetim-kurallari/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/audit-rules/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/regras-de-auditoria/</loc>
@@ -550,7 +550,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/regles-d-audit/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/regole-del-controllo/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/regras-de-auditoria/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/denetim-kurallari/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/audit-rules/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/dizin-durumu/</loc>
@@ -561,7 +561,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/etat-de-l-index/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/stato-indice/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/status-de-indexacao/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/dizin-durumu/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/index-status/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/index-status/</loc>
@@ -572,7 +572,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/etat-de-l-index/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/stato-indice/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/status-de-indexacao/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/dizin-durumu/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/index-status/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/indexstatus/</loc>
@@ -583,7 +583,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/etat-de-l-index/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/stato-indice/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/status-de-indexacao/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/dizin-durumu/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/index-status/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/etat-de-l-index/</loc>
@@ -594,7 +594,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/etat-de-l-index/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/stato-indice/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/status-de-indexacao/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/dizin-durumu/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/index-status/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/stato-indice/</loc>
@@ -605,7 +605,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/etat-de-l-index/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/stato-indice/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/status-de-indexacao/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/dizin-durumu/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/index-status/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/status-de-indexacao/</loc>
@@ -616,7 +616,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/etat-de-l-index/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/stato-indice/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/status-de-indexacao/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/dizin-durumu/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/index-status/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/firsatlar/</loc>
@@ -627,7 +627,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/opportunites/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/opportunita/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/oportunidades/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/firsatlar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/opportunities/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/opportunities/</loc>
@@ -638,7 +638,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/opportunites/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/opportunita/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/oportunidades/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/firsatlar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/opportunities/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/chancen/</loc>
@@ -649,7 +649,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/opportunites/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/opportunita/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/oportunidades/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/firsatlar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/opportunities/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/opportunites/</loc>
@@ -660,7 +660,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/opportunites/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/opportunita/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/oportunidades/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/firsatlar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/opportunities/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/opportunita/</loc>
@@ -671,7 +671,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/opportunites/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/opportunita/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/oportunidades/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/firsatlar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/opportunities/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/oportunidades/</loc>
@@ -682,73 +682,73 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/opportunites/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/opportunita/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/oportunidades/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/firsatlar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/opportunities/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/google-baglantisi/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/google-baglantisi/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/google-connection/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/google-verbindung/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/connexion-google/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/collegamento-google/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/conexao-google/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/google-baglantisi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/google-connection/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/google-connection/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/google-baglantisi/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/google-connection/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/google-verbindung/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/connexion-google/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/collegamento-google/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/conexao-google/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/google-baglantisi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/google-connection/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/google-verbindung/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/google-baglantisi/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/google-connection/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/google-verbindung/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/connexion-google/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/collegamento-google/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/conexao-google/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/google-baglantisi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/google-connection/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/connexion-google/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/google-baglantisi/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/google-connection/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/google-verbindung/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/connexion-google/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/collegamento-google/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/conexao-google/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/google-baglantisi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/google-connection/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/collegamento-google/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/google-baglantisi/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/google-connection/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/google-verbindung/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/connexion-google/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/collegamento-google/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/conexao-google/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/google-baglantisi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/google-connection/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/conexao-google/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/google-baglantisi/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/google-connection/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/google-verbindung/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/connexion-google/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/collegamento-google/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/conexao-google/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/google-baglantisi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/google-connection/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/kayitli-kelimeler/</loc>
@@ -759,7 +759,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/mots-cles-enregistres/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/parole-chiave-salvate/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/palavras-chave-salvas/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/kayitli-kelimeler/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/saved-keywords/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/saved-keywords/</loc>
@@ -770,7 +770,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/mots-cles-enregistres/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/parole-chiave-salvate/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/palavras-chave-salvas/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/kayitli-kelimeler/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/saved-keywords/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/gespeicherte-suchbegriffe/</loc>
@@ -781,7 +781,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/mots-cles-enregistres/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/parole-chiave-salvate/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/palavras-chave-salvas/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/kayitli-kelimeler/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/saved-keywords/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/mots-cles-enregistres/</loc>
@@ -792,7 +792,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/mots-cles-enregistres/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/parole-chiave-salvate/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/palavras-chave-salvas/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/kayitli-kelimeler/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/saved-keywords/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/parole-chiave-salvate/</loc>
@@ -803,7 +803,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/mots-cles-enregistres/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/parole-chiave-salvate/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/palavras-chave-salvas/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/kayitli-kelimeler/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/saved-keywords/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/palavras-chave-salvas/</loc>
@@ -814,7 +814,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/mots-cles-enregistres/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/parole-chiave-salvate/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/palavras-chave-salvas/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/kayitli-kelimeler/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/saved-keywords/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/kurulum-docker/</loc>
@@ -825,7 +825,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/installation-avec-docker/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/installazione-con-docker/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/instalar-com-docker/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/kurulum-docker/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/install-docker/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/install-docker/</loc>
@@ -836,7 +836,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/installation-avec-docker/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/installazione-con-docker/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/instalar-com-docker/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/kurulum-docker/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/install-docker/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/installation-mit-docker/</loc>
@@ -847,7 +847,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/installation-avec-docker/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/installazione-con-docker/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/instalar-com-docker/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/kurulum-docker/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/install-docker/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/installation-avec-docker/</loc>
@@ -858,7 +858,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/installation-avec-docker/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/installazione-con-docker/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/instalar-com-docker/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/kurulum-docker/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/install-docker/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/installazione-con-docker/</loc>
@@ -869,7 +869,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/installation-avec-docker/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/installazione-con-docker/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/instalar-com-docker/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/kurulum-docker/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/install-docker/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/instalar-com-docker/</loc>
@@ -880,7 +880,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/installation-avec-docker/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/installazione-con-docker/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/instalar-com-docker/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/kurulum-docker/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/install-docker/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/kurulum-windows/</loc>
@@ -891,73 +891,73 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/installation-sous-windows/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/installazione-su-windows/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/instalar-no-windows/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/kurulum-windows/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/install-windows/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/install-windows/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/kurulum-windows/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/install-windows/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/installation-unter-windows/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/installation-sous-windows/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/installazione-su-windows/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/instalar-no-windows/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/kurulum-windows/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/install-windows/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/installation-unter-windows/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/kurulum-windows/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/install-windows/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/installation-unter-windows/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/installation-sous-windows/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/installazione-su-windows/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/instalar-no-windows/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/kurulum-windows/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/install-windows/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/installation-sous-windows/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/kurulum-windows/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/install-windows/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/installation-unter-windows/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/installation-sous-windows/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/installazione-su-windows/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/instalar-no-windows/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/kurulum-windows/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/install-windows/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/installazione-su-windows/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/kurulum-windows/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/install-windows/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/installation-unter-windows/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/installation-sous-windows/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/installazione-su-windows/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/instalar-no-windows/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/kurulum-windows/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/install-windows/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/instalar-no-windows/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/kurulum-windows/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/install-windows/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/installation-unter-windows/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/installation-sous-windows/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/installazione-su-windows/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/instalar-no-windows/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/kurulum-windows/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/install-windows/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/pagespeed-anahtari/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/pagespeed-anahtari/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/pagespeed-key/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/pagespeed-schluessel/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/cle-pagespeed/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/chiave-pagespeed/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/chave-pagespeed/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/pagespeed-anahtari/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/pagespeed-key/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/pagespeed-key/</loc>
@@ -968,29 +968,29 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/cle-pagespeed/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/chiave-pagespeed/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/chave-pagespeed/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/pagespeed-anahtari/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/pagespeed-key/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/pagespeed-schluessel/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/pagespeed-anahtari/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/pagespeed-key/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/pagespeed-schluessel/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/cle-pagespeed/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/chiave-pagespeed/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/chave-pagespeed/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/pagespeed-anahtari/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/pagespeed-key/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/cle-pagespeed/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/pagespeed-anahtari/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/pagespeed-key/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/pagespeed-schluessel/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/cle-pagespeed/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/chiave-pagespeed/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/chave-pagespeed/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/pagespeed-anahtari/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/pagespeed-key/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/chiave-pagespeed/</loc>
@@ -1001,18 +1001,18 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/cle-pagespeed/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/chiave-pagespeed/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/chave-pagespeed/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/pagespeed-anahtari/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/pagespeed-key/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/chave-pagespeed/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/pagespeed-anahtari/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/pagespeed-key/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/pagespeed-schluessel/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/cle-pagespeed/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/chiave-pagespeed/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/chave-pagespeed/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/pagespeed-anahtari/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/pagespeed-key/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/panel/</loc>
@@ -1023,7 +1023,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/tableau-de-bord/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/pannello/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/painel/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/panel/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/dashboard/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/dashboard/</loc>
@@ -1034,7 +1034,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/tableau-de-bord/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/pannello/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/painel/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/panel/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/dashboard/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/uebersicht/</loc>
@@ -1045,7 +1045,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/tableau-de-bord/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/pannello/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/painel/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/panel/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/dashboard/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/tableau-de-bord/</loc>
@@ -1056,7 +1056,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/tableau-de-bord/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/pannello/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/painel/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/panel/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/dashboard/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/pannello/</loc>
@@ -1067,7 +1067,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/tableau-de-bord/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/pannello/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/painel/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/panel/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/dashboard/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/painel/</loc>
@@ -1078,7 +1078,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/tableau-de-bord/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/pannello/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/painel/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/panel/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/dashboard/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/proje-bilgisi/</loc>
@@ -1089,7 +1089,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/infos-du-projet/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/informazioni-progetto/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/informacoes-do-projeto/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/proje-bilgisi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/project-context/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/project-context/</loc>
@@ -1100,7 +1100,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/infos-du-projet/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/informazioni-progetto/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/informacoes-do-projeto/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/proje-bilgisi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/project-context/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/projektinfo/</loc>
@@ -1111,7 +1111,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/infos-du-projet/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/informazioni-progetto/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/informacoes-do-projeto/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/proje-bilgisi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/project-context/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/infos-du-projet/</loc>
@@ -1122,7 +1122,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/infos-du-projet/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/informazioni-progetto/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/informacoes-do-projeto/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/proje-bilgisi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/project-context/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/informazioni-progetto/</loc>
@@ -1133,7 +1133,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/infos-du-projet/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/informazioni-progetto/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/informacoes-do-projeto/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/proje-bilgisi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/project-context/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/informacoes-do-projeto/</loc>
@@ -1144,7 +1144,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/infos-du-projet/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/informazioni-progetto/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/informacoes-do-projeto/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/proje-bilgisi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/project-context/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/projeler/</loc>
@@ -1155,7 +1155,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/projets/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/progetti/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/projetos/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/projeler/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/projects/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/projects/</loc>
@@ -1166,7 +1166,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/projets/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/progetti/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/projetos/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/projeler/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/projects/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/projekte/</loc>
@@ -1177,7 +1177,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/projets/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/progetti/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/projetos/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/projeler/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/projects/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/projets/</loc>
@@ -1188,7 +1188,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/projets/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/progetti/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/projetos/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/projeler/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/projects/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/progetti/</loc>
@@ -1199,7 +1199,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/projets/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/progetti/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/projetos/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/projeler/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/projects/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/projetos/</loc>
@@ -1210,7 +1210,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/projets/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/progetti/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/projetos/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/projeler/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/projects/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/raporlar/</loc>
@@ -1221,7 +1221,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/rapports/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/rapporti/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/relatorios/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/raporlar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/reports/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/reports/</loc>
@@ -1232,7 +1232,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/rapports/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/rapporti/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/relatorios/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/raporlar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/reports/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/berichte/</loc>
@@ -1243,7 +1243,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/rapports/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/rapporti/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/relatorios/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/raporlar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/reports/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/rapports/</loc>
@@ -1254,7 +1254,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/rapports/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/rapporti/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/relatorios/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/raporlar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/reports/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/rapporti/</loc>
@@ -1265,7 +1265,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/rapports/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/rapporti/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/relatorios/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/raporlar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/reports/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/relatorios/</loc>
@@ -1276,7 +1276,73 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/rapports/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/rapporti/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/relatorios/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/raporlar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/reports/" />
+  </url>
+  <url>
+    <loc>https://seowatcher.io/kilavuz/seowatcher-nedir/</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/seowatcher-nedir/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/what-is-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/was-ist-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/quest-ce-que-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/cos-e-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/o-que-e-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/what-is-seowatcher/" />
+  </url>
+  <url>
+    <loc>https://seowatcher.io/en/docs/what-is-seowatcher/</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/seowatcher-nedir/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/what-is-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/was-ist-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/quest-ce-que-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/cos-e-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/o-que-e-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/what-is-seowatcher/" />
+  </url>
+  <url>
+    <loc>https://seowatcher.io/de/dokumentation/was-ist-seowatcher/</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/seowatcher-nedir/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/what-is-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/was-ist-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/quest-ce-que-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/cos-e-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/o-que-e-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/what-is-seowatcher/" />
+  </url>
+  <url>
+    <loc>https://seowatcher.io/fr/guides/quest-ce-que-seowatcher/</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/seowatcher-nedir/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/what-is-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/was-ist-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/quest-ce-que-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/cos-e-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/o-que-e-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/what-is-seowatcher/" />
+  </url>
+  <url>
+    <loc>https://seowatcher.io/it/guide/cos-e-seowatcher/</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/seowatcher-nedir/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/what-is-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/was-ist-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/quest-ce-que-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/cos-e-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/o-que-e-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/what-is-seowatcher/" />
+  </url>
+  <url>
+    <loc>https://seowatcher.io/pt/guias/o-que-e-seowatcher/</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/seowatcher-nedir/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/what-is-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/was-ist-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/quest-ce-que-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/cos-e-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/o-que-e-seowatcher/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/what-is-seowatcher/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/siralama-takibi/</loc>
@@ -1287,7 +1353,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/suivi-du-classement/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/monitoraggio-posizioni/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/acompanhamento-de-posicoes/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/siralama-takibi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/rank-tracking/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/rank-tracking/</loc>
@@ -1298,7 +1364,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/suivi-du-classement/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/monitoraggio-posizioni/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/acompanhamento-de-posicoes/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/siralama-takibi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/rank-tracking/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/ranking-verfolgung/</loc>
@@ -1309,7 +1375,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/suivi-du-classement/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/monitoraggio-posizioni/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/acompanhamento-de-posicoes/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/siralama-takibi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/rank-tracking/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/suivi-du-classement/</loc>
@@ -1320,7 +1386,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/suivi-du-classement/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/monitoraggio-posizioni/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/acompanhamento-de-posicoes/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/siralama-takibi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/rank-tracking/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/monitoraggio-posizioni/</loc>
@@ -1331,7 +1397,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/suivi-du-classement/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/monitoraggio-posizioni/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/acompanhamento-de-posicoes/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/siralama-takibi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/rank-tracking/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/acompanhamento-de-posicoes/</loc>
@@ -1342,7 +1408,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/suivi-du-classement/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/monitoraggio-posizioni/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/acompanhamento-de-posicoes/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/siralama-takibi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/rank-tracking/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/site-denetimi/</loc>
@@ -1353,7 +1419,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/audit-du-site/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/controllo-del-sito/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/auditoria-do-site/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/site-denetimi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/site-audit/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/site-audit/</loc>
@@ -1364,7 +1430,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/audit-du-site/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/controllo-del-sito/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/auditoria-do-site/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/site-denetimi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/site-audit/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/website-audit/</loc>
@@ -1375,7 +1441,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/audit-du-site/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/controllo-del-sito/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/auditoria-do-site/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/site-denetimi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/site-audit/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/audit-du-site/</loc>
@@ -1386,7 +1452,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/audit-du-site/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/controllo-del-sito/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/auditoria-do-site/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/site-denetimi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/site-audit/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/controllo-del-sito/</loc>
@@ -1397,7 +1463,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/audit-du-site/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/controllo-del-sito/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/auditoria-do-site/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/site-denetimi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/site-audit/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/auditoria-do-site/</loc>
@@ -1408,7 +1474,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/audit-du-site/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/controllo-del-sito/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/auditoria-do-site/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/site-denetimi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/site-audit/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/sorun-giderme/</loc>
@@ -1419,62 +1485,62 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/depannage/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/risoluzione-problemi/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/solucao-de-problemas/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/sorun-giderme/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/troubleshooting/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/troubleshooting/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/sorun-giderme/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/troubleshooting/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/fehlerbehebung/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/depannage/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/risoluzione-problemi/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/solucao-de-problemas/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/sorun-giderme/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/troubleshooting/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/fehlerbehebung/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/sorun-giderme/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/troubleshooting/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/fehlerbehebung/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/depannage/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/risoluzione-problemi/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/solucao-de-problemas/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/sorun-giderme/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/troubleshooting/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/depannage/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/sorun-giderme/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/troubleshooting/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/fehlerbehebung/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/depannage/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/risoluzione-problemi/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/solucao-de-problemas/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/sorun-giderme/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/troubleshooting/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/risoluzione-problemi/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/sorun-giderme/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/troubleshooting/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/fehlerbehebung/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/depannage/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/risoluzione-problemi/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/solucao-de-problemas/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/sorun-giderme/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/troubleshooting/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/solucao-de-problemas/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/sorun-giderme/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/troubleshooting/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/fehlerbehebung/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/depannage/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/risoluzione-problemi/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/solucao-de-problemas/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/sorun-giderme/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/troubleshooting/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/surum-notlari/</loc>
@@ -1485,7 +1551,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/notes-de-version/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/note-di-rilascio/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/notas-da-versao/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/surum-notlari/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/release-notes/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/release-notes/</loc>
@@ -1496,7 +1562,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/notes-de-version/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/note-di-rilascio/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/notas-da-versao/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/surum-notlari/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/release-notes/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/versionshinweise/</loc>
@@ -1507,7 +1573,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/notes-de-version/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/note-di-rilascio/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/notas-da-versao/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/surum-notlari/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/release-notes/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/notes-de-version/</loc>
@@ -1518,7 +1584,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/notes-de-version/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/note-di-rilascio/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/notas-da-versao/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/surum-notlari/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/release-notes/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/note-di-rilascio/</loc>
@@ -1529,7 +1595,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/notes-de-version/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/note-di-rilascio/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/notas-da-versao/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/surum-notlari/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/release-notes/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/notas-da-versao/</loc>
@@ -1540,7 +1606,7 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/notes-de-version/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/note-di-rilascio/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/notas-da-versao/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/surum-notlari/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/release-notes/" />
   </url>
   <url>
     <loc>https://seowatcher.io/kilavuz/yardim/</loc>
@@ -1551,67 +1617,67 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/aide/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/aiuto/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/ajuda/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/yardim/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/help/" />
   </url>
   <url>
     <loc>https://seowatcher.io/en/docs/help/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/yardim/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/help/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/hilfe/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/aide/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/aiuto/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/ajuda/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/yardim/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/help/" />
   </url>
   <url>
     <loc>https://seowatcher.io/de/dokumentation/hilfe/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/yardim/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/help/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/hilfe/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/aide/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/aiuto/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/ajuda/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/yardim/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/help/" />
   </url>
   <url>
     <loc>https://seowatcher.io/fr/guides/aide/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/yardim/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/help/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/hilfe/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/aide/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/aiuto/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/ajuda/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/yardim/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/help/" />
   </url>
   <url>
     <loc>https://seowatcher.io/it/guide/aiuto/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/yardim/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/help/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/hilfe/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/aide/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/aiuto/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/ajuda/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/yardim/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/help/" />
   </url>
   <url>
     <loc>https://seowatcher.io/pt/guias/ajuda/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/yardim/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/help/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/dokumentation/hilfe/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/guides/aide/" />
     <xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/guide/aiuto/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/guias/ajuda/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/kilavuz/yardim/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/docs/help/" />
   </url>
-  <url><loc>https://seowatcher.io/gizlilik/</loc><lastmod>2026-10-26</lastmod><xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/gizlilik/" /><xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/privacy/" /><xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/datenschutz/" /><xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/confidentialite/" /><xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/privacy/" /><xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/privacidade/" /><xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/gizlilik/" /></url>
-  <url><loc>https://seowatcher.io/en/privacy/</loc><lastmod>2026-10-26</lastmod><xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/gizlilik/" /><xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/privacy/" /><xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/datenschutz/" /><xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/confidentialite/" /><xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/privacy/" /><xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/privacidade/" /><xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/gizlilik/" /></url>
-  <url><loc>https://seowatcher.io/de/datenschutz/</loc><lastmod>2026-10-26</lastmod><xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/gizlilik/" /><xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/privacy/" /><xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/datenschutz/" /><xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/confidentialite/" /><xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/privacy/" /><xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/privacidade/" /><xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/gizlilik/" /></url>
-  <url><loc>https://seowatcher.io/fr/confidentialite/</loc><lastmod>2026-10-26</lastmod><xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/gizlilik/" /><xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/privacy/" /><xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/datenschutz/" /><xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/confidentialite/" /><xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/privacy/" /><xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/privacidade/" /><xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/gizlilik/" /></url>
-  <url><loc>https://seowatcher.io/it/privacy/</loc><lastmod>2026-10-26</lastmod><xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/gizlilik/" /><xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/privacy/" /><xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/datenschutz/" /><xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/confidentialite/" /><xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/privacy/" /><xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/privacidade/" /><xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/gizlilik/" /></url>
-  <url><loc>https://seowatcher.io/pt/privacidade/</loc><lastmod>2026-10-26</lastmod><xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/gizlilik/" /><xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/privacy/" /><xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/datenschutz/" /><xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/confidentialite/" /><xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/privacy/" /><xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/privacidade/" /><xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/gizlilik/" /></url>
+  <url><loc>https://seowatcher.io/gizlilik/</loc><lastmod>2026-10-26</lastmod><xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/gizlilik/" /><xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/privacy/" /><xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/datenschutz/" /><xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/confidentialite/" /><xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/privacy/" /><xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/privacidade/" /><xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/privacy/" /></url>
+  <url><loc>https://seowatcher.io/en/privacy/</loc><lastmod>2026-10-26</lastmod><xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/gizlilik/" /><xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/privacy/" /><xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/datenschutz/" /><xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/confidentialite/" /><xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/privacy/" /><xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/privacidade/" /><xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/privacy/" /></url>
+  <url><loc>https://seowatcher.io/de/datenschutz/</loc><lastmod>2026-10-26</lastmod><xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/gizlilik/" /><xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/privacy/" /><xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/datenschutz/" /><xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/confidentialite/" /><xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/privacy/" /><xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/privacidade/" /><xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/privacy/" /></url>
+  <url><loc>https://seowatcher.io/fr/confidentialite/</loc><lastmod>2026-10-26</lastmod><xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/gizlilik/" /><xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/privacy/" /><xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/datenschutz/" /><xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/confidentialite/" /><xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/privacy/" /><xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/privacidade/" /><xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/privacy/" /></url>
+  <url><loc>https://seowatcher.io/it/privacy/</loc><lastmod>2026-10-26</lastmod><xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/gizlilik/" /><xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/privacy/" /><xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/datenschutz/" /><xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/confidentialite/" /><xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/privacy/" /><xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/privacidade/" /><xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/privacy/" /></url>
+  <url><loc>https://seowatcher.io/pt/privacidade/</loc><lastmod>2026-10-26</lastmod><xhtml:link rel="alternate" hreflang="tr" href="https://seowatcher.io/gizlilik/" /><xhtml:link rel="alternate" hreflang="en" href="https://seowatcher.io/en/privacy/" /><xhtml:link rel="alternate" hreflang="de" href="https://seowatcher.io/de/datenschutz/" /><xhtml:link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/confidentialite/" /><xhtml:link rel="alternate" hreflang="it" href="https://seowatcher.io/it/privacy/" /><xhtml:link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/privacidade/" /><xhtml:link rel="alternate" hreflang="x-default" href="https://seowatcher.io/en/privacy/" /></url>
 </urlset>

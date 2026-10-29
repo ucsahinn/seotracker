@@ -234,7 +234,7 @@ export function NextStepsCard({
   );
 }
 
-export function buildPanelActions({
+function buildPanelActions({
   projectId,
   gscConnected,
   googleMissing,

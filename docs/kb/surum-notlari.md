@@ -1,16 +1,16 @@
 ---
 title: Sürüm notları
-description: seowatcher 0.8.4 Alpha — eksiksiz Google verisi, canlı renkler ve gerçek verilerle yeniden incelenen, telefonda daha okunaklı ekranlar.
+description: seowatcher 0.8.6 Alpha (29 Ekim 2026): 202 kurallı yeni site denetimi, altı dilli arayüz, bildirimler ve daha doğru Google verisi.
 updated: 2026-10-29
 ---
 
-Son sürüm **0.8.5 Alpha**, 29 Ekim 2026. Güncellerken veriniz korunur.
+Son sürüm **0.8.6 Alpha**, 29 Ekim 2026. Güncellerken veriniz korunur.
 
 2.x serisinden 0.x.x Alpha serisine ilk geçiş için yeni kurulum dosyasını elle çalıştırın; eski otomatik güncelleyici küçük numarayı yeni sürüm olarak tanımaz.
 
-## 0.8.5 Alpha — 2026-10-29
+## 0.8.6 Alpha — 2026-10-29
 
-Bu giriş 0.5.0'dan 0.8.5'e kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
+Bu giriş 0.5.0'dan 0.8.6'ya kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
 
 ### ✨ Öne çıkanlar
 
@@ -66,6 +66,8 @@ Bu giriş 0.5.0'dan 0.8.5'e kadar gelen yenilikleri ve düzeltmeleri toplar: sit
 - **Yardım ve notlar:** Yardım ve sürüm notları ekranlarında aradığınız bilgiyi bulmak kolaylaştı.
 - **Verinin renkleri:** Tıklama mavi, gösterim mor, tıklama oranı turkuaz, sıra hardal, oturum yeşil ve dönüşüm gül rengindedir. Kartlar ve grafikler iki temada da aynı, daha canlı renkleri kullanır.
 - **Daha sakin ekranlar:** Kaynak, dönem ve güncellik kısa etiketlerle bir arada gösterilir. Uzun açıklamaları gerektiğinde açarsınız; kısa adlar ve belirgin düğmeler işlemleri kolaylaştırır.
+- **Telefonda:** Kayıt listeleri telefonda tablo yerine okunaklı satırlar olarak görünür; sorgu adları ve etiketler artık kesilmez.
+- **Tek görünüm:** Düğmeler, açılır bölümler, bildirim kutuları ve kartlar her ekranda aynı biçimdedir; tek sayfalık listelerde gereksiz sayfa düğmeleri gösterilmez.
 
 ### 🗂️ Projeler ve kayıtlar
 

@@ -47,6 +47,10 @@ export function TablePagination<Size extends number>({
     totalCount != null ? Math.max(1, Math.ceil(totalCount / pageSize)) : null;
   const canGoPrev = page > 1;
   const canGoNext = totalPages != null ? page < totalPages : hasNextPage;
+  // One page that no page size could split is not a pager: two disabled
+  // buttons and a size picker were the loudest thing under a short table.
+  if (page === 1 && totalCount != null && totalCount <= Math.min(...pageSizes))
+    return null;
 
   return (
     <div className="flex flex-col gap-3 border-t border-base-300 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">

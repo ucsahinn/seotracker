@@ -11,6 +11,13 @@ export function RankingMovementChips({
   onChange,
   label,
 }: ComponentProps<typeof FilterChips<MoveId>> & { comparable: boolean }) {
+  // Four disabled pills of dashes and zeros are a row of nothing to press.
+  const usable = chips.some(
+    (chip) =>
+      active === chip.id ||
+      ((comparable || chip.id === "top10") && chip.count > 0),
+  );
+  if (!usable) return null;
   return (
     <div role="group" aria-label={label} className="flex flex-wrap gap-2">
       {chips.map((chip) => {
@@ -25,7 +32,7 @@ export function RankingMovementChips({
             disabled={(unknown || chip.count === 0) && !pressed}
             title={unknown ? t("Karşılaştırma yok") : chip.hint}
             onClick={() => onChange(pressed ? undefined : chip.id)}
-            className={`inline-flex min-h-11 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${pressed ? "border-primary bg-primary/10 text-[var(--ink-primary)]" : "border-[var(--control-border)] bg-base-100 hover:bg-base-200/60"}`}
+            className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${pressed ? "border-primary bg-primary/10 text-[var(--ink-primary)]" : "border-[var(--control-border)] bg-base-100 hover:bg-base-200/60"}`}
           >
             <Icon className="size-3.5" aria-hidden />
             {chip.label}{" "}

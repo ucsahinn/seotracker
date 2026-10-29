@@ -46,7 +46,7 @@ export function OrganicTrendChart({ rows }: { rows: TrendRow[] }) {
             )
       }
     >
-      <AreaChart data={rows} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
+      <AreaChart data={rows} margin={{ top: 8, right: 20, bottom: 0, left: 0 }}>
         <CartesianGrid {...CHART_GRID} />
         <XAxis
           dataKey="date"

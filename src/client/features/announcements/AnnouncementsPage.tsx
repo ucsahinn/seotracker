@@ -1,4 +1,3 @@
-import { FactStrip } from "@/client/components/FactStrip";
 import { useEffect, useState } from "react";
 import { Megaphone, RefreshCw } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
@@ -23,11 +22,13 @@ const CATEGORY_LABELS = {
   release: "Sürüm",
 } as const;
 
-const CATEGORY_STYLES = {
-  product: "badge-primary",
-  maintenance: "badge-warning",
-  security: "badge-error",
-  release: "badge-info",
+// A neutral chip with a coloured dot: a solid ember fill read as the
+// primary button, and the label already carries the category.
+const CATEGORY_DOTS = {
+  product: "bg-primary",
+  maintenance: "bg-warning",
+  security: "bg-error",
+  release: "bg-info",
 } as const;
 const EMPTY_ANNOUNCEMENTS: PublicAnnouncement[] = [];
 
@@ -171,37 +172,29 @@ function AnnouncementCard({
   }
   return (
     <li
-      className={`rounded-box border bg-base-200 p-4 sm:p-5 ${unread ? "border-primary/50" : "border-[var(--hairline)]"}`}
+      className={`rounded-box border bg-base-100 p-4 shadow-[var(--shadow-raise)] sm:p-5 ${unread ? "border-primary/50" : "border-[var(--hairline)]"}`}
     >
-      <div className="flex flex-wrap items-center gap-2">
-        <span
-          className={`badge badge-sm ${CATEGORY_STYLES[announcement.category]}`}
-        >
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--hairline-strong)] px-2.5 py-0.5 text-xs font-medium text-base-content">
+          <span
+            className={`size-1.5 rounded-full ${CATEGORY_DOTS[announcement.category]}`}
+            aria-hidden
+          />
           {t(CATEGORY_LABELS[announcement.category])}
         </span>
         {unread ? (
           <span className="text-xs font-medium text-primary">{t("Yeni")}</span>
         ) : null}
+        <dl className="ml-auto flex items-baseline gap-1.5 text-xs">
+          <dt className="text-subtle">{t("Yayımlandı")}</dt>
+          <dd className="text-muted">
+            <time dateTime={announcement.publish_at}>
+              {formatDateTime(announcement.publish_at)}
+            </time>
+          </dd>
+        </dl>
       </div>
-      <div className="mt-4">
-        <FactStrip
-          label={t("Kaynak")}
-          facts={[
-            {
-              label: t("Yayımlandı"),
-              value: (
-                <time
-                  className="ml-auto text-xs text-subtle"
-                  dateTime={announcement.publish_at}
-                >
-                  {formatDateTime(announcement.publish_at)}
-                </time>
-              ),
-            },
-          ]}
-        />
-      </div>
-      <h2 className="mt-3 text-base font-semibold text-base-content">
+      <h2 className="mt-3 max-w-prose text-base font-semibold text-base-content">
         {title}
       </h2>
       <p className="mt-2 max-w-prose whitespace-pre-wrap break-words text-sm leading-relaxed text-muted">
@@ -280,7 +273,7 @@ function AnnouncementCard({
         </form>
       ) : null}
       {error ? (
-        <p role="alert" className="mt-2 text-sm text-error">
+        <p role="alert" className="mt-2 text-sm text-[var(--ink-error)]">
           {error}
         </p>
       ) : null}

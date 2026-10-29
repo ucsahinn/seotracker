@@ -5,6 +5,7 @@ export const frAnalytics: Catalog = {
   "Sıraya dayalı öneri; kazanç bilinmiyor (yetersiz veri).":
     "Suggestion fondée sur la position ; gain inconnu (données insuffisantes).",
   "Yalnızca marka aramaları": "Requêtes de marque uniquement",
+  "Tüm sayfalar: {action}": "Toutes les pages : {action}",
   "Kazanç için veri yetersiz: az gösterim {low}, eksik hedef oranı {curve}, eksik marka dışı sorgu {missing}. Sıraya dayalı öneriler tahmin değildir.":
     "Données insuffisantes pour le gain : faibles impressions {low}, taux cible absent {curve}, requêtes hors marque absentes {missing}. Les suggestions de position ne sont pas des estimations.",
 

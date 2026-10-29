@@ -14,7 +14,7 @@
     <title>Connexion à Google | Guide seowatcher</title>
     <meta
       name="description"
-      content="Séparer identifiants de l’installation et propriétés du projet; distinguer configuration et accès."
+      content="Connectez Search Console et GA4 avec votre compte de service Google Cloud ou votre client OAuth, puis choisissez les propriétés de chaque projet."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -54,7 +54,7 @@
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://seowatcher.io/kilavuz/google-baglantisi/"
+      href="https://seowatcher.io/en/docs/google-connection/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -91,7 +91,7 @@
     <meta property="og:title" content="Connexion à Google | Guide seowatcher" />
     <meta
       property="og:description"
-      content="Séparer identifiants de l’installation et propriétés du projet; distinguer configuration et accès."
+      content="Connectez Search Console et GA4 avec votre compte de service Google Cloud ou votre client OAuth, puis choisissez les propriétés de chaque projet."
     />
     <meta
       property="og:image"
@@ -104,7 +104,7 @@
       property="og:image:alt"
       content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/guides/connexion-google/"
@@ -122,7 +122,7 @@
     />
     <meta
       name="twitter:description"
-      content="Séparer identifiants de l’installation et propriétés du projet; distinguer configuration et accès."
+      content="Connectez Search Console et GA4 avec votre compte de service Google Cloud ou votre client OAuth, puis choisissez les propriétés de chaque projet."
     />
     <meta
       name="twitter:image"
@@ -142,7 +142,9 @@
             "@id": "https://seowatcher.io/#website",
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
-            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+            "alternateName": ["seotracker"],
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
+            "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
             "@type": "SoftwareApplication",
@@ -163,10 +165,11 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/fr/guides/connexion-google/#article",
             "headline": "Connexion à Google",
-            "description": "Séparer identifiants de l’installation et propriétés du projet; distinguer configuration et accès.",
+            "description": "Connectez Search Console et GA4 avec votre compte de service Google Cloud ou votre client OAuth, puis choisissez les propriétés de chaque projet.",
             "url": "https://seowatcher.io/fr/guides/connexion-google/",
             "inLanguage": "fr",
-            "dateModified": "2026-10-27",
+            "datePublished": "2026-10-23",
+            "dateModified": "2026-10-29",
             "articleSection": "Pour démarrer",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -201,7 +204,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.5" defer></script>
+    <script src="/assets/docs.js?v=0.8.6" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1471,6 +1474,11 @@
           <p class="nav-group">Pour démarrer</p>
           <ul>
             <li>
+              <a href="/fr/guides/quest-ce-que-seowatcher/"
+                >Qu'est-ce que seowatcher ?</a
+              >
+            </li>
+            <li>
               <a href="/fr/guides/installation-sous-windows/"
                 >Installation sous Windows</a
               >
@@ -1533,8 +1541,16 @@
       <article id="icerik" data-page="google-baglantisi">
         <h1>Connexion à Google</h1>
         <p class="lede">
-          Séparer identifiants de l’installation et propriétés du projet;
-          distinguer configuration et accès.
+          Connectez Search Console et GA4 avec votre compte de service Google
+          Cloud ou votre client OAuth, puis choisissez les propriétés de chaque
+          projet.
+        </p>
+        <p>
+          seowatcher lit la Search Console et Google Analytics 4 avec vos
+          propres identifiants Google Cloud : un compte de service ou un client
+          OAuth. Vous enregistrez l'identifiant une fois pour toute
+          l'installation, puis vous choisissez une propriété Search Console et
+          une propriété GA4 pour chaque projet.
         </p>
         <h2 id="identifiants-et-proprietes">Identifiants et propriétés</h2>
         <p>
@@ -1590,7 +1606,7 @@
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 27 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

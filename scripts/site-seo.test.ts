@@ -90,3 +90,45 @@ test("every refresh alias has one HTTP 301 per URL form directly to its canonica
     }
   }
 });
+
+test("indexable pages are self-canonical, hreflang-reciprocal and exactly the sitemap", () => {
+  const origin = "https://seowatcher.io";
+  const indexable = content.filter(
+    ({ $ }) => !/noindex/.test($('meta[name="robots"]').attr("content") ?? ""),
+  );
+  const alternates = new Map(
+    indexable.map(({ route, $ }) => [
+      origin + route,
+      $('link[rel="alternate"][hreflang]')
+        .map((_, link) => `${$(link).attr("hreflang")} ${$(link).attr("href")}`)
+        .get(),
+    ]),
+  );
+  for (const { route, $ } of indexable) {
+    const url = origin + route;
+    expect(
+      $('link[rel="canonical"]')
+        .map((_, link) => $(link).attr("href"))
+        .get(),
+      route,
+    ).toEqual([url]);
+    $('script[type="application/ld+json"]').each((_, script) => {
+      expect(() => JSON.parse($(script).text()), route).not.toThrow();
+    });
+    const own = alternates.get(url)!;
+    expect(
+      own.some((a) => a.startsWith("x-default ")),
+      route,
+    ).toBe(true);
+    for (const target of own.map((a) => a.split(" ")[1])) {
+      expect(alternates.get(target), `${route} -> ${target}`).toBeDefined();
+      expect(
+        alternates.get(target)!.some((a) => a.endsWith(` ${url}`)),
+        `${target} does not link back to ${route}`,
+      ).toBe(true);
+    }
+  }
+  const sitemap = readFileSync(new URL("sitemap.xml", site), "utf8");
+  const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  expect([...locs].sort()).toEqual([...alternates.keys()].sort());
+});

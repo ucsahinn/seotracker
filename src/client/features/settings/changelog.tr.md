@@ -2,9 +2,9 @@
 
 Yenilikler ve düzeltmeler, en yeni sürümden başlayarak listelenir.
 
-## [0.8.5] Alpha — 2026-10-29
+## [0.8.6] Alpha — 2026-10-29
 
-Bu giriş 0.5.0'dan 0.8.5'e kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
+Bu giriş 0.5.0'dan 0.8.6'ya kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
 
 ### ✨ Öne çıkanlar
 
@@ -60,6 +60,8 @@ Bu giriş 0.5.0'dan 0.8.5'e kadar gelen yenilikleri ve düzeltmeleri toplar: sit
 - **Yardım ve notlar:** Yardım ve sürüm notları ekranlarında aradığınız bilgiyi bulmak kolaylaştı.
 - **Verinin renkleri:** Tıklama mavi, gösterim mor, tıklama oranı turkuaz, sıra hardal, oturum yeşil ve dönüşüm gül rengindedir. Kartlar ve grafikler iki temada da aynı, daha canlı renkleri kullanır.
 - **Daha sakin ekranlar:** Kaynak, dönem ve güncellik kısa etiketlerle bir arada gösterilir. Uzun açıklamaları gerektiğinde açarsınız; kısa adlar ve belirgin düğmeler işlemleri kolaylaştırır.
+- **Telefonda:** Kayıt listeleri telefonda tablo yerine okunaklı satırlar olarak görünür; sorgu adları ve etiketler artık kesilmez.
+- **Tek görünüm:** Düğmeler, açılır bölümler, bildirim kutuları ve kartlar her ekranda aynı biçimdedir; tek sayfalık listelerde gereksiz sayfa düğmeleri gösterilmez.
 
 ### 🗂️ Projeler ve kayıtlar
 

@@ -20,7 +20,10 @@ import {
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { getLastProjectId } from "@/client/lib/active-project";
 import { CreateProjectModal } from "@/client/features/projects/CreateProjectModal";
-import { ProjectFacts } from "@/client/features/projects/ProjectFacts";
+import {
+  LINK_CLASS,
+  ProjectFacts,
+} from "@/client/features/projects/ProjectFacts";
 import { invalidateProjectLists } from "@/client/features/projects/projectQueries";
 import { t } from "@/shared/i18n";
 
@@ -94,8 +97,8 @@ function ProjectsPage() {
 
       {projects.length > 1 ? (
         <div className="mb-4 grid gap-3 sm:grid-cols-2">
-          <label className="space-y-1 text-sm">
-            <span>{t("Proje ara")}</span>
+          <label className="flex flex-col gap-1 text-sm">
+            <span className="font-medium">{t("Proje ara")}</span>
             <input
               type="search"
               className="input input-bordered w-full"
@@ -104,8 +107,8 @@ function ProjectsPage() {
               placeholder={t("Ad veya alan adı")}
             />
           </label>
-          <label className="space-y-1 text-sm">
-            <span>{t("Sırala")}</span>
+          <label className="flex flex-col gap-1 text-sm">
+            <span className="font-medium">{t("Sırala")}</span>
             <select
               className="select select-bordered w-full"
               value={sort}
@@ -154,15 +157,15 @@ function ProjectsPage() {
               {t("Bu aramayla eşleşen proje yok. Aramayı değiştirin.")}
             </p>
           ) : null}
-          <ul className="space-y-4">
+          <ul className="space-y-3">
             {visible.map((project) => {
               const overview = overviewById.get(project.id);
               return (
                 <li
                   key={project.id}
-                  className="space-y-4 rounded-box border border-[var(--hairline)] bg-base-100 p-4"
+                  className="space-y-3 rounded-box border border-[var(--hairline)] bg-base-100 p-4"
                 >
-                  <div className="flex flex-wrap items-start justify-between gap-2">
+                  <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0 flex-1">
                       <Link
                         to="/p/$projectId"
@@ -185,49 +188,53 @@ function ProjectsPage() {
                     loading={overviewQuery.isPending}
                     failed={overviewQuery.isError}
                     onRetry={() => void overviewQuery.refetch()}
+                    primaryAction={
+                      !project.domain ? (
+                        <Link
+                          to="/p/$projectId/settings"
+                          params={{ projectId: project.id }}
+                          className="btn btn-primary btn-sm min-h-11"
+                        >
+                          {t("Site ekle")}
+                        </Link>
+                      ) : overview?.searchConsole === false ? (
+                        <Link
+                          to="/p/$projectId/settings/integrations"
+                          params={{ projectId: project.id }}
+                          hash="search-console"
+                          className="btn btn-primary btn-sm min-h-11"
+                        >
+                          {t("Search Console bağla")}
+                        </Link>
+                      ) : (
+                        <Link
+                          to="/p/$projectId"
+                          params={{ projectId: project.id }}
+                          className="btn btn-primary btn-sm min-h-11"
+                        >
+                          {t("Paneli aç")}
+                        </Link>
+                      )
+                    }
+                    links={
+                      <>
+                        <Link
+                          to="/p/$projectId/context"
+                          params={{ projectId: project.id }}
+                          className={LINK_CLASS}
+                        >
+                          {t("Proje bilgisi")}
+                        </Link>
+                        <Link
+                          to="/p/$projectId/settings"
+                          params={{ projectId: project.id }}
+                          className={LINK_CLASS}
+                        >
+                          {t("Ayarlar")}
+                        </Link>
+                      </>
+                    }
                   />
-                  <div className="flex flex-wrap items-center gap-2 border-t border-[var(--hairline)] pt-3">
-                    {!project.domain ? (
-                      <Link
-                        to="/p/$projectId/settings"
-                        params={{ projectId: project.id }}
-                        className="btn btn-primary btn-sm min-h-11"
-                      >
-                        {t("Site ekle")}
-                      </Link>
-                    ) : overview?.searchConsole === false ? (
-                      <Link
-                        to="/p/$projectId/settings/integrations"
-                        params={{ projectId: project.id }}
-                        hash="search-console"
-                        className="btn btn-primary btn-sm min-h-11"
-                      >
-                        {t("Search Console bağla")}
-                      </Link>
-                    ) : (
-                      <Link
-                        to="/p/$projectId"
-                        params={{ projectId: project.id }}
-                        className="btn btn-primary btn-sm min-h-11"
-                      >
-                        {t("Paneli aç")}
-                      </Link>
-                    )}
-                    <Link
-                      to="/p/$projectId/context"
-                      params={{ projectId: project.id }}
-                      className="btn btn-ghost btn-sm min-h-11"
-                    >
-                      {t("Proje bilgisi")}
-                    </Link>
-                    <Link
-                      to="/p/$projectId/settings"
-                      params={{ projectId: project.id }}
-                      className="btn btn-ghost btn-sm min-h-11"
-                    >
-                      {t("Ayarlar")}
-                    </Link>
-                  </div>
                 </li>
               );
             })}
@@ -270,7 +277,7 @@ function ArchivedProjects() {
     return (
       <section className="space-y-3">
         <h2 className="text-sm font-medium text-muted">{t("Arşivlendi")}</h2>
-        <div className="rounded-box border border-base-300">
+        <div className="rounded-box border border-[var(--hairline)]">
           <QueryErrorState
             compact
             title={t("Arşivlenen projeler yüklenemedi")}
@@ -296,7 +303,7 @@ function ArchivedProjects() {
           onRetry={() => void archivedQuery.refetch()}
         />
       ) : null}
-      <ul className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
+      <ul className="divide-y divide-[var(--hairline)] overflow-hidden rounded-box border border-[var(--hairline)]">
         {archived.map((project) => (
           <li
             key={project.id}

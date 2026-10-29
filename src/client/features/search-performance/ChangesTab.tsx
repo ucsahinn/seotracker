@@ -175,7 +175,7 @@ function QuarterBars({ quarters }: { quarters: Array<number | null> }) {
           />
         ))}
       </div>
-      <figcaption className="flex justify-between text-[11px] text-muted">
+      <figcaption className="flex justify-between text-xs text-muted">
         <span>{t("1 yıl önce")}</span>
         <span>{t("Son çeyrek")}</span>
       </figcaption>

@@ -89,7 +89,7 @@ export function TrendLegend({
   compareOff: boolean;
 }) {
   return (
-    <ul className="flex flex-wrap gap-x-4 gap-y-1" aria-label={t("Gösterge")}>
+    <ul className="flex flex-wrap gap-x-5 gap-y-1.5" aria-label={t("Gösterge")}>
       <li className="inline-flex items-center gap-1.5">
         <span
           aria-hidden
@@ -126,6 +126,18 @@ export function TrendLegend({
   );
 }
 
+/*
+ * Two segmented groups with the same frame and the same padding, held
+ * apart by a hairline so "Tıklama … Gün" never reads as one row of six
+ * buttons. Each group wraps on its own instead of clipping the card edge.
+ */
+const GROUP =
+  "flex max-w-full flex-wrap gap-0.5 rounded-field border border-[var(--hairline)] p-0.5";
+const option = (active: boolean) =>
+  `btn btn-sm whitespace-nowrap border-0 shadow-none ${
+    active ? "btn-active" : "btn-ghost"
+  }`;
+
 export function TrendControls({
   metric,
   onMetric,
@@ -138,37 +150,33 @@ export function TrendControls({
   onGranularity: (next: Granularity) => void;
 }) {
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <div
-        role="group"
-        aria-label={t("Grafik ölçüsü")}
-        className="join max-w-full"
-      >
-        {METRICS.map((option) => (
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+      <div role="group" aria-label={t("Grafik ölçüsü")} className={GROUP}>
+        {METRICS.map((entry) => (
           <button
-            key={option.id}
+            key={entry.id}
             type="button"
-            aria-pressed={metric === option.id}
-            onClick={() => onMetric(option.id)}
-            className={`btn join-item btn-sm whitespace-nowrap ${
-              metric === option.id ? "btn-active" : "btn-ghost"
-            }`}
+            aria-pressed={metric === entry.id}
+            onClick={() => onMetric(entry.id)}
+            className={option(metric === entry.id)}
           >
-            <span className="sm:hidden">{t(option.short)}</span>
-            <span className="hidden sm:inline">{t(option.label)}</span>
+            <span className="sm:hidden">{t(entry.short)}</span>
+            <span className="hidden sm:inline">{t(entry.label)}</span>
           </button>
         ))}
       </div>
-      <div role="group" aria-label={t("Zaman birimi")} className="join">
+      <span
+        aria-hidden
+        className="hidden h-6 border-l border-[var(--hairline)] sm:block"
+      />
+      <div role="group" aria-label={t("Zaman birimi")} className={GROUP}>
         {(["day", "week", "month"] as const).map((grain) => (
           <button
             key={grain}
             type="button"
             aria-pressed={granularity === grain}
             onClick={() => onGranularity(grain)}
-            className={`btn join-item btn-sm ${
-              granularity === grain ? "btn-active" : "btn-ghost"
-            }`}
+            className={option(granularity === grain)}
           >
             {t(GRAIN_LABEL[grain])}
           </button>

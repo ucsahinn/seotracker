@@ -6,6 +6,8 @@ route: /settings
 updated: 2026-10-27
 ---
 
+As Configurações guardam as escolhas que valem para este navegador (aparência e idioma) e para toda a instalação (credenciais do Google, chave do PageSpeed, limites e atualizações). Nome, domínio e propriedades do Google de um projeto ficam em **Definições do projeto**. Esta página explica o alcance de cada configuração e onde alterá-la.
+
 ## Âmbito das definições
 
 A aparência e o idioma aplicam-se a este navegador. Escolha o idioma e confirme no botão; percorrer a lista não recarrega a página. O idioma do mercado do projeto é separado.

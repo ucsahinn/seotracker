@@ -14,7 +14,7 @@
     <title>Mit Google verbinden | seowatcher-Anleitung</title>
     <meta
       name="description"
-      content="Installationszugang und Projekt-Property getrennt wählen; Konfiguration und Zugriff unterscheiden."
+      content="Search Console und GA4 mit eigenem Google-Cloud-Dienstkonto oder OAuth-Client verbinden und dann für jedes Projekt die Properties wählen."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -54,7 +54,7 @@
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://seowatcher.io/kilavuz/google-baglantisi/"
+      href="https://seowatcher.io/en/docs/google-connection/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -94,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="Installationszugang und Projekt-Property getrennt wählen; Konfiguration und Zugriff unterscheiden."
+      content="Search Console und GA4 mit eigenem Google-Cloud-Dienstkonto oder OAuth-Client verbinden und dann für jedes Projekt die Properties wählen."
     />
     <meta
       property="og:image"
@@ -107,7 +107,7 @@
       property="og:image:alt"
       content="seowatcher-Karte: das Dashboard der App mit Daten aus Search Console, Analytics 4 und dem Website-Audit, dazu eine Download-Schaltfläche für Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/de/dokumentation/google-verbindung/"
@@ -125,7 +125,7 @@
     />
     <meta
       name="twitter:description"
-      content="Installationszugang und Projekt-Property getrennt wählen; Konfiguration und Zugriff unterscheiden."
+      content="Search Console und GA4 mit eigenem Google-Cloud-Dienstkonto oder OAuth-Client verbinden und dann für jedes Projekt die Properties wählen."
     />
     <meta
       name="twitter:image"
@@ -145,7 +145,9 @@
             "@id": "https://seowatcher.io/#website",
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
-            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+            "alternateName": ["seotracker"],
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
+            "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
             "@type": "SoftwareApplication",
@@ -166,10 +168,11 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/de/dokumentation/google-verbindung/#article",
             "headline": "Mit Google verbinden",
-            "description": "Installationszugang und Projekt-Property getrennt wählen; Konfiguration und Zugriff unterscheiden.",
+            "description": "Search Console und GA4 mit eigenem Google-Cloud-Dienstkonto oder OAuth-Client verbinden und dann für jedes Projekt die Properties wählen.",
             "url": "https://seowatcher.io/de/dokumentation/google-verbindung/",
             "inLanguage": "de",
-            "dateModified": "2026-10-27",
+            "datePublished": "2026-10-23",
+            "dateModified": "2026-10-29",
             "articleSection": "Erste Schritte",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -204,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.5" defer></script>
+    <script src="/assets/docs.js?v=0.8.6" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1471,6 +1474,11 @@
           <p class="nav-group">Erste Schritte</p>
           <ul>
             <li>
+              <a href="/de/dokumentation/was-ist-seowatcher/"
+                >Was ist seowatcher?</a
+              >
+            </li>
+            <li>
               <a href="/de/dokumentation/installation-unter-windows/"
                 >Installation unter Windows</a
               >
@@ -1547,8 +1555,16 @@
       <article id="icerik" data-page="google-baglantisi">
         <h1>Mit Google verbinden</h1>
         <p class="lede">
-          Installationszugang und Projekt-Property getrennt wählen;
-          Konfiguration und Zugriff unterscheiden.
+          Search Console und GA4 mit eigenem Google-Cloud-Dienstkonto oder
+          OAuth-Client verbinden und dann für jedes Projekt die Properties
+          wählen.
+        </p>
+        <p>
+          seowatcher liest Search Console und Google Analytics 4 mit Ihren
+          eigenen Google-Cloud-Zugangsdaten: einem Dienstkonto oder einem
+          OAuth-Client. Sie speichern die Zugangsdaten einmal für die ganze
+          Installation und wählen dann für jedes Projekt eine Search-Console-
+          und eine GA4-Property.
         </p>
         <h2 id="zugangsdaten-und-property">Zugangsdaten und Property</h2>
         <p>
@@ -1609,7 +1625,7 @@
           >
         </nav>
         <p class="meta">
-          Zuletzt aktualisiert: 27 Oktober 2026. Fehler entdeckt?
+          Zuletzt aktualisiert: 29 Oktober 2026. Fehler entdeckt?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

@@ -94,18 +94,18 @@ export function AnalyticsBreakdownControls({
         <div
           role="radiogroup"
           aria-label={t("Kitleyi neye göre böl")}
-          className="flex flex-wrap gap-1"
+          className="join max-w-full flex-wrap"
         >
           {BREAKDOWNS.map((option) => (
             <label
               key={option.value}
-              className={`btn min-h-11 btn-sm gap-2 ${
-                option.value === breakdown ? "btn-active" : "btn-ghost"
+              className={`btn btn-sm join-item min-h-11 sm:min-h-9 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-primary ${
+                option.value === breakdown ? "btn-active" : ""
               }`}
             >
               <input
                 type="radio"
-                className="radio radio-xs"
+                className="sr-only"
                 name="analytics-breakdown"
                 checked={option.value === breakdown}
                 onChange={() => setBreakdown(option.value)}
@@ -120,18 +120,18 @@ export function AnalyticsBreakdownControls({
         <div
           role="radiogroup"
           aria-label={t("Trafiği neye göre böl")}
-          className="flex flex-wrap gap-1"
+          className="join max-w-full flex-wrap"
         >
           {ACQUISITION_BREAKDOWNS.map((option) => (
             <label
               key={option.value}
-              className={`btn min-h-11 btn-sm gap-2 ${
-                option.value === acquisition ? "btn-active" : "btn-ghost"
+              className={`btn btn-sm join-item min-h-11 sm:min-h-9 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-primary ${
+                option.value === acquisition ? "btn-active" : ""
               }`}
             >
               <input
                 type="radio"
-                className="radio radio-xs"
+                className="sr-only"
                 name="analytics-acquisition"
                 checked={option.value === acquisition}
                 onChange={() => setAcquisition(option.value)}
@@ -168,12 +168,17 @@ export function AnalyticsControls({
   channel: Channel;
   setChannel: (next: Channel) => void;
 }) {
+  // One control height (44px tap target on phones, 36px from sm up) and
+  // one label style across the row; the channel is a true segmented control.
+  const control =
+    "select select-bordered select-sm h-11 min-h-11 sm:h-9 sm:min-h-9 text-base-content";
+  const labelStyle = "flex items-center gap-2 text-xs text-muted";
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3">
-      <label className="flex min-w-0 max-w-full flex-col items-start gap-2 text-sm sm:flex-row sm:items-center">
-        {t("Raporlar")}
+    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
+      <label className={`${labelStyle} min-w-0 max-w-full`}>
+        <span className="whitespace-nowrap">{t("Raporlar")}</span>
         <select
-          className="select select-bordered min-h-11 max-w-full"
+          className={`${control} min-w-0 max-w-full text-sm`}
           value={view}
           onChange={(event) =>
             setView(
@@ -198,11 +203,11 @@ export function AnalyticsControls({
             change nothing -- a control that visibly responds and has no
             effect is worse than a disabled one. */}
       {view === HEALTH ? null : (
-        <div className="flex flex-wrap items-center gap-2">
-          <label className="flex items-center gap-2 text-xs text-muted">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
+          <label className={labelStyle}>
             <span className="whitespace-nowrap">{t("Satır sayısı")}</span>
             <select
-              className="select select-bordered min-h-11 select-sm w-20"
+              className={`${control} w-20`}
               value={rowLimit}
               onChange={(event) => {
                 const next = ROW_LIMITS.find(
@@ -218,44 +223,44 @@ export function AnalyticsControls({
               ))}
             </select>
           </label>
-          <select
-            className="select select-bordered min-h-11 select-sm w-32"
-            value={scope.startDate ? "exact" : windowDays}
-            onChange={(event) => {
-              const next = WINDOWS.find(
-                (option) => String(option.value) === event.target.value,
-              );
-              if (next) {
-                onWindowChange(next.value);
-              }
-            }}
-            aria-label={t("Tarih aralığı")}
-          >
-            {scope.startDate ? (
-              <option value="exact">{t("Özel tarih aralığı")}</option>
-            ) : null}
-            {WINDOWS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {t(option.label)}
-              </option>
-            ))}
-          </select>
-          {kind !== "site_search" ? (
-            <div
-              className="flex flex-wrap gap-1"
-              role="group"
-              aria-label={t("Kanal")}
+          <label className={labelStyle}>
+            <span className="whitespace-nowrap">{t("Dönem")}</span>
+            <select
+              className={`${control} w-36`}
+              value={scope.startDate ? "exact" : windowDays}
+              onChange={(event) => {
+                const next = WINDOWS.find(
+                  (option) => String(option.value) === event.target.value,
+                );
+                if (next) {
+                  onWindowChange(next.value);
+                }
+              }}
+              aria-label={t("Tarih aralığı")}
             >
+              {scope.startDate ? (
+                <option value="exact">{t("Özel tarih aralığı")}</option>
+              ) : null}
+              {WINDOWS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {t(option.label)}
+                </option>
+              ))}
+            </select>
+          </label>
+          {kind !== "site_search" ? (
+            <fieldset className="join">
+              <legend className="sr-only">{t("Kanal")}</legend>
               {CHANNELS.map((option) => (
                 <label
                   key={option.value}
-                  className={`btn min-h-11 btn-sm ${
+                  className={`btn btn-sm join-item h-11 min-h-11 sm:h-9 sm:min-h-9 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-primary ${
                     option.value === channel ? "btn-active" : ""
                   }`}
                 >
                   <input
                     type="radio"
-                    className="radio radio-xs"
+                    className="sr-only"
                     name="analytics-channel"
                     checked={option.value === channel}
                     onChange={() => setChannel(option.value)}
@@ -263,7 +268,7 @@ export function AnalyticsControls({
                   {t(option.label)}
                 </label>
               ))}
-            </div>
+            </fieldset>
           ) : (
             <p className="text-sm text-muted">
               {t("Tüm trafik · ölçülmüş arama sonuçları")}

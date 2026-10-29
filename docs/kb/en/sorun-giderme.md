@@ -5,9 +5,9 @@ kind: sorun-giderme
 updated: 2026-10-27
 ---
 
-The app's interface comes in six languages: Turkish, English, German, French, Italian and Portuguese. This guide uses the English names; to switch, go to **Settings → Appearance → Language**.
-
 This guide covers what to do when something does not work. First, check the "App health" card on the **Help** screen in the app. The card looks at this installation itself, and it checks four things: sign-in and access, Google sign-in, the PageSpeed key, and the database. If it says "N things need attention", the button next to it takes you to the right setting. The sections below run from the most common problem to the rarest.
+
+The app's interface comes in six languages: Turkish, English, German, French, Italian and Portuguese. This guide uses the English names; to switch, go to **Settings → Appearance → Language**.
 
 ## The page does not open
 

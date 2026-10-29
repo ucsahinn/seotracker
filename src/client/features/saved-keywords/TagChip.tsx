@@ -9,7 +9,7 @@ import type { SavedKeywordTag } from "@/types/keywords";
 type Size = "xs" | "sm" | "md";
 
 const SIZE_CLASS: Record<Size, string> = {
-  xs: "h-5 px-1.5 text-[11px]",
+  xs: "h-5 px-1.5 text-xs",
   sm: "h-6 px-2 text-xs",
   md: "h-7 px-2.5 text-sm",
 };

@@ -1,4 +1,3 @@
-import { ChevronDown } from "lucide-react";
 import { t } from "@/shared/i18n";
 
 /**
@@ -8,15 +7,13 @@ import { t } from "@/shared/i18n";
  */
 export function ReportKindsHelp() {
   return (
-    <details className="group rounded-box border border-[var(--hairline)] bg-base-100 px-4 py-3">
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-2 text-sm font-medium">
+    // A plain disclosure like every other reference note on the screen, not
+    // a card of its own at the foot of the page.
+    <details className="text-sm">
+      <summary className="min-h-11 cursor-pointer py-3">
         {t("Nasıl çalışır?")}
-        <ChevronDown
-          aria-hidden
-          className="size-4 text-muted transition-transform group-open:rotate-180"
-        />
       </summary>
-      <div className="mt-3 grid gap-4 sm:grid-cols-2">
+      <div className="grid max-w-4xl gap-4 pb-2 sm:grid-cols-3">
         <div className="space-y-1">
           <h2 className="text-sm font-semibold">
             {t("Arama performansı raporu")}

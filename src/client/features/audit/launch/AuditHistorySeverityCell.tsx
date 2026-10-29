@@ -4,8 +4,8 @@ import type { getAuditHistory } from "@/serverFunctions/audit";
 import { issueDelta, type IssueDelta } from "./auditDelta";
 import { t } from "@/shared/i18n";
 type HistoryRow = Awaited<ReturnType<typeof getAuditHistory>>[number];
+// Info is a plain count: a blue pill beside the ember links read as one.
 const CHIP = {
-  info: "border-info/30 bg-info/10 text-[var(--ink-info)]",
   critical: "border-error/30 bg-error/10 text-[var(--ink-error)]",
   warning: "border-warning/30 bg-warning/10 text-[var(--ink-warning)]",
 };
@@ -31,15 +31,19 @@ export function AuditHistorySeverityCell({
     : null;
 
   return (
-    <div className="flex flex-col items-end gap-0.5">
-      {count > 0 ? (
+    <div className="flex flex-col items-end gap-0.5 max-md:items-start">
+      {count > 0 && severity !== "info" ? (
         <span
           className={`inline-flex rounded-full border px-2 text-xs font-medium ${CHIP[severity]}`}
         >
           {formatCount(count)}
         </span>
       ) : (
-        <span className="text-xs text-muted">0</span>
+        <span
+          className={`text-xs tabular-nums ${count > 0 ? "" : "text-muted"}`}
+        >
+          {formatCount(count)}
+        </span>
       )}
       {delta && delta.diff !== 0 ? (
         <DeltaText delta={delta} current={count} />

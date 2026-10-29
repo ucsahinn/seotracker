@@ -5,9 +5,9 @@ kind: sorun-giderme
 updated: 2026-10-27
 ---
 
-L'interface de l'application existe en six langues : turc, anglais, allemand, français, italien et portugais. La langue se choisit dans Paramètres → Apparence → Langue. Ce guide donne les boutons et les écrans sous le nom qu'ils portent dans l'interface en français. Le menu de la zone de notification de Windows n'existe qu'en turc. Là, le nom turc est suivi de sa traduction française entre parenthèses.
-
 Si quelque chose ne fonctionne pas, regardez d'abord la carte « État de l'application » de l'écran **Aide** dans l'application. La carte regarde cette installation elle-même et contrôle la connexion et l'accès, la connexion Google, la clé PageSpeed et la base de données. Si elle dit « N éléments nécessitent votre attention », le bouton à côté vous mène au bon réglage. Les problèmes ci-dessous sont classés du plus fréquent au plus rare.
+
+L'interface de l'application existe en six langues : turc, anglais, allemand, français, italien et portugais. La langue se choisit dans Paramètres → Apparence → Langue. Ce guide donne les boutons et les écrans sous le nom qu'ils portent dans l'interface en français. Le menu de la zone de notification de Windows n'existe qu'en turc. Là, le nom turc est suivi de sa traduction française entre parenthèses.
 
 ## La page ne s'ouvre pas
 

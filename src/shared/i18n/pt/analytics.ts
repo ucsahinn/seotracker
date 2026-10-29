@@ -5,6 +5,7 @@ export const ptAnalytics: Catalog = {
   "Sıraya dayalı öneri; kazanç bilinmiyor (yetersiz veri).":
     "Sugestão baseada na posição; ganho desconhecido (dados insuficientes).",
   "Yalnızca marka aramaları": "Apenas consultas de marca",
+  "Tüm sayfalar: {action}": "Todas as páginas: {action}",
   "Kazanç için veri yetersiz: az gösterim {low}, eksik hedef oranı {curve}, eksik marka dışı sorgu {missing}. Sıraya dayalı öneriler tahmin değildir.":
     "Dados insuficientes para o ganho: poucas impressões {low}, taxa alvo ausente {curve}, consultas sem marca ausentes {missing}. Sugestões por posição não são estimativas.",
 

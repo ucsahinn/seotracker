@@ -51,7 +51,7 @@
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://seowatcher.io/kilavuz/ayarlar/"
+      href="https://seowatcher.io/en/docs/settings/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -101,7 +101,7 @@
       property="og:image:alt"
       content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/guides/parametres/"
@@ -136,7 +136,9 @@
             "@id": "https://seowatcher.io/#website",
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
-            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+            "alternateName": ["seotracker"],
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
+            "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
             "@type": "SoftwareApplication",
@@ -160,7 +162,8 @@
             "description": "Portées navigateur, installation et projet; identifiants Google, compteurs locaux et versions.",
             "url": "https://seowatcher.io/fr/guides/parametres/",
             "inLanguage": "fr",
-            "dateModified": "2026-10-28",
+            "datePublished": "2026-10-23",
+            "dateModified": "2026-10-29",
             "articleSection": "Les écrans",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -195,7 +198,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.5" defer></script>
+    <script src="/assets/docs.js?v=0.8.6" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1465,6 +1468,11 @@
           <p class="nav-group">Pour démarrer</p>
           <ul>
             <li>
+              <a href="/fr/guides/quest-ce-que-seowatcher/"
+                >Qu'est-ce que seowatcher ?</a
+              >
+            </li>
+            <li>
               <a href="/fr/guides/installation-sous-windows/"
                 >Installation sous Windows</a
               >
@@ -1531,6 +1539,14 @@
         <p class="lede">
           Portées navigateur, installation et projet; identifiants Google,
           compteurs locaux et versions.
+        </p>
+        <p>
+          Les Paramètres regroupent les choix qui s'appliquent à ce navigateur
+          (apparence et langue) et à toute l'installation (identifiants Google,
+          clé PageSpeed, limites et mises à jour). Le nom, le domaine et les
+          propriétés Google d'un projet se trouvent dans les
+          <strong>Paramètres du projet</strong>. Cette page explique la portée
+          de chaque réglage et où le modifier.
         </p>
         <h2 id="portee-des-reglages">Portée des réglages</h2>
         <p>
@@ -1609,7 +1625,7 @@
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 28 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

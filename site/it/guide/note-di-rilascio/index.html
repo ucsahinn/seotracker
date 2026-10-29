@@ -14,7 +14,7 @@
     <title>Note di versione | guida di seowatcher</title>
     <meta
       name="description"
-      content="seowatcher 0.8.4 Alpha — dati Google completi, colori vivaci e schermate riviste con dati reali, più leggibili sul telefono."
+      content="seowatcher 0.8.6 Alpha (29 ottobre 2026): nuovo controllo del sito con 202 regole, sei lingue, notifiche e dati Google più precisi."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -54,7 +54,7 @@
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://seowatcher.io/kilavuz/surum-notlari/"
+      href="https://seowatcher.io/en/docs/release-notes/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -94,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="seowatcher 0.8.4 Alpha — dati Google completi, colori vivaci e schermate riviste con dati reali, più leggibili sul telefono."
+      content="seowatcher 0.8.6 Alpha (29 ottobre 2026): nuovo controllo del sito con 202 regole, sei lingue, notifiche e dati Google più precisi."
     />
     <meta
       property="og:image"
@@ -125,7 +125,7 @@
     />
     <meta
       name="twitter:description"
-      content="seowatcher 0.8.4 Alpha — dati Google completi, colori vivaci e schermate riviste con dati reali, più leggibili sul telefono."
+      content="seowatcher 0.8.6 Alpha (29 ottobre 2026): nuovo controllo del sito con 202 regole, sei lingue, notifiche e dati Google più precisi."
     />
     <meta
       name="twitter:image"
@@ -145,7 +145,9 @@
             "@id": "https://seowatcher.io/#website",
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
-            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+            "alternateName": ["seotracker"],
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
+            "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
             "@type": "SoftwareApplication",
@@ -166,9 +168,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/it/guide/note-di-rilascio/#article",
             "headline": "Note di versione",
-            "description": "seowatcher 0.8.4 Alpha — dati Google completi, colori vivaci e schermate riviste con dati reali, più leggibili sul telefono.",
+            "description": "seowatcher 0.8.6 Alpha (29 ottobre 2026): nuovo controllo del sito con 202 regole, sei lingue, notifiche e dati Google più precisi.",
             "url": "https://seowatcher.io/it/guide/note-di-rilascio/",
             "inLanguage": "it",
+            "datePublished": "2026-10-23",
             "dateModified": "2026-10-29",
             "articleSection": "Aiuto e riferimento",
             "about": { "@id": "https://seowatcher.io/#app" },
@@ -204,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.5" defer></script>
+    <script src="/assets/docs.js?v=0.8.6" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1474,6 +1477,9 @@
           <p class="nav-group">Per iniziare</p>
           <ul>
             <li>
+              <a href="/it/guide/cos-e-seowatcher/">Che cos'è seowatcher?</a>
+            </li>
+            <li>
               <a href="/it/guide/installazione-su-windows/"
                 >Installazione su Windows</a
               >
@@ -1550,11 +1556,11 @@
       <article id="icerik" data-page="surum-notlari">
         <h1>Note di versione</h1>
         <p class="lede">
-          seowatcher 0.8.4 Alpha — dati Google completi, colori vivaci e
-          schermate riviste con dati reali, più leggibili sul telefono.
+          seowatcher 0.8.6 Alpha (29 ottobre 2026): nuovo controllo del sito con
+          202 regole, sei lingue, notifiche e dati Google più precisi.
         </p>
         <p>
-          L’ultima versione è la <strong>0.8.5 Alpha</strong>, del 29 ottobre
+          L’ultima versione è la <strong>0.8.6 Alpha</strong>, del 29 ottobre
           2026. I dati restano intatti durante l’aggiornamento.
         </p>
         <p>
@@ -1562,9 +1568,9 @@
           programma di installazione; il vecchio aggiornamento non riconosce il
           numero inferiore come più recente.
         </p>
-        <h2 id="0-8-5-alpha-2026-10-29">0.8.5 Alpha — 2026-10-29</h2>
+        <h2 id="0-8-6-alpha-2026-10-29">0.8.6 Alpha — 2026-10-29</h2>
         <p>
-          Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.5:
+          Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.6:
           verifica del sito, dashboard, notifiche e sei lingue, con dati più
           precisi e schermate più leggibili.
         </p>
@@ -1741,6 +1747,16 @@
             aggiornamento dei dati sono riuniti con etichette brevi. Apri le
             spiegazioni lunghe quando servono; nomi brevi e pulsanti chiari
             rendono più facili le azioni.
+          </li>
+          <li>
+            <strong>Su telefono:</strong> Gli elenchi appaiono come righe
+            leggibili invece che come tabelle sul telefono; query ed etichette
+            non vengono più tagliate.
+          </li>
+          <li>
+            <strong>Stile unico:</strong> Pulsanti, sezioni espandibili,
+            notifiche e schede hanno lo stesso aspetto in ogni schermata; gli
+            elenchi di una sola pagina non mostrano più i pulsanti di pagina.
           </li>
         </ul>
         <h3 id="progetti-e-ricerche-salvate">🗂️ Progetti e ricerche salvate</h3>
@@ -2104,7 +2120,7 @@
         <p class="toc-label">In questa pagina</p>
         <ol>
           <li>
-            <a href="#0-8-5-alpha-2026-10-29">0.8.5 Alpha — 2026-10-29</a>
+            <a href="#0-8-6-alpha-2026-10-29">0.8.6 Alpha — 2026-10-29</a>
           </li>
           <li>
             <a href="#0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</a>

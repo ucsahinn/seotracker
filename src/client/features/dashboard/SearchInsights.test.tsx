@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it, vi } from "vitest";
 import type { ReactNode } from "react";
-import { SearchInsights } from "./SearchInsights";
+import { ClickTrendCard } from "./SearchInsights";
 import { searchViewFixture } from "@/shared/search-view-test-fixtures";
 import { toLegacyReport } from "@/shared/searchPerformanceView";
 
@@ -42,7 +42,7 @@ vi.mock("recharts", () => ({
 }));
 
 it("describes the comparison as dashed rather than faded", () => {
-  render(<SearchInsights projectId="p" connected />);
+  render(<ClickTrendCard projectId="p" connected />);
   expect(
     screen.getByText(
       "Günlük tıklamalar; kesikli çizgi önceki dönemi gösterir.",

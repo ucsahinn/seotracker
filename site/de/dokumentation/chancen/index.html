@@ -14,7 +14,7 @@
     <title>Chancen | seowatcher-Anleitung</title>
     <meta
       name="description"
-      content="Zeigt erfasste Seiten, mögliche Aufgaben und bei ausreichenden Daten eine Obergrenze für zusätzliche Klicks."
+      content="Welche Seite zuerst? Seiten, die Google bereits zeigt, nach einer Obergrenze zusätzlicher Klicks aus Ihren Search-Console-Daten, mit Aufgabe."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -54,7 +54,7 @@
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://seowatcher.io/kilavuz/firsatlar/"
+      href="https://seowatcher.io/en/docs/opportunities/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -91,7 +91,7 @@
     <meta property="og:title" content="Chancen | seowatcher-Anleitung" />
     <meta
       property="og:description"
-      content="Zeigt erfasste Seiten, mögliche Aufgaben und bei ausreichenden Daten eine Obergrenze für zusätzliche Klicks."
+      content="Welche Seite zuerst? Seiten, die Google bereits zeigt, nach einer Obergrenze zusätzlicher Klicks aus Ihren Search-Console-Daten, mit Aufgabe."
     />
     <meta
       property="og:image"
@@ -119,7 +119,7 @@
     <meta name="twitter:title" content="Chancen | seowatcher-Anleitung" />
     <meta
       name="twitter:description"
-      content="Zeigt erfasste Seiten, mögliche Aufgaben und bei ausreichenden Daten eine Obergrenze für zusätzliche Klicks."
+      content="Welche Seite zuerst? Seiten, die Google bereits zeigt, nach einer Obergrenze zusätzlicher Klicks aus Ihren Search-Console-Daten, mit Aufgabe."
     />
     <meta
       name="twitter:image"
@@ -139,7 +139,9 @@
             "@id": "https://seowatcher.io/#website",
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
-            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+            "alternateName": ["seotracker"],
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
+            "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
             "@type": "SoftwareApplication",
@@ -160,9 +162,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/de/dokumentation/chancen/#article",
             "headline": "Chancen",
-            "description": "Zeigt erfasste Seiten, mögliche Aufgaben und bei ausreichenden Daten eine Obergrenze für zusätzliche Klicks.",
+            "description": "Welche Seite zuerst? Seiten, die Google bereits zeigt, nach einer Obergrenze zusätzlicher Klicks aus Ihren Search-Console-Daten, mit Aufgabe.",
             "url": "https://seowatcher.io/de/dokumentation/chancen/",
             "inLanguage": "de",
+            "datePublished": "2026-10-23",
             "dateModified": "2026-10-29",
             "articleSection": "Bildschirme",
             "about": { "@id": "https://seowatcher.io/#app" },
@@ -198,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.5" defer></script>
+    <script src="/assets/docs.js?v=0.8.6" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1465,6 +1468,11 @@
           <p class="nav-group">Erste Schritte</p>
           <ul>
             <li>
+              <a href="/de/dokumentation/was-ist-seowatcher/"
+                >Was ist seowatcher?</a
+              >
+            </li>
+            <li>
               <a href="/de/dokumentation/installation-unter-windows/"
                 >Installation unter Windows</a
               >
@@ -1543,19 +1551,16 @@
       <article id="icerik" data-page="firsatlar">
         <h1>Chancen</h1>
         <p class="lede">
-          Zeigt erfasste Seiten, mögliche Aufgaben und bei ausreichenden Daten
-          eine Obergrenze für zusätzliche Klicks.
+          Welche Seite zuerst? Seiten, die Google bereits zeigt, nach einer
+          Obergrenze zusätzlicher Klicks aus Ihren Search-Console-Daten, mit
+          Aufgabe.
         </p>
         <p>
-          „Analytics-Adressgruppe prüfen“ in der Zeile und Detailansicht öffnet
-          organische Einstiegsseiten mit Quelldaten und normalisierter
-          Adressgruppe. Ohne passende Adresse oder Daten ersetzt eine Erklärung
-          den Link. Die Gruppe wird vor der Seiteneinteilung innerhalb derselben
-          höchstens 1.000 Quellzeilen wie bei Chancen gefiltert. Analytics nennt
-          Quellen- und Qualitätsgrenzen, die eine vollständige Bestätigung
-          verhindern. Neu abgerufene Messwerte können sich ändern; gleiche
-          Datumsangaben können in der GA4-Zeitzone und im pazifischen Kalender
-          der Search Console andere Zeitspannen abdecken.
+          Chancen ordnet die Seiten, die Google für Ihre Website bereits zeigt,
+          danach, wie viele zusätzliche Klicks sie bringen könnten. Die
+          Berechnung nutzt Ihre eigenen Search-Console-Daten und die Klickraten
+          Ihrer Website. Jede Seite erhält eine vorgeschlagene Aufgabe und eine
+          Obergrenze für den Gewinn; das ist keine Prognose und keine Garantie.
         </p>
         <h2 id="chancen-nutzen">Chancen nutzen</h2>
         <p>
@@ -1621,6 +1626,17 @@
           aktualisieren, bei fehlenden Rechten die Verbindung prüfen. Schlägt
           die Aktualisierung fehl, bleiben vorherige Daten mit ursprünglichen
           Datumsangaben und Warnung sichtbar.
+        </p>
+        <p>
+          „Analytics-Adressgruppe prüfen“ in der Zeile und Detailansicht öffnet
+          organische Einstiegsseiten mit Quelldaten und normalisierter
+          Adressgruppe. Ohne passende Adresse oder Daten ersetzt eine Erklärung
+          den Link. Die Gruppe wird vor der Seiteneinteilung innerhalb derselben
+          höchstens 1.000 Quellzeilen wie bei Chancen gefiltert. Analytics nennt
+          Quellen- und Qualitätsgrenzen, die eine vollständige Bestätigung
+          verhindern. Neu abgerufene Messwerte können sich ändern; gleiche
+          Datumsangaben können in der GA4-Zeitzone und im pazifischen Kalender
+          der Search Console andere Zeitspannen abdecken.
         </p>
         <h2 id="export-und-kontrolle">Export und Kontrolle</h2>
         <p>

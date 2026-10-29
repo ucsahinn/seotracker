@@ -109,23 +109,9 @@ export function UpdateSection({ version }: { version: string }) {
         <h2 className="text-base font-semibold">{t("Hakkında")}</h2>
       </SectionHeaderRow>
 
-      <details className="text-sm text-muted">
-        <summary className="cursor-pointer py-2">{t("Ayrıntılar")}</summary>
-        <p className="text-sm text-muted">
-          {fillParts(
-            t(
-              "Uygulama yeni sürümü fark eder ve ne yapacağınızı söyler. Windows paketi güncellemeyi kendisi kurar, Docker'da verilen komutu siz çalıştırırsınız. Docker'da kontrolü kapatırsanız GitHub'a istek gitmez. Windows paketinde görev çubuğu uygulaması günde bir kez GitHub'a bakar. Kendiliğinden kurup kurmayacağını menüdeki {option} seçeneği belirler.",
-            ),
-            {
-              option: <strong>{t("Güncellemeleri kendiliğinden kur")}</strong>,
-            },
-          )}
-        </p>
-      </details>
-
       <div className="flex items-center justify-between gap-6">
         <span className="text-sm">{t("Sürüm")}</span>
-        <span className="font-mono text-sm text-muted">v{version} Alpha</span>
+        <span className="text-sm text-muted">v{version} Alpha</span>
       </div>
       <div className="flex items-center justify-between gap-6">
         <span className="text-sm">{t("Site ve kılavuz")}</span>
@@ -316,9 +302,19 @@ export function UpdateSection({ version }: { version: string }) {
 
       {/* Said plainly, because it is an outbound request the operator did not
           ask for individually and can switch off. */}
-      <details className="text-sm text-muted">
-        <summary className="cursor-pointer py-2">{t("Ayrıntılar")}</summary>
-        <p className="text-xs text-subtle">
+      <details className="text-xs text-muted">
+        <summary className="cursor-pointer py-1">{t("Ayrıntılar")}</summary>
+        <p className="max-w-prose text-sm">
+          {fillParts(
+            t(
+              "Uygulama yeni sürümü fark eder ve ne yapacağınızı söyler. Windows paketi güncellemeyi kendisi kurar, Docker'da verilen komutu siz çalıştırırsınız. Docker'da kontrolü kapatırsanız GitHub'a istek gitmez. Windows paketinde görev çubuğu uygulaması günde bir kez GitHub'a bakar. Kendiliğinden kurup kurmayacağını menüdeki {option} seçeneği belirler.",
+            ),
+            {
+              option: <strong>{t("Güncellemeleri kendiliğinden kur")}</strong>,
+            },
+          )}
+        </p>
+        <p className="mt-2 max-w-prose text-xs text-subtle">
           {t(
             "Kontrol açıkken uygulama, bir sekmede açık olduğu sürece en çok altı saatte bir GitHub'a bağlanıp en son sürümü sorar. GitHub bu istekte yalnızca genel IP adresinizi, uygulama adını ve sürümü görür; siteleriniz, Google hesabınız ya da denetimleriniz gönderilmez.",
           )}

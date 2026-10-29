@@ -13,12 +13,13 @@ it("C32 gives long announcements a short preview and keeps the full body reachab
     importance: "low",
   });
   const { container } = render(<NotificationHistory />);
-  const full = screen.getByText(body.trim());
-  expect(full.closest("details")?.open).toBe(false);
-  expect(
-    container.querySelector(".notification-preview")?.textContent?.length,
-  ).toBeLessThanOrEqual(181);
+  const text = container.querySelector(".notification-preview");
+  // The whole body, clamped by CSS - not a character cut mid-sentence.
+  expect(text?.textContent).toBe(body);
+  expect(text?.className).toContain("line-clamp-2");
   expect(screen.getByRole("button", { name: "Duyuruyu oku" })).toBeTruthy();
-  fireEvent.click(screen.getByText("Tam metin"));
-  expect(full.closest("details")?.open).toBe(true);
+  const toggle = screen.getByRole("button", { name: "Tam metin" });
+  fireEvent.click(toggle);
+  expect(toggle.getAttribute("aria-expanded")).toBe("true");
+  expect(container.querySelector(".notification-preview")).toBeNull();
 });

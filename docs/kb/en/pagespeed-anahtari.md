@@ -5,6 +5,8 @@ kind: nasil-yapilir
 updated: 2026-10-27
 ---
 
+A PageSpeed Insights API key lets the site audit measure the speed of your pages with Google's PageSpeed Insights. You create the key for free in Google Cloud, and it is optional: without one, the app tries to measure at most 50 pages per audit.
+
 ## Add a key
 
 Enable PageSpeed Insights API in Google Cloud. Create an API key and restrict it to PageSpeed Insights. Save it in Settings → Speed measurement. The key is encrypted and never displayed. Docker can also use PAGESPEED_API_KEY; the Settings value takes priority.

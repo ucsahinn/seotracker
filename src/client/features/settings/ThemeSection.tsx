@@ -48,17 +48,7 @@ export function ThemeSection() {
 
   return (
     <section id="gorunum" className="scroll-mt-16 space-y-3">
-      <div className="space-y-1">
-        <h2 className="text-base font-semibold">{t("Görünüm")}</h2>
-        <details className="text-sm text-muted">
-          <summary className="cursor-pointer py-2">{t("Tema kaydı")}</summary>
-          <p className="text-sm text-muted">
-            {t(
-              "Varsayılan koyu tema seowatcher.io ile aynı görünür. Sistem, işletim sisteminizin tercihini izler. Seçim bu tarayıcıda saklanır.",
-            )}
-          </p>
-        </details>
-      </div>
+      <h2 className="text-base font-semibold">{t("Görünüm")}</h2>
       <div className="flex items-center justify-between gap-6">
         <span className="text-sm">{t("Tema")}</span>
         <SegmentedRadio
@@ -114,9 +104,17 @@ export function ThemeSection() {
           </button>
         </div>
       </form>
-      <details className="text-sm text-muted">
-        <summary className="cursor-pointer py-2">{t("Dil kapsamı")}</summary>
-        <p className="text-xs text-muted">
+      <details className="text-xs text-muted">
+        <summary className="cursor-pointer py-1">{t("Tema kaydı")}</summary>
+        <p className="max-w-prose pb-1 text-sm">
+          {t(
+            "Varsayılan koyu tema seowatcher.io ile aynı görünür. Sistem, işletim sisteminizin tercihini izler. Seçim bu tarayıcıda saklanır.",
+          )}
+        </p>
+      </details>
+      <details className="text-xs text-muted">
+        <summary className="cursor-pointer py-1">{t("Dil kapsamı")}</summary>
+        <p className="max-w-prose pb-1 text-sm">
           {t(
             "Arayüz dili bu tarayıcıda saklanır; projenin varsayılan pazar dilini değiştirmez.",
           )}

@@ -9,6 +9,7 @@ export const enAnalytics: Catalog = {
   "Sıraya dayalı öneri; kazanç bilinmiyor (yetersiz veri).":
     "Position-based suggestion; gain unknown (insufficient data).",
   "Yalnızca marka aramaları": "Only brand queries",
+  "Tüm sayfalar: {action}": "All pages: {action}",
   "Kazanç için veri yetersiz: az gösterim {low}, eksik hedef oranı {curve}, eksik marka dışı sorgu {missing}. Sıraya dayalı öneriler tahmin değildir.":
     "Insufficient evidence for gain: low impressions {low}, missing target rate {curve}, missing non-brand queries {missing}. Position-based suggestions are not estimates.",
 
@@ -866,4 +867,6 @@ export const enAnalytics: Catalog = {
 
   "Bu ekran Google’dan yeni veri istemez. Buradaki okuma bilgisi kayıtlı geçmişe aittir; güncel veriyi raporda görebilirsiniz.":
     "This screen does not request new data from Google. Read information shown here comes from saved history; open the report for current data.",
+  "Bu dönemde hiç oturum kaydedilmedi.":
+    "No sessions were recorded in this period.",
 };

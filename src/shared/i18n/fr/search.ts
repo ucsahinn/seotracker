@@ -3,6 +3,12 @@ import type { Catalog } from "@/shared/i18n";
 
 /** French for the Search performance screen, its to-do copy and the printable report. */
 export const frSearch: Catalog = {
+  "Listedeki hiçbir sayfa için ek tıklama hesaplanamadı; bu, sıfır kazanç demek değildir.":
+    "Les clics supplémentaires n'ont pu être estimés pour aucune page de la liste ; cela ne signifie pas un gain nul.",
+  "Değişim sütunu gizlendi: önceki dönemde bu sorguların hiçbiri için veri yok.":
+    "Colonne « Évolution » masquée : aucune de ces requêtes n'a de données sur la période précédente.",
+  "Dönem ortalaması ve grubu (1-3, 4-10, 11-20, 21+). Yanındaki çizgi haftalık sırayı gösterir; çizginin yükselmesi sıranın iyileştiği demektir.":
+    "Moyenne de la période et sa tranche (1-3, 4-10, 11-20, 21+). La ligne à côté montre la position hebdomadaire ; une ligne qui monte signifie une position améliorée.",
   "{count} sorgu gözlendi.": "Requêtes observées : {count}.",
   "En çok gösterilenler": "Requêtes les plus affichées",
   "Tam yanıtlı gün: {current}/{days}; önceki dönem: {previous}/{days}.":

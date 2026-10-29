@@ -5,6 +5,8 @@ kind: nasil-yapilir
 updated: 2026-10-27
 ---
 
+PageSpeed Insights API anahtarı, site denetiminin sayfalarınızın hızını Google'ın PageSpeed Insights servisiyle ölçmesini sağlar. Anahtarı Google Cloud'da ücretsiz oluşturursunuz ve isteğe bağlıdır: anahtar yoksa uygulama her denetimde en fazla 50 sayfayı ölçmeyi dener.
+
 ## Anahtarı ekleyin
 
 Google Cloud projenizde PageSpeed Insights API'yi etkinleştirin. Kimlik bilgileri bölümünde bir API anahtarı oluşturun; API kısıtını PageSpeed Insights olarak ayarlayın. **Ayarlar → Hız ölçümü** alanına anahtarı girip **Kaydet** deyin. Anahtar şifreli saklanır, ekranda gösterilmez. Docker'da PAGESPEED_API_KEY ortam değeri de kullanılabilir; Ayarlar'daki kayıt önceliklidir.

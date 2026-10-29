@@ -1,7 +1,9 @@
 import { t } from "@/shared/i18n";
 import { formatCount, formatDate, formatDecimal } from "@/client/lib/format";
 import type { getTrackedQueries } from "@/serverFunctions/gscHistory";
-import { FactStrip } from "@/client/components/FactStrip";
+import { FactStrip, type Fact } from "@/client/components/FactStrip";
+import { AlertTriangle } from "lucide-react";
+import type { ReactNode } from "react";
 
 export type RankingArchiveData = Awaited<ReturnType<typeof getTrackedQueries>>;
 
@@ -9,10 +11,13 @@ export function RankingSourceEvidence({
   data,
   notConnected,
   pick,
+  archive,
 }: {
   data: RankingArchiveData | undefined;
   notConnected: boolean;
   pick: (query: string) => void;
+  /** The local archive's span, folded into this one source block. */
+  archive?: { facts: Fact[]; details: ReactNode } | null;
 }) {
   const comparisonPartial =
     data &&
@@ -21,27 +26,47 @@ export function RankingSourceEvidence({
   return (
     <>
       {data && data.totalObserved > 0 ? (
-        <section aria-live="polite" className="space-y-4">
-          <p className="text-lg font-semibold">
-            {data.comparableCount === 0
-              ? t("{count} sorgu gözlendi.", {
-                  count: formatCount(data.totalObserved),
-                })
-              : t(
-                  "Karşılaştırılabilen {count} sorguda {up} yükseldi, {down} geriledi.",
+        // Headline, its qualifiers as chips beside it, then the one next
+        // step: three loose lines of different sizes and colours read as
+        // three separate messages.
+        <section aria-live="polite" className="space-y-3">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+            <p className="text-lg font-semibold">
+              {data.comparableCount === 0
+                ? t("{count} sorgu gözlendi.", {
+                    count: formatCount(data.totalObserved),
+                  })
+                : t(
+                    "Karşılaştırılabilen {count} sorguda {up} yükseldi, {down} geriledi.",
+                    {
+                      count: formatCount(data.comparableCount),
+                      up: formatCount(data.significantUp),
+                      down: formatCount(data.significantDown),
+                    },
+                  )}
+            </p>
+            {data.comparableCount === 0 ? (
+              <span className="rounded-full border border-[var(--hairline)] px-2.5 py-0.5 text-xs text-muted">
+                {t("Karşılaştırma yok")}
+              </span>
+            ) : null}
+            {comparisonPartial ? (
+              <span className="inline-flex items-center gap-1 rounded-full border border-warning/30 bg-warning/10 px-2.5 py-0.5 text-xs text-[var(--ink-warning)]">
+                <AlertTriangle aria-hidden className="size-3 shrink-0" />
+                {t(
+                  "Tam yanıtlı gün: {current}/{days}; önceki dönem: {previous}/{days}.",
                   {
-                    count: formatCount(data.comparableCount),
-                    up: formatCount(data.significantUp),
-                    down: formatCount(data.significantDown),
+                    current: formatCount(data.coverage.complete),
+                    previous: formatCount(data.previousCoverage.complete),
+                    days: formatCount(data.days),
                   },
                 )}
-          </p>
-          {data.comparableCount === 0 ? (
-            <p className="text-sm text-muted">{t("Karşılaştırma yok")}</p>
-          ) : null}
+              </span>
+            ) : null}
+          </div>
           {data.fallers[0] ? (
             <button
-              className="btn btn-outline min-h-11 h-auto max-w-full rounded-full whitespace-normal break-words text-left"
+              className="btn btn-sm h-auto min-h-9 max-w-full whitespace-normal break-words text-left"
               onClick={() => pick(data.fallers[0].query)}
             >
               {t("Önce {query} sorgusunu inceleyin.", {
@@ -51,46 +76,6 @@ export function RankingSourceEvidence({
           ) : data.comparableCount > 0 ? (
             <p className="text-sm text-muted">
               {t("Karşılaştırılabilen sorgularda belirgin düşüş yok.")}
-            </p>
-          ) : null}
-          <details className="max-w-prose text-sm text-muted">
-            <summary className="min-h-11 cursor-pointer">
-              {t("Veri kapsamı ve hesaplama")}
-            </summary>
-            <p>
-              {t(
-                "Karşılaştırması bilinmeyen: {count}. Belirgin hareket eşiği: {threshold} sıra.",
-                {
-                  count: formatCount(data.unknownCount),
-                  threshold: formatDecimal(0.5),
-                },
-              )}
-            </p>
-            {notConnected ? (
-              <p className="text-sm text-[var(--ink-warning)]">
-                {t(
-                  "Bağlantı yok; gösterilen özet kayıtlı tarihsel gözlemlerdir.",
-                )}
-              </p>
-            ) : null}
-            {comparisonPartial ? (
-              <p className="text-sm text-[var(--ink-warning)]">
-                {t(
-                  "Arşiv kapsamı kısmi veya bilinmiyor. Hareketler yalnızca kayıtlı gözlemleri karşılaştırır; sitenin tamamını temsil etmez.",
-                )}
-              </p>
-            ) : null}
-          </details>
-          {comparisonPartial ? (
-            <p className="text-sm text-[var(--ink-warning)]">
-              {t(
-                "Tam yanıtlı gün: {current}/{days}; önceki dönem: {previous}/{days}.",
-                {
-                  current: formatCount(data.coverage.complete),
-                  previous: formatCount(data.previousCoverage.complete),
-                  days: formatCount(data.days),
-                },
-              )}
             </p>
           ) : null}
         </section>
@@ -115,14 +100,39 @@ export function RankingSourceEvidence({
               label: t("Dönem"),
               value: `${formatDate(data.range.startDate)} – ${formatDate(data.range.endDate)}`,
             },
+            ...(archive?.facts ?? []),
             {
               label: t("Karşılaştırma"),
               value: `${formatDate(data.previousRange.startDate)} – ${formatDate(data.previousRange.endDate)}`,
             },
           ]}
-          detailsLabel={t("Ayrıntılar")}
+          detailsLabel={t("Veri kapsamı ve hesaplama")}
           details={
             <>
+              {archive?.details}
+              <p>
+                {t(
+                  "Karşılaştırması bilinmeyen: {count}. Belirgin hareket eşiği: {threshold} sıra.",
+                  {
+                    count: formatCount(data.unknownCount),
+                    threshold: formatDecimal(0.5),
+                  },
+                )}
+              </p>
+              {notConnected ? (
+                <p className="text-[var(--ink-warning)]">
+                  {t(
+                    "Bağlantı yok; gösterilen özet kayıtlı tarihsel gözlemlerdir.",
+                  )}
+                </p>
+              ) : null}
+              {comparisonPartial ? (
+                <p className="text-[var(--ink-warning)]">
+                  {t(
+                    "Arşiv kapsamı kısmi veya bilinmiyor. Hareketler yalnızca kayıtlı gözlemleri karşılaştırır; sitenin tamamını temsil etmez.",
+                  )}
+                </p>
+              ) : null}
               <p>
                 {data.coverageIssues
                   .map((day) => formatDate(day.date))

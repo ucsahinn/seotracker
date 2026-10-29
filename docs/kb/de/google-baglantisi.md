@@ -1,9 +1,11 @@
 ---
 title: Mit Google verbinden
-description: Installationszugang und Projekt-Property getrennt wählen; Konfiguration und Zugriff unterscheiden.
+description: Search Console und GA4 mit eigenem Google-Cloud-Dienstkonto oder OAuth-Client verbinden und dann für jedes Projekt die Properties wählen.
 kind: nasil-yapilir
 updated: 2026-10-27
 ---
+
+seowatcher liest Search Console und Google Analytics 4 mit Ihren eigenen Google-Cloud-Zugangsdaten: einem Dienstkonto oder einem OAuth-Client. Sie speichern die Zugangsdaten einmal für die ganze Installation und wählen dann für jedes Projekt eine Search-Console- und eine GA4-Property.
 
 ## Zugangsdaten und Property
 

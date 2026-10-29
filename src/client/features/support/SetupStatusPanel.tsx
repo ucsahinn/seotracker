@@ -1,4 +1,3 @@
-import { FactStrip } from "@/client/components/FactStrip";
 import { Link } from "@tanstack/react-router";
 import {
   AlertCircle,
@@ -80,7 +79,7 @@ export function SetupStatusPanel() {
   if (diagnostics.isPending) {
     return (
       <div
-        className="space-y-2 rounded-box border border-base-300 bg-base-100 p-4"
+        className="space-y-2 rounded-box border border-[var(--hairline)] bg-base-100 p-4"
         aria-busy
       >
         <div className="skeleton h-4 w-40" />
@@ -93,7 +92,7 @@ export function SetupStatusPanel() {
 
   if (diagnostics.isError) {
     return (
-      <div className="rounded-box border border-base-300 bg-base-100">
+      <div className="rounded-box border border-[var(--hairline)] bg-base-100">
         <QueryErrorState
           compact
           error={diagnostics.error}
@@ -195,7 +194,7 @@ function StatusBody({
   return (
     <section
       aria-labelledby="setup-status-title"
-      className="enter space-y-4 rounded-box border border-base-300 bg-base-100 p-4"
+      className="enter space-y-4 rounded-box border border-[var(--hairline)] bg-base-100 p-4"
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex items-start gap-3">
@@ -209,16 +208,6 @@ function StatusBody({
             {/* Install health, not a project's setup: that checklist is on
                 the dashboard and Proje bilgisi, and the two must not be
                 read as one verdict. */}
-            <details className="text-sm text-muted">
-              <summary className="cursor-pointer py-2">
-                {t("Ayrıntılar")}
-              </summary>
-              <p className="text-xs text-muted">
-                {t(
-                  "Bu kurulumun kendisi. Bir projenin kurulum listesi Panel'de ve Proje bilgisi'nde.",
-                )}
-              </p>
-            </details>
             <p className="mt-0.5 text-sm" aria-live="polite">
               {checks.length === 0
                 ? t(
@@ -233,15 +222,10 @@ function StatusBody({
             <p className="mt-1 text-sm">
               <VersionLine version={data.version} update={update} />
             </p>
-            <FactStrip
-              label={t("Kaynak")}
-              facts={[
-                {
-                  label: t("Son kontrol"),
-                  value: formatDateTime(data.generatedAt),
-                },
-              ]}
-            />
+            <dl className="mt-1 flex flex-wrap gap-x-1.5 text-xs">
+              <dt className="text-subtle">{t("Son kontrol")}</dt>
+              <dd className="text-muted">{formatDateTime(data.generatedAt)}</dd>
+            </dl>
             {data.setup.port.fallback ? (
               <p className="mt-2 flex max-w-prose items-start gap-1.5 text-sm">
                 <AlertTriangle
@@ -251,6 +235,16 @@ function StatusBody({
                 <span>{portFallbackMessage(data.setup.port.fallback)}</span>
               </p>
             ) : null}
+            <details className="text-xs text-muted">
+              <summary className="cursor-pointer py-1">
+                {t("Ayrıntılar")}
+              </summary>
+              <p className="max-w-prose text-sm text-muted">
+                {t(
+                  "Bu kurulumun kendisi. Bir projenin kurulum listesi Panel'de ve Proje bilgisi'nde.",
+                )}
+              </p>
+            </details>
           </div>
         </div>
         <CopyButton
@@ -260,7 +254,7 @@ function StatusBody({
         />
       </div>
 
-      <ul className="divide-y divide-base-300">
+      <ul className="divide-y divide-[var(--hairline)]">
         {checks.map(({ key, described }) => {
           const fix = CHECK_INFO[key]?.fix;
           return (
@@ -299,16 +293,8 @@ function StatusBody({
         })}
       </ul>
 
-      <div className="space-y-2 border-t border-base-300 pt-3">
+      <div className="space-y-2 border-t border-[var(--hairline)] pt-3">
         <h3 className="text-xs font-medium text-muted">{t("Projeler")}</h3>
-        <details className="text-sm text-muted">
-          <summary className="cursor-pointer py-2">{t("Ayrıntılar")}</summary>
-          <p className="text-xs text-muted">
-            {t(
-              "Burada kayıtlı mülk seçimleri gösterilir; Google erişimi bu kontrolde sınanmaz. Güncel bir okuma denemek için Bağlantıları açın, seçili mülkün raporuna gidin ve Yenile düğmesine basın.",
-            )}
-          </p>
-        </details>
         {projects.length === 0 ? (
           <p className="text-sm text-muted">
             {fillParts(t("Henüz proje yok. {link}."), {
@@ -326,9 +312,12 @@ function StatusBody({
               return (
                 <li
                   key={project.id}
-                  className="flex flex-wrap items-center justify-between gap-2 text-sm"
+                  className="flex items-center justify-between gap-3 text-sm"
                 >
-                  <span className="flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-0.5">
+                  {/* No wrap on the row itself: a wrapping row dropped the
+                      link under the name on a phone, at a different place
+                      for each project. The text wraps; the link stays right. */}
+                  <span className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-3 gap-y-0.5">
                     <span className="font-medium">{project.name}</span>
                     <span className="text-xs text-muted">
                       {t("Search Console {gsc} · Analytics {ga4}", {
@@ -340,7 +329,7 @@ function StatusBody({
                   <Link
                     to="/p/$projectId/settings/integrations"
                     params={{ projectId: project.id }}
-                    className="btn btn-ghost btn-xs"
+                    className="btn btn-ghost btn-xs max-sm:min-h-11 shrink-0"
                   >
                     {t("Bağlantıları aç")}
                   </Link>
@@ -349,6 +338,14 @@ function StatusBody({
             })}
           </ul>
         )}
+        <details className="text-xs text-muted">
+          <summary className="cursor-pointer py-1">{t("Ayrıntılar")}</summary>
+          <p className="max-w-prose text-sm text-muted">
+            {t(
+              "Burada kayıtlı mülk seçimleri gösterilir; Google erişimi bu kontrolde sınanmaz. Güncel bir okuma denemek için Bağlantıları açın, seçili mülkün raporuna gidin ve Yenile düğmesine basın.",
+            )}
+          </p>
+        </details>
       </div>
     </section>
   );

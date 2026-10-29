@@ -1,4 +1,3 @@
-import { FactStrip } from "@/client/components/FactStrip";
 import { useQuery } from "@tanstack/react-query";
 import { getProjects } from "@/serverFunctions/projects";
 import { gscPropertyMismatch } from "@/shared/settingsPropertyScope";
@@ -34,19 +33,8 @@ function ProjectIntegrationsRoute() {
 
   return (
     <div className="space-y-8">
-      <FactStrip
-        label={t("Bağlantılar")}
-        facts={[
-          {
-            label: t("Alan adı"),
-            value: project?.domain ?? t("Alan adı belirtilmedi"),
-          },
-          {
-            label: "Search Console",
-            value: gsc.data?.siteUrl ?? t("Mülk seçilmedi"),
-          },
-        ]}
-      />
+      {/* The domain is under the page title and the property is in the
+          Search Console card; only a mismatch between them is said here. */}
       {gscPropertyMismatch(
         project?.domain ?? null,
         gsc.data?.siteUrl ?? null,

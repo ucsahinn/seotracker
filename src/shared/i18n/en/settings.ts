@@ -596,4 +596,7 @@ export const enSettings: Catalog = {
   "Para birimi": "Currency",
   "Mülk alan adını kapsamıyor.": "Property does not cover this domain.",
   "Denetim eski": "Older audit",
+  "İlgili ayarlar": "Related settings",
+  Kaynaklar: "Resources",
+  "{count} okunmamış": "{count} unread",
 };

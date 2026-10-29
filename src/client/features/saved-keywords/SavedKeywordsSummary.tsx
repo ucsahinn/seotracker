@@ -35,62 +35,68 @@ export function SavedKeywordsSummary({
     { id: "none", label: t("Sıra bilinmiyor") },
   ] as const;
   return (
+    // One card: the headline with its qualifier beside it and the next step
+    // on the right, then the two disclosures inside it. The loose stack of
+    // headline, yellow line, big outlined button and two floating
+    // disclosures took 450px before the list began.
     <section
-      className="space-y-4"
+      className="rounded-box border border-[var(--hairline)] bg-base-100 shadow-[var(--shadow-raise)]"
       aria-label={t("Kayıtlı kelimelerin arşiv özeti")}
     >
-      <div className="space-y-4 text-sm">
-        <p className="max-w-prose text-lg font-semibold">
-          {data.archiveError
-            ? t(
-                "Kelimeler kayıtlı; sıra karşılaştırması şu anda kullanılamıyor.",
-              )
-            : t(
-                "Kaydettiğiniz {saved} kelimenin {observed} tanesi bu aralıkta arşivde gözlendi.",
-                {
-                  saved: formatCount(data.totalSavedMatching),
-                  observed: formatCount(data.totalObservedMatching),
-                },
-              )}
-        </p>
-        {stale ? (
-          <p role="status" className="text-[var(--ink-warning)]">
-            {t(
-              "Son doğrulanmış yanıt gösteriliyor; liste yenilenirken işlem yapmayın.",
-            )}
-          </p>
-        ) : null}
-        {!stale &&
-        (partial ||
-          archiveStale ||
-          data.archiveError ||
-          data.connectionError ||
-          data.statusError) ? (
-          <p className="text-[var(--ink-warning)]">
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 p-4 text-sm">
+        <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1.5">
+          <p className="text-base font-semibold">
             {data.archiveError
-              ? t("Karşılaştırma yok")
-              : data.connectionError || data.statusError
-                ? t("Kısmi veri")
-                : t(
-                    "{observed}/{days} gün gözlem; {complete}/{days} gün tam yanıt.",
-                    {
-                      observed: formatCount(data.observedDates.length),
-                      complete: formatCount(data.coverage.complete),
-                      days: formatCount(data.requestedDays),
-                    },
-                  )}
+              ? t(
+                  "Kelimeler kayıtlı; sıra karşılaştırması şu anda kullanılamıyor.",
+                )
+              : t(
+                  "Kaydettiğiniz {saved} kelimenin {observed} tanesi bu aralıkta arşivde gözlendi.",
+                  {
+                    saved: formatCount(data.totalSavedMatching),
+                    observed: formatCount(data.totalObservedMatching),
+                  },
+                )}
           </p>
-        ) : null}
+          {stale ? (
+            <p role="status" className={WARNING_CHIP}>
+              {t(
+                "Son doğrulanmış yanıt gösteriliyor; liste yenilenirken işlem yapmayın.",
+              )}
+            </p>
+          ) : null}
+          {!stale &&
+          (partial ||
+            archiveStale ||
+            data.archiveError ||
+            data.connectionError ||
+            data.statusError) ? (
+            <p className={WARNING_CHIP}>
+              {data.archiveError
+                ? t("Karşılaştırma yok")
+                : data.connectionError || data.statusError
+                  ? t("Kısmi veri")
+                  : t(
+                      "{observed}/{days} gün gözlem; {complete}/{days} gün tam yanıt.",
+                      {
+                        observed: formatCount(data.observedDates.length),
+                        complete: formatCount(data.coverage.complete),
+                        days: formatCount(data.requestedDays),
+                      },
+                    )}
+            </p>
+          ) : null}
+        </div>
         <div className="flex flex-wrap gap-2">
           {data.archiveError || data.connectionError || data.statusError ? (
-            <button className="btn btn-outline min-h-11" onClick={onRetry}>
+            <button className="btn btn-sm" onClick={onRetry}>
               {t("Tekrar dene")}
             </button>
           ) : !data.siteUrl ? (
             <Link
               to="/p/$projectId/settings/integrations"
               params={{ projectId }}
-              className="btn btn-outline min-h-11"
+              className="btn btn-sm"
             >
               {t("Search Console'u bağla")}
             </Link>
@@ -98,25 +104,30 @@ export function SavedKeywordsSummary({
             <Link
               to="/p/$projectId/rankings"
               params={{ projectId }}
-              className="btn btn-outline min-h-11"
+              className="btn btn-sm"
             >
               {t("Arşiv kapsamını incele")}
             </Link>
           ) : data.downSignificant > 0 ? (
-            <button className="btn btn-outline min-h-11" onClick={onFallers}>
+            <button className="btn btn-sm" onClick={onFallers}>
               {t("Gerileyenleri incele")}
             </button>
           ) : null}
         </div>
       </div>
-      <details>
-        <summary className="min-h-11 cursor-pointer text-sm text-muted">
+      <details className="border-t border-[var(--hairline)] px-4">
+        <summary className="min-h-10 cursor-pointer text-sm text-muted">
           {t("Kaynak")}
         </summary>
-        <SavedSourceEvidence data={data} reason={reason} />
+        <div className="pb-4">
+          <SavedSourceEvidence data={data} reason={reason} />
+        </div>
       </details>
-      <details className="space-y-4" open={filter !== undefined}>
-        <summary className="min-h-11 cursor-pointer text-sm text-muted">
+      <details
+        className="space-y-4 border-t border-[var(--hairline)] px-4 open:pb-4"
+        open={filter !== undefined}
+      >
+        <summary className="min-h-10 cursor-pointer text-sm text-muted">
           {t("Arşiv özeti")}
         </summary>
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
@@ -238,6 +249,9 @@ export function SavedKeywordsSummary({
     </section>
   );
 }
+const WARNING_CHIP =
+  "rounded-full border border-warning/30 bg-warning/10 px-2.5 py-0.5 text-xs text-[var(--ink-warning)]";
+
 function formatBar(n: number, total: number) {
   return String((n / total) * 100) + "%";
 }

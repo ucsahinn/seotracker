@@ -84,6 +84,16 @@ export const QUICK_COPY = {
   no_conversions: "Trafik var, dönüşüm yok",
 } as const satisfies Record<QuickId, string>;
 
+/** The host and the rest, so a list can dim the host every row repeats. */
+export function splitUrl(url: string): { host: string; rest: string } {
+  try {
+    const parsed = new URL(url);
+    return { host: parsed.host, rest: `${parsed.pathname}${parsed.search}` };
+  } catch {
+    return { host: "", rest: url };
+  }
+}
+
 export function pathOf(url: string): string {
   try {
     const parsed = new URL(url);

@@ -5,6 +5,8 @@ kind: nasil-yapilir
 updated: 2026-10-27
 ---
 
+Ein PageSpeed-Insights-API-Schlüssel lässt das Website-Audit die Geschwindigkeit Ihrer Seiten mit Googles PageSpeed Insights messen. Sie erstellen den Schlüssel kostenlos in Google Cloud, und er ist optional: Ohne Schlüssel versucht die App, pro Audit höchstens 50 Seiten zu messen.
+
 ## Schlüssel einrichten
 
 Aktivieren Sie PageSpeed Insights API in Google Cloud. Erstellen Sie einen API-Schlüssel und beschränken Sie ihn auf PageSpeed Insights. Speichern Sie ihn unter Einstellungen → Geschwindigkeitsmessung. Der Schlüssel wird verschlüsselt und nicht angezeigt. Docker unterstützt auch PAGESPEED_API_KEY; der gespeicherte Wert hat Vorrang.

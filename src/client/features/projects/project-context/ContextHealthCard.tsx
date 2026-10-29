@@ -64,7 +64,7 @@ export function ContextHealthCard({
   return (
     <section
       aria-labelledby="context-health-title"
-      className="rounded-box border border-base-300 bg-base-100 p-4"
+      className="rounded-box border border-[var(--hairline)] bg-base-100 p-4"
     >
       <h2 id="context-health-title" className="text-sm font-semibold">
         {t("Kurulum durumu")}
@@ -96,7 +96,7 @@ export function ContextHealthCard({
           )}
         </p>
       ) : null}
-      <ul className="mt-3 divide-y divide-base-300">
+      <ul className="mt-3 divide-y divide-[var(--hairline)]">
         {items.map((item) => (
           <HealthRow
             key={item.id}
@@ -167,7 +167,7 @@ function HealthRow({
       {item.state === "error" && onRetry ? (
         <button
           type="button"
-          className="btn btn-ghost btn-xs min-h-11 min-w-11"
+          className="btn btn-ghost btn-xs min-h-11 min-w-11 sm:min-h-8 sm:min-w-8"
           onClick={onRetry}
         >
           {t("Yeniden dene")}
@@ -186,7 +186,7 @@ function HealthAction({
   item: HealthItem;
   projectId: string;
 }) {
-  const className = `btn btn-xs min-h-11 min-w-11 ${item.state === "done" ? "btn-ghost" : ""}`;
+  const className = `btn btn-xs min-h-11 min-w-11 sm:min-h-8 sm:min-w-8 ${item.state === "done" ? "btn-ghost" : ""}`;
   const { target } = item;
   if (target.kind === "anchor") {
     return (

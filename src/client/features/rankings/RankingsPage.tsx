@@ -18,7 +18,7 @@ import { QueryHistoryCard } from "./QueryHistoryCard";
 import { TrackedQueriesTable } from "./TrackedQueriesTable";
 import { PositionBandBars } from "./PositionBandBars";
 import { MoversCard } from "./MoversCard";
-import { ArchiveStatus } from "./ArchiveStatus";
+import { ArchiveStatus, filledArchiveEvidence } from "./ArchiveStatus";
 import { archiveSyncInterval } from "./archiveSyncInterval";
 import { EmptyArchivePanel, NotConnectedPanel } from "./EmptyArchivePanel";
 import {
@@ -157,6 +157,7 @@ export function RankingsPage({
   const notConnected = sync.data?.notConnected === true;
   const archiveEmpty =
     sync.data?.rowCount === 0 && !sync.data.error && !sync.data.hasMore;
+  const archive = filledArchiveEvidence(sync);
   return (
     <PageShell>
       <PageHeader
@@ -173,29 +174,13 @@ export function RankingsPage({
         }
         actions={
           <PageActions>
-            <fieldset
-              className="flex flex-wrap gap-2"
-              aria-label={t("Zaman aralığı")}
-            >
-              {RANKING_WINDOWS.map((option) => (
-                <label
-                  key={option.days}
-                  className="flex min-h-11 cursor-pointer items-center gap-1.5 rounded-field px-2 text-sm"
-                >
-                  <input
-                    type="radio"
-                    name="ranking-window"
-                    className="radio radio-xs"
-                    checked={!startDate && days === option.days}
-                    onChange={() => {
-                      setPage(1);
-                      onDaysChange(option.days);
-                    }}
-                  />
-                  {t(option.label)}
-                </label>
-              ))}
-            </fieldset>
+            <RankingWindowPicker
+              days={startDate ? null : days}
+              onChange={(next) => {
+                setPage(1);
+                onDaysChange(next);
+              }}
+            />
             <RefreshButton
               {...refresh}
               onRefresh={() => void sync.refetch()}
@@ -209,8 +194,13 @@ export function RankingsPage({
         data={data}
         notConnected={notConnected}
         pick={pick}
+        archive={archive}
       />
-      <ArchiveStatus sync={sync} projectId={projectId} />
+      {/* A filled archive joins the source block above; the archive's own
+          box is for loading, errors and an archive still empty. */}
+      {data && archive ? null : (
+        <ArchiveStatus sync={sync} projectId={projectId} />
+      )}
       {sync.data?.hasMore ? (
         <button
           className="btn btn-outline min-h-11 self-start"
@@ -242,14 +232,16 @@ export function RankingsPage({
                   setPage(1);
                 }}
               />
-              <MoversCard
-                rows={[...data.risers, ...data.fallers]}
-                comparableCount={data.comparableCount}
-                onPick={pick}
-              />
+              {data.comparableCount > 0 ? (
+                <MoversCard
+                  rows={[...data.risers, ...data.fallers]}
+                  comparableCount={data.comparableCount}
+                  onPick={pick}
+                />
+              ) : null}
             </div>
           ) : null}
-          <section className="min-w-0 rounded-box border border-base-300 bg-base-100">
+          <section className="min-w-0 rounded-box border border-[var(--hairline)] bg-base-100 shadow-[var(--shadow-raise)]">
             <RankingsFilters
               data={data}
               search={search}
@@ -291,6 +283,12 @@ export function RankingsPage({
               }}
             />
           </section>
+          {/* With nothing to compare, the movers card is only a note on
+              why; it sits with the other notes under the list instead of
+              floating between the chart and the table. */}
+          {data && data.comparableCount === 0 ? (
+            <MoversCard rows={[]} comparableCount={0} onPick={pick} />
+          ) : null}
           {data && data.unobservedCount > 0 ? (
             <details className="text-sm text-muted">
               <summary className="min-h-11 cursor-pointer">
@@ -348,5 +346,41 @@ export function RankingsPage({
         </div>
       ) : null}
     </PageShell>
+  );
+}
+
+/**
+ * The period radios drawn as one segmented control: the native dots wrapped
+ * into a ragged row with no group outline. Three per row on a phone.
+ */
+function RankingWindowPicker({
+  days,
+  onChange,
+}: {
+  /** Null when a custom range from a link is active. */
+  days: number | null;
+  onChange: (days: number) => void;
+}) {
+  return (
+    <fieldset
+      className="grid grid-cols-3 gap-0.5 rounded-field border border-[var(--control-border)] bg-base-100 p-0.5 max-sm:w-full sm:flex sm:flex-wrap"
+      aria-label={t("Zaman aralığı")}
+    >
+      {RANKING_WINDOWS.map((option) => (
+        <label
+          key={option.days}
+          className="flex min-h-8 cursor-pointer items-center justify-center rounded-field px-3 text-center text-sm text-muted transition-colors hover:text-base-content has-[:checked]:bg-base-200 has-[:checked]:font-medium has-[:checked]:text-base-content has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-primary max-sm:min-h-11"
+        >
+          <input
+            type="radio"
+            name="ranking-window"
+            className="sr-only"
+            checked={days === option.days}
+            onChange={() => onChange(option.days)}
+          />
+          {t(option.label)}
+        </label>
+      ))}
+    </fieldset>
   );
 }

@@ -54,7 +54,7 @@
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://seowatcher.io/kilavuz/ajan-kurulumu/"
+      href="https://seowatcher.io/en/docs/agent-setup/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -145,7 +145,9 @@
             "@id": "https://seowatcher.io/#website",
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
-            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+            "alternateName": ["seotracker"],
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
+            "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
             "@type": "SoftwareApplication",
@@ -169,6 +171,7 @@
             "description": "Connecter votre assistant SEO sans exposer le jeton, vérifier un nouvel appel et utiliser les compétences pour auditer le site et rédiger un rapport.",
             "url": "https://seowatcher.io/fr/guides/installation-assistant/",
             "inLanguage": "fr",
+            "datePublished": "2026-10-23",
             "dateModified": "2026-10-29",
             "articleSection": "Aide et référence",
             "about": { "@id": "https://seowatcher.io/#app" },
@@ -204,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.5" defer></script>
+    <script src="/assets/docs.js?v=0.8.6" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1477,6 +1480,11 @@
           <p class="nav-group">Pour démarrer</p>
           <ul>
             <li>
+              <a href="/fr/guides/quest-ce-que-seowatcher/"
+                >Qu'est-ce que seowatcher ?</a
+              >
+            </li>
+            <li>
               <a href="/fr/guides/installation-sous-windows/"
                 >Installation sous Windows</a
               >
@@ -1542,6 +1550,14 @@
           Connecter votre assistant SEO sans exposer le jeton, vérifier un
           nouvel appel et utiliser les compétences pour auditer le site et
           rédiger un rapport.
+        </p>
+        <p>
+          L'installation de l'assistant connecte un assistant IA comme Claude
+          Code, Codex ou Cursor à seowatcher via MCP (Model Context Protocol).
+          Une fois connecté, l'assistant lit vos données Search Console,
+          Analytics et d'audit depuis l'application sur votre ordinateur, lance
+          des audits et rédige des rapports. Ce que lit l'assistant peut partir
+          chez son fournisseur.
         </p>
         <h2 id="connecter-l-agent">Connecter l'agent</h2>
         <p>

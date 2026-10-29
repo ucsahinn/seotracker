@@ -1140,4 +1140,5 @@ export const enApp: Catalog = {
   "Duyuruyu oku": "Read announcement",
   "Windows tercihleri": "Windows preferences",
   "Uygulamayı durdurma": "Stopping the app",
+  "Başlık veya özet": "Title or summary",
 };

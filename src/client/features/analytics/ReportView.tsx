@@ -244,7 +244,6 @@ export function ReportView({
   }
   return (
     <div className="space-y-4" id="analytics-report">
-      <AnalyticsEvidence result={result} onOpenHealth={onOpenHealth} />
       <ReportListScope
         scope={scope}
         shown={rows.length}
@@ -282,9 +281,22 @@ export function ReportView({
           role="group"
           aria-label={t("Hızlı filtreler")}
         >
-          {kind !== "site_search" ? (
-            <span className="text-sm text-muted">
-              {organicOnly ? t("Organik arama") : t("Tüm trafik")}
+          {/* The label and its help stay one unit, so the help icon never
+              wraps to a line of its own after the last chip. */}
+          {kind !== "site_search" || chips.length > 0 ? (
+            <span className="inline-flex items-center gap-1 text-sm text-muted">
+              {kind !== "site_search"
+                ? organicOnly
+                  ? t("Organik arama")
+                  : t("Tüm trafik")
+                : null}
+              {chips.length > 0 ? (
+                <HelpTip label={t("Hızlı filtreler")}>
+                  {t(
+                    "Sayılar, listelenen tüm satırlara göre hesaplanır. Birden fazla filtre seçerseniz satırın hepsine uyması gerekir.",
+                  )}
+                </HelpTip>
+              ) : null}
             </span>
           ) : null}
           {chips.map((chip) => {
@@ -296,7 +308,7 @@ export function ReportView({
                 aria-pressed={on}
                 disabled={chip.disabledReason !== null}
                 title={chip.hint}
-                className={`btn btn-sm min-h-11 sm:min-h-0 gap-1.5 rounded-full ${on ? "btn-neutral" : "btn-ghost border-base-300"}`}
+                className={`btn btn-sm min-h-11 sm:min-h-0 gap-1.5 rounded-full ${on ? "btn-neutral" : "btn-ghost border-[var(--control-border)]"}`}
                 onClick={() =>
                   setActiveChips((current) =>
                     on
@@ -312,13 +324,6 @@ export function ReportView({
               </button>
             );
           })}
-          {chips.length > 0 ? (
-            <HelpTip label={t("Hızlı filtreler")}>
-              {t(
-                "Sayılar, listelenen tüm satırlara göre hesaplanır. Birden fazla filtre seçerseniz satırın hepsine uyması gerekir.",
-              )}
-            </HelpTip>
-          ) : null}
           {isFiltered ? (
             <button
               type="button"
@@ -377,7 +382,7 @@ export function ReportView({
       ) : null}
 
       {rows.length === 0 ? (
-        <div className="rounded-box border border-base-300 bg-base-100">
+        <div className="rounded-box border border-[var(--hairline)] bg-base-100">
           <EmptyState
             icon={FilterX}
             title={t("Bu filtrelere uyan satır yok")}
@@ -402,6 +407,9 @@ export function ReportView({
           currencyCode={result.currencyCode ?? null}
         />
       )}
+      {/* Provenance after the table it describes; source and period already
+          head the trend card. */}
+      <AnalyticsEvidence result={result} onOpenHealth={onOpenHealth} />
     </div>
   );
 }

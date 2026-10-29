@@ -1,14 +1,14 @@
 ---
 title: Oportunidades
-description: Mostra páginas observadas, possíveis ações e um limite de cliques adicionais quando há dados suficientes.
+description: Qual página trabalhar primeiro: páginas que o Google já mostra, ordenadas pelo limite de cliques extras do Search Console, com o trabalho sugerido.
 screen: Fırsatlar
 route: /p/<proje>/opportunities
 updated: 2026-10-27
 ---
 
-“Examinar grupo de endereços do Analytics” na linha e nos detalhes abre páginas de destino orgânicas com as datas da fonte e o grupo normalizado. Sem correspondência de endereço ou datas, uma explicação substitui o link. O filtro ocorre antes da paginação sobre as mesmas, no máximo, 1.000 linhas da fonte de Oportunidades. O Analytics informa limites de fonte e qualidade que impedem verificar o grupo completo. As medidas obtidas novamente podem mudar; as mesmas datas podem cobrir intervalos diferentes no fuso GA4 e no calendário do Pacífico do Search Console.
+Oportunidades ordena as páginas que o Google já mostra para o seu site pela quantidade de cliques extras que poderiam trazer. O cálculo usa os seus próprios dados do Search Console e as taxas de cliques do seu site. Cada página recebe um tipo de trabalho sugerido e um limite máximo de ganho; não é uma previsão nem uma garantia.
 
-# Como usar Oportunidades
+## Como usar Oportunidades
 
 **Veja isto primeiro** abre a página com o maior limite calculável de cliques adicionais e sugere um trabalho a investigar. Isso não mede a facilidade nem a rapidez desse trabalho.
 
@@ -29,6 +29,8 @@ No computador há uma tabela ordenável; no celular, linhas com quebra de endere
 Um escopo não calculável não significa ausência de oportunidade. Consultas sem correspondência, poucas impressões e taxas-alvo ausentes são separados do zero medido. Nenhuma linha recebida não prova ausência de impressões.
 
 O Analytics acrescenta sessões orgânicas, eventos principais e parcela de sessões com evento principal medidos. Não projeta eventos futuros a partir de cliques adicionais. Medições restritas continuam desconhecidas. Variantes de URL podem compartilhar o mesmo grupo do Analytics; não some suas sessões entre linhas. Se a cota acabar, aguarde e atualize; se faltar permissão, confira a conexão. Quando a atualização falha, os dados anteriores permanecem com suas datas originais e um aviso.
+
+“Examinar grupo de endereços do Analytics” na linha e nos detalhes abre páginas de destino orgânicas com as datas da fonte e o grupo normalizado. Sem correspondência de endereço ou datas, uma explicação substitui o link. O filtro ocorre antes da paginação sobre as mesmas, no máximo, 1.000 linhas da fonte de Oportunidades. O Analytics informa limites de fonte e qualidade que impedem verificar o grupo completo. As medidas obtidas novamente podem mudar; as mesmas datas podem cobrir intervalos diferentes no fuso GA4 e no calendário do Pacífico do Search Console.
 
 ## Exportação e acompanhamento
 

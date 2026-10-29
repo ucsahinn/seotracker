@@ -1,16 +1,16 @@
 ---
 title: Release notes
-description: seowatcher 0.8.4 Alpha — complete Google data, vivid colours and screens reviewed again with real data for clearer reading on phones.
+description: seowatcher 0.8.6 Alpha (October 29, 2026): a new site audit with 202 rules, six interface languages, notifications and more accurate Google data.
 updated: 2026-10-29
 ---
 
-The latest release is **0.8.5 Alpha**, October 29, 2026. Your data is kept when you update.
+The latest release is **0.8.6 Alpha**, October 29, 2026. Your data is kept when you update.
 
 For the first move from 2.x to 0.x.x Alpha, run the new installer manually; the old updater does not recognize the lower number as newer.
 
-## 0.8.5 Alpha — 2026-10-29
+## 0.8.6 Alpha — 2026-10-29
 
-This entry brings together features and fixes from 0.5.0 to 0.8.5: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
+This entry brings together features and fixes from 0.5.0 to 0.8.6: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
 
 ### ✨ Highlights
 
@@ -66,6 +66,8 @@ This entry brings together features and fixes from 0.5.0 to 0.8.5: site audits, 
 - **Help and notes:** Help and release notes make it easier to find the information you need.
 - **Data colours:** Clicks are blue, impressions violet, click rate teal, position ochre, sessions green and conversions rose. Cards and charts use the same, more vivid colours in both themes.
 - **Calmer screens:** Source, period and freshness appear together with short labels. Open longer explanations when you need them; shorter names and clear buttons make actions easier to find.
+- **On phones:** Record lists show as readable rows instead of tables on phones; query names and labels are no longer cut off.
+- **One look:** Buttons, expandable sections, notification pop-ups and cards look the same on every screen; single-page lists no longer show page buttons.
 
 ### 🗂️ Projects and saved searches
 

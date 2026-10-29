@@ -20,7 +20,7 @@ function PersonalSettings() {
       {/* A hairline between blocks instead of ten rows of air: with only
           whitespace the sections ran into one long form and the small
           headings were the only thing saying where one ended. */}
-      <div className="enter divide-y divide-[var(--hairline)] [&>*]:py-8 [&>*:first-child]:pt-0 [&>*:last-child]:pb-0">
+      <div className="enter divide-y divide-[var(--hairline)] [&>*]:py-6 [&>*:first-child]:pt-0 [&>*:last-child]:pb-0">
         <ThemeSection />
         <NotificationSettings />
         <WindowsSection />

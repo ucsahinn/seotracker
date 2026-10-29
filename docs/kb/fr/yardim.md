@@ -6,9 +6,9 @@ route: /support
 updated: 2026-10-27
 ---
 
-L'interface de l'application existe en six langues : turc, anglais, allemand, français, italien et portugais. La langue se choisit dans Paramètres → Apparence → Langue. Ce guide donne les boutons et les écrans sous le nom qu'ils portent dans l'interface en français. Le menu de la zone de notification de Windows n'existe qu'en turc. Là, le nom turc est suivi de sa traduction française entre parenthèses.
-
 Si quelque chose ne va pas, regardez d'abord ici. Cet écran contrôle votre installation, dit ce qui manque et vous conduit au bon réglage.
+
+L'interface de l'application existe en six langues : turc, anglais, allemand, français, italien et portugais. La langue se choisit dans Paramètres → Apparence → Langue. Ce guide donne les boutons et les écrans sous le nom qu'ils portent dans l'interface en français. Le menu de la zone de notification de Windows n'existe qu'en turc. Là, le nom turc est suivi de sa traduction française entre parenthèses.
 
 ## Ce que l'écran affiche
 

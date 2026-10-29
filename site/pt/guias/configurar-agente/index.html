@@ -54,7 +54,7 @@
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://seowatcher.io/kilavuz/ajan-kurulumu/"
+      href="https://seowatcher.io/en/docs/agent-setup/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -145,7 +145,9 @@
             "@id": "https://seowatcher.io/#website",
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
-            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+            "alternateName": ["seotracker"],
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
+            "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
             "@type": "SoftwareApplication",
@@ -169,6 +171,7 @@
             "description": "Conecte um assistente SEO com segurança, verifique uma nova chamada e use as habilidades para auditar o site e escrever relatórios com dados locais.",
             "url": "https://seowatcher.io/pt/guias/configurar-agente/",
             "inLanguage": "pt",
+            "datePublished": "2026-10-23",
             "dateModified": "2026-10-29",
             "articleSection": "Ajuda e referência",
             "about": { "@id": "https://seowatcher.io/#app" },
@@ -204,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.5" defer></script>
+    <script src="/assets/docs.js?v=0.8.6" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1476,6 +1479,9 @@
           <p class="nav-group">Primeiros passos</p>
           <ul>
             <li>
+              <a href="/pt/guias/o-que-e-seowatcher/">O que é o seowatcher?</a>
+            </li>
+            <li>
               <a href="/pt/guias/instalar-no-windows/">Instalar no Windows</a>
             </li>
             <li>
@@ -1543,6 +1549,14 @@
           Conecte um assistente SEO com segurança, verifique uma nova chamada e
           use as habilidades para auditar o site e escrever relatórios com dados
           locais.
+        </p>
+        <p>
+          A configuração do agente conecta um assistente de IA como Claude Code,
+          Codex ou Cursor ao seowatcher via MCP (Model Context Protocol). Depois
+          de conectado, o assistente lê os seus dados do Search Console, do
+          Analytics e das auditorias no app do seu computador, executa
+          auditorias e escreve relatórios. O que o assistente lê pode ir para o
+          fornecedor dele.
         </p>
         <h2 id="ligar-o-agente">Ligar o agente</h2>
         <p>

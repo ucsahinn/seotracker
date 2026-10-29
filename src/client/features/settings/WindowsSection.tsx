@@ -35,16 +35,6 @@ export function WindowsSection() {
       aria-busy={status.isFetching || save.isPending}
     >
       <h2 className="text-base font-semibold">Windows</h2>
-      <details className="text-sm text-muted">
-        <summary className="cursor-pointer py-2">
-          {t("Windows tercihleri")}
-        </summary>
-        <p className="max-w-prose text-sm text-muted">
-          {t(
-            "Bu tercihler Windows uygulamasına kaydedilir ve tepsi menüsüyle aynı ayarları kullanır.",
-          )}
-        </p>
-      </details>
       {status.isPending ? (
         <div
           role="status"
@@ -146,6 +136,16 @@ export function WindowsSection() {
           {t("Tekrar dene")}
         </button>
       ) : null}
+      <details className="text-xs text-muted">
+        <summary className="cursor-pointer py-1">
+          {t("Windows tercihleri")}
+        </summary>
+        <p className="max-w-prose text-sm text-muted">
+          {t(
+            "Bu tercihler Windows uygulamasına kaydedilir ve tepsi menüsüyle aynı ayarları kullanır.",
+          )}
+        </p>
+      </details>
       <WindowsStopHelp status={status.data?.status} />
     </section>
   );
@@ -203,8 +203,8 @@ function WindowsToggle({
 function WindowsStopHelp({ status }: { status: string | undefined }) {
   if (!status) return null;
   return (
-    <details className="text-sm text-muted">
-      <summary className="cursor-pointer py-2">
+    <details className="text-xs text-muted">
+      <summary className="cursor-pointer py-1">
         {t("Uygulamayı durdurma")}
       </summary>{" "}
       <p className="max-w-prose text-sm text-subtle">

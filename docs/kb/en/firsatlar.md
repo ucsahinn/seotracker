@@ -1,14 +1,14 @@
 ---
 title: Opportunities
-description: Shows observed pages, possible work and an extra-click upper bound when the data supports one.
+description: Which page to work on first: pages Google already shows, ranked by an upper bound on extra clicks from your Search Console data, with suggested work.
 screen: Fırsatlar
 route: /p/<proje>/opportunities
 updated: 2026-10-27
 ---
 
-“Inspect Analytics address group” in a row or its detail opens organic landing pages with the source dates and normalized address group. When the address or dates cannot be matched, an explanation replaces the link. The group is filtered before pagination within the same source of up to 1,000 rows used by Opportunities. Analytics discloses source or quality limits that prevent verification of the complete group. Refetched measurements may change; matching date labels can cover different time spans in the GA4 property timezone and Search Console Pacific calendar.
+Opportunities ranks the pages Google already shows for your site by how many extra clicks they could bring. The calculation uses your own Search Console data and your site's own click-through rates. Each page gets a suggested kind of work and an upper bound on the gain; it is not a forecast or a guarantee.
 
-# How to use Opportunities
+## How to use Opportunities
 
 Start with **Look here first**. It opens the page with the highest estimable additional-click upper bound and suggests work to investigate. It does not measure how easy or fast the work will be.
 
@@ -29,6 +29,8 @@ Desktop has a sortable table; phones have wrapping page rows and a Details actio
 Unestimable scope does not mean no opportunity. Missing query matches, low impressions and missing target rates are counted separately from measured zero. No returned page rows does not prove there were no impressions.
 
 Analytics adds observed organic sessions, key events and the share of sessions with a key event. It never projects future event counts from additional clicks. Restricted metrics stay unknown. Source limits and timezones are disclosed. URL variants may share one Analytics cohort; do not sum its sessions across rows. For quota errors, wait and refresh; for permission errors, check connection settings. A failed refresh preserves previous evidence with its original dates and a warning.
+
+“Inspect Analytics address group” in a row or its detail opens organic landing pages with the source dates and normalized address group. When the address or dates cannot be matched, an explanation replaces the link. The group is filtered before pagination within the same source of up to 1,000 rows used by Opportunities. Analytics discloses source or quality limits that prevent verification of the complete group. Refetched measurements may change; matching date labels can cover different time spans in the GA4 property timezone and Search Console Pacific calendar.
 
 ## Export and follow-up
 

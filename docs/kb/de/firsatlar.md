@@ -1,14 +1,14 @@
 ---
 title: Chancen
-description: Zeigt erfasste Seiten, mögliche Aufgaben und bei ausreichenden Daten eine Obergrenze für zusätzliche Klicks.
+description: Welche Seite zuerst? Seiten, die Google bereits zeigt, nach einer Obergrenze zusätzlicher Klicks aus Ihren Search-Console-Daten, mit Aufgabe.
 screen: Fırsatlar
 route: /p/<proje>/opportunities
 updated: 2026-10-27
 ---
 
-„Analytics-Adressgruppe prüfen“ in der Zeile und Detailansicht öffnet organische Einstiegsseiten mit Quelldaten und normalisierter Adressgruppe. Ohne passende Adresse oder Daten ersetzt eine Erklärung den Link. Die Gruppe wird vor der Seiteneinteilung innerhalb derselben höchstens 1.000 Quellzeilen wie bei Chancen gefiltert. Analytics nennt Quellen- und Qualitätsgrenzen, die eine vollständige Bestätigung verhindern. Neu abgerufene Messwerte können sich ändern; gleiche Datumsangaben können in der GA4-Zeitzone und im pazifischen Kalender der Search Console andere Zeitspannen abdecken.
+Chancen ordnet die Seiten, die Google für Ihre Website bereits zeigt, danach, wie viele zusätzliche Klicks sie bringen könnten. Die Berechnung nutzt Ihre eigenen Search-Console-Daten und die Klickraten Ihrer Website. Jede Seite erhält eine vorgeschlagene Aufgabe und eine Obergrenze für den Gewinn; das ist keine Prognose und keine Garantie.
 
-# Chancen nutzen
+## Chancen nutzen
 
 **Zuerst hier nachsehen** öffnet die Seite mit der höchsten berechenbaren Obergrenze zusätzlicher Klicks und nennt eine zu prüfende Maßnahme. Wie leicht oder schnell diese Arbeit ist, wird nicht gemessen.
 
@@ -29,6 +29,8 @@ Am Desktop erscheint eine sortierbare Tabelle, am Telefon eine umbrechende Seite
 Nicht berechenbarer Umfang bedeutet nicht fehlendes Potenzial. Fehlende Anfragenzuordnung, zu wenige Impressionen und fehlende Zielraten werden von einer gemessenen Null getrennt. Keine gelieferten Seitenzeilen beweisen nicht, dass es keine Impressionen gab.
 
 Analytics ergänzt gemessene organische Sitzungen, Schlüsselereignisse und den Anteil der Sitzungen mit Schlüsselereignis. Aus zusätzlichen Klicks werden keine künftigen Ereignisse prognostiziert. Eingeschränkte Messwerte bleiben unbekannt. URL-Varianten können dieselbe Analytics-Gruppe nutzen; deren Sitzungen nicht zeilenübergreifend summieren. Bei erschöpftem Kontingent warten und aktualisieren, bei fehlenden Rechten die Verbindung prüfen. Schlägt die Aktualisierung fehl, bleiben vorherige Daten mit ursprünglichen Datumsangaben und Warnung sichtbar.
+
+„Analytics-Adressgruppe prüfen“ in der Zeile und Detailansicht öffnet organische Einstiegsseiten mit Quelldaten und normalisierter Adressgruppe. Ohne passende Adresse oder Daten ersetzt eine Erklärung den Link. Die Gruppe wird vor der Seiteneinteilung innerhalb derselben höchstens 1.000 Quellzeilen wie bei Chancen gefiltert. Analytics nennt Quellen- und Qualitätsgrenzen, die eine vollständige Bestätigung verhindern. Neu abgerufene Messwerte können sich ändern; gleiche Datumsangaben können in der GA4-Zeitzone und im pazifischen Kalender der Search Console andere Zeitspannen abdecken.
 
 ## Export und Kontrolle
 

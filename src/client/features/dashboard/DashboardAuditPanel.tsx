@@ -32,8 +32,10 @@ export function DashboardAuditPanel({
   progressPages?: number;
 }) {
   const audit = overview?.audit;
+  // A column: the card takes the row's height and a footnote under it
+  // stays inside the grid cell instead of spilling under the next row.
   return (
-    <section className="min-w-0 space-y-3">
+    <section className="flex min-w-0 flex-col gap-3">
       {isError ? (
         <QueryErrorState
           error={error}
@@ -81,7 +83,11 @@ export function DashboardAuditPanel({
           })}
         </p>
       ) : null}
-      {audit ? <AuditHealthCard projectId={projectId} audit={audit} /> : null}
+      {audit ? (
+        <div className="flex-1">
+          <AuditHealthCard projectId={projectId} audit={audit} />
+        </div>
+      ) : null}
       <AuditFreshnessCard projectId={projectId} />
     </section>
   );

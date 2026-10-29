@@ -19,12 +19,14 @@ export function CardShell({
   children: React.ReactNode;
 }) {
   return (
-    <div className="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
+    // h-full + a growing body: in a stretched grid row two cards side by side
+    // end on one line; in a start-aligned one this resolves to auto.
+    <div className="flex h-full flex-col overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
       <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3.5">
-        <h2 className="text-sm font-semibold leading-tight">{title}</h2>
+        <h2 className="text-base font-semibold leading-tight">{title}</h2>
         {action}
       </div>
-      <div className="border-t border-base-300 p-5">
+      <div className="flex-1 border-t border-base-300 p-5">
         {children}
         {stamp ? <p className="mt-4 text-xs text-subtle">{stamp}</p> : null}
       </div>
@@ -80,7 +82,9 @@ export function Stat({
     : undefined;
   return (
     <div
-      className={metric ? "metric-tile rounded-field p-3" : undefined}
+      // Every stat sits in the same frame; only a named metric adds its hue,
+      // so a grid of four never reads as two tiles and two loose numbers.
+      className="metric-tile stat-tile rounded-field p-3"
       data-metric={metric}
       style={style}
     >
@@ -105,4 +109,4 @@ export function Stat({
   );
 }
 
-export const moreDetailsClass = "btn btn-ghost btn-xs";
+export const moreDetailsClass = "card-action";

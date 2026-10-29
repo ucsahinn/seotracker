@@ -74,7 +74,7 @@ export function SystemLimitsSection({ id }: { id?: string }) {
       ) : null}
       {projectId ? (
         <details>
-          <summary className="link cursor-pointer text-sm">
+          <summary className="min-h-11 cursor-pointer text-sm">
             {t("Sınırları göster")}
           </summary>
           <div className="mt-3">

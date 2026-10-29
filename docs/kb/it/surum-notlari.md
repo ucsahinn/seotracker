@@ -1,16 +1,16 @@
 ---
 title: Note di versione
-description: seowatcher 0.8.4 Alpha — dati Google completi, colori vivaci e schermate riviste con dati reali, più leggibili sul telefono.
+description: seowatcher 0.8.6 Alpha (29 ottobre 2026): nuovo controllo del sito con 202 regole, sei lingue, notifiche e dati Google più precisi.
 updated: 2026-10-29
 ---
 
-L’ultima versione è la **0.8.5 Alpha**, del 29 ottobre 2026. I dati restano intatti durante l’aggiornamento.
+L’ultima versione è la **0.8.6 Alpha**, del 29 ottobre 2026. I dati restano intatti durante l’aggiornamento.
 
 Per passare da 2.x a 0.x.x Alpha, avviare manualmente il nuovo programma di installazione; il vecchio aggiornamento non riconosce il numero inferiore come più recente.
 
-## 0.8.5 Alpha — 2026-10-29
+## 0.8.6 Alpha — 2026-10-29
 
-Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.5: verifica del sito, dashboard, notifiche e sei lingue, con dati più precisi e schermate più leggibili.
+Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.6: verifica del sito, dashboard, notifiche e sei lingue, con dati più precisi e schermate più leggibili.
 
 ### ✨ In evidenza
 
@@ -66,6 +66,8 @@ Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.5: verifica del s
 - **Aiuto e versioni:** Nelle schermate di aiuto e delle note di versione è più facile trovare le informazioni desiderate.
 - **Colori dei dati:** Clic blu, impressioni viola, tasso di clic turchese, posizione ocra, sessioni verdi e conversioni rosa: schede e grafici usano gli stessi colori più vivaci in entrambi i temi.
 - **Schermate più ordinate:** Fonte, periodo e aggiornamento dei dati sono riuniti con etichette brevi. Apri le spiegazioni lunghe quando servono; nomi brevi e pulsanti chiari rendono più facili le azioni.
+- **Su telefono:** Gli elenchi appaiono come righe leggibili invece che come tabelle sul telefono; query ed etichette non vengono più tagliate.
+- **Stile unico:** Pulsanti, sezioni espandibili, notifiche e schede hanno lo stesso aspetto in ogni schermata; gli elenchi di una sola pagina non mostrano più i pulsanti di pagina.
 
 ### 🗂️ Progetti e ricerche salvate
 

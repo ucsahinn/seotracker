@@ -74,8 +74,10 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
   );
 
   return (
-    <section className="rounded-box border border-base-300 bg-base-200/25 px-2 py-3">
-      <div className="px-2">
+    // No frame of its own: it sits inside the history card, and a bordered
+    // box inside a bordered card was a box in a box.
+    <section className="space-y-1">
+      <div>
         <h3 className="text-sm font-medium">{t("Denetimler arası değişim")}</h3>
         <p className="mt-0.5 text-xs text-muted">
           {t(
@@ -83,41 +85,8 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
           )}
         </p>
       </div>
-      <div
-        role="group"
-        aria-label={t("Grafik serileri")}
-        className="flex flex-wrap gap-4 px-2 py-2 text-xs text-muted"
-      >
-        <span className="inline-flex items-center gap-2">
-          <svg width="24" height="6" aria-hidden>
-            <line
-              x1="0"
-              y1="3"
-              x2="24"
-              y2="3"
-              stroke={SEVERITY.critical}
-              strokeWidth="2"
-            />
-          </svg>
-          {t("Kritik")}
-        </span>
-        <span className="inline-flex items-center gap-2">
-          <svg width="24" height="6" aria-hidden>
-            <line
-              x1="0"
-              y1="3"
-              x2="24"
-              y2="3"
-              stroke={SEVERITY.warning}
-              strokeWidth="2"
-              strokeDasharray="4 3"
-            />
-          </svg>
-          {t("Uyarı")}
-        </span>
-      </div>
       {!comparable ? (
-        <div className="space-y-3 px-2">
+        <div className="space-y-3">
           <p className="text-sm text-muted">
             {t(
               "Karşılaştırma yapılamadı: tarama kapsamları farklı veya bilinmiyor.",
@@ -131,8 +100,13 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
               <thead>
                 <tr>
                   {[t("Tarih"), t("Sayfa"), t("Kritik"), t("Uyarı")].map(
-                    (label) => (
-                      <th key={label}>{label}</th>
+                    (label, index) => (
+                      <th
+                        key={label}
+                        className={index > 0 ? "text-right" : undefined}
+                      >
+                        {label}
+                      </th>
                     ),
                   )}
                 </tr>
@@ -140,19 +114,17 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
               <tbody>
                 {points.map((point) => (
                   <tr key={point.key}>
-                    <td>{formatDateTime(point.date)}</td>
-                    <td>{formatCount(point.pages)}</td>
-                    <td>
-                      {t("{density} ({total} toplam)", {
-                        density: formatDecimal(point.critical),
-                        total: formatCount(point.criticalTotal),
-                      })}
+                    <td className="whitespace-nowrap">
+                      {formatDateTime(point.date)}
                     </td>
-                    <td>
-                      {t("{density} ({total} toplam)", {
-                        density: formatDecimal(point.warning),
-                        total: formatCount(point.warningTotal),
-                      })}
+                    <td className="text-right tabular-nums">
+                      {formatCount(point.pages)}
+                    </td>
+                    <td className="text-right tabular-nums">
+                      {densityCell(point.critical, point.criticalTotal)}
+                    </td>
+                    <td className="text-right tabular-nums">
+                      {densityCell(point.warning, point.warningTotal)}
                     </td>
                   </tr>
                 ))}
@@ -161,115 +133,144 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
           </div>
         </div>
       ) : !anyFindings ? (
-        <p className="px-2 pt-3 text-sm text-muted">
+        <p className="pt-2 text-sm text-muted">
           {t(
             "Bu {count} denetimin hiçbirinde kritik sorun ya da uyarı çıkmadı, grafik boş. Bilgi düzeyindeki bulgular denetimlerin kendi sayfalarında.",
             { count: points.length },
           )}
         </p>
       ) : (
-        <Chart
-          height={180}
-          summary={summarise(first, last, points.length)}
-          table={{
-            caption: t(
-              "Denetim başına sayfa yoğunluğu: yüz sayfa başına sorun",
-            ),
-            columns: [t("Tarih"), t("Sayfa"), t("Kritik"), t("Uyarı")],
-            rows: points.map((point) => [
-              formatDateTime(point.date),
-              formatCount(point.pages),
-              t("{density} ({total} toplam)", {
-                density: formatDecimal(point.critical),
-                total: formatCount(point.criticalTotal),
-              }),
-              t("{density} ({total} toplam)", {
-                density: formatDecimal(point.warning),
-                total: formatCount(point.warningTotal),
-              }),
-            ]),
-          }}
-        >
-          <LineChart
-            data={points}
-            // Room for the last tick label, which centres on the last point.
-            margin={{ top: 12, right: 28, bottom: 0, left: 0 }}
+        <>
+          <div
+            role="group"
+            aria-label={t("Grafik serileri")}
+            className="flex flex-wrap gap-4 py-2 text-xs text-muted"
           >
-            <CartesianGrid {...CHART_GRID} />
-            <XAxis
-              dataKey="date"
-              {...CHART_AXIS}
-              // Several audits often share a day, so a date-only label repeats; the
-              // time makes each tick one audit, and the gap hides overlaps.
-              tickFormatter={formatDateTime}
-              minTickGap={36}
-            />
-            <YAxis
-              {...CHART_AXIS}
-              width={40}
-              tickFormatter={(value: number) => formatCount(value)}
-              domain={[0, "auto"]}
-            />
-            <Tooltip
-              cursor={{ stroke: "currentColor", strokeOpacity: 0.2 }}
-              content={({ active, label }) => {
-                if (!active || typeof label !== "string") return null;
-                const point = points.find((entry) => entry.date === label);
-                if (!point) return null;
-                return (
-                  <ChartTooltip
-                    title={t("{date} · {count} sayfa", {
-                      date: formatDateTime(point.date),
-                      count: point.pages,
-                    })}
-                    rows={[
-                      {
-                        label: t("Kritik"),
-                        value: t("{density} / 100 sayfa ({total} toplam)", {
-                          density: formatDecimal(point.critical),
-                          total: formatCount(point.criticalTotal),
-                        }),
-                        color: SEVERITY.critical,
-                      },
-                      {
-                        label: t("Uyarı"),
-                        value: t("{density} / 100 sayfa ({total} toplam)", {
-                          density: formatDecimal(point.warning),
-                          total: formatCount(point.warningTotal),
-                        }),
-                        color: SEVERITY.warning,
-                      },
-                    ]}
-                  />
-                );
-              }}
-            />
-            <Line
-              type="monotone"
-              dataKey="critical"
-              name={t("Kritik")}
-              stroke={SEVERITY.critical}
-              strokeWidth={2}
-              dot={{ r: 3 }}
-              isAnimationActive={!reduced}
-            />
-            <Line
-              type="monotone"
-              dataKey="warning"
-              name={t("Uyarı")}
-              stroke={SEVERITY.warning}
-              strokeWidth={2}
-              /*
-               * Dashed as well as tinted: `--color-error` and `--color-warning`
-               * sit at nearly the same lightness, so two solid lines are one
-               * line to a reader who cannot separate the hues.
-               */
-              strokeDasharray="4 3"
-              dot={{ r: 3 }}
-              isAnimationActive={!reduced}
-            />
-          </LineChart>
-        </Chart>
+            <span className="inline-flex items-center gap-2">
+              <svg width="24" height="6" aria-hidden>
+                <line
+                  x1="0"
+                  y1="3"
+                  x2="24"
+                  y2="3"
+                  stroke={SEVERITY.critical}
+                  strokeWidth="2"
+                />
+              </svg>
+              {t("Kritik")}
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <svg width="24" height="6" aria-hidden>
+                <line
+                  x1="0"
+                  y1="3"
+                  x2="24"
+                  y2="3"
+                  stroke={SEVERITY.warning}
+                  strokeWidth="2"
+                  strokeDasharray="4 3"
+                />
+              </svg>
+              {t("Uyarı")}
+            </span>
+          </div>
+          <Chart
+            height={180}
+            summary={summarise(first, last, points.length)}
+            table={{
+              caption: t(
+                "Denetim başına sayfa yoğunluğu: yüz sayfa başına sorun",
+              ),
+              columns: [t("Tarih"), t("Sayfa"), t("Kritik"), t("Uyarı")],
+              rows: points.map((point) => [
+                formatDateTime(point.date),
+                formatCount(point.pages),
+                densityText(point.critical, point.criticalTotal),
+                densityText(point.warning, point.warningTotal),
+              ]),
+            }}
+          >
+            <LineChart
+              data={points}
+              // Room for the last tick label, which centres on the last point.
+              margin={{ top: 12, right: 28, bottom: 0, left: 0 }}
+            >
+              <CartesianGrid {...CHART_GRID} />
+              <XAxis
+                dataKey="date"
+                {...CHART_AXIS}
+                // Several audits often share a day, so a date-only label repeats; the
+                // time makes each tick one audit, and the gap hides overlaps.
+                tickFormatter={formatDateTime}
+                minTickGap={36}
+              />
+              <YAxis
+                {...CHART_AXIS}
+                width={40}
+                tickFormatter={(value: number) => formatCount(value)}
+                domain={[0, "auto"]}
+              />
+              <Tooltip
+                cursor={{ stroke: "currentColor", strokeOpacity: 0.2 }}
+                content={({ active, label }) => {
+                  if (!active || typeof label !== "string") return null;
+                  const point = points.find((entry) => entry.date === label);
+                  if (!point) return null;
+                  return (
+                    <ChartTooltip
+                      title={t("{date} · {count} sayfa", {
+                        date: formatDateTime(point.date),
+                        count: point.pages,
+                      })}
+                      rows={[
+                        {
+                          label: t("Kritik"),
+                          value: t("{density} / 100 sayfa ({total} toplam)", {
+                            density: formatDensity(point.critical),
+                            total: formatCount(point.criticalTotal),
+                          }),
+                          color: SEVERITY.critical,
+                        },
+                        {
+                          label: t("Uyarı"),
+                          value: t("{density} / 100 sayfa ({total} toplam)", {
+                            density: formatDensity(point.warning),
+                            total: formatCount(point.warningTotal),
+                          }),
+                          color: SEVERITY.warning,
+                        },
+                      ]}
+                    />
+                  );
+                }}
+              />
+              <Line
+                type="monotone"
+                dataKey="critical"
+                name={t("Kritik")}
+                stroke={SEVERITY.critical}
+                strokeWidth={2}
+                dot={{ r: 3 }}
+                isAnimationActive={!reduced}
+              />
+              <Line
+                type="monotone"
+                dataKey="warning"
+                name={t("Uyarı")}
+                stroke={SEVERITY.warning}
+                strokeWidth={2}
+                /*
+                 * Dashed as well as tinted: `--color-error` and `--color-warning`
+                 * sit at nearly the same lightness, so two solid lines are one
+                 * line to a reader who cannot separate the hues.
+                 */
+                strokeDasharray="4 3"
+                dot={{ r: 3 }}
+                isAnimationActive={!reduced}
+              />
+            </LineChart>
+          </Chart>
+        </>
       )}
     </section>
   );
@@ -298,12 +299,39 @@ function summarise(first: Point, last: Point, total: number) {
       count: total,
       series: series.label,
       fromDate: formatDate(first.date),
-      from: formatDecimal(series.from),
+      from: formatDensity(series.from),
       toDate: formatDate(last.date),
-      to: formatDecimal(series.to),
+      to: formatDensity(series.to),
       direction,
     },
   );
+}
+
+/** A whole density prints as a whole number: "160", not "160,0". */
+function formatDensity(value: number): string {
+  return Number.isInteger(value) ? formatCount(value) : formatDecimal(value);
+}
+
+/**
+ * Density with its count under it, so the cell stays narrow enough for a
+ * phone; a zero is just "0", not "0,0 / 0 toplam".
+ */
+function densityCell(density: number, total: number) {
+  if (total === 0) return formatCount(0);
+  return (
+    <>
+      <span className="whitespace-nowrap">{formatDensity(density)}</span>
+      <span className="block text-xs whitespace-nowrap text-muted">
+        {t("{total} toplam", { total: formatCount(total) })}
+      </span>
+    </>
+  );
+}
+
+/** The same pair as one string, for the chart's text table. */
+function densityText(density: number, total: number): string {
+  if (total === 0) return formatCount(0);
+  return `${formatDensity(density)} (${t("{total} toplam", { total: formatCount(total) })})`;
 }
 
 function roundTenth(value: number): number {

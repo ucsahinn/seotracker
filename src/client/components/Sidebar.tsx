@@ -162,7 +162,7 @@ function SidebarFooter({ onNavigate }: { onNavigate?: () => void }) {
         <Megaphone className="h-4 w-4 shrink-0" aria-hidden />
         <span className="truncate">{t("Duyurular")}</span>
         {unread > 0 ? (
-          <span className="badge badge-primary badge-sm ml-auto">
+          <span className="badge badge-count badge-sm ml-auto">
             {formatCount(unread)}
           </span>
         ) : null}

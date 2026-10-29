@@ -1,7 +1,6 @@
 import { t } from "@/shared/i18n";
 import * as React from "react";
 import { Check, ChevronRight, ListChecks, RotateCcw } from "lucide-react";
-import { EmptyState } from "@/client/components/EmptyState";
 import { SafeExternalLink } from "@/client/components/SafeExternalLink";
 import type { TodoItem } from "@/shared/searchInsights";
 import {
@@ -63,19 +62,22 @@ export function TodoTab({
   if (todo.length === 0) {
     return (
       <div>
-        <EmptyState
-          icon={ListChecks}
-          title={t("Şu an önerilecek iş yok")}
-          action={
-            <button
-              type="button"
-              className="btn btn-sm"
-              onClick={onShowQueries}
-            >
-              {t("Sorguları aç")}
-            </button>
-          }
-        />
+        {/* One row, not a 250px centred panel: the finding is "nothing
+            passed the thresholds", and the note below says why. */}
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 px-4 pt-4">
+          <ListChecks
+            className="size-4 shrink-0 text-[var(--ink-primary)]"
+            aria-hidden
+          />
+          <p className="text-sm font-medium">{t("Şu an önerilecek iş yok")}</p>
+          <button
+            type="button"
+            className="btn btn-ghost btn-sm ml-auto"
+            onClick={onShowQueries}
+          >
+            {t("Sorguları aç")}
+          </button>
+        </div>
         <details className="px-4 pb-4 text-sm text-muted">
           <summary className="min-h-11 cursor-pointer py-3">
             {t("Veri hakkında")}

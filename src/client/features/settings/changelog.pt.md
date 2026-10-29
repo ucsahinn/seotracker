@@ -2,9 +2,9 @@
 
 Novidades e correções, da versão mais recente para a mais antiga.
 
-## [0.8.5] Alpha — 2026-10-29
+## [0.8.6] Alpha — 2026-10-29
 
-Esta entrada reúne novidades e correções da 0.5.0 à 0.8.5: auditoria do site, painel, notificações e seis idiomas, com dados mais precisos e telas mais legíveis.
+Esta entrada reúne novidades e correções da 0.5.0 à 0.8.6: auditoria do site, painel, notificações e seis idiomas, com dados mais precisos e telas mais legíveis.
 
 ### ✨ Destaques
 
@@ -60,6 +60,8 @@ Esta entrada reúne novidades e correções da 0.5.0 à 0.8.5: auditoria do site
 - **Ajuda e versões:** As telas de ajuda e de notas da versão facilitam encontrar as informações desejadas.
 - **Cores dos dados:** Cliques em azul, impressões em violeta, taxa de cliques em turquesa, posição em ocre, sessões em verde e conversões em rosa: cartões e gráficos usam as mesmas cores mais vivas nos dois temas.
 - **Telas mais tranquilas:** Fonte, período e atualização dos dados aparecem juntos com rótulos curtos. Abra as explicações longas quando precisar; nomes curtos e botões claros facilitam as ações.
+- **No celular:** As listas aparecem como linhas legíveis em vez de tabelas no celular; consultas e rótulos não são mais cortados.
+- **Visual único:** Botões, seções expansíveis, notificações e cartões têm a mesma aparência em todas as telas; listas de uma única página não mostram mais botões de página.
 
 ### 🗂️ Projetos e pesquisas salvas
 

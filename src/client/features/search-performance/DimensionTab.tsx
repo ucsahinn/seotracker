@@ -232,10 +232,12 @@ export function DimensionTab({
                   const move = positionMove(row.previousPosition, row.position);
                   return (
                     <tr key={row.key} className="hover:bg-base-200/50">
-                      <td className="max-w-0">
+                      {/* On a phone the query wraps instead of being cut to
+                          five letters; the change column makes room. */}
+                      <td className="max-w-0 max-sm:min-w-36">
                         <button
                           type="button"
-                          className="block w-full truncate text-left hover:underline focus-visible:outline-2 focus-visible:outline-primary"
+                          className="block w-full text-left [overflow-wrap:anywhere] hover:underline sm:truncate focus-visible:outline-2 focus-visible:outline-primary"
                           title={row.key}
                           onClick={() => onOpen(row.key)}
                         >
@@ -252,7 +254,7 @@ export function DimensionTab({
                       <td className="text-right tabular-nums">
                         {formatCount(row.clicks)}
                       </td>
-                      <td className="whitespace-nowrap text-right tabular-nums">
+                      <td className="whitespace-nowrap text-right tabular-nums max-sm:hidden">
                         <ClickChange value={row.clickChange} />
                       </td>
                       <td className="hidden text-right tabular-nums md:table-cell">
@@ -266,7 +268,7 @@ export function DimensionTab({
                       <td className="whitespace-nowrap text-right tabular-nums">
                         {formatDecimal(row.position)}
                         {move ? (
-                          <span className="block text-[11px] text-subtle">
+                          <span className="block text-xs text-subtle">
                             {move}
                           </span>
                         ) : null}

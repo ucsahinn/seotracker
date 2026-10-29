@@ -1,7 +1,7 @@
 import { formatDateTime } from "@/client/lib/format";
 import { FactStrip } from "@/client/components/FactStrip";
 import { googleAuthErrorCopy } from "./googleAuthErrorCopy";
-import { Loader2 } from "lucide-react";
+import { ChevronRight, Loader2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { t } from "@/shared/i18n";
 
@@ -152,54 +152,60 @@ export function GoogleConnectedState({
           </>
         }
       />
-      <div className="flex flex-wrap gap-3">
-        {reportHref && reportLabel ? (
-          <a href={reportHref} className="btn btn-ghost btn-sm min-h-11">
-            {reportLabel}
-          </a>
-        ) : null}
-        <a
-          href="/settings#google"
-          aria-label={t("Kurulumun Google kimlik ayarları")}
-          className="btn btn-ghost btn-sm min-h-11 max-w-full h-auto whitespace-normal text-left"
-        >
-          {t("Ayarlar")}
-        </a>
-      </div>
-      {canManage || canManageAccounts ? (
-        <fieldset
-          disabled={disconnecting || disabled}
-          className="flex flex-wrap items-center gap-1"
-        >
-          <button
-            type="button"
-            className="btn btn-outline btn-sm border-base-300"
-            ref={changeButton}
-            data-google-change
-            aria-label={
-              canManage
-                ? t("Mülkü veya hesabı değiştir")
-                : t("Google hesaplarını yönet")
-            }
-            onClick={onChange}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        {canManage || canManageAccounts ? (
+          <fieldset
+            disabled={disconnecting || disabled}
+            className="flex flex-wrap items-center gap-2"
           >
-            {t("Değiştir")}
-          </button>
-          {canManage && !confirming ? (
             <button
               type="button"
-              className="btn btn-ghost btn-sm text-[var(--ink-error)] hover:bg-error/10"
-              onClick={() => setConfirming(true)}
+              className="btn btn-sm"
+              ref={changeButton}
+              data-google-change
+              aria-label={
+                canManage
+                  ? t("Mülkü veya hesabı değiştir")
+                  : t("Google hesaplarını yönet")
+              }
+              onClick={onChange}
             >
-              {t("Bağlantıyı kes")}
+              {t("Değiştir")}
             </button>
+            {canManage && !confirming ? (
+              <button
+                type="button"
+                className="btn btn-ghost btn-sm text-[var(--ink-error)] hover:bg-error/10"
+                onClick={() => setConfirming(true)}
+              >
+                {t("Bağlantıyı kes")}
+              </button>
+            ) : null}
+          </fieldset>
+        ) : null}
+        <div className="flex flex-wrap items-center gap-3 text-sm">
+          {reportHref && reportLabel ? (
+            <a
+              href={reportHref}
+              className="link link-primary inline-flex min-h-11 items-center gap-0.5"
+            >
+              {reportLabel}
+              <ChevronRight className="size-3.5" aria-hidden />
+            </a>
           ) : null}
-        </fieldset>
-      ) : null}
+          <a
+            href="/settings#google"
+            aria-label={t("Kurulumun Google kimlik ayarları")}
+            className="link inline-flex min-h-11 items-center text-muted"
+          >
+            {t("Ayarlar")}
+          </a>
+        </div>
+      </div>
       {canManage && confirming ? (
         <div
           role="alert"
-          className="space-y-3 rounded-field border border-base-300 p-3 text-sm"
+          className="space-y-3 rounded-field border border-[var(--hairline-strong)] p-3 text-sm"
         >
           <p className="text-muted">
             {t(

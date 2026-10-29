@@ -1446,7 +1446,7 @@ export const deCatalog = {
     "Dichte pro Audit: Probleme pro hundert Seiten",
   Tarih: "Datum",
   Sayfa: "Seite",
-  "{density} ({total} toplam)": "{density} ({total} insgesamt)",
+  "{total} toplam": "{total} insgesamt",
   "{date} · {count} sayfa": {
     one: "{date} · {count} Seite",
     other: "{date} · {count} Seiten",
@@ -4054,4 +4054,8 @@ export const deCatalog = {
   "{count} sayfa soruluyor": "Google wird zu {count} Seiten befragt",
   "{pages} sayfa tarandı, {issues} bulgu":
     "{pages} Seiten gecrawlt, {issues} Befunde",
+  "Bu dönemde hiç oturum kaydedilmedi.":
+    "In diesem Zeitraum wurden keine Sitzungen erfasst.",
+  "Başlık veya özet": "Titel oder Zusammenfassung",
+  "Tarama bittikten sonra çalışır.": "Läuft nach Abschluss des Crawls.",
 } as const;

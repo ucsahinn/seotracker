@@ -5,9 +5,9 @@ kind: nasil-yapilir
 updated: 2026-10-23
 ---
 
-A interface do aplicativo existe em seis idiomas: turco, inglês, alemão, francês, italiano e português. O idioma é escolhido em Configurações → Aparência → Idioma. Este guia mostra botões e telas com o nome que eles têm na interface em português. O assistente de instalação só existe em turco e inglês, e o menu da bandeja do Windows só em turco. Ali o nome exibido vem com o significado em português entre parênteses.
-
 Ao fim desta página, o aplicativo estará instalado no seu computador e aberto no navegador. A instalação leva dois minutos. Ela é feita só para a sua conta de usuário e não exige direitos de administrador (a permissão é pedida uma única vez, se faltar o componente Visual C++).
+
+A interface do aplicativo existe em seis idiomas: turco, inglês, alemão, francês, italiano e português. O idioma é escolhido em Configurações → Aparência → Idioma. Este guia mostra botões e telas com o nome que eles têm na interface em português. O assistente de instalação só existe em turco e inglês, e o menu da bandeja do Windows só em turco. Ali o nome exibido vem com o significado em português entre parênteses.
 
 ## O que você precisa
 

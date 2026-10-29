@@ -120,3 +120,6 @@ clear.
 - 2026-10-26: Bash tool on Windows fails with `ENAMETOOLONG: uv_spawn` when a heredoc command is very long (~40 KB); write the script with the Write tool and run it instead. Scratchpad already held an unrelated `i18n_add.py` from another session, so pick unique script names.
 - 2026-10-27: In the Bash tool, a `node -e '...'` or quoted heredoc whose body holds template-literal backticks and Turkish apostrophes failed with "unexpected EOF while looking for matching quote"; Python writes from Git Bash also hit `OSError: [Errno 22]` on a relative src path. Writing the edit script with the Write tool and running `node script.cjs` worked.
 - 2026-10-27: `node scripts/i18n-check.mjs` prints "missing 0" even when de/fr/it/pt lack keys; "missing" counts only English. The locale gap shows only in the "Locale coverage" line or via `--missing <locale>`.
+
+- 2026-10-29: `tsc --noEmit` reported 37 false column-type errors in unrelated files when `OpportunityPhoneList` was imported near the top of `OpportunitiesTable.tsx`; moving the import last made them go away. Likely `AppDataTable` `ColumnMeta.__valueType` inference depending on module order.
+- 2026-10-29: under full `pnpm test` load, `src/server/mcp/project-auth.test.ts` and `saved-keywords.test.ts` each failed once and passed alone (17/17); likely a default-timeout race when the machine is busy.

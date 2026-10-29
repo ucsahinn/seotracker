@@ -152,3 +152,21 @@ export function TabStrip({
     </div>
   );
 }
+
+/*
+ * Yapılacaklar is the default tab, but an empty one opened the screen on a
+ * "nothing to do" panel whose only button led to the tab beside it. With
+ * nothing to do, the default lands on Sorgular instead; choosing Yapılacaklar
+ * explicitly still shows it. No navigation, so Back gets no extra stop.
+ */
+export function useLandingTab(
+  routeTab: SearchTab,
+  view: { todo: readonly unknown[] } | null,
+) {
+  const [pickedTodo, setPickedTodo] = React.useState(false);
+  const tab: SearchTab =
+    routeTab === "todo" && view && view.todo.length === 0 && !pickedTodo
+      ? "queries"
+      : routeTab;
+  return { tab, pickTodo: () => setPickedTodo(true) };
+}

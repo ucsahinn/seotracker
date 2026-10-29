@@ -255,7 +255,7 @@ export function OpportunitiesTab({
                           }
                         />
                         {row.page ? (
-                          <span className="block truncate text-[11px] text-subtle">
+                          <span className="block truncate text-xs text-subtle">
                             {shortPage(row.page)}
                           </span>
                         ) : null}

@@ -2,6 +2,8 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { expect, it, vi } from "vitest";
 import { GrowingTextarea } from "./GrowingTextarea";
 it("C26 grows to the full saved note and resizes edited drafts", () => {
+  // The JS fallback runs only where CSS field-sizing is missing.
+  vi.stubGlobal("CSS", { supports: () => false });
   const height = vi
     .spyOn(HTMLTextAreaElement.prototype, "scrollHeight", "get")
     .mockReturnValue(480);

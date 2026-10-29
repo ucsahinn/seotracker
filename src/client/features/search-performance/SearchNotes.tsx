@@ -98,44 +98,77 @@ export function SearchNotes({
 
   return (
     <div className="flex flex-col gap-2">
-      {marks.length > 0 ? (
-        <ol
-          className="flex flex-col gap-1"
-          aria-label={t("Grafikteki işaretler")}
-        >
-          {marks.map(({ n, annotation }) => (
-            <li
-              key={`${annotation.kind}-${n}`}
-              className="flex items-start gap-2"
-            >
-              <span className="inline-flex size-5 shrink-0 items-center justify-center rounded-full border border-[var(--hairline-strong)] text-[11px] font-semibold text-base-content">
-                {n}
-              </span>
-              <span className="min-w-0 flex-1 [overflow-wrap:anywhere]">
-                <span className="text-base-content">
-                  {annotationText(annotation)}
-                </span>
-                {annotation.kind === "audit"
-                  ? null
-                  : ` · ${t(ANNOTATION_KIND_LABEL[annotation.kind])}`}
-                {" · "}
-                {dateRange(annotation)}
-              </span>
-              {annotation.kind === "note" ? (
-                <button
-                  type="button"
-                  className="btn btn-ghost btn-xs btn-square"
-                  aria-label={t("Notu sil: {note}", { note: annotation.label })}
-                  disabled={remove.isPending}
-                  onClick={() => remove.mutate(annotation.id)}
+      {/* The marker key on the left, the one action on the right; on a
+          phone the action goes under the list instead of floating beside it. */}
+      <div className="flex flex-col items-start gap-x-4 gap-y-2 sm:flex-row sm:flex-wrap">
+        {marks.length > 0 ? (
+          <ol
+            className="flex min-w-0 flex-1 flex-col gap-1 self-stretch"
+            aria-label={t("Grafikteki işaretler")}
+          >
+            {marks.map(({ n, annotation }) => (
+              <li
+                key={`${annotation.kind}-${n}`}
+                className="flex items-start gap-2"
+              >
+                {/* The dashed rule the chart draws, with its number: a
+                    numbered circle read as a pagination control. */}
+                <span
+                  className={`inline-flex shrink-0 items-center gap-1 text-xs font-semibold tabular-nums ${
+                    annotation.kind === "note"
+                      ? "text-[var(--ink-primary)]"
+                      : "text-base-content"
+                  }`}
                 >
-                  <Trash2 className="size-3.5" aria-hidden />
-                </button>
-              ) : null}
-            </li>
-          ))}
-        </ol>
-      ) : null}
+                  <span
+                    aria-hidden
+                    className="inline-block h-3.5 border-l border-dashed border-current opacity-70"
+                  />
+                  {n}
+                </span>
+                <span className="min-w-0 flex-1 [overflow-wrap:anywhere]">
+                  <span className="text-base-content">
+                    {annotationText(annotation)}
+                  </span>
+                  {annotation.kind === "audit"
+                    ? null
+                    : ` · ${t(ANNOTATION_KIND_LABEL[annotation.kind])}`}
+                  <span className="text-muted max-sm:block">
+                    <span className="max-sm:hidden"> · </span>
+                    {dateRange(annotation)}
+                  </span>
+                </span>
+                {annotation.kind === "note" ? (
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-xs btn-square"
+                    aria-label={t("Notu sil: {note}", {
+                      note: annotation.label,
+                    })}
+                    disabled={remove.isPending}
+                    onClick={() => remove.mutate(annotation.id)}
+                  >
+                    <Trash2 className="size-3.5" aria-hidden />
+                  </button>
+                ) : null}
+              </li>
+            ))}
+          </ol>
+        ) : null}
+        {open ? null : (
+          <button
+            type="button"
+            className="btn btn-ghost btn-xs gap-1 max-sm:-ml-2 sm:ml-auto"
+            onClick={() => {
+              setOpen(true);
+              window.setTimeout(() => noteField.current?.focus(), 0);
+            }}
+          >
+            <Plus className="size-3.5" aria-hidden />
+            {t("Not ekle")}
+          </button>
+        )}
+      </div>
 
       {open ? (
         <form
@@ -157,7 +190,7 @@ export function SearchNotes({
               onChange={(event) => setDate(event.target.value)}
             />
           </label>
-          <label className="flex min-w-0 flex-1 flex-col gap-1">
+          <label className="flex min-w-0 flex-1 flex-col gap-1 self-stretch">
             <span>{t("Not")}</span>
             <input
               ref={noteField}
@@ -187,21 +220,7 @@ export function SearchNotes({
             </button>
           </div>
         </form>
-      ) : (
-        <div>
-          <button
-            type="button"
-            className="btn btn-ghost btn-xs gap-1"
-            onClick={() => {
-              setOpen(true);
-              window.setTimeout(() => noteField.current?.focus(), 0);
-            }}
-          >
-            <Plus className="size-3.5" aria-hidden />
-            {t("Not ekle")}
-          </button>
-        </div>
-      )}
+      ) : null}
 
       {open && outside.length > 0 ? (
         <details>

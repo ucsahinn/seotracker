@@ -69,7 +69,7 @@ export function CompetitorsSection({
         action={
           <button
             type="button"
-            className="btn btn-ghost btn-xs min-h-11 min-w-11"
+            className="btn btn-ghost btn-xs min-h-11 min-w-11 sm:min-h-8 sm:min-w-8"
             onClick={() => setAdding(true)}
           >
             <Plus className="size-3.5" />
@@ -116,8 +116,11 @@ export function CompetitorsSection({
                 />
               </li>
             ) : (
-              <li key={competitor.id} className="flex flex-col gap-3 p-3">
-                <div className="min-w-0 space-y-0.5">
+              <li
+                key={competitor.id}
+                className="flex items-start justify-between gap-3 p-3"
+              >
+                <div className="min-w-0 flex-1 space-y-0.5">
                   <div className="flex flex-wrap items-baseline gap-x-2">
                     <span
                       className="break-all text-sm font-medium"
@@ -147,7 +150,7 @@ export function CompetitorsSection({
                 <RowActions>
                   <button
                     type="button"
-                    className="btn btn-ghost btn-xs min-h-11 min-w-11"
+                    className="btn btn-ghost btn-xs min-h-11 min-w-11 sm:min-h-8 sm:min-w-8"
                     aria-label={t("{domain} rakibini düzenle", {
                       domain: competitor.domain,
                     })}

@@ -110,10 +110,8 @@ export function SavedKeywordsTagFilter({
         ref={triggerRef}
         aria-expanded={open}
         aria-controls={popupId}
-        className={`inline-flex min-h-11 items-center gap-2 rounded-field border px-3 text-sm transition ${
-          hasSelection
-            ? "border-primary/50 bg-primary/10 text-base-content"
-            : "border-base-300 bg-base-100 hover:border-base-content/30"
+        className={`btn btn-sm gap-1.5 ${
+          hasSelection ? "border-primary/50 bg-primary/10" : ""
         }`}
         onClick={(event) => {
           if (open) {
@@ -138,7 +136,7 @@ export function SavedKeywordsTagFilter({
         <TagIcon className="size-3.5 opacity-70" />
         <span className="font-medium">{t("Etiketler")}</span>
         {hasSelection ? (
-          <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[11px] font-semibold text-primary-content">
+          <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-xs font-semibold text-primary-content">
             {formatCount(selectedTagIds.length)}
           </span>
         ) : null}
@@ -373,7 +371,7 @@ function TagFilterRow({
             className={`size-2 shrink-0 rounded-full ${tagDotClass(color)}`}
           />
           <span className="min-w-0 flex-1 break-words text-sm">{tag.name}</span>
-          <span className="shrink-0 text-[11px] tabular-nums text-muted">
+          <span className="shrink-0 text-xs tabular-nums text-muted">
             {formatCount(tag.keywordCount)}
           </span>
         </label>

@@ -3,6 +3,12 @@ import type { Catalog } from "@/shared/i18n";
 
 /** German for the Search performance screen, its to-do copy and the printable report. */
 export const deSearch: Catalog = {
+  "Listedeki hiçbir sayfa için ek tıklama hesaplanamadı; bu, sıfır kazanç demek değildir.":
+    "Für keine Seite der Liste ließen sich zusätzliche Klicks schätzen; das bedeutet keinen Gewinn von null.",
+  "Değişim sütunu gizlendi: önceki dönemde bu sorguların hiçbiri için veri yok.":
+    "Spalte „Veränderung“ ausgeblendet: Für keine dieser Suchanfragen gibt es Daten im vorherigen Zeitraum.",
+  "Dönem ortalaması ve grubu (1-3, 4-10, 11-20, 21+). Yanındaki çizgi haftalık sırayı gösterir; çizginin yükselmesi sıranın iyileştiği demektir.":
+    "Durchschnitt des Zeitraums und seine Gruppe (1-3, 4-10, 11-20, 21+). Die Linie daneben zeigt die wöchentliche Position; eine steigende Linie bedeutet eine bessere Position.",
   "{count} sorgu gözlendi.": "Beobachtete Suchanfragen: {count}.",
   "En çok gösterilenler": "Meistgezeigte Suchanfragen",
   "Tam yanıtlı gün: {current}/{days}; önceki dönem: {previous}/{days}.":

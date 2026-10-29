@@ -11,7 +11,8 @@ import { AlertCircle } from "lucide-react";
 import { formatDate, formatDateTime, formatNumber } from "@/client/lib/format";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { Link } from "@tanstack/react-router";
-import { FactStrip } from "@/client/components/FactStrip";
+import { FactStrip, type Fact } from "@/client/components/FactStrip";
+import type { ReactNode } from "react";
 
 export function ArchiveStatus({
   sync,
@@ -164,11 +165,53 @@ export function ArchiveStatus({
     );
   }
 
+  const evidence = archiveEvidence(data);
+  return (
+    <FactStrip
+      label={t("Arşiv dönemi")}
+      facts={evidence.facts}
+      detailsLabel={t("Ayrıntılar")}
+      details={evidence.details}
+    />
+  );
+}
+
+type ArchiveSync = Parameters<typeof ArchiveStatus>[0]["sync"];
+
+/** The archive's facts when it is filled and healthy, for the source block. */
+export function filledArchiveEvidence(sync: ArchiveSync) {
+  const data = sync.data;
+  return data &&
+    !sync.isLoading &&
+    !sync.isError &&
+    !data.notConnected &&
+    !data.error &&
+    data.rowCount > 0
+    ? archiveEvidence(data)
+    : null;
+}
+
+type ArchiveData = NonNullable<
+  Parameters<typeof ArchiveStatus>[0]["sync"]["data"]
+>;
+
+/**
+ * A filled archive's span and notes. The rankings screen folds these into
+ * its one source block rather than stacking a second provenance box under
+ * the first; `ArchiveStatus` renders them alone elsewhere.
+ */
+function archiveEvidence(data: ArchiveData): {
+  facts: Fact[];
+  details: ReactNode;
+} {
   // Both ends are nullable. Interpolated raw they rendered as nothing, so a
   // half-populated archive read "Arşiv  –  arasını kapsıyor"; the range is
   // either there or the sentence does without it.
   // Row counts are storage plumbing; the dates are what an owner reads.
   const rows = formatNumber(data.rowCount);
+  const lastChecked = data.lastRunAt
+    ? t("Son kontrol: {date}", { date: formatDateTime(data.lastRunAt) })
+    : null;
   const summary =
     data.earliestDate && data.earliestDate === data.lastDate
       ? t(
@@ -185,56 +228,58 @@ export function ArchiveStatus({
           )
         : t("Arşiv {rows} satır.", { rows });
 
-  return (
-    <FactStrip
-      label={t("Arşiv dönemi")}
-      facts={[
-        {
-          label: t("Arşiv dönemi"),
-          value:
-            data.earliestDate && data.lastDate
-              ? data.earliestDate === data.lastDate
-                ? formatDate(data.lastDate)
-                : `${formatDate(data.earliestDate)} – ${formatDate(data.lastDate)}`
-              : t("Bilinmiyor"),
-        },
-        {
-          label: t("Güncellendi"),
-          value: data.lastRunAt
-            ? formatDateTime(data.lastRunAt)
+  return {
+    facts: [
+      {
+        label: t("Arşiv dönemi"),
+        value:
+          data.earliestDate && data.lastDate
+            ? data.earliestDate === data.lastDate
+              ? formatDate(data.lastDate)
+              : `${formatDate(data.earliestDate)} – ${formatDate(data.lastDate)}`
             : t("Bilinmiyor"),
-        },
-      ]}
-      detailsLabel={t("Ayrıntılar")}
-      details={
-        <>
-          <p>{summary}</p>
-          {lastChecked ? <p>{lastChecked}</p> : null}
+      },
+      {
+        label: t("Güncellendi"),
+        value: data.lastRunAt
+          ? formatDateTime(data.lastRunAt)
+          : t("Bilinmiyor"),
+      },
+    ],
+    details: (
+      <>
+        <p>{summary}</p>
+        {lastChecked ? <p>{lastChecked}</p> : null}
+        <p>
+          {t(
+            "Google anonim sorguları gizler ve günlük satırları sınırlar; bu arşiv tüm aramaları içermez.",
+          )}
+        </p>
+        {data.scannedThrough ? (
           <p>
-            {` ${t("Google anonim sorguları gizler ve günlük satırları sınırlar; bu arşiv tüm aramaları içermez.")}`}
+            {t("Taranan son gün: {date}", {
+              date: formatDate(data.scannedThrough),
+            })}
           </p>
-          {data.scannedThrough ? (
-            <p>
-              {t("Taranan son gün: {date}", {
-                date: formatDate(data.scannedThrough),
-              })}
-            </p>
-          ) : null}
+        ) : null}
+        {/* `newDays`, not the days written. A caught-up archive re-reads the
+            three days Search Console is still revising on every open, and
+            reporting that as days added claimed growth that never happened.
+            The backfill walks oldest to newest, so what is left is the
+            recent end, not the old one. */}
+        {data.newDays > 0 || data.hasMore ? (
           <p>
-            {/* `newDays`, not the days written. A caught-up archive re-reads the
-          three days Search Console is still revising on every open, and
-          reporting that as days added claimed growth that never happened. */}
             {data.newDays > 0
-              ? ` ${t("Bu açılışta {count} gün eklendi.", { count: formatNumber(data.newDays) })}`
+              ? t("Bu açılışta {count} gün eklendi.", {
+                  count: formatNumber(data.newDays),
+                })
               : ""}
-            {/* The backfill walks oldest to newest, so what is left is the recent
-          end, not the old one. */}
             {data.hasMore
               ? ` ${t("Bu sayfa açıkken kalan günler otomatik yüklenir; bağlantı veya kota hatasında beklenir.")}`
               : ""}
           </p>
-        </>
-      }
-    />
-  );
+        ) : null}
+      </>
+    ),
+  };
 }

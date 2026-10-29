@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Pencil } from "lucide-react";
+import { GrowingTextarea } from "./GrowingTextarea";
 import { PROSE_MAX_CHARS } from "@/types/schemas/projectContext";
 import { useDirtyDraft } from "./DraftGuard";
 import {
@@ -95,7 +96,7 @@ export function CustomSections({
                   <RowActions>
                     <button
                       type="button"
-                      className="btn btn-ghost btn-xs min-h-11 min-w-11"
+                      className="btn btn-ghost btn-xs min-h-11 min-w-11 sm:min-h-8 sm:min-w-8"
                       aria-label={t("{title} bölümünü düzenle", {
                         title: custom.title ?? custom.slug,
                       })}
@@ -193,7 +194,7 @@ function CustomSectionForm({
       </label>
       <label className="block text-sm">
         {t("Bölüm içeriği")}
-        <textarea
+        <GrowingTextarea
           value={content}
           onChange={(event) => setContent(event.target.value)}
           rows={5}

@@ -74,7 +74,7 @@ export const COLUMNS: Array<{
   className?: string;
 }> = [
   { id: "clicks", label: "Tıklama" },
-  { id: "clickChange", label: "Tıklama farkı" },
+  { id: "clickChange", label: "Tıklama farkı", className: "max-sm:hidden" },
   { id: "impressions", label: "Gösterim", className: "hidden md:table-cell" },
   { id: "ctr", label: "Tıklama oranı", className: "hidden lg:table-cell" },
   { id: "position", label: "Sıra" },
@@ -146,7 +146,7 @@ export function QuickChips({
     <div
       role="group"
       aria-label={t("Hızlı filtreler")}
-      className="-mx-1 flex gap-1.5 overflow-x-auto px-1 pb-0.5 [scrollbar-width:none]"
+      className="flex flex-wrap gap-1.5"
     >
       {CHIPS[dimension].map((chip) => {
         const pressed = active === chip.id;

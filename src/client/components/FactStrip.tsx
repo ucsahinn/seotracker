@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { ChevronRight } from "lucide-react";
 import { t } from "@/shared/i18n";
 
 export type Fact = {
@@ -50,13 +49,8 @@ export function FactStrip({
       <Facts facts={facts.slice(0, 2)} />
       {secondary.length > 0 || details ? (
         <details className="fact-strip-details group">
-          <summary className="gap-2">
-            <ChevronRight
-              aria-hidden="true"
-              className="size-3.5 shrink-0 transition-transform group-open:rotate-90"
-            />
-            {detailsLabel ?? t("Ayrıntılar")}
-          </summary>
+          {/* The chevron is the shared disclosure marker (app.css). */}
+          <summary>{detailsLabel ?? t("Ayrıntılar")}</summary>
           {secondary.length > 0 ? <Facts facts={secondary} /> : null}
           {details ? <div className="space-y-1.5">{details}</div> : null}
         </details>

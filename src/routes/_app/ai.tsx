@@ -96,7 +96,7 @@ function AiPage() {
                itself, capped at 60 characters but not guaranteed to contain a
                space. */
           <div
-            className="flex min-w-0 flex-col items-start gap-1"
+            className="flex w-full min-w-0 flex-col items-start gap-1 [&>.fact-strip]:w-full"
             aria-live="polite"
           >
             {connection.isPending ? (
@@ -200,7 +200,6 @@ function AiPage() {
       ) : null}
       <Tabs
         group="ai"
-        className="w-fit"
         value={tab}
         onChange={setTab}
         items={AI_TABS.map((item) => ({ ...item, label: t(item.label) }))}
@@ -252,9 +251,9 @@ function AiPage() {
                 <InstallCard lead={false} />
               </>
 
-              <section className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-box border border-base-300 bg-base-100 p-4">
+              <section className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-box border border-base-300 bg-base-100 p-5">
                 <div className="min-w-0 flex-1 basis-72">
-                  <h2 className="text-sm font-semibold">
+                  <h2 className="text-base font-semibold">
                     {t("Becerileri güncelleyin")}
                   </h2>
                   <details className="mt-1 text-sm text-muted">

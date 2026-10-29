@@ -1437,7 +1437,7 @@ export const frCatalog = {
     "Densité par audit : problèmes pour cent pages",
   Tarih: "Date",
   Sayfa: "Page",
-  "{density} ({total} toplam)": "{density} ({total} au total)",
+  "{total} toplam": "{total} au total",
   "{date} · {count} sayfa": {
     one: "{date} · {count} page",
     other: "{date} · {count} pages",
@@ -4052,4 +4052,9 @@ export const frCatalog = {
   "{count} sayfa soruluyor": "Interrogation de Google sur {count} pages",
   "{pages} sayfa tarandı, {issues} bulgu":
     "{pages} pages explorées, {issues} constats",
+  "Bu dönemde hiç oturum kaydedilmedi.":
+    "Aucune session n’a été enregistrée sur cette période.",
+  "Başlık veya özet": "Titre ou résumé",
+  "Tarama bittikten sonra çalışır.":
+    "S’exécute une fois l’exploration terminée.",
 } as const;

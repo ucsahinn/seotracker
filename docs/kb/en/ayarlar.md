@@ -6,6 +6,8 @@ route: /settings
 updated: 2026-10-27
 ---
 
+Settings holds the choices that apply to this browser (appearance and language) and to the whole installation (Google credentials, PageSpeed key, limits and updates). A project's name, domain and Google properties live in **Project settings**. This page explains the scope of each setting and where to change it.
+
 ## Scope and controls
 
 Appearance is stored in this browser. Choose a language and select **Apply language**; arrow navigation alone does not reload the page. Project market language is a separate setting.

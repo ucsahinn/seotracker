@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { FactStrip } from "@/client/components/FactStrip";
 import { DeltaBadge } from "@/client/components/MetricTile";
@@ -15,29 +16,47 @@ export function ProjectFacts({
   loading,
   failed,
   onRetry,
+  primaryAction,
+  links,
 }: {
   overview: Overview | undefined;
   loading?: boolean;
   failed?: boolean;
   onRetry: () => void;
+  /** The card's one primary button, first in the shared action row. */
+  primaryAction?: ReactNode;
+  /** Extra quiet links appended to the same row. */
+  links?: ReactNode;
 }) {
   if (!overview)
-    return loading ? (
-      <div aria-busy="true" className="space-y-2 py-3">
-        <div className="skeleton h-4 w-3/4" />
-        <div className="skeleton h-4 w-1/2" />
+    return (
+      <div className="space-y-3 text-sm">
+        {loading ? (
+          <div aria-busy="true" className="space-y-2 py-3">
+            <div className="skeleton h-4 w-3/4" />
+            <div className="skeleton h-4 w-1/2" />
+          </div>
+        ) : (
+          <p className="text-sm text-muted" role="status">
+            {t(
+              "Proje verileri okunamadı. Listeyi yenileyerek yeniden deneyin.",
+            )}{" "}
+            <button
+              type="button"
+              className="btn btn-ghost btn-sm min-h-11"
+              onClick={onRetry}
+            >
+              {t("Yeniden dene")}
+            </button>
+          </p>
+        )}
+        {primaryAction || links ? (
+          <ActionRow>
+            {primaryAction}
+            {links}
+          </ActionRow>
+        ) : null}
       </div>
-    ) : (
-      <p className="text-sm text-muted" role="status">
-        {t("Proje verileri okunamadı. Listeyi yenileyerek yeniden deneyin.")}{" "}
-        <button
-          type="button"
-          className="btn btn-ghost btn-sm min-h-11"
-          onClick={onRetry}
-        >
-          {t("Yeniden dene")}
-        </button>
-      </p>
     );
   const { clicks, projectId, snapshot } = overview;
   const prior = clicks?.previousClicks;
@@ -58,7 +77,7 @@ export function ProjectFacts({
     overview.archiveStatus === "unavailable" ||
     overview.auditStatus === "unavailable";
   return (
-    <div className="space-y-4 text-sm">
+    <div className="space-y-3 text-sm">
       {unknown ? (
         <p role="status">
           {t("Bazı kaynaklar okunamadı; gösterilen diğer bilgiler korunuyor.")}{" "}
@@ -82,9 +101,13 @@ export function ProjectFacts({
           </span>
         </div>
       ) : null}
-      <p className="text-xs text-muted">
-        Search Console: {connectionLabel(overview.searchConsole)} · Analytics:{" "}
-        {connectionLabel(overview.analytics)}
+      <p className="flex flex-col text-xs text-muted sm:flex-row sm:flex-wrap sm:gap-x-3">
+        <span className="whitespace-nowrap">
+          Search Console: {connectionLabel(overview.searchConsole)}
+        </span>
+        <span className="whitespace-nowrap">
+          Analytics: {connectionLabel(overview.analytics)}
+        </span>
       </p>
       <FactStrip
         label={t("Proje özeti")}
@@ -149,23 +172,40 @@ export function ProjectFacts({
         detailsLabel={t("Proje ayrıntıları")}
         details={<ProjectProvenance overview={overview} />}
       />
-      <div className="flex flex-wrap gap-2">
+      <ActionRow>
+        {primaryAction}
         <Link
-          className="btn btn-ghost btn-sm min-h-11"
+          className={LINK_CLASS}
           to="/p/$projectId/search-performance"
           params={{ projectId }}
         >
           {t("Arama performansı")}
         </Link>
         <Link
-          className="btn btn-ghost btn-sm min-h-11"
+          className={LINK_CLASS}
           to="/p/$projectId/audit"
           params={{ projectId }}
           search={snapshot ? { auditId: snapshot.id } : {}}
         >
           {snapshot ? t("Denetimi aç") : t("Site denetimlerini aç")}
         </Link>
-      </div>
+        {links}
+      </ActionRow>
+    </div>
+  );
+}
+
+/** Quiet text link for a project card's secondary destinations. */
+export const LINK_CLASS = "link inline-flex min-h-11 items-center";
+
+/** One action row per card: the primary button, then quiet links. */
+function ActionRow({ children }: { children: ReactNode }) {
+  return (
+    // The provenance strip above already ends on a hairline. On a phone
+    // the primary button spans the card and the quiet links fall into an
+    // even two-column grid instead of wrapping raggedly after it.
+    <div className="grid grid-cols-2 gap-x-4 gap-y-1 pt-1 max-sm:[&>.btn]:col-span-2 max-sm:[&>.btn]:w-full sm:flex sm:flex-wrap sm:items-center">
+      {children}
     </div>
   );
 }

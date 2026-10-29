@@ -73,7 +73,7 @@
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://seowatcher.io/gizlilik/"
+      href="https://seowatcher.io/en/privacy/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -83,6 +83,40 @@
       title="seowatcher"
       href="/it/feed.xml"
     />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://seowatcher.io/#website",
+            "url": "https://seowatcher.io/",
+            "name": "seowatcher",
+            "alternateName": ["seotracker"],
+            "publisher": { "@id": "https://seowatcher.io/#author" }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://seowatcher.io/#author",
+            "name": "seowatcher",
+            "url": "https://seowatcher.io/",
+            "logo": "https://seowatcher.io/assets/icon-256.png",
+            "sameAs": ["https://github.com/ucsahinn/seotracker"]
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://seowatcher.io/it/privacy/#webpage",
+            "url": "https://seowatcher.io/it/privacy/",
+            "name": "Privacy e cookie",
+            "description": "Questa informativa riguarda il sito seowatcher.io. I dati dei progetti nell’applicazione seowatcher installata restano separati sul tuo computer.",
+            "inLanguage": "it",
+            "dateModified": "2026-10-26",
+            "isPartOf": { "@id": "https://seowatcher.io/#website" },
+            "publisher": { "@id": "https://seowatcher.io/#author" }
+          }
+        ]
+      }
+    </script>
     <style data-consent-css>
       /* Cookie banner and footer links built by consent.js. The tokens come from
    the home and guide stylesheets; the fallbacks are the same values, for the

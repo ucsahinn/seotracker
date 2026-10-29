@@ -1,5 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import { AlertCircle, Check } from "lucide-react";
+import {
+  AlertCircle,
+  Check,
+  Info,
+  OctagonAlert,
+  TriangleAlert,
+} from "lucide-react";
 import { SearchConsoleConnectionCard } from "@/client/features/gsc/SearchConsoleConnectionCard";
 import { AUDIT_ISSUE_TYPES } from "@/shared/audit-issues";
 import {
@@ -23,6 +29,18 @@ import { FactStrip } from "@/client/components/FactStrip";
 // through t(), since the registry's titles are Turkish source strings.
 const issueTypes: Record<string, { title: string } | undefined> =
   AUDIT_ISSUE_TYPES;
+
+const SEVERITY_ICON = {
+  critical: OctagonAlert,
+  warning: TriangleAlert,
+  info: Info,
+} as const;
+
+const SEVERITY_INK = {
+  critical: "text-[var(--ink-error)]",
+  warning: "text-[var(--ink-warning)]",
+  info: "text-subtle",
+} as const;
 
 function issueTitle(issueType: string): string {
   const title = issueTypes[issueType]?.title;
@@ -208,79 +226,81 @@ function RunningAuditCard({
                 )}
           </div>
         ) : (
-          <ul className="space-y-2">
-            {audit.topIssues.map((issue) => (
-              <li key={issue.issueType}>
-                <Link
-                  to="/p/$projectId/audit"
-                  params={{ projectId }}
-                  search={{ auditId: audit.auditId, tab: "issues" as const }}
-                  className="flex items-start justify-between gap-2 rounded-field min-h-11 px-1 py-2 text-sm focus-visible:outline-offset-[-2px] transition-colors hover:bg-base-200/60"
-                >
-                  <span className="flex min-w-0 items-start gap-2">
-                    <span
-                      className={`mt-1.5 size-2 shrink-0 rounded-full ${
-                        issue.severity === "critical"
-                          ? "bg-error"
-                          : issue.severity === "warning"
-                            ? "bg-[var(--mark-warning)]"
-                            : "bg-base-content/30"
-                      }`}
-                      aria-hidden
-                    />
-                    {/* The dot alone carried severity: no text, no accessible
-                      name. The house rule says direction is never colour
-                      alone, and rank is no different. */}
-                    <span className="sr-only">
-                      {t(SEVERITY_LABEL[issue.severity])}:{" "}
-                    </span>
-                    <span className="min-w-0 whitespace-normal break-words">
-                      {issueTitle(issue.issueType)}
-                    </span>
-                  </span>
-                  <span className="shrink-0 tabular-nums text-muted">
-                    {issue.siteLevel
-                      ? t("Site geneli")
-                      : t("{count} sayfa", { count: issue.count })}
-                  </span>
-                </Link>
-              </li>
-            ))}
-            {/* Severity across every finding, not just the three above. The
-              overflow line used to hide whether the rest held criticals. */}
-            {audit.totalIssueTypes > audit.topIssues.length ? (
-              <li>
-                <Link
-                  to="/p/$projectId/audit"
-                  params={{ projectId }}
-                  search={{ auditId: audit.auditId, tab: "issues" as const }}
-                  className="text-xs text-muted underline decoration-base-content/25 underline-offset-4 hover:text-base-content"
-                >
-                  {t("+ {count} kontrol türü daha", {
-                    count: audit.totalIssueTypes - audit.topIssues.length,
-                  })}
-                </Link>
-              </li>
-            ) : null}
-            <li>
+          <>
+            <ul className="space-y-0.5">
+              {audit.topIssues.map((issue) => {
+                const Icon = SEVERITY_ICON[issue.severity];
+                return (
+                  <li key={issue.issueType}>
+                    <Link
+                      to="/p/$projectId/audit"
+                      params={{ projectId }}
+                      search={{
+                        auditId: audit.auditId,
+                        tab: "issues" as const,
+                      }}
+                      className="flex min-h-10 items-start justify-between gap-2 rounded-field px-1 py-2 text-sm transition-colors hover:bg-base-200/60 focus-visible:outline-offset-[-2px]"
+                    >
+                      <span className="flex min-w-0 items-start gap-2">
+                        {/* A shape per severity as well as an ink, so rank
+                          never rests on colour alone; the sr-only label
+                          names it for a screen reader. */}
+                        <Icon
+                          className={`mt-0.5 size-4 shrink-0 ${SEVERITY_INK[issue.severity]}`}
+                          aria-hidden
+                        />
+                        <span className="sr-only">
+                          {t(SEVERITY_LABEL[issue.severity])}:{" "}
+                        </span>
+                        <span className="min-w-0 whitespace-normal break-words">
+                          {issueTitle(issue.issueType)}
+                        </span>
+                      </span>
+                      <span className="shrink-0 tabular-nums text-muted">
+                        {issue.siteLevel
+                          ? t("Site geneli")
+                          : t("{count} sayfa", { count: issue.count })}
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
+              {/* Severity across every finding, not just the three above. The
+                overflow line used to hide whether the rest held criticals. */}
+              {audit.totalIssueTypes > audit.topIssues.length ? (
+                <li>
+                  <Link
+                    to="/p/$projectId/audit"
+                    params={{ projectId }}
+                    search={{ auditId: audit.auditId, tab: "issues" as const }}
+                    className="btn btn-ghost btn-xs mt-1"
+                  >
+                    {t("+ {count} kontrol türü daha", {
+                      count: audit.totalIssueTypes - audit.topIssues.length,
+                    })}
+                  </Link>
+                </li>
+              ) : null}
+            </ul>
+            <div className="mt-3 border-t border-base-300 pt-3">
               <SeverityBar
                 projectId={projectId}
                 auditId={audit.auditId}
                 totals={audit.severityTotals}
                 siteTotals={audit.siteSeverityTotals}
               />
-            </li>
-          </ul>
+            </div>
+          </>
         )}
 
         {audit.topPages.length > 0 ? (
           <div className="mt-4 space-y-2 border-t border-base-300 pt-3">
             {/* The card named issue types and never pages, yet opening a page
               is always the next move. Worst severity first, then count. */}
-            <h3 className="text-xs font-medium text-muted">
+            <h3 className="text-[13px] font-semibold text-base-content">
               {t("En çok sorunu olan sayfalar")}
             </h3>
-            <ul className="space-y-1">
+            <ul className="space-y-0.5">
               {audit.topPages.map((page) => (
                 <li key={page.pageUrl}>
                   <Link
@@ -291,7 +311,7 @@ function RunningAuditCard({
                       tab: "issues" as const,
                       pageUrl: page.pageUrl,
                     }}
-                    className="flex items-center justify-between gap-2 rounded-field min-h-11 px-1 py-2 text-sm focus-visible:outline-offset-[-2px] transition-colors hover:bg-base-200/60"
+                    className="flex items-center justify-between gap-2 rounded-field min-h-10 px-1 py-2 text-sm focus-visible:outline-offset-[-2px] transition-colors hover:bg-base-200/60"
                     title={page.pageUrl}
                   >
                     <span className="min-w-0 truncate text-muted">

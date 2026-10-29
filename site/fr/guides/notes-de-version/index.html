@@ -14,7 +14,7 @@
     <title>Notes de version | Guide seowatcher</title>
     <meta
       name="description"
-      content="seowatcher 0.8.4 Alpha — données Google complètes, couleurs vives et écrans revus avec des données réelles, plus lisibles sur téléphone."
+      content="seowatcher 0.8.6 Alpha (29 octobre 2026) : nouvel audit de site à 202 règles, six langues, notifications et données Google plus exactes."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -54,7 +54,7 @@
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://seowatcher.io/kilavuz/surum-notlari/"
+      href="https://seowatcher.io/en/docs/release-notes/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -91,7 +91,7 @@
     <meta property="og:title" content="Notes de version | Guide seowatcher" />
     <meta
       property="og:description"
-      content="seowatcher 0.8.4 Alpha — données Google complètes, couleurs vives et écrans revus avec des données réelles, plus lisibles sur téléphone."
+      content="seowatcher 0.8.6 Alpha (29 octobre 2026) : nouvel audit de site à 202 règles, six langues, notifications et données Google plus exactes."
     />
     <meta
       property="og:image"
@@ -119,7 +119,7 @@
     <meta name="twitter:title" content="Notes de version | Guide seowatcher" />
     <meta
       name="twitter:description"
-      content="seowatcher 0.8.4 Alpha — données Google complètes, couleurs vives et écrans revus avec des données réelles, plus lisibles sur téléphone."
+      content="seowatcher 0.8.6 Alpha (29 octobre 2026) : nouvel audit de site à 202 règles, six langues, notifications et données Google plus exactes."
     />
     <meta
       name="twitter:image"
@@ -139,7 +139,9 @@
             "@id": "https://seowatcher.io/#website",
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
-            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+            "alternateName": ["seotracker"],
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
+            "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
             "@type": "SoftwareApplication",
@@ -160,9 +162,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/fr/guides/notes-de-version/#article",
             "headline": "Notes de version",
-            "description": "seowatcher 0.8.4 Alpha — données Google complètes, couleurs vives et écrans revus avec des données réelles, plus lisibles sur téléphone.",
+            "description": "seowatcher 0.8.6 Alpha (29 octobre 2026) : nouvel audit de site à 202 règles, six langues, notifications et données Google plus exactes.",
             "url": "https://seowatcher.io/fr/guides/notes-de-version/",
             "inLanguage": "fr",
+            "datePublished": "2026-10-23",
             "dateModified": "2026-10-29",
             "articleSection": "Aide et référence",
             "about": { "@id": "https://seowatcher.io/#app" },
@@ -198,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.5" defer></script>
+    <script src="/assets/docs.js?v=0.8.6" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1468,6 +1471,11 @@
           <p class="nav-group">Pour démarrer</p>
           <ul>
             <li>
+              <a href="/fr/guides/quest-ce-que-seowatcher/"
+                >Qu'est-ce que seowatcher ?</a
+              >
+            </li>
+            <li>
               <a href="/fr/guides/installation-sous-windows/"
                 >Installation sous Windows</a
               >
@@ -1532,11 +1540,11 @@
       <article id="icerik" data-page="surum-notlari">
         <h1>Notes de version</h1>
         <p class="lede">
-          seowatcher 0.8.4 Alpha — données Google complètes, couleurs vives et
-          écrans revus avec des données réelles, plus lisibles sur téléphone.
+          seowatcher 0.8.6 Alpha (29 octobre 2026) : nouvel audit de site à 202
+          règles, six langues, notifications et données Google plus exactes.
         </p>
         <p>
-          La dernière version est la <strong>0.8.5 Alpha</strong>, du 29 octobre
+          La dernière version est la <strong>0.8.6 Alpha</strong>, du 29 octobre
           2026. Vos données sont conservées lors de la mise à jour.
         </p>
         <p>
@@ -1544,10 +1552,10 @@
           manuellement ; l’ancien outil ne reconnaît pas le numéro inférieur
           comme plus récent.
         </p>
-        <h2 id="0-8-5-alpha-2026-10-29">0.8.5 Alpha — 2026-10-29</h2>
+        <h2 id="0-8-6-alpha-2026-10-29">0.8.6 Alpha — 2026-10-29</h2>
         <p>
           Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la
-          0.8.5 : audit du site, tableau de bord, notifications et six langues,
+          0.8.6 : audit du site, tableau de bord, notifications et six langues,
           avec des données plus justes et des écrans plus lisibles.
         </p>
         <h3 id="points-forts">✨ Points forts</h3>
@@ -1725,6 +1733,17 @@
             fraîcheur des données sont regroupées sous des libellés courts.
             Ouvrez les longues explications au besoin ; des noms courts et des
             boutons clairs facilitent les actions.
+          </li>
+          <li>
+            <strong>Sur mobile :</strong> Les listes s’affichent en lignes
+            lisibles plutôt qu’en tableaux sur mobile ; les requêtes et les
+            libellés ne sont plus coupés.
+          </li>
+          <li>
+            <strong>Un seul style :</strong> Les boutons, les sections
+            dépliables, les notifications et les cartes ont le même aspect sur
+            chaque écran ; les listes d’une seule page n’affichent plus de
+            boutons de pagination.
           </li>
         </ul>
         <h3 id="projets-et-recherches-enregistrees">
@@ -2097,7 +2116,7 @@
         <p class="toc-label">Sur cette page</p>
         <ol>
           <li>
-            <a href="#0-8-5-alpha-2026-10-29">0.8.5 Alpha — 2026-10-29</a>
+            <a href="#0-8-6-alpha-2026-10-29">0.8.6 Alpha — 2026-10-29</a>
           </li>
           <li>
             <a href="#0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</a>

@@ -18,9 +18,10 @@ import { formatCount, formatDate } from "@/client/lib/format";
 import type { WorkKind } from "@/shared/pageOpportunities";
 import { getSearchOpportunities } from "@/serverFunctions/opportunities";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
-import { OpportunityWorkBars } from "@/client/features/opportunities/OpportunityWorkBars";
+import { OpportunityWorkBars, plusCount } from "./OpportunityWorkBars";
 import { OpportunityMethod } from "@/client/features/opportunities/OpportunityMethod";
 import { OpportunityQuickFilters } from "@/client/features/opportunities/OpportunityQuickFilters";
+import { PathBreaks } from "./OpportunityColumns";
 import {
   pathOf,
   usefulChips,
@@ -53,8 +54,6 @@ const WINDOWS = [
 ] as const;
 
 type WindowDays = (typeof WINDOWS)[number]["days"];
-
-const plusCount = (n: number) => `+${formatCount(n)}`;
 
 export function OpportunitiesPage({
   projectId,
@@ -290,73 +289,94 @@ function Report({
         </p>
       ) : null}
 
-      <section className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4">
-        <h2 className="text-sm font-medium">{t("Önce şuna bakın")}</h2>
-        {top ? (
-          <button
-            type="button"
-            aria-label={t("Önce şuna bakın")}
-            className="block min-h-11 w-full break-all text-left text-lg font-semibold underline decoration-primary underline-offset-4"
-            onClick={() => {
-              onResetFilters();
-              setOpenPage(top.page);
-            }}
-          >
-            {pathOf(top.page)}
-          </button>
-        ) : null}
-        {top ? (
-          <p className="text-sm">
-            {t(rowAction(top))} ·{" "}
-            {top.gainPerMonth === null
-              ? t("Sıraya dayalı öneri; kazanç bilinmiyor (yetersiz veri).")
-              : t("En fazla +{gain} tıklama / 30 gün (üst sınır)", {
-                  gain: formatCount(top.gainPerMonth),
-                })}
-          </p>
-        ) : null}
-        <p className="text-sm font-semibold">
-          {t("En fazla kazanılabilecek tıklama / ay (üst sınır)")}:{" "}
-          {totals.gainPerMonth === null ? "–" : plusCount(totals.gainPerMonth)}
-        </p>
-        <p className="text-sm">
-          {t(
-            !analyticsOn || data.coverage.matchedRows === 0
-              ? "Dönüşüm bilgisi bilinmiyor."
-              : counts.converts > 0
-                ? "Doğrulanmış dönüşüm: {count} sayfa"
-                : "Eşleşen veride doğrulanmış dönüşüm yok.",
-            { count: formatCount(counts.converts) },
+      {/* The page and why on the left, the bounded numbers on the right:
+          five equal-weight lines gave the eye nowhere to land. */}
+      <section className="grid gap-x-8 gap-y-4 rounded-box border border-[var(--hairline)] bg-base-100 p-4 shadow-[var(--shadow-raise)] md:grid-cols-[minmax(0,1fr)_minmax(16rem,22rem)]">
+        <div className="min-w-0 space-y-1">
+          <h2 className="text-sm font-medium text-muted">
+            {t("Önce şuna bakın")}
+          </h2>
+          {top ? (
+            <button
+              type="button"
+              aria-label={t("Önce şuna bakın")}
+              className="block min-h-11 w-full text-left text-lg font-semibold break-words text-[var(--ink-primary)] hover:underline"
+              onClick={() => {
+                onResetFilters();
+                setOpenPage(top.page);
+              }}
+            >
+              <PathBreaks path={pathOf(top.page)} />
+            </button>
+          ) : null}
+          {top ? (
+            <p className="text-sm text-muted">
+              <span className="text-base-content">{t(rowAction(top))}</span>
+              {" · "}
+              {top.gainPerMonth === null
+                ? t("Sıraya dayalı öneri; kazanç bilinmiyor (yetersiz veri).")
+                : t("En fazla +{gain} tıklama / 30 gün (üst sınır)", {
+                    gain: formatCount(top.gainPerMonth),
+                  })}
+            </p>
+          ) : null}
+        </div>
+        <div className="grid content-start gap-3 md:border-l md:border-[var(--hairline)] md:pl-6">
+          {totals.gainPerMonth === null ? null : (
+            <dl>
+              <dt className="text-xs text-muted">
+                {t("En fazla kazanılabilecek tıklama / ay (üst sınır)")}
+              </dt>
+              <dd className="text-2xl font-semibold tabular-nums">
+                {plusCount(totals.gainPerMonth)}
+              </dd>
+            </dl>
           )}
-        </p>
-        <p className="text-xs text-muted">
-          {t("Eşleşen: {matched} / {total} sayfa", {
-            matched: formatCount(data.coverage.matchedRows),
-            total: formatCount(data.totalCandidateRows),
-          })}{" "}
-          ·{" "}
-          {t("Dönüşüm durumu bilinmeyen: {count} sayfa", {
-            count: formatCount(
-              Math.max(
-                0,
-                data.totalCandidateRows -
-                  counts.converts -
-                  counts.no_conversions,
-              ),
-            ),
-          })}
-        </p>
-        {analyticsOn && counts.converts > 0 ? (
-          <button
-            type="button"
-            className="btn btn-sm"
-            onClick={() => setQuick(quick === "converts" ? null : "converts")}
-          >
-            {t("Dönüşüm getirenleri göster")}
-          </button>
-        ) : null}
+          <div className="space-y-1">
+            <p className="text-sm">
+              {t(
+                !analyticsOn || data.coverage.matchedRows === 0
+                  ? "Dönüşüm bilgisi bilinmiyor."
+                  : counts.converts > 0
+                    ? "Doğrulanmış dönüşüm: {count} sayfa"
+                    : "Eşleşen veride doğrulanmış dönüşüm yok.",
+                { count: formatCount(counts.converts) },
+              )}
+            </p>
+            <p className="text-xs text-muted">
+              {t("Eşleşen: {matched} / {total} sayfa", {
+                matched: formatCount(data.coverage.matchedRows),
+                total: formatCount(data.totalCandidateRows),
+              })}{" "}
+              ·{" "}
+              {t("Dönüşüm durumu bilinmeyen: {count} sayfa", {
+                count: formatCount(
+                  Math.max(
+                    0,
+                    data.totalCandidateRows -
+                      counts.converts -
+                      counts.no_conversions,
+                  ),
+                ),
+              })}
+            </p>
+            {analyticsOn && counts.converts > 0 ? (
+              <div>
+                <button
+                  type="button"
+                  className="btn btn-sm"
+                  onClick={() =>
+                    setQuick(quick === "converts" ? null : "converts")
+                  }
+                >
+                  {t("Dönüşüm getirenleri göster")}
+                </button>
+              </div>
+            ) : null}
+          </div>
+        </div>
         {totals.unknownPages > 0 ? (
-          <p className="text-sm text-[var(--ink-warning)]">
+          <p className="text-xs text-[var(--ink-warning)] md:col-span-2">
             {t(
               "Bazı sayfalarda kazanç bilinmiyor; bu, sıfır kazanç demek değildir.",
             )}

@@ -40,11 +40,11 @@ function SupportPage() {
 
       <SystemLimitsSection />
 
-      <details className="text-sm text-muted">
-        <summary className="cursor-pointer py-3 font-medium">
+      <details className="rounded-box border border-base-300 bg-base-100 px-4 text-sm text-muted">
+        <summary className="min-h-11 cursor-pointer py-3 font-medium">
           {t("Kurulum belgeleri")}
         </summary>
-        <ul className="space-y-4 max-w-prose leading-relaxed">
+        <ul className="max-w-prose space-y-4 pb-4 leading-relaxed">
           <li>
             <span className="font-medium text-base-content">
               {pending || windows ? t("Günlükler") : t("Konteyner günlüğü")}
@@ -141,7 +141,7 @@ function SupportPage() {
         </details>
       </section>
 
-      <div className="border-t border-base-300 pt-6">
+      <div className="flex flex-wrap gap-2 border-t border-base-300 pt-6">
         <a
           href={REPO_URL}
           target="_blank"

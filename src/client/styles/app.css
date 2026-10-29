@@ -358,7 +358,9 @@ html[data-theme="seotracker-dark"]
     .btn-outline,
     .btn-soft
   ) {
-  --btn-color: oklch(25% 0 0);
+  --btn-color: oklch(25% 0.008 60);
+  /* The perimeter says "control"; a borderless dark fill read as a label. */
+  --btn-border: var(--control-border);
 }
 
 /* Light mode: the base-200 default button is nearly invisible on the
@@ -393,8 +395,9 @@ html[data-theme="seotracker"] .nav-item[aria-current="page"] > svg {
 
 /* The pressed segment of a button group (Gün / Hafta / Ay, Tıklama /
    Gösterim) and a toggled ghost button such as "Filtreler". */
-html[data-theme="seotracker"] .join > .btn.btn-active,
-html[data-theme="seotracker"] .btn-ghost.btn-active {
+.join > .btn.btn-active,
+.btn-ghost.btn-active,
+.btn.btn-active:not(.btn-primary) {
   background-color: color-mix(
     in oklab,
     var(--color-primary) 14%,
@@ -425,11 +428,11 @@ html[data-theme="seotracker"] .link:not(.link-hover, .link-primary) {
   );
 }
 
-/* A switch that is on. Unstyled ones turned near-black when checked, beside
-   the orange `toggle-primary` ones on the audit form; now they all agree.
+/* A switch that is on, in both themes. Unstyled ones turned near-black (or
+   white on the dark theme) beside the orange `toggle-primary` ones on the
+   audit form; now they all agree.
    A toggle that names another colour keeps it. */
-html[data-theme="seotracker"]
-  .toggle:is(:checked, [aria-checked="true"], :has(> input:checked)):not(
+.toggle:is(:checked, [aria-checked="true"], :has(> input:checked)):not(
     .toggle-secondary,
     .toggle-accent,
     .toggle-neutral,
@@ -772,19 +775,19 @@ h3 {
 /* Provenance as labelled facts, not a paragraph: a quiet hairline panel whose
    labels are small and whose values carry the weight, so the eye lands on
    dates and sources instead of reading every sentence. */
+/* Provenance is a footnote, not a second card: hairlines above and below,
+   no box, so it never nests a border inside the panel that holds it. */
 .fact-strip {
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-box);
-  background: color-mix(in oklab, var(--surface-panel) 60%, transparent);
+  border-block: 1px solid var(--hairline);
 }
 .fact-strip-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
-  gap: 0.875rem 1.5rem;
-  padding: 0.875rem 1rem;
+  gap: 0.625rem 1.5rem;
+  padding: 0.625rem 0;
 }
 .fact dt {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.01em;
   color: var(--text-subtle);
@@ -809,13 +812,13 @@ h3 {
 }
 .fact-strip-details {
   border-top: 1px solid var(--hairline);
-  padding: 0 1rem;
+  padding: 0;
   font-size: 0.75rem;
   color: var(--text-muted);
 }
 .fact-strip-details > summary {
   cursor: pointer;
-  min-height: 2.75rem;
+  min-height: 2.25rem;
   display: flex;
   align-items: center;
 }
@@ -1369,5 +1372,194 @@ html[data-theme="seotracker"]
   .card-lift:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-float);
+  }
+}
+
+/* One disclosure look. About a hundred summaries were drawing the browser's
+   filled triangle at three sizes next to the chevron the FactStrip uses. Every
+   summary that does not draw its own icon (`list-none`) gets the same small
+   chevron, turned down when open. In a layer so a summary's own colour and
+   size utilities still win. */
+@layer components {
+  details > summary:not(.list-none) {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: var(--text-muted);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  details > summary:not(.list-none)::-webkit-details-marker {
+    display: none;
+  }
+  details > summary:not(.list-none)::before {
+    content: "";
+    flex: none;
+    width: 0.875rem;
+    height: 0.875rem;
+    background-color: currentColor;
+    opacity: 0.7;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E")
+      center / contain no-repeat;
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+  details[open] > summary:not(.list-none)::before {
+    transform: rotate(90deg);
+  }
+  @media (hover: hover) {
+    details > summary:not(.list-none):hover {
+      color: var(--color-base-content);
+    }
+  }
+}
+
+/* Toasts follow the theme. Sonner ships a white light theme of its own,
+   which landed as a bright slab on the dark default. Long announcement bodies
+   are clamped; the full text is one click away in the bell. */
+:root [data-sonner-toaster][data-sonner-theme] {
+  --normal-bg: var(--color-base-200);
+  --normal-text: var(--color-base-content);
+  --normal-border: var(--hairline);
+  --success-bg: var(--color-base-200);
+  --success-text: var(--color-base-content);
+  --success-border: var(--hairline);
+  --error-bg: var(--color-base-200);
+  --error-text: var(--color-base-content);
+  --error-border: color-mix(in oklab, var(--color-error) 40%, transparent);
+  --border-radius: var(--radius-box);
+  font-family: inherit;
+}
+:root [data-sonner-toast] {
+  box-shadow: var(--shadow-float);
+  align-items: flex-start;
+}
+:root [data-sonner-toast] [data-icon] {
+  margin-top: 0.125rem;
+}
+:root [data-sonner-toast][data-type="success"] [data-icon] {
+  color: var(--ink-success);
+}
+:root [data-sonner-toast][data-type="error"] [data-icon] {
+  color: var(--ink-error);
+}
+:root [data-sonner-toast] [data-title] {
+  font-weight: 600;
+  line-height: 1.35;
+}
+:root [data-sonner-toast] [data-description] {
+  color: var(--text-muted);
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+:root [data-sonner-toast] [data-button] {
+  background: var(--color-primary);
+  color: var(--color-primary-content);
+  border-radius: var(--radius-field);
+  font-weight: 600;
+  align-self: center;
+}
+
+/* An unnamed metric still reads as a tile: a hairline frame in place of the
+   categorical edge, so it lines up with its coloured neighbours. */
+.stat-tile:not([data-metric]) {
+  box-shadow: inset 0 0 0 1px var(--hairline);
+}
+
+/* Button type. daisyUI sets small buttons at 12px and extra-small at 11px,
+   both semibold: next to 14px body text they read cramped and louder than
+   the content. One step up, one weight down; the primary keeps its weight. */
+.btn-sm {
+  font-size: 0.8125rem;
+}
+.btn-xs {
+  font-size: 0.75rem;
+}
+.btn:not(.btn-primary) {
+  font-weight: 500;
+}
+
+/* A disabled button still names what it would do: same shape, readable
+   label, no fill shouting "error". */
+.btn:not(.btn-primary):is(:disabled, .btn-disabled) {
+  background-color: transparent;
+  border-color: var(--hairline-strong);
+  color: var(--text-subtle);
+  opacity: 1;
+}
+
+/* Phones: anything tappable gets a thumb-sized target. */
+@media (max-width: 639px) and (pointer: coarse) {
+  .btn-sm,
+  .btn-xs:not(.btn-square, .btn-circle) {
+    min-height: 2.75rem;
+  }
+  .btn-xs.btn-square,
+  .btn-sm.btn-square {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+  }
+}
+
+/* Count badges in the sidebar are notices, not buttons: an ember wash with
+   ember ink instead of the solid primary fill. */
+.badge-count {
+  background-color: var(--accent-wash);
+  color: var(--ink-primary);
+  border-color: transparent;
+  font-variant-numeric: tabular-nums;
+}
+
+/* A tab strip wider than a phone scrolls sideways instead of clipping a
+   label mid-letter, and fades at the edge so more tabs read as "there". */
+@media (max-width: 639px) {
+  .tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+    mask-image: linear-gradient(90deg, #000 calc(100% - 2rem), transparent);
+  }
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .tabs > .tab {
+    flex: none;
+    scroll-snap-align: start;
+  }
+}
+
+/* A card's header link ("Tümünü gör", "Raporlar", "Yönet"): link ink, body
+   size, a trailing chevron, and a padded hit area, so it reads as a way out
+   of the card rather than a bold label. */
+.card-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 2rem;
+  padding-inline: 0.375rem;
+  border-radius: var(--radius-field);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--ink-primary);
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+.card-action::after {
+  content: "";
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+.card-action:hover {
+  background-color: var(--accent-wash);
+}
+@media (max-width: 639px) and (pointer: coarse) {
+  .card-action {
+    min-height: 2.75rem;
   }
 }

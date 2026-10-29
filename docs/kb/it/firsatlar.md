@@ -1,14 +1,14 @@
 ---
 title: Opportunità
-description: Mostra pagine osservate, possibili interventi e un limite di clic aggiuntivi quando i dati lo consentono.
+description: Quale pagina curare prima: le pagine già visibili su Google, ordinate per limite massimo di clic in più dai dati Search Console, con il lavoro suggerito.
 screen: Fırsatlar
 route: /p/<proje>/opportunities
 updated: 2026-10-27
 ---
 
-« Esamina il gruppo di indirizzi Analytics » nella riga e nei dettagli apre le pagine di destinazione organiche con le date della fonte e il gruppo normalizzato. Senza corrispondenza dell’indirizzo o delle date, una spiegazione sostituisce il link. Il filtro precede la paginazione sulle stesse massimo 1.000 righe della fonte di Opportunità. Analytics segnala i limiti di fonte e qualità che impediscono di verificare l’intero gruppo. Le misure ricaricate possono cambiare; le stesse date possono coprire intervalli diversi nel fuso GA4 e nel calendario del Pacifico di Search Console.
+Opportunità ordina le pagine che Google mostra già per il tuo sito in base a quanti clic in più potrebbero portare. Il calcolo usa i tuoi dati di Search Console e le percentuali di clic del tuo sito. Ogni pagina riceve un tipo di lavoro suggerito e un limite massimo del guadagno; non è una previsione né una garanzia.
 
-# Usare le opportunità
+## Usare le opportunità
 
 **Guarda prima qui** apre la pagina con il limite massimo di clic aggiuntivi più alto tra quelle valutabili. L’azione proposta va verificata: facilità e rapidità del lavoro non sono misurate.
 
@@ -29,6 +29,8 @@ Sul computer trovi una tabella ordinabile; sul telefono, righe con indirizzi a c
 Un ambito non calcolabile non significa assenza di opportunità. Query non abbinate, impressioni insufficienti e tassi obiettivo mancanti sono separati dallo zero misurato. Nessuna riga ricevuta non prova l’assenza di impressioni.
 
 Analytics aggiunge sessioni organiche, eventi chiave e quota di sessioni con evento chiave misurati. Non proietta eventi futuri dai clic aggiuntivi. Le misure limitate restano sconosciute. Varianti URL possono condividere lo stesso gruppo Analytics: non sommare le sue sessioni tra righe. Per quota esaurita, attendi e aggiorna; per autorizzazioni mancanti, controlla la connessione. Un aggiornamento fallito conserva i dati precedenti con date originali e avviso.
+
+« Esamina il gruppo di indirizzi Analytics » nella riga e nei dettagli apre le pagine di destinazione organiche con le date della fonte e il gruppo normalizzato. Senza corrispondenza dell’indirizzo o delle date, una spiegazione sostituisce il link. Il filtro precede la paginazione sulle stesse massimo 1.000 righe della fonte di Opportunità. Analytics segnala i limiti di fonte e qualità che impediscono di verificare l’intero gruppo. Le misure ricaricate possono cambiare; le stesse date possono coprire intervalli diversi nel fuso GA4 e nel calendario del Pacifico di Search Console.
 
 ## Esportazione e verifica
 

@@ -1,9 +1,11 @@
 ---
 title: Connexion à Google
-description: Séparer identifiants de l’installation et propriétés du projet; distinguer configuration et accès.
+description: Connectez Search Console et GA4 avec votre compte de service Google Cloud ou votre client OAuth, puis choisissez les propriétés de chaque projet.
 kind: nasil-yapilir
 updated: 2026-10-27
 ---
+
+seowatcher lit la Search Console et Google Analytics 4 avec vos propres identifiants Google Cloud : un compte de service ou un client OAuth. Vous enregistrez l'identifiant une fois pour toute l'installation, puis vous choisissez une propriété Search Console et une propriété GA4 pour chaque projet.
 
 ## Identifiants et propriétés
 

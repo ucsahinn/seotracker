@@ -14,7 +14,7 @@
     <title>Opportunità | guida di seowatcher</title>
     <meta
       name="description"
-      content="Mostra pagine osservate, possibili interventi e un limite di clic aggiuntivi quando i dati lo consentono."
+      content="Quale pagina curare prima: le pagine già visibili su Google, ordinate per limite massimo di clic in più dai dati Search Console, con il lavoro suggerito."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/it/guide/opportunita/" />
@@ -51,7 +51,7 @@
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://seowatcher.io/kilavuz/firsatlar/"
+      href="https://seowatcher.io/en/docs/opportunities/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -88,7 +88,7 @@
     <meta property="og:title" content="Opportunità | guida di seowatcher" />
     <meta
       property="og:description"
-      content="Mostra pagine osservate, possibili interventi e un limite di clic aggiuntivi quando i dati lo consentono."
+      content="Quale pagina curare prima: le pagine già visibili su Google, ordinate per limite massimo di clic in più dai dati Search Console, con il lavoro suggerito."
     />
     <meta
       property="og:image"
@@ -116,7 +116,7 @@
     <meta name="twitter:title" content="Opportunità | guida di seowatcher" />
     <meta
       name="twitter:description"
-      content="Mostra pagine osservate, possibili interventi e un limite di clic aggiuntivi quando i dati lo consentono."
+      content="Quale pagina curare prima: le pagine già visibili su Google, ordinate per limite massimo di clic in più dai dati Search Console, con il lavoro suggerito."
     />
     <meta
       name="twitter:image"
@@ -136,7 +136,9 @@
             "@id": "https://seowatcher.io/#website",
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
-            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+            "alternateName": ["seotracker"],
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
+            "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
             "@type": "SoftwareApplication",
@@ -157,9 +159,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/it/guide/opportunita/#article",
             "headline": "Opportunità",
-            "description": "Mostra pagine osservate, possibili interventi e un limite di clic aggiuntivi quando i dati lo consentono.",
+            "description": "Quale pagina curare prima: le pagine già visibili su Google, ordinate per limite massimo di clic in più dai dati Search Console, con il lavoro suggerito.",
             "url": "https://seowatcher.io/it/guide/opportunita/",
             "inLanguage": "it",
+            "datePublished": "2026-10-23",
             "dateModified": "2026-10-29",
             "articleSection": "Schermate",
             "about": { "@id": "https://seowatcher.io/#app" },
@@ -195,7 +198,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.5" defer></script>
+    <script src="/assets/docs.js?v=0.8.6" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1462,6 +1465,9 @@
           <p class="nav-group">Per iniziare</p>
           <ul>
             <li>
+              <a href="/it/guide/cos-e-seowatcher/">Che cos'è seowatcher?</a>
+            </li>
+            <li>
               <a href="/it/guide/installazione-su-windows/"
                 >Installazione su Windows</a
               >
@@ -1538,19 +1544,16 @@
       <article id="icerik" data-page="firsatlar">
         <h1>Opportunità</h1>
         <p class="lede">
-          Mostra pagine osservate, possibili interventi e un limite di clic
-          aggiuntivi quando i dati lo consentono.
+          Quale pagina curare prima: le pagine già visibili su Google, ordinate
+          per limite massimo di clic in più dai dati Search Console, con il
+          lavoro suggerito.
         </p>
         <p>
-          « Esamina il gruppo di indirizzi Analytics » nella riga e nei dettagli
-          apre le pagine di destinazione organiche con le date della fonte e il
-          gruppo normalizzato. Senza corrispondenza dell’indirizzo o delle date,
-          una spiegazione sostituisce il link. Il filtro precede la paginazione
-          sulle stesse massimo 1.000 righe della fonte di Opportunità. Analytics
-          segnala i limiti di fonte e qualità che impediscono di verificare
-          l’intero gruppo. Le misure ricaricate possono cambiare; le stesse date
-          possono coprire intervalli diversi nel fuso GA4 e nel calendario del
-          Pacifico di Search Console.
+          Opportunità ordina le pagine che Google mostra già per il tuo sito in
+          base a quanti clic in più potrebbero portare. Il calcolo usa i tuoi
+          dati di Search Console e le percentuali di clic del tuo sito. Ogni
+          pagina riceve un tipo di lavoro suggerito e un limite massimo del
+          guadagno; non è una previsione né una garanzia.
         </p>
         <h2 id="usare-le-opportunita">Usare le opportunità</h2>
         <p>
@@ -1608,6 +1611,17 @@
           sessioni tra righe. Per quota esaurita, attendi e aggiorna; per
           autorizzazioni mancanti, controlla la connessione. Un aggiornamento
           fallito conserva i dati precedenti con date originali e avviso.
+        </p>
+        <p>
+          « Esamina il gruppo di indirizzi Analytics » nella riga e nei dettagli
+          apre le pagine di destinazione organiche con le date della fonte e il
+          gruppo normalizzato. Senza corrispondenza dell’indirizzo o delle date,
+          una spiegazione sostituisce il link. Il filtro precede la paginazione
+          sulle stesse massimo 1.000 righe della fonte di Opportunità. Analytics
+          segnala i limiti di fonte e qualità che impediscono di verificare
+          l’intero gruppo. Le misure ricaricate possono cambiare; le stesse date
+          possono coprire intervalli diversi nel fuso GA4 e nel calendario del
+          Pacifico di Search Console.
         </p>
         <h2 id="esportazione-e-verifica">Esportazione e verifica</h2>
         <p>

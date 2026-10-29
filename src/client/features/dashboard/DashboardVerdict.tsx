@@ -1,7 +1,5 @@
-import type { PanelAction } from "./NextStepsCard";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
 import { FactStrip, type Fact } from "@/client/components/FactStrip";
 import { dashboardSearchViewQuery } from "./dashboardGscReport";
 import { DeltaBadge } from "@/client/components/MetricTile";
@@ -12,11 +10,9 @@ import { searchSampleNote } from "../search-performance/searchSample";
 export function DashboardVerdict({
   projectId,
   connected,
-  action,
 }: {
   projectId: string;
   connected: boolean;
-  action?: PanelAction;
 }) {
   const query = useQuery(dashboardSearchViewQuery(projectId, connected));
   if (!connected || query.data?.connected === false)
@@ -109,23 +105,6 @@ export function DashboardVerdict({
           <p className="max-w-prose text-sm text-muted">{sampleNote}</p>
         ) : null}
       </div>
-      {action ? (
-        <Link
-          to={action.to}
-          params={action.params}
-          search={action.search}
-          className="group inline-flex min-h-11 items-center gap-3 rounded-full border border-[var(--hairline)] py-1.5 pr-2 pl-4 text-sm transition-colors hover:border-primary/50"
-        >
-          <span>{action.title}</span>
-          <span className="inline-flex items-center gap-1 rounded-full bg-primary/12 px-3 py-1 font-medium text-primary">
-            {action.cta}
-            <ArrowRight
-              className="size-3.5 transition-transform group-hover:translate-x-0.5"
-              aria-hidden
-            />
-          </span>
-        </Link>
-      ) : null}
       {query.isError ? (
         <p role="status" className="text-sm text-[var(--ink-warning)]">
           {t("Son yenileme başarısız; önbellekteki veriler gösteriliyor.")}

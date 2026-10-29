@@ -6,6 +6,8 @@ route: /settings
 updated: 2026-10-27
 ---
 
+Le Impostazioni contengono le scelte che valgono per questo browser (aspetto e lingua) e per tutta l'installazione (credenziali Google, chiave PageSpeed, limiti e aggiornamenti). Nome, dominio e proprietà Google di un progetto si trovano in **Impostazioni progetto**. Questa pagina spiega l'ambito di ogni impostazione e dove cambiarla.
+
 ## Ambito delle impostazioni
 
 Aspetto e lingua si applicano a questo browser. Scegli la lingua e conferma con il pulsante: scorrere l'elenco non ricarica la pagina. La lingua del mercato del progetto è separata.

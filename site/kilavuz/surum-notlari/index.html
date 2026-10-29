@@ -14,7 +14,7 @@
     <title>Sürüm notları | seowatcher kılavuzu</title>
     <meta
       name="description"
-      content="seowatcher 0.8.4 Alpha — eksiksiz Google verisi, canlı renkler ve gerçek verilerle yeniden incelenen, telefonda daha okunaklı ekranlar."
+      content="seowatcher 0.8.6 Alpha (29 Ekim 2026): 202 kurallı yeni site denetimi, altı dilli arayüz, bildirimler ve daha doğru Google verisi."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/kilavuz/surum-notlari/" />
@@ -51,7 +51,7 @@
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://seowatcher.io/kilavuz/surum-notlari/"
+      href="https://seowatcher.io/en/docs/release-notes/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -88,7 +88,7 @@
     <meta property="og:title" content="Sürüm notları | seowatcher kılavuzu" />
     <meta
       property="og:description"
-      content="seowatcher 0.8.4 Alpha — eksiksiz Google verisi, canlı renkler ve gerçek verilerle yeniden incelenen, telefonda daha okunaklı ekranlar."
+      content="seowatcher 0.8.6 Alpha (29 Ekim 2026): 202 kurallı yeni site denetimi, altı dilli arayüz, bildirimler ve daha doğru Google verisi."
     />
     <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
     <meta property="og:image:type" content="image/png" />
@@ -113,7 +113,7 @@
     <meta name="twitter:title" content="Sürüm notları | seowatcher kılavuzu" />
     <meta
       name="twitter:description"
-      content="seowatcher 0.8.4 Alpha — eksiksiz Google verisi, canlı renkler ve gerçek verilerle yeniden incelenen, telefonda daha okunaklı ekranlar."
+      content="seowatcher 0.8.6 Alpha (29 Ekim 2026): 202 kurallı yeni site denetimi, altı dilli arayüz, bildirimler ve daha doğru Google verisi."
     />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta
@@ -130,7 +130,9 @@
             "@id": "https://seowatcher.io/#website",
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
-            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+            "alternateName": ["seotracker"],
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
+            "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
             "@type": "SoftwareApplication",
@@ -151,9 +153,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/kilavuz/surum-notlari/#article",
             "headline": "Sürüm notları",
-            "description": "seowatcher 0.8.4 Alpha — eksiksiz Google verisi, canlı renkler ve gerçek verilerle yeniden incelenen, telefonda daha okunaklı ekranlar.",
+            "description": "seowatcher 0.8.6 Alpha (29 Ekim 2026): 202 kurallı yeni site denetimi, altı dilli arayüz, bildirimler ve daha doğru Google verisi.",
             "url": "https://seowatcher.io/kilavuz/surum-notlari/",
             "inLanguage": "tr",
+            "datePublished": "2026-10-23",
             "dateModified": "2026-10-29",
             "articleSection": "Yardım ve başvuru",
             "about": { "@id": "https://seowatcher.io/#app" },
@@ -189,7 +192,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.5" defer></script>
+    <script src="/assets/docs.js?v=0.8.6" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1457,6 +1460,7 @@
           <summary>Kılavuz</summary>
           <p class="nav-group">Başlangıç</p>
           <ul>
+            <li><a href="/kilavuz/seowatcher-nedir/">seowatcher nedir?</a></li>
             <li><a href="/kilavuz/kurulum-windows/">Windows'a kurulum</a></li>
             <li><a href="/kilavuz/kurulum-docker/">Docker ile kurulum</a></li>
             <li><a href="/kilavuz/google-baglantisi/">Google'a bağlanma</a></li>
@@ -1496,11 +1500,11 @@
       <article id="icerik" data-page="surum-notlari">
         <h1>Sürüm notları</h1>
         <p class="lede">
-          seowatcher 0.8.4 Alpha — eksiksiz Google verisi, canlı renkler ve
-          gerçek verilerle yeniden incelenen, telefonda daha okunaklı ekranlar.
+          seowatcher 0.8.6 Alpha (29 Ekim 2026): 202 kurallı yeni site denetimi,
+          altı dilli arayüz, bildirimler ve daha doğru Google verisi.
         </p>
         <p>
-          Son sürüm <strong>0.8.5 Alpha</strong>, 29 Ekim 2026. Güncellerken
+          Son sürüm <strong>0.8.6 Alpha</strong>, 29 Ekim 2026. Güncellerken
           veriniz korunur.
         </p>
         <p>
@@ -1508,9 +1512,9 @@
           dosyasını elle çalıştırın; eski otomatik güncelleyici küçük numarayı
           yeni sürüm olarak tanımaz.
         </p>
-        <h2 id="0-8-5-alpha-2026-10-29">0.8.5 Alpha — 2026-10-29</h2>
+        <h2 id="0-8-6-alpha-2026-10-29">0.8.6 Alpha — 2026-10-29</h2>
         <p>
-          Bu giriş 0.5.0'dan 0.8.5'e kadar gelen yenilikleri ve düzeltmeleri
+          Bu giriş 0.5.0'dan 0.8.6'ya kadar gelen yenilikleri ve düzeltmeleri
           toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha
           doğru veriler ve daha okunaklı ekranlar.
         </p>
@@ -1680,6 +1684,16 @@
             kısa etiketlerle bir arada gösterilir. Uzun açıklamaları
             gerektiğinde açarsınız; kısa adlar ve belirgin düğmeler işlemleri
             kolaylaştırır.
+          </li>
+          <li>
+            <strong>Telefonda:</strong> Kayıt listeleri telefonda tablo yerine
+            okunaklı satırlar olarak görünür; sorgu adları ve etiketler artık
+            kesilmez.
+          </li>
+          <li>
+            <strong>Tek görünüm:</strong> Düğmeler, açılır bölümler, bildirim
+            kutuları ve kartlar her ekranda aynı biçimdedir; tek sayfalık
+            listelerde gereksiz sayfa düğmeleri gösterilmez.
           </li>
         </ul>
         <h3 id="projeler-ve-kayitlar">🗂️ Projeler ve kayıtlar</h3>
@@ -2023,7 +2037,7 @@
         <p class="toc-label">Bu sayfada</p>
         <ol>
           <li>
-            <a href="#0-8-5-alpha-2026-10-29">0.8.5 Alpha — 2026-10-29</a>
+            <a href="#0-8-6-alpha-2026-10-29">0.8.6 Alpha — 2026-10-29</a>
           </li>
           <li>
             <a href="#0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</a>

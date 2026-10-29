@@ -22,12 +22,18 @@ export function ReportDownloadButton({
   title,
   primary = false,
   label = t("İndir"),
+  iconOnPhone = false,
 }: {
   reportId: string;
   title: string;
   primary?: boolean;
   /** The visible text; the accessible name always starts with it. */
   label?: string;
+  /**
+   * A list row on a phone: the icon alone, so a long title does not push the
+   * button onto a line of its own. The accessible name keeps the label.
+   */
+  iconOnPhone?: boolean;
 }) {
   const [ok, setOk] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -60,7 +66,7 @@ export function ReportDownloadButton({
     <span className="inline-flex flex-col items-start gap-1">
       <button
         type="button"
-        className={`btn btn-sm min-h-11 gap-1.5 ${primary ? "btn-primary" : ""} ${pending ? "opacity-70" : ""}`}
+        className={`btn btn-sm min-h-11 gap-1.5 ${primary ? "btn-primary" : ""} ${pending ? "opacity-70" : ""} ${iconOnPhone ? "max-sm:w-11 max-sm:px-0" : ""}`}
         aria-disabled={pending}
         aria-busy={pending}
         aria-label={`${visible}: ${title}`}
@@ -77,7 +83,9 @@ export function ReportDownloadButton({
         ) : (
           <Download aria-hidden className="size-4" />
         )}
-        {visible}
+        <span className={iconOnPhone ? "max-sm:sr-only" : undefined}>
+          {visible}
+        </span>
       </button>
       {errorMessage ? (
         <span

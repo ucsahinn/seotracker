@@ -5,6 +5,8 @@ kind: nasil-yapilir
 updated: 2026-10-27
 ---
 
+Une clé d'API PageSpeed Insights permet à l'audit de site de mesurer la vitesse de vos pages avec PageSpeed Insights de Google. La clé se crée gratuitement dans Google Cloud et reste facultative : sans clé, l'application tente de mesurer au plus 50 pages par audit.
+
 ## Ajouter une clé
 
 Activez PageSpeed Insights API dans Google Cloud, créez une clé et limitez-la à cette API. Enregistrez-la dans Paramètres → Mesure de vitesse. La clé est chiffrée et jamais affichée. Docker accepte PAGESPEED_API_KEY; la valeur des Paramètres est prioritaire.

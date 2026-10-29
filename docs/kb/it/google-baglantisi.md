@@ -1,9 +1,11 @@
 ---
 title: Collegamento con Google
-description: Separare credenziali dell’installazione e proprietà del progetto; distinguere configurazione e accesso.
+description: Collega Search Console e GA4 con il tuo account di servizio Google Cloud o client OAuth, poi scegli le proprietà di ogni progetto.
 kind: nasil-yapilir
 updated: 2026-10-27
 ---
+
+seowatcher legge Search Console e Google Analytics 4 con le tue credenziali Google Cloud: un account di servizio o un client OAuth. Salvi la credenziale una volta per tutta l'installazione, poi scegli una proprietà Search Console e una GA4 per ogni progetto.
 
 ## Credenziali e proprietà
 

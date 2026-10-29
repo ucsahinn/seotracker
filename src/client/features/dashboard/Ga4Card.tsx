@@ -142,7 +142,7 @@ export function Ga4Card({
       title={t("Organik trafik")}
       stamp={covered ? undefined : "Google Analytics"}
       action={
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-3">
           {report?.connected ? (
             <Link
               to="/p/$projectId/analytics"
@@ -274,30 +274,14 @@ export function Ga4Card({
               />
             ) : null}
           </div>
-          <Ga4Provenance report={report} />
-          {!hasEcommerce ? (
-            <details className="text-xs text-muted">
-              <summary className="min-h-11 cursor-pointer py-3">
-                {t("Organik gelir")}
-              </summary>
-              <p>
-                {t(
-                  "Satış ölçümü doğrulanmadı; sıfır satış, mağaza olmadığı anlamına gelmez.",
-                )}
-              </p>
-            </details>
-          ) : null}
           {report.totals.sessions === null ? (
-            <details className="text-sm text-muted">
-              <summary className="min-h-11 cursor-pointer py-3 text-[var(--ink-warning)]">
-                {t("Yetersiz veri")}
-              </summary>
-              <p className="max-w-prose leading-relaxed">
-                {t(
-                  "Oturum sayısı bilinmiyor. Analytics raporunu açarak kaynak uyarılarını inceleyin; bağlantı erişimini ve sitedeki Analytics etiketini kontrol edin.",
-                )}
-              </p>
-            </details>
+            // The source fact below carries the "Yetersiz veri" chip; this is
+            // what it means, said once in place of the missing chart.
+            <p className="max-w-prose text-sm leading-relaxed text-muted">
+              {t(
+                "Oturum sayısı bilinmiyor. Analytics raporunu açarak kaynak uyarılarını inceleyin; bağlantı erişimini ve sitedeki Analytics etiketini kontrol edin.",
+              )}
+            </p>
           ) : null}
           {report.totals.sessions === 0 && !limited ? (
             <p className="text-sm text-muted">
@@ -305,44 +289,59 @@ export function Ga4Card({
             </p>
           ) : null}
           {/*
-           * Through the shared wrapper like every other chart. Its own
-           * `ResponsiveContainer` measured during hydration, before the
-           * card had layout, and printed a -1 warning to the console of
-           * every install on every dashboard load.
+           * A titled block straight under the numbers it draws, rather than a
+           * loose caption at the foot of the card after two disclosures.
+           * Through the shared wrapper like every other chart: its own
+           * `ResponsiveContainer` measured during hydration, before the card
+           * had layout, and warned on every dashboard load.
            */}
           {report.trend.some((row) => row.sessions !== null) ? (
-            <p className="text-xs font-medium text-muted">
-              {t("Günlük organik oturumlar")}
-            </p>
-          ) : null}
-          {report.trend.some((row) => row.sessions !== null) ? (
-            <Chart
-              metric="sessions"
-              height={96}
-              summary={trendSummary(report.trend)}
-              className="[&_figcaption]:hidden"
-            >
-              <AreaChart
-                data={report.trend}
-                margin={{ top: 4, right: 0, bottom: 0, left: 0 }}
+            <section className="space-y-2">
+              <h3 className="text-[13px] font-semibold text-base-content">
+                {t("Günlük organik oturumlar")}
+              </h3>
+              <Chart
+                metric="sessions"
+                height={96}
+                summary={trendSummary(report.trend)}
+                className="[&_figcaption]:hidden"
               >
-                <XAxis dataKey="date" hide />
-                <YAxis hide domain={[0, "auto"]} />
-                <Tooltip
-                  content={<SessionsTooltip />}
-                  cursor={{ stroke: "currentColor", strokeOpacity: 0.2 }}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="sessions"
-                  stroke={CHART_SERIES.primary}
-                  strokeWidth={2}
-                  fill={CHART_SERIES.primary}
-                  fillOpacity={0.08}
-                  isAnimationActive={!reduced}
-                />
-              </AreaChart>
-            </Chart>
+                <AreaChart
+                  data={report.trend}
+                  margin={{ top: 4, right: 0, bottom: 0, left: 0 }}
+                >
+                  <XAxis dataKey="date" hide />
+                  <YAxis hide domain={[0, "auto"]} />
+                  <Tooltip
+                    content={<SessionsTooltip />}
+                    cursor={{ stroke: "currentColor", strokeOpacity: 0.2 }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="sessions"
+                    stroke={CHART_SERIES.primary}
+                    strokeWidth={2}
+                    fill={CHART_SERIES.primary}
+                    fillOpacity={0.08}
+                    isAnimationActive={!reduced}
+                  />
+                </AreaChart>
+              </Chart>
+            </section>
+          ) : null}
+          {/* Provenance and caveats close the card, after its content. */}
+          <Ga4Provenance report={report} />
+          {!hasEcommerce ? (
+            <details className="text-sm text-muted">
+              <summary className="min-h-11 cursor-pointer py-3">
+                {t("Organik gelir")}
+              </summary>
+              <p className="max-w-prose leading-relaxed">
+                {t(
+                  "Satış ölçümü doğrulanmadı; sıfır satış, mağaza olmadığı anlamına gelmez.",
+                )}
+              </p>
+            </details>
           ) : null}
         </div>
       ) : null}

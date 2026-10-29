@@ -235,7 +235,7 @@ function LighthouseOptions({ launchForm }: Pick<Props, "launchForm">) {
           {(field) => (
             <input
               type="checkbox"
-              className="toggle toggle-sm toggle-primary mt-0.5 shrink-0"
+              className="toggle toggle-sm toggle-primary shrink-0"
               checked={Boolean(field.state.value)}
               onChange={(event) => field.handleChange(event.target.checked)}
             />
@@ -262,7 +262,7 @@ function LighthouseOptions({ launchForm }: Pick<Props, "launchForm">) {
           {(field) => (
             <input
               type="checkbox"
-              className="toggle toggle-sm toggle-primary mt-0.5 shrink-0"
+              className="toggle toggle-sm toggle-primary shrink-0"
               checked={Boolean(field.state.value)}
               onChange={(event) => field.handleChange(event.target.checked)}
             />
@@ -275,6 +275,10 @@ function LighthouseOptions({ launchForm }: Pick<Props, "launchForm">) {
               "Tarama bittikten sonra başka sitelere verilen bağlantıların açılıp açılmadığına ve sitenizdeki görsel dosyalarının boyutuna bakar. En çok 300 adres sorulur; sosyal ağlar gibi botları engelleyen siteler atlanır.",
             )}
           </HelpTip>
+          {/* Both toggles carry a second line, so their labels line up. */}
+          <span className="mt-1 block text-xs text-muted">
+            {t("Tarama bittikten sonra çalışır.")}
+          </span>
         </span>
       </label>
 

@@ -195,4 +195,7 @@ export const ptAppSupplemental: Catalog = {
   "Tarama sınırı kaydedilmemiş.":
     "O limite de rastreamento não foi registrado.",
   "Kapsam ayrıntıları": "Detalhes do escopo",
+  "İlgili ayarlar": "Configurações relacionadas",
+  Kaynaklar: "Recursos",
+  "{count} okunmamış": "{count} não lidas",
 };

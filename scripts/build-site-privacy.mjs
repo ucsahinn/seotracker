@@ -43,7 +43,7 @@ const updated = policyDate();
 const url = (lang) => `https://seowatcher.io${privacyUrl(locales[lang])}`;
 const alternates = [
   ...Object.keys(copy).map((lang) => [lang, url(lang)]),
-  ["x-default", url("tr")],
+  ["x-default", url("en")],
 ];
 for (const [lang, text] of Object.entries(copy)) {
   const locale = locales[lang];
@@ -59,6 +59,40 @@ for (const [lang, text] of Object.entries(copy)) {
         `<meta property="og:locale:alternate" content="${other.ogLocale}">`,
     )
     .join("\n");
+  // The same site entities as every other page, plus this policy page with
+  // the date it shows. "</" never occurs in the data, but stays escaped.
+  const jsonLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://seowatcher.io/#website",
+        url: "https://seowatcher.io/",
+        name: "seowatcher",
+        alternateName: ["seotracker"],
+        publisher: { "@id": "https://seowatcher.io/#author" },
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://seowatcher.io/#author",
+        name: "seowatcher",
+        url: "https://seowatcher.io/",
+        logo: "https://seowatcher.io/assets/icon-256.png",
+        sameAs: ["https://github.com/ucsahinn/seotracker"],
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${url(lang)}#webpage`,
+        url: url(lang),
+        name: text.title,
+        description: text.intro,
+        inLanguage: lang,
+        dateModified: updated,
+        isPartOf: { "@id": "https://seowatcher.io/#website" },
+        publisher: { "@id": "https://seowatcher.io/#author" },
+      },
+    ],
+  }).replaceAll("</", "<\\/");
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(
     path.join(dir, "index.html"),
@@ -75,6 +109,7 @@ ${otherLocales}
 ${alternates.map(([code, href]) => `<link rel="alternate" hreflang="${code}" href="${href}">`).join("\n")}
 <link rel="icon" href="/assets/icon.svg" type="image/svg+xml"><link rel="manifest" href="/site.webmanifest" />
 <link rel="alternate" type="application/atom+xml" title="seowatcher" href="${locale.base}/feed.xml">
+<script type="application/ld+json">${jsonLd}</script>
 <style data-consent-css>${consentCss}</style><meta name="ga4-id" content="" /><script src="/assets/consent.js?v=4" defer></script>
 </head><body data-privacy-page><main><a href="${lang === "tr" ? "/" : `/${lang}/`}">seowatcher · ${escape(text.home)}</a><h1>${escape(text.title)}</h1><p>${escape(text.intro)}</p><p><small>${locale.t.updated}: <time datetime="${updated}">${readableDate(locale, updated)}</time></small></p>
 ${text.sections.map(([title, paragraph]) => `<section><h2>${escape(title)}</h2><p>${escape(paragraph)}</p></section>`).join("\n")}

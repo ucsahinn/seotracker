@@ -83,7 +83,11 @@ it("keeps the unknown cause reachable without diagnosing the tag", () => {
   const reason = screen.getByText(
     "Bazı ölçümler belirlenemedi. Nedeni bilinmiyor; bu, hiç ziyaret olmadığı anlamına gelmez.",
   );
-  expect(reason.closest("details")?.hasAttribute("open")).toBe(false);
+  // Said inline, beside the one heading that names the unreadable period.
+  expect(reason.closest("details")).toBeNull();
+  expect(screen.getAllByText("Bu dönemin trafiği belirlenemedi")).toHaveLength(
+    1,
+  );
 });
 
 it("does not repeat a previous-value explanation for every unknown current metric", () => {

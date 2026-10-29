@@ -213,8 +213,8 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
 
           <div className="flex flex-col gap-1.5">
             <ProjectMarketFields value={market} onChange={setMarket} />
-            <details className="text-sm text-muted">
-              <summary className="cursor-pointer py-2">
+            <details className="text-xs text-muted">
+              <summary className="cursor-pointer py-1">
                 {t("Ayrıntılar")}
               </summary>
               <p className="max-w-prose text-sm leading-relaxed">
@@ -232,21 +232,6 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
               )}
             </p>
           ) : null}
-          <div className="flex flex-wrap gap-3 text-sm">
-            <a
-              className="btn btn-ghost btn-sm min-h-11"
-              href={`/p/${project.id}/settings/context`}
-            >
-              {t("Proje bilgisi")}
-            </a>
-            <a
-              className="btn btn-ghost btn-sm min-h-11 h-auto max-w-full whitespace-normal text-left"
-              href={`/p/${project.id}/search-performance`}
-              title={t("Marka terimlerini Arama performansında düzenleyin")}
-            >
-              {t("Arama performansı")}
-            </a>
-          </div>
           {(domain.trim() || "") !== (project.domain ?? "") ? (
             <label className="flex min-h-11 items-center gap-3 text-sm">
               <input
@@ -277,6 +262,31 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
                 : t("Değişiklikleri kaydet")}
             </button>
           </div>
+          {/* A labelled list, not a run-on line: on a phone the long link
+              ran to the screen edge and the label read as a stray word. */}
+          <nav aria-labelledby="related-settings" className="text-sm">
+            <p id="related-settings" className="text-muted">
+              {t("İlgili ayarlar")}
+            </p>
+            <ul className="mt-1 space-y-0.5">
+              <li>
+                <a
+                  className="link flex min-h-11 w-fit max-w-full items-center break-words py-2 sm:min-h-0 sm:py-1"
+                  href={`/p/${project.id}/settings/context`}
+                >
+                  {t("Proje bilgisi")}
+                </a>
+              </li>
+              <li>
+                <a
+                  className="link flex min-h-11 w-fit max-w-full items-center break-words py-2 sm:min-h-0 sm:py-1"
+                  href={`/p/${project.id}/search-performance`}
+                >
+                  {t("Marka terimlerini Arama performansında düzenleyin")}
+                </a>
+              </li>
+            </ul>
+          </nav>
         </fieldset>
       </form>
     </section>
@@ -308,7 +318,7 @@ function DangerSection({
   });
 
   return (
-    <section className="space-y-3 border-t border-base-300 pt-8">
+    <section className="space-y-3 border-t border-[var(--hairline)] pt-8">
       <SettingsHeading
         title={t("Projeyi arşivle")}
         help={t(
@@ -352,8 +362,8 @@ function DangerSection({
           </div>
         </div>
       ) : (
-        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-          <p className="text-sm text-muted">
+        <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
+          <p className="max-w-prose text-sm text-muted">
             {canArchive
               ? t(
                   "Bu projeyi arşivleyerek çalışma alanınızdan kaldırabilirsiniz.",

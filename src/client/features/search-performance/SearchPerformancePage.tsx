@@ -57,6 +57,7 @@ import type { TodoTarget } from "@/shared/searchTodoCopy";
 import {
   TabStrip,
   useHistorySync,
+  useLandingTab,
 } from "@/client/features/search-performance/SearchPageParts";
 
 type ViewChange = {
@@ -75,7 +76,7 @@ type ViewChange = {
 
 export function SearchPerformancePage({
   projectId,
-  tab,
+  tab: routeTab,
   range,
   device,
   country,
@@ -111,6 +112,7 @@ export function SearchPerformancePage({
   );
   const view = viewQuery.data?.connected ? viewQuery.data : null;
   useHistorySync(projectId, view);
+  const { tab, pickTodo } = useLandingTab(routeTab, view);
 
   const doneTodos = useDoneTodos(projectId);
   const openTodos = view
@@ -125,8 +127,10 @@ export function SearchPerformancePage({
   const closeDrill = () =>
     onViewChange({ exactQuery: undefined, exactPage: undefined });
 
-  const setTab = (next: SearchTab) =>
+  const setTab = (next: SearchTab) => {
+    if (next === "todo") pickTodo();
     onViewChange({ tab: next, f: undefined, q: undefined });
+  };
   const tabsRef = React.useRef<HTMLDivElement>(null);
   const showTodo = () => {
     setTab("todo");

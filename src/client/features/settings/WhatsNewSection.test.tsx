@@ -73,9 +73,13 @@ describe("WhatsNewSection", () => {
 
     expect(screen.getByRole("heading", { name: /Site audit/ })).toBeDefined();
     expect(screen.getByText(/Your site's security settings/)).toBeDefined();
+    // The first topic opens with the note; later topics stay folded.
     expect(
       screen.getByText(/Your site's security settings/).closest("details")
         ?.open,
+    ).toBe(true);
+    expect(
+      screen.getByText(/Audit results, new versions/).closest("details")?.open,
     ).toBe(false);
     expect(screen.queryByText(/Sitenizin güvenlik ayarları/)).toBeNull();
   });

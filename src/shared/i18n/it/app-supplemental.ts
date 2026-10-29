@@ -194,4 +194,7 @@ export const itAppSupplemental: Catalog = {
   "Tarama sınırı kaydedilmemiş.":
     "Il limite di scansione non è stato registrato.",
   "Kapsam ayrıntıları": "Dettagli sull’ambito",
+  "İlgili ayarlar": "Impostazioni correlate",
+  Kaynaklar: "Risorse",
+  "{count} okunmamış": "{count} da leggere",
 };

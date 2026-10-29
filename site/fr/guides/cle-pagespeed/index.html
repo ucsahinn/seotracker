@@ -54,7 +54,7 @@
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://seowatcher.io/kilavuz/pagespeed-anahtari/"
+      href="https://seowatcher.io/en/docs/pagespeed-key/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -104,7 +104,7 @@
       property="og:image:alt"
       content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/guides/cle-pagespeed/"
@@ -139,7 +139,9 @@
             "@id": "https://seowatcher.io/#website",
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
-            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+            "alternateName": ["seotracker"],
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
+            "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
             "@type": "SoftwareApplication",
@@ -163,7 +165,8 @@
             "description": "Enregistrer une clé PageSpeed et comprendre les tests et compteurs d’audit.",
             "url": "https://seowatcher.io/fr/guides/cle-pagespeed/",
             "inLanguage": "fr",
-            "dateModified": "2026-10-27",
+            "datePublished": "2026-10-23",
+            "dateModified": "2026-10-29",
             "articleSection": "Pour démarrer",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -198,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.5" defer></script>
+    <script src="/assets/docs.js?v=0.8.6" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1468,6 +1471,11 @@
           <p class="nav-group">Pour démarrer</p>
           <ul>
             <li>
+              <a href="/fr/guides/quest-ce-que-seowatcher/"
+                >Qu'est-ce que seowatcher ?</a
+              >
+            </li>
+            <li>
               <a href="/fr/guides/installation-sous-windows/"
                 >Installation sous Windows</a
               >
@@ -1535,6 +1543,12 @@
           Enregistrer une clé PageSpeed et comprendre les tests et compteurs
           d’audit.
         </p>
+        <p>
+          Une clé d'API PageSpeed Insights permet à l'audit de site de mesurer
+          la vitesse de vos pages avec PageSpeed Insights de Google. La clé se
+          crée gratuitement dans Google Cloud et reste facultative : sans clé,
+          l'application tente de mesurer au plus 50 pages par audit.
+        </p>
         <h2 id="ajouter-une-cle">Ajouter une clé</h2>
         <p>
           Activez PageSpeed Insights API dans Google Cloud, créez une clé et
@@ -1573,7 +1587,7 @@
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 27 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

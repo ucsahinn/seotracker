@@ -65,8 +65,24 @@ export function SavedKeywordsPage(props: SavedPageProps) {
     detail,
   } = watchlist;
   const emptyInventory = hasEmptyInventory(watchlist);
+  const searchField = (
+    <filters.filtersForm.Field name="include">
+      {(field) => (
+        <label className="block space-y-1 text-sm">
+          <span>{t("Kelime ara; tüm terimler eşleşir")}</span>
+          <input
+            className="input input-sm w-full max-sm:min-h-11"
+            value={field.state.value}
+            onChange={(event) => field.handleChange(event.target.value)}
+            placeholder={t("Terimleri virgülle ayırın")}
+          />
+        </label>
+      )}
+    </filters.filtersForm.Field>
+  );
   const filterControls = (
     <SavedKeywordsFilters
+      search={searchField}
       tagsOnly={emptyInventory}
       filtersForm={filters.filtersForm}
       activeFilterCount={filters.activeFilterCount}
@@ -137,29 +153,8 @@ export function SavedKeywordsPage(props: SavedPageProps) {
           }
         />
       ) : null}
-      <div className="rounded-box border border-base-300 bg-base-100">
-        {!emptyInventory ? (
-          <>
-            <div className="p-4">
-              <filters.filtersForm.Field name="include">
-                {(field) => (
-                  <label className="block space-y-1 text-sm">
-                    <span>{t("Kelime ara; tüm terimler eşleşir")}</span>
-                    <input
-                      className="input min-h-11 w-full"
-                      value={field.state.value}
-                      onChange={(event) =>
-                        field.handleChange(event.target.value)
-                      }
-                      placeholder={t("Terimleri virgülle ayırın")}
-                    />
-                  </label>
-                )}
-              </filters.filtersForm.Field>
-            </div>
-            {filterControls}
-          </>
-        ) : null}
+      <div className="rounded-box border border-[var(--hairline)] bg-base-100 shadow-[var(--shadow-raise)]">
+        {!emptyInventory ? filterControls : null}
         <div className="space-y-3 p-4" aria-busy={pending || query.isFetching}>
           {removeError ? (
             <RemoveSavedKeywordsError message={removeError} />
@@ -191,7 +186,7 @@ export function SavedKeywordsPage(props: SavedPageProps) {
             ) : null}
             {search.fallers ? <span>{t("Belirgin gerileyenler")}</span> : null}
             {active || invalid || pending ? (
-              <button className="btn btn-ghost min-h-11" onClick={clear}>
+              <button className="btn btn-ghost btn-sm" onClick={clear}>
                 {t("Tümünü temizle")}
               </button>
             ) : null}

@@ -88,7 +88,7 @@ function strikingColumns(
               onClick={() => onOpen({ dimension: "page", key: page })}
             />
             {row.original.pageCount > 1 ? (
-              <span className="text-[11px] text-subtle">
+              <span className="text-xs text-subtle">
                 {t("{count} sayfa bu sorguda", {
                   count: row.original.pageCount,
                 })}

@@ -80,7 +80,7 @@ export function PositionBandBars({
   if (total === 0) return null;
 
   return (
-    <section className="rounded-box border border-base-300 bg-base-100 px-4 py-4">
+    <section className="rounded-box border border-[var(--hairline)] bg-base-100 p-4 shadow-[var(--shadow-raise)]">
       <div className="flex items-center gap-1.5">
         <h2 className="text-base font-semibold">{t("Sıra dağılımı")}</h2>
         <HelpTip label={t("Sıra dağılımı")}>
@@ -89,28 +89,15 @@ export function PositionBandBars({
           )}
         </HelpTip>
       </div>
-      <details className="mt-2 max-w-prose text-sm text-muted">
-        <summary className="min-h-11 cursor-pointer">{t("Ayrıntılar")}</summary>
-        <p>
-          {paired === 0
-            ? t(
-                "Seçili dönemdeki ortalama sıralar: {count} sorgu. Önceki dönemle karşılaştırılabilecek sorgu yok.",
-                // A number, not formatted text: the English catalog picks
-                // "query" or "queries" from it.
-                { count: total },
-              )
-            : t(
-                "{count} sorgu; aynı {paired} sorguda net değişim. Çubuklar en büyük gruba görelidir.",
-                { count: formatCount(total), paired: formatCount(paired) },
-              )}
-        </p>
-      </details>
+      {/* Label, bar and count on one 36px line, inside a readable width: the
+          bars used to be 6px tracks a table-width long with their labels
+          floating 18px above. */}
       <div
         role="group"
         aria-label={t("Sıra grupları")}
-        className="mt-3 space-y-1.5"
+        className="mt-3 max-w-3xl space-y-0.5"
       >
-        {BAND_IDS.map((id) => {
+        {BAND_IDS.map((id, index) => {
           const count = counts[id];
           const pressed = active === id;
           return (
@@ -131,38 +118,64 @@ export function PositionBandBars({
                     })
               }
               onClick={() => onChange(pressed ? undefined : id)}
-              className={`group grid min-h-11 w-full grid-cols-[auto_1fr_auto] items-center gap-3 rounded-field px-2 py-1.5 text-left text-sm transition-colors enabled:hover:bg-base-200/60 disabled:cursor-not-allowed disabled:opacity-60 ${pressed ? "bg-base-200" : ""}`}
+              className={`grid min-h-9 w-full grid-cols-[3rem_minmax(0,1fr)_5.5rem_auto] items-center gap-3 rounded-field px-2 text-left text-sm transition-colors enabled:hover:bg-base-200/60 disabled:cursor-not-allowed max-sm:min-h-11 ${pressed ? "bg-base-200" : ""}`}
             >
-              <span className="w-12 shrink-0 tabular-nums text-muted">
+              <span className="tabular-nums font-medium">
                 {BAND_LABELS[id]}
               </span>
-              <span className="col-span-3 row-start-2 h-2.5 w-full rounded-full bg-base-200">
+              <span className="h-3 w-full rounded-full bg-base-200">
                 <span
                   aria-hidden
                   className="block h-full rounded-full origin-left transition-transform duration-700 ease-out motion-reduce:transform-none motion-reduce:transition-none"
                   style={{
                     width: `${(count / max) * 100}%`,
                     transform: drawn || reduced ? "scaleX(1)" : "scaleX(0)",
-                    backgroundColor: DATA_SERIES.position,
+                    // Better bands read darker-to-lighter, on the one
+                    // position hue; the label beside each bar carries the
+                    // meaning, so the shade is never the only cue.
+                    backgroundColor: `color-mix(in oklch, ${DATA_SERIES.position} ${BAND_SHADE[index]}%, var(--color-base-200))`,
                   }}
                 />
               </span>
-              <span className="min-w-0 text-right tabular-nums">
+              <span
+                className={`text-right tabular-nums ${count === 0 ? "text-subtle" : ""}`}
+              >
                 {formatCount(count)}
-                <span className="ml-2 text-muted">
+                <span className="ml-2 text-xs text-muted">
                   {formatPercent(count / total, 0)}
                 </span>
               </span>
               {paired > 0 ? (
                 <BandChange band={id} change={changes[id]} />
-              ) : null}
+              ) : (
+                <span />
+              )}
             </button>
           );
         })}
       </div>
+      <details className="mt-3 max-w-prose text-sm text-muted">
+        <summary className="min-h-11 cursor-pointer">{t("Ayrıntılar")}</summary>
+        <p>
+          {paired === 0
+            ? t(
+                "Seçili dönemdeki ortalama sıralar: {count} sorgu. Önceki dönemle karşılaştırılabilecek sorgu yok.",
+                // A number, not formatted text: the English catalog picks
+                // "query" or "queries" from it.
+                { count: total },
+              )
+            : t(
+                "{count} sorgu; aynı {paired} sorguda net değişim. Çubuklar en büyük gruba görelidir.",
+                { count: formatCount(total), paired: formatCount(paired) },
+              )}
+        </p>
+      </details>
     </section>
   );
 }
+
+/** Mix of the position hue per band, best band first. */
+const BAND_SHADE = [100, 88, 76, 66] as const;
 
 /**
  * The band's move against the previous window, with an arrow and a sign.

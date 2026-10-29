@@ -14,7 +14,7 @@
     <title>Google'a bağlanma | seowatcher kılavuzu</title>
     <meta
       name="description"
-      content="Kurulum kimliğini ve proje mülkünü ayrı seçin; kayıt ile veri erişiminin farkını görün."
+      content="Search Console ve GA4'ü kendi Google Cloud hizmet hesabınız ya da OAuth istemcinizle bağlayın, sonra her proje için mülkleri seçin."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -54,7 +54,7 @@
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://seowatcher.io/kilavuz/google-baglantisi/"
+      href="https://seowatcher.io/en/docs/google-connection/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -94,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="Kurulum kimliğini ve proje mülkünü ayrı seçin; kayıt ile veri erişiminin farkını görün."
+      content="Search Console ve GA4'ü kendi Google Cloud hizmet hesabınız ya da OAuth istemcinizle bağlayın, sonra her proje için mülkleri seçin."
     />
     <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
     <meta property="og:image:type" content="image/png" />
@@ -104,7 +104,7 @@
       property="og:image:alt"
       content="seowatcher tanıtım kartı: Search Console, Analytics 4 ve site denetimi verilerini gösteren uygulama paneli ve Windows için indirme düğmesi"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/kilavuz/google-baglantisi/"
@@ -122,7 +122,7 @@
     />
     <meta
       name="twitter:description"
-      content="Kurulum kimliğini ve proje mülkünü ayrı seçin; kayıt ile veri erişiminin farkını görün."
+      content="Search Console ve GA4'ü kendi Google Cloud hizmet hesabınız ya da OAuth istemcinizle bağlayın, sonra her proje için mülkleri seçin."
     />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta
@@ -139,7 +139,9 @@
             "@id": "https://seowatcher.io/#website",
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
-            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+            "alternateName": ["seotracker"],
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
+            "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
             "@type": "SoftwareApplication",
@@ -160,10 +162,11 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/kilavuz/google-baglantisi/#article",
             "headline": "Google'a bağlanma",
-            "description": "Kurulum kimliğini ve proje mülkünü ayrı seçin; kayıt ile veri erişiminin farkını görün.",
+            "description": "Search Console ve GA4'ü kendi Google Cloud hizmet hesabınız ya da OAuth istemcinizle bağlayın, sonra her proje için mülkleri seçin.",
             "url": "https://seowatcher.io/kilavuz/google-baglantisi/",
             "inLanguage": "tr",
-            "dateModified": "2026-10-27",
+            "datePublished": "2026-10-22",
+            "dateModified": "2026-10-29",
             "articleSection": "Başlangıç",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -198,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.5" defer></script>
+    <script src="/assets/docs.js?v=0.8.6" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1466,6 +1469,7 @@
           <summary>Kılavuz</summary>
           <p class="nav-group">Başlangıç</p>
           <ul>
+            <li><a href="/kilavuz/seowatcher-nedir/">seowatcher nedir?</a></li>
             <li><a href="/kilavuz/kurulum-windows/">Windows'a kurulum</a></li>
             <li><a href="/kilavuz/kurulum-docker/">Docker ile kurulum</a></li>
             <li class="current" aria-current="page">
@@ -1505,8 +1509,14 @@
       <article id="icerik" data-page="google-baglantisi">
         <h1>Google'a bağlanma</h1>
         <p class="lede">
-          Kurulum kimliğini ve proje mülkünü ayrı seçin; kayıt ile veri
-          erişiminin farkını görün.
+          Search Console ve GA4'ü kendi Google Cloud hizmet hesabınız ya da
+          OAuth istemcinizle bağlayın, sonra her proje için mülkleri seçin.
+        </p>
+        <p>
+          seowatcher, Search Console ve Google Analytics 4 verisini kendi Google
+          Cloud kimliğinizle okur: bir hizmet hesabı ya da bir OAuth istemcisi.
+          Kimliği tüm kurulum için bir kez kaydedersiniz, sonra her proje için
+          bir Search Console ve bir GA4 mülkü seçersiniz.
         </p>
         <h2 id="kimlik-ve-mulk-ayri-secimlerdir">
           Kimlik ve mülk ayrı seçimlerdir
@@ -1567,7 +1577,7 @@
           >
         </nav>
         <p class="meta">
-          Son güncelleme: 27 Ekim 2026. Bir hata görürseniz
+          Son güncelleme: 29 Ekim 2026. Bir hata görürseniz
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

@@ -72,7 +72,15 @@ function homeSource() {
     path.join(root, "site/assets/consent.css"),
     "utf8",
   );
-  let page = html;
+  // The page shows the current release, so it changed no earlier than that
+  // release: a hand-kept WebPage dateModified older than the app's
+  // datePublished (moved by bump-version) would contradict the visible page.
+  const released = /"datePublished": "(\d{4}-\d{2}-\d{2})"/.exec(html)?.[1];
+  let page = html.replace(
+    /("dateModified": ")(\d{4}-\d{2}-\d{2})(")/,
+    (match, open, date, close) =>
+      released && date < released ? `${open}${released}${close}` : match,
+  );
   for (const [name, url] of Object.entries(assetUrls)) {
     page = page.replace(
       new RegExp(

@@ -14,7 +14,7 @@
     <title>Opportunités | Guide seowatcher</title>
     <meta
       name="description"
-      content="Présente les pages observées, les travaux possibles et une limite de clics supplémentaires si les données le permettent."
+      content="Quelle page travailler d'abord : les pages déjà visibles dans Google, classées par limite haute de clics supplémentaires, avec le travail suggéré."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -54,7 +54,7 @@
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://seowatcher.io/kilavuz/firsatlar/"
+      href="https://seowatcher.io/en/docs/opportunities/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -91,7 +91,7 @@
     <meta property="og:title" content="Opportunités | Guide seowatcher" />
     <meta
       property="og:description"
-      content="Présente les pages observées, les travaux possibles et une limite de clics supplémentaires si les données le permettent."
+      content="Quelle page travailler d'abord : les pages déjà visibles dans Google, classées par limite haute de clics supplémentaires, avec le travail suggéré."
     />
     <meta
       property="og:image"
@@ -119,7 +119,7 @@
     <meta name="twitter:title" content="Opportunités | Guide seowatcher" />
     <meta
       name="twitter:description"
-      content="Présente les pages observées, les travaux possibles et une limite de clics supplémentaires si les données le permettent."
+      content="Quelle page travailler d'abord : les pages déjà visibles dans Google, classées par limite haute de clics supplémentaires, avec le travail suggéré."
     />
     <meta
       name="twitter:image"
@@ -139,7 +139,9 @@
             "@id": "https://seowatcher.io/#website",
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
-            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+            "alternateName": ["seotracker"],
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
+            "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
             "@type": "SoftwareApplication",
@@ -160,9 +162,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/fr/guides/opportunites/#article",
             "headline": "Opportunités",
-            "description": "Présente les pages observées, les travaux possibles et une limite de clics supplémentaires si les données le permettent.",
+            "description": "Quelle page travailler d'abord : les pages déjà visibles dans Google, classées par limite haute de clics supplémentaires, avec le travail suggéré.",
             "url": "https://seowatcher.io/fr/guides/opportunites/",
             "inLanguage": "fr",
+            "datePublished": "2026-10-23",
             "dateModified": "2026-10-29",
             "articleSection": "Les écrans",
             "about": { "@id": "https://seowatcher.io/#app" },
@@ -198,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.5" defer></script>
+    <script src="/assets/docs.js?v=0.8.6" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1465,6 +1468,11 @@
           <p class="nav-group">Pour démarrer</p>
           <ul>
             <li>
+              <a href="/fr/guides/quest-ce-que-seowatcher/"
+                >Qu'est-ce que seowatcher ?</a
+              >
+            </li>
+            <li>
               <a href="/fr/guides/installation-sous-windows/"
                 >Installation sous Windows</a
               >
@@ -1529,19 +1537,16 @@
       <article id="icerik" data-page="firsatlar">
         <h1>Opportunités</h1>
         <p class="lede">
-          Présente les pages observées, les travaux possibles et une limite de
-          clics supplémentaires si les données le permettent.
+          Quelle page travailler d'abord : les pages déjà visibles dans Google,
+          classées par limite haute de clics supplémentaires, avec le travail
+          suggéré.
         </p>
         <p>
-          « Examiner le groupe d’adresses Analytics » dans une ligne ou son
-          détail ouvre les pages de destination organiques avec les dates
-          sources et le groupe normalisé. Sans correspondance d’adresse ou de
-          dates, une explication remplace le lien. Le filtre précède la
-          pagination sur la même source limitée à 1 000 lignes qu’Opportunités.
-          Analytics signale les limites de source et de qualité empêchant de
-          vérifier le groupe complet. Les mesures récupérées peuvent changer ;
-          les mêmes dates peuvent couvrir des périodes différentes dans le
-          fuseau GA4 et le calendrier du Pacifique de Search Console.
+          Opportunités classe les pages que Google affiche déjà pour votre site
+          selon le nombre de clics supplémentaires qu'elles pourraient apporter.
+          Le calcul utilise vos propres données Search Console et les taux de
+          clics de votre site. Chaque page reçoit un type de travail suggéré et
+          une limite haute du gain ; ce n'est ni une prévision ni une garantie.
         </p>
         <h2 id="utiliser-les-opportunites">Utiliser les opportunités</h2>
         <p>
@@ -1606,6 +1611,17 @@
           épuisé : patientez puis actualisez. Autorisation absente : vérifiez la
           connexion. En cas d’échec d’actualisation, les données précédentes
           gardent leurs dates et un avertissement.
+        </p>
+        <p>
+          « Examiner le groupe d’adresses Analytics » dans une ligne ou son
+          détail ouvre les pages de destination organiques avec les dates
+          sources et le groupe normalisé. Sans correspondance d’adresse ou de
+          dates, une explication remplace le lien. Le filtre précède la
+          pagination sur la même source limitée à 1 000 lignes qu’Opportunités.
+          Analytics signale les limites de source et de qualité empêchant de
+          vérifier le groupe complet. Les mesures récupérées peuvent changer ;
+          les mêmes dates peuvent couvrir des périodes différentes dans le
+          fuseau GA4 et le calendrier du Pacifique de Search Console.
         </p>
         <h2 id="export-et-suivi">Export et suivi</h2>
         <p>

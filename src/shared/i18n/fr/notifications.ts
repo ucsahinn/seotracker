@@ -46,4 +46,7 @@ export const frNotifications: Catalog = {
   "Para birimi": "Devise",
   "Mülk alan adını kapsamıyor.": "La propriété ne couvre pas ce domaine.",
   "Denetim eski": "Audit ancien",
+  "İlgili ayarlar": "Paramètres associés",
+  Kaynaklar: "Ressources",
+  "{count} okunmamış": "{count} non lue(s)",
 };

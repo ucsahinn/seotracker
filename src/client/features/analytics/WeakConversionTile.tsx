@@ -28,7 +28,7 @@ export function WeakConversionTile({
         className={`flex w-full flex-wrap items-center gap-x-4 gap-y-1 rounded-box border px-4 py-3 text-left transition-colors ${
           active
             ? "border-primary bg-primary/5"
-            : "border-base-300 bg-base-100 hover:border-primary/40"
+            : "border-[var(--hairline)] bg-base-100 hover:border-primary/40"
         }`}
       >
         <span className="text-2xl font-semibold tabular-nums">

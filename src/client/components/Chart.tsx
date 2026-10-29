@@ -172,7 +172,7 @@ export function ChartTooltip({
  * follow the light/dark switch without a second palette.
  */
 export const CHART_AXIS = {
-  tick: { fill: "currentColor", fontSize: 11 },
+  tick: { fill: "currentColor", fontSize: 12 },
   tickLine: false,
   axisLine: false,
   stroke: "currentColor",

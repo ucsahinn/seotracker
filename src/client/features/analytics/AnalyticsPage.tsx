@@ -53,8 +53,14 @@ const REPORT_QUESTIONS: Record<Ga4ReportKindName, string> = {
 };
 
 // An empty first page has nothing to page through.
-function hasPages(result: { rowCount: number }, offset: number) {
-  return result.rowCount > 0 || offset > 0;
+// A pager only when there is another page: a full page may continue, and a
+// later page can always go back. One short page needs no buttons.
+function hasPages(
+  result: { rowCount: number },
+  offset: number,
+  rowLimit: number,
+) {
+  return offset > 0 || result.rowCount >= rowLimit;
 }
 
 export function AnalyticsPage({
@@ -341,27 +347,27 @@ export function AnalyticsPage({
         )}
         {view !== HEALTH &&
         result?.status === "ok" &&
-        hasPages(result, offset) ? (
+        hasPages(result, offset, rowLimit) ? (
           <nav
             aria-label={t("Rapor sayfaları")}
-            className="flex flex-wrap items-center justify-between gap-3"
+            className="flex flex-wrap items-center justify-end gap-2"
           >
-            <button
-              type="button"
-              className="btn btn-sm min-h-11"
-              disabled={offset === 0 || reportQuery.isFetching}
-              onClick={() => setOffset(Math.max(0, offset - rowLimit))}
-            >
-              {t("Önceki sayfa")}
-            </button>
-            <span role="status" className="text-xs text-muted">
+            <span role="status" className="mr-2 text-xs text-muted">
               {formatCount(offset + (result.rowCount ? 1 : 0))}–
               {formatCount(offset + result.rowCount)} /{" "}
               {formatCount(result.totalRowCount)}
             </span>
             <button
               type="button"
-              className="btn btn-sm min-h-11"
+              className="btn btn-ghost btn-sm min-h-11 sm:min-h-0"
+              disabled={offset === 0 || reportQuery.isFetching}
+              onClick={() => setOffset(Math.max(0, offset - rowLimit))}
+            >
+              {t("Önceki sayfa")}
+            </button>
+            <button
+              type="button"
+              className="btn btn-sm min-h-11 sm:min-h-0"
               disabled={!result.pageInfo.hasMore || reportQuery.isFetching}
               onClick={() => {
                 if (result.pageInfo.nextOffset !== null)

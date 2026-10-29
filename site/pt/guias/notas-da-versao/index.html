@@ -14,7 +14,7 @@
     <title>Notas da versão | Guia do seowatcher</title>
     <meta
       name="description"
-      content="seowatcher 0.8.4 Alpha — dados Google completos, cores vivas e telas revistas com dados reais, mais legíveis no celular."
+      content="seowatcher 0.8.6 Alpha (29 de outubro de 2026): nova auditoria do site com 202 regras, seis idiomas, notificações e dados do Google mais precisos."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -54,7 +54,7 @@
     <link
       rel="alternate"
       hreflang="x-default"
-      href="https://seowatcher.io/kilavuz/surum-notlari/"
+      href="https://seowatcher.io/en/docs/release-notes/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -91,7 +91,7 @@
     <meta property="og:title" content="Notas da versão | Guia do seowatcher" />
     <meta
       property="og:description"
-      content="seowatcher 0.8.4 Alpha — dados Google completos, cores vivas e telas revistas com dados reais, mais legíveis no celular."
+      content="seowatcher 0.8.6 Alpha (29 de outubro de 2026): nova auditoria do site com 202 regras, seis idiomas, notificações e dados do Google mais precisos."
     />
     <meta
       property="og:image"
@@ -119,7 +119,7 @@
     <meta name="twitter:title" content="Notas da versão | Guia do seowatcher" />
     <meta
       name="twitter:description"
-      content="seowatcher 0.8.4 Alpha — dados Google completos, cores vivas e telas revistas com dados reais, mais legíveis no celular."
+      content="seowatcher 0.8.6 Alpha (29 de outubro de 2026): nova auditoria do site com 202 regras, seis idiomas, notificações e dados do Google mais precisos."
     />
     <meta
       name="twitter:image"
@@ -139,7 +139,9 @@
             "@id": "https://seowatcher.io/#website",
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
-            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+            "alternateName": ["seotracker"],
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
+            "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
             "@type": "SoftwareApplication",
@@ -160,9 +162,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/pt/guias/notas-da-versao/#article",
             "headline": "Notas da versão",
-            "description": "seowatcher 0.8.4 Alpha — dados Google completos, cores vivas e telas revistas com dados reais, mais legíveis no celular.",
+            "description": "seowatcher 0.8.6 Alpha (29 de outubro de 2026): nova auditoria do site com 202 regras, seis idiomas, notificações e dados do Google mais precisos.",
             "url": "https://seowatcher.io/pt/guias/notas-da-versao/",
             "inLanguage": "pt",
+            "datePublished": "2026-10-23",
             "dateModified": "2026-10-29",
             "articleSection": "Ajuda e referência",
             "about": { "@id": "https://seowatcher.io/#app" },
@@ -198,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.5" defer></script>
+    <script src="/assets/docs.js?v=0.8.6" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1464,6 +1467,9 @@
           <p class="nav-group">Primeiros passos</p>
           <ul>
             <li>
+              <a href="/pt/guias/o-que-e-seowatcher/">O que é o seowatcher?</a>
+            </li>
+            <li>
               <a href="/pt/guias/instalar-no-windows/">Instalar no Windows</a>
             </li>
             <li>
@@ -1530,11 +1536,12 @@
       <article id="icerik" data-page="surum-notlari">
         <h1>Notas da versão</h1>
         <p class="lede">
-          seowatcher 0.8.4 Alpha — dados Google completos, cores vivas e telas
-          revistas com dados reais, mais legíveis no celular.
+          seowatcher 0.8.6 Alpha (29 de outubro de 2026): nova auditoria do site
+          com 202 regras, seis idiomas, notificações e dados do Google mais
+          precisos.
         </p>
         <p>
-          A versão mais recente é a <strong>0.8.5 Alpha</strong>, de 29 de
+          A versão mais recente é a <strong>0.8.6 Alpha</strong>, de 29 de
           outubro de 2026. Os dados são mantidos na atualização.
         </p>
         <p>
@@ -1542,9 +1549,9 @@
           manualmente; o atualizador antigo não reconhece o número menor como
           mais recente.
         </p>
-        <h2 id="0-8-5-alpha-2026-10-29">0.8.5 Alpha — 2026-10-29</h2>
+        <h2 id="0-8-6-alpha-2026-10-29">0.8.6 Alpha — 2026-10-29</h2>
         <p>
-          Esta entrada reúne novidades e correções da 0.5.0 à 0.8.5: auditoria
+          Esta entrada reúne novidades e correções da 0.5.0 à 0.8.6: auditoria
           do site, painel, notificações e seis idiomas, com dados mais precisos
           e telas mais legíveis.
         </p>
@@ -1720,6 +1727,16 @@
             dos dados aparecem juntos com rótulos curtos. Abra as explicações
             longas quando precisar; nomes curtos e botões claros facilitam as
             ações.
+          </li>
+          <li>
+            <strong>No celular:</strong> As listas aparecem como linhas legíveis
+            em vez de tabelas no celular; consultas e rótulos não são mais
+            cortados.
+          </li>
+          <li>
+            <strong>Visual único:</strong> Botões, seções expansíveis,
+            notificações e cartões têm a mesma aparência em todas as telas;
+            listas de uma única página não mostram mais botões de página.
           </li>
         </ul>
         <h3 id="projetos-e-pesquisas-salvas">🗂️ Projetos e pesquisas salvas</h3>
@@ -2079,7 +2096,7 @@
         <p class="toc-label">Nesta página</p>
         <ol>
           <li>
-            <a href="#0-8-5-alpha-2026-10-29">0.8.5 Alpha — 2026-10-29</a>
+            <a href="#0-8-6-alpha-2026-10-29">0.8.6 Alpha — 2026-10-29</a>
           </li>
           <li>
             <a href="#0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</a>

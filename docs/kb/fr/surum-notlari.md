@@ -1,16 +1,16 @@
 ---
 title: Notes de version
-description: seowatcher 0.8.4 Alpha — données Google complètes, couleurs vives et écrans revus avec des données réelles, plus lisibles sur téléphone.
+description: seowatcher 0.8.6 Alpha (29 octobre 2026) : nouvel audit de site à 202 règles, six langues, notifications et données Google plus exactes.
 updated: 2026-10-29
 ---
 
-La dernière version est la **0.8.5 Alpha**, du 29 octobre 2026. Vos données sont conservées lors de la mise à jour.
+La dernière version est la **0.8.6 Alpha**, du 29 octobre 2026. Vos données sont conservées lors de la mise à jour.
 
 Pour passer de 2.x à 0.x.x Alpha, lancez le nouvel installateur manuellement ; l’ancien outil ne reconnaît pas le numéro inférieur comme plus récent.
 
-## 0.8.5 Alpha — 2026-10-29
+## 0.8.6 Alpha — 2026-10-29
 
-Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.5 : audit du site, tableau de bord, notifications et six langues, avec des données plus justes et des écrans plus lisibles.
+Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.6 : audit du site, tableau de bord, notifications et six langues, avec des données plus justes et des écrans plus lisibles.
 
 ### ✨ Points forts
 
@@ -66,6 +66,8 @@ Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.5 : a
 - **Aide et versions :** Les écrans d’aide et de notes de version facilitent la recherche d’informations.
 - **Couleurs des données:** Clics bleus, impressions violettes, taux de clic turquoise, position ocre, sessions vertes et conversions roses : cartes et graphiques gardent les mêmes couleurs, plus vives, dans les deux thèmes.
 - **Écrans plus calmes:** La source, la période et la fraîcheur des données sont regroupées sous des libellés courts. Ouvrez les longues explications au besoin ; des noms courts et des boutons clairs facilitent les actions.
+- **Sur mobile :** Les listes s’affichent en lignes lisibles plutôt qu’en tableaux sur mobile ; les requêtes et les libellés ne sont plus coupés.
+- **Un seul style :** Les boutons, les sections dépliables, les notifications et les cartes ont le même aspect sur chaque écran ; les listes d’une seule page n’affichent plus de boutons de pagination.
 
 ### 🗂️ Projets et recherches enregistrées
 

@@ -5,9 +5,9 @@ kind: nasil-yapilir
 updated: 2026-10-23
 ---
 
-The app's interface comes in six languages: Turkish, English, German, French, Italian and Portuguese. This guide uses the English names; to switch, go to **Settings → Appearance → Language**. The Windows tray menu is Turkish only, so there the guide gives the Turkish name with its English meaning in brackets.
-
 This guide installs the app on your computer and opens it in the browser. The install takes two minutes. It installs only for your own user account and needs no administrator rights, except once if the Visual C++ component is missing.
+
+The app's interface comes in six languages: Turkish, English, German, French, Italian and Portuguese. This guide uses the English names; to switch, go to **Settings → Appearance → Language**. The Windows tray menu is Turkish only, so there the guide gives the Turkish name with its English meaning in brackets.
 
 ## What you need
 

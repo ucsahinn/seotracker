@@ -2,6 +2,7 @@ import type { Ga4ReportMetadata } from "@/server/features/ga4/services/Ga4Report
 import { t } from "@/shared/i18n";
 import { formatDate } from "@/shared/format";
 import { FactStrip } from "@/client/components/FactStrip";
+import { StatusPill } from "@/client/components/StatusPill";
 import type { getGa4DashboardReport } from "@/serverFunctions/ga4";
 type Report = Extract<
   Awaited<ReturnType<typeof getGa4DashboardReport>>,
@@ -19,8 +20,11 @@ export function Ga4Provenance({ report }: { report: Report }) {
         {
           label: t("Kaynak"),
           value: "Google Analytics",
-          hint: limited ? t("Yetersiz veri") : undefined,
-          tone: limited ? "warning" : undefined,
+          // A status chip, not the source name painted yellow: the value
+          // stays a plain fact and the state reads as a state.
+          hint: limited ? (
+            <StatusPill tone="warning" label={t("Yetersiz veri")} />
+          ) : undefined,
         },
         {
           label: t("Dönem"),

@@ -2,9 +2,9 @@
 
 Neuheiten und Korrekturen, neueste Version zuerst.
 
-## [0.8.5] Alpha — 2026-10-29
+## [0.8.6] Alpha — 2026-10-29
 
-Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.5: Website-Audit, Übersicht, Benachrichtigungen und sechs Sprachen sowie genauere Daten und besser lesbare Bildschirme.
+Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.6: Website-Audit, Übersicht, Benachrichtigungen und sechs Sprachen sowie genauere Daten und besser lesbare Bildschirme.
 
 ### ✨ Höhepunkte
 
@@ -60,6 +60,8 @@ Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.5: Website-
 - **Hilfe und Versionshinweise:** Die gesuchten Informationen sind in Hilfe und Versionshinweisen leichter zu finden.
 - **Farben der Daten:** Klicks sind blau, Impressionen violett, Klickrate türkis, Position ocker, Sitzungen grün und Conversions rosé. Karten und Diagramme nutzen in beiden Designs dieselben kräftigeren Farben.
 - **Ruhigere Ansichten:** Quelle, Zeitraum und Aktualität stehen mit kurzen Beschriftungen zusammen. Längere Erklärungen öffnen Sie bei Bedarf; kurze Namen und klare Schaltflächen erleichtern die Bedienung.
+- **Auf dem Handy:** Listen erscheinen auf dem Handy als gut lesbare Zeilen statt Tabellen; Suchanfragen und Beschriftungen werden nicht mehr abgeschnitten.
+- **Einheitliches Bild:** Schaltflächen, aufklappbare Abschnitte, Benachrichtigungen und Karten sehen auf jedem Bildschirm gleich aus; einseitige Listen zeigen keine Seitenschaltflächen mehr.
 
 ### 🗂️ Projekte und gespeicherte Suchbegriffe
 

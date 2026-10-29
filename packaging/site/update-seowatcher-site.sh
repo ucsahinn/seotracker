@@ -10,7 +10,7 @@ enabled=/etc/nginx/sites-enabled/seowatcher.io.conf
 available=/etc/nginx/sites-available/seowatcher.io.conf
 cert=/etc/letsencrypt/live/seowatcher.io/fullchain.pem
 key=/etc/letsencrypt/live/seowatcher.io/privkey.pem
-release=$base/releases/20261029-0.8.5-alpha
+release=$base/releases/20261029-0.8.6-alpha
 archive=$bundle/site.tar.gz
 redirects=$bundle/seowatcher-redirects.conf
 snippet=/etc/nginx/snippets/seowatcher-redirects.conf
@@ -142,7 +142,7 @@ with tarfile.open(sys.argv[1], 'r:gz') as archive:
         'assets/og.png', 'assets/og-en.png', 'assets/og-de.png',
         'assets/og-fr.png', 'assets/og-it.png', 'assets/og-pt.png',
         '404.html', 'assets/consent.js',
-        'assets/consent.css', 'sitemap.xml', 'llms.txt'
+        'assets/consent.css', 'sitemap.xml', 'llms.txt', 'llms-full.txt'
     }
     if not required.issubset(files):
         raise SystemExit('Required site files are missing')
@@ -268,11 +268,11 @@ with tarfile.open(sys.argv[1], 'r:gz') as archive:
                 if 'noindex,follow' not in content or f'https://seowatcher.io{target}' not in content or f'0; url={target}' not in content:
                     raise SystemExit(f'Broken previous guide URL alias: {alias}')
     html_count = sum(name.endswith('.html') for name in files)
-    if html_count != 287:
+    if html_count != 298:
         raise SystemExit(f'Unexpected HTML page count: {html_count}')
     sitemap = ET.fromstring(archive.extractfile(files['sitemap.xml']).read())
     urls = sitemap.findall('{http://www.sitemaps.org/schemas/sitemap/0.9}url')
-    if len(urls) != 144:
+    if len(urls) != 150:
         raise SystemExit(f'Unexpected sitemap target count: {len(urls)}')
     for node in urls:
         location = node.findtext('{http://www.sitemaps.org/schemas/sitemap/0.9}loc', '')

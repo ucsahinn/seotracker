@@ -94,25 +94,6 @@ export function PageSpeedKeySection() {
         <h2 className="text-base font-semibold">{t("Hız ölçümü")}</h2>
       </SectionHeaderRow>
 
-      <details className="text-sm text-muted">
-        <summary className="cursor-pointer py-2">{t("Ayrıntılar")}</summary>
-        <p className="text-sm text-muted">
-          {t(
-            "Anahtarsız ölçüm sınırlıdır; bu uygulama denetim başına en fazla {count} sayfayı dener. Google daha önce sınır koyabilir. Anahtar başarı garantisi vermez.",
-            { count: UNKEYED_LIGHTHOUSE_PAGE_CAP },
-          )}{" "}
-          <a
-            href={KEY_URL}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
-          >
-            PageSpeed Insights API
-            <ExternalLink className="size-3" />
-          </a>
-        </p>
-      </details>
-
       {statusQuery.isPending ? <Skeleton variant="form" rows={1} /> : null}
 
       {statusQuery.isError ? (
@@ -241,6 +222,24 @@ export function PageSpeedKeySection() {
           onConfirm={() => clear.mutate()}
         />
       ) : null}
+      <details className="text-xs text-muted">
+        <summary className="cursor-pointer py-1">{t("Ayrıntılar")}</summary>
+        <p className="text-sm text-muted">
+          {t(
+            "Anahtarsız ölçüm sınırlıdır; bu uygulama denetim başına en fazla {count} sayfayı dener. Google daha önce sınır koyabilir. Anahtar başarı garantisi vermez.",
+            { count: UNKEYED_LIGHTHOUSE_PAGE_CAP },
+          )}{" "}
+          <a
+            href={KEY_URL}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
+          >
+            PageSpeed Insights API
+            <ExternalLink className="size-3" />
+          </a>
+        </p>
+      </details>
     </section>
   );
 }

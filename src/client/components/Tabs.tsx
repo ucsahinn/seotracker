@@ -44,6 +44,20 @@ export function Tabs<Id extends string>({
 }) {
   const refs = React.useRef(new Map<Id, HTMLButtonElement>());
 
+  // On a phone the strip scrolls; keep the selected tab inside it. Only the
+  // strip moves (never the page), so this is safe on first paint too.
+  React.useEffect(() => {
+    const tab = refs.current.get(value);
+    const strip = tab?.parentElement;
+    if (!tab || !strip || strip.scrollWidth <= strip.clientWidth) return;
+    const left = tab.offsetLeft - strip.offsetLeft;
+    if (
+      left < strip.scrollLeft ||
+      left + tab.offsetWidth > strip.scrollLeft + strip.clientWidth
+    )
+      strip.scrollLeft = Math.max(0, left - 16);
+  }, [value]);
+
   const select = (index: number) => {
     const next = items[index];
     if (!next) return;

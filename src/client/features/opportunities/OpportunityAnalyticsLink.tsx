@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { ChartLine } from "lucide-react";
 import { normalizePageKey } from "@/shared/normalizePageKey";
 import { t } from "@/shared/i18n";
 import type { OpportunityRow } from "./opportunityLogic";
@@ -57,12 +58,27 @@ export function OpportunityAnalyticsLink({
         startDate: dateRange.startDate,
         endDate: dateRange.endDate,
       }}
-      className="inline-flex min-h-11 items-center text-xs text-primary underline"
+      // In a table cell the full sentence ran into the number beside it
+      // ("10Analytics…"); the compact form is its own short line, and keeps
+      // the full name for assistive technology.
+      aria-label={compact ? t("Analytics adres grubunu incele") : undefined}
+      className={
+        compact
+          ? "mt-0.5 inline-flex min-h-6 items-center gap-1 text-xs text-primary hover:underline max-sm:min-h-11"
+          : "inline-flex min-h-11 items-center text-xs text-primary underline"
+      }
       title={t(
         "Kaynak sınırlıysa Analytics tam eşleşmenin doğrulanamadığını belirtir.",
       )}
     >
-      {t("Analytics adres grubunu incele")}
+      {compact ? (
+        <>
+          <ChartLine aria-hidden className="size-3" />
+          Analytics
+        </>
+      ) : (
+        t("Analytics adres grubunu incele")
+      )}
     </Link>
   );
 }
