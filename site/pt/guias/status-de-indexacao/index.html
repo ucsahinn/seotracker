@@ -14,7 +14,7 @@
     <title>Status de indexação | Guia do seowatcher</title>
     <meta
       name="description"
-      content="A resposta do Google para cada página: se está indexada, por que não está e quando foi visitada pela última vez. Até 2.000 consultas por dia."
+      content="O Google colocou cada página no índice? Se não, por quê, e quando ele a rastreou pela última vez? No máximo 2.000 consultas por dia."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -94,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="A resposta do Google para cada página: se está indexada, por que não está e quando foi visitada pela última vez. Até 2.000 consultas por dia."
+      content="O Google colocou cada página no índice? Se não, por quê, e quando ele a rastreou pela última vez? No máximo 2.000 consultas por dia."
     />
     <meta
       property="og:image"
@@ -107,7 +107,7 @@
       property="og:image:alt"
       content="Cartão do seowatcher: o painel do aplicativo com dados do Search Console, do Analytics 4 e da auditoria do site, e um botão para baixar para Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/pt/guias/status-de-indexacao/"
@@ -125,7 +125,7 @@
     />
     <meta
       name="twitter:description"
-      content="A resposta do Google para cada página: se está indexada, por que não está e quando foi visitada pela última vez. Até 2.000 consultas por dia."
+      content="O Google colocou cada página no índice? Se não, por quê, e quando ele a rastreou pela última vez? No máximo 2.000 consultas por dia."
     />
     <meta
       name="twitter:image"
@@ -168,11 +168,11 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/pt/guias/status-de-indexacao/#article",
             "headline": "Status de indexação",
-            "description": "A resposta do Google para cada página: se está indexada, por que não está e quando foi visitada pela última vez. Até 2.000 consultas por dia.",
+            "description": "O Google colocou cada página no índice? Se não, por quê, e quando ele a rastreou pela última vez? No máximo 2.000 consultas por dia.",
             "url": "https://seowatcher.io/pt/guias/status-de-indexacao/",
             "inLanguage": "pt",
             "datePublished": "2026-10-23",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-29",
             "articleSection": "Telas",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1502,7 +1502,7 @@
               >
             </li>
             <li>
-              <a href="/pt/guias/analise/">Entender os dados de análise</a>
+              <a href="/pt/guias/analise/">Compreender os dados do Analytics</a>
             </li>
             <li>
               <a href="/pt/guias/auditoria-do-site/">Auditoria do site</a>
@@ -1513,7 +1513,7 @@
             <li><a href="/pt/guias/relatorios/">Relatórios e modelos</a></li>
             <li>
               <a href="/pt/guias/informacoes-do-projeto/"
-                >Informações do projeto</a
+                >Contexto do projeto</a
               >
             </li>
             <li><a href="/pt/guias/configuracoes/">Configurações</a></li>
@@ -1525,7 +1525,7 @@
               <a href="/pt/guias/regras-de-auditoria/">Regras de auditoria</a>
             </li>
             <li>
-              <a href="/pt/guias/configurar-agente/">Configurar o agente</a>
+              <a href="/pt/guias/configurar-agente/">Configuração do agente</a>
             </li>
             <li>
               <a href="/pt/guias/solucao-de-problemas/">Solução de problemas</a>
@@ -1537,187 +1537,175 @@
       <article id="icerik" data-page="dizin-durumu">
         <h1>Status de indexação</h1>
         <p class="lede">
-          A resposta do Google para cada página: se está indexada, por que não
-          está e quando foi visitada pela última vez. Até 2.000 consultas por
-          dia.
+          O Google colocou cada página no índice? Se não, por quê, e quando ele
+          a rastreou pela última vez? No máximo 2.000 consultas por dia.
         </p>
         <p>
-          Esta página mostra como descobrir quais das suas páginas o Google
-          colocou na busca.
+          A auditoria do site verifica se uma página abre, mas não consegue
+          saber se o Google a colocou no índice dele. A aba
+          <strong>Status de indexação</strong>, dentro de
+          <strong>Auditoria do site</strong>, pergunta isso ao Google pela
+          Inspeção de URL do Search Console e guarda as respostas neste
+          computador. Uma página só é consultada de novo quando a resposta dela
+          fica antiga.
         </p>
         <p>
-          A auditoria do site informa que uma página pode ser aberta. Ela não
-          consegue dizer se o Google realmente a adicionou ao seu índice (a
-          lista de páginas do Google). A aba
-          <strong>Status de indexação</strong> pergunta isso ao Google e guarda
-          a resposta. As respostas ficam guardadas neste computador. A mesma
-          pergunta não é repetida sem necessidade. Só as respostas que ficaram
-          velhas são perguntadas outra vez. Isso importa porque o Google concede
-          2.000 perguntas por dia para cada propriedade (o registro do seu site
-          no Search Console). O aplicativo e o seu assistente dividem essa cota.
+          Essa economia importa: o Google concede 2.000 consultas por dia para
+          cada propriedade do Search Console, e o aplicativo e o agente
+          conectado dividem a mesma cota.
         </p>
-        <h2 id="o-que-ha-na-tela">O que há na tela</h2>
+        <h2 id="o-que-a-aba-contem">O que a aba contém</h2>
         <p>
           <strong
-            >O anel &quot;O que o Google fez com essas páginas?&quot;.</strong
+            >Anel &quot;O que o Google fez com essas páginas?&quot;</strong
           >
-          As páginas rastreadas são divididas em três grupos:
+          Divide as páginas rastreadas em três grupos:
         </p>
         <ul>
-          <li><strong>No Google</strong>: podem aparecer na busca.</li>
+          <li><strong>No Google</strong>: a página pode aparecer na busca.</li>
           <li>
-            <strong>Não indexado</strong>: o Google olhou, mas não a incluiu.
+            <strong>Não indexado</strong>: o Google a analisou, mas não a
+            incluiu.
           </li>
           <li>
             <strong>Aguardando uma resposta</strong>: a página ainda não foi
-            consultada, ou o Google não deu resposta.
+            consultada ou o Google não respondeu.
           </li>
         </ul>
         <p>
-          <strong>Caixas de resumo.</strong> Mostram quantas páginas foram
+          <strong>Quadros de resumo.</strong> Mostram quantas páginas foram
           consultadas, quantas estão no índice, quantas não estão e quantas
-          aguardam. A caixa &quot;Páginas onde o Google escolheu um canônico
-          diferente&quot; conta as páginas em que o Google escolheu um endereço
-          diferente do canônico que você declarou (a etiqueta que diz qual é o
-          endereço principal da página). A caixa &quot;Ainda não consultadas
-          nesta auditoria&quot; é o número de páginas que faltam consultar.
+          aguardam.
+          <strong>Páginas onde o Google escolheu um canônico diferente</strong>
+          conta as páginas em que o endereço escolhido pelo Google difere do
+          canonical declarado no site. Uma diferença apenas na barra final
+          também conta.
+          <strong
+            >Páginas desta auditoria ainda não verificadas no Google</strong
+          >
+          indica quantas páginas faltam consultar.
         </p>
         <p>
-          <strong>O botão &quot;Verificar o status no Google&quot;.</strong>
-          Cada clique consulta no máximo 25 páginas. As páginas que estão há
-          mais tempo sem resposta vêm primeiro. Se o limite diário estiver
-          cheio, aparece o aviso &quot;O limite diário de 2.000 endereços do
-          Google foi atingido&quot;. Se o Search Console não estiver conectado,
-          o botão fica desativado. Ele também fica desativado se o domínio
-          auditado não estiver dentro da propriedade conectada.
+          <strong>Verificar o status no Google.</strong> Cada clique consulta no
+          máximo 25 páginas, começando pelas que nunca foram consultadas e
+          depois pelas que têm a resposta vencida há mais tempo. Quando a cota
+          diária se esgota, aparece um aviso. O botão fica desativado se:
         </p>
+        <ul>
+          <li>o Search Console não estiver conectado;</li>
+          <li>não houver mais páginas para consultar;</li>
+          <li>
+            o domínio auditado não pertencer à propriedade conectada, por
+            exemplo porque outro site foi auditado.
+          </li>
+        </ul>
         <p>
-          <strong>Tabela.</strong> Colunas: <strong>Página</strong>,
+          <strong>Tabela.</strong> As colunas são <strong>Página</strong>,
           <strong>Status</strong>, <strong>Motivo</strong>,
-          <strong>URL canônico selecionado pelo Google</strong>,
-          <strong>Último rastreamento do Google</strong>. A célula de status
-          mostra &quot;No Google&quot;, &quot;Não verificado&quot;, &quot;Sem
-          resposta&quot;, &quot;Erro&quot;, ou a versão em turco do próprio
-          status do Google. No total, 18 status são traduzidos para o turco.
-          Exemplos:
+          <strong>URL canônico selecionado pelo Google</strong> e
+          <strong>Último rastreamento do Google</strong>. O status é &quot;No
+          Google&quot;, &quot;Não verificado&quot;, &quot;Sem resposta&quot;,
+          &quot;Erro&quot; ou um dos 18 status do Google, traduzido. Alguns
+          exemplos:
         </p>
         <ul>
           <li>&quot;Descoberto, atualmente não indexado&quot;</li>
-          <li>
-            &quot;Excluído pela tag 'noindex'&quot; (a página fica fora da
-            busca)
-          </li>
-          <li>
-            &quot;Bloqueado por robots.txt&quot; (robots.txt: o arquivo que diz
-            ao Google em quais páginas ele pode entrar)
-          </li>
-          <li>
-            &quot;Soft 404&quot; (a página existe, mas o Google a considera
-            vazia)
-          </li>
+          <li>&quot;Excluído pela tag 'noindex'&quot;</li>
+          <li>&quot;Bloqueado por robots.txt&quot;</li>
+          <li>&quot;Soft 404&quot;</li>
           <li>&quot;URL desconhecido para o Google&quot;</li>
         </ul>
-        <p>Você pode baixar a tabela como CSV.</p>
-        <h2 id="como-usar">Como usar</h2>
+        <p>A tabela pode ser baixada em CSV.</p>
+        <h2 id="passo-a-passo">Passo a passo</h2>
         <ol>
           <li>
-            Quando a auditoria terminar, abra a aba. Se o número de
-            &quot;Aguardando uma resposta&quot; for alto, clique em
-            <strong>Verificar o status no Google</strong>. Cada clique avança 25
-            páginas. Em um site pequeno, alguns cliques bastam.
+            Quando a auditoria terminar, abra a aba. Se muitas páginas estiverem
+            em <strong>Aguardando uma resposta</strong>, clique em
+            <strong>Verificar o status no Google</strong>: cada clique avança 25
+            páginas, e em um site pequeno poucos cliques bastam.
           </li>
           <li>
-            Olhe primeiro o grupo &quot;Não indexado&quot;. A coluna
-            <strong>Motivo</strong> é o motivo do Google e muitas vezes diz o
-            que fazer. Se disser &quot;Bloqueado por robots.txt&quot;, remova o
-            bloqueio. Se disser &quot;Excluído pela tag 'noindex'&quot;, apague
-            a etiqueta. Se disser &quot;Descoberto, atualmente não
-            indexado&quot;, esperar costuma bastar.
+            Examine primeiro o grupo <strong>Não indexado</strong>. A coluna
+            <strong>Motivo</strong> traz a explicação do Google, que muitas
+            vezes já indica a solução:
+            <ul>
+              <li>&quot;Bloqueado por robots.txt&quot;: remova o bloqueio.</li>
+              <li>&quot;Excluído pela tag 'noindex'&quot;: remova a tag.</li>
+              <li>
+                &quot;Descoberto, atualmente não indexado&quot;: em geral, basta
+                esperar.
+              </li>
+            </ul>
           </li>
           <li>
-            Adicione ao mapa do site (sitemap) as páginas importantes que dizem
-            &quot;URL desconhecido para o Google&quot;. Envie o mapa do site ao
-            Search Console. Para as três ou quatro páginas mais importantes,
-            clique à mão em &quot;Dizine eklenmesini iste&quot; (Solicitar
-            indexação) no Search Console.
+            Adicione ao sitemap as páginas importantes marcadas como &quot;URL
+            desconhecido para o Google&quot; e envie o sitemap no Search
+            Console. Para algumas páginas especialmente importantes, use no
+            Search Console o comando &quot;Solicitar indexação&quot;.
           </li>
           <li>
-            Se a caixa &quot;Páginas onde o Google escolheu um canônico
-            diferente&quot; não for zero, olhe a coluna
-            <strong>URL canônico selecionado pelo Google</strong>. O Google
-            preferiu outro endereço. Corrija o seu endereço principal ou adote o
-            que o Google escolheu.
+            Se o quadro de canônicos diferentes não estiver zerado, leia a
+            coluna <strong>URL canônico selecionado pelo Google</strong>: o
+            Google não aceitou o endereço principal declarado. Corrija o
+            canonical ou adote o endereço escolhido pelo Google.
           </li>
           <li>
-            Clique de novo depois de alguns dias. Só as respostas velhas são
-            perguntadas outra vez, então a sua cota não é desperdiçada.
+            Consulte de novo depois de alguns dias. Só as respostas antigas são
+            consultadas outra vez, então a cota não é desperdiçada.
           </li>
         </ol>
         <h2 id="como-os-numeros-sao-calculados">
           Como os números são calculados
         </h2>
         <p>
-          Se o Google disser &quot;indexada&quot;, a página conta como &quot;No
-          Google&quot;. Se disser &quot;não indexada&quot; ou
-          &quot;desconhecida&quot;, a página conta como &quot;Não
-          indexado&quot;. Se não houver resposta, a página é &quot;Aguardando
-          uma resposta&quot;.
+          Se o Google responder &quot;no índice&quot;, a página fica em
+          <strong>No Google</strong>. Qualquer outra resposta do Google
+          (&quot;fora do índice&quot; ou indefinida) coloca a página em
+          <strong>Não indexado</strong>. Sem resposta, a página continua em
+          <strong>Aguardando uma resposta</strong>.
         </p>
         <p>
-          Uma resposta é considerada velha depois de um tempo definido e é
-          perguntada de novo. Para uma página no índice, esse tempo é de 14
-          dias. Para uma página fora do índice, ou uma resposta com erro, é de 3
-          dias. Uma página que nunca foi consultada está sempre pronta para ser
-          consultada. O limite diário é calculado a partir do número de
-          perguntas das últimas 24 horas. O aplicativo conta apenas as suas
-          próprias perguntas. As consultas que você faz à mão no Search Console
-          não entram nesse contador, mas contam para o limite real do Google.
-        </p>
-        <p>
-          Uma divergência de canônico significa que o endereço que o Google
-          escolheu e o endereço que você declarou são diferentes. Uma diferença
-          de barra no fim também conta.
+          Uma resposta fica antiga depois de 14 dias para uma página no índice e
+          depois de 3 dias para uma página não indexada ou com erro. Uma página
+          nunca consultada está sempre pronta para consulta. A cota diária é
+          calculada sobre as consultas das últimas 24 horas. O aplicativo conta
+          apenas as próprias consultas: as inspeções feitas manualmente no
+          Search Console não entram no contador, mas reduzem a cota real do
+          Google.
         </p>
         <p>
           Se o último rastreamento do Google tiver mais de 90 dias, a auditoria
-          relata o problema &quot;O Google não rastreia esta página há muito
-          tempo&quot;. As respostas velhas são reunidas em um único problema,
-          &quot;A resposta do Google sobre algumas páginas está
-          desatualizada&quot;.
+          do site registra o problema &quot;O Google não rastreia esta página há
+          muito tempo&quot;. As respostas antigas são reunidas em um único
+          problema, &quot;As respostas do Google para algumas páginas estão
+          desatualizadas&quot;.
         </p>
         <h2 id="perguntas-frequentes">Perguntas frequentes</h2>
         <p>
-          <strong>Por que o botão está desativado?</strong> Pode haver três
-          motivos. O Search Console não está conectado. Não restam páginas a
-          consultar. Ou o domínio que você auditou não está dentro da
-          propriedade conectada. Isso acontece se você auditou outro site.
-        </p>
-        <p>
           <strong>De quem é o limite de 2.000?</strong> Da propriedade. Dois
-          projetos conectados à mesma propriedade e o seu assistente gastam do
-          mesmo conjunto.
+          projetos conectados à mesma propriedade e o agente usam a mesma cota.
         </p>
         <p>
           <strong
-            >O que devo fazer com uma página que diz &quot;Descoberto,
-            atualmente não indexado&quot;?</strong
+            >O que fazer com uma página &quot;Descoberto, atualmente não
+            indexado&quot;?</strong
           >
-          Na maioria das vezes, nada. Em sites novos, o Google pode fazer as
-          páginas esperarem semanas. Colocar um link para a página a partir de
-          páginas do site que são rastreadas com frequência acelera o processo.
+          Muitas vezes, nada: em sites novos, o Google pode levar semanas. Um
+          link a partir das páginas rastreadas com mais frequência pode acelerar
+          o processo.
         </p>
         <p>
-          <strong>Esta aba avisa o Google sobre páginas novas?</strong> Não, ela
-          apenas pergunta. Para avisar o Google, há o mapa do site e
-          &quot;Dizine eklenmesini iste&quot; no Search Console.
+          <strong>A aba informa ao Google sobre páginas novas?</strong> Não, ela
+          só pergunta. Para informar páginas novas, use o sitemap e
+          &quot;Solicitar indexação&quot; no Search Console.
         </p>
         <h2 id="limites">Limites</h2>
         <p>
-          As respostas são tão boas quanto o que o Google fornece. O Google pode
-          deixar alguns campos vazios. Não é possível passar de 2.000 perguntas
-          por dia. Consultar por completo um site de 10.000 páginas leva cinco
-          dias. A aba consulta apenas as páginas rastreadas. Endereços que não
-          fizeram parte da auditoria não aparecem na lista.
+          A aba mostra apenas o que o Google responde, e o Google pode deixar
+          alguns campos vazios. O limite de 2.000 consultas por dia não pode ser
+          ultrapassado: verificar um site de 10.000 páginas leva cinco dias. Só
+          as páginas rastreadas pela auditoria são consultadas; endereços que
+          ficaram fora da auditoria não aparecem.
         </p>
         <nav class="pager" aria-label="Página anterior e seguinte">
           <a class="pager-prev" rel="prev" href="/pt/guias/auditoria-do-site/"
@@ -1727,20 +1715,20 @@
           >
         </nav>
         <p class="meta">
-          Última atualização: 27 de outubro de 2026. Viu algum erro?
+          Última atualização: 29 de outubro de 2026. Encontrou um erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >Relate no GitHub</a
+            >Informe no GitHub</a
           >.
         </p>
       </article>
       <nav class="toc" aria-label="Nesta página">
         <p class="toc-label">Nesta página</p>
         <ol>
-          <li><a href="#o-que-ha-na-tela">O que há na tela</a></li>
-          <li><a href="#como-usar">Como usar</a></li>
+          <li><a href="#o-que-a-aba-contem">O que a aba contém</a></li>
+          <li><a href="#passo-a-passo">Passo a passo</a></li>
           <li>
             <a href="#como-os-numeros-sao-calculados"
               >Como os números são calculados</a

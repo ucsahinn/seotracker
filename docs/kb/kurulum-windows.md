@@ -5,7 +5,7 @@ kind: nasil-yapilir
 updated: 2026-10-23
 ---
 
-Bu sayfayı bitirince uygulama bilgisayarınızda kurulu ve tarayıcıda açık olur. Kurulum iki dakika sürer. Yalnızca sizin kullanıcı hesabınıza kurulur, yönetici izni gerekmez.
+Kurulum yaklaşık iki dakika sürer. Sonunda uygulama bilgisayarınızda kurulu ve tarayıcıda açık olur. Varsayılan olarak yalnızca sizin kullanıcı hesabınıza, `%LOCALAPPDATA%\Programs\seowatcher` klasörüne kurulur ve yönetici izni istemez.
 
 ## Gerekenler
 
@@ -13,7 +13,7 @@ Bu sayfayı bitirince uygulama bilgisayarınızda kurulu ve tarayıcıda açık 
 - Yaklaşık 400 MB boş yer. Kurulum dosyası 86 MB, kurulu hali 313 MB.
 - Edge, Chrome ya da Firefox gibi bir tarayıcı.
 - Docker, Node ya da terminal (komut penceresi) gerekmez.
-- Microsoft'un Visual C++ paketi. Bilgisayarda yoksa kurulum onu kendisi kurar ve bir kez yönetici izni sorar. Uygulama `%LOCALAPPDATA%\Programs\seowatcher` klasörüne kurulur.
+- Microsoft'un Visual C++ paketi. Bilgisayarda yoksa kurulum onu kendisi kurar ve bir kez yönetici izni sorar.
 
 ## Adımlar
 
@@ -24,18 +24,18 @@ Bu sayfayı bitirince uygulama bilgisayarınızda kurulu ve tarayıcıda açık 
 3. Windows "Windows bilgisayarınızı korudu" derse **Daha fazla bilgi**, sonra **Yine de çalıştır** deyin. Dosya henüz imzalı olmadığı için Windows yayıncıyı tanımıyor. Uyarı normaldir.
 4. İsterseniz dosyanın SHA-256 özetini (dosyanın parmak izi) sürüm sayfasındaki `SHA256SUMS.txt` ile karşılaştırın.
 5. Hoş geldiniz sayfasında **Sonraki** deyin.
-6. "Kim için kurulsun" sorusunda **Yalnızca ben** seçeneğini seçin. Önerilen budur ve yalnızca sizin hesabınıza kurar. **Tüm kullanıcılar** seçeneği yönetici izni ister.
+6. "Kim için kurulsun" sorusunda **Yalnızca ben** seçeneğini seçin. Önerilen budur. **Tüm kullanıcılar** seçeneği yönetici izni ister.
 7. Şu iki seçeneğe bakın: **Windows açılınca seowatcher'ı başlat** ve **Masaüstüne kısayol ekle**. İlki işaretli gelir. Uygulamanın arka planda başlamasını istemiyorsanız işareti kaldırın. Sonra **Sonraki** deyin.
 8. **Kur** deyin.
 9. Son sayfada **seowatcher'ı şimdi başlat** kutusu var. İşaretli bırakın ve **Bitti** deyin. Uygulama açılır.
 10. Bekleyin. İlk açılış 20-30 saniye sürer. Bu sürede görev çubuğundaki simgenin yazısı sırayla "Anahtarlar hazırlanıyor", "Veritabanı güncelleniyor", "Sunucu başlatılıyor" olur. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Hazır olunca tarayıcı kendiliğinden açılır. Uygulama Windows açılışında başlıyorsa tarayıcı açılmaz, "seowatcher hazır" baloncuğu çıkar.
 11. Tarayıcıda `http://127.0.0.1:3001` açılır. Adresteki 127.0.0.1 bilgisayarınızın kendisidir, 3001 ise adres numarasıdır (port).
 
-Sonraki adım: Google'a bağlanma kılavuzu.
+Sonraki adım: [Google'a bağlanma](/docs/google-baglantisi/).
 
 ### Görev çubuğu menüsü
 
-Simgeye sağ tıklayın. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Menü dört bölümdür. En üstte uygulamayı açma ve durum satırı, sonra güncelleme ile yeniden başlatma, sonra iki ayar, en altta sorun giderme maddeleri durur.
+Görev çubuğundaki seowatcher simgesine sağ tıklayın; simge görünmüyorsa önce ^ okuna tıklayın. Uygulamanın ekranları bu menüye "tepsi menüsü" der. Menü dört bölümdür: uygulamayı açma ve durum satırı, güncelleme ve yeniden başlatma, ayarlar, sorun giderme.
 
 - **seowatcher'ı aç**: uygulamayı tarayıcıda açar. Simgeye çift tıklamak da aynı işi yapar. Uygulama henüz açılıyorsa "seowatcher açılıyor" baloncuğu çıkar, hazır olunca tarayıcı kendiliğinden açılır.
 - Durum satırı: "Çalışıyor: http://127.0.0.1:3001/", "Veritabanı güncelleniyor" ya da hata yazısı. Tıklanmaz. Yazı uzunsa fareyi üstünde tutunca tamamı görünür.
@@ -44,6 +44,7 @@ Simgeye sağ tıklayın. Simge görünmüyorsa görev çubuğundaki ^ okuna tık
 - **Yeniden başlat**: uygulamayı kapatıp açar. Bir şey takılırsa ilk bunu deneyin.
 - **Windows açılınca başlat**: işaretliyse uygulama bilgisayar açılınca arka planda başlar. Bilgisayardaki herkes için kurulumda bu ayarı yönetici açtıysa madde işaretli ve gri görünür, yalnızca yönetici kapatabilir.
 - **Güncellemeleri kendiliğinden kur**: işaretliyse yeni sürüm bulununca kendisi kurar.
+- **Windows bildirimleri**: işaretliyse (varsayılan) denetim sonuçları ve duyurular tarayıcı kapalıyken de Windows bildirimi olarak gelir. Ayrıntılar [Ayarlar](/docs/ayarlar/) sayfasında.
 - **Kurulumu onar**: geçici dosyaları temizler, paketin eksiksiz olduğunu kontrol eder, uygulamayı yeniden açar. Onarırken madde "Onarılıyor…" yazar.
 - **Tanı bilgisini kopyala**: Windows sürümünü, işlemciyi, Visual C++ sürümünü, motor denemesini, Windows olay günlüğündeki hatalı modülü, çökme dökümlerini ve son kayıt satırlarını panoya kopyalar. Bilgi birkaç saniyede hazırlanır, sonra "Kopyalandı" baloncuğu çıkar. Sorun bildirirken işinize yarar.
 - **Sorunu bildir (GitHub)**: aynı bilgiyi panoya alır ve GitHub'da hazır doldurulmuş bir sorun kaydı açar. Ne yaparken olduğunu bir cümleyle ekleyip gönderin.
@@ -76,11 +77,11 @@ Bir bilgisayardaki tüm kullanıcılar için kurmak ya da bir dağıtım aracıy
 - **Sessiz kurulum**: `seowatcher-setup.exe /VERYSILENT /NORESTART` (tek kullanıcı) ya da `seowatcher-setup.exe /VERYSILENT /ALLUSERS /NORESTART` (yönetici, tüm kullanıcılar). Sessiz kurulum bitince uygulama kendiliğinden açılır.
 - **Kurulum günlüğü**: her kurulum `%LOCALAPPDATA%\seowatcher\logs\setup.log` dosyasına yazılır. `/LOG="yol"` ile başka bir yer verebilirsiniz.
 - **Sessiz kaldırma**: `unins000.exe /VERYSILENT` (kurulum klasöründe: `%LOCALAPPDATA%\Programs\seowatcher` ya da tüm kullanıcılar kurulumunda `C:\Program Files\seowatcher`).
-- **Doğrulama**: her sürüm yayımlanmadan önce temiz bir Windows makinesinde kurulur, açılır, sağlık adresi yanıt verene kadar beklenir ve kaldırılır. Bu sınavı geçemeyen sürüm yayımlanmaz.
+- **Doğrulama**: her sürüm yayımlanmadan önce temiz bir Windows makinesinde kurulur, açılır, sağlık adresi yanıt verene kadar beklenir ve kaldırılır. Bu kontrolden geçemeyen sürüm yayımlanmaz.
 
 ### Onarma
 
-Bir şey takılırsa simgeye sağ tıklayıp **Kurulumu onar** deyin (simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın). Uygulama geçici dosyaları temizler ve paketin eksiksiz olduğunu kontrol eder. Sonra açılırken veritabanı güncellemesini yeniden çalıştırır.
+Bir şey takılırsa simgeye sağ tıklayıp **Kurulumu onar** deyin. Uygulama geçici dosyaları temizler ve paketin eksiksiz olduğunu kontrol eder. Sonra açılırken veritabanı güncellemesini yeniden çalıştırır.
 
 Paketten bir dosya silinmişse (örneğin antivirüs programı karantinaya aldıysa) uygulama kurulu sürümün kurulum dosyasını GitHub'dan indirir, parmak izini doğrular ve kendini yeniden kurar. Verilerinize dokunmaz. İnternet yoksa "Kurulum eksik" der ve sürüm sayfasını açar. O durumda kurulum dosyasını indirip çalıştırmanız yeter.
 
@@ -125,13 +126,13 @@ Belirli bir numara istiyorsanız:
 
 4. Kaydedin ve uygulamayı başlatın. Dosyada başka satırlar da varsa (`autoUpdate` gibi) onları silmeyin, yalnızca `port` değerini değiştirin.
 
-Numara değişince Google'daki iki yönlendirme adresini de yeni numarayla güncelleyin. Bu adresler Google'a bağlanma kılavuzunda anlatılıyor.
+OAuth istemcisi kullanıyorsanız Google'daki iki yönlendirme adresini yeni numarayla güncelleyin ([Google'a bağlanma](/docs/google-baglantisi/)).
 
 ## Kontrol
 
-- Fareyi görev çubuğu simgesinin üzerine getirince "seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/" yazmalı. Baştaki sürüm numarası kurduğunuz sürümdür. 0.5.0 Alpha örnektir.
+- Fareyi görev çubuğu simgesinin üzerine getirince "seowatcher X.Y.Z Alpha: Çalışıyor: http://127.0.0.1:3001/" yazmalı. X.Y.Z kurduğunuz sürümdür.
 - Tarayıcıda `http://127.0.0.1:3001/api/health` adresi "status":"ok" ile başlayan bir yazı göstermeli.
-- **Yardım** ekranındaki "Kurulumunuzun durumu" kartı "Her şey yolunda." demeli. Google'a bağlanmadan önce "Google girişi" satırı uyarı gösterir. Bu normaldir.
+- **Yardım** ekranındaki **Uygulamanın durumu** kartı **Kurulum kontrollerinde sorun bulunmadı.** demeli. Google'a bağlanmadan önce "Google girişi" satırının uyarı göstermesi normaldir.
 
 ## Sık sorulanlar
 
@@ -139,15 +140,13 @@ Numara değişince Google'daki iki yönlendirme adresini de yeni numarayla günc
 
 **Bilgisayarı kapatınca ne olur?** Uygulama da kapanır. **Windows açılınca başlat** işaretliyse bir sonraki açılışta kendiliğinden başlar.
 
-**Başka bilgisayardan açabilir miyim?** Hayır, bilerek böyle. Uygulama yalnızca 127.0.0.1 adresini dinler. İnternete açmak için önüne kendi kimlik doğrulamanızı koymanız gerekir.
+**Başka bilgisayardan açabilir miyim?** Hayır, bu bilinçli bir tercihtir. Uygulama yalnızca 127.0.0.1 adresini dinler. İnternete açmak için önüne kendi kimlik doğrulamanızı koymanız gerekir.
 
-**Docker sürümünden geçebilir miyim?** Evet, ama veri kendiliğinden taşınmaz. Projeleri yeniden oluşturur, Google'ı yeniden bağlarsınız. Search Console arşivi ilk açılışta yeniden dolar.
+**Docker sürümünden geçebilir miyim?** Evet, ama veri kendiliğinden taşınmaz. Projeleri yeniden oluşturur, Google'ı yeniden bağlarsınız. Search Console arşivi, Arama performansı ya da Sıralama takibi ekranını açtığınızda Google'ın sakladığı son 16 aydan yeniden dolar.
 
 **Antivirüs uyarı verdi.** Dosya imzasız olduğu için bazı antivirüs programları uyarır. Dosyayı yalnızca GitHub sürüm sayfasından indirin ve SHA-256 özetini karşılaştırın.
 
 ## Sorun çıkarsa
-
-Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın.
 
 - **Simge "Hata: 3001 ve sonraki 9 adres numarası (port) dolu" diyor.** Başka program bu numaraları tutuyor. `config.json` dosyasına başka bir numara yazın.
 - **Simge "Veritabanı güncellemesi başarısız" diyor.** **Günlükleri aç** deyin, `migrate.log` dosyasının son satırlarına bakın. Çoğunlukla disk dolmuştur ya da klasör salt okunurdur.
@@ -156,7 +155,3 @@ Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın.
 - **Tarayıcı açılmadı.** Simgeye çift tıklayın ya da adresi elle yazın: `http://127.0.0.1:3001`
 
 <!-- Kaynaklar: packaging/windows/README.md; packaging/windows/launcher/SeoWatcher.cs (menü, port seçimi, dosyalar); packaging/windows/seowatcher.iss (kurulum yeri, görevler, kaldırma); .github/workflows/release-windows.yml (SHA256SUMS) -->
-
-## Windows bildirimleri
-
-Tepsideki seowatcher simgesine sağ tıklayın ve **Windows bildirimleri** seçeneğini kullanın (varsayılan açık). Başlatıcı çalışırken, tarayıcı kapalı veya arka planda olsa da tüm projelerin tamamlanan/başarısız denetimleri ve yeni duyurular yaklaşık 90 saniyede Windows baloncuğu olarak görünür. Tıklamak ilgili sayfayı açar; birden fazla olay tek özette toplanır. İlk kullanım geçmiş olayları göstermez; yeniden başlatmak görülen olayları tekrarlamaz. Kapalıyken gelen olaylar sonradan gösterilmez. Yeni sürüm bildirimleri mevcut güncelleme ayarını izler. Windows Odaklanma/Rahatsız etmeyin bildirimleri gizleyebilir. Başlatıcı kapalıysa bildirim gelmez. Docker sürümünde bu özellik yoktur.

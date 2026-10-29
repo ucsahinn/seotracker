@@ -2,9 +2,9 @@
 
 Novità e correzioni, dalla versione più recente.
 
-## [0.8.6] Alpha — 2026-10-29
+## [0.8.7] Alpha — 2026-10-29
 
-Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.6: verifica del sito, dashboard, notifiche e sei lingue, con dati più precisi e schermate più leggibili.
+Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.7: verifica del sito, dashboard, notifiche e sei lingue, con dati più precisi e schermate più leggibili.
 
 ### ✨ In evidenza
 
@@ -52,6 +52,7 @@ Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.6: verifica del s
 - **Guida:** La guida d'uso, le regole di verifica e le note di rilascio sono disponibili in sei lingue.
 - **Privacy:** Su seowatcher.io la misurazione parte solo se la accetti.
 - **Traduzioni riviste:** Testi e guide sono stati aggiornati nelle sei lingue per seguire le schermate riviste.
+- **Traduzioni corrette:** Sono stati corretti nomi di colonne e categorie tradotti male nelle schermate in francese, tedesco, italiano e portoghese; il ruolo di Analytics usa il nome di Google, "Visualizzatore".
 
 ### 🎨 Aspetto e aiuto
 

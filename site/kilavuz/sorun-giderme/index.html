@@ -192,7 +192,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1483,7 +1483,7 @@
             <li><a href="/kilavuz/firsatlar/">Fırsatlar</a></li>
             <li><a href="/kilavuz/kayitli-kelimeler/">Kayıtlı kelimeler</a></li>
             <li>
-              <a href="/kilavuz/analitik/">Analitik verilerini yorumlama</a>
+              <a href="/kilavuz/analitik/">Analytics verisini yorumlama</a>
             </li>
             <li><a href="/kilavuz/site-denetimi/">Site denetimi</a></li>
             <li><a href="/kilavuz/dizin-durumu/">Dizin durumu</a></li>
@@ -1511,13 +1511,13 @@
           sorunlarını giderin.
         </p>
         <p>
-          Bir şey çalışmıyorsa önce uygulamada
-          <strong>Yardım</strong> ekranındaki &quot;Uygulamanın durumu&quot;
-          kartına bakın. Kart bu kurulumun kendisini, yani giriş ve erişimi,
-          Google girişini, PageSpeed anahtarını ve veritabanını kontrol eder.
-          &quot;N şey dikkat istiyor&quot; diyorsa yanındaki düğme sizi doğru
-          ayara götürür. Aşağıdaki sorunlar en sık görülenden en nadire doğru
-          sıralıdır.
+          Uygulama açılıyorsa önce <strong>Yardım</strong> ekranındaki
+          <strong>Uygulamanın durumu</strong> kartına bakın. Kart giriş ve
+          erişimi, Google kimliğini, PageSpeed anahtarını ve veritabanını
+          kontrol eder. &quot;… kurulum kontrolü dikkat istiyor&quot; yazıyorsa
+          yanındaki düğme sizi doğru ayara götürür. Aşağıdaki sorunlar en sık
+          görülenden en nadire doğru sıralıdır; her biri belirti, sebep ve çözüm
+          olarak yazılmıştır.
         </p>
         <h2 id="sayfa-acilmiyor">Sayfa açılmıyor</h2>
         <p class="callout callout-belirti">
@@ -1529,10 +1529,10 @@
         </p>
         <p>
           <strong>Çözüm (Windows paketi):</strong> Görev çubuğundaki simgeye
-          bakın. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Yoksa
-          Başlat menüsünden seowatcher'ı açın. Simgenin üzerine gelince
-          &quot;Çalışıyor: http://127.0.0.1:3001/&quot; yazmalı; adres numarası
-          farklıysa o adresi açın. &quot;Hata&quot; yazıyorsa sağ tıklayıp
+          bakın; görünmüyorsa ^ okuna tıklayın. Orada da yoksa Başlat menüsünden
+          seowatcher'ı açın. Simgenin üzerine gelince &quot;Çalışıyor:
+          http://127.0.0.1:3001/&quot; yazmalı; adres numarası farklıysa o
+          adresi açın. &quot;Hata&quot; yazıyorsa sağ tıklayıp
           <strong>Yeniden başlat</strong> deyin, olmazsa
           <strong>Kurulumu onar</strong>. Nedeni
           <strong>Günlükleri aç</strong> ile <code>launcher.log</code> ve
@@ -1698,8 +1698,8 @@
         </p>
         <p class="callout callout-cozum">
           <strong>Çözüm:</strong> Bir hizmet hesabı ya da Google erişim anahtarı
-          girin (Google'a bağlanma kılavuzu). İkisinden biri yeter; ikisi de
-          kayıtlıysa hizmet hesabı kullanılır.
+          girin (<a href="/kilavuz/google-baglantisi/">Google'a bağlanma</a>).
+          İkisinden biri yeter; ikisi de kayıtlıysa hizmet hesabı kullanılır.
           <strong>Yardım</strong> ekranındaki &quot;Google girişi&quot; satırı
           hangisinin kullanıldığını yazar.
         </p>
@@ -1808,10 +1808,10 @@
           verilmedi&quot; görünüyor.
         </p>
         <p class="callout callout-sebep">
-          <strong>Sebep:</strong> Ekran üç şey söyler: ne olduğunu, sorunun
-          sitenizde mi uygulamada mı olduğunu ve ne yapacağınızı. Başlık hangi
+          <strong>Sebep:</strong> Denetim bir aşamada hata verdi. Başlık hangi
           aşamada durduğunu yazar: adres keşfi, tarama, hız ölçümü ya da
-          sonuçların hazırlanması.
+          sonuçların hazırlanması. Altındaki cümle sorunun sitede mi uygulamada
+          mı olduğunu söyler.
         </p>
         <p class="callout callout-cozum">
           <strong>Çözüm:</strong> Ekrandaki cümleye göre ilerleyin.
@@ -1946,17 +1946,18 @@
           ölçülür). Ya da Google'ın günlük hakkı dolmuş.
         </p>
         <p class="callout callout-cozum">
-          <strong>Çözüm:</strong> PageSpeed anahtarı kılavuzuna göre ücretsiz
-          anahtar alın. Günlük hak dolduysa kalanı yarın yapacağınız yeni
-          denetimde ölçülür. Denetim başlarken hız ölçümü kapalıysa o denetim
-          için sonradan ölçülmez.
+          <strong>Çözüm:</strong>
+          <a href="/kilavuz/pagespeed-anahtari/">PageSpeed anahtarı</a>
+          sayfasındaki adımlarla ücretsiz bir anahtar alın. Günlük hak dolduysa
+          kalanı yarın yapacağınız yeni denetimde ölçülür. Denetim başlarken hız
+          ölçümü kapalıysa o denetim için sonradan ölçülmez.
         </p>
         <h2 id="url-denetimi-gunluk-sinira-ulasildi">
           URL Denetimi &quot;günlük sınıra ulaşıldı&quot;
         </h2>
         <p class="callout callout-belirti">
           <strong>Belirti:</strong> Dizin durumu sekmesinde düğme çalışmıyor.
-          &quot;Google'ın günlük 2.000 adres sınırına ulaşıldı&quot; yazıyor.
+          &quot;Google'ın günlük 2.000 adres sınırı doldu&quot; uyarısı çıkıyor.
         </p>
         <p class="callout callout-sebep">
           <strong>Sebep:</strong> Mülk başına günde 2.000 soru hakkı var.
@@ -1964,8 +1965,9 @@
           aynı havuzdan harcar.
         </p>
         <p class="callout callout-cozum">
-          <strong>Çözüm:</strong> Yarın devam edin. Uygulama yalnızca eskiyen
-          yanıtları yeniden sorar, hakkınız boşa gitmez.
+          <strong>Çözüm:</strong> Sınır son 24 saate göre hesaplanır ve birkaç
+          saat içinde açılmaya başlar; sonra devam edin. Uygulama yalnızca
+          eskiyen yanıtları yeniden sorar, hakkınız boşa gitmez.
         </p>
         <h2 id="analytics-karti-ya-da-raporu-hata-veriyor">
           Analytics kartı ya da raporu hata veriyor
@@ -1987,7 +1989,7 @@
           </li>
           <li>
             <strong>Bu mülke erişim reddedildi (HTTP 403).</strong> Bağlı hesaba
-            ya da hizmet hesabına mülkte en az Görüntüleyen yetkisi verin.
+            ya da hizmet hesabına mülkte en az Görüntüleyici yetkisi verin.
           </li>
           <li>
             <strong>Mülk bulunamadı (HTTP 404).</strong> Mülk silinmiş ya da
@@ -2025,7 +2027,7 @@
           </li>
         </ul>
         <p class="callout callout-cozum">
-          <strong>Çözüm:</strong> Cümlenin söylediği adımı yapın. Çoğu zaman
+          <strong>Çözüm:</strong> Listeden size uyan adımı uygulayın. Çoğu zaman
           <strong>Bağlantıyı düzelt</strong> sizi doğru ayara götürür.
         </p>
         <h2 id="search-console-istegi-hata-veriyor">
@@ -2071,7 +2073,7 @@
           </li>
         </ul>
         <p class="callout callout-cozum">
-          <strong>Çözüm:</strong> Cümlenin söylediği adımı yapın. Hesap ve mülk
+          <strong>Çözüm:</strong> Hata cümlesindeki adımı izleyin. Hesap ve mülk
           sorunlarında <strong>Ayarlar</strong>'da bağlantıyı yenilemek çoğu
           zaman yeter.
         </p>
@@ -2260,9 +2262,9 @@
           </li>
         </ul>
         <p class="callout callout-cozum">
-          <strong>Çözüm:</strong> Cümlenin söylediği adımı yapın. Bu seçenekler
-          yalnızca Windows paketinde kullanılabilir. Docker'da başlangıç
-          davranışını işletim sisteminizden yönetirsiniz.
+          <strong>Çözüm:</strong> Yukarıdaki listeden hata cümlenize uyan adımı
+          uygulayın. Bu seçenekler yalnızca Windows paketinde kullanılabilir.
+          Docker'da başlangıç davranışını işletim sisteminizden yönetirsiniz.
         </p>
         <h2 id="baslatici-uyarilari">Başlatıcı uyarıları</h2>
         <p>Görev çubuğu simgesinde çıkan uyarılar ve ne yapacağınız:</p>

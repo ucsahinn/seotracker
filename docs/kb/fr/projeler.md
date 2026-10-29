@@ -6,22 +6,37 @@ route: /projects, /p/{proje}/settings
 updated: 2026-10-28
 ---
 
-Projets aide à choisir un site et à compléter ses connexions. Chaque projet conserve ses propriétés Google, audits et rapports.
+Un projet correspond à un site. L’écran **Projets** liste vos projets et indique, pour chacun, l’étape de configuration suivante.
 
-## Lire l’écran
+## Lire la liste
 
-Avec plusieurs projets, recherchez et triez par nom ou domaine. **Dernier ouvert** désigne le projet mémorisé par ce navigateur, pas son état SEO. L’action principale propose d’ajouter un site, de connecter Search Console ou d’ouvrir le tableau de bord selon la configuration connue. Les informations du projet ouvrent les notes ; les paramètres ouvrent la configuration.
+Avec plusieurs projets, utilisez **Rechercher un projet** et triez par nom ou par domaine. Le badge **Ouvert récemment** désigne le projet que ce navigateur a ouvert en dernier ; il ne dit rien de son état SEO.
 
-L’archive de recherche contient les données Web stockées localement, tous appareils et pays. Les dates sont visibles. La période se termine au dernier jour enregistré, parfois ancien. Si des jours manquent, les clics sont seulement le sous-total des jours observés. Un jour absent reste un trou, jamais zéro. La variation exige deux périodes complètes. Les totaux égaux sont indiqués sans changement ; depuis zéro, les nombres précédents et actuels sont explicites. Les détails montrent le dernier jour stocké et l’heure de lecture disponible. Les anciens enregistrements ne précisent pas la preuve de finalisation.
+Le bouton principal de chaque carte dépend de la configuration : **Ajouter un site**, **Connecter Search Console** ou **Ouvrir le tableau de bord**. **Contexte du projet** ouvre les notes du projet, **Paramètres** ouvre sa configuration.
 
-L’audit appartient à l’hôte du site choisi. Le dernier audit terminé reste distinct d’une tentative plus récente échouée ou en cours. Une connexion enregistrée ne prouve pas une lecture Google réussie. Une source illisible n’est ni déconnectée ni un zéro mesuré : réessayez. Actualiser relit identités et données locales sans appeler Google ni lancer un audit.
+## Chiffres de recherche de la carte
 
-## Créer et gérer
+La carte reprend l’archive locale des données Search Console : recherche Web, tous appareils et tous pays. La période s’arrête au dernier jour enregistré, qui peut dater de plusieurs jours ; les dates sont toujours affichées.
 
-Nouveau projet demande un nom, un domaine facultatif, un pays et une langue. La création ne collecte rien. Choisissez les propriétés Google dans Paramètres → Connexions. Les paramètres généraux modifient identité et marché. Chaque projet possède une propriété Search Console et une propriété Analytics.
+- Un jour absent de l’archive reste un trou, jamais un zéro. S’il manque des jours, les clics affichés ne sont que le sous-total des jours observés.
+- Une évolution n’est calculée qu’entre deux périodes complètes. Deux totaux égaux sont signalés comme inchangés. Après une période à zéro, les deux valeurs sont affichées en clair plutôt qu’en pourcentage.
+- Si la période précédente compte moins de 20 clics, le badge donne l’écart en clics. Passer de 1 à 5 clics s’affiche « +4 clics » : sur de si petits nombres, ce n’est pas la preuve d’une forte croissance.
+- Les détails indiquent le dernier jour enregistré et l’heure de lecture. Les enregistrements anciens ne précisent pas si Google avait finalisé ces jours.
 
-Archiver conserve les données ; Restaurer les rend accessibles. Le dernier projet ne peut pas être archivé. Les clics de recherche diffèrent des sessions GA4 et des totaux par requête. Les périodes différentes ne sont pas additionnées.
+Les clics de recherche ne se comparent ni aux sessions GA4 ni à la somme des lignes par requête. Ne cumulez pas des chiffres de périodes différentes.
 
-Lorsque la période précédente compte moins de 20 clics, le badge affiche la différence de clics plutôt qu’un pourcentage. Passer de 1 à 5 représente par exemple +4 clics ; avec de petits nombres, ce changement seul ne prouve pas une forte croissance.
+## Audit et connexions sur la carte
+
+L’audit affiché est celui du domaine du projet. Le dernier audit terminé est présenté séparément d’une tentative plus récente, en cours ou échouée.
+
+Une connexion enregistrée ne prouve pas que Google a répondu. Si une source n’a pas pu être lue, elle n’est ni déconnectée ni à zéro : réessayez. **Actualiser** relit les identités et les données locales ; il n’interroge pas Google et ne lance pas d’audit.
+
+## Créer un projet
+
+**Nouveau projet** demande un nom, un domaine (facultatif), un pays et une langue. La création ne collecte encore aucune donnée. Choisissez ensuite les propriétés dans **Paramètres du projet → Connexions** : une propriété Search Console et une propriété Analytics par projet. La section **Général** des paramètres modifie le nom, le domaine et le marché.
+
+## Archiver et rétablir
+
+**Archiver le projet** le retire de la liste sans supprimer ses données. Il apparaît sous **Archivé**, d’où **Rétablir** le remet en service. Le dernier projet actif ne peut pas être archivé.
 
 <!-- Sources: src/routes/_app/projects.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/project-context/; src/server/features/projects/services/ProjectOverviewService.ts; src/server/features/project-context/ -->

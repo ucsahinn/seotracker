@@ -3,49 +3,81 @@ title: Rapports et modèles
 description: Conserver les rapports d’audit, de recherche et de votre assistant en fichiers HTML. Les ouvrir sur mobile, les imprimer ou les partager par e-mail.
 screen: Raporlar
 route: /p/<proje>/reports
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
-Les rapports sont des documents HTML enregistrés pour ce projet. Leur ouverture ne rafraîchit pas les données Google. La date d'enregistrement n'est pas la date de mesure.
+Chaque rapport est un document HTML unique enregistré dans le projet. Ouvrir un rapport n’actualise pas les données Google, et la date d’enregistrement n’est pas la période mesurée dans le rapport.
 
-## Créer et retrouver
+## Trois façons de préparer un rapport
 
-**Préparer un rapport de recherche** ouvre Performances de recherche. Choisissez période, appareil, pays et type de recherche, puis téléchargez le rapport. **Préparer un rapport d'audit** ouvre l'audit pour choisir une exploration. Copiez la commande de rapport pour votre assistant. Les modèles sont des consignes, pas des générateurs automatiques ni des programmations. Le rapport est enregistré avant téléchargement et reste lisible si la source est déconnectée.
+- **Préparer un rapport de recherche** ouvre Performances de recherche. Choisissez la période, l’appareil, le pays et le type de recherche, puis cliquez sur **Télécharger le rapport**.
+- **Préparer un rapport d’audit** ouvre Audit du site. Choisissez un audit et téléchargez son rapport.
+- **Copier l’invite du rapport** copie le texte à coller dans votre agent. L’agent examine le projet et enregistre le rapport ici.
 
-Le dernier rapport mis à jour apparaît avec son résumé enregistré et les actions d'ouverture et de téléchargement. Un résumé absent ou une période non structurée est signalé. Vérifiez les dates et limites dans le document. Le titre et le HTML ne servent pas à inventer une provenance.
+Le rapport est enregistré avant d’être téléchargé : si le téléchargement échoue, vous pouvez le relancer depuis la liste. Les rapports enregistrés s’ouvrent même si la connexion Google est rompue.
 
-La recherche porte sur les titres et résumés. Les nombres par type tiennent compte de la recherche et des sept derniers jours avant le filtre de type. Cette durée compte les fichiers distincts enregistrés ou modifiés, pas les modifications ni la fraîcheur des données Google. Le nombre de résultats est distinct du total du projet.
+## Modèles
 
-Le serveur renvoie 25 lignes de métadonnées par page. Les rapports au-delà des 100 premiers restent accessibles et recherchables. Le tri par défaut est la dernière mise à jour, avec aussi création et titre. Recherche, type, filtre récent, tri et page restent dans l'URL pour Retour et actualisation.
+Un modèle est une consigne qui indique à l’agent comment rédiger un rapport : à qui il s’adresse et de quelles sections il se compose. Un modèle ne produit pas de rapport tout seul et ne se programme pas.
 
-Les anciens rapports Recherche et Audit partagent un marqueur de créateur. Ils indiquent **Rapport de l'application, type non enregistré** et ne sont pas tous comptés comme audits. Les compétences de l'assistant et noms de modèles enregistrés restent visibles. Le nombre de fichiers ne mesure pas le progrès SEO. La taille représente les octets HTML stockés; les métadonnées de sécurité peuvent agrandir le téléchargement.
+- Le nom compte au plus 80 caractères, la description 200, la consigne 3 000.
+- Un projet compte au plus dix modèles.
+- Supprimer un modèle ne supprime pas les rapports rédigés avec lui.
 
-## Lire, télécharger et récupérer
+## Liste des rapports
 
-L'aperçu utilise un cadre isolé sans scripts ni réseau. Dépliez les informations de source et d'enregistrement. La langue enregistrée reste fixe; recréez volontairement le rapport depuis la source pour une autre langue ou des données actuelles.
+En haut de la liste, la carte **Rapport enregistré** présente le dernier rapport mis à jour : titre, résumé enregistré, date d’enregistrement, **Ouvrir le rapport** et **Télécharger au format HTML**. Cette carte ne décrit pas l’état actuel du site. Si le site d’origine du rapport peut être vérifié, la carte indique « Site source » ; s’il diffère du site du projet, un avertissement apparaît. S’il ne peut pas être vérifié, la carte signale que le rapport peut concerner un autre site.
 
-Le HTML se lit hors ligne et se partage comme fichier. Le PDF utilise l'impression du navigateur. Si l'onglet est bloqué, autorisez les fenêtres ou ouvrez le rapport dans un nouvel onglet et imprimez. Le plein écran isole le focus du clavier et garde une sortie en haut et en bas. Le lien appartient à cette installation; envoyez le fichier.
+**Rechercher des rapports** cherche dans les titres et les résumés. Les boutons de type (**Rapport de performances de recherche**, **Rapport d’audit du site**, **Rapports écrits par votre agent**, etc.) affichent le nombre de rapports restant après la recherche et le filtre **7 derniers jours**. Ce filtre retient les fichiers créés ou modifiés au cours des sept derniers jours ; il ne dit rien de la fraîcheur des données Google.
 
-Après 15 secondes sans aperçu, Réessayer et Ouvrir dans un nouvel onglet sont proposés. Les erreurs de document absent, d'accès, de connexion et de téléchargement ont des actions explicites. Une actualisation échouée conserve les dernières lignes avec un avertissement. Un contrôle de stockage indisponible ne prouve pas qu'il reste de la place.
+La liste se charge par pages de 25 ; utilisez **Page précédente** et **Page suivante**. Le tri par défaut suit la dernière mise à jour : un ancien rapport mis à jour remonte donc en tête. Vous pouvez aussi trier par date de création ou par titre. La recherche, le type, le filtre, le tri et la page sont conservés dans la barre d’adresse.
 
-## Limites des mesures
+Si le projet n’a encore aucun rapport, la liste est remplacée par des liens pour préparer le premier. Si des rapports ne sont masqués que par un filtre, **Effacer les filtres** apparaît.
 
-Le rapport de recherche indique période réellement résolue, comparaison, filtres et génération. Les jours suivent l'heure du Pacifique. Si Google ne donne pas de limite de finalisation, l'exclusion fondée sur un délai supposé est signalée. Avec une limite de lignes, la part non listée comprend requêtes masquées et lignes non lues. Les limites requête, page et requête×page affectent les opportunités, pas les totaux canoniques du site.
+### Anciens rapports
 
-L'analyse des chevauchements affiche sa propre période et ses seuils même sans résultat. Un rapport de sept jours peut utiliser 28 jours pour cette analyse. Plusieurs pages ne prouvent ni clics perdus ni dommage SEO. Les données historiques ou d'apparence indisponibles ne deviennent pas zéro. Les listes limitées indiquent éléments affichés et observés. Le budget de requêtes concerne la vue Recherche, hors analyse supplémentaire et effets du cache.
+Les documents de recherche et d’audit produits par d’anciennes versions portent le même marqueur de créateur et n’ont pas de type enregistré. Ils sont listés avec l’étiquette **Ancien rapport · source et date non vérifiées**. Leur type et leur période ne sont pas déduits du titre : vérifiez la période dans le document. L’identifiant technique ajouté au titre de ces rapports est masqué dans la liste ; le fichier enregistré n’est pas modifié.
 
-La génération relit les données serveur. Google peut corriger le passé et la période peut être résolue à nouveau: l'égalité exacte avec un écran antérieur n'est pas garantie. Le même titre localisé peut être remplacé; changer de langue peut créer un autre document. Les titres longs respectent le stockage et portent une protection serveur contre les collisions de source et de filtres.
+Les nouveaux rapports ont un type enregistré. Un rapport de recherche est identifié par la propriété, les dates exactes et les filtres ; un rapport d’audit par l’identifiant de l’audit.
 
-## Modèles et stockage
+## Ouvrir, télécharger, imprimer
 
-Modèle: nom 80, description 200, consignes 3 000 caractères; dix par projet. Supprimer un modèle conserve ses rapports. Effacer la recherche réaffiche les modèles masqués.
+Le rapport s’ouvre dans un cadre sécurisé, sans accès réseau ni scripts. **Informations sur la source et l’enregistrement** indique le créateur, le type, la taille et les dates d’enregistrement. La taille est le nombre d’octets du HTML enregistré.
 
-Protections: 500 000 octets par rapport, 120 caractères de titre, 2 500 de résumé, 10 000 rapports par projet et 5 Go par installation. Ce sont des limites de stockage, pas de couverture SEO. Vérifiez les dates d'exploration, de vitesse et des sources Google optionnelles dans la méthode du rapport d'audit.
+- **Télécharger au format HTML** enregistre un fichier lisible sans connexion internet.
+- **Enregistrer au format PDF (imprimer)** ouvre l’impression du navigateur. Si l’onglet est bloqué, autorisez les fenêtres contextuelles, ou ouvrez le rapport avec **Ouvrir dans un nouvel onglet** et imprimez depuis cet onglet.
+- Le mode plein écran affiche le rapport sur tout l’écran, avec un bouton de sortie en haut et en bas.
 
-## Types de source et régénération
+Le lien d’un rapport ne fonctionne que dans cette installation. Pour partager un rapport, envoyez le fichier HTML.
 
-Les nouveaux rapports natifs de performances de recherche et d’audit du site ont des types enregistrés distincts. Le titre des anciens rapports ne sert pas à déterminer leur type. L’identité de recherche utilise la propriété, les dates fixées et les filtres ; celle d’audit utilise l’identifiant d’audit. Régénérer la même source dans une autre langue met à jour le même enregistrement et peut changer sa langue. Les conflits de titre avec des rapports d’agent sont refusés ; un ancien document de même titre est conservé et le nouvel enregistrement est refusé.
+Si l’aperçu ne s’ouvre pas en 15 secondes, **Réessayer** et **Ouvrir dans un nouvel onglet** sont proposés. Si la liste ne peut pas être actualisée, les derniers enregistrements reçus restent affichés avec un avertissement.
 
-Régénérez les rapports natifs depuis leur écran source ; les agents ne peuvent pas remplacer leur contenu avec `save_report`. Une source manquante ne vaut jamais zéro. La méthode d’audit précise la période de trafic GSC, la limite de lignes et la mesure CrUX mobile enregistrée disponible.
+## Préparer de nouveau
 
-Le rapport enregistré en haut n’est pas un bilan actuel du site. Le site source est affiché si l’audit d’origine permet de le vérifier ; une différence avec le site du projet déclenche un avertissement. Sans source vérifiée, le rapport peut concerner un autre site. Les anciens rapports portent une mention de source et de date non vérifiées. **Ouvrir les audits du site** ouvre l’historique. Si un audit enregistré convient, ouvrez-le et téléchargez son rapport ; ce lien ne lance pas automatiquement un audit et ne crée pas de rapport. Les anciens fichiers sont conservés.
+Un rapport garde la langue et les données de son enregistrement. Pour des données à jour ou une autre langue, préparez-le de nouveau depuis son écran source. Un rapport préparé de nouveau à partir de la même source met à jour le même enregistrement.
+
+Les agents ne peuvent pas modifier avec `save_report` les rapports produits par l’application. Un rapport d’agent qui porte le même titre qu’un rapport existant est refusé, et l’ancien document est conservé.
+
+**Ouvrir les audits du site** ouvre l’historique des audits, d’où vous pouvez télécharger le rapport d’un audit. Ce lien ne lance ni audit ni rapport.
+
+## Contenu du rapport de recherche
+
+La couverture indique la période réelle retenue, la période de comparaison, les filtres et l’heure de création. Les jours suivent l’heure du Pacifique. Si Google n’a pas fourni de limite de finalisation, le rapport précise que les derniers jours ont été exclus par hypothèse.
+
+Les données sont relues chez Google au moment de la préparation. Comme Google peut corriger des valeurs passées, le rapport peut différer des chiffres vus plus tôt à l’écran.
+
+- La part des clics non listés couvre à la fois les requêtes masquées par Google et les lignes au-delà de la limite.
+- Les tableaux par requête, par page et par couple requête–page ont une limite de lignes : le total du site n’est pas la somme de ces tableaux.
+- L’analyse des chevauchements indique sa propre période et ses seuils, même sans résultat. Dans un rapport de sept jours, elle peut s’appuyer sur 28 jours de données. Plusieurs pages sur une même requête ne prouvent pas à elles seules une perte de clics.
+- Une donnée non récupérée n’est jamais présentée comme un zéro. Les listes raccourcies indiquent le nombre d’éléments observés et la part affichée.
+
+## Contenu du rapport d’audit
+
+La section méthode du rapport d’audit indique les dates de l’exploration, de la mesure de vitesse et des données Google facultatives. Elle précise aussi la période de trafic Search Console utilisée, la limite de lignes de la source et la mesure CrUX mobile enregistrée (données de vitesse de vrais utilisateurs). Une source manquante n’est jamais comptée comme zéro.
+
+## Limites de stockage
+
+- Un rapport pèse au plus 500 000 octets. Le titre compte au plus 120 caractères, le résumé 2 500.
+- Un projet conserve au plus 10 000 rapports, et l’installation au plus 5 Go de rapports.
+
+Ces limites protègent le disque ; elles ne disent rien de la réussite SEO.

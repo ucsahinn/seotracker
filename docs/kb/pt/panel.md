@@ -1,45 +1,52 @@
 ---
 title: Painel
-description: O painel reúne tráfego de pesquisa, próximas tarefas apoiadas em dados e limites das fontes.
+description: O Painel reúne tráfego de pesquisa, próximas tarefas baseadas em dados, situação da auditoria e resultados do Analytics do projeto.
 screen: Panel
 route: /p/<proje>
 updated: 2026-10-28
 ---
 
-O painel reúne tráfego de pesquisa, próximas tarefas apoiadas em dados e limites das fontes. Atualizar volta a ler as fontes ativas, a configuração e o estado da instalação. Se uma leitura falhar, apresenta um aviso de atualização parcial. A hora de receção não é o último dia medido.
+**Atualizar** relê as fontes ativas, a configuração e o estado da instalação. Se uma leitura falhar, o Painel avisa que a atualização foi parcial. A hora em que os dados chegaram não é o último dia medido.
 
-## Resumo de pesquisa
+## Resumo da pesquisa
 
-O âmbito predefinido cobre 28 dias de pesquisa Web, em todos os dispositivos e países. Os dias recentes incompletos ficam excluídos. Valem as datas visíveis e o fuso do Pacífico. As linhas da fonte mostram o período anterior real, o último dia com dados e os dias excluídos. Se o Google não indicar a completude, a exclusão presumida é explicada. Consultas ocultas e limites de linhas impedem que a lista represente o total do site.
+Por padrão, o resumo cobre 28 dias de pesquisa na Web, em todos os dispositivos e países. Os dias recentes ainda incompletos ficam de fora. Valem as datas exibidas, no fuso horário do Pacífico. As linhas sobre a fonte mostram o período anterior efetivo, o último dia com dados e os dias excluídos. Se o Google não informar que um dia está completo, o Painel explica qual exclusão presumiu. Por causa das consultas ocultas e do limite de linhas, a lista não representa o site inteiro.
 
-Os cliques contam acessos dos resultados do Google; as impressões, aparições nos resultados. A CTR divide os cliques pelas impressões. A posição média é ponderada pelas impressões; quanto menor, melhor. Os quatro indicadores abrem o desempenho de pesquisa no mesmo âmbito. O crescimento a partir de zero usa um valor absoluto; uma queda para zero pode mostrar uma percentagem negativa válida. Sem período anterior não se inventa uma variação. A linha esbatida mostra os cliques diários anteriores.
+- **Cliques**: cliques nos resultados do Google que levam ao site.
+- **Impressões**: vezes em que o site apareceu nos resultados.
+- **CTR**: cliques divididos por impressões.
+- **Posição média**: média ponderada pelas impressões; quanto menor, melhor.
+
+Cada indicador abre Desempenho da pesquisa com o mesmo escopo. Um crescimento a partir de zero aparece em valor absoluto; uma queda para zero pode gerar uma porcentagem negativa válida. Sem período anterior, nenhuma variação é exibida. A linha clara no gráfico mostra os cliques diários do período anterior.
 
 ## Tarefas e configuração
 
-No máximo três tarefas resultam de problemas de ligação, resultados da auditoria, tarefas de pesquisa reais ou rastreios antigos. Ter uma ligação não cria, por si só, uma oportunidade. Uma falha de leitura não se transforma em conselho para a primeira auditoria. A ausência de tarefa prioritária não confirma o bom estado de todas as fontes.
+O Painel sugere no máximo três tarefas. Elas vêm de problemas de conexão, resultados da auditoria, tarefas de pesquisa reais ou rastreamentos desatualizados. Uma conexão ativa, sozinha, não gera oportunidade. Uma leitura que falhou não vira convite para a primeira auditoria. A ausência de tarefas prioritárias não garante que todas as fontes funcionem.
 
-A configuração usa os mesmos seis sinais das informações do projeto. Sinais em falta e ilegíveis ficam separados. Uma auditoria concluída do próprio site fica desatualizada aos sete dias exatos. As preferências são um percurso opcional recolhido, sem uma segunda pontuação. Os passos adiados podem ser recuperados mesmo sem tarefas ativas.
+A configuração usa os mesmos seis sinais de Contexto do projeto e separa sinais ausentes de sinais ilegíveis. Uma auditoria concluída do site fica desatualizada após exatamente sete dias. As preferências são um percurso opcional, recolhido por padrão, e não geram uma segunda pontuação. Etapas adiadas podem ser retomadas mesmo sem tarefas abertas.
 
 ## Estimativas por consulta
 
-As consultas elegíveis têm impressões suficientes e posição arredondada entre 4 e 20. Os cliques adicionais modelam a subida à faixa seguinte: são um limite superior, não tráfego medido. As estimativas conhecidas e desconhecidas são contadas no conjunto completo antes das quatro linhas visíveis. Um conjunto sem estimativas não vira um limite de zero. A separação por marca é identificada como confirmada, sugerida ou ausente. Não some esta estimativa ao total de oportunidades por página, cuja unidade e período diferem.
+Uma consulta é elegível quando tem impressões suficientes e posição arredondada entre 4 e 20. Os cliques adicionais estimam o ganho se a consulta subisse para a faixa seguinte: são um limite superior, não tráfego medido. Estimativas conhecidas e desconhecidas são contadas sobre o conjunto inteiro, não só nas quatro linhas visíveis. Se nenhuma estimativa estiver disponível, o resultado não é apresentado como zero. A tela informa se os termos de marca estão confirmados, sugeridos ou ausentes. Não some esta estimativa ao total de Oportunidades por página: a unidade e o período são diferentes.
 
-## Auditoria do próprio site
+## Auditoria do site
 
-Só são escolhidos rastreios do domínio do projeto. Uma auditoria mais recente de outro site é ignorada. O último resultado concluído e uma tentativa mais recente em curso ou falhada são identificados separadamente. Sem domínio, existe uma ligação às definições. O cartão indica endereço inicial, data, verificações medidas e limite de páginas.
+O Painel usa apenas rastreamentos do domínio do projeto e ignora uma auditoria mais recente de outro site. O último resultado concluído e uma tentativa mais recente, em andamento ou com falha, aparecem separados. Se o projeto não tiver domínio, um link leva às configurações. O cartão mostra endereço inicial, data, verificações medidas e limite de páginas.
 
-Páginas únicas afetadas, tipos de verificação e pares página–verificação são unidades diferentes. Uma página pode falhar três verificações. As notas informativas ficam fora da barra de críticos e avisos. A avaliação aplica-se apenas ao âmbito medido. Dados em falta ou limites de páginas não certificam todo o site. As comparações exigem o mesmo âmbito inicial, definições e URLs rastreados, com medições legíveis. Só as verificações medidas nos dois rastreios mostram alterações. Um rastreio reduzido ou ilegível não prova uma resolução. O âmbito desconhecido é explicado. As ligações abrem os problemas da mesma auditoria para o URL escolhido.
+Páginas afetadas, tipos de verificação e pares página-verificação são unidades diferentes: uma mesma página pode falhar em três verificações. As notas informativas ficam fora da barra de problemas críticos e avisos. A avaliação vale apenas para o escopo medido; dados ausentes ou um limite de páginas não atestam o site inteiro.
 
-## Resultados Analytics
+Comparar dois rastreamentos exige o mesmo endereço inicial, as mesmas configurações e os mesmos URLs, com medições legíveis nos dois. As variações aparecem só para as verificações medidas em ambos. Um rastreamento reduzido ou ilegível não prova que um problema foi resolvido. Se o escopo for desconhecido, o cartão explica. Os links abrem os problemas da mesma auditoria para o URL escolhido; o identificador da auditoria permanece na navegação.
 
-Sessões orgânicas, utilizadores ativos, interação e eventos principais vêm do Google Analytics. As datas reais e o fuso da propriedade são visíveis. As sessões diferem dos cliques do Google e incluem outros motores. Uma métrica desconhecida ou restrita não significa zero tráfego; as restantes métricas legíveis mantêm-se visíveis. Limiares de privacidade, amostragem e restrições de acesso são explicados. Comparações pouco fiáveis são omitidas e dias desconhecidos ficam em branco.
+## Resultados do Analytics
 
-Dados comerciais positivos num dos períodos mantêm receitas e encomendas visíveis, incluindo um zero medido num período calmo. Sem provas, a medição de vendas fica por confirmar. Uma moeda desconhecida é indicada.
+Sessões orgânicas, usuários ativos, engajamento e eventos principais vêm do Google Analytics 4, com as datas efetivas e o fuso horário da propriedade. As sessões não coincidem com os cliques do Google e incluem outros mecanismos de busca. Uma métrica desconhecida ou restrita não significa tráfego zero; as demais métricas legíveis continuam visíveis. O Painel explica limites de privacidade, amostragem e restrições de acesso. Comparações pouco confiáveis são omitidas e dias desconhecidos ficam em branco.
 
-O painel não contém volumes de palavras-chave, backlinks ou posições dos concorrentes. Compare os dados do Google com datas e filtros idênticos.
+Se um dos dois períodos tiver dados comerciais positivos, receita e pedidos continuam visíveis, mesmo quando o outro período mede zero. Sem essa evidência, a medição de vendas fica não confirmada. Uma moeda desconhecida é sinalizada. A nota sobre vendas fica na explicação expansível da receita orgânica.
 
-## Interpretar poucos dados
+Se as sessões forem desconhecidas, confira os avisos sobre a fonte na tela Analytics, as permissões da propriedade e a tag no site.
 
-Quando os cliques do período de comparação ficam abaixo do limite de análise, o resumo apresenta primeiro os cliques e as impressões reais. Com poucos dados, percentuais e médias não comprovam crescimento ou perda por si só. Uma lista de oportunidades vazia não significa que nenhuma consulta esteja na posição 4–20: também se aplicam o limite de impressões ajustado ao período e a exclusão de consultas de marca.
+## Poucos dados
 
-O identificador da auditoria permanece na navegação; o cartão mostra o endereço inicial. Se as sessões forem desconhecidas, confira os avisos da fonte no relatório do Analytics, as permissões e a tag no site. A nota sobre vendas fica na explicação expansível da receita orgânica.
+Se os cliques do período de comparação estiverem abaixo do limite de análise, o resumo mostra primeiro os cliques e as impressões reais. Com poucos dados, porcentagens e médias sozinhas não comprovam crescimento nem queda. Uma lista de oportunidades vazia não significa que nenhuma consulta esteja entre as posições 4 e 20: também contam o limite de impressões ajustado ao período e a exclusão das consultas de marca.
+
+O Painel não contém volumes de busca, backlinks nem posições de concorrentes. Para comparar os dados com o Google, use as mesmas datas e os mesmos filtros.

@@ -1,11 +1,11 @@
 ---
 title: What is seowatcher?
-description: seowatcher is a free, open-source SEO app that shows Search Console, GA4, site audit and PageSpeed data in one panel on your own computer.
+description: A free, open-source SEO workspace that runs on your own computer and brings Search Console, GA4, a site audit and PageSpeed together.
 kind: kavram
 updated: 2026-10-29
 ---
 
-seowatcher is a free, MIT-licensed, open-source SEO app that shows Google Search Console, Google Analytics 4, its own site crawler and PageSpeed Insights in one panel. It runs on your own computer, not in the cloud: a single installer for Windows 10 and 11, and Docker on Mac and Linux. On GitHub it is called seotracker; they are the same app.
+The app runs on your own computer, not in the cloud. On Windows 10 and 11 it installs from a single file; on Mac and Linux it runs in Docker. On GitHub it is called seotracker; it is the same app.
 
 ## Quick facts
 
@@ -16,23 +16,23 @@ seowatcher is a free, MIT-licensed, open-source SEO app that shows Google Search
 | Platforms            | Windows 10/11 (64-bit) installer; Docker on Mac and Linux                                 |
 | Data sources         | Google Search Console, Google Analytics 4, the app's own site crawler, PageSpeed Insights |
 | Site audit           | 202 rules                                                                                 |
-| AI connection        | Assistants such as Claude Code, Codex, Cursor and Gemini CLI over MCP; 6 ready-made tasks |
+| AI connection        | Claude Code, Codex, Cursor and other MCP clients; 6 ready-made SEO skills                 |
 | Interface languages  | Turkish, English, German, French, Italian, Portuguese                                     |
 | Users                | Single user, opened only from your own computer                                           |
 | Where the data lives | `%LOCALAPPDATA%\seowatcher` on Windows, the `seotracker_data` volume in Docker            |
-| Version              | 0.8.6 Alpha, October 29, 2026                                                             |
+| Version              | 0.8.7 Alpha, October 29, 2026                                                             |
 | Size                 | Installer 86 MB, installed 313 MB                                                         |
 | Based on             | open-seo (every-app)                                                                      |
 
 ## What does seowatcher do?
 
-- **Search performance:** clicks, impressions, click-through rate and average position from Search Console, by query, page, country and device. Google provides 16 months of history; the app also builds its own archive.
+- **Search performance:** clicks, impressions, click-through rate and average position from Search Console, by query, page, country and device. Google provides 16 months of history; while the Search performance or Rank tracking screen is open, the app also copies it into its own archive.
 - **Opportunities:** ranks the pages Google already shows by how many extra clicks they could bring at your site's own click-through rates, and suggests the work for each page.
-- **Site audit:** crawls your site against 202 rules: broken links, missing or long titles, slow pages, pages Google does not index. Each finding says what to do.
-- **Index status:** reads Google's record for each of your pages (indexed or not, why, when it was last crawled) through URL Inspection. Google limits this to 2,000 URLs per property per day.
+- **Site audit:** crawls your site and checks it against the audit rules: broken links, missing or long titles, slow pages, pages Google does not index. Each finding says how to fix it.
+- **Index status:** asks Google's URL Inspection API whether each page is indexed, why not, and when it was last crawled. Google allows 2,000 checks per property per day.
 - **Analytics:** shows GA4 visits, engagement and key events next to the search data.
 - **Reports:** saves single-file HTML reports you can open on a phone, print or email.
-- **AI assistant:** over MCP, your assistant reads your numbers, runs the audit and writes the report.
+- **AI assistant:** over MCP, your assistant reads the same data, runs audits and writes reports.
 
 ## What does seowatcher not do?
 
@@ -44,11 +44,11 @@ seowatcher is a free, MIT-licensed, open-source SEO app that shows Google Search
 
 ## How is it different from Search Console?
 
-Search Console is the source of the data; seowatcher reads it and builds a worklist on top. Search Console shows you numbers; seowatcher shows in one place which page to look at first, where your site breaks against 202 rules, and what Analytics measured for it. Because it keeps an archive on your computer, over time you can also look further back than Google's 16-month window. The numbers come from the same source, but Google reports with about a three-day delay and hides very rare queries, which is why a page total and the site total can differ.
+Search Console is the source of the search data; seowatcher reads it and builds a worklist on top. In one place you see which page to work on first, what the site audit found and what Analytics measured for the same pages. Because seowatcher keeps its own archive, you can eventually look further back than Google's 16-month window. The figures are Google's, including its roughly three-day reporting delay and the rare queries it hides, which is why the sum of a query table can be lower than the site total.
 
 ## How is it different from paid SEO suites?
 
-Paid SEO suites sell estimates of search volume, backlinks and competitor rankings from their own crawls and purchased data. seowatcher does none of that; it uses only the data Google already gives you as the site owner, plus its own crawl. That is why it is free, and also why it is not built for market research. It fits if you want to monitor, fix and report on your own site's presence in Google.
+Paid SEO suites sell estimates of search volume, backlinks and competitor rankings built from their own crawls and purchased data. seowatcher uses only the data Google gives you as the site owner, plus its own crawl. That keeps it free, and it also means it is not a market research tool. It suits you if you want to monitor, fix and report on your own sites in Google.
 
 ## Who is it for?
 
@@ -58,11 +58,11 @@ Site owners, content teams and freelance SEOs who want the Search Console and GA
 
 ### Is it really free?
 
-Yes. It is an MIT-licensed, open-source project. The Google services it uses stay within their free usage limits.
+Yes. The app is MIT-licensed, and the Google APIs it uses are free within their usage limits.
 
 ### Where is my data stored?
 
-On Windows, in the `%LOCALAPPDATA%\seowatcher` folder: the database, your Google access key and the logs. Uninstalling the app does not touch that folder. In Docker, the data lives in the `seotracker_data` volume.
+On Windows, the `%LOCALAPPDATA%\seowatcher` folder holds the database, your encrypted Google credentials and the logs; uninstalling the app leaves it in place. On Docker, everything is in the `seotracker_data` volume.
 
 ### What does the app connect to?
 
@@ -70,15 +70,15 @@ Google (Search Console, Analytics, PageSpeed), the site you audit, and GitHub fo
 
 ### Does it run on Mac or Linux?
 
-Yes, with Docker. On Windows the single-file installer is easier.
+Yes, with Docker. On Windows, the installer is the simpler option.
 
 ### Why do I need to create a Google Cloud credential?
 
-seowatcher is not a cloud service; it runs on your computer and connects to Google directly. Google wants to know who owns the connecting app. You do this once.
+Because seowatcher connects to Google directly from your computer, Google needs to know which Cloud project the requests come from. You set it up once per installation.
 
 ### Do I need to expose the app to the internet?
 
-No. The app opens only from your own computer.
+No. The app listens only on your own computer. If you want to reach it from elsewhere, put your own authentication in front of it.
 
 ## Where to start
 

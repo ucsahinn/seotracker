@@ -1,51 +1,71 @@
 ---
 title: Relatórios e modelos
-description: Salve relatórios de auditoria, pesquisa e do assistente em arquivos HTML. Abra no celular, imprima ou compartilhe os resultados por e-mail.
+description: Salve relatórios de pesquisa, auditoria e do agente como arquivos HTML, encontre-os, imprima em PDF e compartilhe; modelos e limites.
 screen: Raporlar
 route: /p/<proje>/reports
 updated: 2026-10-27
 ---
 
-Os relatórios são documentos HTML salvos neste projeto. Abri-los não atualiza os dados do Google. A data de gravação não é a data da medição.
+Um relatório é um documento HTML salvo no projeto. Abri-lo não atualiza os dados do Google, e a data em que foi salvo não é a data das medições.
 
-## Criar e encontrar
+## Crie um relatório
 
-**Preparar relatório de pesquisa** abre Desempenho de pesquisa. Escolha período, dispositivo, país e tipo de pesquisa e baixe o relatório. **Preparar relatório de auditoria** abre a auditoria para selecionar o rastreamento. Copie o comando para pedir um relatório ao assistente. Modelos são instruções, não geradores automáticos nem agendamentos. O relatório é salvo antes do download e continua legível se a fonte for desconectada.
+- **Preparar relatório de pesquisa** abre **Desempenho da pesquisa**: escolha período, dispositivo, país e tipo de pesquisa e baixe o relatório.
+- **Preparar relatório de auditoria** abre **Auditoria do site**, onde você escolhe o rastreamento de origem.
+- **Copiar prompt do relatório** copia o comando para colar no agente, que escreve o relatório e o salva aqui.
 
-O relatório atualizado mais recentemente aparece no topo com resumo salvo e ações de abrir e baixar. Resumo ausente e período não registrado de forma estruturada são informados. Confira datas e limites no documento. Título e HTML não são usados para inventar a origem dos dados.
+O documento é salvo antes do download e continua legível mesmo se a fonte for desconectada. Os modelos são instruções para o agente: não geram relatórios sozinhos nem os agendam.
 
-A busca pesquisa títulos e resumos. As contagens por tipo usam busca e últimos sete dias antes do filtro de tipo. Sete dias conta arquivos distintos salvos ou atualizados, não edições nem dados recentes do Google. Resultados e total do projeto são contagens separadas.
+## Encontre um relatório
 
-O servidor entrega 25 registros de metadados por página. Relatórios além dos primeiros 100 continuam acessíveis e pesquisáveis. A ordem padrão é a última atualização; editar um arquivo antigo o move para cima. Também há ordem por criação e título. Busca, tipo, filtro recente, ordem e página permanecem na URL para Voltar e recarregar.
+No topo aparece o **Último relatório atualizado**, com o resumo salvo e os botões para abrir e baixar. Se faltar o resumo ou o período em forma estruturada, a tela avisa: nesse caso, confira as datas e os limites no próprio documento. O aplicativo não analisa título ou HTML para reconstruir a origem. O relatório do topo não é um resumo atualizado do site.
 
-Relatórios antigos de Pesquisa e Auditoria compartilham o identificador do criador. Por isso mostram **Relatório do aplicativo, tipo não registrado**, sem contar todos como auditorias. Habilidades do assistente e nomes de modelos registrados continuam visíveis. Mais arquivos não significam progresso de SEO. O tamanho representa bytes HTML armazenados; metadados de segurança podem aumentar o arquivo baixado.
+A pesquisa nos relatórios examina título e resumo. As contagens por tipo consideram a pesquisa e o filtro dos últimos sete dias, mas não o filtro por tipo. "Últimos sete dias" se refere aos arquivos salvos ou atualizados nesse período, não a cada edição nem a dados recentes do Google. O número de resultados e o total do projeto aparecem separados.
 
-## Ler e recuperar
+O servidor devolve 25 relatórios por página, e todos continuam acessíveis e pesquisáveis, inclusive depois do centésimo. A ordem padrão é a última atualização: editar um arquivo antigo o leva para o topo. Também é possível ordenar por data de criação e por título. Pesquisa, tipo, filtro recente, ordenação e página ficam na URL, então Voltar e recarregar os preservam.
 
-A prévia usa um quadro isolado sem scripts ou rede. Expanda os detalhes de fonte e gravação. O idioma salvo permanece fixo; para outro idioma ou dados atuais, gere novamente pela tela de origem de forma consciente.
+## Tipos de relatório
 
-O HTML pode ser lido offline e enviado como arquivo. O PDF usa a impressão do navegador. Se a aba for bloqueada, permita pop-ups ou abra o relatório em nova aba e imprima. A tela cheia isola o foco do teclado e mantém saídas acima e abaixo do documento. O link pertence a esta instalação; compartilhe o arquivo.
+Os novos relatórios de desempenho da pesquisa e de auditoria do site têm, cada um, um tipo salvo. Relatórios mais antigos criados pelo aplicativo aparecem como **Relatório do app, tipo não registrado**: o tipo não é deduzido do título e eles não são contados como auditorias. As skills do agente e os nomes dos modelos salvos continuam visíveis. Mais arquivos não indicam progresso de SEO. O tamanho exibido é o do HTML salvo; o arquivo baixado pode ser maior por causa dos metadados de segurança.
 
-Após 15 segundos sem prévia, aparecem Tentar novamente e Abrir em nova aba. Documento ausente, acesso, conexão e falhas de download têm instruções de recuperação. Se a atualização falhar, os últimos dados ficam com um aviso. Uma consulta de armazenamento indisponível não comprova espaço livre.
+Um relatório de pesquisa é identificado por propriedade, datas e filtros; um relatório de auditoria, pelo ID da auditoria. Gerar de novo a mesma fonte em outro idioma atualiza o mesmo registro e pode mudar o idioma dele. Um título já usado por um relatório do agente é recusado; se um documento antigo tiver o mesmo título, ele é mantido e o novo salvamento é recusado. Títulos longos respeitam o limite de tamanho, e o servidor os diferencia pela fonte e pelos filtros.
 
-## Limites das medições
+Os relatórios do aplicativo são gerados de novo a partir da tela de origem; os agentes não podem substituir o conteúdo deles com `save_report`.
 
-O relatório de pesquisa mostra período resolvido, comparação, filtros e geração. Os dias seguem o horário do Pacífico. Sem um limite de finalização do Google, é declarada a exclusão baseada em atraso presumido. Com limite de linhas, a parcela não listada inclui consultas ocultas e linhas não lidas. Limites de consulta, página e consulta×página afetam oportunidades, não os totais canônicos do site.
+## Leia, imprima e compartilhe
 
-A análise de sobreposição informa período e limites mesmo sem resultados. Um relatório de sete dias pode usar 28 dias nessa análise. Várias páginas não comprovam cliques perdidos ou prejuízo de SEO. Dados históricos ou de aparência indisponíveis não viram zero. Listas limitadas informam registros exibidos e observados. O orçamento de requisições pertence à vista Pesquisa e exclui análise adicional e efeitos do cache.
+A pré-visualização abre em um quadro isolado, sem scripts e sem acesso à rede. As informações sobre fonte e salvamento podem ser expandidas abaixo do documento. O relatório mantém o idioma em que foi criado; para outro idioma ou dados novos, gere-o de novo na tela de origem.
 
-A geração relê os dados do servidor. O Google pode corrigir valores anteriores e o período pode ser resolvido novamente; igualdade exata com uma tela anterior não é garantida. O mesmo título localizado pode ser substituído; mudar o idioma pode criar outro documento. Títulos longos respeitam o limite e incluem proteção do servidor contra colisões de fonte e filtros.
+- **Baixar como HTML** gera um arquivo legível offline, para enviar como anexo.
+- O PDF é gerado pela impressão do navegador. Se a aba de impressão for bloqueada, permita pop-ups ou escolha **Abrir em uma nova aba** e imprima de lá.
+- Em tela cheia, o foco do teclado fica no documento; os comandos de saída ficam acima e abaixo dele.
 
-## Modelos e armazenamento
+O link do relatório só funciona nesta instalação: para compartilhar, envie o arquivo.
 
-Modelos: nome com 80, descrição com 200 e instruções com 3.000 caracteres; dez por projeto. Excluir um modelo preserva seus relatórios. Limpar busca revela os modelos ocultos.
+## Se a pré-visualização não abrir
 
-Proteções: 500.000 bytes por relatório, título com 120 caracteres, resumo com 2.500, 10.000 relatórios por projeto e 5 GB por instalação. São limites de armazenamento, não medidas de SEO. Confira datas do rastreamento, velocidade e fontes Google opcionais na metodologia do relatório de auditoria.
+Depois de 15 segundos sem pré-visualização, aparecem **Tentar novamente** e **Abrir em uma nova aba**. Documento ausente, acesso negado, problema de conexão e erro do servidor têm, cada um, sua própria orientação. Se a atualização da lista falhar, os dados anteriores continuam com um aviso. Se a verificação de armazenamento estiver indisponível, isso não prova que haja espaço livre.
 
-## Tipos de fonte e nova geração
+## Limites dos dados no relatório
 
-Os novos relatórios nativos de desempenho de pesquisa e auditoria do site têm tipos salvos distintos. O tipo de relatórios antigos não é deduzido do título. A identidade de pesquisa usa propriedade, datas definidas e filtros; a identidade de auditoria usa o ID da auditoria. Gerar novamente a mesma fonte em outro idioma atualiza o mesmo registro e pode mudar seu idioma. Conflitos de título com relatórios de agentes são recusados; um documento antigo com o mesmo título é preservado e o novo salvamento é recusado.
+O relatório de pesquisa informa período efetivo, comparação, filtros e momento de criação. Os dias seguem o horário do Pacífico. Se o Google não informar até quando os dados estão completos, o relatório declara o atraso presumido. Se o limite de linhas foi atingido, a parte não listada inclui tanto consultas ocultas quanto linhas não lidas. Os limites por consulta, página e par consulta-página afetam as oportunidades, não os totais do site.
 
-Gere novamente relatórios nativos na tela de origem; agentes não podem substituir seu conteúdo com `save_report`. Dados ausentes nunca são tratados como zero. A metodologia de auditoria identifica o período de tráfego GSC, o limite de linhas e a medição CrUX móvel salva disponível.
+A seção de sobreposições informa período e limites mesmo quando não encontra nada; um relatório de sete dias pode usar 28 dias nessa análise. Várias páginas na mesma consulta não provam cliques perdidos nem danos de SEO. Dados históricos ou de aparência indisponíveis não viram zero. Listas truncadas informam quantas linhas são mostradas e quantas foram observadas. O orçamento de solicitações vale para a visualização de pesquisa e não inclui análises adicionais nem cache.
 
-O relatório salvo no topo não é um resumo atual do site. O site de origem aparece quando pode ser verificado pela auditoria original; se for diferente do site do projeto, um aviso é exibido. Sem uma fonte verificada, o relatório pode se referir a outro site. Relatórios antigos indicam fonte e data não verificadas. **Abrir auditorias do site** abre o histórico. Se houver uma auditoria salva adequada, abra-a e baixe o relatório; o link não inicia uma auditoria nem cria um relatório automaticamente. Os arquivos antigos são preservados.
+Criar um relatório relê os dados do servidor. O Google pode corrigir o passado e o período pode ser recalculado, então o resultado pode diferir de uma tela vista antes.
+
+O relatório de auditoria informa na metodologia o período de tráfego do GSC, o limite de linhas e a medição CrUX móvel salva, se houver. Ele mostra o site de origem quando o rastreamento original permite verificá-lo; se for diferente do site do projeto, aparece um aviso. Sem uma fonte verificada, o relatório pode se referir a outro site, e os relatórios antigos aparecem como **Relatório antigo · fonte e data não verificadas**. **Abrir auditorias do site** abre o histórico de auditorias: se houver uma auditoria adequada, abra-a e baixe o relatório. O link não inicia auditoria nem cria relatório; os arquivos antigos não mudam.
+
+## Modelos e limites de armazenamento
+
+Cada projeto pode ter dez modelos. O nome aceita até 80 caracteres, a descrição até 200 e as instruções até 3.000. Excluir um modelo não exclui os relatórios criados com ele. **Limpar pesquisa** volta a mostrar os modelos ocultos pela pesquisa.
+
+| Limite                  | Valor            |
+| ----------------------- | ---------------- |
+| tamanho de um relatório | 500.000 bytes    |
+| título                  | 120 caracteres   |
+| resumo                  | 2.500 caracteres |
+| relatórios por projeto  | 10.000           |
+| espaço por instalação   | 5 GB             |
+
+São limites de armazenamento, não medidas de SEO.

@@ -201,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1496,9 +1496,7 @@
           <p class="nav-group">Bildschirme</p>
           <ul>
             <li><a href="/de/dokumentation/projekte/">Projekte</a></li>
-            <li>
-              <a href="/de/dokumentation/uebersicht/">Übersicht (Panel)</a>
-            </li>
+            <li><a href="/de/dokumentation/uebersicht/">Übersicht</a></li>
             <li><a href="/de/dokumentation/suchleistung/">Suchleistung</a></li>
             <li>
               <a href="/de/dokumentation/ranking-verfolgung/"
@@ -1508,12 +1506,12 @@
             <li><a href="/de/dokumentation/chancen/">Chancen</a></li>
             <li>
               <a href="/de/dokumentation/gespeicherte-suchbegriffe/"
-                >Gespeicherte Suchbegriffe</a
+                >Gespeicherte Keywords</a
               >
             </li>
             <li>
               <a href="/de/dokumentation/datenanalyse/"
-                >Analysedaten verstehen</a
+                >Analytics-Daten verstehen</a
               >
             </li>
             <li>
@@ -1523,7 +1521,7 @@
             <li>
               <a href="/de/dokumentation/berichte/">Berichte und Vorlagen</a>
             </li>
-            <li><a href="/de/dokumentation/projektinfo/">Projektinfo</a></li>
+            <li><a href="/de/dokumentation/projektinfo/">Projektkontext</a></li>
             <li>
               <a href="/de/dokumentation/einstellungen/">Einstellungen</a>
             </li>
@@ -1536,7 +1534,7 @@
             <li><a href="/de/dokumentation/audit-regeln/">Audit-Regeln</a></li>
             <li>
               <a href="/de/dokumentation/assistent-einrichten/"
-                >Assistent einrichten</a
+                >Agent einrichten</a
               >
             </li>
             <li>
@@ -1555,9 +1553,8 @@
           Probleme und bereitet die Datei für eine Problemmeldung vor.
         </p>
         <p>
-          Wenn etwas schiefgeht, sehen Sie zuerst hier nach. Dieser Bildschirm
-          prüft Ihre Installation, sagt, was fehlt, und führt Sie zur richtigen
-          Einstellung.
+          Wenn etwas nicht funktioniert, beginnen Sie hier. Jede Warnung nennt,
+          was fehlt, und führt zur passenden Einstellung.
         </p>
         <p>
           Die Oberfläche der App gibt es in sechs Sprachen: Türkisch, Englisch,
@@ -1595,20 +1592,20 @@
             Versionshinweise (<code>/release-notes</code>).
           </li>
           <li>
-            <strong>Agent-Einrichtung</strong>: führt zum Bildschirm für die
-            Assistenten-Verbindung.
+            <strong>Agent-Einrichtung</strong>: öffnet den Bildschirm, auf dem
+            Sie einen KI-Agenten verbinden.
           </li>
         </ul>
         <p>
           <strong>Zustand der App.</strong> Die Karte prüft Zugriff,
           Google-Verbindungseinstellungen, PageSpeed-Schlüssel, Laufzeitumgebung
-          und Datenbank dieser Installation. Erfolgreiche Prüfungen bestätigen
-          weder eine fehlerfreie Website noch aktuelle Google-Daten. Nicht
-          gelesene Einstellungen gelten nicht als erfolgreich geprüft. Lesen Sie
-          die Warnung und wählen Sie <strong>Status erneut prüfen</strong>.
-          Version und Prüfzeit ordnen das Ergebnis ein.
-          <strong>Zusammenfassung kopieren</strong> kopiert den Status als Text;
-          <strong>Verbindungen öffnen</strong> führt zu den Projektverbindungen.
+          und Datenbank dieser Installation. Bestandene Prüfungen bestätigen
+          weder eine fehlerfreie Website noch aktuelle Google-Daten. Eine
+          Einstellung, die nicht gelesen werden konnte, gilt nicht als
+          bestanden; lesen Sie dann die Warnung und wählen Sie
+          <strong>Status erneut prüfen</strong>. Version und Prüfzeit stehen
+          neben dem Ergebnis. <strong>Zusammenfassung kopieren</strong> kopiert
+          den Status als Text.
         </p>
         <p>
           <strong>Hinweis zur Portnummer.</strong> Öffnet sich das Windows-Paket
@@ -1617,17 +1614,15 @@
           Bildschirm der App ein gelber Streifen: „seowatcher läuft diesmal auf
           3002, weil ein anderes Programm 3001 belegt (z. B. eine alte
           Docker-Kopie). Die Google-Anmeldung ist für 3001 eingerichtet;
-          schließen Sie dieses Programm und starten Sie seowatcher neu.“ Der
-          Streifen ist da, falls Sie die Meldung in der Taskleiste übersehen
-          haben. Die Google-Anmeldung kehrt zur Adresse 3001 zurück und schlägt
-          fehl, wenn Sie die App auf 3002 geöffnet haben. Die
-          Schließen-Schaltfläche rechts im Streifen blendet ihn für diesen
-          Reiter aus. Derselbe Satz steht auch in der Karte
-          <strong>Zustand der App</strong>. Zur Lösung schließen Sie das
-          Programm, das 3001 belegt, und wählen dann im Tray-Menü
+          schließen Sie dieses Programm und starten Sie seowatcher neu.“
+          Derselbe Satz steht in der Karte <strong>Zustand der App</strong>,
+          falls Sie die Meldung in der Taskleiste übersehen haben. Die
+          Google-Anmeldung leitet nach 3001 zurück und schlägt deshalb fehl,
+          solange die App auf 3002 läuft. Schließen Sie das Programm, das 3001
+          belegt, und wählen Sie im Tray-Menü
           <strong>Yeniden başlat</strong> (Neu starten). Die App kehrt zu 3001
-          zurück und der Streifen verschwindet. Nutzt kein anderes Programm den
-          Port, kehrt die App beim nächsten Start ohnehin zu 3001 zurück.
+          zurück, und der Streifen verschwindet. Die Schließen-Schaltfläche im
+          Streifen blendet ihn nur für diesen Tab aus.
         </p>
         <p>
           <strong>Projekte.</strong> Sie sehen den Zustand der Search-Console-
@@ -1636,21 +1631,21 @@
           Projekteinstellungen.
         </p>
         <p>
-          <strong>Häufige Probleme.</strong> Es gibt sechs aufklappbare
-          Überschriften: Seite öffnet sich nicht oder die App ist geschlossen,
-          der Port ist belegt, mein Agent kann keine Verbindung herstellen
-          (401), Geschwindigkeitsmessung bricht ab (429), keine Suchanfragedaten
-          und ich habe eine Einstellung geändert, und die App übernimmt sie
-          nicht. Bei jeder steht, was Sie tun, mit einem Link zur passenden
+          <strong>Häufige Probleme.</strong> Sechs aufklappbare Abschnitte
+          behandeln diese Fälle: Die Seite öffnet sich nicht oder die App ist
+          geschlossen; der Port ist belegt; der Agent kann sich nicht verbinden
+          (401); die Geschwindigkeitsmessung bricht ab (429); es gibt keine
+          Suchanfragedaten; eine geänderte Einstellung wird nicht übernommen.
+          Jeder Abschnitt nennt die Lösung und verlinkt die passende
           Einstellung.
         </p>
         <p>
-          <strong>Google- und Systemgrenzen.</strong> Mit
+          <strong>Google- und Systemlimits.</strong> Mit
           <strong>Limits anzeigen</strong> sehen Sie, wo Sie bei Googles
           Tagesgrenzen gerade stehen.
         </p>
         <p>
-          <strong>Untere Liste.</strong> Es gibt Abkürzungen zu den
+          <strong>Untere Liste.</strong> Sie enthält Abkürzungen zu den
           Protokolldateien und zur Statusadresse (<code>/api/health</code>).
           Beim Windows-Paket öffnen Sie die Protokolle über
           <strong>Günlükleri aç</strong> (Protokolle öffnen) im Menü der
@@ -1664,9 +1659,8 @@
             lesen Sie die Warnung auf der Karte.
           </li>
           <li>
-            Klicken Sie auf die Schaltfläche neben der Warnung, sie führt Sie
-            zur richtigen Einstellung. Nehmen Sie die Einstellung vor, kehren
-            Sie zurück und klicken Sie auf
+            Klicken Sie auf die Schaltfläche neben der Warnung. Ändern Sie die
+            Einstellung, kehren Sie zurück und klicken Sie auf
             <strong>Status erneut prüfen</strong>.
           </li>
           <li>
@@ -1684,34 +1678,34 @@
         </ol>
         <h2 id="haufige-fragen">Häufige Fragen</h2>
         <p>
-          <strong>Warum ist die Zeile „Google-Anmeldung“ gelb?</strong> Es wurde
-          noch kein Google-Zugangsschlüssel eingetragen. Solange Google nicht
-          verbunden ist, bleibt die Zeile gelb. Folgen Sie der Anleitung zur
-          Google-Verbindung.
+          <strong>Warum ist die Zeile „Google-Anmeldung“ gelb?</strong> Es sind
+          noch keine Google-Zugangsdaten gespeichert. Die Zeile bleibt gelb, bis
+          Google verbunden ist; folgen Sie der Anleitung
+          <a href="/de/dokumentation/google-verbindung/">Mit Google verbinden</a
+          >.
         </p>
         <p>
           <strong
             >In der Zeile „Anmeldung und Zugriff“ steht „ein Benutzer ohne
             Passwort“.</strong
           >
-          Das ist normal. Die App öffnet sich nur von Ihrem eigenen Computer
-          aus. Wollen Sie sie im Netz erreichbar machen, müssen Sie selbst eine
-          gesicherte Anmeldung davorschalten.
+          Das ist so vorgesehen: Die App ist nur auf Ihrem eigenen Computer
+          erreichbar. Wollen Sie sie im Netzwerk freigeben, schalten Sie selbst
+          eine gesicherte Anmeldung davor.
         </p>
         <p>
           <strong>Was steht im Diagnosepaket?</strong> Version,
           Installationsprüfungen, Tabellenzahlen sowie Phasen- und
           Fehlerzusammenfassungen der letzten 25 Audits. PageSpeed-Fehler werden
-          ohne Seiten-URLs zusammengefasst. Geheimnisse und Passwörter fehlen;
-          Projektnamen, Domains und Google-Property-IDs können enthalten sein.
-          Prüfen Sie die Dateien vor dem Senden.
+          ohne Seiten-URLs zusammengefasst. Geheimnisse und Passwörter sind
+          nicht enthalten, Projektnamen, Domains und Google-Property-IDs dagegen
+          schon. Prüfen Sie die Datei vor dem Senden.
         </p>
         <h2 id="grenzen">Grenzen</h2>
         <p>
-          Dieser Bildschirm prüft nur die Installation selbst. Ein Problem auf
-          Ihrer Website finden Sie mit dem Bildschirm
-          <strong>Website-Audit</strong>, ein Problem auf Googles Seite mit dem
-          Bildschirm <strong>Indexstatus</strong>.
+          Dieser Bildschirm prüft nur die Installation. Probleme auf Ihrer
+          Website zeigt das <strong>Website-Audit</strong>, Probleme bei der
+          Aufnahme in Google der Reiter <strong>Indexstatus</strong>.
         </p>
         <h2 id="welcher-bildschirm-hilft">Welcher Bildschirm hilft?</h2>
         <p>
@@ -1720,10 +1714,10 @@
           <a href="/de/dokumentation/chancen/">Chancen</a> hilft bei der Auswahl
           von Aufgaben anhand von Search-Console-Daten. Die
           <a href="/de/dokumentation/ranking-verfolgung/">Ranking-Verfolgung</a>
-          zeigt die durchschnittlichen Positionen gespeicherter Suchbegriffe in
-          Google-Daten, keine Live-Suchergebnisse. Bei fehlenden Daten prüfen
-          Sie Projektverbindungen, Zeitraum und Hinweise zur Datenabdeckung. Der
-          Installationsstatus bestätigt diese Berichte nicht.
+          zeigt durchschnittliche Positionen Ihrer Suchanfragen aus dem lokalen
+          Archiv, keine Live-Suchergebnisse. Fehlen Daten, prüfen Sie
+          Projektverbindungen, Zeitraum und die Hinweise zur Datenabdeckung; ein
+          guter Installationsstatus bestätigt diese Berichte nicht.
         </p>
         <p>
           Bei Websites mit wenig Suchverkehr blendet Google manche Suchanfragen
@@ -1773,7 +1767,7 @@
     <footer>
       <div class="wrap">
         <p class="star">
-          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          Ein Stern hilft anderen, das Werkzeug zu finden.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

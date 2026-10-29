@@ -1,29 +1,48 @@
 ---
-title: Projektinfo
-description: Projektinfo speichert lokale Notizen für Sie und verbundene Assistenten. Gefüllte Texte sind nicht verifiziert; nicht jeder Assistent liest sie automatisch.
+title: Projektkontext
+description: Der Projektkontext speichert lokale Notizen zu Ziel, Positionierung und wichtigen Seiten für Sie und verbundene KI-Agenten.
 screen: Proje bilgisi
 route: /p/<proje>/context
 updated: 2026-10-27
 ---
 
-Projektinfo speichert lokale Notizen für Sie und verbundene Assistenten. Gefüllte Texte sind nicht verifiziert; nicht jeder Assistent liest sie automatisch.
+Die Notizen sind Ihre eigenen Angaben. Die App prüft sie nicht auf Richtigkeit, und nicht jeder Agent liest sie automatisch.
 
 ## Mit dem Ziel beginnen
 
-Oben stehen die Anzahl gefüllter Hauptabschnitte und das gespeicherte Ziel. Öffnen Sie den ersten leeren Abschnitt oder die Abschnittsauswahl. Geschäftsübersicht, aktuelles Ziel, Positionierung und Schreibpräferenzen erlauben je 4.000 Zeichen. Autor und absoluter Änderungszeitpunkt stehen am Abschnitt. Speichern überträgt nur geänderte Hauptabschnitte.
+Oben sehen Sie, wie viele Hauptabschnitte ausgefüllt sind, und das gespeicherte Ziel. Von dort öffnen Sie den ersten leeren Abschnitt oder die Abschnittsauswahl.
 
-Wettbewerber und wichtige Seiten sind optionale Notizlisten, keine Ranking- oder Conversion-Messungen. Jede Liste erlaubt 100 Einträge. Domain/Name/Notiz: 255/120/500 Zeichen; Seitenadresse/Thema/Notiz: 2.048/200/500. Rollen sind eigene Etiketten. Assistenten erstellen zusätzliche Abschnitte; Sie können sie bearbeiten oder entfernen. Höchstens 20 Abschnitte, 120 Zeichen Titel, 4.000 Zeichen Inhalt.
+Die vier Hauptabschnitte sind Geschäftsübersicht, aktuelles Ziel, Positionierung und Schreibpräferenzen. Jeder fasst bis zu 4.000 Zeichen. Am Abschnitt stehen, wer ihn zuletzt geändert hat und wann. **Änderungen speichern** überträgt nur die geänderten Abschnitte.
+
+Mitbewerber und Schlüsselseiten sind optionale Notizlisten. Sie messen weder Rankings noch Conversions. Jede Liste fasst 100 Einträge:
+
+| Liste           | Feldgrenzen                                       |
+| --------------- | ------------------------------------------------- |
+| Mitbewerber     | Domain 255, Name 120, Notiz 500 Zeichen           |
+| Schlüsselseiten | Seitenadresse 2.048, Thema 200, Notiz 500 Zeichen |
+
+Die Rolle einer Schlüsselseite ist ein frei wählbares Etikett.
+
+Agenten können weitere Abschnitte anlegen, die Sie bearbeiten oder entfernen können. Erlaubt sind höchstens 20 solcher Abschnitte mit je 120 Zeichen Titel und 4.000 Zeichen Inhalt.
 
 ## Speichern und aktualisieren
 
-Aktualisieren liest Notizen und Einrichtung neu. Bei einem Hintergrundfehler bleiben gespeicherte Informationen und Entwürfe mit Warnung sichtbar. Ungespeicherte Änderungen in Haupt- oder Inline-Formularen lösen beim Verlassen eine Warnung aus. Der Server verhindert gleichzeitiges Überschreiben desselben Abschnitts noch nicht; vergleichen Sie vor dem Speichern den neuesten Text.
+**Aktualisieren** liest Notizen und Einrichtungsstatus neu. Schlägt das im Hintergrund fehl, bleiben gespeicherte Angaben und Ihre Entwürfe mit einer Warnung sichtbar. Verlassen Sie die Seite mit ungespeicherten Änderungen, warnt die App.
 
-Die Assistentenvorlage bittet um Ihre Zustimmung vor dem Speichern. Die Anwendungswerkzeuge können sofort schreiben und erzwingen keine zusätzliche Zustimmung. Ohne gelesene Projektidentität wird keine Vorlage erstellt.
+Hat ein anderer Client einen Abschnitt geändert, während Sie ihn bearbeiten, lehnt die App den gesamten Speichervorgang ab. Ihr Entwurf bleibt erhalten. Die App zeigt den Text zu Beginn Ihrer Bearbeitung, den zuletzt gespeicherten Text und Ihren Entwurf. Führen Sie die Änderungen zusammen und speichern Sie erneut. Agenten nutzen denselben Schutz über das Feld `expectedContent`; ältere Clients ohne dieses Feld funktionieren weiter.
 
-Das Rechercheprotokoll zeigt die neuesten 20 Einträge der letzten 90 Tage, je 1.000 Zeichen. Das Datum stammt vom UTC-Tag des Servers. Ältere Einträge werden bei jedem Lesen ausgefiltert. Weitere Einträge im Zeitraum werden durch einen Hinweis kenntlich gemacht. Die Liste ist kein vollständiger Verlauf.
+## Agenten und Rechercheprotokoll
 
-Ändert ein anderer Client einen Abschnitt während der Bearbeitung, wird der gesamte Speichervorgang abgelehnt; Ihr Entwurf bleibt erhalten. Vergleichen und verbinden Sie Ausgangstext, aktuellen Text und Entwurf vor dem erneuten Speichern. Agenten können mit `expectedContent` denselben Schutz nutzen; ältere Clients ohne dieses Feld bleiben kompatibel.
+Die Agentenvorlage bittet um Ihre Zustimmung, bevor ein Agent etwas speichert. Die MCP-Werkzeuge selbst schreiben jedoch sofort und verlangen keine zusätzliche Bestätigung. Kann die App die Projektidentität nicht lesen, erstellt sie keine Vorlage.
 
-Quellen und Einrichtung zählt sechs gemeinsame Konfigurationssignale; fehlend und nicht lesbar bleiben getrennt. Optionale Listen zählen nicht. Verbindungen sind kein Live-Test, ein PageSpeed-Schlüssel garantiert keine Quote, ein Werkzeugaufruf dieser Installation beweist kein Lesen dieses Projekts. Das ist kein SEO-Wert.
+Das Rechercheprotokoll zeigt die neuesten 20 Einträge der letzten 90 Tage mit je bis zu 1.000 Zeichen. Das Datum folgt dem UTC-Tag des Servers. Ältere Einträge werden beim Lesen ausgefiltert. Gibt es im Zeitraum mehr Einträge, weist ein Hinweis darauf hin. Das Protokoll ist daher kein vollständiger Verlauf.
+
+## Quellen und Einrichtung
+
+Dieser Bereich zählt sechs Konfigurationssignale, die auch die Übersicht verwendet. Fehlende und nicht lesbare Signale werden getrennt gezählt; die optionalen Listen zählen nicht mit. Der Wert beschreibt nur die Einrichtung, keine SEO-Leistung:
+
+- Eine gespeicherte Verbindung ist kein Live-Test.
+- Ein PageSpeed-Schlüssel garantiert kein Kontingent.
+- Ein Werkzeugaufruf über diese Installation beweist nicht, dass ein Agent dieses Projekt gelesen hat.
 
 <!-- Sources: src/routes/_app/projects.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/project-context/; src/server/features/projects/services/ProjectOverviewService.ts; src/server/features/project-context/ -->

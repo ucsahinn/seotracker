@@ -11,7 +11,7 @@
     <meta name="ga4-id" content="G-DFPDX00V4R" />
     <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Installation de l'assistant | Guide seowatcher</title>
+    <title>Configuration de l’agent | Guide seowatcher</title>
     <meta
       name="description"
       content="Connecter votre assistant SEO sans exposer le jeton, vérifier un nouvel appel et utiliser les compétences pour auditer le site et rédiger un rapport."
@@ -90,7 +90,7 @@
     <meta property="og:site_name" content="seowatcher" />
     <meta
       property="og:title"
-      content="Installation de l'assistant | Guide seowatcher"
+      content="Configuration de l’agent | Guide seowatcher"
     />
     <meta
       property="og:description"
@@ -105,7 +105,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta property="article:modified_time" content="2026-10-29" />
     <meta
@@ -121,7 +121,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="Installation de l'assistant | Guide seowatcher"
+      content="Configuration de l’agent | Guide seowatcher"
     />
     <meta
       name="twitter:description"
@@ -133,7 +133,7 @@
     />
     <meta
       name="twitter:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
@@ -167,7 +167,7 @@
           {
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/fr/guides/installation-assistant/#article",
-            "headline": "Installation de l'assistant",
+            "headline": "Configuration de l’agent",
             "description": "Connecter votre assistant SEO sans exposer le jeton, vérifier un nouvel appel et utiliser les compétences pour auditer le site et rédiger un rapport.",
             "url": "https://seowatcher.io/fr/guides/installation-assistant/",
             "inLanguage": "fr",
@@ -199,7 +199,7 @@
               {
                 "@type": "ListItem",
                 "position": 3,
-                "name": "Installation de l'assistant",
+                "name": "Configuration de l’agent",
                 "item": "https://seowatcher.io/fr/guides/installation-assistant/"
               }
             ]
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1481,7 +1481,7 @@
           <ul>
             <li>
               <a href="/fr/guides/quest-ce-que-seowatcher/"
-                >Qu'est-ce que seowatcher ?</a
+                >Qu’est-ce que seowatcher ?</a
               >
             </li>
             <li>
@@ -1520,23 +1520,27 @@
               >
             </li>
             <li>
-              <a href="/fr/guides/statistiques/">Comprendre les statistiques</a>
+              <a href="/fr/guides/statistiques/"
+                >Comprendre les données Analytics</a
+              >
             </li>
             <li><a href="/fr/guides/audit-du-site/">Audit du site</a></li>
             <li>
-              <a href="/fr/guides/etat-de-l-index/">État de l'indexation</a>
+              <a href="/fr/guides/etat-de-l-index/">État de l’indexation</a>
             </li>
             <li><a href="/fr/guides/rapports/">Rapports et modèles</a></li>
-            <li><a href="/fr/guides/infos-du-projet/">Infos du projet</a></li>
+            <li>
+              <a href="/fr/guides/infos-du-projet/">Contexte du projet</a>
+            </li>
             <li><a href="/fr/guides/parametres/">Paramètres</a></li>
           </ul>
           <p class="nav-group">Aide et référence</p>
           <ul>
             <li><a href="/fr/guides/aide/">Aide</a></li>
-            <li><a href="/fr/guides/regles-d-audit/">Règles d'audit</a></li>
+            <li><a href="/fr/guides/regles-d-audit/">Règles d’audit</a></li>
             <li class="current" aria-current="page">
               <a href="/fr/guides/installation-assistant/"
-                >Installation de l'assistant</a
+                >Configuration de l’agent</a
               >
             </li>
             <li><a href="/fr/guides/depannage/">Dépannage</a></li>
@@ -1545,86 +1549,199 @@
         </details>
       </aside>
       <article id="icerik" data-page="ajan-kurulumu">
-        <h1>Installation de l'assistant</h1>
+        <h1>Configuration de l’agent</h1>
         <p class="lede">
           Connecter votre assistant SEO sans exposer le jeton, vérifier un
           nouvel appel et utiliser les compétences pour auditer le site et
           rédiger un rapport.
         </p>
         <p>
-          L'installation de l'assistant connecte un assistant IA comme Claude
-          Code, Codex ou Cursor à seowatcher via MCP (Model Context Protocol).
-          Une fois connecté, l'assistant lit vos données Search Console,
-          Analytics et d'audit depuis l'application sur votre ordinateur, lance
-          des audits et rédige des rapports. Ce que lit l'assistant peut partir
-          chez son fournisseur.
+          Un assistant IA (agent) comme Claude Code, Codex ou Cursor se connecte
+          à seowatcher par MCP (Model Context Protocol). Une fois connecté, il
+          lit vos données Search Console, Analytics et d’audit dans
+          l’application installée sur votre ordinateur, lance des audits et
+          enregistre des rapports. Les données que l’agent lit peuvent être
+          transmises à son fournisseur.
         </p>
-        <h2 id="connecter-l-agent">Connecter l'agent</h2>
+        <h2 id="connecter-l-agent">Connecter l’agent</h2>
+        <ol>
+          <li>
+            Dans le menu de gauche, ouvrez
+            <strong>Configuration de l’agent</strong>.
+          </li>
+          <li>
+            À la question <strong>Quel agent utilisez-vous ?</strong>,
+            choisissez <strong>Claude Code</strong>, <strong>Codex</strong> ou
+            <strong>Autre</strong>. Les touches fléchées, Début et Fin
+            permettent aussi de choisir.
+          </li>
+          <li>
+            Cliquez sur <strong>Copier la commande de configuration</strong>.
+            Choisir un agent ne copie rien à lui seul.
+          </li>
+          <li>Collez le texte copié dans votre agent.</li>
+        </ol>
         <p>
-          Ouvrez la configuration de l'agent. Choisissez Claude Code, Codex ou
-          Autre et copiez les instructions. Les flèches, Début et Fin changent
-          le choix sans copier. Le texte ne contient aucun jeton réel; l'agent
-          utilise le secret local. L'installation complète reste une option
-          séparée.
+          La commande ne contient pas le jeton réel : l’agent le lit dans
+          l’installation de votre ordinateur. Après une nouvelle installation,
+          ou pour tout reprendre depuis le début, utilisez
+          <strong>Copier la commande de nouvelle installation</strong>.
         </p>
-        <h2 id="verifier-un-nouvel-appel">Vérifier un nouvel appel</h2>
+        <h2 id="verifier-la-connexion">Vérifier la connexion</h2>
         <p>
-          Lancez la vérification puis demandez un appel d'outil seowatcher. La
-          page consulte le journal local toutes les cinq secondes pendant 60
-          secondes au maximum. Un ancien appel ne valide pas une nouvelle
-          configuration. Onglet masqué, erreur de lecture ou annulation arrêtent
-          la vérification. Sans nouvel appel, vérifiez l'état MCP du client et
-          réessayez; cela ne prouve pas une panne.
+          Cliquez sur <strong>Vérifier la connexion</strong>, puis demandez à
+          votre agent d’appeler un outil seowatcher, n’importe lequel. Pendant
+          60 secondes, la page cherche un nouvel appel toutes les cinq secondes.
+          Un appel antérieur ne compte pas.
+        </p>
+        <ul>
+          <li>
+            « Nouvel appel d’outil vérifié. » : la configuration est terminée.
+          </li>
+          <li>
+            « Aucun nouvel appel d’outil détecté. » : vérifiez l’état MCP dans
+            votre agent, faites-lui appeler un outil et relancez la
+            vérification. Ce résultat ne prouve pas que la connexion est en
+            panne.
+          </li>
+        </ul>
+        <p>
+          Passer l’onglet en arrière-plan, une erreur ou
+          <strong>Annuler</strong> arrêtent l’attente.
         </p>
         <p>
-          Connecté et la date du dernier appel décrivent une utilisation passée,
-          pas une session permanente. Relancez une lecture inconnue. Les outils
-          ont une portée d'installation.
+          Le badge <strong>Appel d’outil reçu</strong> et l’heure du dernier
+          appel décrivent une utilisation passée, pas une session ouverte en
+          permanence. Si l’état ne peut pas être lu, cliquez sur
+          <strong>Relire l’état</strong>. Un agent connecté accède à tous les
+          projets de cette installation, pas seulement au projet ouvert.
         </p>
         <h2 id="proteger-le-jeton">Protéger le jeton</h2>
         <p>
-          Préférez les instructions de configuration. Pour une configuration
-          manuelle, placez
-          <code>Authorization: Bearer &lt;token&gt;</code> uniquement dans le
-          champ secret local du client. PowerShell copie sans affichage:
+          Préférez la commande de configuration toute prête. Si vous devez
+          configurer l’agent à la main, placez le jeton uniquement dans le champ
+          d’en-tête secret de votre client MCP :
+          <code>Authorization: Bearer &lt;jeton&gt;</code>.
         </p>
         <p>
-          Windows :
+          Pour copier le jeton dans le presse-papiers sans l’afficher, exécutez
+          cette commande dans PowerShell.
+        </p>
+        <p>Installation Windows :</p>
+        <p>
           <code
             >(Get-Content
             &quot;$env:LOCALAPPDATA\seowatcher\mcp-token&quot;).Trim() |
             Set-Clipboard</code
           >
         </p>
+        <p>Installation Docker :</p>
         <p>
-          Docker :
           <code
             >(docker compose exec -T seotracker cat
             /app/.wrangler/mcp-token).Trim() | Set-Clipboard</code
           >
         </p>
         <p>
-          Collez dans le champ local, puis effacez le presse-papiers. Aucun
-          jeton dans le chat, la sortie du terminal, une capture ou le code. Le
-          menu Windows permet d'ouvrir le dossier de données.
+          Après l’avoir collé dans le champ d’en-tête, videz le presse-papiers.
+          Ne placez jamais le jeton dans un terminal, une conversation, une
+          capture d’écran ou du code source. Sous Windows,
+          <strong>Veri klasörünü aç</strong> (Ouvrir le dossier de données) dans
+          le menu de la zone de notification ouvre le dossier qui contient le
+          fichier du jeton.
         </p>
-        <h2 id="competences-et-depannage">Compétences et dépannage</h2>
+        <h2 id="competences">Compétences</h2>
         <p>
-          L'onglet Compétences décrit les processus SEO. Les instructions les
-          installent; le texte de mise à jour les actualise. Claude Code :
-          /seo-audit; Codex : $seo-audit. Pour 401, vérifiez l'en-tête local.
-          Pour une connexion refusée, vérifiez l'application et l'adresse.
-          Actualisez l'état MCP et vérifiez un nouvel appel.
+          L’onglet <strong>Compétences</strong> liste les six processus SEO
+          prêts à l’emploi que la commande de configuration installe dans votre
+          agent :
         </p>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Compétence</th>
+                <th>Rôle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>seo-coach</code></td>
+                <td>
+                  Fait le point sur votre situation et choisit l’étape suivante.
+                </td>
+              </tr>
+              <tr>
+                <td><code>seo-project-setup</code></td>
+                <td>
+                  Enregistre une fois vos objectifs, vos concurrents et vos
+                  pages clés.
+                </td>
+              </tr>
+              <tr>
+                <td><code>seo-audit</code></td>
+                <td>
+                  Audite votre site et met en avant une seule action pour la
+                  semaine.
+                </td>
+              </tr>
+              <tr>
+                <td><code>seo-check-in</code></td>
+                <td>
+                  Compare la période à la précédente : ce qui a changé, quand,
+                  et si cela compte.
+                </td>
+              </tr>
+              <tr>
+                <td><code>seo-triage</code></td>
+                <td>
+                  Après une baisse de trafic, vérifie qu’elle est réelle, puis
+                  trouve où et quand.
+                </td>
+              </tr>
+              <tr>
+                <td><code>seo-report</code></td>
+                <td>
+                  Enregistre le résultat d’une compétence dans l’écran Rapports.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Dans Claude Code, une compétence s’appelle avec
+          <code>/seo-audit</code> ; dans Codex, avec <code>$seo-audit</code>. Si
+          l’agent est déjà configuré,
+          <strong>Copier la commande de mise à jour</strong> actualise les
+          compétences ; vos réglages de connexion et vos propres modifications
+          sont conservés.
+        </p>
+        <h2 id="si-la-connexion-echoue">Si la connexion échoue</h2>
+        <ul>
+          <li>
+            <strong>Erreur 401 :</strong> votre client MCP n’envoie pas
+            l’en-tête <code>Authorization</code>. Vérifiez l’en-tête et le
+            jeton.
+          </li>
+          <li>
+            <strong>Connexion refusée :</strong> vérifiez que l’application est
+            ouverte et que l’agent utilise la bonne adresse MCP. Elle figure sur
+            la ligne <strong>Adresse MCP de cette installation</strong>.
+          </li>
+          <li>
+            Après correction, actualisez l’état MCP dans votre agent et relancez
+            la vérification avec un nouvel appel d’outil.
+          </li>
+        </ul>
         <nav class="pager" aria-label="Page précédente et suivante">
           <a class="pager-prev" rel="prev" href="/fr/guides/regles-d-audit/"
-            ><span>Précédent</span><strong>Règles d'audit</strong></a
+            ><span>Précédent</span><strong>Règles d’audit</strong></a
           ><a class="pager-next" rel="next" href="/fr/guides/depannage/"
             ><span>Suivant</span><strong>Dépannage</strong></a
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1636,21 +1753,18 @@
       <nav class="toc" aria-label="Sur cette page">
         <p class="toc-label">Sur cette page</p>
         <ol>
-          <li><a href="#connecter-l-agent">Connecter l'agent</a></li>
-          <li>
-            <a href="#verifier-un-nouvel-appel">Vérifier un nouvel appel</a>
-          </li>
+          <li><a href="#connecter-l-agent">Connecter l’agent</a></li>
+          <li><a href="#verifier-la-connexion">Vérifier la connexion</a></li>
           <li><a href="#proteger-le-jeton">Protéger le jeton</a></li>
-          <li>
-            <a href="#competences-et-depannage">Compétences et dépannage</a>
-          </li>
+          <li><a href="#competences">Compétences</a></li>
+          <li><a href="#si-la-connexion-echoue">Si la connexion échoue</a></li>
         </ol>
       </nav>
     </main>
     <footer>
       <div class="wrap">
         <p class="star">
-          Une étoile aide d'autres personnes à trouver un outil gratuit.
+          Une étoile aide d’autres personnes à trouver un outil gratuit.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

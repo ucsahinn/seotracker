@@ -6,54 +6,82 @@ route: /support
 updated: 2026-10-27
 ---
 
-Bir şey ters giderse ilk buraya bakın. Bu ekran kurulumunuzu kontrol eder, eksiği söyler ve sizi doğru ayara götürür.
+Yardım ekranı sitenizi değil, seowatcher kurulumunun kendisini kontrol eder. Bir eksik bulursa sizi onu düzelteceğiniz ayara götürür.
 
-## Ekranda neler var
+## Sorun çözme sırası
 
-**Hızlı işlemler.** Üstteki düğmeler:
+1. **Uygulamanın durumu** kartındaki uyarıyı okuyun.
+2. Uyarının yanındaki bağlantıyla ilgili ayara gidin, ayarı düzeltin, geri dönüp **Durumu yeniden kontrol et** düğmesine basın.
+3. Kart **Kurulum kontrollerinde sorun bulunmadı.** dediği halde sorun sürüyorsa **Sık sorunlar** başlıklarına ve ilgili proje ekranına bakın.
+4. Yine çözülmezse **Tanılama paketi indir** ile dosyayı indirin ve GitHub'daki sorun kaydına ekleyin. Windows'ta tepsi menüsündeki **Sorunu bildir (GitHub)** aynı işi tek adımda yapar.
 
-- **Durumu yeniden kontrol et**: aşağıdaki kartı tazeler.
-- **Tanılama paketi indir**: sorun bildirirken göndereceğiniz dosyayı indirir. İçinde gizli değer yoktur.
-- **Kılavuzu aç**: seowatcher.io'daki kılavuzu açar.
-- **seowatcher.io**: uygulamanın sitesini açar. İndirme sayfası ve kılavuz oradadır.
-- **Sürüm notları**: ayrı Sürüm notları ekranını açar (`/release-notes`).
-- **Ajan kurulumu**: asistan bağlantısı ekranına gider.
+## Hızlı işlemler
 
-**Uygulamanın durumu.** Kart yalnızca bu kurulumun erişim, Google bağlantı ayarı, PageSpeed anahtarı, çalışma ortamı ve veritabanı kontrollerini gösterir. Başarılı sonuç sitenizin hatasız olduğunu veya Google verisinin güncel olduğunu kanıtlamaz. Okunamayan bir ayar başarı sayılmaz; uyarıyı okuyup **Durumu yeniden kontrol et** deyin. Sürüm satırı ve son kontrol zamanı sonuçların ne zaman alındığını gösterir. **Özeti kopyala** bu durumu metin olarak kopyalar. Proje bağlantıları **Bağlantıları aç** ile yönetilir.
+- **Durumu yeniden kontrol et**: Uygulamanın durumu kartını yeniler.
+- **Tanılama paketi indir**: Sorun bildirirken göndereceğiniz dosyayı indirir.
+- **Kılavuzu aç**: seowatcher.io'daki kılavuzu yeni sekmede açar.
+- **seowatcher.io**: İndirme sayfasının da bulunduğu siteyi açar.
+- **Sürüm notları**: Uygulamadaki Sürüm notları ekranını açar.
+- **Ajan kurulumu**: Ajan bağlantısı ekranına gider.
 
-**Adres numarası (port) uyarısı.** Windows paketi 3001 numarasını başka bir program tutarken başka bir numarada açılırsa (örneğin eski bir Docker kopyası 3001'i kullanıyorsa), uygulamanın her ekranında üstte sarı bir şerit çıkar: "seowatcher bu sefer 3002 numarasında çalışıyor çünkü 3001 başka bir program tarafından kullanılıyor (ör. eski bir Docker kopyası). Google bağlantısı 3001 için ayarlandı; o programı kapatıp seowatcher'ı yeniden başlatın." Şerit, görev çubuğundaki bildirimi kaçırmış olabilirsiniz diye vardır. Google ile giriş 3001 adresine döner ve uygulamayı 3002'de açtıysanız hata verir. Şeridin sağındaki kapat düğmesi onu bu sekme için gizler. Aynı cümle **Uygulamanın durumu** kartında da yazar. Çözmek için 3001'i tutan programı kapatın, sonra görev çubuğu menüsünden **Yeniden başlat** deyin. Uygulama 3001'e döner ve şerit kaybolur. Başka bir program kullanmıyorsanız bir sonraki açılışta zaten 3001'e döner.
+## Uygulamanın durumu
 
-**Projeler.** Her projenin Search Console ve Analytics bağlantısının durumu görünür. **Bağlantıları aç** sizi proje ayarlarına götürür.
+Kart bu kurulumun erişim ayarını, Google kimliğini, PageSpeed anahtarını, çalışma ortamını ve veritabanını kontrol eder. Her şeyin yeşil olması sitenizin hatasız ya da Google verisinin güncel olduğunu kanıtlamaz. Okunamayan bir ayar başarılı sayılmaz.
 
-**Sık sorunlar.** Altı açılır başlık var: sayfa açılmıyor ya da uygulama kapalı, adres numarası (port) dolu, ajanım bağlanamıyor (401), hız ölçümü yarım kalıyor (429), sorgu verisi yok ve bir ayarı değiştirdim, uygulama görmüyor. Her birinde ne yapacağınız ve ilgili ayarın bağlantısı yazar.
+Sürüm satırı kullandığınız sürümü ve yeni sürüm olup olmadığını, **Son kontrol** de sonucun ne zaman alındığını gösterir. **Özeti kopyala** durumu gizli değer içermeyen bir metin olarak kopyalar.
 
-**Google ve sistem sınırları.** **Sınırları göster** deyince Google'ın günlük sınırlarında şu an nerede olduğunuzu görürsünüz.
+## Adres numarası (port) uyarısı
 
-**Alt liste.** Kayıt dosyalarına ve sağlık adresine (`/api/health`) giden kısayollar var. Windows paketinde kayıtları görev çubuğu menüsündeki **Günlükleri aç** ile açarsınız. Docker'da **Komutu kopyala** ile verilen komutu kullanırsınız.
+Windows sürümü normalde 3001 numaralı adreste çalışır. Bu numarayı başka bir program (örneğin eski bir Docker kopyası) tutuyorsa uygulama başka bir numarada, örneğin 3002'de açılır. O zaman her ekranın üstünde sarı bir şerit çıkar ve aynı uyarı **Uygulamanın durumu** kartında da yazar.
 
-## Nasıl kullanılır
+Bu önemlidir, çünkü Google ile giriş 3001 adresine döner; uygulama 3002'deyken giriş hata verir. Çözmek için:
 
-1. Bir şey çalışmıyorsa önce bu ekranı açın ve karttaki uyarıyı okuyun.
-2. Uyarının yanındaki düğmeye basın, sizi doğru ayara götürür. Ayarı yapın, geri dönüp **Durumu yeniden kontrol et** deyin.
-3. Kurulum kontrolleri başarılı olduğu halde sorun sürüyorsa **Sık sorunlar** başlıklarına ve ilgili proje ekranına bakın.
-4. Yine çözülmezse **Tanılama paketi indir** deyin ve dosyayı GitHub'daki sorun kaydına ekleyin. Windows paketinde görev çubuğu menüsündeki **Sorunu bildir (GitHub)** aynı işi tek tıkla yapar.
+1. 3001'i kullanan programı kapatın.
+2. Tepsi menüsünden **Yeniden başlat** seçeneğine tıklayın.
+
+Uygulama 3001'e döner ve şerit kaybolur. Şeridin sağındaki kapat düğmesi onu yalnızca bu sekme için gizler.
+
+## Projeler
+
+Her projenin Search Console ve Analytics mülkünün **seçili** ya da **seçili değil** olduğu görünür. **Bağlantıları aç** projenin bağlantı ayarlarına gider.
+
+## Sık sorunlar
+
+Altı açılır başlık vardır. Her birinde yapılacak iş ve ilgili ayarın bağlantısı yazar:
+
+- **Sayfa açılmıyor ya da uygulama kapalı** (Docker'da **Sayfa açılmıyor ya da Docker kapalı**)
+- **Adres numarası (port) dolu**
+- **Ajanım bağlanamıyor (401)**
+- **Hız ölçümü yarım kalıyor (429)**
+- **Sorgu verisi yok, grafikler boş**
+- **Bir ayarı değiştirdim, uygulama görmüyor**
+
+## Google ve sistem sınırları
+
+**Sınırları göster**, Google'ın günlük sınırlarının ne kadarını kullandığınızı gösterir. Ayrıntılar [Ayarlar](/docs/ayarlar/) sayfasındadır.
+
+## Günlükler ve sağlık adresi
+
+Ekranın altında kayıt dosyalarına ve sağlık adresine (`/api/health`) giden kısayollar vardır. Windows'ta günlükleri tepsi menüsündeki **Günlükleri aç** açar. Docker'da **Komutu kopyala** ile verilen komutu terminalde çalıştırın.
+
+## Tanılama paketinde ne var
+
+Paket sürümü, kurulum kontrollerini, tablo sayılarını ve son 25 denetimin aşama ve hata özetlerini içerir. PageSpeed hataları adresler çıkarılarak özetlenir. Gizli anahtarlar ve parolalar eklenmez. Proje adları, alan adları ve Google mülk kimlikleri yer alabilir; dosyayı göndermeden önce inceleyin.
 
 ## Sık sorulanlar
 
-**"Google girişi" satırı neden sarı?** Henüz Google erişim anahtarı girilmemiştir. Google'a bağlanana kadar bu satır sarı kalır. Google'a bağlanma kılavuzunu izleyin.
+**Google kimliği satırı neden sarı?** Henüz bir Google kimliği kaydedilmemiştir. [Google'a bağlanma](/docs/google-baglantisi/) adımlarını izleyin.
 
-**"Giriş ve erişim" satırında "parolasız tek kullanıcı" yazıyor.** Bu normaldir. Uygulama yalnızca kendi bilgisayarınızdan açılır. Dışarıya açmak isterseniz önüne kendi şifreli girişinizi koymanız gerekir.
+**Erişim satırında "parolasız tek kullanıcı" yazıyor.** Bu normaldir; uygulama yalnızca kendi bilgisayarınızdan açılır. Dış ağa açmak isterseniz önüne kendi kimlik doğrulamanızı koyun.
 
-**Tanılama paketinde ne var?** Sürüm, kurulum kontrolleri, tablo sayıları, son 25 denetimin aşama ve hata özetleri bulunur. PageSpeed hataları URL'ler çıkarılarak özetlenir. Gizli anahtarlar ve parolalar eklenmez; proje adları, alan adları ve Google mülk kimlikleri yer alabilir. Göndermeden önce dosyaları inceleyin.
+**Kurulum tamam ama ekranlarda veri yok.** Yardım ekranı raporları doğrulamaz. Proje bağlantılarını, seçili tarih aralığını ve ekrandaki veri kapsamı uyarısını kontrol edin. Az trafik alan sitelerde Google bazı sorguları gizler: sayfa toplamında tıklama varken sorgu listesi boş ya da daha kısa olabilir. Bu tek başına bağlantı hatası değildir.
 
-## Sınırlar
+## Hangi ekrana gitmeli
 
-Bu ekran yalnızca kurulumun kendisini kontrol eder. Sitenizdeki bir sorunu bulmak için Site denetimi, Google tarafındaki bir sorunu görmek için Dizin durumu ekranına bakın.
-
-## Hangi ekrana gitmeli?
-
-[Panel](/docs/panel/) seçili projenin veri ve kurulum özetini gösterir. [Fırsatlar](/docs/firsatlar/) Search Console verisinden yapılacak işleri seçmenize yardımcı olur. [Sıralama takibi](/docs/siralama-takibi/) kaydedilen kelimelerin Google verisindeki ortalama konumunu izler; canlı arama sonucu değildir. Veri eksikse önce proje bağlantılarını, tarih aralığını ve ekrandaki veri kapsamı uyarısını kontrol edin. Yardım ekranındaki kurulum sonucu bu raporları doğrulamaz.
-
-Az trafik alan sitelerde Google bazı sorguları gizler. Sayfa toplamlarında tıklama varken sorgu listesi boş veya daha küçük olabilir; bu tek başına bağlantı hatası değildir.
+- Sitenizdeki teknik sorunlar için [Site denetimi](/docs/site-denetimi/).
+- Google'ın sayfalarınızı dizine alıp almadığı için [Dizin durumu](/docs/dizin-durumu/).
+- Projenin veri ve kurulum özeti için [Panel](/docs/panel/).
+- Yapılacak işleri seçmek için [Fırsatlar](/docs/firsatlar/).
+- Search Console sorgularının sıra geçmişi için [Sıralama takibi](/docs/siralama-takibi/).
 
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/quotas/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->

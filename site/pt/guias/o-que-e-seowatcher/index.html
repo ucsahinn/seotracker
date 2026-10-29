@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1508,7 +1508,7 @@
               >
             </li>
             <li>
-              <a href="/pt/guias/analise/">Entender os dados de análise</a>
+              <a href="/pt/guias/analise/">Compreender os dados do Analytics</a>
             </li>
             <li>
               <a href="/pt/guias/auditoria-do-site/">Auditoria do site</a>
@@ -1519,7 +1519,7 @@
             <li><a href="/pt/guias/relatorios/">Relatórios e modelos</a></li>
             <li>
               <a href="/pt/guias/informacoes-do-projeto/"
-                >Informações do projeto</a
+                >Contexto do projeto</a
               >
             </li>
             <li><a href="/pt/guias/configuracoes/">Configurações</a></li>
@@ -1531,7 +1531,7 @@
               <a href="/pt/guias/regras-de-auditoria/">Regras de auditoria</a>
             </li>
             <li>
-              <a href="/pt/guias/configurar-agente/">Configurar o agente</a>
+              <a href="/pt/guias/configurar-agente/">Configuração do agente</a>
             </li>
             <li>
               <a href="/pt/guias/solucao-de-problemas/">Solução de problemas</a>
@@ -1547,12 +1547,10 @@
           Search Console, GA4, auditoria do site e PageSpeed no seu computador.
         </p>
         <p>
-          O seowatcher é um app de SEO gratuito, de código aberto e com licença
-          MIT, que mostra Google Search Console, Google Analytics 4, o seu
-          próprio rastreador de sites e PageSpeed Insights em um só painel. Ele
-          roda no seu computador, não na nuvem: um único instalador para Windows
-          10 e 11, e Docker no Mac e no Linux. No GitHub ele se chama
-          seotracker; é o mesmo app.
+          Todos os dados aparecem em um só painel e ficam no seu computador, não
+          na nuvem. No Windows 10 e 11 basta um único instalador; no Mac e no
+          Linux, o app roda no Docker. No GitHub, o projeto se chama seotracker:
+          é o mesmo app.
         </p>
         <h2 id="em-resumo">Em resumo</h2>
         <div class="tw">
@@ -1593,8 +1591,8 @@
               <tr>
                 <td>Conexão com IA</td>
                 <td>
-                  Assistentes como Claude Code, Codex, Cursor e Gemini CLI via
-                  MCP; 6 tarefas prontas
+                  Agentes como Claude Code, Codex, Cursor e Gemini CLI via MCP;
+                  6 skills prontas
                 </td>
               </tr>
               <tr>
@@ -1614,7 +1612,7 @@
               </tr>
               <tr>
                 <td>Versão</td>
-                <td>0.8.6 Alpha, 29 de outubro de 2026</td>
+                <td>0.8.7 Alpha, 29 de outubro de 2026</td>
               </tr>
               <tr>
                 <td>Tamanho</td>
@@ -1632,8 +1630,9 @@
           <li>
             <strong>Desempenho da pesquisa:</strong> cliques, impressões, taxa
             de cliques e posição média do Search Console, por consulta, página,
-            país e dispositivo. O Google fornece 16 meses de histórico; o app
-            também monta o seu próprio arquivo.
+            país e dispositivo. O Google fornece 16 meses de histórico; enquanto
+            a tela Desempenho da pesquisa ou Acompanhamento de posições estiver
+            aberta, o app também o copia para um arquivo próprio.
           </li>
           <li>
             <strong>Oportunidades:</strong> ordena as páginas que o Google já
@@ -1653,7 +1652,7 @@
             propriedade por dia.
           </li>
           <li>
-            <strong>Análise:</strong> mostra visitas, engajamento e eventos
+            <strong>Analytics:</strong> mostra visitas, engajamento e eventos
             principais do GA4 ao lado dos dados de pesquisa.
           </li>
           <li>
@@ -1661,19 +1660,18 @@
             para abrir no celular, imprimir ou enviar por e-mail.
           </li>
           <li>
-            <strong>Assistente de IA:</strong> via MCP, o seu assistente lê os
-            números, executa a auditoria e escreve o relatório.
+            <strong>Agente de IA:</strong> via MCP, um agente lê os números,
+            executa a auditoria e escreve o relatório.
           </li>
         </ul>
         <h2 id="o-que-o-seowatcher-nao-faz">O que o seowatcher não faz?</h2>
         <ul>
           <li>
-            Não estima volume de pesquisa. As impressões vêm do Google e não são
-            volume de pesquisa.
+            Não estima volume de pesquisa: as impressões exibidas vêm do Google.
           </li>
           <li>Não conta os sites que apontam para você (backlinks).</li>
           <li>
-            Não acompanha o ranking dos concorrentes; lê apenas os sites que
+            Não acompanha a posição dos concorrentes; lê apenas os sites que
             você adiciona como projetos.
           </li>
           <li>
@@ -1686,27 +1684,26 @@
           Qual a diferença para o Search Console?
         </h2>
         <p>
-          O Search Console é a fonte dos dados; o seowatcher os lê e monta uma
-          lista de trabalho em cima deles. O Search Console mostra números; o
-          seowatcher mostra em um só lugar qual página olhar primeiro, onde o
-          site falha nas 202 regras e o que o Analytics mediu. Como guarda um
-          arquivo no seu computador, com o tempo você também pode olhar para
-          além da janela de 16 meses do Google. Os números vêm da mesma fonte,
-          mas o Google os entrega com cerca de três dias de atraso e oculta
-          consultas muito raras; por isso o total das páginas e o total do site
-          podem ser diferentes.
+          O Search Console fornece os números; o seowatcher os lê e monta com
+          eles uma lista de trabalho, mostrando em um só lugar qual página olhar
+          primeiro, onde o site falha nas 202 regras e o que o Analytics mediu.
+          Como guarda um arquivo no seu computador, com o tempo você também pode
+          olhar para além da janela de 16 meses do Google. Os números vêm da
+          mesma fonte, mas o Google os entrega com cerca de três dias de atraso
+          e oculta consultas muito raras; por isso o total das páginas e o total
+          do site podem ser diferentes.
         </p>
         <h2 id="qual-a-diferenca-para-as-suites-de-seo-pagas">
           Qual a diferença para as suítes de SEO pagas?
         </h2>
         <p>
           As suítes de SEO pagas vendem estimativas de volume de pesquisa,
-          backlinks e ranking de concorrentes a partir de rastreamentos próprios
-          e dados comprados. O seowatcher não faz nada disso; usa apenas os
-          dados que o Google já entrega a você como dono do site, mais o seu
-          próprio rastreamento. Por isso é gratuito, e por isso não foi feito
-          para pesquisa de mercado. Ele serve se você quer acompanhar, corrigir
-          e relatar a presença do seu próprio site no Google.
+          backlinks e posições de concorrentes a partir de rastreamentos
+          próprios e dados comprados. O seowatcher não faz nada disso; usa
+          apenas os dados que o Google já entrega a você como dono do site, mais
+          o seu próprio rastreamento. Por isso é gratuito, e por isso não foi
+          feito para pesquisa de mercado. Ele serve se você quer acompanhar,
+          corrigir e relatar a presença do seu próprio site no Google.
         </p>
         <h2 id="para-quem-e">Para quem é?</h2>
         <p>
@@ -1732,8 +1729,8 @@
         <p>
           Com o Google (Search Console, Analytics, PageSpeed), com o site que
           você audita e com o GitHub para verificar versões. Se você conectar um
-          assistente de IA, os dados que ele lê podem ir para o fornecedor desse
-          assistente; essa conexão é opcional.
+          agente de IA, os dados que ele lê podem ir para o fornecedor desse
+          agente; essa conexão é opcional.
         </p>
         <h3 id="funciona-no-mac-ou-no-linux">Funciona no Mac ou no Linux?</h3>
         <p>
@@ -1751,7 +1748,7 @@
         <h3 id="preciso-expor-o-app-na-internet">
           Preciso expor o app na internet?
         </h3>
-        <p>Não. O app só abre no seu próprio computador.</p>
+        <p>Não. O app só abre no seu computador.</p>
         <h2 id="por-onde-comecar">Por onde começar?</h2>
         <ol>
           <li>
@@ -1760,7 +1757,7 @@
           </li>
           <li><a href="/pt/guias/conexao-google/">Conectar ao Google</a>.</li>
           <li>
-            Se quiser, a
+            Opcional: a
             <a href="/pt/guias/chave-pagespeed/">chave do PageSpeed</a> e a
             <a href="/pt/guias/configurar-agente/">configuração do agente</a>.
           </li>
@@ -1775,12 +1772,12 @@
           >
         </nav>
         <p class="meta">
-          Última atualização: 29 de outubro de 2026. Viu algum erro?
+          Última atualização: 29 de outubro de 2026. Encontrou um erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >Relate no GitHub</a
+            >Informe no GitHub</a
           >.
         </p>
       </article>

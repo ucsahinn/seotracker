@@ -1,37 +1,92 @@
 ---
-title: Comprendre les statistiques
+title: Comprendre les données Analytics
 description: Analytics présente les visites, l’engagement et les événements clés mesurés dans votre propriété GA4.
 screen: Analytics
 route: /p/<proje>/analytics
-updated: 2026-10-27
+updated: 2026-10-28
 ---
 
-Les liens depuis Opportunités ouvrent le même groupe d’adresses normalisées et les dates sources via `pageGroup`. Le serveur lit toutes les lignes de pages de destination organiques de Google, page par page, avant de les filtrer pour la pagination de 50/100/200 lignes à l’écran. Les paramètres de requête et barres obliques finales partagent un groupe ; les hôtes différents et chemins sensibles à la casse restent séparés. Une limite de source ou de qualité empêche de confirmer le groupe complet et est signalée. Un résultat vide ne prouve pas l’absence de trafic. La synthèse conserve la portée de la propriété. Le filtre peut être retiré ; l’URL, le retour arrière et les exports préservent sa portée.
+Le sélecteur de rapport, en haut de l’écran, donne accès à huit vues :
 
-Analytics présente les visites, l’engagement et les événements clés mesurés dans votre propriété GA4. Le sélecteur propose les pages de destination, les pages, l’acquisition, les événements clés, l’e-commerce, la recherche interne, l’audience et les paramètres de mesure.
+| Rapport                   | Contenu                                                                 |
+| ------------------------- | ----------------------------------------------------------------------- |
+| **Pages de destination**  | Pages où commencent les visites : sessions, engagement, conversions.    |
+| **Pages et écrans**       | Vues et temps passé sur chaque page.                                    |
+| **Acquisition du trafic** | Provenance des visiteurs.                                               |
+| **Événements clés**       | Événements comptés comme conversions et nombre de personnes concernées. |
+| **E-commerce**            | Produits et revenus, si la propriété mesure l’e-commerce.               |
+| **Recherche sur le site** | Ce que les visiteurs recherchent sur votre site.                        |
+| **Audience**              | Appareils, pays, nouveaux visiteurs et visiteurs connus.                |
+| **État des mesures**      | Lacunes dans les paramètres d’administration GA4.                       |
 
-## Lire le périmètre
+## Périmètre : quel trafic, quel site
 
-Si les mesures sont inconnues, le trafic est indiqué comme impossible à déterminer ; les valeurs connues sont conservées. Les restrictions signalées apparaissent près des mesures. Si la cause est inconnue, cela est dit clairement. Vous pouvez réessayer ou vérifier les paramètres ; changer de canal n’est pas proposé pour réparer une erreur de lecture. Les notes générales sont repliées dans **Comprendre les données Analytics** ; le périmètre, la période et les avertissements restent visibles.
+Le canal par défaut est **Recherche organique**, qui inclut les moteurs de recherche autres que Google. **Tout le trafic** modifie à la fois la synthèse du haut et le rapport. Le rapport **Recherche sur le site** n’a pas de sélecteur de canal : il montre toujours les événements de résultats de recherche de tout le trafic.
 
-La recherche naturelle inclut les moteurs autres que Google. Tout le trafic modifie ensemble la synthèse et le rapport. La recherche interne couvre toujours les événements de résultats mesurés sur tous les canaux, sans sélecteur de canal. Tous les hôtes et flux de la propriété sont inclus. D’autres sites ou applications peuvent contribuer aux totaux.
+Les chiffres couvrent toute la propriété GA4 : tous les noms d’hôte et tous les flux de données. Si une application mobile ou un autre site envoie des données à la même propriété, les totaux ne concernent pas seulement le site du projet.
 
-Les périodes de 7, 28 et 90 jours se terminent hier dans le fuseau de la propriété. Hier est un jour calendaire écoulé, sans garantie de données définitives. Les jours récents peuvent être retraités. Les dates courantes, la période précédente de même durée et le fuseau sont affichés. Les liens acceptent startDate/endDate ensemble ; une fin future est ramenée à hier avec un avertissement. GA4 et Search Console utilisent des calendriers et mesures différents. Des dates identiques ne garantissent pas le même intervalle temporel.
+## Période
 
-## Examiner résultats et lignes
+**7 derniers jours**, **28 derniers jours** et **3 derniers mois** se terminent hier, dans le fuseau horaire de la propriété. Hier est un jour calendaire terminé, mais Google peut encore retraiter ses données. L’écran indique les dates réelles de début et de fin, la période précédente de même durée utilisée pour la comparaison et le fuseau horaire.
 
-La synthèse suit le périmètre choisi : sessions, taux d’engagement, événements clés et revenu d’achat. Les événements clés ne sont pas des clients uniques. Un revenu nul ne prouve pas l’absence de boutique. Une devise inconnue est signalée à côté du montant. La durée d’engagement est totale, pas une moyenne par utilisateur. Les valeurs quotidiennes distinguent les jours inconnus de zéro. Les restrictions de qualité empêchent les comparaisons ou conseils affirmatifs.
+Un lien peut transmettre `startDate` et `endDate`, toujours ensemble. Une date de fin égale ou postérieure à aujourd’hui est ramenée à hier, et l’écran le signale.
 
-Choisissez 50, 100 ou 200 lignes par page et utilisez Précédent/Suivant. Filtres, tri, synthèses et exports couvrent uniquement la page affichée. Choisir une barre filtre le tableau sans changer la base de la synthèse. Un utilisateur peut appartenir à plusieurs catégories : ne les additionnez pas pour obtenir des utilisateurs uniques. Les chemins identiques d’hôtes distincts et les produits homonymes d’identifiants distincts restent séparés. Aucun graphique de parts de revenu n’est tracé pour des valeurs négatives ou inconnues.
+GA4 et Search Console n’utilisent ni le même calendrier ni les mêmes mesures : des dates identiques ne garantissent pas le même intervalle de temps.
 
-Le filtre de faible conversion est une piste d’analyse sur au moins quatre pages admissibles affichées avec au moins 30 sessions chacune. Il n’estime pas des ventes perdues. Aucun événement observé ne prouve une configuration manquante. Une recherche interne fréquente ne prouve pas un manque de contenu.
+## Lire la synthèse
 
-## Partage, mesure et quota
+La synthèse du haut donne, pour le périmètre choisi, les sessions, le taux d’engagement, les événements clés et le revenu des achats.
 
-Rapport, canal, dates, ventilation, taille et position de page restent dans l’URL. Le filtre exact host/path couvre seulement les lignes affichées, sans fusion de variantes d’URL. CSV et Sheets exportent les lignes filtrées avec des nombres bruts. ga4_scope_json conserve source, propriété, dates, fuseau, devise, qualité, page et filtres.
+- Un nombre d’événements clés n’est pas un nombre de clients uniques.
+- Zéro événement clé peut aussi signifier qu’aucun objectif n’est défini.
+- Un revenu nul ne prouve pas que le site n’est pas une boutique.
+- Si la devise est inconnue, « (devise inconnue) » suit le montant.
+- La durée d’engagement est un total, pas une moyenne par utilisateur.
 
-L’état de mesure lit uniquement les paramètres Admin. L’absence de lacune ne prouve pas que la balise envoie des données ; suivez les vérifications de collecte proposées. Les inventaires partiels sont précédés d’au moins. Si la mesure améliorée est désactivée, aucune sous-fonction n’est effectivement active. Aucun paramètre de compte n’est modifié.
+La section dépliable **Valeurs quotidiennes** distingue les jours inconnus des jours à zéro. En cas d’échantillonnage, de seuil de confidentialité ou de restriction d’accès, les comparaisons de périodes et les recommandations affirmatives sont masquées.
 
-Le quota replié présente un instantané local de la dernière réponse de rapport, pas l’usage de la période de trafic. Le plafond standard est une hypothèse. Actualiser redemande les rapports visibles et peut consommer des jetons.
+Avec peu de sessions, une seule visite fait nettement varier les taux. Une variation en pourcentage ne prouve à elle seule ni réussite ni perte.
 
-Lorsque Google tronque les données de la période demandée, la synthèse Analytics et les détails du rapport indiquent la raison et les dates fournies par Google. Le rapport est considéré comme limité ; une couverture incomplète n’est pas présentée comme une comparaison fiable des périodes.
+## Tableau, filtres et pagination
+
+Le tableau affiche 50, 100 ou 200 lignes par page ; **Page précédente** et **Page suivante** donnent accès aux autres. Filtres, tri, synthèses et exports ne portent que sur les lignes de la page affichée. Cliquer sur une barre restreint le tableau à ces lignes, sans changer la synthèse du haut.
+
+- Un utilisateur peut figurer dans plusieurs catégories : n’additionnez pas les lignes pour obtenir un nombre d’utilisateurs uniques.
+- Un même chemin sur deux noms d’hôte différents donne deux lignes. Deux produits homonymes restent aussi distincts.
+- Aucun graphique de répartition n’est tracé pour un revenu négatif ou inconnu.
+
+Le filtre des **pages à fort trafic et faible conversion** est une piste d’analyse, pas une estimation de ventes perdues. Il se fonde sur la médiane d’au moins quatre lignes comptant chacune 30 sessions ou plus. De même, un terme souvent recherché sur le site ne prouve pas à lui seul qu’un contenu manque.
+
+## Groupe d’adresses venu d’Opportunités
+
+Depuis l’écran Opportunités, un lien ouvre Analytics sur un **Groupe d’adresses Analytics**, avec les dates de la source. Ce filtre s’exécute sur le serveur : il lit chez Google toutes les lignes de pages de destination organiques, isole le groupe, puis pagine le résultat.
+
+Les variantes d’une adresse qui ne diffèrent que par les paramètres de requête ou la barre oblique finale sont regroupées. Les noms d’hôte différents et les chemins dont la casse diffère restent séparés. Si une limite de source ou de qualité empêche de vérifier tout le groupe, l’écran le signale ; un résultat vide ne prouve pas que le groupe n’a reçu aucun trafic. Pendant ce temps, la synthèse du haut porte toujours sur toute la propriété.
+
+**Retirer le filtre de groupe d’adresses** supprime le filtre. La barre d’adresse, le bouton Retour et les exports conservent le périmètre du groupe.
+
+## Résultats vides ou incertains
+
+Si le rapport organique est vide, deux sorties sont proposées : **Afficher tout le trafic** élargit le périmètre, **État des mesures** montre les paramètres. Connecter Analytics récemment ne modifie pas les données passées.
+
+Si une mesure n’a pas pu être lue, l’écran n’en conclut pas que la période est vide : il indique « Le trafic de cette période n’a pas pu être déterminé » et garde les chiffres lisibles. Si Google a donné la raison d’une restriction, elle figure à côté de la mesure concernée ; sinon, l’écran le précise. Il propose alors **Réessayer** ou un contrôle des mesures, jamais un changement de canal.
+
+Si Google a tronqué les données de la période, la raison et les dates fournies par Google figurent dans la synthèse et dans les détails du rapport. Le rapport est alors considéré comme limité et n’est pas présenté comme une comparaison fiable des périodes.
+
+Les notes de périmètre et de traitement des données sont regroupées dans **Détails des données** ; les explications générales dans **Comprendre les données Analytics**.
+
+## État des mesures
+
+**État des mesures** lit uniquement les paramètres d’administration GA4 et ne modifie rien dans le compte. Le résultat « Aucune lacune trouvée dans les paramètres contrôlés » ne prouve pas que la balise du site envoie réellement des données ; suivez pour cela le lien **Vérifier la collecte de données de la balise**.
+
+Si l’inventaire n’a été lu qu’en partie, les nombres sont précédés de **Min.** Si l’interrupteur principal **Mesures améliorées** est désactivé, le nombre d’événements automatiques actifs s’affiche à zéro.
+
+## Barre d’adresse et exports
+
+Le rapport, le canal, les dates, la ventilation, le nombre de lignes et le numéro de page sont enregistrés dans la barre d’adresse : partager le lien ouvre la même vue. Les filtres `host` et `path` d’un lien sont exacts, ne s’appliquent qu’aux lignes affichées et ne fusionnent pas les variantes d’adresse.
+
+**CSV** et **Exporter vers Google Sheets** exportent les lignes filtrées à l’écran, avec les nombres bruts. La colonne `ga4_scope_json` décrit la source, la propriété, les dates, le fuseau horaire, la devise, la qualité des données, la page et les filtres.
+
+## Quota
+
+Les valeurs de la section dépliable **Quotas et limites** sont un instantané de la dernière réponse de rapport, pas un total de la période choisie. Le plafond standard du compte est une hypothèse. **Actualiser** redemande à Google les rapports visibles, et chaque requête consomme du quota.

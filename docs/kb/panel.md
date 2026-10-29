@@ -6,42 +6,86 @@ route: /p/<proje>
 updated: 2026-10-28
 ---
 
-Panel, sitenin arama trafiğini, önce bakılacak ölçülmüş işleri ve kaynakların sınırlarını bir araya getirir. Üstteki Yenile düğmesi Panel’in etkin kaynaklarını, kurulum durumunu ve Google yapılandırmasını yeniden okur. Başarısız bir okuma varsa başarı duyurusu yerine kısmi yenileme uyarısı çıkar. Veri alınma zamanı, kaynağın ölçtüğü son gün değildir.
+Panel bir projeyi açtığınızda ilk gördüğünüz ekrandır. Her kart kendi kaynağını ve tarih aralığını yazar; ayrıntı için ilgili ekrana bağlanır.
 
-## Arama özeti ve dört sayı
+## Yenile ve veri zamanı
 
-Search Console özeti varsayılan 28 günlük Web aramalarını, tüm cihaz ve ülkeler için gösterir. Kesinleşmemiş son günler toplamlara katılmaz. Görünen tarih aralığı ve Pasifik saat dilimi esas alınır. Kaynak satırlarında önceki gerçek tarihler, son veri günü ve dışarıda bırakılan gün sayısı bulunur. Google tamamlanma tarihi bildirmemişse son günlerin varsayımla dışlandığı açıkça yazılır. Bazı sorgular gizlenir; satır sınırına ulaşan liste ayrıca belirtilir.
+**Yenile** düğmesi Panel'in bağlı kaynaklarını, kurulum durumunu ve Google yapılandırmasını yeniden okur. Okumalardan biri başarısız olursa başarı bildirimi yerine kısmi yenileme uyarısı çıkar ve önbellekteki veriler gösterilir.
 
-Tıklama, Google aramasından sitenize gelişleri; gösterim, sonuçlarda görünmeleri sayar. Tıklama oranı tıklamaların gösterimlere oranıdır. Ortalama sıra gösterim ağırlıklıdır, küçük sayı daha iyidir. Dört kart da aynı kapsamlı Arama performansı raporuna gider. Önceki dönem sıfırken artış mutlak sayı olarak gösterilir; sıfıra düşüş geçerli bir eksi yüzde olabilir. Önceki dönem yoksa karşılaştırma üretilmez. Günlük eğilimde soluk çizgi önceki dönemi gösterir.
+**Veri alındı** zamanı, verinin uygulamaya geldiği andır. Kaynağın ölçtüğü son gün bu değildir; o gün kartın kendi tarih aralığında yazar.
 
-## Önce hangi iş?
+## Arama özeti
 
-En fazla üç öneri, bağlantı sorunu, denetim bulguları, gerçek arama görevleri ve eski tarama gibi kanıtlardan oluşur. Bağlı olmak tek başına fırsat önerisi üretmez. Denetim okuma hatası ilk kullanım sayılmaz. Ölçülen kapsamda iş bulunmaması bütün kaynakların sorunsuz olduğu anlamına gelmez.
+Özet, Search Console'un son 28 gününü gösterir: Web araması, tüm cihazlar, tüm ülkeler. Tarihler Google'ın kullandığı Pasifik saatine göredir.
 
-Kurulum etiketi Proje bilgisi ile aynı altı sinyali kullanır. Eksik ve okunamayan sinyaller ayrıdır. Kendi sitedeki tamamlanmış denetim, tam yedinci günde eskimiş sayılır. Kurulum tercihleri alttaki kapalı, isteğe bağlı turdur; ikinci bir puan değildir. Aktif adım kalmasa da sonraya bırakılan adımlar geri alınabilir.
+Google'ın henüz kesinleştirmediği son günler toplamlara katılmaz. **Search Console veri kapsamı** satırı hangi günlerin **Kesin veri**, hangilerinin **Geçici veri** olduğunu ve kaç günün dışarıda kaldığını gösterir. Google tamamlanma tarihi bildirmezse **Google tarih bildirmedi; son günler dışarıda.** yazar.
 
-## Sorgu tahminleri
+Dört kart şunları sayar:
 
-Yeterli gösterimli, ortalama sırası yuvarlanarak 4–20 aralığına giren sorgular bir üst sıra bandı için değerlendirilir. Bu bir üst sınır modelidir, gerçekleşmiş trafik değildir. Hesaplanabilen ve hesaplanamayan sorgular tüm uygun küme üzerinden sayılır, yalnızca görünen dört satırdan değil. Hiç tahmin hesaplanamadığında sıfır toplam yazılmaz. Marka ayrımının onaylanmış, önerilmiş veya yapılmamış olduğu belirtilir. Bu sorgu tahmini, sayfa bazlı ve farklı dönem birimli Fırsatlar toplamıyla toplanmaz.
+- **Tıklama**: Google aramasından sitenize gelen tıklamalar.
+- **Gösterim**: Sitenizin Google sonuçlarında gösterilme sayısı.
+- **Tıklama oranı**: Gösterimlerin yüzde kaçı tıklamaya döndü.
+- **Ortalama sıra**: Gösterim ağırlıklı ortalama. Küçük sayı daha iyidir.
 
-## Kendi sitenizin denetimi
+Her kart aynı kapsamla **Arama performansı** ekranını açar. Değişim, bir önceki eşit uzunluktaki döneme göre hesaplanır:
 
-Panel yalnızca proje alan adıyla eşleşen denetimleri seçer. Daha yeni başka-site taraması kullanılmaz. Son tamamlanan ölçüm, yeni çalışan veya başarısız denemeden ayrı gösterilir. Alan adı yoksa proje ayarına yönlendirme çıkar. Kart denetimin başlangıç adresini, tarihini, ölçülen kontrollerini ve varsa tarama sınırını belirtir.
+- Önceki dönem sıfırsa artış yüzde yerine sayı olarak yazılır.
+- Önceki dönem yoksa **Karşılaştırma yok** görünür.
 
-Etkilenen benzersiz sayfa sayısı, kontrol türü sayısı ve önem düzeyindeki sayfa–kontrol çiftleri farklı birimlerdir. Bir sayfa üç kontrolden kalabilir. Bilgi notları kritik ve uyarı çubuğundan ayrı durur. Sağlık cümlesi yalnızca ölçülen kapsamı anlatır; eksik ölçüm veya sayfa sınırı tüm site için sağlık iddiası üretmez. Karşılaştırma yalnızca başlangıç kapsamı, ayarlar, taranan URL kümesi ve ölçümler uyumluysa yapılır. Yalnızca iki taramada da ölçülen kontrollerdeki değişimler gösterilir; daha dar veya okunamayan tarama düzeldi sayılmaz. Kapsam bilinmiyorsa nedeni yazılır. Sayfa satırları aynı denetimin sorunlarını seçilen URL’ye odaklayarak açar.
+Google çok az aranan sorguları gizlilik nedeniyle listelemez. Liste satır sınırına ulaştığında bu da ayrıca belirtilir.
 
-## Analytics sonuçları
+**Tıklama eğilimi** günlük tıklamaları çizer. Kesikli çizgi önceki dönemdir.
 
-Organik oturum, aktif kullanıcı, etkileşim oranı ve anahtar olaylar Google Analytics’ten gelir. Gerçek tarihler ve mülk saat dilimi gösterilir. Oturum ile Google tıklaması farklı ölçümlerdir; Analytics başka arama motorlarını da kapsar. Kısıtlı veya bilinmeyen bir ölçüm sıfır trafik diye yorumlanmaz; okunabilen diğer ölçümler görünür kalır. Gizlilik eşiği, örnekleme ve erişim kısıtları açıklanır, güvenilir olmayan karşılaştırmalar gizlenir. Eksik günlük değerler bilinmeyen kalır.
+## Sıradaki adımlar
 
-Pozitif ticaret kanıtı iki dönemden birinde varsa gelir ve sipariş görünür; sessiz bir dönemin ölçülen sıfırı korunur. Kanıt yoksa satış ölçümünün doğrulanmadığı belirtilir. Para birimi bilinmiyorsa gelir birimsiz para gibi sunulmaz.
+Bu kart ölçülmüş kanıta dayanan en fazla üç iş önerir. Kanıt şunlardan gelir: bağlantı sorunu, denetim bulguları, Search Console'daki arama görevleri ve eskimiş denetim. Bağlantının kurulu olması tek başına öneri üretmez. **Ölçülen kapsamda öncelikli iş bulunmadı.** yazısı yalnızca ölçülen kaynaklar için geçerlidir; ölçülmeyen bir sorun olmadığını göstermez.
 
-## Sınırlar
+Kartın başlığındaki sayaç (örneğin **Kurulum 4 / 6**), Proje bilgisi ekranıyla aynı altı adımı sayar. Eksik ve okunamayan adımlar ayrı gösterilir. Bir denetim, başladığı andan tam yedi gün sonra eskimiş sayılır ve **Denetimi tazeleyin** önerisi çıkar.
 
-Panel arama hacmi, backlink veya rakip sırası içermez. Ekrandaki sonuçlar ilgili kaynağın tarihine ve kapsamına bağlıdır. Gerçek Google hesabıyla doğrulama, aynı dönem ve filtrelerde yapılmalıdır.
+Alttaki **Kurulum tercihleri** kapalı gelen, isteğe bağlı bir listedir; ikinci bir puan değildir. **Şimdilik geç** ile ertelediğiniz adımları sonradan geri alabilirsiniz.
+
+## Bir üst sıra bandına çıkabilecek sorgular
+
+Yeterli gösterimi olan ve ortalama sırası yuvarlanınca 4 ile 20 arasında kalan sorgular burada değerlendirilir. Kart en iyi dört sorguyu gösterir; sayım ise uygun sorguların tamamı üzerinden yapılır.
+
+Tahmin, sorgu bir üst sıra bandına çıkarsa gelebilecek ek tıklamaların üst sınırıdır. Gerçekleşmiş trafik değildir. Hiçbir sorgu için tahmin hesaplanamazsa sıfır yazılmaz. Kart, marka sorgularının ayrılıp ayrılmadığını da belirtir.
+
+Bu tahmini Fırsatlar ekranının toplamıyla toplamayın. Fırsatlar sayfa bazında ve farklı bir dönemle hesaplar.
+
+## Site denetimi kartı
+
+Panel yalnızca proje alan adıyla eşleşen denetimleri kullanır; başka bir siteyi tarayan daha yeni bir denetim yok sayılır. Projede alan adı yoksa kart sizi proje ayarlarına yönlendirir.
+
+Kart son tamamlanan denetimin başlangıç adresini, tarihini, ölçülen kontrollerini ve varsa sayfa sınırını yazar. Sürmekte olan ya da başarısız olan bir deneme, son tamamlanan sonuçtan ayrı gösterilir.
+
+Kartta üç farklı sayı vardır; bunları birbirine eklemeyin:
+
+- etkilenen sayfa sayısı,
+- sorun çıkan kontrol türü sayısı,
+- önem düzeyine göre sayfa ve kontrol çiftleri. Bir sayfa üç kontrolden kalırsa üç çift sayılır.
+
+Bilgi notları kritik ve uyarı çubuğundan ayrı durur. Sağlık cümlesi yalnızca taranan kapsamı anlatır. Sayfa sınırına takılan ya da eksik ölçülen bir tarama tüm site için sonuç vermez.
+
+**Son denetimde yeni çıkanlar** ve **Düzelenler**, iki denetim karşılaştırılabildiğinde görünür: aynı başlangıç adresi, aynı ayarlar, uyumlu sayfa kümesi. Yalnızca iki denetimde de ölçülen kontroller karşılaştırılır. Daha dar ya da okunamayan bir tarama "düzeldi" sayılmaz. Karşılaştırma yapılamazsa nedeni yazılır. Bir sayfa satırına tıklayınca aynı denetimin sorunları o sayfaya odaklanarak açılır.
+
+## Organik trafik
+
+Bu kart Google Analytics'ten gelir: organik oturum, aktif kullanıcı, etkileşim oranı ve anahtar olay. Gerçek tarihler ve mülkün saat dilimi kartta yazar.
+
+Oturum ile Search Console tıklaması aynı şey değildir. Analytics'teki organik trafik başka arama motorlarını da kapsar.
+
+Bir ölçüm kısıtlı ya da bilinmiyorsa sıfır trafik olarak yorumlanmaz; okunabilen diğer ölçümler görünür kalır. Örnekleme, gizlilik eşiği ve erişim kısıtları kartta açıklanır. Bu durumlarda güvenilmeyen karşılaştırmalar gizlenir.
+
+**Organik gelir** ve **Sipariş**, iki dönemden birinde gerçek satış görüldüyse gösterilir. Satış hiç görülmediyse satış ölçümünün doğrulanmadığı yazılır. Para birimi bilinmiyorsa tutar para birimi olmadan sunulmaz. Oturum sayısı bilinmiyorsa Analytics ekranındaki kaynak uyarılarına, bağlantı erişimine ve sitedeki Analytics etiketine bakın.
 
 ## Az veriyle yorum
 
-Karşılaştırma dönemindeki tıklama sayısı analiz eşiğinin altındaysa özet yüzdeden önce gerçek tıklama ve gösterim sayılarını verir. Az veride yüzdeler ve ortalamalar tek başına büyüme veya kayıp kanıtı değildir. Boş fırsat listesi, hiçbir sorgunun 4–20. sırada olmadığını söylemez: döneme göre ölçeklenen gösterim eşiği ve marka sorgularının dışlanması da geçerlidir.
+Karşılaştırma dönemindeki tıklama sayısı eşiğin altındaysa özet, yüzdeden önce gerçek tıklama ve gösterim sayılarını verir. Az veride yüzde ve ortalamalar tek başına büyüme ya da kayıp kanıtı değildir.
 
-Denetim kimliği bağlantıda korunur; kartta başlangıç adresi gösterilir. Oturum sayısı bilinmiyorsa Analytics raporunun kaynak uyarıları, bağlantı erişimi ve site etiketi kontrol edilir. Satış ölçümü notu Organik gelir açıklamasının içindedir.
+Sorgu listesinin boş olması, 4 ile 20. sıra arasında hiç sorgu olmadığı anlamına gelmez. Gösterim eşiği döneme göre ölçeklenir ve marka sorguları dışarıda bırakılır.
+
+## Panel'de olmayanlar
+
+Panel arama hacmi, backlink ya da rakip sırası göstermez; bu veriler seowatcher'da yoktur. Bir sayıyı Google'ın kendi ekranıyla karşılaştıracaksanız aynı dönemi ve aynı filtreleri seçin.
+
+<!-- Sources: src/client/features/dashboard/; src/shared/projectSetup.ts; src/shared/panelAudit.ts -->

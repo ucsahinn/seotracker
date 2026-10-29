@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1508,7 +1508,7 @@
               >
             </li>
             <li>
-              <a href="/pt/guias/analise/">Entender os dados de análise</a>
+              <a href="/pt/guias/analise/">Compreender os dados do Analytics</a>
             </li>
             <li>
               <a href="/pt/guias/auditoria-do-site/">Auditoria do site</a>
@@ -1519,7 +1519,7 @@
             <li><a href="/pt/guias/relatorios/">Relatórios e modelos</a></li>
             <li>
               <a href="/pt/guias/informacoes-do-projeto/"
-                >Informações do projeto</a
+                >Contexto do projeto</a
               >
             </li>
             <li><a href="/pt/guias/configuracoes/">Configurações</a></li>
@@ -1531,7 +1531,7 @@
               <a href="/pt/guias/regras-de-auditoria/">Regras de auditoria</a>
             </li>
             <li>
-              <a href="/pt/guias/configurar-agente/">Configurar o agente</a>
+              <a href="/pt/guias/configurar-agente/">Configuração do agente</a>
             </li>
             <li class="current" aria-current="page">
               <a href="/pt/guias/solucao-de-problemas/">Solução de problemas</a>
@@ -1576,10 +1576,10 @@
           <strong>Solução:</strong> No Windows, procure o ícone na barra de
           tarefas. Se o ícone não aparecer, clique na seta ^ da barra de
           tarefas. Se ele não estiver lá, abra o seowatcher pelo menu Iniciar.
-          Se o ícone disser &quot;Erro&quot;, clique nele com o botão direito e
-          escolha <strong>Yeniden başlat</strong> (Reiniciar). No Docker,
-          execute <code>docker compose ps</code>. Se o estado não for healthy,
-          execute <code>docker compose up -d</code>.
+          Se o ícone disser &quot;Hata&quot; (Erro), clique nele com o botão
+          direito e escolha <strong>Yeniden başlat</strong> (Reiniciar). No
+          Docker, execute <code>docker compose ps</code>. Se o estado não for
+          healthy, execute <code>docker compose up -d</code>.
         </p>
         <h2 id="o-numero-da-porta-esta-em-uso">
           O número da porta está em uso
@@ -1606,16 +1606,17 @@
         </p>
         <p class="callout callout-cozum">
           <strong>Solução:</strong> O pacote Windows normalmente escolhe um
-          número livre entre 3002 e 3010, avisa com um balão e com a faixa do
-          alto, e o usa só nessa inicialização. Feche primeiro o programa que
-          ocupa a 3001. Se for uma cópia antiga do Docker, pare o contêiner
-          seotracker no Docker Desktop ou execute
+          número livre entre 3002 e 3010, avisa com uma notificação e com a
+          faixa do alto, e o usa só nessa inicialização. Feche primeiro o
+          programa que ocupa a 3001. Se for uma cópia antiga do Docker, pare o
+          contêiner seotracker no Docker Desktop ou execute
           <code>docker compose stop</code> na pasta do projeto. Depois escolha
           <strong>Yeniden başlat</strong> (Reiniciar) no menu. O aplicativo
           volta à 3001 e a faixa some. Fechar a faixa só a esconde nessa aba;
-          não resolve nada. Se todos estiverem em uso, escreva outro número no
-          arquivo <code>config.json</code> da pasta de dados. No Docker, crie um
-          arquivo <code>.env</code> com a linha <code>PORT=3002</code> e execute
+          não resolve nada. Se os números de 3002 a 3010 estiverem todos em uso,
+          escreva outro número no arquivo <code>config.json</code> da pasta de
+          dados. No Docker, crie um arquivo <code>.env</code> com a linha
+          <code>PORT=3002</code> e execute
           <code>docker compose up -d --force-recreate seotracker</code>. Quando
           o número muda, atualize também os endereços de redirecionamento do
           Google.
@@ -1635,9 +1636,8 @@
           esse pacote está ausente ou desatualizado.
         </p>
         <p class="callout callout-cozum">
-          <strong>Solução:</strong> Clique no balão que aparece, ou clique com o
-          botão direito no ícone (se o ícone não aparecer, clique na seta ^ da
-          barra de tarefas) e escolha
+          <strong>Solução:</strong> Clique na notificação que aparece, ou clique
+          com o botão direito no ícone da bandeja e escolha
           <strong>Eksik Windows bileşenini kur</strong> (Instalar o componente
           do Windows que falta). O Windows pede permissão de administrador uma
           vez. Quando a instalação termina, o aplicativo reinicia sozinho. Se
@@ -1662,13 +1662,15 @@
           <strong>Solução:</strong> Se o aplicativo iniciou, você não precisa
           fazer nada. Se não, no menu da bandeja, escolha
           <strong>Eksik Windows bileşenini kur</strong> (Instalar o componente
-          do Windows que falta) e permita desta vez. Se o ícone não aparecer,
-          clique na seta ^ da barra de tarefas. Ou instale você mesmo o
+          do Windows que falta) e permita desta vez. Ou instale você mesmo o
           componente em
           <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code>.
         </p>
-        <h2 id="o-icone-diz-uygulamanin-motoru-coktu">
-          O ícone diz &quot;Uygulamanın motoru çöktü&quot;
+        <h2
+          id="o-icone-diz-uygulamanin-motoru-coktu-o-motor-do-aplicativo-travou"
+        >
+          O ícone diz &quot;Uygulamanın motoru çöktü&quot; (o motor do
+          aplicativo travou)
         </h2>
         <p class="callout callout-belirti">
           <strong>Sintoma:</strong> O aplicativo não abre. O registro tem
@@ -1746,17 +1748,17 @@
           a chave de criptografia tem menos de 32 caracteres.
         </p>
         <p class="callout callout-cozum">
-          <strong>Solução:</strong> Faça os passos 10 e 11 do guia da conexão
-          com o Google. No Docker, se você definiu
-          <code>BETTER_AUTH_SECRET</code> à mão, deixe-a mais longa. Se a deixar
-          vazia, o aplicativo cria uma sozinho.
+          <strong>Solução:</strong> Siga a seção OAuth do guia
+          <a href="/pt/guias/conexao-google/">Conectar ao Google</a>. No Docker,
+          se você definiu <code>BETTER_AUTH_SECRET</code> à mão, deixe-a mais
+          longa. Se a deixar vazia, o aplicativo cria uma sozinho.
         </p>
         <h2 id="o-google-diz-access-denied">
           O Google diz &quot;access_denied&quot;
         </h2>
         <p class="callout callout-belirti">
-          <strong>Sintoma:</strong> Depois da tela de permissão, aparece um
-          aviso &quot;iptal edildi&quot; (cancelado).
+          <strong>Sintoma:</strong> Depois da tela de permissão, aparece o aviso
+          &quot;O login no Google foi cancelado&quot;.
         </p>
         <p class="callout callout-sebep">
           <strong>Causa:</strong> A conta Google com que você entrou não está na
@@ -1774,7 +1776,7 @@
         </p>
         <p class="callout callout-sebep">
           <strong>Causa:</strong> Em aplicativos com estado &quot;Teste&quot;, o
-          Google pode derrubar a permissão depois de sete dias. A chave de
+          Google pode revogar a autorização depois de sete dias. A chave de
           criptografia também pode ter mudado.
         </p>
         <p class="callout callout-cozum">
@@ -1788,8 +1790,8 @@
           Não há dados de consultas e os gráficos estão vazios
         </h2>
         <p class="callout callout-belirti">
-          <strong>Sintoma:</strong> Os cartões do Panel (Painel) estão em zero.
-          Desempenho da pesquisa diz &quot;Ainda não há dados para este
+          <strong>Sintoma:</strong> Os cartões do <strong>Painel</strong> estão
+          em zero. Desempenho da pesquisa diz &quot;Ainda não há dados para este
           período&quot;.
         </p>
         <p class="callout callout-sebep">
@@ -1835,8 +1837,8 @@
         <p class="callout callout-cozum">
           <strong>Solução:</strong> Espere. O aplicativo confere toda auditoria
           que parece &quot;em andamento&quot; há mais de 15 minutos. Se não
-          houver sinais de vida, ele encerra a auditoria como &quot;Falhou&quot;
-          e escreve o motivo. Depois escolha
+          houver sinais de vida, ele marca a auditoria como &quot;Falhou&quot; e
+          indica o motivo. Depois escolha
           <strong>Executar novamente com as mesmas configurações</strong>. Não
           inicie duas auditorias com medição de velocidade ao mesmo tempo. Elas
           se atrasam mutuamente.
@@ -1851,10 +1853,11 @@
           &quot;Auditoria incompleta — sem pontuação&quot;.
         </p>
         <p class="callout callout-sebep">
-          <strong>Causa:</strong> A tela diz três coisas: o que aconteceu, se o
-          defeito está no seu site ou no aplicativo, e o que fazer. O título diz
-          em que fase ela parou: descoberta de URLs, rastreamento, medição de
-          velocidade ou preparação dos resultados.
+          <strong>Causa:</strong> A auditoria foi interrompida. A tela diz três
+          coisas: o que aconteceu, se o defeito está no seu site ou no
+          aplicativo, e o que fazer. O título diz em que fase ela parou:
+          descoberta de URLs, rastreamento, medição de velocidade ou preparação
+          dos resultados.
         </p>
         <p class="callout callout-cozum">
           <strong>Solução:</strong> Siga a frase da tela.
@@ -1881,8 +1884,8 @@
               dados.</strong
             >
             O disco pode estar cheio ou o arquivo de dados pode estar bloqueado
-            por outro programa. Veja se o disco tem espaço, reinicie o
-            aplicativo e comece a auditoria de novo.
+            por outro programa. Libere espaço em disco se necessário, reinicie o
+            aplicativo e repita a auditoria.
           </li>
           <li>
             <strong
@@ -1926,9 +1929,9 @@
         <p class="callout callout-sebep">
           <strong>Causa:</strong> Uma parte grande das verificações não pôde ser
           medida (a parcela de verificações medidas está abaixo de 70 por cento,
-          ou menos da metade das verificações de Rastreando, Indexação, Conteúdo
-          ou Velocidade foi medida). As linhas abaixo do cartão dizem os
-          motivos: a cota do PageSpeed acabou, não há chave do PageSpeed, a
+          ou menos da metade das verificações de Rastreamento, Indexação,
+          Conteúdo ou Velocidade foi medida). As linhas abaixo do cartão dizem
+          os motivos: a cota do PageSpeed acabou, não há chave do PageSpeed, a
           medição de velocidade estava desligada ou não se conseguiu buscar os
           dados de índice no Search Console.
         </p>
@@ -1980,13 +1983,13 @@
           uma nova auditoria. Se continuar, salve de novo a chave do PageSpeed
           em <strong>Configurações</strong>.
         </p>
-        <h2 id="a-auditoria-diz-engellendik">
-          A auditoria diz &quot;Engellendik&quot;
+        <h2 id="a-auditoria-diz-fomos-bloqueados">
+          A auditoria diz &quot;Fomos bloqueados&quot;
         </h2>
         <p class="callout callout-belirti">
           <strong>Sintoma:</strong> Aparece um aviso amarelo: &quot;A auditoria
-          não conseguiu rastrear este site por completo.&quot; ou &quot;N
-          sayfada engellendik.&quot; (Fomos bloqueados em N páginas.)
+          não conseguiu rastrear este site por completo.&quot; ou &quot;Fomos
+          bloqueados em N páginas.&quot;
         </p>
         <p class="callout callout-sebep">
           <strong>Causa:</strong> A proteção contra robôs do site (Cloudflare ou
@@ -2003,10 +2006,9 @@
           A medição de velocidade está incompleta ou ausente
         </h2>
         <p class="callout callout-belirti">
-          <strong>Sintoma:</strong> A aba Hız (Velocidade) está vazia ou tem
-          muito poucas linhas. O cartão de cota diz &quot;Cota esgotada&quot;,
-          &quot;Dakikalık sınır&quot; (Limite por minuto) ou &quot;Anahtar
-          yok&quot; (Sem chave).
+          <strong>Sintoma:</strong> A aba <strong>Velocidade</strong> está vazia
+          ou tem muito poucas linhas. O cartão de cotas indica cota esgotada,
+          limite por minuto atingido ou falta de chave.
         </p>
         <p class="callout callout-sebep">
           <strong>Causa:</strong> Não há uma chave do PageSpeed (no máximo 50
@@ -2024,19 +2026,19 @@
         </h2>
         <p class="callout callout-belirti">
           <strong>Sintoma:</strong> Na aba Status de indexação, o botão não
-          funciona. Ele diz &quot;Google'ın günlük 2.000 adres sınırına
-          ulaşıldı&quot; (O limite diário de 2.000 endereços do Google foi
-          atingido).
+          funciona. Aparece a mensagem &quot;O limite diário de 2.000 URLs do
+          Google está esgotado&quot;.
         </p>
         <p class="callout callout-sebep">
           <strong>Causa:</strong> Há uma cota de 2.000 perguntas por dia por
-          propriedade. O aplicativo, o seu assistente e as verificações que você
-          faz à mão no Search Console usam o mesmo conjunto.
+          propriedade. O aplicativo, o agente e as verificações que você faz à
+          mão no Search Console usam o mesmo conjunto.
         </p>
         <p class="callout callout-cozum">
-          <strong>Solução:</strong> Continue amanhã. O aplicativo só pergunta de
-          novo as respostas que ficaram velhas, então a sua cota não é
-          desperdiçada.
+          <strong>Solução:</strong> O limite conta as últimas 24 horas, então a
+          cota se libera aos poucos ao longo de algumas horas; continue depois
+          disso. O aplicativo só pergunta de novo as respostas que ficaram
+          velhas, então a sua cota não é desperdiçada.
         </p>
         <h2 id="o-cartao-ou-o-relatorio-do-analytics-mostra-um-erro">
           O cartão ou o relatório do Analytics mostra um erro
@@ -2066,11 +2068,11 @@
           <li>
             <strong>A propriedade não foi encontrada (HTTP 404).</strong> Ela
             pode ter sido excluída ou movida. Escolha-a de novo em
-            <strong>Configurações</strong>.
+            <strong>Configurações do projeto → Conexões</strong>.
           </li>
           <li>
             <strong>Nenhuma propriedade está conectada a este projeto.</strong>
-            Escolha uma em <strong>Configurações</strong>.
+            Escolha uma em <strong>Configurações do projeto → Conexões</strong>.
           </li>
           <li>
             <strong>A cota de relatórios acabou (HTTP 429).</strong> A cota se
@@ -2104,8 +2106,8 @@
           </li>
         </ul>
         <p class="callout callout-cozum">
-          <strong>Solução:</strong> Faça o passo que a frase indica. Quase
-          sempre <strong>Corrigir a conexão</strong> leva à configuração certa.
+          <strong>Solução:</strong> Siga a indicação da mensagem. Quase sempre
+          <strong>Corrigir a conexão</strong> leva à configuração certa.
         </p>
         <h2 id="uma-solicitacao-ao-search-console-mostra-um-erro">
           Uma solicitação ao Search Console mostra um erro
@@ -2134,8 +2136,8 @@
           </li>
           <li>
             <strong>A propriedade não foi encontrada (HTTP 404).</strong> Ela
-            pode ter sido removida do Search Console. Escolha-a de novo em
-            <strong>Configurações</strong>.
+            pode ter sido removida do Search Console: escolha uma válida em
+            <strong>Configurações do projeto → Conexões</strong>.
           </li>
           <li>
             <strong>O limite de solicitações acabou (HTTP 429).</strong> Tente
@@ -2152,22 +2154,22 @@
             do Google.
           </li>
           <li>
-            <strong>Não foi possível alcançar o Google.</strong> A frase dá um
-            detalhe na linha &quot;Motivo&quot;. Se continuar, veja a conexão de
-            internet deste computador.
+            <strong>Não foi possível alcançar o Google.</strong> A linha
+            &quot;Motivo&quot; traz um detalhe. Se o problema persistir,
+            verifique a rede.
           </li>
         </ul>
         <p class="callout callout-cozum">
-          <strong>Solução:</strong> Faça o passo que a frase indica. Em
-          problemas de conta e propriedade, renovar a conexão em
-          <strong>Configurações</strong> costuma bastar.
+          <strong>Solução:</strong> Em problemas de conta e propriedade, renovar
+          a conexão em
+          <strong>Configurações do projeto → Conexões</strong> costuma bastar.
         </p>
         <h2 id="o-trafego-de-localhost-aparece-no-analytics">
           O tráfego de localhost aparece no Analytics
         </h2>
         <p class="callout callout-belirti">
           <strong>Sintoma:</strong> Na tabela de páginas de entrada, a coluna
-          Alan adı (Domínio) mostra localhost ou 127.0.0.1.
+          <strong>Domínio</strong> mostra localhost ou 127.0.0.1.
         </p>
         <p class="callout callout-sebep">
           <strong>Causa:</strong> Uma cópia de teste do seu site carrega a mesma
@@ -2177,31 +2179,52 @@
           <strong>Solução:</strong> Configure a tag para carregar apenas no
           domínio real. A maioria das ferramentas tem uma opção de
           &quot;verificação de domínio&quot;. O aplicativo não filtra essas
-          linhas sozinho. Até lá, leia a tabela com a coluna Alan adı (Domínio)
-          à vista.
+          linhas sozinho. Até lá, identifique essas linhas pela coluna
+          <strong>Domínio</strong>.
         </p>
-        <h2 id="o-assistente-nao-consegue-se-conectar-401">
-          O assistente não consegue se conectar (401)
+        <h2 id="o-agente-nao-consegue-se-conectar-401">
+          O agente não consegue se conectar (401)
         </h2>
         <p class="callout callout-belirti">
           <strong>Sintoma:</strong> O Claude Code ou o Codex diz
           &quot;Unauthorized&quot;.
         </p>
         <p class="callout callout-sebep">
-          <strong>Causa:</strong> A senha não está sendo enviada, ou está
-          errada.
+          <strong>Causa:</strong> O cliente não está enviando o token, ou o
+          token está errado.
         </p>
         <p class="callout callout-cozum">
-          <strong>Solução:</strong> Copie a senha de novo. No Windows, ela está
-          no arquivo <code>mcp-token</code> da pasta de dados. No Docker,
-          execute
-          <code
-            >docker compose exec -T seotracker cat
-            /app/.wrangler/mcp-token</code
-          >. Apague o caractere de quebra de linha no fim do valor. Sem
-          terminal: abra o arquivo no Bloco de Notas, selecione a linha inteira
-          e copie; não inclua a quebra de linha. No Claude Code, digite
-          <code>/mcp</code> e escolha <strong>Reconnect</strong>.
+          <strong>Solução:</strong> Na tela
+          <strong>Configuração do agente</strong>, use
+          <strong>Copiar comando de configuração</strong>: o agente lê o token
+          da instalação sem exibi-lo. Para configurar à mão, copie o token para
+          a área de transferência sem exibi-lo, cole-o no campo de cabeçalho do
+          cliente MCP e depois limpe a área de transferência. Nunca cole o token
+          em um chat nem em uma captura de tela.
+        </p>
+        <ul>
+          <li>
+            <strong>Pacote Windows:</strong> o token fica no arquivo
+            <code>%LOCALAPPDATA%\seowatcher\mcp-token</code> (menu:
+            <strong>Veri klasörünü aç</strong>, Abrir a pasta de dados). No
+            PowerShell:
+            <code
+              >(Get-Content
+              &quot;$env:LOCALAPPDATA\seowatcher\mcp-token&quot;).Trim() |
+              Set-Clipboard</code
+            >.
+          </li>
+          <li>
+            <strong>Docker:</strong> no PowerShell,
+            <code
+              >(docker compose exec -T seotracker cat
+              /app/.wrangler/mcp-token).Trim() | Set-Clipboard</code
+            >.
+          </li>
+        </ul>
+        <p>
+          Depois, no Claude Code, digite <code>/mcp</code> e escolha
+          <strong>Reconnect</strong> (Reconectar).
         </p>
         <h2
           id="o-docker-demora-muito-na-primeira-inicializacao-ou-fica-unhealthy"
@@ -2295,9 +2318,8 @@
             <strong
               >O aplicativo da bandeja não reconheceu esta solicitação.</strong
             >
-            O servidor e o aplicativo podem ser de sessões diferentes. Escolha
-            <strong>Çıkış</strong> (Sair) no menu da bandeja e abra o aplicativo
-            de novo.
+            O servidor e o aplicativo podem ser de sessões diferentes. Feche o
+            aplicativo com <strong>Çıkış</strong> (Sair) e abra-o de novo.
           </li>
           <li>
             <strong>O aplicativo da bandeja recusou a solicitação.</strong>
@@ -2313,8 +2335,8 @@
           </li>
         </ul>
         <p class="callout callout-cozum">
-          <strong>Solução:</strong> Faça o passo que a frase indica. Essas
-          opções só existem no pacote do Windows. No Docker, você controla o
+          <strong>Solução:</strong> Essas opções só existem no pacote do
+          Windows; siga a indicação da mensagem. No Docker, você controla o
           comportamento na inicialização pelo sistema operacional.
         </p>
         <h2 id="mensagens-do-iniciador">Mensagens do iniciador</h2>
@@ -2362,7 +2384,7 @@
             <strong>&quot;Güncelleme denetlenemedi&quot;</strong> (Não foi
             possível verificar a atualização) ou
             <strong>&quot;Güncelleme yapılamadı&quot;</strong> (A atualização
-            falhou): o balão diz o motivo. Se disser &quot;GitHub'a
+            falhou): a notificação diz o motivo. Se disser &quot;GitHub'a
             ulaşılamadı&quot; (não foi possível acessar o GitHub), confira a sua
             conexão com a internet. Se disser &quot;GitHub şu an çok fazla istek
             alıyor&quot; (o GitHub está recebendo requisições demais agora),
@@ -2385,18 +2407,18 @@
         </ul>
         <nav class="pager" aria-label="Página anterior e seguinte">
           <a class="pager-prev" rel="prev" href="/pt/guias/configurar-agente/"
-            ><span>Anterior</span><strong>Configurar o agente</strong></a
+            ><span>Anterior</span><strong>Configuração do agente</strong></a
           ><a class="pager-next" rel="next" href="/pt/guias/notas-da-versao/"
             ><span>Próxima</span><strong>Notas da versão</strong></a
           >
         </nav>
         <p class="meta">
-          Última atualização: 29 de outubro de 2026. Viu algum erro?
+          Última atualização: 29 de outubro de 2026. Encontrou um erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >Relate no GitHub</a
+            >Informe no GitHub</a
           >.
         </p>
       </article>
@@ -2420,8 +2442,10 @@
             >
           </li>
           <li>
-            <a href="#o-icone-diz-uygulamanin-motoru-coktu"
-              >O ícone diz &quot;Uygulamanın motoru çöktü&quot;</a
+            <a
+              href="#o-icone-diz-uygulamanin-motoru-coktu-o-motor-do-aplicativo-travou"
+              >O ícone diz &quot;Uygulamanın motoru çöktü&quot; (o motor do
+              aplicativo travou)</a
             >
           </li>
           <li>
@@ -2485,8 +2509,8 @@
             >
           </li>
           <li>
-            <a href="#a-auditoria-diz-engellendik"
-              >A auditoria diz &quot;Engellendik&quot;</a
+            <a href="#a-auditoria-diz-fomos-bloqueados"
+              >A auditoria diz &quot;Fomos bloqueados&quot;</a
             >
           </li>
           <li>
@@ -2515,8 +2539,8 @@
             >
           </li>
           <li>
-            <a href="#o-assistente-nao-consegue-se-conectar-401"
-              >O assistente não consegue se conectar (401)</a
+            <a href="#o-agente-nao-consegue-se-conectar-401"
+              >O agente não consegue se conectar (401)</a
             >
           </li>
           <li>

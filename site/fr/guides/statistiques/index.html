@@ -11,7 +11,7 @@
     <meta name="ga4-id" content="G-DFPDX00V4R" />
     <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Comprendre les statistiques | Guide seowatcher</title>
+    <title>Comprendre les données Analytics | Guide seowatcher</title>
     <meta
       name="description"
       content="Analytics présente les visites, l’engagement et les événements clés mesurés dans votre propriété GA4."
@@ -90,7 +90,7 @@
     <meta property="og:site_name" content="seowatcher" />
     <meta
       property="og:title"
-      content="Comprendre les statistiques | Guide seowatcher"
+      content="Comprendre les données Analytics | Guide seowatcher"
     />
     <meta
       property="og:description"
@@ -105,7 +105,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta property="article:modified_time" content="2026-10-29" />
     <meta
@@ -121,7 +121,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="Comprendre les statistiques | Guide seowatcher"
+      content="Comprendre les données Analytics | Guide seowatcher"
     />
     <meta
       name="twitter:description"
@@ -133,7 +133,7 @@
     />
     <meta
       name="twitter:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
@@ -167,7 +167,7 @@
           {
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/fr/guides/statistiques/#article",
-            "headline": "Comprendre les statistiques",
+            "headline": "Comprendre les données Analytics",
             "description": "Analytics présente les visites, l’engagement et les événements clés mesurés dans votre propriété GA4.",
             "url": "https://seowatcher.io/fr/guides/statistiques/",
             "inLanguage": "fr",
@@ -199,7 +199,7 @@
               {
                 "@type": "ListItem",
                 "position": 3,
-                "name": "Comprendre les statistiques",
+                "name": "Comprendre les données Analytics",
                 "item": "https://seowatcher.io/fr/guides/statistiques/"
               }
             ]
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1478,7 +1478,7 @@
           <ul>
             <li>
               <a href="/fr/guides/quest-ce-que-seowatcher/"
-                >Qu'est-ce que seowatcher ?</a
+                >Qu’est-ce que seowatcher ?</a
               >
             </li>
             <li>
@@ -1517,23 +1517,27 @@
               >
             </li>
             <li class="current" aria-current="page">
-              <a href="/fr/guides/statistiques/">Comprendre les statistiques</a>
+              <a href="/fr/guides/statistiques/"
+                >Comprendre les données Analytics</a
+              >
             </li>
             <li><a href="/fr/guides/audit-du-site/">Audit du site</a></li>
             <li>
-              <a href="/fr/guides/etat-de-l-index/">État de l'indexation</a>
+              <a href="/fr/guides/etat-de-l-index/">État de l’indexation</a>
             </li>
             <li><a href="/fr/guides/rapports/">Rapports et modèles</a></li>
-            <li><a href="/fr/guides/infos-du-projet/">Infos du projet</a></li>
+            <li>
+              <a href="/fr/guides/infos-du-projet/">Contexte du projet</a>
+            </li>
             <li><a href="/fr/guides/parametres/">Paramètres</a></li>
           </ul>
           <p class="nav-group">Aide et référence</p>
           <ul>
             <li><a href="/fr/guides/aide/">Aide</a></li>
-            <li><a href="/fr/guides/regles-d-audit/">Règles d'audit</a></li>
+            <li><a href="/fr/guides/regles-d-audit/">Règles d’audit</a></li>
             <li>
               <a href="/fr/guides/installation-assistant/"
-                >Installation de l'assistant</a
+                >Configuration de l’agent</a
               >
             </li>
             <li><a href="/fr/guides/depannage/">Dépannage</a></li>
@@ -1542,116 +1546,264 @@
         </details>
       </aside>
       <article id="icerik" data-page="analytics">
-        <h1>Comprendre les statistiques</h1>
+        <h1>Comprendre les données Analytics</h1>
         <p class="lede">
           Analytics présente les visites, l’engagement et les événements clés
           mesurés dans votre propriété GA4.
         </p>
         <p>
-          Les liens depuis Opportunités ouvrent le même groupe d’adresses
-          normalisées et les dates sources via <code>pageGroup</code>. Le
-          serveur lit toutes les lignes de pages de destination organiques de
-          Google, page par page, avant de les filtrer pour la pagination de
-          50/100/200 lignes à l’écran. Les paramètres de requête et barres
-          obliques finales partagent un groupe ; les hôtes différents et chemins
-          sensibles à la casse restent séparés. Une limite de source ou de
-          qualité empêche de confirmer le groupe complet et est signalée. Un
-          résultat vide ne prouve pas l’absence de trafic. La synthèse conserve
-          la portée de la propriété. Le filtre peut être retiré ; l’URL, le
-          retour arrière et les exports préservent sa portée.
+          Le sélecteur de rapport, en haut de l’écran, donne accès à huit vues :
+        </p>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Rapport</th>
+                <th>Contenu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Pages de destination</strong></td>
+                <td>
+                  Pages où commencent les visites : sessions, engagement,
+                  conversions.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Pages et écrans</strong></td>
+                <td>Vues et temps passé sur chaque page.</td>
+              </tr>
+              <tr>
+                <td><strong>Acquisition du trafic</strong></td>
+                <td>Provenance des visiteurs.</td>
+              </tr>
+              <tr>
+                <td><strong>Événements clés</strong></td>
+                <td>
+                  Événements comptés comme conversions et nombre de personnes
+                  concernées.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>E-commerce</strong></td>
+                <td>
+                  Produits et revenus, si la propriété mesure l’e-commerce.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Recherche sur le site</strong></td>
+                <td>Ce que les visiteurs recherchent sur votre site.</td>
+              </tr>
+              <tr>
+                <td><strong>Audience</strong></td>
+                <td>
+                  Appareils, pays, nouveaux visiteurs et visiteurs connus.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>État des mesures</strong></td>
+                <td>Lacunes dans les paramètres d’administration GA4.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h2 id="perimetre-quel-trafic-quel-site">
+          Périmètre : quel trafic, quel site
+        </h2>
+        <p>
+          Le canal par défaut est <strong>Recherche organique</strong>, qui
+          inclut les moteurs de recherche autres que Google.
+          <strong>Tout le trafic</strong> modifie à la fois la synthèse du haut
+          et le rapport. Le rapport <strong>Recherche sur le site</strong> n’a
+          pas de sélecteur de canal : il montre toujours les événements de
+          résultats de recherche de tout le trafic.
         </p>
         <p>
-          Analytics présente les visites, l’engagement et les événements clés
-          mesurés dans votre propriété GA4. Le sélecteur propose les pages de
-          destination, les pages, l’acquisition, les événements clés,
-          l’e-commerce, la recherche interne, l’audience et les paramètres de
-          mesure.
+          Les chiffres couvrent toute la propriété GA4 : tous les noms d’hôte et
+          tous les flux de données. Si une application mobile ou un autre site
+          envoie des données à la même propriété, les totaux ne concernent pas
+          seulement le site du projet.
         </p>
-        <h2 id="lire-le-perimetre">Lire le périmètre</h2>
+        <h2 id="periode">Période</h2>
         <p>
-          Si les mesures sont inconnues, le trafic est indiqué comme impossible
-          à déterminer ; les valeurs connues sont conservées. Les restrictions
-          signalées apparaissent près des mesures. Si la cause est inconnue,
-          cela est dit clairement. Vous pouvez réessayer ou vérifier les
-          paramètres ; changer de canal n’est pas proposé pour réparer une
-          erreur de lecture. Les notes générales sont repliées dans
-          <strong>Comprendre les données Analytics</strong> ; le périmètre, la
-          période et les avertissements restent visibles.
+          <strong>7 derniers jours</strong>,
+          <strong>28 derniers jours</strong> et
+          <strong>3 derniers mois</strong> se terminent hier, dans le fuseau
+          horaire de la propriété. Hier est un jour calendaire terminé, mais
+          Google peut encore retraiter ses données. L’écran indique les dates
+          réelles de début et de fin, la période précédente de même durée
+          utilisée pour la comparaison et le fuseau horaire.
         </p>
         <p>
-          La recherche naturelle inclut les moteurs autres que Google. Tout le
-          trafic modifie ensemble la synthèse et le rapport. La recherche
-          interne couvre toujours les événements de résultats mesurés sur tous
-          les canaux, sans sélecteur de canal. Tous les hôtes et flux de la
-          propriété sont inclus. D’autres sites ou applications peuvent
-          contribuer aux totaux.
+          Un lien peut transmettre <code>startDate</code> et
+          <code>endDate</code>, toujours ensemble. Une date de fin égale ou
+          postérieure à aujourd’hui est ramenée à hier, et l’écran le signale.
         </p>
         <p>
-          Les périodes de 7, 28 et 90 jours se terminent hier dans le fuseau de
-          la propriété. Hier est un jour calendaire écoulé, sans garantie de
-          données définitives. Les jours récents peuvent être retraités. Les
-          dates courantes, la période précédente de même durée et le fuseau sont
-          affichés. Les liens acceptent startDate/endDate ensemble ; une fin
-          future est ramenée à hier avec un avertissement. GA4 et Search Console
-          utilisent des calendriers et mesures différents. Des dates identiques
-          ne garantissent pas le même intervalle temporel.
+          GA4 et Search Console n’utilisent ni le même calendrier ni les mêmes
+          mesures : des dates identiques ne garantissent pas le même intervalle
+          de temps.
         </p>
-        <h2 id="examiner-resultats-et-lignes">Examiner résultats et lignes</h2>
+        <h2 id="lire-la-synthese">Lire la synthèse</h2>
         <p>
-          La synthèse suit le périmètre choisi : sessions, taux d’engagement,
-          événements clés et revenu d’achat. Les événements clés ne sont pas des
-          clients uniques. Un revenu nul ne prouve pas l’absence de boutique.
-          Une devise inconnue est signalée à côté du montant. La durée
-          d’engagement est totale, pas une moyenne par utilisateur. Les valeurs
-          quotidiennes distinguent les jours inconnus de zéro. Les restrictions
-          de qualité empêchent les comparaisons ou conseils affirmatifs.
+          La synthèse du haut donne, pour le périmètre choisi, les sessions, le
+          taux d’engagement, les événements clés et le revenu des achats.
         </p>
+        <ul>
+          <li>
+            Un nombre d’événements clés n’est pas un nombre de clients uniques.
+          </li>
+          <li>
+            Zéro événement clé peut aussi signifier qu’aucun objectif n’est
+            défini.
+          </li>
+          <li>
+            Un revenu nul ne prouve pas que le site n’est pas une boutique.
+          </li>
+          <li>
+            Si la devise est inconnue, « (devise inconnue) » suit le montant.
+          </li>
+          <li>
+            La durée d’engagement est un total, pas une moyenne par utilisateur.
+          </li>
+        </ul>
         <p>
-          Choisissez 50, 100 ou 200 lignes par page et utilisez
-          Précédent/Suivant. Filtres, tri, synthèses et exports couvrent
-          uniquement la page affichée. Choisir une barre filtre le tableau sans
-          changer la base de la synthèse. Un utilisateur peut appartenir à
-          plusieurs catégories : ne les additionnez pas pour obtenir des
-          utilisateurs uniques. Les chemins identiques d’hôtes distincts et les
-          produits homonymes d’identifiants distincts restent séparés. Aucun
-          graphique de parts de revenu n’est tracé pour des valeurs négatives ou
-          inconnues.
-        </p>
-        <p>
-          Le filtre de faible conversion est une piste d’analyse sur au moins
-          quatre pages admissibles affichées avec au moins 30 sessions chacune.
-          Il n’estime pas des ventes perdues. Aucun événement observé ne prouve
-          une configuration manquante. Une recherche interne fréquente ne prouve
-          pas un manque de contenu.
-        </p>
-        <h2 id="partage-mesure-et-quota">Partage, mesure et quota</h2>
-        <p>
-          Rapport, canal, dates, ventilation, taille et position de page restent
-          dans l’URL. Le filtre exact host/path couvre seulement les lignes
-          affichées, sans fusion de variantes d’URL. CSV et Sheets exportent les
-          lignes filtrées avec des nombres bruts. ga4_scope_json conserve
-          source, propriété, dates, fuseau, devise, qualité, page et filtres.
+          La section dépliable <strong>Valeurs quotidiennes</strong> distingue
+          les jours inconnus des jours à zéro. En cas d’échantillonnage, de
+          seuil de confidentialité ou de restriction d’accès, les comparaisons
+          de périodes et les recommandations affirmatives sont masquées.
         </p>
         <p>
-          L’état de mesure lit uniquement les paramètres Admin. L’absence de
-          lacune ne prouve pas que la balise envoie des données ; suivez les
-          vérifications de collecte proposées. Les inventaires partiels sont
-          précédés d’au moins. Si la mesure améliorée est désactivée, aucune
-          sous-fonction n’est effectivement active. Aucun paramètre de compte
-          n’est modifié.
+          Avec peu de sessions, une seule visite fait nettement varier les taux.
+          Une variation en pourcentage ne prouve à elle seule ni réussite ni
+          perte.
+        </p>
+        <h2 id="tableau-filtres-et-pagination">
+          Tableau, filtres et pagination
+        </h2>
+        <p>
+          Le tableau affiche 50, 100 ou 200 lignes par page ;
+          <strong>Page précédente</strong> et
+          <strong>Page suivante</strong> donnent accès aux autres. Filtres, tri,
+          synthèses et exports ne portent que sur les lignes de la page
+          affichée. Cliquer sur une barre restreint le tableau à ces lignes,
+          sans changer la synthèse du haut.
+        </p>
+        <ul>
+          <li>
+            Un utilisateur peut figurer dans plusieurs catégories :
+            n’additionnez pas les lignes pour obtenir un nombre d’utilisateurs
+            uniques.
+          </li>
+          <li>
+            Un même chemin sur deux noms d’hôte différents donne deux lignes.
+            Deux produits homonymes restent aussi distincts.
+          </li>
+          <li>
+            Aucun graphique de répartition n’est tracé pour un revenu négatif ou
+            inconnu.
+          </li>
+        </ul>
+        <p>
+          Le filtre des
+          <strong>pages à fort trafic et faible conversion</strong> est une
+          piste d’analyse, pas une estimation de ventes perdues. Il se fonde sur
+          la médiane d’au moins quatre lignes comptant chacune 30 sessions ou
+          plus. De même, un terme souvent recherché sur le site ne prouve pas à
+          lui seul qu’un contenu manque.
+        </p>
+        <h2 id="groupe-d-adresses-venu-d-opportunites">
+          Groupe d’adresses venu d’Opportunités
+        </h2>
+        <p>
+          Depuis l’écran Opportunités, un lien ouvre Analytics sur un
+          <strong>Groupe d’adresses Analytics</strong>, avec les dates de la
+          source. Ce filtre s’exécute sur le serveur : il lit chez Google toutes
+          les lignes de pages de destination organiques, isole le groupe, puis
+          pagine le résultat.
         </p>
         <p>
-          Le quota replié présente un instantané local de la dernière réponse de
-          rapport, pas l’usage de la période de trafic. Le plafond standard est
-          une hypothèse. Actualiser redemande les rapports visibles et peut
-          consommer des jetons.
+          Les variantes d’une adresse qui ne diffèrent que par les paramètres de
+          requête ou la barre oblique finale sont regroupées. Les noms d’hôte
+          différents et les chemins dont la casse diffère restent séparés. Si
+          une limite de source ou de qualité empêche de vérifier tout le groupe,
+          l’écran le signale ; un résultat vide ne prouve pas que le groupe n’a
+          reçu aucun trafic. Pendant ce temps, la synthèse du haut porte
+          toujours sur toute la propriété.
         </p>
         <p>
-          Lorsque Google tronque les données de la période demandée, la synthèse
-          Analytics et les détails du rapport indiquent la raison et les dates
-          fournies par Google. Le rapport est considéré comme limité ; une
-          couverture incomplète n’est pas présentée comme une comparaison fiable
-          des périodes.
+          <strong>Retirer le filtre de groupe d’adresses</strong> supprime le
+          filtre. La barre d’adresse, le bouton Retour et les exports conservent
+          le périmètre du groupe.
+        </p>
+        <h2 id="resultats-vides-ou-incertains">
+          Résultats vides ou incertains
+        </h2>
+        <p>
+          Si le rapport organique est vide, deux sorties sont proposées :
+          <strong>Afficher tout le trafic</strong> élargit le périmètre,
+          <strong>État des mesures</strong> montre les paramètres. Connecter
+          Analytics récemment ne modifie pas les données passées.
+        </p>
+        <p>
+          Si une mesure n’a pas pu être lue, l’écran n’en conclut pas que la
+          période est vide : il indique « Le trafic de cette période n’a pas pu
+          être déterminé » et garde les chiffres lisibles. Si Google a donné la
+          raison d’une restriction, elle figure à côté de la mesure concernée ;
+          sinon, l’écran le précise. Il propose alors
+          <strong>Réessayer</strong> ou un contrôle des mesures, jamais un
+          changement de canal.
+        </p>
+        <p>
+          Si Google a tronqué les données de la période, la raison et les dates
+          fournies par Google figurent dans la synthèse et dans les détails du
+          rapport. Le rapport est alors considéré comme limité et n’est pas
+          présenté comme une comparaison fiable des périodes.
+        </p>
+        <p>
+          Les notes de périmètre et de traitement des données sont regroupées
+          dans <strong>Détails des données</strong> ; les explications générales
+          dans <strong>Comprendre les données Analytics</strong>.
+        </p>
+        <h2 id="etat-des-mesures">État des mesures</h2>
+        <p>
+          <strong>État des mesures</strong> lit uniquement les paramètres
+          d’administration GA4 et ne modifie rien dans le compte. Le résultat
+          « Aucune lacune trouvée dans les paramètres contrôlés » ne prouve pas
+          que la balise du site envoie réellement des données ; suivez pour cela
+          le lien <strong>Vérifier la collecte de données de la balise</strong>.
+        </p>
+        <p>
+          Si l’inventaire n’a été lu qu’en partie, les nombres sont précédés de
+          <strong>Min.</strong> Si l’interrupteur principal
+          <strong>Mesures améliorées</strong> est désactivé, le nombre
+          d’événements automatiques actifs s’affiche à zéro.
+        </p>
+        <h2 id="barre-d-adresse-et-exports">Barre d’adresse et exports</h2>
+        <p>
+          Le rapport, le canal, les dates, la ventilation, le nombre de lignes
+          et le numéro de page sont enregistrés dans la barre d’adresse :
+          partager le lien ouvre la même vue. Les filtres <code>host</code> et
+          <code>path</code> d’un lien sont exacts, ne s’appliquent qu’aux lignes
+          affichées et ne fusionnent pas les variantes d’adresse.
+        </p>
+        <p>
+          <strong>CSV</strong> et
+          <strong>Exporter vers Google Sheets</strong> exportent les lignes
+          filtrées à l’écran, avec les nombres bruts. La colonne
+          <code>ga4_scope_json</code> décrit la source, la propriété, les dates,
+          le fuseau horaire, la devise, la qualité des données, la page et les
+          filtres.
+        </p>
+        <h2 id="quota">Quota</h2>
+        <p>
+          Les valeurs de la section dépliable
+          <strong>Quotas et limites</strong> sont un instantané de la dernière
+          réponse de rapport, pas un total de la période choisie. Le plafond
+          standard du compte est une hypothèse.
+          <strong>Actualiser</strong> redemande à Google les rapports visibles,
+          et chaque requête consomme du quota.
         </p>
         <nav class="pager" aria-label="Page précédente et suivante">
           <a
@@ -1664,7 +1816,7 @@
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1676,22 +1828,40 @@
       <nav class="toc" aria-label="Sur cette page">
         <p class="toc-label">Sur cette page</p>
         <ol>
-          <li><a href="#lire-le-perimetre">Lire le périmètre</a></li>
           <li>
-            <a href="#examiner-resultats-et-lignes"
-              >Examiner résultats et lignes</a
+            <a href="#perimetre-quel-trafic-quel-site"
+              >Périmètre : quel trafic, quel site</a
+            >
+          </li>
+          <li><a href="#periode">Période</a></li>
+          <li><a href="#lire-la-synthese">Lire la synthèse</a></li>
+          <li>
+            <a href="#tableau-filtres-et-pagination"
+              >Tableau, filtres et pagination</a
             >
           </li>
           <li>
-            <a href="#partage-mesure-et-quota">Partage, mesure et quota</a>
+            <a href="#groupe-d-adresses-venu-d-opportunites"
+              >Groupe d’adresses venu d’Opportunités</a
+            >
           </li>
+          <li>
+            <a href="#resultats-vides-ou-incertains"
+              >Résultats vides ou incertains</a
+            >
+          </li>
+          <li><a href="#etat-des-mesures">État des mesures</a></li>
+          <li>
+            <a href="#barre-d-adresse-et-exports">Barre d’adresse et exports</a>
+          </li>
+          <li><a href="#quota">Quota</a></li>
         </ol>
       </nav>
     </main>
     <footer>
       <div class="wrap">
         <p class="star">
-          Une étoile aide d'autres personnes à trouver un outil gratuit.
+          Une étoile aide d’autres personnes à trouver un outil gratuit.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

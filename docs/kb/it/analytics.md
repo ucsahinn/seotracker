@@ -1,37 +1,58 @@
 ---
-title: Interpretare i dati di analisi
-description: Analytics mostra visite, coinvolgimento ed eventi chiave misurati nella proprietà GA4.
+title: Capire i dati di Analytics
+description: Leggere sessioni, coinvolgimento, eventi chiave ed entrate GA4 del sito, controllare la misurazione ed esportare le righe necessarie.
 screen: Analytics
 route: /p/<proje>/analytics
 updated: 2026-10-27
 ---
 
-I link da Opportunità aprono lo stesso gruppo di indirizzi normalizzati e le date della fonte tramite `pageGroup`. Il server legge tutte le righe delle pagine di destinazione organiche da Google, pagina per pagina, prima del filtro e della paginazione da 50/100/200 righe sullo schermo. Parametri di ricerca e barre finali condividono un gruppo; host diversi e percorsi con maiuscole diverse restano separati. Limiti della fonte o di qualità impediscono di confermare l’intero gruppo e vengono segnalati. Un risultato vuoto non dimostra l’assenza di traffico. Il riepilogo mantiene l’ambito della proprietà. Il filtro si può rimuovere; URL, navigazione Indietro ed esportazioni ne conservano l’ambito.
+La schermata **Analytics** legge la proprietà GA4 collegata al progetto. In alto c'è un riepilogo di sessioni, tasso di coinvolgimento, eventi chiave ed entrate da acquisti. Sotto, il selettore dei report offre **Pagine di destinazione**, **Pagine e schermate**, **Acquisizione del traffico**, **Eventi chiave**, **E-commerce**, **Ricerca nel sito**, **Pubblico** e **Stato della misurazione**. Le note su come leggere i numeri sono raccolte nella sezione chiusa **Capire i dati di Analytics**; ambito, date e avvisi restano sempre visibili.
 
-Analytics mostra visite, coinvolgimento ed eventi chiave misurati nella proprietà GA4. Il selettore offre pagine di destinazione, pagine, acquisizione, eventi chiave, e-commerce, ricerca interna, pubblico e impostazioni di misurazione.
+## Ambito: canale, proprietà e date
 
-## Leggi prima l’ambito
+Il canale predefinito è **Ricerca organica**, che comprende tutti i motori di ricerca, non solo Google. **Tutto il traffico** cambia insieme il riepilogo e il report. **Ricerca nel sito** copre sempre tutto il traffico e non ha un selettore di canale.
 
-Se le misurazioni sono sconosciute, il traffico viene indicato come non determinabile; i valori noti restano visibili. Le limitazioni segnalate appaiono accanto alle metriche. Se la causa è sconosciuta, viene dichiarato. Puoi riprovare o controllare le impostazioni; cambiare canale non viene proposto come rimedio a un errore di lettura. Le note generali sono raccolte nella sezione chiusa **Capire i dati di Analytics**; ambito, periodo e avvisi restano visibili.
+I dati comprendono tutti gli host e gli stream della proprietà. Se un altro sito o un'app inviano dati alla stessa proprietà, anche quei dati sono inclusi.
 
-La ricerca organica include motori diversi da Google. Tutto il traffico cambia insieme riepilogo e report. La ricerca interna mostra sempre gli eventi misurati dei risultati di ricerca su tutti i canali, senza selettore di canale. Sono inclusi tutti gli host e gli stream della proprietà. Anche altri siti o app possono contribuire ai totali.
+I periodi di 7, 28 e 90 giorni terminano ieri, nel fuso orario della proprietà. La schermata mostra le date correnti, il periodo precedente di uguale durata e il fuso orario. Ieri è un giorno concluso, ma GA4 può ancora rielaborare i giorni recenti. Un link può impostare date esatte con `startDate` ed `endDate`; una data finale nel futuro viene riportata a ieri, con un avviso.
 
-I periodi di 7, 28 e 90 giorni terminano ieri nel fuso della proprietà. Ieri è un giorno di calendario concluso, non una garanzia di dati definitivi. I giorni recenti possono essere rielaborati. Sono mostrati date effettive, periodo precedente di pari durata e fuso. I link accettano startDate/endDate insieme; una fine futura viene limitata a ieri con un avviso. GA4 e Search Console usano calendari e misure diversi. Date uguali non garantiscono intervalli temporali identici.
+GA4 e Search Console usano calendari diversi (fuso della proprietà contro ora del Pacifico) e misure diverse. Le stesse date possono quindi coprire ore diverse.
 
-## Esamina risultati e righe
+## Leggere il riepilogo
 
-Il riepilogo segue l’ambito scelto: sessioni, tasso di coinvolgimento, eventi chiave ed entrate degli acquisti. Gli eventi chiave non sono clienti unici. Entrate zero non provano l’assenza di un negozio. La valuta sconosciuta è indicata accanto all’importo. Il tempo di coinvolgimento è totale, non medio per utente. I valori giornalieri distinguono giorni sconosciuti e zero. Le limitazioni dei dati impediscono confronti o consigli sicuri.
+- Gli **eventi chiave** contano eventi, non clienti unici.
+- Il **tempo di coinvolgimento** è un totale, non una media per utente.
+- **Entrate** pari a zero non provano che il sito non abbia un negozio. Una valuta sconosciuta è indicata accanto all'importo.
+- I valori giornalieri distinguono un giorno sconosciuto da un giorno con valore zero.
 
-Scegli 50, 100 o 200 righe per pagina e usa Precedente/Successiva. Filtri, ordinamento, riepiloghi ed esportazioni riguardano solo la pagina elencata. Una barra filtra la tabella senza cambiare la base del riepilogo. Gli utenti possono ricomparire tra categorie: non sommarli come utenti unici della proprietà. Percorsi uguali su host diversi e prodotti omonimi con ID diversi restano separati. Con entrate negative o sconosciute non viene tracciato un grafico delle quote.
+Se un valore non si può leggere, la schermata mostra **Non è stato possibile determinare il traffico di questo periodo** e conserva i valori letti. Le limitazioni segnalate da Google, come campionamento o soglie di privacy, compaiono accanto alle metriche; una causa sconosciuta viene dichiarata come tale. I dati limitati non vengono usati per confronti o consigli certi. Se Google ha troncato i dati nel periodo scelto, riepilogo e report riportano motivo e date indicati da Google, e il confronto tra periodi non viene mostrato.
 
-Il filtro di bassa conversione è un indizio su almeno quattro pagine idonee elencate con almeno 30 sessioni ciascuna. Non stima vendite perse. L’assenza di eventi osservati non prova una configurazione mancante. Le ricerche interne frequenti non provano contenuti mancanti.
+Per risolvere un errore di lettura, scelga **Riprova** o apra **Stato della misurazione**. Cambiare canale non risolve il problema.
 
-## Condivisione, misurazione e quota
+## Lavorare con le righe del report
 
-Report, canale, date, dettaglio, dimensione e posizione della pagina rimangono nell’URL. Il filtro esatto host/path riguarda solo le righe elencate e non unisce varianti URL. CSV e Sheets esportano le righe filtrate con valori numerici grezzi. ga4_scope_json conserva origine, proprietà, date, fuso, valuta, qualità, pagina e filtri.
+Il report mostra 50, 100 o 200 righe per pagina; **Pagina precedente** e **Pagina successiva** scorrono le altre. Filtri, ordinamento, riepiloghi ed esportazioni si applicano alla pagina di righe visibile. Un clic su una barra del grafico filtra la tabella senza cambiare il riepilogo.
 
-Il controllo legge solo le impostazioni Admin. Nessuna lacuna nelle impostazioni non prova che il tag invii dati: segui le verifiche di raccolta collegate. Gli inventari parziali sono indicati come almeno. Se la misurazione avanzata è disattivata, nessuna sottofunzione è effettivamente attiva. Non vengono modificate impostazioni dell’account.
+- Lo stesso utente può comparire in più categorie: non sommi gli utenti delle categorie per ottenere gli utenti unici.
+- Lo stesso percorso su host diversi, e prodotti con lo stesso nome ma ID diversi, restano su righe separate.
+- I grafici delle quote di entrate non compaiono se un valore è negativo o sconosciuto.
 
-La quota comprimibile mostra un’istantanea locale dell’ultima risposta, non l’utilizzo nel periodo di traffico. Il limite standard è un’ipotesi. Aggiorna richiede nuovamente i report visibili e può consumare token.
+Il filtro **Traffico elevato, conversione bassa** è un punto di partenza per un'indagine. Richiede almeno quattro pagine elencate con almeno 30 sessioni ciascuna e non stima le vendite perse. Una pagina senza eventi chiave non prova un problema di monitoraggio, e le ricerche frequenti nel sito non provano che manchino contenuti.
 
-Quando Google tronca i dati nel periodo richiesto, il riepilogo Analytics e i dettagli del report mostrano il motivo e le date forniti da Google. Il report è considerato limitato; una copertura incompleta non viene presentata come un confronto affidabile tra periodi.
+## Gruppi di indirizzi da Opportunità
+
+**Esamina il gruppo di indirizzi Analytics** nella schermata [Opportunità](/docs/firsatlar/) apre **Pagine di destinazione** filtrate su un gruppo di indirizzi, con le date dei dati di origine. Il server legge da Google tutte le righe delle pagine di destinazione organiche prima di dividerle in pagine, quindi l'intero gruppo viene abbinato. Parametri di query e barre finali rientrano nello stesso gruppo; host diversi e percorsi con maiuscole diverse restano separati. Se un limite della fonte o una restrizione dei dati impedisce un abbinamento completo, la schermata lo segnala; un risultato vuoto non prova l'assenza di traffico. Il riepilogo mantiene l'ambito dell'intera proprietà. **Rimuovi filtro del gruppo di indirizzi** riporta al report completo.
+
+## Link ed esportazioni
+
+Report, canale, date, suddivisione, dimensione e posizione della pagina restano nell'URL: un link o il pulsante Indietro ripristinano la stessa vista. Il filtro esatto per host e percorso riguarda solo le righe elencate e non unisce le varianti di URL.
+
+**CSV** ed **Esporta in Fogli Google** esportano le righe filtrate con i valori numerici grezzi. La colonna `ga4_scope_json` registra fonte, proprietà, date, fuso orario, valuta, qualità dei dati, pagina e filtri.
+
+## Stato della misurazione
+
+**Stato della misurazione** legge le impostazioni Admin della proprietà: stream di dati web, misurazione avanzata, eventi chiave e definizioni personalizzate. Non modifica nulla nell'account. "Nessuna lacuna nelle impostazioni controllate" non prova che il tag invii dati; per questo servono le verifiche di raccolta collegate. Se la misurazione avanzata è disattivata, nessuno dei suoi eventi automatici è attivo. I conteggi indicati come "almeno" provengono da un inventario che può essere incompleto.
+
+## Quota
+
+La sezione chiusa della quota mostra i token di reporting rimasti secondo l'ultima risposta, non il consumo nel periodo scelto. Il limite delle proprietà standard usato come confronto è un'ipotesi. **Aggiorna** richiede di nuovo i report visibili e consuma token.

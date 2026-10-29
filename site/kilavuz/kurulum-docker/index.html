@@ -104,7 +104,7 @@
       property="og:image:alt"
       content="seowatcher tanıtım kartı: Search Console, Analytics 4 ve site denetimi verilerini gösteren uygulama paneli ve Windows için indirme düğmesi"
     />
-    <meta property="article:modified_time" content="2026-10-23" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/kilavuz/kurulum-docker/"
@@ -166,7 +166,7 @@
             "url": "https://seowatcher.io/kilavuz/kurulum-docker/",
             "inLanguage": "tr",
             "datePublished": "2026-10-22",
-            "dateModified": "2026-10-23",
+            "dateModified": "2026-10-29",
             "articleSection": "Başlangıç",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -201,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1494,7 +1494,7 @@
             <li><a href="/kilavuz/firsatlar/">Fırsatlar</a></li>
             <li><a href="/kilavuz/kayitli-kelimeler/">Kayıtlı kelimeler</a></li>
             <li>
-              <a href="/kilavuz/analitik/">Analitik verilerini yorumlama</a>
+              <a href="/kilavuz/analitik/">Analytics verisini yorumlama</a>
             </li>
             <li><a href="/kilavuz/site-denetimi/">Site denetimi</a></li>
             <li><a href="/kilavuz/dizin-durumu/">Dizin durumu</a></li>
@@ -1519,13 +1519,12 @@
           dosyası gerekmez. Verileriniz Docker'ın veri deposunda durur.
         </p>
         <p>
-          Bu sayfayı bitirince uygulama Docker'da (uygulamaları kapalı kutu
-          içinde çalıştıran program) çalışır ve
-          <code>http://localhost:3001</code> adresinde açılır. Windows
-          kullanıyorsanız tek dosyalık Windows kurulumu çok daha kolay. Bu yol
-          Mac, Linux ve zaten Docker kullananlar için. İlk açılış birkaç dakika
-          sürer, çünkü uygulama kutunun (konteynerin) içinde derlenir. Sonraki
-          açılışlar saniyeler sürer.
+          Sonunda uygulama Docker'da (uygulamaları yalıtılmış bir kutuda
+          çalıştıran program) çalışır ve
+          <code>http://localhost:3001</code> adresinde açılır. Bu yol Mac, Linux
+          ve zaten Docker kullananlar içindir; Windows'ta
+          <a href="/kilavuz/kurulum-windows/">tek dosyalık kurulum</a> daha
+          kolaydır.
         </p>
         <h2 id="gerekenler">Gerekenler</h2>
         <ul>
@@ -1577,14 +1576,16 @@ cd seotracker</code></pre>
           </li>
         </ol>
         <p>
-          Sonraki adım: Google'a bağlanma kılavuzu. Docker'da Google'a
-          vereceğiniz iki yönlendirme adresi şunlar:
+          Sonraki adım
+          <a href="/kilavuz/google-baglantisi/">Google'a bağlanma</a>. OAuth
+          istemcisi kullanacaksanız Docker'da Google'a vereceğiniz iki
+          yönlendirme adresi şunlardır:
         </p>
         <ul>
           <li><code>http://localhost:3001/api/gsc/oauth/callback</code></li>
           <li><code>http://localhost:3001/api/ga4/oauth/callback</code></li>
         </ul>
-        <h3 id="guncelleme">Güncelleme</h3>
+        <h2 id="guncelleme">Güncelleme</h2>
         <p>Şu iki komutu çalıştırın:</p>
         <div class="code">
           <pre><code>git pull
@@ -1595,7 +1596,7 @@ docker compose up -d --build</code></pre>
           komutu gösterir. Veriniz <code>seotracker_data</code> adlı veri
           deposunda durduğu için güncelleme onu silmez.
         </p>
-        <h3 id="durdurma-ve-kaldirma">Durdurma ve kaldırma</h3>
+        <h2 id="durdurma-ve-kaldirma">Durdurma ve kaldırma</h2>
         <ul>
           <li>Durdurmak için: <code>docker compose stop</code></li>
           <li>Yeniden başlatmak için: <code>docker compose up -d</code></li>
@@ -1609,7 +1610,7 @@ docker compose up -d --build</code></pre>
             siler.
           </li>
         </ul>
-        <h3 id="yedekleme">Yedekleme</h3>
+        <h2 id="yedekleme">Yedekleme</h2>
         <p>
           Veriniz <code>seotracker_data</code> deposunda, kutunun içindeki
           <code>/app/.wrangler</code> yolundadır. Yedek almak için üç komutu
@@ -1627,10 +1628,10 @@ docker compose up -d</code></pre>
           anahtardır. Yedekte o dosya yoksa uygulama açılır ama Google
           bağlantıları gelmez.
         </p>
-        <h3 id="ayarlar-istege-bagli">Ayarlar (isteğe bağlı)</h3>
+        <h2 id="ayarlar-istege-bagli">Ayarlar (isteğe bağlı)</h2>
         <p>
-          Hiçbir ayar zorunlu değil. Değiştirmek isterseniz proje klasörüne bir
-          <code>.env</code> dosyası koyun. Sonra
+          Hiçbir ayar zorunlu değildir. Değiştirmek isterseniz proje klasörüne
+          bir <code>.env</code> dosyası koyun. Sonra
           <code>docker compose up -d --force-recreate seotracker</code> komutunu
           çalıştırın.
         </p>
@@ -1707,15 +1708,17 @@ docker compose up -d</code></pre>
           </li>
           <li>
             Tarayıcıda <code>http://localhost:3001</code> açılmalı.
-            <strong>Yardım</strong> ekranındaki durum kartı &quot;Her şey
-            yolunda.&quot; demeli. Google'a bağlanmadan önce &quot;Google
-            girişi&quot; satırı uyarı gösterir. Bu normaldir.
+            <strong>Yardım</strong> ekranındaki durum kartı
+            <strong>Kurulum kontrollerinde sorun bulunmadı.</strong> demeli.
+            Google'a bağlanmadan önce &quot;Google girişi&quot; satırı uyarı
+            gösterir. Bu normaldir.
           </li>
         </ul>
         <h2 id="sik-sorulanlar">Sık sorulanlar</h2>
         <p>
-          <strong>İlk açılış neden uzun sürüyor?</strong> Uygulama kutunun
-          içinde derlenir. Sonraki açılışlarda derleme atlanır.
+          <strong>İlk açılış neden uzun sürüyor?</strong> Uygulama ilk açılışta
+          kutunun içinde derlenir; bu birkaç dakika sürer. Sonraki açılışlarda
+          derleme atlanır ve uygulama saniyeler içinde açılır.
         </p>
         <p>
           <strong><code>.env.example</code> dosyası nerede?</strong> Yok. Üst
@@ -1778,7 +1781,7 @@ docker compose up -d</code></pre>
           >
         </nav>
         <p class="meta">
-          Son güncelleme: 23 Ekim 2026. Bir hata görürseniz
+          Son güncelleme: 29 Ekim 2026. Bir hata görürseniz
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1792,6 +1795,10 @@ docker compose up -d</code></pre>
         <ol>
           <li><a href="#gerekenler">Gerekenler</a></li>
           <li><a href="#adimlar">Adımlar</a></li>
+          <li><a href="#guncelleme">Güncelleme</a></li>
+          <li><a href="#durdurma-ve-kaldirma">Durdurma ve kaldırma</a></li>
+          <li><a href="#yedekleme">Yedekleme</a></li>
+          <li><a href="#ayarlar-istege-bagli">Ayarlar (isteğe bağlı)</a></li>
           <li><a href="#kontrol">Kontrol</a></li>
           <li><a href="#sik-sorulanlar">Sık sorulanlar</a></li>
           <li><a href="#sorun-cikarsa">Sorun çıkarsa</a></li>

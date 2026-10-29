@@ -140,7 +140,7 @@ export const enSettings: Catalog = {
   "Hizmet hesapları": "Service accounts",
   "Hizmet hesabı durumu okunamadı.":
     "Couldn't read the service account status.",
-  "Bu adresi Search Console'da {path} ile mülkünüze ekleyin (yetki: {level}). Eklemeden veri gelmez. Analytics için de GA4 mülkünde {gaPath}'ne aynı adresi Görüntüleyen olarak ekleyin.":
+  "Bu adresi Search Console'da {path} ile mülkünüze ekleyin (yetki: {level}). Eklemeden veri gelmez. Analytics için de GA4 mülkünde {gaPath}'ne aynı adresi Görüntüleyici olarak ekleyin.":
     "In Search Console, add this address to your property under {path} (permission: {level}). No data arrives until you do. For Analytics, also add the same address as a Viewer in the GA4 property under {gaPath}.",
   "Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle":
     "Settings → Users and permissions → Add user",

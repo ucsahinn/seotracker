@@ -6,40 +6,70 @@ route: /p/<proje>/opportunities
 updated: 2026-10-27
 ---
 
-Fırsatlar, Google'da zaten görünen sayfalarınızı ne kadar ek tıklama getirebileceklerine göre sıralar. Hesap sizin Search Console verinizden ve sitenizin kendi tıklama oranlarından yapılır. Her sayfa için önerilen bir iş ve kazanç için bir üst sınır gösterilir; bu bir tahmin ya da garanti değildir.
+Hesap sizin Search Console verinizden ve sitenizin kendi tıklama oranlarından yapılır. Her sayfa için bir iş önerisi ve o işin getirebileceği ek tıklamanın üst sınırı gösterilir. Bu sınır beklenen sonuç ya da garanti değildir.
 
-## Fırsatlar nasıl kullanılır?
+## Nereden başlamalı
 
-Bu ekran, önce hangi sayfaya bakacağınızı ve hangi işi inceleyeceğinizi gösterir. **Önce şuna bakın** en yüksek hesaplanabilen ek tıklama sınırına sahip sayfayı açar. Bu, işin kolay veya hızlı olduğunun ölçümü değildir.
+**Önce şuna bakın** kartı, hesaplanabilen ek tıklama sınırı en yüksek olan sayfayı açar. Bu sıralama işin kolay ya da hızlı olduğunu ölçmez; yalnızca olası kazancın büyüklüğünü gösterir.
 
-## Dönem ve kapsam
+## Dört iş türü
 
-7, 28 veya 90 günlük dönem seçin. Search Console'un Pasifik takviminde Google'ın tamamlandığını bildirdiği günler kullanılır. Google sınır bilgisi vermediyse gecikme varsayılır ve ekranda belirtilir. Gerçek başlangıç ve bitiş tarihleri görünür. Analytics aynı takvim tarihlerini kendi mülk saat diliminde okur; bu iki kaynak aynı an aralığını ölçmeyebilir.
+Her sayfa, ölçülen aramalarına göre bir iş türüne girer:
 
-**30 güne ölçekli üst sınır**, seçili dönemin kazancının 30 güne uyarlanmasıdır. Bir takvim ayı tahmini, garanti veya arama hacmi değildir. Yalnızca alınan, tanımlanabilen ve yeterli verisi olan aramaları kapsar. Gizli sorguların payı bilinmez; satır sınırları ayrıca açıklanır. Panelin sorgu bazlı tahmini farklı bir hesaptır; iki sayıyı toplamayın. Mevcut tıklama tabanı bu aday sayfaların marka aramaları dahil tüm tıklamalarıdır.
+| İş türü                        | Durum                                                                 | Öneri                                              |
+| ------------------------------ | --------------------------------------------------------------------- | -------------------------------------------------- |
+| **Başlık ve açıklama işi**     | İlk sayfada, ama sitenizin aynı sıradaki aramalarından az tıklanıyor. | **Başlığı ve açıklamayı yenileyin**                |
+| **İlk sayfada, 4-10. sıra**    | İlk üçün altında. Bir basamak yükselmek tıklamayı belirgin artırır.   | **İçeriği güçlendirin**                            |
+| **2. sayfada, 11-20. sıra**    | İlk sayfanın hemen arkasında; ilk sayfaya çıkana kadar az tıklanır.   | **İç bağlantı verin, içeriği genişletin**          |
+| **Derinde, 21. sıradan sonra** | Gösterim var, sıra düşük.                                             | **Arama niyetini ve sayfanın kapsamını inceleyin** |
 
-## İş listesi ve filtreler
+Düşük sıra tek başına bir sayfayı silmek ya da birleştirmek için kanıt değildir. Birleştirmeyi ancak iki sayfanın aynı ihtiyacı karşıladığını doğruladığınızda düşünün.
 
-İş türü ve dönüşüm filtresi birlikte, **ve** koşuluyla çalışır. Sunucu filtreyi bütün aday sayfalara uygular, sonra ilk 25, 50 veya 100 eşleşmeyi gösterir. Üst toplamlar satır sınırından ve filtrelerden etkilenmez. Bir sayfa birden fazla iş türünde sayılabilir; iş türlerinin sayfa sayılarını toplamayın. Dönem, satır sınırı ve filtreler URL'de saklanır.
+## Dönem ve 30 günlük üst sınır
 
-Masaüstünde sıralanabilir tablo, telefonda adresi saran iş satırları vardır. **Ayrıntı** ile ölçülen sorguları açın. Her sorguda gösterim, sıra, hedef sıra grubu ve sayfa sınırından dağıtılan ek tıklama görünür. En çok kazançlı 10 sorgu gösterilir; geri kalanların katkısı ayrı satırdadır. Sorgu payları ve kalan, sayfanın gösterilen kazancını tamamlar. CTR farkı yalnızca karşılaştırılabilir marka dışı sorgularda, aynı gösterim tabanıyla ve yüzde puan olarak hesaplanır.
+7, 28 ya da 90 günlük dönem seçin. Yalnızca Google'ın tamamlandığını bildirdiği günler kullanılır; tarihler Search Console'un Pasifik takvimine göredir. Google tamamlanma tarihini bildirmezse gecikme varsayılır ve ekranda yazılır. Gerçek başlangıç ve bitiş tarihleri her zaman görünür.
 
-## Bilinmeyen veri ve Analytics
+**En fazla kazanılabilecek tıklama / ay (üst sınır)**, seçili dönemin kazancının 30 güne ölçeklenmiş halidir. Takvim ayı tahmini, garanti ya da arama hacmi değildir. Yalnızca Google'ın verdiği, tanımlanabilen ve yeterli verisi olan aramaları kapsar. Google'ın gizlediği sorguların payı bilinmez.
 
-**Hesaplanamayan kapsam** kazanç yok demek değildir. Eksik sorgu eşleşmesi, yetersiz gösterim ve eksik hedef oranı ayrı sayılır. Ölçülen sıfır bunlardan ayrıdır. Hiç satır dönmemesi, hiç gösterim olmadığını kanıtlamaz.
+Panel'deki sorgu bazlı tahmin ayrı bir hesaptır; iki sayıyı toplamayın.
 
-Analytics yalnızca ölçülmüş organik oturumları, anahtar olayları ve dönüşen oturum oranını ekler; ek tıklamadan gelecekteki olay sayısı üretilmez. Kısıtlı ölçüm sıfıra çevrilmez. Saat dilimi ve kaynak sınırları açıklanır. Adres varyantları aynı Analytics grubuyla eşleşebilir; bu oturumları URL satırları arasında toplamayın. Kota hatasında bekleyip yenileyin; izin hatasında bağlantı ayarlarını kontrol edin. Yenileme başarısızsa önceki sonuç kendi tarihleriyle ve uyarıyla korunur.
+## Liste, filtre ve ayrıntı
 
-Satırdaki ve ayrıntıdaki “Analytics adres grubunu incele” bağlantısı organik giriş sayfalarını kaynak tarihleri ve normalleştirilmiş adres grubu ile açar. Adres veya tarih eşleşmesi yoksa bağlantı yerine eşleşmenin doğrulanamadığı yazılır. Grup, Fırsatlar ile aynı en fazla 1.000 kaynak satırında sayfalama öncesi süzülür. Kaynak veya kalite kısıtı varsa Analytics tam grubun doğrulanamadığını belirtir. Yeniden alınan veriler değişebilir; aynı tarih etiketleri GA4 mülk saat dilimi ile Search Console Pasifik takviminde farklı zaman aralıklarını kapsayabilir.
+**İş türleri** filtresi ile dönüşüm filtresi birlikte çalışır: ikisine de uyan sayfalar listelenir. Sunucu filtreyi tüm aday sayfalara uygular, sonra ilk 25, 50 ya da 100 sayfayı gösterir. Üstteki toplamlar satır sayısından ve filtrelerden etkilenmez. Bir sayfa birden çok iş türünde sayılabilir; iş türlerinin sayfa sayılarını toplamayın. Dönem, satır sayısı ve filtreler adres çubuğunda saklanır.
 
-## Dışa aktarma ve takip
+Masaüstünde sıralanabilir bir tablo, telefonda adresi saran satırlar görünür. **Ayrıntı** ile sayfanın ölçülen aramalarını açın. Her aramada gösterim, sıra, hedef sıra ve o aramaya düşen ek tıklama payı yazar. En çok kazandıran 10 arama ayrı satırlarda, geri kalanı **Diğer aramalar (dağıtılmış kalan)** satırında toplanır; hepsi birlikte sayfanın kazancını verir. Tıklama oranı farkı yalnızca karşılaştırılabilir marka dışı aramalarda, yüzde puan olarak hesaplanır.
 
-CSV veya E-Tablolar aktarımı yalnızca görünen filtreli satırları içerir. Ölçülen tarihler, 30 günlük üst sınır birimi, model, mülk, marka ayrımı, kaynak sınırları ve Analytics adres grubu sütunlara eklenir. E-Tablolar'a yazma yalnızca siz menüden başlatırsanız yapılır.
+Kazancı hesaplanamayan sayfalar da listelenir. Önce tahmini olan sayfalar kazanca göre, sonra **Kazanç bilinmiyor** olan sayfalar gösterime göre sıralanır. Bu sayfalardaki öneri yalnızca sıraya dayanır: 1-5 başlık ve açıklama, 6-10 içerik, 11-20 iç bağlantı ve içerik, 21 ve sonrası arama niyeti. Bilinmeyen kazanç sıfır değildir ve toplamlara girmez. Tüm kazançlar bilinmiyorsa iş türleri çubuk yerine aday sayfa sayısıyla gösterilir.
 
-**Arama performansında aç** kaynak başlangıç ve bitiş tarihlerini ve birebir URL'yi koruyarak ayrıntı panelini açar. Dönem artık okunamıyorsa farklı günlere geçilmez; kullanılabilir dönem açıklanır. Yaptığınız değişikliği not edin ve aynı kapsamlı dönemlerin ölçülen tıklama, CTR ve sırasını karşılaştırın. Tahminin küçülmesi tek başına başarı kanıtı değildir. Düşük sıra veya düşük tahmin nedeniyle içerik silmeyin; birleştirmeyi ancak aynı ihtiyacın tekrarlandığını doğruladığınızda değerlendirin.
+## Hesaplanamayan kapsam
 
-Az veride bu ekran kazancı sıfır saymaz. Tahmine uygun marka dışı sorgu olmayışı; gizli sorgular, marka ayrımı veya veri sınırlarından kaynaklanabilir. En uzun dönem seçiliyse daha uzun dönem önerilmez. Arama performansını açarak gösterim alan sorguları inceleyin. Hesabın ayrıntıları Veri kapsamı ve hesaplama bölümünde açılır.
+**Hesaplanamayan kapsam** bölümü, kazancın neden hesaplanamadığını ayrı ayrı sayar: eşleşmeyen sorgu, yetersiz gösterim, eksik hedef oranı. Ölçülmüş sıfır kazanç bunlardan ayrıdır. Google'ın hiç satır döndürmemesi de hiç gösterim olmadığını kanıtlamaz.
 
-Gösterim alan ancak kazancı hesaplanamayan sayfalar da listelenir: önce tahminli sayfalar kazanca göre, ardından kazancı bilinmeyen sayfalar gösterime göre. Bilinmeyen kazanç sıfır değildir; toplamlar yalnızca hesaplanan kazançları toplar. Ayrıntıda marka dışı sorgular gösterime göre sıralanır; yalnızca marka sorgusu görülen sayfalar işaretlenir. Öneri yalnızca sıraya dayanır (1–5 başlık/açıklama inceleme, 6–10 içerik, 11–20 iç bağlantı ve içerik, 21+ arama niyeti); düşük tıklama oranı veya kazanım kanıtı değildir. İş filtresi bu öneriye, dönüşüm filtresi ölçülen Analytics sinyaline uygulanır. CSV ve E-Tablolar bilinmeyen kazancı boş bırakır; durum, neden, marka işareti ve ölçülen sorguları içerir.
+Az veride ekran kazancı sıfır saymaz. Tahmine uygun marka dışı arama yoksa nedeni gizli sorgular, marka ayrımı ya da veri sınırları olabilir. En uzun dönem seçili değilse daha uzun bir dönem önerilir. Gösterim alan aramaları görmek için **Arama performansını aç** düğmesini kullanın. Hesabın ayrıntıları **Veri kapsamı ve hesaplama** bölümündedir.
 
-Kazanç bilinmiyorsa önce sayfayı ve ölçülen sorguları inceleyin; başlık veya içerik değişikliği ancak uyumsuzluk doğrulanınca düşünülür. Tüm kazançlar bilinmiyorsa iş türleri çubuk yerine aday sayfa sayısıyla gösterilir. Dönüşüm özeti eşleşen ve dönüşüm durumu bilinmeyen sayfaları ayrı sayar; Analytics kapsamı yoksa sıfır dönüşüm iddia etmez. Dönüşüm filtresi yalnızca doğrulanmış kayıt varsa düğme olarak görünür. Kaynak ve dönem etiketli alanda, hesaplama ayrıntıları kapalı açıklamadadır. Eşleşmeyen Analytics verisinin nedeni ayrıntıda açıklanır; her satırda tekrarlanmaz.
+Kazanç bilinmeyen bir sayfada önce sayfayı ve ölçülen aramaları inceleyin. Başlık ya da içerik değişikliğini ancak sayfa ile aramalar arasında bir uyumsuzluk görürseniz düşünün.
+
+## Analytics ne katıyor?
+
+Analytics bağlıysa her sayfaya ölçülmüş organik oturum, anahtar olay ve dönüşen oturum oranı eklenir. Ek tıklamadan gelecekteki dönüşüm sayısı türetilmez. Kısıtlı bir ölçüm sıfıra çevrilmez.
+
+- Dönüşüm özeti eşleşen sayfaları ve **Dönüşüm durumu bilinmeyen** sayfaları ayrı sayar. Analytics kapsamı yoksa sıfır dönüşüm iddia edilmez.
+- **Dönüşüm getirenleri göster** filtresi yalnızca doğrulanmış kayıt varsa görünür.
+- Bir adresin birkaç çeşidi aynı Analytics grubuna düşebilir. Bu oturumları satırlar arasında toplamayın.
+- Eşleşmeyen Analytics verisinin nedeni ayrıntıda bir kez açıklanır.
+
+**Analytics adres grubunu incele** bağlantısı, Analytics'i bu sayfanın adres grubu ve aynı kaynak tarihleriyle açar. Grup, Fırsatlar'ın kullandığı en fazla 1.000 kaynak satırı içinde süzülür. Adres ya da tarih eşleşmesi kurulamazsa bağlantı yerine eşleşmenin doğrulanamadığı yazılır.
+
+Analytics kendi mülk saat dilimini, Search Console Pasifik takvimini kullanır. Aynı tarih etiketi iki kaynakta farklı zaman aralıklarını kapsayabilir.
+
+Kota hatasında bekleyip yenileyin; izin hatasında **Bağlantıları ayarla** ile bağlantıyı kontrol edin. Yenileme başarısız olursa önceki sonuç kendi tarihleri ve bir uyarıyla ekranda kalır.
+
+## Dışa aktarma
+
+**CSV** ve **E-Tablolar'a aktar** yalnızca görünen, filtrelenmiş satırları aktarır. Ölçüm tarihleri, 30 günlük üst sınır birimi, model, mülk, marka ayrımı, kaynak sınırları ve Analytics adres grubu sütun olarak eklenir. Bilinmeyen kazanç boş bırakılır; durum, neden, marka işareti ve ölçülen aramalar yazılır. E-Tablolar'a yalnızca siz menüden başlattığınızda yazılır.
+
+## Değişikliği ölçmek
+
+**Arama performansında aç**, aynı başlangıç ve bitiş tarihleriyle ve birebir adresle Arama performansı ayrıntısını açar. Dönem artık okunamıyorsa başka günlere geçilmez; kullanılabilir dönem yazılır.
+
+Bir değişiklik yaptığınızda tarihini not edin. Sonra aynı uzunluktaki dönemlerin ölçülen tıklama, tıklama oranı ve sırasını karşılaştırın. Fırsatlar'daki tahminin küçülmesi tek başına başarı kanıtı değildir.

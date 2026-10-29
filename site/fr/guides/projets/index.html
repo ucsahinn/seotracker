@@ -99,9 +99,9 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/guides/projets/"
@@ -124,7 +124,7 @@
     />
     <meta
       name="twitter:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
@@ -163,7 +163,7 @@
             "url": "https://seowatcher.io/fr/guides/projets/",
             "inLanguage": "fr",
             "datePublished": "2026-10-23",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Les écrans",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -198,7 +198,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1466,7 +1466,7 @@
           <ul>
             <li>
               <a href="/fr/guides/quest-ce-que-seowatcher/"
-                >Qu'est-ce que seowatcher ?</a
+                >Qu’est-ce que seowatcher ?</a
               >
             </li>
             <li>
@@ -1507,23 +1507,27 @@
               >
             </li>
             <li>
-              <a href="/fr/guides/statistiques/">Comprendre les statistiques</a>
+              <a href="/fr/guides/statistiques/"
+                >Comprendre les données Analytics</a
+              >
             </li>
             <li><a href="/fr/guides/audit-du-site/">Audit du site</a></li>
             <li>
-              <a href="/fr/guides/etat-de-l-index/">État de l'indexation</a>
+              <a href="/fr/guides/etat-de-l-index/">État de l’indexation</a>
             </li>
             <li><a href="/fr/guides/rapports/">Rapports et modèles</a></li>
-            <li><a href="/fr/guides/infos-du-projet/">Infos du projet</a></li>
+            <li>
+              <a href="/fr/guides/infos-du-projet/">Contexte du projet</a>
+            </li>
             <li><a href="/fr/guides/parametres/">Paramètres</a></li>
           </ul>
           <p class="nav-group">Aide et référence</p>
           <ul>
             <li><a href="/fr/guides/aide/">Aide</a></li>
-            <li><a href="/fr/guides/regles-d-audit/">Règles d'audit</a></li>
+            <li><a href="/fr/guides/regles-d-audit/">Règles d’audit</a></li>
             <li>
               <a href="/fr/guides/installation-assistant/"
-                >Installation de l'assistant</a
+                >Configuration de l’agent</a
               >
             </li>
             <li><a href="/fr/guides/depannage/">Dépannage</a></li>
@@ -1538,56 +1542,92 @@
           projet conserve ses propriétés Google, audits et rapports.
         </p>
         <p>
-          Projets aide à choisir un site et à compléter ses connexions. Chaque
-          projet conserve ses propriétés Google, audits et rapports.
+          Un projet correspond à un site. L’écran <strong>Projets</strong> liste
+          vos projets et indique, pour chacun, l’étape de configuration
+          suivante.
         </p>
-        <h2 id="lire-l-ecran">Lire l’écran</h2>
+        <h2 id="lire-la-liste">Lire la liste</h2>
         <p>
-          Avec plusieurs projets, recherchez et triez par nom ou domaine.
-          <strong>Dernier ouvert</strong> désigne le projet mémorisé par ce
-          navigateur, pas son état SEO. L’action principale propose d’ajouter un
-          site, de connecter Search Console ou d’ouvrir le tableau de bord selon
-          la configuration connue. Les informations du projet ouvrent les notes
-          ; les paramètres ouvrent la configuration.
-        </p>
-        <p>
-          L’archive de recherche contient les données Web stockées localement,
-          tous appareils et pays. Les dates sont visibles. La période se termine
-          au dernier jour enregistré, parfois ancien. Si des jours manquent, les
-          clics sont seulement le sous-total des jours observés. Un jour absent
-          reste un trou, jamais zéro. La variation exige deux périodes
-          complètes. Les totaux égaux sont indiqués sans changement ; depuis
-          zéro, les nombres précédents et actuels sont explicites. Les détails
-          montrent le dernier jour stocké et l’heure de lecture disponible. Les
-          anciens enregistrements ne précisent pas la preuve de finalisation.
+          Avec plusieurs projets, utilisez
+          <strong>Rechercher un projet</strong> et triez par nom ou par domaine.
+          Le badge <strong>Ouvert récemment</strong> désigne le projet que ce
+          navigateur a ouvert en dernier ; il ne dit rien de son état SEO.
         </p>
         <p>
-          L’audit appartient à l’hôte du site choisi. Le dernier audit terminé
-          reste distinct d’une tentative plus récente échouée ou en cours. Une
-          connexion enregistrée ne prouve pas une lecture Google réussie. Une
-          source illisible n’est ni déconnectée ni un zéro mesuré : réessayez.
-          Actualiser relit identités et données locales sans appeler Google ni
-          lancer un audit.
+          Le bouton principal de chaque carte dépend de la configuration :
+          <strong>Ajouter un site</strong>,
+          <strong>Connecter Search Console</strong> ou
+          <strong>Ouvrir le tableau de bord</strong>.
+          <strong>Contexte du projet</strong> ouvre les notes du projet,
+          <strong>Paramètres</strong> ouvre sa configuration.
         </p>
-        <h2 id="creer-et-gerer">Créer et gérer</h2>
+        <h2 id="chiffres-de-recherche-de-la-carte">
+          Chiffres de recherche de la carte
+        </h2>
         <p>
-          Nouveau projet demande un nom, un domaine facultatif, un pays et une
-          langue. La création ne collecte rien. Choisissez les propriétés Google
-          dans Paramètres → Connexions. Les paramètres généraux modifient
-          identité et marché. Chaque projet possède une propriété Search Console
-          et une propriété Analytics.
+          La carte reprend l’archive locale des données Search Console :
+          recherche Web, tous appareils et tous pays. La période s’arrête au
+          dernier jour enregistré, qui peut dater de plusieurs jours ; les dates
+          sont toujours affichées.
+        </p>
+        <ul>
+          <li>
+            Un jour absent de l’archive reste un trou, jamais un zéro. S’il
+            manque des jours, les clics affichés ne sont que le sous-total des
+            jours observés.
+          </li>
+          <li>
+            Une évolution n’est calculée qu’entre deux périodes complètes. Deux
+            totaux égaux sont signalés comme inchangés. Après une période à
+            zéro, les deux valeurs sont affichées en clair plutôt qu’en
+            pourcentage.
+          </li>
+          <li>
+            Si la période précédente compte moins de 20 clics, le badge donne
+            l’écart en clics. Passer de 1 à 5 clics s’affiche « +4 clics » : sur
+            de si petits nombres, ce n’est pas la preuve d’une forte croissance.
+          </li>
+          <li>
+            Les détails indiquent le dernier jour enregistré et l’heure de
+            lecture. Les enregistrements anciens ne précisent pas si Google
+            avait finalisé ces jours.
+          </li>
+        </ul>
+        <p>
+          Les clics de recherche ne se comparent ni aux sessions GA4 ni à la
+          somme des lignes par requête. Ne cumulez pas des chiffres de périodes
+          différentes.
+        </p>
+        <h2 id="audit-et-connexions-sur-la-carte">
+          Audit et connexions sur la carte
+        </h2>
+        <p>
+          L’audit affiché est celui du domaine du projet. Le dernier audit
+          terminé est présenté séparément d’une tentative plus récente, en cours
+          ou échouée.
         </p>
         <p>
-          Archiver conserve les données ; Restaurer les rend accessibles. Le
-          dernier projet ne peut pas être archivé. Les clics de recherche
-          diffèrent des sessions GA4 et des totaux par requête. Les périodes
-          différentes ne sont pas additionnées.
+          Une connexion enregistrée ne prouve pas que Google a répondu. Si une
+          source n’a pas pu être lue, elle n’est ni déconnectée ni à zéro :
+          réessayez. <strong>Actualiser</strong> relit les identités et les
+          données locales ; il n’interroge pas Google et ne lance pas d’audit.
         </p>
+        <h2 id="creer-un-projet">Créer un projet</h2>
         <p>
-          Lorsque la période précédente compte moins de 20 clics, le badge
-          affiche la différence de clics plutôt qu’un pourcentage. Passer de 1 à
-          5 représente par exemple +4 clics ; avec de petits nombres, ce
-          changement seul ne prouve pas une forte croissance.
+          <strong>Nouveau projet</strong> demande un nom, un domaine
+          (facultatif), un pays et une langue. La création ne collecte encore
+          aucune donnée. Choisissez ensuite les propriétés dans
+          <strong>Paramètres du projet → Connexions</strong> : une propriété
+          Search Console et une propriété Analytics par projet. La section
+          <strong>Général</strong> des paramètres modifie le nom, le domaine et
+          le marché.
+        </p>
+        <h2 id="archiver-et-retablir">Archiver et rétablir</h2>
+        <p>
+          <strong>Archiver le projet</strong> le retire de la liste sans
+          supprimer ses données. Il apparaît sous <strong>Archivé</strong>, d’où
+          <strong>Rétablir</strong> le remet en service. Le dernier projet actif
+          ne peut pas être archivé.
         </p>
         <nav class="pager" aria-label="Page précédente et suivante">
           <a class="pager-prev" rel="prev" href="/fr/guides/cle-pagespeed/"
@@ -1597,7 +1637,7 @@
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 28 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1609,15 +1649,26 @@
       <nav class="toc" aria-label="Sur cette page">
         <p class="toc-label">Sur cette page</p>
         <ol>
-          <li><a href="#lire-l-ecran">Lire l’écran</a></li>
-          <li><a href="#creer-et-gerer">Créer et gérer</a></li>
+          <li><a href="#lire-la-liste">Lire la liste</a></li>
+          <li>
+            <a href="#chiffres-de-recherche-de-la-carte"
+              >Chiffres de recherche de la carte</a
+            >
+          </li>
+          <li>
+            <a href="#audit-et-connexions-sur-la-carte"
+              >Audit et connexions sur la carte</a
+            >
+          </li>
+          <li><a href="#creer-un-projet">Créer un projet</a></li>
+          <li><a href="#archiver-et-retablir">Archiver et rétablir</a></li>
         </ol>
       </nav>
     </main>
     <footer>
       <div class="wrap">
         <p class="star">
-          Une étoile aide d'autres personnes à trouver un outil gratuit.
+          Une étoile aide d’autres personnes à trouver un outil gratuit.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

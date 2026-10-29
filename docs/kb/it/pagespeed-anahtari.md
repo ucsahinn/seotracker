@@ -1,22 +1,31 @@
 ---
 title: Chiave PageSpeed
-description: Salvare la chiave API di PageSpeed Insights, verificare le richieste di prova e capire quote e contatori durante il controllo del sito.
+description: Salvare la chiave API di PageSpeed Insights, interpretare la prova della chiave e capire quote e contatori del controllo del sito.
 kind: nasil-yapilir
 updated: 2026-10-27
 ---
 
-Una chiave API di PageSpeed Insights permette al controllo del sito di misurare la velocità delle pagine con PageSpeed Insights di Google. La chiave si crea gratis in Google Cloud ed è facoltativa: senza chiave, l'app prova a misurare al massimo 50 pagine per controllo.
+Con una chiave API di PageSpeed Insights, il controllo del sito misura la velocità delle pagine tramite il servizio di Google. La chiave è gratuita e facoltativa: senza chiave l'app tenta di misurare al massimo 50 pagine per controllo, e Google può fermare le richieste anche prima.
 
 ## Aggiungere una chiave
 
-Attiva PageSpeed Insights API in Google Cloud, crea una chiave e limita l'accesso a questa API. Salvala in Impostazioni → Misurazione velocità. È cifrata e mai mostrata. Docker accetta PAGESPEED_API_KEY; il valore salvato ha priorità.
+1. In Google Cloud attivi la PageSpeed Insights API.
+2. Crei una chiave API e la limiti a questa sola API.
+3. La salvi in **Impostazioni → Test di velocità**.
 
-## Significato del test
+La chiave viene cifrata e non è mai mostrata. In Docker si può usare anche la variabile `PAGESPEED_API_KEY`; il valore salvato in **Impostazioni** ha la precedenza.
 
-Il test invia una richiesta mobile reale per example.com. Non misura il tuo sito e non incrementa il contatore audit. Mostra risultato e data. Il pulsante resta disabilitato durante la richiesta e per almeno dieci secondi dal clic. Cambiare chiave rimuove il risultato precedente.
+## Che cosa dimostra la prova
 
-## Limiti e problemi
+**Prova la chiave** invia una richiesta reale da dispositivo mobile per example.com. Non misura il Suo sito e non incrementa il contatore dei controlli. Al termine compaiono risultato e data. Il pulsante resta disattivato durante la richiesta e per almeno dieci secondi dal clic. Cambiando chiave, il risultato precedente viene rimosso.
 
-Senza chiave l'app tenta al massimo 50 pagine per audit. Google può limitare prima; una chiave non garantisce successo. Verifica la quota reale in Google Cloud. Il contatore PageSpeed copre solo audit iniziati nelle ultime 24 ore, escludendo test e altri programmi.
+Una chiave salvata conferma solo la configurazione; una prova riuscita conferma solo quella singola richiesta.
 
-Chiave invalida: copiala di nuovo. Per 403 verifica API attiva e restrizioni. Attendi per limiti giornalieri o di frequenza e controlla le quote Cloud. Riprova gli errori di rete. Salvato indica configurazione; un test riuscito conferma solo quella richiesta.
+## Quote e problemi
+
+Una chiave non garantisce che tutte le misure riescano. La quota reale si controlla in Google Cloud. Il contatore PageSpeed in **Impostazioni** comprende solo i controlli avviati nelle ultime 24 ore; esclude le prove della chiave e gli altri programmi.
+
+- **Chiave non valida**: la copi di nuovo.
+- **Errore 403 o accesso limitato**: verifichi che l'API sia attiva e controlli le restrizioni della chiave.
+- **Limite giornaliero o di frequenza**: attenda e controlli le quote in Google Cloud.
+- **Errore di rete**: riprovi.

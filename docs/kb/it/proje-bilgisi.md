@@ -1,29 +1,42 @@
 ---
-title: Informazioni sul progetto
-description: Conservare obiettivi e note del progetto in locale per te e per un assistente collegato. Capire la portata delle note e i loro limiti.
+title: Contesto del progetto
+description: Contesto del progetto conserva in locale obiettivi, concorrenti e note che Lei e un agente collegato possono usare. Limiti e salvataggio.
 screen: Proje bilgisi
 route: /p/<proje>/context
 updated: 2026-10-27
 ---
 
-Le informazioni del progetto sono note locali per te e per un assistente collegato. Un testo compilato non è verificato e non tutti gli assistenti lo leggono automaticamente.
+Il testo inserito qui non viene verificato. Non tutti gli agenti lo leggono automaticamente: alcuni devono essere invitati a consultarlo.
 
-## Parti dall’obiettivo
+## Partire dall'obiettivo
 
-In alto trovi il numero di sezioni principali compilate e l’obiettivo salvato. Apri la prima sezione vuota o usa il selettore. Attività, obiettivo attuale, posizionamento e preferenze di scrittura consentono 4.000 caratteri ciascuno. Autore e data assoluta sono visibili per sezione. Salva modifiche invia solo le sezioni principali cambiate.
+In alto la schermata mostra quante sezioni principali sono compilate e l'obiettivo salvato. **Compila la prima sezione vuota** apre la sezione mancante; **Vai alla sezione** porta a qualsiasi altra. **Panoramica dell'attività**, obiettivo attuale, posizionamento e **Preferenze di scrittura** accettano fino a 4.000 caratteri ciascuno. Ogni sezione indica l'ultimo autore e la data esatta della modifica. **Salva modifiche** salva solo le sezioni principali modificate.
 
-Concorrenti e pagine importanti sono liste facoltative, non misure di ranking o conversioni. Ciascuna consente 100 voci. Dominio/nome/nota: 255/120/500 caratteri; indirizzo/argomento/nota: 2.048/200/500. I ruoli sono etichette tue. Gli assistenti creano sezioni personalizzate; puoi modificarle o rimuoverle. Limiti: 20 sezioni, titolo di 120 caratteri, contenuto di 4.000.
+**Concorrenti** e **Pagine importanti** sono elenchi facoltativi, compilati a mano. Non misurano posizionamento né conversioni. Ogni elenco accetta 100 voci:
+
+| Elenco            | Limiti in caratteri                      |
+| ----------------- | ---------------------------------------- |
+| Concorrenti       | dominio 255, nome 120, note 500          |
+| Pagine importanti | indirizzo 2.048, argomento 200, note 500 |
+
+Il ruolo di una pagina è un'etichetta scelta dall'utente. Gli agenti possono creare **Sezioni personalizzate**, che si possono modificare o rimuovere: al massimo 20, con titolo fino a 120 caratteri e contenuto fino a 4.000.
 
 ## Salvare e aggiornare
 
-Aggiorna rilegge note e configurazione. Un errore in background conserva informazioni e bozze mostrando un avviso. Uscire con modifiche principali o nei moduli in linea non salvate attiva un avviso. Il server non impedisce ancora sovrascritture simultanee della stessa sezione: confronta il testo più recente prima di salvare.
+**Aggiorna** rilegge note e configurazione. Se una lettura in background non riesce, informazioni e bozze restano al loro posto e compare un avviso. Uscendo dalla pagina con modifiche non salvate, nelle sezioni principali o nei moduli in linea, compare un avviso.
 
-Il prompt per l’assistente gli chiede di ottenere il tuo consenso prima di scrivere. Gli strumenti applicativi possono scrivere subito e non impongono un’ulteriore conferma. Il prompt resta indisponibile finché l’identità del progetto non è letta.
+Se un altro client modifica una sezione mentre la si sta scrivendo, l'intero salvataggio viene rifiutato e la bozza resta disponibile. La schermata affianca **Testo all'inizio della modifica**, **Ultimo testo salvato** e la bozza: li confronti, unisca le modifiche e salvi di nuovo. Gli agenti ottengono la stessa protezione inviando `expectedContent`; i client meno recenti che non lo inviano restano compatibili.
 
-Il diario di ricerca mostra le 20 note più recenti degli ultimi 90 giorni, di 1.000 caratteri ciascuna. La data usa il giorno UTC del server. Le note scadute vengono filtrate a ogni lettura. Un avviso indica altre note nello stesso periodo. Non è la cronologia completa.
+## Bozza con l'agente
 
-Se un altro client modifica una sezione durante la scrittura, l’intero salvataggio viene rifiutato e la bozza resta disponibile. Confronta il testo iniziale, l’ultimo testo salvato e la bozza, poi uniscili prima di riprovare. Gli agenti possono inviare `expectedContent` per la stessa protezione; i client precedenti senza questo campo restano compatibili.
+**Prepara una bozza con l'agente** offre un prompt da copiare con **Copia prompt**. Il prompt chiede all'agente di ottenere il consenso dell'utente prima di salvare. Gli strumenti dell'app, invece, scrivono subito e non chiedono un'ulteriore conferma. Il prompt è disponibile solo dopo che l'identità del progetto è stata letta.
 
-Fonti e configurazione conta sei segnali condivisi distinguendo mancanze e letture fallite. Le liste facoltative non contano. Una connessione non è un test dal vivo, una chiave PageSpeed non garantisce quota, una chiamata strumento dell’installazione non prova la lettura di questo progetto. Non è un punteggio SEO.
+## Registro delle ricerche
+
+Il **Registro delle ricerche** mostra le 20 voci più recenti degli ultimi 90 giorni; ogni voce arriva a 1.000 caratteri. La data segue il giorno UTC del server. Le voci scadute vengono filtrate a ogni lettura. Un avviso segnala quando nello stesso periodo esistono altre voci non mostrate: il registro non è una cronologia completa.
+
+## Origine e installazione
+
+**Origine e installazione** conta sei segnali di configurazione condivisi e distingue ciò che manca da ciò che non è stato possibile leggere. Gli elenchi facoltativi non contano. Una connessione salvata non è un test dal vivo, una chiave PageSpeed non garantisce la quota e una chiamata a uno strumento dell'installazione non prova che questo progetto sia stato letto. Il conteggio non è un punteggio SEO.
 
 <!-- Sources: src/routes/_app/projects.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/project-context/; src/server/features/projects/services/ProjectOverviewService.ts; src/server/features/project-context/ -->

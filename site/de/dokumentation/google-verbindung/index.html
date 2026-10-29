@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1502,9 +1502,7 @@
           <p class="nav-group">Bildschirme</p>
           <ul>
             <li><a href="/de/dokumentation/projekte/">Projekte</a></li>
-            <li>
-              <a href="/de/dokumentation/uebersicht/">Übersicht (Panel)</a>
-            </li>
+            <li><a href="/de/dokumentation/uebersicht/">Übersicht</a></li>
             <li><a href="/de/dokumentation/suchleistung/">Suchleistung</a></li>
             <li>
               <a href="/de/dokumentation/ranking-verfolgung/"
@@ -1514,12 +1512,12 @@
             <li><a href="/de/dokumentation/chancen/">Chancen</a></li>
             <li>
               <a href="/de/dokumentation/gespeicherte-suchbegriffe/"
-                >Gespeicherte Suchbegriffe</a
+                >Gespeicherte Keywords</a
               >
             </li>
             <li>
               <a href="/de/dokumentation/datenanalyse/"
-                >Analysedaten verstehen</a
+                >Analytics-Daten verstehen</a
               >
             </li>
             <li>
@@ -1529,7 +1527,7 @@
             <li>
               <a href="/de/dokumentation/berichte/">Berichte und Vorlagen</a>
             </li>
-            <li><a href="/de/dokumentation/projektinfo/">Projektinfo</a></li>
+            <li><a href="/de/dokumentation/projektinfo/">Projektkontext</a></li>
             <li>
               <a href="/de/dokumentation/einstellungen/">Einstellungen</a>
             </li>
@@ -1540,7 +1538,7 @@
             <li><a href="/de/dokumentation/audit-regeln/">Audit-Regeln</a></li>
             <li>
               <a href="/de/dokumentation/assistent-einrichten/"
-                >Assistent einrichten</a
+                >Agent einrichten</a
               >
             </li>
             <li>
@@ -1560,56 +1558,119 @@
           wählen.
         </p>
         <p>
-          seowatcher liest Search Console und Google Analytics 4 mit Ihren
-          eigenen Google-Cloud-Zugangsdaten: einem Dienstkonto oder einem
-          OAuth-Client. Sie speichern die Zugangsdaten einmal für die ganze
-          Installation und wählen dann für jedes Projekt eine Search-Console-
-          und eine GA4-Property.
+          seowatcher liest Search Console und Google Analytics 4 mit
+          Zugangsdaten aus Ihrem eigenen Google-Cloud-Projekt. Die Verbindung
+          hat zwei Ebenen:
         </p>
-        <h2 id="zugangsdaten-und-property">Zugangsdaten und Property</h2>
+        <ul>
+          <li>
+            <strong>Zugangsdaten</strong> speichern Sie einmal unter
+            <strong>Einstellungen</strong>. Sie gelten für die ganze
+            Installation.
+          </li>
+          <li>
+            <strong>Properties</strong> wählen Sie für jedes Projekt unter
+            <strong>Projekteinstellungen → Verbindungen</strong>: eine
+            Search-Console- und eine GA4-Property.
+          </li>
+        </ul>
         <p>
-          Google-Zugangsdaten in den Einstellungen gelten für die Installation.
-          Die Property unter Projekteinstellungen → Verbindungen gilt für ein
-          Projekt. Gespeichert und Property ausgewählt bestätigen nur die
-          Konfiguration. Den Datenzugriff prüfen Sie im Bericht Suchleistung
-          oder Analytics. Analytics zeigt Zeitzone und Währung neben der
-          Property. Die Auswahl installiert kein Website-Tracking.
+          Beides zusammen bestätigt nur die Konfiguration. Ob Daten tatsächlich
+          ankommen, sehen Sie in der Suchleistung oder in Analytics. Die Auswahl
+          einer Property installiert kein Tracking auf Ihrer Website.
         </p>
-        <h2 id="dienstkonto-oder-oauth">Dienstkonto oder OAuth</h2>
+        <h2 id="weg-1-dienstkonto">Weg 1: Dienstkonto</h2>
+        <ol>
+          <li>
+            Aktivieren Sie in Google Cloud die Search Console API sowie für
+            Analytics die Analytics Admin API und die Analytics Data API.
+          </li>
+          <li>
+            Erstellen Sie ein Dienstkonto und laden Sie dessen JSON-Schlüssel
+            herunter.
+          </li>
+          <li>
+            Wählen Sie unter <strong>Einstellungen → Dienstkonto</strong> die
+            Datei oder fügen Sie ihren Inhalt in das verdeckte Feld ein, und
+            speichern Sie. Den privaten Schlüssel zeigt die App danach nicht
+            mehr an.
+          </li>
+          <li>
+            Geben Sie der angezeigten E-Mail-Adresse des Dienstkontos in der
+            Search Console vollen Zugriff und in Analytics die Rolle Betrachter.
+          </li>
+          <li>Wählen Sie in den Projekteinstellungen die Properties.</li>
+        </ol>
+        <h2 id="weg-2-oauth-client">Weg 2: OAuth-Client</h2>
+        <ol>
+          <li>
+            Erstellen Sie in Google Cloud einen OAuth-Client vom Typ
+            Webanwendung.
+          </li>
+          <li>
+            Tragen Sie beide Weiterleitungsadressen exakt so ein, wie die App
+            sie anzeigt.
+          </li>
+          <li>
+            Speichern Sie Client-ID und Clientschlüssel in den Einstellungen.
+          </li>
+          <li>
+            Klicken Sie in den Projekteinstellungen unter
+            <strong>Verbindungen</strong> auf
+            <strong>Google-Konto hinzufügen</strong>, melden Sie sich mit Ihrem
+            Google-Konto an und wählen Sie die Property.
+          </li>
+        </ol>
         <p>
-          Aktivieren Sie Search Console API sowie für Analytics Admin API und
-          Data API in Google Cloud. Erstellen Sie ein Dienstkonto und laden Sie
-          den JSON-Schlüssel herunter. Wählen Sie die Datei unter Einstellungen
-          → Dienstkonto oder nutzen Sie das verdeckte Einfügefeld und speichern
-          Sie. Der private Schlüssel bleibt unsichtbar. Geben Sie der
-          angezeigten E-Mail Vollzugriff in Search Console und Betrachterrechte
-          in Analytics. Wählen Sie anschließend die Property im Projekt.
+          Ist zusätzlich ein Dienstkonto gespeichert, verwendet die App das
+          Dienstkonto.
+        </p>
+        <h2 id="status-der-verbindung">Status der Verbindung</h2>
+        <p>
+          Die Verbindungskarte zeigt, wann die App mit den aktuellen
+          Zugangsdaten zuletzt erfolgreich Daten der Property abgerufen hat.
+          Nach einem vorübergehenden Fehler bleibt das Datum des letzten Erfolgs
+          stehen. Gab es noch keinen Abruf, gilt der Zugriff als unbestätigt.
+          Für GA4 nennt die Karte außerdem Zeitzone und Währung der Property.
+          Das Öffnen der Einstellungen fragt Google nicht ab.
         </p>
         <p>
-          Alternativ erstellen Sie einen OAuth-Web-Client. Registrieren Sie
-          beide Callback-Adressen exakt wie angezeigt, speichern Sie Client-ID
-          und Geheimnis und autorisieren Sie das Google-Konto in den
-          Projektverbindungen. Ein gespeichertes Dienstkonto hat Vorrang.
+          Wechseln Sie die Zugangsdaten, gelten frühere Zugriffs- und
+          Kontingentnachweise nicht für die neue Identität. Aktualisieren Sie
+          die Berichte danach ausdrücklich.
         </p>
-        <h2 id="wiederherstellung">Wiederherstellung</h2>
+        <h2 id="probleme-beheben">Probleme beheben</h2>
         <p>
-          Ein Lesefehler erhält die alte Property-Liste; eine leere Liste allein
-          beweist keine fehlenden Rechte. Abgelaufene Freigaben neu verbinden,
-          bei Ablehnung Property-Rechte und bei deaktivierter API das
-          Cloud-Projekt prüfen. Bei Begrenzungen warten. Unbekannte Fehler:
-          erneut versuchen und Hilfe-Diagnose verwenden. Löschen in der App
-          widerruft keinen Google-Schlüssel. Domainänderungen erhalten Zuordnung
-          und Verlauf.
+          Schlägt das Laden der Property-Liste fehl, bleibt die bisherige Liste
+          stehen. Eine leere Liste allein beweist keine fehlenden Rechte.
         </p>
+        <ul>
+          <li>
+            <strong>Freigabe abgelaufen</strong>: Verbinden Sie das Konto
+            erneut.
+          </li>
+          <li>
+            <strong>Zugriff verweigert</strong>: Prüfen Sie die Rechte an der
+            Property.
+          </li>
+          <li>
+            <strong>API deaktiviert</strong>: Aktivieren Sie die API im
+            Cloud-Projekt.
+          </li>
+          <li>
+            <strong>Limit erreicht</strong>: Warten Sie und versuchen Sie es
+            später erneut.
+          </li>
+          <li>
+            <strong>Unbekannter Fehler</strong>: Versuchen Sie es erneut und
+            nutzen Sie die Diagnose auf dem Bildschirm <strong>Hilfe</strong>.
+          </li>
+        </ul>
         <p>
-          Die Verbindungskarte zeigt den letzten bereits beobachteten
-          Google-Abruf für die aktuellen Zugangsdaten und die Property mit
-          Datum. Nach einem vorübergehenden Fehler bleibt das Datum des
-          vorherigen erfolgreichen Abrufs erhalten. Ohne Verlauf ist der Zugriff
-          unbestätigt. Das Öffnen der Einstellungen löst keine Google-Abfrage
-          aus. Nach einem Wechsel der Zugangsdaten gelten alte Zugriffs- und
-          Kontingentnachweise nicht für die neue Identität; Berichte müssen
-          ausdrücklich aktualisiert werden.
+          Wenn Sie Zugangsdaten in der App löschen, bleibt der Schlüssel bei
+          Google gültig; widerrufen Sie ihn bei Bedarf in Google Cloud. Ändern
+          Sie die Domain eines Projekts, bleiben Property-Zuordnung und Verlauf
+          erhalten.
         </p>
         <nav class="pager" aria-label="Vorherige und nächste Seite">
           <a
@@ -1637,18 +1698,17 @@
       <nav class="toc" aria-label="Auf dieser Seite">
         <p class="toc-label">Auf dieser Seite</p>
         <ol>
-          <li>
-            <a href="#zugangsdaten-und-property">Zugangsdaten und Property</a>
-          </li>
-          <li><a href="#dienstkonto-oder-oauth">Dienstkonto oder OAuth</a></li>
-          <li><a href="#wiederherstellung">Wiederherstellung</a></li>
+          <li><a href="#weg-1-dienstkonto">Weg 1: Dienstkonto</a></li>
+          <li><a href="#weg-2-oauth-client">Weg 2: OAuth-Client</a></li>
+          <li><a href="#status-der-verbindung">Status der Verbindung</a></li>
+          <li><a href="#probleme-beheben">Probleme beheben</a></li>
         </ol>
       </nav>
     </main>
     <footer>
       <div class="wrap">
         <p class="star">
-          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          Ein Stern hilft anderen, das Werkzeug zu finden.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

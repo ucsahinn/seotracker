@@ -1,21 +1,21 @@
 ---
 title: Install on Windows
-description: Install on Windows with a single file. First launch, update, uninstall, backup and changing the port number. No Docker or terminal needed.
+description: Install seowatcher on Windows 10 or 11 with one file, then update, repair, back up, change the port or uninstall it. No Docker needed.
 kind: nasil-yapilir
 updated: 2026-10-23
 ---
 
-This guide installs the app on your computer and opens it in the browser. The install takes two minutes. It installs only for your own user account and needs no administrator rights, except once if the Visual C++ component is missing.
+The Windows package installs seowatcher for your user account and opens it in your browser. Installation takes about two minutes and needs no administrator rights, unless Windows is missing the Visual C++ runtime.
 
-The app's interface comes in six languages: Turkish, English, German, French, Italian and Portuguese. This guide uses the English names; to switch, go to **Settings → Appearance → Language**. The Windows tray menu is Turkish only, so there the guide gives the Turkish name with its English meaning in brackets.
+The app's interface is available in six languages; change it under **Settings → Appearance**. The tray menu is in Turkish only, so this guide gives each tray item in Turkish with its English meaning in brackets.
 
 ## What you need
 
 - Windows 10 or 11 (64-bit).
 - About 400 MB of free space. The installer file is 86 MB and the installed app is 313 MB.
 - A browser such as Edge, Chrome or Firefox.
-- You do not need Docker, Node, a terminal (command window) or administrator rights.
-- The app's engine needs Microsoft's Visual C++ package. If your computer does not have it, the installer installs it for you and asks for administrator permission once.
+- No Docker, Node or terminal.
+- Microsoft's Visual C++ runtime. If it is missing, the installer adds it and asks for administrator permission once.
 
 ## Steps
 
@@ -23,7 +23,7 @@ The app's interface comes in six languages: Turkish, English, German, French, It
 
 1. Download **seowatcher-setup.exe** from the GitHub releases page. The fixed address is: `github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe`
 2. Double-click the file.
-3. If Windows says "Windows protected your PC", click **More info**, then **Run anyway** (on a Turkish Windows: "Daha fazla bilgi", "Yine de çalıştır"). The file is not signed yet, so Windows does not know the publisher. The warning is expected.
+3. If Windows says "Windows protected your PC", click **More info**, then **Run anyway**. The installer is not code-signed yet, so Windows does not recognize the publisher; the warning is expected.
 4. Optionally, compare the file's SHA-256 hash (the file's fingerprint) with `SHA256SUMS.txt` on the releases page.
 5. In the installer wizard, go through the pages in this order:
    1. The welcome page: click **Next**.
@@ -31,14 +31,14 @@ The app's interface comes in six languages: Turkish, English, German, French, It
    3. The options page: **Start seowatcher when Windows starts** (Turkish: "Windows açılınca seowatcher'ı başlat") and **Create a desktop shortcut** (Turkish: "Masaüstüne kısayol ekle"). The first one is checked by default. Clear it if you do not want the app to start in the background. Click **Next**.
    4. Click **Install** (on a Turkish Windows: **Kur**).
    5. The final page has a **Start seowatcher now** checkbox. Leave it checked and click **Finish** (on a Turkish Windows: **Bitti**). The app opens.
-6. Wait. The first launch takes 20-30 seconds. Look for the seowatcher icon in the notification area (system tray) at the right of the taskbar. If the icon is not visible, click the ^ arrow on the taskbar. The icon's text then changes in turn to "Anahtarlar hazırlanıyor" (Preparing keys), "Veritabanı güncelleniyor" (Updating database) and "Sunucu başlatılıyor" (Starting server). When it is ready, your browser opens by itself. When Windows starts it automatically, the browser does not open; a "seowatcher hazır" (seowatcher is ready) balloon appears instead.
+6. Wait 20-30 seconds for the first launch. The seowatcher icon appears in the notification area at the right end of the taskbar; if you cannot see it, click the ^ arrow there. The icon's text then changes in turn to "Anahtarlar hazırlanıyor" (Preparing keys), "Veritabanı güncelleniyor" (Updating database) and "Sunucu başlatılıyor" (Starting server). When it is ready, your browser opens by itself. When Windows starts it automatically, the browser does not open; a "seowatcher hazır" (seowatcher is ready) balloon appears instead.
 7. `http://127.0.0.1:3001` opens in the browser by itself. This is your computer's own address (127.0.0.1) followed by the port number (3001).
 
-The next step is the Google connection guide.
+Next, follow [Connecting to Google](/docs/google-baglantisi/).
 
 ### Taskbar menu
 
-Right-click the icon (if it is not visible, click the ^ arrow on the taskbar). The menu has four sections. At the top are opening the app and the status line, then update and restart, then two settings, and at the bottom the troubleshooting items.
+Right-click the tray icon to open the menu. From top to bottom it holds: opening the app and the status line, update and restart, the startup and update settings, and the troubleshooting items.
 
 - **seowatcher'ı aç** (Open seowatcher): opens the app in the browser. Double-clicking the icon does the same. If the app is still starting, a "seowatcher açılıyor" (seowatcher is starting) balloon appears, and the browser opens by itself when it is ready.
 - Status line: "Çalışıyor: http://127.0.0.1:3001/" (Running: http://127.0.0.1:3001/), "Veritabanı güncelleniyor" (Updating database) or an error text. It cannot be clicked. If the text is long, hold the mouse over it to see all of it.
@@ -47,6 +47,7 @@ Right-click the icon (if it is not visible, click the ^ arrow on the taskbar). T
 - **Yeniden başlat** (Restart): closes the app and opens it again. If something gets stuck, try this first.
 - **Windows açılınca başlat** (Start with Windows): if checked, the app starts in the background when the computer starts. If an administrator turned this setting on during an install for all users of the computer, the item is checked and greyed out, and only an administrator can turn it off.
 - **Güncellemeleri kendiliğinden kur** (Install updates automatically): if checked, the app installs a new version by itself when it finds one.
+- **Windows bildirimleri** (Windows notifications): on by default. Shows finished and failed audits and new announcements as Windows notifications, even when the browser is closed. See [Settings](/docs/ayarlar/) for details.
 - **Kurulumu onar** (Repair installation): clears temporary files, checks that the package is complete and reopens the app. While it repairs, the item reads "Onarılıyor…" (Repairing…).
 - **Tanı bilgisini kopyala** (Copy diagnostic info): copies the Windows version, the processor, the Visual C++ version, a test run of the engine, the faulty module from the Windows event log, crash dumps and the last log lines to the clipboard. The information is ready in a few seconds, then a "Kopyalandı" (Copied) balloon appears. This helps when you report a problem.
 - **Sorunu bildir (GitHub)** (Report a problem (GitHub)): puts the same information on the clipboard and opens a pre-filled issue on GitHub. Add one sentence about what you did and send it.
@@ -67,7 +68,7 @@ The app updates itself. Two minutes after it opens, and once every day, it check
 - If there is no internet connection, or GitHub does not answer at that moment, the app tries again an hour later. For automatic attempts, it warns only once per version.
 - If the downloaded file's fingerprint does not match, the update is not installed and the installed version keeps running.
 - An install for all users of the computer needs administrator permission to update, so the app does not install by itself there. When a new version comes out you see a balloon; when you click it, Windows asks for administrator permission.
-- To update by hand, download the new installer from the same address and run it. The wizard closes the running app, replaces the files and starts it again. The **Start seowatcher when Windows starts** (Turkish: "Windows açılınca seowatcher'ı başlat") checkbox in the wizard shows your current setting from the menu.
+- To update by hand, download the new installer from the same address and run it. The wizard closes the running app, replaces the files and starts it again. The wizard's **Start seowatcher when Windows starts** checkbox reflects your current setting.
 
 Your data, your Google connection and your settings stay as they are. An automatic update does not touch the **Windows açılınca başlat** (Start with Windows) setting.
 
@@ -83,7 +84,7 @@ For IT teams that want to install for all users of a computer, or install silent
 
 ### Repair
 
-If something gets stuck, right-click the icon and click **Kurulumu onar** (Repair installation); if the icon is not visible, click the ^ arrow on the taskbar. The app clears temporary files and checks that the package is complete. When it then opens, it runs the database update again.
+If something gets stuck, right-click the tray icon and click **Kurulumu onar** (Repair installation). The app clears temporary files and checks that the package is complete. When it then opens, it runs the database update again.
 
 If a file has been deleted from the package (for example, an antivirus program quarantined it), the app downloads the installer of the installed version from GitHub, verifies its fingerprint and reinstalls itself. Your data is not touched. If there is no internet connection, it says "Kurulum eksik" (Installation incomplete) and opens the releases page; then download the installer and run it.
 
@@ -92,7 +93,7 @@ If a file has been deleted from the package (for example, an antivirus program q
 1. In Windows, open **Settings → Apps → Installed apps** and find **seowatcher**.
 2. Click **Uninstall**.
 
-The uninstaller removes the program, the Start menu shortcut the "start with Windows" entry (including one you turned on from the menu) and downloaded update files. It does not touch the data folder, and the uninstall window says so too. If you also want to delete your database, your Google connection and your reports, delete the data folder yourself.
+The uninstaller removes the program, the Start menu shortcut, the "start with Windows" entry (including one you turned on from the menu) and downloaded update files. It does not touch the data folder, and the uninstall window says so too. If you also want to delete your database, your Google connection and your reports, delete the data folder yourself.
 
 ### Where is the data and how do I back it up?
 
@@ -128,13 +129,13 @@ To choose a specific port:
 
 4. Save it and start the app. If the file has other lines (such as `autoUpdate`), do not delete them; change only the value of `port`.
 
-When the number changes, also update the two redirect addresses at Google with the new number. These addresses are explained in the Google connection guide.
+If you use an OAuth client, update its two redirect URIs at Google to the new port. See [Connecting to Google](/docs/google-baglantisi/).
 
 ## Check
 
-- When you hover over the taskbar icon (if it is not visible, click the ^ arrow on the taskbar), it should read "seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/" (seowatcher 0.5.0 Alpha: Running: http://127.0.0.1:3001/). The version number is the one you installed.
+- Hovering over the tray icon shows "seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/" (Running), where X.Y.Z is the version you installed.
 - In the browser, the address `http://127.0.0.1:3001/api/health` should show a text that starts with "status":"ok".
-- On the **Help** screen, the "Your setup status" card should say "Everything looks good.". Before Google is connected, the "Google sign-in" row asks for attention. This is normal.
+- On the **Help** screen, the **App health** card shows no problems except **Google sign-in**, which asks for attention until you connect Google.
 
 ## Frequently asked questions
 
@@ -144,7 +145,7 @@ When the number changes, also update the two redirect addresses at Google with t
 
 **Can I open it from another computer?** No, and this is on purpose. The app listens only on the 127.0.0.1 address. To open it to the internet, you need to put your own authentication in front of it.
 
-**Can I switch from the Docker version?** Yes, but the data does not move by itself. You need to create the projects and connect Google again. The Search Console archive fills up again on the first launch.
+**Can I switch from the Docker version?** Yes, but the data does not move by itself. You need to create the projects and connect Google again. The Search Console archive refills from Google's last 16 months when you open Search performance or Rank tracking.
 
 **My antivirus gave a warning.** Some antivirus programs warn because the file is unsigned. Download the file only from the GitHub releases page and compare its SHA-256 hash.
 
@@ -157,7 +158,3 @@ When the number changes, also update the two redirect addresses at Google with t
 - **The browser did not open.** Double-click the icon or type the address by hand: `http://127.0.0.1:3001`
 
 <!-- Kaynaklar: packaging/windows/README.md; packaging/windows/launcher/SeoWatcher.cs (menü, port seçimi, dosyalar); packaging/windows/seowatcher.iss (kurulum yeri, görevler, kaldırma); .github/workflows/release-windows.yml (SHA256SUMS) -->
-
-## Windows notifications
-
-Right-click the seowatcher tray icon and use **Windows bildirimleri** (Windows notifications, on by default). While the launcher runs, completed/failed audits from all projects and new announcements appear as Windows balloons within about 90 seconds, even with the browser closed or in the background. Click to open the relevant page; several events form one summary. First use skips old events; restarting does not replay seen events. Events received while muted are not replayed later. New-version notifications follow the existing update setting. Windows Focus/Do not disturb can hide notifications. No notifications appear when the launcher is closed. This feature is unavailable in Docker.

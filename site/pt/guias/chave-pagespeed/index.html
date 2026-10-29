@@ -14,7 +14,7 @@
     <title>Chave do PageSpeed | Guia do seowatcher</title>
     <meta
       name="description"
-      content="Guardar uma chave PageSpeed e compreender testes e contadores de auditoria."
+      content="Como salvar a chave da API do PageSpeed Insights, entender o teste da chave e acompanhar cotas e contadores da auditoria do site."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -94,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="Guardar uma chave PageSpeed e compreender testes e contadores de auditoria."
+      content="Como salvar a chave da API do PageSpeed Insights, entender o teste da chave e acompanhar cotas e contadores da auditoria do site."
     />
     <meta
       property="og:image"
@@ -125,7 +125,7 @@
     />
     <meta
       name="twitter:description"
-      content="Guardar uma chave PageSpeed e compreender testes e contadores de auditoria."
+      content="Como salvar a chave da API do PageSpeed Insights, entender o teste da chave e acompanhar cotas e contadores da auditoria do site."
     />
     <meta
       name="twitter:image"
@@ -168,7 +168,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/pt/guias/chave-pagespeed/#article",
             "headline": "Chave do PageSpeed",
-            "description": "Guardar uma chave PageSpeed e compreender testes e contadores de auditoria.",
+            "description": "Como salvar a chave da API do PageSpeed Insights, entender o teste da chave e acompanhar cotas e contadores da auditoria do site.",
             "url": "https://seowatcher.io/pt/guias/chave-pagespeed/",
             "inLanguage": "pt",
             "datePublished": "2026-10-23",
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1507,7 +1507,7 @@
               >
             </li>
             <li>
-              <a href="/pt/guias/analise/">Entender os dados de análise</a>
+              <a href="/pt/guias/analise/">Compreender os dados do Analytics</a>
             </li>
             <li>
               <a href="/pt/guias/auditoria-do-site/">Auditoria do site</a>
@@ -1518,7 +1518,7 @@
             <li><a href="/pt/guias/relatorios/">Relatórios e modelos</a></li>
             <li>
               <a href="/pt/guias/informacoes-do-projeto/"
-                >Informações do projeto</a
+                >Contexto do projeto</a
               >
             </li>
             <li><a href="/pt/guias/configuracoes/">Configurações</a></li>
@@ -1530,7 +1530,7 @@
               <a href="/pt/guias/regras-de-auditoria/">Regras de auditoria</a>
             </li>
             <li>
-              <a href="/pt/guias/configurar-agente/">Configurar o agente</a>
+              <a href="/pt/guias/configurar-agente/">Configuração do agente</a>
             </li>
             <li>
               <a href="/pt/guias/solucao-de-problemas/">Solução de problemas</a>
@@ -1542,43 +1542,61 @@
       <article id="icerik" data-page="pagespeed-anahtari">
         <h1>Chave do PageSpeed</h1>
         <p class="lede">
-          Guardar uma chave PageSpeed e compreender testes e contadores de
-          auditoria.
+          Como salvar a chave da API do PageSpeed Insights, entender o teste da
+          chave e acompanhar cotas e contadores da auditoria do site.
         </p>
         <p>
-          Uma chave da API do PageSpeed Insights permite que a auditoria do site
-          meça a velocidade das suas páginas com o PageSpeed Insights do Google.
-          A chave é criada de graça no Google Cloud e é opcional: sem ela, o app
-          tenta medir no máximo 50 páginas por auditoria.
+          Com uma chave da API do PageSpeed Insights, a auditoria do site mede a
+          velocidade das páginas pelo serviço do Google. A chave é gratuita e
+          opcional: sem ela, o aplicativo tenta medir no máximo 50 páginas por
+          auditoria, e o Google pode interromper as solicitações antes disso.
         </p>
-        <h2 id="adicionar-uma-chave">Adicionar uma chave</h2>
+        <h2 id="adicione-uma-chave">Adicione uma chave</h2>
+        <ol>
+          <li>No Google Cloud, ative a PageSpeed Insights API.</li>
+          <li>Crie uma chave de API e restrinja-a a essa API.</li>
+          <li>
+            Salve-a em <strong>Configurações → Testes de velocidade</strong>.
+          </li>
+        </ol>
         <p>
-          Ative PageSpeed Insights API no Google Cloud, crie uma chave e
-          restrinja-a a esta API. Guarde em Definições → Medição de velocidade.
-          A chave é cifrada e nunca mostrada. Docker aceita PAGESPEED_API_KEY; o
-          valor guardado tem prioridade.
+          A chave é criptografada e nunca é exibida. No Docker, também é
+          possível usar a variável <code>PAGESPEED_API_KEY</code>; o valor salvo
+          em <strong>Configurações</strong> tem prioridade.
         </p>
-        <h2 id="o-que-o-teste-prova">O que o teste prova</h2>
+        <h2 id="o-que-o-teste-comprova">O que o teste comprova</h2>
         <p>
-          O teste envia um pedido móvel real para example.com. Não mede o seu
-          site nem aumenta o contador de auditorias. Apresenta resultado e data.
-          O botão permanece desativado durante o pedido e pelo menos dez
-          segundos após o clique. Alterar a chave remove o resultado antigo.
+          <strong>Testar chave</strong> envia uma solicitação real de
+          dispositivo móvel para example.com. Ele não mede o seu site nem
+          aumenta o contador de auditorias. Ao final, aparecem o resultado e a
+          data. O botão fica desativado durante a solicitação e por pelo menos
+          dez segundos após o clique. Ao trocar a chave, o resultado anterior é
+          removido.
         </p>
-        <h2 id="limites-e-recuperacao">Limites e recuperação</h2>
         <p>
-          Sem chave a aplicação tenta no máximo 50 páginas por auditoria. O
-          Google pode limitar antes; uma chave não garante sucesso. Consulte a
-          quota real no Google Cloud. O contador PageSpeed abrange apenas
-          auditorias iniciadas nas últimas 24 horas, sem testes ou outros
+          Uma chave salva confirma apenas a configuração; um teste bem-sucedido
+          confirma apenas aquela solicitação.
+        </p>
+        <h2 id="cotas-e-problemas">Cotas e problemas</h2>
+        <p>
+          Uma chave não garante que todas as medições funcionem. A cota real
+          fica no Google Cloud. O contador do PageSpeed em
+          <strong>Configurações</strong> inclui apenas as auditorias iniciadas
+          nas últimas 24 horas; não inclui os testes da chave nem outros
           programas.
         </p>
-        <p>
-          Chave inválida: copie novamente. Para 403 confirme API ativa e
-          restrições. Aguarde perante limites diários ou de frequência e
-          consulte as quotas Cloud. Repita falhas de rede. Guardado indica
-          configuração; um teste bem-sucedido confirma apenas esse pedido.
-        </p>
+        <ul>
+          <li><strong>Chave inválida</strong>: copie-a de novo.</li>
+          <li>
+            <strong>Erro 403 ou acesso restrito</strong>: confira se a API está
+            ativa e revise as restrições da chave.
+          </li>
+          <li>
+            <strong>Limite diário ou de frequência</strong>: aguarde e consulte
+            as cotas no Google Cloud.
+          </li>
+          <li><strong>Erro de rede</strong>: tente de novo.</li>
+        </ul>
         <nav class="pager" aria-label="Página anterior e seguinte">
           <a class="pager-prev" rel="prev" href="/pt/guias/conexao-google/"
             ><span>Anterior</span><strong>Conectar ao Google</strong></a
@@ -1587,21 +1605,21 @@
           >
         </nav>
         <p class="meta">
-          Última atualização: 29 de outubro de 2026. Viu algum erro?
+          Última atualização: 29 de outubro de 2026. Encontrou um erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >Relate no GitHub</a
+            >Informe no GitHub</a
           >.
         </p>
       </article>
       <nav class="toc" aria-label="Nesta página">
         <p class="toc-label">Nesta página</p>
         <ol>
-          <li><a href="#adicionar-uma-chave">Adicionar uma chave</a></li>
-          <li><a href="#o-que-o-teste-prova">O que o teste prova</a></li>
-          <li><a href="#limites-e-recuperacao">Limites e recuperação</a></li>
+          <li><a href="#adicione-uma-chave">Adicione uma chave</a></li>
+          <li><a href="#o-que-o-teste-comprova">O que o teste comprova</a></li>
+          <li><a href="#cotas-e-problemas">Cotas e problemas</a></li>
         </ol>
       </nav>
     </main>

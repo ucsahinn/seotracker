@@ -1,29 +1,41 @@
 ---
-title: Infos du projet
+title: Contexte du projet
 description: Conserver les objectifs et les notes du projet en local pour vous et votre assistant connecté. Comprendre leur portée et leurs limites.
 screen: Proje bilgisi
 route: /p/<proje>/context
 updated: 2026-10-27
 ---
 
-Les informations du projet sont des notes locales utilisables par vous et votre assistant connecté. Un texte rempli n’est pas vérifié ; tous les assistants ne le lisent pas automatiquement.
+Le contexte du projet rassemble vos notes sur un site : activité, objectif, positionnement, consignes de rédaction. L’application les stocke sur cet ordinateur sans les vérifier. Un assistant connecté peut les lire et les modifier via MCP, mais seulement s’il appelle l’outil prévu à cet effet.
 
-## Commencer par l’objectif
+## Sections et limites
 
-Le haut de page montre les sections principales remplies et l’objectif enregistré. Ouvrez la première section vide ou utilisez le sélecteur. Présentation de l’activité, objectif actuel, positionnement et préférences rédactionnelles acceptent chacun 4 000 caractères. L’auteur et la date absolue figurent sur chaque section. Enregistrer ne transmet que les sections principales modifiées.
+Les quatre sections principales sont **Présentation de l’activité**, **Objectif actuel**, **Positionnement** et **Préférences de rédaction**. Chacune accepte 4 000 caractères et indique l’auteur et la date de la dernière modification. Le haut de page montre les sections remplies et l’objectif enregistré. **Remplir la première section vide** et le sélecteur de section vous y conduisent. **Enregistrer les modifications** n’envoie que les sections principales modifiées.
 
-Concurrents et pages importantes sont des listes facultatives, pas des mesures de classement ou de conversion. Chaque liste accepte 100 entrées. Domaine/nom/note : 255/120/500 caractères ; adresse/sujet/note : 2 048/200/500. Les rôles sont vos étiquettes. Les assistants créent les sections personnalisées ; vous pouvez les modifier ou supprimer. Limites : 20 sections, titre de 120 caractères, contenu de 4 000.
+**Concurrents** et **Pages clés** sont des listes facultatives que vous tenez vous-même. Elles ne mesurent ni classement ni conversion.
 
-## Enregistrer et actualiser
+| Liste                   | Entrées | Limites des champs                             |
+| ----------------------- | ------- | ---------------------------------------------- |
+| Concurrents             | 100     | Domaine 255, nom 120, notes 500 caractères     |
+| Pages clés              | 100     | Adresse 2 048, sujet 200, notes 500 caractères |
+| Sections personnalisées | 20      | Titre 120, contenu 4 000 caractères            |
 
-Actualiser relit notes et configuration. Une erreur en arrière-plan conserve les informations enregistrées et les brouillons avec un avertissement. Quitter avec des modifications principales ou intégrées non enregistrées déclenche un avertissement. Le serveur n’empêche pas encore l’écrasement d’une même section modifiée simultanément : comparez le texte récent avant d’enregistrer.
+Le rôle d’une page clé est une étiquette pour votre propre usage. Les sections personnalisées sont créées par un assistant ; vous pouvez les modifier ou les supprimer.
 
-Le modèle destiné à l’assistant lui demande votre accord avant d’écrire. Les outils de l’application peuvent écrire immédiatement, sans accord supplémentaire imposé. Sans identité de projet résolue, le modèle reste indisponible.
+## Travailler avec un assistant
 
-Le journal de recherche affiche les 20 dernières notes des 90 derniers jours, de 1 000 caractères chacune. La date suit le jour UTC du serveur. Les notes expirées sont filtrées à chaque lecture. Un message indique les notes supplémentaires de cette période. La liste n’est pas un historique complet.
+**Préparer un brouillon avec l’agent** fournit une invite à copier. Elle demande à l’assistant d’obtenir votre accord avant d’enregistrer. Cet accord ne figure que dans l’invite : les outils de l’application écrivent dès qu’ils sont appelés. L’invite devient disponible une fois l’identité du projet chargée.
 
-Si un autre client modifie une section pendant votre saisie, tout l’enregistrement est refusé et votre brouillon est conservé. Comparez le texte initial, le dernier texte enregistré et votre brouillon, puis fusionnez-les avant de réessayer. Les agents peuvent transmettre `expectedContent` pour bénéficier de cette protection ; les anciens clients restent compatibles sans ce champ.
+Si une section change ailleurs pendant que vous la modifiez, par exemple parce qu’un assistant l’a enregistrée, l’application refuse tout votre enregistrement et conserve votre brouillon. Elle affiche alors le **Texte au début de la modification**, le **Dernier texte enregistré** et votre brouillon. Fusionnez-les, puis enregistrez de nouveau. Les assistants bénéficient de la même protection en envoyant `expectedContent` ; les anciens clients qui ne l’envoient pas fonctionnent toujours.
 
-Sources et configuration compte six signaux communs et distingue absence et lecture impossible. Les listes facultatives sont exclues. Une connexion n’est pas un test en direct, une clé PageSpeed ne garantit pas le quota, un appel d’outil de cette installation ne prouve pas la lecture de ce projet. Ce n’est pas une note SEO.
+## Journal de recherche
+
+Le **Journal de recherche** affiche les 20 notes les plus récentes des 90 derniers jours. Chaque note compte 1 000 caractères au plus et porte la date du jour UTC du serveur. Les notes plus anciennes sortent de la vue, même sans nouvel ajout, et un message signale les notes de la période qui ne sont pas affichées. Le journal montre l’activité récente ; ce n’est pas un historique complet.
+
+## Source et installation
+
+**Source et installation** compte six signaux de configuration communs à tout le projet. Il distingue un signal absent d’un signal illisible et ignore les listes facultatives. Ce n’est pas une note SEO : une connexion enregistrée ne prouve pas que Google répond, une clé PageSpeed ne garantit pas le quota, et un appel d’outil enregistré ne prouve pas que l’assistant a lu ce projet.
+
+**Actualiser** relit les notes et la configuration. Si une lecture en arrière-plan échoue, l’écran conserve les informations enregistrées et vos brouillons, avec un avertissement. Si vous quittez la page avec des modifications non enregistrées, l’application demande confirmation.
 
 <!-- Sources: src/routes/_app/projects.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/project-context/; src/server/features/projects/services/ProjectOverviewService.ts; src/server/features/project-context/ -->

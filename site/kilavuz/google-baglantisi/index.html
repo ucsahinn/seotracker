@@ -201,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1488,7 +1488,7 @@
             <li><a href="/kilavuz/firsatlar/">Fırsatlar</a></li>
             <li><a href="/kilavuz/kayitli-kelimeler/">Kayıtlı kelimeler</a></li>
             <li>
-              <a href="/kilavuz/analitik/">Analitik verilerini yorumlama</a>
+              <a href="/kilavuz/analitik/">Analytics verisini yorumlama</a>
             </li>
             <li><a href="/kilavuz/site-denetimi/">Site denetimi</a></li>
             <li><a href="/kilavuz/dizin-durumu/">Dizin durumu</a></li>
@@ -1513,61 +1513,153 @@
           OAuth istemcinizle bağlayın, sonra her proje için mülkleri seçin.
         </p>
         <p>
-          seowatcher, Search Console ve Google Analytics 4 verisini kendi Google
-          Cloud kimliğinizle okur: bir hizmet hesabı ya da bir OAuth istemcisi.
-          Kimliği tüm kurulum için bir kez kaydedersiniz, sonra her proje için
-          bir Search Console ve bir GA4 mülkü seçersiniz.
+          Bağlantı iki adımdır. Önce Google kimliğini tüm kurulum için bir kez
+          kaydedersiniz. Sonra her projede bir Search Console ve bir Google
+          Analytics 4 mülkü seçersiniz. Kimlik için iki yol vardır: hizmet
+          hesabı (daha kısa yol) ya da Google OAuth istemcisi.
         </p>
-        <h2 id="kimlik-ve-mulk-ayri-secimlerdir">
-          Kimlik ve mülk ayrı seçimlerdir
-        </h2>
+        <h2 id="kimlik-ve-mulk-farki">Kimlik ve mülk farkı</h2>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Seçim</th>
+                <th>Kapsam</th>
+                <th>Nerede</th>
+                <th>Rozet</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Kimlik</td>
+                <td>Tüm projeler</td>
+                <td><strong>Ayarlar → Google kimlikleri</strong></td>
+                <td><strong>Kayıtlı</strong></td>
+              </tr>
+              <tr>
+                <td>Mülk</td>
+                <td>Tek proje</td>
+                <td><strong>Proje ayarları → Bağlantılar</strong></td>
+                <td><strong>Mülk seçili</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <p>
-          <strong>Ayarlar</strong> içindeki Google kimliği tüm kuruluma
-          uygulanır; <strong>Proje ayarları → Bağlantılar</strong> içindeki mülk
-          yalnızca o projeye uygulanır. <strong>Kayıtlı</strong> kimliğin
-          saklandığını, <strong>Mülk seçili</strong> ise mülk seçiminin
-          kaydedildiğini söyler. İkisi de rapor verisine erişimin doğrulandığı
-          anlamına gelmez. Son veri durumunu Arama performansı veya Analytics
-          raporundan kontrol edin. Analytics mülkünün saat dilimi ve para birimi
-          kimliğinin yanında görünür. Mülk bağlamak sitenize izleme kodu kurmaz.
+          İki rozet de yalnızca kaydı gösterir; Google'ın veri verdiğini
+          doğrulamaz. Erişimin çalıştığını <strong>Arama performansı</strong> ya
+          da <strong>Analytics</strong> ekranında veri görerek anlarsınız. Mülk
+          bağlamak sitenize izleme kodu da kurmaz.
         </p>
-        <h2 id="hizmet-hesabi">Hizmet hesabı</h2>
+        <h2 id="yol-1-hizmet-hesabi">Yol 1: Hizmet hesabı</h2>
+        <ol>
+          <li>
+            Google Cloud'da bir proje açın ve şu API'leri etkinleştirin: Search
+            Console API, Google Analytics Admin API ve Google Analytics Data
+            API.
+          </li>
+          <li>
+            Bir hizmet hesabı oluşturun ve JSON anahtar dosyasını indirin.
+          </li>
+          <li>
+            seowatcher'da <strong>Ayarlar → Hizmet hesabı</strong> bölümünde
+            dosyayı seçin ya da
+            <strong>JSON içeriğini gizli yapıştır</strong> alanını kullanın.
+            <strong>Kaydet</strong> düğmesine basın. Özel anahtar ekranda
+            gösterilmez.
+          </li>
+          <li>Ekranda görünen hizmet hesabı e-postasını kopyalayın.</li>
+          <li>
+            Search Console'da
+            <strong>Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle</strong>
+            yolunu izleyin ve bu e-postayı <strong>Tam</strong> izinle ekleyin.
+          </li>
+          <li>
+            Google Analytics'te
+            <strong>Yönetici → Erişim yönetimi</strong> altında aynı e-postayı
+            <strong>Görüntüleyici</strong> rolüyle ekleyin.
+          </li>
+          <li>
+            seowatcher'da projeyi açın,
+            <strong>Proje ayarları → Bağlantılar</strong> altında
+            <strong>Mülk seç</strong> ile mülkü seçip
+            <strong>Mülkü kaydet</strong> düğmesine basın.
+          </li>
+        </ol>
+        <h2 id="yol-2-google-oauth-istemcisi">Yol 2: Google OAuth istemcisi</h2>
+        <ol>
+          <li>
+            Google Cloud'da aynı API'leri etkinleştirin ve &quot;Web
+            application&quot; türünde bir OAuth istemcisi oluşturun.
+          </li>
+          <li>
+            seowatcher <strong>Ayarlar</strong> ekranında gösterilen iki
+            yönlendirme adresini (Search Console ve Analytics için) istemciye
+            aynen ekleyin.
+          </li>
+          <li>
+            İstemci kimliğini ve gizli anahtarı <strong>Ayarlar</strong>'a yazıp
+            kaydedin.
+          </li>
+          <li>
+            <strong>Proje ayarları → Bağlantılar</strong> altında
+            <strong>Google hesabı ekle</strong> ile izni verin, sonra mülkü
+            seçip kaydedin.
+          </li>
+        </ol>
         <p>
-          Google Cloud'da ilgili API'leri etkinleştirin: Search Console API;
-          Analytics için Admin API ve Data API. Hizmet hesabı oluşturup JSON
-          anahtarını indirin. <strong>Ayarlar → Hizmet hesabı</strong> bölümünde
-          dosyayı seçin veya gizli yapıştırma alanını kullanın ve
-          <strong>Kaydet</strong> deyin. Dosyanın özel anahtarı ekranda
-          gösterilmez. Görünen hizmet hesabı e-postasını Search Console mülküne
-          Tam, Analytics mülküne Görüntüleyen olarak ekleyin. Ardından proje
-          bağlantılarında mülkü seçin.
+          Hizmet hesabı da kayıtlıysa uygulama hizmet hesabını kullanır; OAuth
+          kartında <strong>Kullanılmıyor, hizmet hesabı bağlı</strong> yazar.
         </p>
-        <h2 id="google-oauth-alternatifi">Google OAuth alternatifi</h2>
+        <h2 id="baglanti-kartini-okumak">Bağlantı kartını okumak</h2>
         <p>
-          Google Cloud'da OAuth Web application istemcisi oluşturun.
-          Ayarlar'daki Search Console ve Analytics yönlendirme adreslerinin
-          ikisini de aynen ekleyin. İstemci kimliği ve gizli anahtarı Ayarlar'a
-          kaydedin. Proje bağlantılarından Google iznini verip mülkü seçin.
-          Hizmet hesabı kayıtlıysa öncelikle o kullanılır.
+          Bağlantı kartı, seçili kimlik ve mülk için son Google okumasını
+          tarihiyle gösterir: <strong>Son başarılı Google okuması</strong> ya da
+          <strong>Son başarısız Google okuması</strong>. Geçici bir hatadan
+          sonra önceki başarılı okumanın tarihi korunur. Hiç okuma yapılmadıysa
+          <strong>Veri erişimi henüz doğrulanmadı.</strong> yazar. Analytics
+          mülkünün saat dilimi ve para birimi de kartta görünür.
+        </p>
+        <p>
+          Ayarlar ekranını açmak Google'a sorgu göndermez. Kimliği
+          değiştirdiğinizde eski okuma ve kota kayıtları yeni kimliğe taşınmaz;
+          raporları elle yenileyin.
         </p>
         <h2 id="sorun-cikarsa">Sorun çıkarsa</h2>
+        <ul>
+          <li>
+            <strong>Mülk listesi boş:</strong> Bu tek başına erişiminiz
+            olmadığını kanıtlamaz. Okuma hatasında son liste korunur;
+            <strong>Tekrar dene</strong> ile yeniden okuyun.
+          </li>
+          <li>
+            <strong>Bağlantının süresi doldu:</strong>
+            <strong>Yeniden bağlan</strong> ile izni yenileyin.
+          </li>
+          <li>
+            <strong>Erişim reddedildi:</strong> Hizmet hesabının ya da Google
+            hesabının mülkte izni olduğunu kontrol edin.
+          </li>
+          <li>
+            <strong>API etkin değil:</strong> Google Cloud projesinde ilgili
+            API'yi etkinleştirin.
+          </li>
+          <li>
+            <strong>İstek sınırı:</strong> Bir süre bekleyip yeniden deneyin.
+          </li>
+          <li>
+            <strong>Bilinmeyen hata:</strong> <strong>Tekrar dene</strong>,
+            sonra <strong>Yardım</strong> ekranındaki tanılamayı kullanın.
+          </li>
+        </ul>
         <p>
-          Son mülk listesi okuma hatasında korunur; boş liste erişiminiz
-          olmadığına tek başına kanıt değildir. Süresi dolan izni yeniden
-          bağlayın; erişim reddinde mülk izinlerini, etkin olmayan API'de Cloud
-          projesini kontrol edin. İstek sınırında bekleyip yeniden deneyin.
-          Bilinmeyen hatada <strong>Tekrar dene</strong> ve
-          <strong>Yardım</strong> tanılamasını kullanın. Kimlik silmek Google
-          tarafındaki anahtarı iptal etmez. Alan adını değiştirmek Google
-          mülkünü veya geçmişi değiştirmez.
+          Kimliği seowatcher'dan silmek, anahtarı Google tarafında iptal etmez;
+          bunu Google Cloud'da yapın. Projenin alan adını değiştirmek de seçili
+          mülkü ya da geçmiş veriyi değiştirmez.
         </p>
         <p>
-          Bağlantı kartı, geçerli kimlik ve mülk için daha önce gözlenen son
-          Google okumasını tarihiyle gösterir; geçici hatada önceki başarılı
-          okumanın tarihi korunur. Geçmiş yoksa erişim doğrulanmadı olarak
-          görünür. Ayar ekranını açmak Google sorgusu çalıştırmaz. Kimlik
-          değiştiğinde eski okuma ve kota kanıtları yeni kimliğe taşınmaz;
-          raporları açıkça yenileyin.
+          Belirti ve çözüm listesinin tamamı
+          <a href="/kilavuz/sorun-giderme/">Sorun giderme</a> sayfasındadır.
         </p>
         <nav class="pager" aria-label="Önceki ve sonraki sayfa">
           <a class="pager-prev" rel="prev" href="/kilavuz/kurulum-docker/"
@@ -1589,14 +1681,15 @@
       <nav class="toc" aria-label="Bu sayfada">
         <p class="toc-label">Bu sayfada</p>
         <ol>
+          <li><a href="#kimlik-ve-mulk-farki">Kimlik ve mülk farkı</a></li>
+          <li><a href="#yol-1-hizmet-hesabi">Yol 1: Hizmet hesabı</a></li>
           <li>
-            <a href="#kimlik-ve-mulk-ayri-secimlerdir"
-              >Kimlik ve mülk ayrı seçimlerdir</a
+            <a href="#yol-2-google-oauth-istemcisi"
+              >Yol 2: Google OAuth istemcisi</a
             >
           </li>
-          <li><a href="#hizmet-hesabi">Hizmet hesabı</a></li>
           <li>
-            <a href="#google-oauth-alternatifi">Google OAuth alternatifi</a>
+            <a href="#baglanti-kartini-okumak">Bağlantı kartını okumak</a>
           </li>
           <li><a href="#sorun-cikarsa">Sorun çıkarsa</a></li>
         </ol>

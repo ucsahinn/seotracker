@@ -14,7 +14,7 @@
     <title>Collegamento con Google | guida di seowatcher</title>
     <meta
       name="description"
-      content="Collega Search Console e GA4 con il tuo account di servizio Google Cloud o client OAuth, poi scegli le proprietà di ogni progetto."
+      content="Collegare Search Console e GA4 con un account di servizio Google Cloud o un client OAuth, poi scegliere le proprietà di ogni progetto."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -94,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="Collega Search Console e GA4 con il tuo account di servizio Google Cloud o client OAuth, poi scegli le proprietà di ogni progetto."
+      content="Collegare Search Console e GA4 con un account di servizio Google Cloud o un client OAuth, poi scegliere le proprietà di ogni progetto."
     />
     <meta
       property="og:image"
@@ -125,7 +125,7 @@
     />
     <meta
       name="twitter:description"
-      content="Collega Search Console e GA4 con il tuo account di servizio Google Cloud o client OAuth, poi scegli le proprietà di ogni progetto."
+      content="Collegare Search Console e GA4 con un account di servizio Google Cloud o un client OAuth, poi scegliere le proprietà di ogni progetto."
     />
     <meta
       name="twitter:image"
@@ -168,7 +168,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/it/guide/collegamento-google/#article",
             "headline": "Collegamento con Google",
-            "description": "Collega Search Console e GA4 con il tuo account di servizio Google Cloud o client OAuth, poi scegli le proprietà di ogni progetto.",
+            "description": "Collegare Search Console e GA4 con un account di servizio Google Cloud o un client OAuth, poi scegliere le proprietà di ogni progetto.",
             "url": "https://seowatcher.io/it/guide/collegamento-google/",
             "inLanguage": "it",
             "datePublished": "2026-10-23",
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1516,17 +1516,17 @@
                 >Parole chiave salvate</a
               >
             </li>
-            <li>
-              <a href="/it/guide/analisi/">Interpretare i dati di analisi</a>
-            </li>
+            <li><a href="/it/guide/analisi/">Capire i dati di Analytics</a></li>
             <li>
               <a href="/it/guide/controllo-del-sito/">Controllo del sito</a>
             </li>
-            <li><a href="/it/guide/stato-indice/">Stato dell'indice</a></li>
+            <li>
+              <a href="/it/guide/stato-indice/">Stato dell'indicizzazione</a>
+            </li>
             <li><a href="/it/guide/rapporti/">Report e modelli</a></li>
             <li>
               <a href="/it/guide/informazioni-progetto/"
-                >Informazioni sul progetto</a
+                >Contesto del progetto</a
               >
             </li>
             <li><a href="/it/guide/impostazioni/">Impostazioni</a></li>
@@ -1539,7 +1539,7 @@
             </li>
             <li>
               <a href="/it/guide/configurazione-assistente/"
-                >Configurazione dell'assistente</a
+                >Configurazione dell'agente</a
               >
             </li>
             <li>
@@ -1554,56 +1554,96 @@
       <article id="icerik" data-page="google-baglantisi">
         <h1>Collegamento con Google</h1>
         <p class="lede">
-          Collega Search Console e GA4 con il tuo account di servizio Google
-          Cloud o client OAuth, poi scegli le proprietà di ogni progetto.
+          Collegare Search Console e GA4 con un account di servizio Google Cloud
+          o un client OAuth, poi scegliere le proprietà di ogni progetto.
         </p>
         <p>
-          seowatcher legge Search Console e Google Analytics 4 con le tue
-          credenziali Google Cloud: un account di servizio o un client OAuth.
-          Salvi la credenziale una volta per tutta l'installazione, poi scegli
-          una proprietà Search Console e una GA4 per ogni progetto.
+          La credenziale si salva una sola volta e vale per tutta
+          l'installazione. La proprietà, invece, si sceglie per ogni progetto:
+          una per Search Console e una per Google Analytics 4.
         </p>
         <h2 id="credenziali-e-proprieta">Credenziali e proprietà</h2>
         <p>
-          Le credenziali Google nelle Impostazioni valgono per l'installazione.
-          La proprietà in Impostazioni progetto → Connessioni vale per un
-          progetto. Salvato e Proprietà selezionata confermano solo la
-          configurazione. Verifica l'accesso nei report Rendimento di ricerca o
-          Analytics. Analytics mostra fuso orario e valuta della proprietà. La
-          selezione non installa il monitoraggio sul sito.
+          Le credenziali Google salvate in
+          <strong>Impostazioni</strong> (sezioni <strong>Google</strong> e
+          <strong>Account di servizio</strong>) valgono per l'intera
+          installazione. La proprietà scelta in
+          <strong>Impostazioni progetto → Connessioni</strong> vale solo per
+          quel progetto. Gli stati &quot;salvata&quot; e &quot;proprietà
+          selezionata&quot; confermano la configurazione, non l'accesso ai dati.
+          L'accesso si verifica aprendo
+          <strong>Rendimento della ricerca</strong> o
+          <strong>Analytics</strong>. Scegliere una proprietà non installa alcun
+          codice di monitoraggio sul sito.
         </p>
-        <h2 id="account-di-servizio-o-oauth">Account di servizio o OAuth</h2>
+        <h2 id="account-di-servizio">Account di servizio</h2>
+        <p>È il metodo più breve.</p>
+        <ol>
+          <li>
+            In Google Cloud attivi la Search Console API e, per Analytics, la
+            Admin API e la Data API.
+          </li>
+          <li>Crei un account di servizio e scarichi la sua chiave JSON.</li>
+          <li>
+            In <strong>Impostazioni → Account di servizio</strong> selezioni il
+            file oppure usi
+            <strong>Incolla il contenuto JSON mantenendolo nascosto</strong>,
+            poi salvi. La chiave privata non viene mai mostrata.
+          </li>
+          <li>
+            Aggiunga l'indirizzo email dell'account mostrato a Search Console
+            come utente con accesso completo e ad Analytics con ruolo
+            Visualizzatore.
+          </li>
+          <li>Scelga la proprietà in ogni progetto.</li>
+        </ol>
+        <h2 id="oauth-in-alternativa">OAuth in alternativa</h2>
         <p>
-          Attiva Search Console API e, per Analytics, Admin API e Data API in
-          Google Cloud. Crea un account di servizio e scarica la chiave JSON. In
-          Impostazioni → Account di servizio seleziona il file o usa l'incolla
-          mascherato, poi salva. La chiave privata resta nascosta. Aggiungi
-          l'indirizzo mostrato con accesso Completo in Search Console e
-          Visualizzatore in Analytics. Scegli quindi la proprietà nel progetto.
+          Crei in Google Cloud un client OAuth di tipo &quot;Applicazione
+          web&quot;. Registri esattamente i due URL di reindirizzamento mostrati
+          in <strong>Impostazioni</strong>. Salvi <strong>ID client</strong> e
+          <strong>Segreto client</strong>, poi autorizzi l'account Google da
+          <strong>Connessioni</strong> del progetto e scelga la proprietà. Se è
+          salvato anche un account di servizio, ha la precedenza su OAuth.
         </p>
+        <h2 id="se-qualcosa-non-funziona">Se qualcosa non funziona</h2>
         <p>
-          Per OAuth crea un client Web application. Registra esattamente
-          entrambi gli URL di callback mostrati, salva ID e segreto e autorizza
-          il conto dalle connessioni del progetto. Un account di servizio
-          salvato ha priorità.
+          Se l'aggiornamento dell'elenco non riesce, restano visibili le
+          proprietà precedenti. Un elenco vuoto, da solo, non prova la mancanza
+          di accesso.
         </p>
-        <h2 id="recupero">Recupero</h2>
+        <ul>
+          <li>
+            <strong>Autorizzazione scaduta</strong>: ricolleghi l'account.
+          </li>
+          <li>
+            <strong>Accesso negato</strong>: controlli i permessi sulla
+            proprietà.
+          </li>
+          <li>
+            <strong>API disattivata</strong>: la attivi nel progetto Google
+            Cloud.
+          </li>
+          <li><strong>Limite di richieste</strong>: attenda e riprovi.</li>
+          <li>
+            <strong>Errore sconosciuto</strong>: riprovi e apra la diagnostica
+            in <strong>Aiuto</strong>.
+          </li>
+        </ul>
         <p>
-          Un errore conserva l'elenco precedente; un elenco vuoto da solo non
-          prova l'assenza di diritti. Ricollega autorizzazioni scadute, verifica
-          i permessi per accesso negato e il progetto Cloud per API inattive.
-          Attendi per i limiti. Per errori sconosciuti riprova e usa la
-          diagnostica Aiuto. Eliminare credenziali qui non le revoca in Google.
-          Cambiare dominio conserva collegamento e storico.
+          Eliminare una credenziale qui non la revoca in Google. Cambiare il
+          dominio del progetto conserva la proprietà collegata e lo storico.
         </p>
+        <h2 id="ultima-lettura">Ultima lettura</h2>
         <p>
-          La scheda di collegamento mostra la data dell’ultima lettura Google
-          già osservata per le credenziali e la proprietà attuali. Dopo un
-          errore temporaneo mantiene la data della precedente lettura riuscita.
-          Senza cronologia, l’accesso resta non verificato. Aprire le
-          impostazioni non invia richieste a Google. Un cambio di credenziali
-          non trasferisce le precedenti prove di accesso o quota alla nuova
-          identità; aggiornate esplicitamente i report.
+          La scheda di connessione mostra la data dell'ultima lettura da Google
+          già osservata con la credenziale e la proprietà attuali. Dopo un
+          errore temporaneo resta la data dell'ultima lettura riuscita; senza
+          storico l'accesso risulta non verificato. La scheda mostra anche fuso
+          orario e valuta della proprietà Analytics. Aprire le impostazioni non
+          invia richieste a Google. Dopo un cambio di credenziale, le prove di
+          accesso e di quota precedenti non passano alla nuova identità:
+          aggiorni i report.
         </p>
         <nav class="pager" aria-label="Pagina precedente e successiva">
           <a
@@ -1616,12 +1656,12 @@
           >
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 29 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 29 ottobre 2026. Ha trovato un errore?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >segnalarlo su GitHub</a
+            >Lo segnali su GitHub</a
           >.
         </p>
       </article>
@@ -1631,12 +1671,12 @@
           <li>
             <a href="#credenziali-e-proprieta">Credenziali e proprietà</a>
           </li>
+          <li><a href="#account-di-servizio">Account di servizio</a></li>
+          <li><a href="#oauth-in-alternativa">OAuth in alternativa</a></li>
           <li>
-            <a href="#account-di-servizio-o-oauth"
-              >Account di servizio o OAuth</a
-            >
+            <a href="#se-qualcosa-non-funziona">Se qualcosa non funziona</a>
           </li>
-          <li><a href="#recupero">Recupero</a></li>
+          <li><a href="#ultima-lettura">Ultima lettura</a></li>
         </ol>
       </nav>
     </main>

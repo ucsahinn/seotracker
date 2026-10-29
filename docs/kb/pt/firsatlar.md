@@ -1,45 +1,71 @@
 ---
 title: Oportunidades
-description: Qual página trabalhar primeiro: páginas que o Google já mostra, ordenadas pelo limite de cliques extras do Search Console, com o trabalho sugerido.
+description: Qual página trabalhar primeiro: páginas que o Google já mostra, ordenadas pelo máximo de cliques extras do Search Console, com o trabalho sugerido.
 screen: Fırsatlar
 route: /p/<proje>/opportunities
 updated: 2026-10-27
 ---
 
-Oportunidades ordena as páginas que o Google já mostra para o seu site pela quantidade de cliques extras que poderiam trazer. O cálculo usa os seus próprios dados do Search Console e as taxas de cliques do seu site. Cada página recebe um tipo de trabalho sugerido e um limite máximo de ganho; não é uma previsão nem uma garantia.
+O cálculo usa os dados do Search Console do projeto e as taxas de cliques do próprio site. Para cada página, indica um tipo de trabalho sugerido e um limite máximo de cliques adicionais. Não é um resultado esperado nem uma garantia.
 
-## Como usar Oportunidades
+## Por onde começar
 
-**Veja isto primeiro** abre a página com o maior limite calculável de cliques adicionais e sugere um trabalho a investigar. Isso não mede a facilidade nem a rapidez desse trabalho.
+**Comece por aqui** abre a página com o maior limite de cliques adicionais entre as que podem ser estimadas, junto com o trabalho a verificar. A facilidade e o prazo do trabalho não são medidos.
+
+Cada página entra em um tipo de trabalho conforme as pesquisas medidas:
+
+| Tipo de trabalho                      | Situação                                                                                    | Ação sugerida                                           |
+| ------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| **Título e descrição**                | Na primeira página, mas com menos cliques que as outras pesquisas do site na mesma posição. | **Reescreva o título e a descrição**                    |
+| **Na primeira página, posições 4-10** | Abaixo dos três primeiros resultados. Subir uma faixa aumenta bem os cliques.               | **Reforce o conteúdo**                                  |
+| **Na segunda página, posições 11-20** | Logo depois da primeira página; recebe poucos cliques até chegar lá.                        | **Adicione links internos, amplie o conteúdo**          |
+| **Longe, depois da posição 20**       | Tem impressões, mas uma posição baixa.                                                      | **Analise a intenção de busca e a cobertura da página** |
+
+Para uma página com ganho desconhecido, o trabalho sugerido depende apenas da posição média:
+
+| Posição    | Trabalho sugerido             |
+| ---------- | ----------------------------- |
+| 1–5        | revisar título e snippet      |
+| 6–10       | melhorar o conteúdo           |
+| 11–20      | links internos e conteúdo     |
+| 21 ou mais | verificar a intenção de busca |
+
+A sugestão não prova CTR baixo nem ganho futuro.
 
 ## Datas e escopo
 
-Escolha 7, 28 ou 90 dias. O Search Console usa dias completos no calendário do Pacífico do Google. Se o Google não informar o limite de completude, o aplicativo indica a hipótese de atraso dos dados. As datas reais ficam visíveis. O Analytics lê as mesmas datas no fuso da propriedade, o que pode cobrir outro intervalo de tempo.
+O período pode ser de 7, 28 ou 90 dias. O Search Console usa dias completos do calendário do Pacífico. Se o Google não informar até quando os dados estão completos, o aplicativo declara o atraso que presumiu. As datas efetivas de início e fim continuam visíveis. O Analytics lê as mesmas datas no fuso horário da propriedade, então o intervalo de tempo pode ser diferente.
 
-O **limite máximo ajustado para 30 dias** normaliza o período escolhido. Não é previsão mensal, garantia nem volume de busca. Ele cobre apenas consultas recebidas, identificáveis e com evidência suficiente. A parcela de consultas ocultas é desconhecida; os limites de linhas são informados. Não some esse resultado à estimativa por consulta do painel, que usa outro modelo. A base atual de cliques inclui todos os cliques das páginas candidatas, inclusive os de marca.
+O **limite máximo em base de 30 dias** converte o período escolhido para 30 dias. Não é uma previsão mensal, uma garantia nem um volume de busca. Cobre apenas consultas recebidas, identificáveis e com dados suficientes. A participação das consultas ocultas é desconhecida; os limites de linhas são informados. A estimativa por consulta do Painel usa outro modelo: não some os dois números. A comparação com os cliques atuais usa todos os cliques das páginas candidatas, inclusive os de marca.
 
 ## Lista e filtros
 
-Os filtros de trabalho e conversão se combinam com E. O servidor filtra todas as páginas candidatas antes de mostrar as primeiras 25, 50 ou 100 correspondências. Os totais gerais não mudam. Uma página pode contar em várias categorias; não some seus números de páginas. Período, limite e filtros ficam na URL.
+Os filtros por tipo de trabalho e por conversão se combinam (os dois precisam valer). O servidor filtra todas as páginas candidatas antes de mostrar as primeiras 25, 50 ou 100; os totais gerais não mudam. Uma página pode entrar em vários tipos de trabalho, então as contagens por tipo não se somam. Período, número de linhas e filtros ficam na URL. **Mostrar páginas com conversões** só aparece quando há conversões confirmadas.
 
-No computador há uma tabela ordenável; no celular, linhas com quebra de endereço e botão Detalhes. Os detalhes mostram impressões, posição, faixa de posição-alvo e contribuição distribuída por consulta. As dez maiores contribuições aparecem com uma linha separada para o restante. Contribuições e restante completam o limite da página. A diferença de CTR usa apenas consultas sem marca comparáveis, com a mesma base de impressões, em pontos percentuais.
+No computador, a lista é uma tabela ordenável; no celular, cada página é uma linha com o botão **Detalhes**. Os detalhes mostram impressões, posição, faixa de posição alvo e a contribuição atribuída a cada consulta. Aparecem as dez principais consultas e, à parte, o restante: juntos, correspondem ao limite da página. A diferença de CTR, em pontos percentuais, usa apenas consultas sem marca comparáveis, com a mesma base de impressões.
 
-## Dados desconhecidos e Analytics
+## Ganho desconhecido
 
-Um escopo não calculável não significa ausência de oportunidade. Consultas sem correspondência, poucas impressões e taxas-alvo ausentes são separados do zero medido. Nenhuma linha recebida não prova ausência de impressões.
+Páginas com impressões, mas sem estimativa, também aparecem: primeiro as estimadas, por ganho, depois as demais, por impressões. **Ganho desconhecido** não significa zero; os totais somam apenas os ganhos calculados. Consultas sem correspondência, impressões insuficientes e taxas-alvo ausentes são contadas à parte de um zero medido. Se o Google não devolver linhas, isso não prova ausência de impressões.
 
-O Analytics acrescenta sessões orgânicas, eventos principais e parcela de sessões com evento principal medidos. Não projeta eventos futuros a partir de cliques adicionais. Medições restritas continuam desconhecidas. Variantes de URL podem compartilhar o mesmo grupo do Analytics; não some suas sessões entre linhas. Se a cota acabar, aguarde e atualize; se faltar permissão, confira a conexão. Quando a atualização falha, os dados anteriores permanecem com suas datas originais e um aviso.
+Com ganho desconhecido, examine primeiro a página e as consultas observadas; altere título ou conteúdo somente depois de confirmar uma incompatibilidade. Os detalhes listam as consultas sem marca por impressões e sinalizam as páginas que recebem apenas buscas de marca. Se nenhum ganho puder ser calculado, os tipos de trabalho mostram o número de páginas candidatas sem barras.
 
-“Examinar grupo de endereços do Analytics” na linha e nos detalhes abre páginas de destino orgânicas com as datas da fonte e o grupo normalizado. Sem correspondência de endereço ou datas, uma explicação substitui o link. O filtro ocorre antes da paginação sobre as mesmas, no máximo, 1.000 linhas da fonte de Oportunidades. O Analytics informa limites de fonte e qualidade que impedem verificar o grupo completo. As medidas obtidas novamente podem mudar; as mesmas datas podem cobrir intervalos diferentes no fuso GA4 e no calendário do Pacífico do Search Console.
+Poucos dados não significam potencial zero. A falta de consultas sem marca utilizáveis pode vir de consultas ocultas, da exclusão da marca ou de limites dos dados. Para examinar as consultas com impressões, abra **Desempenho da pesquisa**. Os detalhes do cálculo ficam na seção recolhida **Cobertura dos dados e cálculo**.
 
-## Exportação e acompanhamento
+## Dados do Analytics
 
-CSV e Planilhas Google incluem as linhas filtradas exibidas, datas, unidade normalizada, modelo, propriedade, origem dos termos de marca, limites e grupo do Analytics. A gravação nas Planilhas só ocorre após sua escolha no menu.
+O Analytics acrescenta sessões orgânicas, eventos principais e a participação das sessões com um evento principal, como foram medidos. Ele não projeta eventos futuros a partir dos cliques adicionais. Métricas restritas continuam desconhecidas. Várias variantes de um URL podem compartilhar o mesmo grupo do Analytics: não some as sessões dele em várias linhas. O resumo de conversões separa as páginas correspondidas das que têm status desconhecido; a falta de cobertura do Analytics não equivale a zero conversões. Dados ausentes do Analytics são explicados nos detalhes da página, não linha por linha.
 
-O link para Desempenho da pesquisa preserva as datas de início e fim e abre os detalhes da URL exata. Períodos indisponíveis são explicados sem substituir as datas. Anote as mudanças e compare cliques, CTR e posição medidos em períodos equivalentes. Uma estimativa menor, por si só, não prova sucesso. Não exclua conteúdo apenas por posição baixa; considere unir páginas somente após confirmar que atendem à mesma necessidade.
+- **Cota esgotada**: aguarde e atualize.
+- **Permissões ausentes**: confira a conexão do projeto.
+- **Falha na atualização**: os dados anteriores permanecem, com as datas originais e um aviso.
 
-Poucos dados não significam ganho potencial zero. A ausência de consultas sem marca utilizáveis pode resultar de consultas ocultas, exclusões da marca ou limites de dados. O período máximo não sugere novas extensões. Abra Desempenho de pesquisa para consultar as consultas com impressões. Os detalhes do cálculo expandem-se na secção de cobertura dos dados.
+**Examinar grupo de endereços do Analytics**, na linha ou nos detalhes, abre as páginas de destino orgânicas com as datas da fonte e o grupo de endereços normalizado. Se o endereço ou as datas não puderem ser correspondidos, uma explicação substitui o link. O grupo é filtrado antes da paginação, nas mesmas linhas de origem usadas por Oportunidades (no máximo 1.000). O Analytics informa os limites que impedem verificar o grupo inteiro.
 
-Páginas com impressões e ganho desconhecido também aparecem: primeiro estimativas por ganho, depois páginas desconhecidas por impressões. Desconhecido não significa zero; os totais somam apenas ganhos calculados. Os detalhes mostram consultas sem marca por impressões e indicam páginas com apenas consultas de marca. As sugestões usam apenas posição (1–5 revisar título/snippet, 6–10 conteúdo, 11–20 links internos/conteúdo, 21+ intenção). Não comprovam CTR baixo nem ganho futuro. Os filtros de trabalho seguem essas sugestões; os de conversão usam sinais medidos do Analytics. CSV e Planilhas deixam o ganho desconhecido vazio e incluem estado, motivo, marca e consultas medidas.
+## Exporte e verifique o resultado
 
-Quando o ganho for desconhecido, examine primeiro a página e as buscas observadas; altere o título ou o conteúdo apenas após confirmar uma incompatibilidade. Se todos os ganhos forem desconhecidos, as categorias mostram contagens de páginas candidatas sem barras de ganho. O resumo de conversões separa páginas correspondentes daquelas com status de conversão desconhecido; a falta de cobertura do Analytics não significa zero conversões. O botão de filtro aparece apenas quando há conversões confirmadas. Fonte e período são dados identificados, e os cálculos ficam nos detalhes recolhidos. A falta de dados do Analytics é explicada nos detalhes da página, sem se repetir em todas as linhas.
+**CSV** e **Exportar para Sheets** incluem as linhas filtradas visíveis, as datas observadas, a unidade normalizada, o modelo, a propriedade, a origem dos termos de marca, os limites da fonte e o grupo do Analytics. O ganho desconhecido fica em branco; entram status, motivo, indicador de marca e consultas observadas. A gravação no Sheets só acontece quando você escolhe a exportação.
+
+**Abrir em Desempenho da pesquisa** mantém as datas de início e fim e abre os detalhes do URL exato. Se um período não puder ser lido, a tela explica em vez de substituir as datas.
+
+Depois de uma alteração, anote-a e compare cliques, CTR e posição medidos em períodos equivalentes. Uma estimativa em queda, sozinha, não prova sucesso. Uma posição baixa ou uma estimativa pequena não justificam apagar conteúdo; considere unir duas páginas só depois de confirmar que atendem à mesma necessidade.

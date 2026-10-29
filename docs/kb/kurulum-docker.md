@@ -5,7 +5,7 @@ kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-Bu sayfayı bitirince uygulama Docker'da (uygulamaları kapalı kutu içinde çalıştıran program) çalışır ve `http://localhost:3001` adresinde açılır. Windows kullanıyorsanız tek dosyalık Windows kurulumu çok daha kolay. Bu yol Mac, Linux ve zaten Docker kullananlar için. İlk açılış birkaç dakika sürer, çünkü uygulama kutunun (konteynerin) içinde derlenir. Sonraki açılışlar saniyeler sürer.
+Sonunda uygulama Docker'da (uygulamaları yalıtılmış bir kutuda çalıştıran program) çalışır ve `http://localhost:3001` adresinde açılır. Bu yol Mac, Linux ve zaten Docker kullananlar içindir; Windows'ta [tek dosyalık kurulum](/docs/kurulum-windows/) daha kolaydır.
 
 ## Gerekenler
 
@@ -38,12 +38,12 @@ docker compose logs -f
 
 4. Bekleyin. Günlükte "Building client + server" satırı ilk derlemedir. `docker compose ps` çıktısında durum **healthy** olana kadar bekleyin, sonra tarayıcıda `http://localhost:3001` adresini açın.
 
-Sonraki adım: Google'a bağlanma kılavuzu. Docker'da Google'a vereceğiniz iki yönlendirme adresi şunlar:
+Sonraki adım [Google'a bağlanma](/docs/google-baglantisi/). OAuth istemcisi kullanacaksanız Docker'da Google'a vereceğiniz iki yönlendirme adresi şunlardır:
 
 - `http://localhost:3001/api/gsc/oauth/callback`
 - `http://localhost:3001/api/ga4/oauth/callback`
 
-### Güncelleme
+## Güncelleme
 
 Şu iki komutu çalıştırın:
 
@@ -54,14 +54,14 @@ docker compose up -d --build
 
 **Ayarlar → Hakkında** yeni sürümü haber verir ve bu iki komutu gösterir. Veriniz `seotracker_data` adlı veri deposunda durduğu için güncelleme onu silmez.
 
-### Durdurma ve kaldırma
+## Durdurma ve kaldırma
 
 - Durdurmak için: `docker compose stop`
 - Yeniden başlatmak için: `docker compose up -d`
 - Kutuyu kaldırıp veriyi korumak için: `docker compose down`
 - Veriyi de silmek için: `docker compose down -v`. Bu komut veritabanını, Google bağlantılarını ve raporları kalıcı olarak siler.
 
-### Yedekleme
+## Yedekleme
 
 Veriniz `seotracker_data` deposunda, kutunun içindeki `/app/.wrangler` yolundadır. Yedek almak için üç komutu sırayla çalıştırın:
 
@@ -73,9 +73,9 @@ docker compose up -d
 
 Geri yüklerken aynı komutta `tar czf` yerine `tar xzf` kullanın. Veri deposundaki `instance-secret` dosyası Google bağlantılarını şifreleyen anahtardır. Yedekte o dosya yoksa uygulama açılır ama Google bağlantıları gelmez.
 
-### Ayarlar (isteğe bağlı)
+## Ayarlar (isteğe bağlı)
 
-Hiçbir ayar zorunlu değil. Değiştirmek isterseniz proje klasörüne bir `.env` dosyası koyun. Sonra `docker compose up -d --force-recreate seotracker` komutunu çalıştırın.
+Hiçbir ayar zorunlu değildir. Değiştirmek isterseniz proje klasörüne bir `.env` dosyası koyun. Sonra `docker compose up -d --force-recreate seotracker` komutunu çalıştırın.
 
 | Ayar adı                               | Ne işe yarar                                                                                                   |
 | -------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
@@ -91,11 +91,11 @@ Hiçbir ayar zorunlu değil. Değiştirmek isterseniz proje klasörüne bir `.en
 
 - `docker compose ps` çıktısında durum **healthy** olmalı. İlk açılışta buna ulaşmak beş dakikaya kadar sürebilir.
 - `curl.exe http://127.0.0.1:3001/api/health` (Windows'ta; Mac ve Linux'ta `curl`) çıktısı "status":"ok" ile başlamalı. Bu adresi tarayıcıda da açabilirsiniz.
-- Tarayıcıda `http://localhost:3001` açılmalı. **Yardım** ekranındaki durum kartı "Her şey yolunda." demeli. Google'a bağlanmadan önce "Google girişi" satırı uyarı gösterir. Bu normaldir.
+- Tarayıcıda `http://localhost:3001` açılmalı. **Yardım** ekranındaki durum kartı **Kurulum kontrollerinde sorun bulunmadı.** demeli. Google'a bağlanmadan önce "Google girişi" satırı uyarı gösterir. Bu normaldir.
 
 ## Sık sorulanlar
 
-**İlk açılış neden uzun sürüyor?** Uygulama kutunun içinde derlenir. Sonraki açılışlarda derleme atlanır.
+**İlk açılış neden uzun sürüyor?** Uygulama ilk açılışta kutunun içinde derlenir; bu birkaç dakika sürer. Sonraki açılışlarda derleme atlanır ve uygulama saniyeler içinde açılır.
 
 **`.env.example` dosyası nerede?** Yok. Üst projeden gelen o dosya bu sürümde bulunmayan özellikleri anlatıyordu. Tam liste yukarıdaki tabloda ve `docs/ENVIRONMENT.md` dosyasında.
 

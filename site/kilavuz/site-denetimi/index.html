@@ -198,7 +198,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1483,7 +1483,7 @@
             <li><a href="/kilavuz/firsatlar/">Fırsatlar</a></li>
             <li><a href="/kilavuz/kayitli-kelimeler/">Kayıtlı kelimeler</a></li>
             <li>
-              <a href="/kilavuz/analitik/">Analitik verilerini yorumlama</a>
+              <a href="/kilavuz/analitik/">Analytics verisini yorumlama</a>
             </li>
             <li class="current" aria-current="page">
               <a href="/kilavuz/site-denetimi/">Site denetimi</a>
@@ -1510,18 +1510,15 @@
           Denetim puanını, ölçüm kapsamını ve eksik verilerin anlamını öğrenin.
         </p>
         <p>
-          Sitenizdeki sorunları nasıl bulacağınızı ve düzelteceğinizi burada
-          öğrenirsiniz.
-        </p>
-        <p>
-          Uygulama sitenizi kendi tarayıcısıyla gezer (sayfaları tek tek açıp
-          okuyan program). Kırık bağlantıları, eksik başlıkları ve yavaş
-          sayfaları arar. Sonunda bir puan ve önem sırasına dizilmiş bir sorun
-          listesi alırsınız. Puan, kontrollerin ne kadarının ölçülebildiğini de
-          gösterir. Yarım kalan bir denetime puan verilmez.
+          Uygulama sitenizi kendi tarayıcısıyla (sayfaları tek tek açıp okuyan
+          program) gezer; kırık bağlantıları, eksik başlıkları, yavaş sayfaları
+          ve diğer sorunları arar. Sonunda bir puan ve önem sırasına dizilmiş
+          bir sorun listesi alırsınız. Kuralların tam listesi
+          <a href="/kilavuz/denetim-kurallari/">Denetim kuralları</a>
+          sayfasındadır.
         </p>
         <h2 id="ekranda-neler-var">Ekranda neler var</h2>
-        <p><strong>Yeni denetim başlat kartı.</strong> Şu alanlar var.</p>
+        <p><strong>Yeni denetim başlat kartı.</strong> Şu alanlardan oluşur:</p>
         <ul>
           <li>
             <strong>Taranacak site adresi</strong>: projenizin alan adı hazır
@@ -1545,36 +1542,46 @@
           </li>
         </ul>
         <p>
-          PageSpeed anahtarınız (Google'ın hız ölçümü için verdiği ücretsiz kod)
-          yoksa hız ölçümü en çok 50 sayfayla sınırlanır. Tümünü ölçmek için
-          <strong>Ayarlar</strong> ekranından ücretsiz bir anahtar ekleyin.
-          <strong>Denetimi başlat</strong> denetimi başlatır. Altındaki
-          <strong>Kotalar</strong> bölümü kapalı gelir. Açarsanız PageSpeed ve
-          URL denetimi kotalarının güncel durumunu görürsünüz.
+          PageSpeed anahtarınız yoksa hız ölçümü en çok 50 sayfayla sınırlanır.
+          Tümünü ölçmek için
+          <a href="/kilavuz/pagespeed-anahtari/">ücretsiz bir anahtar</a>
+          ekleyin. <strong>Denetimi başlat</strong> taramayı başlatır. Altındaki
+          kapalı <strong>Kotalar</strong> bölümü PageSpeed ve URL Denetimi
+          kotalarının güncel durumunu gösterir.
         </p>
         <p>
           <strong>Önceki denetimler.</strong> Her denetimin tarihi, adresi,
           durumu, sayfa sayısı ve sorun sayıları listelenir. Kritik, Uyarı ve
-          Bilgi sütunları kayıtlı tüm bulguları gösterir: sayfa bulguları ve
-          site geneli kontroller birlikte; aynı sayfada birden çok bulgu
-          olabilir. Projede birden çok site denetlenmişse listenin üstünde bir
-          site seçici çıkar. Yoğunluk, yüz sayfa başına sorun sayısıdır. Grafik
-          çizgileri ve değişim okları yalnızca kayıtlı kanıtlar aynı siteyi,
-          sayfa kümesini, tarama ayarlarını ve ölçülen kontrolleri
-          doğruladığında gösterilir. Kapsam farklıysa veya bilinmiyorsa bağımsız
-          sayılar gösterilir; değişim belirlenemez. Birden çok site seçiliyken
-          grafik gizlenir. Satırdaki <strong>Görüntüle</strong> denetimi açar.
-          Satır menüsünde <strong>Aynı ayarlarla yeniden başlat</strong> ve
+          Bilgi sütunları kayıtlı tüm bulguları sayar: sayfa bulguları ve site
+          geneli kontroller birlikte. Aynı sayfada birden çok bulgu olabilir.
+          <strong>Taranan sayfa</strong>, başarısız denetimlerde de gerçekten
+          taranan adres sayısıdır, başlangıçtaki sayfa sınırı değildir.
+          <strong>Hız ölçümü istendi</strong>, denetimin hız ölçümü açık
+          başlatıldığını gösterir; ölçümün tamamlandığını değil.
+          <strong>Kapsam ayrıntıları</strong> ölçülen ve ölçülemeyen kontrolleri
+          açar. Başarısız bir denetimde kayıtlı hata kodunun açıklaması ve
+          sonraki adım görünür. Telefonda diğer sütunlar için tabloyu yana
+          kaydırın.
+        </p>
+        <p>
+          Projede birden çok site denetlenmişse listenin üstünde bir site seçici
+          çıkar. Yoğunluk, yüz sayfa başına sorun sayısıdır. Grafik çizgileri ve
+          değişim okları yalnızca kayıtlı kanıtlar aynı siteyi, sayfa kümesini,
+          tarama ayarlarını ve ölçülen kontrolleri doğruladığında gösterilir.
+          Kapsam farklıysa ya da bilinmiyorsa sayılar yan yana gösterilir,
+          değişim hesaplanmaz. Birden çok site seçiliyken grafik gizlenir.
+          Satırdaki <strong>Görüntüle</strong> denetimi açar. Satır menüsünde
+          <strong>Aynı ayarlarla yeniden başlat</strong> ve
           <strong>Denetimi sil</strong> vardır. Silmek denetimin sayfalarını,
           sorunlarını ve hız ölçümlerini de siler ve geri alınamaz.
         </p>
         <p>
-          <strong>Denetim ayrıntısı.</strong> Üstte
-          <strong>Raporu indir</strong> düğmesi tek dosyalık HTML raporu indirir
-          ve <strong>Raporlar</strong> ekranına kaydeder. Altında, gerekiyorsa
-          sarı uyarılar çıkar (aşağıda). Sonra puan kartı gelir.
+          <strong>Denetim ayrıntısı.</strong> Üstteki
+          <strong>Raporu indir</strong> tek dosyalık HTML raporu indirir ve
+          <strong>Raporlar</strong> ekranına kaydeder. Altında, gerekiyorsa sarı
+          uyarılar çıkar (aşağıda), sonra puan kartı gelir.
         </p>
-        <p><strong>Puan kartı.</strong> Şunları gösterir.</p>
+        <p><strong>Puan kartı.</strong> Şunları gösterir:</p>
         <ul>
           <li>
             Ortada <strong>Site puanı</strong> ve yanında derece kelimesi:
@@ -1594,10 +1601,11 @@
             <strong>Bulunan adres: N, taranan: M</strong>. Tarama sitede kaç
             adres buldu, kaçını açtı. Denetim sizin seçtiğiniz sayfa sınırında
             durduysa &quot;Denetim N sayfayla sınırlıydı; sitede daha fazla
-            sayfa olabilir.&quot; notu çıkar. Bu durumda puan geçerlidir.
+            sayfa olabilir.&quot; notu çıkar. Puan yine geçerlidir, ama yalnızca
+            taranan sayfaları anlatır.
           </li>
           <li>
-            Ölçülemeyen ağır kategoriler için satırlar. Örneğin &quot;Hız
+            Ölçülemeyen önemli kategoriler için birer satır. Örneğin &quot;Hız
             ölçülmedi: PageSpeed kotası doldu&quot;.
           </li>
           <li>
@@ -1652,10 +1660,10 @@
             <strong>Site haritasında yok</strong>.
           </li>
           <li>
-            <strong>Dizin durumu</strong>: Google'ın her sayfa için yanıtı. Ayrı
-            kılavuzda anlatılır. Denetlenen site projenin Search Console mülküne
-            ait değilse bu sekmede Google verisi gösterilmez ve ekran bunu
-            açıklar.
+            <strong>Dizin durumu</strong>: Google'ın her sayfa için yanıtı.
+            <a href="/kilavuz/dizin-durumu/">Dizin durumu</a> sayfasında
+            anlatılır. Denetlenen site projenin Search Console mülküne ait
+            değilse bu sekmede Google verisi gösterilmez ve ekran bunu açıklar.
           </li>
           <li>
             <strong>Hız (N)</strong>: yalnızca hız ölçümü açıksa görünür.
@@ -1796,7 +1804,8 @@
             <strong>Denetim bu siteyi tamamen tarayamadı.</strong> Sitenin bot
             koruması tarayıcıyı durdurmuş. Sonuçlar yine de gösterilir. Güvenlik
             duvarında &quot;seotracker-audit&quot; adına izin verin ya da
-            kılavuzda önerilen masaüstü tarayıcılardan birini deneyin.
+            ekranda önerilen masaüstü tarayıcılardan birini (LibreCrawl,
+            Screaming Frog) deneyin.
           </li>
           <li>
             <strong>N sayfa alınamadı (ağ hatası).</strong> Bağlantı yeniden
@@ -1844,7 +1853,8 @@
           </li>
           <li>
             <strong>Sorunlu sayfalar</strong> sekmesinde önce kritik sorunları
-            bitirin. Kritik sorun Google'ın sayfayı görmesini engeller.
+            bitirin. Kritik sorunlar Google'ın sayfayı görmesini ya da
+            ziyaretçinin siteye girmesini engeller.
           </li>
           <li>
             Listeyi <strong>Dışa aktar</strong> ile alıp site yöneticinize
@@ -1888,10 +1898,10 @@
           puansız kalır.
         </p>
         <p>
-          <strong>Hız ölçümü.</strong> 212 sayfalık bir sitede denetimin tamamı
-          35 dakika sürdü. Bunun yaklaşık 24 dakikası hız ölçümüydü. Günlük kota
-          dolarsa ölçüm durur, o ana kadarki sonuçlar kalır ve puan kısmi
-          olabilir. Şu durumlarda sorun yazılır:
+          <strong>Hız ölçümü.</strong> Ölçüm uzun sürer: 212 sayfalık bir örnek
+          sitede denetim 35 dakika sürdü, bunun yaklaşık 24 dakikası hız
+          ölçümüydü. Günlük kota dolarsa ölçüm durur, o ana kadarki sonuçlar
+          kalır ve puan kısmi olabilir. Şu durumlarda sorun yazılır:
         </p>
         <ul>
           <li>Ana içerik 4 saniyeden geç görünür (LCP).</li>
@@ -1910,29 +1920,18 @@
           99'da tutar.
         </p>
         <p>
-          <strong>Puanım neden 69'da takıldı?</strong> Kritik bir sorun var.
-          Sorunu düzeltene kadar puan 69'u geçemez. Kart bunu yazar.
+          <strong>Puanım neden 69'da takıldı?</strong> Kritik bir sorun var;
+          düzeltene kadar puan 69'u geçemez.
         </p>
         <p>
           <strong>Neden &quot;Kısmi puan&quot; yazıyor?</strong> Kontrollerin
-          önemli bir kısmı ölçülemedi. Kapsam satırı ve altındaki satırlar
-          nedenini söyler. Hız ölçümünü açmak ya da Search Console'ı bağlamak
-          genelde kapsamı artırır.
-        </p>
-        <p>
-          <strong>Neden puan yerine &quot;Eksik denetim&quot; yazıyor?</strong>
-          Denetim yarıda kalmış ya da erken durmuş. Sorun listesi tam olmadığı
-          için puan verilmez. Denetimi yeniden çalıştırın.
-        </p>
-        <p>
-          <strong>&quot;Engellendik&quot; uyarısı ne demek?</strong> Sitenizin
-          bot koruması tarayıcıyı durdurmuş. Güvenlik duvarında
-          &quot;seotracker-audit&quot; adına izin verin.
+          önemli bir kısmı ölçülemedi. Hız ölçümünü açmak ya da Search Console'u
+          bağlamak genelde kapsamı artırır.
         </p>
         <p>
           <strong>Hız ölçümü yarıda kaldı.</strong> Genelde PageSpeed anahtarı
           yoktur ya da günlük kota dolmuştur.
-          <strong>Ayarlar</strong> ekranındaki kota kartı nedeni yazar.
+          <strong>Ayarlar → Google ve sistem sınırları</strong> nedeni gösterir.
         </p>
         <p>
           <strong>Aynı anda kaç denetim çalışır?</strong> En çok üç. Hız ölçen
@@ -1946,27 +1945,9 @@
           değildir. Denetim sitenizde hiçbir şeyi değiştirmez. Düzeltmeyi siz ya
           da asistanınız yaparsınız.
         </p>
-        <p>
-          Önceki denetimler listesindeki <strong>Taranan sayfa</strong>,
-          başarısız denetimlerde de gerçekten taranan adres sayısıdır;
-          başlangıçtaki sayfa sınırı değildir. Kritik ve uyarı sütunları toplam
-          bulgu sayısını gösterir. <strong>Hız ölçümü istendi</strong>,
-          denetimin hız ölçümü açık başlatıldığını belirtir; ölçümün başarıyla
-          tamamlandığını kanıtlamaz. Telefonda diğer sütunları ve işlemleri
-          görmek için tabloyu yana kaydırın.
-        </p>
-        <p>
-          Geçmişteki Kritik, Uyarı ve Bilgi sayıları sayfa bulgularıdır; aynı
-          sayfada birden çok bulgu olabilir. Tamamlanan işin yanında kayıtlı
-          tarama sınırı gösterilir; sınır bilinmiyorsa açıkça belirtilir.
-          <strong>Kapsam ayrıntıları</strong> ölçülen ve ölçülemeyen kontrolleri
-          açar. Başarısız denetimde kayıtlı hata kodunun açıklaması ve sonraki
-          adım görünür; neden bilinmiyorsa tahmin edilmez.
-        </p>
         <nav class="pager" aria-label="Önceki ve sonraki sayfa">
           <a class="pager-prev" rel="prev" href="/kilavuz/analitik/"
-            ><span>Önceki</span
-            ><strong>Analitik verilerini yorumlama</strong></a
+            ><span>Önceki</span><strong>Analytics verisini yorumlama</strong></a
           ><a class="pager-next" rel="next" href="/kilavuz/dizin-durumu/"
             ><span>Sonraki</span><strong>Dizin durumu</strong></a
           >

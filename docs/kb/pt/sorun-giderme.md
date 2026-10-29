@@ -15,7 +15,7 @@ A interface do aplicativo existe em seis idiomas: turco, inglês, alemão, franc
 
 **Causa:** O aplicativo não está em execução.
 
-**Solução:** No Windows, procure o ícone na barra de tarefas. Se o ícone não aparecer, clique na seta ^ da barra de tarefas. Se ele não estiver lá, abra o seowatcher pelo menu Iniciar. Se o ícone disser "Erro", clique nele com o botão direito e escolha **Yeniden başlat** (Reiniciar). No Docker, execute `docker compose ps`. Se o estado não for healthy, execute `docker compose up -d`.
+**Solução:** No Windows, procure o ícone na barra de tarefas. Se o ícone não aparecer, clique na seta ^ da barra de tarefas. Se ele não estiver lá, abra o seowatcher pelo menu Iniciar. Se o ícone disser "Hata" (Erro), clique nele com o botão direito e escolha **Yeniden başlat** (Reiniciar). No Docker, execute `docker compose ps`. Se o estado não for healthy, execute `docker compose up -d`.
 
 ## O número da porta está em uso
 
@@ -23,7 +23,7 @@ A interface do aplicativo existe em seis idiomas: turco, inglês, alemão, franc
 
 **Causa:** Outro programa está usando o mesmo número de porta. A causa mais comum é uma cópia antiga do Docker que você rodou um dia. O Docker Desktop pode reiniciá-la sozinho quando o computador liga. Os endereços de redirecionamento do Google trazem a 3001, então o login do Google não funciona enquanto o aplicativo está aberto na 3002.
 
-**Solução:** O pacote Windows normalmente escolhe um número livre entre 3002 e 3010, avisa com um balão e com a faixa do alto, e o usa só nessa inicialização. Feche primeiro o programa que ocupa a 3001. Se for uma cópia antiga do Docker, pare o contêiner seotracker no Docker Desktop ou execute `docker compose stop` na pasta do projeto. Depois escolha **Yeniden başlat** (Reiniciar) no menu. O aplicativo volta à 3001 e a faixa some. Fechar a faixa só a esconde nessa aba; não resolve nada. Se todos estiverem em uso, escreva outro número no arquivo `config.json` da pasta de dados. No Docker, crie um arquivo `.env` com a linha `PORT=3002` e execute `docker compose up -d --force-recreate seotracker`. Quando o número muda, atualize também os endereços de redirecionamento do Google.
+**Solução:** O pacote Windows normalmente escolhe um número livre entre 3002 e 3010, avisa com uma notificação e com a faixa do alto, e o usa só nessa inicialização. Feche primeiro o programa que ocupa a 3001. Se for uma cópia antiga do Docker, pare o contêiner seotracker no Docker Desktop ou execute `docker compose stop` na pasta do projeto. Depois escolha **Yeniden başlat** (Reiniciar) no menu. O aplicativo volta à 3001 e a faixa some. Fechar a faixa só a esconde nessa aba; não resolve nada. Se os números de 3002 a 3010 estiverem todos em uso, escreva outro número no arquivo `config.json` da pasta de dados. No Docker, crie um arquivo `.env` com a linha `PORT=3002` e execute `docker compose up -d --force-recreate seotracker`. Quando o número muda, atualize também os endereços de redirecionamento do Google.
 
 ## O ícone diz "Windows bileşeni eksik"
 
@@ -31,7 +31,7 @@ A interface do aplicativo existe em seis idiomas: turco, inglês, alemão, franc
 
 **Causa:** O motor do aplicativo precisa do pacote Visual C++ da Microsoft (2015-2022, 64 bits). Em um Windows recém-instalado, esse pacote está ausente ou desatualizado.
 
-**Solução:** Clique no balão que aparece, ou clique com o botão direito no ícone (se o ícone não aparecer, clique na seta ^ da barra de tarefas) e escolha **Eksik Windows bileşenini kur** (Instalar o componente do Windows que falta). O Windows pede permissão de administrador uma vez. Quando a instalação termina, o aplicativo reinicia sozinho. Se você não tiver o pacote, baixe-o da página da Microsoft: `https://aka.ms/vs/17/release/vc_redist.x64.exe`
+**Solução:** Clique na notificação que aparece, ou clique com o botão direito no ícone da bandeja e escolha **Eksik Windows bileşenini kur** (Instalar o componente do Windows que falta). O Windows pede permissão de administrador uma vez. Quando a instalação termina, o aplicativo reinicia sozinho. Se você não tiver o pacote, baixe-o da página da Microsoft: `https://aka.ms/vs/17/release/vc_redist.x64.exe`
 
 ## A permissão de administrador foi recusada
 
@@ -39,9 +39,9 @@ A interface do aplicativo existe em seis idiomas: turco, inglês, alemão, franc
 
 **Causa:** O componente Visual C++ não foi instalado. Como o aplicativo traz uma cópia dos arquivos de que precisa, ele inicia mesmo assim na maioria dos computadores.
 
-**Solução:** Se o aplicativo iniciou, você não precisa fazer nada. Se não, no menu da bandeja, escolha **Eksik Windows bileşenini kur** (Instalar o componente do Windows que falta) e permita desta vez. Se o ícone não aparecer, clique na seta ^ da barra de tarefas. Ou instale você mesmo o componente em `https://aka.ms/vs/17/release/vc_redist.x64.exe`.
+**Solução:** Se o aplicativo iniciou, você não precisa fazer nada. Se não, no menu da bandeja, escolha **Eksik Windows bileşenini kur** (Instalar o componente do Windows que falta) e permita desta vez. Ou instale você mesmo o componente em `https://aka.ms/vs/17/release/vc_redist.x64.exe`.
 
-## O ícone diz "Uygulamanın motoru çöktü"
+## O ícone diz "Uygulamanın motoru çöktü" (o motor do aplicativo travou)
 
 **Sintoma:** O aplicativo não abre. O registro tem "Workers runtime failed to start" e "0xc0000005", mas o pacote Visual C++ está instalado.
 
@@ -71,11 +71,11 @@ A interface do aplicativo existe em seis idiomas: turco, inglês, alemão, franc
 
 **Causa:** O ID do cliente e a chave secreta não foram informados em **Configurações → Google**. Ou, no Docker, a chave de criptografia tem menos de 32 caracteres.
 
-**Solução:** Faça os passos 10 e 11 do guia da conexão com o Google. No Docker, se você definiu `BETTER_AUTH_SECRET` à mão, deixe-a mais longa. Se a deixar vazia, o aplicativo cria uma sozinho.
+**Solução:** Siga a seção OAuth do guia [Conectar ao Google](/docs/google-baglantisi/). No Docker, se você definiu `BETTER_AUTH_SECRET` à mão, deixe-a mais longa. Se a deixar vazia, o aplicativo cria uma sozinho.
 
 ## O Google diz "access_denied"
 
-**Sintoma:** Depois da tela de permissão, aparece um aviso "iptal edildi" (cancelado).
+**Sintoma:** Depois da tela de permissão, aparece o aviso "O login no Google foi cancelado".
 
 **Causa:** A conta Google com que você entrou não está na lista de usuários de teste da tela de consentimento.
 
@@ -85,13 +85,13 @@ A interface do aplicativo existe em seis idiomas: turco, inglês, alemão, franc
 
 **Sintoma:** O cartão da integração diz "A conexão expirou" e nenhum dado chega.
 
-**Causa:** Em aplicativos com estado "Teste", o Google pode derrubar a permissão depois de sete dias. A chave de criptografia também pode ter mudado.
+**Causa:** Em aplicativos com estado "Teste", o Google pode revogar a autorização depois de sete dias. A chave de criptografia também pode ter mudado.
 
 **Solução:** No cartão, escolha **Reconectar**. Se continuar acontecendo, passe a tela de consentimento para produção ou troque para uma conta de serviço (**Configurações → Conta de serviço**, Configurações → Conta de serviço).
 
 ## Não há dados de consultas e os gráficos estão vazios
 
-**Sintoma:** Os cartões do Panel (Painel) estão em zero. Desempenho da pesquisa diz "Ainda não há dados para este período".
+**Sintoma:** Os cartões do **Painel** estão em zero. Desempenho da pesquisa diz "Ainda não há dados para este período".
 
 **Causa:** Há três possibilidades. O site é novo e o Google ainda não informa impressões. Ou o Search Console está três dias atrasado e o período escolhido é curto demais. Ou a propriedade errada está selecionada.
 
@@ -111,19 +111,19 @@ A interface do aplicativo existe em seis idiomas: turco, inglês, alemão, franc
 
 **Causa:** O aplicativo pode ter reiniciado, ou a tarefa pode ter caído.
 
-**Solução:** Espere. O aplicativo confere toda auditoria que parece "em andamento" há mais de 15 minutos. Se não houver sinais de vida, ele encerra a auditoria como "Falhou" e escreve o motivo. Depois escolha **Executar novamente com as mesmas configurações**. Não inicie duas auditorias com medição de velocidade ao mesmo tempo. Elas se atrasam mutuamente.
+**Solução:** Espere. O aplicativo confere toda auditoria que parece "em andamento" há mais de 15 minutos. Se não houver sinais de vida, ele marca a auditoria como "Falhou" e indica o motivo. Depois escolha **Executar novamente com as mesmas configurações**. Não inicie duas auditorias com medição de velocidade ao mesmo tempo. Elas se atrasam mutuamente.
 
 ## A auditoria diz "A auditoria parou antes de terminar"
 
 **Sintoma:** A tela da auditoria diz "A auditoria parou na fase "rastreamento"." ou "A auditoria parou antes de terminar." No lugar da pontuação aparece "Auditoria incompleta — sem pontuação".
 
-**Causa:** A tela diz três coisas: o que aconteceu, se o defeito está no seu site ou no aplicativo, e o que fazer. O título diz em que fase ela parou: descoberta de URLs, rastreamento, medição de velocidade ou preparação dos resultados.
+**Causa:** A auditoria foi interrompida. A tela diz três coisas: o que aconteceu, se o defeito está no seu site ou no aplicativo, e o que fazer. O título diz em que fase ela parou: descoberta de URLs, rastreamento, medição de velocidade ou preparação dos resultados.
 
 **Solução:** Siga a frase da tela.
 
 - **Uma etapa não terminou a tempo.** Em geral, o site responde muito devagar. Tente de novo em alguns minutos. Se repetir, comece com menos páginas.
 - **A auditoria não coube na memória**, **passou do tempo de processador** ou **o resultado de uma etapa passou do tamanho que o aplicativo consegue guardar.** Páginas muito grandes ou complexas causam isso. Comece de novo com menos páginas.
-- **Ocorreu um erro ao gravar os resultados no banco de dados.** O disco pode estar cheio ou o arquivo de dados pode estar bloqueado por outro programa. Veja se o disco tem espaço, reinicie o aplicativo e comece a auditoria de novo.
+- **Ocorreu um erro ao gravar os resultados no banco de dados.** O disco pode estar cheio ou o arquivo de dados pode estar bloqueado por outro programa. Libere espaço em disco se necessário, reinicie o aplicativo e repita a auditoria.
 - **O mecanismo interno de auditoria do aplicativo informou um erro.** Escolha **Yeniden başlat** (Reiniciar) no menu da bandeja e comece a auditoria de novo.
 - **A auditoria foi interrompida.** O aplicativo pode ter sido fechado ou reiniciado no meio dela. Deixe o aplicativo aberto e comece a auditoria de novo.
 - **A chave de instalação não chegou à parte que executa as auditorias.** Suas chaves Google e PageSpeed salvas não foram apagadas. Atualize ou reinicie o aplicativo e comece a auditoria de novo.
@@ -135,7 +135,7 @@ O texto bruto do erro não chega à tela. Ele fica no pacote de diagnóstico.
 
 **Sintoma:** Ao lado da pontuação não há palavra de avaliação. Há uma linha como "Pontuação provisória — cobertura das medições 62%".
 
-**Causa:** Uma parte grande das verificações não pôde ser medida (a parcela de verificações medidas está abaixo de 70 por cento, ou menos da metade das verificações de Rastreando, Indexação, Conteúdo ou Velocidade foi medida). As linhas abaixo do cartão dizem os motivos: a cota do PageSpeed acabou, não há chave do PageSpeed, a medição de velocidade estava desligada ou não se conseguiu buscar os dados de índice no Search Console.
+**Causa:** Uma parte grande das verificações não pôde ser medida (a parcela de verificações medidas está abaixo de 70 por cento, ou menos da metade das verificações de Rastreamento, Indexação, Conteúdo ou Velocidade foi medida). As linhas abaixo do cartão dizem os motivos: a cota do PageSpeed acabou, não há chave do PageSpeed, a medição de velocidade estava desligada ou não se conseguiu buscar os dados de índice no Search Console.
 
 **Solução:** Ligue a medição de velocidade, adicione uma chave do PageSpeed ou conecte o Search Console e execute a auditoria de novo. A pontuação vale para o que foi medido. Sobre o resto, nenhum julgamento, bom ou ruim, foi feito.
 
@@ -155,9 +155,9 @@ O texto bruto do erro não chega à tela. Ele fica no pacote de diagnóstico.
 
 **Solução:** Atualize ou reinicie o aplicativo e comece uma nova auditoria. Se continuar, salve de novo a chave do PageSpeed em **Configurações**.
 
-## A auditoria diz "Engellendik"
+## A auditoria diz "Fomos bloqueados"
 
-**Sintoma:** Aparece um aviso amarelo: "A auditoria não conseguiu rastrear este site por completo." ou "N sayfada engellendik." (Fomos bloqueados em N páginas.)
+**Sintoma:** Aparece um aviso amarelo: "A auditoria não conseguiu rastrear este site por completo." ou "Fomos bloqueados em N páginas."
 
 **Causa:** A proteção contra robôs do site (Cloudflare ou um firewall) barrou o rastreador de sites do aplicativo.
 
@@ -165,7 +165,7 @@ O texto bruto do erro não chega à tela. Ele fica no pacote de diagnóstico.
 
 ## A medição de velocidade está incompleta ou ausente
 
-**Sintoma:** A aba Hız (Velocidade) está vazia ou tem muito poucas linhas. O cartão de cota diz "Cota esgotada", "Dakikalık sınır" (Limite por minuto) ou "Anahtar yok" (Sem chave).
+**Sintoma:** A aba **Velocidade** está vazia ou tem muito poucas linhas. O cartão de cotas indica cota esgotada, limite por minuto atingido ou falta de chave.
 
 **Causa:** Não há uma chave do PageSpeed (no máximo 50 páginas são medidas). Ou a cota diária do Google acabou.
 
@@ -173,11 +173,11 @@ O texto bruto do erro não chega à tela. Ele fica no pacote de diagnóstico.
 
 ## A URL Inspection diz "limite diário atingido"
 
-**Sintoma:** Na aba Status de indexação, o botão não funciona. Ele diz "Google'ın günlük 2.000 adres sınırına ulaşıldı" (O limite diário de 2.000 endereços do Google foi atingido).
+**Sintoma:** Na aba Status de indexação, o botão não funciona. Aparece a mensagem "O limite diário de 2.000 URLs do Google está esgotado".
 
-**Causa:** Há uma cota de 2.000 perguntas por dia por propriedade. O aplicativo, o seu assistente e as verificações que você faz à mão no Search Console usam o mesmo conjunto.
+**Causa:** Há uma cota de 2.000 perguntas por dia por propriedade. O aplicativo, o agente e as verificações que você faz à mão no Search Console usam o mesmo conjunto.
 
-**Solução:** Continue amanhã. O aplicativo só pergunta de novo as respostas que ficaram velhas, então a sua cota não é desperdiçada.
+**Solução:** O limite conta as últimas 24 horas, então a cota se libera aos poucos ao longo de algumas horas; continue depois disso. O aplicativo só pergunta de novo as respostas que ficaram velhas, então a sua cota não é desperdiçada.
 
 ## O cartão ou o relatório do Analytics mostra um erro
 
@@ -187,15 +187,15 @@ O texto bruto do erro não chega à tela. Ele fica no pacote de diagnóstico.
 
 - **A conexão expirou ou foi revogada.** Conecte de novo em **Configurações**.
 - **O acesso a esta propriedade foi recusado (HTTP 403).** Dê à conta conectada ou à conta de serviço pelo menos a função de Leitor na propriedade.
-- **A propriedade não foi encontrada (HTTP 404).** Ela pode ter sido excluída ou movida. Escolha-a de novo em **Configurações**.
-- **Nenhuma propriedade está conectada a este projeto.** Escolha uma em **Configurações**.
+- **A propriedade não foi encontrada (HTTP 404).** Ela pode ter sido excluída ou movida. Escolha-a de novo em **Configurações do projeto → Conexões**.
+- **Nenhuma propriedade está conectada a este projeto.** Escolha uma em **Configurações do projeto → Conexões**.
 - **A cota de relatórios acabou (HTTP 429).** A cota se renova a cada hora e a cada dia. Tente mais tarde.
 - **A Google Analytics Data API está desativada no projeto do Google Cloud.** Ative "Google Analytics Data API" no Google Cloud Console e tente de novo.
 - **O relatório não é compatível com a propriedade escolhida (HTTP 400).** Confira a propriedade ou escolha outra.
 - **O Google devolveu uma resposta inválida ou não está respondendo no momento.** Tente de novo daqui a pouco.
 - **Não foi possível alcançar o Google.** Veja a conexão de internet deste computador.
 
-**Solução:** Faça o passo que a frase indica. Quase sempre **Corrigir a conexão** leva à configuração certa.
+**Solução:** Siga a indicação da mensagem. Quase sempre **Corrigir a conexão** leva à configuração certa.
 
 ## Uma solicitação ao Search Console mostra um erro
 
@@ -205,29 +205,34 @@ O texto bruto do erro não chega à tela. Ele fica no pacote de diagnóstico.
 
 - **A solicitação foi considerada inválida (HTTP 400).** Isso não é problema de conexão. A dimensão, o filtro ou o tipo de pesquisa escolhido não pode ser usado nesta propriedade. Tire os filtros.
 - **O acesso à propriedade foi recusado (HTTP 401 ou 403).** Veja se a conta tem permissão verificada na propriedade ou renove a conexão em **Configurações**.
-- **A propriedade não foi encontrada (HTTP 404).** Ela pode ter sido removida do Search Console. Escolha-a de novo em **Configurações**.
+- **A propriedade não foi encontrada (HTTP 404).** Ela pode ter sido removida do Search Console: escolha uma válida em **Configurações do projeto → Conexões**.
 - **O limite de solicitações acabou (HTTP 429).** Tente de novo em alguns minutos.
 - **Não respondeu a tempo.** Tente de novo daqui a pouco.
 - **Não está respondendo no momento (outro código HTTP).** Tente de novo daqui a pouco. Se continuar, veja a página de status do Google.
-- **Não foi possível alcançar o Google.** A frase dá um detalhe na linha "Motivo". Se continuar, veja a conexão de internet deste computador.
+- **Não foi possível alcançar o Google.** A linha "Motivo" traz um detalhe. Se o problema persistir, verifique a rede.
 
-**Solução:** Faça o passo que a frase indica. Em problemas de conta e propriedade, renovar a conexão em **Configurações** costuma bastar.
+**Solução:** Em problemas de conta e propriedade, renovar a conexão em **Configurações do projeto → Conexões** costuma bastar.
 
 ## O tráfego de localhost aparece no Analytics
 
-**Sintoma:** Na tabela de páginas de entrada, a coluna Alan adı (Domínio) mostra localhost ou 127.0.0.1.
+**Sintoma:** Na tabela de páginas de entrada, a coluna **Domínio** mostra localhost ou 127.0.0.1.
 
 **Causa:** Uma cópia de teste do seu site carrega a mesma tag do Analytics.
 
-**Solução:** Configure a tag para carregar apenas no domínio real. A maioria das ferramentas tem uma opção de "verificação de domínio". O aplicativo não filtra essas linhas sozinho. Até lá, leia a tabela com a coluna Alan adı (Domínio) à vista.
+**Solução:** Configure a tag para carregar apenas no domínio real. A maioria das ferramentas tem uma opção de "verificação de domínio". O aplicativo não filtra essas linhas sozinho. Até lá, identifique essas linhas pela coluna **Domínio**.
 
-## O assistente não consegue se conectar (401)
+## O agente não consegue se conectar (401)
 
 **Sintoma:** O Claude Code ou o Codex diz "Unauthorized".
 
-**Causa:** A senha não está sendo enviada, ou está errada.
+**Causa:** O cliente não está enviando o token, ou o token está errado.
 
-**Solução:** Copie a senha de novo. No Windows, ela está no arquivo `mcp-token` da pasta de dados. No Docker, execute `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. Apague o caractere de quebra de linha no fim do valor. Sem terminal: abra o arquivo no Bloco de Notas, selecione a linha inteira e copie; não inclua a quebra de linha. No Claude Code, digite `/mcp` e escolha **Reconnect**.
+**Solução:** Na tela **Configuração do agente**, use **Copiar comando de configuração**: o agente lê o token da instalação sem exibi-lo. Para configurar à mão, copie o token para a área de transferência sem exibi-lo, cole-o no campo de cabeçalho do cliente MCP e depois limpe a área de transferência. Nunca cole o token em um chat nem em uma captura de tela.
+
+- **Pacote Windows:** o token fica no arquivo `%LOCALAPPDATA%\seowatcher\mcp-token` (menu: **Veri klasörünü aç**, Abrir a pasta de dados). No PowerShell: `(Get-Content "$env:LOCALAPPDATA\seowatcher\mcp-token").Trim() | Set-Clipboard`.
+- **Docker:** no PowerShell, `(docker compose exec -T seotracker cat /app/.wrangler/mcp-token).Trim() | Set-Clipboard`.
+
+Depois, no Claude Code, digite `/mcp` e escolha **Reconnect** (Reconectar).
 
 ## O Docker demora muito na primeira inicialização ou fica "unhealthy"
 
@@ -254,11 +259,11 @@ Ao relatar um problema, clique em **Baixar pacote de diagnóstico** na tela **Aj
 - **O aplicativo da bandeja não respondeu em 4 segundos.** Se o computador acabou de acordar da suspensão, aperte **Tentar novamente** depois de alguns segundos. Se persistir, escolha **Çıkış** (Sair) no menu da bandeja e abra o aplicativo de novo.
 - **Não foi possível conectar ao serviço de configurações do aplicativo da bandeja.** Ele pode ter sido fechado. Abra o seowatcher de novo pelo menu Iniciar.
 - **Esta configuração está bloqueada por um administrador.** Só o administrador do computador pode alterá-la.
-- **O aplicativo da bandeja não reconheceu esta solicitação.** O servidor e o aplicativo podem ser de sessões diferentes. Escolha **Çıkış** (Sair) no menu da bandeja e abra o aplicativo de novo.
+- **O aplicativo da bandeja não reconheceu esta solicitação.** O servidor e o aplicativo podem ser de sessões diferentes. Feche o aplicativo com **Çıkış** (Sair) e abra-o de novo.
 - **O aplicativo da bandeja recusou a solicitação.** Reinicie o aplicativo pelo menu da bandeja. Se persistir, atualize o pacote do Windows.
 - **O aplicativo da bandeja devolveu uma resposta não reconhecida.** As versões podem não corresponder. Atualize o pacote do Windows.
 
-**Solução:** Faça o passo que a frase indica. Essas opções só existem no pacote do Windows. No Docker, você controla o comportamento na inicialização pelo sistema operacional.
+**Solução:** Essas opções só existem no pacote do Windows; siga a indicação da mensagem. No Docker, você controla o comportamento na inicialização pelo sistema operacional.
 
 ## Mensagens do iniciador
 
@@ -269,7 +274,7 @@ Estas mensagens aparecem no ícone do Windows ou em uma caixa de diálogo. O ini
 - **"Sunucu 10 dakikada üç kez kapandı"** (O servidor fechou três vezes em 10 minutos): o aplicativo parou de reabri-lo. Escolha **Kurulumu onar** e, se não resolver, **Sorunu bildir (GitHub)**.
 - **"Kurulum eksik"** (Instalação incompleta): **Kurulumu onar** devolve os arquivos que faltam baixando o instalador. Se não houver internet, a página de versões abre; baixe o instalador e execute-o.
 - **"3001 numarası dolu, 3002 kullanılıyor"** (A porta 3001 está em uso, usando a 3002): outro programa ocupa a 3001, muitas vezes uma cópia antiga do Docker. O mesmo aviso aparece também como uma faixa amarela no aplicativo. Se você receber um erro ao conectar ao Google, feche esse programa e escolha **Yeniden başlat**. Veja acima "O número da porta está em uso".
-- **"Güncelleme denetlenemedi"** (Não foi possível verificar a atualização) ou **"Güncelleme yapılamadı"** (A atualização falhou): o balão diz o motivo. Se disser "GitHub'a ulaşılamadı" (não foi possível acessar o GitHub), confira a sua conexão com a internet. Se disser "GitHub şu an çok fazla istek alıyor" (o GitHub está recebendo requisições demais agora), tente de novo em uma hora. Se a impressão digital não coincidir, baixe o instalador na página de versões. Em qualquer caso, a versão instalada continua funcionando.
+- **"Güncelleme denetlenemedi"** (Não foi possível verificar a atualização) ou **"Güncelleme yapılamadı"** (A atualização falhou): a notificação diz o motivo. Se disser "GitHub'a ulaşılamadı" (não foi possível acessar o GitHub), confira a sua conexão com a internet. Se disser "GitHub şu an çok fazla istek alıyor" (o GitHub está recebendo requisições demais agora), tente de novo em uma hora. Se a impressão digital não coincidir, baixe o instalador na página de versões. Em qualquer caso, a versão instalada continua funcionando.
 - **"Güncelleme kurulmadı"** (A atualização não foi instalada): a janela de instalação foi fechada ou a permissão de administrador não foi dada. Tente de novo em **Güncelle** no menu.
 - **"Windows bileşeni kurulamadı"** (Não foi possível instalar o componente do Windows): escolha **Eksik Windows bileşenini kur** (Instalar o componente do Windows que falta) no menu.
 

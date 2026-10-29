@@ -5,18 +5,29 @@ kind: nasil-yapilir
 updated: 2026-10-27
 ---
 
-PageSpeed Insights API anahtarı, site denetiminin sayfalarınızın hızını Google'ın PageSpeed Insights servisiyle ölçmesini sağlar. Anahtarı Google Cloud'da ücretsiz oluşturursunuz ve isteğe bağlıdır: anahtar yoksa uygulama her denetimde en fazla 50 sayfayı ölçmeyi dener.
+Site denetimi sayfalarınızın hızını Google PageSpeed Insights ile ölçer. Anahtar isteğe bağlıdır ve Google Cloud'da ücretsiz oluşturulur. Anahtar yoksa uygulama her denetimde en fazla 50 sayfayı ölçmeyi dener.
 
 ## Anahtarı ekleyin
 
-Google Cloud projenizde PageSpeed Insights API'yi etkinleştirin. Kimlik bilgileri bölümünde bir API anahtarı oluşturun; API kısıtını PageSpeed Insights olarak ayarlayın. **Ayarlar → Hız ölçümü** alanına anahtarı girip **Kaydet** deyin. Anahtar şifreli saklanır, ekranda gösterilmez. Docker'da PAGESPEED_API_KEY ortam değeri de kullanılabilir; Ayarlar'daki kayıt önceliklidir.
+1. Google Cloud projenizde PageSpeed Insights API'yi etkinleştirin.
+2. **Kimlik bilgileri** bölümünde bir API anahtarı oluşturun ve API kısıtını PageSpeed Insights olarak ayarlayın.
+3. seowatcher'da **Ayarlar → Hız ölçümü** bölümünde anahtarı **API anahtarı** alanına yapıştırın ve **Kaydet** düğmesine basın.
 
-## Testin anlamı
+Anahtar şifreli saklanır ve ekranda gösterilmez. Docker kurulumunda `PAGESPEED_API_KEY` ortam değişkeni de kullanılabilir; Ayarlar'a kaydedilen anahtar ondan önce gelir.
 
-**Anahtarı test et**, example.com için bir gerçek mobil istek gönderir. Sitenizin hızını ölçmez ve denetim ölçüm sayacına eklenmez. Sonuç ve test tarihi görünür. Düğme istek boyunca ve tıklamadan itibaren en az 10 saniye kapalıdır. Anahtar değişince önceki test sonucu kaldırılır.
+## Anahtarı test edin
 
-## Sınırlar ve hatalar
+**Anahtarı test et**, example.com için gerçek bir mobil ölçüm isteği gönderir. Sitenizin hızını ölçmez ve denetim sayacına eklenmez. Sonuç ve **Test tarihi** bölümde görünür. Düğme istek sürerken ve tıklamadan sonra en az 10 saniye kapalı kalır. Anahtarı değiştirdiğinizde eski test sonucu silinir.
 
-Anahtarsız uygulama denetim başına en fazla 50 sayfayı dener. Google daha erken sınır koyabilir; anahtar başarı garantisi vermez. Gerçek kota için Google Cloud kota ekranına bakın. Ayarlar'daki PageSpeed sayacı yalnızca son 24 saatte başlayan denetimlerin kayıtlarını sayar; testleri veya başka programları saymaz.
+Test yalnızca o tek isteğin sonucudur. Kaydedilmiş ya da test edilmiş bir anahtar, denetimdeki her ölçümün başarılı olacağını garanti etmez; Google kotaya göre daha erken durdurabilir.
 
-Geçersiz anahtarda değeri yeniden kopyalayın. 403/kısıtlı anahtarda API'nin etkin olduğunu ve kısıtları kontrol edin. Günlük kota veya istek sınırında bekleyin ve Cloud kota ekranını inceleyin. Ağ hatasında yeniden deneyin. Kaydedilmiş anahtar erişimin doğrulandığı anlamına gelmez; test yalnızca o isteğin sonucudur.
+## Kota
+
+Gerçek kota ve kullanım Google Cloud'un kota ekranındadır. **Ayarlar → Google ve sistem sınırları** altındaki PageSpeed sayacı yalnızca son 24 saatte başlayan denetimlerin isteklerini sayar; testleri ve başka programların isteklerini saymaz.
+
+## Hatalar
+
+- **Geçersiz anahtar:** Anahtarı Google Cloud'dan yeniden kopyalayın.
+- **403 ya da kısıtlı anahtar:** API'nin etkin olduğunu ve anahtar kısıtlarının PageSpeed Insights'a izin verdiğini kontrol edin.
+- **Günlük kota ya da istek sınırı:** Bekleyin ve Cloud kota ekranına bakın.
+- **Ağ hatası:** Yeniden deneyin.

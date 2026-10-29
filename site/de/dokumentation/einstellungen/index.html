@@ -14,7 +14,7 @@
     <title>Einstellungen | seowatcher-Anleitung</title>
     <meta
       name="description"
-      content="Browser-, Installations- und Projektumfang; Google-Zugangsdaten, lokale Zähler und Versionsprüfung."
+      content="Was in den Einstellungen für den Browser, für die ganze Installation und für ein einzelnes Projekt gilt, und wo Sie es jeweils ändern."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -91,7 +91,7 @@
     <meta property="og:title" content="Einstellungen | seowatcher-Anleitung" />
     <meta
       property="og:description"
-      content="Browser-, Installations- und Projektumfang; Google-Zugangsdaten, lokale Zähler und Versionsprüfung."
+      content="Was in den Einstellungen für den Browser, für die ganze Installation und für ein einzelnes Projekt gilt, und wo Sie es jeweils ändern."
     />
     <meta
       property="og:image"
@@ -119,7 +119,7 @@
     <meta name="twitter:title" content="Einstellungen | seowatcher-Anleitung" />
     <meta
       name="twitter:description"
-      content="Browser-, Installations- und Projektumfang; Google-Zugangsdaten, lokale Zähler und Versionsprüfung."
+      content="Was in den Einstellungen für den Browser, für die ganze Installation und für ein einzelnes Projekt gilt, und wo Sie es jeweils ändern."
     />
     <meta
       name="twitter:image"
@@ -162,7 +162,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/de/dokumentation/einstellungen/#article",
             "headline": "Einstellungen",
-            "description": "Browser-, Installations- und Projektumfang; Google-Zugangsdaten, lokale Zähler und Versionsprüfung.",
+            "description": "Was in den Einstellungen für den Browser, für die ganze Installation und für ein einzelnes Projekt gilt, und wo Sie es jeweils ändern.",
             "url": "https://seowatcher.io/de/dokumentation/einstellungen/",
             "inLanguage": "de",
             "datePublished": "2026-10-23",
@@ -201,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1496,9 +1496,7 @@
           <p class="nav-group">Bildschirme</p>
           <ul>
             <li><a href="/de/dokumentation/projekte/">Projekte</a></li>
-            <li>
-              <a href="/de/dokumentation/uebersicht/">Übersicht (Panel)</a>
-            </li>
+            <li><a href="/de/dokumentation/uebersicht/">Übersicht</a></li>
             <li><a href="/de/dokumentation/suchleistung/">Suchleistung</a></li>
             <li>
               <a href="/de/dokumentation/ranking-verfolgung/"
@@ -1508,12 +1506,12 @@
             <li><a href="/de/dokumentation/chancen/">Chancen</a></li>
             <li>
               <a href="/de/dokumentation/gespeicherte-suchbegriffe/"
-                >Gespeicherte Suchbegriffe</a
+                >Gespeicherte Keywords</a
               >
             </li>
             <li>
               <a href="/de/dokumentation/datenanalyse/"
-                >Analysedaten verstehen</a
+                >Analytics-Daten verstehen</a
               >
             </li>
             <li>
@@ -1523,7 +1521,7 @@
             <li>
               <a href="/de/dokumentation/berichte/">Berichte und Vorlagen</a>
             </li>
-            <li><a href="/de/dokumentation/projektinfo/">Projektinfo</a></li>
+            <li><a href="/de/dokumentation/projektinfo/">Projektkontext</a></li>
             <li class="current" aria-current="page">
               <a href="/de/dokumentation/einstellungen/">Einstellungen</a>
             </li>
@@ -1534,7 +1532,7 @@
             <li><a href="/de/dokumentation/audit-regeln/">Audit-Regeln</a></li>
             <li>
               <a href="/de/dokumentation/assistent-einrichten/"
-                >Assistent einrichten</a
+                >Agent einrichten</a
               >
             </li>
             <li>
@@ -1549,90 +1547,151 @@
       <article id="icerik" data-page="ayarlar">
         <h1>Einstellungen</h1>
         <p class="lede">
-          Browser-, Installations- und Projektumfang; Google-Zugangsdaten,
-          lokale Zähler und Versionsprüfung.
+          Was in den Einstellungen für den Browser, für die ganze Installation
+          und für ein einzelnes Projekt gilt, und wo Sie es jeweils ändern.
         </p>
         <p>
-          Die Einstellungen enthalten, was für diesen Browser (Darstellung und
-          Sprache) und für die ganze Installation gilt (Google-Zugangsdaten,
-          PageSpeed-Schlüssel, Limits und Updates). Name, Domain und
-          Google-Properties eines Projekts stehen in den
-          <strong>Projekteinstellungen</strong>. Diese Seite erklärt, wofür jede
-          Einstellung gilt und wo Sie sie ändern.
+          Die Einstellungen haben drei Geltungsbereiche. Darstellung und Sprache
+          gelten für diesen Browser. Google-Zugangsdaten, PageSpeed-Schlüssel
+          und Updates gelten für die ganze Installation; die Limits zeigt die
+          App jeweils für ein Projekt. Name, Domain und Google-Properties eines
+          Projekts stehen dagegen in den <strong>Projekteinstellungen</strong>.
         </p>
-        <h2 id="geltungsbereich">Geltungsbereich</h2>
+        <h2 id="browser-darstellung-und-sprache">
+          Browser: Darstellung und Sprache
+        </h2>
         <p>
-          Darstellung und Sprache gelten für diesen Browser. Wählen Sie die
-          Sprache und bestätigen Sie mit der Schaltfläche zum Anwenden. Die
-          Projektsprache ist eine getrennte Marktvorgabe.
+          Wählen Sie unter <strong>Darstellung</strong> die Sprache und
+          bestätigen Sie mit <strong>Sprache anwenden</strong>. Die Sprache
+          eines Projekts ist davon unabhängig: Sie legt den Markt für
+          gespeicherte Keywords fest.
         </p>
+        <h2 id="installation-google-zugangsdaten">
+          Installation: Google-Zugangsdaten
+        </h2>
         <p>
-          Google-Zugangsdaten gelten für die gesamte Installation; ein
-          Dienstkonto hat Vorrang. Gespeicherte Zugangsdaten und eine
-          ausgewählte Property bestätigen keinen Datenzugriff. Bei Lesefehlern
-          bleiben alte Einstellungen mit Wiederholungshinweis sichtbar. Wählen
-          Sie die JSON-Datei oder nutzen Sie das verdeckte Einfügefeld und
-          speichern Sie. Der private Schlüssel wird nicht angezeigt.
-        </p>
-        <p>
-          Projektname, Domain und Property liegen in den Projekteinstellungen.
-          Eine Domainänderung erhält Google-Zuordnung und Verlauf. Land und
-          Sprache sind Vorgaben gespeicherter Suchbegriffe; Suchleistung hat
-          einen eigenen Länderfilter.
-        </p>
-        <h2 id="windows-messung-und-grenzen">Windows, Messung und Grenzen</h2>
-        <p>
-          Windows-Einstellungen werden von der Tray-App bestätigt. Docker zeigt
-          keine Schalter. Ein nicht erreichbarer Starter bedeutet unbekannt,
-          nicht ausgeschaltet. Wiederholen Sie den Abruf; Verwaltungssperren
-          werden erklärt.
+          Die Google-Zugangsdaten gelten für alle Projekte. Ist ein Dienstkonto
+          gespeichert, hat es Vorrang vor einem OAuth-Client. Zum Speichern
+          wählen Sie die JSON-Datei des Dienstkontos oder fügen ihren Inhalt in
+          das verdeckte Feld ein. Den privaten Schlüssel zeigt die App danach
+          nicht mehr an.
         </p>
         <p>
-          Ohne PageSpeed-Schlüssel versucht die App höchstens 50 Seiten pro
-          Prüfung. Google kann früher begrenzen; ein Schlüssel garantiert keinen
-          Erfolg. Der Schlüsseltest sendet eine mobile Anfrage für example.com
-          und zählt nicht zum Prüfungszähler. Testdatum und Ergebnis werden
-          angezeigt; ein Schlüsselwechsel entfernt das alte Ergebnis.
+          Gespeicherte Zugangsdaten und eine ausgewählte Property bestätigen
+          noch keinen Datenzugriff. Kann die App die Einstellungen nicht lesen,
+          bleiben die zuletzt bekannten Werte mit einem Hinweis zum erneuten
+          Versuch sichtbar. Die Einrichtung beschreibt
+          <a href="/de/dokumentation/google-verbindung/">Mit Google verbinden</a
+          >.
         </p>
+        <h2 id="projekt-name-domain-und-properties">
+          Projekt: Name, Domain und Properties
+        </h2>
         <p>
-          Wählen Sie unter Grenzen das Projekt. URL-Prüfung zählt eigene
-          Property-Anfragen der letzten 24 Stunden. PageSpeed zählt Prüfungen
-          mit Beginn in diesem Zeitraum. GA4-Restwerte stammen aus der letzten
-          Antwort; Standardgrenzen sind Annahmen. Alte und fehlende Quellen
-          bleiben unbekannt. Seiten stammen aus der letzten abgeschlossenen
-          Prüfung der Projektdomain; Berichte und Vorlagen aus dem gesamten
-          Projektbestand.
+          Projektname, Domain und Properties ändern Sie in den
+          Projekteinstellungen. Eine geänderte Domain behält die
+          Google-Zuordnung und den Verlauf. Land und Sprache des Projekts sind
+          Vorgaben für gespeicherte Keywords; die Suchleistung hat einen eigenen
+          Länderfilter.
         </p>
-        <h2 id="aktualisierungen">Aktualisierungen</h2>
+        <h2 id="pagespeed-schlussel">PageSpeed-Schlüssel</h2>
         <p>
-          Die Versionsprüfung in der App fragt höchstens alle sechs Stunden
-          GitHub ab. Die Windows-Tray-App kann unabhängig täglich prüfen.
-          Automatische Installation wird unter Windows eingestellt. Das letzte
-          erfolgreiche Prüfdatum kennzeichnet gespeicherte Versionsdaten. Bei
-          Anfrage-/Zugriffsbeschränkungen warten und wiederholen; bei fehlender
-          Quelle die Hilfe-Diagnose nutzen. Unlesbare Einstellungen sind
-          gesperrt.
+          Ohne Schlüssel misst die App höchstens 50 Seiten pro Audit. Google
+          kann schon früher begrenzen, und auch ein Schlüssel garantiert keinen
+          Erfolg. <strong>Schlüssel testen</strong> sendet eine mobile Anfrage
+          für example.com und zählt nicht zum Audit-Zähler. Testdatum und
+          Ergebnis werden angezeigt; ein neuer Schlüssel löscht das alte
+          Ergebnis. Einzelheiten stehen unter
+          <a href="/de/dokumentation/pagespeed-schluessel/"
+            >PageSpeed-Schlüssel</a
+          >.
         </p>
-        <h2 id="windows-benachrichtigungen">Windows-Benachrichtigungen</h2>
+        <h2 id="limits">Limits</h2>
+        <p>
+          Wählen Sie unter <strong>Google- und Systemlimits</strong> ein
+          Projekt. Die Zähler bedeuten:
+        </p>
+        <ul>
+          <li>
+            <strong>URL-Prüfung</strong>: Anfragen dieser App an die Property in
+            den letzten 24 Stunden.
+          </li>
+          <li>
+            <strong>PageSpeed</strong>: Audits, die in den letzten 24 Stunden
+            begonnen haben.
+          </li>
+          <li>
+            <strong>GA4</strong>: das Restkontingent laut letzter Antwort von
+            Google. Standardgrenzen sind Annahmen.
+          </li>
+          <li>
+            <strong>Seiten</strong>: aus dem letzten abgeschlossenen Audit der
+            Projektdomain.
+          </li>
+          <li>
+            <strong>Berichte und Vorlagen</strong>: der gesamte Bestand des
+            Projekts.
+          </li>
+        </ul>
+        <p>Veraltete oder fehlende Quellen zeigt die App als unbekannt an.</p>
+        <h2 id="windows-einstellungen">Windows-Einstellungen</h2>
+        <p>
+          Im Windows-Paket stehen hier <strong>Mit Windows starten</strong> und
+          <strong>Updates automatisch installieren</strong>; die Tray-App
+          speichert und bestätigt jede Änderung. Unter Docker gibt es diese
+          Schalter nicht. Ist die Tray-App nicht erreichbar, zeigt die App den
+          Zustand als unbekannt, nicht als ausgeschaltet. Versuchen Sie es
+          erneut; ist eine Einstellung von einem Administrator gesperrt, nennt
+          die App das.
+        </p>
+        <h3 id="windows-benachrichtigungen">Windows-Benachrichtigungen</h3>
         <p>
           Klicken Sie mit der rechten Maustaste auf das seowatcher-Symbol im
           Infobereich und wählen Sie
-          <strong>Windows bildirimleri</strong> (standardmäßig aktiv). Solange
-          der Starter läuft, erscheinen abgeschlossene oder fehlgeschlagene
-          Prüfungen aller Projekte und neue Ankündigungen nach etwa 90 Sekunden
-          als Windows-Sprechblase, auch bei geschlossenem Browser oder im
-          Hintergrund. Ein Klick öffnet die zugehörige Seite; mehrere Ereignisse
-          werden zusammengefasst. Der erste Start überspringt alte Ereignisse;
-          ein Neustart wiederholt erfasste Ereignisse nicht. Bei ausgeschalteten
-          Meldungen empfangene Ereignisse werden nicht nachgeholt. Neue
-          Versionen folgen weiterhin der Update-Einstellung. Der
-          Windows-Fokusmodus kann Meldungen ausblenden. Bei geschlossenem
-          Starter erscheinen keine Meldungen. Diese Funktion ist in Docker nicht
-          verfügbar.
+          <strong>Windows bildirimleri</strong> (Windows-Benachrichtigungen).
+          Die Option ist standardmäßig aktiv. Das Tray-Menü gibt es nur auf
+          Türkisch.
+        </p>
+        <p>
+          Solange die Tray-App läuft, meldet Windows nach etwa 90 Sekunden
+          abgeschlossene oder fehlgeschlagene Audits aller Projekte und neue
+          Ankündigungen, auch wenn der Browser geschlossen ist. Ein Klick auf
+          die Meldung öffnet die passende Seite; mehrere Ereignisse werden
+          zusammengefasst.
+        </p>
+        <ul>
+          <li>
+            Beim ersten Start werden ältere Ereignisse übersprungen; nach einem
+            Neustart wiederholt die App bereits gemeldete Ereignisse nicht.
+          </li>
+          <li>
+            Ereignisse, die eintreffen, während die Option aus ist, werden nicht
+            nachgeholt.
+          </li>
+          <li>
+            Ist die Tray-App beendet, erscheinen keine Meldungen. Der
+            Windows-Fokusmodus kann sie ebenfalls ausblenden.
+          </li>
+          <li>
+            Hinweise auf neue Versionen folgen weiterhin der Update-Einstellung.
+          </li>
+        </ul>
+        <p>Unter Docker gibt es diese Funktion nicht.</p>
+        <h2 id="updates">Updates</h2>
+        <p>
+          Die App fragt GitHub höchstens alle sechs Stunden nach einer neuen
+          Version; <strong>Jetzt prüfen</strong> fragt sofort. Die Tray-App
+          unter Windows prüft zusätzlich unabhängig einmal täglich; ob Updates
+          automatisch installiert werden, stellen Sie im Windows-Paket ein. Das
+          Datum der letzten erfolgreichen Prüfung zeigt, wie aktuell die
+          Versionsangabe ist. Bei zu vielen Anfragen oder Zugriffsbeschränkungen
+          warten Sie und versuchen es erneut. Ist die Quelle nicht erreichbar,
+          nutzen Sie die Diagnose auf dem Bildschirm <strong>Hilfe</strong>.
+          Einstellungen, die die App nicht lesen kann, bleiben gesperrt.
         </p>
         <nav class="pager" aria-label="Vorherige und nächste Seite">
           <a class="pager-prev" rel="prev" href="/de/dokumentation/projektinfo/"
-            ><span>Zurück</span><strong>Projektinfo</strong></a
+            ><span>Zurück</span><strong>Projektkontext</strong></a
           ><a class="pager-next" rel="next" href="/de/dokumentation/hilfe/"
             ><span>Weiter</span><strong>Hilfe</strong></a
           >
@@ -1650,23 +1709,32 @@
       <nav class="toc" aria-label="Auf dieser Seite">
         <p class="toc-label">Auf dieser Seite</p>
         <ol>
-          <li><a href="#geltungsbereich">Geltungsbereich</a></li>
           <li>
-            <a href="#windows-messung-und-grenzen"
-              >Windows, Messung und Grenzen</a
+            <a href="#browser-darstellung-und-sprache"
+              >Browser: Darstellung und Sprache</a
             >
           </li>
-          <li><a href="#aktualisierungen">Aktualisierungen</a></li>
           <li>
-            <a href="#windows-benachrichtigungen">Windows-Benachrichtigungen</a>
+            <a href="#installation-google-zugangsdaten"
+              >Installation: Google-Zugangsdaten</a
+            >
           </li>
+          <li>
+            <a href="#projekt-name-domain-und-properties"
+              >Projekt: Name, Domain und Properties</a
+            >
+          </li>
+          <li><a href="#pagespeed-schlussel">PageSpeed-Schlüssel</a></li>
+          <li><a href="#limits">Limits</a></li>
+          <li><a href="#windows-einstellungen">Windows-Einstellungen</a></li>
+          <li><a href="#updates">Updates</a></li>
         </ol>
       </nav>
     </main>
     <footer>
       <div class="wrap">
         <p class="star">
-          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          Ein Stern hilft anderen, das Werkzeug zu finden.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

@@ -242,7 +242,7 @@ export function GooglePropertyPicker({
                         <p className="px-2 pb-3 text-sm text-muted">
                           {provider === "ga4"
                             ? t(
-                                "Bu hesabın görebildiği bir GA4 mülkü yok. Henüz mülk oluşturmadıysanız analytics.google.com'dan oluşturun, sonra bu hesabı ona Görüntüleyen olarak ekleyin.",
+                                "Bu hesabın görebildiği bir GA4 mülkü yok. Henüz mülk oluşturmadıysanız analytics.google.com'dan oluşturun, sonra bu hesabı ona Görüntüleyici olarak ekleyin.",
                               )
                             : t(
                                 "Bu hesabın görebildiği bir Search Console mülkü yok. Mülkü doğruladıysanız bu hesabı search.google.com/search-console adresinden kullanıcı olarak ekleyin.",

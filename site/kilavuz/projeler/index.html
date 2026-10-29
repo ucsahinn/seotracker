@@ -192,7 +192,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1476,7 +1476,7 @@
             <li><a href="/kilavuz/firsatlar/">Fırsatlar</a></li>
             <li><a href="/kilavuz/kayitli-kelimeler/">Kayıtlı kelimeler</a></li>
             <li>
-              <a href="/kilavuz/analitik/">Analitik verilerini yorumlama</a>
+              <a href="/kilavuz/analitik/">Analytics verisini yorumlama</a>
             </li>
             <li><a href="/kilavuz/site-denetimi/">Site denetimi</a></li>
             <li><a href="/kilavuz/dizin-durumu/">Dizin durumu</a></li>
@@ -1501,59 +1501,95 @@
           Analytics bağlantılarını, denetimlerini ve raporlarını ayrı inceleyin.
         </p>
         <p>
-          Projeler, hangi siteyi açacağınızı ve hangi bağlantıyı
-          tamamlayacağınızı gösterir. Her sitenin Search Console, Analytics,
-          denetim ve raporları kendi projesindedir.
+          Her proje tek bir siteyi temsil eder. Search Console ve Analytics
+          bağlantıları, denetimler, kayıtlı kelimeler ve raporlar projeye
+          aittir; projeler arasında karışmaz.
         </p>
-        <h2 id="ekrani-okuyun">Ekranı okuyun</h2>
+        <h2 id="proje-listesi">Proje listesi</h2>
         <p>
-          Birden fazla proje varsa ad veya alan adıyla arayın, ada veya alan
-          adına göre sıralayın. <strong>Son açılan</strong>, bu tarayıcıda
-          hatırlanan son projedir; SEO durumu değildir. Site yoksa
-          <strong>Site ekle</strong>, Search Console bağlantısı yoksa
-          <strong>Search Console bağla</strong>, diğer durumlarda
-          <strong>Paneli aç</strong> ile devam edin.
+          Birden fazla projeniz varsa <strong>Proje ara</strong> kutusuyla ad ya
+          da alan adına göre arayın; <strong>Sırala</strong> ile ada ya da alan
+          adına göre sıralayın. <strong>Son açılan</strong> etiketi bu
+          tarayıcıda en son açtığınız projeyi gösterir; SEO durumuyla ilgisi
+          yoktur.
+        </p>
+        <p>Her proje kartındaki ana düğme, eksik olan adıma göre değişir:</p>
+        <ul>
+          <li>Site yoksa <strong>Site ekle</strong>.</li>
+          <li>
+            Search Console bağlı değilse <strong>Search Console bağla</strong>.
+          </li>
+          <li>Her şey yerindeyse <strong>Paneli aç</strong>.</li>
+        </ul>
+        <p>
           <strong>Proje bilgisi</strong> kayıtlı notları,
-          <strong>Ayarlar</strong> proje yapılandırmasını açar.
+          <strong>Ayarlar</strong> projenin yapılandırmasını açar.
+        </p>
+        <h2 id="kartta-gorunen-bilgiler">Kartta görünen bilgiler</h2>
+        <p>
+          <strong>Arama arşivi</strong>, bu kurulumun kaydettiği Search Console
+          verisidir: Web araması, tüm cihazlar ve ülkeler. Pencere en yeni
+          kayıtlı günde biter; bugüne kadar güncel olduğu varsayılmaz.
+          <strong>Son kayıtlı gün</strong> ve
+          <strong>Son arşiv okuması</strong> kartın kaynak ayrıntılarında yazar.
+          Eski arşivlerde Google'ın veriyi hangi tarihte kesinleştirdiği kayıtlı
+          değildir; bu durumda
+          <strong>Kesinleşme kaynağı arşivde kayıtlı değil</strong> görünür.
+        </p>
+        <p>Tıklama sayısını okurken:</p>
+        <ul>
+          <li>
+            Bazı günler eksikse toplam yalnızca kayıtlı günleri kapsar. Eksik
+            gün sıfır sayılmaz; grafikte boşluk kalır.
+          </li>
+          <li>
+            Değişim yalnızca iki dönemin tüm günleri kayıtlıysa hesaplanır.
+            Toplamlar eşitse <strong>Değişmedi</strong> yazar.
+          </li>
+          <li>
+            Önceki dönem 20 tıklamadan azsa yüzde yerine fark yazılır:
+            <strong>1 → 5 tıklama</strong> gibi. Küçük sayılarda bu fark tek
+            başına güçlü bir büyüme işareti değildir.
+          </li>
+        </ul>
+        <p>
+          Bu tıklamalar GA4 oturumlarıyla aynı ölçü değildir. Farklı tarih
+          aralıklarındaki projelerin sayılarını toplamayın.
         </p>
         <p>
-          <strong>Arama arşivi</strong>, bu kurulumda kayıtlı Web aramalarını,
-          tüm cihazları ve ülkeleri kapsar. Tarihler ekranda görünür. Pencere en
-          yeni kayıtlı günde biter; bugüne kadar güncel olduğu varsayılmaz.
-          Kayıtlı gün sayısı eksikse tıklama sayısı yalnızca bu günlerin
-          toplamıdır. Eksik gün sıfır değildir; grafikte boşluk kalır. İki
-          dönemin de tüm günleri kayıtlıysa değişim hesaplanır. Eşit toplamlar
-          “Değişmedi”, sıfır tabanlı değişimler açık önceki/yeni sayılarla
-          gösterilir. Arşiv kaynağı ayrıntılarında son kayıtlı gün ve varsa
-          okuma zamanı vardır; kesinleşmenin hangi kanıta dayandığı eski arşivde
-          tutulmamıştır.
+          Denetim satırı yalnızca bu sitenin kendi alan adındaki denetimleri
+          gösterir. <strong>Son denetim</strong> ile süren ya da başarısız son
+          deneme ayrı satırlarda durur.
         </p>
         <p>
-          Denetim, seçilen sitenin kendi alan adına aittir. Son tamamlanan
-          denetim ile son başarısız veya süren deneme ayrı gösterilir.
-          Bağlantının kayıtlı olması, Google verisinin başarıyla okunduğunu
-          kanıtlamaz. Okunamayan kaynak “bağlı değil” veya sıfır sayılmaz;
-          <strong>Yeniden dene</strong> kullanın. Listeyi yenilemek kimliği ve
-          yerel verileri birlikte okur; Google çağrısı veya denetim başlatmaz.
+          <strong>Bağlantı kayıtlı</strong> rozeti, Google verisinin
+          okunabildiğini göstermez. Okunamayan bir kaynak &quot;bağlı
+          değil&quot; ya da sıfır sayılmaz; <strong>Okunamadı</strong> yazar ve
+          <strong>Yeniden dene</strong> önerilir. Listeyi yenilemek yalnızca
+          yerel kaydı okur; Google'a istek göndermez, denetim başlatmaz.
         </p>
-        <h2 id="proje-olusturun-ve-yonetin">Proje oluşturun ve yönetin</h2>
+        <h2 id="yeni-proje">Yeni proje</h2>
         <p>
-          <strong>Yeni proje</strong> ile ad, isteğe bağlı alan adı, ülke ve dil
-          girin. Oluşturmak veri toplamaz. Google bağlantılarını
-          <strong>Ayarlar → Bağlantılar</strong> üzerinden seçin. Genel
-          ayarlarda adı, siteyi ve pazarı değiştirebilirsiniz. Bir projede bir
-          Search Console ve bir Analytics mülkü bulunur.
+          <strong>Yeni proje</strong> düğmesine basın ve şunları girin: ad,
+          isteğe bağlı alan adı, ülke ve dil.
+          <strong>Proje oluştur</strong> yalnızca kaydı açar; veri toplamaz.
+          Ardından <strong>Proje ayarları → Bağlantılar</strong> altında bir
+          Search Console ve bir Analytics mülkü seçin. Her projede her birinden
+          en fazla bir mülk olur.
         </p>
+        <h2 id="proje-ayarlari">Proje ayarları</h2>
         <p>
-          Arşivlemek verileri silmez.
-          <strong>Arşivlendi → Geri al</strong> projeyi geri getirir. Tek kalan
-          proje arşivlenemez. Arama tıklamaları GA4 oturumları veya sorgu arşivi
-          toplamıyla aynı ölçü değildir; farklı tarihli projeler toplanmaz.
+          <strong>Proje ayarları → Genel</strong> altında adı, siteyi, ülkeyi ve
+          dili değiştirebilirsiniz. Ülke ve dil, kayıtlı kelimelerin varsayılan
+          pazarıdır. Alan adını değiştirmek seçili Google mülkünü ya da geçmiş
+          veriyi değiştirmez.
         </p>
+        <h2 id="arsivleme">Arşivleme</h2>
         <p>
-          Önceki dönem 20 tıklamadan azsa yüzde yerine tıklama farkı gösterilir.
-          Örneğin 1’den 5’e çıkış +4 tıklamadır; küçük sayılarda bu değişim tek
-          başına güçlü bir büyüme işareti değildir.
+          <strong>Projeyi arşivle</strong> projeyi listeden kaldırır, verisini
+          silmez. Arşivlenen projeyi <strong>Arşivlendi</strong> listesinden
+          <strong>Geri al</strong> ile geri getirirsiniz. Tek projenizi
+          arşivleyemezsiniz.
         </p>
         <nav class="pager" aria-label="Önceki ve sonraki sayfa">
           <a class="pager-prev" rel="prev" href="/kilavuz/pagespeed-anahtari/"
@@ -1575,10 +1611,13 @@
       <nav class="toc" aria-label="Bu sayfada">
         <p class="toc-label">Bu sayfada</p>
         <ol>
-          <li><a href="#ekrani-okuyun">Ekranı okuyun</a></li>
+          <li><a href="#proje-listesi">Proje listesi</a></li>
           <li>
-            <a href="#proje-olusturun-ve-yonetin">Proje oluşturun ve yönetin</a>
+            <a href="#kartta-gorunen-bilgiler">Kartta görünen bilgiler</a>
           </li>
+          <li><a href="#yeni-proje">Yeni proje</a></li>
+          <li><a href="#proje-ayarlari">Proje ayarları</a></li>
+          <li><a href="#arsivleme">Arşivleme</a></li>
         </ol>
       </nav>
     </main>

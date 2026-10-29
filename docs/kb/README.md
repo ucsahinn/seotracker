@@ -17,8 +17,8 @@ olmayan sayfayı uyarı olarak yazar. Ana sayfanın
 Dil** seçicisi onları kendi adlarıyla gösterir: Türkçe, English, Deutsch,
 Français, Italiano, Português. Her dilin kılavuzu (`docs/kb/en/`, `de/`, `fr/`,
 `it/`, `pt/`) o dildeki ekran adlarını birebir kullanır. Windows tepsi menüsü
-ve kurulum sihirbazı yalnızca Türkçe ve İngilizce olduğu için oradaki adların
-yanında o dildeki karşılığı verilir.
+yalnızca Türkçe, kurulum sihirbazı Türkçe ve İngilizce olduğu için oradaki
+adların yanında o dildeki karşılığı verilir.
 
 Her dosya YAML ön bilgisiyle başlar (`title`, `description`, ekran sayfalarında
 `screen` ve `route`, kılavuzlarda `kind`, hepsinde `updated`). Sonunda, sayfaya
@@ -68,7 +68,9 @@ bakışta ne yapacağını anlamalıdır.
   yazacaksa geçer ve `kod` biçiminde yazılır.
 - Uygulamanın ekrandaki etiketleri kalın ve birebir. Adımlar numaralı, her adım
   bir fiille başlar. Başlıklar okurun kendi sorusu ya da düz ifade.
-- Her sayfa tek cümleyle açılır: bu sayfadan ne elde edeceksiniz.
+- Ön bilgideki `description`, sitede başlığın hemen altında giriş paragrafı olarak
+  basılır. Gövde onu tekrar etmez; yeni bir bilgiyle başlar. Bir bilgi sayfada
+  bir kez geçer.
 - Uzun tire, orta nokta, ünlem, emoji yok. Sayı, sınır ya da Google davranışı
   yalnızca kaynak kodda ya da Google'ın belgesinde görülüyorsa yazılır; emin
   olunmayan şey yazılmaz.

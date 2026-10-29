@@ -1,21 +1,21 @@
 ---
 title: Installation mit Docker
-description: App mit Docker unter Mac, Linux und Windows installieren: ein Befehl, keine .env-Datei. Die Daten liegen im Datenspeicher von Docker.
+description: seowatcher mit Docker unter Mac, Linux und Windows installieren: ein Befehl, keine .env-Datei, die Daten liegen in einem Docker-Volume.
 kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-Am Ende läuft die App in Docker (einem Programm, das Anwendungen in abgeschlossenen Containern ausführt) und ist unter `http://localhost:3001` geöffnet. Unter Windows ist die Installation mit einer einzigen Datei deutlich einfacher. Dieser Weg ist für Mac, Linux und alle, die Docker ohnehin nutzen. Der erste Start dauert einige Minuten, weil die App im Container gebaut wird. Spätere Starts dauern nur Sekunden.
+Nach dieser Anleitung läuft die App in einem Docker-Container und ist unter `http://localhost:3001` erreichbar. Dieser Weg eignet sich für Mac, Linux und alle, die Docker ohnehin nutzen; unter Windows ist die [Installationsdatei](/docs/kurulum-windows/) einfacher.
 
 ## Voraussetzungen
 
-- Docker Desktop (Mac, Windows) oder Docker Engine mit Docker Compose (Linux). Für Docker Desktop unter Windows müssen WSL 2 (die Komponente, die Linux innerhalb von Windows ausführt) und die Virtualisierung eingeschaltet sein.
+- Docker Desktop (Mac, Windows) oder Docker Engine mit Docker Compose (Linux). Docker Desktop unter Windows braucht WSL 2 und eingeschaltete Virtualisierung.
 - Git. Statt Git genügt auch **Code → Download ZIP** auf der GitHub-Seite.
 - Etwa 2 GB freier Speicherplatz und 2 GB freier Arbeitsspeicher während des ersten Baus.
 
 ## Schritte
 
-1. Laden Sie das Repository (die Projektdateien) herunter und wechseln Sie in den Ordner:
+1. Laden Sie das Repository herunter und wechseln Sie in den Ordner:
 
 ```sh
 git clone https://github.com/ucsahinn/seotracker.git
@@ -28,9 +28,9 @@ cd seotracker
 docker compose up -d
 ```
 
-Das ist alles. Eine `.env`-Datei brauchen Sie nicht. Der Verschlüsselungsschlüssel und das Passwort für den Assistenten werden beim ersten Start automatisch erzeugt und im Datenspeicher (Volume) von Docker abgelegt.
+Eine `.env`-Datei brauchen Sie nicht. Der Verschlüsselungsschlüssel und das Token für KI-Agenten entstehen beim ersten Start automatisch und liegen im Docker-Volume.
 
-3. Wenn Sie den Fortschritt sehen möchten, geben Sie Folgendes ein:
+3. Den Fortschritt verfolgen Sie mit:
 
 ```sh
 docker compose logs -f
@@ -38,21 +38,21 @@ docker compose logs -f
 
 4. Die Zeile „Building client + server“ im Protokoll zeigt den ersten Bau. Warten Sie, bis der Status in der Ausgabe von `docker compose ps` **healthy** lautet, und öffnen Sie dann im Browser `http://localhost:3001`.
 
-Weiter geht es mit der Anleitung zur Google-Verbindung. Bei Docker geben Sie Google diese beiden Weiterleitungsadressen an:
+Verbinden Sie danach Google wie unter [Mit Google verbinden](/docs/google-baglantisi/) beschrieben. Für Docker lauten die beiden Weiterleitungsadressen:
 
 - `http://localhost:3001/api/gsc/oauth/callback`
 - `http://localhost:3001/api/ga4/oauth/callback`
 
 ### Update
 
-Geben Sie diese zwei Befehle ein:
+Führen Sie im Projektordner aus:
 
 ```sh
 git pull
 docker compose up -d --build
 ```
 
-**Einstellungen → Info** meldet die neue Version und zeigt diese beiden Befehle an. Ihre Daten liegen im Datenspeicher `seotracker_data`, deshalb löscht das Update sie nicht.
+**Einstellungen → Info** meldet eine neue Version und zeigt diese beiden Befehle an. Das Update lässt Ihre Daten im Volume `seotracker_data` unberührt.
 
 ### Anhalten und entfernen
 
@@ -63,19 +63,19 @@ docker compose up -d --build
 
 ### Sicherung
 
-Ihre Daten liegen im Datenspeicher `seotracker_data`, im Container unter dem Pfad `/app/.wrangler`. Für eine Sicherung geben Sie die drei Befehle nacheinander ein:
+Die Daten liegen im Volume `seotracker_data`, im Container unter `/app/.wrangler`. Für eine Sicherung führen Sie nacheinander aus:
 
 ```sh
 docker compose stop
-docker run --rm -v seotracker_data:/data -v "$PWD":/backup alpine tar czf /backup/seotracker-yedek.tgz -C /data .
+docker run --rm -v seotracker_data:/data -v "$PWD":/backup alpine tar czf /backup/seotracker-backup.tgz -C /data .
 docker compose up -d
 ```
 
-Zum Wiederherstellen verwenden Sie im selben Befehl `tar xzf` statt `tar czf`. Die Datei `instance-secret` im Datenspeicher ist der Schlüssel, der die Google-Verbindungen verschlüsselt. Fehlt sie in der Sicherung, startet die App, aber die Google-Verbindungen kommen nicht zurück.
+Zum Wiederherstellen verwenden Sie im selben Befehl `tar xzf` statt `tar czf`. Die Datei `instance-secret` im Volume verschlüsselt die Google-Verbindungen. Fehlt sie in der Sicherung, startet die App zwar, die Google-Verbindungen sind aber verloren.
 
 ### Einstellungen (optional)
 
-Keine Einstellung ist Pflicht. Wenn Sie etwas ändern möchten, legen Sie im Projektordner eine `.env`-Datei an. Geben Sie dann `docker compose up -d --force-recreate seotracker` ein.
+Keine Einstellung ist Pflicht. Um etwas zu ändern, legen Sie im Projektordner eine `.env`-Datei an und führen `docker compose up -d --force-recreate seotracker` aus.
 
 | Name der Einstellung                   | Wozu sie dient                                                                                                                                                        |
 | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -85,29 +85,29 @@ Keine Einstellung ist Pflicht. Wenn Sie etwas ändern möchten, legen Sie im Pro
 | BETTER_AUTH_SECRET                     | Verschlüsselungsschlüssel. Lassen Sie ihn leer, die App erzeugt ihn. Geben Sie ihn von Hand an, nehmen Sie mindestens 32 Zeichen und ändern Sie ihn danach nicht mehr |
 | GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET | Alternative zur Eingabe auf dem Bildschirm **Einstellungen**. Ein auf dem Bildschirm eingegebener Wert hat Vorrang                                                    |
 | PAGESPEED_API_KEY                      | Alternative zur Eingabe auf dem Bildschirm Einstellungen                                                                                                              |
-| MCP_TOKEN                              | Ist er leer, wird er beim ersten Start erzeugt. Mit `off` wird kein Passwort verlangt. Jeder andere Wert wird unverändert verwendet                                   |
+| MCP_TOKEN                              | Token für KI-Agenten. Leer: wird beim ersten Start erzeugt. `off`: kein Token nötig. Jeder andere Wert wird unverändert verwendet                                     |
 
 ## Kontrolle
 
 - In der Ausgabe von `docker compose ps` muss der Status **healthy** lauten. Beim ersten Start kann es bis zu fünf Minuten dauern, bis er erreicht ist.
 - Die Ausgabe von `curl.exe http://127.0.0.1:3001/api/health` (unter Windows; unter Mac und Linux `curl`) muss mit "status":"ok" beginnen. Sie können diese Adresse auch im Browser öffnen.
-- Im Browser muss sich `http://localhost:3001` öffnen lassen. Die Statuskarte auf dem Bildschirm **Hilfe** sollte „Alles ist in Ordnung.“ anzeigen. Solange Google nicht verbunden ist, ist die Zeile „Google-Anmeldung“ als „braucht Aufmerksamkeit“ markiert. Das ist normal.
+- Im Browser muss sich `http://localhost:3001` öffnen lassen. Die Karte **Zustand der App** auf dem Bildschirm **Hilfe** sollte „Die Installationsprüfungen haben keine Probleme gefunden.“ melden. Solange Google nicht verbunden ist, zeigt die Zeile **Google-Anmeldung** eine Warnung. Das ist normal.
 
 ## Häufige Fragen
 
 **Warum dauert der erste Start so lange?** Die App wird im Container gebaut. Bei späteren Starts entfällt der Bau.
 
-**Wo ist die Datei `.env.example`?** Es gibt sie nicht. Die Datei aus dem übergeordneten Projekt beschrieb Dinge, die in dieser Version nicht vorkommen. Die vollständige Liste steht in der Tabelle oben und in der Datei `docs/ENVIRONMENT.md`.
+**Wo ist die Datei `.env.example`?** Es gibt sie nicht. Die Vorlage des Ursprungsprojekts beschrieb Einstellungen, die es hier nicht gibt. Die vollständige Liste steht in der Tabelle oben und in der Datei `docs/ENVIRONMENT.md`.
 
-**Kann ich die App im Internet erreichbar machen?** Die App verlangt keine Anmeldung. Machen Sie sie nur erreichbar, wenn Sie selbst eine Anmeldung davorschalten. Setzen Sie `ALLOWED_HOST`, warnt die App bei der Gesundheitsprüfung.
+**Kann ich die App im Internet erreichbar machen?** Die App verlangt keine Anmeldung. Machen Sie sie nur erreichbar, wenn Sie selbst eine Anmeldung davorschalten. Ist `ALLOWED_HOST` gesetzt, weist die Statusprüfung darauf hin.
 
-**Woher bekomme ich das Passwort meines Assistenten?** Der Bildschirm **Agent-Einrichtung** in der App zeigt den Befehl: `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. Wenn Sie Git Bash benutzen, setzen Sie `MSYS_NO_PATHCONV=1` davor.
+**Woher bekomme ich das Token für meinen KI-Agenten?** Der Bildschirm **Agent-Einrichtung** in der App zeigt den Befehl: `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. Wenn Sie Git Bash benutzen, setzen Sie `MSYS_NO_PATHCONV=1` davor.
 
 ## Wenn etwas nicht klappt
 
 - **Es erscheint „Bind for 127.0.0.1:3001 failed“.** Die Portnummer ist belegt. Legen Sie im Projektordner eine `.env` mit der Zeile `PORT=3002` an und erstellen Sie den Container neu. Unter Windows kann der Editor (Notepad) die Datei als `.env.txt` speichern. In PowerShell ist `Set-Content -Encoding ascii .env 'PORT=3002'` sicher.
 - **Der Status lautet „unhealthy“.** `docker compose logs --tail 50` zeigt die letzten Zeilen. Ist beim Bau der Arbeitsspeicher ausgegangen, geben Sie Docker Desktop mehr Arbeitsspeicher.
-- **Die Google-Verbindung meldet „nicht eingerichtet“.** Ist `BETTER_AUTH_SECRET` kürzer als 32 Zeichen, bleibt Google ausgeschaltet. Haben Sie ihn von Hand angegeben, verlängern Sie ihn. Haben Sie ihn nicht angegeben, ist vielleicht die Datei `instance-secret` im Datenspeicher beschädigt.
-- **Nach dem Update ist die Google-Verbindung getrennt.** `BETTER_AUTH_SECRET` hat sich geändert, oder der Datenspeicher wurde neu erstellt. Klicken Sie in den Projekteinstellungen auf **Erneut verbinden**.
+- **Die Google-Verbindung meldet „nicht eingerichtet“.** Ist `BETTER_AUTH_SECRET` kürzer als 32 Zeichen, bleibt Google ausgeschaltet. Haben Sie den Wert von Hand gesetzt, verlängern Sie ihn. Haben Sie ihn nicht gesetzt, ist womöglich die Datei `instance-secret` im Volume beschädigt.
+- **Nach dem Update ist die Google-Verbindung getrennt.** `BETTER_AUTH_SECRET` hat sich geändert, oder das Volume wurde neu erstellt. Klicken Sie in den Projekteinstellungen auf **Erneut verbinden**.
 
 <!-- Kaynaklar: docs/SELF_HOSTING_DOCKER.md; docs/ENVIRONMENT.md; compose.yaml; docker-entrypoint.sh; src/lib/selfhost-preflight.ts; src/routes/_app/ai.tsx -->

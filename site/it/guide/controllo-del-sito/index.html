@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1516,17 +1516,17 @@
                 >Parole chiave salvate</a
               >
             </li>
-            <li>
-              <a href="/it/guide/analisi/">Interpretare i dati di analisi</a>
-            </li>
+            <li><a href="/it/guide/analisi/">Capire i dati di Analytics</a></li>
             <li class="current" aria-current="page">
               <a href="/it/guide/controllo-del-sito/">Controllo del sito</a>
             </li>
-            <li><a href="/it/guide/stato-indice/">Stato dell'indice</a></li>
+            <li>
+              <a href="/it/guide/stato-indice/">Stato dell'indicizzazione</a>
+            </li>
             <li><a href="/it/guide/rapporti/">Report e modelli</a></li>
             <li>
               <a href="/it/guide/informazioni-progetto/"
-                >Informazioni sul progetto</a
+                >Contesto del progetto</a
               >
             </li>
             <li><a href="/it/guide/impostazioni/">Impostazioni</a></li>
@@ -1539,7 +1539,7 @@
             </li>
             <li>
               <a href="/it/guide/configurazione-assistente/"
-                >Configurazione dell'assistente</a
+                >Configurazione dell'agente</a
               >
             </li>
             <li>
@@ -1558,7 +1558,6 @@
           Capire il punteggio, la copertura delle misure e i risultati
           incompleti.
         </p>
-        <p>Qui si trovano i problemi del sito e si vede come correggerli.</p>
         <p>
           L'app visita il sito con il proprio crawler (il programma che apre e
           legge le pagine una per una). Cerca collegamenti rotti, titoli
@@ -1570,7 +1569,7 @@
         </p>
         <h2 id="cosa-c-e-nella-schermata">Cosa c'è nella schermata</h2>
         <p>
-          <strong>Scheda per avviare un nuovo audit.</strong> Ha questi campi.
+          <strong>Scheda Avvia un nuovo controllo.</strong> Ha questi campi.
         </p>
         <ul>
           <li>
@@ -1611,7 +1610,7 @@
           <strong>Controlli precedenti.</strong> Di ogni verifica sono elencati
           data, indirizzo, stato, numero di pagine e numero di problemi. Le
           colonne Critico, Avviso e Info mostrano tutti i riscontri salvati,
-          compresi quelli delle pagine e i controlli dell’intero sito; una
+          compresi quelli delle pagine e i controlli dell'intero sito; una
           pagina può avere più riscontri. Se nel progetto sono stati controllati
           più siti, sopra l'elenco compare un selettore del sito. La densità
           indica i problemi ogni cento pagine. Le linee e le frecce di
@@ -1624,7 +1623,18 @@
           <strong>Esegui di nuovo con le stesse impostazioni</strong> e
           <strong>Elimina controllo</strong>. Eliminare cancella anche le
           pagine, i problemi e le misurazioni di velocità della verifica e non
-          si può annullare.
+          si può annullare. La colonna
+          <strong>Pagine scansionate</strong> indica gli indirizzi
+          effettivamente scansionati, anche per i controlli non riusciti, e non
+          il limite iniziale. Le scansioni completate riportano il limite di
+          pagine registrato o segnalano che manca. I dettagli sull'ambito
+          elencano i controlli misurati e quelli non misurati. Le scansioni non
+          riuscite mostrano la spiegazione registrata e il passo successivo; una
+          causa sconosciuta viene dichiarata come tale.
+          <strong>Misurazione della velocità richiesta</strong> significa che
+          l'opzione era attiva all'avvio, non che la misurazione sia riuscita.
+          Sul telefono la tabella scorre in orizzontale per mostrare le altre
+          colonne e azioni.
         </p>
         <p>
           <strong>Dettaglio della verifica.</strong> In alto,
@@ -1667,12 +1677,12 @@
             <strong>Verifiche superate</strong> e <strong>Non misurato</strong>.
           </li>
           <li>
-            <strong>Punteggi per categoria</strong>: Scansione in corso,
-            Contenuto, Indicizzazione, Velocità, Sicurezza, Accessibilità,
-            Social e dati strutturati. La più bassa è in alto. Un clic su una
-            categoria apre la scheda <strong>Controlli</strong> su quella
-            categoria. Una categoria in cui non si è potuto misurare nulla dice
-            &quot;Non misurato&quot;. Una misurata in parte dice &quot;Dati
+            <strong>Punteggi per categoria</strong>: Scansione, Contenuto,
+            Indicizzazione, Velocità, Sicurezza, Accessibilità, Social e dati
+            strutturati. La più bassa è in alto. Un clic su una categoria apre
+            la scheda <strong>Controlli</strong> su quella categoria. Una
+            categoria in cui non si è potuto misurare nulla dice &quot;Non
+            misurato&quot;. Una misurata in parte dice &quot;Dati
             parziali&quot;.
           </li>
           <li>
@@ -1696,7 +1706,7 @@
           <li>
             <strong>Verifiche (N)</strong>: tutti i controlli, per categoria.
             Ognuno compare come superato, fallito o non misurato. Per quelli non
-            misurati è scritto il motivo.
+            misurati è indicato il motivo.
           </li>
           <li>
             <strong>Dati immediati</strong>: il sito al di là delle sue pagine.
@@ -1726,7 +1736,7 @@
           <li>
             <strong>Velocità (N)</strong>: compare solo se la misurazione della
             velocità era attiva. Se alcune pagine non sono state misurate, il
-            numero è scritto come &quot;10/12&quot;.
+            numero compare come &quot;10/12&quot;.
           </li>
         </ul>
         <p>
@@ -1739,15 +1749,15 @@
         <p>
           <strong>Punteggio completo.</strong> Quando la maggior parte dei
           controlli è stata misurata, arriva con una parola di giudizio. Il
-          punteggio si legge così: da 90 Eccellente, da 70 Buono, da 50 Media,
+          punteggio si legge così: da 90 Eccellente, da 70 Buono, da 50 Medio,
           sotto Scarso.
         </p>
         <p>
           <strong>Punteggio provvisorio.</strong> Se la quota di controlli
           misurati scende sotto il 70 per cento, il punteggio è provvisorio. Lo
-          è anche se in Scansione in corso, Indicizzazione, Contenuto o Velocità
-          è stata misurata meno della metà dei controlli. La scheda scrive
-          &quot;Punteggio provvisorio, copertura delle misure 62%&quot;, non dà
+          è anche se in Scansione, Indicizzazione, Contenuto o Velocità è stata
+          misurata meno della metà dei controlli. La scheda indica
+          &quot;Punteggio provvisorio — copertura delle misure 62%&quot;, non dà
           parole di giudizio ed è di colore neutro. Il numero riguarda solo i
           controlli che si sono potuti vedere. Sul resto non è stato dato alcun
           giudizio, né buono né cattivo. I motivi di solito sono questi: la
@@ -1756,8 +1766,8 @@
           sono potuti ottenere i dati dell'indice.
         </p>
         <p>
-          <strong>Nessun punteggio.</strong> In questi casi la scheda scrive
-          &quot;Verifica incompleta, nessun punteggio&quot; al posto del
+          <strong>Nessun punteggio.</strong> In questi casi la scheda mostra
+          &quot;Controllo incompleto — nessun punteggio&quot; al posto del
           punteggio.
         </p>
         <ul>
@@ -1777,8 +1787,8 @@
           I risultati vengono comunque mostrati e valgono per le pagine
           scansionate. Per un punteggio completo, eseguire di nuovo la verifica.
         </p>
-        <h2 id="se-la-verifica-si-e-interrotta-cosa-c-e-scritto">
-          Se la verifica si è interrotta, cosa c'è scritto
+        <h2 id="messaggi-quando-la-verifica-si-interrompe">
+          Messaggi quando la verifica si interrompe
         </h2>
         <p>
           Quando una verifica fallisce, la schermata dice tre cose: che cosa è
@@ -1886,8 +1896,8 @@
             >
             La protezione anti-bot del sito ha fermato il crawler. I risultati
             vengono comunque mostrati. Consentire &quot;seotracker-audit&quot;
-            nel firewall oppure provare uno dei crawler desktop che la guida
-            suggerisce.
+            nel firewall oppure provare uno dei crawler desktop che la schermata
+            suggerisce (LibreCrawl, Screaming Frog).
           </li>
           <li>
             <strong
@@ -1899,7 +1909,7 @@
             controllare che il sito si apra da questo computer.
           </li>
           <li>
-            <strong>Il sito ha limitato la velocità su N pagine.</strong> Il
+            <strong>Il sito ha limitato le richieste su N pagine.</strong> Il
             sito ha risposto &quot;troppe richieste&quot;. Quelle pagine non si
             sono potute controllare. Riavviare dopo che il limite si è azzerato.
           </li>
@@ -1933,9 +1943,9 @@
             può risultare provvisorio. È normale.
           </li>
           <li>
-            Leggere la riga di copertura sulla scheda del punteggio. Se c'è
-            scritto <strong>Punteggio provvisorio</strong>, le righe sotto
-            dicono il motivo.
+            Leggere la riga di copertura sulla scheda del punteggio. Se indica
+            <strong>Punteggio provvisorio</strong>, le righe sotto dicono il
+            motivo.
           </li>
           <li>
             Nella scheda <strong>Da fare</strong> partire dai primi tre lavori.
@@ -1944,7 +1954,7 @@
           <li>
             Nella scheda <strong>Pagine con problemi</strong> finire prima i
             problemi critici. Un problema critico impedisce a Google di vedere
-            la pagina.
+            la pagina o ai visitatori di raggiungere il sito.
           </li>
           <li>
             Prendere l'elenco con <strong>Esporta</strong> e consegnarlo a chi
@@ -1967,12 +1977,13 @@
         <h2 id="come-si-calcolano-i-numeri">Come si calcolano i numeri</h2>
         <p>
           <strong>Punteggio.</strong> Ogni risultato toglie punti alla propria
-          categoria. Quanti dipende dall'importanza del risultato e dalla quota
-          di pagine coinvolte. I pesi sono: critico 40, avviso 15, informativa
-          3. Il punteggio del sito è la media ponderata di sette categorie.
-          Scansione e Indicizzazione pesano di più, Social e dati strutturati di
-          meno. Un controllo che non si è potuto misurare non alza né abbassa il
-          punteggio. Per questo la copertura è mostrata a parte.
+          categoria. Il numero di punti dipende dall'importanza del risultato e
+          dalla quota di pagine coinvolte. I pesi sono: critico 40, avviso 15,
+          informativa 3. Il punteggio del sito è la media ponderata di sette
+          categorie. Scansione e Indicizzazione pesano di più, Social e dati
+          strutturati di meno. Un controllo che non si è potuto misurare non
+          alza né abbassa il punteggio. Per questo la copertura è mostrata a
+          parte.
         </p>
         <p>
           <strong>Limiti massimi.</strong> Se c'è anche un solo problema, il
@@ -1980,7 +1991,7 @@
           Con 5 avvisi o più, al massimo 89. Così una singola pagina bloccata
           all'indicizzazione su un sito grande non si nasconde sotto un
           punteggio alto. Se un limite trattiene il punteggio, la scheda lo
-          scrive. Anche il &quot;+N punti&quot; accanto a un lavoro tiene conto
+          indica. Anche il &quot;+N punti&quot; accanto a un lavoro tiene conto
           del limite. Correggere l'unico problema critico toglie tutto il
           limite. Correggere un avviso mentre un limite è attivo dà pochissimo.
         </p>
@@ -1995,7 +2006,7 @@
           l'intera verifica è durata 35 minuti. Circa 24 erano di misurazione
           della velocità. Se la quota giornaliera si esaurisce, la misurazione
           si ferma, i risultati ottenuti restano e il punteggio può essere
-          provvisorio. In questi casi viene scritto un problema:
+          provvisorio. In questi casi viene segnalato un problema:
         </p>
         <ul>
           <li>Il contenuto principale compare dopo più di 4 secondi (LCP).</li>
@@ -2016,22 +2027,22 @@
         <p>
           <strong>Perché il punteggio è fermo a 69?</strong> C'è un problema
           critico. Finché non lo si corregge, il punteggio non può superare 69.
-          La scheda lo scrive.
+          La scheda lo indica.
         </p>
         <p>
-          <strong>Perché c'è scritto &quot;Punteggio provvisorio&quot;?</strong>
-          Una parte importante dei controlli non è stata misurata. La riga di
+          <strong>Perché compare &quot;Punteggio provvisorio&quot;?</strong> Una
+          parte importante dei controlli non è stata misurata. La riga di
           copertura e quelle sotto ne dicono il motivo. Attivare la misurazione
           della velocità o collegare Search Console di solito aumenta la
           copertura.
         </p>
         <p>
           <strong
-            >Perché c'è scritto &quot;Verifica incompleta&quot; al posto del
+            >Perché compare &quot;Controllo incompleto&quot; al posto del
             punteggio?</strong
           >
           La verifica si è fermata a metà o troppo presto. L'elenco dei problemi
-          è incompleto, quindi non c'è punteggio. Esegui di nuovo la verifica.
+          è incompleto, quindi non c'è punteggio. Eseguire di nuovo la verifica.
         </p>
         <p>
           <strong>Cosa significa l'avviso &quot;bloccato&quot;?</strong> La
@@ -2041,7 +2052,8 @@
         <p>
           <strong>La misurazione della velocità si è fermata a metà.</strong> Di
           solito manca la chiave PageSpeed o la quota giornaliera è esaurita. La
-          scheda delle quote in <strong>Impostazioni</strong> ne dice il motivo.
+          sezione <strong>Limiti di Google e di sistema</strong> in
+          <strong>Impostazioni</strong> ne indica il motivo.
         </p>
         <p>
           <strong>Quante verifiche girano insieme?</strong> Al massimo tre. Due
@@ -2053,42 +2065,25 @@
           gira nella pagina) aggiunge dopo. Una verifica scansiona al massimo
           10.000 pagine. La misurazione della velocità è la misura di
           laboratorio di Google, non dati di visitatori reali. La verifica non
-          cambia nulla nel sito. Le correzioni le fa chi gestisce il sito o il
-          suo assistente.
-        </p>
-        <p>
-          Negli audit precedenti, <strong>Pagine scansionate</strong> indica gli
-          indirizzi effettivamente scansionati, anche negli audit non riusciti,
-          e non il limite iniziale. Le colonne Critico e Avviso mostrano il
-          totale dei problemi.
-          <strong>Misurazione della velocità richiesta</strong> significa che
-          l’opzione era attiva all’avvio; non dimostra che la misurazione sia
-          riuscita. Sul telefono, scorri la tabella in orizzontale per vedere le
-          altre colonne e azioni.
-        </p>
-        <p>
-          La cronologia mostra problemi critici, avvisi e informazioni per
-          pagina; una pagina può avere più rilevamenti. Le scansioni completate
-          mostrano il limite registrato o indicano che manca. I dettagli
-          sull’ambito aprono i controlli misurati e non misurati. Le scansioni
-          non riuscite mostrano la spiegazione registrata e il prossimo passo;
-          se la causa è sconosciuta, viene dichiarato.
+          cambia nulla nel sito. Le correzioni le fa chi gestisce il sito o un
+          agente.
         </p>
         <nav class="pager" aria-label="Pagina precedente e successiva">
           <a class="pager-prev" rel="prev" href="/it/guide/analisi/"
             ><span>Precedente</span
-            ><strong>Interpretare i dati di analisi</strong></a
+            ><strong>Capire i dati di Analytics</strong></a
           ><a class="pager-next" rel="next" href="/it/guide/stato-indice/"
-            ><span>Successiva</span><strong>Stato dell'indice</strong></a
+            ><span>Successiva</span
+            ><strong>Stato dell'indicizzazione</strong></a
           >
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 29 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 29 ottobre 2026. Ha trovato un errore?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >segnalarlo su GitHub</a
+            >Lo segnali su GitHub</a
           >.
         </p>
       </article>
@@ -2102,8 +2097,8 @@
             <a href="#i-tre-stati-del-punteggio">I tre stati del punteggio</a>
           </li>
           <li>
-            <a href="#se-la-verifica-si-e-interrotta-cosa-c-e-scritto"
-              >Se la verifica si è interrotta, cosa c'è scritto</a
+            <a href="#messaggi-quando-la-verifica-si-interrompe"
+              >Messaggi quando la verifica si interrompe</a
             >
           </li>
           <li>

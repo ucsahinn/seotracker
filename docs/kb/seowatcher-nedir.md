@@ -5,7 +5,7 @@ kind: kavram
 updated: 2026-10-29
 ---
 
-seowatcher, Google Search Console, Google Analytics 4, kendi site tarayıcısı ve PageSpeed Insights verisini tek panelde gösteren ücretsiz, MIT lisanslı, açık kaynaklı bir SEO uygulamasıdır. Bulutta değil, kendi bilgisayarınızda çalışır: Windows 10 ve 11'e tek dosyayla kurulur, Mac ve Linux'ta Docker ile çalışır. GitHub'daki adı seotracker'dır; ikisi aynı uygulamadır.
+Uygulama bulutta değil, kendi bilgisayarınızda çalışır. Windows 10 ve 11'e tek dosyayla kurulur; Mac ve Linux'ta Docker ile çalışır. GitHub'daki adı seotracker'dır; ikisi aynı uygulamadır.
 
 ## Kısa bilgiler
 
@@ -16,17 +16,17 @@ seowatcher, Google Search Console, Google Analytics 4, kendi site tarayıcısı 
 | Platform              | Windows 10/11 (64 bit) kurulum dosyası; Mac ve Linux'ta Docker                                   |
 | Veri kaynakları       | Google Search Console, Google Analytics 4, uygulamanın kendi site tarayıcısı, PageSpeed Insights |
 | Site denetimi         | 202 kural                                                                                        |
-| Yapay zekâ bağlantısı | MCP ile Claude Code, Codex, Cursor ve Gemini CLI gibi asistanlar; 6 hazır görev                  |
+| Yapay zekâ bağlantısı | MCP ile Claude Code, Codex, Cursor ve Gemini CLI gibi asistanlar; 6 hazır SEO becerisi           |
 | Arayüz dili           | Türkçe, İngilizce, Almanca, Fransızca, İtalyanca, Portekizce                                     |
 | Kullanıcı             | Tek kullanıcı, yalnızca kendi bilgisayarınızdan açılır                                           |
 | Veri nerede           | Windows'ta `%LOCALAPPDATA%\seowatcher`, Docker'da `seotracker_data` birimi                       |
-| Sürüm                 | 0.8.6 Alpha, 29 Ekim 2026                                                                        |
+| Sürüm                 | 0.8.7 Alpha, 29 Ekim 2026                                                                        |
 | Boyut                 | Kurulum dosyası 86 MB, kurulu hali 313 MB                                                        |
 | Temel aldığı proje    | open-seo (every-app)                                                                             |
 
 ## seowatcher ne yapar?
 
-- **Arama performansı:** Search Console'daki tıklama, gösterim, tıklama oranı ve ortalama sırayı sorguya, sayfaya, ülkeye ve cihaza göre gösterir. Google 16 ay geriye veri verir; uygulama kendi arşivini de biriktirir.
+- **Arama performansı:** Search Console'daki tıklama, gösterim, tıklama oranı ve ortalama sırayı sorguya, sayfaya, ülkeye ve cihaza göre gösterir. Google 16 ay geriye veri verir; Arama performansı ya da Sıralama takibi ekranı açıkken uygulama bu veriyi kendi arşivinde de biriktirir.
 - **Fırsatlar:** Google'da görünen sayfalarınızı, sitenizin kendi tıklama oranına göre ne kadar ek tıklama getirebileceklerine göre sıralar ve her sayfa için yapılacak işi önerir.
 - **Site denetimi:** Sitenizi 202 kurala göre tarar: kırık bağlantılar, eksik ya da uzun başlıklar, yavaş sayfalar, dizine alınmayan sayfalar. Her bulgunun altında ne yapacağınız yazar.
 - **Dizin durumu:** Google'ın her sayfanız için tuttuğu kaydı (dizinde mi, değilse neden, en son ne zaman tarandı) URL Denetimi ile okur. Google bunu mülk başına günde 2.000 adresle sınırlar.
@@ -44,11 +44,13 @@ seowatcher, Google Search Console, Google Analytics 4, kendi site tarayıcısı 
 
 ## Search Console'dan farkı ne?
 
-Search Console verinin kaynağıdır; seowatcher bu veriyi okur ve üzerine iş listesi kurar. Search Console size sayıları gösterir; seowatcher hangi sayfaya önce bakacağınızı, sitenizin 202 kurala göre nerede bozuk olduğunu ve Analytics'teki karşılığını aynı yerde gösterir. Arşivi bilgisayarınızda biriktirdiği için zamanla Google'ın 16 aylık penceresinden eski tarihlere de bakabilirsiniz. Sayılar aynı kaynaktan gelir, ancak Google veriyi yaklaşık üç gün geriden verir ve çok az aranan sorguları gizler; sayfa toplamıyla site toplamının farklı çıkması bu yüzdendir.
+Search Console verinin kaynağıdır; seowatcher bu veriyi okur ve üzerine iş listesi kurar. Search Console size sayıları gösterir; seowatcher hangi sayfaya önce bakacağınızı, sitenizin teknik olarak nerede bozuk olduğunu ve Analytics'teki karşılığını aynı yerde gösterir. Arşiv bilgisayarınızda biriktiği için zamanla Google'ın 16 aylık penceresinden eski tarihlere de bakabilirsiniz.
+
+Sayılar Search Console ile aynı kaynaktan gelir. Google veriyi yaklaşık üç gün geriden verir ve çok az aranan sorguları gizler. Sorgu tablolarının toplamıyla site toplamının farklı çıkmasının nedeni budur.
 
 ## Ücretli SEO araçlarından farkı ne?
 
-Ücretli SEO araçları kendi taramalarından ve satın aldıkları veriden arama hacmi, backlink ve rakip sıralaması tahmini satar. seowatcher bunları yapmaz; yalnızca Google'ın sitenizin sahibi olarak size zaten verdiği veriyi ve kendi taramasını kullanır. Bu yüzden ücretsizdir, ama pazar araştırması için tasarlanmamıştır. Kendi sitenizin Google'daki durumunu izlemek, düzeltmek ve raporlamak istiyorsanız uygundur.
+Ücretli SEO araçları kendi taramalarından ve satın aldıkları veriden arama hacmi, backlink ve rakip sıralaması tahmini satar. seowatcher yalnızca Google'ın site sahibi olarak size zaten verdiği veriyi ve kendi taramasını kullanır. Bu yüzden ücretsizdir, ama pazar araştırması aracı değildir. Kendi sitenizin Google'daki durumunu izlemek, düzeltmek ve raporlamak için tasarlanmıştır.
 
 ## Kimler için?
 
@@ -58,7 +60,7 @@ Kendi sitesinin ya da müşteri sitelerinin Search Console ve GA4 verisini tek y
 
 ### Gerçekten ücretsiz mi?
 
-Evet. MIT lisanslı, açık kaynak bir projedir. Kullandığı Google servisleri de ücretsiz kullanım sınırları içinde kalır.
+Evet. Uygulamanın ücretli bir sürümü yoktur. Kullandığı Google servisleri de ücretsiz kullanım sınırları içinde kalır.
 
 ### Verilerim nerede duruyor?
 
@@ -74,11 +76,11 @@ Evet, Docker ile. Windows'ta tek dosyalık kurulum daha kolaydır.
 
 ### Neden Google Cloud'da bir erişim anahtarı oluşturmam gerekiyor?
 
-seowatcher bulut hizmeti değildir; bilgisayarınızda çalışır ve doğrudan Google'a bağlanır. Google bağlanan uygulamanın kime ait olduğunu bilmek ister. Bunu bir kez yaparsınız.
+seowatcher sizin bilgisayarınızdan doğrudan Google'a bağlanır; arada bir şirket sunucusu yoktur. Google, veriye erişen uygulamanın kime ait olduğunu bilmek ister. Bu kimliği bir kez oluşturursunuz.
 
 ### Uygulamayı internete açmam gerekir mi?
 
-Hayır. Uygulama yalnızca kendi bilgisayarınızdan açılır.
+Hayır. Uygulama yalnızca kendi bilgisayarınızdan açılır ve Google'a giden bağlantıyı kendisi kurar.
 
 ## Nereden başlamalı?
 

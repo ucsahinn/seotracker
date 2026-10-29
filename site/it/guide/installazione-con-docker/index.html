@@ -107,7 +107,7 @@
       property="og:image:alt"
       content="Scheda di seowatcher: la dashboard dell’app con i dati di Search Console, Analytics 4 e dell’audit del sito, e un pulsante per scaricarla su Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/it/guide/installazione-con-docker/"
@@ -172,7 +172,7 @@
             "url": "https://seowatcher.io/it/guide/installazione-con-docker/",
             "inLanguage": "it",
             "datePublished": "2026-10-23",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-29",
             "articleSection": "Per iniziare",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1519,17 +1519,17 @@
                 >Parole chiave salvate</a
               >
             </li>
-            <li>
-              <a href="/it/guide/analisi/">Interpretare i dati di analisi</a>
-            </li>
+            <li><a href="/it/guide/analisi/">Capire i dati di Analytics</a></li>
             <li>
               <a href="/it/guide/controllo-del-sito/">Controllo del sito</a>
             </li>
-            <li><a href="/it/guide/stato-indice/">Stato dell'indice</a></li>
+            <li>
+              <a href="/it/guide/stato-indice/">Stato dell'indicizzazione</a>
+            </li>
             <li><a href="/it/guide/rapporti/">Report e modelli</a></li>
             <li>
               <a href="/it/guide/informazioni-progetto/"
-                >Informazioni sul progetto</a
+                >Contesto del progetto</a
               >
             </li>
             <li><a href="/it/guide/impostazioni/">Impostazioni</a></li>
@@ -1542,7 +1542,7 @@
             </li>
             <li>
               <a href="/it/guide/configurazione-assistente/"
-                >Configurazione dell'assistente</a
+                >Configurazione dell'agente</a
               >
             </li>
             <li>
@@ -1561,13 +1561,15 @@
           e non serve il file .env. I dati restano nel volume di dati di Docker.
         </p>
         <p>
-          Al termine l'app sarà in funzione in Docker (il programma che esegue
-          le applicazioni in ambienti isolati, detti container) e aperta
-          all'indirizzo <code>http://localhost:3001</code>. Chi usa Windows
-          trova molto più semplice l'installazione con un solo file. Questa
-          strada è per chi usa Mac o Linux e per chi usa già Docker. Il primo
-          avvio richiede alcuni minuti, perché l'app viene compilata dentro il
-          container. I successivi richiedono pochi secondi.
+          Docker esegue le applicazioni in ambienti isolati, detti container. Al
+          termine di questa procedura l'app risponde all'indirizzo
+          <code>http://localhost:3001</code>. La procedura è pensata per Mac,
+          Linux e per chi usa già Docker; su Windows l'<a
+            href="/it/guide/installazione-su-windows/"
+            >installazione con un solo file</a
+          >
+          è più semplice. Il primo avvio richiede alcuni minuti, perché l'app
+          viene compilata dentro il container; i successivi pochi secondi.
         </p>
         <h2 id="cosa-serve">Cosa serve</h2>
         <ul>
@@ -1604,45 +1606,45 @@ cd seotracker</code></pre>
           <pre><code>docker compose up -d</code></pre>
         </div>
         <p>
-          Tutto qui. Il file <code>.env</code> non serve. La chiave di cifratura
-          e la password dell'assistente vengono generate da sole al primo avvio
-          e conservate nel volume di dati di Docker.
+          Non serve altro, nemmeno un file <code>.env</code>. La chiave di
+          cifratura e il token MCP dell'agente vengono generati al primo avvio e
+          conservati nel volume di dati di Docker.
         </p>
         <ol>
-          <li>Per vedere l'avanzamento, scrivere:</li>
+          <li>Per seguire l'avanzamento:</li>
         </ol>
         <div class="code">
           <pre><code>docker compose logs -f</code></pre>
         </div>
         <ol>
           <li>
-            Attendere. La riga &quot;Building client + server&quot; nel registro
-            indica la prima compilazione. Aspettare che nell'output di
-            <code>docker compose ps</code> lo stato diventi
-            <strong>healthy</strong>, poi aprire nel browser
-            <code>http://localhost:3001</code>.
+            La riga &quot;Building client + server&quot; nel registro indica la
+            prima compilazione. Attendere che
+            <code>docker compose ps</code> mostri lo stato
+            <strong>healthy</strong>, poi aprire
+            <code>http://localhost:3001</code> nel browser.
           </li>
         </ol>
         <p>
-          Il passaggio successivo è la guida al collegamento con Google. Con
-          Docker i due indirizzi di reindirizzamento da dare a Google sono
-          questi:
+          Il passaggio successivo è il
+          <a href="/it/guide/collegamento-google/">collegamento con Google</a>.
+          Con Docker gli indirizzi di reindirizzamento da registrare in Google
+          sono:
         </p>
         <ul>
           <li><code>http://localhost:3001/api/gsc/oauth/callback</code></li>
           <li><code>http://localhost:3001/api/ga4/oauth/callback</code></li>
         </ul>
         <h3 id="aggiornamento">Aggiornamento</h3>
-        <p>Scrivere questi due comandi:</p>
+        <p>Eseguire:</p>
         <div class="code">
           <pre><code>git pull
 docker compose up -d --build</code></pre>
         </div>
         <p>
-          La sezione <strong>Impostazioni → Informazioni</strong> segnala la
-          nuova versione e mostra questi due comandi. I dati restano nel volume
-          di nome <code>seotracker_data</code>, quindi l'aggiornamento non li
-          cancella.
+          <strong>Impostazioni → Informazioni</strong> segnala la nuova versione
+          e mostra gli stessi comandi. I dati restano nel volume
+          <code>seotracker_data</code>: l'aggiornamento non li cancella.
         </p>
         <h3 id="arresto-e-rimozione">Arresto e rimozione</h3>
         <ul>
@@ -1661,8 +1663,8 @@ docker compose up -d --build</code></pre>
         <h3 id="copia-di-sicurezza">Copia di sicurezza</h3>
         <p>
           I dati sono nel volume <code>seotracker_data</code>, al percorso
-          <code>/app/.wrangler</code> dentro il container. Per la copia di
-          sicurezza, scrivere in ordine tre comandi:
+          <code>/app/.wrangler</code> dentro il container. Per creare una copia
+          di sicurezza, eseguire in ordine:
         </p>
         <div class="code">
           <pre><code>docker compose stop
@@ -1670,7 +1672,7 @@ docker run --rm -v seotracker_data:/data -v &quot;$PWD&quot;:/backup alpine tar 
 docker compose up -d</code></pre>
         </div>
         <p>
-          Per ripristinare, nello stesso comando usare <code>tar xzf</code> al
+          Per il ripristino si usa lo stesso comando con <code>tar xzf</code> al
           posto di <code>tar czf</code>. Il file
           <code>instance-secret</code> nel volume è la chiave che cifra i
           collegamenti con Google. Se manca dalla copia, l'app si apre ma i
@@ -1678,8 +1680,8 @@ docker compose up -d</code></pre>
         </p>
         <h3 id="impostazioni-facoltative">Impostazioni (facoltative)</h3>
         <p>
-          Nessuna impostazione è obbligatoria. Per cambiarne una, mettere un
-          file <code>.env</code> nella cartella del progetto. Poi scrivere
+          Nessuna impostazione è obbligatoria. Per cambiarne una, creare un file
+          <code>.env</code> nella cartella del progetto ed eseguire
           <code>docker compose up -d --force-recreate seotracker</code>.
         </p>
         <div class="tw">
@@ -1736,7 +1738,7 @@ docker compose up -d</code></pre>
                 <td>MCP_TOKEN</td>
                 <td>
                   Se è vuoto, viene generato al primo avvio. Con
-                  <code>off</code> non viene chiesta la password. Qualsiasi
+                  <code>off</code> non viene richiesto alcun token. Qualsiasi
                   altro valore è usato così com'è
                 </td>
               </tr>
@@ -1747,8 +1749,8 @@ docker compose up -d</code></pre>
         <ul>
           <li>
             Nell'output di <code>docker compose ps</code> lo stato deve essere
-            <strong>healthy</strong>. Al primo avvio può servire fino a cinque
-            minuti.
+            <strong>healthy</strong>. Al primo avvio possono servire fino a
+            cinque minuti.
           </li>
           <li>
             L'output di
@@ -1758,10 +1760,11 @@ docker compose up -d</code></pre>
             anche nel browser.
           </li>
           <li>
-            Nel browser deve aprirsi <code>http://localhost:3001</code>. La
-            scheda di stato nella schermata <strong>Aiuto</strong> deve dire
-            &quot;Sembra tutto a posto.&quot;. Finché Google non è collegato, la
-            riga &quot;Accesso a Google&quot; segnala un problema. È normale.
+            Nel browser deve aprirsi <code>http://localhost:3001</code>. Nella
+            schermata <strong>Aiuto</strong>, la scheda
+            <strong>Stato dell'app</strong> non deve segnalare errori. Finché
+            Google non è collegato, la riga dell'accesso a Google resta in
+            avviso: è normale.
           </li>
         </ul>
         <h2 id="domande-frequenti">Domande frequenti</h2>
@@ -1777,15 +1780,14 @@ docker compose up -d</code></pre>
           file <code>docs/ENVIRONMENT.md</code>.
         </p>
         <p>
-          <strong>Si può aprire a Internet?</strong> L'app non chiede a nessuno
-          di identificarsi. Non aprirla senza mettere davanti una propria
-          autenticazione. Se si imposta <code>ALLOWED_HOST</code>, l'app lo
-          segnala nel controllo di stato.
+          <strong>Si può esporre su Internet?</strong> L'app non chiede a
+          nessuno di identificarsi. Non va esposta senza anteporle un proprio
+          sistema di autenticazione. Se si imposta <code>ALLOWED_HOST</code>,
+          l'app lo segnala nel controllo di stato.
         </p>
         <p>
-          <strong>Dove si trova la password dell'assistente?</strong> La
-          schermata <strong>Configurazione dell’agente</strong> dell'app mostra
-          il comando:
+          <strong>Dove si trova il token MCP dell'agente?</strong> La schermata
+          <strong>Configurazione dell'agente</strong> mostra il comando:
           <code
             >docker compose exec -T seotracker cat
             /app/.wrangler/mcp-token</code
@@ -1799,8 +1801,8 @@ docker compose up -d</code></pre>
             Il numero di porta è occupato. Mettere nella cartella del progetto
             un file <code>.env</code> con la riga <code>PORT=3002</code> e
             ricreare il container. Su Windows il Blocco note può salvare il file
-            come <code>.env.txt</code>. In PowerShell,
-            <code>Set-Content -Encoding ascii .env 'PORT=3002'</code> è sicuro.
+            come <code>.env.txt</code>. In PowerShell è più sicuro
+            <code>Set-Content -Encoding ascii .env 'PORT=3002'</code>.
           </li>
           <li>
             <strong>Lo stato è &quot;unhealthy&quot;.</strong>
@@ -1809,10 +1811,7 @@ docker compose up -d</code></pre>
             Docker Desktop.
           </li>
           <li>
-            <strong
-              >Il collegamento con Google dice &quot;non
-              configurata&quot;.</strong
-            >
+            <strong>Il collegamento con Google risulta non configurato.</strong>
             Se <code>BETTER_AUTH_SECRET</code> è più corta di 32 caratteri,
             Google resta disattivato. Se la si è indicata a mano, allungarla.
             Altrimenti il file <code>instance-secret</code> nel volume potrebbe
@@ -1842,12 +1841,12 @@ docker compose up -d</code></pre>
           >
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 27 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 29 ottobre 2026. Ha trovato un errore?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >segnalarlo su GitHub</a
+            >Lo segnali su GitHub</a
           >.
         </p>
       </article>

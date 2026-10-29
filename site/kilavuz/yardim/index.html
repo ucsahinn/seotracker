@@ -98,7 +98,7 @@
       property="og:image:alt"
       content="seowatcher tanıtım kartı: Search Console, Analytics 4 ve site denetimi verilerini gösteren uygulama paneli ve Windows için indirme düğmesi"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta property="og:url" content="https://seowatcher.io/kilavuz/yardim/" />
     <meta property="og:locale" content="tr_TR" />
     <meta property="og:locale:alternate" content="en_US" />
@@ -154,7 +154,7 @@
             "url": "https://seowatcher.io/kilavuz/yardim/",
             "inLanguage": "tr",
             "datePublished": "2026-10-22",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Yardım ve başvuru",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -189,7 +189,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1471,7 +1471,7 @@
             <li><a href="/kilavuz/firsatlar/">Fırsatlar</a></li>
             <li><a href="/kilavuz/kayitli-kelimeler/">Kayıtlı kelimeler</a></li>
             <li>
-              <a href="/kilavuz/analitik/">Analitik verilerini yorumlama</a>
+              <a href="/kilavuz/analitik/">Analytics verisini yorumlama</a>
             </li>
             <li><a href="/kilavuz/site-denetimi/">Site denetimi</a></li>
             <li><a href="/kilavuz/dizin-durumu/">Dizin durumu</a></li>
@@ -1499,152 +1499,184 @@
           dosyayı hazırlar.
         </p>
         <p>
-          Bir şey ters giderse ilk buraya bakın. Bu ekran kurulumunuzu kontrol
-          eder, eksiği söyler ve sizi doğru ayara götürür.
+          Yardım ekranı sitenizi değil, seowatcher kurulumunun kendisini kontrol
+          eder. Bir eksik bulursa sizi onu düzelteceğiniz ayara götürür.
         </p>
-        <h2 id="ekranda-neler-var">Ekranda neler var</h2>
-        <p><strong>Hızlı işlemler.</strong> Üstteki düğmeler:</p>
-        <ul>
-          <li>
-            <strong>Durumu yeniden kontrol et</strong>: aşağıdaki kartı tazeler.
-          </li>
-          <li>
-            <strong>Tanılama paketi indir</strong>: sorun bildirirken
-            göndereceğiniz dosyayı indirir. İçinde gizli değer yoktur.
-          </li>
-          <li>
-            <strong>Kılavuzu aç</strong>: seowatcher.io'daki kılavuzu açar.
-          </li>
-          <li>
-            <strong>seowatcher.io</strong>: uygulamanın sitesini açar. İndirme
-            sayfası ve kılavuz oradadır.
-          </li>
-          <li>
-            <strong>Sürüm notları</strong>: ayrı Sürüm notları ekranını açar
-            (<code>/release-notes</code>).
-          </li>
-          <li>
-            <strong>Ajan kurulumu</strong>: asistan bağlantısı ekranına gider.
-          </li>
-        </ul>
-        <p>
-          <strong>Uygulamanın durumu.</strong> Kart yalnızca bu kurulumun
-          erişim, Google bağlantı ayarı, PageSpeed anahtarı, çalışma ortamı ve
-          veritabanı kontrollerini gösterir. Başarılı sonuç sitenizin hatasız
-          olduğunu veya Google verisinin güncel olduğunu kanıtlamaz. Okunamayan
-          bir ayar başarı sayılmaz; uyarıyı okuyup
-          <strong>Durumu yeniden kontrol et</strong> deyin. Sürüm satırı ve son
-          kontrol zamanı sonuçların ne zaman alındığını gösterir.
-          <strong>Özeti kopyala</strong> bu durumu metin olarak kopyalar. Proje
-          bağlantıları <strong>Bağlantıları aç</strong> ile yönetilir.
-        </p>
-        <p>
-          <strong>Adres numarası (port) uyarısı.</strong> Windows paketi 3001
-          numarasını başka bir program tutarken başka bir numarada açılırsa
-          (örneğin eski bir Docker kopyası 3001'i kullanıyorsa), uygulamanın her
-          ekranında üstte sarı bir şerit çıkar: &quot;seowatcher bu sefer 3002
-          numarasında çalışıyor çünkü 3001 başka bir program tarafından
-          kullanılıyor (ör. eski bir Docker kopyası). Google bağlantısı 3001
-          için ayarlandı; o programı kapatıp seowatcher'ı yeniden
-          başlatın.&quot; Şerit, görev çubuğundaki bildirimi kaçırmış
-          olabilirsiniz diye vardır. Google ile giriş 3001 adresine döner ve
-          uygulamayı 3002'de açtıysanız hata verir. Şeridin sağındaki kapat
-          düğmesi onu bu sekme için gizler. Aynı cümle
-          <strong>Uygulamanın durumu</strong> kartında da yazar. Çözmek için
-          3001'i tutan programı kapatın, sonra görev çubuğu menüsünden
-          <strong>Yeniden başlat</strong> deyin. Uygulama 3001'e döner ve şerit
-          kaybolur. Başka bir program kullanmıyorsanız bir sonraki açılışta
-          zaten 3001'e döner.
-        </p>
-        <p>
-          <strong>Projeler.</strong> Her projenin Search Console ve Analytics
-          bağlantısının durumu görünür. <strong>Bağlantıları aç</strong> sizi
-          proje ayarlarına götürür.
-        </p>
-        <p>
-          <strong>Sık sorunlar.</strong> Altı açılır başlık var: sayfa açılmıyor
-          ya da uygulama kapalı, adres numarası (port) dolu, ajanım bağlanamıyor
-          (401), hız ölçümü yarım kalıyor (429), sorgu verisi yok ve bir ayarı
-          değiştirdim, uygulama görmüyor. Her birinde ne yapacağınız ve ilgili
-          ayarın bağlantısı yazar.
-        </p>
-        <p>
-          <strong>Google ve sistem sınırları.</strong>
-          <strong>Sınırları göster</strong> deyince Google'ın günlük
-          sınırlarında şu an nerede olduğunuzu görürsünüz.
-        </p>
-        <p>
-          <strong>Alt liste.</strong> Kayıt dosyalarına ve sağlık adresine
-          (<code>/api/health</code>) giden kısayollar var. Windows paketinde
-          kayıtları görev çubuğu menüsündeki <strong>Günlükleri aç</strong> ile
-          açarsınız. Docker'da <strong>Komutu kopyala</strong> ile verilen
-          komutu kullanırsınız.
-        </p>
-        <h2 id="nasil-kullanilir">Nasıl kullanılır</h2>
+        <h2 id="sorun-cozme-sirasi">Sorun çözme sırası</h2>
         <ol>
           <li>
-            Bir şey çalışmıyorsa önce bu ekranı açın ve karttaki uyarıyı okuyun.
+            <strong>Uygulamanın durumu</strong> kartındaki uyarıyı okuyun.
           </li>
           <li>
-            Uyarının yanındaki düğmeye basın, sizi doğru ayara götürür. Ayarı
-            yapın, geri dönüp <strong>Durumu yeniden kontrol et</strong> deyin.
+            Uyarının yanındaki bağlantıyla ilgili ayara gidin, ayarı düzeltin,
+            geri dönüp <strong>Durumu yeniden kontrol et</strong> düğmesine
+            basın.
           </li>
           <li>
-            Kurulum kontrolleri başarılı olduğu halde sorun sürüyorsa
-            <strong>Sık sorunlar</strong> başlıklarına ve ilgili proje ekranına
-            bakın.
+            Kart <strong>Kurulum kontrollerinde sorun bulunmadı.</strong> dediği
+            halde sorun sürüyorsa <strong>Sık sorunlar</strong> başlıklarına ve
+            ilgili proje ekranına bakın.
           </li>
           <li>
-            Yine çözülmezse <strong>Tanılama paketi indir</strong> deyin ve
-            dosyayı GitHub'daki sorun kaydına ekleyin. Windows paketinde görev
-            çubuğu menüsündeki <strong>Sorunu bildir (GitHub)</strong> aynı işi
-            tek tıkla yapar.
+            Yine çözülmezse <strong>Tanılama paketi indir</strong> ile dosyayı
+            indirin ve GitHub'daki sorun kaydına ekleyin. Windows'ta tepsi
+            menüsündeki <strong>Sorunu bildir (GitHub)</strong> aynı işi tek
+            adımda yapar.
           </li>
         </ol>
+        <h2 id="hizli-islemler">Hızlı işlemler</h2>
+        <ul>
+          <li>
+            <strong>Durumu yeniden kontrol et</strong>: Uygulamanın durumu
+            kartını yeniler.
+          </li>
+          <li>
+            <strong>Tanılama paketi indir</strong>: Sorun bildirirken
+            göndereceğiniz dosyayı indirir.
+          </li>
+          <li>
+            <strong>Kılavuzu aç</strong>: seowatcher.io'daki kılavuzu yeni
+            sekmede açar.
+          </li>
+          <li>
+            <strong>seowatcher.io</strong>: İndirme sayfasının da bulunduğu
+            siteyi açar.
+          </li>
+          <li>
+            <strong>Sürüm notları</strong>: Uygulamadaki Sürüm notları ekranını
+            açar.
+          </li>
+          <li>
+            <strong>Ajan kurulumu</strong>: Ajan bağlantısı ekranına gider.
+          </li>
+        </ul>
+        <h2 id="uygulamanin-durumu">Uygulamanın durumu</h2>
+        <p>
+          Kart bu kurulumun erişim ayarını, Google kimliğini, PageSpeed
+          anahtarını, çalışma ortamını ve veritabanını kontrol eder. Her şeyin
+          yeşil olması sitenizin hatasız ya da Google verisinin güncel olduğunu
+          kanıtlamaz. Okunamayan bir ayar başarılı sayılmaz.
+        </p>
+        <p>
+          Sürüm satırı kullandığınız sürümü ve yeni sürüm olup olmadığını,
+          <strong>Son kontrol</strong> de sonucun ne zaman alındığını gösterir.
+          <strong>Özeti kopyala</strong> durumu gizli değer içermeyen bir metin
+          olarak kopyalar.
+        </p>
+        <h2 id="adres-numarasi-port-uyarisi">Adres numarası (port) uyarısı</h2>
+        <p>
+          Windows sürümü normalde 3001 numaralı adreste çalışır. Bu numarayı
+          başka bir program (örneğin eski bir Docker kopyası) tutuyorsa uygulama
+          başka bir numarada, örneğin 3002'de açılır. O zaman her ekranın
+          üstünde sarı bir şerit çıkar ve aynı uyarı
+          <strong>Uygulamanın durumu</strong> kartında da yazar.
+        </p>
+        <p>
+          Bu önemlidir, çünkü Google ile giriş 3001 adresine döner; uygulama
+          3002'deyken giriş hata verir. Çözmek için:
+        </p>
+        <ol>
+          <li>3001'i kullanan programı kapatın.</li>
+          <li>
+            Tepsi menüsünden <strong>Yeniden başlat</strong> seçeneğine
+            tıklayın.
+          </li>
+        </ol>
+        <p>
+          Uygulama 3001'e döner ve şerit kaybolur. Şeridin sağındaki kapat
+          düğmesi onu yalnızca bu sekme için gizler.
+        </p>
+        <h2 id="projeler">Projeler</h2>
+        <p>
+          Her projenin Search Console ve Analytics mülkünün
+          <strong>seçili</strong> ya da <strong>seçili değil</strong> olduğu
+          görünür. <strong>Bağlantıları aç</strong> projenin bağlantı ayarlarına
+          gider.
+        </p>
+        <h2 id="sik-sorunlar">Sık sorunlar</h2>
+        <p>
+          Altı açılır başlık vardır. Her birinde yapılacak iş ve ilgili ayarın
+          bağlantısı yazar:
+        </p>
+        <ul>
+          <li>
+            <strong>Sayfa açılmıyor ya da uygulama kapalı</strong> (Docker'da
+            <strong>Sayfa açılmıyor ya da Docker kapalı</strong>)
+          </li>
+          <li><strong>Adres numarası (port) dolu</strong></li>
+          <li><strong>Ajanım bağlanamıyor (401)</strong></li>
+          <li><strong>Hız ölçümü yarım kalıyor (429)</strong></li>
+          <li><strong>Sorgu verisi yok, grafikler boş</strong></li>
+          <li><strong>Bir ayarı değiştirdim, uygulama görmüyor</strong></li>
+        </ul>
+        <h2 id="google-ve-sistem-sinirlari">Google ve sistem sınırları</h2>
+        <p>
+          <strong>Sınırları göster</strong>, Google'ın günlük sınırlarının ne
+          kadarını kullandığınızı gösterir. Ayrıntılar
+          <a href="/kilavuz/ayarlar/">Ayarlar</a> sayfasındadır.
+        </p>
+        <h2 id="gunlukler-ve-saglik-adresi">Günlükler ve sağlık adresi</h2>
+        <p>
+          Ekranın altında kayıt dosyalarına ve sağlık adresine
+          (<code>/api/health</code>) giden kısayollar vardır. Windows'ta
+          günlükleri tepsi menüsündeki <strong>Günlükleri aç</strong> açar.
+          Docker'da <strong>Komutu kopyala</strong> ile verilen komutu
+          terminalde çalıştırın.
+        </p>
+        <h2 id="tanilama-paketinde-ne-var">Tanılama paketinde ne var</h2>
+        <p>
+          Paket sürümü, kurulum kontrollerini, tablo sayılarını ve son 25
+          denetimin aşama ve hata özetlerini içerir. PageSpeed hataları adresler
+          çıkarılarak özetlenir. Gizli anahtarlar ve parolalar eklenmez. Proje
+          adları, alan adları ve Google mülk kimlikleri yer alabilir; dosyayı
+          göndermeden önce inceleyin.
+        </p>
         <h2 id="sik-sorulanlar">Sık sorulanlar</h2>
         <p>
-          <strong>&quot;Google girişi&quot; satırı neden sarı?</strong> Henüz
-          Google erişim anahtarı girilmemiştir. Google'a bağlanana kadar bu
-          satır sarı kalır. Google'a bağlanma kılavuzunu izleyin.
+          <strong>Google kimliği satırı neden sarı?</strong> Henüz bir Google
+          kimliği kaydedilmemiştir.
+          <a href="/kilavuz/google-baglantisi/">Google'a bağlanma</a> adımlarını
+          izleyin.
         </p>
         <p>
           <strong
-            >&quot;Giriş ve erişim&quot; satırında &quot;parolasız tek
-            kullanıcı&quot; yazıyor.</strong
+            >Erişim satırında &quot;parolasız tek kullanıcı&quot;
+            yazıyor.</strong
           >
-          Bu normaldir. Uygulama yalnızca kendi bilgisayarınızdan açılır.
-          Dışarıya açmak isterseniz önüne kendi şifreli girişinizi koymanız
-          gerekir.
+          Bu normaldir; uygulama yalnızca kendi bilgisayarınızdan açılır. Dış
+          ağa açmak isterseniz önüne kendi kimlik doğrulamanızı koyun.
         </p>
         <p>
-          <strong>Tanılama paketinde ne var?</strong> Sürüm, kurulum
-          kontrolleri, tablo sayıları, son 25 denetimin aşama ve hata özetleri
-          bulunur. PageSpeed hataları URL'ler çıkarılarak özetlenir. Gizli
-          anahtarlar ve parolalar eklenmez; proje adları, alan adları ve Google
-          mülk kimlikleri yer alabilir. Göndermeden önce dosyaları inceleyin.
+          <strong>Kurulum tamam ama ekranlarda veri yok.</strong> Yardım ekranı
+          raporları doğrulamaz. Proje bağlantılarını, seçili tarih aralığını ve
+          ekrandaki veri kapsamı uyarısını kontrol edin. Az trafik alan
+          sitelerde Google bazı sorguları gizler: sayfa toplamında tıklama
+          varken sorgu listesi boş ya da daha kısa olabilir. Bu tek başına
+          bağlantı hatası değildir.
         </p>
-        <h2 id="sinirlar">Sınırlar</h2>
-        <p>
-          Bu ekran yalnızca kurulumun kendisini kontrol eder. Sitenizdeki bir
-          sorunu bulmak için Site denetimi, Google tarafındaki bir sorunu görmek
-          için Dizin durumu ekranına bakın.
-        </p>
-        <h2 id="hangi-ekrana-gitmeli">Hangi ekrana gitmeli?</h2>
-        <p>
-          <a href="/kilavuz/panel/">Panel</a> seçili projenin veri ve kurulum
-          özetini gösterir. <a href="/kilavuz/firsatlar/">Fırsatlar</a> Search
-          Console verisinden yapılacak işleri seçmenize yardımcı olur.
-          <a href="/kilavuz/siralama-takibi/">Sıralama takibi</a> kaydedilen
-          kelimelerin Google verisindeki ortalama konumunu izler; canlı arama
-          sonucu değildir. Veri eksikse önce proje bağlantılarını, tarih
-          aralığını ve ekrandaki veri kapsamı uyarısını kontrol edin. Yardım
-          ekranındaki kurulum sonucu bu raporları doğrulamaz.
-        </p>
-        <p>
-          Az trafik alan sitelerde Google bazı sorguları gizler. Sayfa
-          toplamlarında tıklama varken sorgu listesi boş veya daha küçük
-          olabilir; bu tek başına bağlantı hatası değildir.
-        </p>
+        <h2 id="hangi-ekrana-gitmeli">Hangi ekrana gitmeli</h2>
+        <ul>
+          <li>
+            Sitenizdeki teknik sorunlar için
+            <a href="/kilavuz/site-denetimi/">Site denetimi</a>.
+          </li>
+          <li>
+            Google'ın sayfalarınızı dizine alıp almadığı için
+            <a href="/kilavuz/dizin-durumu/">Dizin durumu</a>.
+          </li>
+          <li>
+            Projenin veri ve kurulum özeti için
+            <a href="/kilavuz/panel/">Panel</a>.
+          </li>
+          <li>
+            Yapılacak işleri seçmek için
+            <a href="/kilavuz/firsatlar/">Fırsatlar</a>.
+          </li>
+          <li>
+            Search Console sorgularının sıra geçmişi için
+            <a href="/kilavuz/siralama-takibi/">Sıralama takibi</a>.
+          </li>
+        </ul>
         <nav class="pager" aria-label="Önceki ve sonraki sayfa">
           <a class="pager-prev" rel="prev" href="/kilavuz/ayarlar/"
             ><span>Önceki</span><strong>Ayarlar</strong></a
@@ -1653,7 +1685,7 @@
           >
         </nav>
         <p class="meta">
-          Son güncelleme: 28 Ekim 2026. Bir hata görürseniz
+          Son güncelleme: 29 Ekim 2026. Bir hata görürseniz
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1665,11 +1697,27 @@
       <nav class="toc" aria-label="Bu sayfada">
         <p class="toc-label">Bu sayfada</p>
         <ol>
-          <li><a href="#ekranda-neler-var">Ekranda neler var</a></li>
-          <li><a href="#nasil-kullanilir">Nasıl kullanılır</a></li>
+          <li><a href="#sorun-cozme-sirasi">Sorun çözme sırası</a></li>
+          <li><a href="#hizli-islemler">Hızlı işlemler</a></li>
+          <li><a href="#uygulamanin-durumu">Uygulamanın durumu</a></li>
+          <li>
+            <a href="#adres-numarasi-port-uyarisi"
+              >Adres numarası (port) uyarısı</a
+            >
+          </li>
+          <li><a href="#projeler">Projeler</a></li>
+          <li><a href="#sik-sorunlar">Sık sorunlar</a></li>
+          <li>
+            <a href="#google-ve-sistem-sinirlari">Google ve sistem sınırları</a>
+          </li>
+          <li>
+            <a href="#gunlukler-ve-saglik-adresi">Günlükler ve sağlık adresi</a>
+          </li>
+          <li>
+            <a href="#tanilama-paketinde-ne-var">Tanılama paketinde ne var</a>
+          </li>
           <li><a href="#sik-sorulanlar">Sık sorulanlar</a></li>
-          <li><a href="#sinirlar">Sınırlar</a></li>
-          <li><a href="#hangi-ekrana-gitmeli">Hangi ekrana gitmeli?</a></li>
+          <li><a href="#hangi-ekrana-gitmeli">Hangi ekrana gitmeli</a></li>
         </ol>
       </nav>
     </main>

@@ -14,7 +14,7 @@
     <title>Indexstatus | seowatcher-Anleitung</title>
     <meta
       name="description"
-      content="Ob Google Ihre Seiten in die Suche aufgenommen hat, warum nicht und wann es zuletzt vorbeikam. Höchstens 2.000 Abfragen pro Tag."
+      content="Ob Google Ihre Seiten indexiert hat, warum nicht und wann Google sie zuletzt gecrawlt hat. Höchstens 2.000 Abfragen pro Property und Tag."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -91,7 +91,7 @@
     <meta property="og:title" content="Indexstatus | seowatcher-Anleitung" />
     <meta
       property="og:description"
-      content="Ob Google Ihre Seiten in die Suche aufgenommen hat, warum nicht und wann es zuletzt vorbeikam. Höchstens 2.000 Abfragen pro Tag."
+      content="Ob Google Ihre Seiten indexiert hat, warum nicht und wann Google sie zuletzt gecrawlt hat. Höchstens 2.000 Abfragen pro Property und Tag."
     />
     <meta
       property="og:image"
@@ -104,7 +104,7 @@
       property="og:image:alt"
       content="seowatcher-Karte: das Dashboard der App mit Daten aus Search Console, Analytics 4 und dem Website-Audit, dazu eine Download-Schaltfläche für Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/de/dokumentation/indexstatus/"
@@ -119,7 +119,7 @@
     <meta name="twitter:title" content="Indexstatus | seowatcher-Anleitung" />
     <meta
       name="twitter:description"
-      content="Ob Google Ihre Seiten in die Suche aufgenommen hat, warum nicht und wann es zuletzt vorbeikam. Höchstens 2.000 Abfragen pro Tag."
+      content="Ob Google Ihre Seiten indexiert hat, warum nicht und wann Google sie zuletzt gecrawlt hat. Höchstens 2.000 Abfragen pro Property und Tag."
     />
     <meta
       name="twitter:image"
@@ -162,11 +162,11 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/de/dokumentation/indexstatus/#article",
             "headline": "Indexstatus",
-            "description": "Ob Google Ihre Seiten in die Suche aufgenommen hat, warum nicht und wann es zuletzt vorbeikam. Höchstens 2.000 Abfragen pro Tag.",
+            "description": "Ob Google Ihre Seiten indexiert hat, warum nicht und wann Google sie zuletzt gecrawlt hat. Höchstens 2.000 Abfragen pro Property und Tag.",
             "url": "https://seowatcher.io/de/dokumentation/indexstatus/",
             "inLanguage": "de",
             "datePublished": "2026-10-23",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-29",
             "articleSection": "Bildschirme",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -201,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1496,9 +1496,7 @@
           <p class="nav-group">Bildschirme</p>
           <ul>
             <li><a href="/de/dokumentation/projekte/">Projekte</a></li>
-            <li>
-              <a href="/de/dokumentation/uebersicht/">Übersicht (Panel)</a>
-            </li>
+            <li><a href="/de/dokumentation/uebersicht/">Übersicht</a></li>
             <li><a href="/de/dokumentation/suchleistung/">Suchleistung</a></li>
             <li>
               <a href="/de/dokumentation/ranking-verfolgung/"
@@ -1508,12 +1506,12 @@
             <li><a href="/de/dokumentation/chancen/">Chancen</a></li>
             <li>
               <a href="/de/dokumentation/gespeicherte-suchbegriffe/"
-                >Gespeicherte Suchbegriffe</a
+                >Gespeicherte Keywords</a
               >
             </li>
             <li>
               <a href="/de/dokumentation/datenanalyse/"
-                >Analysedaten verstehen</a
+                >Analytics-Daten verstehen</a
               >
             </li>
             <li>
@@ -1525,7 +1523,7 @@
             <li>
               <a href="/de/dokumentation/berichte/">Berichte und Vorlagen</a>
             </li>
-            <li><a href="/de/dokumentation/projektinfo/">Projektinfo</a></li>
+            <li><a href="/de/dokumentation/projektinfo/">Projektkontext</a></li>
             <li>
               <a href="/de/dokumentation/einstellungen/">Einstellungen</a>
             </li>
@@ -1536,7 +1534,7 @@
             <li><a href="/de/dokumentation/audit-regeln/">Audit-Regeln</a></li>
             <li>
               <a href="/de/dokumentation/assistent-einrichten/"
-                >Assistent einrichten</a
+                >Agent einrichten</a
               >
             </li>
             <li>
@@ -1551,22 +1549,18 @@
       <article id="icerik" data-page="dizin-durumu">
         <h1>Indexstatus</h1>
         <p class="lede">
-          Ob Google Ihre Seiten in die Suche aufgenommen hat, warum nicht und
-          wann es zuletzt vorbeikam. Höchstens 2.000 Abfragen pro Tag.
+          Ob Google Ihre Seiten indexiert hat, warum nicht und wann Google sie
+          zuletzt gecrawlt hat. Höchstens 2.000 Abfragen pro Property und Tag.
         </p>
         <p>
-          Dieser Reiter zeigt, welche Ihrer Seiten Google in die Suche
-          aufgenommen hat.
-        </p>
-        <p>
-          Das Website-Audit sagt, ob sich eine Seite öffnen lässt. Es kann nicht
-          sagen, ob Google die Seite tatsächlich in den Index (Googles Liste der
-          Seiten) aufgenommen hat. Der Reiter <strong>Indexstatus</strong> fragt
-          Google danach und speichert die Antwort auf diesem Computer. Dieselbe
-          Frage wird nicht ständig wiederholt; nur veraltete Antworten werden
-          neu abgefragt. Das ist wichtig, weil Google erlaubt pro Property
-          (Ihren Website-Eintrag in der Search Console) 2.000 Fragen am Tag. Die
-          App und Ihr Assistent teilen sich dieses Kontingent.
+          Das Website-Audit zeigt, ob sich eine Seite öffnen lässt. Ob Google
+          sie tatsächlich in seinen Index aufgenommen hat, kann es nicht sagen.
+          Dafür fragt der Reiter <strong>Indexstatus</strong> Google über die
+          URL-Prüfung und speichert jede Antwort auf diesem Computer. Neu
+          gefragt wird nur, wenn eine Antwort veraltet ist. Das spart
+          Kontingent: Google erlaubt pro Property (Ihrer Website in der Search
+          Console) 2.000 Abfragen am Tag, und die App und Ihr KI-Agent teilen
+          sich diesen Vorrat.
         </p>
         <h2 id="was-auf-dem-bildschirm-zu-sehen-ist">
           Was auf dem Bildschirm zu sehen ist
@@ -1587,31 +1581,31 @@
           </li>
         </ul>
         <p>
-          <strong>Zusammenfassungskästen.</strong> Sie sehen, bei wie vielen
-          Seiten nachgefragt wurde, wie viele im Index sind, wie viele nicht und
-          wie viele warten. Der Kasten „Seiten, für die Google eine andere
-          kanonische URL ausgewählt hat“ zählt die Seiten, bei denen Google eine
-          andere Adresse gewählt hat als den von Ihnen gemeldeten Canonical (die
-          Hauptadresse einer Seite). Der Kasten „In diesem Audit noch nicht
-          gefragt“ ist die Zahl der Seiten, die auf ihre Abfrage warten.
+          <strong>Zusammenfassungskästen.</strong> Sie zeigen, für wie viele
+          Seiten Google gefragt wurde, wie viele im Index sind, wie viele nicht
+          und wie viele noch warten. Der Kasten „Seiten, für die Google eine
+          andere kanonische URL ausgewählt hat“ zählt Seiten, bei denen Google
+          eine andere Hauptadresse gewählt hat als die von Ihnen per
+          Canonical-Tag angegebene. Der Kasten „In diesem Audit noch nicht
+          gefragt“ zählt die Seiten, deren Abfrage noch aussteht.
         </p>
         <p>
           <strong>Schaltfläche „Status bei Google prüfen“.</strong> Bei jedem
           Klick werden höchstens 25 Seiten abgefragt. Zuerst kommen die, die am
           längsten keine Antwort erhalten haben. Ist die Tagesgrenze erreicht,
           erscheint die Warnung „Googles Tagesgrenze von 2.000 Adressen ist
-          erreicht“. Ist die Search Console nicht verbunden, ist die
-          Schaltfläche deaktiviert. Sie ist auch deaktiviert, wenn die geprüfte
-          Domain nicht zur verbundenen Property gehört.
+          erreicht“. Die Schaltfläche ist deaktiviert, wenn die Search Console
+          nicht verbunden ist oder die geprüfte Domain nicht zur verbundenen
+          Property gehört.
         </p>
         <p>
           <strong>Tabelle.</strong> Die Spalten sind: <strong>Seite</strong>,
           <strong>Status</strong>, <strong>Grund</strong>,
           <strong>Von Google ausgewählte kanonische URL</strong>,
-          <strong>Letzter Crawl von Google</strong>. In der Zelle Status steht
-          „Bei Google“, „Nicht geprüft“, „Keine Antwort“, „Fehler“ oder die
-          türkische Fassung von Googles eigenem Status. Für insgesamt 18 Status
-          gibt es eine türkische Fassung. Einige Beispiele:
+          <strong>Letzter Crawl von Google</strong>. Die Spalte Status zeigt
+          „Bei Google“, „Nicht geprüft“, „Keine Antwort“, „Fehler“ oder Googles
+          eigenen Status in deutscher Fassung. Die App übersetzt 18 solcher
+          Status, zum Beispiel:
         </p>
         <ul>
           <li>„Gefunden – zurzeit nicht indexiert“</li>
@@ -1626,77 +1620,74 @@
           <li>
             Öffnen Sie den Reiter, wenn das Audit fertig ist. Ist die Zahl bei
             „Wartet auf Antwort“ hoch, klicken Sie auf
-            <strong>Status bei Google prüfen</strong>. Bei jedem Klick kommen 25
-            Seiten voran. Bei einer kleinen Website genügen wenige Klicks.
+            <strong>Status bei Google prüfen</strong>. Jeder Klick fragt 25
+            weitere Seiten ab; bei einer kleinen Website genügen wenige Klicks.
           </li>
           <li>
-            Sehen Sie zuerst in die Gruppe „Nicht indexiert“. Die Spalte
+            Prüfen Sie zuerst die Gruppe „Nicht indexiert“. Die Spalte
             <strong>Grund</strong> ist Googles Begründung und sagt oft, was zu
             tun ist. Bei „Durch robots.txt blockiert“ heben Sie die Sperre auf.
-            Bei „Durch das noindex-Tag ausgeschlossen“ löschen Sie das Tag. Bei
-            „Gefunden – zurzeit nicht indexiert“ genügt meist Abwarten.
+            Bei „Durch das noindex-Tag ausgeschlossen“ entfernen Sie das Tag,
+            falls die Seite in die Suche soll. Bei „Gefunden – zurzeit nicht
+            indexiert“ genügt meist Abwarten.
           </li>
           <li>
             Nehmen Sie wichtige Seiten, bei denen „Google ist diese URL nicht
-            bekannt“ steht, in die Sitemap (die Karte Ihrer Website) auf. Senden
-            Sie die Sitemap an die Search Console. Für drei bis fünf besonders
-            wichtige Seiten wählen Sie in der Search Console von Hand „Dizine
-            eklenmesini iste“ (Indexierung beantragen).
+            bekannt“ steht, in die Sitemap auf und reichen Sie die Sitemap in
+            der Search Console ein. Für einige besonders wichtige Seiten wählen
+            Sie in der Search Console zusätzlich „Indexierung beantragen“.
           </li>
           <li>
-            Ist der Kasten „Seiten, für die Google eine andere kanonische URL
-            ausgewählt hat“ nicht null, sehen Sie in die Spalte
+            Steht im Kasten „Seiten, für die Google eine andere kanonische URL
+            ausgewählt hat“ mehr als null, sehen Sie in die Spalte
             <strong>Von Google ausgewählte kanonische URL</strong>. Google folgt
-            der von Ihnen gemeldeten Hauptadresse nicht. Korrigieren Sie
-            entweder Ihre Adresse oder machen Sie die von Google gewählte zur
+            dort Ihrer Angabe nicht. Korrigieren Sie entweder Ihr Canonical-Tag
+            oder übernehmen Sie die von Google gewählte Adresse als
             Hauptadresse.
           </li>
           <li>
-            Klicken Sie nach einigen Tagen erneut. Nur veraltete Antworten
-            werden neu abgefragt, es wird also kein Kontingent verschwendet.
+            Klicken Sie nach einigen Tagen erneut auf
+            <strong>Status bei Google prüfen</strong>.
           </li>
         </ol>
         <h2 id="wie-die-zahlen-berechnet-werden">
           Wie die Zahlen berechnet werden
         </h2>
         <p>
-          Sagt Google „im Index“, gilt die Seite als „Bei Google“. Sagt es
-          „nicht im Index“ oder „unklar“, zählt sie als „Nicht indexiert“. Gibt
-          es keine Antwort, ist die Seite „Wartet auf Antwort“.
+          Meldet Google „im Index“, zählt die Seite als „Bei Google“. Meldet
+          Google „nicht im Index“ oder „unklar“, zählt sie als „Nicht
+          indexiert“. Ohne Antwort zählt sie als „Wartet auf Antwort“.
         </p>
         <p>
-          Eine Antwort gilt nach einer bestimmten Zeit als veraltet und wird neu
-          abgefragt. Für eine Seite im Index sind das 14 Tage. Für eine Antwort
-          „nicht im Index“ oder mit Fehler sind es 3 Tage. Eine Seite, nach der
-          nie gefragt wurde, ist immer bereit zur Abfrage. Die Tagesgrenze wird
-          anhand der Zahl der Fragen der letzten 24 Stunden berechnet. Die App
-          zählt nur ihre eigenen Fragen. Abfragen, die Sie von Hand in der
-          Search Console stellen, gehen nicht in diesen Zähler ein, verringern
-          aber Googles tatsächliches Limit.
+          Eine Antwort veraltet für eine Seite im Index nach 14 Tagen, für
+          „nicht im Index“ oder einen Fehler nach 3 Tagen. Eine Seite, für die
+          noch nie gefragt wurde, kommt immer infrage. Für die Tagesgrenze zählt
+          die App ihre eigenen Abfragen der letzten 24 Stunden. Abfragen, die
+          Sie von Hand in der Search Console stellen, gehen nicht in diesen
+          Zähler ein, verringern aber Googles tatsächliches Limit.
         </p>
         <p>
-          Ein Konflikt bei der Hauptadresse liegt vor, wenn die von Google
-          gewählte Adresse und die von Ihnen gemeldete verschieden sind. Auch
-          ein Unterschied beim Schrägstrich am Ende zählt.
+          Ein Canonical-Konflikt liegt vor, sobald die von Google gewählte und
+          die von Ihnen angegebene Adresse voneinander abweichen, auch nur durch
+          einen abschließenden Schrägstrich.
         </p>
         <p>
-          Liegt Googles letzter Crawl länger als 90 Tage zurück, trägt das Audit
-          das Problem „Google hat diese Seite schon lange nicht mehr gecrawlt“
-          ein. Veraltete Antworten werden in dem einen Problem „Googles Antwort
-          zu einigen Seiten ist veraltet“ zusammengefasst.
+          Liegt Googles letzter Crawl einer Seite länger als 90 Tage zurück,
+          meldet das Audit das Problem „Google hat diese Seite schon lange nicht
+          mehr gecrawlt“. Veraltete Antworten fasst das Problem „Die Antworten
+          von Google für einige Seiten sind veraltet“ zusammen.
         </p>
         <h2 id="haufige-fragen">Häufige Fragen</h2>
         <p>
-          <strong>Warum ist die Schaltfläche deaktiviert?</strong> Es gibt drei
-          mögliche Gründe. Die Search Console ist nicht verbunden. Es ist keine
-          Seite mehr abzufragen. Oder die geprüfte Domain gehört nicht zur
-          verbundenen Property. Das passiert, wenn Sie eine andere Website
-          geprüft haben.
+          <strong>Warum ist die Schaltfläche deaktiviert?</strong> Entweder ist
+          die Search Console nicht verbunden, es ist keine Seite mehr
+          abzufragen, oder die geprüfte Domain gehört nicht zur verbundenen
+          Property, etwa weil Sie eine andere Website geprüft haben.
         </p>
         <p>
           <strong>Für wen gilt die Grenze von 2.000?</strong> Für die Property.
-          Zwei Projekte, die mit derselben Property verbunden sind, und Ihr
-          Assistent verbrauchen aus demselben Vorrat.
+          Zwei Projekte mit derselben Property und Ihr KI-Agent verbrauchen
+          denselben Vorrat.
         </p>
         <p>
           <strong
@@ -1709,16 +1700,16 @@
         </p>
         <p>
           <strong>Meldet dieser Reiter Google neue Seiten?</strong> Nein, er
-          fragt nur. Zum Melden gibt es die Sitemap und in der Search Console
-          „Dizine eklenmesini iste“.
+          fragt nur ab. Neue Seiten melden Sie über die Sitemap oder in der
+          Search Console mit „Indexierung beantragen“.
         </p>
         <h2 id="grenzen">Grenzen</h2>
         <p>
-          Die Antworten sind so, wie Google sie gibt. Google kann einige Felder
-          leer lassen. Mehr als 2.000 Fragen am Tag sind nicht möglich. Eine
-          Website mit 10.000 Seiten vollständig abzufragen, dauert fünf Tage.
-          Der Reiter fragt nur gecrawlte Seiten ab. Adressen, die nicht ins
-          Audit gelangt sind, erscheinen nicht in der Liste.
+          Die App zeigt Googles Antworten unverändert; manche Felder lässt
+          Google leer. Mehr als 2.000 Abfragen am Tag sind nicht möglich, eine
+          Website mit 10.000 Seiten braucht also fünf Tage. Abgefragt werden nur
+          Seiten, die das Audit gecrawlt hat; andere Adressen erscheinen nicht
+          in der Liste.
         </p>
         <nav class="pager" aria-label="Vorherige und nächste Seite">
           <a
@@ -1731,7 +1722,7 @@
           >
         </nav>
         <p class="meta">
-          Zuletzt aktualisiert: 27 Oktober 2026. Fehler entdeckt?
+          Zuletzt aktualisiert: 29 Oktober 2026. Fehler entdeckt?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1762,7 +1753,7 @@
     <footer>
       <div class="wrap">
         <p class="star">
-          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          Ein Stern hilft anderen, das Werkzeug zu finden.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

@@ -11,7 +11,7 @@
     <meta name="ga4-id" content="G-DFPDX00V4R" />
     <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Infos du projet | Guide seowatcher</title>
+    <title>Contexte du projet | Guide seowatcher</title>
     <meta
       name="description"
       content="Conserver les objectifs et les notes du projet en local pour vous et votre assistant connecté. Comprendre leur portée et leurs limites."
@@ -88,7 +88,7 @@
     />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="seowatcher" />
-    <meta property="og:title" content="Infos du projet | Guide seowatcher" />
+    <meta property="og:title" content="Contexte du projet | Guide seowatcher" />
     <meta
       property="og:description"
       content="Conserver les objectifs et les notes du projet en local pour vous et votre assistant connecté. Comprendre leur portée et leurs limites."
@@ -102,7 +102,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta property="article:modified_time" content="2026-10-29" />
     <meta
@@ -116,7 +116,10 @@
     <meta property="og:locale:alternate" content="it_IT" />
     <meta property="og:locale:alternate" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Infos du projet | Guide seowatcher" />
+    <meta
+      name="twitter:title"
+      content="Contexte du projet | Guide seowatcher"
+    />
     <meta
       name="twitter:description"
       content="Conserver les objectifs et les notes du projet en local pour vous et votre assistant connecté. Comprendre leur portée et leurs limites."
@@ -127,7 +130,7 @@
     />
     <meta
       name="twitter:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
@@ -161,7 +164,7 @@
           {
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/fr/guides/infos-du-projet/#article",
-            "headline": "Infos du projet",
+            "headline": "Contexte du projet",
             "description": "Conserver les objectifs et les notes du projet en local pour vous et votre assistant connecté. Comprendre leur portée et leurs limites.",
             "url": "https://seowatcher.io/fr/guides/infos-du-projet/",
             "inLanguage": "fr",
@@ -193,7 +196,7 @@
               {
                 "@type": "ListItem",
                 "position": 3,
-                "name": "Infos du projet",
+                "name": "Contexte du projet",
                 "item": "https://seowatcher.io/fr/guides/infos-du-projet/"
               }
             ]
@@ -201,7 +204,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1475,7 +1478,7 @@
           <ul>
             <li>
               <a href="/fr/guides/quest-ce-que-seowatcher/"
-                >Qu'est-ce que seowatcher ?</a
+                >Qu’est-ce que seowatcher ?</a
               >
             </li>
             <li>
@@ -1514,25 +1517,27 @@
               >
             </li>
             <li>
-              <a href="/fr/guides/statistiques/">Comprendre les statistiques</a>
+              <a href="/fr/guides/statistiques/"
+                >Comprendre les données Analytics</a
+              >
             </li>
             <li><a href="/fr/guides/audit-du-site/">Audit du site</a></li>
             <li>
-              <a href="/fr/guides/etat-de-l-index/">État de l'indexation</a>
+              <a href="/fr/guides/etat-de-l-index/">État de l’indexation</a>
             </li>
             <li><a href="/fr/guides/rapports/">Rapports et modèles</a></li>
             <li class="current" aria-current="page">
-              <a href="/fr/guides/infos-du-projet/">Infos du projet</a>
+              <a href="/fr/guides/infos-du-projet/">Contexte du projet</a>
             </li>
             <li><a href="/fr/guides/parametres/">Paramètres</a></li>
           </ul>
           <p class="nav-group">Aide et référence</p>
           <ul>
             <li><a href="/fr/guides/aide/">Aide</a></li>
-            <li><a href="/fr/guides/regles-d-audit/">Règles d'audit</a></li>
+            <li><a href="/fr/guides/regles-d-audit/">Règles d’audit</a></li>
             <li>
               <a href="/fr/guides/installation-assistant/"
-                >Installation de l'assistant</a
+                >Configuration de l’agent</a
               >
             </li>
             <li><a href="/fr/guides/depannage/">Dépannage</a></li>
@@ -1541,70 +1546,111 @@
         </details>
       </aside>
       <article id="icerik" data-page="proje-bilgisi">
-        <h1>Infos du projet</h1>
+        <h1>Contexte du projet</h1>
         <p class="lede">
           Conserver les objectifs et les notes du projet en local pour vous et
           votre assistant connecté. Comprendre leur portée et leurs limites.
         </p>
         <p>
-          Les informations du projet sont des notes locales utilisables par vous
-          et votre assistant connecté. Un texte rempli n’est pas vérifié ; tous
-          les assistants ne le lisent pas automatiquement.
+          Le contexte du projet rassemble vos notes sur un site : activité,
+          objectif, positionnement, consignes de rédaction. L’application les
+          stocke sur cet ordinateur sans les vérifier. Un assistant connecté
+          peut les lire et les modifier via MCP, mais seulement s’il appelle
+          l’outil prévu à cet effet.
         </p>
-        <h2 id="commencer-par-l-objectif">Commencer par l’objectif</h2>
+        <h2 id="sections-et-limites">Sections et limites</h2>
         <p>
-          Le haut de page montre les sections principales remplies et l’objectif
-          enregistré. Ouvrez la première section vide ou utilisez le sélecteur.
-          Présentation de l’activité, objectif actuel, positionnement et
-          préférences rédactionnelles acceptent chacun 4 000 caractères.
-          L’auteur et la date absolue figurent sur chaque section. Enregistrer
-          ne transmet que les sections principales modifiées.
-        </p>
-        <p>
-          Concurrents et pages importantes sont des listes facultatives, pas des
-          mesures de classement ou de conversion. Chaque liste accepte 100
-          entrées. Domaine/nom/note : 255/120/500 caractères ;
-          adresse/sujet/note : 2 048/200/500. Les rôles sont vos étiquettes. Les
-          assistants créent les sections personnalisées ; vous pouvez les
-          modifier ou supprimer. Limites : 20 sections, titre de 120 caractères,
-          contenu de 4 000.
-        </p>
-        <h2 id="enregistrer-et-actualiser">Enregistrer et actualiser</h2>
-        <p>
-          Actualiser relit notes et configuration. Une erreur en arrière-plan
-          conserve les informations enregistrées et les brouillons avec un
-          avertissement. Quitter avec des modifications principales ou intégrées
-          non enregistrées déclenche un avertissement. Le serveur n’empêche pas
-          encore l’écrasement d’une même section modifiée simultanément :
-          comparez le texte récent avant d’enregistrer.
+          Les quatre sections principales sont
+          <strong>Présentation de l’activité</strong>,
+          <strong>Objectif actuel</strong>, <strong>Positionnement</strong> et
+          <strong>Préférences de rédaction</strong>. Chacune accepte 4 000
+          caractères et indique l’auteur et la date de la dernière modification.
+          Le haut de page montre les sections remplies et l’objectif enregistré.
+          <strong>Remplir la première section vide</strong> et le sélecteur de
+          section vous y conduisent.
+          <strong>Enregistrer les modifications</strong> n’envoie que les
+          sections principales modifiées.
         </p>
         <p>
-          Le modèle destiné à l’assistant lui demande votre accord avant
-          d’écrire. Les outils de l’application peuvent écrire immédiatement,
-          sans accord supplémentaire imposé. Sans identité de projet résolue, le
-          modèle reste indisponible.
+          <strong>Concurrents</strong> et <strong>Pages clés</strong> sont des
+          listes facultatives que vous tenez vous-même. Elles ne mesurent ni
+          classement ni conversion.
+        </p>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Liste</th>
+                <th>Entrées</th>
+                <th>Limites des champs</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Concurrents</td>
+                <td class="num">100</td>
+                <td>Domaine 255, nom 120, notes 500 caractères</td>
+              </tr>
+              <tr>
+                <td>Pages clés</td>
+                <td class="num">100</td>
+                <td>Adresse 2 048, sujet 200, notes 500 caractères</td>
+              </tr>
+              <tr>
+                <td>Sections personnalisées</td>
+                <td class="num">20</td>
+                <td>Titre 120, contenu 4 000 caractères</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Le rôle d’une page clé est une étiquette pour votre propre usage. Les
+          sections personnalisées sont créées par un assistant ; vous pouvez les
+          modifier ou les supprimer.
+        </p>
+        <h2 id="travailler-avec-un-assistant">Travailler avec un assistant</h2>
+        <p>
+          <strong>Préparer un brouillon avec l’agent</strong> fournit une invite
+          à copier. Elle demande à l’assistant d’obtenir votre accord avant
+          d’enregistrer. Cet accord ne figure que dans l’invite : les outils de
+          l’application écrivent dès qu’ils sont appelés. L’invite devient
+          disponible une fois l’identité du projet chargée.
         </p>
         <p>
-          Le journal de recherche affiche les 20 dernières notes des 90 derniers
-          jours, de 1 000 caractères chacune. La date suit le jour UTC du
-          serveur. Les notes expirées sont filtrées à chaque lecture. Un message
-          indique les notes supplémentaires de cette période. La liste n’est pas
-          un historique complet.
+          Si une section change ailleurs pendant que vous la modifiez, par
+          exemple parce qu’un assistant l’a enregistrée, l’application refuse
+          tout votre enregistrement et conserve votre brouillon. Elle affiche
+          alors le <strong>Texte au début de la modification</strong>, le
+          <strong>Dernier texte enregistré</strong> et votre brouillon.
+          Fusionnez-les, puis enregistrez de nouveau. Les assistants bénéficient
+          de la même protection en envoyant <code>expectedContent</code> ; les
+          anciens clients qui ne l’envoient pas fonctionnent toujours.
+        </p>
+        <h2 id="journal-de-recherche">Journal de recherche</h2>
+        <p>
+          Le <strong>Journal de recherche</strong> affiche les 20 notes les plus
+          récentes des 90 derniers jours. Chaque note compte 1 000 caractères au
+          plus et porte la date du jour UTC du serveur. Les notes plus anciennes
+          sortent de la vue, même sans nouvel ajout, et un message signale les
+          notes de la période qui ne sont pas affichées. Le journal montre
+          l’activité récente ; ce n’est pas un historique complet.
+        </p>
+        <h2 id="source-et-installation">Source et installation</h2>
+        <p>
+          <strong>Source et installation</strong> compte six signaux de
+          configuration communs à tout le projet. Il distingue un signal absent
+          d’un signal illisible et ignore les listes facultatives. Ce n’est pas
+          une note SEO : une connexion enregistrée ne prouve pas que Google
+          répond, une clé PageSpeed ne garantit pas le quota, et un appel
+          d’outil enregistré ne prouve pas que l’assistant a lu ce projet.
         </p>
         <p>
-          Si un autre client modifie une section pendant votre saisie, tout
-          l’enregistrement est refusé et votre brouillon est conservé. Comparez
-          le texte initial, le dernier texte enregistré et votre brouillon, puis
-          fusionnez-les avant de réessayer. Les agents peuvent transmettre
-          <code>expectedContent</code> pour bénéficier de cette protection ; les
-          anciens clients restent compatibles sans ce champ.
-        </p>
-        <p>
-          Sources et configuration compte six signaux communs et distingue
-          absence et lecture impossible. Les listes facultatives sont exclues.
-          Une connexion n’est pas un test en direct, une clé PageSpeed ne
-          garantit pas le quota, un appel d’outil de cette installation ne
-          prouve pas la lecture de ce projet. Ce n’est pas une note SEO.
+          <strong>Actualiser</strong> relit les notes et la configuration. Si
+          une lecture en arrière-plan échoue, l’écran conserve les informations
+          enregistrées et vos brouillons, avec un avertissement. Si vous quittez
+          la page avec des modifications non enregistrées, l’application demande
+          confirmation.
         </p>
         <nav class="pager" aria-label="Page précédente et suivante">
           <a class="pager-prev" rel="prev" href="/fr/guides/rapports/"
@@ -1614,7 +1660,7 @@
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1626,19 +1672,21 @@
       <nav class="toc" aria-label="Sur cette page">
         <p class="toc-label">Sur cette page</p>
         <ol>
+          <li><a href="#sections-et-limites">Sections et limites</a></li>
           <li>
-            <a href="#commencer-par-l-objectif">Commencer par l’objectif</a>
+            <a href="#travailler-avec-un-assistant"
+              >Travailler avec un assistant</a
+            >
           </li>
-          <li>
-            <a href="#enregistrer-et-actualiser">Enregistrer et actualiser</a>
-          </li>
+          <li><a href="#journal-de-recherche">Journal de recherche</a></li>
+          <li><a href="#source-et-installation">Source et installation</a></li>
         </ol>
       </nav>
     </main>
     <footer>
       <div class="wrap">
         <p class="star">
-          Une étoile aide d'autres personnes à trouver un outil gratuit.
+          Une étoile aide d’autres personnes à trouver un outil gratuit.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

@@ -5,7 +5,7 @@ kind: sorun-giderme
 updated: 2026-10-27
 ---
 
-Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Uygulamanın durumu" kartına bakın. Kart bu kurulumun kendisini, yani giriş ve erişimi, Google girişini, PageSpeed anahtarını ve veritabanını kontrol eder. "N şey dikkat istiyor" diyorsa yanındaki düğme sizi doğru ayara götürür. Aşağıdaki sorunlar en sık görülenden en nadire doğru sıralıdır.
+Uygulama açılıyorsa önce **Yardım** ekranındaki **Uygulamanın durumu** kartına bakın. Kart giriş ve erişimi, Google kimliğini, PageSpeed anahtarını ve veritabanını kontrol eder. "… kurulum kontrolü dikkat istiyor" yazıyorsa yanındaki düğme sizi doğru ayara götürür. Aşağıdaki sorunlar en sık görülenden en nadire doğru sıralıdır; her biri belirti, sebep ve çözüm olarak yazılmıştır.
 
 ## Sayfa açılmıyor
 
@@ -13,7 +13,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Uygulamanı
 
 **Sebep:** Uygulama çalışmıyor.
 
-**Çözüm (Windows paketi):** Görev çubuğundaki simgeye bakın. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Yoksa Başlat menüsünden seowatcher'ı açın. Simgenin üzerine gelince "Çalışıyor: http://127.0.0.1:3001/" yazmalı; adres numarası farklıysa o adresi açın. "Hata" yazıyorsa sağ tıklayıp **Yeniden başlat** deyin, olmazsa **Kurulumu onar**. Nedeni **Günlükleri aç** ile `launcher.log` ve `server.log` dosyalarının son satırları yazar.
+**Çözüm (Windows paketi):** Görev çubuğundaki simgeye bakın; görünmüyorsa ^ okuna tıklayın. Orada da yoksa Başlat menüsünden seowatcher'ı açın. Simgenin üzerine gelince "Çalışıyor: http://127.0.0.1:3001/" yazmalı; adres numarası farklıysa o adresi açın. "Hata" yazıyorsa sağ tıklayıp **Yeniden başlat** deyin, olmazsa **Kurulumu onar**. Nedeni **Günlükleri aç** ile `launcher.log` ve `server.log` dosyalarının son satırları yazar.
 
 **Çözüm (Docker):** Önce Docker Desktop'ın çalıştığına bakın. Proje klasöründe `docker compose ps` komutunu çalıştırın. Durum healthy değilse `docker compose up -d` komutunu çalıştırın; nedeni `docker compose logs --tail 50` yazar.
 
@@ -71,7 +71,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Uygulamanı
 
 **Sebep:** Ne **Ayarlar → Hizmet hesabı** bölümüne bir hizmet hesabı, ne de **Ayarlar → Google** bölümüne istemci kimliği ve gizli anahtar girilmiş. Ya da şifreleme anahtarı bozuk ve kayıtlı Google bilgileri açılamıyor.
 
-**Çözüm:** Bir hizmet hesabı ya da Google erişim anahtarı girin (Google'a bağlanma kılavuzu). İkisinden biri yeter; ikisi de kayıtlıysa hizmet hesabı kullanılır. **Yardım** ekranındaki "Google girişi" satırı hangisinin kullanıldığını yazar.
+**Çözüm:** Bir hizmet hesabı ya da Google erişim anahtarı girin ([Google'a bağlanma](/docs/google-baglantisi/)). İkisinden biri yeter; ikisi de kayıtlıysa hizmet hesabı kullanılır. **Yardım** ekranındaki "Google girişi" satırı hangisinin kullanıldığını yazar.
 
 - **Windows paketi:** şifreleme anahtarı veri klasöründeki `instance-secret` dosyasıdır ve başlatıcı onu bir kez üretir. Simge bu dosyanın bozuk olduğunu söylüyorsa yedekten geri koyun; Google hiç bağlanmadıysa dosyayı silip **Yeniden başlat** deyin.
 - **Docker:** `BETTER_AUTH_SECRET` değerini elle verdiyseniz en az 32 karakter olmalı. Boş bırakırsanız konteyner kendisi üretir.
@@ -120,7 +120,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Uygulamanı
 
 **Belirti:** Denetim ekranında "Denetim tarama aşamasında durdu." ya da "Denetim tamamlanamadan durdu." yazıyor. Puanın yerinde "Eksik denetim, puan verilmedi" görünüyor.
 
-**Sebep:** Ekran üç şey söyler: ne olduğunu, sorunun sitenizde mi uygulamada mı olduğunu ve ne yapacağınızı. Başlık hangi aşamada durduğunu yazar: adres keşfi, tarama, hız ölçümü ya da sonuçların hazırlanması.
+**Sebep:** Denetim bir aşamada hata verdi. Başlık hangi aşamada durduğunu yazar: adres keşfi, tarama, hız ölçümü ya da sonuçların hazırlanması. Altındaki cümle sorunun sitede mi uygulamada mı olduğunu söyler.
 
 **Çözüm:** Ekrandaki cümleye göre ilerleyin.
 
@@ -172,15 +172,15 @@ Ham hata metni ekrana gelmez. Tanılama paketinde durur.
 
 **Sebep:** PageSpeed anahtarı yok (en fazla 50 sayfa ölçülür). Ya da Google'ın günlük hakkı dolmuş.
 
-**Çözüm:** PageSpeed anahtarı kılavuzuna göre ücretsiz anahtar alın. Günlük hak dolduysa kalanı yarın yapacağınız yeni denetimde ölçülür. Denetim başlarken hız ölçümü kapalıysa o denetim için sonradan ölçülmez.
+**Çözüm:** [PageSpeed anahtarı](/docs/pagespeed-anahtari/) sayfasındaki adımlarla ücretsiz bir anahtar alın. Günlük hak dolduysa kalanı yarın yapacağınız yeni denetimde ölçülür. Denetim başlarken hız ölçümü kapalıysa o denetim için sonradan ölçülmez.
 
 ## URL Denetimi "günlük sınıra ulaşıldı"
 
-**Belirti:** Dizin durumu sekmesinde düğme çalışmıyor. "Google'ın günlük 2.000 adres sınırına ulaşıldı" yazıyor.
+**Belirti:** Dizin durumu sekmesinde düğme çalışmıyor. "Google'ın günlük 2.000 adres sınırı doldu" uyarısı çıkıyor.
 
 **Sebep:** Mülk başına günde 2.000 soru hakkı var. Uygulama, asistanınız ve Search Console'da elle yaptığınız sorgular aynı havuzdan harcar.
 
-**Çözüm:** Yarın devam edin. Uygulama yalnızca eskiyen yanıtları yeniden sorar, hakkınız boşa gitmez.
+**Çözüm:** Sınır son 24 saate göre hesaplanır ve birkaç saat içinde açılmaya başlar; sonra devam edin. Uygulama yalnızca eskiyen yanıtları yeniden sorar, hakkınız boşa gitmez.
 
 ## Analytics kartı ya da raporu hata veriyor
 
@@ -189,7 +189,7 @@ Ham hata metni ekrana gelmez. Tanılama paketinde durur.
 **Sebep:** Cümle nedeni ve çözümü yazar. Başlıca durumlar şunlardır.
 
 - **Bağlantının süresi dolmuş ya da iptal edilmiş.** **Ayarlar**'dan yeniden bağlayın.
-- **Bu mülke erişim reddedildi (HTTP 403).** Bağlı hesaba ya da hizmet hesabına mülkte en az Görüntüleyen yetkisi verin.
+- **Bu mülke erişim reddedildi (HTTP 403).** Bağlı hesaba ya da hizmet hesabına mülkte en az Görüntüleyici yetkisi verin.
 - **Mülk bulunamadı (HTTP 404).** Mülk silinmiş ya da taşınmış olabilir. **Ayarlar**'dan yeniden seçin.
 - **Bu projeye bağlı bir mülk yok.** **Ayarlar**'dan bir mülk seçin.
 - **Raporlama kotası doldu (HTTP 429).** Kota saatlik ve günlük yenilenir. Daha sonra tekrar deneyin.
@@ -198,7 +198,7 @@ Ham hata metni ekrana gelmez. Tanılama paketinde durur.
 - **Google geçersiz bir yanıt döndürdü ya da geçici olarak yanıt vermiyor.** Birazdan tekrar deneyin.
 - **Google'a bağlanılamadı.** Bu bilgisayarın internet bağlantısını kontrol edin.
 
-**Çözüm:** Cümlenin söylediği adımı yapın. Çoğu zaman **Bağlantıyı düzelt** sizi doğru ayara götürür.
+**Çözüm:** Listeden size uyan adımı uygulayın. Çoğu zaman **Bağlantıyı düzelt** sizi doğru ayara götürür.
 
 ## Search Console isteği hata veriyor
 
@@ -214,7 +214,7 @@ Ham hata metni ekrana gelmez. Tanılama paketinde durur.
 - **Geçici olarak yanıt vermiyor (başka bir HTTP kodu).** Birazdan tekrar deneyin. Sürerse Google'ın durum sayfasına bakın.
 - **Google'a bağlanılamadı.** Cümle "Neden" satırında bir ayrıntı yazar. Sürerse bu bilgisayarın internet bağlantısını kontrol edin.
 
-**Çözüm:** Cümlenin söylediği adımı yapın. Hesap ve mülk sorunlarında **Ayarlar**'da bağlantıyı yenilemek çoğu zaman yeter.
+**Çözüm:** Hata cümlesindeki adımı izleyin. Hesap ve mülk sorunlarında **Ayarlar**'da bağlantıyı yenilemek çoğu zaman yeter.
 
 ## Analytics'te localhost trafiği görünüyor
 
@@ -276,7 +276,7 @@ Sorun bildirirken **Yardım** ekranındaki **Tanılama paketi indir** düğmesin
 - **Tepsi uygulaması ayar isteğini reddetti.** Uygulamayı tepsi menüsünden yeniden başlatın. Sürerse Windows paketini güncelleyin.
 - **Tepsi uygulaması tanınmayan bir yanıt döndürdü.** Uygulama ile tepsi sürümü uyuşmuyor olabilir. Windows paketini güncelleyin.
 
-**Çözüm:** Cümlenin söylediği adımı yapın. Bu seçenekler yalnızca Windows paketinde kullanılabilir. Docker'da başlangıç davranışını işletim sisteminizden yönetirsiniz.
+**Çözüm:** Yukarıdaki listeden hata cümlenize uyan adımı uygulayın. Bu seçenekler yalnızca Windows paketinde kullanılabilir. Docker'da başlangıç davranışını işletim sisteminizden yönetirsiniz.
 
 ## Başlatıcı uyarıları
 

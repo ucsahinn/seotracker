@@ -1,13 +1,11 @@
 ---
 title: Troubleshooting
-description: The most common problems: symptom, cause and fix. Port in use, the Windows warning, Google errors, quota, a stuck audit, empty charts, assistant 401.
+description: Symptom, cause and fix for the problems users hit most: port conflicts, Windows warnings, Google errors, quotas, audits and agent access.
 kind: sorun-giderme
 updated: 2026-10-27
 ---
 
-This guide covers what to do when something does not work. First, check the "App health" card on the **Help** screen in the app. The card looks at this installation itself, and it checks four things: sign-in and access, Google sign-in, the PageSpeed key, and the database. If it says "N things need attention", the button next to it takes you to the right setting. The sections below run from the most common problem to the rarest.
-
-The app's interface comes in six languages: Turkish, English, German, French, Italian and Portuguese. This guide uses the English names; to switch, go to **Settings → Appearance → Language**.
+Start with the **App health** card on the [Help](/docs/yardim/) screen. It checks sign-in and access, Google sign-in, the PageSpeed key, the runtime and the database, and links each problem to the setting that fixes it. The sections below run from the most common problem to the rarest. Tray menu items are in Turkish only, so they are given in Turkish with the English meaning in brackets.
 
 ## The page does not open
 
@@ -15,7 +13,7 @@ The app's interface comes in six languages: Turkish, English, German, French, It
 
 **Cause:** The app is not running.
 
-**Fix (Windows package):** Check the taskbar for the icon. If the icon is not visible, click the ^ arrow on the taskbar. If it is not there, open seowatcher from the Start menu. Hovering over the icon should show "Çalışıyor: http://127.0.0.1:3001/" (Running); if the port number is different, open that address. If it says "Hata" (Error), right-click it and choose **Yeniden başlat** (Restart), or if that does not help, **Kurulumu onar** (Repair installation). **Günlükleri aç** (Open logs) shows the reason in the last lines of `launcher.log` and `server.log`.
+**Fix (Windows package):** Look for the seowatcher icon in the notification area; click the ^ arrow on the taskbar if it is hidden. If there is no icon, open seowatcher from the Start menu. Hovering over the icon should show "Çalışıyor: http://127.0.0.1:3001/" (Running); if the port number is different, open that address. If it says "Hata" (Error), right-click it and choose **Yeniden başlat** (Restart), or if that does not help, **Kurulumu onar** (Repair installation). **Günlükleri aç** (Open logs) shows the reason in the last lines of `launcher.log` and `server.log`.
 
 **Fix (Docker):** First check that Docker Desktop is running. In the project folder, run `docker compose ps`. If the status is not healthy, run `docker compose up -d`; `docker compose logs --tail 50` shows the reason.
 
@@ -33,7 +31,7 @@ The app's interface comes in six languages: Turkish, English, German, French, It
 
 **Cause:** The app's engine needs Microsoft's Visual C++ package (2015-2022, 64-bit). On a clean Windows, this package is missing or out of date.
 
-**Fix:** Click the balloon that appears, or right-click the icon (if the icon is not visible, click the ^ arrow on the taskbar) and choose **Eksik Windows bileşenini kur** (Install the missing Windows component). Windows asks for administrator permission once. When the installation finishes, the app restarts by itself. If you do not have the package, download it from Microsoft's page: `https://aka.ms/vs/17/release/vc_redist.x64.exe`
+**Fix:** Click the notification that appears, or right-click the tray icon and choose **Eksik Windows bileşenini kur** (Install the missing Windows component). Windows asks for administrator permission once. When the installation finishes, the app restarts by itself. You can also download the package from Microsoft: `https://aka.ms/vs/17/release/vc_redist.x64.exe`
 
 ## Administrator permission was refused
 
@@ -41,7 +39,7 @@ The app's interface comes in six languages: Turkish, English, German, French, It
 
 **Cause:** The Visual C++ component was not installed. Because the app carries a copy of the files it needs, it still starts on most computers.
 
-**Fix:** If the app started, you do not need to do anything. If it did not, in the tray menu, choose **Eksik Windows bileşenini kur** (Install the missing Windows component) and allow it this time. If the icon is not visible, click the ^ arrow on the taskbar. Or install the component yourself from `https://aka.ms/vs/17/release/vc_redist.x64.exe`.
+**Fix:** If the app started, you do not need to do anything. If it did not, choose **Eksik Windows bileşenini kur** (Install the missing Windows component) in the tray menu and allow it this time, or install the component yourself from `https://aka.ms/vs/17/release/vc_redist.x64.exe`.
 
 ## The icon says "Uygulamanın motoru çöktü"
 
@@ -57,7 +55,7 @@ The app's interface comes in six languages: Turkish, English, German, French, It
 
 **Cause:** The file is not signed. Windows shows this screen for publishers it does not know.
 
-**Fix:** Click the **More info** text on the screen (on a Turkish Windows: "Daha fazla bilgi"). The **Run anyway** button (Turkish: "Yine de çalıştır") appears. To be sure, compare the file's SHA-256 digest (its fingerprint) with `SHA256SUMS.txt` on the release page.
+**Fix:** Click **More info**, then **Run anyway**. To be sure, compare the file's SHA-256 digest (its fingerprint) with `SHA256SUMS.txt` on the release page.
 
 ## Google says "redirect_uri_mismatch"
 
@@ -65,22 +63,22 @@ The app's interface comes in six languages: Turkish, English, German, French, It
 
 **Cause:** The redirect address in Google Cloud Console is not exactly the same as the one in the app.
 
-**Fix:** In the app, go to **Ayarlar → Google** (Settings → Google) and copy both addresses with the copy buttons. Paste them into the address field of the Google access key (the OAuth client) in Cloud Console. Any difference matters: localhost instead of 127.0.0.1, http instead of https, or a slash at the end.
+**Fix:** In the app, open **Settings → Google** and copy both redirect URIs with the copy buttons. Paste them into the OAuth client's **Authorized redirect URIs** in Google Cloud Console. Any difference matters: localhost instead of 127.0.0.1, http instead of https, or a slash at the end.
 
-## "Google erişim anahtarı eksik"
+## "Google access key missing"
 
-**Symptom:** In the project settings, the **Connections** tab shows a yellow warning saying "Google access key missing".
+**Symptom:** The **Connections** tab in project settings shows a yellow "Google access key missing" warning.
 
-**Cause:** Neither a service account in **Settings → Service account** nor a client ID and secret key in **Settings → Google** has been entered. Or the encryption key is damaged, so the saved Google details cannot be opened.
+**Cause:** Neither a service account (**Settings → Service account**) nor an OAuth client ID and secret (**Settings → Google**) has been saved. Or the encryption key is damaged, so the saved Google details cannot be opened.
 
-**Fix:** Enter a service account or a Google access key (see the Google connection guide). One of them is enough; if both are saved, the service account is used. The "Google sign-in" row on the **Help** screen says which one is in use.
+**Fix:** Save a service account or an OAuth client (see [Connecting to Google](/docs/google-baglantisi/)). One of them is enough; if both are saved, the service account is used. The "Google sign-in" row on the **Help** screen says which one is in use.
 
 - **Windows package:** the encryption key is the `instance-secret` file in the data folder, created once by the launcher. If the icon says this file is damaged, restore it from a backup; if Google was never connected, delete the file and choose **Yeniden başlat** (Restart).
 - **Docker:** if you set `BETTER_AUTH_SECRET` by hand, it must be at least 32 characters. If you leave it empty, the container creates one itself.
 
 ## Google says "access_denied"
 
-**Symptom:** After the permission screen, an "iptal edildi" (canceled) warning appears.
+**Symptom:** After Google's permission screen, the app says "Google sign-in was canceled".
 
 **Cause:** The Google account you signed in with is not in the test users list on the consent screen.
 
@@ -96,7 +94,7 @@ The app's interface comes in six languages: Turkish, English, German, French, It
 
 ## There is no query data and the charts are empty
 
-**Symptom:** The Panel (Dashboard) cards are zero. Search performance says "No data for this period yet".
+**Symptom:** The **Dashboard** cards show zero. Search performance says "No data for this period yet".
 
 **Cause:** There are three possible causes: the site is new and Google has not shown it yet; Search Console is three days behind and the selected period is too short; or the wrong property is selected.
 
@@ -160,9 +158,9 @@ The raw error text does not reach the screen. It stays in the diagnostics bundle
 
 **Fix:** Update or restart the app, then start a new audit. If it continues, save the PageSpeed key again in **Settings**.
 
-## The audit says "Engellendik"
+## The audit says it was blocked
 
-**Symptom:** A yellow warning appears: "The audit could not fully crawl this site." or "N sayfada engellendik." (We were blocked on N pages.)
+**Symptom:** A yellow warning says "The audit could not fully crawl this site." or "We were blocked on N pages."
 
 **Cause:** The site's bot protection (Cloudflare or a firewall) stopped the app's site crawler.
 
@@ -174,19 +172,19 @@ The raw error text does not reach the screen. It stays in the diagnostics bundle
 
 **Cause:** There is no PageSpeed key (at most 50 pages are measured). Or Google's daily allowance has run out.
 
-**Fix:** Get a free key by following the PageSpeed key guide. If the daily allowance has run out, a new audit tomorrow completes the measurement. If speed testing was off when an audit started, that audit is never measured afterwards.
+**Fix:** Add a free key; see [PageSpeed key](/docs/pagespeed-anahtari/). If the daily allowance has run out, a new audit tomorrow completes the measurement. If speed testing was off when an audit started, that audit is never measured afterwards.
 
 ## URL Inspection says "daily limit reached"
 
-**Symptom:** In the Index status tab, the button does not work. It says "Google'ın günlük 2.000 adres sınırına ulaşıldı" (Google's daily limit of 2,000 addresses has been reached).
+**Symptom:** On the **Index status** tab, **Check status on Google** is disabled and the tab says "Google's daily limit of 2,000 URLs is used up".
 
 **Cause:** Google allows 2,000 questions per day per property. The app, your assistant and the checks you make by hand in Search Console all use the same pool.
 
-**Fix:** Continue tomorrow. The app only asks again for answers that have gone stale, so your allowance is not wasted.
+**Fix:** The limit counts the last 24 hours, so the allowance frees up gradually within hours; continue then. The app only asks again for answers that have gone stale, so your allowance is not wasted.
 
 ## The Analytics card or report shows an error
 
-**Symptom:** The Organic traffic card on the Dashboard, or the Analytics screen, shows a sentence instead of data, with **Fix the connection** and **Try again** buttons.
+**Symptom:** The **Organic traffic** card on the **Dashboard**, or the Analytics screen, shows a sentence instead of data, with **Fix the connection** and **Try again** buttons.
 
 **Cause:** The sentence gives the cause and the fix. The main cases are these.
 
@@ -230,18 +228,18 @@ The raw error text does not reach the screen. It stays in the diagnostics bundle
 
 **Symptom:** Claude Code or Codex says "Unauthorized".
 
-**Cause:** The password is not being sent, or it is wrong.
+**Cause:** The client is not sending the token, or the token is wrong.
 
-**Fix:** The easiest way is the ready-made command on the **Agent setup** screen: it knows which install you have and puts the password into your tool's settings without printing it. To do it by hand, read the password again; do not paste it into a chat or let it end up in a screenshot.
+**Fix:** Use **Copy setup command** on the **Agent setup** screen. The command detects your install type and puts the token into your tool's settings without printing it. To set it by hand, read the token again as shown below, and never paste it into a chat or screenshot.
 
-- **Windows package:** the password is in the file `%LOCALAPPDATA%\seowatcher\mcp-token` (menu: **Veri klasörünü aç**, Open data folder). The launcher creates it on first start and hands it to the app at every start. To copy it to the clipboard without printing it, in PowerShell: `(Get-Content "$env:LOCALAPPDATA\seowatcher\mcp-token").Trim() | Set-Clipboard`. Clear the clipboard after pasting (Win+V, Clear all). There is no `docker` command on this install.
-- **Docker:** the password is inside the container: `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. In Git Bash, put `MSYS_NO_PATHCONV=1` in front, or the output comes back empty. Leave out the line break at the end of the value. You can set your own password with `MCP_TOKEN` in `.env`; after changing it, run `docker compose up -d --force-recreate seotracker`.
+- **Windows package:** the token is in the file `%LOCALAPPDATA%\seowatcher\mcp-token` (menu: **Veri klasörünü aç**, Open data folder). The launcher creates it on first start and hands it to the app at every start. To copy it to the clipboard without printing it, in PowerShell: `(Get-Content "$env:LOCALAPPDATA\seowatcher\mcp-token").Trim() | Set-Clipboard`. Clear the clipboard after pasting (Win+V, Clear all). There is no `docker` command on this install.
+- **Docker:** the token is inside the container: `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. In Git Bash, put `MSYS_NO_PATHCONV=1` in front, or the output comes back empty. Leave out the line break at the end of the value. You can set your own token with `MCP_TOKEN` in `.env`; after changing it, run `docker compose up -d --force-recreate seotracker`.
 
 Then, in Claude Code, type `/mcp` and choose **Reconnect**.
 
 ## I changed a setting and the app does not see it
 
-**Symptom:** A new port number, `.env` value or password has not reached the app.
+**Symptom:** A new port number, `.env` value or token has not reached the app.
 
 **Cause:** What you enter on the Settings screen (Google, service account, PageSpeed key, language) applies immediately. Settings in files are read only at the next start, and the two installs keep them in different files.
 

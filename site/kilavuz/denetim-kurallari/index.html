@@ -104,7 +104,7 @@
       property="og:image:alt"
       content="seowatcher tanıtım kartı: Search Console, Analytics 4 ve site denetimi verilerini gösteren uygulama paneli ve Windows için indirme düğmesi"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/kilavuz/denetim-kurallari/"
@@ -166,7 +166,7 @@
             "url": "https://seowatcher.io/kilavuz/denetim-kurallari/",
             "inLanguage": "tr",
             "datePublished": "2026-10-22",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-29",
             "articleSection": "Yardım ve başvuru",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -201,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1489,7 +1489,7 @@
             <li><a href="/kilavuz/firsatlar/">Fırsatlar</a></li>
             <li><a href="/kilavuz/kayitli-kelimeler/">Kayıtlı kelimeler</a></li>
             <li>
-              <a href="/kilavuz/analitik/">Analitik verilerini yorumlama</a>
+              <a href="/kilavuz/analitik/">Analytics verisini yorumlama</a>
             </li>
             <li><a href="/kilavuz/site-denetimi/">Site denetimi</a></li>
             <li><a href="/kilavuz/dizin-durumu/">Dizin durumu</a></li>
@@ -1517,22 +1517,53 @@
         </p>
         <p>
           Site denetimi her sayfaya ve sitenin bütününe 202 kuralla bakar: 13
-          kritik, 93 uyarı ve 96 bilgi. Bu sayı, uygulamanın kural listesindeki
-          kimliklerin sayısıdır; aşağıdaki tablolarda her biri bir satırdır.
-          <strong>Kritik</strong> (13 kural), Google'ın sayfayı göremediği ya da
-          anlayamadığı, ziyaretçinin siteye giremediği durumlardır. Önce bunları
-          düzeltin. <strong>Uyarı</strong> tablosundaki 64 kural sıralamayı ve
-          tıklamayı yavaş yavaş düşürür. <strong>Bilgi</strong> tablosundaki 62
-          kural küçük iyileştirme fırsatlarını gösterir. Aşağıdaki
-          <strong>Ek kontroller</strong> bölümünde 63 kural daha var (29 uyarı,
-          34 bilgi). Puanda kritik 40, uyarı 15, bilgi 3 ağırlığındadır. Bir
-          kuralın kaç sayfayı etkilediği de puana girer.
+          kritik, 93 uyarı ve 96 bilgi. Her kural aşağıdaki tablolarda bir
+          satırdır.
+        </p>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Önem</th>
+                <th>Anlamı</th>
+                <th>Puandaki ağırlığı</th>
+                <th>Tablo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Kritik</strong></td>
+                <td>
+                  Google sayfayı göremiyor ya da anlayamıyor, ziyaretçi siteye
+                  giremiyor.
+                </td>
+                <td class="num">40</td>
+                <td>Kritik (13 kural)</td>
+              </tr>
+              <tr>
+                <td><strong>Uyarı</strong></td>
+                <td>Sıralamayı ve tıklamayı yavaş yavaş düşürür.</td>
+                <td class="num">15</td>
+                <td>Uyarı (64 kural), Ek kontroller (29 kural)</td>
+              </tr>
+              <tr>
+                <td><strong>Bilgi</strong></td>
+                <td>Küçük bir iyileştirme fırsatı.</td>
+                <td class="num">3</td>
+                <td>Bilgi (62 kural), Ek kontroller (34 kural)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Önce kritik bulguları düzeltin. Bir kuralın kaç sayfayı etkilediği de
+          puana girer.
         </p>
         <p>
-          Tabloda her kuralın ekrandaki adını, ne demek olduğunu ve düzeltmenin
-          ilk adımını görürsünüz. Tam düzeltme metni ekrandaki bulgu
-          kartındadır. Son sütun, CSV dosyasında ve asistan yanıtlarında görünen
-          kural kimliğidir.
+          Tablolarda her kuralın ekrandaki adı, ne anlama geldiği ve düzeltmenin
+          ilk adımı yazar. Düzeltmenin tam metni uygulamadaki bulgu kartındadır.
+          Son sütundaki kimlik, CSV dosyasında ve ajan yanıtlarında görünen
+          addır.
         </p>
         <h2 id="sik-gecen-sozler">Sık geçen sözler</h2>
         <ul>
@@ -2955,21 +2986,30 @@
               <tr>
                 <td>Görseller gereğinden büyük indiriliyor</td>
                 <td>Uyarı</td>
-                <td>Görseller gereğinden büyük indiriliyor.</td>
+                <td>
+                  Görsel dosyaları gösterildikleri boyuttan büyük ya da eski
+                  biçimde. Sayfa gereksiz yere ağırlaşır.
+                </td>
                 <td>WebP/AVIF'e çevirin, sıkıştırın, boyutlandırın.</td>
                 <td>lh-image-delivery</td>
               </tr>
               <tr>
                 <td>Sayfa açılmadan önce yönlendirme yapılıyor</td>
                 <td>Uyarı</td>
-                <td>Sayfa açılmadan önce yönlendirme var.</td>
+                <td>
+                  Ziyaretçi asıl sayfaya varmadan bir ya da daha çok
+                  yönlendirmeden geçiyor. Her adım açılışı geciktirir.
+                </td>
                 <td>Bağlantıları son adrese çevirin.</td>
                 <td>lh-document-redirects</td>
               </tr>
               <tr>
                 <td>Sayfa sıkıştırılmadan gönderiliyor</td>
                 <td>Uyarı</td>
-                <td>HTML sıkıştırılmadan gönderiliyor.</td>
+                <td>
+                  Metin dosyaları sıkıştırılmadan geliyor, indirme olduğundan
+                  uzun sürüyor.
+                </td>
                 <td>gzip ya da Brotli sıkıştırmayı açın.</td>
                 <td>lh-text-compression</td>
               </tr>
@@ -2992,35 +3032,39 @@
               <tr>
                 <td>Görsellerde alternatif metin eksik (Lighthouse)</td>
                 <td>Uyarı</td>
-                <td>Tarayıcıda alt metni olmayan görseller var.</td>
+                <td>
+                  Ekran okuyucu bu görsellerin ne gösterdiğini söyleyemez.
+                </td>
                 <td>Anlamlı görsellere alt metni yazın.</td>
                 <td>lh-a11y-image-alt</td>
               </tr>
               <tr>
                 <td>Form alanlarının etiketi yok (Lighthouse)</td>
                 <td>Uyarı</td>
-                <td>Form alanlarının etiketi yok.</td>
+                <td>Ekran okuyucu, alana ne yazılacağını söyleyemez.</td>
                 <td>Her alana bir &lt;label&gt; bağlayın.</td>
                 <td>lh-a11y-label</td>
               </tr>
               <tr>
                 <td>Bazı bağlantıların okunabilir adı yok</td>
                 <td>Uyarı</td>
-                <td>Bazı bağlantıların okunabilir adı yok.</td>
+                <td>
+                  Ekran okuyucu bu bağlantıların nereye gittiğini söyleyemez.
+                </td>
                 <td>Metin ya da aria-label ekleyin.</td>
                 <td>lh-a11y-link-name</td>
               </tr>
               <tr>
                 <td>Bazı düğmelerin okunabilir adı yok</td>
                 <td>Uyarı</td>
-                <td>Bazı düğmelerin okunabilir adı yok.</td>
+                <td>Ekran okuyucu bu düğmelerin ne yaptığını söyleyemez.</td>
                 <td>Metin ya da aria-label ekleyin.</td>
                 <td>lh-a11y-button-name</td>
               </tr>
               <tr>
                 <td>Sayfanın tarayıcıda başlığı yok (Lighthouse)</td>
                 <td>Uyarı</td>
-                <td>Tarayıcıda &lt;title&gt; yok.</td>
+                <td>Tarayıcı sekmesinde ve aramada sayfa adı görünmez.</td>
                 <td>Sunucunun gönderdiği HTML'e başlık ekleyin.</td>
                 <td>lh-a11y-document-title</td>
               </tr>
@@ -3048,28 +3092,40 @@
               <tr>
                 <td>Google sayfayı dizine alamıyor (Lighthouse)</td>
                 <td>Uyarı</td>
-                <td>Lighthouse sayfayı dizine alınamaz buldu.</td>
+                <td>
+                  Lighthouse'a göre Google bu sayfayı dizine alamaz; büyük
+                  olasılıkla robots.txt ya da noindex engelliyor.
+                </td>
                 <td>robots.txt ve noindex kurallarını kontrol edin.</td>
                 <td>lh-is-crawlable</td>
               </tr>
               <tr>
                 <td>robots.txt dosyasında geçersiz satırlar var</td>
                 <td>Uyarı</td>
-                <td>robots.txt'te geçersiz satırlar var.</td>
+                <td>
+                  Botlar geçersiz satırları yok sayar; bu satırlardaki kurallar
+                  uygulanmaz.
+                </td>
                 <td>Satırları &quot;Alan: değer&quot; biçimine düzeltin.</td>
                 <td>lh-robots-txt</td>
               </tr>
               <tr>
                 <td>hreflang etiketleri geçersiz (Lighthouse)</td>
                 <td>Uyarı</td>
-                <td>hreflang etiketleri geçersiz.</td>
+                <td>
+                  Dil kodu ya da adres hatalı olduğu için Google dil sürümlerini
+                  eşleştiremez.
+                </td>
                 <td>Geçerli dil kodu ve tam adres kullanın.</td>
                 <td>lh-hreflang</td>
               </tr>
               <tr>
                 <td>canonical etiketi geçersiz (Lighthouse)</td>
                 <td>Uyarı</td>
-                <td>canonical etiketi geçersiz.</td>
+                <td>
+                  Google bu asıl adres bildirimini kullanamaz ve asıl adresi
+                  kendisi seçer.
+                </td>
                 <td>
                   Tek bir canonical bırakın, sayfanın kendi adresini verin.
                 </td>
@@ -3099,7 +3155,10 @@
               <tr>
                 <td>robots etiketleri birbiriyle çelişiyor</td>
                 <td>Uyarı</td>
-                <td>robots etiketleri birbiriyle çelişiyor.</td>
+                <td>
+                  Sayfada birbirine zıt robots yönergeleri var; Google en
+                  kısıtlayıcı olanı uygular.
+                </td>
                 <td>Tek bir robots etiketi bırakın.</td>
                 <td>robots-meta-conflict</td>
               </tr>
@@ -3187,7 +3246,10 @@
               <tr>
                 <td>Tarayıcıda oluşan sayfa yapısı çok büyük</td>
                 <td>Bilgi</td>
-                <td>Tarayıcıda oluşan sayfa yapısı çok büyük.</td>
+                <td>
+                  Tarayıcı çok sayıda öğe oluşturuyor. Özellikle telefonda sayfa
+                  yavaşlar.
+                </td>
                 <td>Gizli içeriği gerektiğinde oluşturun.</td>
                 <td>lh-dom-size</td>
               </tr>
@@ -3201,7 +3263,10 @@
               <tr>
                 <td>Yazı tipleri yüklenirken metin görünmüyor</td>
                 <td>Bilgi</td>
-                <td>Yazı tipleri yüklenene kadar metin görünmüyor.</td>
+                <td>
+                  Yazı tipi inene kadar metin görünmez; ziyaretçi bir süre boş
+                  ekran görür.
+                </td>
                 <td>font-display: swap ekleyin.</td>
                 <td>lh-font-display</td>
               </tr>
@@ -3270,14 +3335,17 @@
               <tr>
                 <td>Dokunma hedefleri çok küçük ya da çok sık</td>
                 <td>Bilgi</td>
-                <td>Dokunma hedefleri küçük ya da çok sık.</td>
+                <td>Telefonda yanlış öğeye dokunmak kolaylaşır.</td>
                 <td>Hedeflere en az 24×24 piksel verin.</td>
                 <td>lh-a11y-target-size</td>
               </tr>
               <tr>
                 <td>Başlık sırası tarayıcıda atlıyor (Lighthouse)</td>
                 <td>Bilgi</td>
-                <td>Başlık düzeyleri tarayıcıda atlıyor.</td>
+                <td>
+                  Başlık düzeyleri atlandığı için ekran okuyucu kullananlar
+                  sayfanın yapısını izleyemez.
+                </td>
                 <td>Başlıkları sırayla kullanın.</td>
                 <td>lh-a11y-heading-order</td>
               </tr>
@@ -3305,42 +3373,59 @@
               <tr>
                 <td>Bazı görseller yanlış oranla gösteriliyor</td>
                 <td>Bilgi</td>
-                <td>Görseller yanlış oranla gösteriliyor.</td>
+                <td>
+                  Görseller gerçek oranlarından farklı gösterildiği için basık
+                  ya da gergin görünür.
+                </td>
                 <td>Doğru width/height ya da object-fit kullanın.</td>
                 <td>lh-image-aspect-ratio</td>
               </tr>
               <tr>
                 <td>Bazı görseller ekran için düşük çözünürlüklü</td>
                 <td>Bilgi</td>
-                <td>Görseller ekrana göre düşük çözünürlüklü.</td>
+                <td>
+                  Yüksek çözünürlüklü ekranlarda görseller bulanık görünür.
+                </td>
                 <td>srcset ile büyük sürümler sunun.</td>
                 <td>lh-image-size-responsive</td>
               </tr>
               <tr>
                 <td>Bağlantı metinleri açıklayıcı değil (Lighthouse)</td>
                 <td>Bilgi</td>
-                <td>Bağlantı metinleri açıklayıcı değil.</td>
+                <td>
+                  &quot;Daha fazla&quot; gibi bağlantı metinleri, gidilecek
+                  sayfayı Google'a ve ziyaretçiye anlatmaz.
+                </td>
                 <td>Metni hedefin konusuna göre yazın.</td>
                 <td>lh-link-text</td>
               </tr>
               <tr>
                 <td>Sayfa meta refresh ile yönlendiriyor</td>
                 <td>Bilgi</td>
-                <td>Sayfa meta refresh ile yönlendiriyor.</td>
+                <td>
+                  Yönlendirme sayfa açıldıktan sonra yapılıyor. Yavaştır ve
+                  Google kalıcı yönlendirme kadar net anlamaz.
+                </td>
                 <td>Yönlendirmeyi sunucuda (301) yapın.</td>
                 <td>meta-refresh-redirect</td>
               </tr>
               <tr>
                 <td>canonical adresi göreli yazılmış</td>
                 <td>Bilgi</td>
-                <td>canonical göreli yol olarak yazılmış.</td>
+                <td>
+                  Asıl adres tam adres yerine göreli yol olarak yazılmış; yanlış
+                  adrese çözülebilir.
+                </td>
                 <td>Tam adres (https://...) yazın.</td>
                 <td>canonical-relative</td>
               </tr>
               <tr>
                 <td>canonical adresinde # parçası var</td>
                 <td>Bilgi</td>
-                <td>canonical adresinde # parçası var.</td>
+                <td>
+                  Google asıl adresteki # ve sonrasını yok sayar; bildirim
+                  istediğiniz adresi göstermeyebilir.
+                </td>
                 <td># ve sonrasını kaldırın.</td>
                 <td>canonical-with-fragment</td>
               </tr>
@@ -3354,28 +3439,40 @@
               <tr>
                 <td>E-posta adresi düz metin olarak açıkta</td>
                 <td>Bilgi</td>
-                <td>E-posta adresi düz metin olarak açıkta.</td>
+                <td>
+                  Sayfadaki e-posta adresini istenmeyen posta botları
+                  toplayabilir.
+                </td>
                 <td>İletişim formu kullanmayı düşünün.</td>
                 <td>exposed-email-address</td>
               </tr>
               <tr>
                 <td>Başlıktaki kelimeler sayfa içeriğinde geçmiyor</td>
                 <td>Bilgi</td>
-                <td>Başlıktaki kelimeler içerikte geçmiyor.</td>
+                <td>
+                  Başlık bir konuyu vaat ediyor, içerik başka bir şey anlatıyor.
+                  Google başlığı değiştirebilir.
+                </td>
                 <td>Başlığı sayfanın konusuna göre yazın.</td>
                 <td>title-content-mismatch</td>
               </tr>
               <tr>
                 <td>Kuruluş yapısal verisinde sosyal profiller yok</td>
                 <td>Bilgi</td>
-                <td>Organization verisinde sameAs yok.</td>
+                <td>
+                  Kuruluş verisi resmi sosyal profillerinizi listelemiyor;
+                  Google bunları markanızla eşleştiremeyebilir.
+                </td>
                 <td>Resmi profil adreslerini sameAs'e ekleyin.</td>
                 <td>organization-missing-sameas</td>
               </tr>
               <tr>
                 <td>Derindeki sayfada içerik yolu (breadcrumb) yok</td>
                 <td>Bilgi</td>
-                <td>Derin sayfada içerik yolu yok.</td>
+                <td>
+                  Derindeki sayfada içerik yolu yok; ziyaretçi ve Google
+                  sayfanın sitedeki yerini göremez.
+                </td>
                 <td>İçerik yolu ve BreadcrumbList ekleyin.</td>
                 <td>missing-breadcrumbs</td>
               </tr>
@@ -3389,7 +3486,10 @@
               <tr>
                 <td>Blog var ama RSS/Atom akışı bildirilmemiş</td>
                 <td>Bilgi</td>
-                <td>Blog var ama RSS/Atom akışı bildirilmemiş.</td>
+                <td>
+                  Blog yazıları için akış bildirilmemiş; akış okuyucular ve bazı
+                  botlar yeni yazıları kaçırır.
+                </td>
                 <td>
                   Akışı &lt;link rel=&quot;alternate&quot;&gt; ile bildirin.
                 </td>
@@ -3400,49 +3500,57 @@
         </div>
         <h2 id="kurallar-nasil-calisir">Kurallar nasıl çalışır?</h2>
         <p>
-          Çoğu kural sayfa başına çalışır ve etkilediği her sayfayı listeler.
-          Bazıları sitenin bütünüyle ilgilidir ve tek bir bulgu üretir. Bunlar
-          robots.txt kuralları, site haritası kuralları, &quot;Sitede sosyal
-          medya paylaşım etiketleri yok&quot; ve &quot;Sitede hiç yapısal veri
-          yok&quot; kurallarıdır.
+          <strong>Sayfa kuralları</strong> taranan her sayfaya bakar ve
+          etkilediği her sayfayı listeler.
         </p>
         <p>
-          Adı &quot;Google&quot; ile başlayan kurallar uygulamanın taramasından
-          gelmez. Dizin durumu sekmesinde Google'dan alınan yanıtlardan çıkar. O
-          sekmede Google'a hiç soru sormadıysanız bu kurallar çalışmaz. Hız
-          kuralları (LCP, CLS, INP, SEO puanı) yalnızca &quot;Sayfa hızını da
-          ölç&quot; açıkken ve telefon ölçümüne göre çalışır.
+          <strong>Site geneli kurallar</strong> tüm site için tek bulgu üretir.
+          robots.txt ve site haritası kuralları, &quot;Sitede sosyal medya
+          paylaşım etiketleri (Open Graph) yok&quot; ve &quot;Sitede hiç yapısal
+          veri yok&quot; böyle çalışır. Bir grup kural da siteyi denetim başında
+          bir kez yoklar: www'li ve www'siz adres, http'den https'e yönlendirme,
+          var olmayan rastgele bir adrese verilen yanıt, robots.txt'in tüm
+          siteyi kapatması, site haritası satırı ve yapay zekâ botları, site
+          simgesi, llms.txt, güvenlik başlıkları (HSTS, X-Content-Type-Options,
+          çerçeve koruması, Referrer-Policy) ile başlangıç sayfasının boyutu,
+          sıkıştırması ve ilk yanıt süresi.
         </p>
         <p>
-          Bazı kurallar sayfaları tek tek değil, siteyi denetim başında bir kez
-          yoklar ve tek bulgu üretir: www'li ve www'siz adres, http'den https'e
-          yönlendirme, var olmayan rastgele bir adrese verilen yanıt,
-          robots.txt'in tüm siteyi kapatması, site haritası satırı ve yapay zekâ
-          botları, site simgesi, llms.txt, güvenlik başlıkları (HSTS,
-          X-Content-Type-Options, çerçeve koruması, Referrer-Policy) ile
-          başlangıç sayfasının boyutu, sıkıştırması ve ilk yanıt süresi. SSL
-          sertifikasının bitiş tarihi herkese açık sertifika kayıtlarından
-          (Certificate Transparency), alan adınınki alan adı kayıt bilgisinden
-          (RDAP), SPF ve DMARC kayıtları DNS'ten okunur. &quot;Sayfalardaki
-          Analytics kimliği bağlı mülkle eşleşmiyor&quot; kuralı, projeye bir
-          Google Analytics mülkü bağlıyken sayfalardaki ölçüm kimliğini o mülkün
-          kimlikleriyle karşılaştırır.
+          <strong>Dış kaynaklar.</strong> SSL sertifikasının bitiş tarihi
+          herkese açık sertifika kayıtlarından (Certificate Transparency), alan
+          adınınki alan adı kayıt bilgisinden (RDAP), SPF ve DMARC kayıtları
+          DNS'ten okunur. &quot;Sayfalardaki Analytics kimliği bağlı mülkle
+          eşleşmiyor&quot; kuralı, projeye bir Google Analytics mülkü bağlıyken
+          sayfalardaki ölçüm kimliğini o mülkün kimlikleriyle karşılaştırır.
         </p>
         <p>
-          Adı &quot;lh-&quot; ile başlayan kurallar ve LCP, CLS, INP'nin
-          &quot;iyileştirilmeli&quot; kuralları, PageSpeed Insights'ın her sayfa
-          için zaten gönderdiği Lighthouse raporundan okunur; yalnızca
-          &quot;Sayfa hızını da ölç&quot; açıkken ve telefon ölçümüne göre
-          çalışır. Lighthouse'un bir sayfada çalıştırmadığı ya da hata verdiği
-          bir denetim bulgu sayılmaz, &quot;geçti&quot; de sayılmaz. &quot;Başka
-          bir siteye verilen bağlantı kırık&quot; ve &quot;Görsel dosyası çok
-          büyük&quot; kuralları yalnızca başlatırken &quot;Dış bağlantıları ve
-          görsel boyutlarını da kontrol et&quot; açıksa çalışır: tarama
-          bittikten sonra en çok 300 adres sorulur. Sosyal ağlar gibi botları
-          engelleyen siteler ve yanıt vermeyen adresler kırık sayılmaz. Bir
-          denetimin ölçmediği kural Kontroller sekmesinde &quot;bilinmiyor&quot;
-          olarak görünür; bu kurallar eklenmeden önce yapılan denetimlerde de
-          öyledir.
+          <strong>Google kuralları.</strong> Adı &quot;Google&quot; ile başlayan
+          kurallar uygulamanın taramasından değil,
+          <strong>Dizin durumu</strong> sekmesinde Google'dan alınan yanıtlardan
+          çıkar. O sekmede Google'a hiç soru sormadıysanız çalışmaz.
+        </p>
+        <p>
+          <strong>Hız kuralları.</strong> LCP, CLS ve INP kuralları, Lighthouse
+          SEO puanı ve kimliği <code>lh-</code> ile başlayan tüm kurallar,
+          PageSpeed Insights'ın her sayfa için gönderdiği Lighthouse raporundan
+          okunur. Yalnızca <strong>Sayfa hızını da ölç</strong> açıkken ve
+          telefon ölçümüne göre çalışır. Lighthouse'un bir sayfada
+          çalıştırmadığı ya da hata verdiği bir denetim ne bulgu ne de
+          &quot;geçti&quot; sayılır.
+        </p>
+        <p>
+          <strong>Dış bağlantılar ve görsel boyutları.</strong> &quot;Başka bir
+          siteye verilen bağlantı kırık&quot; ve &quot;Görsel dosyası çok
+          büyük&quot; yalnızca başlatırken
+          <strong>Dış bağlantıları ve görsel boyutlarını da kontrol et</strong>
+          açıksa çalışır; tarama bittikten sonra en çok 300 adres sorulur.
+          Sosyal ağlar gibi botları engelleyen siteler ve yanıt vermeyen
+          adresler kırık sayılmaz.
+        </p>
+        <p>
+          Bir denetimin ölçmediği kural <strong>Kontroller</strong> sekmesinde
+          ölçülmemiş olarak görünür; kural eklenmeden önce yapılan denetimlerde
+          de öyledir.
         </p>
         <nav class="pager" aria-label="Önceki ve sonraki sayfa">
           <a class="pager-prev" rel="prev" href="/kilavuz/yardim/"
@@ -3452,7 +3560,7 @@
           >
         </nav>
         <p class="meta">
-          Son güncelleme: 27 Ekim 2026. Bir hata görürseniz
+          Son güncelleme: 29 Ekim 2026. Bir hata görürseniz
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

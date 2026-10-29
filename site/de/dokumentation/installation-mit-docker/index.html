@@ -14,7 +14,7 @@
     <title>Installation mit Docker | seowatcher-Anleitung</title>
     <meta
       name="description"
-      content="App mit Docker unter Mac, Linux und Windows installieren: ein Befehl, keine .env-Datei. Die Daten liegen im Datenspeicher von Docker."
+      content="seowatcher mit Docker unter Mac, Linux und Windows installieren: ein Befehl, keine .env-Datei, die Daten liegen in einem Docker-Volume."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -94,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="App mit Docker unter Mac, Linux und Windows installieren: ein Befehl, keine .env-Datei. Die Daten liegen im Datenspeicher von Docker."
+      content="seowatcher mit Docker unter Mac, Linux und Windows installieren: ein Befehl, keine .env-Datei, die Daten liegen in einem Docker-Volume."
     />
     <meta
       property="og:image"
@@ -107,7 +107,7 @@
       property="og:image:alt"
       content="seowatcher-Karte: das Dashboard der App mit Daten aus Search Console, Analytics 4 und dem Website-Audit, dazu eine Download-Schaltfläche für Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/de/dokumentation/installation-mit-docker/"
@@ -125,7 +125,7 @@
     />
     <meta
       name="twitter:description"
-      content="App mit Docker unter Mac, Linux und Windows installieren: ein Befehl, keine .env-Datei. Die Daten liegen im Datenspeicher von Docker."
+      content="seowatcher mit Docker unter Mac, Linux und Windows installieren: ein Befehl, keine .env-Datei, die Daten liegen in einem Docker-Volume."
     />
     <meta
       name="twitter:image"
@@ -168,11 +168,11 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/de/dokumentation/installation-mit-docker/#article",
             "headline": "Installation mit Docker",
-            "description": "App mit Docker unter Mac, Linux und Windows installieren: ein Befehl, keine .env-Datei. Die Daten liegen im Datenspeicher von Docker.",
+            "description": "seowatcher mit Docker unter Mac, Linux und Windows installieren: ein Befehl, keine .env-Datei, die Daten liegen in einem Docker-Volume.",
             "url": "https://seowatcher.io/de/dokumentation/installation-mit-docker/",
             "inLanguage": "de",
             "datePublished": "2026-10-23",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-29",
             "articleSection": "Erste Schritte",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1508,9 +1508,7 @@
           <p class="nav-group">Bildschirme</p>
           <ul>
             <li><a href="/de/dokumentation/projekte/">Projekte</a></li>
-            <li>
-              <a href="/de/dokumentation/uebersicht/">Übersicht (Panel)</a>
-            </li>
+            <li><a href="/de/dokumentation/uebersicht/">Übersicht</a></li>
             <li><a href="/de/dokumentation/suchleistung/">Suchleistung</a></li>
             <li>
               <a href="/de/dokumentation/ranking-verfolgung/"
@@ -1520,12 +1518,12 @@
             <li><a href="/de/dokumentation/chancen/">Chancen</a></li>
             <li>
               <a href="/de/dokumentation/gespeicherte-suchbegriffe/"
-                >Gespeicherte Suchbegriffe</a
+                >Gespeicherte Keywords</a
               >
             </li>
             <li>
               <a href="/de/dokumentation/datenanalyse/"
-                >Analysedaten verstehen</a
+                >Analytics-Daten verstehen</a
               >
             </li>
             <li>
@@ -1535,7 +1533,7 @@
             <li>
               <a href="/de/dokumentation/berichte/">Berichte und Vorlagen</a>
             </li>
-            <li><a href="/de/dokumentation/projektinfo/">Projektinfo</a></li>
+            <li><a href="/de/dokumentation/projektinfo/">Projektkontext</a></li>
             <li>
               <a href="/de/dokumentation/einstellungen/">Einstellungen</a>
             </li>
@@ -1546,7 +1544,7 @@
             <li><a href="/de/dokumentation/audit-regeln/">Audit-Regeln</a></li>
             <li>
               <a href="/de/dokumentation/assistent-einrichten/"
-                >Assistent einrichten</a
+                >Agent einrichten</a
               >
             </li>
             <li>
@@ -1561,25 +1559,25 @@
       <article id="icerik" data-page="kurulum-docker">
         <h1>Installation mit Docker</h1>
         <p class="lede">
-          App mit Docker unter Mac, Linux und Windows installieren: ein Befehl,
-          keine .env-Datei. Die Daten liegen im Datenspeicher von Docker.
+          seowatcher mit Docker unter Mac, Linux und Windows installieren: ein
+          Befehl, keine .env-Datei, die Daten liegen in einem Docker-Volume.
         </p>
         <p>
-          Am Ende läuft die App in Docker (einem Programm, das Anwendungen in
-          abgeschlossenen Containern ausführt) und ist unter
-          <code>http://localhost:3001</code> geöffnet. Unter Windows ist die
-          Installation mit einer einzigen Datei deutlich einfacher. Dieser Weg
-          ist für Mac, Linux und alle, die Docker ohnehin nutzen. Der erste
-          Start dauert einige Minuten, weil die App im Container gebaut wird.
-          Spätere Starts dauern nur Sekunden.
+          Nach dieser Anleitung läuft die App in einem Docker-Container und ist
+          unter <code>http://localhost:3001</code> erreichbar. Dieser Weg eignet
+          sich für Mac, Linux und alle, die Docker ohnehin nutzen; unter Windows
+          ist die
+          <a href="/de/dokumentation/installation-unter-windows/"
+            >Installationsdatei</a
+          >
+          einfacher.
         </p>
         <h2 id="voraussetzungen">Voraussetzungen</h2>
         <ul>
           <li>
             Docker Desktop (Mac, Windows) oder Docker Engine mit Docker Compose
-            (Linux). Für Docker Desktop unter Windows müssen WSL 2 (die
-            Komponente, die Linux innerhalb von Windows ausführt) und die
-            Virtualisierung eingeschaltet sein.
+            (Linux). Docker Desktop unter Windows braucht WSL 2 und
+            eingeschaltete Virtualisierung.
           </li>
           <li>
             Git. Statt Git genügt auch <strong>Code → Download ZIP</strong> auf
@@ -1593,8 +1591,7 @@
         <h2 id="schritte">Schritte</h2>
         <ol>
           <li>
-            Laden Sie das Repository (die Projektdateien) herunter und wechseln
-            Sie in den Ordner:
+            Laden Sie das Repository herunter und wechseln Sie in den Ordner:
           </li>
         </ol>
         <div class="code">
@@ -1608,15 +1605,12 @@ cd seotracker</code></pre>
           <pre><code>docker compose up -d</code></pre>
         </div>
         <p>
-          Das ist alles. Eine <code>.env</code>-Datei brauchen Sie nicht. Der
-          Verschlüsselungsschlüssel und das Passwort für den Assistenten werden
-          beim ersten Start automatisch erzeugt und im Datenspeicher (Volume)
-          von Docker abgelegt.
+          Eine <code>.env</code>-Datei brauchen Sie nicht. Der
+          Verschlüsselungsschlüssel und das Token für KI-Agenten entstehen beim
+          ersten Start automatisch und liegen im Docker-Volume.
         </p>
         <ol>
-          <li>
-            Wenn Sie den Fortschritt sehen möchten, geben Sie Folgendes ein:
-          </li>
+          <li>Den Fortschritt verfolgen Sie mit:</li>
         </ol>
         <div class="code">
           <pre><code>docker compose logs -f</code></pre>
@@ -1630,23 +1624,26 @@ cd seotracker</code></pre>
           </li>
         </ol>
         <p>
-          Weiter geht es mit der Anleitung zur Google-Verbindung. Bei Docker
-          geben Sie Google diese beiden Weiterleitungsadressen an:
+          Verbinden Sie danach Google wie unter
+          <a href="/de/dokumentation/google-verbindung/"
+            >Mit Google verbinden</a
+          >
+          beschrieben. Für Docker lauten die beiden Weiterleitungsadressen:
         </p>
         <ul>
           <li><code>http://localhost:3001/api/gsc/oauth/callback</code></li>
           <li><code>http://localhost:3001/api/ga4/oauth/callback</code></li>
         </ul>
         <h3 id="update">Update</h3>
-        <p>Geben Sie diese zwei Befehle ein:</p>
+        <p>Führen Sie im Projektordner aus:</p>
         <div class="code">
           <pre><code>git pull
 docker compose up -d --build</code></pre>
         </div>
         <p>
-          <strong>Einstellungen → Info</strong> meldet die neue Version und
-          zeigt diese beiden Befehle an. Ihre Daten liegen im Datenspeicher
-          <code>seotracker_data</code>, deshalb löscht das Update sie nicht.
+          <strong>Einstellungen → Info</strong> meldet eine neue Version und
+          zeigt diese beiden Befehle an. Das Update lässt Ihre Daten im Volume
+          <code>seotracker_data</code> unberührt.
         </p>
         <h3 id="anhalten-und-entfernen">Anhalten und entfernen</h3>
         <ul>
@@ -1664,27 +1661,27 @@ docker compose up -d --build</code></pre>
         </ul>
         <h3 id="sicherung">Sicherung</h3>
         <p>
-          Ihre Daten liegen im Datenspeicher <code>seotracker_data</code>, im
-          Container unter dem Pfad <code>/app/.wrangler</code>. Für eine
-          Sicherung geben Sie die drei Befehle nacheinander ein:
+          Die Daten liegen im Volume <code>seotracker_data</code>, im Container
+          unter <code>/app/.wrangler</code>. Für eine Sicherung führen Sie
+          nacheinander aus:
         </p>
         <div class="code">
           <pre><code>docker compose stop
-docker run --rm -v seotracker_data:/data -v &quot;$PWD&quot;:/backup alpine tar czf /backup/seotracker-yedek.tgz -C /data .
+docker run --rm -v seotracker_data:/data -v &quot;$PWD&quot;:/backup alpine tar czf /backup/seotracker-backup.tgz -C /data .
 docker compose up -d</code></pre>
         </div>
         <p>
           Zum Wiederherstellen verwenden Sie im selben Befehl
           <code>tar xzf</code> statt <code>tar czf</code>. Die Datei
-          <code>instance-secret</code> im Datenspeicher ist der Schlüssel, der
-          die Google-Verbindungen verschlüsselt. Fehlt sie in der Sicherung,
-          startet die App, aber die Google-Verbindungen kommen nicht zurück.
+          <code>instance-secret</code> im Volume verschlüsselt die
+          Google-Verbindungen. Fehlt sie in der Sicherung, startet die App zwar,
+          die Google-Verbindungen sind aber verloren.
         </p>
         <h3 id="einstellungen-optional">Einstellungen (optional)</h3>
         <p>
-          Keine Einstellung ist Pflicht. Wenn Sie etwas ändern möchten, legen
-          Sie im Projektordner eine <code>.env</code>-Datei an. Geben Sie dann
-          <code>docker compose up -d --force-recreate seotracker</code> ein.
+          Keine Einstellung ist Pflicht. Um etwas zu ändern, legen Sie im
+          Projektordner eine <code>.env</code>-Datei an und führen
+          <code>docker compose up -d --force-recreate seotracker</code> aus.
         </p>
         <div class="tw">
           <table>
@@ -1741,9 +1738,9 @@ docker compose up -d</code></pre>
               <tr>
                 <td>MCP_TOKEN</td>
                 <td>
-                  Ist er leer, wird er beim ersten Start erzeugt. Mit
-                  <code>off</code> wird kein Passwort verlangt. Jeder andere
-                  Wert wird unverändert verwendet
+                  Token für KI-Agenten. Leer: wird beim ersten Start erzeugt.
+                  <code>off</code>: kein Token nötig. Jeder andere Wert wird
+                  unverändert verwendet
                 </td>
               </tr>
             </tbody>
@@ -1765,10 +1762,11 @@ docker compose up -d</code></pre>
           </li>
           <li>
             Im Browser muss sich <code>http://localhost:3001</code> öffnen
-            lassen. Die Statuskarte auf dem Bildschirm
-            <strong>Hilfe</strong> sollte „Alles ist in Ordnung.“ anzeigen.
-            Solange Google nicht verbunden ist, ist die Zeile „Google-Anmeldung“
-            als „braucht Aufmerksamkeit“ markiert. Das ist normal.
+            lassen. Die Karte <strong>Zustand der App</strong> auf dem
+            Bildschirm <strong>Hilfe</strong> sollte „Die Installationsprüfungen
+            haben keine Probleme gefunden.“ melden. Solange Google nicht
+            verbunden ist, zeigt die Zeile
+            <strong>Google-Anmeldung</strong> eine Warnung. Das ist normal.
           </li>
         </ul>
         <h2 id="haufige-fragen">Häufige Fragen</h2>
@@ -1778,18 +1776,18 @@ docker compose up -d</code></pre>
         </p>
         <p>
           <strong>Wo ist die Datei <code>.env.example</code>?</strong> Es gibt
-          sie nicht. Die Datei aus dem übergeordneten Projekt beschrieb Dinge,
-          die in dieser Version nicht vorkommen. Die vollständige Liste steht in
-          der Tabelle oben und in der Datei <code>docs/ENVIRONMENT.md</code>.
+          sie nicht. Die Vorlage des Ursprungsprojekts beschrieb Einstellungen,
+          die es hier nicht gibt. Die vollständige Liste steht in der Tabelle
+          oben und in der Datei <code>docs/ENVIRONMENT.md</code>.
         </p>
         <p>
           <strong>Kann ich die App im Internet erreichbar machen?</strong> Die
           App verlangt keine Anmeldung. Machen Sie sie nur erreichbar, wenn Sie
-          selbst eine Anmeldung davorschalten. Setzen Sie
-          <code>ALLOWED_HOST</code>, warnt die App bei der Gesundheitsprüfung.
+          selbst eine Anmeldung davorschalten. Ist
+          <code>ALLOWED_HOST</code> gesetzt, weist die Statusprüfung darauf hin.
         </p>
         <p>
-          <strong>Woher bekomme ich das Passwort meines Assistenten?</strong>
+          <strong>Woher bekomme ich das Token für meinen KI-Agenten?</strong>
           Der Bildschirm <strong>Agent-Einrichtung</strong> in der App zeigt den
           Befehl:
           <code
@@ -1818,15 +1816,15 @@ docker compose up -d</code></pre>
           <li>
             <strong>Die Google-Verbindung meldet „nicht eingerichtet“.</strong>
             Ist <code>BETTER_AUTH_SECRET</code> kürzer als 32 Zeichen, bleibt
-            Google ausgeschaltet. Haben Sie ihn von Hand angegeben, verlängern
-            Sie ihn. Haben Sie ihn nicht angegeben, ist vielleicht die Datei
-            <code>instance-secret</code> im Datenspeicher beschädigt.
+            Google ausgeschaltet. Haben Sie den Wert von Hand gesetzt,
+            verlängern Sie ihn. Haben Sie ihn nicht gesetzt, ist womöglich die
+            Datei <code>instance-secret</code> im Volume beschädigt.
           </li>
           <li>
             <strong>Nach dem Update ist die Google-Verbindung getrennt.</strong>
-            <code>BETTER_AUTH_SECRET</code> hat sich geändert, oder der
-            Datenspeicher wurde neu erstellt. Klicken Sie in den
-            Projekteinstellungen auf <strong>Erneut verbinden</strong>.
+            <code>BETTER_AUTH_SECRET</code> hat sich geändert, oder das Volume
+            wurde neu erstellt. Klicken Sie in den Projekteinstellungen auf
+            <strong>Erneut verbinden</strong>.
           </li>
         </ul>
         <nav class="pager" aria-label="Vorherige und nächste Seite">
@@ -1843,7 +1841,7 @@ docker compose up -d</code></pre>
           >
         </nav>
         <p class="meta">
-          Zuletzt aktualisiert: 27 Oktober 2026. Fehler entdeckt?
+          Zuletzt aktualisiert: 29 Oktober 2026. Fehler entdeckt?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1868,7 +1866,7 @@ docker compose up -d</code></pre>
     <footer>
       <div class="wrap">
         <p class="star">
-          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          Ein Stern hilft anderen, das Werkzeug zu finden.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

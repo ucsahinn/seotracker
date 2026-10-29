@@ -11,10 +11,10 @@
     <meta name="ga4-id" content="G-DFPDX00V4R" />
     <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Entender os dados de análise | Guia do seowatcher</title>
+    <title>Compreender os dados do Analytics | Guia do seowatcher</title>
     <meta
       name="description"
-      content="Analytics mostra visitas, engajamento e eventos principais medidos na propriedade GA4."
+      content="Como ler sessões, engajamento, eventos principais e receita do GA4 do site, verificar a medição e exportar as linhas necessárias."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/pt/guias/analise/" />
@@ -87,11 +87,11 @@
     <meta property="og:site_name" content="seowatcher" />
     <meta
       property="og:title"
-      content="Entender os dados de análise | Guia do seowatcher"
+      content="Compreender os dados do Analytics | Guia do seowatcher"
     />
     <meta
       property="og:description"
-      content="Analytics mostra visitas, engajamento e eventos principais medidos na propriedade GA4."
+      content="Como ler sessões, engajamento, eventos principais e receita do GA4 do site, verificar a medição e exportar as linhas necessárias."
     />
     <meta
       property="og:image"
@@ -115,11 +115,11 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="Entender os dados de análise | Guia do seowatcher"
+      content="Compreender os dados do Analytics | Guia do seowatcher"
     />
     <meta
       name="twitter:description"
-      content="Analytics mostra visitas, engajamento e eventos principais medidos na propriedade GA4."
+      content="Como ler sessões, engajamento, eventos principais e receita do GA4 do site, verificar a medição e exportar as linhas necessárias."
     />
     <meta
       name="twitter:image"
@@ -161,8 +161,8 @@
           {
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/pt/guias/analise/#article",
-            "headline": "Entender os dados de análise",
-            "description": "Analytics mostra visitas, engajamento e eventos principais medidos na propriedade GA4.",
+            "headline": "Compreender os dados do Analytics",
+            "description": "Como ler sessões, engajamento, eventos principais e receita do GA4 do site, verificar a medição e exportar as linhas necessárias.",
             "url": "https://seowatcher.io/pt/guias/analise/",
             "inLanguage": "pt",
             "datePublished": "2026-10-23",
@@ -193,7 +193,7 @@
               {
                 "@type": "ListItem",
                 "position": 3,
-                "name": "Entender os dados de análise",
+                "name": "Compreender os dados do Analytics",
                 "item": "https://seowatcher.io/pt/guias/analise/"
               }
             ]
@@ -201,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1499,7 +1499,7 @@
               >
             </li>
             <li class="current" aria-current="page">
-              <a href="/pt/guias/analise/">Entender os dados de análise</a>
+              <a href="/pt/guias/analise/">Compreender os dados do Analytics</a>
             </li>
             <li>
               <a href="/pt/guias/auditoria-do-site/">Auditoria do site</a>
@@ -1510,7 +1510,7 @@
             <li><a href="/pt/guias/relatorios/">Relatórios e modelos</a></li>
             <li>
               <a href="/pt/guias/informacoes-do-projeto/"
-                >Informações do projeto</a
+                >Contexto do projeto</a
               >
             </li>
             <li><a href="/pt/guias/configuracoes/">Configurações</a></li>
@@ -1522,7 +1522,7 @@
               <a href="/pt/guias/regras-de-auditoria/">Regras de auditoria</a>
             </li>
             <li>
-              <a href="/pt/guias/configurar-agente/">Configurar o agente</a>
+              <a href="/pt/guias/configurar-agente/">Configuração do agente</a>
             </li>
             <li>
               <a href="/pt/guias/solucao-de-problemas/">Solução de problemas</a>
@@ -1532,113 +1532,171 @@
         </details>
       </aside>
       <article id="icerik" data-page="analytics">
-        <h1>Entender os dados de análise</h1>
+        <h1>Compreender os dados do Analytics</h1>
         <p class="lede">
-          Analytics mostra visitas, engajamento e eventos principais medidos na
-          propriedade GA4.
+          Como ler sessões, engajamento, eventos principais e receita do GA4 do
+          site, verificar a medição e exportar as linhas necessárias.
         </p>
         <p>
-          Os links de Oportunidades abrem o mesmo grupo de endereços
-          normalizados e as datas da fonte com <code>pageGroup</code>. O
-          servidor lê todas as linhas de páginas de destino orgânicas do Google,
-          página por página, antes do filtro e da paginação de 50/100/200 linhas
-          na tela. Parâmetros de consulta e barras finais pertencem ao mesmo
-          grupo; hosts diferentes e caminhos com maiúsculas diferentes ficam
-          separados. Limites da fonte ou de qualidade impedem confirmar o grupo
-          completo e são informados. Um resultado vazio não prova ausência de
-          tráfego. O resumo mantém o escopo da propriedade. O filtro pode ser
-          removido; URL, navegação Voltar e exportações preservam seu escopo.
+          A tela <strong>Analytics</strong> lê a propriedade do GA4 conectada ao
+          projeto. No topo fica um resumo de sessões, taxa de engajamento,
+          eventos principais e receita de compras. Abaixo, o seletor de
+          relatórios oferece <strong>Páginas de destino</strong>,
+          <strong>Páginas e telas</strong>,
+          <strong>Aquisição de tráfego</strong>,
+          <strong>Eventos principais</strong>, <strong>E-commerce</strong>,
+          <strong>Pesquisa no site</strong>, <strong>Público</strong> e
+          <strong>Status da medição</strong>. As notas sobre como ler os números
+          ficam na seção recolhida
+          <strong>Compreender os dados do Analytics</strong>; escopo, datas e
+          avisos permanecem sempre visíveis.
         </p>
-        <p>
-          Analytics mostra visitas, engajamento e eventos principais medidos na
-          propriedade GA4. O seletor oferece páginas de destino, páginas,
-          aquisição, eventos principais, comércio eletrônico, pesquisa interna,
-          público e configurações de medição.
-        </p>
-        <h2 id="leia-primeiro-o-escopo">Leia primeiro o escopo</h2>
-        <p>
-          Se as medições forem desconhecidas, o tráfego é indicado como não
-          determinável; os valores conhecidos são preservados. As restrições
-          informadas aparecem junto às métricas. Quando a causa é desconhecida,
-          isso é dito explicitamente. Pode tentar novamente ou verificar as
-          configurações; mudar de canal não é sugerido como solução para um erro
-          de leitura. As notas gerais ficam recolhidas em
-          <strong>Compreender os dados do Analytics</strong>; escopo, período e
-          avisos permanecem visíveis.
-        </p>
-        <p>
-          A busca orgânica inclui mecanismos além do Google. Todo o tráfego
-          altera o resumo e o relatório juntos. A pesquisa interna sempre mostra
-          eventos medidos de resultados de pesquisa em todos os canais, sem
-          seletor de canal. Todos os hosts e fluxos da propriedade estão
-          incluídos. Outros sites ou aplicativos podem contribuir para os
-          totais.
-        </p>
-        <p>
-          Os períodos de 7, 28 e 90 dias terminam ontem no fuso da propriedade.
-          Ontem é um dia de calendário encerrado, sem garantia de dados
-          definitivos. Dias recentes podem ser reprocessados. As datas efetivas,
-          o período anterior de mesma duração e o fuso são exibidos. Links
-          aceitam startDate/endDate juntos; uma data final futura é limitada a
-          ontem com aviso. GA4 e Search Console usam calendários e medidas
-          diferentes. Datas iguais não garantem intervalos temporais idênticos.
-        </p>
-        <h2 id="examine-resultados-e-linhas">Examine resultados e linhas</h2>
-        <p>
-          O resumo segue o escopo escolhido: sessões, taxa de engajamento,
-          eventos principais e receita de compras. Eventos principais não são
-          clientes únicos. Receita zero não prova ausência de loja. A moeda
-          desconhecida aparece ao lado do valor. O tempo de engajamento é total,
-          não a média por usuário. Os valores diários distinguem dias
-          desconhecidos de zero. Restrições de qualidade impedem comparações ou
-          recomendações conclusivas.
-        </p>
-        <p>
-          Escolha 50, 100 ou 200 linhas por página e use Anterior/Próxima.
-          Filtros, ordenação, resumos e exportações abrangem apenas a página
-          listada. Selecionar uma barra filtra a tabela sem alterar a base do
-          resumo. Usuários podem aparecer em várias categorias: não os some como
-          usuários únicos da propriedade. Caminhos iguais em hosts distintos e
-          produtos com o mesmo nome e IDs diferentes permanecem separados.
-          Receitas negativas ou desconhecidas não recebem gráfico de
-          participação.
-        </p>
-        <p>
-          O filtro de baixa conversão é um indício para investigar pelo menos
-          quatro páginas elegíveis listadas com no mínimo 30 sessões cada. Não
-          estima vendas perdidas. Ausência de eventos observados não prova
-          configuração incompleta. Pesquisas internas frequentes não provam
-          falta de conteúdo.
-        </p>
-        <h2 id="compartilhamento-medicao-e-cota">
-          Compartilhamento, medição e cota
+        <h2 id="escopo-canal-propriedade-e-datas">
+          Escopo: canal, propriedade e datas
         </h2>
         <p>
+          O canal padrão é <strong>Pesquisa orgânica</strong>, que inclui todos
+          os mecanismos de busca, não só o Google.
+          <strong>Todo o tráfego</strong> muda ao mesmo tempo o resumo e o
+          relatório. <strong>Pesquisa no site</strong> sempre cobre todo o
+          tráfego e não tem seletor de canal.
+        </p>
+        <p>
+          Os números incluem todos os hosts e fluxos de dados da propriedade. Se
+          outro site ou aplicativo enviar dados para a mesma propriedade, esses
+          dados também entram.
+        </p>
+        <p>
+          Os períodos de 7, 28 e 90 dias terminam ontem, no fuso horário da
+          propriedade. A tela mostra as datas atuais, o período anterior de
+          mesma duração e o fuso horário. Ontem é um dia encerrado, mas o GA4
+          ainda pode reprocessar os dias recentes. Um link pode definir datas
+          exatas com <code>startDate</code> e <code>endDate</code>; uma data
+          final no futuro volta para ontem, com um aviso.
+        </p>
+        <p>
+          O GA4 e o Search Console usam calendários diferentes (fuso da
+          propriedade versus horário do Pacífico) e medidas diferentes. As
+          mesmas datas podem cobrir horas diferentes.
+        </p>
+        <h2 id="leia-o-resumo">Leia o resumo</h2>
+        <ul>
+          <li>
+            <strong>Eventos principais</strong> contam eventos, não clientes
+            únicos.
+          </li>
+          <li>
+            O <strong>tempo de engajamento</strong> é um total, não uma média
+            por usuário.
+          </li>
+          <li>
+            <strong>Receita</strong> igual a zero não prova que o site não tenha
+            loja. Uma moeda desconhecida aparece ao lado do valor.
+          </li>
+          <li>
+            Os valores diários separam um dia desconhecido de um dia com valor
+            zero.
+          </li>
+        </ul>
+        <p>
+          Se um valor não puder ser lido, a tela mostra
+          <strong>Não foi possível determinar o tráfego deste período</strong> e
+          mantém os valores que conseguiu ler. As restrições informadas pelo
+          Google, como amostragem ou limites de privacidade, aparecem ao lado
+          das métricas; uma causa desconhecida é declarada como tal. Dados
+          restritos não são usados em comparações ou recomendações conclusivas.
+          Se o Google truncou os dados no período escolhido, o resumo e o
+          relatório mostram o motivo e as datas informados pelo Google, e a
+          comparação entre períodos não é exibida.
+        </p>
+        <p>
+          Para corrigir um erro de leitura, clique em
+          <strong>Tentar novamente</strong> ou abra
+          <strong>Status da medição</strong>. Trocar de canal não resolve o
+          problema.
+        </p>
+        <h2 id="trabalhe-com-as-linhas-do-relatorio">
+          Trabalhe com as linhas do relatório
+        </h2>
+        <p>
+          O relatório mostra 50, 100 ou 200 linhas por página;
+          <strong>Página anterior</strong> e
+          <strong>Página seguinte</strong> percorrem as demais. Filtros,
+          ordenação, resumos e exportações valem para a página de linhas
+          visível. Clicar em uma barra do gráfico filtra a tabela sem alterar o
+          resumo.
+        </p>
+        <ul>
+          <li>
+            O mesmo usuário pode aparecer em várias categorias: não some os
+            usuários das categorias para obter usuários únicos.
+          </li>
+          <li>
+            O mesmo caminho em hosts diferentes, e produtos com o mesmo nome mas
+            IDs diferentes, ficam em linhas separadas.
+          </li>
+          <li>
+            Os gráficos de participação na receita não aparecem se algum valor
+            for negativo ou desconhecido.
+          </li>
+        </ul>
+        <p>
+          O filtro <strong>Alto tráfego, baixa conversão</strong> é um ponto de
+          partida para investigação. Ele exige pelo menos quatro páginas
+          listadas com no mínimo 30 sessões cada e não estima vendas perdidas.
+          Uma página sem eventos principais não prova um problema de
+          rastreamento, e pesquisas frequentes no site não provam falta de
+          conteúdo.
+        </p>
+        <h2 id="grupos-de-enderecos-vindos-de-oportunidades">
+          Grupos de endereços vindos de Oportunidades
+        </h2>
+        <p>
+          <strong>Examinar grupo de endereços do Analytics</strong>, na tela
+          <a href="/pt/guias/oportunidades/">Oportunidades</a>, abre
+          <strong>Páginas de destino</strong> filtradas por um grupo de
+          endereços, com as datas dos dados de origem. O servidor lê do Google
+          todas as linhas de páginas de destino orgânicas antes de dividi-las em
+          páginas, então o grupo inteiro é correspondido. Parâmetros de consulta
+          e barras finais ficam no mesmo grupo; hosts diferentes e caminhos com
+          maiúsculas diferentes ficam separados. Se um limite da fonte ou uma
+          restrição de dados impedir a correspondência completa, a tela avisa;
+          um resultado vazio não prova ausência de tráfego. O resumo mantém o
+          escopo da propriedade inteira.
+          <strong>Remover filtro de grupo de endereços</strong> volta ao
+          relatório completo.
+        </p>
+        <h2 id="links-e-exportacoes">Links e exportações</h2>
+        <p>
           Relatório, canal, datas, detalhamento, tamanho e posição da página
-          ficam na URL. O filtro exato host/path abrange somente as linhas
-          listadas e não agrupa variantes de URL. CSV e Planilhas exportam as
-          linhas filtradas com números brutos. ga4_scope_json preserva origem,
-          propriedade, datas, fuso, moeda, qualidade, página e filtros.
+          ficam na URL: um link ou o botão Voltar restauram a mesma
+          visualização. O filtro exato por host e caminho vale apenas para as
+          linhas listadas e não agrupa variantes de URL.
         </p>
         <p>
-          O diagnóstico lê apenas configurações Admin. Não encontrar lacunas não
-          prova que a tag envia dados: siga as verificações de coleta
-          vinculadas. Inventários parciais indicam pelo menos. Se a medição
-          otimizada estiver desativada, nenhuma subfunção estará efetivamente
-          ativa. Nenhuma configuração da conta é alterada.
+          <strong>CSV</strong> e <strong>Exportar para Sheets</strong> exportam
+          as linhas filtradas com os números brutos. A coluna
+          <code>ga4_scope_json</code> registra fonte, propriedade, datas, fuso
+          horário, moeda, qualidade dos dados, página e filtros.
         </p>
+        <h2 id="status-da-medicao">Status da medição</h2>
         <p>
-          A seção recolhida de cota mostra uma captura local da última resposta,
-          não o uso do período de tráfego. O teto padrão é uma suposição.
-          Atualizar solicita novamente os relatórios visíveis e pode consumir
-          tokens.
+          <strong>Status da medição</strong> lê as configurações de Admin da
+          propriedade: fluxos de dados da Web, medição otimizada, eventos
+          principais e definições personalizadas. Nada é alterado na sua conta.
+          &quot;Nenhuma lacuna nas configurações verificadas&quot; não prova que
+          a tag envia dados; para isso, use as verificações de coleta
+          vinculadas. Com a medição otimizada desativada, nenhum dos eventos
+          automáticos dela está ativo. Contagens marcadas como &quot;pelo
+          menos&quot; vêm de um inventário que pode estar incompleto.
         </p>
+        <h2 id="cota">Cota</h2>
         <p>
-          Quando o Google trunca dados no período solicitado, o resumo do
-          Analytics e os detalhes do relatório mostram o motivo e as datas
-          informados pelo Google. O relatório é considerado limitado; uma
-          cobertura incompleta não é apresentada como uma comparação confiável
-          entre períodos.
+          A seção recolhida de cota mostra os tokens de relatório restantes
+          segundo a última resposta, não o consumo no período escolhido. O
+          limite das propriedades padrão usado na comparação é uma suposição.
+          <strong>Atualizar</strong> solicita de novo os relatórios visíveis e
+          consome tokens.
         </p>
         <nav class="pager" aria-label="Página anterior e seguinte">
           <a
@@ -1651,29 +1709,37 @@
           >
         </nav>
         <p class="meta">
-          Última atualização: 29 de outubro de 2026. Viu algum erro?
+          Última atualização: 29 de outubro de 2026. Encontrou um erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >Relate no GitHub</a
+            >Informe no GitHub</a
           >.
         </p>
       </article>
       <nav class="toc" aria-label="Nesta página">
         <p class="toc-label">Nesta página</p>
         <ol>
-          <li><a href="#leia-primeiro-o-escopo">Leia primeiro o escopo</a></li>
           <li>
-            <a href="#examine-resultados-e-linhas"
-              >Examine resultados e linhas</a
+            <a href="#escopo-canal-propriedade-e-datas"
+              >Escopo: canal, propriedade e datas</a
+            >
+          </li>
+          <li><a href="#leia-o-resumo">Leia o resumo</a></li>
+          <li>
+            <a href="#trabalhe-com-as-linhas-do-relatorio"
+              >Trabalhe com as linhas do relatório</a
             >
           </li>
           <li>
-            <a href="#compartilhamento-medicao-e-cota"
-              >Compartilhamento, medição e cota</a
+            <a href="#grupos-de-enderecos-vindos-de-oportunidades"
+              >Grupos de endereços vindos de Oportunidades</a
             >
           </li>
+          <li><a href="#links-e-exportacoes">Links e exportações</a></li>
+          <li><a href="#status-da-medicao">Status da medição</a></li>
+          <li><a href="#cota">Cota</a></li>
         </ol>
       </nav>
     </main>

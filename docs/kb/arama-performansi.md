@@ -6,31 +6,25 @@ route: /p/<proje>/search-performance
 updated: 2026-10-28
 ---
 
-Google'da kaç kez göründüğünüzü, kaç tıklama aldığınızı ve önce neyi düzeltmeniz gerektiğini burada görürsünüz.
+Tıklama, gösterim, tıklama oranı ve sıra doğrudan Search Console'dan gelir; uygulama bunları tahmin etmez. Tahmin yalnızca "olası kazanç" rakamlarındadır ve bunlar her yerde "üst sınır" diye işaretlenir.
 
-Tıklama, gösterim, tıklama oranı ve sıra doğrudan Search Console'dan gelir. Uygulama bunları tahmin etmez. Tahmin yalnızca "olası kazanç" rakamlarındadır ve bunlar her yerde "üst sınır" diye işaretlenir.
+Seçtiğiniz filtreler adres çubuğuna yazılır. Görünümü bağlantı olarak paylaşabilir ya da yer imine ekleyebilirsiniz.
 
-Seçtiğiniz filtreler adres çubuğuna yazılır. İsterseniz o görünümü bağlantı olarak paylaşır ya da yer imine eklersiniz.
+## Dört kavram
 
-## Üç terim
-
-**Kesin gün.** Search Console bir günü birkaç gün boyunca saymaya devam eder. Toplamlar ve karşılaştırmalar yalnızca sayımı bitmiş günleri kullanır. Günler Google'ın kullandığı Pasifik saatine göredir. Henüz sayılmakta olan günler grafikte taralı görünür ve toplamlara katılmaz.
+**Kesin gün.** Search Console bir günü birkaç gün boyunca saymaya devam eder. Toplamlar ve karşılaştırmalar yalnızca sayımı bitmiş günleri kullanır. Günler Google'ın kullandığı Pasifik saatine göredir. Henüz sayılmakta olan günler grafikte taralı görünür.
 
 **Gizli sorgu.** Google, çok az aranan sorguları gizlilik için listelemez. Ama bu sorguların tıklamalarını site toplamına katar. Bu yüzden sorgu tablosunun toplamı site toplamından küçüktür. Fark gizli sorgulardandır.
 
-**API sınırları ve güncellik.** Uygulama sorgu, sayfa ve sorgu-sayfa tablolarını 25.000 satırlık sayfalarla, Google daha fazla satır döndürmeyene kadar okur; iki sayfada durmaz. Google arama türü başına günde en fazla 50.000 satır sunar ve sorgu/sayfa ayrıntılarında başka satırları da atlayabilir. Bütün sayfaların okunması, bütün aramaların bilindiği anlamına gelmez. Site toplamları bu ayrıntı tablolarından toplanmaz. **Veri hakkında** bölümünde en eski yanıtın alınma zamanı gösterilir. Yanıtlar en fazla on dakika önbellekte tutulur; yenileme bu önbelleği atlar.
-
-Search Analytics istek başlangıçları kurulumun çalışan sunucu örneğinde saniyede en fazla on kez yapılır. Google kota hatası verirse yeni okumalar on beş dakika bekler; arşivin kaydedilmiş ilerlemesi korunur. Arşiv tam 16 takvim ayı geriye gider, eksik aralıkları sonraki çalışmalarda tamamlar ve tek günlük yeniden okumada Google’ın sunduğu 50.000 satıra kadar ulaşır. Uygulama kapalıyken arşiv eşitlemesi çalışmaz. URL Denetimi ayrı kalır: sonuçlar önbellekten okunur, yalnızca açık düğmeyle yenilenir ve mülk başına günlük 2.000 istek sınırı korunur.
-
-Kaynaklar: [Google’ın tam veri alma kılavuzu](https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data), [API kotaları](https://developers.google.com/webmaster-tools/limits).
+**Satır sınırı.** Google tek istekte en fazla belirli sayıda satır verir ve bazı satırları hiç döndürmez. Bu yüzden sorgu ve sayfa tabloları her zaman eksiksiz değildir. Ayrıntısı aşağıda, "Sayılar nasıl hesaplanır" bölümündedir.
 
 **Üst sınır.** Kazanç rakamı "en fazla bu kadar" demektir. Her arama bir basamak yükselirse sitenizin kendi tıklama oranlarıyla alacağı ek tıklamadır. Gerçek sonuç rakiplere ve Google'a bağlıdır, çoğu zaman bundan küçüktür.
 
 ## Ekranda neler var
 
-**Üst çubuk.** Sağ üstte dört şey var.
+**Üst çubuk.** Sağ üstte üç denetim vardır.
 
-- **Yenile**: Search Console'dan taze veri ister. Uygulama normalde birkaç dakikalık yanıtı kullanır.
+- **Yenile**: Search Console'dan taze veri ister. Uygulama normalde en fazla on dakika önce alınmış yanıtı kullanır; **Yenile** bu önbelleği atlar.
 - **Raporu indir**: Ekrandaki görünümü yazdırılabilir tek dosyalık bir rapora çevirir, kaydeder ve indirir. Rapor **Raporlar** ekranında da durur.
 - Dışa aktarma menüsü: **Sorgular (CSV)**, **Sayfalar (CSV)**, **İlk üçe yakın sorgular (CSV)**, **Sorguları E-Tablolar'a aktar**, **Sayfaları E-Tablolar'a aktar**. Dışa aktarma ekrandaki filtreleri izler. Sorgular ya da Sayfalar sekmesindeyken bir arama ya da hızlı filtre seçtiyseniz o da dosyaya yansır.
 
@@ -80,7 +74,7 @@ Aramalara ya da sayfalara göre tablo. Sütunlar: **Sorgu** (ya da **Sayfa**), *
 
 **Satır menüsü.** Üç noktada: **Sayfayı yeni sekmede aç**, **Adresi kopyala**, **Kelimeyi kopyala**, **Kelime olarak kaydet**. Kaydettikleriniz **Kayıtlı kelimeler** ekranına gider. Satıra tıklamak ayrıntı panelini açar.
 
-Tablonun altındaki not tabanı söyler: "okunan N sorgu, N tıklama. Sitenin toplamı N tıklama; aradaki fark Google'ın gizlediği sorgulardan." Google'ın satır sınırına ulaşılmışsa en az tıklanan uç listede yoktur ve not bunu yazar.
+Tablonun altındaki not, okunan sorgu sayısını ve tıklamasını sitenin toplamıyla karşılaştırır; aradaki fark Google'ın gizlediği sorgulardandır. Satır sınırına ulaşılmışsa en az tıklanan uç listede yoktur ve not bunu da yazar.
 
 ### Sıralama fırsatları
 
@@ -119,7 +113,7 @@ Aynı aramada birden çok sayfanızın göründüğü durumları gösterir. Sayf
 
 **Marka adları.** Marka adını **Marka adlarını düzenle** ile girersiniz. Sitenizin adını ve insanların onu nasıl yazdığını girin, örneğin ad ve kısaltması. Bu kelimeleri içeren aramalar marka araması sayılır. **Kaydet** ve **Vazgeç** düğmeleri vardır, **Öneriler** satırından tek tıkla ad eklersiniz. Marka adı tanımlamak yalnızca bu ekranı değil, **Fırsatlar** ekranındaki kazanç tahminini de değiştirir. Çünkü o tahmin marka aramalarını dışarıda tutar.
 
-**Ayrıntı paneli.** Bir sorguya ya da sayfaya tıklayınca (tabloda, Yapılacaklar'da, Sıralama fırsatları'nda ya da Değişimler'de) sağdan açılır. En üstte "tarih aralığı, kesin günler" yazar. Sonra dört sayı (Tıklama, Gösterim, Tıklama oranı, Ortalama sıra) ve seçili karşılaştırmaya göre değişimleri görürsünüz. Altında **Günlük tıklama** çizgisi durur. Sayfa için "Bu sayfanın sorguları (N)", sorgu için "Bu sorguda görünen sayfalar (N)" listesi çıkar. Her satırda tıklama ve sıra yazar. Bir sayfa için hiç sorgu listelenmiyorsa tıklamaları Google'ın gizlediği sorgulardan geliyor olabilir. Sorguları, sayfanın toplamından küçük çıkabilir, çünkü gizli sorgular listelenmez. **Sayfayı aç** sayfayı yeni sekmede açar. **Kelime olarak kaydet** sorguyu **Kayıtlı kelimeler**'e ekler.
+**Ayrıntı paneli.** Bir sorguya ya da sayfaya tıklayınca (tabloda, Yapılacaklar'da, Sıralama fırsatları'nda ya da Değişimler'de) sağdan açılır. En üstte "tarih aralığı, kesin günler" yazar. Sonra dört sayı (Tıklama, Gösterim, Tıklama oranı, Ortalama sıra) ve seçili karşılaştırmaya göre değişimleri görürsünüz. Altında **Günlük tıklama** çizgisi durur. Sayfa için "Bu sayfanın sorguları (N)", sorgu için "Bu sorguda görünen sayfalar (N)" listesi çıkar. Her satırda tıklama ve sıra yazar. Listelenen sorguların toplamı sayfanın toplamından küçük olabilir, hatta hiç sorgu listelenmeyebilir: fark Google'ın gizlediği sorgulardır. **Sayfayı aç** sayfayı yeni sekmede açar. **Kelime olarak kaydet** sorguyu **Kayıtlı kelimeler**'e ekler.
 
 ## Nasıl kullanılır
 
@@ -136,11 +130,13 @@ Aynı aramada birden çok sayfanızın göründüğü durumları gösterir. Sayf
 
 ## Sayılar nasıl hesaplanır
 
-Google veriyi üç gün geç verir. Aralık bu yüzden bugünde değil, üç gün öncesinde biter. Son günler ayrıca birkaç gün daha değişebilir. Uygulama bu günleri toplamlara katmaz. Önceki dönem, aynı uzunlukta ve bu aralığın hemen öncesindeki dönemdir. Geçen yıl karşılaştırmasında geçen yılın aynı günleri alınır. Tıklama ve gösterimdeki değişimi yüzde, tıklama oranındaki değişimi puan olarak görürsünüz.
+Google veriyi yaklaşık üç gün geç verir; bu yüzden aralık bugünde değil, üç gün önce biter. Önceki dönem, aynı uzunlukta ve bu aralığın hemen öncesindeki dönemdir. Geçen yıl karşılaştırmasında geçen yılın aynı günleri alınır. Tıklama ve gösterimdeki değişimi yüzde, tıklama oranındaki değişimi puan olarak görürsünüz.
 
 Toplam kutuları sitenin gerçek toplamıdır. Tablolar ise aynı aramada çıkan her sayfayı ayrı sayar. Sayfa tablosunu toplarsanız kutudan büyük bir sayı bulursunuz. Bu hata değildir. Sorgu tablosunu toplarsanız kutudan küçük bir sayı bulursunuz, çünkü gizli sorgular listelenmez.
 
-Google tek seferde en fazla 1.000 satır verir. Satır sınırına ulaşılmışsa en az tıklanan uç listede yoktur ve ekran bunu yazar.
+Uygulama sorgu, sayfa ve sorgu-sayfa tablolarını 25.000 satırlık parçalarla, Google yeni satır döndürmeyene kadar okur. Google arama türü başına günde en fazla 50.000 satır sunar ve bazı satırları atlayabilir. Bu yüzden tüm parçaların okunması, tüm aramaların bilindiği anlamına gelmez. Site toplamları bu tablolardan toplanmaz; Google'ın ayrı verdiği toplamdır.
+
+Uygulama Google'a saniyede en fazla on istek başlatır. Google kota hatası verirse yeni okumalar on beş dakika bekler. Kaynaklar: [Google'ın tam veri alma kılavuzu](https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data), [API kotaları](https://developers.google.com/webmaster-tools/limits).
 
 **Olası kazanç.** Uygulama her aramaya sitenizin kendi tıklama oranını uygular. Aramanın bulunduğu sıradan bir basamak yukarısının oranı alınır, aramanın gösterimiyle çarpılır ve mevcut tıklama çıkarılır. Çok az gösterimi olan aramalar hesaba girmez (28 gün için en az 50 gösterim). Başlık sorunlarında ölçü, aramanın sitenin aynı sıradaki oranına ulaşmasıdır. Marka aramaları dışarıda tutulur. Bu yüzden her kazanç bir üst sınırdır. Aynı hesap **Fırsatlar** ekranında da kullanılır.
 
@@ -148,30 +144,30 @@ Google tek seferde en fazla 1.000 satır verir. Satır sınırına ulaşılmış
 
 ## Sık sorulanlar
 
-**Son üç gün neden grafikte taralı?** Google o günleri henüz saymaya devam ediyor. Toplamlara katılmazlar. Birkaç gün sonra kesinleşirler.
-
-**Tablo toplamı kartla tutmuyor.** Normaldir. Kart site toplamıdır. Sorgu tablosu gizli sorguları, sayfa tablosu birden çok sayfayı ayrı saydığı için farklı çıkar.
-
 **Google'da aradığımda sıram farklı.** Buradaki sıra dönemin ortalamasıdır. Tek bir aramayı yansıtmaz.
 
 **Aradığım sorgu listede yok.** Google çok az aranan sorguları gizler. Küçük sitelerde sorgu satırı hiç olmayabilir.
 
-**Yapılacaklar listesinde bir iş neden kayboldu?** Yapıldı diye işaretlediyseniz "Yapıldı olarak işaretlenenler" altındadır. İşaretler yalnızca bu tarayıcıda saklanır. Başka tarayıcıda ya da bilgisayarda yeniden görürsünüz.
+**Yapılacaklar listesinde bir iş neden kayboldu?** Yapıldı diye işaretlediyseniz "Yapıldı olarak işaretlenenler" altındadır. Başka bir tarayıcıda iş yeniden görünür, çünkü işaret yalnızca işaretlediğiniz tarayıcıda saklanır.
 
-**Çakışma varsa sayfaları birleştireyim mi?** Çoğu zaman hayır. Önce hangi sayfanın cevap vermesini istediğinize karar verin. Sonra iç bağlantıları o sayfaya yöneltin. Sayfalar gerçekten aynı soruyu yanıtlıyorsa birleştirin.
+**Çakışma varsa sayfaları birleştireyim mi?** Çoğu zaman hayır; ana sayfayı seçip iç bağlantıları ona yöneltmek yeter. Birleştirmeyi yalnızca sayfalar gerçekten aynı soruyu yanıtlıyorsa düşünün.
 
-**Marka adı girmek zorunda mıyım?** Hayır, ama girmezseniz sitenizin kendi adını arayanlar tıklama oranı hesabını bozar ve fırsatlar eksik çıkar. Ekran bunu "Marka adınızı tanımlayın" işiyle hatırlatır. Uygulama alan adınızdan önerdiği adları kullanıyorsa iş "Marka adını onayla" adıyla çıkar.
+**Marka adı girmek zorunda mıyım?** Hayır, ama girmezseniz sitenizin adını arayanların yüksek tıklama oranı hesabı şişirir ve fırsatlar eksik çıkar. Yapılacaklar listesi bunu hatırlatır.
 
 ## Sınırlar
 
-Discover ve Google Haberler arama türleri yer almaz. Arama hacmi ve rakip sırası da yoktur. Veri Google'dan 16 aydan eskiye gitmez. Daha eskisi için bu bilgisayardaki arşive bakın: **Değişimler** sekmesindeki uzun dönem grafiği ve **Sıralama takibi** ekranı arşivden okur. Yapıldı işaretleri ve notlar yalnızca bu kurulumda durur.
+Discover ve Google Haberler arama türleri yer almaz. Arama hacmi ve rakip sırası da yoktur. Google 16 aydan eski veri vermez. Daha eskisi için bu bilgisayardaki arşive bakın: **Değişimler** sekmesindeki uzun dönem grafiği ve **Sıralama takibi** ekranı arşivden okur. Arşiv yalnızca bu ekran ya da Sıralama takibi açıkken dolar. URL Denetimi bu ekranın parçası değildir; [Dizin durumu](/docs/dizin-durumu/) sayfasına bakın.
 
-<!-- Kaynaklar: src/routes/_project/p/$projectId/search-performance.tsx; src/client/features/search-performance/SearchPerformancePage.tsx; SearchPageParts.tsx; SearchFilters.tsx; DataTrustStrip.tsx; SearchVerdict.tsx; KpiTiles.tsx; SearchTrendChart.tsx; TrendParts.tsx; SearchNotes.tsx; LongTermTrend.tsx; TodoTab.tsx; DimensionTab.tsx; DimensionTableParts.tsx; OpportunitiesTab.tsx; StrikingTable.tsx; ChangesTab.tsx; CannibalizationSummary.tsx; CannibalizationTable.tsx; DistributionTab.tsx; PositionDistribution.tsx; DrilldownPanel.tsx; BrandTerms.tsx; SearchReportButton.tsx; src/shared/searchInsights.ts; src/shared/searchTodoCopy.ts; src/shared/searchQuickFilters.ts; src/shared/dataFreshness.ts; src/serverFunctions/searchPerformance.ts; src/server/features/gsc/cannibalization.ts -->
+## Bağlantılar ve sabit tarihler
 
-Fırsatlar ve Sıralama takibi bağlantıları birebir URL/sorgu ayrıntısını kaynak tarihleriyle açar. Genel toplamlar mülk kapsamındadır; seçili kimliğin sayıları ayrıntı panelindedir. Okunamayan dönem başka tarihlerle değiştirilmez. Dönem ön ayarı seçmek tarih sabitlemesini kaldırır. Raporu indir, gösterilen tarihleri sunucuya gönderir ve yenileme sırasında kullanılamaz. Tarihler sabittir; Google yeniden okunan ölçümleri düzeltebilir.
+**Fırsatlar** ve **Sıralama takibi** ekranlarından gelen bağlantılar, birebir sayfayı ya da sorguyu kaynak tarihleriyle açar. Bu durumda üstteki toplamlar yine tüm mülkü gösterir; seçili sayfanın ya da sorgunun sayıları ayrıntı panelindedir. Okunamayan bir dönem başka tarihlerle değiştirilmez. Hazır bir dönem seçmek sabit tarihleri kaldırır.
+
+**Raporu indir** ekranda gösterilen tarihleri kullanır ve yenileme sürerken kapalıdır. Rapordaki tarihler sabittir, ama Google yeniden okunan değerleri düzeltmiş olabilir.
 
 ## Az veriyle yorum
 
 Karşılaştırma dönemindeki tıklama sayısı analiz eşiğinin altındaysa özet yüzdeden önce gerçek tıklama ve gösterim sayılarını verir. Az veride yüzdeler ve ortalamalar tek başına büyüme veya kayıp kanıtı değildir. Boş fırsat listesi, hiçbir sorgunun 4–20. sırada olmadığını söylemez: döneme göre ölçeklenen gösterim eşiği ve marka sorgularının dışlanması da geçerlidir.
 
-Yapılacaklar boşsa görünen sorguları açıp inceleyebilirsiniz. Son 3 ay zaten seçiliyken daha uzun dönem önerilmez. Google’ın gizlediği sorguların sonradan paylaşılacağı varsayılmaz.
+Yapılacaklar boşsa görünen sorguları tek tek açıp inceleyin. Son 3 ay zaten seçiliyse daha uzun bir dönem önerilmez. Google'ın gizlediği sorgular sonradan da paylaşılmaz.
+
+<!-- Kaynaklar: src/routes/_project/p/$projectId/search-performance.tsx; src/client/features/search-performance/SearchPerformancePage.tsx; SearchPageParts.tsx; SearchFilters.tsx; DataTrustStrip.tsx; SearchVerdict.tsx; KpiTiles.tsx; SearchTrendChart.tsx; TrendParts.tsx; SearchNotes.tsx; LongTermTrend.tsx; TodoTab.tsx; DimensionTab.tsx; DimensionTableParts.tsx; OpportunitiesTab.tsx; StrikingTable.tsx; ChangesTab.tsx; CannibalizationSummary.tsx; CannibalizationTable.tsx; DistributionTab.tsx; PositionDistribution.tsx; DrilldownPanel.tsx; BrandTerms.tsx; SearchReportButton.tsx; src/shared/searchInsights.ts; src/shared/searchTodoCopy.ts; src/shared/searchQuickFilters.ts; src/shared/dataFreshness.ts; src/serverFunctions/searchPerformance.ts; src/server/features/gsc/cannibalization.ts -->

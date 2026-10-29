@@ -1,37 +1,50 @@
 ---
 title: Acompanhamento de posições
-description: Acompanhe posições médias no Google e mudanças nas consultas. O arquivo local guarda os dados mesmo além do limite de 16 meses do Google.
+description: Acompanhe a posição média das consultas no Google e suas variações. O arquivo local guarda os dados além dos 16 meses do Search Console.
 screen: Sıralama takibi
 route: /p/<proje>/rankings
 updated: 2026-10-27
 ---
 
-Este ecrã mostra as consultas Web do Search Console arquivadas neste computador. A posição média não é uma classificação fixa em todas as pesquisas: localização, dispositivo e contexto podem alterá-la. Impressões não são volume de pesquisa.
+A tela mostra as consultas da Web do Search Console arquivadas neste computador. A posição média não é uma colocação fixa válida para toda pesquisa: localização, dispositivo e contexto a alteram. Impressões não são volume de busca.
 
 ## Por onde começar
 
-O resumo conta consultas observadas em ambos os períodos e variações de pelo menos meia posição. As comparações desconhecidas são contadas separadamente. Abra primeiro a descida sugerida. A prioridade multiplica a variação absoluta pelas impressões registadas; não estima cliques perdidos. As listas mostram três consultas, até cinco depois de expandidas.
+O resumo conta as consultas observadas nos dois períodos e as que se moveram pelo menos meia posição. Comparações que não podem ser calculadas são contadas à parte. Abra primeiro a queda sugerida. A prioridade multiplica a variação absoluta pelas impressões registradas: não é uma estimativa de cliques perdidos. Cada lista mostra três consultas; expandida, chega a cinco, e só pode ser expandida com mais de três movimentos.
+
+Se nenhuma consulta foi observada nos dois períodos, subidas e quedas não podem ser calculadas. O cartão de movimentos explica isso em vez de mostrar um movimento igual a zero.
 
 ## Datas e cobertura
 
-Escolha 30, 90, 180, 480 ou 1825 dias. A última opção abrange os últimos cinco anos do arquivo, não todo o histórico. Os meses são aproximações; os detalhes mostram datas exatas no calendário America/Los_Angeles. A data final pressupõe três dias de atraso, sem verificar a completude em tempo real. A importação pede apenas dados finais do Google.
+O período pode ser de 30, 90, 180, 480 ou 1825 dias. A última opção cobre os últimos cinco anos do arquivo, não o histórico inteiro. Os meses indicados são aproximados; os detalhes mostram as datas exatas no calendário America/Los_Angeles. A data final presume três dias de atraso e não verifica em tempo real se os dados estão completos. A importação pede ao Google apenas dados definitivos.
 
-Os dias com resposta da API completa, limite da aplicação, falha ou cobertura desconhecida são contados separadamente. Os dias antigos não são declarados completos retroativamente. Mesmo uma resposta completa exclui consultas ocultas ou omitidas pelo Google. A última observação difere da última data analisada. Continuar a preencher pode exigir várias execuções. O histórico existente mantém-se disponível durante a sincronização.
+Os dias são contados por estado: resposta completa da API, limite do aplicativo atingido, falha ou cobertura desconhecida. Dias importados no passado não são declarados completos depois. Mesmo uma resposta completa exclui as consultas que o Google oculta ou omite. A última observação e a última data analisada são informações diferentes. Completar o arquivo pode exigir várias execuções; durante a sincronização, o histórico existente continua disponível.
+
+## Como o arquivo é preenchido
+
+Enquanto esta tela está aberta, os dias que faltam são carregados sozinhos; **Desempenho da pesquisa** também atualiza o arquivo quando está aberta. Com as duas telas fechadas, ou com o aplicativo fechado, nada é baixado.
+
+- Depois de cada transferência parcial, o aplicativo espera 15 segundos antes de pedir o bloco seguinte.
+- Quando o arquivo está em dia, ele verifica de novo a cada 15 minutos.
+- Depois de um erro de conexão ou de cota, ele espera 15 minutos antes de tentar de novo.
+- Depois de um erro de autorização, você precisa renovar a conexão.
+
+**Continuar a preencher o arquivo** retoma a transferência manualmente. A primeira importação começa no início da janela de 16 meses do Google; dias que o Google não fornece mais não podem ser recuperados. Cada execução trata no máximo quatro janelas de tempo; janelas com muitas linhas são divididas por dia e retomadas nas execuções seguintes. Para um dia, o aplicativo lê até 50.000 linhas; um dia que continua incompleto fica marcado como tal.
 
 ## Distribuição e pesquisa
 
-A distribuição abrange todas as consultas observadas no período atual. As posições são arredondadas: 3,4 fica no primeiro grupo, 3,5 no segundo. As barras são relativas ao maior grupo; a percentagem representa a quota das consultas observadas. As variações dos grupos são líquidas e usam as mesmas consultas comparáveis. Uma comparação ausente nunca se torna zero.
+A distribuição inclui todas as consultas observadas no período atual. As posições são arredondadas: 3,4 entra no primeiro grupo e 3,5 no segundo. O tamanho das barras é relativo ao maior grupo; a porcentagem é a participação nas consultas observadas. As variações dos grupos são líquidas e usam as mesmas consultas comparáveis. Uma comparação ausente não vira zero.
 
-A pesquisa e os filtros ultrapassam o antigo limite de cem consultas. Os contadores respeitam o texto e os outros filtros ativos. O quartil superior por impressões inclui empates. As primeiras 10 incluem consultas sem observação anterior; as saídas das primeiras 10 exigem ambos os períodos. Um botão limpa todos os filtros. As páginas têm 25, 50 ou 100 linhas, sem alterar os resumos.
+A pesquisa e os filtros atuam sobre todas as consultas, sem o antigo limite de cem. Os contadores consideram o texto pesquisado e os demais filtros ativos. O filtro do quartil superior por impressões inclui os empates. O filtro "top 10" inclui consultas sem observação anterior; as saídas do top 10 exigem dados nos dois períodos. Um botão remove todos os filtros. As páginas mostram 25, 50 ou 100 linhas; o número de linhas não altera os resumos.
 
-As consultas observadas antes mas ausentes agora aparecem numa lista separada. Isto não prova perda de posição nem posição zero. São mostrados os primeiros 25 registos por impressões; o texto de pesquisa também se aplica aqui.
+As consultas observadas antes, mas ausentes no período atual, aparecem em uma lista separada. A ausência delas não prova perda de posição nem posição zero. A lista mostra as 25 primeiras por impressões e também respeita o texto pesquisado.
 
-## Ler o histórico
+## Leia o histórico
 
-As posições médias são ponderadas pelas impressões. A variação é a média anterior menos a atual. Abaixo de 0,05 posições é neutra; o filtro significativo usa 0,5. O detalhe usa a mesma comparação entre períodos da tabela. O primeiro e o último dia registado são observações separadas.
+As posições médias são ponderadas pelas impressões. A variação é a média anterior menos a média atual. Abaixo de 0,05 posição, a variação é neutra; o filtro de movimentos significativos usa 0,5. O detalhe de uma consulta usa a mesma comparação entre períodos da tabela. O primeiro e o último dia registrados são observações separadas.
 
-Os dias observados estão sempre visíveis: 10 dias em 90 não significam cobertura completa. Os pontos diários seguem o calendário real e as lacunas interrompem a linha. Setas, Home e End percorrem as datas. Expanda os valores diários para os ler. Semanas inteiramente ausentes mantêm lacunas; as semanas nas extremidades podem ser parciais.
+O número de dias observados está sempre visível: 10 dias em 90 não são cobertura completa. Os pontos diários seguem o calendário real e os dias ausentes interrompem a linha. As datas podem ser percorridas com as teclas de seta, Home e End; os valores diários aparecem ao expandir a lista. Semanas totalmente sem dados ficam em branco; as semanas nas extremidades do período podem ser parciais.
 
-A ligação para Desempenho de pesquisa preserva a consulta exata e as datas do arquivo. Para períodos anteriores à retenção do Google, a primeira data disponível é indicada antes da navegação. Não há classificações de concorrentes, volume pago nem previsões de tráfego.
+O link para **Desempenho da pesquisa** mantém a consulta exata e as datas do arquivo. Se o período ultrapassar a retenção de dados do Google, a primeira data disponível é informada antes de abrir a página.
 
-Se nenhuma consulta foi observada nos dois períodos, não é possível calcular subidas e descidas. O cartão de movimentos explica isto, sem apresentar movimento zero medido. A expansão só está disponível com mais de três movimentos.
+A tela não oferece posições de concorrentes, volume de busca nem previsões de tráfego.

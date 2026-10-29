@@ -1,14 +1,14 @@
 ---
 title: Dizin durumu
-description: Google her sayfanızı aramaya almış mı, almadıysa neden, en son ne zaman uğramış? Günde en çok 2.000 sorgu sorabilirsiniz.
+description: Google her sayfanızı dizine almış mı, almadıysa neden, en son ne zaman taramış? Google mülk başına günde 2.000 adres denetimine izin verir.
 screen: Site denetimi, Dizin durumu sekmesi
 route: /p/<proje>/audit?auditId=<denetim>&tab=index
 updated: 2026-10-22
 ---
 
-Google'ın hangi sayfalarınızı aramaya aldığını burada öğrenirsiniz.
+Site denetimi bir sayfanın açılıp açılmadığını gösterir, ama Google'ın onu dizine (aramada gösterdiği sayfa listesine) alıp almadığını bilemez. **Dizin durumu** sekmesi bunu Google'ın URL Denetimi hizmetine sorar ve yanıtı bu bilgisayarda saklar. Yanıt eskimedikçe aynı sayfayı yeniden sormaz.
 
-Site denetimi, sayfanın açılıp açılmadığını gösterir. Google'ın sayfayı gerçekten dizine (Google'ın sayfa listesine) alıp almadığını gösteremez. **Dizin durumu** sekmesi bunu Google'a sorar ve yanıtı bu bilgisayarda saklar. Aynı soruyu tekrar tekrar sormaz, yalnızca eskiyen yanıtları yeniden sorar. Bu önemlidir, çünkü Google her mülk (Search Console'daki site kaydınız) için günde 2.000 soru hakkı verir. Uygulama ve asistanınız bu hakkı paylaşır.
+Bu tasarruf önemlidir: Google her mülk (Search Console'daki site kaydı) için günde 2.000 sorgu hakkı verir ve uygulamayla ajanınız bu hakkı paylaşır.
 
 ## Ekranda neler var
 
@@ -16,13 +16,15 @@ Site denetimi, sayfanın açılıp açılmadığını gösterir. Google'ın sayf
 
 - **Google'da**: aramada çıkabilir.
 - **Dizinde değil**: Google baktı ama almadı.
-- **Yanıt bekleyen**: henüz sorulmadı ya da cevap alınamadı.
+- **Yanıt bekleyen**: henüz sorulmadı ya da yanıt alınamadı.
 
-**Özet kutuları.** Kaç sayfanın sorulduğunu, kaçının dizinde olduğunu, kaçının olmadığını ve kaçının beklediğini görürsünüz. "Google'ın farklı adresi seçtiği sayfalar" kutusu, Google'ın bildirdiğiniz canonical'dan (asıl adres bildirimi) farklı bir adres seçtiği sayfaları sayar. "Bu denetimde henüz sorulmamış" kutusu, sorulmayı bekleyen sayfa sayısıdır.
+Bir gruba tıklayınca alttaki tablo yalnızca o sayfaları gösterir; **Tümünü göster** filtreyi kaldırır.
 
-**Google'da durumunu kontrol et düğmesi.** Her basışta en çok 25 sayfa sorar. Önce en uzun süredir yanıtı alınmayanları sorar. Günlük sınır dolarsa "Google'ın günlük 2.000 adres sınırına ulaşıldı" uyarısı çıkar. Search Console bağlı değilse düğme kapalıdır. Denetlenen alan adı bağlı mülkün içinde değilse de kapalıdır.
+**Özet kutuları.** Kaç sayfanın sorulduğunu, kaçının dizinde olduğunu, kaçının olmadığını ve kaçının beklediğini gösterir. **Google'ın farklı adresi seçtiği sayfalar** kutusu, Google'ın sizin canonical (asıl adres bildirimi) etiketinizden farklı bir adres seçtiği sayfaları sayar. **Bu denetimin Google'a sorulmamış sayfaları** kutusu, sırada bekleyen sayfa sayısıdır.
 
-**Tablo.** Sütunlar şunlar: **Sayfa**, **Durum**, **Sebep**, **Google'ın seçtiği adres**, **Google'ın son ziyareti**. Durum hücresinde "Google'da", "Kontrol edilmedi", "Yanıt alınamadı", "Hata" ya da Google'ın kendi durumunun Türkçesi yazar. Toplam 18 durumun Türkçesi var. Birkaç örnek:
+**Google'da durumunu kontrol et düğmesi.** Her basışta en çok 25 sayfa sorar; önce en uzun süredir yanıtı olmayan sayfaları seçer. Düğmenin yanında **Bugünkü kotadan … sorgu kaldı** yazar. Günlük sınır dolarsa kaç sayfanın sırada beklediği ve sınırın birkaç saat içinde yenileneceği yazılır.
+
+**Tablo.** Sütunlar şunlar: **Sayfa**, **Durum**, **Sebep**, **Google'ın seçtiği adres**, **Google'ın son ziyareti**. Durum hücresinde **Google'da**, **Kontrol edilmedi**, **Yanıt alınamadı**, **Hata** ya da Google'ın bildirdiği durumun Türkçesi yazar. Google'ın 18 durumunun her birinin Türkçesi vardır. Birkaç örnek:
 
 - "Keşfedildi, henüz taranmadı"
 - "'noindex' etiketiyle dışlandı" (sayfa aramadan gizlenmiş)
@@ -34,25 +36,34 @@ Tabloyu CSV olarak indirebilirsiniz.
 
 ## Nasıl kullanılır
 
-1. Denetim bitince sekmeyi açın. "Yanıt bekleyen" sayısı yüksekse **Google'da durumunu kontrol et**'e basın. Her basışta 25 sayfa ilerler. Küçük sitede birkaç basış yeter.
-2. Önce "Dizinde değil" grubuna bakın. **Sebep** sütunu Google'ın gerekçesidir ve çoğu zaman ne yapacağınızı söyler. "robots.txt engelliyor" ise engeli kaldırın. "'noindex' etiketiyle dışlandı" ise etiketi silin. "Keşfedildi, henüz taranmadı" ise genelde beklemek yeterlidir.
-3. "Google bu adresi bilmiyor" diyen önemli sayfaları site haritasına ekleyin. Haritayı Search Console'a gönderin. Üç beş çok önemli sayfa için Search Console'da elle "Dizine eklenmesini iste" deyin.
-4. "Google'ın farklı adresi seçtiği sayfalar" kutusu sıfır değilse **Google'ın seçtiği adres** sütununa bakın. Google sizin bildirdiğiniz asıl adresi beğenmemiştir. Ya sizinkini düzeltin ya da Google'ın seçtiğini asıl adres yapın.
-5. Birkaç gün sonra tekrar basın. Yalnızca eskiyen cevaplar yeniden sorulur, kotanız boşa gitmez.
+1. Denetim bitince sekmeyi açın. **Yanıt bekleyen** sayısı yüksekse **Google'da durumunu kontrol et** düğmesine basın. Her basış 25 sayfa ilerler; küçük bir site için birkaç basış yeter.
+2. Önce **Dizinde değil** grubuna bakın. **Sebep** sütunu Google'ın gerekçesidir ve çoğu zaman yapılacak işi söyler:
+   - "robots.txt engelliyor": engeli kaldırın.
+   - "'noindex' etiketiyle dışlandı": sayfa aramada görünmeli ise etiketi silin.
+   - "Keşfedildi, henüz taranmadı": çoğunlukla beklemek yeter.
+3. "Google bu adresi bilmiyor" diyen önemli sayfaları site haritasına ekleyin ve haritayı Search Console'a gönderin. En önemli birkaç sayfa için Search Console'da "Dizine eklenmesini iste" deyin.
+4. **Google'ın farklı adresi seçtiği sayfalar** sıfır değilse **Google'ın seçtiği adres** sütununa bakın. Google sizin bildirdiğiniz asıl adresi kabul etmemiştir. Ya kendi bildiriminizi düzeltin ya da Google'ın seçtiği adresi asıl adres yapın.
+5. Birkaç gün sonra yeniden basın. Yalnızca eskiyen yanıtlar yeniden sorulur, kota boşa gitmez.
 
 ## Sayılar nasıl hesaplanır
 
-Google "dizinde" derse sayfa "Google'da", "dizinde değil" ya da "belirsiz" derse "Dizinde değil" sayılır. Cevap yoksa sayfa "Yanıt bekleyen" olur.
+Google "dizinde" derse sayfa **Google'da** sayılır. "Dizinde değil" ya da "belirsiz" derse **Dizinde değil** sayılır. Yanıt yoksa sayfa **Yanıt bekleyen** grubundadır.
 
-Cevap belli bir süre sonra eski sayılır ve yeniden sorulur. Dizindeki sayfa için bu süre 14 gündür. Dizinde olmayan ya da hatalı cevap için 3 gündür. Hiç sorulmamış sayfa her zaman sorulmaya hazırdır. Günlük sınır son 24 saatteki soru sayısıyla hesaplanır. Uygulama yalnızca kendi sorularını sayar. Search Console'da elle yaptığınız sorgular bu sayaca girmez ama Google'ın gerçek sınırından düşer.
+Bir yanıt şu sürelerden sonra eskir ve yeniden sorulabilir:
+
+- Dizindeki sayfa: 14 gün.
+- Dizinde olmayan sayfa ya da hatalı yanıt: 3 gün.
+- Hiç sorulmamış sayfa: her zaman sıradadır.
+
+Günlük sınır, son 24 saatteki sorgu sayısıyla hesaplanır. Uygulama yalnızca kendi sorgularını sayar. Search Console'da elle yaptığınız denetimler bu sayaca girmez, ama Google'ın gerçek sınırından düşer.
 
 Asıl adres uyuşmazlığı, Google'ın seçtiği adresle sizin bildirdiğiniz adresin farklı olmasıdır. Sondaki eğik çizgi farkı da sayılır.
 
-Google'ın son taraması 90 günden eskiyse denetim "Google bu sayfayı uzun süredir taramadı" sorununu yazar. Eskimiş cevaplar tek bir "Google'ın bazı sayfalar hakkındaki yanıtı eskimiş" sorununda toplanır.
+Google'ın son taraması 90 günden eskiyse denetim "Google bu sayfayı uzun süredir taramadı" sorununu yazar. Eskimiş yanıtlar tek bir "Google'ın bazı sayfalar hakkındaki yanıtı eskimiş" sorununda toplanır.
 
 ## Sık sorulanlar
 
-**Düğme neden kapalı?** Üç neden olabilir. Search Console bağlı değildir. Sorulacak sayfa kalmamıştır. Ya da denetlediğiniz alan adı bağlı mülkün içinde değildir. Başka bir siteyi denetlediyseniz böyle olur.
+**Düğme neden kapalı?** Üç nedenden biri geçerlidir: Search Console bağlı değildir, sorulacak sayfa kalmamıştır ya da denetlenen alan adı bağlı mülkün içinde değildir. Sonuncusu, projenin sitesi dışında bir siteyi denetlediğinizde olur.
 
 **2.000 sınırı kimin?** Mülkün. Aynı mülke bağlı iki proje ve asistanınız aynı havuzdan harcar.
 
@@ -62,6 +73,6 @@ Google'ın son taraması 90 günden eskiyse denetim "Google bu sayfayı uzun sü
 
 ## Sınırlar
 
-Cevaplar Google'ın verdiği kadardır. Google bazı alanları boş bırakabilir. Günde 2.000 sorudan fazlasını soramazsınız. 10.000 sayfalık bir siteyi tamamen sormak beş gün sürer. Sekme yalnızca taranan sayfaları sorar. Denetime girmeyen adresler listede görünmez.
+Yanıtlar Google'ın verdiği kadardır; Google bazı alanları boş bırakabilir. Günlük sınır nedeniyle 10.000 sayfalık bir sitenin tamamını sormak en az beş gün sürer. Sekme yalnızca denetimde taranan sayfaları sorar; denetime girmeyen adresler listede görünmez.
 
 <!-- Kaynaklar: src/client/features/audit/IndexCoverageView.tsx; CoverageTable.tsx; CoverageVerdictDonut.tsx; coverageBuckets.ts; coverageReasons.ts; export.ts; src/server/features/gsc/indexCoverage.ts; src/server/lib/audit/google-verdict-checks.ts; src/shared/gsc-coverage-states.ts; src/db/gsc-inspection.schema.ts; src/server/features/quotas/QuotaService.ts -->

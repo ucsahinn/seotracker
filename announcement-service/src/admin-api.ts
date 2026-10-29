@@ -3,6 +3,7 @@ import {
   AnnouncementMutationConflictError,
   type AnnouncementRepository,
 } from "./repository";
+import { translateFields, type Translator } from "./translate";
 import {
   inputSchema,
   isAnnouncement,
@@ -249,13 +250,54 @@ async function updateAnnouncement(
   return json({ announcement: updated });
 }
 
+const TRANSLATE_FIELD_LIMIT = 40;
+const TRANSLATE_FIELD_LENGTH = 4000;
+
+/** Drafts English copy from the Turkish fields; it never saves anything. */
+async function translateDraft(
+  request: Request,
+  translator: Translator | undefined,
+): Promise<Response> {
+  if (!translator)
+    return json({ error: "Automatic translation is not configured" }, 503);
+  const body: unknown = await request.json().catch(() => null);
+  const fields =
+    body && typeof body === "object" && "fields" in body
+      ? (body as { fields: unknown }).fields
+      : null;
+  if (
+    !Array.isArray(fields) ||
+    fields.length === 0 ||
+    fields.length > TRANSLATE_FIELD_LIMIT ||
+    !fields.every(
+      (field): field is string =>
+        typeof field === "string" && field.length <= TRANSLATE_FIELD_LENGTH,
+    )
+  )
+    return json(
+      { error: "Send 1-40 text fields of up to 4000 characters" },
+      400,
+    );
+  try {
+    return json({ fields: await translateFields(fields, translator) });
+  } catch {
+    return json(
+      { error: "Translation failed. Try again or write it by hand." },
+      502,
+    );
+  }
+}
+
 export async function handleAdminApiRequest(
   request: Request,
   repository: AnnouncementRepository,
   now: () => Date,
+  translator?: Translator,
 ): Promise<Response> {
   const url = new URL(request.url);
   const method = request.method.toUpperCase();
+  if (url.pathname === "/api/admin/translate" && method === "POST")
+    return translateDraft(request, translator);
   if (url.pathname === "/api/admin/announcements" && method === "GET")
     return listAnnouncements(request, repository);
   if (url.pathname === "/api/admin/announcements" && method === "POST")

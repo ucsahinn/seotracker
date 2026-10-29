@@ -2,9 +2,9 @@
 
 New features and fixes, newest release first.
 
-## [0.8.6] Alpha — 2026-10-29
+## [0.8.7] Alpha — 2026-10-29
 
-This entry brings together features and fixes from 0.5.0 to 0.8.6: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
+This entry brings together features and fixes from 0.5.0 to 0.8.7: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
 
 ### ✨ Highlights
 
@@ -52,6 +52,7 @@ This entry brings together features and fixes from 0.5.0 to 0.8.6: site audits, 
 - **Guide:** The user guide, audit rules and release notes are available in six languages.
 - **Privacy:** On seowatcher.io, measurement runs only if you accept it.
 - **Reviewed translations:** Screen text and guides in all six languages were updated to match the revised screens.
+- **Translation fixes:** Mistranslated column and category names on the French, German, Italian and Portuguese screens were corrected; the Analytics role is now named "Viewer", as in Google.
 
 ### 🎨 Appearance and help
 

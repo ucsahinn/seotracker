@@ -14,7 +14,7 @@
     <title>Clé PageSpeed | Guide seowatcher</title>
     <meta
       name="description"
-      content="Enregistrer une clé PageSpeed et comprendre les tests et compteurs d’audit."
+      content="Créer une clé d’API PageSpeed Insights gratuite, l’enregistrer dans Paramètres, la tester et lire les compteurs de quota des audits."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -91,7 +91,7 @@
     <meta property="og:title" content="Clé PageSpeed | Guide seowatcher" />
     <meta
       property="og:description"
-      content="Enregistrer une clé PageSpeed et comprendre les tests et compteurs d’audit."
+      content="Créer une clé d’API PageSpeed Insights gratuite, l’enregistrer dans Paramètres, la tester et lire les compteurs de quota des audits."
     />
     <meta
       property="og:image"
@@ -102,7 +102,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta property="article:modified_time" content="2026-10-29" />
     <meta
@@ -119,7 +119,7 @@
     <meta name="twitter:title" content="Clé PageSpeed | Guide seowatcher" />
     <meta
       name="twitter:description"
-      content="Enregistrer une clé PageSpeed et comprendre les tests et compteurs d’audit."
+      content="Créer une clé d’API PageSpeed Insights gratuite, l’enregistrer dans Paramètres, la tester et lire les compteurs de quota des audits."
     />
     <meta
       name="twitter:image"
@@ -127,7 +127,7 @@
     />
     <meta
       name="twitter:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
@@ -162,7 +162,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/fr/guides/cle-pagespeed/#article",
             "headline": "Clé PageSpeed",
-            "description": "Enregistrer une clé PageSpeed et comprendre les tests et compteurs d’audit.",
+            "description": "Créer une clé d’API PageSpeed Insights gratuite, l’enregistrer dans Paramètres, la tester et lire les compteurs de quota des audits.",
             "url": "https://seowatcher.io/fr/guides/cle-pagespeed/",
             "inLanguage": "fr",
             "datePublished": "2026-10-23",
@@ -201,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1472,7 +1472,7 @@
           <ul>
             <li>
               <a href="/fr/guides/quest-ce-que-seowatcher/"
-                >Qu'est-ce que seowatcher ?</a
+                >Qu’est-ce que seowatcher ?</a
               >
             </li>
             <li>
@@ -1513,23 +1513,27 @@
               >
             </li>
             <li>
-              <a href="/fr/guides/statistiques/">Comprendre les statistiques</a>
+              <a href="/fr/guides/statistiques/"
+                >Comprendre les données Analytics</a
+              >
             </li>
             <li><a href="/fr/guides/audit-du-site/">Audit du site</a></li>
             <li>
-              <a href="/fr/guides/etat-de-l-index/">État de l'indexation</a>
+              <a href="/fr/guides/etat-de-l-index/">État de l’indexation</a>
             </li>
             <li><a href="/fr/guides/rapports/">Rapports et modèles</a></li>
-            <li><a href="/fr/guides/infos-du-projet/">Infos du projet</a></li>
+            <li>
+              <a href="/fr/guides/infos-du-projet/">Contexte du projet</a>
+            </li>
             <li><a href="/fr/guides/parametres/">Paramètres</a></li>
           </ul>
           <p class="nav-group">Aide et référence</p>
           <ul>
             <li><a href="/fr/guides/aide/">Aide</a></li>
-            <li><a href="/fr/guides/regles-d-audit/">Règles d'audit</a></li>
+            <li><a href="/fr/guides/regles-d-audit/">Règles d’audit</a></li>
             <li>
               <a href="/fr/guides/installation-assistant/"
-                >Installation de l'assistant</a
+                >Configuration de l’agent</a
               >
             </li>
             <li><a href="/fr/guides/depannage/">Dépannage</a></li>
@@ -1540,45 +1544,94 @@
       <article id="icerik" data-page="pagespeed-anahtari">
         <h1>Clé PageSpeed</h1>
         <p class="lede">
-          Enregistrer une clé PageSpeed et comprendre les tests et compteurs
-          d’audit.
+          Créer une clé d’API PageSpeed Insights gratuite, l’enregistrer dans
+          Paramètres, la tester et lire les compteurs de quota des audits.
         </p>
         <p>
-          Une clé d'API PageSpeed Insights permet à l'audit de site de mesurer
-          la vitesse de vos pages avec PageSpeed Insights de Google. La clé se
-          crée gratuitement dans Google Cloud et reste facultative : sans clé,
-          l'application tente de mesurer au plus 50 pages par audit.
+          L’audit du site mesure la vitesse des pages avec Google PageSpeed
+          Insights. La clé d’API est gratuite et facultative. Sans clé,
+          l’application mesure au plus 50 pages par audit, et Google interrompt
+          souvent plus tôt les requêtes sans clé avec une erreur 429 (trop de
+          requêtes). L’exploration et les autres contrôles n’ont pas besoin de
+          clé.
         </p>
-        <h2 id="ajouter-une-cle">Ajouter une clé</h2>
+        <h2 id="creer-et-enregistrer-une-cle">Créer et enregistrer une clé</h2>
+        <ol>
+          <li>
+            Dans la console Google Cloud, activez
+            <strong>PageSpeed Insights API</strong>.
+          </li>
+          <li>Créez une clé d’API et limitez-la à PageSpeed Insights API.</li>
+          <li>
+            Dans seowatcher, ouvrez
+            <strong>Paramètres → Tests de vitesse</strong>, collez la clé et
+            cliquez sur <strong>Enregistrer</strong>.
+          </li>
+        </ol>
         <p>
-          Activez PageSpeed Insights API dans Google Cloud, créez une clé et
-          limitez-la à cette API. Enregistrez-la dans Paramètres → Mesure de
-          vitesse. La clé est chiffrée et jamais affichée. Docker accepte
-          PAGESPEED_API_KEY; la valeur des Paramètres est prioritaire.
+          L’application chiffre la clé et ne l’affiche plus jamais. Avec Docker,
+          vous pouvez utiliser la variable <code>PAGESPEED_API_KEY</code> ; une
+          clé enregistrée dans Paramètres est prioritaire.
         </p>
-        <h2 id="sens-du-test">Sens du test</h2>
+        <h2 id="tester-la-cle">Tester la clé</h2>
         <p>
-          Le test envoie une requête mobile réelle pour example.com. Il ne
-          mesure pas votre site et n'augmente pas le compteur d'audit. Le
-          résultat et la date apparaissent. Le bouton reste désactivé pendant la
-          requête et au moins dix secondes après le clic. Changer de clé retire
-          l'ancien résultat.
-        </p>
-        <h2 id="limites-et-recuperation">Limites et récupération</h2>
-        <p>
-          Sans clé, l'application tente au plus 50 pages par audit. Google peut
-          limiter plus tôt; une clé ne garantit pas le succès. Le quota réel se
-          consulte dans Google Cloud. Le compteur PageSpeed ne couvre que les
-          audits commencés dans les dernières 24 heures, sans tests ni autres
-          programmes.
+          <strong>Tester la clé</strong> envoie une vraie requête mobile pour
+          example.com. Le test ne mesure pas votre site et n’entre pas dans le
+          compteur des audits. Le résultat et sa date s’affichent à côté du
+          bouton. Le bouton reste désactivé pendant le test et au moins dix
+          secondes après le clic. Enregistrer une autre clé efface l’ancien
+          résultat.
         </p>
         <p>
-          Clé invalide : recopiez-la. Pour 403, vérifiez l'activation de l'API
-          et les restrictions. Attendez en cas de limite journalière ou de
-          débit, puis consultez les quotas Cloud. Réessayez après une erreur
-          réseau. Enregistré décrit la configuration; un test réussi confirme
-          seulement cette requête.
+          Un test réussi prouve seulement que cette requête a abouti. Une clé ne
+          garantit pas que chaque mesure d’audit réussira ; consultez votre
+          quota réel dans la console Google Cloud.
         </p>
+        <h2 id="compteurs-de-quota">Compteurs de quota</h2>
+        <p>
+          Le compteur PageSpeed de <strong>Paramètres → Limites</strong> compte
+          les mesures des audits lancés au cours des dernières 24 heures. Il ne
+          compte ni les tests de clé ni les autres programmes qui utilisent la
+          même clé.
+        </p>
+        <h2 id="resoudre-un-echec">Résoudre un échec</h2>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Résultat</th>
+                <th>Que faire</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Clé invalide</td>
+                <td>
+                  Recopiez la clé depuis la console Google Cloud et
+                  enregistrez-la.
+                </td>
+              </tr>
+              <tr>
+                <td>403 ou clé restreinte</td>
+                <td>
+                  Vérifiez que l’API est activée et que les restrictions de la
+                  clé l’autorisent.
+                </td>
+              </tr>
+              <tr>
+                <td>429 ou quota quotidien atteint</td>
+                <td>
+                  Attendez la réinitialisation du quota, puis consultez les
+                  quotas dans Google Cloud.
+                </td>
+              </tr>
+              <tr>
+                <td>Erreur réseau</td>
+                <td>Vérifiez la connexion internet et relancez le test.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <nav class="pager" aria-label="Page précédente et suivante">
           <a class="pager-prev" rel="prev" href="/fr/guides/connexion-google/"
             ><span>Précédent</span><strong>Connexion à Google</strong></a
@@ -1587,7 +1640,7 @@
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1599,18 +1652,21 @@
       <nav class="toc" aria-label="Sur cette page">
         <p class="toc-label">Sur cette page</p>
         <ol>
-          <li><a href="#ajouter-une-cle">Ajouter une clé</a></li>
-          <li><a href="#sens-du-test">Sens du test</a></li>
           <li>
-            <a href="#limites-et-recuperation">Limites et récupération</a>
+            <a href="#creer-et-enregistrer-une-cle"
+              >Créer et enregistrer une clé</a
+            >
           </li>
+          <li><a href="#tester-la-cle">Tester la clé</a></li>
+          <li><a href="#compteurs-de-quota">Compteurs de quota</a></li>
+          <li><a href="#resoudre-un-echec">Résoudre un échec</a></li>
         </ol>
       </nav>
     </main>
     <footer>
       <div class="wrap">
         <p class="star">
-          Une étoile aide d'autres personnes à trouver un outil gratuit.
+          Une étoile aide d’autres personnes à trouver un outil gratuit.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

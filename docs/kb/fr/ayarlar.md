@@ -1,33 +1,80 @@
 ---
 title: Paramètres
-description: Portées navigateur, installation et projet; identifiants Google, compteurs locaux et versions.
+description: Ce que règle chaque section des Paramètres, pour ce navigateur ou toute l’installation : langue, identifiants Google, PageSpeed, limites et versions.
 screen: Ayarlar
 route: /settings
 updated: 2026-10-27
 ---
 
-Les Paramètres regroupent les choix qui s'appliquent à ce navigateur (apparence et langue) et à toute l'installation (identifiants Google, clé PageSpeed, limites et mises à jour). Le nom, le domaine et les propriétés Google d'un projet se trouvent dans les **Paramètres du projet**. Cette page explique la portée de chaque réglage et où le modifier.
+Les **Paramètres** regroupent les choix valables pour toute l’installation. Les réglages propres à un projet (nom, domaine, pays, langue et propriétés Google) se trouvent dans ses **Paramètres du projet**.
 
-## Portée des réglages
+## Où s’applique chaque réglage
 
-L'apparence et la langue concernent ce navigateur. Choisissez la langue, puis appliquez-la avec le bouton. Parcourir la liste ne recharge pas la page. La langue du marché du projet est distincte.
+| Réglage                                | Portée              | Où                                             |
+| -------------------------------------- | ------------------- | ---------------------------------------------- |
+| Thème et langue                        | Ce navigateur       | **Paramètres → Apparence**                     |
+| Son des notifications                  | Ce navigateur       | **Paramètres → Notifications**                 |
+| Identifiants Google                    | Tous les projets    | **Paramètres → Google**, **Compte de service** |
+| Clé PageSpeed                          | Tous les projets    | **Paramètres → Tests de vitesse**              |
+| Compteurs de limites                   | Un projet à la fois | **Paramètres → Limites**                       |
+| Nom, domaine, pays, langue             | Un projet           | **Paramètres du projet → Général**             |
+| Propriétés Search Console et Analytics | Un projet           | **Paramètres du projet → Connexions**          |
 
-Les identifiants Google concernent toute l'installation. Le compte de service est prioritaire. Un identifiant enregistré ou une propriété sélectionnée ne prouve pas l'accès aux données. Une erreur de lecture conserve les réglages connus et propose de réessayer. Sélectionnez le fichier JSON ou utilisez le champ de collage masqué, puis enregistrez. La clé privée n'est pas affichée.
+## Apparence
 
-Les réglages du projet gèrent son nom, domaine et propriété. Modifier le domaine conserve l'association Google et l'historique. Pays et langue sont les valeurs par défaut des mots-clés enregistrés; les performances de recherche ont leur propre filtre pays.
+Le thème est conservé dans ce navigateur. Pour changer de langue, choisissez-la dans la liste puis cliquez sur **Appliquer la langue** ; parcourir la liste ne modifie pas la page. Le pays et la langue d’un projet sont un autre réglage : ils fixent le marché par défaut des mots-clés enregistrés.
 
-## Windows, vitesse et limites
+## Notifications
 
-Les réglages Windows sont confirmés par l'application de notification. Docker n'affiche aucun interrupteur. Un lanceur inaccessible signifie inconnu, pas désactivé. Réessayez; les restrictions administrateur sont expliquées.
+Quand l’application est ouverte, les notifications s’affichent à l’écran. Celles qui arrivent pendant que l’onglet est en arrière-plan sont conservées dans l’historique des notifications. **Son des notifications** active ou coupe le son des notifications importantes. **Écouter le son** et **Tester la notification dans l’application** permettent de les essayer.
 
-Sans clé PageSpeed, l'application tente au plus 50 pages par audit. Google peut limiter plus tôt; la clé ne garantit pas le succès. Le test envoie une requête mobile pour example.com, hors compteur d'audit. La date est affichée; changer de clé supprime l'ancien résultat.
+## Identifiants Google
 
-Choisissez le projet dans Limites. L'inspection d'URL compte les requêtes locales de la propriété sur 24 heures glissantes. PageSpeed compte les audits commencés sur cette période. Le solde GA4 date de la dernière réponse; les plafonds standards sont supposés. Les sources anciennes ou absentes restent inconnues. Les pages proviennent du dernier audit terminé du domaine; rapports et modèles couvrent tout le projet.
+Un identifiant Google vaut pour tous les projets. Si un compte de service et un client OAuth sont tous deux enregistrés, le compte de service est utilisé. La procédure complète figure dans le guide [Connexion à Google](/docs/google-baglantisi/).
 
-## Versions
+Pour enregistrer un compte de service, sélectionnez le fichier JSON ou utilisez **Coller le contenu JSON en le masquant**, puis cliquez sur **Enregistrer**. La clé privée n’est jamais affichée.
 
-Le contrôle dans l'application consulte GitHub au plus toutes les six heures. L'application Windows peut vérifier quotidiennement de manière indépendante. Son installation automatique se règle dans Windows. La date du dernier succès indique l'âge de la version connue. Attendez en cas de limite/restriction, puis réessayez; utilisez le diagnostic Aide pour une source absente. Un réglage illisible ne peut pas être modifié.
+Le badge **Enregistré** indique seulement que l’identifiant est stocké, pas que Google accorde l’accès. Si l’identifiant ne peut pas être lu, le dernier enregistrement est conservé et l’écran propose de réessayer.
 
-## Notifications Windows
+Modifier le domaine d’un projet ne change ni la propriété Google ni l’historique. Le filtre par pays de Performances de recherche se choisit indépendamment du pays du projet.
 
-Faites un clic droit sur l’icône seowatcher dans la zone de notification et utilisez **Windows bildirimleri** (activé par défaut). Tant que le lanceur fonctionne, les audits terminés ou échoués de tous les projets et les nouvelles annonces apparaissent en bulles Windows sous environ 90 secondes, même avec le navigateur fermé ou en arrière-plan. Un clic ouvre la page concernée ; plusieurs événements sont regroupés. Le premier lancement ignore les anciens événements ; un redémarrage ne répète pas ceux déjà reçus. Les événements reçus pendant la désactivation ne sont pas affichés ensuite. Les nouvelles versions suivent le réglage de mise à jour existant. Le mode Concentration/Ne pas déranger peut masquer les notifications. Aucune notification si le lanceur est fermé. Cette fonction est absente de Docker.
+## Tests de vitesse
+
+La clé PageSpeed est facultative. Sans clé, chaque audit tente de mesurer au plus 50 pages, et Google peut s’arrêter plus tôt ; une clé ne garantit pas non plus le succès. Le détail figure dans le guide [Clé PageSpeed](/docs/pagespeed-anahtari/).
+
+## Limites
+
+La section **Limites de Google et du système** affiche, pour un projet à la fois, les compteurs que l’application tient elle-même. Choisissez d’abord un projet dans **Projet dont les limites sont affichées**.
+
+- **Inspection de l’URL (Search Console)** : requêtes envoyées par l’application pour cette propriété au cours des dernières 24 heures. L’usage fait ailleurs chez Google n’est pas compté.
+- **PageSpeed** : requêtes des audits lancés au cours des dernières 24 heures.
+- **GA4** : quota restant d’après la dernière réponse. La limite standard d’une propriété est une hypothèse.
+- **Pages d’audit** : tirées du dernier audit terminé sur le domaine du projet.
+- **Rapports et modèles** : tous les enregistrements du projet.
+
+Un compteur ancien ou illisible n’est jamais affiché à zéro ; la ligne de synthèse indique combien de limites ont un usage inconnu.
+
+## Windows
+
+Cette section n’apparaît que dans la version Windows. Les préférences **Démarrer avec Windows** et **Installer les mises à jour automatiquement** sont enregistrées par l’application de la zone de notification ; la version Docker ne les propose pas.
+
+Si l’application de la zone de notification ne répond pas, cela ne signifie pas que le réglage est désactivé : relisez-le avec **Réessayer**. Si un administrateur a verrouillé un réglage, la raison est indiquée à côté.
+
+### Notifications Windows
+
+Ce choix se fait dans le menu de la zone de notification : faites un clic droit sur l’icône seowatcher et activez ou désactivez **Windows bildirimleri** (Notifications Windows). Il est activé par défaut.
+
+Quand il est activé, les audits terminés ou échoués de tous les projets et les nouvelles annonces arrivent en notifications Windows en 90 secondes environ, même navigateur fermé. Un clic sur la notification ouvre la page concernée. Plusieurs événements simultanés sont regroupés en un seul résumé.
+
+- Au premier lancement, les événements passés ne sont pas affichés. Un redémarrage ne répète pas les événements déjà affichés.
+- Les événements survenus pendant que l’option est désactivée, ou que le lanceur est arrêté, ne sont pas affichés après coup.
+- Le mode Concentration ou Ne pas déranger de Windows peut masquer les notifications.
+- Les notifications de nouvelle version suivent votre réglage de mise à jour.
+
+## À propos et vérification des versions
+
+Quand **Vérification de version dans l’application** est activée, l’application cherche une nouvelle version sur GitHub au plus une fois toutes les six heures. L’application Windows peut, indépendamment, vérifier une fois par jour ; l’installation automatique se règle dans la section **Windows**.
+
+La date de la dernière vérification réussie indique l’âge de l’information de version. Si GitHub renvoie une limite de requêtes ou une erreur d’accès, patientez puis réessayez. Pour une erreur 404, utilisez le diagnostic de l’écran **Aide**. Si le réglage ne peut pas être lu, l’interrupteur ne peut pas être modifié.
+
+<!-- Sources: src/routes/_app/settings/; src/client/features/settings/; src/client/features/notifications/NotificationSettings.tsx; src/client/features/quotas/SystemLimitsSection.tsx -->

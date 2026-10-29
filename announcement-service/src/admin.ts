@@ -30,6 +30,7 @@ export const adminPage = String.raw`<!doctype html>
           <label>Mesaj · Türkçe<textarea name="bodyTr" maxlength="4000" required></textarea></label>
           <label>Message · English<textarea name="bodyEn" maxlength="4000" required></textarea></label>
         </div>
+        <div class="translate-row"><button id="translate" type="button">Türkçeden İngilizceye çevir</button><p class="hint" id="translate-hint">Türkçe başlık, mesaj, soru ve seçenekler İngilizce alanlara yazılır. Emojiler ve satırlar korunur. Kaydetmeden önce okuyup düzeltin; kaydettiğinizde onaylamış olursunuz.</p></div>
         <div class="interaction-box">
           <label>Etkileşim türü<select name="interactionType"><option value="none">Yalnızca duyuru</option><option value="poll">Anket · seçenekli yanıt</option><option value="question">Soru · yazılı yanıt</option></select></label>
           <div id="interaction-fields" hidden>

@@ -201,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1497,7 +1497,7 @@
             <li><a href="/kilavuz/firsatlar/">Fırsatlar</a></li>
             <li><a href="/kilavuz/kayitli-kelimeler/">Kayıtlı kelimeler</a></li>
             <li>
-              <a href="/kilavuz/analitik/">Analitik verilerini yorumlama</a>
+              <a href="/kilavuz/analitik/">Analytics verisini yorumlama</a>
             </li>
             <li><a href="/kilavuz/site-denetimi/">Site denetimi</a></li>
             <li><a href="/kilavuz/dizin-durumu/">Dizin durumu</a></li>
@@ -1522,109 +1522,190 @@
           Yerel arşivle Google'ın 16 aylık sınırından eski kayıtları inceleyin.
         </p>
         <p>
-          Bu ekran Search Console Web sorgularının bu bilgisayarda saklanan
-          geçmişini gösterir. Ortalama sıra, her aramada göreceğiniz sabit bir
-          konum değildir. Ülke, cihaz ve arama bağlamıyla değişebilir. Gösterim
-          arama hacmi değildir.
-        </p>
-        <h2 id="once-neye-bakmali">Önce neye bakmalı?</h2>
-        <p>
-          Üstte iki dönemde de gözlenen sorgu sayısı, en az yarım sıra yükselen
-          ve gerileyen sorgular görünür. Karşılaştırması bilinmeyenler ayrıca
-          sayılır. Önce önerilen gerileyen sorgunun geçmişini inceleyin.
-          İnceleme sırası, mutlak sıra değişimi ile kayıtlı gösterimin
-          çarpımıdır; kayıp tıklama tahmini değildir. Hareket listeleri önce üç,
-          genişletilince beş sorgu gösterir.
-        </p>
-        <h2 id="tarihler-ve-arsiv-kapsami">Tarihler ve arşiv kapsamı</h2>
-        <p>
-          30, 90, 180, 480 veya 1825 günlük dönem seçilir. Son seçenek son beş
-          yıllık arşivdir; daha eski tüm geçmişi kapsamaz. Ay adları yaklaşık
-          sürelerdir; kesin başlangıç ve bitiş tarihleri veri ayrıntısındadır.
-          Tarihler America/Los_Angeles takvimindedir. Bitiş, üç günlük gecikme
-          varsayımına dayanır; canlı tamamlanma doğrulaması değildir. İçe
-          aktarım yalnızca Google'ın final verisini ister.
+          Bu ekran, Search Console'daki Web sorgularının bu bilgisayarda biriken
+          geçmişini gösterir. Google bu veriyi 16 ay saklar; seowatcher'ın yerel
+          arşivi, bir kez aldığı günleri bu sınırdan sonra da tutar.
         </p>
         <p>
-          API yanıtı tamamlanan, uygulama sınırına takılan, başarısız ve
-          bilinmeyen günler ayrı sayılır. Eski arşiv günlerinin kapsamı geriye
-          dönük tamamlanmış sayılmaz. Yanıtın tamamlanması Google'ın gizlediği
-          veya döndürmediği sorguları içermez. Son gözlem tarihi ile taranan son
-          tarih farklıdır. Doldurmaya devam etmek birkaç çalıştırma
-          gerektirebilir. Mevcut geçmiş senkronizasyon sırasında okunabilir.
+          İki kavramı baştan ayırın. Ortalama sıra, her aramada göreceğiniz
+          sabit bir konum değildir; ülke, cihaz ve arama bağlamıyla değişir.
+          Gösterim de arama hacmi değildir.
+        </p>
+        <h2 id="once-neye-bakmali">Önce neye bakmalı</h2>
+        <p>
+          Üstte iki dönemde de gözlenen sorgu sayısı ile en az yarım sıra
+          yükselen ve düşen sorgular görünür. Karşılaştırması yapılamayan
+          sorgular ayrıca sayılır.
         </p>
         <p>
-          Sıralama sayfası açıkken eksik geçmiş, her sınırlı aktarımın ardından
-          15 saniye beklenerek otomatik doldurulur. Arşiv yetiştiğinde 15
-          dakikada bir yeniden kontrol edilir. Bağlantı veya kota hatasında
-          yeniden denemeden önce 15 dakika beklenir; yetkilendirme hatasında
-          bağlantıyı sizin yenilemeniz gerekir. Arşivin son kontrol zamanı
-          ayrıca gösterilir; bu, bütün günlerin tamamlandığı anlamına gelmez.
-          Sayfa veya uygulama kapalıyken aktarım çalışmaz.
+          <strong>Önce … sorgusunu inceleyin</strong> önerisiyle başlayın.
+          Öneri, sıra değişiminin büyüklüğü ile gösterimin çarpımına göre
+          seçilir. Bu bir inceleme sırasıdır, kaybedilen tıklama tahmini
+          değildir.
         </p>
         <p>
-          İlk aktarım 480 günlük yaklaşık süre yerine Google'ın 16 takvim aylık
-          saklama sınırından başlar. Bilgisayar uzun süre kapalı kaldıysa
-          bekleyen eksik günler hâlâ okunabilir tarihlerden sürdürülür.
-          Google'ın artık sunmadığı günler geri alınamaz. Daha önce 480 günlük
-          sınırla doldurulmuş arşivlerin eski başlangıcı bu değişiklikle
-          otomatik yeniden taranmaz.
+          <strong>Yükselenler ve düşenler</strong> listeleri önce üç sorgu
+          gösterir; genişletince beşe çıkar. Genişletme düğmesi yalnızca üçten
+          fazla hareket varsa görünür. İki dönemde de gözlenen sorgu yoksa
+          hareket hesaplanamaz ve kart sıfır hareket yazmak yerine bunu söyler.
+        </p>
+        <h2 id="donem">Dönem</h2>
+        <p>
+          30, 90, 180, 480 ya da 1825 günlük dönem seçebilirsiniz. En uzun
+          seçenek son beş yılı kapsar, daha eskisini değil. Ay adları yaklaşık
+          süredir; kesin tarihler
+          <strong>Veri kapsamı ve hesaplama</strong> bölümündedir.
         </p>
         <p>
-          Her çalıştırma en fazla dört pencere işler; çok satırlı pencereler
-          günlük parçalara ayrılarak sonraki çalıştırmalarda sürdürülür. Tek gün
-          için Google'ın sunduğu en fazla 50.000 satır ve boş son sayfa
-          okunabilir. Buna rağmen tamamlanmayan gün eksik olarak kalır. Google
-          anonim sorguları ve bazı düşük hacimli satırları döndürmez; arşiv tüm
-          aramaların listesi değildir.
+          Tarihler Google'ın kullandığı Pasifik saatine (America/Los_Angeles)
+          göredir. Bitiş günü, üç günlük gecikme varsayımıyla seçilir;
+          Google'dan canlı bir tamamlanma onayı alınmaz. Arşive yalnızca
+          Google'ın kesinleşmiş verisi alınır.
         </p>
-        <h2 id="dagilim-ve-sorgu-listesi">Dağılım ve sorgu listesi</h2>
+        <h2 id="arsiv-nasil-dolar">Arşiv nasıl dolar</h2>
         <p>
-          Dağılım tüm mevcut dönem gözlemlerini sayar. Sıralar yuvarlanır: 3,4
-          ilk grupta, 3,5 ikinci gruptadır. Çubuk uzunluğu en büyük gruba
-          görelidir; yanındaki yüzde tüm gözlenen sorgular içindeki paydır. Net
-          değişim yalnızca aynı karşılaştırılabilir sorgular üzerinde
-          hesaplanır. Karşılaştırma yoksa sıfır yazılmaz.
+          Bu ekran açıkken eksik günler kendiliğinden yüklenir.
+          <strong
+            >Bu sayfa açıkken kalan günler otomatik yüklenir; bağlantı veya kota
+            hatasında beklenir.</strong
+          >
+          notu bunu anlatır.
         </p>
+        <ul>
+          <li>
+            Her sınırlı aktarımdan sonra 15 saniye beklenir, sonra bir sonraki
+            parça istenir.
+          </li>
+          <li>Arşiv güncel olduğunda 15 dakikada bir kontrol edilir.</li>
+          <li>
+            Bağlantı ya da kota hatasında yeniden denemeden önce 15 dakika
+            beklenir.
+          </li>
+          <li>Yetkilendirme hatasında bağlantıyı sizin yenilemeniz gerekir.</li>
+          <li>
+            Ekran ya da uygulama kapalıyken aktarım çalışmaz. Arama performansı
+            ekranı da açıkken arşivi günceller.
+            <strong>Arşivi doldurmaya devam et</strong> ile elle de
+            sürdürebilirsiniz.
+          </li>
+        </ul>
         <p>
-          Arama ve filtreler ilk yüz sorguyla sınırlı değildir. Sayaçlar metin
-          ve diğer etkin filtreleri dikkate alır. Üst çeyrek gösterim eşiğine
-          eşit olanlar da dahildir. İlk 10 filtresi önceki kaydı olmayan güncel
-          sorguları da kapsar. İlk 10'dan çıkanlar yalnızca iki dönemde de
-          gözlenen sorgulardır. Filtreleri tek düğmeyle kaldırabilirsiniz.
-          Sayfalar 25, 50 veya 100 kayıt gösterir; özetler sayfa boyutundan
-          etkilenmez.
-        </p>
-        <p>
-          Önceki dönemde olup bu dönemde gözlenmeyenler ayrı listelenir. Bu,
-          sıralamanın sıfıra düştüğünü veya tüm sıralamaların kaybolduğunu
-          kanıtlamaz. Liste gösterime göre ilk 25 kaydı gösterir; arama burada
-          da geçerlidir.
-        </p>
-        <h2 id="gecmisi-yorumlama">Geçmişi yorumlama</h2>
-        <p>
-          Sıra ortalamaları gösterimle ağırlıklıdır. Değişim önceki ortalama
-          eksi mevcut ortalamadır. 0,05 altı nötrdür; belirgin hareket filtresi
-          0,5 kullanır. Ayrıntının başlığı da aynı dönem karşılaştırmasını
-          gösterir. İlk/son kayıtlı gün çifti ayrı kanıttır.
-        </p>
-        <p>
-          Gözlenen gün her zaman gösterilir; örneğin 90 günlük dönemde 10 gün
-          olması tam kapsam değildir. Günlük grafik gerçek tarihlerle
-          aralıklıdır; eksik günlerde çizgi kesilir. Oklar, Home ve End günler
-          arasında gezinir. Günlük değerler açılarak okunabilir. Haftalık
-          çizgilerde tamamen boş haftalar korunur; uç haftalar kısmi olabilir.
+          İlk aktarım, Google'ın 16 aylık saklama sınırının başından başlar.
+          Bilgisayar uzun süre kapalı kaldıysa eksik günler hâlâ okunabilen
+          tarihlerden tamamlanır. Google'ın artık sunmadığı günler geri
+          alınamaz. Daha önce 480 günlük sınırla başlatılmış arşivlerin
+          başlangıcı kendiliğinden yeniden taranmaz.
         </p>
         <p>
-          Arama performansı bağlantısı birebir sorguyu ve arşivin
-          başlangıç/bitiş tarihlerini korur. Google'ın saklama sınırından eski
-          dönemlerde bağlantı yerine kullanılabilir başlangıç açıklanır. Rakip
-          sıralaması, ücretli arama hacmi ve trafik tahmini yoktur.
+          Her çalıştırma en fazla dört zaman penceresi işler. Çok satırlı
+          pencereler günlere bölünür ve sonraki çalıştırmalarda sürdürülür. Bir
+          gün için Google'ın verdiği en fazla 50.000 satır okunur; buna rağmen
+          tamamlanamayan gün eksik kalır.
+        </p>
+        <h2 id="arsiv-kapsamini-okumak">Arşiv kapsamını okumak</h2>
+        <p>
+          Günler dört gruba ayrılır: Google yanıtı tamamlanmış, uygulama
+          sınırına takılmış, başarısız ve bilinmeyen. Eski arşiv günleri geriye
+          dönük olarak tamamlanmış sayılmaz.
         </p>
         <p>
-          İki dönemde de gözlenen sorgu yoksa yükseliş veya düşüş hesaplanamaz.
-          Hareket kartı bunu açıkça söyler; sıfır hareket ölçülmüş gibi sunmaz.
-          Genişletme düğmesi yalnızca üçten fazla hareket varsa görünür.
+          <strong>Taranan son gün</strong> ile son gözlem tarihi farklı
+          şeylerdir. <strong>Son kontrol</strong> zamanı da tüm günlerin
+          tamamlandığı anlamına gelmez. Aktarım sürerken mevcut geçmiş
+          okunabilir.
+        </p>
+        <p>
+          &quot;Yanıt tamamlandı&quot; bile tüm aramaları kapsamaz: Google
+          anonim sorguları ve bazı düşük hacimli satırları hiç döndürmez. Arşiv
+          tüm aramaların listesi değildir.
+        </p>
+        <h2 id="sira-dagilimi">Sıra dağılımı</h2>
+        <p>
+          <strong>Sıra dağılımı</strong> seçili dönemde gözlenen tüm sorguları
+          gruplara ayırır. Sıralar yuvarlanır: 3,4 ilk grupta, 3,5 ikinci
+          gruptadır. Çubuk uzunluğu en büyük gruba göredir; yanındaki yüzde ise
+          tüm gözlenen sorgular içindeki paydır. Net değişim yalnızca iki
+          dönemde de gözlenen sorgular üzerinden hesaplanır. Karşılaştırma yoksa
+          sıfır yazılmaz.
+        </p>
+        <h2 id="sorgu-listesi-ve-filtreler">Sorgu listesi ve filtreler</h2>
+        <p>
+          <strong>Arşivde sorgu ara</strong> ve filtreler ilk yüz sorguyla
+          sınırlı değildir; tüm arşivde çalışır. Sayaçlar etkin olan bütün
+          filtreleri hesaba katar.
+        </p>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Filtre</th>
+                <th>Gösterdiği sorgular</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>İlk 10</strong></td>
+                <td>
+                  Dönem ortalaması ilk 10'da olanlar; önceki kaydı olmayanlar
+                  dahil.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>İlk 10'dan çıkanlar</strong></td>
+                <td>
+                  Yalnızca iki dönemde de gözlenen ve ilk 10'dan düşenler.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>En çok gösterilenler</strong></td>
+                <td>Gösterimi üst çeyrek eşiğinde ya da üstünde olanlar.</td>
+              </tr>
+              <tr>
+                <td><strong>Hiç tıklanmayan</strong></td>
+                <td>Gösterilmiş ama hiç tıklanmamış sorgular.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <strong>Tüm filtreleri kaldır</strong> hepsini birden kapatır. Sayfa
+          25, 50 ya da 100 sorgu gösterir; özetler sayfa boyutundan etkilenmez.
+        </p>
+        <p>
+          Önceki dönemde görünüp bu dönemde gözlenmeyen sorgular ayrı bir
+          listededir. Bu liste, sıralamanın sıfıra düştüğünü ya da kaybolduğunu
+          kanıtlamaz. Gösterime göre ilk 25 kayıt listelenir ve arama burada da
+          çalışır.
+        </p>
+        <h2 id="bir-sorgunun-gecmisi">Bir sorgunun geçmişi</h2>
+        <p>
+          Sıra ortalamaları gösterimle ağırlıklıdır. Değişim, önceki ortalamadan
+          güncel ortalamanın çıkarılmasıyla bulunur. 0,05'ten küçük değişim
+          nötrdür; belirgin hareket eşiği 0,5'tir.
+          <strong>İlk/son kayıtlı gün</strong> ayrı bir kanıttır, dönem
+          karşılaştırmasının yerine geçmez.
+        </p>
+        <p>
+          <strong>Gözlenen gün</strong> sayısı her zaman yazar. 90 günlük
+          dönemde 10 gün gözlem tam kapsam değildir. Günlük grafik gerçek
+          tarihlerle çizilir; eksik günlerde çizgi kesilir. Ok tuşları, Home ve
+          End günler arasında gezinir;
+          <strong>Günlük değerler</strong> değerleri metin olarak açar. Haftalık
+          görünümde tamamen boş haftalar boş kalır, ilk ve son hafta kısmi
+          olabilir.
+        </p>
+        <p>
+          <strong>Arama performansında aç</strong> aynı sorguyu ve arşiv
+          tarihlerini korur. Dönem Google'ın 16 aylık sınırından eskiyse
+          bağlantı yerine kullanılabilir başlangıç tarihi yazılır.
+        </p>
+        <p>
+          <strong>Kayıtlı kelimelere ekle</strong> sorguyu
+          <a href="/kilavuz/kayitli-kelimeler/">Kayıtlı kelimeler</a> ekranına
+          ekler.
+        </p>
+        <p>
+          Bu ekranda rakip sıralaması, arama hacmi ya da trafik tahmini yoktur.
         </p>
         <nav class="pager" aria-label="Önceki ve sonraki sayfa">
           <a class="pager-prev" rel="prev" href="/kilavuz/arama-performansi/"
@@ -1646,14 +1727,15 @@
       <nav class="toc" aria-label="Bu sayfada">
         <p class="toc-label">Bu sayfada</p>
         <ol>
-          <li><a href="#once-neye-bakmali">Önce neye bakmalı?</a></li>
+          <li><a href="#once-neye-bakmali">Önce neye bakmalı</a></li>
+          <li><a href="#donem">Dönem</a></li>
+          <li><a href="#arsiv-nasil-dolar">Arşiv nasıl dolar</a></li>
+          <li><a href="#arsiv-kapsamini-okumak">Arşiv kapsamını okumak</a></li>
+          <li><a href="#sira-dagilimi">Sıra dağılımı</a></li>
           <li>
-            <a href="#tarihler-ve-arsiv-kapsami">Tarihler ve arşiv kapsamı</a>
+            <a href="#sorgu-listesi-ve-filtreler">Sorgu listesi ve filtreler</a>
           </li>
-          <li>
-            <a href="#dagilim-ve-sorgu-listesi">Dağılım ve sorgu listesi</a>
-          </li>
-          <li><a href="#gecmisi-yorumlama">Geçmişi yorumlama</a></li>
+          <li><a href="#bir-sorgunun-gecmisi">Bir sorgunun geçmişi</a></li>
         </ol>
       </nav>
     </main>

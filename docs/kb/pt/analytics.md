@@ -1,37 +1,58 @@
 ---
-title: Entender os dados de análise
-description: Analytics mostra visitas, engajamento e eventos principais medidos na propriedade GA4.
+title: Compreender os dados do Analytics
+description: Como ler sessões, engajamento, eventos principais e receita do GA4 do site, verificar a medição e exportar as linhas necessárias.
 screen: Analytics
 route: /p/<proje>/analytics
 updated: 2026-10-27
 ---
 
-Os links de Oportunidades abrem o mesmo grupo de endereços normalizados e as datas da fonte com `pageGroup`. O servidor lê todas as linhas de páginas de destino orgânicas do Google, página por página, antes do filtro e da paginação de 50/100/200 linhas na tela. Parâmetros de consulta e barras finais pertencem ao mesmo grupo; hosts diferentes e caminhos com maiúsculas diferentes ficam separados. Limites da fonte ou de qualidade impedem confirmar o grupo completo e são informados. Um resultado vazio não prova ausência de tráfego. O resumo mantém o escopo da propriedade. O filtro pode ser removido; URL, navegação Voltar e exportações preservam seu escopo.
+A tela **Analytics** lê a propriedade do GA4 conectada ao projeto. No topo fica um resumo de sessões, taxa de engajamento, eventos principais e receita de compras. Abaixo, o seletor de relatórios oferece **Páginas de destino**, **Páginas e telas**, **Aquisição de tráfego**, **Eventos principais**, **E-commerce**, **Pesquisa no site**, **Público** e **Status da medição**. As notas sobre como ler os números ficam na seção recolhida **Compreender os dados do Analytics**; escopo, datas e avisos permanecem sempre visíveis.
 
-Analytics mostra visitas, engajamento e eventos principais medidos na propriedade GA4. O seletor oferece páginas de destino, páginas, aquisição, eventos principais, comércio eletrônico, pesquisa interna, público e configurações de medição.
+## Escopo: canal, propriedade e datas
 
-## Leia primeiro o escopo
+O canal padrão é **Pesquisa orgânica**, que inclui todos os mecanismos de busca, não só o Google. **Todo o tráfego** muda ao mesmo tempo o resumo e o relatório. **Pesquisa no site** sempre cobre todo o tráfego e não tem seletor de canal.
 
-Se as medições forem desconhecidas, o tráfego é indicado como não determinável; os valores conhecidos são preservados. As restrições informadas aparecem junto às métricas. Quando a causa é desconhecida, isso é dito explicitamente. Pode tentar novamente ou verificar as configurações; mudar de canal não é sugerido como solução para um erro de leitura. As notas gerais ficam recolhidas em **Compreender os dados do Analytics**; escopo, período e avisos permanecem visíveis.
+Os números incluem todos os hosts e fluxos de dados da propriedade. Se outro site ou aplicativo enviar dados para a mesma propriedade, esses dados também entram.
 
-A busca orgânica inclui mecanismos além do Google. Todo o tráfego altera o resumo e o relatório juntos. A pesquisa interna sempre mostra eventos medidos de resultados de pesquisa em todos os canais, sem seletor de canal. Todos os hosts e fluxos da propriedade estão incluídos. Outros sites ou aplicativos podem contribuir para os totais.
+Os períodos de 7, 28 e 90 dias terminam ontem, no fuso horário da propriedade. A tela mostra as datas atuais, o período anterior de mesma duração e o fuso horário. Ontem é um dia encerrado, mas o GA4 ainda pode reprocessar os dias recentes. Um link pode definir datas exatas com `startDate` e `endDate`; uma data final no futuro volta para ontem, com um aviso.
 
-Os períodos de 7, 28 e 90 dias terminam ontem no fuso da propriedade. Ontem é um dia de calendário encerrado, sem garantia de dados definitivos. Dias recentes podem ser reprocessados. As datas efetivas, o período anterior de mesma duração e o fuso são exibidos. Links aceitam startDate/endDate juntos; uma data final futura é limitada a ontem com aviso. GA4 e Search Console usam calendários e medidas diferentes. Datas iguais não garantem intervalos temporais idênticos.
+O GA4 e o Search Console usam calendários diferentes (fuso da propriedade versus horário do Pacífico) e medidas diferentes. As mesmas datas podem cobrir horas diferentes.
 
-## Examine resultados e linhas
+## Leia o resumo
 
-O resumo segue o escopo escolhido: sessões, taxa de engajamento, eventos principais e receita de compras. Eventos principais não são clientes únicos. Receita zero não prova ausência de loja. A moeda desconhecida aparece ao lado do valor. O tempo de engajamento é total, não a média por usuário. Os valores diários distinguem dias desconhecidos de zero. Restrições de qualidade impedem comparações ou recomendações conclusivas.
+- **Eventos principais** contam eventos, não clientes únicos.
+- O **tempo de engajamento** é um total, não uma média por usuário.
+- **Receita** igual a zero não prova que o site não tenha loja. Uma moeda desconhecida aparece ao lado do valor.
+- Os valores diários separam um dia desconhecido de um dia com valor zero.
 
-Escolha 50, 100 ou 200 linhas por página e use Anterior/Próxima. Filtros, ordenação, resumos e exportações abrangem apenas a página listada. Selecionar uma barra filtra a tabela sem alterar a base do resumo. Usuários podem aparecer em várias categorias: não os some como usuários únicos da propriedade. Caminhos iguais em hosts distintos e produtos com o mesmo nome e IDs diferentes permanecem separados. Receitas negativas ou desconhecidas não recebem gráfico de participação.
+Se um valor não puder ser lido, a tela mostra **Não foi possível determinar o tráfego deste período** e mantém os valores que conseguiu ler. As restrições informadas pelo Google, como amostragem ou limites de privacidade, aparecem ao lado das métricas; uma causa desconhecida é declarada como tal. Dados restritos não são usados em comparações ou recomendações conclusivas. Se o Google truncou os dados no período escolhido, o resumo e o relatório mostram o motivo e as datas informados pelo Google, e a comparação entre períodos não é exibida.
 
-O filtro de baixa conversão é um indício para investigar pelo menos quatro páginas elegíveis listadas com no mínimo 30 sessões cada. Não estima vendas perdidas. Ausência de eventos observados não prova configuração incompleta. Pesquisas internas frequentes não provam falta de conteúdo.
+Para corrigir um erro de leitura, clique em **Tentar novamente** ou abra **Status da medição**. Trocar de canal não resolve o problema.
 
-## Compartilhamento, medição e cota
+## Trabalhe com as linhas do relatório
 
-Relatório, canal, datas, detalhamento, tamanho e posição da página ficam na URL. O filtro exato host/path abrange somente as linhas listadas e não agrupa variantes de URL. CSV e Planilhas exportam as linhas filtradas com números brutos. ga4_scope_json preserva origem, propriedade, datas, fuso, moeda, qualidade, página e filtros.
+O relatório mostra 50, 100 ou 200 linhas por página; **Página anterior** e **Página seguinte** percorrem as demais. Filtros, ordenação, resumos e exportações valem para a página de linhas visível. Clicar em uma barra do gráfico filtra a tabela sem alterar o resumo.
 
-O diagnóstico lê apenas configurações Admin. Não encontrar lacunas não prova que a tag envia dados: siga as verificações de coleta vinculadas. Inventários parciais indicam pelo menos. Se a medição otimizada estiver desativada, nenhuma subfunção estará efetivamente ativa. Nenhuma configuração da conta é alterada.
+- O mesmo usuário pode aparecer em várias categorias: não some os usuários das categorias para obter usuários únicos.
+- O mesmo caminho em hosts diferentes, e produtos com o mesmo nome mas IDs diferentes, ficam em linhas separadas.
+- Os gráficos de participação na receita não aparecem se algum valor for negativo ou desconhecido.
 
-A seção recolhida de cota mostra uma captura local da última resposta, não o uso do período de tráfego. O teto padrão é uma suposição. Atualizar solicita novamente os relatórios visíveis e pode consumir tokens.
+O filtro **Alto tráfego, baixa conversão** é um ponto de partida para investigação. Ele exige pelo menos quatro páginas listadas com no mínimo 30 sessões cada e não estima vendas perdidas. Uma página sem eventos principais não prova um problema de rastreamento, e pesquisas frequentes no site não provam falta de conteúdo.
 
-Quando o Google trunca dados no período solicitado, o resumo do Analytics e os detalhes do relatório mostram o motivo e as datas informados pelo Google. O relatório é considerado limitado; uma cobertura incompleta não é apresentada como uma comparação confiável entre períodos.
+## Grupos de endereços vindos de Oportunidades
+
+**Examinar grupo de endereços do Analytics**, na tela [Oportunidades](/docs/firsatlar/), abre **Páginas de destino** filtradas por um grupo de endereços, com as datas dos dados de origem. O servidor lê do Google todas as linhas de páginas de destino orgânicas antes de dividi-las em páginas, então o grupo inteiro é correspondido. Parâmetros de consulta e barras finais ficam no mesmo grupo; hosts diferentes e caminhos com maiúsculas diferentes ficam separados. Se um limite da fonte ou uma restrição de dados impedir a correspondência completa, a tela avisa; um resultado vazio não prova ausência de tráfego. O resumo mantém o escopo da propriedade inteira. **Remover filtro de grupo de endereços** volta ao relatório completo.
+
+## Links e exportações
+
+Relatório, canal, datas, detalhamento, tamanho e posição da página ficam na URL: um link ou o botão Voltar restauram a mesma visualização. O filtro exato por host e caminho vale apenas para as linhas listadas e não agrupa variantes de URL.
+
+**CSV** e **Exportar para Sheets** exportam as linhas filtradas com os números brutos. A coluna `ga4_scope_json` registra fonte, propriedade, datas, fuso horário, moeda, qualidade dos dados, página e filtros.
+
+## Status da medição
+
+**Status da medição** lê as configurações de Admin da propriedade: fluxos de dados da Web, medição otimizada, eventos principais e definições personalizadas. Nada é alterado na sua conta. "Nenhuma lacuna nas configurações verificadas" não prova que a tag envia dados; para isso, use as verificações de coleta vinculadas. Com a medição otimizada desativada, nenhum dos eventos automáticos dela está ativo. Contagens marcadas como "pelo menos" vêm de um inventário que pode estar incompleto.
+
+## Cota
+
+A seção recolhida de cota mostra os tokens de relatório restantes segundo a última resposta, não o consumo no período escolhido. O limite das propriedades padrão usado na comparação é uma suposição. **Atualizar** solicita de novo os relatórios visíveis e consome tokens.

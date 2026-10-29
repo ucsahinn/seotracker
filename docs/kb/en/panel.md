@@ -1,47 +1,56 @@
 ---
 title: Dashboard
-description: The Dashboard brings together search traffic, measured next tasks and source limitations.
+description: The project's starting screen: Google search totals, the next few tasks worth doing, the latest audit and organic traffic from GA4.
 screen: Panel
 route: /p/<proje>
 updated: 2026-10-28
 ---
 
-The Dashboard brings together search traffic, measured next tasks and source limitations. Refresh rereads the active Dashboard sources, setup state and Google configuration. If a read fails, it reports a partial refresh. The data retrieval time is separate from the latest measured day.
+The **Dashboard** summarizes one project on a single screen: search results from Search Console, up to three next tasks, the latest site audit and organic traffic from Google Analytics. Each card states the dates and the source it covers.
+
+**Refresh** reads the dashboard sources, the setup status and the Google configuration again. If one source fails, the dashboard reports a partial refresh and keeps the rest. The time the data was retrieved is shown separately from the latest day the data covers.
 
 ## Search summary
 
-The default scope is 28 days of Web search across all devices and countries. Unfinished recent days are excluded. The visible dates and Pacific time zone define the window. Source lines show the actual previous dates, latest data day and excluded days. If Google supplies no completeness date, the assumed exclusion is disclosed. Hidden queries and row limits mean query lists are not complete site totals.
+The default view is the last 28 complete days of Web search, all devices and all countries, on Google's Pacific calendar. Recent days that Google has not finalized are left out. The source line shows the exact current and previous dates, the latest data day and the excluded days; if Google gives no finality date, the screen says it is assuming one.
 
-Clicks count visits from Google search results; impressions count appearances in results. CTR divides clicks by impressions. Average position is impression-weighted; lower is better. All four tiles open Search performance with the same default scope. Growth from a zero baseline uses an absolute count; a fall to zero can show a valid negative percentage. A missing previous period produces no invented change. The faded daily-click line shows the previous period.
+- **Clicks**: visits from Google search results.
+- **Impressions**: times your site appeared in results.
+- **CTR**: clicks divided by impressions.
+- **Average position**: weighted by impressions; lower is better, and 1 is the top.
 
-## Next tasks and setup
+Each tile opens **Search performance** with the same settings. The faded line on the daily click chart is the previous period. A rise from zero shows the absolute count instead of a percentage; a fall to zero shows a normal negative percentage. If the previous period is missing, no change is shown.
 
-Up to three tasks come from connection problems, measured audit findings, actual search tasks or an old crawl. Being connected alone does not generate an opportunity. A failed audit read never becomes first-use advice. No priority task within measured scope does not certify every source as healthy.
+When the previous period has too few clicks for a reliable comparison, the summary leads with the actual clicks and impressions. With little data, a percentage alone does not show growth or decline.
 
-Setup uses the same six signals as Project context. Missing and unreadable signals are separate. An own-site completed audit becomes stale at exactly seven days. Setup preferences is a collapsed optional tour, without another readiness score. Deferred steps remain restorable when no active steps remain.
+## Next tasks
 
-## Query estimates
+Up to three tasks come from connection problems, audit findings, search opportunities or an outdated audit. A connected source alone does not create a task, and a failed audit read never turns into first-use advice. An empty task list means nothing urgent was found in the data that could be read; it does not certify that every source is healthy.
 
-Eligible queries have enough impressions and a rounded average position of 4–20. Extra clicks model movement to the next position band and are an upper bound, not measured traffic. Known and unknown estimates are counted over the whole eligible set before the top four rows are shown. All-unknown never becomes a zero bound. Confirmed, suggested and absent brand separation are disclosed. Do not add this query estimate to the page-based Opportunities total, which has a different unit and period basis.
+## Setup
 
-## Own-site audit
+The **Setup checklist** uses the same six signals as [Project context](/docs/proje-bilgisi/) and reports a missing signal separately from an unreadable one. A completed audit of the project's own domain counts as outdated after seven days. **Setup preferences** is an optional, collapsed tour with no score of its own. Steps you put off can be brought back once no active step remains.
 
-Only crawls matching the project domain are selected. A newer crawl of another site is ignored. The last completed snapshot and a newer running or failed attempt are identified separately. Without a domain, the Dashboard links to project settings. The card names the start address, date, measured checks and any page cap.
+## Queries that could move up one position band
 
-Unique affected pages, failed check types and severity page–type pairs are different units. One page can fail three checks. Information notes sit outside the critical/warning bar. Health wording applies only to measured scope. Missing measurements or a page cap cannot certify the entire site. Comparisons require matching start scope, settings, crawled URL sets and usable measurements. Only checks measured in both crawls produce changes; a narrower or unreadable crawl cannot count as a fix. Unknown scope is explained. Worst-page links open the same audit’s issues focused on the selected URL.
+This card lists queries with a rounded average position from 4 to 20 and enough impressions. The extra clicks shown assume each query moves up one position band. They are an upper bound, not measured traffic. Queries with and without an estimate are counted across the whole eligible set before the top four are shown; if no estimate is possible, the card does not show zero. The card also states whether brand queries were separated using confirmed names, suggested names or not at all.
 
-## Analytics outcomes
+An empty card does not mean no query ranks between 4 and 20: the impression threshold scales with the period, and brand queries are excluded. Do not add this estimate to the total on [Opportunities](/docs/firsatlar/), which counts pages over a different period.
 
-Organic sessions, active users, engagement and key events come from Google Analytics. Actual dates and the property time zone are visible. Sessions differ from Google clicks and include other organic search engines. Unknown or restricted sessions never mean zero traffic; other readable metrics remain visible. Privacy thresholds, sampling and access restrictions are disclosed. Unreliable comparisons are withheld and missing limited daily values remain gaps.
+## Site audit
 
-Positive commerce evidence in either period keeps revenue and orders visible, including a measured quiet zero period. With no such evidence, sales measurement is described as unverified. Unknown currency is explicitly labelled.
+The card uses only audits of the project's own domain; a newer audit of a different site is ignored. It shows the last completed audit and, separately, any newer audit that is still running or failed. If the project has no domain, the card links to project settings. Otherwise it names the start URL, date, measured checks and any page limit.
 
-## Limits
+The counts use different units: affected pages, failed check types and severity counts per page and check. One page can fail three checks. Info findings sit outside the critical and warning bar. Health wording applies only to what was measured; a page limit or unmeasured checks mean the result does not cover the whole site.
 
-The Dashboard has no keyword volume, backlink or competitor-ranking data. Every result depends on its source window and coverage. Reconcile real Google data using identical dates and filters.
+Changes between audits appear only when both audits share the same start URL, settings and crawled pages and have usable measurements. A check counts as fixed only if it was measured in both audits. **Pages with the most issues** opens the same audit's issues, filtered to the selected URL.
 
-## Interpreting small samples
+## Organic traffic
 
-When the comparison period has fewer clicks than the analysis threshold, the summary leads with actual clicks and impressions. Percentages and averages alone do not establish growth or loss with little data. An empty opportunity list does not mean no query ranks at 4–20: the period-scaled impression threshold and brand exclusion also apply.
+Organic sessions, active users, engagement rate and key events come from Google Analytics, with the dates and the property's time zone shown. Sessions are not the same as Google clicks and include other search engines. An unknown or restricted value never means zero traffic; the other readable values stay visible. Privacy thresholds, sampling and access limits are named on the card, unreliable comparisons are withheld, and missing days stay as gaps. If sessions are unknown, check the source warnings in the [Analytics](/docs/analytics/) report, the connection's access and the site's tag.
 
-The audit identifier stays in navigation; the card shows the starting URL. Unknown sessions call for checking source warnings in the Analytics report, connection access and the site tag. The sales measurement note is inside the Organic revenue disclosure.
+Revenue and orders stay visible if either period has recorded sales, even when the current period is zero. If neither period has sales data, the note under **Organic revenue** says sales measurement is unverified. An unknown currency is labelled.
+
+## What the dashboard does not include
+
+There is no keyword volume, backlink data or competitor ranking. To compare a figure with Google's own reports, use the same dates and filters there.

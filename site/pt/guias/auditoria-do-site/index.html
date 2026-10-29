@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1505,7 +1505,7 @@
               >
             </li>
             <li>
-              <a href="/pt/guias/analise/">Entender os dados de análise</a>
+              <a href="/pt/guias/analise/">Compreender os dados do Analytics</a>
             </li>
             <li class="current" aria-current="page">
               <a href="/pt/guias/auditoria-do-site/">Auditoria do site</a>
@@ -1516,7 +1516,7 @@
             <li><a href="/pt/guias/relatorios/">Relatórios e modelos</a></li>
             <li>
               <a href="/pt/guias/informacoes-do-projeto/"
-                >Informações do projeto</a
+                >Contexto do projeto</a
               >
             </li>
             <li><a href="/pt/guias/configuracoes/">Configurações</a></li>
@@ -1528,7 +1528,7 @@
               <a href="/pt/guias/regras-de-auditoria/">Regras de auditoria</a>
             </li>
             <li>
-              <a href="/pt/guias/configurar-agente/">Configurar o agente</a>
+              <a href="/pt/guias/configurar-agente/">Configuração do agente</a>
             </li>
             <li>
               <a href="/pt/guias/solucao-de-problemas/">Solução de problemas</a>
@@ -1545,10 +1545,6 @@
           incompletos.
         </p>
         <p>
-          Esta página explica como encontrar os problemas do seu site e
-          corrigi-los.
-        </p>
-        <p>
           O aplicativo percorre o seu site com o seu próprio rastreador (um
           programa que abre e lê as páginas uma a uma). Ele procura links
           quebrados, títulos ausentes e páginas lentas. No fim, você recebe uma
@@ -1559,8 +1555,7 @@
         </p>
         <h2 id="o-que-ha-na-tela">O que há na tela</h2>
         <p>
-          <strong>O cartão para iniciar uma nova auditoria.</strong> Tem estes
-          campos.
+          <strong>Cartão Iniciar uma nova auditoria.</strong> Tem estes campos.
         </p>
         <ul>
           <li>
@@ -1613,7 +1608,17 @@
           <strong>Executar novamente com as mesmas configurações</strong> e
           <strong>Excluir auditoria</strong>. Excluir apaga também as páginas,
           os problemas e as medições de velocidade da auditoria, e não dá para
-          desfazer.
+          desfazer. A coluna <strong>Páginas rastreadas</strong> indica os
+          endereços efetivamente rastreados, incluindo auditorias com falha, e
+          não o limite inicial. Auditorias concluídas mostram o limite de
+          páginas registrado ou avisam que ele não foi registrado. Os detalhes
+          do escopo listam as verificações medidas e as não medidas. Auditorias
+          com falha mostram a explicação registrada e o próximo passo; uma causa
+          desconhecida é declarada como tal.
+          <strong>Medição de velocidade pedida</strong> significa que a opção
+          estava ativa no início, não que a medição tenha funcionado. No
+          celular, role a tabela na horizontal para ver as demais colunas e
+          ações.
         </p>
         <p>
           <strong>Detalhes da auditoria.</strong> No alto,
@@ -1659,7 +1664,7 @@
             <strong>Não medido</strong>.
           </li>
           <li>
-            <strong>Pontuações por categoria</strong>: Rastreando, Conteúdo,
+            <strong>Pontuações por categoria</strong>: Rastreamento, Conteúdo,
             Indexação, Velocidade, Segurança, Acessibilidade, Social e dados
             estruturados. A mais baixa fica em cima. Se você clicar numa
             categoria, a guia <strong>Verificações</strong> abre nessa
@@ -1687,7 +1692,7 @@
           <li>
             <strong>Verificações (N)</strong>: todas as verificações, por
             categoria. Cada uma aparece como aprovada, reprovada ou não medida.
-            Para as não medidas, o motivo vem escrito.
+            Para as não medidas, o motivo é indicado.
           </li>
           <li>
             <strong>Dados instantâneos</strong>: o site para além das suas
@@ -1715,7 +1720,7 @@
           <li>
             <strong>Velocidade (N)</strong>: só aparece se a medição de
             velocidade estava ligada. Se algumas páginas não puderam ser
-            medidas, o número vem escrito como &quot;10/12&quot;.
+            medidas, o número aparece como &quot;10/12&quot;.
           </li>
         </ul>
         <p>
@@ -1734,19 +1739,20 @@
         <p>
           <strong>Pontuação provisória.</strong> Se a parcela de verificações
           medidas cair abaixo de 70 por cento, a pontuação é provisória. Ela
-          também é provisória se menos da metade das verificações de Rastreando,
-          Indexação, Conteúdo ou Velocidade foi medida. O cartão escreve
-          &quot;Pontuação provisória, cobertura das medições 62%&quot;, não dá
-          palavra de avaliação e fica numa cor neutra. O número reflete só as
-          verificações que se conseguiu ver. Sobre o resto, nenhum julgamento,
-          bom ou ruim, foi feito. Os motivos de costume são estes: a cota do
-          PageSpeed acabou, não há chave do PageSpeed, a medição de velocidade
-          estava desligada ou não se conseguiu buscar os dados de índice no
-          Search Console.
+          também é provisória se menos da metade das verificações de
+          Rastreamento, Indexação, Conteúdo ou Velocidade foi medida. O cartão
+          mostra &quot;Pontuação provisória — cobertura das medições 62%&quot;,
+          não dá palavra de avaliação e fica numa cor neutra. O número reflete
+          só as verificações que se conseguiu ver. Sobre o resto, nenhum
+          julgamento, bom ou ruim, foi feito. Os motivos de costume são estes: a
+          cota do PageSpeed acabou, não há chave do PageSpeed, a medição de
+          velocidade estava desligada ou não se conseguiu buscar os dados de
+          índice no Search Console.
         </p>
         <p>
-          <strong>Sem pontuação.</strong> Nestes casos, o cartão escreve
-          &quot;Auditoria incompleta, sem pontuação&quot; no lugar da pontuação.
+          <strong>Sem pontuação.</strong> Nestes casos, o cartão mostra
+          &quot;Auditoria incompleta — sem pontuação&quot; no lugar da
+          pontuação.
         </p>
         <ul>
           <li>A auditoria parou com um erro.</li>
@@ -1765,8 +1771,8 @@
           Os resultados continuam sendo mostrados e valem para as páginas
           rastreadas. Para uma pontuação completa, execute a auditoria de novo.
         </p>
-        <h2 id="se-a-auditoria-parou-o-que-esta-escrito">
-          Se a auditoria parou, o que está escrito
+        <h2 id="mensagens-quando-a-auditoria-para">
+          Mensagens quando a auditoria para
         </h2>
         <p>
           Quando uma auditoria falha, a tela diz três coisas: o que aconteceu,
@@ -1877,17 +1883,18 @@
             A proteção contra robôs do seu site parou o rastreador. Os
             resultados continuam sendo mostrados. Libere
             &quot;seotracker-audit&quot; no firewall ou experimente um dos
-            rastreadores de computador que o guia sugere.
+            rastreadores de computador que a tela sugere (LibreCrawl, Screaming
+            Frog).
           </li>
           <li>
             <strong>N páginas não puderam ser obtidas (erro de rede).</strong> A
             conexão não se estabeleceu nem na nova tentativa. Essas páginas não
             foram auditadas e não contam como quebradas. Muitas vezes é
-            passageiro. Execute a auditoria de novo. Se continuar, veja se o
-            site abre a partir deste computador.
+            passageiro: repita a auditoria. Se continuar, veja se o site abre a
+            partir deste computador.
           </li>
           <li>
-            <strong>O site limitou a taxa em N páginas.</strong> O site
+            <strong>O site limitou as solicitações em N páginas.</strong> O site
             respondeu &quot;muitas solicitações&quot;. Essas páginas não puderam
             ser auditadas. Comece de novo depois que o limite zerar.
           </li>
@@ -1921,7 +1928,7 @@
             Isso é normal.
           </li>
           <li>
-            Leia a linha de cobertura no cartão da pontuação. Se estiver escrito
+            Leia a linha de cobertura no cartão da pontuação. Se indicar
             <strong>Pontuação provisória</strong>, as linhas abaixo dizem o
             motivo.
           </li>
@@ -1932,7 +1939,7 @@
           <li>
             Na guia <strong>Páginas com problemas</strong>, termine primeiro os
             problemas críticos. Um problema crítico impede o Google de ver a
-            página.
+            página ou os visitantes de chegar ao site.
           </li>
           <li>
             Leve a lista com <strong>Exportar</strong> e entregue a quem cuida
@@ -1956,22 +1963,23 @@
         </h2>
         <p>
           <strong>Pontuação.</strong> Cada achado tira pontos da sua própria
-          categoria. Quantos, depende da importância do achado e da parcela de
-          páginas que ele atinge. Os pesos são: crítico 40, aviso 15, informação
-          3. A pontuação do site é a média ponderada de sete categorias.
-          Rastreando e Indexação pesam mais, Social e dados estruturados pesa
-          menos. Uma verificação que não pôde ser medida não aumenta nem diminui
-          a pontuação. Por isso a cobertura é mostrada à parte.
+          categoria. O número de pontos depende da importância do achado e da
+          parcela de páginas que ele atinge. Os pesos são: crítico 40, aviso 15,
+          informação 3. A pontuação do site é a média ponderada de sete
+          categorias. Rastreamento e Indexação pesam mais, Social e dados
+          estruturados pesa menos. Uma verificação que não pôde ser medida não
+          aumenta nem diminui a pontuação. Por isso a cobertura é mostrada à
+          parte.
         </p>
         <p>
           <strong>Limites máximos.</strong> Se houver um único problema que
           seja, a pontuação é no máximo 99. Se houver um problema crítico, no
           máximo 69. Com 5 avisos ou mais, no máximo 89. Assim, uma única página
           bloqueada na indexação num site grande não se esconde sob uma
-          pontuação alta. Se um limite segura a pontuação, o cartão escreve
-          isso. O &quot;+N pontos&quot; ao lado de um trabalho também leva o
-          limite em conta. Corrigir o único problema crítico tira o limite
-          inteiro. Corrigir um aviso enquanto um limite vale dá muito pouco.
+          pontuação alta. Se um limite segura a pontuação, o cartão indica isso.
+          O &quot;+N pontos&quot; ao lado de um trabalho também leva o limite em
+          conta. Corrigir o único problema crítico tira o limite inteiro.
+          Corrigir um aviso enquanto um limite vale dá muito pouco.
         </p>
         <p>
           <strong>Rastreamento.</strong> O aplicativo não sobrecarrega o seu
@@ -1984,8 +1992,8 @@
           <strong>Medição de velocidade.</strong> Num site de 212 páginas, a
           auditoria inteira levou 35 minutos. Cerca de 24 deles foram de medição
           de velocidade. Se a cota diária acabar, a medição para, os resultados
-          até ali ficam e a pontuação pode ser provisória. Um problema é escrito
-          nestes casos:
+          até ali ficam e a pontuação pode ser provisória. Um problema é
+          registrado nestes casos:
         </p>
         <ul>
           <li>
@@ -2021,8 +2029,8 @@
             >Por que aparece &quot;Auditoria incompleta&quot; no lugar da
             pontuação?</strong
           >
-          A auditoria parou no meio ou cedo demais. A lista de problemas está
-          incompleta, então não há pontuação. Execute a auditoria de novo.
+          A auditoria parou no meio ou cedo demais. Sem a lista completa de
+          problemas, não há pontuação. Execute a auditoria de novo.
         </p>
         <p>
           <strong>O que significa o aviso &quot;bloqueado&quot;?</strong> A
@@ -2031,7 +2039,8 @@
         </p>
         <p>
           <strong>A medição de velocidade parou no meio.</strong> Em geral falta
-          a chave do PageSpeed ou a cota diária acabou. O cartão de cotas em
+          a chave do PageSpeed ou a cota diária acabou. A seção
+          <strong>Limites do Google e do sistema</strong> em
           <strong>Configurações</strong> diz o motivo.
         </p>
         <p>
@@ -2044,29 +2053,12 @@
           na página) acrescenta depois. Uma auditoria rastreia no máximo 10.000
           páginas. A medição de velocidade é a medição de laboratório do Google,
           não dados de visitantes reais. A auditoria não muda nada no seu site.
-          As correções são feitas por você ou pelo seu assistente.
-        </p>
-        <p>
-          Nas auditorias anteriores, <strong>Páginas rastreadas</strong> indica
-          os endereços efetivamente rastreados, incluindo auditorias falhadas, e
-          não o limite inicial. As colunas Crítico e Aviso mostram o total de
-          problemas. <strong>Medição de velocidade pedida</strong> significa que
-          a opção estava ativa no início; não prova que a medição tenha sido
-          concluída com êxito. No telemóvel, desloque a tabela na horizontal
-          para ver as restantes colunas e ações.
-        </p>
-        <p>
-          O histórico mostra ocorrências críticas, avisos e informações por
-          página; uma página pode ter várias ocorrências. Trabalhos concluídos
-          mostram o limite de rastreamento registrado ou informam que ele não
-          foi registrado. Os detalhes do escopo abrem as verificações medidas e
-          não medidas. Auditorias com falha mostram a explicação registrada e o
-          próximo passo; causas desconhecidas são indicadas explicitamente.
+          As correções são feitas por você ou por um agente.
         </p>
         <nav class="pager" aria-label="Página anterior e seguinte">
           <a class="pager-prev" rel="prev" href="/pt/guias/analise/"
             ><span>Anterior</span
-            ><strong>Entender os dados de análise</strong></a
+            ><strong>Compreender os dados do Analytics</strong></a
           ><a
             class="pager-next"
             rel="next"
@@ -2075,12 +2067,12 @@
           >
         </nav>
         <p class="meta">
-          Última atualização: 29 de outubro de 2026. Viu algum erro?
+          Última atualização: 29 de outubro de 2026. Encontrou um erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >Relate no GitHub</a
+            >Informe no GitHub</a
           >.
         </p>
       </article>
@@ -2094,8 +2086,8 @@
             >
           </li>
           <li>
-            <a href="#se-a-auditoria-parou-o-que-esta-escrito"
-              >Se a auditoria parou, o que está escrito</a
+            <a href="#mensagens-quando-a-auditoria-para"
+              >Mensagens quando a auditoria para</a
             >
           </li>
           <li>

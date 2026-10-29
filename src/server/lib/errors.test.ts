@@ -72,7 +72,7 @@ describe("googleAppError", () => {
     );
     expect(message).toMatch(/^UPSTREAM_UNAVAILABLE: /);
     expect(message).toContain("HTTP 403");
-    expect(message).toContain("Görüntüleyen");
+    expect(message).toContain("Görüntüleyici");
   });
 
   it("keeps an exhausted quota as RATE_LIMITED, with when it renews", () => {

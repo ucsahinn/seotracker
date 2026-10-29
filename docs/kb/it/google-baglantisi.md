@@ -1,24 +1,42 @@
 ---
 title: Collegamento con Google
-description: Collega Search Console e GA4 con il tuo account di servizio Google Cloud o client OAuth, poi scegli le proprietà di ogni progetto.
+description: Collegare Search Console e GA4 con un account di servizio Google Cloud o un client OAuth, poi scegliere le proprietà di ogni progetto.
 kind: nasil-yapilir
 updated: 2026-10-27
 ---
 
-seowatcher legge Search Console e Google Analytics 4 con le tue credenziali Google Cloud: un account di servizio o un client OAuth. Salvi la credenziale una volta per tutta l'installazione, poi scegli una proprietà Search Console e una GA4 per ogni progetto.
+La credenziale si salva una sola volta e vale per tutta l'installazione. La proprietà, invece, si sceglie per ogni progetto: una per Search Console e una per Google Analytics 4.
 
 ## Credenziali e proprietà
 
-Le credenziali Google nelle Impostazioni valgono per l'installazione. La proprietà in Impostazioni progetto → Connessioni vale per un progetto. Salvato e Proprietà selezionata confermano solo la configurazione. Verifica l'accesso nei report Rendimento di ricerca o Analytics. Analytics mostra fuso orario e valuta della proprietà. La selezione non installa il monitoraggio sul sito.
+Le credenziali Google salvate in **Impostazioni** (sezioni **Google** e **Account di servizio**) valgono per l'intera installazione. La proprietà scelta in **Impostazioni progetto → Connessioni** vale solo per quel progetto. Gli stati "salvata" e "proprietà selezionata" confermano la configurazione, non l'accesso ai dati. L'accesso si verifica aprendo **Rendimento della ricerca** o **Analytics**. Scegliere una proprietà non installa alcun codice di monitoraggio sul sito.
 
-## Account di servizio o OAuth
+## Account di servizio
 
-Attiva Search Console API e, per Analytics, Admin API e Data API in Google Cloud. Crea un account di servizio e scarica la chiave JSON. In Impostazioni → Account di servizio seleziona il file o usa l'incolla mascherato, poi salva. La chiave privata resta nascosta. Aggiungi l'indirizzo mostrato con accesso Completo in Search Console e Visualizzatore in Analytics. Scegli quindi la proprietà nel progetto.
+È il metodo più breve.
 
-Per OAuth crea un client Web application. Registra esattamente entrambi gli URL di callback mostrati, salva ID e segreto e autorizza il conto dalle connessioni del progetto. Un account di servizio salvato ha priorità.
+1. In Google Cloud attivi la Search Console API e, per Analytics, la Admin API e la Data API.
+2. Crei un account di servizio e scarichi la sua chiave JSON.
+3. In **Impostazioni → Account di servizio** selezioni il file oppure usi **Incolla il contenuto JSON mantenendolo nascosto**, poi salvi. La chiave privata non viene mai mostrata.
+4. Aggiunga l'indirizzo email dell'account mostrato a Search Console come utente con accesso completo e ad Analytics con ruolo Visualizzatore.
+5. Scelga la proprietà in ogni progetto.
 
-## Recupero
+## OAuth in alternativa
 
-Un errore conserva l'elenco precedente; un elenco vuoto da solo non prova l'assenza di diritti. Ricollega autorizzazioni scadute, verifica i permessi per accesso negato e il progetto Cloud per API inattive. Attendi per i limiti. Per errori sconosciuti riprova e usa la diagnostica Aiuto. Eliminare credenziali qui non le revoca in Google. Cambiare dominio conserva collegamento e storico.
+Crei in Google Cloud un client OAuth di tipo "Applicazione web". Registri esattamente i due URL di reindirizzamento mostrati in **Impostazioni**. Salvi **ID client** e **Segreto client**, poi autorizzi l'account Google da **Connessioni** del progetto e scelga la proprietà. Se è salvato anche un account di servizio, ha la precedenza su OAuth.
 
-La scheda di collegamento mostra la data dell’ultima lettura Google già osservata per le credenziali e la proprietà attuali. Dopo un errore temporaneo mantiene la data della precedente lettura riuscita. Senza cronologia, l’accesso resta non verificato. Aprire le impostazioni non invia richieste a Google. Un cambio di credenziali non trasferisce le precedenti prove di accesso o quota alla nuova identità; aggiornate esplicitamente i report.
+## Se qualcosa non funziona
+
+Se l'aggiornamento dell'elenco non riesce, restano visibili le proprietà precedenti. Un elenco vuoto, da solo, non prova la mancanza di accesso.
+
+- **Autorizzazione scaduta**: ricolleghi l'account.
+- **Accesso negato**: controlli i permessi sulla proprietà.
+- **API disattivata**: la attivi nel progetto Google Cloud.
+- **Limite di richieste**: attenda e riprovi.
+- **Errore sconosciuto**: riprovi e apra la diagnostica in **Aiuto**.
+
+Eliminare una credenziale qui non la revoca in Google. Cambiare il dominio del progetto conserva la proprietà collegata e lo storico.
+
+## Ultima lettura
+
+La scheda di connessione mostra la data dell'ultima lettura da Google già osservata con la credenziale e la proprietà attuali. Dopo un errore temporaneo resta la data dell'ultima lettura riuscita; senza storico l'accesso risulta non verificato. La scheda mostra anche fuso orario e valuta della proprietà Analytics. Aprire le impostazioni non invia richieste a Google. Dopo un cambio di credenziale, le prove di accesso e di quota precedenti non passano alla nuova identità: aggiorni i report.

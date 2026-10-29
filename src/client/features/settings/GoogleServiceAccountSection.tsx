@@ -233,7 +233,7 @@ export function GoogleServiceAccountSection() {
             <p className="max-w-prose text-sm text-muted">
               {fillParts(
                 t(
-                  "Bu adresi Search Console'da {path} ile mülkünüze ekleyin (yetki: {level}). Eklemeden veri gelmez. Analytics için de GA4 mülkünde {gaPath}'ne aynı adresi Görüntüleyen olarak ekleyin.",
+                  "Bu adresi Search Console'da {path} ile mülkünüze ekleyin (yetki: {level}). Eklemeden veri gelmez. Analytics için de GA4 mülkünde {gaPath}'ne aynı adresi Görüntüleyici olarak ekleyin.",
                 ),
                 {
                   path: (

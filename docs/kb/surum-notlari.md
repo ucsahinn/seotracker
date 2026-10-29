@@ -1,16 +1,16 @@
 ---
 title: Sürüm notları
-description: seowatcher 0.8.6 Alpha (29 Ekim 2026): 202 kurallı yeni site denetimi, altı dilli arayüz, bildirimler ve daha doğru Google verisi.
+description: seowatcher 0.8.7 Alpha (29 Ekim 2026): 202 kurallı yeni site denetimi, altı dilli arayüz, bildirimler ve daha doğru Google verisi.
 updated: 2026-10-29
 ---
 
-Son sürüm **0.8.6 Alpha**, 29 Ekim 2026. Güncellerken veriniz korunur.
+Son sürüm **0.8.7 Alpha**, 29 Ekim 2026. Güncellerken veriniz korunur.
 
 2.x serisinden 0.x.x Alpha serisine ilk geçiş için yeni kurulum dosyasını elle çalıştırın; eski otomatik güncelleyici küçük numarayı yeni sürüm olarak tanımaz.
 
-## 0.8.6 Alpha — 2026-10-29
+## 0.8.7 Alpha — 2026-10-29
 
-Bu giriş 0.5.0'dan 0.8.6'ya kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
+Bu giriş 0.5.0'dan 0.8.7'ye kadarki yenilikleri ve düzeltmeleri toplar: yeni site denetimi, Panel, bildirimler, altı dil, daha doğru veriler ve daha okunaklı ekranlar.
 
 ### ✨ Öne çıkanlar
 
@@ -18,7 +18,7 @@ Bu giriş 0.5.0'dan 0.8.6'ya kadar gelen yenilikleri ve düzeltmeleri toplar: si
 - **Dürüst sonuçlar:** Ölçemediği bir şeyi "geçti" saymaz; veri yoksa bunu açıkça söyler.
 - **Sıralı yapılacaklar:** Google'dan en çok ziyaretçi getiren sayfaların sorunları öne çıkar.
 - **Altı dil:** Uygulamayı Türkçe, İngilizce, Almanca, Fransızca, İtalyanca ve Portekizce kullanabilirsiniz.
-- **Haberler:** Duyurular ve bildirimlerle yeni sürümleri ve önemli gelişmeleri kaçırmazsınız.
+- **Haberler:** Yeni sürümler ve önemli gelişmeler duyuru ve bildirim olarak gelir.
 
 ### 🔎 Site denetimi
 
@@ -27,11 +27,11 @@ Bu giriş 0.5.0'dan 0.8.6'ya kadar gelen yenilikleri ve düzeltmeleri toplar: si
 - **Yapay zekâ botları:** Sitenizin ChatGPT ve Claude gibi yapay zekâ botlarına açık olup olmadığını görürsünüz.
 - **Hız bulguları:** Hız ölçümü açıksa sitenizi yavaşlatan sorunlar, tahmini kazançlarıyla listelenir.
 - **Önizlemeler:** Sayfanızın Google'da, paylaşımlarda ve telefonda nasıl görüneceğini önceden görürsünüz.
-- **Puan geçmişi:** Denetimler arasında nelerin düzeldiğini izler, yenilenen raporu indirirsiniz.
+- **Puan geçmişi:** Denetimler arasında neyin düzeldiğini izler, yenilenen raporu indirirsiniz.
 
-### 📊 Pano ve raporlar
+### 📊 Panel ve raporlar
 
-- **Sıradaki adımlar:** Panoda kurulumu tamamlamanız için kısa bir görev listesi ve hazırlık puanı bulunur. Bu puan SEO başarısı değildir.
+- **Sıradaki adımlar:** Panel'de kurulumu tamamlamanız için kısa bir görev listesi ve kurulum sayacı bulunur. Bu sayaç SEO başarısını ölçmez.
 - **Hazır raporlar:** Yapay zekâ asistanınız denetim, arama ve Analytics verilerinizden iyileştirme raporu hazırlar.
 - **Denetim ilerlemesi:** Denetim sürerken geçen süreyi ve ilerlemeyi, bitince kısa bir özeti görürsünüz.
 - **Rapor türleri:** Arama raporları ile site denetimi raporları ayrı gösterilir; türü bilinmeyen eski raporlar açıkça belirtilir.
@@ -42,48 +42,49 @@ Bu giriş 0.5.0'dan 0.8.6'ya kadar gelen yenilikleri ve düzeltmeleri toplar: si
 ### 🔔 Bildirimler ve duyurular
 
 - **Bildirim merkezi:** Denetim sonuçları, yeni sürümler ve Google bağlantı sorunları tek yerde toplanır.
-- **Bildirim sesi:** Önemli bildirimlerin sesini Ayarlar’dan açıp kapatabilirsiniz.
-- **Windows bildirimleri:** Güncellemeler ve duyurular Windows'un bildirim alanında da görünür. Denetim bittiğinde veya başarısız olduğunda da Windows bildirimi gelir. Görev çubuğundaki simgenin menüsünden bu bildirimleri kapatabilirsiniz.
+- **Bildirim sesi:** Önemli bildirimlerin sesini Ayarlar'dan açıp kapatabilirsiniz.
+- **Windows bildirimleri:** Güncellemeler, duyurular ve biten ya da başarısız olan denetimler Windows bildirimi olarak da gelir. Bu bildirimleri görev çubuğu simgesinin menüsünden kapatabilirsiniz.
 - **Duyurular:** Yeni haberler uygulamadaki Duyurular ekranında yayımlanır.
 
 ### 🪟 Windows
 
 - **Ayarlar:** Windows ile birlikte açılmayı ve otomatik güncellemeyi Ayarlar'dan değiştirirsiniz.
-- **Açılış ilerlemesi:** Uygulama hazırlanırken ve güncelleme inerken bir pencere yüzdeyi gösterir.
+- **Açılış ilerlemesi:** Uygulama hazırlanırken ve güncelleme inerken bir pencere ilerlemeyi yüzde olarak gösterir.
 - **Net yönergeler:** Windows paketi ile Docker arasındaki farklar kılavuzda ve Yardım'da anlatılır.
 
 ### 🌍 Diller
 
 - **Dil seçimi:** Ayarlar → Görünüm → Dil bölümünden dilinizi seçersiniz; sayı ve tarihler de ona uyar.
-- **Kılavuz:** Kullanım kılavuzu, denetim kuralları ve sürüm notları altı dilde okunur.
+- **Kılavuz:** Kullanım kılavuzu, denetim kuralları ve sürüm notları altı dilde yayında.
 - **Gizlilik:** seowatcher.io'da ölçüm yalnızca siz kabul ederseniz çalışır.
 - **Gözden geçirilen çeviriler:** Ekran metinleri ve kılavuzlar altı dilde yeni ekranlara uyarlandı.
+- **Çeviri düzeltmeleri:** Fransızca, Almanca, İtalyanca ve Portekizce ekranlarda yanlış çevrilmiş sütun ve kategori adları düzeltildi; Analytics rolü Google'daki adıyla "Görüntüleyici" olarak geçer.
 
 ### 🎨 Görünüm ve yardım
 
 - **Açık tema:** Daha koyu zemin, daha açık kartlar ve daha belirgin turuncu vurgular okumayı kolaylaştırır.
-- **Kartlar ve sayılar:** Özet kartları sadeleştirildi; değişen sayılar hareketi azaltma tercihinize uyar.
-- **Yardım ve notlar:** Yardım ve sürüm notları ekranlarında aradığınız bilgiyi bulmak kolaylaştı.
+- **Kartlar ve sayılar:** Özet kartları sadeleşti; sayı geçiş animasyonları hareketi azaltma tercihinize uyar.
+- **Yardım ve notlar:** Yardım ve Sürüm notları ekranlarında aradığınız bilgiyi daha kolay bulursunuz.
 - **Verinin renkleri:** Tıklama mavi, gösterim mor, tıklama oranı turkuaz, sıra hardal, oturum yeşil ve dönüşüm gül rengindedir. Kartlar ve grafikler iki temada da aynı, daha canlı renkleri kullanır.
-- **Daha sakin ekranlar:** Kaynak, dönem ve güncellik kısa etiketlerle bir arada gösterilir. Uzun açıklamaları gerektiğinde açarsınız; kısa adlar ve belirgin düğmeler işlemleri kolaylaştırır.
+- **Daha sakin ekranlar:** Kaynak, dönem ve güncellik kısa etiketlerle bir arada durur. Uzun açıklamalar gerektiğinde açılır; kısa adlar ve belirgin düğmeler işlemleri kolaylaştırır.
 - **Telefonda:** Kayıt listeleri telefonda tablo yerine okunaklı satırlar olarak görünür; sorgu adları ve etiketler artık kesilmez.
 - **Tek görünüm:** Düğmeler, açılır bölümler, bildirim kutuları ve kartlar her ekranda aynı biçimdedir; tek sayfalık listelerde gereksiz sayfa düğmeleri gösterilmez.
 
 ### 🗂️ Projeler ve kayıtlar
 
-- **Kayıtlı aramalar:** Sıralamalar kayıtlı listeniz üzerinden hesaplanır; yazım farkları ölçümleri ezmez, bilinmeyen sıra açıkça belirtilir.
+- **Kayıtlı aramalar:** Kayıtlı kelimelerin sırası kendi listeniz üzerinden hesaplanır; yazım farkları ölçümleri karıştırmaz, bilinmeyen sıra açıkça belirtilir.
 - **Proje özeti:** Eksik arşiv günleri trafik kaybı sayılmaz; denetim özeti yalnızca projenizin sitesini gösterir.
 - **Proje bilgisi:** Çakışan düzenlemelerde taslağınızı koruyup güncel metinle karşılaştırabilirsiniz.
 
 ### 🛠️ Düzeltmeler
 
-- **Daha doğru denetim:** Gerçek sitelerdeki hatalar giderildi; karşılaştırmalar her denetimin kendi sayfalarını kullanır, başlatılamayan denetimin kaydı korunur. Denetim geçmişindeki hata açıklamaları da ekrana sığar. Denetim geçmişindeki sayılar hem sayfalardaki hem site genelindeki bulguları kapsadığını açıklar.
-- **Menüler ve klavye:** Telefonda ekranlar, raporlar ve ülke listesi taşmaz; menüler ekrana sığar, klavye odağı açık pencerede kalır, Esc yalnızca üstteki listeyi kapatır ve yazdıklarınızı korur; ekran okuyucular seçimleri, Analytics ise kanal adlarını seçtiğiniz dilde bildirir. Telefonda güncelleme saati, rapor türü ve Sıralama takibi satırlarının etiketleri görünür.
-- **Ekran düzeltmeleri:** Yardım’daki tanılama paketi sorunu daha iyi anlatır ve sayfa adreslerinizi içermez. Gerçek verilerle bulunan 25 sorun giderildi: pano, arama performansı, sıralama, kayıtlı kelimeler, Analytics, raporlar, denetim, ayarlar, bağlantılar, Yardım ve İngilizce çoğullar daha doğru görünür. Ekranlar gerçek verilerle iki kez daha, sayfaların alt kısımları da dahil incelendi. Panodaki denetim sayılarının neyi saydığı açık, sorun adları tamdır. Boş kayıtlı kelime listesi bunu hemen gösterir. Sıralama takibi ortalama sırayı belirtir; Yardım ve sayfa geçişleri menüdeki adlarla uyumludur. Panodaki oturum grafiğinin adı düzeltildi; sıralamalar seçili dönemin ortalaması olarak anlatılır. İngilizce, Almanca, Fransızca, İtalyanca ve Portekizce tekil ve çoğul ifadeler düzeltildi. Yapay zekâ asistanı aynı aramada birbiriyle yarışan sayfaları yeniden bulabilir.
-- **Daha doğru sayılar:** Eksik ölçümler sıfır sayılmaz, sınırlı Analytics verisi kesin sonuç gibi sunulmaz; sıralamalar aynı tarihleri kullanır, öncelikli işler ve tahminlerin sınırları açıklanır, filtrelemek aylık kazanç tahminini değiştirmez. Fırsatlar, Google'ın gizlediği aramaları açıklar; 90 gün seçiliyken aynı süreye genişletmenizi önermez. Az ziyaretçili sitelerde de eksik veriyle gerçek sıfır birbirinden ayrılır. Analytics bilinmeyen ölçümü bir kez açıklar; boş tablolarda önceki ve sonraki sayfa düğmeleri görünmez. Fırsatlar az ziyaretçili sitelerde de sayfaları gerçek ölçümleriyle listeler. Öneri ortalama sıraya dayanıyorsa ve kazanç hesaplanamıyorsa kazanç bilinmiyor diye gösterilir.
-- **Bağlantı durumu:** Mülk seçimi ile doğrulanmış erişim ayrıdır, hesap değişince eski sonuçlar güncel sayılmaz; yanıt vermeyen Google bağlantısı beklemede kalmaz, geçici hatada yeniden denemeniz, kapalı hizmette neyi açmanız gerektiği söylenir.
+- **Daha doğru denetim:** Gerçek sitelerde bulunan hatalar giderildi. Karşılaştırmalar her denetimin kendi sayfalarını kullanır, başlatılamayan denetimin kaydı korunur. Denetim geçmişinde hata açıklamaları ekrana sığar ve sayıların hem sayfa hem site geneli bulgularını kapsadığı yazar.
+- **Menüler ve klavye:** Telefonda ekranlar, raporlar ve ülke listesi taşmaz; menüler ekrana sığar. Klavye odağı açık pencerede kalır, Esc yalnızca üstteki listeyi kapatır ve yazdıklarınızı korur. Ekran okuyucular seçimleri, Analytics ise kanal adlarını seçtiğiniz dilde bildirir. Telefonda güncelleme saati, rapor türü ve Sıralama takibi satırlarının etiketleri görünür.
+- **Ekran düzeltmeleri:** Yardım'daki tanılama paketi sorunu daha iyi anlatır ve sayfa adreslerinizi içermez. Gerçek verilerle yapılan incelemede bulunan 25 sorun giderildi: Panel, Arama performansı, Sıralama takibi, Kayıtlı kelimeler, Analytics, Raporlar, Site denetimi, Ayarlar, bağlantılar ve Yardım daha doğru görünür. Ekranlar, sayfaların alt kısımları dahil, gerçek verilerle iki kez daha incelendi. Panel'deki denetim sayılarının neyi saydığı yazar ve sorun adları kesilmez. Boş kayıtlı kelime listesi bunu hemen söyler. Sıralamalar seçili dönemin ortalaması olarak anlatılır; Yardım ve sayfa geçişleri menüdeki adları kullanır. Panel'deki oturum grafiğinin adı düzeltildi. İngilizce, Almanca, Fransızca, İtalyanca ve Portekizce tekil ve çoğul ifadeler düzeltildi. Yapay zekâ asistanı aynı aramada birbiriyle yarışan sayfaları yeniden bulabilir.
+- **Daha doğru sayılar:** Eksik ölçümler sıfır sayılmaz, sınırlı Analytics verisi kesin sonuç gibi sunulmaz. Sıralamalar aynı tarihleri kullanır; öncelikli işlerin ve tahminlerin sınırları açıklanır; filtrelemek aylık kazanç tahminini değiştirmez. Az ziyaretçili sitelerde de eksik veri gerçek sıfırdan ayrılır ve Fırsatlar sayfaları gerçek ölçümleriyle listeler. Fırsatlar, Google'ın gizlediği aramaları açıklar ve 90 gün zaten seçiliyken aynı süreyi önermez. Kazanç hesaplanamıyorsa öneri ortalama sıraya dayanır ve kazanç "bilinmiyor" diye gösterilir. Analytics bilinmeyen ölçümü bir kez açıklar; boş tablolarda sayfa düğmeleri görünmez.
+- **Bağlantı durumu:** Mülk seçimi ile doğrulanmış erişim ayrı gösterilir; hesap değişince eski sonuçlar güncel sayılmaz. Yanıt vermeyen Google bağlantısı askıda kalmaz. Geçici hatada yeniden denemeniz, kapalı bir hizmette neyi açmanız gerektiği söylenir.
 - **Kayıtların korunması:** Etiket ekleme ve kaldırma yarım kalmaz, kullanılan etiket silinmez; geçmiş veriler doğru mülkle tamamlanır ve bekleyen işler doğru sırada ele alınır.
-- **Windows açılışı:** Çalışma dosyaları kullanıcı klasörüne yazılır; onarılan asistan bağlantısı yeniden açılışta korunur ve başlangıç kontrolü takılı kalmaz. Kullanılamayan Windows ayarı bağlantısı gizlenir. Uygulamaya döndüğünüzde siz yokken gelen bildirimler de açılır.
+- **Windows açılışı:** Çalışma dosyaları kullanıcı klasörüne yazılır; onarılan asistan bağlantısı yeniden açılışta korunur ve başlangıç kontrolü takılmaz. Kullanılamayan Windows ayarı bağlantısı gizlenir. Uygulamaya döndüğünüzde siz yokken gelen bildirimler de gösterilir.
 
 ### 🔒 Güvenlik
 
@@ -107,7 +108,7 @@ Windows'a tek tıkla kurulum geldi; seowatcher.io sitesi ve kullanım kılavuzu 
 - **Görev çubuğu:** Uygulamayı görev çubuğundaki simgesinden yönetirsiniz.
 - **Güncelleme:** Güncelle seçeneği ilerlemeyi gösterir; isterseniz güncellemeler kendiliğinden kurulur.
 - **Kendini toparlar:** Beklenmedik bir kapanmada uygulama yeniden başlar, günlük dosyaları şişmez.
-- **Onar ve bildir:** Yardım'daki Kurulumu onar açılış sorunlarını giderir; Sorunu bildir, kişisel bilgilerinizi gizleyerek hazır bir kayıt açar.
+- **Onar ve bildir:** Tepsi menüsündeki Kurulumu onar açılış sorunlarını giderir; Sorunu bildir, kişisel bilgilerinizi gizleyerek hazır bir sorun kaydı açar.
 
 ### 🧭 İlk kurulum
 
@@ -151,7 +152,7 @@ seowatcher'ın ilk sürümü: Google verilerinizi, site denetiminizi ve hız öl
 
 ### 🤖 Yapay zekâ asistanı
 
-- **Kolay kurulum:** Kurulum istemini yapay zekâ asistanınıza yapıştırırsınız; gerisini o kontrol eder.
+- **Kolay kurulum:** Kurulum istemini yapay zekâ asistanınıza yapıştırırsınız; gerisini asistan yapar.
 - **Gizli bilgi istemez:** Şifrelerinizi sohbete yapıştırmanızı istemez.
 - **Codex desteği:** Codex için ayrı, tek komutluk bir yönerge vardır.
 
@@ -174,6 +175,6 @@ seowatcher'ın ilk sürümü: Google verilerinizi, site denetiminizi ve hız öl
 
 ## Sürüm numaraları
 
-seowatcher 1.0'a kadar 0.x Alpha numaralarıyla ilerler. Kullanıcının fark ettiği yeni özellik ikinci numarayı (0.7.1 → 0.8.0), yalnızca düzeltme üçüncü numarayı (0.8.0 → 0.8.2) artırır. Yeni giriş yalnızca kullanıcıların fark edeceği dönüm noktaları için açılır; küçük düzeltmeler mevcut girişe eklenir ve giriş en yeni numarayı alır. 0.0.0 ile 0.4.3 arasındaki sürümler ilk yayımlandığında v2.x etiketleriyle çıktı; karşılıkları [CHANGELOG.md](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md) başındaki tabloda.
+seowatcher 1.0'a kadar 0.x Alpha numaralarıyla ilerler. Kullanıcının fark ettiği yeni özellik ikinci numarayı (0.7.1 → 0.8.0), yalnızca düzeltme üçüncü numarayı (0.8.0 → 0.8.2) artırır. Yeni giriş yalnızca kullanıcıların fark edeceği dönüm noktaları için açılır; küçük düzeltmeler mevcut girişe eklenir ve giriş en yeni numarayı alır. 0.0.0 ile 0.4.3 arasındaki sürümler ilk yayımlandığında v2.x etiketleriyle çıktı; karşılıkları CHANGELOG dosyasının başındaki tablodadır.
 
-Tüm geçmiş GitHub'daki [CHANGELOG.md](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md) dosyasında.
+Tüm geçmiş GitHub'daki [CHANGELOG.md](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md) dosyasındadır.

@@ -1,67 +1,67 @@
 ---
-title: État de l'indexation
-description: Google a-t-il indexé chacune de vos pages, sinon pourquoi, et quand l'a-t-il explorée pour la dernière fois ? Jusqu'à 2 000 pages vérifiées par jour.
+title: État de l’indexation
+description: Google a-t-il indexé chacune de vos pages, sinon pourquoi, et quand l’a-t-il explorée pour la dernière fois ? Jusqu’à 2 000 pages vérifiées par jour.
 screen: Site denetimi, Dizin durumu sekmesi
 route: /p/<proje>/audit?auditId=<denetim>&tab=index
 updated: 2026-10-22
 ---
 
-Cet onglet dit quelles pages Google a mises dans la recherche.
+L’audit du site dit si une page s’ouvre. Il ne dit pas si Google l’a réellement ajoutée à son index, la liste des pages qu’il peut afficher dans la recherche. L’onglet **État de l’indexation** de l’audit pose cette question à Google et conserve la réponse sur cet ordinateur.
 
-L'audit du site dit si la page s'ouvre. Il ne peut pas dire si Google a vraiment pris la page dans son index (la liste des pages de Google). L'onglet **État de l'indexation** pose la question à Google et conserve la réponse sur cet ordinateur. Il ne repose pas sans cesse la même question : seules les réponses anciennes sont redemandées. C'est important, car Google accorde 2 000 questions par jour pour chaque propriété (l'enregistrement de votre site dans Search Console). L'application et votre assistant se partagent ce quota.
+Les réponses récentes ne sont pas redemandées. C’est important : Google accorde 2 000 vérifications par jour et par propriété (l’enregistrement de votre site dans Search Console), et l’application comme votre assistant puisent dans ce même quota.
 
-## Ce que l'écran affiche
+## Ce que l’écran affiche
 
-**L'anneau « Qu'a fait Google avec ces pages ? ».** Les pages explorées sont réparties en trois groupes :
+**L’anneau « Qu’a fait Google avec ces pages ? ».** Les pages explorées sont réparties en trois groupes :
 
-- **Sur Google** : elle peut apparaître dans la recherche.
-- **Non indexé** : Google l'a regardée mais ne l'a pas prise.
-- **En attente d'une réponse** : elle n'a pas encore été interrogée, ou aucune réponse n'a pu être obtenue.
+- **Sur Google** : la page peut apparaître dans la recherche.
+- **Non indexé** : Google a examiné la page sans l’ajouter à l’index.
+- **En attente d’une réponse** : la page n’a pas encore été vérifiée, ou aucune réponse n’a pu être obtenue.
 
-**Encadrés de synthèse.** Vous voyez combien de pages ont été interrogées, combien sont dans l'index, combien ne le sont pas et combien attendent. L'encadré « Pages pour lesquelles Google a choisi une autre URL canonique » compte les pages pour lesquelles Google a choisi une adresse différente de la canonical (l'indication de l'adresse principale) que vous avez déclarée. L'encadré « Pas encore interrogées dans cet audit » est le nombre de pages qui attendent d'être interrogées.
+**Encadrés de synthèse.** Ils indiquent combien de pages ont été vérifiées, combien sont indexées, combien ne le sont pas et combien attendent. L’encadré **Pages pour lesquelles Google a choisi une autre URL canonique** compte les pages pour lesquelles Google a retenu une autre adresse principale que celle déclarée par votre balise canonical. L’encadré **Pas encore vérifié** compte les pages qui attendent leur vérification.
 
-**Bouton « Vérifier l'état sur Google ».** À chaque clic, il interroge 25 pages au maximum. Il commence par celles qui n'ont pas reçu de réponse depuis le plus longtemps. Si la limite quotidienne est atteinte, l'avertissement « La limite quotidienne de 2 000 adresses de Google est atteinte » apparaît. Si Search Console n'est pas connecté, le bouton est désactivé. Il l'est aussi si le nom de domaine audité n'est pas dans la propriété connectée.
+**Bouton « Vérifier l’état sur Google ».** Chaque clic vérifie 25 pages au plus : d’abord celles qui n’ont jamais été vérifiées, puis celles dont la réponse est la plus en retard sur son délai de renouvellement. Une fois la limite quotidienne atteinte, le message « La limite quotidienne de 2 000 URL de Google est épuisée » s’affiche. Le bouton est désactivé si Search Console n’est pas connecté, ou si le domaine audité n’appartient pas à la propriété connectée.
 
-**Tableau.** Les colonnes sont : **Page**, **État**, **Raison**, **URL canonique sélectionnée par Google**, **Dernière exploration par Google**. La cellule d'état indique « Sur Google », « Non vérifié », « Pas de réponse », « Erreur », ou l'un des 18 états de Google, affiché en turc. Quelques exemples :
+**Tableau.** Les colonnes sont **Page**, **État**, **Raison**, **URL canonique sélectionnée par Google** et **Dernière exploration par Google**. L’état vaut « Sur Google », « Non vérifié », « Aucune réponse », « Erreur » ou l’un des 18 états documentés par Google, traduits dans la langue de l’interface. Par exemple :
 
-- « Détectée, actuellement non indexée »
-- « Exclue par la balise « noindex » »
-- « Bloquée par robots.txt »
-- « Soft 404 »
-- « Google ne connaît pas cette URL »
+- « Détectée, actuellement non indexée »
+- « Exclue par la balise « noindex » »
+- « Bloquée par robots.txt »
+- « Soft 404 »
+- « Google ne connaît pas cette URL »
 
-Vous pouvez télécharger le tableau en CSV.
+Le tableau se télécharge au format CSV.
 
-## Comment l'utiliser
+## Comment l’utiliser
 
-1. Quand l'audit est terminé, ouvrez l'onglet. Si le nombre « En attente d'une réponse » est élevé, cliquez sur **Vérifier l'état sur Google**. Chaque clic fait avancer de 25 pages. Sur un petit site, quelques clics suffisent.
-2. Regardez d'abord le groupe « Non indexé ». La colonne **Raison** donne la justification de Google et, le plus souvent, elle dit ce qu'il faut faire. Si c'est « Bloquée par robots.txt », levez le blocage. Si c'est « Exclue par la balise « noindex » », supprimez la balise. Si c'est « Détectée, actuellement non indexée », attendre suffit généralement.
-3. Ajoutez au plan du site (sitemap) les pages importantes qui indiquent « Google ne connaît pas cette URL ». Envoyez le plan à Search Console. Pour trois ou quatre pages très importantes, cliquez à la main sur « Demander l'indexation » (« Dizine eklenmesini iste » dans la version turque) dans Search Console.
-4. Si l'encadré « Pages pour lesquelles Google a choisi une autre URL canonique » n'est pas à zéro, regardez la colonne **URL canonique sélectionnée par Google**. Google n'a pas retenu l'adresse principale que vous avez déclarée. Corrigez la vôtre, ou faites de l'adresse choisie par Google l'adresse principale.
-5. Recliquez quelques jours plus tard. Seules les réponses devenues anciennes sont reposées, et votre quota n'est pas gaspillé.
+1. Une fois l’audit terminé, ouvrez l’onglet. Si le nombre de pages **En attente d’une réponse** est élevé, cliquez sur **Vérifier l’état sur Google**. Chaque clic avance de 25 pages ; sur un petit site, quelques clics suffisent.
+2. Commencez par le groupe **Non indexé**. La colonne **Raison** donne l’explication de Google, qui indique le plus souvent quoi faire. « Bloquée par robots.txt » : levez le blocage. « Exclue par la balise « noindex » » : retirez la balise. « Détectée, actuellement non indexée » : il suffit généralement d’attendre.
+3. Ajoutez au sitemap (plan du site) les pages importantes marquées « Google ne connaît pas cette URL », puis soumettez-le dans Search Console. Pour quelques pages essentielles, utilisez aussi « Demander l’indexation » dans Search Console.
+4. Si l’encadré des URL canoniques n’est pas à zéro, consultez la colonne **URL canonique sélectionnée par Google** : Google n’a pas retenu l’adresse principale que vous avez déclarée. Corrigez votre déclaration, ou faites de l’adresse choisie par Google votre adresse principale.
+5. Revenez quelques jours plus tard et cliquez de nouveau. Seules les réponses devenues anciennes sont redemandées, sans gaspiller de quota.
 
 ## Comment les chiffres sont calculés
 
-Si Google répond « dans l'index », la page est comptée « Sur Google ». S'il répond « pas dans l'index » ou « indéterminé », elle est comptée « Non indexé ». S'il n'y a pas de réponse, la page devient « En attente d'une réponse ».
+Une page que Google déclare indexée compte dans **Sur Google**. Toute autre réponse de Google la place dans **Non indexé**. Sans réponse exploitable, la page reste **En attente d’une réponse**.
 
-Une réponse devient ancienne après un certain délai ; elle est alors redemandée. Pour une page dans l'index, ce délai est de 14 jours. Pour une réponse « pas dans l'index » ou en erreur, il est de 3 jours. Une page jamais interrogée est toujours prête à l'être. La limite quotidienne est calculée avec le nombre de questions des 24 dernières heures. L'application ne compte que ses propres questions. Les requêtes que vous faites à la main dans Search Console n'entrent pas dans ce compteur, mais elles comptent dans la vraie limite de Google.
+Une réponse devient ancienne après un délai, puis elle est redemandée : 14 jours pour une page indexée, 3 jours pour une page non indexée ou une erreur. Une page jamais vérifiée passe toujours en premier. La limite quotidienne se calcule sur les vérifications des 24 dernières heures. L’application ne compte que ses propres vérifications : celles que vous faites à la main dans Search Console n’entrent pas dans ce compteur, mais elles comptent dans la limite réelle de Google.
 
-Un décalage d'adresse principale signifie que l'adresse choisie par Google est différente de celle que vous avez déclarée. Une différence de barre oblique finale compte aussi.
+Il y a décalage d’URL canonique quand l’adresse choisie par Google diffère de celle que vous avez déclarée. Une simple différence de barre oblique finale compte aussi.
 
-Si la dernière exploration de Google date de plus de 90 jours, l'audit écrit le problème « Google n'a pas exploré cette page depuis longtemps ». Les réponses périmées sont regroupées dans un seul problème : « La réponse de Google sur certaines pages est périmée ».
+Si la dernière exploration de Google date de plus de 90 jours, l’audit signale le problème « Google n’a pas exploré cette page depuis longtemps ». Les réponses trop anciennes sont regroupées dans un seul problème : « Les réponses de Google pour certaines pages sont obsolètes ».
 
 ## Questions fréquentes
 
-**Pourquoi le bouton est-il désactivé ?** Il y a trois raisons possibles. La Search Console n'est pas connectée. Il ne reste aucune page à interroger. Ou le nom de domaine que vous auditez n'est pas dans la propriété connectée. Cela arrive si vous avez audité un autre site.
+**Pourquoi le bouton est-il désactivé ?** Trois raisons possibles : Search Console n’est pas connecté, aucune page n’est à vérifier, ou le domaine audité n’appartient pas à la propriété connectée, par exemple parce que vous avez audité un autre site.
 
-**À qui appartient la limite de 2 000 ?** À la propriété. Deux projets rattachés à la même propriété et votre assistant puisent dans la même réserve.
+**À qui s’applique la limite de 2 000 ?** À la propriété. Deux projets rattachés à la même propriété et votre assistant partagent le même quota.
 
-**Que faire pour une page « Détectée, actuellement non indexée » ?** Le plus souvent, rien. Sur les sites récents, Google peut faire attendre des semaines. Placer un lien depuis les pages du site que Google explore souvent accélère les choses.
+**Que faire pour une page « Détectée, actuellement non indexée » ?** Le plus souvent, rien. Sur un site récent, Google peut faire attendre plusieurs semaines. Un lien depuis des pages que Google explore souvent accélère les choses.
 
-**Cet onglet signale-t-il de nouvelles pages à Google ?** Non, il ne fait que poser la question. Pour signaler, il y a le plan du site et « Demander l'indexation » dans Search Console.
+**Cet onglet signale-t-il de nouvelles pages à Google ?** Non, il se contente d’interroger Google. Pour signaler des pages, utilisez le sitemap et « Demander l’indexation » dans Search Console.
 
 ## Limites
 
-Les réponses sont celles de Google, rien de plus. Google peut laisser certains champs vides. Vous ne pouvez pas dépasser 2 000 questions par jour. Interroger entièrement un site de 10 000 pages prend cinq jours. L'onglet n'interroge que les pages explorées. Les adresses qui n'entrent pas dans l'audit n'apparaissent pas dans la liste.
+Les réponses sont celles de Google, sans interprétation ; Google peut laisser certains champs vides. Au rythme de 2 000 vérifications par jour, un site de 10 000 pages demande cinq jours. L’onglet ne vérifie que les pages explorées par l’audit : les adresses qui n’en font pas partie n’apparaissent pas dans la liste.
 
 <!-- Kaynaklar: src/client/features/audit/IndexCoverageView.tsx; CoverageTable.tsx; CoverageVerdictDonut.tsx; coverageBuckets.ts; coverageReasons.ts; export.ts; src/server/features/gsc/indexCoverage.ts; src/server/lib/audit/google-verdict-checks.ts; src/shared/gsc-coverage-states.ts; src/db/gsc-inspection.schema.ts; src/server/features/quotas/QuotaService.ts -->

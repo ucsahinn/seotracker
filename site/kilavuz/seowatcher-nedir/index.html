@@ -201,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1491,7 +1491,7 @@
             <li><a href="/kilavuz/firsatlar/">Fırsatlar</a></li>
             <li><a href="/kilavuz/kayitli-kelimeler/">Kayıtlı kelimeler</a></li>
             <li>
-              <a href="/kilavuz/analitik/">Analitik verilerini yorumlama</a>
+              <a href="/kilavuz/analitik/">Analytics verisini yorumlama</a>
             </li>
             <li><a href="/kilavuz/site-denetimi/">Site denetimi</a></li>
             <li><a href="/kilavuz/dizin-durumu/">Dizin durumu</a></li>
@@ -1517,12 +1517,9 @@
           uygulamasıdır.
         </p>
         <p>
-          seowatcher, Google Search Console, Google Analytics 4, kendi site
-          tarayıcısı ve PageSpeed Insights verisini tek panelde gösteren
-          ücretsiz, MIT lisanslı, açık kaynaklı bir SEO uygulamasıdır. Bulutta
-          değil, kendi bilgisayarınızda çalışır: Windows 10 ve 11'e tek dosyayla
-          kurulur, Mac ve Linux'ta Docker ile çalışır. GitHub'daki adı
-          seotracker'dır; ikisi aynı uygulamadır.
+          Uygulama bulutta değil, kendi bilgisayarınızda çalışır. Windows 10 ve
+          11'e tek dosyayla kurulur; Mac ve Linux'ta Docker ile çalışır.
+          GitHub'daki adı seotracker'dır; ikisi aynı uygulamadır.
         </p>
         <h2 id="kisa-bilgiler">Kısa bilgiler</h2>
         <div class="tw">
@@ -1563,7 +1560,7 @@
                 <td>Yapay zekâ bağlantısı</td>
                 <td>
                   MCP ile Claude Code, Codex, Cursor ve Gemini CLI gibi
-                  asistanlar; 6 hazır görev
+                  asistanlar; 6 hazır SEO becerisi
                 </td>
               </tr>
               <tr>
@@ -1585,7 +1582,7 @@
               </tr>
               <tr>
                 <td>Sürüm</td>
-                <td>0.8.6 Alpha, 29 Ekim 2026</td>
+                <td>0.8.7 Alpha, 29 Ekim 2026</td>
               </tr>
               <tr>
                 <td>Boyut</td>
@@ -1603,8 +1600,9 @@
           <li>
             <strong>Arama performansı:</strong> Search Console'daki tıklama,
             gösterim, tıklama oranı ve ortalama sırayı sorguya, sayfaya, ülkeye
-            ve cihaza göre gösterir. Google 16 ay geriye veri verir; uygulama
-            kendi arşivini de biriktirir.
+            ve cihaza göre gösterir. Google 16 ay geriye veri verir; Arama
+            performansı ya da Sıralama takibi ekranı açıkken uygulama bu veriyi
+            kendi arşivinde de biriktirir.
           </li>
           <li>
             <strong>Fırsatlar:</strong> Google'da görünen sayfalarınızı,
@@ -1658,13 +1656,16 @@
         <p>
           Search Console verinin kaynağıdır; seowatcher bu veriyi okur ve
           üzerine iş listesi kurar. Search Console size sayıları gösterir;
-          seowatcher hangi sayfaya önce bakacağınızı, sitenizin 202 kurala göre
+          seowatcher hangi sayfaya önce bakacağınızı, sitenizin teknik olarak
           nerede bozuk olduğunu ve Analytics'teki karşılığını aynı yerde
-          gösterir. Arşivi bilgisayarınızda biriktirdiği için zamanla Google'ın
-          16 aylık penceresinden eski tarihlere de bakabilirsiniz. Sayılar aynı
-          kaynaktan gelir, ancak Google veriyi yaklaşık üç gün geriden verir ve
-          çok az aranan sorguları gizler; sayfa toplamıyla site toplamının
-          farklı çıkması bu yüzdendir.
+          gösterir. Arşiv bilgisayarınızda biriktiği için zamanla Google'ın 16
+          aylık penceresinden eski tarihlere de bakabilirsiniz.
+        </p>
+        <p>
+          Sayılar Search Console ile aynı kaynaktan gelir. Google veriyi
+          yaklaşık üç gün geriden verir ve çok az aranan sorguları gizler. Sorgu
+          tablolarının toplamıyla site toplamının farklı çıkmasının nedeni
+          budur.
         </p>
         <h2 id="ucretli-seo-araclarindan-farki-ne">
           Ücretli SEO araçlarından farkı ne?
@@ -1672,11 +1673,10 @@
         <p>
           Ücretli SEO araçları kendi taramalarından ve satın aldıkları veriden
           arama hacmi, backlink ve rakip sıralaması tahmini satar. seowatcher
-          bunları yapmaz; yalnızca Google'ın sitenizin sahibi olarak size zaten
-          verdiği veriyi ve kendi taramasını kullanır. Bu yüzden ücretsizdir,
-          ama pazar araştırması için tasarlanmamıştır. Kendi sitenizin
-          Google'daki durumunu izlemek, düzeltmek ve raporlamak istiyorsanız
-          uygundur.
+          yalnızca Google'ın site sahibi olarak size zaten verdiği veriyi ve
+          kendi taramasını kullanır. Bu yüzden ücretsizdir, ama pazar
+          araştırması aracı değildir. Kendi sitenizin Google'daki durumunu
+          izlemek, düzeltmek ve raporlamak için tasarlanmıştır.
         </p>
         <h2 id="kimler-icin">Kimler için?</h2>
         <p>
@@ -1688,7 +1688,7 @@
         <h2 id="sik-sorulan-sorular">Sık sorulan sorular</h2>
         <h3 id="gercekten-ucretsiz-mi">Gerçekten ücretsiz mi?</h3>
         <p>
-          Evet. MIT lisanslı, açık kaynak bir projedir. Kullandığı Google
+          Evet. Uygulamanın ücretli bir sürümü yoktur. Kullandığı Google
           servisleri de ücretsiz kullanım sınırları içinde kalır.
         </p>
         <h3 id="verilerim-nerede-duruyor">Verilerim nerede duruyor?</h3>
@@ -1715,14 +1715,17 @@
           Neden Google Cloud'da bir erişim anahtarı oluşturmam gerekiyor?
         </h3>
         <p>
-          seowatcher bulut hizmeti değildir; bilgisayarınızda çalışır ve
-          doğrudan Google'a bağlanır. Google bağlanan uygulamanın kime ait
-          olduğunu bilmek ister. Bunu bir kez yaparsınız.
+          seowatcher sizin bilgisayarınızdan doğrudan Google'a bağlanır; arada
+          bir şirket sunucusu yoktur. Google, veriye erişen uygulamanın kime ait
+          olduğunu bilmek ister. Bu kimliği bir kez oluşturursunuz.
         </p>
         <h3 id="uygulamayi-internete-acmam-gerekir-mi">
           Uygulamayı internete açmam gerekir mi?
         </h3>
-        <p>Hayır. Uygulama yalnızca kendi bilgisayarınızdan açılır.</p>
+        <p>
+          Hayır. Uygulama yalnızca kendi bilgisayarınızdan açılır ve Google'a
+          giden bağlantıyı kendisi kurar.
+        </p>
         <h2 id="nereden-baslamali">Nereden başlamalı?</h2>
         <ol>
           <li>

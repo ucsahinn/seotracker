@@ -14,7 +14,7 @@
     <title>Desempenho da pesquisa | Guia do seowatcher</title>
     <meta
       name="description"
-      content="Você vê quantas vezes aparece no Google, quantos cliques recebe e o que corrigir primeiro. Os números vêm do Search Console. Os ganhos são um limite superior."
+      content="Cliques, impressões e posições do Search Console, as páginas a melhorar primeiro e os limites dos ganhos estimados."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -94,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="Você vê quantas vezes aparece no Google, quantos cliques recebe e o que corrigir primeiro. Os números vêm do Search Console. Os ganhos são um limite superior."
+      content="Cliques, impressões e posições do Search Console, as páginas a melhorar primeiro e os limites dos ganhos estimados."
     />
     <meta
       property="og:image"
@@ -107,7 +107,7 @@
       property="og:image:alt"
       content="Cartão do seowatcher: o painel do aplicativo com dados do Search Console, do Analytics 4 e da auditoria do site, e um botão para baixar para Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/pt/guias/desempenho-de-busca/"
@@ -125,7 +125,7 @@
     />
     <meta
       name="twitter:description"
-      content="Você vê quantas vezes aparece no Google, quantos cliques recebe e o que corrigir primeiro. Os números vêm do Search Console. Os ganhos são um limite superior."
+      content="Cliques, impressões e posições do Search Console, as páginas a melhorar primeiro e os limites dos ganhos estimados."
     />
     <meta
       name="twitter:image"
@@ -168,11 +168,11 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/pt/guias/desempenho-de-busca/#article",
             "headline": "Desempenho da pesquisa",
-            "description": "Você vê quantas vezes aparece no Google, quantos cliques recebe e o que corrigir primeiro. Os números vêm do Search Console. Os ganhos são um limite superior.",
+            "description": "Cliques, impressões e posições do Search Console, as páginas a melhorar primeiro e os limites dos ganhos estimados.",
             "url": "https://seowatcher.io/pt/guias/desempenho-de-busca/",
             "inLanguage": "pt",
             "datePublished": "2026-10-23",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Telas",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1511,7 +1511,7 @@
               >
             </li>
             <li>
-              <a href="/pt/guias/analise/">Entender os dados de análise</a>
+              <a href="/pt/guias/analise/">Compreender os dados do Analytics</a>
             </li>
             <li>
               <a href="/pt/guias/auditoria-do-site/">Auditoria do site</a>
@@ -1522,7 +1522,7 @@
             <li><a href="/pt/guias/relatorios/">Relatórios e modelos</a></li>
             <li>
               <a href="/pt/guias/informacoes-do-projeto/"
-                >Informações do projeto</a
+                >Contexto do projeto</a
               >
             </li>
             <li><a href="/pt/guias/configuracoes/">Configurações</a></li>
@@ -1534,7 +1534,7 @@
               <a href="/pt/guias/regras-de-auditoria/">Regras de auditoria</a>
             </li>
             <li>
-              <a href="/pt/guias/configurar-agente/">Configurar o agente</a>
+              <a href="/pt/guias/configurar-agente/">Configuração do agente</a>
             </li>
             <li>
               <a href="/pt/guias/solucao-de-problemas/">Solução de problemas</a>
@@ -1546,13 +1546,8 @@
       <article id="icerik" data-page="arama-performansi">
         <h1>Desempenho da pesquisa</h1>
         <p class="lede">
-          Você vê quantas vezes aparece no Google, quantos cliques recebe e o
-          que corrigir primeiro. Os números vêm do Search Console. Os ganhos são
-          um limite superior.
-        </p>
-        <p>
-          Aqui você vê quantas vezes aparece no Google, quantos cliques recebe e
-          o que corrigir primeiro.
+          Cliques, impressões e posições do Search Console, as páginas a
+          melhorar primeiro e os limites dos ganhos estimados.
         </p>
         <p>
           Cliques, impressões, CTR e posição vêm direto do Search Console. O
@@ -1561,7 +1556,7 @@
           &quot;limite superior&quot;.
         </p>
         <p>
-          Os filtros escolhidos são escritos na barra de endereço. Se quiser,
+          Os filtros escolhidos ficam salvos no endereço da página. Se quiser,
           compartilhe essa visão como link ou guarde nos favoritos.
         </p>
         <h2 id="tres-termos">Três termos</h2>
@@ -1592,8 +1587,8 @@
         <ul>
           <li>
             <strong>Atualizar</strong>: pede dados novos ao Search Console. O
-            aplicativo normalmente reaproveita uma resposta de alguns minutos
-            atrás.
+            aplicativo normalmente reaproveita uma resposta de até dez minutos
+            atrás; <strong>Atualizar</strong> ignora esse cache.
           </li>
           <li>
             <strong>Baixar relatório</strong>: transforma a visão mostrada em um
@@ -1606,7 +1601,7 @@
             <strong>Consultas perto das três primeiras posições (CSV)</strong>,
             <strong>Exportar consultas para o Sheets</strong>,
             <strong>Exportar páginas para o Sheets</strong>. As exportações
-            seguem os filtros da tela. Se na guia Pesquisas ou Páginas houver
+            seguem os filtros da tela. Se na guia Consultas ou Páginas houver
             uma busca ou um filtro rápido, ele também vai para o arquivo.
           </li>
         </ul>
@@ -1635,8 +1630,8 @@
           quantos dias ainda estão sendo contados e a data dos últimos dados, a
           parcela de cliques de consultas ocultas, se as tabelas foram lidas por
           inteiro (o Google devolve um número limitado de linhas por vez) e se
-          esta visão enviou novas solicitações ao Google ou usou uma resposta
-          tirada alguns minutos antes.
+          esta visão enviou novas solicitações ao Google ou reaproveitou uma
+          resposta de até dez minutos atrás.
         </p>
         <p>
           <strong>Frase de resumo.</strong> Uma ou duas frases acima dos quadros
@@ -1780,7 +1775,7 @@
           pesquisa, página, dispositivo ou país. Se houver vários trabalhos para
           a mesma pesquisa ou página, o total no alto conta uma vez só.
         </p>
-        <h3 id="pesquisas-e-paginas">Pesquisas e Páginas</h3>
+        <h3 id="consultas-e-paginas">Consultas e Páginas</h3>
         <p>
           Uma tabela por pesquisas ou por páginas. As colunas são
           <strong>Consulta</strong> (ou <strong>Página</strong>),
@@ -1788,8 +1783,8 @@
           relação à comparação), <strong>Impressões</strong>,
           <strong>CTR</strong> e <strong>Posição</strong>. Clique no título para
           ordenar. A barra atrás de uma linha é a parcela dela nos cliques desta
-          tabela. A caixa no alto procura entre as linhas. Ao lado, fica escrito
-          &quot;{mostradas} / {total} linhas&quot;.
+          tabela. A caixa no alto procura entre as linhas. Ao lado, um contador
+          mostra &quot;N / M linhas&quot;.
         </p>
         <p>
           <strong>Filtros rápidos.</strong> Para pesquisas:
@@ -1806,22 +1801,23 @@
           <strong>Abrir página em uma nova aba</strong>,
           <strong>Copiar URL</strong>, <strong>Copiar palavra-chave</strong>,
           <strong>Salvar como palavra-chave</strong>. O que você salva vai para
-          a tela de palavras-chave salvas. Clicar numa linha abre o painel de
-          detalhes.
+          a tela <strong>Palavras-chave salvas</strong>. Clicar numa linha abre
+          o painel de detalhes.
         </p>
         <p>
           A nota abaixo da tabela diz a base: &quot;lidas N consultas, N
           cliques. O total do site é de N cliques; a diferença vem das consultas
-          que o Google oculta.&quot; Se o limite de linhas do Google foi
-          atingido, a ponta menos clicada falta na lista e a nota avisa.
+          que o Google oculta.&quot;
         </p>
-        <h3 id="oportunidades-de-posicao">Oportunidades de posição</h3>
+        <h3 id="oportunidades-de-posicionamento">
+          Oportunidades de posicionamento
+        </h3>
         <p>São quatro seções.</p>
         <ul>
           <li>
             <strong>Consultas perto das três primeiras posições.</strong>
             Pesquisas com posição média entre 4 e 20. As pesquisas de marca não
-            entram. Está escrito quantos cliques a mais elas poderiam trazer
+            entram. A seção indica quantos cliques a mais elas poderiam trazer
             juntas se cada uma subisse um degrau (de 6-10 para 4-5, de 4-5 para
             2-3, de 11-20 para a primeira página). É um limite superior. O total
             cobre todas as consultas dessa faixa, não só as linhas listadas, e
@@ -1861,7 +1857,7 @@
             taxas são calculadas a partir das pesquisas sem marca.
           </li>
         </ul>
-        <h3 id="alteracoes">Alterações</h3>
+        <h3 id="variacoes">Variações</h3>
         <p>Elas comparam o período escolhido com o anterior.</p>
         <ul>
           <li>
@@ -1918,14 +1914,15 @@
             para cada consulta, as páginas dela com cliques, impressões e
             posições. A página que o Google mais mostra para essa consulta conta
             como a &quot;preferida&quot;. A parcela de impressões que vai para
-            as outras fica escrita &quot;fora da parcela&quot;.
+            as outras páginas aparece como &quot;fora da parcela&quot;.
           </li>
           <li>
-            Esta análise olha 28 dias. Se 7 dias estiver escolhido, ela sobe
-            para 28 na análise e o período real é escrito. Só pesquisas com pelo
-            menos 100 impressões são examinadas. Para uma página entrar na
-            disputa, ela precisa de pelo menos 10 impressões e 20 por cento de
-            parcela nessa pesquisa.
+            Esta análise cobre 28 dias. Se
+            <strong>Últimos 7 dias</strong> estiver escolhido, ela usa mesmo
+            assim 28 dias e mostra o período real. Só pesquisas com pelo menos
+            100 impressões são examinadas. Para uma página entrar na disputa,
+            ela precisa de pelo menos 10 impressões e 20 por cento de parcela
+            nessa pesquisa.
           </li>
           <li>
             Se a busca bater no limite de linhas do Search Console, a tela avisa
@@ -1950,15 +1947,14 @@
             <strong>Pesquisas de marca e sem marca.</strong> As pesquisas que
             chegam com o seu nome e as de quem não conhecia você são medidas à
             parte: <strong>Pesquisas de marca</strong> e
-            <strong>Pesquisas sem marca</strong>. Para cada uma, ficam escritos
-            o número de consultas, os cliques, o CTR e a posição média. Se
-            nenhum nome da marca estiver definido, aparece &quot;Pesquisas de
-            marca não separadas&quot; e um botão
-            <strong>Adicionar nome da marca</strong>. Se o aplicativo sugeriu
-            nomes da marca a partir do seu domínio, aparece &quot;Não
-            confirmado.&quot; A medição foi então feita com os nomes sugeridos.
-            Clique em <strong>Confirmar sugestões</strong> ou use
-            <strong>Editar nomes da marca</strong>. As parcelas são das
+            <strong>Pesquisas sem marca</strong>. Para cada uma, aparecem o
+            número de consultas, os cliques, o CTR e a posição média. Se nenhum
+            nome da marca estiver definido, aparece &quot;Pesquisas de marca não
+            separadas&quot; e um botão <strong>Adicionar nome da marca</strong>.
+            Se o aplicativo sugeriu nomes da marca a partir do seu domínio,
+            aparece &quot;Não confirmado.&quot; A medição foi então feita com os
+            nomes sugeridos. Clique em <strong>Confirmar sugestões</strong> ou
+            use <strong>Editar nomes da marca</strong>. As parcelas são das
             consultas lidas, as ocultas não estão incluídas.
           </li>
           <li>
@@ -1992,8 +1988,8 @@
         </p>
         <p>
           <strong>Painel de detalhes.</strong> Um clique numa pesquisa ou página
-          (numa tabela, em A fazer, em Oportunidades de posição ou em
-          Alterações) abre o painel pela direita. No alto estão o período e
+          (numa tabela, em A fazer, em Oportunidades de posicionamento ou em
+          Variações) abre o painel pela direita. No alto estão o período e
           &quot;dias definitivos&quot;. Depois quatro números (Cliques,
           Impressões, CTR, Posição média) e a variação deles em relação à
           comparação escolhida. Abaixo, a linha
@@ -2025,15 +2021,15 @@
             nesse dia, ela aparece nos marcadores.
           </li>
           <li>
-            Na guia <strong>Oportunidades de posição</strong>, olhe as
+            Na guia <strong>Oportunidades de posicionamento</strong>, olhe as
             <strong>Consultas perto das três primeiras posições</strong>. Abra a
             página das três pesquisas mais mostradas. Ajuste título e primeiro
             parágrafo a essa pesquisa.
           </li>
           <li>
-            Na guia <strong>Pesquisas</strong>, aperte o botão
-            <strong>CTR baixa</strong>. Sua posição é boa, mas ninguém clica. O
-            problema provavelmente está no título e na descrição.
+            Na guia <strong>Consultas</strong>, ative o filtro
+            <strong>CTR baixa</strong>. Essas linhas têm boa posição, mas poucos
+            cliques: o problema costuma estar no título e na descrição.
           </li>
           <li>
             Na guia <strong>Variações</strong>, olhe <strong>Em queda</strong>.
@@ -2051,8 +2047,8 @@
             efeito no gráfico.
           </li>
           <li>
-            Quando um trabalho terminar, diga <strong>Feito</strong>. A lista
-            encurta.
+            Quando um trabalho terminar, clique em <strong>Feito</strong>. A
+            lista encurta.
           </li>
           <li>
             No fim do mês, guarde a visão com <strong>Baixar relatório</strong>.
@@ -2067,8 +2063,6 @@
           mudar por mais alguns dias. O aplicativo não os inclui nos totais. O
           período anterior é o período de mesma duração logo antes deste. Na
           comparação com o ano passado, tomam-se os mesmos dias do ano passado.
-          Você vê a variação de cliques e impressões em porcentagem e a do CTR
-          em pontos.
         </p>
         <p>
           Os quadros são os totais reais do site. As tabelas contam
@@ -2078,8 +2072,14 @@
           menor que o do quadro, porque as consultas ocultas não são listadas.
         </p>
         <p>
-          O Google entrega no máximo 1.000 linhas por vez. Se o limite de linhas
-          foi atingido, a ponta menos clicada falta na lista e a tela avisa.
+          O aplicativo lê as tabelas por consulta, por página e por par
+          consulta-página em blocos de 25.000 linhas, até o Google não devolver
+          linhas novas. O Google fornece no máximo 50.000 linhas por dia e por
+          tipo de pesquisa e pode omitir algumas linhas: ler todos os blocos não
+          significa que toda pesquisa seja conhecida. Se o limite foi atingido,
+          a ponta menos clicada fica de fora e a tela avisa. Os totais do site
+          não são somados a partir dessas tabelas; são um total separado
+          fornecido pelo Google.
         </p>
         <p>
           <strong>Ganho possível.</strong> O aplicativo aplica a cada pesquisa a
@@ -2119,8 +2119,8 @@
           isolada.
         </p>
         <p>
-          <strong>A consulta que procuro não está na lista.</strong> O Google
-          oculta as consultas pesquisadas muito raramente. Em sites pequenos
+          <strong>A consulta que procuro não está na lista.</strong> Ela
+          provavelmente é uma consulta oculta (veja acima). Em sites pequenos,
           pode não haver nenhuma linha de consulta.
         </p>
         <p>
@@ -2131,17 +2131,14 @@
         </p>
         <p>
           <strong>Se as páginas se sobrepõem, devo juntá-las?</strong> Em geral,
-          não. Decida primeiro qual página deve responder. Depois aponte os
-          links internos para essa página. Se as páginas respondem mesmo à mesma
-          pergunta, junte-as.
+          não: siga o passo 7 acima. Junte as páginas só se elas responderem de
+          fato à mesma pergunta.
         </p>
         <p>
           <strong>Preciso informar um nome da marca?</strong> Não, mas sem ele
           quem pesquisa o nome do seu próprio site distorce o cálculo do CTR e
-          as oportunidades saem incompletas. A tela lembra isso com a tarefa
-          &quot;Defina o nome da sua marca&quot;. Se o aplicativo usa nomes
-          sugeridos a partir do seu domínio, a tarefa se chama &quot;Confirmar o
-          nome da marca&quot;.
+          as oportunidades saem incompletas. A tela lembra isso com as tarefas
+          descritas acima.
         </p>
         <h2 id="limites">Limites</h2>
         <p>
@@ -2150,34 +2147,41 @@
           Google não vão além de 16 meses. Para o que for mais antigo, olhe o
           arquivo neste computador: o gráfico de longo prazo da guia
           <strong>Variações</strong> e a tela
-          <strong>Acompanhamento de posições</strong> leem dele. As marcas de
-          &quot;feito&quot; e as notas ficam só nesta instalação.
+          <strong>Acompanhamento de posições</strong> leem dele. O arquivo só é
+          preenchido enquanto esta tela ou
+          <strong>Acompanhamento de posições</strong> estiver aberta.
+        </p>
+        <h2 id="links-de-entrada-e-datas-fixas">
+          Links de entrada e datas fixas
+        </h2>
+        <p>
+          Os links de Oportunidades e Acompanhamento de posições abrem o detalhe
+          da URL ou da consulta exata, nas datas da origem. Os totais do alto
+          continuam sendo da propriedade inteira; os valores do item escolhido
+          ficam no painel de detalhes. Se essas datas não estiverem mais
+          disponíveis, a tela avisa em vez de trocá-las em silêncio. Escolher um
+          período predefinido remove as datas fixas.
         </p>
         <p>
-          Os links de Oportunidades e Acompanhamento de posições abrem os
-          detalhes da URL ou consulta exata nas datas de origem. Os totais
-          gerais continuam sendo da propriedade; os valores da identidade
-          selecionada ficam no painel de detalhes. Períodos indisponíveis nunca
-          são substituídos silenciosamente. Escolher um período predefinido
-          remove as datas fixadas. O relatório envia as datas exibidas ao
-          servidor e fica indisponível durante a atualização. As datas
-          permanecem fixas; o Google pode revisar as medições consultadas
-          novamente.
+          <strong>Baixar relatório</strong> envia ao servidor as datas exibidas
+          e fica indisponível durante uma atualização. As datas do relatório
+          ficam fixas, mas o Google pode revisar as medições lidas de novo.
         </p>
         <h2 id="interpretar-poucos-dados">Interpretar poucos dados</h2>
         <p>
           Quando os cliques do período de comparação ficam abaixo do limite de
           análise, o resumo apresenta primeiro os cliques e as impressões reais.
           Com poucos dados, percentuais e médias não comprovam crescimento ou
-          perda por si só. Uma lista de oportunidades vazia não significa que
+          perda por si só. Uma lista vazia em
+          <strong>Oportunidades de posicionamento</strong> não significa que
           nenhuma consulta esteja na posição 4–20: também se aplicam o limite de
           impressões ajustado ao período e a exclusão de consultas de marca.
         </p>
         <p>
-          Se a lista de tarefas estiver vazia, abra as consultas visíveis. Não é
-          sugerido um período maior quando os últimos três meses já estão
-          selecionados. Não se presume que o Google revele depois as consultas
-          ocultas.
+          Se a guia <strong>A fazer</strong> estiver vazia, consulte a guia
+          <strong>Consultas</strong>. Nenhum período maior é sugerido quando
+          <strong>Últimos três meses</strong> já está selecionado, e nada
+          permite supor que o Google revele depois as consultas ocultas.
         </p>
         <nav class="pager" aria-label="Página anterior e seguinte">
           <a class="pager-prev" rel="prev" href="/pt/guias/painel/"
@@ -2190,12 +2194,12 @@
           >
         </nav>
         <p class="meta">
-          Última atualização: 28 de outubro de 2026. Viu algum erro?
+          Última atualização: 29 de outubro de 2026. Encontrou um erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >Relate no GitHub</a
+            >Informe no GitHub</a
           >.
         </p>
       </article>
@@ -2212,6 +2216,11 @@
           </li>
           <li><a href="#perguntas-frequentes">Perguntas frequentes</a></li>
           <li><a href="#limites">Limites</a></li>
+          <li>
+            <a href="#links-de-entrada-e-datas-fixas"
+              >Links de entrada e datas fixas</a
+            >
+          </li>
           <li>
             <a href="#interpretar-poucos-dados">Interpretar poucos dados</a>
           </li>

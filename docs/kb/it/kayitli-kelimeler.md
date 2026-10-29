@@ -1,35 +1,54 @@
 ---
 title: Parole chiave salvate
-description: Esaminare le parole chiave salvate con date e copertura dell’archivio. Capire osservazioni, dati mancanti e variazioni nel periodo scelto.
+description: Seguire le parole chiave salvate nell'archivio locale: periodi, osservazioni, dati mancanti, variazioni di posizione ed esportazione.
 screen: Kayıtlı kelimeler
 route: /p/<proje>/saved
 updated: 2026-10-27
 ---
 
-Salva le ricerche importanti da Prestazioni di ricerca o Posizionamenti. Il salvataggio non avvia un nuovo monitoraggio Google: questa pagina abbina i record scelti alle osservazioni nell'archivio locale.
+Le ricerche importanti si salvano da **Rendimento della ricerca** o da **Monitoraggio del posizionamento**. Salvare non avvia un nuovo monitoraggio presso Google: la pagina abbina le parole salvate alle osservazioni già presenti nell'archivio locale.
 
-## Date e conteggi
+## Periodo e conteggi
 
-Scegli 30, 90 o 180 giorni; il valore iniziale è 90. Sono visibili le date esatte del periodo corrente e del precedente di pari durata. Si usa il calendario del Pacifico con un ritardo presunto di tre giorni, che non dimostra la completezza dell'archivio.
+Il periodo può essere di 30, 90 o 180 giorni; il valore predefinito è 90. La schermata mostra le date esatte del periodo corrente e del periodo precedente di uguale durata. Le date seguono il fuso orario del Pacifico, con un ritardo presunto di tre giorni; questo ritardo non garantisce che l'archivio sia completo.
 
-Le schede contano record salvati dopo i filtri di testo e tag, record osservati, movimenti significativi confrontabili e posizioni sconosciute. Le barre usano la stessa base e filtrano la tabella. Non sono volumi di ricerca né tutte le query del sito. Record di mercati diversi conservano identità e conteggi; le osservazioni coprono tutti i paesi e dispositivi.
+Le schede in alto contano:
 
-La posizione è ponderata per impressioni. Gli spazi sono compattati e le maiuscole seguono le regole turche: I/ı resta distinto da İ/i. Le varianti originali sono combinate per impressioni. Un dato mancante non è posizione zero né perdita certa. Significativo indica almeno 0,5 posizioni; variazioni più piccole possono comparire nei dettagli. Nessun confronto non significa invariato.
+- le parole salvate che superano i filtri di testo ed etichette;
+- le **Parole chiave osservate** nel periodo;
+- i movimenti significativi confrontabili;
+- le parole con **Posizione sconosciuta**.
 
-## Esaminare un record
+Le barre usano la stessa base e, con un clic, filtrano la tabella. Questi numeri non sono volumi di ricerca e non coprono tutte le query del sito. Parole salvate per mercati diversi restano separate, ma le osservazioni coprono tutti i paesi e i dispositivi.
 
-La tabella mostra parola, posizione media, variazione, impressioni e tag. Sul telefono le misure sono sotto la parola. I dettagli archivio mostrano gli stessi periodi, varianti originali, media precedente, giorni osservati e mercato salvato. Data di aggiunta ed eventuale intento storico restano nei dettagli; non viene misurato un nuovo intento. Il collegamento secondario cerca testo contenuto negli ultimi 28 giorni di Prestazioni di ricerca, non la stessa misura di archivio.
+Se nessuna parola è confrontabile, la scheda dei movimenti mostra **Nessun confronto** invece di zero. Se tutte le parole sono state osservate, la scheda **Posizione sconosciuta** non segnala osservazioni mancanti. Le schede senza risultati corrispondenti non sono cliccabili.
 
-Tutti i termini inclusi devono corrispondere e nessun termine escluso deve comparire. Ogni campo accetta al massimo 20 termini. Basta uno dei tag selezionati, fino a 50 selezioni; non è il limite dei tag memorizzati nel progetto. I conteggi tag sono assegnazioni sull'intero progetto. Filtri, fascia, periodo, ordine e pagina restano nell'URL. Cancella tutto rimuove anche una fascia attiva vuota.
+## Come si calcola la posizione
+
+La posizione è una media ponderata per le impressioni. Nel confronto con le query di Google gli spazi multipli vengono ridotti e le maiuscole seguono le regole del turco, quindi I/ı resta distinto da İ/i. Le varianti originali della stessa parola si combinano in base alle impressioni.
+
+Un dato mancante non è una posizione zero né una perdita certa. Un movimento è significativo da 0,5 posizioni in su; le variazioni minori compaiono nei dettagli. "Nessun confronto" non significa "invariato".
+
+## Esaminare una parola
+
+La tabella mostra parola, posizione media, variazione, impressioni ed etichette; sul telefono le misure compaiono sotto la parola. I **Dettagli dell'archivio** usano gli stessi periodi e riportano varianti originali, media precedente, giorni osservati e mercato salvato. Lì si trovano anche la data di aggiunta e l'eventuale intento registrato in passato: l'app non misura un nuovo intento.
+
+**Mostra le osservazioni giornaliere dell'archivio** carica lo storico giorno per giorno, con le stesse date e lo stesso abbinamento. I giorni mancanti restano vuoti. Il grafico si esplora da tastiera ed esiste anche un elenco testuale dei valori.
+
+Il collegamento secondario cerca il testo della parola negli ultimi 28 giorni di **Rendimento della ricerca**; non è la stessa misura dell'archivio.
+
+## Filtri e ordinamento
+
+- **Contiene**: tutti i termini devono comparire. **Non contiene**: nessuno dei termini deve comparire. Ogni campo accetta al massimo 20 termini.
+- **Etichette**: basta una delle etichette scelte; si possono selezionare fino a 50 etichette. Questo non limita quante etichette può avere il progetto. I conteggi per etichetta valgono sull'intero progetto.
+- Filtri, fascia di posizione, periodo, ordinamento e pagina restano nell'URL. **Cancella tutto** rimuove anche una fascia attiva senza risultati.
+
+L'ordine predefinito è per data di aggiunta; si può ordinare anche per posizione, movimento, impressioni e parola. Ordinare per **Cali significativi** aiuta a decidere da dove partire, ma non indica la causa del calo.
+
+La selezione di righe vale solo per la pagina corrente. Mentre un filtro o un aggiornamento è in corso, le azioni sulle righe precedenti sono bloccate. La rimozione di parole chiede conferma.
 
 ## Archivio ed esportazione
 
-Connessione assente, archivio mai importato, copertura parziale ed errore di lettura hanno spiegazioni distinte. Aggiorna elenco legge solo il database locale. Per nuovi dati Google usa l'aggiornamento archivio in Posizionamenti. Google può omettere query rare; nessuna osservazione non prova l'assenza nella ricerca.
+Connessione mancante, archivio mai importato, copertura parziale ed errore di lettura hanno ciascuno una spiegazione propria. **Aggiorna elenco** rilegge solo il database locale; per scaricare nuovi dati da Google si aggiorna l'archivio in **Monitoraggio del posizionamento**. Google può omettere le query rare: l'assenza di osservazioni non prova che la pagina sia assente dalla ricerca.
 
-CSV e Fogli usano la stessa popolazione filtrata. Le prime colonne rimangono parola, intento, tag e aggiunta; seguono posizione corrente/precedente, variazione, stato, giorni, date, copertura, varianti, ambito, mercato, ID e snapshot. Le misure sconosciute restano vuote. Se i dati cambiano durante l'esportazione, riavviala.
-
-La selezione vale solo per questa pagina. Filtri o aggiornamenti in corso bloccano azioni su righe vecchie. La rimozione richiede conferma. L'ordine iniziale resta la data di aggiunta; puoi ordinare anche posizione, movimento, impressioni e parola. L'ordine dei cali significativi serve a indagare, senza provarne la causa.
-
-**Osservazioni giornaliere.** Richiedi esplicitamente lo storico nei dettagli archivio. Date e abbinamento restano uguali. I giorni mancanti restano vuoti; puoi esplorare le date da tastiera e aprire l’elenco testuale dei valori.
-
-Senza parole chiave confrontabili, la scheda dei movimenti mostra Nessun confronto anziché zero. Se tutte le parole chiave sono state osservate, la scheda Posizione sconosciuta non segnala osservazioni mancanti. I pulsanti delle schede dei movimenti e delle posizioni sconosciute sono disattivati senza risultati corrispondenti.
+**Scarica CSV** ed **Esporta in Fogli Google** usano lo stesso insieme filtrato. Le prime colonne sono parola, intento, etichette e data di aggiunta; seguono posizione attuale e precedente, variazione, stato, giorni, date, copertura, varianti, ambito, mercato, ID e istantanea. Le misure sconosciute restano vuote. Se i dati cambiano durante l'esportazione, la avvii di nuovo.

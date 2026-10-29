@@ -11,10 +11,10 @@
     <meta name="ga4-id" content="G-DFPDX00V4R" />
     <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Configurazione dell'assistente | guida di seowatcher</title>
+    <title>Configurazione dell'agente | guida di seowatcher</title>
     <meta
       name="description"
-      content="Collegare un assistente SEO in sicurezza, verificare una nuova chiamata e usare le competenze per controllare il sito e scrivere report."
+      content="Collegare un agente IA a seowatcher tramite MCP, verificare la connessione, proteggere il token e usare le skill per controlli e report."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -90,11 +90,11 @@
     <meta property="og:site_name" content="seowatcher" />
     <meta
       property="og:title"
-      content="Configurazione dell'assistente | guida di seowatcher"
+      content="Configurazione dell'agente | guida di seowatcher"
     />
     <meta
       property="og:description"
-      content="Collegare un assistente SEO in sicurezza, verificare una nuova chiamata e usare le competenze per controllare il sito e scrivere report."
+      content="Collegare un agente IA a seowatcher tramite MCP, verificare la connessione, proteggere il token e usare le skill per controlli e report."
     />
     <meta
       property="og:image"
@@ -121,11 +121,11 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="Configurazione dell'assistente | guida di seowatcher"
+      content="Configurazione dell'agente | guida di seowatcher"
     />
     <meta
       name="twitter:description"
-      content="Collegare un assistente SEO in sicurezza, verificare una nuova chiamata e usare le competenze per controllare il sito e scrivere report."
+      content="Collegare un agente IA a seowatcher tramite MCP, verificare la connessione, proteggere il token e usare le skill per controlli e report."
     />
     <meta
       name="twitter:image"
@@ -167,8 +167,8 @@
           {
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/it/guide/configurazione-assistente/#article",
-            "headline": "Configurazione dell'assistente",
-            "description": "Collegare un assistente SEO in sicurezza, verificare una nuova chiamata e usare le competenze per controllare il sito e scrivere report.",
+            "headline": "Configurazione dell'agente",
+            "description": "Collegare un agente IA a seowatcher tramite MCP, verificare la connessione, proteggere il token e usare le skill per controlli e report.",
             "url": "https://seowatcher.io/it/guide/configurazione-assistente/",
             "inLanguage": "it",
             "datePublished": "2026-10-23",
@@ -199,7 +199,7 @@
               {
                 "@type": "ListItem",
                 "position": 3,
-                "name": "Configurazione dell'assistente",
+                "name": "Configurazione dell'agente",
                 "item": "https://seowatcher.io/it/guide/configurazione-assistente/"
               }
             ]
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1519,17 +1519,17 @@
                 >Parole chiave salvate</a
               >
             </li>
-            <li>
-              <a href="/it/guide/analisi/">Interpretare i dati di analisi</a>
-            </li>
+            <li><a href="/it/guide/analisi/">Capire i dati di Analytics</a></li>
             <li>
               <a href="/it/guide/controllo-del-sito/">Controllo del sito</a>
             </li>
-            <li><a href="/it/guide/stato-indice/">Stato dell'indice</a></li>
+            <li>
+              <a href="/it/guide/stato-indice/">Stato dell'indicizzazione</a>
+            </li>
             <li><a href="/it/guide/rapporti/">Report e modelli</a></li>
             <li>
               <a href="/it/guide/informazioni-progetto/"
-                >Informazioni sul progetto</a
+                >Contesto del progetto</a
               >
             </li>
             <li><a href="/it/guide/impostazioni/">Impostazioni</a></li>
@@ -1542,7 +1542,7 @@
             </li>
             <li class="current" aria-current="page">
               <a href="/it/guide/configurazione-assistente/"
-                >Configurazione dell'assistente</a
+                >Configurazione dell'agente</a
               >
             </li>
             <li>
@@ -1555,48 +1555,69 @@
         </details>
       </aside>
       <article id="icerik" data-page="ajan-kurulumu">
-        <h1>Configurazione dell'assistente</h1>
+        <h1>Configurazione dell'agente</h1>
         <p class="lede">
-          Collegare un assistente SEO in sicurezza, verificare una nuova
-          chiamata e usare le competenze per controllare il sito e scrivere
+          Collegare un agente IA a seowatcher tramite MCP, verificare la
+          connessione, proteggere il token e usare le skill per controlli e
           report.
         </p>
         <p>
-          La configurazione dell'assistente collega a seowatcher un assistente
-          IA come Claude Code, Codex o Cursor tramite MCP (Model Context
-          Protocol). Una volta collegato, l'assistente legge i dati di Search
-          Console, Analytics e dei controlli dall'app sul tuo computer, avvia
-          controlli e scrive report. Ciò che l'assistente legge può arrivare al
-          suo fornitore.
+          Tramite MCP (Model Context Protocol) un agente IA come Claude Code,
+          Codex o Cursor si collega all'app installata su questo computer.
+          L'agente legge i dati di Search Console, Analytics e dei controlli,
+          avvia controlli e scrive report. Ciò che l'agente legge può essere
+          inviato al suo fornitore.
         </p>
         <h2 id="collegare-l-agente">Collegare l'agente</h2>
+        <ol>
+          <li>
+            Apra <strong>Configurazione dell'agente</strong> nella barra
+            laterale.
+          </li>
+          <li>
+            In <strong>Collega il tuo agente</strong> scelga
+            <strong>Claude Code</strong>, <strong>Codex</strong> o
+            <strong>Altro</strong>. I tasti freccia, Home e Fine cambiano la
+            scelta senza copiare nulla.
+          </li>
+          <li>
+            Copi le istruzioni con
+            <strong>Copia comando di configurazione</strong> e le incolli
+            nell'agente.
+          </li>
+        </ol>
         <p>
-          Apri Configurazione agente. Scegli Claude Code, Codex o Altro e copia
-          le istruzioni. Frecce, Home e Fine cambiano selezione senza copiare.
-          Il testo non contiene il token reale; l'agente usa il segreto locale.
-          L'installazione da zero resta un'opzione separata.
+          Le istruzioni non contengono il token reale: l'agente usa il segreto
+          salvato in locale. <strong>Nuova installazione</strong> è un'opzione
+          separata, per una prima installazione o un controllo da capo.
         </p>
         <h2 id="verificare-una-nuova-chiamata">
           Verificare una nuova chiamata
         </h2>
         <p>
-          Avvia la verifica e chiedi una chiamata a uno strumento seowatcher. La
-          pagina legge il registro locale ogni cinque secondi, per un massimo di
-          60 secondi. Una chiamata storica non verifica una nuova
-          configurazione. Scheda nascosta, errore o annullamento fermano il
-          controllo. Se non appare una nuova chiamata, controlla lo stato MCP
-          del client e riprova: non è prova di un guasto.
+          Prema <strong>Verifica connessione</strong> e chieda all'agente di
+          chiamare uno strumento di seowatcher. La pagina legge il registro
+          locale ogni cinque secondi, per al massimo 60 secondi. Una chiamata
+          registrata in precedenza non conferma una configurazione nuova. Se la
+          scheda viene nascosta, si verifica un errore o si annulla, il
+          controllo si ferma.
         </p>
         <p>
-          Collegato e la data dell'ultima chiamata descrivono uso passato, non
-          una sessione permanente. Riprova uno stato sconosciuto. Gli strumenti
-          operano sull'installazione.
+          Se non compare una nuova chiamata, controlli lo stato MCP nel client e
+          riprovi: l'assenza della chiamata non prova un guasto.
+          <strong>Chiamata allo strumento ricevuta</strong> e l'orario
+          dell'ultima chiamata descrivono un uso passato, non una sessione
+          sempre aperta. Se lo stato è sconosciuto, usi
+          <strong>Rileggi stato</strong>. Gli strumenti agiscono sull'intera
+          installazione, non su un singolo progetto.
         </p>
         <h2 id="proteggere-il-token">Proteggere il token</h2>
         <p>
-          Preferisci le istruzioni guidate. Per la configurazione manuale usa
+          Preferisca le istruzioni guidate. Per una configurazione manuale
+          (<strong>Se vuoi collegarti manualmente</strong>) inserisca
           <code>Authorization: Bearer &lt;token&gt;</code> solo nel campo
-          segreto locale del client. PowerShell copia senza visualizzare:
+          segreto locale del client. Questi comandi PowerShell copiano il token
+          negli appunti senza mostrarlo:
         </p>
         <p>
           Windows:
@@ -1614,17 +1635,35 @@
           >
         </p>
         <p>
-          Incolla nel campo locale e svuota gli appunti. Non inserire il token
-          in chat, output del terminale, schermate o codice. Il menu Windows
-          permette di aprire la cartella dati.
+          Incolli il token nel campo locale, poi svuoti gli appunti. Non
+          inserisca mai il token in una chat, nell'output del terminale, in una
+          schermata o nel codice. Su Windows,
+          <strong>Veri klasörünü aç</strong> (Apri la cartella dei dati) nel
+          menu dell'area di notifica apre la cartella che contiene il token.
         </p>
-        <h2 id="competenze-e-recupero">Competenze e recupero</h2>
+        <h2 id="skill-e-soluzione-dei-problemi">
+          Skill e soluzione dei problemi
+        </h2>
         <p>
-          La scheda Competenze elenca i flussi SEO. Le istruzioni li installano;
-          il testo di aggiornamento li rinnova. Claude Code: /seo-audit; Codex:
-          $seo-audit. Per 401 verifica l'header locale; se la connessione è
-          rifiutata controlla app e indirizzo. Aggiorna lo stato MCP e verifica
-          una nuova chiamata.
+          La scheda <strong>Skill</strong> elenca i flussi di lavoro SEO pronti.
+          Le istruzioni di configurazione le installano;
+          <strong>Copia il comando di aggiornamento</strong> le rinnova senza
+          toccare le impostazioni di connessione. In Claude Code si avviano con
+          <code>/seo-audit</code>, in Codex con <code>$seo-audit</code>.
+        </p>
+        <ul>
+          <li>
+            <strong>Errore 401</strong>: controlli l'intestazione
+            <code>Authorization</code> nel campo segreto del client.
+          </li>
+          <li>
+            <strong>Connessione rifiutata</strong>: verifichi che l'app sia
+            aperta e che l'indirizzo sia corretto.
+          </li>
+        </ul>
+        <p>
+          Dopo la correzione, aggiorni lo stato MCP nel client e verifichi una
+          nuova chiamata.
         </p>
         <nav class="pager" aria-label="Pagina precedente e successiva">
           <a
@@ -1640,12 +1679,12 @@
           >
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 29 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 29 ottobre 2026. Ha trovato un errore?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >segnalarlo su GitHub</a
+            >Lo segnali su GitHub</a
           >.
         </p>
       </article>
@@ -1659,7 +1698,11 @@
             >
           </li>
           <li><a href="#proteggere-il-token">Proteggere il token</a></li>
-          <li><a href="#competenze-e-recupero">Competenze e recupero</a></li>
+          <li>
+            <a href="#skill-e-soluzione-dei-problemi"
+              >Skill e soluzione dei problemi</a
+            >
+          </li>
         </ol>
       </nav>
     </main>

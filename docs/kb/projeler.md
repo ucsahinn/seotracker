@@ -6,22 +6,46 @@ route: /projects, /p/{proje}/settings
 updated: 2026-10-28
 ---
 
-Projeler, hangi siteyi açacağınızı ve hangi bağlantıyı tamamlayacağınızı gösterir. Her sitenin Search Console, Analytics, denetim ve raporları kendi projesindedir.
+Her proje tek bir siteyi temsil eder. Search Console ve Analytics bağlantıları, denetimler, kayıtlı kelimeler ve raporlar projeye aittir; projeler arasında karışmaz.
 
-## Ekranı okuyun
+## Proje listesi
 
-Birden fazla proje varsa ad veya alan adıyla arayın, ada veya alan adına göre sıralayın. **Son açılan**, bu tarayıcıda hatırlanan son projedir; SEO durumu değildir. Site yoksa **Site ekle**, Search Console bağlantısı yoksa **Search Console bağla**, diğer durumlarda **Paneli aç** ile devam edin. **Proje bilgisi** kayıtlı notları, **Ayarlar** proje yapılandırmasını açar.
+Birden fazla projeniz varsa **Proje ara** kutusuyla ad ya da alan adına göre arayın; **Sırala** ile ada ya da alan adına göre sıralayın. **Son açılan** etiketi bu tarayıcıda en son açtığınız projeyi gösterir; SEO durumuyla ilgisi yoktur.
 
-**Arama arşivi**, bu kurulumda kayıtlı Web aramalarını, tüm cihazları ve ülkeleri kapsar. Tarihler ekranda görünür. Pencere en yeni kayıtlı günde biter; bugüne kadar güncel olduğu varsayılmaz. Kayıtlı gün sayısı eksikse tıklama sayısı yalnızca bu günlerin toplamıdır. Eksik gün sıfır değildir; grafikte boşluk kalır. İki dönemin de tüm günleri kayıtlıysa değişim hesaplanır. Eşit toplamlar “Değişmedi”, sıfır tabanlı değişimler açık önceki/yeni sayılarla gösterilir. Arşiv kaynağı ayrıntılarında son kayıtlı gün ve varsa okuma zamanı vardır; kesinleşmenin hangi kanıta dayandığı eski arşivde tutulmamıştır.
+Her proje kartındaki ana düğme, eksik olan adıma göre değişir:
 
-Denetim, seçilen sitenin kendi alan adına aittir. Son tamamlanan denetim ile son başarısız veya süren deneme ayrı gösterilir. Bağlantının kayıtlı olması, Google verisinin başarıyla okunduğunu kanıtlamaz. Okunamayan kaynak “bağlı değil” veya sıfır sayılmaz; **Yeniden dene** kullanın. Listeyi yenilemek kimliği ve yerel verileri birlikte okur; Google çağrısı veya denetim başlatmaz.
+- Site yoksa **Site ekle**.
+- Search Console bağlı değilse **Search Console bağla**.
+- Her şey yerindeyse **Paneli aç**.
 
-## Proje oluşturun ve yönetin
+**Proje bilgisi** kayıtlı notları, **Ayarlar** projenin yapılandırmasını açar.
 
-**Yeni proje** ile ad, isteğe bağlı alan adı, ülke ve dil girin. Oluşturmak veri toplamaz. Google bağlantılarını **Ayarlar → Bağlantılar** üzerinden seçin. Genel ayarlarda adı, siteyi ve pazarı değiştirebilirsiniz. Bir projede bir Search Console ve bir Analytics mülkü bulunur.
+## Kartta görünen bilgiler
 
-Arşivlemek verileri silmez. **Arşivlendi → Geri al** projeyi geri getirir. Tek kalan proje arşivlenemez. Arama tıklamaları GA4 oturumları veya sorgu arşivi toplamıyla aynı ölçü değildir; farklı tarihli projeler toplanmaz.
+**Arama arşivi**, bu kurulumun kaydettiği Search Console verisidir: Web araması, tüm cihazlar ve ülkeler. Pencere en yeni kayıtlı günde biter; bugüne kadar güncel olduğu varsayılmaz. **Son kayıtlı gün** ve **Son arşiv okuması** kartın kaynak ayrıntılarında yazar. Eski arşivlerde Google'ın veriyi hangi tarihte kesinleştirdiği kayıtlı değildir; bu durumda **Kesinleşme kaynağı arşivde kayıtlı değil** görünür.
 
-Önceki dönem 20 tıklamadan azsa yüzde yerine tıklama farkı gösterilir. Örneğin 1’den 5’e çıkış +4 tıklamadır; küçük sayılarda bu değişim tek başına güçlü bir büyüme işareti değildir.
+Tıklama sayısını okurken:
 
-<!-- Sources: src/routes/_app/projects.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/project-context/; src/server/features/projects/services/ProjectOverviewService.ts; src/server/features/project-context/ -->
+- Bazı günler eksikse toplam yalnızca kayıtlı günleri kapsar. Eksik gün sıfır sayılmaz; grafikte boşluk kalır.
+- Değişim yalnızca iki dönemin tüm günleri kayıtlıysa hesaplanır. Toplamlar eşitse **Değişmedi** yazar.
+- Önceki dönem 20 tıklamadan azsa yüzde yerine fark yazılır: **1 → 5 tıklama** gibi. Küçük sayılarda bu fark tek başına güçlü bir büyüme işareti değildir.
+
+Bu tıklamalar GA4 oturumlarıyla aynı ölçü değildir. Farklı tarih aralıklarındaki projelerin sayılarını toplamayın.
+
+Denetim satırı yalnızca bu sitenin kendi alan adındaki denetimleri gösterir. **Son denetim** ile süren ya da başarısız son deneme ayrı satırlarda durur.
+
+**Bağlantı kayıtlı** rozeti, Google verisinin okunabildiğini göstermez. Okunamayan bir kaynak "bağlı değil" ya da sıfır sayılmaz; **Okunamadı** yazar ve **Yeniden dene** önerilir. Listeyi yenilemek yalnızca yerel kaydı okur; Google'a istek göndermez, denetim başlatmaz.
+
+## Yeni proje
+
+**Yeni proje** düğmesine basın ve şunları girin: ad, isteğe bağlı alan adı, ülke ve dil. **Proje oluştur** yalnızca kaydı açar; veri toplamaz. Ardından **Proje ayarları → Bağlantılar** altında bir Search Console ve bir Analytics mülkü seçin. Her projede her birinden en fazla bir mülk olur.
+
+## Proje ayarları
+
+**Proje ayarları → Genel** altında adı, siteyi, ülkeyi ve dili değiştirebilirsiniz. Ülke ve dil, kayıtlı kelimelerin varsayılan pazarıdır. Alan adını değiştirmek seçili Google mülkünü ya da geçmiş veriyi değiştirmez.
+
+## Arşivleme
+
+**Projeyi arşivle** projeyi listeden kaldırır, verisini silmez. Arşivlenen projeyi **Arşivlendi** listesinden **Geri al** ile geri getirirsiniz. Tek projenizi arşivleyemezsiniz.
+
+<!-- Sources: src/routes/_app/projects.tsx; src/client/features/projects/ProjectFacts.tsx; src/server/features/projects/services/ProjectOverviewService.ts -->

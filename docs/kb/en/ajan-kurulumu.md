@@ -1,34 +1,51 @@
 ---
 title: Agent setup
-description: Connect your SEO assistant securely, verify a fresh tool call and use skills to audit your site and write reports from local data.
+description: Connect Claude Code, Codex or another MCP client to seowatcher, confirm it with a fresh tool call and install the six SEO skills.
 kind: nasil-yapilir
 updated: 2026-10-27
 ---
 
-Agent setup connects an AI assistant such as Claude Code, Codex or Cursor to seowatcher over MCP (Model Context Protocol). Once connected, the assistant reads your Search Console, Analytics and audit data from the app on your computer, runs audits and writes reports. What the assistant reads can go to that assistant's provider.
+seowatcher exposes its data to AI assistants over MCP (Model Context Protocol). A connected assistant can read your Search Console, Analytics and audit data, start audits and save reports. It works with Claude Code, Codex, Cursor, ChatGPT and any other client that supports MCP. Anything the assistant reads can be sent to that assistant's provider.
 
 ## Connect your agent
 
-Open Agent setup in the running application. Choose Claude Code, Codex or Other and copy the setup prompt. Arrow keys, Home and End select the client without copying. The prompt contains no actual token; the agent uses the local installation secret. From-scratch installation is a separate option.
+1. Open **Agent setup** in the app.
+2. Under **Which agent do you use?**, choose **Claude Code**, **Codex** or **Other**. Arrow keys, Home and End move between the options without copying anything.
+3. Select **Copy setup command** and paste the command into your agent.
 
-## Verify a new call
+The agent connects seowatcher, installs the SEO skills and walks you through any step you must do by hand. The command contains no token: the agent reads the local token from your computer instead of writing it into the chat.
 
-Select Verify connection and ask the agent to call a seowatcher tool. The page checks the local call record every five seconds for at most 60 seconds. A historical call cannot verify a new setup. Polling stops on a hidden tab, read error or cancellation. If no new call appears, inspect your client's MCP status and try again; this is not proof the connection failed.
+If you have just installed seowatcher and nothing is configured yet, use **Fresh install** instead. That command has the agent check the install, the Google connection, the PageSpeed key and your first project before it connects itself.
 
-Connected and last-call dates describe historical use, not a continuously online session. Retry an unreadable status. Tool access covers the installation, rather than only the project open in the browser.
+## Confirm the connection
 
-## Protect the token
+Select **Verify connection**, then ask your agent to call any seowatcher tool. The page checks for a new call every five seconds for up to 60 seconds. A call made before you started verifying does not count. Checking stops if you switch tabs, cancel or a read fails.
 
-Prefer the setup prompt. For manual setup, use only your client's local secret header field: `Authorization: Bearer <token>`. Windows PowerShell can copy without displaying:
+If no new call arrives, check your client's MCP status and try again. A timeout does not prove that the connection is broken.
+
+The connected and last-call dates describe past use, not a live session. An assistant's access covers the whole installation, not only the project open in the browser.
+
+## Skills
+
+The **Skills** tab lists the six SEO workflows the setup command installs, such as `seo-audit` and `seo-report`. Call them as `/seo-audit` in Claude Code or `$seo-audit` in Codex. To refresh skills you installed earlier, use **Copy update command**; your connection settings and your own edits stay as they are.
+
+## Manual setup and the token
+
+Use the setup command when you can. For a manual setup, put the token only in your client's local header field: `Authorization: Bearer <token>`. These PowerShell commands copy it to the clipboard without printing it.
+
+Windows package:
 
 `(Get-Content "$env:LOCALAPPDATA\seowatcher\mcp-token").Trim() | Set-Clipboard`
 
-For Docker in PowerShell:
+Docker:
 
 `(docker compose exec -T seotracker cat /app/.wrangler/mcp-token).Trim() | Set-Clipboard`
 
-Paste into the local secret field and clear the clipboard. Never paste the token into chat, terminal output, screenshots or source code. The Windows tray's Open data folder action locates the token file.
+After pasting, clear the clipboard. Never put the token in a chat, terminal output, screenshot or source code. On Windows, **Veri klasörünü aç** (Open data folder) in the tray menu opens the folder that holds the token file.
 
-## Skills and recovery
+## If the agent cannot connect
 
-The Skills tab lists SEO workflows. The setup prompt installs them; copy the update prompt to refresh an existing installation. Use /seo-audit in Claude Code or $seo-audit in Codex. For 401, check that the client sends its local authorization header. For refused connections, check the running application and endpoint. Refresh MCP status in the client and verify a new tool call.
+- **401 Unauthorized**: the client is not sending the `Authorization` header, or the token is wrong.
+- **Connection refused**: seowatcher is not running, or the client points to the wrong address or port.
+
+After fixing either one, reconnect MCP in your client and verify with a new tool call. See [Troubleshooting](/docs/sorun-giderme/) for more detail.

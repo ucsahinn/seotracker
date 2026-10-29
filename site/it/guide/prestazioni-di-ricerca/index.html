@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1519,17 +1519,17 @@
                 >Parole chiave salvate</a
               >
             </li>
-            <li>
-              <a href="/it/guide/analisi/">Interpretare i dati di analisi</a>
-            </li>
+            <li><a href="/it/guide/analisi/">Capire i dati di Analytics</a></li>
             <li>
               <a href="/it/guide/controllo-del-sito/">Controllo del sito</a>
             </li>
-            <li><a href="/it/guide/stato-indice/">Stato dell'indice</a></li>
+            <li>
+              <a href="/it/guide/stato-indice/">Stato dell'indicizzazione</a>
+            </li>
             <li><a href="/it/guide/rapporti/">Report e modelli</a></li>
             <li>
               <a href="/it/guide/informazioni-progetto/"
-                >Informazioni sul progetto</a
+                >Contesto del progetto</a
               >
             </li>
             <li><a href="/it/guide/impostazioni/">Impostazioni</a></li>
@@ -1542,7 +1542,7 @@
             </li>
             <li>
               <a href="/it/guide/configurazione-assistente/"
-                >Configurazione dell'assistente</a
+                >Configurazione dell'agente</a
               >
             </li>
             <li>
@@ -1561,17 +1561,13 @@
           pagine da migliorare e capire i limiti dei guadagni stimati.
         </p>
         <p>
-          Qui si vede quante volte si compare su Google, quanti clic si
-          ottengono e cosa correggere per primo.
-        </p>
-        <p>
           Clic, impressioni, CTR e posizione arrivano direttamente da Search
           Console. L'app non ne stima nessuno. Le stime ci sono solo nelle cifre
           del &quot;guadagno possibile&quot;, e sono sempre segnate come
           &quot;limite superiore&quot;.
         </p>
         <p>
-          I filtri scelti vengono scritti nella barra degli indirizzi. Volendo,
+          I filtri scelti vengono salvati nell'indirizzo della pagina. Volendo,
           si condivide quella vista come link o la si aggiunge ai preferiti.
         </p>
         <h2 id="tre-termini">Tre termini</h2>
@@ -1602,7 +1598,8 @@
         <ul>
           <li>
             <strong>Aggiorna</strong>: chiede dati freschi a Search Console. Di
-            norma l'app riusa una risposta di qualche minuto prima.
+            norma l'app riusa una risposta di al massimo dieci minuti prima;
+            <strong>Aggiorna</strong> salta questa cache.
           </li>
           <li>
             <strong>Scarica report</strong>: trasforma la vista mostrata in un
@@ -1645,7 +1642,7 @@
           ultimi dati, la quota di clic da query nascoste, se le tabelle sono
           state lette per intero (Google restituisce un numero limitato di righe
           alla volta) e se questa vista ha inviato nuove richieste a Google o ha
-          usato una risposta presa qualche minuto prima.
+          riusato una risposta di al massimo dieci minuti prima.
         </p>
         <p>
           <strong>Frase di riepilogo.</strong> Una o due frasi sopra i riquadri
@@ -1694,10 +1691,10 @@
           <li>
             <strong>Aggiungi una nota</strong> lascia una nota personale a una
             data, per esempio &quot;Nuovi titoli delle pagine pubblicati&quot;.
-            Una nota è di al massimo 280 caratteri. Aiuta a ricordare più tardi
-            il motivo di un calo o di un aumento. Le note fuori dal periodo
-            scelto sono raccolte sotto &quot;Note fuori da questo periodo
-            (N)&quot;.
+            Una nota può contenere al massimo 280 caratteri. Aiuta a ricordare
+            più tardi il motivo di un calo o di un aumento. Le note fuori dal
+            periodo scelto sono raccolte sotto &quot;Note fuori da questo
+            periodo (N)&quot;.
           </li>
         </ul>
         <p>
@@ -1799,8 +1796,8 @@
           al confronto), <strong>Impressioni</strong>, <strong>CTR</strong> e
           <strong>Posizione</strong>. Un clic sull'intestazione ordina. La barra
           dietro una riga è la sua quota dei clic di questa tabella. La casella
-          in alto cerca tra le righe. Accanto c'è scritto &quot;{mostrate} /
-          {totale} righe&quot;.
+          in alto cerca tra le righe. Accanto, un contatore indica &quot;N / M
+          righe&quot;.
         </p>
         <p>
           <strong>Filtri rapidi.</strong> Per le query:
@@ -1817,14 +1814,13 @@
           <strong>Apri la pagina in una nuova scheda</strong>,
           <strong>Copia URL</strong>, <strong>Copia parola chiave</strong>,
           <strong>Salva come parola chiave</strong>. Ciò che si salva va nella
-          schermata delle parole chiave salvate. Un clic su una riga apre il
-          pannello di dettaglio.
+          schermata <strong>Parole chiave salvate</strong>. Un clic su una riga
+          apre il pannello di dettaglio.
         </p>
         <p>
           La nota sotto la tabella dice la base: &quot;lette N query, N clic. Il
           totale del sito è di N clic; la differenza viene dalle query che
-          Google nasconde.&quot; Se è stato raggiunto il limite di righe di
-          Google, l'estremità meno cliccata manca nell'elenco e la nota lo dice.
+          Google nasconde.&quot;
         </p>
         <h3 id="opportunita-di-posizionamento">
           Opportunità di posizionamento
@@ -1833,20 +1829,21 @@
         <ul>
           <li>
             <strong>Query vicine ai primi tre.</strong> Ricerche con posizione
-            media tra 4 e 20. Le ricerche di brand non sono incluse. È scritto
-            quanti clic in più potrebbero portare insieme se ciascuna salisse di
-            un gradino (da 6-10 a 4-5, da 4-5 a 2-3, da 11-20 alla prima
-            pagina). È un limite superiore. Il totale comprende tutte le query
-            di questa fascia, non solo le righe elencate, ed è seguito dalle
-            date a cui si riferisce, per esempio &quot;Periodo: 27 set 2026 – 24
-            ott 2026.&quot; Se sono elencati solo i guadagni maggiori, una nota
-            sotto dice &quot;Sono elencate le N con il guadagno maggiore.&quot;
-            La tabella mostra <strong>Query</strong>,
+            media tra 4 e 20. Le ricerche di brand non sono incluse. La sezione
+            indica quanti clic in più potrebbero portare insieme se ciascuna
+            salisse di un gradino (da 6-10 a 4-5, da 4-5 a 2-3, da 11-20 alla
+            prima pagina). È un limite superiore. Il totale comprende tutte le
+            query di questa fascia, non solo le righe elencate, ed è seguito
+            dalle date a cui si riferisce, per esempio &quot;Periodo: 27 set
+            2026 – 24 ott 2026.&quot; Se sono elencati solo i guadagni maggiori,
+            una nota sotto dice &quot;Sono elencate le N con il guadagno
+            maggiore.&quot; La tabella mostra <strong>Query</strong>,
             <strong>Pagina di destinazione</strong>, <strong>Posizione</strong>,
             <strong>Impressioni</strong>, <strong>Clic</strong> e
             <strong>Guadagno possibile</strong>. La pagina di destinazione è
             quella che Google mostra più spesso per quella ricerca. Le ricerche
-            selezionate si prendono con <strong>Copia parole chiave</strong> o
+            selezionate si copiano o si salvano con
+            <strong>Copia parole chiave</strong> o
             <strong>Salva come parola chiave</strong>.
           </li>
           <li>
@@ -1869,9 +1866,10 @@
             <strong>CTR del tuo sito per posizione.</strong> Il metro dei
             guadagni sopra. È il tasso di clic dei risultati del sito stesso in
             ogni posizione, non di altri siti. Se una posizione ha troppe poche
-            ricerche o impressioni, c'è scritto &quot;Dati insufficienti&quot; e
-            per quella non si fa alcuna stima. Se sono stati definiti i nomi del
-            brand, questi tassi sono calcolati dalle ricerche non di brand.
+            ricerche o impressioni, la riga indica &quot;Dati
+            insufficienti&quot; e per quella non si fa alcuna stima. Se sono
+            stati definiti i nomi del brand, questi tassi sono calcolati dalle
+            ricerche non di brand.
           </li>
         </ul>
         <h3 id="variazioni">Variazioni</h3>
@@ -1933,15 +1931,16 @@
             <strong>Pagine in competizione per la stessa query</strong> mostra,
             per ogni query, le sue pagine con clic, impressioni e posizioni. La
             pagina che Google mostra più spesso per quella query conta come
-            &quot;preferita&quot;. La quota di impressioni che va alle altre è
-            scritta &quot;fuori quota&quot;.
+            &quot;preferita&quot;. La quota di impressioni che va alle altre
+            pagine è indicata come &quot;fuori quota&quot;.
           </li>
           <li>
-            Questa analisi guarda 28 giorni. Se è scelto 7 giorni, per l'analisi
-            sale a 28 e viene scritto l'intervallo reale di date. Si esaminano
-            solo le ricerche con almeno 100 impressioni. Perché una pagina entri
-            nella competizione servono almeno 10 impressioni e il 20 per cento
-            di quota su quella ricerca.
+            Questa analisi copre 28 giorni. Se è scelto
+            <strong>Ultimi 7 giorni</strong>, l'analisi usa comunque 28 giorni e
+            mostra l'intervallo reale di date. Si esaminano solo le ricerche con
+            almeno 100 impressioni. Perché una pagina entri nella competizione
+            servono almeno 10 impressioni e il 20 per cento di quota su quella
+            ricerca.
           </li>
           <li>
             Se la ricerca raggiunge il limite di righe di Search Console, la
@@ -1966,13 +1965,13 @@
             <strong>Ricerche di brand e non di brand.</strong> Le ricerche che
             arrivano con il nome e quelle di chi non conosceva il sito sono
             misurate separatamente: <strong>Ricerche di brand</strong> e
-            <strong>Ricerche non di brand</strong>. Per ciascuna sono scritti
+            <strong>Ricerche non di brand</strong>. Per ciascuna sono indicati
             numero di query, clic, CTR e posizione media. Se non è definito
-            alcun nome del brand, c'è scritto &quot;Ricerche del brand non
-            separate&quot; e compare il pulsante
+            alcun nome del brand, compare la dicitura &quot;Ricerche del brand
+            non separate&quot; insieme al pulsante
             <strong>Aggiungi il nome del brand</strong>. Se l'app ha suggerito
-            nomi del brand dal dominio, c'è scritto &quot;Non confermato.&quot;
-            La misura è allora fatta con i nomi suggeriti. Fare clic su
+            nomi del brand dal dominio, compare &quot;Non confermato.&quot; La
+            misura è allora fatta con i nomi suggeriti. Fare clic su
             <strong>Conferma i suggerimenti</strong> o usare
             <strong>Modifica i nomi del brand</strong>. Le quote riguardano le
             query lette, le query nascoste non sono incluse.
@@ -2048,9 +2047,9 @@
             paragrafo a quella ricerca.
           </li>
           <li>
-            Nella scheda <strong>Query</strong>, premere il pulsante
-            <strong>CTR basso</strong>. La posizione è buona ma nessuno clicca.
-            Il problema sta quasi certamente in titolo e descrizione.
+            Nella scheda <strong>Query</strong>, attivare il filtro
+            <strong>CTR basso</strong>. Queste righe hanno una buona posizione
+            ma pochi clic: il problema sta di solito in titolo e descrizione.
           </li>
           <li>
             Nella scheda <strong>Variazioni</strong>, guardare
@@ -2068,8 +2067,8 @@
             l'effetto nel grafico.
           </li>
           <li>
-            Quando un lavoro è finito, dire <strong>Fatto</strong>. L'elenco si
-            accorcia.
+            Quando un lavoro è finito, fare clic su <strong>Fatto</strong>.
+            L'elenco si accorcia.
           </li>
           <li>
             A fine mese, salvare la vista con <strong>Scarica report</strong>.
@@ -2082,8 +2081,7 @@
           ancora cambiare per qualche giorno. L'app non li include nei totali.
           Il periodo precedente è il periodo della stessa durata subito prima di
           questo intervallo. Per il confronto con l'anno scorso si prendono gli
-          stessi giorni dell'anno scorso. La variazione di clic e impressioni si
-          vede in percentuale, quella del CTR in punti.
+          stessi giorni dell'anno scorso.
         </p>
         <p>
           I riquadri sono i veri totali del sito. Le tabelle contano
@@ -2093,9 +2091,14 @@
           più piccolo del riquadro, perché le query nascoste non sono elencate.
         </p>
         <p>
-          Google dà al massimo 1.000 righe alla volta. Se il limite di righe è
-          stato raggiunto, l'estremità meno cliccata manca nell'elenco e la
-          schermata lo dice.
+          L'app legge le tabelle per query, per pagina e per coppia query-pagina
+          a blocchi di 25.000 righe, finché Google non restituisce più righe
+          nuove. Google fornisce al massimo 50.000 righe al giorno per tipo di
+          ricerca e può tralasciare alcune righe: leggere tutti i blocchi non
+          significa conoscere ogni ricerca. Se il limite è stato raggiunto,
+          l'estremità meno cliccata manca e la schermata lo dice. I totali del
+          sito non si ricavano sommando queste tabelle: sono un totale separato
+          fornito da Google.
         </p>
         <p>
           <strong>Guadagno possibile.</strong> L'app applica a ogni ricerca il
@@ -2133,9 +2136,9 @@
           ricerca.
         </p>
         <p>
-          <strong>La query che cerco non è nell'elenco.</strong> Google nasconde
-          le query cercate molto raramente. Sui siti piccoli possono non esserci
-          affatto righe di query.
+          <strong>La query che cerco non è nell'elenco.</strong> Probabilmente è
+          una query nascosta (vedere sopra). Sui siti piccoli possono non
+          esserci affatto righe di query.
         </p>
         <p>
           <strong>Perché un lavoro è sparito dall'elenco Da fare?</strong> Se lo
@@ -2145,52 +2148,57 @@
         </p>
         <p>
           <strong>Se le pagine si sovrappongono, vanno unite?</strong> Di solito
-          no. Decidere prima quale pagina deve rispondere. Poi orientare i link
-          interni verso quella pagina. Se le pagine rispondono davvero alla
-          stessa domanda, unirle.
+          no: seguire il passo 7 qui sopra. Le pagine si uniscono solo se
+          rispondono davvero alla stessa domanda.
         </p>
         <p>
           <strong>Bisogna inserire un nome del brand?</strong> No, ma senza, chi
           cerca il nome del sito falsa il calcolo del CTR e le opportunità
-          risultano incomplete. La schermata lo ricorda con l'attività
-          &quot;Imposta il nome del tuo brand&quot;. Se l'app usa nomi suggeriti
-          dal dominio, l'attività si chiama &quot;Conferma il nome del
-          brand&quot;.
+          risultano incomplete. La schermata lo ricorda con le attività
+          descritte sopra.
         </p>
         <h2 id="limiti">Limiti</h2>
         <p>
           I tipi di ricerca Discover e Google Notizie non sono inclusi. Non ci
           sono volume di ricerca né posizioni dei concorrenti. I dati di Google
-          non risalgono oltre i 16 mesi. Per il più vecchio, guardare l'archivio
-          su questo computer: il grafico di lungo periodo nella scheda
-          <strong>Variazioni</strong> e la schermata
-          <strong>Monitoraggio del posizionamento</strong> leggono da lì. I
-          segni &quot;fatto&quot; e le note restano solo su questa
-          installazione.
+          non risalgono oltre i 16 mesi. Per i dati più vecchi, guardare
+          l'archivio su questo computer: il grafico di lungo periodo nella
+          scheda <strong>Variazioni</strong> e la schermata
+          <strong>Monitoraggio del posizionamento</strong> leggono da lì.
+          L'archivio si riempie solo mentre è aperta questa schermata o
+          <strong>Monitoraggio del posizionamento</strong>.
+        </p>
+        <h2 id="collegamenti-in-entrata-e-date-fisse">
+          Collegamenti in entrata e date fisse
+        </h2>
+        <p>
+          I collegamenti da Opportunità e Monitoraggio del posizionamento aprono
+          il dettaglio dell'URL o della query esatta, nelle date della fonte. I
+          totali in alto riguardano l'intera proprietà; i valori dell'elemento
+          scelto sono nel pannello di dettaglio. Se quelle date non sono più
+          disponibili, la schermata lo dice invece di sostituirle in silenzio.
+          Scegliere un periodo predefinito rimuove le date fisse.
         </p>
         <p>
-          I collegamenti da Opportunità e Monitoraggio posizioni aprono i
-          dettagli dell’URL o della query esatta nelle date originali. I totali
-          generali restano relativi alla proprietà; i valori dell’elemento
-          scelto sono nel pannello dei dettagli. I periodi non leggibili non
-          vengono sostituiti in silenzio. Scegliere un periodo predefinito
-          rimuove le date fissate. Il rapporto invia al server le date
-          visualizzate ed è disabilitato durante l’aggiornamento. Le date
-          restano fisse; Google può correggere le misurazioni rilette.
+          <strong>Scarica report</strong> invia al server le date visualizzate
+          ed è disattivato durante un aggiornamento. Le date del report restano
+          fisse, ma Google può correggere le misure rilette.
         </p>
         <h2 id="interpretare-pochi-dati">Interpretare pochi dati</h2>
         <p>
           Se i clic del periodo di confronto sono sotto la soglia di analisi, il
           riepilogo presenta prima clic e impressioni reali. Con pochi dati,
           percentuali e medie da sole non dimostrano una crescita o una perdita.
-          Un elenco di opportunità vuoto non significa che nessuna query sia in
-          posizione 4–20: valgono anche la soglia di impressioni adattata al
-          periodo e l’esclusione delle query di marca.
+          Un elenco vuoto in <strong>Opportunità di posizionamento</strong> non
+          significa che nessuna query sia in posizione 4–20: valgono anche la
+          soglia di impressioni adattata al periodo e l'esclusione delle query
+          di brand.
         </p>
         <p>
-          Se l’elenco delle attività è vuoto, apri le query visibili. Non viene
-          suggerito un periodo più lungo se sono già selezionati gli ultimi tre
-          mesi. Non si presume che Google riveli in seguito le query nascoste.
+          Se la scheda <strong>Da fare</strong> è vuota, consultare la scheda
+          <strong>Query</strong>. Non viene suggerito un periodo più lungo se è
+          già selezionato <strong>Ultimi 3 mesi</strong>, e nulla autorizza a
+          supporre che Google riveli in seguito le query nascoste.
         </p>
         <nav class="pager" aria-label="Pagina precedente e successiva">
           <a class="pager-prev" rel="prev" href="/it/guide/pannello/"
@@ -2204,12 +2212,12 @@
           >
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 29 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 29 ottobre 2026. Ha trovato un errore?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >segnalarlo su GitHub</a
+            >Lo segnali su GitHub</a
           >.
         </p>
       </article>
@@ -2226,6 +2234,11 @@
           </li>
           <li><a href="#domande-frequenti">Domande frequenti</a></li>
           <li><a href="#limiti">Limiti</a></li>
+          <li>
+            <a href="#collegamenti-in-entrata-e-date-fisse"
+              >Collegamenti in entrata e date fisse</a
+            >
+          </li>
           <li>
             <a href="#interpretare-pochi-dati">Interpretare pochi dati</a>
           </li>

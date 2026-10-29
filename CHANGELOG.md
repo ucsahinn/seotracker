@@ -6,7 +6,7 @@ Her sürümde eklenen yenilikler ve düzeltmeler, en yeni sürümden başlayarak
 
 - **Alpha:** 1.0 gelene kadar tüm sürümler 0.x Alpha'dır.
 - **Numara:** 0.MINOR.PATCH biçimindedir. Kullanıcının fark ettiği yeni bir özellik ikinci numarayı artırır (0.7.1 → 0.8.0); yalnızca düzeltme içeren sürüm üçüncü numarayı artırır (0.8.1 → 0.8.2).
-- **Az giriş:** Bu dosyada yalnızca kullanıcıların fark edeceği dönüm noktaları için yeni giriş açılır. Şu an üç giriş var: 0.2.1, 0.4.3 ve 0.8.6.
+- **Az giriş:** Bu dosyada yalnızca kullanıcıların fark edeceği dönüm noktaları için yeni giriş açılır. Şu an üç giriş var: 0.2.1, 0.4.3 ve 0.8.7.
 - **Küçük düzeltmeler:** Küçük düzeltme sürümü yeni giriş açmaz. Düzeltme mevcut girişe eklenir ve giriş en yeni sürümün numarasını ve tarihini alır (0.8.1 girişine 0.8.2 düzeltmesi eklenince giriş 0.8.2 olur).
 - **Etiket:** GitHub etiketi `v` ve sürüm numarasından oluşur (`v0.8.0`).
 - **Yayınlanmamış:** Henüz yayımlanmayan değişiklikler `## [Yayınlanmamış]` başlığında toplanır. Yayın gününde bu başlık sürüm numarası ve tarihle değiştirilir; uygulamadaki sürüm notları bu bölümü göstermez.
@@ -24,23 +24,24 @@ Her sürümde eklenen yenilikler ve düzeltmeler, en yeni sürümden başlayarak
 | v2.2.1      | 0.2.1                                  |
 | v2.3.0      | 0.4.3 (0.3.0 bu girişte birleştirildi) |
 | v2.4.3      | 0.4.3                                  |
-| v0.5.0      | 0.8.6 (0.5.0 bu girişte birleştirildi) |
-| v0.6.0      | 0.8.6 (0.6.0 bu girişte birleştirildi) |
-| v0.7.0      | 0.8.6 (0.7.0 bu girişte birleştirildi) |
-| v0.7.1      | 0.8.6 (0.7.1 bu girişte birleştirildi) |
-| v0.8.0      | 0.8.6 (0.8.0 bu girişte birleştirildi) |
-| v0.8.1      | 0.8.6 (0.8.1 bu girişte birleştirildi) |
-| v0.8.2      | 0.8.6 (0.8.2 bu girişte birleştirildi) |
-| v0.8.3      | 0.8.6 (0.8.3 bu girişte birleştirildi) |
-| v0.8.4      | 0.8.6 (0.8.4 bu girişte birleştirildi) |
-| v0.8.5      | 0.8.6 (0.8.5 bu girişte birleştirildi) |
-| v0.8.6      | 0.8.6                                  |
+| v0.5.0      | 0.8.7 (0.5.0 bu girişte birleştirildi) |
+| v0.6.0      | 0.8.7 (0.6.0 bu girişte birleştirildi) |
+| v0.7.0      | 0.8.7 (0.7.0 bu girişte birleştirildi) |
+| v0.7.1      | 0.8.7 (0.7.1 bu girişte birleştirildi) |
+| v0.8.0      | 0.8.7 (0.8.0 bu girişte birleştirildi) |
+| v0.8.1      | 0.8.7 (0.8.1 bu girişte birleştirildi) |
+| v0.8.2      | 0.8.7 (0.8.2 bu girişte birleştirildi) |
+| v0.8.3      | 0.8.7 (0.8.3 bu girişte birleştirildi) |
+| v0.8.4      | 0.8.7 (0.8.4 bu girişte birleştirildi) |
+| v0.8.5      | 0.8.7 (0.8.5 bu girişte birleştirildi) |
+| v0.8.6      | 0.8.7 (0.8.6 bu girişte birleştirildi) |
+| v0.8.7      | 0.8.7                                  |
 
 **v2.4.3 veya daha eski bir Windows kurulumunuz varsa:** Eski güncelleyici 0.x numarasını daha küçük sayıp yeni sürüm olarak görmez, bu yüzden kendiliğinden güncellenmez. En son sürümün kurulum dosyasını GitHub sürüm sayfasından bir kez elle çalıştırın. Verileriniz ve Google bağlantılarınız korunur. Sonraki güncellemeler her zamanki gibi gelir.
 
-## [0.8.6] Alpha — 2026-10-29
+## [0.8.7] Alpha — 2026-10-29
 
-Bu giriş 0.5.0'dan 0.8.6'ya kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
+Bu giriş 0.5.0'dan 0.8.7'ye kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
 
 ### ✨ Öne çıkanlar
 
@@ -88,6 +89,7 @@ Bu giriş 0.5.0'dan 0.8.6'ya kadar gelen yenilikleri ve düzeltmeleri toplar: si
 - **Kılavuz:** Kullanım kılavuzu, denetim kuralları ve sürüm notları altı dilde okunur.
 - **Gizlilik:** seowatcher.io'da ölçüm yalnızca siz kabul ederseniz çalışır.
 - **Gözden geçirilen çeviriler:** Ekran metinleri ve kılavuzlar altı dilde yeni ekranlara uyarlandı.
+- **Çeviri düzeltmeleri:** Fransızca, Almanca, İtalyanca ve Portekizce ekranlarda yanlış çevrilmiş sütun ve kategori adları düzeltildi; Analytics rolü Google'daki adıyla "Görüntüleyici" olarak geçer.
 
 ### 🎨 Görünüm ve yardım
 

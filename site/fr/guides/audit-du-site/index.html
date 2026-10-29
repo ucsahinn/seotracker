@@ -102,7 +102,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta property="article:modified_time" content="2026-10-29" />
     <meta
@@ -127,7 +127,7 @@
     />
     <meta
       name="twitter:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
@@ -201,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1472,7 +1472,7 @@
           <ul>
             <li>
               <a href="/fr/guides/quest-ce-que-seowatcher/"
-                >Qu'est-ce que seowatcher ?</a
+                >Qu’est-ce que seowatcher ?</a
               >
             </li>
             <li>
@@ -1511,25 +1511,29 @@
               >
             </li>
             <li>
-              <a href="/fr/guides/statistiques/">Comprendre les statistiques</a>
+              <a href="/fr/guides/statistiques/"
+                >Comprendre les données Analytics</a
+              >
             </li>
             <li class="current" aria-current="page">
               <a href="/fr/guides/audit-du-site/">Audit du site</a>
             </li>
             <li>
-              <a href="/fr/guides/etat-de-l-index/">État de l'indexation</a>
+              <a href="/fr/guides/etat-de-l-index/">État de l’indexation</a>
             </li>
             <li><a href="/fr/guides/rapports/">Rapports et modèles</a></li>
-            <li><a href="/fr/guides/infos-du-projet/">Infos du projet</a></li>
+            <li>
+              <a href="/fr/guides/infos-du-projet/">Contexte du projet</a>
+            </li>
             <li><a href="/fr/guides/parametres/">Paramètres</a></li>
           </ul>
           <p class="nav-group">Aide et référence</p>
           <ul>
             <li><a href="/fr/guides/aide/">Aide</a></li>
-            <li><a href="/fr/guides/regles-d-audit/">Règles d'audit</a></li>
+            <li><a href="/fr/guides/regles-d-audit/">Règles d’audit</a></li>
             <li>
               <a href="/fr/guides/installation-assistant/"
-                >Installation de l'assistant</a
+                >Configuration de l’agent</a
               >
             </li>
             <li><a href="/fr/guides/depannage/">Dépannage</a></li>
@@ -1545,82 +1549,83 @@
           résultats incomplets.
         </p>
         <p>
-          Cet écran trouve les problèmes de votre site et vous dit comment les
-          corriger.
-        </p>
-        <p>
-          L'application parcourt votre site avec son propre explorateur (un
+          L’application parcourt votre site avec son propre explorateur (un
           programme qui ouvre les pages une à une et les lit). Elle cherche les
           liens cassés, les titres manquants et les pages lentes. À la fin, vous
           obtenez un score et une liste de problèmes classés par importance,
           chacun avec la façon de le corriger. Le score montre aussi combien de
-          vérifications ont pu être mesurées. Un audit arrêté à mi-chemin n'a
+          vérifications ont pu être mesurées. Un audit arrêté à mi-chemin n’a
           pas de score.
         </p>
-        <h2 id="ce-que-l-ecran-affiche">Ce que l'écran affiche</h2>
+        <h2 id="ce-que-l-ecran-affiche">Ce que l’écran affiche</h2>
         <p>
-          <strong>Carte « Démarrer un nouvel audit ».</strong> Elle comporte ces
+          <strong>Carte « Démarrer un nouvel audit ».</strong> Elle comporte ces
           champs.
         </p>
         <ul>
           <li>
-            <strong>Le champ d'adresse du site</strong> : le nom de domaine de
+            <strong>Le champ d’adresse du site</strong> : le nom de domaine de
             votre projet est déjà rempli.
           </li>
           <li>
-            <strong>Explorer jusqu'à N pages</strong> : au moins 10, au plus 10
-            000, 50 par défaut. Si vous saisissez plus de 500, l'application
+            <strong>Explorer jusqu’à N pages</strong> : au moins 10, au plus 10
+            000, 50 par défaut. Si vous saisissez plus de 500, l’application
             demande une confirmation.
           </li>
           <li>
-            <strong>Mesurer aussi la vitesse des pages</strong> : désactivé par
-            défaut. Si vous l'activez, chaque page est mesurée sur téléphone et
-            sur ordinateur. La mesure est faite par Google Lighthouse (l'outil
-            de mesure des pages de Google). La carte indique à l'avance le temps
+            <strong>Mesurer aussi la vitesse des pages</strong> : désactivé par
+            défaut. Si vous l’activez, chaque page est mesurée sur téléphone et
+            sur ordinateur. La mesure est faite par Google Lighthouse (l’outil
+            de mesure des pages de Google). La carte indique à l’avance le temps
             minimal que cela prendra.
           </li>
           <li>
             <strong
               >Vérifier aussi les liens sortants et le poids des images</strong
-            >
-            : après l'exploration, elle vérifie si les liens vers d'autres sites
-            s'ouvrent et quel poids ont vos images. 300 adresses au plus sont
-            interrogées. Les sites qui bloquent les robots sont ignorés.
+            > : après l’exploration, elle vérifie si les liens vers d’autres
+            sites s’ouvrent et quel poids ont vos images. 300 adresses au plus
+            sont interrogées. Les sites qui bloquent les robots sont ignorés.
           </li>
         </ul>
         <p>
-          Si vous n'avez pas de clé PageSpeed (le code gratuit que Google
+          Si vous n’avez pas de clé PageSpeed (le code gratuit que Google
           fournit pour la mesure de vitesse), la mesure de vitesse est limitée à
           50 pages. Pour tout mesurer, ajoutez une clé gratuite dans
-          <strong>Paramètres</strong>. <strong>Démarrer l'audit</strong> lance
-          l'audit. La section <strong>Quotas</strong> en dessous est repliée.
-          Dépliez-la pour voir l'état actuel des quotas PageSpeed et
-          d'inspection d'URL.
+          <strong>Paramètres</strong>. <strong>Démarrer l’audit</strong> lance
+          l’audit. La section <strong>Quotas</strong> en dessous est repliée.
+          Dépliez-la pour voir l’état actuel des quotas PageSpeed et
+          d’inspection d’URL.
         </p>
         <p>
-          <strong>Audits précédents.</strong> La date, l'adresse, l'état, le
+          <strong>Audits précédents.</strong> La date, l’adresse, l’état, le
           nombre de pages et le nombre de problèmes de chaque audit sont listés.
           Les colonnes Critique, Avertissement et Info affichent tous les
           constats enregistrés, y compris ceux des pages et les contrôles du
-          site entier ; une page peut avoir plusieurs constats. Si plusieurs
+          site entier ; une page peut avoir plusieurs constats. Si plusieurs
           sites ont été audités dans le projet, un sélecteur de site apparaît
           au-dessus de la liste. La densité correspond aux problèmes pour cent
           pages. Les courbes et les flèches de variation apparaissent uniquement
           si les données enregistrées confirment le même site, le même ensemble
           de pages, les mêmes paramètres d’exploration et les mêmes contrôles
           mesurés. Si les périmètres diffèrent ou sont inconnus, les nombres
-          restent indépendants ; la variation ne peut pas être déterminée. Quand
+          restent indépendants ; la variation ne peut pas être déterminée. Quand
           plusieurs sites sont sélectionnés, le graphique est masqué.
-          <strong>Afficher</strong> sur une ligne ouvre l'audit. Le menu de la
+          <strong>Afficher</strong> sur une ligne ouvre l’audit. Le menu de la
           ligne propose <strong>Relancer avec les mêmes paramètres</strong> et
-          <strong>Supprimer l'audit</strong>. Supprimer efface aussi les pages,
-          les problèmes et les mesures de vitesse de l'audit, et ne peut pas
-          être annulé.
+          <strong>Supprimer l’audit</strong>. Supprimer efface aussi les pages,
+          les problèmes et les mesures de vitesse de l’audit, et ne peut pas
+          être annulé. La colonne <strong>Pages explorées</strong> compte les
+          adresses réellement explorées, même pour un audit échoué, et non la
+          limite choisie au départ.
+          <strong>Mesure de vitesse demandée</strong> signifie seulement que
+          l’option était activée au lancement, pas que la mesure a réussi. Sur
+          téléphone, faites défiler le tableau horizontalement pour voir les
+          autres colonnes.
         </p>
         <p>
-          <strong>Détail de l'audit.</strong> En haut,
+          <strong>Détail de l’audit.</strong> En haut,
           <strong>Télécharger le rapport</strong> télécharge un rapport HTML
-          d'un seul fichier et l'enregistre dans <strong>Rapports</strong>. En
+          d’un seul fichier et l’enregistre dans <strong>Rapports</strong>. En
           dessous, des avertissements jaunes apparaissent au besoin (voir plus
           bas). Vient ensuite la carte du score.
         </p>
@@ -1628,48 +1633,48 @@
         <ul>
           <li>
             Au centre, le <strong>Score du site</strong> et à côté un mot
-            d'appréciation : <strong>Excellent</strong>, <strong>Bon</strong>,
+            d’appréciation : <strong>Excellent</strong>, <strong>Bon</strong>,
             <strong>Moyenne</strong> ou <strong>Médiocre</strong>.
           </li>
           <li>
-            En dessous, la ligne de couverture : « Score fondé sur les 142
-            contrôles mesurés. 38 contrôles n'ont pas pu être mesurés. » Le
-            point d'interrogation à côté explique comment le score est calculé.
+            En dessous, la ligne de couverture : « Score fondé sur les 142
+            contrôles mesurés. 38 contrôles n’ont pas pu être mesurés. » Le
+            point d’interrogation à côté explique comment le score est calculé.
           </li>
           <li>
-            Une phrase d'appréciation. Si le score est retenu à une limite, elle
+            Une phrase d’appréciation. Si le score est retenu à une limite, elle
             en donne la raison.
           </li>
           <li>
-            <strong>Adresses trouvées : N, explorées : M</strong>. Combien
-            d'adresses l'exploration a trouvées sur le site et combien elle en a
-            ouvertes. Si l'audit s'est arrêté à la limite de pages que vous
-            aviez choisie, une note indique « L'audit était limité à N pages ;
-            le site peut en compter davantage. » Le score reste valable dans ce
+            <strong>Adresses trouvées : N, explorées : M</strong>. Combien
+            d’adresses l’exploration a trouvées sur le site et combien elle en a
+            ouvertes. Si l’audit s’est arrêté à la limite de pages que vous
+            aviez choisie, une note indique « L’audit était limité à N pages ;
+            le site peut en compter davantage. » Le score reste valable dans ce
             cas.
           </li>
           <li>
-            Des lignes pour les catégories lourdes qui n'ont pas pu être
-            mesurées. Par exemple « Vitesse non mesuré : le quota PageSpeed
-            était épuisé ».
+            Des lignes pour les catégories lourdes qui n’ont pas pu être
+            mesurées. Par exemple « Vitesse non mesurée : le quota PageSpeed
+            était épuisé ».
           </li>
           <li>
-            Quatre compteurs : <strong>Problèmes critiques</strong>,
+            Quatre compteurs : <strong>Problèmes critiques</strong>,
             <strong>Améliorations</strong> (avertissements et informations),
             <strong>Vérifications réussies</strong> et
             <strong>Non mesuré</strong>.
           </li>
           <li>
-            <strong>Scores par catégorie</strong> : Exploration, Contenu,
+            <strong>Scores par catégorie</strong> : Exploration, Contenu,
             Indexation, Vitesse, Sécurité, Accessibilité, Réseaux sociaux et
             données structurées. La plus basse est en haut. Un clic sur une
-            catégorie ouvre l'onglet <strong>Vérifications</strong> sur cette
-            catégorie. Une catégorie où rien n'a pu être mesuré indique « Non
-            mesuré ». Une catégorie mesurée en partie indique « Données
-            partielles ».
+            catégorie ouvre l’onglet <strong>Vérifications</strong> sur cette
+            catégorie. Une catégorie où rien n’a pu être mesuré indique « Non
+            mesuré ». Une catégorie mesurée en partie indique « Données
+            partielles ».
           </li>
           <li>
-            <strong>Historique du score</strong> : les scores des derniers
+            <strong>Historique du score</strong> : les scores des derniers
             audits du même site. Il apparaît dès que deux audits ont un score.
             Les barres grises sont des scores provisoires. Les audits sans score
             ne figurent pas sur le graphique, et une ligne en dessous dit
@@ -1679,102 +1684,102 @@
         <p><strong>Onglets.</strong></p>
         <ul>
           <li>
-            <strong>À faire (N)</strong> : les travaux, en commençant par celui
+            <strong>À faire (N)</strong> : les travaux, en commençant par celui
             qui rapporte le plus de points. Chaque travail indique les points
-            que vous gagnez, une étiquette « Petite tâche », « Tâche moyenne »
-            ou « Grosse tâche » et une boîte
+            que vous gagnez, une étiquette « Petite tâche », « Tâche moyenne »
+            ou « Grosse tâche » et une boîte
             <strong>Comment le corriger</strong>. Si Search Console est
-            connecté, l'ordre tient aussi compte des clics des pages concernées.
+            connecté, l’ordre tient aussi compte des clics des pages concernées.
           </li>
           <li>
-            <strong>Vérifications (N)</strong> : toutes les vérifications, par
+            <strong>Vérifications (N)</strong> : toutes les vérifications, par
             catégorie. Chacune apparaît comme réussie, échouée ou non mesurée.
-            Pour les non mesurées, la raison est écrite.
+            Pour les non mesurées, la raison est indiquée.
           </li>
           <li>
-            <strong>Instantané</strong> : le site au-delà de ses pages. Par
-            exemple le certificat, l'enregistrement du nom de domaine, le DNS et
+            <strong>Instantané</strong> : le site au-delà de ses pages. Par
+            exemple le certificat, l’enregistrement du nom de domaine, le DNS et
             un aperçu du site.
           </li>
           <li>
-            <strong>Pages présentant des problèmes (N)</strong> : regroupe les
+            <strong>Pages présentant des problèmes (N)</strong> : regroupe les
             problèmes. Ouvrez une carte pour voir la cause, les adresses
             concernées et la boîte <strong>Comment le corriger</strong>. Vous
             pouvez chercher dans les adresses.
           </li>
           <li>
-            <strong>Pages (N)</strong> : chaque page explorée. Filtres rapides :
+            <strong>Pages (N)</strong> : chaque page explorée. Filtres rapides :
             <strong>Indexation bloquée</strong>, <strong>Lent</strong> (plus
-            d'une seconde), <strong>Texte alternatif manquant</strong>,
+            d’une seconde), <strong>Texte alternatif manquant</strong>,
             <strong>Absente du sitemap</strong>.
           </li>
           <li>
-            <strong>État de l'indexation</strong> : la réponse de Google pour
+            <strong>État de l’indexation</strong> : la réponse de Google pour
             chaque page. Elle est décrite dans un guide à part. Si le site
-            audité n'appartient pas à la propriété Search Console du projet, cet
-            onglet n'affiche pas de données Google et l'écran en explique la
+            audité n’appartient pas à la propriété Search Console du projet, cet
+            onglet n’affiche pas de données Google et l’écran en explique la
             raison.
           </li>
           <li>
-            <strong>Vitesse (N)</strong> : n'apparaît que si la mesure de
-            vitesse était activée. Si certaines pages n'ont pas pu être
-            mesurées, le nombre s'écrit « 10/12 ».
+            <strong>Vitesse (N)</strong> : n’apparaît que si la mesure de
+            vitesse était activée. Si certaines pages n’ont pas pu être
+            mesurées, le nombre s’écrit « 10/12 ».
           </li>
         </ul>
         <p>
           Le menu <strong>Exporter</strong> en haut à droite donne la liste de
-          l'onglet ouvert en <strong>Exporter vers Google Sheets</strong>,
+          l’onglet ouvert en <strong>Exporter vers Google Sheets</strong>,
           <strong>CSV</strong> ou <strong>JSON</strong>. Si un filtre est actif,
           seules les lignes visibles partent.
         </p>
         <h2 id="les-trois-etats-du-score">Les trois états du score</h2>
         <p>
           <strong>Score complet.</strong> Quand la plus grande part des
-          vérifications a été mesurée, il vient avec un mot d'appréciation.
-          Lisez le score ainsi : à partir de 90 Excellent, à partir de 70 Bon, à
-          partir de 50 Moyenne, en dessous Mauvais.
+          vérifications a été mesurée, il vient avec un mot d’appréciation.
+          Lisez le score ainsi : à partir de 90 Excellent, à partir de 70 Bon, à
+          partir de 50 Moyenne, en dessous Médiocre.
         </p>
         <p>
           <strong>Score provisoire.</strong> Si la part de vérifications
-          mesurées tombe sous 70 pour cent, le score est provisoire. C'est aussi
-          le cas si moins de la moitié des vérifications d'Exploration,
-          d'Indexation, de Contenu ou de Vitesse ont été mesurées. La carte
-          indique « Score provisoire, couverture des mesures 62 % », ne donne
-          aucun mot d'appréciation et reste de couleur neutre. Le nombre ne
-          reflète que les vérifications qu'on a pu voir. Aucun jugement, bon ou
-          mauvais, n'a été porté sur le reste. Les raisons habituelles sont
-          celles-ci : le quota PageSpeed était épuisé, il n'y a pas de clé
+          mesurées tombe sous 70 pour cent, le score est provisoire. C’est aussi
+          le cas si moins de la moitié des vérifications d’Exploration,
+          d’Indexation, de Contenu ou de Vitesse ont été mesurées. La carte
+          indique « Score provisoire — couverture des mesures 62 % », ne donne
+          aucun mot d’appréciation et reste de couleur neutre. Le nombre ne
+          reflète que les vérifications qu’on a pu voir. Aucun jugement, bon ou
+          mauvais, n’a été porté sur le reste. Les raisons habituelles sont
+          celles-ci : le quota PageSpeed était épuisé, il n’y a pas de clé
           PageSpeed, la mesure de vitesse était désactivée ou les données
-          d'index n'ont pas pu être récupérées dans Search Console.
+          d’index n’ont pas pu être récupérées dans Search Console.
         </p>
         <p>
           <strong>Aucun score attribué.</strong> Dans ces cas, la carte indique
-          « Audit incomplet, aucun score attribué » à la place du score.
+          « Audit incomplet — aucun score attribué » à la place du score.
         </p>
         <ul>
-          <li>L'audit s'est arrêté sur une erreur.</li>
-          <li>L'audit est toujours en cours.</li>
+          <li>L’audit s’est arrêté sur une erreur.</li>
+          <li>L’audit est toujours en cours.</li>
           <li>
-            L'exploration s'est arrêtée prématurément en raison de la limite de
+            L’exploration s’est arrêtée prématurément en raison de la limite de
             débit du site. La liste des problèmes est incomplète, un score ne
-            serait qu'une supposition.
+            serait qu’une supposition.
           </li>
           <li>
-            Aucune page n'a pu être explorée. Dans ce cas, la carte du score
-            n'apparaît pas du tout.
+            Aucune page n’a pu être explorée. Dans ce cas, la carte du score
+            n’apparaît pas du tout.
           </li>
         </ul>
         <p>
           Les constats sont tout de même affichés et valent pour les pages
-          explorées. Pour un score complet, relancez l'audit.
+          explorées. Pour un score complet, relancez l’audit.
         </p>
-        <h2 id="si-l-audit-s-est-arrete-ce-qui-est-ecrit">
-          Si l'audit s'est arrêté, ce qui est écrit
+        <h2 id="messages-affiches-quand-l-audit-s-arrete">
+          Messages affichés quand l’audit s’arrête
         </h2>
         <p>
-          Quand un audit échoue, l'écran dit trois choses : ce qui s'est passé,
-          si le défaut vient de votre site ou de l'application, et ce que vous
-          devez faire. Le titre indique la phase où il s'est arrêté :
+          Quand un audit échoue, l’écran dit trois choses : ce qui s’est passé,
+          si le défaut vient de votre site ou de l’application, et ce que vous
+          devez faire. Le titre indique la phase où il s’est arrêté :
           <strong>découverte des URL</strong>, <strong>exploration</strong>,
           <strong>mesure de vitesse</strong> ou
           <strong>préparation des résultats</strong>.
@@ -1783,14 +1788,14 @@
           <table>
             <thead>
               <tr>
-                <th>Ce que dit l'écran</th>
+                <th>Ce que dit l’écran</th>
                 <th>Côté</th>
                 <th>Que faire</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Une étape n'a pas terminé à temps</td>
+                <td>Une étape n’a pas terminé à temps</td>
                 <td>Probablement votre site</td>
                 <td>
                   Réessayez dans quelques minutes. Si cela se reproduit, lancez
@@ -1798,129 +1803,129 @@
                 </td>
               </tr>
               <tr>
-                <td>L'audit ne tenait pas dans la mémoire de l'application</td>
-                <td>L'application</td>
+                <td>L’audit ne tenait pas dans la mémoire de l’application</td>
+                <td>L’application</td>
                 <td>Relancez avec moins de pages</td>
               </tr>
               <tr>
-                <td>L'audit a dépassé le temps de processeur autorisé</td>
-                <td>L'application</td>
+                <td>L’audit a dépassé le temps de processeur autorisé</td>
+                <td>L’application</td>
                 <td>Relancez avec moins de pages</td>
               </tr>
               <tr>
                 <td>
-                  Une erreur est survenue lors de l'écriture des résultats dans
+                  Une erreur est survenue lors de l’écriture des résultats dans
                   la base de données
                 </td>
-                <td>L'application</td>
+                <td>L’application</td>
                 <td>
-                  Vérifiez qu'il reste de la place sur le disque, redémarrez
-                  l'application et relancez l'audit
+                  Vérifiez qu’il reste de la place sur le disque, redémarrez
+                  l’application et relancez l’audit
                 </td>
               </tr>
               <tr>
                 <td>
-                  Le résultat d'une étape dépassait la taille que l'application
+                  Le résultat d’une étape dépassait la taille que l’application
                   peut stocker
                 </td>
-                <td>L'application</td>
+                <td>L’application</td>
                 <td>Relancez avec moins de pages</td>
               </tr>
               <tr>
                 <td>
-                  Le moteur interne d'audit de l'application a signalé une
+                  Le moteur interne d’audit de l’application a signalé une
                   erreur
                 </td>
-                <td>L'application</td>
+                <td>L’application</td>
                 <td>
                   Choisissez <strong>Yeniden başlat</strong> (Redémarrer) dans
-                  le menu de la zone de notification, puis relancez l'audit
+                  le menu de la zone de notification, puis relancez l’audit
                 </td>
               </tr>
               <tr>
-                <td>L'audit a été interrompu</td>
-                <td>L'application</td>
-                <td>Laissez l'application ouverte et relancez l'audit</td>
+                <td>L’audit a été interrompu</td>
+                <td>L’application</td>
+                <td>Laissez l’application ouverte et relancez l’audit</td>
               </tr>
               <tr>
                 <td>
-                  La clé d'installation n'est pas parvenue à la partie qui
-                  exécute les audits (vos clés n'ont pas été supprimées)
+                  La clé d’installation n’est pas parvenue à la partie qui
+                  exécute les audits (vos clés n’ont pas été supprimées)
                 </td>
-                <td>L'application</td>
+                <td>L’application</td>
                 <td>
-                  Mettez l'application à jour ou redémarrez-la, puis relancez
-                  l'audit
+                  Mettez l’application à jour ou redémarrez-la, puis relancez
+                  l’audit
                 </td>
               </tr>
               <tr>
-                <td>L'audit s'est arrêté sur une erreur inattendue</td>
+                <td>L’audit s’est arrêté sur une erreur inattendue</td>
                 <td>Non déterminé</td>
                 <td>
-                  Relancez. Si cela continue, téléchargez le package de
-                  diagnostics depuis <strong>Aide</strong>
+                  Relancez. Si cela continue, téléchargez le paquet de
+                  diagnostic depuis <strong>Aide</strong>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
         <p>
-          Le texte brut de l'erreur n'arrive pas à l'écran. Il reste dans le
-          package de diagnostics.
+          Le texte brut de l’erreur n’arrive pas à l’écran. Il reste dans le
+          paquet de diagnostic.
         </p>
         <h2 id="avertissements-jaunes-pendant-l-exploration">
-          Avertissements jaunes pendant l'exploration
+          Avertissements jaunes pendant l’exploration
         </h2>
         <ul>
           <li>
-            <strong>L'audit n'a pas pu explorer complètement ce site.</strong>
-            La protection anti-bots de votre site a arrêté l'explorateur. Les
-            résultats sont tout de même affichés. Autorisez « seotracker-audit »
-            dans votre pare-feu ou essayez l'un des explorateurs de bureau que
-            le guide propose.
+            <strong>L’audit n’a pas pu explorer complètement ce site.</strong>
+            La protection anti-bots de votre site a arrêté l’explorateur. Les
+            résultats sont tout de même affichés. Autorisez « seotracker-audit »
+            dans votre pare-feu ou essayez l’un des explorateurs de bureau que
+            l’écran propose (LibreCrawl, Screaming Frog).
           </li>
           <li>
             <strong
-              >N pages n'ont pas pu être récupérées (erreur réseau).</strong
+              >N pages n’ont pas pu être récupérées (erreur réseau).</strong
             >
-            La connexion n'a pas pu être établie, même à la nouvelle tentative.
-            Ces pages n'ont pas été auditées et ne sont pas comptées comme
-            cassées. C'est souvent passager. Relancez l'audit. Si cela continue,
-            vérifiez que le site s'ouvre depuis cet ordinateur.
+            La connexion n’a pas pu être établie, même à la nouvelle tentative.
+            Ces pages n’ont pas été auditées et ne sont pas comptées comme
+            cassées. C’est souvent passager. Relancez l’audit. Si cela continue,
+            vérifiez que le site s’ouvre depuis cet ordinateur.
           </li>
           <li>
-            <strong>Le site a limité le débit sur N pages.</strong> Le site a
-            répondu « trop de requêtes ». Ces pages n'ont pas pu être auditées.
+            <strong>Le site a limité le débit de N pages.</strong> Le site a
+            répondu « trop de requêtes ». Ces pages n’ont pas pu être auditées.
             Relancez quand la limite est réinitialisée.
           </li>
           <li>
             <strong
-              >L'exploration s'est arrêtée prématurément en raison de la limite
+              >L’exploration s’est arrêtée prématurément en raison de la limite
               de débit du site.</strong
             >
-            L'attente demandée dépassait la durée que l'audit peut prendre. Le
-            rapport est incomplet et n'a pas de score.
+            L’attente demandée dépassait la durée que l’audit peut prendre. Le
+            rapport est incomplet et n’a pas de score.
           </li>
           <li>
             <strong
-              >La clé PageSpeed enregistrée n'a pas pu être lue ; la mesure de
-              vitesse s'est faite sans clé.</strong
+              >La clé PageSpeed enregistrée n’a pas pu être lue ; la mesure de
+              vitesse s’est faite sans clé.</strong
             >
-            L'audit est terminé, mais la mesure de vitesse s'est faite sans clé.
-            Les résultats de l'exploration ne sont pas touchés. La mesure de
-            vitesse s'est limitée aux premières pages. Mettez l'application à
+            L’audit est terminé, mais la mesure de vitesse s’est faite sans clé.
+            Les résultats de l’exploration ne sont pas touchés. La mesure de
+            vitesse s’est limitée aux premières pages. Mettez l’application à
             jour ou redémarrez-la, puis lancez un nouvel audit. Si cela
             continue, enregistrez de nouveau la clé PageSpeed dans
             <strong>Paramètres</strong>.
           </li>
         </ul>
-        <h2 id="comment-l-utiliser">Comment l'utiliser</h2>
+        <h2 id="comment-l-utiliser">Comment l’utiliser</h2>
         <ol>
           <li>
             Pour le premier audit, laissez le nombre de pages à 50. Gardez la
             mesure de vitesse désactivée. Cela se termine en une ou deux
             minutes. Avec la mesure de vitesse désactivée, le score peut sortir
-            provisoire. C'est normal.
+            provisoire. C’est normal.
           </li>
           <li>
             Lisez la ligne de couverture sur la carte du score. Si elle indique
@@ -1928,14 +1933,14 @@
             raison.
           </li>
           <li>
-            Dans l'onglet <strong>À faire</strong>, commencez par les trois
+            Dans l’onglet <strong>À faire</strong>, commencez par les trois
             premiers travaux. Ils rapportent le plus de points pour le moins
-            d'effort.
+            d’effort.
           </li>
           <li>
-            Dans l'onglet <strong>Pages présentant des problèmes</strong>,
-            finissez d'abord les problèmes critiques. Un problème critique
-            empêche Google de voir la page.
+            Dans l’onglet <strong>Pages présentant des problèmes</strong>,
+            finissez d’abord les problèmes critiques. Un problème critique
+            empêche Google de voir la page ou les visiteurs d’atteindre le site.
           </li>
           <li>
             Récupérez la liste avec <strong>Exporter</strong> et donnez-la à la
@@ -1945,7 +1950,7 @@
           <li>
             Après correction, cliquez sur
             <strong>Relancer avec les mêmes paramètres</strong>. Les flèches de
-            la liste <strong>Audits précédents</strong> et l'<strong
+            la liste <strong>Audits précédents</strong> et l’<strong
               >Historique du score</strong
             >
             montrent ce qui a été corrigé.
@@ -1961,40 +1966,39 @@
         </h2>
         <p>
           <strong>Score.</strong> Chaque constat retire des points à sa
-          catégorie. Combien, cela dépend de l'importance du constat et de la
-          part de pages touchées. Les poids sont : critique 40, avertissement
-          15, information 3. Le score du site est la moyenne pondérée de sept
-          catégories. Exploration et Indexation pèsent le plus, Réseaux sociaux
-          et données structurées le moins. Une vérification qui n'a pas pu être
-          mesurée ne relève ni n'abaisse le score. C'est pourquoi la couverture
-          est montrée à part.
+          catégorie, selon sa gravité et la part de pages touchées. Les poids
+          sont : critique 40, avertissement 15, information 3. Le score du site
+          est la moyenne pondérée de sept catégories. Exploration et Indexation
+          pèsent le plus, Réseaux sociaux et données structurées le moins. Une
+          vérification qui n’a pas pu être mesurée ne relève ni n’abaisse le
+          score. C’est pourquoi la couverture est montrée à part.
         </p>
         <p>
-          <strong>Plafonds.</strong> S'il y a ne serait-ce qu'un problème, le
-          score vaut au plus 99. S'il y a un problème critique, au plus 69. Avec
+          <strong>Plafonds.</strong> S’il y a ne serait-ce qu’un problème, le
+          score vaut au plus 99. S’il y a un problème critique, au plus 69. Avec
           5 avertissements ou plus, au plus 89. Ainsi, une seule page bloquée à
-          l'indexation sur un grand site ne se cache pas sous un score élevé. Si
-          un plafond retient le score, la carte l'écrit. Le « +N points » à côté
-          d'un travail tient compte du plafond aussi. Corriger l'unique problème
-          critique lève tout le plafond. Corriger un avertissement pendant qu'un
-          plafond s'applique rapporte très peu.
+          l’indexation sur un grand site ne se cache pas sous un score élevé. Si
+          un plafond retient le score, la carte l’indique. Le « +N points » à
+          côté d’un travail tient compte du plafond aussi. Corriger l’unique
+          problème critique lève tout le plafond. Corriger un avertissement
+          pendant qu’un plafond s’applique rapporte très peu.
         </p>
         <p>
-          <strong>Exploration.</strong> L'application ne fatigue pas votre site.
-          Elle envoie au plus deux requêtes à la fois. Si le site répond « trop
-          de requêtes » (429), elle attend. Si l'attente totale dépasse 30
-          minutes, l'exploration s'arrête et l'audit n'a pas de score.
+          <strong>Exploration.</strong> L’application ne fatigue pas votre site.
+          Elle envoie au plus deux requêtes à la fois. Si le site répond « trop
+          de requêtes » (429), elle attend. Si l’attente totale dépasse 30
+          minutes, l’exploration s’arrête et l’audit n’a pas de score.
         </p>
         <p>
-          <strong>Mesure de vitesse.</strong> Sur un site de 212 pages, l'audit
+          <strong>Mesure de vitesse.</strong> Sur un site de 212 pages, l’audit
           entier a pris 35 minutes. Environ 24 de ces minutes étaient la mesure
-          de vitesse. Si le quota quotidien est épuisé, la mesure s'arrête, les
+          de vitesse. Si le quota quotidien est épuisé, la mesure s’arrête, les
           résultats obtenus restent et le score peut être provisoire. Un
-          problème est écrit dans ces cas :
+          problème est signalé dans ces cas :
         </p>
         <ul>
           <li>
-            Le contenu principal s'affiche après plus de 4 secondes (LCP).
+            Le contenu principal s’affiche après plus de 4 secondes (LCP).
           </li>
           <li>Le contenu se décale de plus de 0,25 (CLS).</li>
           <li>La réponse à un clic prend plus de 500 millisecondes (INP).</li>
@@ -2002,84 +2006,67 @@
         </ul>
         <h2 id="questions-frequentes">Questions fréquentes</h2>
         <p>
-          <strong>L'audit montre-t-il ce que Google voit ?</strong> Non.
-          L'explorateur de l'application lit la page lui-même. La réponse de
-          Google est dans l'onglet <strong>État de l'indexation</strong>.
+          <strong>L’audit montre-t-il ce que Google voit ?</strong> Non.
+          L’explorateur de l’application lit la page lui-même. La réponse de
+          Google est dans l’onglet <strong>État de l’indexation</strong>.
         </p>
         <p>
-          <strong>Le score est 98, pourquoi pas 100 ?</strong> Un seul problème
+          <strong>Le score est 98, pourquoi pas 100 ?</strong> Un seul problème
           suffit à garder le score à 99 ou moins.
         </p>
         <p>
-          <strong>Pourquoi mon score reste-t-il bloqué à 69 ?</strong> Il y a un
+          <strong>Pourquoi mon score reste-t-il bloqué à 69 ?</strong> Il y a un
           problème critique. Le score ne peut pas dépasser 69 tant que vous ne
-          l'avez pas corrigé. La carte le dit.
+          l’avez pas corrigé. La carte le dit.
         </p>
         <p>
-          <strong>Pourquoi est-il écrit « Score provisoire » ?</strong> Une
-          grande part des vérifications n'a pas pu être mesurée. La ligne de
+          <strong>Pourquoi « Score provisoire » s’affiche-t-il ?</strong> Une
+          grande part des vérifications n’a pas pu être mesurée. La ligne de
           couverture et les lignes en dessous donnent la raison. Activer la
           mesure de vitesse ou connecter Search Console augmente en général la
           couverture.
         </p>
         <p>
-          <strong>Pourquoi « Audit incomplet » au lieu d'un score ?</strong>
-          L'audit s'est arrêté à mi-chemin ou trop tôt. La liste des problèmes
-          est incomplète, donc pas de score. Relancez l'audit.
+          <strong>Pourquoi « Audit incomplet » au lieu d’un score ?</strong>
+          L’audit s’est arrêté à mi-chemin ou trop tôt. La liste des problèmes
+          est incomplète, donc pas de score. Relancez l’audit.
         </p>
         <p>
-          <strong>Que veut dire l'avertissement « bloqué » ?</strong> La
-          protection anti-bots de votre site a arrêté l'explorateur. Autorisez «
-          seotracker-audit » dans le pare-feu.
+          <strong>Que veut dire l’avertissement « bloqué » ?</strong> La
+          protection anti-bots de votre site a arrêté l’explorateur. Autorisez
+          « seotracker-audit » dans le pare-feu.
         </p>
         <p>
-          <strong>La mesure de vitesse s'est arrêtée en route.</strong> En
-          général, il n'y a pas de clé PageSpeed ou le quota quotidien est
-          épuisé. La carte des quotas dans <strong>Paramètres</strong> en donne
-          la raison.
+          <strong>La mesure de vitesse s’est arrêtée en route.</strong> En
+          général, il n’y a pas de clé PageSpeed ou le quota quotidien est
+          épuisé. La section
+          <strong>Limites de Google et du système</strong> des
+          <strong>Paramètres</strong> en donne la raison.
         </p>
         <p>
-          <strong>Combien d'audits tournent en même temps ?</strong> Trois au
-          plus. Deux audits qui mesurent la vitesse se ralentissent l'un
-          l'autre.
+          <strong>Combien d’audits tournent en même temps ?</strong> Trois au
+          plus. Deux audits qui mesurent la vitesse se ralentissent l’un
+          l’autre.
         </p>
         <h2 id="limites">Limites</h2>
         <p>
-          L'explorateur peut ne pas voir le contenu que JavaScript (le code qui
-          s'exécute dans la page) ajoute plus tard. Un audit explore 10 000
+          L’explorateur peut ne pas voir le contenu que JavaScript (le code qui
+          s’exécute dans la page) ajoute plus tard. Un audit explore 10 000
           pages au plus. La mesure de vitesse est la mesure de laboratoire de
-          Google, pas des données de vrais visiteurs. L'audit ne change rien sur
-          votre site. Les corrections, c'est vous ou votre assistant qui les
+          Google, pas des données de vrais visiteurs. L’audit ne change rien sur
+          votre site. Les corrections, c’est vous ou votre assistant qui les
           faites.
-        </p>
-        <p>
-          Dans les audits précédents,
-          <strong>Pages explorées</strong> correspond aux adresses réellement
-          explorées, même pour un audit échoué, et non à la limite initiale. Les
-          colonnes Critique et Avertissement donnent le nombre total de
-          problèmes. <strong>Mesure de vitesse demandée</strong> signifie que
-          cette option était activée au démarrage ; cela ne prouve pas que la
-          mesure a réussi. Sur téléphone, faites défiler le tableau
-          horizontalement pour voir les autres colonnes et actions.
-        </p>
-        <p>
-          L’historique indique les constats critiques, les avertissements et les
-          informations par page ; une page peut en avoir plusieurs. Les tâches
-          terminées affichent la limite d’exploration enregistrée ou précisent
-          son absence. Les détails du périmètre ouvrent les contrôles mesurés et
-          non mesurés. Les audits en échec affichent l’explication enregistrée
-          et la prochaine étape ; une cause inconnue est signalée explicitement.
         </p>
         <nav class="pager" aria-label="Page précédente et suivante">
           <a class="pager-prev" rel="prev" href="/fr/guides/statistiques/"
             ><span>Précédent</span
-            ><strong>Comprendre les statistiques</strong></a
+            ><strong>Comprendre les données Analytics</strong></a
           ><a class="pager-next" rel="next" href="/fr/guides/etat-de-l-index/"
-            ><span>Suivant</span><strong>État de l'indexation</strong></a
+            ><span>Suivant</span><strong>État de l’indexation</strong></a
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -2091,21 +2078,21 @@
       <nav class="toc" aria-label="Sur cette page">
         <p class="toc-label">Sur cette page</p>
         <ol>
-          <li><a href="#ce-que-l-ecran-affiche">Ce que l'écran affiche</a></li>
+          <li><a href="#ce-que-l-ecran-affiche">Ce que l’écran affiche</a></li>
           <li>
             <a href="#les-trois-etats-du-score">Les trois états du score</a>
           </li>
           <li>
-            <a href="#si-l-audit-s-est-arrete-ce-qui-est-ecrit"
-              >Si l'audit s'est arrêté, ce qui est écrit</a
+            <a href="#messages-affiches-quand-l-audit-s-arrete"
+              >Messages affichés quand l’audit s’arrête</a
             >
           </li>
           <li>
             <a href="#avertissements-jaunes-pendant-l-exploration"
-              >Avertissements jaunes pendant l'exploration</a
+              >Avertissements jaunes pendant l’exploration</a
             >
           </li>
-          <li><a href="#comment-l-utiliser">Comment l'utiliser</a></li>
+          <li><a href="#comment-l-utiliser">Comment l’utiliser</a></li>
           <li>
             <a href="#comment-les-chiffres-sont-calcules"
               >Comment les chiffres sont calculés</a
@@ -2119,7 +2106,7 @@
     <footer>
       <div class="wrap">
         <p class="star">
-          Une étoile aide d'autres personnes à trouver un outil gratuit.
+          Une étoile aide d’autres personnes à trouver un outil gratuit.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

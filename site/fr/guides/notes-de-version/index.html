@@ -14,7 +14,7 @@
     <title>Notes de version | Guide seowatcher</title>
     <meta
       name="description"
-      content="seowatcher 0.8.6 Alpha (29 octobre 2026) : nouvel audit de site à 202 règles, six langues, notifications et données Google plus exactes."
+      content="seowatcher 0.8.7 Alpha (29 octobre 2026) : nouvel audit de site à 202 règles, six langues, notifications et données Google plus exactes."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -91,7 +91,7 @@
     <meta property="og:title" content="Notes de version | Guide seowatcher" />
     <meta
       property="og:description"
-      content="seowatcher 0.8.6 Alpha (29 octobre 2026) : nouvel audit de site à 202 règles, six langues, notifications et données Google plus exactes."
+      content="seowatcher 0.8.7 Alpha (29 octobre 2026) : nouvel audit de site à 202 règles, six langues, notifications et données Google plus exactes."
     />
     <meta
       property="og:image"
@@ -102,7 +102,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta property="article:modified_time" content="2026-10-29" />
     <meta
@@ -119,7 +119,7 @@
     <meta name="twitter:title" content="Notes de version | Guide seowatcher" />
     <meta
       name="twitter:description"
-      content="seowatcher 0.8.6 Alpha (29 octobre 2026) : nouvel audit de site à 202 règles, six langues, notifications et données Google plus exactes."
+      content="seowatcher 0.8.7 Alpha (29 octobre 2026) : nouvel audit de site à 202 règles, six langues, notifications et données Google plus exactes."
     />
     <meta
       name="twitter:image"
@@ -127,7 +127,7 @@
     />
     <meta
       name="twitter:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
@@ -162,7 +162,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/fr/guides/notes-de-version/#article",
             "headline": "Notes de version",
-            "description": "seowatcher 0.8.6 Alpha (29 octobre 2026) : nouvel audit de site à 202 règles, six langues, notifications et données Google plus exactes.",
+            "description": "seowatcher 0.8.7 Alpha (29 octobre 2026) : nouvel audit de site à 202 règles, six langues, notifications et données Google plus exactes.",
             "url": "https://seowatcher.io/fr/guides/notes-de-version/",
             "inLanguage": "fr",
             "datePublished": "2026-10-23",
@@ -201,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1472,7 +1472,7 @@
           <ul>
             <li>
               <a href="/fr/guides/quest-ce-que-seowatcher/"
-                >Qu'est-ce que seowatcher ?</a
+                >Qu’est-ce que seowatcher ?</a
               >
             </li>
             <li>
@@ -1511,23 +1511,27 @@
               >
             </li>
             <li>
-              <a href="/fr/guides/statistiques/">Comprendre les statistiques</a>
+              <a href="/fr/guides/statistiques/"
+                >Comprendre les données Analytics</a
+              >
             </li>
             <li><a href="/fr/guides/audit-du-site/">Audit du site</a></li>
             <li>
-              <a href="/fr/guides/etat-de-l-index/">État de l'indexation</a>
+              <a href="/fr/guides/etat-de-l-index/">État de l’indexation</a>
             </li>
             <li><a href="/fr/guides/rapports/">Rapports et modèles</a></li>
-            <li><a href="/fr/guides/infos-du-projet/">Infos du projet</a></li>
+            <li>
+              <a href="/fr/guides/infos-du-projet/">Contexte du projet</a>
+            </li>
             <li><a href="/fr/guides/parametres/">Paramètres</a></li>
           </ul>
           <p class="nav-group">Aide et référence</p>
           <ul>
             <li><a href="/fr/guides/aide/">Aide</a></li>
-            <li><a href="/fr/guides/regles-d-audit/">Règles d'audit</a></li>
+            <li><a href="/fr/guides/regles-d-audit/">Règles d’audit</a></li>
             <li>
               <a href="/fr/guides/installation-assistant/"
-                >Installation de l'assistant</a
+                >Configuration de l’agent</a
               >
             </li>
             <li><a href="/fr/guides/depannage/">Dépannage</a></li>
@@ -1540,209 +1544,217 @@
       <article id="icerik" data-page="surum-notlari">
         <h1>Notes de version</h1>
         <p class="lede">
-          seowatcher 0.8.6 Alpha (29 octobre 2026) : nouvel audit de site à 202
+          seowatcher 0.8.7 Alpha (29 octobre 2026) : nouvel audit de site à 202
           règles, six langues, notifications et données Google plus exactes.
         </p>
         <p>
-          La dernière version est la <strong>0.8.6 Alpha</strong>, du 29 octobre
+          La dernière version est la <strong>0.8.7 Alpha</strong>, du 29 octobre
           2026. Vos données sont conservées lors de la mise à jour.
         </p>
         <p>
           Pour passer de 2.x à 0.x.x Alpha, lancez le nouvel installateur
-          manuellement ; l’ancien outil ne reconnaît pas le numéro inférieur
+          manuellement ; l’ancien outil ne reconnaît pas le numéro inférieur
           comme plus récent.
         </p>
-        <h2 id="0-8-6-alpha-2026-10-29">0.8.6 Alpha — 2026-10-29</h2>
+        <h2 id="0-8-7-alpha-2026-10-29">0.8.7 Alpha — 2026-10-29</h2>
         <p>
           Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la
-          0.8.6 : audit du site, tableau de bord, notifications et six langues,
+          0.8.7 : audit du site, tableau de bord, notifications et six langues,
           avec des données plus justes et des écrans plus lisibles.
         </p>
         <h3 id="points-forts">✨ Points forts</h3>
         <ul>
           <li>
-            <strong>Nouvel audit:</strong> Il examine votre site page par page
+            <strong>Nouvel audit :</strong> Il examine votre site page par page
             et dans son ensemble, avec 202 règles.
           </li>
           <li>
-            <strong>Résultats honnêtes:</strong> Ce qu'il ne peut pas mesurer
-            n'est pas compté comme « réussi » ; sans données, l'écran le dit
+            <strong>Résultats honnêtes :</strong> Ce qu’il ne peut pas mesurer
+            n’est pas compté comme « réussi » ; sans données, l’écran le dit
             clairement.
           </li>
           <li>
-            <strong>Tâches classées:</strong> Les problèmes des pages qui
+            <strong>Tâches classées :</strong> Les problèmes des pages qui
             amènent le plus de visiteurs depuis Google passent en premier.
           </li>
           <li>
-            <strong>Six langues:</strong> Utilisez l'application en turc,
+            <strong>Six langues :</strong> Utilisez l’application en turc,
             anglais, allemand, français, italien ou portugais.
           </li>
           <li>
-            <strong>Actualités:</strong> Annonces et notifications vous tiennent
-            au courant des nouvelles versions et des informations importantes.
+            <strong>Actualités :</strong> Annonces et notifications vous
+            tiennent au courant des nouvelles versions et des informations
+            importantes.
           </li>
         </ul>
         <h3 id="audit-du-site">🔎 Audit du site</h3>
         <ul>
           <li>
-            <strong>Contrôles de sécurité:</strong> Les réglages de sécurité de
-            votre site ainsi que les dates d'expiration du certificat SSL et du
+            <strong>Contrôles de sécurité :</strong> Les réglages de sécurité de
+            votre site ainsi que les dates d’expiration du certificat SSL et du
             nom de domaine sont vérifiés.
           </li>
           <li>
-            <strong>Enregistrements e-mail:</strong> Les enregistrements qui
-            empêchent d'autres personnes d'envoyer des e-mails en votre nom sont
+            <strong>Enregistrements e-mail :</strong> Les enregistrements qui
+            empêchent d’autres personnes d’envoyer des e-mails en votre nom sont
             contrôlés.
           </li>
           <li>
-            <strong>Robots d'IA:</strong> Vous voyez si votre site est ouvert
-            aux robots d'IA comme ChatGPT et Claude.
+            <strong>Robots d’IA :</strong> Vous voyez si votre site est ouvert
+            aux robots d’IA comme ChatGPT et Claude.
           </li>
           <li>
-            <strong>Résultats de vitesse:</strong> Quand la mesure de vitesse
+            <strong>Résultats de vitesse :</strong> Quand la mesure de vitesse
             est activée, les problèmes qui ralentissent votre site sont listés
             avec le gain estimé.
           </li>
           <li>
-            <strong>Aperçus:</strong> Vous voyez à l'avance l'aspect d'une page
+            <strong>Aperçus :</strong> Vous voyez à l’avance l’aspect d’une page
             sur Google, dans les partages et sur un téléphone.
           </li>
           <li>
-            <strong>Historique du score:</strong> Suivez ce qui s'est amélioré
-            d'un audit à l'autre et téléchargez le rapport renouvelé.
+            <strong>Historique du score :</strong> Suivez ce qui s’est amélioré
+            d’un audit à l’autre et téléchargez le rapport renouvelé.
           </li>
         </ul>
         <h3 id="tableau-de-bord-et-rapports">📊 Tableau de bord et rapports</h3>
         <ul>
           <li>
-            <strong>Prochaines étapes:</strong> Le tableau de bord propose une
+            <strong>Prochaines étapes :</strong> Le tableau de bord propose une
             courte liste de tâches et un score de préparation pour terminer
-            votre configuration. Ce score n'est pas un résultat SEO.
+            votre configuration. Ce score n’est pas un résultat SEO.
           </li>
           <li>
-            <strong>Rapports prêts:</strong> Votre assistant IA prépare un
-            rapport d'amélioration à partir de vos données d'audit, de recherche
-            et d'Analytics.
+            <strong>Rapports prêts :</strong> Votre assistant IA prépare un
+            rapport d’amélioration à partir de vos données d’audit, de recherche
+            et d’Analytics.
           </li>
           <li>
-            <strong>Avancement de l'audit:</strong> Pendant un audit, vous voyez
-            le temps écoulé et l'avancement, puis un court résumé à la fin.
+            <strong>Avancement de l’audit :</strong> Pendant un audit, vous
+            voyez le temps écoulé et l’avancement, puis un court résumé à la
+            fin.
           </li>
           <li>
-            <strong>Types de rapports :</strong> Les rapports de recherche et
-            d’audit du site sont séparés ; les anciens rapports de type inconnu
+            <strong>Types de rapports :</strong> Les rapports de recherche et
+            d’audit du site sont séparés ; les anciens rapports de type inconnu
             sont signalés.
           </li>
           <li>
-            <strong>Dates des rapports :</strong> Les rapports de recherche
+            <strong>Dates des rapports :</strong> Les rapports de recherche
             conservent les dates choisies et expliquent les données manquantes
             et les mesures encore susceptibles de changer.
           </li>
           <li>
-            <strong>Sources utilisées :</strong> Les rapports d’audit précisent
+            <strong>Sources utilisées :</strong> Les rapports d’audit précisent
             les données de trafic et de vitesse réellement utilisées.
           </li>
           <li>
-            <strong>Données Google complètes:</strong> Toutes les lignes
+            <strong>Données Google complètes :</strong> Toutes les lignes
             fournies par Google sont récupérées et leur heure de récupération
             est visible. Les archives des positions continuent de se remplir
-            quand la page est ouverte ; les jours incomplets sont signalés.
+            quand la page est ouverte ; les jours incomplets sont signalés.
           </li>
         </ul>
         <h3 id="notifications-et-annonces">🔔 Notifications et annonces</h3>
         <ul>
           <li>
-            <strong>Centre de notifications:</strong> Résultats d'audit,
+            <strong>Centre de notifications :</strong> Résultats d’audit,
             nouvelles versions et problèmes de connexion Google sont réunis au
             même endroit.
           </li>
           <li>
-            <strong>Son des notifications:</strong> Activez ou désactivez le son
-            des alertes importantes dans les paramètres.
+            <strong>Son des notifications :</strong> Activez ou désactivez le
+            son des alertes importantes dans les paramètres.
           </li>
           <li>
-            <strong>Notifications Windows:</strong> Les mises à jour et les
+            <strong>Notifications Windows :</strong> Les mises à jour et les
             annonces apparaissent aussi dans la zone de notification de Windows.
             Windows vous avertit aussi quand un audit se termine ou échoue. Vous
             pouvez désactiver ces notifications dans le menu de l’icône de la
             barre des tâches.
           </li>
           <li>
-            <strong>Annonces:</strong> Les nouvelles s'affichent sur l'écran
-            Annonces de l'application.
+            <strong>Annonces :</strong> Les nouvelles s’affichent sur l’écran
+            Annonces de l’application.
           </li>
         </ul>
         <h3 id="windows">🪟 Windows</h3>
         <ul>
           <li>
-            <strong>Réglages:</strong> Dans les Réglages, choisissez si
-            l'application démarre avec Windows et se met à jour toute seule.
+            <strong>Paramètres :</strong> Dans les Paramètres, choisissez si
+            l’application démarre avec Windows et se met à jour toute seule.
           </li>
           <li>
-            <strong>Progression au démarrage:</strong> Une fenêtre affiche le
-            pourcentage pendant la préparation de l'application et le
-            téléchargement d'une mise à jour.
+            <strong>Progression au démarrage :</strong> Une fenêtre affiche le
+            pourcentage pendant la préparation de l’application et le
+            téléchargement d’une mise à jour.
           </li>
           <li>
-            <strong>Consignes claires:</strong> Le guide et l'Aide expliquent
+            <strong>Consignes claires :</strong> Le guide et l’Aide expliquent
             les différences entre le paquet Windows et Docker.
           </li>
         </ul>
         <h3 id="langues">🌍 Langues</h3>
         <ul>
           <li>
-            <strong>Langue:</strong> Choisissez votre langue dans Réglages →
-            Apparence → Langue ; les nombres et les dates la suivent.
+            <strong>Langue :</strong> Choisissez votre langue dans Paramètres →
+            Apparence → Langue ; les nombres et les dates la suivent.
           </li>
           <li>
-            <strong>Guide:</strong> Le guide d'utilisation, les règles d'audit
+            <strong>Guide :</strong> Le guide d’utilisation, les règles d’audit
             et les notes de version existent en six langues.
           </li>
           <li>
-            <strong>Confidentialité:</strong> Sur seowatcher.io, la mesure
-            d'audience ne démarre que si vous l'acceptez.
+            <strong>Confidentialité :</strong> Sur seowatcher.io, la mesure
+            d’audience ne démarre que si vous l’acceptez.
           </li>
           <li>
-            <strong>Traductions revues :</strong> Les textes et les guides ont
+            <strong>Traductions revues :</strong> Les textes et les guides ont
             été adaptés aux écrans révisés dans les six langues.
+          </li>
+          <li>
+            <strong>Traductions corrigées :</strong> Des noms de colonnes et de
+            catégories mal traduits ont été corrigés dans les écrans en
+            français, allemand, italien et portugais ; le rôle Analytics porte
+            le nom utilisé par Google, « Lecteur ».
           </li>
         </ul>
         <h3 id="apparence-et-aide">🎨 Apparence et aide</h3>
         <ul>
           <li>
-            <strong>Thème clair :</strong> Un fond plus sombre, des cartes plus
+            <strong>Thème clair :</strong> Un fond plus sombre, des cartes plus
             claires et des accents orange plus visibles facilitent la lecture.
           </li>
           <li>
-            <strong>Cartes et chiffres :</strong> Les cartes récapitulatives
-            sont simplifiées ; les chiffres animés respectent votre préférence
+            <strong>Cartes et chiffres :</strong> Les cartes récapitulatives
+            sont simplifiées ; les chiffres animés respectent votre préférence
             de réduction des mouvements.
           </li>
           <li>
-            <strong>Aide et versions :</strong> Les écrans d’aide et de notes de
+            <strong>Aide et versions :</strong> Les écrans d’aide et de notes de
             version facilitent la recherche d’informations.
           </li>
           <li>
-            <strong>Couleurs des données:</strong> Clics bleus, impressions
+            <strong>Couleurs des données :</strong> Clics bleus, impressions
             violettes, taux de clic turquoise, position ocre, sessions vertes et
-            conversions roses : cartes et graphiques gardent les mêmes couleurs,
+            conversions roses : cartes et graphiques gardent les mêmes couleurs,
             plus vives, dans les deux thèmes.
           </li>
           <li>
-            <strong>Écrans plus calmes:</strong> La source, la période et la
+            <strong>Écrans plus calmes :</strong> La source, la période et la
             fraîcheur des données sont regroupées sous des libellés courts.
-            Ouvrez les longues explications au besoin ; des noms courts et des
+            Ouvrez les longues explications au besoin ; des noms courts et des
             boutons clairs facilitent les actions.
           </li>
           <li>
-            <strong>Sur mobile :</strong> Les listes s’affichent en lignes
-            lisibles plutôt qu’en tableaux sur mobile ; les requêtes et les
-            libellés ne sont plus coupés.
+            <strong>Sur mobile :</strong> Les listes s’affichent en lignes
+            lisibles plutôt qu’en tableaux ; les requêtes et les libellés ne
+            sont plus coupés.
           </li>
           <li>
-            <strong>Un seul style :</strong> Les boutons, les sections
+            <strong>Un seul style :</strong> Les boutons, les sections
             dépliables, les notifications et les cartes ont le même aspect sur
-            chaque écran ; les listes d’une seule page n’affichent plus de
+            chaque écran ; les listes d’une seule page n’affichent plus de
             boutons de pagination.
           </li>
         </ul>
@@ -1751,17 +1763,17 @@
         </h3>
         <ul>
           <li>
-            <strong>Recherches enregistrées :</strong> Les positions sont
-            calculées pour votre liste ; les variantes d’écriture n’écrasent
+            <strong>Recherches enregistrées :</strong> Les positions sont
+            calculées pour votre liste ; les variantes d’écriture n’écrasent
             plus les mesures et les positions inconnues sont signalées.
           </li>
           <li>
-            <strong>Résumé du projet :</strong> Les jours absents des archives
-            ne comptent plus comme une perte de trafic ; le résumé d’audit
+            <strong>Résumé du projet :</strong> Les jours absents des archives
+            ne comptent plus comme une perte de trafic ; le résumé d’audit
             concerne uniquement le site du projet.
           </li>
           <li>
-            <strong>Infos du projet :</strong> En cas de modifications
+            <strong>Contexte du projet :</strong> En cas de modifications
             concurrentes, vous pouvez conserver votre brouillon et le comparer
             au texte actuel.
           </li>
@@ -1769,8 +1781,8 @@
         <h3 id="corrections">🛠️ Corrections</h3>
         <ul>
           <li>
-            <strong>Audits plus précis:</strong> Les erreurs trouvées sur de
-            vrais sites ont été corrigées ; les comparaisons utilisent les pages
+            <strong>Audits plus précis :</strong> Les erreurs trouvées sur de
+            vrais sites ont été corrigées ; les comparaisons utilisent les pages
             de chaque audit et un audit reste enregistré si son démarrage
             échoue. Les messages d’échec dans l’historique des audits tiennent
             aussi à l’écran. Les chiffres de l’historique des audits expliquent
@@ -1778,17 +1790,17 @@
             site.
           </li>
           <li>
-            <strong>Menus et clavier:</strong> Écrans, rapports et listes de
-            pays tiennent sur téléphone ; les menus restent visibles, le focus
+            <strong>Menus et clavier :</strong> Écrans, rapports et listes de
+            pays tiennent sur téléphone ; les menus restent visibles, le focus
             reste dans la fenêtre ouverte et Échap ferme seulement la liste au
-            premier plan sans effacer votre saisie ; les lecteurs d’écran
+            premier plan sans effacer votre saisie ; les lecteurs d’écran
             annoncent les choix et Analytics affiche les noms des canaux dans
             votre langue. Sur téléphone, l’heure de mise à jour, le type de
             rapport et les libellés de chaque ligne du suivi des positions sont
             visibles.
           </li>
           <li>
-            <strong>Corrections quotidiennes:</strong> Le paquet de diagnostic
+            <strong>Corrections quotidiennes :</strong> Le paquet de diagnostic
             de l’Aide décrit mieux le problème et ne contient pas les adresses
             de vos pages. 25 problèmes trouvés avec des données réelles ont été
             corrigés dans le tableau de bord, les performances de recherche, les
@@ -1799,24 +1811,24 @@
             tableau de bord expliquent ce qu’ils comptent et les noms des
             problèmes apparaissent en entier. Une liste de recherches
             enregistrées vide l’indique dès l’ouverture. Le suivi des positions
-            parle de positions moyennes ; l’Aide et les changements de page
+            parle de positions moyennes ; l’Aide et les changements de page
             reprennent les noms des menus. Le graphique des sessions du tableau
-            de bord porte le bon nom ; les positions sont décrites comme des
+            de bord porte le bon nom ; les positions sont décrites comme des
             moyennes sur la période choisie. Le singulier et le pluriel ont été
             corrigés en anglais, allemand, français, italien et portugais. Votre
             assistant IA retrouve les pages qui se font concurrence pour une
             même recherche.
           </li>
           <li>
-            <strong>Chiffres plus justes:</strong> Les mesures absentes ne
+            <strong>Chiffres plus justes :</strong> Les mesures absentes ne
             comptent pas comme zéro et les données Analytics limitées ne donnent
-            pas de conclusion certaine ; les classements utilisent les mêmes
+            pas de conclusion certaine ; les classements utilisent les mêmes
             dates, les priorités et limites des estimations sont expliquées, et
             filtrer ne change pas le gain mensuel estimé. Opportunités explique
             les recherches masquées par Google et ne propose plus de passer à 90
             jours quand cette durée est déjà choisie. Même avec peu de
             visiteurs, les données manquantes sont distinguées d’un vrai zéro.
-            Analytics explique une mesure inconnue une seule fois ; les tableaux
+            Analytics explique une mesure inconnue une seule fois ; les tableaux
             vides masquent les boutons de page précédente et suivante.
             Opportunités liste les pages avec leurs mesures réelles même sur les
             sites peu visités. Quand un conseil repose sur la position moyenne
@@ -1824,21 +1836,21 @@
             inconnu.
           </li>
           <li>
-            <strong>État de connexion:</strong> Le choix d’une propriété est
+            <strong>État de connexion :</strong> Le choix d’une propriété est
             distinct de l’accès vérifié et les anciens résultats ne sont plus
-            actuels après un changement de compte ; une connexion Google sans
+            actuels après un changement de compte ; une connexion Google sans
             réponse cesse d’attendre, une erreur passagère invite à réessayer et
             un service désactivé indique quoi activer.
           </li>
           <li>
-            <strong>Données conservées:</strong> L’ajout et le retrait
+            <strong>Données conservées :</strong> L’ajout et le retrait
             d’étiquettes se terminent entièrement, les étiquettes utilisées ne
             peuvent pas être supprimées, l’historique reste lié à la bonne
             propriété et les tâches en attente suivent le bon ordre.
           </li>
           <li>
-            <strong>Démarrage Windows:</strong> Les fichiers de travail sont
-            enregistrés dans votre dossier utilisateur ; les connexions réparées
+            <strong>Démarrage Windows :</strong> Les fichiers de travail sont
+            enregistrés dans votre dossier utilisateur ; les connexions réparées
             de l’assistant sont conservées au redémarrage et le contrôle de
             démarrage ne reste plus bloqué. Un lien inutilisable vers les
             réglages Windows est masqué. Les notifications reçues pendant votre
@@ -1848,238 +1860,238 @@
         <h3 id="securite">🔒 Sécurité</h3>
         <ul>
           <li>
-            <strong>Composants à jour:</strong> Des failles de sécurité dans les
-            composants utilisés par l'application ont été corrigées.
+            <strong>Composants à jour :</strong> Des failles de sécurité dans
+            les composants utilisés par l’application ont été corrigées.
           </li>
           <li>
-            <strong>Clés secrètes :</strong> Enregistrez votre fichier de
+            <strong>Clés secrètes :</strong> Enregistrez votre fichier de
             connexion Google sans afficher son contenu à l’écran.
           </li>
           <li>
-            <strong>Installation de l’assistant :</strong> Les instructions ne
+            <strong>Configuration de l’agent :</strong> Les instructions ne
             demandent pas d’afficher votre clé d’accès à l’écran ni de la coller
             dans une conversation.
           </li>
         </ul>
         <h2 id="0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</h2>
         <p>
-          L'installation en un clic est arrivée sur Windows, et le site
-          seowatcher.io avec son guide d'utilisation est en ligne.
+          L’installation en un clic est arrivée sur Windows, et le site
+          seowatcher.io avec son guide d’utilisation est en ligne.
         </p>
         <h3 id="points-forts-2">✨ Points forts</h3>
         <ul>
           <li>
-            <strong>Installation en un clic:</strong> Installez sous Windows
+            <strong>Installation en un clic :</strong> Installez sous Windows
             avec un seul fichier, sans Docker ni terminal.
           </li>
           <li>
-            <strong>Mise à jour automatique:</strong> L'application télécharge,
+            <strong>Mise à jour automatique :</strong> L’application télécharge,
             vérifie et installe la nouvelle version.
           </li>
           <li>
-            <strong>Site et guide:</strong> seowatcher.io et le guide
-            d'utilisation sont en ligne en six langues.
+            <strong>Site et guide :</strong> seowatcher.io et le guide
+            d’utilisation sont en ligne en six langues.
           </li>
         </ul>
         <h3 id="windows-2">🪟 Windows</h3>
         <ul>
           <li>
-            <strong>Installation facile:</strong> Lancez le fichier : il prépare
-            tout le nécessaire et ouvre le navigateur. Désinstaller ne supprime
-            pas vos données.
+            <strong>Installation facile :</strong> Lancez le fichier : il
+            prépare tout le nécessaire et ouvre le navigateur. Désinstaller ne
+            supprime pas vos données.
           </li>
           <li>
-            <strong>Barre des tâches:</strong> Vous gérez l'application depuis
+            <strong>Barre des tâches :</strong> Vous gérez l’application depuis
             son icône dans la barre des tâches.
           </li>
           <li>
-            <strong>Mise à jour:</strong> L'option Mettre à jour affiche la
-            progression ; si vous le souhaitez, les mises à jour s'installent
+            <strong>Mise à jour :</strong> L’option Mettre à jour affiche la
+            progression ; si vous le souhaitez, les mises à jour s’installent
             toutes seules.
           </li>
           <li>
-            <strong>Se rétablit seule:</strong> Si l'application se ferme de
+            <strong>Se rétablit seule :</strong> Si l’application se ferme de
             façon inattendue, elle redémarre, et les fichiers journaux ne
             grossissent plus.
           </li>
           <li>
-            <strong>Réparer et signaler:</strong> Réparer l'installation, dans
-            l'Aide, règle les problèmes de démarrage ; Signaler un problème
-            ouvre un dossier prêt à l'emploi, où vos informations personnelles
-            sont masquées.
+            <strong>Réparer et signaler :</strong> Réparer l’installation, dans
+            le menu de la barre des tâches, règle les problèmes de démarrage ;
+            Signaler un problème ouvre un signalement prérempli, où vos
+            informations personnelles sont masquées.
           </li>
         </ul>
         <h3 id="premiere-configuration">🧭 Première configuration</h3>
         <ul>
           <li>
-            <strong>Partir de zéro:</strong> Dans la configuration de
-            l'assistant, Configuration complète est tout en haut ; un seul
+            <strong>Partir de zéro :</strong> Dans la configuration de
+            l’assistant, Configuration complète est tout en haut ; un seul
             bouton de copie suffit.
           </li>
           <li>
-            <strong>Connexion Google:</strong> Expliquée en trois courtes étapes
-            dans les Réglages.
+            <strong>Connexion Google :</strong> Expliquée en trois courtes
+            étapes dans les Paramètres.
           </li>
           <li>
-            <strong>Retours clairs:</strong> Enregistrer, supprimer et connecter
-            vous disent ce qui s'est passé ; la suppression demande d'abord
-            confirmation.
+            <strong>Retours clairs :</strong> Enregistrer, supprimer et
+            connecter vous disent ce qui s’est passé ; la suppression demande
+            d’abord confirmation.
           </li>
         </ul>
         <h3 id="site-et-guide">🌐 Site et guide</h3>
         <ul>
           <li>
-            <strong>seowatcher.io:</strong> Le site de l'application est en
+            <strong>seowatcher.io :</strong> Le site de l’application est en
             ligne en six langues.
           </li>
           <li>
-            <strong>Guide d'utilisation:</strong> Un guide de 20 pages à lire en
-            six langues.
+            <strong>Guide d’utilisation :</strong> Un guide de 20 pages à lire
+            en six langues.
           </li>
           <li>
-            <strong>Dépannage:</strong> Les pages sont rédigées avec des
+            <strong>Dépannage :</strong> Les pages sont rédigées avec des
             encadrés Symptôme, Cause et Solution.
           </li>
         </ul>
         <h3 id="apparence">🎨 Apparence</h3>
         <ul>
           <li>
-            <strong>Écrans plus simples:</strong> Le menu, les réglages et la
+            <strong>Écrans plus simples :</strong> Le menu, les réglages et la
             première configuration ont été simplifiés.
           </li>
           <li>
-            <strong>Des mots naturels:</strong> Plus de deux cents textes
-            d'écran ont été réécrits.
+            <strong>Des mots naturels :</strong> Plus de deux cents textes
+            d’écran ont été réécrits.
           </li>
           <li>
-            <strong>Thème sombre:</strong> Le thème sombre est celui par défaut
-            ; clair et sombre sont cohérents avec le site.
+            <strong>Thème sombre :</strong> Le thème sombre est celui par
+            défaut ; clair et sombre sont cohérents avec le site.
           </li>
         </ul>
         <h3 id="corrections-2">🛠️ Corrections</h3>
         <ul>
           <li>
-            <strong>Connexion Google:</strong> Un faux avertissement « clé
-            d'accès manquante », qui n'apparaissait qu'avec un compte de
+            <strong>Connexion Google :</strong> Un faux avertissement « clé
+            d’accès manquante », qui n’apparaissait qu’avec un compte de
             service, a disparu.
           </li>
           <li>
-            <strong>Analytics:</strong> Les noms d'appareils, de canaux et de
-            pays s'affichent dans votre langue ; les revenus indiquent la devise
-            ; les pourcentages de variation se présentent partout de la même
-            façon.
+            <strong>Analytics :</strong> Les noms d’appareils, de canaux et de
+            pays s’affichent dans votre langue ; les revenus indiquent la
+            devise ; les pourcentages de variation se présentent partout de la
+            même façon.
           </li>
           <li>
-            <strong>Débordement sur téléphone:</strong> Les écrans Audit du site
-            et Opportunités ne débordent plus sur un téléphone.
+            <strong>Débordement sur téléphone :</strong> Les écrans Audit du
+            site et Opportunités ne débordent plus sur un téléphone.
           </li>
         </ul>
         <h2 id="0-2-1-alpha-2026-10-04">0.2.1 Alpha — 2026-10-04</h2>
         <p>
-          La première version de seowatcher : elle réunit vos données Google,
-          l'audit du site et la mesure de vitesse dans une seule application sur
+          La première version de seowatcher : elle réunit vos données Google,
+          l’audit du site et la mesure de vitesse dans une seule application sur
           votre propre ordinateur.
         </p>
         <h3 id="points-forts-3">✨ Points forts</h3>
         <ul>
           <li>
-            <strong>Données au même endroit:</strong> Search Console, Analytics,
-            audit du site et mesure de vitesse se retrouvent dans une seule
-            application.
+            <strong>Données au même endroit :</strong> Search Console,
+            Analytics, audit du site et mesure de vitesse se retrouvent dans une
+            seule application.
           </li>
           <li>
-            <strong>Audit du site:</strong> Vous voyez les problèmes de votre
-            site, les pages concernées et l'historique des audits.
+            <strong>Audit du site :</strong> Vous voyez les problèmes de votre
+            site, les pages concernées et l’historique des audits.
           </li>
           <li>
-            <strong>Rapports:</strong> Vous téléchargez et imprimez le rapport
-            d'audit.
+            <strong>Rapports :</strong> Vous téléchargez et imprimez le rapport
+            d’audit.
           </li>
         </ul>
         <h3 id="performance-de-recherche">📈 Performance de recherche</h3>
         <ul>
           <li>
-            <strong>Suivi de recherche:</strong> Suivez vos performances sur
+            <strong>Suivi de recherche :</strong> Suivez vos performances sur
             Google et le classement de vos mots-clés enregistrés.
           </li>
           <li>
-            <strong>Opportunités:</strong> Les améliorations qui pourraient
+            <strong>Opportunités :</strong> Les améliorations qui pourraient
             faire monter votre classement sont listées.
           </li>
           <li>
-            <strong>Limites claires:</strong> Votre quota quotidien Google et le
-            nombre de mesures de vitesse restantes s'affichent à l'écran.
+            <strong>Limites claires :</strong> Votre quota quotidien Google et
+            le nombre de mesures de vitesse restantes s’affichent à l’écran.
           </li>
         </ul>
         <h3 id="assistant-ia">🤖 Assistant IA</h3>
         <ul>
           <li>
-            <strong>Configuration facile:</strong> Collez la consigne de
-            configuration à votre assistant IA ; il vérifie le reste.
+            <strong>Configuration facile :</strong> Collez la consigne de
+            configuration à votre assistant IA ; il vérifie le reste.
           </li>
           <li>
-            <strong>Aucun secret demandé:</strong> Il ne vous demande jamais de
+            <strong>Aucun secret demandé :</strong> Il ne vous demande jamais de
             coller des mots de passe dans la conversation.
           </li>
           <li>
-            <strong>Prise en charge de Codex:</strong> Codex a son propre guide,
-            en une seule commande.
+            <strong>Prise en charge de Codex :</strong> Codex a son propre
+            guide, en une seule commande.
           </li>
         </ul>
         <h3 id="apparence-et-accessibilite">🎨 Apparence et accessibilité</h3>
         <ul>
           <li>
-            <strong>Thème clair et sombre:</strong> Choisissez le thème qui
+            <strong>Thème clair et sombre :</strong> Choisissez le thème qui
             convient à vos yeux.
           </li>
           <li>
-            <strong>Accessibilité:</strong> Utilisable confortablement au
-            clavier et avec un lecteur d'écran.
+            <strong>Accessibilité :</strong> Utilisable confortablement au
+            clavier et avec un lecteur d’écran.
           </li>
           <li>
-            <strong>Progression en direct:</strong> L'avancement de l'audit
-            affiche une estimation du temps restant ; aucune animation si la
+            <strong>Progression en direct :</strong> L’avancement de l’audit
+            affiche une estimation du temps restant ; aucune animation si la
             réduction des animations est activée.
           </li>
         </ul>
         <h3 id="corrections-3">🛠️ Corrections</h3>
         <ul>
           <li>
-            <strong>Audits bloqués:</strong> Un audit interrompu en route ne
-            vous empêche plus d'en lancer un nouveau.
+            <strong>Audits bloqués :</strong> Un audit interrompu en route ne
+            vous empêche plus d’en lancer un nouveau.
           </li>
           <li>
-            <strong>Résultats plus précis:</strong> La profondeur des pages, la
+            <strong>Résultats plus précis :</strong> La profondeur des pages, la
             couverture du plan de site et les pages orphelines sont mieux
-            calculées ; les différences entre http, https et www apparaissent
+            calculées ; les différences entre http, https et www apparaissent
             désormais.
           </li>
           <li>
-            <strong>Compte Google:</strong> Quand le compte ou la propriété
-            change, les données d'un ancien projet ne se mélangent plus.
+            <strong>Compte Google :</strong> Quand le compte ou la propriété
+            change, les données d’un ancien projet ne se mélangent plus.
           </li>
           <li>
-            <strong>Durée de connexion:</strong> Le problème de reconnexion
-            demandée au bout d'environ une heure est corrigé.
+            <strong>Durée de connexion :</strong> Le problème de reconnexion
+            demandée au bout d’environ une heure est corrigé.
           </li>
         </ul>
         <h3 id="securite-2">🔒 Sécurité</h3>
         <ul>
           <li>
-            <strong>Rapports sûrs:</strong> Un rapport téléchargé est protégé
+            <strong>Rapports sûrs :</strong> Un rapport téléchargé est protégé
             contre les pages construites de façon malveillante.
           </li>
         </ul>
         <h2 id="numeros-de-version">Numéros de version</h2>
         <p>
           seowatcher utilise des numéros 0.x Alpha jusqu’à la 1.0. Une nouvelle
-          fonctionnalité visible augmente le deuxième numéro (0.7.1 → 0.8.0) ;
+          fonctionnalité visible augmente le deuxième numéro (0.7.1 → 0.8.0) ;
           une version qui ne contient que des corrections augmente le dernier
           (0.8.0 → 0.8.2). Une nouvelle entrée n’est ajoutée que pour une étape
-          marquante que les utilisateurs remarquent ; les petites corrections
+          marquante que les utilisateurs remarquent ; les petites corrections
           rejoignent l’entrée en cours, qui prend le numéro le plus récent. Les
           versions 0.0.0 à 0.4.3 ont d’abord été publiées avec des étiquettes
-          v2.x ; la correspondance figure dans le tableau au début de
+          v2.x ; la correspondance figure dans le tableau au début de
           <a
             href="https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md"
             target="_blank"
@@ -2088,7 +2100,7 @@
           >.
         </p>
         <p>
-          L'historique complet se trouve dans
+          L’historique complet se trouve dans
           <a
             href="https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md"
             target="_blank"
@@ -2103,7 +2115,7 @@
           ><span class="pager-next empty"></span>
         </nav>
         <p class="meta">
-          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -2116,7 +2128,7 @@
         <p class="toc-label">Sur cette page</p>
         <ol>
           <li>
-            <a href="#0-8-6-alpha-2026-10-29">0.8.6 Alpha — 2026-10-29</a>
+            <a href="#0-8-7-alpha-2026-10-29">0.8.7 Alpha — 2026-10-29</a>
           </li>
           <li>
             <a href="#0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</a>
@@ -2131,7 +2143,7 @@
     <footer>
       <div class="wrap">
         <p class="star">
-          Une étoile aide d'autres personnes à trouver un outil gratuit.
+          Une étoile aide d’autres personnes à trouver un outil gratuit.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

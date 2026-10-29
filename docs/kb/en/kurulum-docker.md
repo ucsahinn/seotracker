@@ -1,11 +1,11 @@
 ---
-title: Installing with Docker
-description: Install with Docker on Mac, Linux and Windows. One command is enough, and no .env file is needed. Your data stays in Docker's data volume.
+title: Install with Docker
+description: Run seowatcher in Docker on Mac, Linux or Windows with one command, then update, back up, configure or remove it.
 kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-This guide gets the app running in Docker (a program that runs apps in isolated containers) at `http://localhost:3001`. If you use Windows, the single-file Windows installation is much easier; this guide is for Mac, Linux and people who already use Docker. The first start takes a few minutes because the app is built inside the container. Later starts take seconds.
+Docker runs seowatcher in a container at `http://localhost:3001`. Use it on Mac and Linux, or on Windows if you already work with Docker; otherwise the [Windows installer](/docs/kurulum-windows/) is simpler.
 
 ## What you need
 
@@ -29,7 +29,7 @@ cd seotracker
 docker compose up -d
 ```
 
-That is all. No `.env` file is needed. The encryption key and the assistant password are created automatically on first start and stored in Docker's data volume.
+No `.env` file is needed. The encryption key and the assistant token are created on first start and stored in the data volume.
 
 3. To follow the progress, run:
 
@@ -39,7 +39,7 @@ docker compose logs -f
 
 4. Wait. The log line "Building client + server" marks the first build. Wait until `docker compose ps` shows the status **healthy**, then open `http://localhost:3001` in the browser.
 
-The next step is the Google connection guide. On Docker, the two redirect addresses you enter at Google are:
+Next, follow [Connecting to Google](/docs/google-baglantisi/). If you use an OAuth client on Docker, its two redirect URIs are:
 
 - `http://localhost:3001/api/gsc/oauth/callback`
 - `http://localhost:3001/api/ga4/oauth/callback`
@@ -86,13 +86,13 @@ No setting is required. To change something, put a `.env` file in the project fo
 | BETTER_AUTH_SECRET                     | The encryption key. Leave it empty and the app creates one. If you set it by hand, use at least 32 characters and never change it afterwards |
 | GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET | An alternative to entering them on the **Settings** screen. A value entered on the screen takes priority                                     |
 | PAGESPEED_API_KEY                      | An alternative to entering it on the **Settings** screen                                                                                     |
-| MCP_TOKEN                              | If empty, it is created on first start. If you write `off`, no password is asked. Any other value is used as it is                           |
+| MCP_TOKEN                              | The assistant token. If empty, one is created on first start. `off` disables the token check. Any other value is used as the token           |
 
 ## Check
 
 - In the output of `docker compose ps`, the status should be **healthy**. On the first start, it can take up to five minutes to get there.
 - The output of `curl.exe http://127.0.0.1:3001/api/health` should start with "status":"ok". You can also open `http://127.0.0.1:3001/api/health` in the browser.
-- `http://localhost:3001` should open in the browser. The status card on the **Help** screen should say "Everything looks good." Before you connect Google, the "Google sign-in" row asks for attention. This is normal.
+- `http://localhost:3001` opens in the browser. On the **Help** screen, the **App health** card shows no problems except **Google sign-in**, which asks for attention until you connect Google.
 
 ## Frequently asked questions
 
@@ -102,7 +102,7 @@ No setting is required. To change something, put a `.env` file in the project fo
 
 **Can I open it to the internet?** The app does not ask who you are, so do not open it to the internet without your own authentication in front of it. If you set `ALLOWED_HOST`, the app warns you in the health check.
 
-**Where do I get my assistant's password?** The **Agent setup** screen in the app shows the command: `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. If you use Git Bash, put `MSYS_NO_PATHCONV=1` in front of the command.
+**Where do I get my assistant's token?** The **Agent setup** screen shows the command: `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. If you use Git Bash, put `MSYS_NO_PATHCONV=1` in front of the command.
 
 ## If something goes wrong
 

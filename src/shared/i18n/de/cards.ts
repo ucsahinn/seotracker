@@ -175,7 +175,7 @@ export const deCards: Catalog = {
     "Nicht verwendet, ein Dienstkonto ist verbunden",
   "Uygulamanın durumu": "Zustand der App",
   "Bu kurulumun kendisi. Bir projenin kurulum listesi Panel'de ve Proje bilgisi'nde.":
-    "Diese Installation selbst. Die Einrichtungsliste eines Projekts finden Sie in der Übersicht und in der Projektinfo.",
+    "Diese Installation selbst. Die Einrichtungsliste eines Projekts finden Sie in der Übersicht und im Projektkontext.",
   Site: "Website",
   "Bu projede {count} farklı site denetlenmiş:":
     "In diesem Projekt wurden {count} verschiedene Websites geprüft:",

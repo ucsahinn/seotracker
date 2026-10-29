@@ -14,7 +14,7 @@
     <title>Palavras-chave salvas | Guia do seowatcher</title>
     <meta
       name="description"
-      content="Confira palavras-chave salvas com datas e cobertura do arquivo. Entenda as observações do Search Console, dados ausentes e mudanças no período."
+      content="Como acompanhar as palavras-chave salvas no arquivo local: períodos, observações, dados ausentes, variações de posição e exportação."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -94,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="Confira palavras-chave salvas com datas e cobertura do arquivo. Entenda as observações do Search Console, dados ausentes e mudanças no período."
+      content="Como acompanhar as palavras-chave salvas no arquivo local: períodos, observações, dados ausentes, variações de posição e exportação."
     />
     <meta
       property="og:image"
@@ -125,7 +125,7 @@
     />
     <meta
       name="twitter:description"
-      content="Confira palavras-chave salvas com datas e cobertura do arquivo. Entenda as observações do Search Console, dados ausentes e mudanças no período."
+      content="Como acompanhar as palavras-chave salvas no arquivo local: períodos, observações, dados ausentes, variações de posição e exportação."
     />
     <meta
       name="twitter:image"
@@ -168,7 +168,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/pt/guias/palavras-chave-salvas/#article",
             "headline": "Palavras-chave salvas",
-            "description": "Confira palavras-chave salvas com datas e cobertura do arquivo. Entenda as observações do Search Console, dados ausentes e mudanças no período.",
+            "description": "Como acompanhar as palavras-chave salvas no arquivo local: períodos, observações, dados ausentes, variações de posição e exportação.",
             "url": "https://seowatcher.io/pt/guias/palavras-chave-salvas/",
             "inLanguage": "pt",
             "datePublished": "2026-10-23",
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1511,7 +1511,7 @@
               >
             </li>
             <li>
-              <a href="/pt/guias/analise/">Entender os dados de análise</a>
+              <a href="/pt/guias/analise/">Compreender os dados do Analytics</a>
             </li>
             <li>
               <a href="/pt/guias/auditoria-do-site/">Auditoria do site</a>
@@ -1522,7 +1522,7 @@
             <li><a href="/pt/guias/relatorios/">Relatórios e modelos</a></li>
             <li>
               <a href="/pt/guias/informacoes-do-projeto/"
-                >Informações do projeto</a
+                >Contexto do projeto</a
               >
             </li>
             <li><a href="/pt/guias/configuracoes/">Configurações</a></li>
@@ -1534,7 +1534,7 @@
               <a href="/pt/guias/regras-de-auditoria/">Regras de auditoria</a>
             </li>
             <li>
-              <a href="/pt/guias/configurar-agente/">Configurar o agente</a>
+              <a href="/pt/guias/configurar-agente/">Configuração do agente</a>
             </li>
             <li>
               <a href="/pt/guias/solucao-de-problemas/">Solução de problemas</a>
@@ -1546,114 +1546,155 @@
       <article id="icerik" data-page="kayitli-kelimeler">
         <h1>Palavras-chave salvas</h1>
         <p class="lede">
-          Confira palavras-chave salvas com datas e cobertura do arquivo.
-          Entenda as observações do Search Console, dados ausentes e mudanças no
-          período.
+          Como acompanhar as palavras-chave salvas no arquivo local: períodos,
+          observações, dados ausentes, variações de posição e exportação.
         </p>
         <p>
-          Salve consultas importantes em Desempenho de pesquisa ou
-          Classificações. Salvar não inicia um novo rastreamento no Google: esta
-          tela relaciona seus registros às observações do arquivo local.
+          As consultas importantes são salvas a partir de
+          <strong>Desempenho da pesquisa</strong> ou de
+          <strong>Acompanhamento de posições</strong>. Salvar não inicia um novo
+          acompanhamento no Google: a tela relaciona as palavras salvas às
+          observações que já estão no arquivo local.
         </p>
-        <h2 id="datas-e-numeros">Datas e números</h2>
+        <h2 id="periodo-e-contagens">Período e contagens</h2>
         <p>
-          Escolha 30, 90 ou 180 dias; o padrão é 90. As datas exatas do período
-          atual e do anterior de mesma duração aparecem na tela. O calendário é
-          o do Pacífico, com atraso presumido de três dias; isso não comprova um
-          arquivo completo.
+          O período pode ser de 30, 90 ou 180 dias; o padrão é 90. A tela mostra
+          as datas exatas do período atual e do período anterior de mesma
+          duração. As datas seguem o fuso horário do Pacífico, com um atraso
+          presumido de três dias; esse atraso não garante que o arquivo esteja
+          completo.
         </p>
+        <p>Os cartões no topo contam:</p>
+        <ul>
+          <li>
+            as palavras salvas que passam pelos filtros de texto e etiquetas;
+          </li>
+          <li>as <strong>Palavras-chave observadas</strong> no período;</li>
+          <li>os movimentos significativos comparáveis;</li>
+          <li>as palavras com <strong>Posição desconhecida</strong>.</li>
+        </ul>
         <p>
-          Os cartões mostram registros salvos após filtros de texto e etiquetas,
-          registros observados, movimentos significativos comparáveis e posições
-          desconhecidas. As barras usam a mesma base e filtram a tabela. Não são
-          volume de pesquisa nem todas as consultas do site. Registros de
-          mercados diferentes mantêm identidade e contagem, mas as observações
-          abrangem todos os países e dispositivos.
-        </p>
-        <p>
-          A posição é ponderada por impressões. Espaços são compactados e a
-          comparação de maiúsculas segue o turco, distinguindo I/ı de İ/i.
-          Variantes originais são combinadas pelas impressões. Dado ausente não
-          é posição zero nem perda comprovada. Significativo significa pelo
-          menos 0,5 posição; mudanças menores podem aparecer no detalhe. Sem
-          comparação é diferente de inalterado.
-        </p>
-        <h2 id="investigar-um-registro">Investigar um registro</h2>
-        <p>
-          A tabela mostra palavra, posição média, mudança, impressões e
-          etiquetas. No celular, as métricas ficam abaixo da palavra. O detalhe
-          do arquivo usa as mesmas datas e mostra variantes, média anterior,
-          dias observados e mercado salvo. A data de inclusão e uma intenção
-          antiga, se existente, permanecem no detalhe; nenhuma intenção nova é
-          medida. O link secundário pesquisa texto contido nos últimos 28 dias
-          de Desempenho de pesquisa, não a mesma medida do arquivo.
+          As barras usam a mesma base e, com um clique, filtram a tabela. Esses
+          números não são volume de busca e não cobrem todas as consultas do
+          site. Palavras salvas para mercados diferentes ficam separadas, mas as
+          observações abrangem todos os países e dispositivos.
         </p>
         <p>
-          Todos os termos incluídos devem corresponder; nenhum termo excluído
-          pode aparecer. Cada campo aceita até 20 termos. Qualquer etiqueta
-          selecionada corresponde, com até 50 seleções; isso não limita quantas
-          etiquetas podem existir no projeto. As contagens de etiquetas são
-          atribuições no projeto inteiro. Filtros, faixa, período, ordem e
-          página ficam na URL. Limpar tudo também remove uma faixa ativa vazia.
+          Se nenhuma palavra for comparável, o cartão de movimentos mostra
+          <strong>Sem comparação</strong> em vez de zero. Se todas as palavras
+          foram observadas, o cartão <strong>Posição desconhecida</strong> não
+          aponta observações ausentes. Cartões sem resultados correspondentes
+          não são clicáveis.
+        </p>
+        <h2 id="como-a-posicao-e-calculada">Como a posição é calculada</h2>
+        <p>
+          A posição é uma média ponderada pelas impressões. Na comparação com as
+          consultas do Google, espaços repetidos são reduzidos e as maiúsculas
+          seguem as regras do turco, de modo que I/ı fica separado de İ/i. As
+          variantes originais da mesma palavra são combinadas pelas impressões.
+        </p>
+        <p>
+          Um dado ausente não é posição zero nem perda comprovada. Um movimento
+          é significativo a partir de 0,5 posição; variações menores aparecem
+          nos detalhes. &quot;Sem comparação&quot; não quer dizer &quot;sem
+          alteração&quot;.
+        </p>
+        <h2 id="examine-uma-palavra">Examine uma palavra</h2>
+        <p>
+          A tabela mostra palavra, posição média, variação, impressões e
+          etiquetas; no celular, as métricas aparecem abaixo da palavra. Os
+          <strong>Detalhes do arquivo</strong> usam os mesmos períodos e mostram
+          variantes originais, média anterior, dias observados e mercado salvo.
+          Ali ficam também a data de inclusão e a intenção registrada no
+          passado, se houver: o aplicativo não mede uma nova intenção.
+        </p>
+        <p>
+          <strong>Mostrar observações diárias do arquivo</strong> carrega o
+          histórico dia a dia, com as mesmas datas e a mesma correspondência.
+          Dias ausentes ficam em branco. O gráfico pode ser percorrido pelo
+          teclado e há também uma lista em texto dos valores.
+        </p>
+        <p>
+          O link secundário pesquisa o texto da palavra nos últimos 28 dias de
+          <strong>Desempenho da pesquisa</strong>; não é a mesma medida do
+          arquivo.
+        </p>
+        <h2 id="filtros-e-ordenacao">Filtros e ordenação</h2>
+        <ul>
+          <li>
+            <strong>Contém</strong>: todos os termos precisam aparecer.
+            <strong>Não contém</strong>: nenhum dos termos pode aparecer. Cada
+            campo aceita até 20 termos.
+          </li>
+          <li>
+            <strong>Etiquetas</strong>: basta uma das etiquetas escolhidas; é
+            possível selecionar até 50. Isso não limita quantas etiquetas o
+            projeto pode ter. As contagens por etiqueta valem para o projeto
+            inteiro.
+          </li>
+          <li>
+            Filtros, faixa de posição, período, ordenação e página ficam na URL.
+            <strong>Limpar tudo</strong> também remove uma faixa ativa sem
+            resultados.
+          </li>
+        </ul>
+        <p>
+          A ordem padrão é pela data de inclusão; também é possível ordenar por
+          posição, movimento, impressões e palavra. Ordenar por
+          <strong>Quedas significativas</strong> ajuda a decidir por onde
+          começar, mas não indica a causa da queda.
+        </p>
+        <p>
+          A seleção de linhas vale apenas para a página atual. Enquanto um
+          filtro ou uma atualização estiver em andamento, as ações nas linhas
+          anteriores ficam bloqueadas. Remover palavras exige confirmação.
         </p>
         <h2 id="arquivo-e-exportacao">Arquivo e exportação</h2>
         <p>
-          Sem conexão, nunca importado, arquivo parcial e falha de leitura têm
-          explicações próprias. Atualizar lista lê apenas o banco local. Para
-          novos dados Google, atualize o arquivo em Classificações. O Google
-          pode omitir consultas raras; ausência no arquivo não comprova ausência
-          na pesquisa.
+          Conexão ausente, arquivo nunca importado, cobertura parcial e falha de
+          leitura têm, cada um, sua própria explicação.
+          <strong>Atualizar lista</strong> relê apenas o banco de dados local;
+          para baixar novos dados do Google, atualize o arquivo em
+          <strong>Acompanhamento de posições</strong>. O Google pode omitir
+          consultas raras: a falta de observações não prova que a página esteja
+          ausente da busca.
         </p>
         <p>
-          CSV e Planilhas usam a mesma população filtrada. Palavra, intenção,
-          etiquetas e inclusão continuam nas primeiras colunas; seguem posição
-          atual/anterior, mudança, estado, dias, datas, cobertura, variantes,
-          escopo, mercado, ID e snapshot. Medidas desconhecidas ficam vazias. Se
-          os dados mudarem durante a exportação, reinicie-a.
-        </p>
-        <p>
-          A seleção vale apenas para esta página. Filtros ou atualizações
-          pendentes bloqueiam ações em linhas antigas. Remover exige
-          confirmação. A ordem inicial é a data de inclusão; posição, movimento,
-          impressões e palavra também podem ordenar. A ordem de quedas
-          significativas orienta a investigação sem estabelecer uma causa.
-        </p>
-        <p>
-          <strong>Observações diárias.</strong> Solicite o histórico diário nos
-          detalhes do arquivo. Datas e correspondência são as mesmas. Dias
-          ausentes ficam como lacunas; há navegação por teclado e uma lista
-          textual de valores diários.
-        </p>
-        <p>
-          Sem palavras-chave comparáveis, o cartão de movimentos mostra Sem
-          comparação em vez de zero. Se todas as palavras-chave foram
-          observadas, o cartão Posição desconhecida não avisa sobre observações
-          em falta. Os botões dos cartões de movimentos e posições desconhecidas
-          ficam desativados sem resultados correspondentes.
+          <strong>Baixar CSV</strong> e
+          <strong>Exportar para Sheets</strong> usam o mesmo conjunto filtrado.
+          As primeiras colunas são palavra, intenção, etiquetas e data de
+          inclusão; depois vêm posição atual e anterior, variação, status, dias,
+          datas, cobertura, variantes, escopo, mercado, ID e snapshot. Medidas
+          desconhecidas ficam vazias. Se os dados mudarem durante a exportação,
+          comece de novo.
         </p>
         <nav class="pager" aria-label="Página anterior e seguinte">
           <a class="pager-prev" rel="prev" href="/pt/guias/oportunidades/"
             ><span>Anterior</span><strong>Oportunidades</strong></a
           ><a class="pager-next" rel="next" href="/pt/guias/analise/"
             ><span>Próxima</span
-            ><strong>Entender os dados de análise</strong></a
+            ><strong>Compreender os dados do Analytics</strong></a
           >
         </nav>
         <p class="meta">
-          Última atualização: 29 de outubro de 2026. Viu algum erro?
+          Última atualização: 29 de outubro de 2026. Encontrou um erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >Relate no GitHub</a
+            >Informe no GitHub</a
           >.
         </p>
       </article>
       <nav class="toc" aria-label="Nesta página">
         <p class="toc-label">Nesta página</p>
         <ol>
-          <li><a href="#datas-e-numeros">Datas e números</a></li>
-          <li><a href="#investigar-um-registro">Investigar um registro</a></li>
+          <li><a href="#periodo-e-contagens">Período e contagens</a></li>
+          <li>
+            <a href="#como-a-posicao-e-calculada">Como a posição é calculada</a>
+          </li>
+          <li><a href="#examine-uma-palavra">Examine uma palavra</a></li>
+          <li><a href="#filtros-e-ordenacao">Filtros e ordenação</a></li>
           <li><a href="#arquivo-e-exportacao">Arquivo e exportação</a></li>
         </ol>
       </nav>

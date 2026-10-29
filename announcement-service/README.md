@@ -23,6 +23,14 @@ does not receive or store the administrator token.
   token-protected draft and publication operations. Published interactive
   announcements and announcements with responses are immutable; clone them to
   create a new draft. Interactive content and options update in one D1 batch.
+- `POST /api/admin/translate`: token-protected. Takes `{ "fields": [...] }`
+  (1-40 Turkish strings, up to 4000 characters each) and returns English
+  drafts in the same order, using the Workers AI binding `AI`
+  (`@cf/meta/m2m100-1.2b`). Emoji, list markers and line breaks are kept out
+  of the model and restored in place. It saves nothing: the admin composer's
+  "Türkçeden İngilizceye çevir" button fills the English fields, and the
+  administrator reviews them and saves as usual. Without the binding it
+  returns 503.
 - `POST /api/admin/announcements/:id/clone`: makes a new draft with a fresh
   publication date and no expiry. It copies the bilingual content and poll
   options, but never copies responses.

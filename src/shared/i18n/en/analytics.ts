@@ -384,7 +384,7 @@ export const enAnalytics: Catalog = {
   "Bağlantının süresi doldu": "The connection has expired",
   "{account} hesabını yeniden bağla": "Reconnect account {account}",
   "Yeniden bağlan": "Reconnect",
-  "Bu hesabın görebildiği bir GA4 mülkü yok. Henüz mülk oluşturmadıysanız analytics.google.com'dan oluşturun, sonra bu hesabı ona Görüntüleyen olarak ekleyin.":
+  "Bu hesabın görebildiği bir GA4 mülkü yok. Henüz mülk oluşturmadıysanız analytics.google.com'dan oluşturun, sonra bu hesabı ona Görüntüleyici olarak ekleyin.":
     "This account cannot see any GA4 property. If you have not created one yet, create it at analytics.google.com, then add this account to it as a Viewer.",
   "Bu hesabın görebildiği bir Search Console mülkü yok. Mülkü doğruladıysanız bu hesabı search.google.com/search-console adresinden kullanıcı olarak ekleyin.":
     "This account cannot see any Search Console property. If you have verified the property, add this account as a user at search.google.com/search-console.",

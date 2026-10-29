@@ -1,67 +1,70 @@
 ---
 title: Status de indexação
-description: A resposta do Google para cada página: se está indexada, por que não está e quando foi visitada pela última vez. Até 2.000 consultas por dia.
+description: O Google colocou cada página no índice? Se não, por quê, e quando ele a rastreou pela última vez? No máximo 2.000 consultas por dia.
 screen: Site denetimi, Dizin durumu sekmesi
 route: /p/<proje>/audit?auditId=<denetim>&tab=index
 updated: 2026-10-22
 ---
 
-Esta página mostra como descobrir quais das suas páginas o Google colocou na busca.
+A auditoria do site verifica se uma página abre, mas não consegue saber se o Google a colocou no índice dele. A aba **Status de indexação**, dentro de **Auditoria do site**, pergunta isso ao Google pela Inspeção de URL do Search Console e guarda as respostas neste computador. Uma página só é consultada de novo quando a resposta dela fica antiga.
 
-A auditoria do site informa que uma página pode ser aberta. Ela não consegue dizer se o Google realmente a adicionou ao seu índice (a lista de páginas do Google). A aba **Status de indexação** pergunta isso ao Google e guarda a resposta. As respostas ficam guardadas neste computador. A mesma pergunta não é repetida sem necessidade. Só as respostas que ficaram velhas são perguntadas outra vez. Isso importa porque o Google concede 2.000 perguntas por dia para cada propriedade (o registro do seu site no Search Console). O aplicativo e o seu assistente dividem essa cota.
+Essa economia importa: o Google concede 2.000 consultas por dia para cada propriedade do Search Console, e o aplicativo e o agente conectado dividem a mesma cota.
 
-## O que há na tela
+## O que a aba contém
 
-**O anel "O que o Google fez com essas páginas?".** As páginas rastreadas são divididas em três grupos:
+**Anel "O que o Google fez com essas páginas?"** Divide as páginas rastreadas em três grupos:
 
-- **No Google**: podem aparecer na busca.
-- **Não indexado**: o Google olhou, mas não a incluiu.
-- **Aguardando uma resposta**: a página ainda não foi consultada, ou o Google não deu resposta.
+- **No Google**: a página pode aparecer na busca.
+- **Não indexado**: o Google a analisou, mas não a incluiu.
+- **Aguardando uma resposta**: a página ainda não foi consultada ou o Google não respondeu.
 
-**Caixas de resumo.** Mostram quantas páginas foram consultadas, quantas estão no índice, quantas não estão e quantas aguardam. A caixa "Páginas onde o Google escolheu um canônico diferente" conta as páginas em que o Google escolheu um endereço diferente do canônico que você declarou (a etiqueta que diz qual é o endereço principal da página). A caixa "Ainda não consultadas nesta auditoria" é o número de páginas que faltam consultar.
+**Quadros de resumo.** Mostram quantas páginas foram consultadas, quantas estão no índice, quantas não estão e quantas aguardam. **Páginas onde o Google escolheu um canônico diferente** conta as páginas em que o endereço escolhido pelo Google difere do canonical declarado no site. Uma diferença apenas na barra final também conta. **Páginas desta auditoria ainda não verificadas no Google** indica quantas páginas faltam consultar.
 
-**O botão "Verificar o status no Google".** Cada clique consulta no máximo 25 páginas. As páginas que estão há mais tempo sem resposta vêm primeiro. Se o limite diário estiver cheio, aparece o aviso "O limite diário de 2.000 endereços do Google foi atingido". Se o Search Console não estiver conectado, o botão fica desativado. Ele também fica desativado se o domínio auditado não estiver dentro da propriedade conectada.
+**Verificar o status no Google.** Cada clique consulta no máximo 25 páginas, começando pelas que nunca foram consultadas e depois pelas que têm a resposta vencida há mais tempo. Quando a cota diária se esgota, aparece um aviso. O botão fica desativado se:
 
-**Tabela.** Colunas: **Página**, **Status**, **Motivo**, **URL canônico selecionado pelo Google**, **Último rastreamento do Google**. A célula de status mostra "No Google", "Não verificado", "Sem resposta", "Erro", ou a versão em turco do próprio status do Google. No total, 18 status são traduzidos para o turco. Exemplos:
+- o Search Console não estiver conectado;
+- não houver mais páginas para consultar;
+- o domínio auditado não pertencer à propriedade conectada, por exemplo porque outro site foi auditado.
+
+**Tabela.** As colunas são **Página**, **Status**, **Motivo**, **URL canônico selecionado pelo Google** e **Último rastreamento do Google**. O status é "No Google", "Não verificado", "Sem resposta", "Erro" ou um dos 18 status do Google, traduzido. Alguns exemplos:
 
 - "Descoberto, atualmente não indexado"
-- "Excluído pela tag 'noindex'" (a página fica fora da busca)
-- "Bloqueado por robots.txt" (robots.txt: o arquivo que diz ao Google em quais páginas ele pode entrar)
-- "Soft 404" (a página existe, mas o Google a considera vazia)
+- "Excluído pela tag 'noindex'"
+- "Bloqueado por robots.txt"
+- "Soft 404"
 - "URL desconhecido para o Google"
 
-Você pode baixar a tabela como CSV.
+A tabela pode ser baixada em CSV.
 
-## Como usar
+## Passo a passo
 
-1. Quando a auditoria terminar, abra a aba. Se o número de "Aguardando uma resposta" for alto, clique em **Verificar o status no Google**. Cada clique avança 25 páginas. Em um site pequeno, alguns cliques bastam.
-2. Olhe primeiro o grupo "Não indexado". A coluna **Motivo** é o motivo do Google e muitas vezes diz o que fazer. Se disser "Bloqueado por robots.txt", remova o bloqueio. Se disser "Excluído pela tag 'noindex'", apague a etiqueta. Se disser "Descoberto, atualmente não indexado", esperar costuma bastar.
-3. Adicione ao mapa do site (sitemap) as páginas importantes que dizem "URL desconhecido para o Google". Envie o mapa do site ao Search Console. Para as três ou quatro páginas mais importantes, clique à mão em "Dizine eklenmesini iste" (Solicitar indexação) no Search Console.
-4. Se a caixa "Páginas onde o Google escolheu um canônico diferente" não for zero, olhe a coluna **URL canônico selecionado pelo Google**. O Google preferiu outro endereço. Corrija o seu endereço principal ou adote o que o Google escolheu.
-5. Clique de novo depois de alguns dias. Só as respostas velhas são perguntadas outra vez, então a sua cota não é desperdiçada.
+1. Quando a auditoria terminar, abra a aba. Se muitas páginas estiverem em **Aguardando uma resposta**, clique em **Verificar o status no Google**: cada clique avança 25 páginas, e em um site pequeno poucos cliques bastam.
+2. Examine primeiro o grupo **Não indexado**. A coluna **Motivo** traz a explicação do Google, que muitas vezes já indica a solução:
+   - "Bloqueado por robots.txt": remova o bloqueio.
+   - "Excluído pela tag 'noindex'": remova a tag.
+   - "Descoberto, atualmente não indexado": em geral, basta esperar.
+3. Adicione ao sitemap as páginas importantes marcadas como "URL desconhecido para o Google" e envie o sitemap no Search Console. Para algumas páginas especialmente importantes, use no Search Console o comando "Solicitar indexação".
+4. Se o quadro de canônicos diferentes não estiver zerado, leia a coluna **URL canônico selecionado pelo Google**: o Google não aceitou o endereço principal declarado. Corrija o canonical ou adote o endereço escolhido pelo Google.
+5. Consulte de novo depois de alguns dias. Só as respostas antigas são consultadas outra vez, então a cota não é desperdiçada.
 
 ## Como os números são calculados
 
-Se o Google disser "indexada", a página conta como "No Google". Se disser "não indexada" ou "desconhecida", a página conta como "Não indexado". Se não houver resposta, a página é "Aguardando uma resposta".
+Se o Google responder "no índice", a página fica em **No Google**. Qualquer outra resposta do Google ("fora do índice" ou indefinida) coloca a página em **Não indexado**. Sem resposta, a página continua em **Aguardando uma resposta**.
 
-Uma resposta é considerada velha depois de um tempo definido e é perguntada de novo. Para uma página no índice, esse tempo é de 14 dias. Para uma página fora do índice, ou uma resposta com erro, é de 3 dias. Uma página que nunca foi consultada está sempre pronta para ser consultada. O limite diário é calculado a partir do número de perguntas das últimas 24 horas. O aplicativo conta apenas as suas próprias perguntas. As consultas que você faz à mão no Search Console não entram nesse contador, mas contam para o limite real do Google.
+Uma resposta fica antiga depois de 14 dias para uma página no índice e depois de 3 dias para uma página não indexada ou com erro. Uma página nunca consultada está sempre pronta para consulta. A cota diária é calculada sobre as consultas das últimas 24 horas. O aplicativo conta apenas as próprias consultas: as inspeções feitas manualmente no Search Console não entram no contador, mas reduzem a cota real do Google.
 
-Uma divergência de canônico significa que o endereço que o Google escolheu e o endereço que você declarou são diferentes. Uma diferença de barra no fim também conta.
-
-Se o último rastreamento do Google tiver mais de 90 dias, a auditoria relata o problema "O Google não rastreia esta página há muito tempo". As respostas velhas são reunidas em um único problema, "A resposta do Google sobre algumas páginas está desatualizada".
+Se o último rastreamento do Google tiver mais de 90 dias, a auditoria do site registra o problema "O Google não rastreia esta página há muito tempo". As respostas antigas são reunidas em um único problema, "As respostas do Google para algumas páginas estão desatualizadas".
 
 ## Perguntas frequentes
 
-**Por que o botão está desativado?** Pode haver três motivos. O Search Console não está conectado. Não restam páginas a consultar. Ou o domínio que você auditou não está dentro da propriedade conectada. Isso acontece se você auditou outro site.
+**De quem é o limite de 2.000?** Da propriedade. Dois projetos conectados à mesma propriedade e o agente usam a mesma cota.
 
-**De quem é o limite de 2.000?** Da propriedade. Dois projetos conectados à mesma propriedade e o seu assistente gastam do mesmo conjunto.
+**O que fazer com uma página "Descoberto, atualmente não indexado"?** Muitas vezes, nada: em sites novos, o Google pode levar semanas. Um link a partir das páginas rastreadas com mais frequência pode acelerar o processo.
 
-**O que devo fazer com uma página que diz "Descoberto, atualmente não indexado"?** Na maioria das vezes, nada. Em sites novos, o Google pode fazer as páginas esperarem semanas. Colocar um link para a página a partir de páginas do site que são rastreadas com frequência acelera o processo.
-
-**Esta aba avisa o Google sobre páginas novas?** Não, ela apenas pergunta. Para avisar o Google, há o mapa do site e "Dizine eklenmesini iste" no Search Console.
+**A aba informa ao Google sobre páginas novas?** Não, ela só pergunta. Para informar páginas novas, use o sitemap e "Solicitar indexação" no Search Console.
 
 ## Limites
 
-As respostas são tão boas quanto o que o Google fornece. O Google pode deixar alguns campos vazios. Não é possível passar de 2.000 perguntas por dia. Consultar por completo um site de 10.000 páginas leva cinco dias. A aba consulta apenas as páginas rastreadas. Endereços que não fizeram parte da auditoria não aparecem na lista.
+A aba mostra apenas o que o Google responde, e o Google pode deixar alguns campos vazios. O limite de 2.000 consultas por dia não pode ser ultrapassado: verificar um site de 10.000 páginas leva cinco dias. Só as páginas rastreadas pela auditoria são consultadas; endereços que ficaram fora da auditoria não aparecem.
 
 <!-- Kaynaklar: src/client/features/audit/IndexCoverageView.tsx; CoverageTable.tsx; CoverageVerdictDonut.tsx; coverageBuckets.ts; coverageReasons.ts; export.ts; src/server/features/gsc/indexCoverage.ts; src/server/lib/audit/google-verdict-checks.ts; src/shared/gsc-coverage-states.ts; src/db/gsc-inspection.schema.ts; src/server/features/quotas/QuotaService.ts -->

@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1511,7 +1511,7 @@
               >
             </li>
             <li>
-              <a href="/pt/guias/analise/">Entender os dados de análise</a>
+              <a href="/pt/guias/analise/">Compreender os dados do Analytics</a>
             </li>
             <li>
               <a href="/pt/guias/auditoria-do-site/">Auditoria do site</a>
@@ -1522,7 +1522,7 @@
             <li><a href="/pt/guias/relatorios/">Relatórios e modelos</a></li>
             <li>
               <a href="/pt/guias/informacoes-do-projeto/"
-                >Informações do projeto</a
+                >Contexto do projeto</a
               >
             </li>
             <li><a href="/pt/guias/configuracoes/">Configurações</a></li>
@@ -1534,7 +1534,7 @@
               <a href="/pt/guias/regras-de-auditoria/">Regras de auditoria</a>
             </li>
             <li>
-              <a href="/pt/guias/configurar-agente/">Configurar o agente</a>
+              <a href="/pt/guias/configurar-agente/">Configuração do agente</a>
             </li>
             <li>
               <a href="/pt/guias/solucao-de-problemas/">Solução de problemas</a>
@@ -1551,19 +1551,16 @@
           terminal.
         </p>
         <p>
-          Ao fim desta página, o aplicativo estará instalado no seu computador e
-          aberto no navegador. A instalação leva dois minutos. Ela é feita só
-          para a sua conta de usuário e não exige direitos de administrador (a
-          permissão é pedida uma única vez, se faltar o componente Visual C++).
+          A instalação leva cerca de dois minutos; ao final, o aplicativo abre
+          no navegador. Com a opção recomendada, ele é instalado só para a sua
+          conta e não exige direitos de administrador.
         </p>
         <p>
-          A interface do aplicativo existe em seis idiomas: turco, inglês,
-          alemão, francês, italiano e português. O idioma é escolhido em
-          Configurações → Aparência → Idioma. Este guia mostra botões e telas
-          com o nome que eles têm na interface em português. O assistente de
-          instalação só existe em turco e inglês, e o menu da bandeja do Windows
-          só em turco. Ali o nome exibido vem com o significado em português
-          entre parênteses.
+          A interface do aplicativo está disponível em seis idiomas; o idioma é
+          escolhido em <strong>Configurações → Aparência → Idioma</strong>. O
+          assistente de instalação só existe em turco e inglês, e o menu da
+          bandeja do Windows só em turco: nesta página, o nome original vem
+          seguido da tradução entre parênteses.
         </p>
         <h2 id="o-que-voce-precisa">O que você precisa</h2>
         <ul>
@@ -1573,14 +1570,11 @@
             aplicativo instalado ocupa 313 MB.
           </li>
           <li>Um navegador, como Edge, Chrome ou Firefox.</li>
+          <li>Não é preciso Docker, Node nem terminal.</li>
           <li>
-            Você não precisa de Docker, Node, terminal (janela de comandos) nem
-            direitos de administrador.
-          </li>
-          <li>
-            O motor do aplicativo precisa do pacote Visual C++ da Microsoft. Se
-            o seu computador não o tiver, o instalador o instala para você e
-            pede permissão de administrador uma vez.
+            O motor do aplicativo precisa do pacote Microsoft Visual C++. Se ele
+            faltar, o instalador o adiciona e pede permissão de administrador
+            uma única vez.
           </li>
         </ul>
         <h2 id="passos">Passos</h2>
@@ -1602,13 +1596,13 @@
             aviso é normal.
           </li>
           <li>
-            Se quiser, compare o hash SHA-256 do arquivo (a impressão digital do
-            arquivo) com o <code>SHA256SUMS.txt</code> da página de versões.
+            Opcional: compare o hash SHA-256 do arquivo com o valor de
+            <code>SHA256SUMS.txt</code> na página de versões.
           </li>
           <li>
-            O assistente de instalação existe em turco e inglês. Se ele
-            perguntar o idioma, escolha <strong>English</strong>; os passos
-            abaixo usam os nomes em inglês. Percorra as páginas nesta ordem:
+            Se o assistente perguntar o idioma, escolha
+            <strong>English</strong>; os passos abaixo usam os nomes em inglês.
+            Percorra as páginas nesta ordem:
             <ul>
               <li>
                 Página de boas-vindas: clique em
@@ -1642,39 +1636,38 @@
             </ul>
           </li>
           <li>
-            Aguarde. A primeira abertura leva de 20 a 30 segundos. Procure o
-            ícone do seowatcher na área de notificação (a bandeja do sistema), à
-            direita da barra de tarefas. Se o ícone não aparecer, clique na seta
-            ^ da barra de tarefas. O texto do ícone muda em sequência para
-            &quot;Anahtarlar hazırlanıyor&quot; (Preparando as chaves),
+            A primeira abertura leva de 20 a 30 segundos. O ícone do seowatcher
+            fica na bandeja do sistema, à direita da barra de tarefas; se ele
+            não aparecer, clique na seta ^. O texto do ícone muda em sequência
+            para &quot;Anahtarlar hazırlanıyor&quot; (Preparando as chaves),
             &quot;Veritabanı güncelleniyor&quot; (Atualizando o banco de dados)
             e &quot;Sunucu başlatılıyor&quot; (Iniciando o servidor). Quando
-            estiver pronto, o navegador abre sozinho. Quando o Windows inicia o
-            aplicativo automaticamente, o navegador não abre; aparece um balão
+            tudo estiver pronto, o navegador abre
+            <code>http://127.0.0.1:3001</code>: 127.0.0.1 é o próprio computador
+            e 3001 é o número da porta. Quando o aplicativo inicia junto com o
+            Windows, o navegador não abre; aparece a notificação
             &quot;seowatcher hazır&quot; (o seowatcher está pronto).
           </li>
-          <li>
-            O endereço <code>http://127.0.0.1:3001</code> abre sozinho no
-            navegador. O 127.0.0.1 é o seu próprio computador e o 3001 é o
-            número da porta.
-          </li>
         </ol>
-        <p>O próximo passo é o guia da conexão com o Google.</p>
-        <h3 id="menu-da-barra-de-tarefas">Menu da barra de tarefas</h3>
         <p>
-          Clique com o botão direito no ícone (se ele não estiver visível,
-          clique na seta ^ da barra de tarefas). O menu tem quatro partes. No
-          topo ficam a abertura do aplicativo e a linha de status, depois a
-          atualização e a reinicialização, depois duas configurações e, no fim,
-          os itens de solução de problemas.
+          O próximo passo é
+          <a href="/pt/guias/conexao-google/">conectar ao Google</a>.
+        </p>
+        <h3 id="menu-da-bandeja">Menu da bandeja</h3>
+        <p>
+          Clique com o botão direito no ícone do seowatcher (se ele não estiver
+          visível, clique na seta ^ da barra de tarefas). O menu tem quatro
+          partes. No topo ficam a abertura do aplicativo e a linha de status,
+          depois a atualização e a reinicialização, depois três configurações e,
+          no fim, os itens de solução de problemas.
         </p>
         <ul>
           <li>
             <strong>seowatcher'ı aç</strong> (Abrir o seowatcher): abre o
             aplicativo no navegador. Um duplo clique no ícone faz o mesmo. Se o
-            aplicativo ainda estiver iniciando, aparece o balão &quot;seowatcher
-            açılıyor&quot; (o seowatcher está iniciando), e o navegador abre
-            sozinho quando ele estiver pronto.
+            aplicativo ainda estiver iniciando, aparece a notificação
+            &quot;seowatcher açılıyor&quot; (o seowatcher está iniciando), e o
+            navegador abre sozinho quando ele estiver pronto.
           </li>
           <li>
             Linha de status: &quot;Çalışıyor: http://127.0.0.1:3001/&quot; (Em
@@ -1692,12 +1685,12 @@
             <strong>Güncelle</strong> (Atualizar): fica sempre no menu. Ao
             clicar, ele consulta o GitHub na hora. Se houver uma versão nova,
             baixa e instala; senão diz &quot;Güncel&quot; (Atualizado). Durante
-            a consulta o item mostra &quot;Verificando…&quot; e, durante o
-            download, &quot;Güncelleme indiriliyor: X.Y.Z (%45)&quot; (Baixando
-            a atualização: X.Y.Z (45%)); nessa hora ele não é clicável. Quando
-            uma versão nova já foi encontrada, o item mostra &quot;Güncelle:
-            X.Y.Z sürümü hazır&quot; (Atualizar: a versão X.Y.Z está pronta); os
-            números de versão são exemplos.
+            a consulta o item mostra &quot;Kontrol ediliyor…&quot;
+            (Verificando…) e, durante o download, &quot;Güncelleme indiriliyor:
+            X.Y.Z (%45)&quot; (Baixando a atualização: X.Y.Z (45%)); nessa hora
+            ele não é clicável. Quando uma versão nova já foi encontrada, o item
+            mostra &quot;Güncelle: X.Y.Z sürümü hazır&quot; (Atualizar: a versão
+            X.Y.Z está pronta); os números de versão são exemplos.
           </li>
           <li>
             <strong>Yeniden başlat</strong> (Reiniciar): fecha o aplicativo e o
@@ -1716,6 +1709,12 @@
             instala sozinho uma versão nova quando a encontra.
           </li>
           <li>
+            <strong>Windows bildirimleri</strong> (Notificações do Windows):
+            ativado por padrão; os detalhes estão em
+            <a href="#notificacoes-do-windows">Notificações do Windows</a>, mais
+            abaixo.
+          </li>
+          <li>
             <strong>Kurulumu onar</strong> (Reparar a instalação): limpa os
             arquivos temporários, verifica se o pacote está completo e abre o
             aplicativo de novo. Durante o reparo, o item mostra
@@ -1727,7 +1726,7 @@
             Windows, o processador, a versão do Visual C++, um teste do motor, o
             módulo com falha do log de eventos do Windows, os arquivos de
             despejo de falhas e as últimas linhas do registro. As informações
-            ficam prontas em alguns segundos, e então aparece o balão
+            ficam prontas em alguns segundos, e então aparece a notificação
             &quot;Copiado&quot;. Isso ajuda ao relatar um problema.
           </li>
           <li>
@@ -1759,11 +1758,12 @@
         </p>
         <p>
           Se o servidor fechar sozinho durante o uso, o aplicativo o abre de
-          novo e mostra o balão &quot;seowatcher yeniden başlatılıyor&quot; (o
-          seowatcher está reiniciando). Se ele fechar três vezes em dez minutos,
-          o aplicativo para de reabri-lo e a linha de status mostra &quot;Sunucu
-          10 dakikada üç kez kapandı&quot; (O servidor fechou três vezes em 10
-          minutos). Nesse caso, clique em <strong>Kurulumu onar</strong>.
+          novo e mostra a notificação &quot;seowatcher yeniden
+          başlatılıyor&quot; (o seowatcher está reiniciando). Se ele fechar três
+          vezes em dez minutos, o aplicativo para de reabri-lo e a linha de
+          status mostra &quot;Sunucu 10 dakikada üç kez kapandı&quot; (O
+          servidor fechou três vezes em 10 minutos). Nesse caso, clique em
+          <strong>Kurulumu onar</strong>.
         </p>
         <h3 id="atualizacao">Atualização</h3>
         <p>
@@ -1775,7 +1775,7 @@
           &quot;Güncelleme indiriliyor&quot; (Baixando a atualização) e
           &quot;Güncelleme kuruluyor&quot; (Instalando a atualização), e uma
           pequena janela de instalação aparece rapidamente. Quando o aplicativo
-          reabre, aparece o balão &quot;seowatcher X.Y.Z sürümüne
+          reabre, aparece a notificação &quot;seowatcher X.Y.Z sürümüne
           güncellendi&quot; (o seowatcher foi atualizado para a versão X.Y.Z);
           ao clicar nele, abre-se a lista de novidades. A seção
           <strong>Configurações → Sobre</strong> do aplicativo também avisa da
@@ -1785,10 +1785,10 @@
           <li>
             Se você não quiser que ele instale sozinho, desmarque
             <strong>Güncellemeleri kendiliğinden kur</strong> no menu. Quando
-            sair uma versão nova, você verá um balão uma única vez, e o item do
-            menu passará a mostrar &quot;Güncelle: X.Y.Z sürümü hazır&quot;
-            (Atualizar: a versão X.Y.Z está pronta). Para instalar, clique no
-            balão ou no item.
+            sair uma versão nova, você verá uma notificação uma única vez, e o
+            item do menu passará a mostrar &quot;Güncelle: X.Y.Z sürümü
+            hazır&quot; (Atualizar: a versão X.Y.Z está pronta). Para instalar,
+            clique na notificação ou no item.
           </li>
           <li>
             Se não houver internet, ou se o GitHub não responder naquele
@@ -1804,7 +1804,7 @@
             Uma instalação para todos os usuários do computador precisa de
             permissão de administrador para atualizar, então o aplicativo não se
             instala sozinho nesse caso. Quando sair uma versão nova, você verá
-            um balão; ao clicar nele, o Windows pede a permissão de
+            uma notificação; ao clicar nela, o Windows pede a permissão de
             administrador.
           </li>
           <li>
@@ -1866,11 +1866,10 @@
         </ul>
         <h3 id="reparo">Reparo</h3>
         <p>
-          Se algo travar, clique com o botão direito no ícone e em
-          <strong>Kurulumu onar</strong> (Reparar a instalação); se o ícone não
-          estiver visível, clique na seta ^ da barra de tarefas. O aplicativo
-          limpa os arquivos temporários e verifica se o pacote está completo.
-          Depois, ao abrir, ele executa de novo a atualização do banco de dados.
+          Se algo travar, escolha <strong>Kurulumu onar</strong> (Reparar a
+          instalação) no menu da bandeja. Além do que está descrito no menu, na
+          abertura seguinte o aplicativo executa de novo a atualização do banco
+          de dados.
         </p>
         <p>
           Se um arquivo do pacote tiver sido apagado (por exemplo, colocado em
@@ -1890,12 +1889,12 @@
           <li>Clique em <strong>Desinstalar</strong>.</li>
         </ol>
         <p>
-          O desinstalador remove o programa, o atalho do menu Iniciar o registro
-          de &quot;iniciar com o Windows&quot; (inclusive se você o ativou pelo
-          menu) e os arquivos de atualização baixados. Ele não mexe na pasta de
-          dados, e a janela de desinstalação também avisa isso. Se você também
-          quiser apagar o banco de dados, a conexão com o Google e os
-          relatórios, apague a pasta de dados por conta própria.
+          O desinstalador remove o programa, o atalho do menu Iniciar, o
+          registro de &quot;iniciar com o Windows&quot; (inclusive se você o
+          ativou pelo menu) e os arquivos de atualização baixados. Ele não mexe
+          na pasta de dados, e a janela de desinstalação também avisa isso. Se
+          você também quiser apagar o banco de dados, a conexão com o Google e
+          os relatórios, apague a pasta de dados por conta própria.
         </p>
         <h3 id="onde-ficam-os-dados-e-como-fazer-backup">
           Onde ficam os dados e como fazer backup?
@@ -1917,8 +1916,8 @@
             com o Google do zero.
           </li>
           <li>
-            <code>mcp-token</code>: a senha que o seu assistente de IA usa ao se
-            conectar ao aplicativo.
+            <code>mcp-token</code>: o token com que o agente de IA se conecta ao
+            aplicativo.
           </li>
           <li>
             <code>server.env</code>, <code>config.json</code>,
@@ -1940,9 +1939,9 @@
         <p>
           O aplicativo usa o número 3001. Se outro programa o estiver usando, o
           aplicativo escolhe o primeiro número livre de 3002 a 3010, mas só para
-          essa inicialização, e mostra o balão &quot;3001 numarası dolu, 3002
-          kullanılıyor&quot; (A porta 3001 está em uso, usando a 3002). Ele não
-          grava esse número. Quando a 3001 ficar livre, o aplicativo volta a
+          essa inicialização, e mostra a notificação &quot;3001 numarası dolu,
+          3002 kullanılıyor&quot; (A porta 3001 está em uso, usando a 3002). Ele
+          não grava esse número. Quando a 3001 ficar livre, o aplicativo volta a
           usar a 3001 na próxima inicialização, porque os endereços de
           redirecionamento no Google contêm esse número.
         </p>
@@ -1975,11 +1974,9 @@
         <h2 id="verificacao">Verificação</h2>
         <ul>
           <li>
-            Ao passar o mouse sobre o ícone da barra de tarefas (se ele não
-            aparecer, clique na seta ^), deve aparecer &quot;seowatcher X.Y.Z:
-            Çalışıyor: http://127.0.0.1:3001/&quot; (seowatcher 0.5.0 Alpha: Em
-            execução: http://127.0.0.1:3001/). O número da versão é o da que
-            você instalou.
+            Ao passar o mouse sobre o ícone da bandeja, deve aparecer
+            &quot;seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/&quot;
+            (seowatcher X.Y.Z: Em execução). X.Y.Z é a versão instalada.
           </li>
           <li>
             No navegador, o endereço
@@ -1987,10 +1984,10 @@
             que começa com &quot;status&quot;:&quot;ok&quot;.
           </li>
           <li>
-            Na tela <strong>Ajuda</strong>, o cartão &quot;Seu status de
-            configuração&quot; deve dizer &quot;Tudo parece bem.&quot;. Antes de
-            conectar o Google, a linha &quot;Login no Google&quot; pede atenção.
-            Isso é normal.
+            Na tela <strong>Ajuda</strong>, o cartão
+            <strong>Status do app</strong> não deve mostrar erros. Até o Google
+            ser conectado, a linha de login no Google fica em aviso: isso é
+            normal.
           </li>
         </ul>
         <h2 id="perguntas-frequentes">Perguntas frequentes</h2>
@@ -2006,16 +2003,17 @@
           ligar.
         </p>
         <p>
-          <strong>Posso abri-lo de outro computador?</strong> Não, e isso é de
-          propósito. O aplicativo escuta apenas o endereço 127.0.0.1. Para
-          abri-lo para a internet, você precisa colocar sua própria autenticação
-          na frente.
+          <strong>Posso abri-lo de outro computador?</strong> Não, por decisão
+          de projeto: o aplicativo escuta apenas o endereço 127.0.0.1. Para
+          expô-lo na internet, é preciso colocar na frente um sistema de
+          autenticação próprio.
         </p>
         <p>
           <strong>Posso migrar da versão Docker?</strong> Sim, mas os dados não
           se movem sozinhos. Você cria os projetos de novo e conecta o Google de
-          novo. O arquivo do Search Console é preenchido de novo na primeira
-          abertura.
+          novo. O arquivo do Search Console é preenchido de novo com os últimos
+          16 meses do Google quando você abre Desempenho da pesquisa ou
+          Acompanhamento de posições.
         </p>
         <p>
           <strong>Meu antivírus deu um aviso.</strong> Como o arquivo não tem
@@ -2073,18 +2071,12 @@
         </ul>
         <h2 id="notificacoes-do-windows">Notificações do Windows</h2>
         <p>
-          Clique com o botão direito no ícone do seowatcher na bandeja e use
-          <strong>Windows bildirimleri</strong> (ativada por padrão). Enquanto o
-          inicializador estiver em execução, auditorias concluídas ou com falha
-          de todos os projetos e novos anúncios aparecem como balões do Windows
-          em cerca de 90 segundos, mesmo com o navegador fechado ou em segundo
-          plano. Um clique abre a página correspondente; vários eventos são
-          agrupados. O primeiro uso ignora eventos antigos; reiniciar não repete
-          eventos já recebidos. Eventos recebidos durante o silêncio não são
-          exibidos depois. Novas versões seguem a configuração de atualização
-          existente. O modo Foco/Não incomodar pode ocultar notificações. Com o
-          inicializador fechado, não há notificações. Este recurso não está
-          disponível no Docker.
+          Com <strong>Windows bildirimleri</strong> (Notificações do Windows) no
+          menu da bandeja, ativada por padrão, auditorias concluídas ou com
+          falha e novos anúncios aparecem como notificações do Windows em cerca
+          de 90 segundos, mesmo com o navegador fechado. As notificações só
+          chegam enquanto o inicializador estiver em execução. Os detalhes estão
+          em <a href="/pt/guias/configuracoes/">Configurações</a>.
         </p>
         <nav class="pager" aria-label="Página anterior e seguinte">
           <a class="pager-prev" rel="prev" href="/pt/guias/o-que-e-seowatcher/"
@@ -2097,12 +2089,12 @@
           >
         </nav>
         <p class="meta">
-          Última atualização: 29 de outubro de 2026. Viu algum erro?
+          Última atualização: 29 de outubro de 2026. Encontrou um erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >Relate no GitHub</a
+            >Informe no GitHub</a
           >.
         </p>
       </article>

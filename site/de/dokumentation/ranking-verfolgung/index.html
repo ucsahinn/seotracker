@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1511,9 +1511,7 @@
           <p class="nav-group">Bildschirme</p>
           <ul>
             <li><a href="/de/dokumentation/projekte/">Projekte</a></li>
-            <li>
-              <a href="/de/dokumentation/uebersicht/">Übersicht (Panel)</a>
-            </li>
+            <li><a href="/de/dokumentation/uebersicht/">Übersicht</a></li>
             <li><a href="/de/dokumentation/suchleistung/">Suchleistung</a></li>
             <li class="current" aria-current="page">
               <a href="/de/dokumentation/ranking-verfolgung/"
@@ -1523,12 +1521,12 @@
             <li><a href="/de/dokumentation/chancen/">Chancen</a></li>
             <li>
               <a href="/de/dokumentation/gespeicherte-suchbegriffe/"
-                >Gespeicherte Suchbegriffe</a
+                >Gespeicherte Keywords</a
               >
             </li>
             <li>
               <a href="/de/dokumentation/datenanalyse/"
-                >Analysedaten verstehen</a
+                >Analytics-Daten verstehen</a
               >
             </li>
             <li>
@@ -1538,7 +1536,7 @@
             <li>
               <a href="/de/dokumentation/berichte/">Berichte und Vorlagen</a>
             </li>
-            <li><a href="/de/dokumentation/projektinfo/">Projektinfo</a></li>
+            <li><a href="/de/dokumentation/projektinfo/">Projektkontext</a></li>
             <li>
               <a href="/de/dokumentation/einstellungen/">Einstellungen</a>
             </li>
@@ -1549,7 +1547,7 @@
             <li><a href="/de/dokumentation/audit-regeln/">Audit-Regeln</a></li>
             <li>
               <a href="/de/dokumentation/assistent-einrichten/"
-                >Assistent einrichten</a
+                >Agent einrichten</a
               >
             </li>
             <li>
@@ -1568,87 +1566,141 @@
           Das lokale Archiv bewahrt Daten auch über die 16-Monate-Grenze hinaus.
         </p>
         <p>
-          Diese Ansicht zeigt lokal archivierte Search-Console-Web-Suchanfragen.
-          Die Durchschnittsposition ist kein fester Rang für jede Suche. Ort,
-          Gerät und Kontext können sie verändern. Impressionen sind kein
-          Suchvolumen.
+          Die Ranking-Verfolgung zeigt Suchanfragen der Websuche aus Ihrem
+          lokalen Archiv der Search-Console-Daten. Die durchschnittliche
+          Position ist kein fester Rang: Ort, Gerät und Suchkontext verändern
+          das Ergebnis jeder einzelnen Suche. Impressionen sind kein
+          Suchvolumen. Rankings von Mitbewerbern, Suchvolumen und
+          Traffic-Prognosen liefert die App nicht.
         </p>
-        <h2 id="zuerst-die-bewegung-prufen">Zuerst die Bewegung prüfen</h2>
+        <h2 id="zuerst-die-bewegungen-prufen">Zuerst die Bewegungen prüfen</h2>
         <p>
-          Die Zusammenfassung zählt in beiden Zeiträumen beobachtete
-          Suchanfragen und Bewegungen ab einem halben Platz. Unbekannte
-          Vergleiche erscheinen separat. Öffnen Sie zuerst den vorgeschlagenen
-          Rückgang. Die Prüfreihenfolge nutzt absolute Positionsänderung mal
-          erfasste Impressionen, keine Schätzung verlorener Klicks. Die Listen
-          zeigen zunächst drei, erweitert höchstens fünf Einträge.
+          Die Zusammenfassung zählt Suchanfragen, die in beiden Zeiträumen
+          beobachtet wurden, und Bewegungen ab einer halben Position.
+          Suchanfragen ohne möglichen Vergleich stehen separat. Öffnen Sie
+          zuerst den vorgeschlagenen Rückgang.
+        </p>
+        <p>
+          Die Reihenfolge ergibt sich aus Positionsänderung mal Impressionen.
+          Das ist eine Prüfreihenfolge, keine Schätzung verlorener Klicks. Die
+          Listen zeigen zunächst drei Einträge und aufgeklappt höchstens fünf;
+          aufklappen lässt sich erst ab mehr als drei Bewegungen. Wurde keine
+          Suchanfrage in beiden Zeiträumen beobachtet, erklärt die
+          Bewegungskarte das, statt null anzuzeigen.
         </p>
         <h2 id="zeitraum-und-abdeckung">Zeitraum und Abdeckung</h2>
         <p>
-          Wählen Sie 30, 90, 180, 480 oder 1825 Tage. Die letzte Option
-          bezeichnet die letzten fünf Archivjahre, nicht den gesamten Verlauf.
-          Monatsangaben sind Näherungen; genaue Daten stehen in den
-          Datendetails. Der Kalender ist America/Los_Angeles. Das Enddatum nimmt
-          drei Tage Verzögerung an, ohne Live-Prüfung der Vollständigkeit.
-          Importiert werden nur finale Google-Daten.
+          Wählen Sie 30, 90, 180, 480 oder 1825 Tage. 1825 Tage sind die letzten
+          fünf Jahre im Archiv, nicht zwingend der gesamte Verlauf.
+          Monatsangaben sind gerundet; die genauen Daten stehen in den
+          Datendetails.
         </p>
         <p>
-          Vollständig abgerufene API-Antworten, durch die Anwendung begrenzte
-          Tage, Fehler und unbekannte Abdeckung werden getrennt gezählt. Alte
-          Archivtage werden nicht nachträglich als vollständig eingestuft. Auch
-          vollständige Antworten enthalten keine von Google verborgenen oder
-          ausgelassenen Suchanfragen. Letzte Beobachtung und letzter geprüfter
-          Tag sind verschiedene Angaben. Das Weiterfüllen kann mehrere
-          Durchläufe brauchen. Vorhandener Verlauf bleibt währenddessen lesbar.
-        </p>
-        <h2 id="verteilung-und-suche">Verteilung und Suche</h2>
-        <p>
-          Die Verteilung zählt alle im aktuellen Zeitraum beobachteten
-          Suchanfragen. Positionen werden gerundet: 3,4 gehört zur ersten, 3,5
-          zur zweiten Gruppe. Balkenlängen beziehen sich auf die größte Gruppe,
-          Prozentwerte auf alle beobachteten Suchanfragen. Änderungen sind
-          Nettoänderungen derselben vergleichbaren Suchanfragen. Fehlende
-          Vergleiche werden nicht als null ausgegeben.
+          Die Tage folgen dem Kalender America/Los_Angeles. Das Enddatum nimmt
+          drei Tage Verzögerung an, ohne bei Google zu prüfen, ob die Daten
+          vollständig sind. Importiert werden nur Tage, die Google als endgültig
+          liefert.
         </p>
         <p>
-          Suche und Filter reichen über die früheren ersten hundert Einträge
-          hinaus. Zähler berücksichtigen Text und andere aktive Filter. Das
-          obere Impressionsviertel schließt Gleichstände ein. Top 10 umfasst
-          auch Suchanfragen ohne Vorbeobachtung; Top-10-Austritte verlangen
-          beide Zeiträume. Alle Filter lassen sich gemeinsam entfernen. Seiten
-          enthalten 25, 50 oder 100 Einträge; Zusammenfassungen bleiben gleich.
+          Die App zählt getrennt, an wie vielen Tagen Google vollständig
+          geantwortet hat, an wie vielen die App selbst die Abfrage begrenzt
+          hat, wie viele Fehler auftraten und für wie viele Tage die Abdeckung
+          unbekannt ist. Ältere Archivtage werden nicht nachträglich als
+          vollständig eingestuft. Auch eine vollständige Antwort enthält keine
+          Suchanfragen, die Google verbirgt oder auslässt. „Letzte Beobachtung“
+          und „letzter geprüfter Tag“ sind verschiedene Angaben.
+        </p>
+        <h2 id="wie-sich-das-archiv-fullt">Wie sich das Archiv füllt</h2>
+        <p>
+          Solange dieser Bildschirm geöffnet ist, lädt die App fehlende Tage
+          selbst nach; auch die <strong>Suchleistung</strong> aktualisiert das
+          Archiv, solange sie geöffnet ist. Sind beide Bildschirme oder die App
+          geschlossen, wird nichts abgerufen.
+        </p>
+        <ul>
+          <li>
+            Nach jeder begrenzten Übertragung wartet die App 15 Sekunden, bevor
+            sie den nächsten Abschnitt anfordert.
+          </li>
+          <li>Ist das Archiv aktuell, prüft sie alle 15 Minuten erneut.</li>
+          <li>
+            Nach einem Verbindungs- oder Kontingentfehler wartet sie 15 Minuten.
+          </li>
+          <li>
+            Nach einem Autorisierungsfehler müssen Sie die Verbindung selbst
+            erneuern.
+          </li>
+        </ul>
+        <p>
+          <strong>Archiv weiter füllen</strong> setzt die Übertragung von Hand
+          fort. Der erste Import beginnt am Anfang von Googles 16-monatiger
+          Aufbewahrung; Tage, die Google nicht mehr liefert, lassen sich nicht
+          zurückholen. Jeder Durchlauf bearbeitet höchstens vier Zeitfenster;
+          Fenster mit vielen Zeilen werden in Tage geteilt und später
+          fortgesetzt. Pro Tag liest die App bis zu den 50.000 Zeilen, die
+          Google liefert; ein Tag, der trotzdem nicht vollständig wird, bleibt
+          unvollständig. Der vorhandene Verlauf bleibt währenddessen lesbar.
+        </p>
+        <h2 id="verteilung-suche-und-filter">Verteilung, Suche und Filter</h2>
+        <p>
+          Die Verteilung zählt alle Suchanfragen, die im aktuellen Zeitraum
+          beobachtet wurden. Positionen werden gerundet: 3,4 wird zu 3 und fällt
+          in die erste Gruppe, 3,5 wird zu 4 und fällt in die zweite. Die
+          Balkenlänge bezieht sich auf die größte Gruppe, der Prozentwert auf
+          alle beobachteten Suchanfragen. Änderungen sind Nettoänderungen
+          derselben vergleichbaren Suchanfragen; fehlende Vergleiche erscheinen
+          nicht als null.
         </p>
         <p>
-          Vorher beobachtete, jetzt fehlende Suchanfragen stehen separat. Das
-          beweist weder Rangverlust noch Position null. Angezeigt werden die
-          ersten 25 nach Impressionen; der Suchtext gilt auch hier.
+          Suche und Filter durchsuchen alle Suchanfragen, nicht nur die ersten
+          hundert. Die Zähler berücksichtigen den Suchtext und alle anderen
+          aktiven Filter.
         </p>
-        <h2 id="verlauf-lesen">Verlauf lesen</h2>
+        <ul>
+          <li>
+            <strong>Viele Impressionen</strong> umfasst das obere Viertel nach
+            Impressionen, einschließlich Suchanfragen genau auf dem Grenzwert.
+          </li>
+          <li>
+            <strong>Top 10</strong> umfasst auch Suchanfragen ohne frühere
+            Beobachtung.
+          </li>
+          <li>
+            <strong>Aus den Top 10 ausgeschieden</strong> setzt Beobachtungen in
+            beiden Zeiträumen voraus.
+          </li>
+        </ul>
         <p>
-          Positionsmittelwerte sind impressionsgewichtet. Änderung bedeutet
-          vorheriger minus aktueller Mittelwert. Unter 0,05 Plätzen gilt
+          Alle Filter lassen sich gemeinsam entfernen. Eine Seite zeigt 25, 50
+          oder 100 Einträge; die Zusammenfassung bleibt dabei gleich.
+        </p>
+        <p>
+          Suchanfragen, die früher beobachtet wurden und jetzt fehlen, stehen in
+          einer eigenen Liste. Das beweist weder einen Rangverlust noch Position
+          null. Die Liste zeigt die ersten 25 nach Impressionen und
+          berücksichtigt den Suchtext.
+        </p>
+        <h2 id="verlauf-einer-suchanfrage">Verlauf einer Suchanfrage</h2>
+        <p>
+          Positionen sind nach Impressionen gewichtete Mittelwerte. Die Änderung
+          ist der vorherige minus den aktuellen Mittelwert, ein positiver Wert
+          also eine Verbesserung. Änderungen unter 0,05 Positionen gelten als
           neutral, deutliche Bewegungen beginnen bei 0,5. Die Detailansicht
-          nutzt denselben Zeitraumvergleich wie die Tabelle. Erster und letzter
-          erfasster Tag sind separate Beobachtungen.
+          vergleicht dieselben Zeiträume wie die Tabelle.
         </p>
         <p>
-          Beobachtete Tage bleiben immer sichtbar: 10 von 90 Tagen bedeuten
-          keine vollständige Abdeckung. Tagespunkte folgen dem echten Kalender;
-          Lücken unterbrechen die Linie. Pfeiltasten, Home und End wechseln den
-          Tag. Tageswerte lassen sich aufklappen. Ganze fehlende Wochen bleiben
-          Lücken, Randwochen können teilweise sein.
+          Die Zahl der beobachteten Tage steht immer dabei: 10 von 90 Tagen sind
+          keine vollständige Abdeckung. Die Punkte im Diagramm folgen dem
+          Kalender; fehlende Tage unterbrechen die Linie. Fehlende Wochen
+          bleiben Lücken, Wochen am Rand des Zeitraums können unvollständig
+          sein. Mit Pfeiltasten, Pos1 und Ende wechseln Sie den Tag; die
+          Tageswerte lassen sich als Liste aufklappen.
         </p>
         <p>
-          Der Link zur Suchleistung übernimmt die exakte Suchanfrage und die
-          Archivdaten. Bei Zeiträumen vor Googles Aufbewahrungsgrenze wird vor
-          der Navigation das früheste lesbare Datum erklärt. Konkurrenzränge,
-          kostenpflichtiges Suchvolumen und Verkehrsprognosen sind nicht
-          verfügbar.
-        </p>
-        <p>
-          Wurde keine Suchanfrage in beiden Zeiträumen beobachtet, lassen sich
-          Anstiege und Rückgänge nicht berechnen. Die Bewegungskarte erklärt
-          dies, statt eine gemessene Null darzustellen. Erweitern ist nur bei
-          mehr als drei Bewegungen möglich.
+          Der Link zur Suchleistung übernimmt die exakte Suchanfrage und den
+          Zeitraum. Liegt der Zeitraum vor Googles Aufbewahrungsgrenze von 16
+          Monaten, nennt die App vorher das früheste Datum, das Google noch
+          liefert.
         </p>
         <nav class="pager" aria-label="Vorherige und nächste Seite">
           <a
@@ -1674,18 +1726,29 @@
         <p class="toc-label">Auf dieser Seite</p>
         <ol>
           <li>
-            <a href="#zuerst-die-bewegung-prufen">Zuerst die Bewegung prüfen</a>
+            <a href="#zuerst-die-bewegungen-prufen"
+              >Zuerst die Bewegungen prüfen</a
+            >
           </li>
           <li><a href="#zeitraum-und-abdeckung">Zeitraum und Abdeckung</a></li>
-          <li><a href="#verteilung-und-suche">Verteilung und Suche</a></li>
-          <li><a href="#verlauf-lesen">Verlauf lesen</a></li>
+          <li>
+            <a href="#wie-sich-das-archiv-fullt">Wie sich das Archiv füllt</a>
+          </li>
+          <li>
+            <a href="#verteilung-suche-und-filter"
+              >Verteilung, Suche und Filter</a
+            >
+          </li>
+          <li>
+            <a href="#verlauf-einer-suchanfrage">Verlauf einer Suchanfrage</a>
+          </li>
         </ol>
       </nav>
     </main>
     <footer>
       <div class="wrap">
         <p class="star">
-          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          Ein Stern hilft anderen, das Werkzeug zu finden.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

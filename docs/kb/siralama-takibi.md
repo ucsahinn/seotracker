@@ -6,38 +6,73 @@ route: /p/<proje>/rankings
 updated: 2026-10-28
 ---
 
-Bu ekran Search Console Web sorgularının bu bilgisayarda saklanan geçmişini gösterir. Ortalama sıra, her aramada göreceğiniz sabit bir konum değildir. Ülke, cihaz ve arama bağlamıyla değişebilir. Gösterim arama hacmi değildir.
+Bu ekran, Search Console'daki Web sorgularının bu bilgisayarda biriken geçmişini gösterir. Google bu veriyi 16 ay saklar; seowatcher'ın yerel arşivi, bir kez aldığı günleri bu sınırdan sonra da tutar.
 
-## Önce neye bakmalı?
+İki kavramı baştan ayırın. Ortalama sıra, her aramada göreceğiniz sabit bir konum değildir; ülke, cihaz ve arama bağlamıyla değişir. Gösterim de arama hacmi değildir.
 
-Üstte iki dönemde de gözlenen sorgu sayısı, en az yarım sıra yükselen ve gerileyen sorgular görünür. Karşılaştırması bilinmeyenler ayrıca sayılır. Önce önerilen gerileyen sorgunun geçmişini inceleyin. İnceleme sırası, mutlak sıra değişimi ile kayıtlı gösterimin çarpımıdır; kayıp tıklama tahmini değildir. Hareket listeleri önce üç, genişletilince beş sorgu gösterir.
+## Önce neye bakmalı
 
-## Tarihler ve arşiv kapsamı
+Üstte iki dönemde de gözlenen sorgu sayısı ile en az yarım sıra yükselen ve düşen sorgular görünür. Karşılaştırması yapılamayan sorgular ayrıca sayılır.
 
-30, 90, 180, 480 veya 1825 günlük dönem seçilir. Son seçenek son beş yıllık arşivdir; daha eski tüm geçmişi kapsamaz. Ay adları yaklaşık sürelerdir; kesin başlangıç ve bitiş tarihleri veri ayrıntısındadır. Tarihler America/Los_Angeles takvimindedir. Bitiş, üç günlük gecikme varsayımına dayanır; canlı tamamlanma doğrulaması değildir. İçe aktarım yalnızca Google'ın final verisini ister.
+**Önce … sorgusunu inceleyin** önerisiyle başlayın. Öneri, sıra değişiminin büyüklüğü ile gösterimin çarpımına göre seçilir. Bu bir inceleme sırasıdır, kaybedilen tıklama tahmini değildir.
 
-API yanıtı tamamlanan, uygulama sınırına takılan, başarısız ve bilinmeyen günler ayrı sayılır. Eski arşiv günlerinin kapsamı geriye dönük tamamlanmış sayılmaz. Yanıtın tamamlanması Google'ın gizlediği veya döndürmediği sorguları içermez. Son gözlem tarihi ile taranan son tarih farklıdır. Doldurmaya devam etmek birkaç çalıştırma gerektirebilir. Mevcut geçmiş senkronizasyon sırasında okunabilir.
+**Yükselenler ve düşenler** listeleri önce üç sorgu gösterir; genişletince beşe çıkar. Genişletme düğmesi yalnızca üçten fazla hareket varsa görünür. İki dönemde de gözlenen sorgu yoksa hareket hesaplanamaz ve kart sıfır hareket yazmak yerine bunu söyler.
 
-Sıralama sayfası açıkken eksik geçmiş, her sınırlı aktarımın ardından 15 saniye beklenerek otomatik doldurulur. Arşiv yetiştiğinde 15 dakikada bir yeniden kontrol edilir. Bağlantı veya kota hatasında yeniden denemeden önce 15 dakika beklenir; yetkilendirme hatasında bağlantıyı sizin yenilemeniz gerekir. Arşivin son kontrol zamanı ayrıca gösterilir; bu, bütün günlerin tamamlandığı anlamına gelmez. Sayfa veya uygulama kapalıyken aktarım çalışmaz.
+## Dönem
 
-İlk aktarım 480 günlük yaklaşık süre yerine Google'ın 16 takvim aylık saklama sınırından başlar. Bilgisayar uzun süre kapalı kaldıysa bekleyen eksik günler hâlâ okunabilir tarihlerden sürdürülür. Google'ın artık sunmadığı günler geri alınamaz. Daha önce 480 günlük sınırla doldurulmuş arşivlerin eski başlangıcı bu değişiklikle otomatik yeniden taranmaz.
+30, 90, 180, 480 ya da 1825 günlük dönem seçebilirsiniz. En uzun seçenek son beş yılı kapsar, daha eskisini değil. Ay adları yaklaşık süredir; kesin tarihler **Veri kapsamı ve hesaplama** bölümündedir.
 
-Her çalıştırma en fazla dört pencere işler; çok satırlı pencereler günlük parçalara ayrılarak sonraki çalıştırmalarda sürdürülür. Tek gün için Google'ın sunduğu en fazla 50.000 satır ve boş son sayfa okunabilir. Buna rağmen tamamlanmayan gün eksik olarak kalır. Google anonim sorguları ve bazı düşük hacimli satırları döndürmez; arşiv tüm aramaların listesi değildir.
+Tarihler Google'ın kullandığı Pasifik saatine (America/Los_Angeles) göredir. Bitiş günü, üç günlük gecikme varsayımıyla seçilir; Google'dan canlı bir tamamlanma onayı alınmaz. Arşive yalnızca Google'ın kesinleşmiş verisi alınır.
 
-## Dağılım ve sorgu listesi
+## Arşiv nasıl dolar
 
-Dağılım tüm mevcut dönem gözlemlerini sayar. Sıralar yuvarlanır: 3,4 ilk grupta, 3,5 ikinci gruptadır. Çubuk uzunluğu en büyük gruba görelidir; yanındaki yüzde tüm gözlenen sorgular içindeki paydır. Net değişim yalnızca aynı karşılaştırılabilir sorgular üzerinde hesaplanır. Karşılaştırma yoksa sıfır yazılmaz.
+Bu ekran açıkken eksik günler kendiliğinden yüklenir. **Bu sayfa açıkken kalan günler otomatik yüklenir; bağlantı veya kota hatasında beklenir.** notu bunu anlatır.
 
-Arama ve filtreler ilk yüz sorguyla sınırlı değildir. Sayaçlar metin ve diğer etkin filtreleri dikkate alır. Üst çeyrek gösterim eşiğine eşit olanlar da dahildir. İlk 10 filtresi önceki kaydı olmayan güncel sorguları da kapsar. İlk 10'dan çıkanlar yalnızca iki dönemde de gözlenen sorgulardır. Filtreleri tek düğmeyle kaldırabilirsiniz. Sayfalar 25, 50 veya 100 kayıt gösterir; özetler sayfa boyutundan etkilenmez.
+- Her sınırlı aktarımdan sonra 15 saniye beklenir, sonra bir sonraki parça istenir.
+- Arşiv güncel olduğunda 15 dakikada bir kontrol edilir.
+- Bağlantı ya da kota hatasında yeniden denemeden önce 15 dakika beklenir.
+- Yetkilendirme hatasında bağlantıyı sizin yenilemeniz gerekir.
+- Ekran ya da uygulama kapalıyken aktarım çalışmaz. Arama performansı ekranı da açıkken arşivi günceller. **Arşivi doldurmaya devam et** ile elle de sürdürebilirsiniz.
 
-Önceki dönemde olup bu dönemde gözlenmeyenler ayrı listelenir. Bu, sıralamanın sıfıra düştüğünü veya tüm sıralamaların kaybolduğunu kanıtlamaz. Liste gösterime göre ilk 25 kaydı gösterir; arama burada da geçerlidir.
+İlk aktarım, Google'ın 16 aylık saklama sınırının başından başlar. Bilgisayar uzun süre kapalı kaldıysa eksik günler hâlâ okunabilen tarihlerden tamamlanır. Google'ın artık sunmadığı günler geri alınamaz. Daha önce 480 günlük sınırla başlatılmış arşivlerin başlangıcı kendiliğinden yeniden taranmaz.
 
-## Geçmişi yorumlama
+Her çalıştırma en fazla dört zaman penceresi işler. Çok satırlı pencereler günlere bölünür ve sonraki çalıştırmalarda sürdürülür. Bir gün için Google'ın verdiği en fazla 50.000 satır okunur; buna rağmen tamamlanamayan gün eksik kalır.
 
-Sıra ortalamaları gösterimle ağırlıklıdır. Değişim önceki ortalama eksi mevcut ortalamadır. 0,05 altı nötrdür; belirgin hareket filtresi 0,5 kullanır. Ayrıntının başlığı da aynı dönem karşılaştırmasını gösterir. İlk/son kayıtlı gün çifti ayrı kanıttır.
+## Arşiv kapsamını okumak
 
-Gözlenen gün her zaman gösterilir; örneğin 90 günlük dönemde 10 gün olması tam kapsam değildir. Günlük grafik gerçek tarihlerle aralıklıdır; eksik günlerde çizgi kesilir. Oklar, Home ve End günler arasında gezinir. Günlük değerler açılarak okunabilir. Haftalık çizgilerde tamamen boş haftalar korunur; uç haftalar kısmi olabilir.
+Günler dört gruba ayrılır: Google yanıtı tamamlanmış, uygulama sınırına takılmış, başarısız ve bilinmeyen. Eski arşiv günleri geriye dönük olarak tamamlanmış sayılmaz.
 
-Arama performansı bağlantısı birebir sorguyu ve arşivin başlangıç/bitiş tarihlerini korur. Google'ın saklama sınırından eski dönemlerde bağlantı yerine kullanılabilir başlangıç açıklanır. Rakip sıralaması, ücretli arama hacmi ve trafik tahmini yoktur.
+**Taranan son gün** ile son gözlem tarihi farklı şeylerdir. **Son kontrol** zamanı da tüm günlerin tamamlandığı anlamına gelmez. Aktarım sürerken mevcut geçmiş okunabilir.
 
-İki dönemde de gözlenen sorgu yoksa yükseliş veya düşüş hesaplanamaz. Hareket kartı bunu açıkça söyler; sıfır hareket ölçülmüş gibi sunmaz. Genişletme düğmesi yalnızca üçten fazla hareket varsa görünür.
+"Yanıt tamamlandı" bile tüm aramaları kapsamaz: Google anonim sorguları ve bazı düşük hacimli satırları hiç döndürmez. Arşiv tüm aramaların listesi değildir.
+
+## Sıra dağılımı
+
+**Sıra dağılımı** seçili dönemde gözlenen tüm sorguları gruplara ayırır. Sıralar yuvarlanır: 3,4 ilk grupta, 3,5 ikinci gruptadır. Çubuk uzunluğu en büyük gruba göredir; yanındaki yüzde ise tüm gözlenen sorgular içindeki paydır. Net değişim yalnızca iki dönemde de gözlenen sorgular üzerinden hesaplanır. Karşılaştırma yoksa sıfır yazılmaz.
+
+## Sorgu listesi ve filtreler
+
+**Arşivde sorgu ara** ve filtreler ilk yüz sorguyla sınırlı değildir; tüm arşivde çalışır. Sayaçlar etkin olan bütün filtreleri hesaba katar.
+
+| Filtre                   | Gösterdiği sorgular                                                |
+| ------------------------ | ------------------------------------------------------------------ |
+| **İlk 10**               | Dönem ortalaması ilk 10'da olanlar; önceki kaydı olmayanlar dahil. |
+| **İlk 10'dan çıkanlar**  | Yalnızca iki dönemde de gözlenen ve ilk 10'dan düşenler.           |
+| **En çok gösterilenler** | Gösterimi üst çeyrek eşiğinde ya da üstünde olanlar.               |
+| **Hiç tıklanmayan**      | Gösterilmiş ama hiç tıklanmamış sorgular.                          |
+
+**Tüm filtreleri kaldır** hepsini birden kapatır. Sayfa 25, 50 ya da 100 sorgu gösterir; özetler sayfa boyutundan etkilenmez.
+
+Önceki dönemde görünüp bu dönemde gözlenmeyen sorgular ayrı bir listededir. Bu liste, sıralamanın sıfıra düştüğünü ya da kaybolduğunu kanıtlamaz. Gösterime göre ilk 25 kayıt listelenir ve arama burada da çalışır.
+
+## Bir sorgunun geçmişi
+
+Sıra ortalamaları gösterimle ağırlıklıdır. Değişim, önceki ortalamadan güncel ortalamanın çıkarılmasıyla bulunur. 0,05'ten küçük değişim nötrdür; belirgin hareket eşiği 0,5'tir. **İlk/son kayıtlı gün** ayrı bir kanıttır, dönem karşılaştırmasının yerine geçmez.
+
+**Gözlenen gün** sayısı her zaman yazar. 90 günlük dönemde 10 gün gözlem tam kapsam değildir. Günlük grafik gerçek tarihlerle çizilir; eksik günlerde çizgi kesilir. Ok tuşları, Home ve End günler arasında gezinir; **Günlük değerler** değerleri metin olarak açar. Haftalık görünümde tamamen boş haftalar boş kalır, ilk ve son hafta kısmi olabilir.
+
+**Arama performansında aç** aynı sorguyu ve arşiv tarihlerini korur. Dönem Google'ın 16 aylık sınırından eskiyse bağlantı yerine kullanılabilir başlangıç tarihi yazılır.
+
+**Kayıtlı kelimelere ekle** sorguyu [Kayıtlı kelimeler](/docs/kayitli-kelimeler/) ekranına ekler.
+
+Bu ekranda rakip sıralaması, arama hacmi ya da trafik tahmini yoktur.

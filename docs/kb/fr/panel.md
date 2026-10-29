@@ -1,45 +1,91 @@
 ---
 title: Tableau de bord
-description: Le tableau de bord réunit le trafic de recherche, les prochaines tâches étayées et les limites des sources.
+description: Le tableau de bord résume un projet : trafic de recherche, étapes suivantes étayées, dernier audit du site et trafic organique Analytics.
 screen: Panel
 route: /p/<proje>
 updated: 2026-10-28
 ---
 
-Le tableau de bord réunit le trafic de recherche, les prochaines tâches étayées et les limites des sources. Actualiser relit les sources actives, la configuration et l’état de l’installation. Un échec produit un avis d’actualisation partielle. L’heure de réception ne correspond pas au dernier jour mesuré.
+Le tableau de bord est le premier écran d’un projet. Chaque carte indique sa source et sa période, et renvoie à l’écran qui donne le détail.
+
+## Actualiser et heure des données
+
+**Actualiser** relit les sources connectées, l’état de la configuration et les réglages Google. Si une lecture échoue, un avertissement d’actualisation partielle remplace la confirmation et les données en cache restent affichées.
+
+« Données reçues » indique l’heure à laquelle les données sont arrivées dans l’application, pas le dernier jour mesuré par la source. Ce jour figure dans la période de chaque carte.
 
 ## Résumé de recherche
 
-Le périmètre par défaut couvre 28 jours de recherche Web, tous appareils et pays confondus. Les jours récents incomplets sont exclus. Les dates visibles et le fuseau du Pacifique font référence. Les lignes de source indiquent la période précédente réelle, le dernier jour de données et les jours exclus. Sans date de complétude fournie par Google, l’exclusion supposée est expliquée. Les requêtes masquées et les limites de lignes empêchent la liste de représenter le total du site.
+Le résumé couvre les 28 derniers jours de Search Console : recherche Web, tous appareils, tous pays. Les dates suivent l’heure du Pacifique, celle de Google.
 
-Les clics comptent les accès depuis Google ; les impressions, les apparitions dans les résultats. Le CTR divise les clics par les impressions. La position moyenne est pondérée par les impressions ; plus elle est basse, mieux c’est. Les quatre indicateurs ouvrent les performances de recherche dans le même périmètre. Une hausse depuis zéro utilise une valeur absolue ; une baisse à zéro peut afficher un pourcentage négatif valide. Sans période précédente, aucun changement n’est inventé. La ligne pâle représente les clics quotidiens précédents.
+Les derniers jours que Google n’a pas encore finalisés n’entrent pas dans les totaux. La ligne **Périmètre des données Search Console** indique les jours en **Données définitives**, ceux en **Données provisoires** et le nombre de jours exclus. Si Google ne fournit pas de date de complétude, la ligne l’indique : « Google n’a pas indiqué de date de complétude ; les jours récents sont exclus. »
 
-## Tâches et configuration
+Les quatre indicateurs :
 
-Trois tâches au maximum découlent d’un problème de connexion, de constats d’audit, de tâches de recherche réelles ou d’une exploration ancienne. Une connexion seule ne crée pas d’opportunité. Une erreur de lecture ne signifie pas qu’il faut lancer un premier audit. L’absence de tâche prioritaire ne certifie pas toutes les sources.
+- **Clics** : clics depuis la recherche Google vers votre site.
+- **Impressions** : nombre d’affichages de votre site dans les résultats Google.
+- **CTR** : part des impressions qui ont donné un clic.
+- **Position moyenne** : moyenne pondérée par les impressions. Plus elle est basse, mieux c’est.
 
-La configuration reprend les six signaux des informations du projet. Les signaux manquants et illisibles sont séparés. Un audit terminé du site devient ancien à exactement sept jours. Les préférences de configuration constituent un parcours facultatif replié, sans second score. Les étapes reportées restent récupérables même sans tâche active.
+Chaque indicateur ouvre **Performances de recherche** avec le même périmètre. L’évolution se calcule par rapport à la période précédente de même durée :
 
-## Estimations par requête
+- si la période précédente est à zéro, la hausse s’affiche en valeur absolue plutôt qu’en pourcentage ;
+- sans période précédente, l’indicateur affiche **Sans comparaison**.
 
-Les requêtes admissibles ont assez d’impressions et une position arrondie de 4 à 20. Les clics supplémentaires modélisent le passage à la tranche de positions supérieure : c’est un plafond, pas du trafic mesuré. Les estimations connues et inconnues sont comptées sur tout l’ensemble avant l’affichage de quatre lignes. Aucune estimation ne devient pas un plafond de zéro. La séparation de marque confirmée, suggérée ou absente est précisée. N’ajoutez pas cette estimation au total des opportunités par page, dont l’unité et la période diffèrent.
+Google masque certaines requêtes pour protéger la vie privée ; quand la liste atteint la limite de lignes, la carte le signale aussi.
 
-## Audit du site du projet
+**Tendance des clics** trace les clics quotidiens. La ligne pâle représente la période précédente.
 
-Seules les explorations du domaine du projet sont retenues. Un audit plus récent d’un autre site est ignoré. Le dernier instantané terminé et une tentative plus récente en cours ou échouée sont identifiés séparément. Sans domaine, un lien mène aux paramètres. La carte indique l’adresse de départ, la date, les contrôles mesurés et une éventuelle limite de pages.
+## Étapes suivantes
 
-Les pages uniques touchées, les types de contrôles et les couples page–contrôle sont des unités distinctes. Une page peut échouer à trois contrôles. Les notes d’information restent hors de la barre des critiques et avertissements. Toute appréciation se limite au périmètre mesuré. Une mesure manquante ou une limite de pages ne certifie pas tout le site. Les comparaisons exigent le même périmètre initial, les mêmes réglages et URL explorées, ainsi que des mesures lisibles. Seuls les contrôles mesurés des deux côtés montrent des changements. Une exploration réduite ou illisible ne prouve aucune résolution. Le périmètre inconnu est expliqué. Les liens ouvrent les problèmes du même audit pour l’URL choisie.
+Cette carte propose au plus trois tâches, chacune fondée sur une preuve mesurée : un problème de connexion, des constats d’audit, des tâches de recherche issues de Search Console ou un audit trop ancien. Une connexion configurée ne suffit pas à créer une tâche. « Aucune tâche prioritaire dans le périmètre mesuré. » ne vaut que pour les sources mesurées : un problème non mesuré peut exister.
 
-## Résultats Analytics
+Le compteur du titre, par exemple **Configuration 4 / 6**, reprend les six étapes de l’écran Contexte du projet. Les étapes manquantes et illisibles sont présentées séparément. Un audit devient ancien exactement sept jours après son lancement ; la carte propose alors **Actualiser l’audit**.
 
-Les sessions organiques, utilisateurs actifs, interactions et événements clés viennent de Google Analytics. Les dates réelles et le fuseau de la propriété sont visibles. Les sessions diffèrent des clics Google et incluent d’autres moteurs. Une valeur inconnue ou restreinte ne signifie jamais zéro trafic ; les autres mesures lisibles restent affichées. Seuils de confidentialité, échantillonnage et restrictions d’accès sont expliqués. Les comparaisons peu fiables sont masquées et les jours inconnus restent vides.
+En bas, **Préférences de configuration** est une liste facultative, repliée par défaut ; ce n’est pas une seconde note. Les étapes reportées avec **Passer pour l’instant** restent récupérables.
 
-Une preuve de commerce positive dans l’une des périodes maintient les revenus et commandes visibles, y compris un zéro mesuré dans une période calme. Sans preuve, le suivi des ventes reste non confirmé. Une devise inconnue est signalée.
+## Requêtes pouvant gagner une tranche de positions
 
-Le tableau de bord ne contient ni volume de mots-clés, ni backlinks, ni classement concurrent. Comparez les données Google avec les mêmes dates et filtres.
+Cette carte retient les requêtes qui ont assez d’impressions et dont la position moyenne arrondie se situe entre 4 et 20. Elle affiche les quatre meilleures, mais compte toutes les requêtes admissibles.
+
+L’estimation est un plafond : les clics supplémentaires que la requête pourrait gagner en montant d’une tranche de positions. Ce n’est pas du trafic mesuré. Si aucune estimation n’est calculable, la carte n’affiche pas zéro. Elle précise aussi si les requêtes de marque ont été séparées.
+
+N’additionnez pas cette estimation au total de l’écran **Opportunités**, qui calcule par page et sur une autre période.
+
+## Carte Audit du site
+
+Le tableau de bord ne retient que les audits du domaine du projet ; un audit plus récent d’un autre site est ignoré. Si le projet n’a pas de domaine, la carte renvoie aux paramètres du projet.
+
+La carte indique l’adresse de départ du dernier audit terminé, sa date, les contrôles mesurés et l’éventuelle limite de pages. Une tentative en cours ou échouée est présentée à part.
+
+La carte affiche trois nombres différents, à ne pas additionner :
+
+- le nombre de pages touchées ;
+- le nombre de types de contrôles en échec ;
+- les couples page–contrôle par gravité : une page qui échoue à trois contrôles compte pour trois couples.
+
+Les notes d’information restent hors de la barre des problèmes critiques et des avertissements. La phrase d’appréciation ne porte que sur le périmètre exploré : une exploration arrêtée par la limite de pages ou mesurée en partie ne permet pas de juger tout le site.
+
+**Nouveau lors du dernier audit** et **Corrigé** n’apparaissent que si deux audits sont comparables : même adresse de départ, mêmes réglages, ensembles de pages compatibles. Seuls les contrôles mesurés dans les deux audits sont comparés, et une exploration plus restreinte ou illisible ne compte pas comme une correction. Si la comparaison est impossible, la carte en donne la raison. Un clic sur une page ouvre les problèmes de ce même audit pour cette page.
+
+## Trafic organique
+
+Cette carte vient de Google Analytics : sessions organiques, utilisateurs actifs, taux d’engagement et événements clés. Les dates réelles et le fuseau horaire de la propriété y figurent.
+
+Une session n’est pas un clic Search Console : le trafic organique d’Analytics inclut aussi les autres moteurs de recherche.
+
+Une mesure restreinte ou inconnue ne signifie jamais zéro trafic ; les autres mesures lisibles restent affichées. La carte explique l’échantillonnage, les seuils de confidentialité et les restrictions d’accès, et masque alors les comparaisons peu fiables.
+
+**Revenus organiques** et **Transactions** s’affichent si des ventes réelles ont été mesurées dans l’une des deux périodes. Sans aucune vente, la carte indique que le suivi des ventes n’est pas confirmé. Si la devise est inconnue, le montant n’est pas présenté comme une somme d’argent. Si les sessions sont inconnues, vérifiez les avertissements de source de l’écran Analytics, les droits d’accès et la balise Analytics du site.
 
 ## Interpréter peu de données
 
-Si les clics de la période de comparaison sont sous le seuil d’analyse, le résumé présente d’abord les clics et impressions réels. Avec peu de données, les pourcentages et moyennes ne prouvent pas à eux seuls une croissance ou une perte. Une liste d’opportunités vide ne signifie pas qu’aucune requête n’est en position 4–20 : le seuil d’impressions adapté à la période et l’exclusion des requêtes de marque s’appliquent aussi.
+Si la période de comparaison compte peu de clics, le résumé donne d’abord les clics et impressions réels, avant tout pourcentage. Sur de petits volumes, pourcentages et moyennes ne prouvent à eux seuls ni croissance ni perte.
 
-L’identifiant d’audit reste dans la navigation ; la carte affiche l’adresse de départ. Si les sessions sont inconnues, vérifiez les avertissements de source du rapport Analytics, les droits d’accès et la balise du site. La note sur les ventes figure dans l’explication dépliable du revenu organique.
+Une liste de requêtes vide ne signifie pas qu’aucune requête ne se trouve entre les positions 4 et 20 : le seuil d’impressions s’adapte à la période et les requêtes de marque sont exclues.
+
+## Ce que le tableau de bord ne montre pas
+
+Ni volume de recherche, ni backlinks, ni classement des concurrents : seowatcher ne dispose pas de ces données. Pour comparer un chiffre avec l’interface de Google, choisissez la même période et les mêmes filtres.
+
+<!-- Sources: src/client/features/dashboard/; src/shared/projectSetup.ts; src/shared/panelAudit.ts -->

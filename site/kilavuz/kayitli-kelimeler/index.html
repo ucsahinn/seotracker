@@ -14,7 +14,7 @@
     <title>Kayıtlı kelimeler ekranı | seowatcher kılavuzu</title>
     <meta
       name="description"
-      content="Kayıtlı kelimeleri tarihleri ve kapsamı belli arşiv gözlemleriyle inceleyin."
+      content="Önemsediğiniz sorguların ortalama sırasını ve değişimini yerel Search Console arşivinden, tarihleriyle izleyin."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -94,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="Kayıtlı kelimeleri tarihleri ve kapsamı belli arşiv gözlemleriyle inceleyin."
+      content="Önemsediğiniz sorguların ortalama sırasını ve değişimini yerel Search Console arşivinden, tarihleriyle izleyin."
     />
     <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
     <meta property="og:image:type" content="image/png" />
@@ -104,7 +104,7 @@
       property="og:image:alt"
       content="seowatcher tanıtım kartı: Search Console, Analytics 4 ve site denetimi verilerini gösteren uygulama paneli ve Windows için indirme düğmesi"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/kilavuz/kayitli-kelimeler/"
@@ -122,7 +122,7 @@
     />
     <meta
       name="twitter:description"
-      content="Kayıtlı kelimeleri tarihleri ve kapsamı belli arşiv gözlemleriyle inceleyin."
+      content="Önemsediğiniz sorguların ortalama sırasını ve değişimini yerel Search Console arşivinden, tarihleriyle izleyin."
     />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta
@@ -162,11 +162,11 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/kilavuz/kayitli-kelimeler/#article",
             "headline": "Kayıtlı kelimeler",
-            "description": "Kayıtlı kelimeleri tarihleri ve kapsamı belli arşiv gözlemleriyle inceleyin.",
+            "description": "Önemsediğiniz sorguların ortalama sırasını ve değişimini yerel Search Console arşivinden, tarihleriyle izleyin.",
             "url": "https://seowatcher.io/kilavuz/kayitli-kelimeler/",
             "inLanguage": "tr",
             "datePublished": "2026-10-22",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Ekranlar",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -201,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1497,7 +1497,7 @@
               <a href="/kilavuz/kayitli-kelimeler/">Kayıtlı kelimeler</a>
             </li>
             <li>
-              <a href="/kilavuz/analitik/">Analitik verilerini yorumlama</a>
+              <a href="/kilavuz/analitik/">Analytics verisini yorumlama</a>
             </li>
             <li><a href="/kilavuz/site-denetimi/">Site denetimi</a></li>
             <li><a href="/kilavuz/dizin-durumu/">Dizin durumu</a></li>
@@ -1518,107 +1518,172 @@
       <article id="icerik" data-page="kayitli-kelimeler">
         <h1>Kayıtlı kelimeler</h1>
         <p class="lede">
-          Kayıtlı kelimeleri tarihleri ve kapsamı belli arşiv gözlemleriyle
-          inceleyin.
+          Önemsediğiniz sorguların ortalama sırasını ve değişimini yerel Search
+          Console arşivinden, tarihleriyle izleyin.
         </p>
         <p>
-          Önemsediğiniz sorguları Arama performansı veya Sıralamalar ekranından
-          kaydedin. Kaydetmek Google'da yeni takip başlatmaz. Bu ekran yalnızca
-          seçtiğiniz kayıtları yerel arşivdeki gözlemlerle eşleştirir.
+          Önemsediğiniz sorguları <strong>Arama performansı</strong> ya da
+          <strong>Sıralama takibi</strong> ekranından kaydedersiniz. Kaydetmek
+          Google'da yeni bir takip başlatmaz. Bu ekran, kaydettiğiniz kelimeleri
+          bilgisayarınızdaki Search Console arşivinde bulunan gözlemlerle
+          eşleştirir.
         </p>
-        <h2 id="donem-ve-sayilarin-anlami">Dönem ve sayıların anlamı</h2>
+        <h2 id="donem">Dönem</h2>
         <p>
-          30, 90 veya 180 gün seçin; varsayılan 90 gündür. Güncel ve eşit
-          uzunluktaki önceki dönemin tam tarihleri gösterilir. Tarihler
-          Google'ın Pasifik takvimine göre, üç günlük gecikme varsayımıyla
-          belirlenir. Bu varsayım arşivin tam olduğunu kanıtlamaz.
+          30, 90 ya da 180 gün seçin; varsayılan 90 gündür. Ekran hem seçili
+          dönemin hem de bir önceki eşit dönemin tam tarihlerini yazar. Tarihler
+          Google'ın Pasifik takvimine göre ve üç günlük veri gecikmesi
+          varsayılarak belirlenir. Bu varsayım arşivin eksiksiz olduğunu
+          kanıtlamaz.
         </p>
+        <h2 id="ust-kartlar">Üst kartlar</h2>
+        <ul>
+          <li>
+            <strong>Metin ve etiket filtresine uyan kayıtlar:</strong> Filtreden
+            geçen kayıtlı kelime sayısı.
+          </li>
+          <li>
+            <strong>Gözlenen kelimeler:</strong> Arşivde en az bir gözlemi
+            olanlar.
+          </li>
+          <li>
+            <strong>Belirgin gerileyenler</strong> ve yükselenler: İki dönemde
+            karşılaştırılabilen, en az 0,5 sıra hareket eden kelimeler.
+          </li>
+          <li>
+            <strong>Sıra bilinmiyor:</strong> Bu dönemde sıra kanıtı olmayan
+            kayıtlar.
+          </li>
+        </ul>
         <p>
-          Kartlar metin ve etiket filtresine uyan kayıtları, gözlenen kayıtları,
-          karşılaştırılabilen belirgin hareketleri ve sıra kanıtı olmayan
-          kayıtları gösterir. Sıra çubukları aynı tabanı kullanır; gruba
-          tıklamak tabloyu daraltır. Toplam site sorgusu veya arama hacmi
-          değildir. İki farklı pazar kaydı iki kayıt sayılır; gözlemler tüm
-          ülkeler ve cihazları kapsar.
-        </p>
-        <p>
-          Ortalama sıra gösterimle ağırlıklandırılır. Türkçe büyük/küçük harf ve
-          art arda boşluklar eşleştirilir; I/ı ile İ/i ayrımı korunur. Aynı
-          gruptaki ham sorguların ortalamaları gösterimleriyle birleştirilir.
-          Eksik sıra sıfır veya kesin sıralama kaybı sayılmaz. Belirgin
-          yükseliş/gerileme en az 0,5 sıradır; küçük hareketler satır
-          ayrıntısında görülebilir. Karşılaştırma yok ile değişmedi farklıdır.
-        </p>
-        <h2 id="listeyi-inceleyin">Listeyi inceleyin</h2>
-        <p>
-          Tabloda kelime, ortalama sıra, değişim, gösterimler ve etiketler
-          bulunur. Telefonda temel ölçüler kelimenin altında görünür. Kelimeye
-          tıklayın: Arşiv ayrıntısı aynı dönemleri, ham eşleşmeleri, önceki
-          sırayı, gözlenen günleri ve kayıtlı pazar bilgisini açıklar. Eklenme
-          tarihi ve varsa eski amaç bilgisi ayrıntıda korunur; amaç yeni
-          ölçülmez. İkinci bağlantı canlı Arama performansında son 28 günde
-          metni içeren sorguları arar; aynı arşiv ölçümünü açtığı
-          varsayılmamalıdır.
-        </p>
-        <p>
-          İçeren terimlerin tümü eşleşmelidir; içermeyen terimlerden hiçbiri
-          bulunmamalıdır. Her kutuda en fazla 20 terim vardır. Seçilen en fazla
-          50 etiketten herhangi biri yeterlidir; bu, projede yalnızca 50 etiket
-          olabileceği anlamına gelmez. Etiket yanındaki sayılar tüm projedeki
-          atamalardır. Filtreler, sıra grubu, dönem, sıralama ve sayfa URL'de
-          saklanır. Tümünü temizle boş gruptan da çıkmanızı sağlar.
-        </p>
-        <h2 id="eksik-veriyi-onarin">Eksik veriyi onarın</h2>
-        <p>
-          Bağlantı yok, hiç aktarılmamış arşiv, kısmi arşiv ve okuma hatası ayrı
-          açıklanır. Listeyi yenile yalnızca yerel veritabanını okur. Yeni
-          Google verisi için Sıralamalar'da arşivi güncelle yolunu kullanın;
-          bağlantı yoksa önce Search Console'u bağlayın. Google bazı nadir
-          sorguları döndürmez; arşivde gözlem yokluğu Google'da hiç
-          görünmediğinizin kanıtı değildir.
-        </p>
-        <h2 id="disa-aktarim-ve-toplu-islemler">
-          Dışa aktarım ve toplu işlemler
-        </h2>
-        <p>
-          CSV ve E-Tablolar aynı filtrelenen kayıtları ve ölçüm alanlarını
-          aktarır. İlk sütunlar kelime, amaç, etiketler ve eklenme olarak
-          korunur; sıra, önceki sıra, değişim, durum, gözlenen günler, tam
-          tarihler, kapsam, ham eşleşmeler, kayıt kimliği ve anlık görüntü
-          bilgisi eklenir. Bilinmeyen ölçüler boş kalır. Veri aktarım sırasında
-          değişirse yeniden başlatmanız gerekir.
+          Bu sayılar sitenin toplam sorgu sayısı ya da arama hacmi değildir.
+          Aynı kelimeyi iki farklı pazar için kaydettiyseniz iki kayıt sayılır.
+          Gözlemler ise her zaman tüm ülke ve cihazları kapsar; kayıtlı pazar
+          bir arşiv filtresi değildir.
         </p>
         <p>
-          Seçim yalnızca mevcut sayfadadır. Liste yenilenirken veya filtre
-          uygulanırken eski satırlara toplu işlem yapılamaz. Silme onay ister;
-          etiket düzenleme kelimeleri silmez. Varsayılan sıralama eklenme
-          tarihidir; sıra, hareket, gösterim ve kelimeye göre de
-          sıralayabilirsiniz. Gerileyenleri incele yalnızca karşılaştırılabilen
-          belirgin gerilemeleri inceleme sırasına koyar; neden veya sonuç
-          garantisi vermez.
-        </p>
-        <p>
-          <strong>Günlük gözlemler.</strong> Arşiv ayrıntısında günlük
-          gözlemleri açıkça isteyebilirsiniz. Aynı tarih aralığı ve eşleştirme
-          kullanılır; eksik günler grafikte boş kalır. Tarihleri klavyeyle
-          inceleyebilir, günlük değerleri metin olarak açabilirsiniz.
+          <strong>Sıra 1–3</strong>, <strong>Sıra 4–10</strong>,
+          <strong>Sıra 11–20</strong> ve <strong>Sıra 21+</strong> çubukları
+          aynı tabanı kullanır. Bir gruba tıklamak tabloyu o gruba daraltır.
         </p>
         <p>
           Karşılaştırılabilir kelime yoksa hareket kartında sıfır yerine
-          Karşılaştırma yok görünür. Tüm kayıtlı kelimeler gözlendiyse Sıra
-          bilinmiyor kartı eksik gözlem uyarısı vermez. Sonuç yoksa hareket ve
-          bilinmeyen sıra kartlarının düğmeleri devre dışıdır.
+          <strong>Karşılaştırma yok</strong> yazar. Sonuç yoksa hareket ve
+          <strong>Sıra bilinmiyor</strong> kartlarının düğmeleri kapalıdır.
+        </p>
+        <h2 id="sira-nasil-hesaplanir">Sıra nasıl hesaplanır</h2>
+        <ul>
+          <li>Ortalama sıra gösterimle ağırlıklandırılır.</li>
+          <li>
+            Eşleştirmede büyük-küçük harf ve art arda boşluklar yok sayılır.
+            Türkçedeki I/ı ve İ/i ayrımı korunur.
+          </li>
+          <li>
+            Kayıtlı kelimeyle eşleşen ham sorguların ortalamaları
+            gösterimleriyle birleştirilir.
+          </li>
+          <li>Eksik sıra sıfır ya da kesin bir sıra kaybı sayılmaz.</li>
+          <li>
+            0,5 sıradan küçük hareketler yalnızca satırın ayrıntısında görünür.
+          </li>
+          <li>
+            <strong>Karşılaştırma yok</strong> ile &quot;değişmedi&quot;
+            farklıdır: ilkinde iki dönemden birinde gözlem yoktur.
+          </li>
+        </ul>
+        <h2 id="liste-ve-ayrinti">Liste ve ayrıntı</h2>
+        <p>
+          Tabloda <strong>Kelime</strong>, <strong>Ortalama sıra</strong>,
+          <strong>Değişim</strong>, <strong>Gösterimler</strong> ve
+          <strong>Etiketler</strong> sütunları vardır. Telefonda temel ölçüler
+          kelimenin altında görünür.
+        </p>
+        <p>
+          Bir kelimeye tıklayınca <strong>Arşiv ayrıntısı</strong> açılır: aynı
+          dönemler, eşleşen ham sorgular, önceki sıra, gözlenen gün sayısı ve
+          kayıtlı pazar. Kelimenin eklenme tarihi ve varsa eski amaç bilgisi de
+          burada durur; arama amacı yeniden ölçülmez.
+        </p>
+        <p>
+          <strong>Günlük arşiv gözlemlerini göster</strong> günlük grafiği açar.
+          Eksik günler grafikte boş kalır. Günler arasında klavyeyle
+          gezinebilir, <strong>Günlük değerler</strong> ile değerleri metin
+          olarak okuyabilirsiniz.
+        </p>
+        <p>
+          <strong>Arama performansında ara (canlı dönem)</strong> bağlantısı
+          başka bir şey yapar: Arama performansında son 28 günde bu metni içeren
+          sorguları arar. Arşiv ayrıntısıyla aynı ölçümü açmaz.
+        </p>
+        <h2 id="arama-etiket-ve-siralama">Arama, etiket ve sıralama</h2>
+        <ul>
+          <li>
+            Arama kutusuna yazdığınız terimlerin tümü eşleşmelidir. Hariç
+            tutulan terimlerden hiçbiri bulunmamalıdır. Her kutuya en fazla 20
+            terim girilir.
+          </li>
+          <li>
+            Etiket filtresinde en fazla 50 etiket seçebilirsiniz; seçilenlerden
+            birini taşıyan kelime listelenir. Projedeki etiket sayısı 50 ile
+            sınırlı değildir. Etiketin yanındaki sayı tüm projedeki atamaları
+            gösterir.
+          </li>
+          <li>
+            Varsayılan sıralama eklenme tarihidir. Sıra, hareket, gösterim ve
+            kelimeye göre de sıralayabilirsiniz.
+          </li>
+          <li>
+            Filtreler, sıra grubu, dönem, sıralama ve sayfa adres çubuğunda
+            saklanır. <strong>Temizle</strong> tüm filtreleri kaldırır.
+          </li>
+        </ul>
+        <p>
+          <strong>Gerileyenleri incele</strong>, karşılaştırılabilen belirgin
+          gerilemeleri inceleme sırasına koyar. Gerilemenin nedenini söylemez.
+        </p>
+        <h2 id="toplu-islemler">Toplu işlemler</h2>
+        <p>
+          Seçim yalnızca görünen sayfadaki satırları kapsar. Liste yenilenirken
+          ya da filtre uygulanırken toplu işlem yapılamaz.
+          <strong>Etiketle</strong> seçili kelimelere etiket ekler ya da
+          kaldırır; kelimeleri silmez. Kelime ve etiket silmek onay ister.
+          Etiketi silmek kelimelere dokunmaz.
+        </p>
+        <h2 id="disa-aktarma">Dışa aktarma</h2>
+        <p>
+          <strong>CSV indir</strong> ve <strong>E-Tablolar'a aktar</strong>,
+          filtrelenmiş kayıtları ve ölçüm alanlarını aktarır. İlk sütunlar
+          kelime, amaç, etiketler ve eklenme tarihidir. Ardından sıra, önceki
+          sıra, değişim, durum, gözlenen günler, tarihler, kapsam, eşleşen ham
+          sorgular, kayıt kimliği ve anlık görüntü bilgisi gelir. Bilinmeyen
+          ölçüler boş kalır. Veri aktarım sırasında değişirse aktarımı yeniden
+          başlatın.
+        </p>
+        <h2 id="eksik-veri">Eksik veri</h2>
+        <p>
+          Ekran dört durumu ayrı açıklar: Search Console bağlı değil, arşiv hiç
+          aktarılmamış, arşiv kısmi, okuma hatası.
+        </p>
+        <p>
+          <strong>Listeyi yenile</strong> yalnızca yerel veritabanını okur.
+          Google'dan yeni veri almak için
+          <strong>Sıralama takibi</strong> ekranındaki arşiv güncellemesini
+          kullanın; Search Console bağlı değilse önce onu bağlayın.
+        </p>
+        <p>
+          Google bazı düşük hacimli sorguları hiç döndürmez. Arşivde gözlem
+          olmaması, Google'da hiç görünmediğiniz anlamına gelmez.
         </p>
         <nav class="pager" aria-label="Önceki ve sonraki sayfa">
           <a class="pager-prev" rel="prev" href="/kilavuz/firsatlar/"
             ><span>Önceki</span><strong>Fırsatlar</strong></a
           ><a class="pager-next" rel="next" href="/kilavuz/analitik/"
             ><span>Sonraki</span
-            ><strong>Analitik verilerini yorumlama</strong></a
+            ><strong>Analytics verisini yorumlama</strong></a
           >
         </nav>
         <p class="meta">
-          Son güncelleme: 28 Ekim 2026. Bir hata görürseniz
+          Son güncelleme: 29 Ekim 2026. Bir hata görürseniz
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1630,16 +1695,16 @@
       <nav class="toc" aria-label="Bu sayfada">
         <p class="toc-label">Bu sayfada</p>
         <ol>
+          <li><a href="#donem">Dönem</a></li>
+          <li><a href="#ust-kartlar">Üst kartlar</a></li>
+          <li><a href="#sira-nasil-hesaplanir">Sıra nasıl hesaplanır</a></li>
+          <li><a href="#liste-ve-ayrinti">Liste ve ayrıntı</a></li>
           <li>
-            <a href="#donem-ve-sayilarin-anlami">Dönem ve sayıların anlamı</a>
+            <a href="#arama-etiket-ve-siralama">Arama, etiket ve sıralama</a>
           </li>
-          <li><a href="#listeyi-inceleyin">Listeyi inceleyin</a></li>
-          <li><a href="#eksik-veriyi-onarin">Eksik veriyi onarın</a></li>
-          <li>
-            <a href="#disa-aktarim-ve-toplu-islemler"
-              >Dışa aktarım ve toplu işlemler</a
-            >
-          </li>
+          <li><a href="#toplu-islemler">Toplu işlemler</a></li>
+          <li><a href="#disa-aktarma">Dışa aktarma</a></li>
+          <li><a href="#eksik-veri">Eksik veri</a></li>
         </ol>
       </nav>
     </main>

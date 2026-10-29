@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1519,17 +1519,17 @@
                 >Parole chiave salvate</a
               >
             </li>
-            <li>
-              <a href="/it/guide/analisi/">Interpretare i dati di analisi</a>
-            </li>
+            <li><a href="/it/guide/analisi/">Capire i dati di Analytics</a></li>
             <li>
               <a href="/it/guide/controllo-del-sito/">Controllo del sito</a>
             </li>
-            <li><a href="/it/guide/stato-indice/">Stato dell'indice</a></li>
+            <li>
+              <a href="/it/guide/stato-indice/">Stato dell'indicizzazione</a>
+            </li>
             <li><a href="/it/guide/rapporti/">Report e modelli</a></li>
             <li>
               <a href="/it/guide/informazioni-progetto/"
-                >Informazioni sul progetto</a
+                >Contesto del progetto</a
               >
             </li>
             <li><a href="/it/guide/impostazioni/">Impostazioni</a></li>
@@ -1542,7 +1542,7 @@
             </li>
             <li>
               <a href="/it/guide/configurazione-assistente/"
-                >Configurazione dell'assistente</a
+                >Configurazione dell'agente</a
               >
             </li>
             <li>
@@ -1562,20 +1562,16 @@
           sicurezza, porta.
         </p>
         <p>
-          Al termine l'app sarà installata sul computer e aperta nel browser.
-          L'installazione richiede due minuti. Viene installata solo per il
-          proprio account utente e non servono i permessi di amministratore. Se
-          manca il componente Visual C++, il permesso viene chiesto una sola
-          volta.
+          L'installazione richiede circa due minuti; al termine l'app si apre
+          nel browser. Con l'opzione consigliata l'app viene installata solo per
+          l'account corrente e non servono i permessi di amministratore.
         </p>
         <p>
-          L'interfaccia dell'app esiste in sei lingue: turco, inglese, tedesco,
-          francese, italiano e portoghese. La lingua si sceglie in Impostazioni
-          → Aspetto → Lingua. In questa guida pulsanti e schermate hanno il nome
-          che portano nell'interfaccia in italiano. La procedura di
-          installazione esiste solo in turco e in inglese, il menu dell'area di
-          notifica solo in turco. Lì il nome mostrato è seguito dal significato
-          italiano tra parentesi.
+          L'interfaccia dell'app è disponibile in sei lingue; la lingua si
+          sceglie in <strong>Impostazioni → Aspetto → Lingua</strong>. La
+          procedura di installazione esiste solo in turco e in inglese, il menu
+          dell'area di notifica solo in turco: in questa pagina il nome
+          originale è seguito dalla traduzione tra parentesi.
         </p>
         <h2 id="cosa-serve">Cosa serve</h2>
         <ul>
@@ -1585,16 +1581,11 @@
             l'app installata 313 MB.
           </li>
           <li>Un browser come Edge, Chrome o Firefox.</li>
+          <li>Non servono Docker, Node né il terminale.</li>
           <li>
-            Non servono Docker, Node né il terminale (la finestra dei comandi).
-            Non servono nemmeno i diritti di amministratore: vengono chiesti una
-            sola volta, e solo se manca il componente Visual C++.
-          </li>
-          <li>
-            Il motore dell'app richiede il pacchetto Visual C++ di Microsoft. Se
-            il computer non lo ha, l'installazione lo aggiunge da sé e chiede
-            una volta il permesso di amministratore. L'app viene installata
-            nella cartella <code>%LOCALAPPDATA%\Programs\seowatcher</code>.
+            Il motore dell'app richiede il pacchetto Microsoft Visual C++. Se
+            manca, l'installazione lo aggiunge e chiede una sola volta il
+            permesso di amministratore.
           </li>
         </ul>
         <h2 id="passaggi">Passaggi</h2>
@@ -1615,25 +1606,24 @@
             Windows non riconosce l'autore. L'avviso è normale.
           </li>
           <li>
-            Se si desidera, confrontare l'impronta SHA-256 del file (la sua
-            impronta digitale) con quella di <code>SHA256SUMS.txt</code> nella
-            pagina delle versioni.
+            Facoltativo: confrontare l'impronta SHA-256 del file con quella
+            indicata in <code>SHA256SUMS.txt</code> nella pagina delle versioni.
           </li>
           <li>
-            La procedura di installazione esiste in turco e in inglese. Se
-            chiede la lingua, scegliere <strong>English</strong>; i passi
-            seguenti riportano i nomi inglesi. Nella pagina di benvenuto
-            scegliere <strong>Next</strong> (Avanti).
+            Se la procedura chiede la lingua, scegliere
+            <strong>English</strong>: i passi seguenti riportano i nomi inglesi.
+            Nella pagina di benvenuto scegliere <strong>Next</strong> (Avanti).
           </li>
           <li>
             Alla domanda &quot;per chi installare&quot; scegliere
             <strong>Install for me only</strong> (Installa solo per me). È
-            l'opzione consigliata: l'installazione riguarda solo il proprio
-            account. L'opzione <strong>Install for all users</strong> (Installa
-            per tutti gli utenti) richiede il permesso di amministratore.
+            l'opzione consigliata: l'app viene installata in
+            <code>%LOCALAPPDATA%\Programs\seowatcher</code>. L'opzione
+            <strong>Install for all users</strong> (Installa per tutti gli
+            utenti) richiede il permesso di amministratore.
           </li>
           <li>
-            Guardare le due opzioni
+            Controllare le due opzioni
             <strong>Start seowatcher when Windows starts</strong> (Avvia
             seowatcher all'avvio di Windows) e
             <strong>Create a desktop shortcut</strong> (Crea un collegamento sul
@@ -1649,38 +1639,34 @@
             si apre.
           </li>
           <li>
-            Attendere. Il primo avvio dura 20-30 secondi. Il testo dell'icona
-            nella barra delle applicazioni cambia in ordine: &quot;Anahtarlar
-            hazırlanıyor&quot; (Preparazione delle chiavi), &quot;Veritabanı
-            güncelleniyor&quot; (Aggiornamento del database), &quot;Sunucu
-            başlatılıyor&quot; (Avvio del server). Se l'icona non si vede, fare
-            clic sulla freccia ^ nella barra delle applicazioni. Quando è tutto
-            pronto, il browser si apre da solo. Se invece l'app parte con
-            Windows, il browser non si apre e compare un fumetto
-            &quot;seowatcher hazır&quot; (seowatcher è pronto).
-          </li>
-          <li>
-            Nel browser si apre da solo <code>http://127.0.0.1:3001</code>.
-            127.0.0.1 è il computer stesso, 3001 è il numero di porta
-            (l'indirizzo interno del servizio).
+            Il primo avvio dura 20-30 secondi. Il testo dell'icona nell'area di
+            notifica cambia in quest'ordine: &quot;Anahtarlar hazırlanıyor&quot;
+            (Preparazione delle chiavi), &quot;Veritabanı güncelleniyor&quot;
+            (Aggiornamento del database), &quot;Sunucu başlatılıyor&quot; (Avvio
+            del server). Quando è tutto pronto, il browser apre
+            <code>http://127.0.0.1:3001</code>: 127.0.0.1 indica il computer
+            stesso, 3001 è il numero di porta. Se l'app parte insieme a Windows,
+            il browser non si apre e compare la notifica &quot;seowatcher
+            hazır&quot; (seowatcher è pronto).
           </li>
         </ol>
-        <p>Il passaggio successivo è la guida al collegamento con Google.</p>
-        <h3 id="menu-della-barra-delle-applicazioni">
-          Menu della barra delle applicazioni
-        </h3>
         <p>
-          Fare clic con il tasto destro sull'icona. Se non si vede, fare clic
-          sulla freccia ^ nella barra delle applicazioni. Il menu è diviso in
-          quattro parti. In alto ci sono l'apertura dell'app e la riga di stato,
-          poi l'aggiornamento e il riavvio, poi due impostazioni, e in fondo le
-          voci per la risoluzione dei problemi.
+          Il passaggio successivo è il
+          <a href="/it/guide/collegamento-google/">collegamento con Google</a>.
+        </p>
+        <h3 id="menu-dell-area-di-notifica">Menu dell'area di notifica</h3>
+        <p>
+          Il menu si apre con un clic destro sull'icona di seowatcher. Se
+          l'icona non è visibile, fare clic sulla freccia ^ nella barra delle
+          applicazioni. Il menu ha quattro parti: apertura dell'app e riga di
+          stato; aggiornamento e riavvio; tre impostazioni; voci per la
+          risoluzione dei problemi.
         </p>
         <ul>
           <li>
             <strong>seowatcher'ı aç</strong> (Apri seowatcher): apre l'app nel
             browser. Un doppio clic sull'icona fa lo stesso. Se l'app si sta
-            ancora avviando, compare il fumetto &quot;seowatcher açılıyor&quot;
+            ancora avviando, compare la notifica &quot;seowatcher açılıyor&quot;
             (seowatcher si sta avviando) e il browser si apre da solo quando è
             pronta.
           </li>
@@ -1700,12 +1686,13 @@
             <strong>Güncelle</strong> (Aggiorna): è sempre nel menu. Un clic
             controlla subito GitHub. Se c'è una nuova versione la scarica e la
             installa, altrimenti dice &quot;Güncel&quot; (Aggiornato). Durante
-            il controllo la voce riporta &quot;Verifica in corso…&quot;, durante
-            lo scaricamento &quot;Güncelleme indiriliyor: X.Y.Z (%45)&quot;
-            (Scaricamento dell'aggiornamento: X.Y.Z (45%)); in quel momento non
-            si può fare clic. Quando una nuova versione è già stata trovata, la
-            voce riporta &quot;Güncelle: X.Y.Z sürümü hazır&quot; (Aggiorna: la
-            versione X.Y.Z è pronta); i numeri di versione sono esempi.
+            il controllo la voce riporta &quot;Kontrol ediliyor…&quot; (Verifica
+            in corso…), durante lo scaricamento &quot;Güncelleme indiriliyor:
+            X.Y.Z (%45)&quot; (Scaricamento dell'aggiornamento: X.Y.Z (45%)); in
+            quel momento non si può fare clic. Quando una nuova versione è già
+            stata trovata, la voce riporta &quot;Güncelle: X.Y.Z sürümü
+            hazır&quot; (Aggiorna: la versione X.Y.Z è pronta); i numeri di
+            versione sono esempi.
           </li>
           <li>
             <strong>Yeniden başlat</strong> (Riavvia): chiude l'app e la riapre.
@@ -1725,6 +1712,11 @@
             sola una nuova versione quando ne trova una.
           </li>
           <li>
+            <strong>Windows bildirimleri</strong> (Notifiche di Windows): attiva
+            per impostazione predefinita; vedere
+            <a href="#notifiche-di-windows">Notifiche di Windows</a> più sotto.
+          </li>
+          <li>
             <strong>Kurulumu onar</strong> (Ripara l'installazione): elimina i
             file temporanei, controlla che il pacchetto sia completo e riapre
             l'app. Durante la riparazione la voce riporta
@@ -1736,7 +1728,7 @@
             processore, la versione di Visual C++, una prova del motore, il
             modulo difettoso del registro eventi di Windows, i file di dump dei
             crash e le ultime righe del registro. Le informazioni sono pronte in
-            pochi secondi, poi compare il fumetto &quot;Copiato&quot;. Torna
+            pochi secondi, poi compare la notifica &quot;Copiato&quot;. Torna
             utile quando si segnala un problema.
           </li>
           <li>
@@ -1769,7 +1761,7 @@
         </p>
         <p>
           Se il server si chiude da solo mentre è in esecuzione, l'app lo riapre
-          e mostra il fumetto &quot;seowatcher yeniden başlatılıyor&quot;
+          e mostra la notifica &quot;seowatcher yeniden başlatılıyor&quot;
           (seowatcher si sta riavviando). Se si chiude tre volte in dieci
           minuti, l'app smette di riaprirlo e la riga di stato riporta
           &quot;Sunucu 10 dakikada üç kez kapandı&quot; (Il server si è chiuso
@@ -1786,7 +1778,7 @@
           indiriliyor&quot; (Scaricamento dell'aggiornamento) e &quot;Güncelleme
           kuruluyor&quot; (Installazione dell'aggiornamento), e per un attimo
           compare una piccola finestra di installazione. Quando l'app si riapre,
-          compare il fumetto &quot;seowatcher X.Y.Z sürümüne güncellendi&quot;
+          compare la notifica &quot;seowatcher X.Y.Z sürümüne güncellendi&quot;
           (seowatcher è stato aggiornato alla versione X.Y.Z); un clic apre
           l'elenco delle novità. Anche la sezione
           <strong>Impostazioni → Informazioni</strong> dell'app segnala la nuova
@@ -1795,11 +1787,11 @@
         <ul>
           <li>
             Se non si vuole che si installi da sola, togliere la spunta a
-            <strong>Güncellemeleri kendiliğinden kur</strong> nel menu. Quando
-            esce una nuova versione si vede allora un fumetto una sola volta, e
-            la voce del menu riporta &quot;Güncelle: X.Y.Z sürümü hazır&quot;
-            (Aggiorna: la versione X.Y.Z è pronta). Per installare, fare clic
-            sul fumetto o sulla voce.
+            <strong>Güncellemeleri kendiliğinden kur</strong> nel menu. In
+            questo caso, quando esce una nuova versione compare una sola
+            notifica, e la voce del menu riporta &quot;Güncelle: X.Y.Z sürümü
+            hazır&quot; (Aggiorna: la versione X.Y.Z è pronta). Per installare,
+            fare clic sulla notifica o sulla voce.
           </li>
           <li>
             Se non c'è internet, o GitHub in quel momento non risponde, l'app
@@ -1813,8 +1805,9 @@
           <li>
             Un'installazione per tutti gli utenti del computer richiede i
             permessi di amministratore per aggiornarsi, perciò lì l'app non si
-            installa da sola. Quando esce una nuova versione si vede un fumetto;
-            facendo clic, Windows chiede il permesso di amministratore.
+            installa da sola. Quando esce una nuova versione compare una
+            notifica; facendo clic, Windows chiede il permesso di
+            amministratore.
           </li>
           <li>
             Per aggiornare a mano, scaricare dallo stesso indirizzo il nuovo
@@ -1859,8 +1852,8 @@
             <strong>Registro dell'installazione</strong>: ogni installazione
             scrive nel file
             <code>%LOCALAPPDATA%\seowatcher\logs\setup.log</code>. Con
-            <code>/LOG=&quot;yol&quot;</code> (yol significa percorso) si può
-            indicare un altro file.
+            <code>/LOG=&quot;percorso&quot;</code> si può indicare un altro
+            file.
           </li>
           <li>
             <strong>Disinstallazione silenziosa</strong>:
@@ -1878,12 +1871,10 @@
         </ul>
         <h3 id="riparazione">Riparazione</h3>
         <p>
-          Se qualcosa si blocca, fare clic con il tasto destro sull'icona e
-          scegliere <strong>Kurulumu onar</strong> (Ripara l'installazione); se
-          l'icona non si vede, fare clic sulla freccia ^ nella barra delle
-          applicazioni. L'app elimina i file temporanei e controlla che il
-          pacchetto sia completo. Poi, aprendosi, esegue di nuovo
-          l'aggiornamento del database.
+          Se qualcosa si blocca, scegliere
+          <strong>Kurulumu onar</strong> (Ripara l'installazione) nel menu
+          dell'area di notifica. Oltre a quanto descritto nel menu, all'apertura
+          successiva l'app esegue di nuovo l'aggiornamento del database.
         </p>
         <p>
           Se un file del pacchetto è stato eliminato (per esempio messo in
@@ -1905,21 +1896,21 @@
         </ol>
         <p>
           Il programma di disinstallazione elimina il programma, il collegamento
-          nel menu Start la voce &quot;avvia con Windows&quot; (anche se è stata
-          attivata dal menu) e i file di aggiornamento scaricati. Non tocca la
-          cartella dei dati, e la finestra di disinstallazione lo dice. Per
-          eliminare anche il database, il collegamento con Google e i report,
-          cancellare a mano la cartella dei dati.
+          nel menu Start, la voce &quot;avvia con Windows&quot; (anche se è
+          stata attivata dal menu) e i file di aggiornamento scaricati. Non
+          tocca la cartella dei dati, e la finestra di disinstallazione lo dice.
+          Per eliminare anche il database, il collegamento con Google e i
+          report, cancellare a mano la cartella dei dati.
         </p>
         <h3 id="dove-sono-i-dati-e-come-si-fa-la-copia-di-sicurezza">
           Dove sono i dati e come si fa la copia di sicurezza
         </h3>
         <p>
           Tutto si trova in una sola cartella:
-          <code>%LOCALAPPDATA%\seowatcher</code>. Scrivere questo testo nella
-          barra degli indirizzi di Esplora file. Anche la voce di menu
-          <strong>Veri klasörünü aç</strong> (Apri la cartella dei dati) porta
-          lì. Dentro ci sono:
+          <code>%LOCALAPPDATA%\seowatcher</code>. Per aprirla, digitare il
+          percorso nella barra degli indirizzi di Esplora file oppure scegliere
+          <strong>Veri klasörünü aç</strong> (Apri la cartella dei dati) nel
+          menu. Dentro ci sono:
         </p>
         <ul>
           <li>
@@ -1931,8 +1922,8 @@
             Google. Se si perde, il collegamento con Google va rifatto da capo.
           </li>
           <li>
-            <code>mcp-token</code>: la password che l'assistente di intelligenza
-            artificiale usa per collegarsi all'app.
+            <code>mcp-token</code>: il token con cui l'agente IA si collega
+            all'app.
           </li>
           <li>
             <code>server.env</code>, <code>config.json</code>,
@@ -1954,7 +1945,7 @@
         <p>
           L'app usa il numero 3001. Se un altro programma lo occupa, l'app
           sceglie il primo numero libero tra 3002 e 3010 solo per quell'avvio e
-          mostra il fumetto &quot;3001 numarası dolu, 3002 kullanılıyor&quot;
+          mostra la notifica &quot;3001 numarası dolu, 3002 kullanılıyor&quot;
           (La porta 3001 è occupata, si usa la 3002). Non salva questo numero.
           Quando la 3001 torna libera, all'avvio successivo l'app usa di nuovo
           la 3001, perché gli indirizzi di reindirizzamento su Google contengono
@@ -1982,17 +1973,16 @@
           </li>
         </ol>
         <p>
-          Quando il numero cambia, aggiornare con il nuovo numero anche i due
-          indirizzi di reindirizzamento su Google. Sono descritti nella guida al
-          collegamento con Google.
+          Quando il numero cambia, occorre aggiornare anche i due indirizzi di
+          reindirizzamento registrati in Google (vedere
+          <a href="/it/guide/collegamento-google/">Collegamento con Google</a>).
         </p>
         <h2 id="verifica">Verifica</h2>
         <ul>
           <li>
             Passando il mouse sull'icona nella barra delle applicazioni deve
             comparire &quot;seowatcher X.Y.Z: Çalışıyor:
-            http://127.0.0.1:3001/&quot;. Il numero iniziale è la versione
-            installata. 0.5.0 Alpha è un esempio.
+            http://127.0.0.1:3001/&quot;. X.Y.Z è la versione installata.
           </li>
           <li>
             Nel browser l'indirizzo
@@ -2000,10 +1990,10 @@
             che inizia con &quot;status&quot;:&quot;ok&quot;.
           </li>
           <li>
-            Nella schermata <strong>Aiuto</strong> la scheda &quot;Stato della
-            configurazione&quot; deve dire &quot;Sembra tutto a posto.&quot;.
-            Finché Google non è collegato, la riga &quot;Accesso a Google&quot;
-            segnala un problema. È normale.
+            Nella schermata <strong>Aiuto</strong>, la scheda
+            <strong>Stato dell'app</strong> non deve segnalare errori. Finché
+            Google non è collegato, la riga dell'accesso a Google resta in
+            avviso: è normale.
           </li>
         </ul>
         <h2 id="domande-frequenti">Domande frequenti</h2>
@@ -2018,27 +2008,24 @@
           sola.
         </p>
         <p>
-          <strong>Si può aprire da un altro computer?</strong> No, ed è voluto.
-          L'app ascolta solo l'indirizzo 127.0.0.1. Per aprirla a Internet
-          bisogna metterle davanti una propria autenticazione.
+          <strong>Si può aprire da un altro computer?</strong> No, per scelta:
+          l'app ascolta solo l'indirizzo 127.0.0.1. Per esporla su Internet
+          occorre anteporle un proprio sistema di autenticazione.
         </p>
         <p>
           <strong>Si può passare dalla versione Docker a questa?</strong> Sì, ma
           i dati non vengono spostati da soli. I progetti si ricreano e Google
-          si ricollega. L'archivio di Search Console si riempie di nuovo al
-          primo avvio.
+          si ricollega. L'archivio di Search Console si riempie di nuovo con gli
+          ultimi 16 mesi di Google quando si apre Rendimento della ricerca o
+          Monitoraggio del posizionamento.
         </p>
         <p>
-          <strong>L'antivirus ha dato un avviso.</strong> Poiché il file non è
-          firmato, alcuni antivirus segnalano un avviso. Scaricare il file solo
+          <strong>L'antivirus ha segnalato il file.</strong> Il file non è
+          firmato, quindi alcuni antivirus lo segnalano. Scaricare il file solo
           dalla pagina delle versioni su GitHub e confrontare l'impronta
           SHA-256.
         </p>
         <h2 id="se-qualcosa-non-va">Se qualcosa non va</h2>
-        <p>
-          Se l'icona non si vede, fare clic sulla freccia ^ nella barra delle
-          applicazioni.
-        </p>
         <ul>
           <li>
             <strong
@@ -2088,19 +2075,13 @@
         </ul>
         <h2 id="notifiche-di-windows">Notifiche di Windows</h2>
         <p>
-          Fai clic destro sull’icona seowatcher nell’area di notifica e usa
-          <strong>Windows bildirimleri</strong> (attiva per impostazione
-          predefinita). Finché il programma di avvio è in esecuzione, le
-          verifiche completate o non riuscite di tutti i progetti e i nuovi
-          annunci appaiono come fumetti Windows entro circa 90 secondi, anche
-          con il browser chiuso o in secondo piano. Un clic apre la pagina
-          relativa; più eventi vengono riuniti. Il primo avvio ignora gli eventi
-          precedenti; il riavvio non ripete quelli già ricevuti. Gli eventi
-          ricevuti con le notifiche disattivate non vengono mostrati in seguito.
-          Le nuove versioni seguono l’impostazione di aggiornamento esistente.
-          La modalità Concentrazione/Non disturbare può nascondere le notifiche.
-          Nessuna notifica con il programma di avvio chiuso. Questa funzione non
-          è disponibile in Docker.
+          Con <strong>Windows bildirimleri</strong> (Notifiche di Windows) nel
+          menu dell'area di notifica, attiva per impostazione predefinita, i
+          controlli completati o non riusciti e i nuovi annunci compaiono come
+          notifiche di Windows entro circa 90 secondi, anche a browser chiuso.
+          Le notifiche arrivano solo mentre il programma di avvio è in
+          esecuzione. I dettagli sono in
+          <a href="/it/guide/impostazioni/">Impostazioni</a>.
         </p>
         <nav class="pager" aria-label="Pagina precedente e successiva">
           <a class="pager-prev" rel="prev" href="/it/guide/cos-e-seowatcher/"
@@ -2113,12 +2094,12 @@
           >
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 29 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 29 ottobre 2026. Ha trovato un errore?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >segnalarlo su GitHub</a
+            >Lo segnali su GitHub</a
           >.
         </p>
       </article>

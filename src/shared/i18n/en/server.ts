@@ -44,7 +44,7 @@ export const enServer: Catalog = {
     "This report is not compatible with the selected Google Analytics property (HTTP 400).",
   "Google Analytics bağlantısının süresi dolmuş ya da iptal edilmiş. Ayarlar'dan yeniden bağlayın.":
     "The Google Analytics connection has expired or was revoked. Reconnect it in Settings.",
-  "Google Analytics bu mülke erişimi reddetti (HTTP 403). Bağlı hesaba ya da hizmet hesabına mülkte en az Görüntüleyen yetkisi verin.":
+  "Google Analytics bu mülke erişimi reddetti (HTTP 403). Bağlı hesaba ya da hizmet hesabına mülkte en az Görüntüleyici yetkisi verin.":
     "Google Analytics denied access to this property (HTTP 403). Give the connected account or service account at least Viewer access on the property.",
   "Google Analytics mülkü bulunamadı (HTTP 404). Mülk silinmiş ya da taşınmış olabilir; Ayarlar'dan yeniden seçin.":
     "Google Analytics property not found (HTTP 404). It may have been deleted or moved; choose it again in Settings.",
@@ -78,9 +78,9 @@ export const enServer: Catalog = {
     "This audit can't be deleted right now. Wait for it to finish and try again.",
   "Denetimin Lighthouse çıktıları silinemedi; denetim silinmedi. Lütfen tekrar deneyin.":
     "Couldn't delete the audit's Lighthouse results, so the audit was not deleted. Please try again.",
-  "Google Analytics bu hizmet hesabına izin vermedi. İki şey gerekiyor: Google Cloud projenizde Google Analytics Admin API etkin olmalı, ve GA4 mülkünüzde Yönetici → Erişim yönetimi altında {email} adresi Görüntüleyen olarak ekli olmalı.":
+  "Google Analytics bu hizmet hesabına izin vermedi. İki şey gerekiyor: Google Cloud projenizde Google Analytics Admin API etkin olmalı, ve GA4 mülkünüzde Yönetici → Erişim yönetimi altında {email} adresi Görüntüleyici olarak ekli olmalı.":
     "Google Analytics denied access to this service account. Two things are needed: the Google Analytics Admin API must be enabled in your Google Cloud project, and {email} must be added as a Viewer under Admin → Access management in your GA4 property.",
-  "Google Analytics bu hizmet hesabına izin vermedi. Google Analytics Admin API'yi etkinleştirin ve hesabın adresini GA4 mülkünüze Görüntüleyen olarak ekleyin.":
+  "Google Analytics bu hizmet hesabına izin vermedi. Google Analytics Admin API'yi etkinleştirin ve hesabın adresini GA4 mülkünüze Görüntüleyici olarak ekleyin.":
     "Google Analytics denied access to this service account. Enable the Google Analytics Admin API and add the account's address to your GA4 property as a Viewer.",
   "Bu Google hesabı seowatcher hesabınıza bağlı değil.":
     "This Google account isn't connected to your seowatcher account.",

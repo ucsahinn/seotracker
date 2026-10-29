@@ -1,35 +1,70 @@
 ---
 title: Mots-clés enregistrés
-description: Examiner les mots-clés enregistrés avec dates et couverture des archives.
+description: Suivre vos mots-clés enregistrés avec les observations datées de l’archive Search Console locale, leur évolution de position et leur couverture.
 screen: Kayıtlı kelimeler
 route: /p/<proje>/saved
 updated: 2026-10-27
 ---
 
-Enregistrez les requêtes importantes depuis Performance de recherche ou Classements. Cela ne lance pas un suivi Google : cette page relie vos enregistrements aux observations de l'archive locale.
+Vous enregistrez les requêtes qui comptent pour vous depuis **Performances de recherche** ou **Suivi des classements**. L’enregistrement ne lance aucun suivi chez Google : cet écran rapproche vos mots-clés des observations de l’archive Search Console conservée sur votre ordinateur.
 
-## Dates et chiffres
+## Période
 
-Choisissez 30, 90 ou 180 jours, avec 90 par défaut. Les dates exactes de la période et de la période précédente de même durée sont affichées. Le calendrier est celui du Pacifique, avec un retard supposé de trois jours ; cela ne garantit pas une archive complète.
+Choisissez 30, 90 ou 180 jours ; 90 par défaut. L’écran indique les dates exactes de la période choisie et de la période précédente de même durée. Les dates suivent le calendrier du Pacifique de Google, avec un retard supposé de trois jours. Cette hypothèse ne garantit pas que l’archive est complète.
 
-Les cartes comptent les enregistrements correspondant au texte et aux étiquettes, ceux observés, les mouvements significatifs comparables et les positions inconnues. Les barres de position utilisent cette même base et filtrent le tableau. Il ne s'agit ni du volume de recherche ni de toutes les requêtes du site. Les marchés enregistrés gardent leurs identités, mais les observations couvrent tous les pays et appareils.
+## Cartes du haut
 
-La position est pondérée par les impressions. Les espaces sont regroupés et la casse suit les règles turques, avec I/ı distinct de İ/i. Les variantes brutes sont combinées selon leurs impressions. Une donnée absente n'est ni une position zéro ni une perte prouvée. Un mouvement significatif atteint 0,5 position ; les petits changements restent visibles dans le détail. Sans comparaison et inchangé sont différents.
+- **Enregistrements correspondant aux filtres de texte et d’étiquettes** : nombre de mots-clés enregistrés retenus par les filtres.
+- **Mots-clés observés** : ceux qui ont au moins une observation dans l’archive.
+- **Baisses marquées** et hausses : mots-clés comparables sur les deux périodes, qui ont bougé d’au moins 0,5 position.
+- **Position inconnue** : enregistrements sans observation de position sur la période.
 
-## Examiner la liste
+Ces nombres ne sont ni le nombre total de requêtes du site ni un volume de recherche. Un même mot enregistré pour deux marchés compte comme deux enregistrements. Les observations, elles, couvrent toujours tous les pays et tous les appareils : le marché enregistré ne filtre pas l’archive.
 
-Le tableau présente mot, position moyenne, changement, impressions et étiquettes. Sur téléphone, les mesures sont sous le mot. Le détail d'archive reprend les mêmes dates, variantes, moyenne précédente, jours observés et marché enregistré. La date d'ajout et l'ancienne intention éventuelle restent dans le détail ; aucune intention nouvelle n'est mesurée. Le lien secondaire ouvre une recherche par texte contenu sur les 28 derniers jours de Performance de recherche, pas une mesure d'archive identique.
+Les barres **Positions 1–3**, **Positions 4–10**, **Positions 11–20** et **Positions 21 et plus** reposent sur la même base. Cliquer sur un groupe restreint le tableau à ce groupe.
 
-Tous les termes inclus doivent correspondre ; aucun terme exclu ne doit apparaître. Chaque champ accepte 20 termes. Une étiquette sélectionnée suffit, avec 50 sélections au maximum, sans limiter le nombre d'étiquettes du projet. Leurs compteurs sont globaux au projet. Filtres, groupe, période, tri et page restent dans l'URL. Tout effacer retire aussi un groupe actif vide.
+Sans mot-clé comparable, la carte des mouvements affiche **Aucune comparaison** au lieu de zéro. Sans résultat correspondant, les boutons des cartes de mouvements et **Position inconnue** sont désactivés.
 
-## Archive et export
+## Calcul de la position
 
-Déconnexion, absence d'import, archive partielle et erreur de lecture sont expliquées séparément. Actualiser la liste ne lit que la base locale. Pour de nouvelles données Google, utilisez l'actualisation d'archive dans Classements. Google peut masquer des requêtes rares ; leur absence ne prouve pas l'absence du site dans la recherche.
+- La position moyenne est pondérée par les impressions.
+- La correspondance ignore la casse et les espaces répétés. La distinction turque entre I/ı et İ/i est conservée.
+- Les moyennes des requêtes brutes qui correspondent au mot-clé sont combinées selon leurs impressions.
+- Une position absente n’est ni une position zéro ni la preuve d’un recul.
+- Un mouvement est marqué à partir de 0,5 position ; les mouvements plus petits figurent dans le détail de la ligne.
+- « Aucune comparaison » diffère de « inchangé » : il manque une observation sur l’une des deux périodes.
 
-CSV et Sheets utilisent les mêmes enregistrements filtrés. Mot, intention, étiquettes et ajout restent les premières colonnes. S'ajoutent positions actuelle/précédente, changement, état, jours, dates, couverture, variantes, portée, marché, ID et instantané. Les mesures inconnues restent vides. Un changement pendant l'export impose de recommencer.
+## Liste et détail
 
-La sélection concerne cette page seulement. Les actions sur anciennes lignes sont bloquées pendant filtrage ou actualisation. La suppression demande confirmation. Le tri par défaut reste la date d'ajout ; position, mouvement, impressions et mot sont disponibles. L'ordre des baisses significatives aide l'enquête sans prouver leur cause.
+Le tableau présente le mot-clé, la position moyenne, la variation, les impressions et les étiquettes. Sur téléphone, les mesures principales s’affichent sous le mot-clé.
 
-**Observations quotidiennes.** Demandez explicitement le détail quotidien dans les détails d’archive. Les dates et la règle de correspondance restent identiques. Les jours absents restent des trous ; navigation au clavier et liste textuelle des valeurs sont disponibles.
+Un clic sur un mot-clé ouvre les **Détails des archives** : mêmes périodes, requêtes brutes correspondantes, position précédente, nombre de jours observés et marché enregistré. La date d’ajout et l’éventuelle ancienne intention de recherche y figurent aussi ; l’intention n’est pas mesurée de nouveau.
 
-Sans mots-clés comparables, la carte des mouvements affiche Aucune comparaison au lieu de zéro. Si tous les mots-clés ont été observés, la carte Position inconnue ne signale pas d’observations manquantes. Les boutons des cartes de mouvements et de positions inconnues sont désactivés sans résultat correspondant.
+**Afficher les observations quotidiennes des archives** ouvre le graphique quotidien. Les jours manquants y restent vides. Le clavier permet de parcourir les jours, et **Valeurs quotidiennes** donne les valeurs sous forme de texte.
+
+Le lien **Rechercher dans Performances de recherche (période en direct)** fait autre chose : il cherche, dans Performances de recherche, les requêtes des 28 derniers jours qui contiennent ce texte. Il n’ouvre pas la même mesure que le détail des archives.
+
+## Recherche, étiquettes et tri
+
+- Tous les termes saisis dans la zone de recherche doivent correspondre, et aucun terme exclu ne doit apparaître. Chaque zone accepte 20 termes au plus.
+- Le filtre d’étiquettes accepte 50 étiquettes sélectionnées au plus ; un mot-clé portant l’une d’elles est listé. Le nombre d’étiquettes du projet n’est pas limité à 50. Le nombre affiché à côté d’une étiquette compte ses attributions dans tout le projet.
+- Le tri par défaut suit la date d’ajout. Vous pouvez aussi trier par position, mouvement, impressions ou mot-clé.
+- Les filtres, le groupe de positions, la période, le tri et la page sont conservés dans la barre d’adresse. **Effacer** retire tous les filtres.
+
+**Examiner les baisses** place en tête les baisses marquées comparables, pour les examiner. Il n’en donne pas la cause.
+
+## Actions groupées
+
+La sélection ne porte que sur les lignes de la page affichée. Les actions groupées sont bloquées pendant l’actualisation de la liste ou l’application d’un filtre. **Étiqueter** ajoute ou retire des étiquettes aux mots-clés sélectionnés, sans les supprimer. La suppression d’un mot-clé ou d’une étiquette demande confirmation ; supprimer une étiquette ne supprime pas les mots-clés.
+
+## Export
+
+**Télécharger au format CSV** et **Exporter vers Google Sheets** exportent les enregistrements filtrés et leurs mesures. Les premières colonnes sont le mot-clé, l’intention, les étiquettes et la date d’ajout. Suivent la position, la position précédente, la variation, l’état, les jours observés, les dates, la couverture, les requêtes brutes correspondantes, l’identifiant et l’instantané. Les mesures inconnues restent vides. Si les données changent pendant l’export, relancez-le.
+
+## Données manquantes
+
+L’écran distingue quatre situations : Search Console non connecté, archive jamais importée, archive partielle, erreur de lecture.
+
+**Actualiser la liste** ne lit que la base locale. Pour obtenir de nouvelles données de Google, utilisez la mise à jour de l’archive dans **Suivi des classements** ; si Search Console n’est pas connecté, connectez-le d’abord.
+
+Google ne renvoie pas certaines requêtes rares. L’absence d’observation dans l’archive ne signifie pas que votre site n’apparaît jamais dans Google.

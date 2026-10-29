@@ -13,6 +13,8 @@
     },
   ],
   "observability": { "enabled": true },
+  // Workers AI drafts the English copy in the admin composer.
+  "ai": { "binding": "AI" },
   "d1_databases": [
     {
       "binding": "DB",

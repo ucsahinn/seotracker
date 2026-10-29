@@ -14,7 +14,7 @@
     <title>Guida di seowatcher: installazione, schermate, problemi</title>
     <meta
       name="description"
-      content="Guide di seowatcher: installazione, schermate, collegamento con Google, regole del controllo, assistente e risoluzione dei problemi."
+      content="Guide di seowatcher: installazione, schermate, collegamento con Google, regole del controllo, configurazione dell’agente e risoluzione dei problemi."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/it/guide/" />
@@ -83,7 +83,7 @@
     />
     <meta
       property="og:description"
-      content="Guide di seowatcher: installazione, schermate, collegamento con Google, regole del controllo, assistente e risoluzione dei problemi."
+      content="Guide di seowatcher: installazione, schermate, collegamento con Google, regole del controllo, configurazione dell’agente e risoluzione dei problemi."
     />
     <meta
       property="og:image"
@@ -111,7 +111,7 @@
     />
     <meta
       name="twitter:description"
-      content="Guide di seowatcher: installazione, schermate, collegamento con Google, regole del controllo, assistente e risoluzione dei problemi."
+      content="Guide di seowatcher: installazione, schermate, collegamento con Google, regole del controllo, configurazione dell’agente e risoluzione dei problemi."
     />
     <meta
       name="twitter:image"
@@ -154,7 +154,7 @@
             "@type": "CollectionPage",
             "@id": "https://seowatcher.io/it/guide/#page",
             "name": "Guida",
-            "description": "Guide di seowatcher: installazione, schermate, collegamento con Google, regole del controllo, assistente e risoluzione dei problemi.",
+            "description": "Guide di seowatcher: installazione, schermate, collegamento con Google, regole del controllo, configurazione dell’agente e risoluzione dei problemi.",
             "url": "https://seowatcher.io/it/guide/",
             "inLanguage": "it",
             "dateModified": "2026-10-29",
@@ -230,7 +230,7 @@
               {
                 "@type": "TechArticle",
                 "@id": "https://seowatcher.io/it/guide/analisi/#article",
-                "headline": "Interpretare i dati di analisi",
+                "headline": "Capire i dati di Analytics",
                 "url": "https://seowatcher.io/it/guide/analisi/"
               },
               {
@@ -242,7 +242,7 @@
               {
                 "@type": "TechArticle",
                 "@id": "https://seowatcher.io/it/guide/stato-indice/#article",
-                "headline": "Stato dell'indice",
+                "headline": "Stato dell'indicizzazione",
                 "url": "https://seowatcher.io/it/guide/stato-indice/"
               },
               {
@@ -254,7 +254,7 @@
               {
                 "@type": "TechArticle",
                 "@id": "https://seowatcher.io/it/guide/informazioni-progetto/#article",
-                "headline": "Informazioni sul progetto",
+                "headline": "Contesto del progetto",
                 "url": "https://seowatcher.io/it/guide/informazioni-progetto/"
               },
               {
@@ -278,7 +278,7 @@
               {
                 "@type": "TechArticle",
                 "@id": "https://seowatcher.io/it/guide/configurazione-assistente/#article",
-                "headline": "Configurazione dell'assistente",
+                "headline": "Configurazione dell'agente",
                 "url": "https://seowatcher.io/it/guide/configurazione-assistente/"
               },
               {
@@ -316,7 +316,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1618,17 +1618,17 @@
                 >Parole chiave salvate</a
               >
             </li>
-            <li>
-              <a href="/it/guide/analisi/">Interpretare i dati di analisi</a>
-            </li>
+            <li><a href="/it/guide/analisi/">Capire i dati di Analytics</a></li>
             <li>
               <a href="/it/guide/controllo-del-sito/">Controllo del sito</a>
             </li>
-            <li><a href="/it/guide/stato-indice/">Stato dell'indice</a></li>
+            <li>
+              <a href="/it/guide/stato-indice/">Stato dell'indicizzazione</a>
+            </li>
             <li><a href="/it/guide/rapporti/">Report e modelli</a></li>
             <li>
               <a href="/it/guide/informazioni-progetto/"
-                >Informazioni sul progetto</a
+                >Contesto del progetto</a
               >
             </li>
             <li><a href="/it/guide/impostazioni/">Impostazioni</a></li>
@@ -1641,7 +1641,7 @@
             </li>
             <li>
               <a href="/it/guide/configurazione-assistente/"
-                >Configurazione dell'assistente</a
+                >Configurazione dell'agente</a
               >
             </li>
             <li>
@@ -1657,8 +1657,8 @@
         <h1>Guida di seowatcher</h1>
         <p class="lede">
           Ogni passaggio e ogni schermata, dall'installazione al primo report,
-          spiegati in modo breve e semplice. L'app si chiama seotracker su
-          GitHub e seowatcher su questo sito; è la stessa app.
+          spiegati in breve. L'app si chiama seotracker su GitHub e seowatcher
+          su questo sito; è la stessa app.
         </p>
         <h2 id="per-iniziare">Per iniziare</h2>
         <ul class="index">
@@ -1666,7 +1666,7 @@
             <a href="/it/guide/cos-e-seowatcher/">Che cos'è seowatcher?</a
             ><span
               >seowatcher è un'app SEO gratuita e open source che riunisce
-              Search Console, GA4, controllo del sito e PageSpeed sul tuo
+              Search Console, GA4, controllo del sito e PageSpeed sul Suo
               computer.</span
             >
           </li>
@@ -1691,17 +1691,17 @@
           <li>
             <a href="/it/guide/collegamento-google/">Collegamento con Google</a
             ><span
-              >Collega Search Console e GA4 con il tuo account di servizio
-              Google Cloud o client OAuth, poi scegli le proprietà di ogni
+              >Collegare Search Console e GA4 con un account di servizio Google
+              Cloud o un client OAuth, poi scegliere le proprietà di ogni
               progetto.</span
             >
           </li>
           <li>
             <a href="/it/guide/chiave-pagespeed/">Chiave PageSpeed</a
             ><span
-              >Salvare la chiave API di PageSpeed Insights, verificare le
-              richieste di prova e capire quote e contatori durante il controllo
-              del sito.</span
+              >Salvare la chiave API di PageSpeed Insights, interpretare la
+              prova della chiave e capire quote e contatori del controllo del
+              sito.</span
             >
           </li>
         </ul>
@@ -1710,16 +1710,17 @@
           <li>
             <a href="/it/guide/progetti/">Progetti</a
             ><span
-              >Progetti aiuta a scegliere un sito e completare le connessioni.
-              Ogni progetto conserva le proprie proprietà Google, verifiche e
-              rapporti.</span
+              >Progetti elenca i siti monitorati e indica le connessioni
+              mancanti. Ogni progetto ha proprietà Google, controlli e report
+              propri.</span
             >
           </li>
           <li>
             <a href="/it/guide/pannello/">Pannello</a
             ><span
-              >La panoramica riunisce traffico di ricerca, prossime attività
-              supportate dai dati e limiti delle fonti.</span
+              >Il Pannello riunisce traffico di ricerca, prossime attività
+              basate sui dati, stato del controllo e risultati Analytics del
+              progetto.</span
             >
           </li>
           <li>
@@ -1735,32 +1736,33 @@
             <a href="/it/guide/monitoraggio-posizioni/"
               >Monitoraggio del posizionamento</a
             ><span
-              >Seguire le posizioni medie Google delle ricerche e le variazioni.
-              L’archivio locale conserva i dati anche oltre il limite di 16
-              mesi.</span
+              >Seguire la posizione media su Google delle query e le sue
+              variazioni. L'archivio locale conserva i dati oltre i 16 mesi di
+              Search Console.</span
             >
           </li>
           <li>
             <a href="/it/guide/opportunita/">Opportunità</a
             ><span
               >Quale pagina curare prima: le pagine già visibili su Google,
-              ordinate per limite massimo di clic in più dai dati Search
-              Console, con il lavoro suggerito.</span
+              ordinate per clic aggiuntivi massimi secondo Search Console, con
+              il lavoro suggerito.</span
             >
           </li>
           <li>
             <a href="/it/guide/parole-chiave-salvate/">Parole chiave salvate</a
             ><span
-              >Esaminare le parole chiave salvate con date e copertura
-              dell’archivio. Capire osservazioni, dati mancanti e variazioni nel
-              periodo scelto.</span
+              >Seguire le parole chiave salvate nell'archivio locale: periodi,
+              osservazioni, dati mancanti, variazioni di posizione ed
+              esportazione.</span
             >
           </li>
           <li>
-            <a href="/it/guide/analisi/">Interpretare i dati di analisi</a
+            <a href="/it/guide/analisi/">Capire i dati di Analytics</a
             ><span
-              >Analytics mostra visite, coinvolgimento ed eventi chiave misurati
-              nella proprietà GA4.</span
+              >Leggere sessioni, coinvolgimento, eventi chiave ed entrate GA4
+              del sito, controllare la misurazione ed esportare le righe
+              necessarie.</span
             >
           </li>
           <li>
@@ -1772,35 +1774,35 @@
             >
           </li>
           <li>
-            <a href="/it/guide/stato-indice/">Stato dell'indice</a
+            <a href="/it/guide/stato-indice/">Stato dell'indicizzazione</a
             ><span
-              >Google ha incluso ogni pagina nella ricerca? Se no, perché, e
-              quando l'ha visitata l'ultima volta? Si possono fare al massimo
-              2.000 richieste al giorno.</span
+              >Google ha inserito ogni pagina nell'indice? Se no, perché, e
+              quando l'ha scansionata l'ultima volta? Al massimo 2.000 richieste
+              al giorno.</span
             >
           </li>
           <li>
             <a href="/it/guide/rapporti/">Report e modelli</a
             ><span
-              >Salvare i report di controllo, ricerca e assistente in singoli
-              file HTML. Aprirli sul telefono, stamparli o condividerli tramite
-              e-mail.</span
+              >Salvare report di ricerca, controllo e agente come file HTML
+              singoli, ritrovarli, stamparli in PDF e condividerli; modelli e
+              limiti.</span
             >
           </li>
           <li>
-            <a href="/it/guide/informazioni-progetto/"
-              >Informazioni sul progetto</a
+            <a href="/it/guide/informazioni-progetto/">Contesto del progetto</a
             ><span
-              >Conservare obiettivi e note del progetto in locale per te e per
-              un assistente collegato. Capire la portata delle note e i loro
-              limiti.</span
+              >Contesto del progetto conserva in locale obiettivi, concorrenti e
+              note che Lei e un agente collegato possono usare. Limiti e
+              salvataggio.</span
             >
           </li>
           <li>
             <a href="/it/guide/impostazioni/">Impostazioni</a
             ><span
-              >Ambito di browser, installazione e progetto; credenziali Google,
-              contatori e versioni.</span
+              >Che cosa vale per il browser, per l'installazione o per il
+              progetto: lingua, credenziali Google, chiave PageSpeed, limiti,
+              aggiornamenti.</span
             >
           </li>
         </ul>
@@ -1809,9 +1811,8 @@
           <li>
             <a href="/it/guide/aiuto/">Aiuto</a
             ><span
-              >Se qualcosa va storto, guardare prima qui: controlla
-              l'installazione, propone soluzioni ai problemi comuni e prepara il
-              file per la segnalazione.</span
+              >Il primo posto da controllare quando qualcosa non funziona: stato
+              dell'installazione, problemi comuni e pacchetto diagnostico.</span
             >
           </li>
           <li>
@@ -1824,10 +1825,10 @@
           </li>
           <li>
             <a href="/it/guide/configurazione-assistente/"
-              >Configurazione dell'assistente</a
+              >Configurazione dell'agente</a
             ><span
-              >Collegare un assistente SEO in sicurezza, verificare una nuova
-              chiamata e usare le competenze per controllare il sito e scrivere
+              >Collegare un agente IA a seowatcher tramite MCP, verificare la
+              connessione, proteggere il token e usare le skill per controlli e
               report.</span
             >
           </li>
@@ -1837,25 +1838,25 @@
             ><span
               >I problemi più comuni, con sintomo, causa e soluzione: porta
               occupata, avviso di Windows, errori di Google, quota, controllo
-              bloccato, assistente 401.</span
+              bloccato, agente 401.</span
             >
           </li>
           <li>
             <a href="/it/guide/note-di-rilascio/">Note di versione</a
             ><span
-              >seowatcher 0.8.6 Alpha (29 ottobre 2026): nuovo controllo del
+              >seowatcher 0.8.7 Alpha (29 ottobre 2026): nuovo controllo del
               sito con 202 regole, sei lingue, notifiche e dati Google più
               precisi.</span
             >
           </li>
         </ul>
         <p class="meta">
-          Ultimo aggiornamento: 29 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 29 ottobre 2026. Ha trovato un errore?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >segnalarlo su GitHub</a
+            >Lo segnali su GitHub</a
           >.
         </p>
       </article>

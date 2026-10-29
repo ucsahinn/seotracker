@@ -1,32 +1,43 @@
 ---
-title: Assistent einrichten
-description: Agent sicher verbinden, einen neuen Werkzeugaufruf prüfen und SEO-Fähigkeiten nutzen.
+title: Agent einrichten
+description: KI-Agenten wie Claude Code oder Codex sicher über MCP verbinden, einen neuen Werkzeugaufruf bestätigen und die SEO-Skills nutzen.
 kind: nasil-yapilir
 updated: 2026-10-27
 ---
 
-Die Assistenten-Einrichtung verbindet einen KI-Assistenten wie Claude Code, Codex oder Cursor über MCP (Model Context Protocol) mit seowatcher. Danach liest der Assistent Ihre Search-Console-, Analytics- und Audit-Daten aus der App auf Ihrem Computer, startet Audits und schreibt Berichte. Was der Assistent liest, kann an dessen Anbieter gehen.
+Über MCP (Model Context Protocol) liest ein KI-Agent wie Claude Code, Codex oder Cursor Ihre Search-Console-, Analytics- und Audit-Daten direkt aus der App auf Ihrem Computer. Er kann außerdem Audits starten und Berichte schreiben. Beachten Sie: Was der Agent liest, kann an seinen Anbieter übertragen werden.
 
 ## Agent verbinden
 
-Öffnen Sie die Agent-Einrichtung. Wählen Sie Claude Code, Codex oder Andere und kopieren Sie den Einrichtungstext. Pfeile, Pos1 und Ende ändern nur die Auswahl. Der Text enthält kein tatsächliches Token; der Agent verwendet das lokale Geheimnis. Eine Neuinstallation ist eine getrennte Option.
+1. Öffnen Sie in der App den Bildschirm **Agent-Einrichtung**.
+2. Wählen Sie **Claude Code**, **Codex** oder **Andere**. Pfeiltasten, Pos1 und Ende wechseln nur die Auswahl, ohne etwas zu kopieren.
+3. Klicken Sie auf **Einrichtungsbefehl kopieren** und geben Sie den Text Ihrem Agenten.
 
-## Neuen Aufruf prüfen
+Der Einrichtungsbefehl enthält kein Token; der Agent liest das lokale Geheimnis der Installation selbst. Für eine Installation von Grund auf gibt es die separate Option **Neueinrichtung**.
 
-Starten Sie die Verbindungsprüfung und bitten Sie den Agenten um einen seowatcher-Werkzeugaufruf. Die Seite prüft den lokalen Verlauf alle fünf Sekunden, höchstens 60 Sekunden lang. Ein alter Aufruf bestätigt keine neue Einrichtung. Ausgeblendeter Tab, Lesefehler oder Abbruch stoppen die Abfrage. Ohne neuen Aufruf prüfen Sie den MCP-Status im Client und versuchen es erneut. Das beweist keinen Verbindungsfehler.
+## Verbindung bestätigen
 
-Verbunden und letzter Aufruf beschreiben vergangene Nutzung, keine dauerhafte Sitzung. Bei unbekanntem Status erneut lesen. Der Werkzeugzugriff gilt installationsweit.
+Klicken Sie auf **Verbindung bestätigen** und bitten Sie den Agenten, ein beliebiges seowatcher-Werkzeug aufzurufen. Die Seite sieht 60 Sekunden lang alle fünf Sekunden im lokalen Aufrufverlauf nach. Nur ein neuer Aufruf bestätigt die Einrichtung; ein älterer zählt nicht. Die Abfrage stoppt, wenn Sie den Tab wechseln, ein Lesefehler auftritt oder Sie abbrechen.
+
+Erscheint kein neuer Aufruf, prüfen Sie den MCP-Status in Ihrem Client und versuchen Sie es erneut. Das allein beweist noch keinen Verbindungsfehler.
+
+„Verbunden“ und „letzter Aufruf“ beschreiben vergangene Nutzung, keine dauerhaft offene Sitzung. Ist der Status nicht lesbar, wählen Sie **Status erneut lesen**. Der Werkzeugzugriff gilt für die ganze Installation, nicht nur für das im Browser geöffnete Projekt.
 
 ## Token schützen
 
-Bevorzugen Sie den Einrichtungstext. Manuell gehört `Authorization: Bearer <token>` nur in das lokale Geheimnisfeld des Clients. PowerShell kopiert ohne Bildschirmausgabe:
+Verwenden Sie nach Möglichkeit den Einrichtungsbefehl. Richten Sie den Agenten von Hand ein, gehört `Authorization: Bearer <token>` ausschließlich in das lokale Feld für geheime Header Ihres Clients. Diese PowerShell-Befehle kopieren das Token, ohne es anzuzeigen:
 
-Windows: `(Get-Content "$env:LOCALAPPDATA\seowatcher\mcp-token").Trim() | Set-Clipboard`
+Windows-Paket: `(Get-Content "$env:LOCALAPPDATA\seowatcher\mcp-token").Trim() | Set-Clipboard`
 
 Docker: `(docker compose exec -T seotracker cat /app/.wrangler/mcp-token).Trim() | Set-Clipboard`
 
-Danach in das lokale Feld einfügen und die Zwischenablage löschen. Kein Token in Chat, Terminalausgabe, Screenshots oder Quelltext. Der Tray-Menüpunkt zum Datenordner führt zur Windows-Datei.
+Fügen Sie das Token in das lokale Feld ein und leeren Sie danach die Zwischenablage. Das Token gehört nie in einen Chat, eine Terminalausgabe, einen Screenshot oder Quellcode. Im Windows-Paket führt **Veri klasörünü aç** (Datenordner öffnen) im Tray-Menü zur Token-Datei.
 
-## Fähigkeiten und Fehler
+## Skills und Fehlerbehebung
 
-Der Fähigkeiten-Tab zeigt SEO-Abläufe. Der Einrichtungstext installiert sie; der Aktualisierungstext erneuert sie. Claude Code: /seo-audit; Codex: $seo-audit. Bei 401 den lokalen Header prüfen, bei Verbindungsablehnung App und Endpunkt prüfen. Danach MCP-Status aktualisieren und einen neuen Aufruf nachweisen.
+Der Reiter **Skills** listet fertige SEO-Abläufe. Der Einrichtungsbefehl installiert sie; mit **Update-Befehl kopieren** bringen Sie eine bestehende Installation auf den neuesten Stand. Aufruf in Claude Code: `/seo-audit`, in Codex: `$seo-audit`.
+
+- **Fehler 401**: Prüfen Sie, ob der Client den lokalen Authorization-Header sendet.
+- **Verbindung abgelehnt**: Prüfen Sie, ob die App läuft und die MCP-Adresse stimmt.
+
+Aktualisieren Sie danach den MCP-Status im Client und bestätigen Sie einen neuen Werkzeugaufruf.

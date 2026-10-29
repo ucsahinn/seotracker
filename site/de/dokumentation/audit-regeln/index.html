@@ -104,7 +104,7 @@
       property="og:image:alt"
       content="seowatcher-Karte: das Dashboard der App mit Daten aus Search Console, Analytics 4 und dem Website-Audit, dazu eine Download-Schaltfläche für Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/de/dokumentation/audit-regeln/"
@@ -166,7 +166,7 @@
             "url": "https://seowatcher.io/de/dokumentation/audit-regeln/",
             "inLanguage": "de",
             "datePublished": "2026-10-23",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-29",
             "articleSection": "Hilfe und Nachschlagen",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -201,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1499,9 +1499,7 @@
           <p class="nav-group">Bildschirme</p>
           <ul>
             <li><a href="/de/dokumentation/projekte/">Projekte</a></li>
-            <li>
-              <a href="/de/dokumentation/uebersicht/">Übersicht (Panel)</a>
-            </li>
+            <li><a href="/de/dokumentation/uebersicht/">Übersicht</a></li>
             <li><a href="/de/dokumentation/suchleistung/">Suchleistung</a></li>
             <li>
               <a href="/de/dokumentation/ranking-verfolgung/"
@@ -1511,12 +1509,12 @@
             <li><a href="/de/dokumentation/chancen/">Chancen</a></li>
             <li>
               <a href="/de/dokumentation/gespeicherte-suchbegriffe/"
-                >Gespeicherte Suchbegriffe</a
+                >Gespeicherte Keywords</a
               >
             </li>
             <li>
               <a href="/de/dokumentation/datenanalyse/"
-                >Analysedaten verstehen</a
+                >Analytics-Daten verstehen</a
               >
             </li>
             <li>
@@ -1526,7 +1524,7 @@
             <li>
               <a href="/de/dokumentation/berichte/">Berichte und Vorlagen</a>
             </li>
-            <li><a href="/de/dokumentation/projektinfo/">Projektinfo</a></li>
+            <li><a href="/de/dokumentation/projektinfo/">Projektkontext</a></li>
             <li>
               <a href="/de/dokumentation/einstellungen/">Einstellungen</a>
             </li>
@@ -1539,7 +1537,7 @@
             </li>
             <li>
               <a href="/de/dokumentation/assistent-einrichten/"
-                >Assistent einrichten</a
+                >Agent einrichten</a
               >
             </li>
             <li>
@@ -1560,24 +1558,34 @@
         </p>
         <p>
           Das Website-Audit prüft jede Seite und die Website als Ganzes mit 202
-          Regeln: 13 kritischen, 93 Warnungen und 96 Hinweisen. Das ist die Zahl
-          der Regelkennungen in der Regelliste der App, und jede davon steht
-          unten als eigene Tabellenzeile. Die Regeln fallen in drei Gruppen.
-          <strong>Kritisch</strong> (13 Regeln) sind Fälle, in denen Google die
-          Seite nicht sehen oder nicht verstehen kann; beheben Sie diese zuerst.
-          <strong>Warnung</strong> (93 Regeln) weist auf Probleme hin, die
-          Platzierung und Klicks nach und nach senken können.
-          <strong>Hinweis</strong> (96 Regeln) zeigt kleinere Chancen zur
-          Verbesserung. In der Punktzahl haben kritische Regeln das Gewicht 40,
-          Warnungen 15 und Hinweise 3. Auch die Zahl der Seiten, die eine Regel
-          betrifft, geht in die Punktzahl ein.
+          Regeln: 13 kritischen, 93 Warnungen und 96 Hinweisen. Jede Regel steht
+          unten in einer eigenen Tabellenzeile.
+        </p>
+        <ul>
+          <li>
+            <strong>Kritisch</strong>: Google kann die Seite nicht crawlen oder
+            nicht verstehen, oder Besucher erreichen die Website nicht. Beheben
+            Sie diese Befunde zuerst.
+          </li>
+          <li>
+            <strong>Warnung</strong>: Probleme, die Rankings und Klicks nach und
+            nach senken können.
+          </li>
+          <li>
+            <strong>Hinweis</strong>: kleinere Verbesserungsmöglichkeiten.
+          </li>
+        </ul>
+        <p>
+          In die Punktzahl gehen kritische Befunde mit dem Gewicht 40 ein,
+          Warnungen mit 15 und Hinweise mit 3, jeweils zusätzlich gewichtet nach
+          dem Anteil der betroffenen Seiten.
         </p>
         <p>
-          In der Tabelle sehen Sie zu jeder Regel ihren Namen auf dem
-          Bildschirm, was sie bedeutet und den ersten Schritt zur Behebung. Der
-          vollständige Behebungstext steht auf der Problemkarte auf dem
-          Bildschirm. Die letzte Spalte ist die Regelkennung, die in der
-          CSV-Datei und in den Antworten des Assistenten erscheint.
+          Die Tabellen nennen den Namen der Regel wie auf dem Bildschirm, ihre
+          Bedeutung und den ersten Schritt zur Behebung. Die vollständige
+          Anleitung steht auf der Problemkarte in der App. Die letzte Spalte ist
+          die Regelkennung, die auch in CSV-Exporten und in den Antworten Ihres
+          KI-Agenten erscheint.
         </p>
         <h2 id="haufige-begriffe">Häufige Begriffe</h2>
         <ul>
@@ -1678,7 +1686,7 @@
                 <td>server-error</td>
               </tr>
               <tr>
-                <td>Die robots.txt-Datei liefert einen Serverfehler</td>
+                <td>robots.txt gibt einen Serverfehler zurück</td>
                 <td>
                   Kann Google die Datei nicht lesen, hört es unter Umständen
                   ganz auf, die Website zu crawlen.
@@ -1690,7 +1698,7 @@
                 <td>robots-txt-server-error</td>
               </tr>
               <tr>
-                <td>Startadresse ist durch robots.txt blockiert</td>
+                <td>Start-URL wird durch robots.txt blockiert</td>
                 <td>
                   Die Adresse, bei der der Crawl beginnt, ist in der robots.txt
                   verboten.
@@ -1702,7 +1710,7 @@
                 <td>robots-txt-blocks-start-url</td>
               </tr>
               <tr>
-                <td>Seite in der Sitemap öffnet sich nicht</td>
+                <td>Sitemap-Seite wird nicht geladen</td>
                 <td>
                   Eine Seite, von der Sie Google sagen „diese Seite gibt es“,
                   liefert einen Fehler.
@@ -1715,7 +1723,7 @@
               </tr>
               <tr>
                 <td>
-                  Eine Datei, die die Seite braucht, ist durch robots.txt
+                  Eine Datei, die die Seite benötigt, wird von robots.txt
                   blockiert
                 </td>
                 <td>
@@ -1741,7 +1749,7 @@
                 <td>mixed-content-resource</td>
               </tr>
               <tr>
-                <td>Als Hauptadresse wird eine versteckte Seite angegeben</td>
+                <td>Canonical zeigt auf eine ausgeblendete Seite</td>
                 <td>
                   Die Seite, die als Hauptadresse angegeben ist, ist vor der
                   Suche versteckt. Beide widersprechen sich.
@@ -1753,7 +1761,7 @@
                 <td>canonical-to-noindex</td>
               </tr>
               <tr>
-                <td>Google hält die Seite für leer (Soft 404)</td>
+                <td>Google behandelt die Seite als leer (Soft 404)</td>
                 <td>
                   Google betrachtet die Seite als „nicht vorhanden“ und nimmt
                   sie nicht in die Suche auf.
@@ -1786,7 +1794,7 @@
                 <td>robots-disallow-all</td>
               </tr>
               <tr>
-                <td>Die http-Adresse leitet nicht auf https weiter</td>
+                <td>http-Adresse leitet nicht auf https weiter</td>
                 <td>
                   Die http-Adresse der Website öffnet sich, ohne zur sicheren
                   Version zu wechseln. Browser zeigen „Nicht sicher“.
@@ -1798,7 +1806,7 @@
                 <td>no-https-redirect</td>
               </tr>
               <tr>
-                <td>Das SSL-Zertifikat läuft bald ab</td>
+                <td>SSL-Zertifikat läuft bald ab</td>
                 <td>
                   Das Zertifikat läuft in weniger als 14 Tagen ab. Danach öffnen
                   Browser die Website nur hinter einer ganzseitigen Warnung.
@@ -1825,7 +1833,7 @@
             </thead>
             <tbody>
               <tr>
-                <td>Anfragegrenze erreicht (429)</td>
+                <td>Ratenlimit (429) erreicht</td>
                 <td>
                   Die Website hat dem Crawler „zu viele Anfragen“ gemeldet.
                 </td>
@@ -1836,7 +1844,7 @@
                 <td>rate-limited-page</td>
               </tr>
               <tr>
-                <td>Crawl früh beendet: Anfragegrenze</td>
+                <td>Crawling vorzeitig gestoppt: Ratenbegrenzung</td>
                 <td>
                   Der Crawl wurde beendet, als die Wartezeit 30 Minuten
                   überschritt.
@@ -1860,7 +1868,7 @@
                 <td>broken-internal-link</td>
               </tr>
               <tr>
-                <td>Seite liefert beim Öffnen einen Fehler (4xx)</td>
+                <td>Seite gibt einen Fehler zurück (4xx)</td>
                 <td>Die Seite liefert einen Fehler wie „nicht gefunden“.</td>
                 <td>
                   Soll die Seite existieren, veröffentlichen Sie sie neu. Gibt
@@ -1892,7 +1900,7 @@
                 <td>redirect-loop</td>
               </tr>
               <tr>
-                <td>Seite, auf die keine andere Seite verlinkt</td>
+                <td>Seite, auf die keine Links verweisen</td>
                 <td>
                   Die Seite steht nur in der Sitemap. Google misst ihr keinen
                   Wert bei.
@@ -1913,13 +1921,13 @@
                 <td>robots-txt-unreachable</td>
               </tr>
               <tr>
-                <td>robots.txt überschreitet die Grenze von 500 KB</td>
+                <td>robots.txt überschreitet die 500-KiB-Grenze</td>
                 <td>Google liest das Ende der Datei nicht.</td>
                 <td>Kürzen Sie die Datei.</td>
                 <td>robots-txt-truncated</td>
               </tr>
               <tr>
-                <td>Seite in der Sitemap leitet weiter</td>
+                <td>Sitemap-Seite leitet weiter</td>
                 <td>
                   In der Sitemap steht eine Adresse, die auf eine andere Adresse
                   weiterleitet.
@@ -1931,7 +1939,7 @@
                 <td>sitemap-redirect-page</td>
               </tr>
               <tr>
-                <td>Adresse in der Sitemap ist durch robots.txt blockiert</td>
+                <td>Sitemap-URL wird von robots.txt blockiert</td>
                 <td>
                   Die Sitemap sagt „komm“, die robots.txt sagt „komm nicht“.
                 </td>
@@ -1948,7 +1956,7 @@
                 <td>sitemap-too-large</td>
               </tr>
               <tr>
-                <td>Die Sitemap enthält mehr als 50.000 Adressen</td>
+                <td>Sitemap hat mehr als 50.000 URLs</td>
                 <td>
                   Google akzeptiert in einer Datei höchstens 50.000 Adressen.
                 </td>
@@ -1975,7 +1983,7 @@
                 <td>sitemap-unreadable</td>
               </tr>
               <tr>
-                <td>Die Sitemap enthält ein lastmod in der Zukunft</td>
+                <td>Sitemap hat ein lastmod-Datum in der Zukunft</td>
                 <td>
                   Das Datum liegt in der Zukunft. Google hört dann auf, den
                   Datumsangaben zu vertrauen.
@@ -1984,7 +1992,7 @@
                 <td>sitemap-lastmod-future</td>
               </tr>
               <tr>
-                <td>Seite wird über das unsichere http geöffnet</td>
+                <td>Seite wird über unsicheres http geladen</td>
                 <td>Die Seite ist nicht sicher (https).</td>
                 <td>
                   Lassen Sie bei Ihrem Hoster das kostenlose SSL-Zertifikat
@@ -2011,7 +2019,7 @@
                 <td>missing-meta-description</td>
               </tr>
               <tr>
-                <td>Bilder ohne Alt-Text</td>
+                <td>Bilder ohne Alternativtext</td>
                 <td>Es steht nicht da, was die Bilder zeigen.</td>
                 <td>
                   Schreiben Sie zu jedem aussagekräftigen Bild einen kurzen
@@ -2020,8 +2028,11 @@
                 <td>images-missing-alt</td>
               </tr>
               <tr>
-                <td>Mehrere Titel-Tags (title) auf der Seite</td>
-                <td>Es gibt zwei Titel-Tags. Google wählt zufällig eines.</td>
+                <td>Die Seite hat mehr als ein Titel-Tag (&lt;title&gt;)</td>
+                <td>
+                  Es gibt mehr als ein Titel-Tag; Google entscheidet selbst,
+                  welches gilt.
+                </td>
                 <td>
                   Suchen Sie im Quelltext der Seite nach „title“ und lassen Sie
                   nur eines stehen.
@@ -2029,10 +2040,7 @@
                 <td>multiple-titles</td>
               </tr>
               <tr>
-                <td>
-                  Mehrere voneinander abweichende Meta-Beschreibungen auf der
-                  Seite
-                </td>
+                <td>Seite hat mehrere verschiedene Meta-Beschreibungen</td>
                 <td>Es gibt zwei Beschreibungen.</td>
                 <td>
                   Suchen Sie im Quelltext der Seite nach
@@ -2041,7 +2049,7 @@
                 <td>multiple-meta-descriptions</td>
               </tr>
               <tr>
-                <td>Titel-Tag ist ein Platzhaltertext</td>
+                <td>Titel-Tag ist Platzhaltertext</td>
                 <td>Der Titel ist etwas wie „Startseite“ oder „Untitled“.</td>
                 <td>
                   Schreiben Sie einen eigenen Titel, der das Thema der Seite
@@ -2083,7 +2091,7 @@
                 <td>duplicate-content</td>
               </tr>
               <tr>
-                <td>Die Angaben zur Hauptadresse widersprechen sich</td>
+                <td>Canonical-Angaben widersprechen sich</td>
                 <td>
                   Das HTML und die Antwort des Servers nennen verschiedene
                   Hauptadressen.
@@ -2095,7 +2103,9 @@
                 <td>canonical-conflict</td>
               </tr>
               <tr>
-                <td>Die als Hauptadresse angegebene Seite öffnet sich nicht</td>
+                <td>
+                  Canonical verweist auf eine Seite, die nicht geladen wird
+                </td>
                 <td>
                   Die Seite, die als Hauptadresse angegeben ist, liefert einen
                   Fehler.
@@ -2107,9 +2117,7 @@
                 <td>canonical-to-broken</td>
               </tr>
               <tr>
-                <td>
-                  Als Hauptadresse wird eine weiterleitende Seite angegeben
-                </td>
+                <td>Canonical verweist auf eine Weiterleitungsseite</td>
                 <td>
                   Die Hauptadresse ist eine Adresse, die auf eine andere Seite
                   weiterleitet.
@@ -2121,7 +2129,7 @@
                 <td>canonical-to-redirect</td>
               </tr>
               <tr>
-                <td>Google sieht auf der Seite das Versteck-Tag (noindex)</td>
+                <td>Google sieht auf der Seite ein noindex-Tag</td>
                 <td>Googles Antwort: Es hat auf der Seite noindex gesehen.</td>
                 <td>
                   Vergleichen Sie den Quelltext der Seite mit dem, was Google
@@ -2131,7 +2139,7 @@
                 <td>google-blocked-by-meta</td>
               </tr>
               <tr>
-                <td>Google hat eine andere Adresse als Hauptadresse gewählt</td>
+                <td>Google hat eine andere kanonische URL ausgewählt</td>
                 <td>Google ist Ihrer Hauptadresse nicht gefolgt.</td>
                 <td>
                   Sehen Sie sich die von Google gewählte Adresse an. Machen Sie
@@ -2141,7 +2149,7 @@
                 <td>google-chose-different-canonical</td>
               </tr>
               <tr>
-                <td>Code der Sprachversion (hreflang) ist ungültig</td>
+                <td>Sprachversionscode (hreflang) ist ungültig</td>
                 <td>
                   Es wurde ein nicht existierender Code wie „en-UK“ geschrieben.
                 </td>
@@ -2153,8 +2161,8 @@
               </tr>
               <tr>
                 <td>
-                  Die Seite listet sich zwischen den Sprachversionen nicht
-                  selbst auf (hreflang)
+                  Seite führt sich nicht selbst unter ihren Sprachversionen auf
+                  (hreflang)
                 </td>
                 <td>
                   Die Seite listet die anderen Sprachen auf, sich selbst aber
@@ -2167,9 +2175,7 @@
                 <td>hreflang-missing-self</td>
               </tr>
               <tr>
-                <td>
-                  Die Seite schaltet ihre Links mit einer robots-Anweisung aus
-                </td>
+                <td>Seite deaktiviert ihre Links mit einer Robots-Direktive</td>
                 <td>
                   Die Seite hat das Verfolgen ihrer Links ausgeschaltet
                   (nofollow).
@@ -2181,10 +2187,7 @@
                 <td>nofollow-page</td>
               </tr>
               <tr>
-                <td>
-                  Die Seite einer Seitenfolge nennt die erste Seite als
-                  Hauptadresse
-                </td>
+                <td>Paginierte Seite nennt die erste Seite als kanonisch</td>
                 <td>
                   Seite 2 nennt Seite 1 als Hauptadresse. Google ignoriert Seite
                   2.
@@ -2196,7 +2199,7 @@
                 <td>paginated-canonical-to-first-page</td>
               </tr>
               <tr>
-                <td>Sprachversion ist nicht gegenseitig verlinkt (hreflang)</td>
+                <td>Sprachversion ist nicht zurückverlinkt (hreflang)</td>
                 <td>Seite A verweist auf B, aber B verweist nicht auf A.</td>
                 <td>
                   Fügen Sie der Seite B eine hreflang-Zeile hinzu, die auf A
@@ -2206,8 +2209,8 @@
               </tr>
               <tr>
                 <td>
-                  Die Sprachversion verweist auf eine Seite, die sich nicht
-                  öffnet oder aus dem Index entfernt wurde
+                  Die Sprachversion verweist auf eine Seite, die nicht geladen
+                  wird oder nicht indexierbar ist
                 </td>
                 <td>
                   Die angegebene Sprachversion liefert einen Fehler oder ist vor
@@ -2220,10 +2223,7 @@
                 <td>hreflang-target-broken</td>
               </tr>
               <tr>
-                <td>
-                  Die Hauptadresse (canonical) zeigt auf eine andere Domain oder
-                  auf http
-                </td>
+                <td>Canonical verweist auf eine andere Domain oder auf http</td>
                 <td>
                   Die Hauptadresse zeigt auf eine andere Website oder eine
                   unsichere (http) Adresse.
@@ -2235,7 +2235,7 @@
                 <td>canonical-cross-host-or-http</td>
               </tr>
               <tr>
-                <td>Block mit strukturierten Daten ist fehlerhaft</td>
+                <td>Strukturierter Datenblock ist defekt</td>
                 <td>
                   Der Block mit strukturierten Daten (JSON-LD) lässt sich nicht
                   lesen.
@@ -2247,9 +2247,7 @@
                 <td>structured-data-invalid-json</td>
               </tr>
               <tr>
-                <td>
-                  Google hat gecrawlt, aber nicht in den Index aufgenommen
-                </td>
+                <td>Von Google gecrawlt, aber nicht indexiert</td>
                 <td>
                   Googles Antwort: Es hielt den Inhalt nicht für ausreichend.
                 </td>
@@ -2260,7 +2258,7 @@
                 <td>google-crawled-not-indexed</td>
               </tr>
               <tr>
-                <td>Google hat die Seite entdeckt, aber noch nicht gecrawlt</td>
+                <td>Von Google gefunden, aber noch nicht gecrawlt</td>
                 <td>
                   Google kennt die Adresse und hat sie in die Warteschlange
                   gestellt.
@@ -2273,8 +2271,8 @@
               </tr>
               <tr>
                 <td>
-                  Google sah doppelten Inhalt, eine Hauptadresse ist nicht
-                  angegeben
+                  Google hat doppelten Inhalt ohne angegebene kanonische URL
+                  gefunden
                 </td>
                 <td>
                   Google hat eine Kopie der Seite gefunden, und Sie haben keine
@@ -2287,7 +2285,7 @@
                 <td>google-duplicate-no-canonical</td>
               </tr>
               <tr>
-                <td>Google kennt diese Adresse überhaupt nicht</td>
+                <td>Google kennt diese URL überhaupt nicht</td>
                 <td>Die Adresse hat Google nie erreicht.</td>
                 <td>
                   Fügen Sie sie der Sitemap hinzu und senden Sie die Sitemap an
@@ -2305,7 +2303,7 @@
                 <td>google-rich-results-invalid</td>
               </tr>
               <tr>
-                <td>Die Seite meldet widersprüchliche Hauptadressen</td>
+                <td>Seite deklariert widersprüchliche Canonicals</td>
                 <td>Auf der Seite gibt es mehrere canonical-Tags.</td>
                 <td>
                   Entscheiden Sie, welches richtig ist. Schalten Sie das Plugin
@@ -2314,7 +2312,7 @@
                 <td>multiple-canonical-tags</td>
               </tr>
               <tr>
-                <td>Der Hauptinhalt der Seite lädt spät (LCP)</td>
+                <td>Der Hauptinhalt der Seite wird spät geladen (LCP)</td>
                 <td>Das größte Element kommt später als nach 4 Sekunden.</td>
                 <td>
                   Sehen Sie im PageSpeed-Bericht das größte Element an. Meist
@@ -2324,7 +2322,9 @@
                 <td>cwv-lcp-poor</td>
               </tr>
               <tr>
-                <td>Der Inhalt verrutscht beim Laden der Seite (CLS)</td>
+                <td>
+                  Inhalt verschiebt sich, während die Seite geladen wird (CLS)
+                </td>
                 <td>Der Verschiebungswert ist größer als 0,25.</td>
                 <td>
                   Geben Sie Bildern und eingebetteten Kästen Breite und Höhe.
@@ -2332,7 +2332,7 @@
                 <td>cwv-cls-poor</td>
               </tr>
               <tr>
-                <td>Die Seite antwortet spät auf Klicks (INP)</td>
+                <td>Seite reagiert langsam auf Klicks (INP)</td>
                 <td>
                   Die Antwort auf einen Klick dauert länger als 500
                   Millisekunden.
@@ -2344,7 +2344,7 @@
                 <td>cwv-inp-poor</td>
               </tr>
               <tr>
-                <td>Googles SEO-Prüfwert ist niedrig</td>
+                <td>Niedriger SEO-Audit-Score von Google</td>
                 <td>Der Lighthouse-SEO-Wert liegt unter 90.</td>
                 <td>
                   Öffnen Sie die Seite in PageSpeed Insights. Sehen Sie im
@@ -2353,7 +2353,7 @@
                 <td>lighthouse-seo-low</td>
               </tr>
               <tr>
-                <td>Die Website öffnet sich mit und ohne www</td>
+                <td>Website öffnet sich mit und ohne www</td>
                 <td>
                   Beide Adressen öffnen die Seite, keine leitet auf die andere
                   weiter. Google sieht zwei Kopien desselben Inhalts.
@@ -2365,7 +2365,7 @@
                 <td>www-and-apex-both-serve</td>
               </tr>
               <tr>
-                <td>Eine fehlende Seite antwortet mit 200 statt 404</td>
+                <td>Fehlende Seite liefert 200 statt 404</td>
                 <td>
                   Eine Adresse, die es nicht gibt, antwortet mit „OK“ (200).
                   Google wertet das als Soft 404.
@@ -2377,7 +2377,7 @@
                 <td>soft-404-on-missing-page</td>
               </tr>
               <tr>
-                <td>Das HTML der Startseite ist größer als 2 MB</td>
+                <td>HTML der Startseite ist größer als 2 MB</td>
                 <td>
                   Google verarbeitet nur die ersten 2 MB des HTML und ignoriert
                   den Rest.
@@ -2389,7 +2389,7 @@
                 <td>html-too-large</td>
               </tr>
               <tr>
-                <td>Der Server antwortet spät (TTFB)</td>
+                <td>Server sendet die erste Antwort langsam (TTFB)</td>
                 <td>
                   Das erste Byte der Startseite kam erst nach mehr als 800
                   Millisekunden.
@@ -2401,7 +2401,7 @@
                 <td>slow-ttfb</td>
               </tr>
               <tr>
-                <td>Die Seite verhindert das Zoomen</td>
+                <td>Seite sperrt das Zoomen</td>
                 <td>
                   Das Viewport-Tag schaltet das Vergrößern auf dem Smartphone
                   ab. Sehschwache Besucher können den Text nicht vergrößern.
@@ -2426,7 +2426,7 @@
                 <td>javascript-href-links</td>
               </tr>
               <tr>
-                <td>Formularfelder ohne Beschriftung</td>
+                <td>Formularfelder ohne Label</td>
                 <td>
                   Ein Screenreader kann nicht sagen, was in das Feld gehört.
                 </td>
@@ -2437,7 +2437,7 @@
                 <td>form-input-without-label</td>
               </tr>
               <tr>
-                <td>Die HTML-Struktur der Seite ist zu groß</td>
+                <td>HTML-Struktur der Seite ist zu groß</td>
                 <td>
                   Die Seite hat mehr als 1.500 HTML-Elemente. Das bremst,
                   besonders auf dem Smartphone.
@@ -2449,7 +2449,7 @@
                 <td>dom-too-large</td>
               </tr>
               <tr>
-                <td>Fast gleicher Inhalt</td>
+                <td>Nahezu doppelter Inhalt</td>
                 <td>
                   Der Hauptinhalt dieser Seiten unterscheidet sich nur in
                   wenigen Wörtern. Google zeigt womöglich nur eine davon.
@@ -2461,7 +2461,9 @@
                 <td>near-duplicate-content</td>
               </tr>
               <tr>
-                <td>In den strukturierten Daten fehlen Pflichtangaben</td>
+                <td>
+                  Erforderliche Eigenschaften fehlen in strukturierten Daten
+                </td>
                 <td>
                   Felder, die Google für diesen Typ (etwa Product oder FAQPage)
                   verlangt, fehlen. Es erscheint kein Rich Result.
@@ -2474,8 +2476,8 @@
               </tr>
               <tr>
                 <td>
-                  Die Analytics-Kennung auf den Seiten passt nicht zur
-                  verbundenen Property
+                  Analytics-ID auf den Seiten passt nicht zur verbundenen
+                  Property
                 </td>
                 <td>
                   Die Besucherdaten gehen sehr wahrscheinlich an eine andere
@@ -2500,7 +2502,7 @@
                 <td>missing-hsts</td>
               </tr>
               <tr>
-                <td>Das SSL-Zertifikat läuft in weniger als 30 Tagen ab</td>
+                <td>SSL-Zertifikat läuft in weniger als 30 Tagen ab</td>
                 <td>
                   Laut öffentlichen Zertifikatsprotokollen läuft das Zertifikat
                   innerhalb von 30 Tagen ab.
@@ -2512,7 +2514,7 @@
                 <td>ssl-expiring-soon</td>
               </tr>
               <tr>
-                <td>Die Domain läuft in weniger als 30 Tagen ab</td>
+                <td>Domain läuft in weniger als 30 Tagen ab</td>
                 <td>
                   Ohne Verlängerung stehen Website und E-Mail still. Jemand
                   anderes könnte die Domain registrieren.
@@ -2524,7 +2526,7 @@
                 <td>domain-expiring-soon</td>
               </tr>
               <tr>
-                <td>Dateien blockieren die erste Anzeige der Seite</td>
+                <td>Dateien blockieren die erste Darstellung der Seite</td>
                 <td>CSS und Skripte verzögern die erste Anzeige.</td>
                 <td>
                   Versehen Sie Skripte, die der erste Bildschirm nicht braucht,
@@ -2539,7 +2541,7 @@
                 <td>lh-unused-javascript</td>
               </tr>
               <tr>
-                <td>Bilder werden größer als nötig geladen</td>
+                <td>Bilder werden größer geladen als nötig</td>
                 <td>
                   Bilder werden größer heruntergeladen, als sie angezeigt
                   werden.
@@ -2550,7 +2552,7 @@
                 <td>lh-image-delivery</td>
               </tr>
               <tr>
-                <td>Die Seite leitet weiter, bevor sie sich öffnet</td>
+                <td>Die Seite leitet vor dem Öffnen weiter</td>
                 <td>Vor dem Öffnen der Seite gibt es Weiterleitungen.</td>
                 <td>Lassen Sie Links direkt auf die Zieladresse zeigen.</td>
                 <td>lh-document-redirects</td>
@@ -2562,7 +2564,7 @@
                 <td>lh-text-compression</td>
               </tr>
               <tr>
-                <td>Das Hauptbild ist für spätes Laden markiert</td>
+                <td>Das Hauptbild der Seite ist auf spätes Laden gesetzt</td>
                 <td>Das Hauptbild hat loading=&quot;lazy&quot;.</td>
                 <td>
                   Entfernen Sie lazy beim Hauptbild auf dem ersten Bildschirm.
@@ -2570,32 +2572,47 @@
                 <td>lh-lcp-lazy-loaded</td>
               </tr>
               <tr>
-                <td>Manche Texte haben zu wenig Farbkontrast</td>
-                <td>Text hebt sich nicht genug vom Hintergrund ab.</td>
+                <td>Einige Texte haben zu wenig Farbkontrast</td>
+                <td>
+                  Text hebt sich nicht genug vom Hintergrund ab und ist schwer
+                  lesbar.
+                </td>
                 <td>Sorgen Sie für einen Kontrast von mindestens 4,5:1.</td>
                 <td>lh-a11y-color-contrast</td>
               </tr>
               <tr>
                 <td>Bildern fehlt der Alternativtext (Lighthouse)</td>
-                <td>Im Browser gibt es Bilder ohne Alt-Text.</td>
+                <td>
+                  Im gerenderten Browserbild gibt es Bilder ohne Alt-Text, auch
+                  per JavaScript eingefügte.
+                </td>
                 <td>Schreiben Sie Alt-Text für aussagekräftige Bilder.</td>
                 <td>lh-a11y-image-alt</td>
               </tr>
               <tr>
-                <td>Formularfelder haben keine Beschriftung (Lighthouse)</td>
-                <td>Formularfelder haben keine Beschriftung.</td>
+                <td>Formularfelder haben kein Label (Lighthouse)</td>
+                <td>
+                  Lighthouse hat im gerenderten Formular Felder ohne zugeordnete
+                  Beschriftung gefunden.
+                </td>
                 <td>Verknüpfen Sie jedes Feld mit einem label-Element.</td>
                 <td>lh-a11y-label</td>
               </tr>
               <tr>
-                <td>Manche Links haben keinen lesbaren Namen</td>
-                <td>Manche Links haben keinen lesbaren Namen.</td>
+                <td>Einige Links haben keinen lesbaren Namen</td>
+                <td>
+                  Ein Screenreader kann nicht ansagen, wohin diese Links führen,
+                  etwa bei reinen Symbol-Links.
+                </td>
                 <td>Ergänzen Sie Text oder ein aria-label.</td>
                 <td>lh-a11y-link-name</td>
               </tr>
               <tr>
-                <td>Manche Schaltflächen haben keinen lesbaren Namen</td>
-                <td>Manche Schaltflächen haben keinen lesbaren Namen.</td>
+                <td>Einige Schaltflächen haben keinen lesbaren Namen</td>
+                <td>
+                  Ein Screenreader kann nicht ansagen, was diese Schaltflächen
+                  tun.
+                </td>
                 <td>Ergänzen Sie Text oder ein aria-label.</td>
                 <td>lh-a11y-button-name</td>
               </tr>
@@ -2608,7 +2625,7 @@
                 <td>lh-a11y-document-title</td>
               </tr>
               <tr>
-                <td>Zoomen ist auf dem Smartphone gesperrt (Lighthouse)</td>
+                <td>Zoomen ist auf Smartphones gesperrt (Lighthouse)</td>
                 <td>Die Viewport-Einstellung verhindert das Zoomen.</td>
                 <td>Entfernen Sie user-scalable=no und maximum-scale.</td>
                 <td>lh-a11y-meta-viewport</td>
@@ -2620,7 +2637,7 @@
                 <td>lh-is-on-https</td>
               </tr>
               <tr>
-                <td>Manche Links sind nicht crawlbar (Lighthouse)</td>
+                <td>Einige Links können nicht gecrawlt werden (Lighthouse)</td>
                 <td>Es gibt Links, denen Google nicht folgen kann.</td>
                 <td>Geben Sie jedem Link ein echtes href.</td>
                 <td>lh-crawlable-anchors</td>
@@ -2639,15 +2656,21 @@
               </tr>
               <tr>
                 <td>hreflang-Tags sind ungültig (Lighthouse)</td>
-                <td>Die hreflang-Tags sind ungültig.</td>
+                <td>
+                  Sprachcodes oder Adressen in den hreflang-Tags sind
+                  fehlerhaft.
+                </td>
                 <td>
                   Verwenden Sie gültige Sprachcodes und vollständige Adressen.
                 </td>
                 <td>lh-hreflang</td>
               </tr>
               <tr>
-                <td>Das canonical-Tag ist ungültig (Lighthouse)</td>
-                <td>Das canonical-Tag ist ungültig.</td>
+                <td>Das Canonical-Tag ist ungültig (Lighthouse)</td>
+                <td>
+                  Das Canonical-Tag ist mehrfach vorhanden, zeigt auf eine
+                  ungültige Adresse oder widerspricht anderen Angaben.
+                </td>
                 <td>
                   Behalten Sie ein einziges canonical, das auf die eigene
                   Adresse der Seite zeigt.
@@ -2674,7 +2697,7 @@
                 <td>form-action-http</td>
               </tr>
               <tr>
-                <td>Das canonical-Tag steht im Seitenkörper</td>
+                <td>Das Canonical-Tag steht im Seitenkörper</td>
                 <td>
                   Das canonical steht im body; Google beachtet es dort nicht.
                 </td>
@@ -2683,27 +2706,34 @@
               </tr>
               <tr>
                 <td>Robots-Tags widersprechen sich</td>
-                <td>Die Robots-Tags der Seite widersprechen sich.</td>
+                <td>
+                  Die Seite enthält mehrere Robots-Anweisungen mit
+                  gegensätzlichen Werten, etwa index und noindex.
+                </td>
                 <td>Behalten Sie ein einziges Robots-Tag.</td>
                 <td>robots-meta-conflict</td>
               </tr>
               <tr>
                 <td>
-                  Die Seite sagt „nicht gefunden“, antwortet aber erfolgreich
+                  Die Seite meldet „nicht gefunden“, antwortet aber erfolgreich
                 </td>
                 <td>Die Seite meldet „nicht gefunden“, liefert aber 200.</td>
                 <td>Gibt es die Seite nicht, senden Sie 404 oder 410.</td>
                 <td>page-says-not-found</td>
               </tr>
               <tr>
-                <td>Platzhaltertext (Lorem ipsum) auf der Seite</td>
+                <td>
+                  Platzhaltertext (Lorem ipsum) ist auf der Seite stehen
+                  geblieben
+                </td>
                 <td>Auf der Seite steht noch Lorem-ipsum-Blindtext.</td>
                 <td>Ersetzen Sie ihn durch echten Inhalt.</td>
                 <td>lorem-ipsum-text</td>
               </tr>
               <tr>
                 <td>
-                  Eine Folgeseite einer Liste ist aus der Suche ausgeblendet
+                  Eine Folgeseite einer paginierten Liste ist von der Suche
+                  ausgeschlossen
                 </td>
                 <td>
                   Seite 2 und folgende einer Liste sind auf noindex gesetzt.
@@ -2730,7 +2760,7 @@
                 <td>broken-external-link</td>
               </tr>
               <tr>
-                <td>Die Bilddatei ist zu groß</td>
+                <td>Bilddatei ist zu groß</td>
                 <td>Eine Bilddatei ist größer als 200 KB.</td>
                 <td>Verkleinern, komprimieren und in WebP/AVIF umwandeln.</td>
                 <td>image-file-too-large</td>
@@ -2764,7 +2794,7 @@
             </thead>
             <tbody>
               <tr>
-                <td>Serverantwort ist langsam</td>
+                <td>Langsame Serverantwort</td>
                 <td>Die erste Antwort des Servers kommt spät.</td>
                 <td>
                   Sehen Sie sich die Zeiten von Server und Datenbank an.
@@ -2773,17 +2803,13 @@
                 <td>slow-response</td>
               </tr>
               <tr>
-                <td>
-                  Seite in der Sitemap nennt eine andere Seite als Hauptadresse
-                </td>
+                <td>Sitemap-Seite nennt eine andere Seite als kanonisch</td>
                 <td>In der Sitemap steht eine Adresse, die eine Kopie ist.</td>
                 <td>In der Sitemap sollen nur Hauptadressen stehen.</td>
                 <td>sitemap-canonicalized-page</td>
               </tr>
               <tr>
-                <td>
-                  Seite in der Sitemap ist vor den Suchergebnissen versteckt
-                </td>
+                <td>Sitemap-Seite ist aus den Suchergebnissen ausgeblendet</td>
                 <td>
                   In der Sitemap steht eine Seite, die vor der Suche versteckt
                   ist.
@@ -2795,7 +2821,7 @@
                 <td>sitemap-noindex-page</td>
               </tr>
               <tr>
-                <td>Seite liegt sehr tief in der Website-Struktur</td>
+                <td>Seite liegt tief in der Website-Struktur</td>
                 <td>Die Seite ist viele Klicks von der Startseite entfernt.</td>
                 <td>
                   Setzen Sie Links aus Kategorien, Menüs oder hervorgehobenen
@@ -2804,7 +2830,7 @@
                 <td>deep-page</td>
               </tr>
               <tr>
-                <td>In der Sitemap gibt es gar keine lastmod-Angabe</td>
+                <td>Sitemap hat keine lastmod-Daten</td>
                 <td>Google kennt das Datum der letzten Änderung nicht.</td>
                 <td>
                   Schalten Sie in der Einstellung, die die Sitemap erzeugt,
@@ -2813,7 +2839,7 @@
                 <td>sitemap-lastmod-missing</td>
               </tr>
               <tr>
-                <td>Interner Link führt zu einer Weiterleitung</td>
+                <td>Interner Link verweist auf eine Weiterleitung</td>
                 <td>
                   Der Link führt zu einer alten Adresse, von der aus
                   weitergeleitet wird.
@@ -2825,10 +2851,10 @@
                 <td>internal-link-to-redirect</td>
               </tr>
               <tr>
-                <td>Zeichenkodierung ist nicht angegeben</td>
+                <td>Die Zeichenkodierung ist nicht deklariert</td>
                 <td>
-                  Sonderzeichen (etwa türkische Buchstaben) können in manchen
-                  Browsern kaputtgehen.
+                  Sonderzeichen wie Umlaute können in manchen Browsern
+                  kaputtgehen.
                 </td>
                 <td>
                   Fügen Sie am Anfang des head-Bereichs die Zeile meta
@@ -2837,13 +2863,13 @@
                 <td>missing-charset</td>
               </tr>
               <tr>
-                <td>Seitenadresse ist sehr lang</td>
+                <td>Seiten-URL ist zu lang</td>
                 <td>Die Adresse ist sehr lang und schwer zu lesen.</td>
                 <td>Halten Sie die Adresse kurz und aussagekräftig.</td>
                 <td>url-too-long</td>
               </tr>
               <tr>
-                <td>In der Adresse stehen Großbuchstaben oder Unterstriche</td>
+                <td>URL enthält Großbuchstaben oder Unterstriche</td>
                 <td>
                   Es können zwei verschiedene Schreibweisen derselben Seite
                   entstehen.
@@ -2872,7 +2898,7 @@
                 <td>multiple-h1</td>
               </tr>
               <tr>
-                <td>Auf der Seite steht fast kein Text</td>
+                <td>Seite enthält fast keinen Text</td>
                 <td>
                   Der Crawler hat keinen Text gefunden. Der Text kommt
                   möglicherweise erst später per JavaScript.
@@ -2884,7 +2910,7 @@
                 <td>thin-content</td>
               </tr>
               <tr>
-                <td>Von der Seite führt kein Link weg</td>
+                <td>Seite verlinkt nirgendwo anders</td>
                 <td>Eine Sackgasse: Von dieser Seite führt kein Weg weiter.</td>
                 <td>
                   Fügen Sie Links zu passenden Seiten, zur übergeordneten
@@ -2902,7 +2928,7 @@
                 <td>title-too-long</td>
               </tr>
               <tr>
-                <td>Titel ist zu kurz</td>
+                <td>Der Titel ist zu kurz</td>
                 <td>Der Titel beschreibt die Seite nicht.</td>
                 <td>
                   Schreiben Sie einen Titel mit 30 bis 60 Zeichen, der sagt, was
@@ -2929,26 +2955,26 @@
                 <td>meta-description-too-short</td>
               </tr>
               <tr>
-                <td>Überschriftenebenen wurden übersprungen</td>
+                <td>Überschriftenebenen werden übersprungen</td>
                 <td>Es wurde direkt von H1 auf H3 gesprungen.</td>
                 <td>Verwenden Sie Überschriften der Reihe nach: H1, H2, H3.</td>
                 <td>heading-order-skip</td>
               </tr>
               <tr>
-                <td>Das Tag für die mobile Ansicht (viewport) fehlt</td>
+                <td>Kein mobiles Viewport-Tag</td>
                 <td>Auf dem Smartphone erscheint die Seite winzig.</td>
                 <td>Fügen Sie im head-Bereich die viewport-Zeile hinzu.</td>
                 <td>missing-viewport</td>
               </tr>
               <tr>
-                <td>Die Sprache der Seite ist nicht angegeben</td>
+                <td>Seitensprache ist nicht deklariert</td>
                 <td>
                   Es steht nicht da, in welcher Sprache die Seite ist (im
                   html-Tag fehlt lang).
                 </td>
                 <td>
-                  Schreiben Sie den Sprachcode Ihrer Seite, für eine türkische
-                  Seite html lang=&quot;tr&quot;.
+                  Schreiben Sie den Sprachcode Ihrer Seite, für eine deutsche
+                  Seite html lang=&quot;de&quot;.
                 </td>
                 <td>missing-lang</td>
               </tr>
@@ -2962,7 +2988,7 @@
                 <td>images-missing-dimensions</td>
               </tr>
               <tr>
-                <td>Lange Texte haben keine Zwischenüberschriften</td>
+                <td>Langer Text hat keine Unterüberschriften</td>
                 <td>Der lange Text steht in einem einzigen Block.</td>
                 <td>
                   Teilen Sie den Text nach Themen. Geben Sie jedem Abschnitt
@@ -2971,7 +2997,7 @@
                 <td>no-subheadings</td>
               </tr>
               <tr>
-                <td>Der Alt-Text eines Bildes ist ein Dateiname</td>
+                <td>Alternativtext eines Bildes ist ein Dateiname</td>
                 <td>Der Alt-Text sieht aus wie „IMG_1234.jpg“.</td>
                 <td>
                   Schreiben Sie in den Alt-Text, was auf dem Bild zu sehen ist.
@@ -2979,7 +3005,7 @@
                 <td>alt-is-filename</td>
               </tr>
               <tr>
-                <td>Der Alt-Text eines Bildes ist zu lang</td>
+                <td>Alternativtext eines Bildes ist zu lang</td>
                 <td>Der Alt-Text ist so lang wie ein Absatz.</td>
                 <td>
                   Beschreiben Sie das Bild in einem Satz. Etwa 125 Zeichen
@@ -3005,7 +3031,7 @@
                 <td>empty-anchor-text</td>
               </tr>
               <tr>
-                <td>Nichtssagende Linktexte wie „Hier klicken“</td>
+                <td>Bedeutungsloser Linktext wie „Hier klicken“</td>
                 <td>Der Linktext sagt nicht, wohin der Link führt.</td>
                 <td>
                   Ersetzen Sie den Linktext durch das Thema der Zielseite.
@@ -3021,13 +3047,13 @@
                 <td>too-many-links</td>
               </tr>
               <tr>
-                <td>Nofollow-Links auf Seiten der eigenen Website</td>
+                <td>Nofollow-Links zu Ihren eigenen Seiten</td>
                 <td>Ein Link auf Ihre eigenen Seiten hat nofollow.</td>
                 <td>Löschen Sie rel=&quot;nofollow&quot; aus diesen Links.</td>
                 <td>internal-nofollow-links</td>
               </tr>
               <tr>
-                <td>Kein canonical-Tag (Hauptadresse) auf der Seite</td>
+                <td>Seite hat kein Canonical-Tag</td>
                 <td>Google muss die Hauptadresse selbst erraten.</td>
                 <td>
                   Fügen Sie im head-Bereich die canonical-Zeile hinzu, die auf
@@ -3037,7 +3063,7 @@
               </tr>
               <tr>
                 <td>
-                  Die Seite ist vor den Suchergebnissen versteckt (noindex)
+                  Seite ist aus den Suchergebnissen ausgeblendet (noindex)
                 </td>
                 <td>
                   Die Seite ist absichtlich oder versehentlich vor der Suche
@@ -3049,7 +3075,7 @@
                 <td>noindex-page</td>
               </tr>
               <tr>
-                <td>Die Seite nennt eine andere Seite als Hauptadresse</td>
+                <td>Seite nennt eine andere Seite als kanonisch</td>
                 <td>Die Seite erklärt sich selbst zur Kopie.</td>
                 <td>
                   Soll sie unter eigenem Namen in der Suche erscheinen, machen
@@ -3058,10 +3084,7 @@
                 <td>canonicalized-page</td>
               </tr>
               <tr>
-                <td>
-                  Bei den Sprachversionen gibt es keine Standardversion
-                  (x-default)
-                </td>
+                <td>Sprachversionen haben keine Standardversion (x-default)</td>
                 <td>
                   Für Besucher, deren Sprache nicht passt, gibt es keine
                   Standardversion.
@@ -3070,22 +3093,21 @@
                 <td>hreflang-missing-x-default</td>
               </tr>
               <tr>
-                <td>Googles Antwort zu einigen Seiten ist veraltet</td>
+                <td>
+                  Die Antworten von Google für einige Seiten sind veraltet
+                </td>
                 <td>
                   Die gespeicherten Google-Antworten sind älter als 3 oder 14
                   Tage.
                 </td>
                 <td>
-                  Klicken Sie im Reiter Indexstatus auf „Status bei Google
-                  prüfen“.
+                  Klicken Sie im Reiter Indexstatus auf
+                  <strong>Status bei Google prüfen</strong>.
                 </td>
                 <td>stale-google-verdicts</td>
               </tr>
               <tr>
-                <td>
-                  Auf der Website fehlen Tags für das Teilen in sozialen Medien
-                  (Open Graph)
-                </td>
+                <td>Website hat keine Social-Sharing-Tags (Open Graph)</td>
                 <td>Beim Teilen erscheinen weder Bild noch Titel.</td>
                 <td>
                   Fügen Sie im head-Bereich der Vorlage og:title, og:description
@@ -3094,7 +3116,7 @@
                 <td>open-graph-missing-site</td>
               </tr>
               <tr>
-                <td>Die Website hat gar keine strukturierten Daten</td>
+                <td>Website hat keine strukturierten Daten</td>
                 <td>
                   Es gibt keine Chance, in der Suche als Rich Result zu
                   erscheinen.
@@ -3106,7 +3128,7 @@
                 <td>structured-data-missing-site</td>
               </tr>
               <tr>
-                <td>Google hat diese Seite lange nicht gecrawlt</td>
+                <td>Google hat diese Seite schon lange nicht mehr gecrawlt</td>
                 <td>Googles letzter Besuch liegt mehr als 90 Tage zurück.</td>
                 <td>
                   Setzen Sie Links von häufig gecrawlten Seiten. Stellen Sie
@@ -3151,7 +3173,7 @@
                 <td>robots-missing-sitemap-line</td>
               </tr>
               <tr>
-                <td>Einige KI-Crawler sind per robots.txt gesperrt</td>
+                <td>Einige KI-Crawler werden per robots.txt blockiert</td>
                 <td>
                   Bots wie GPTBot und ClaudeBot sind ausgesperrt. Das ist eine
                   Entscheidung; die Google-Suche ist nicht betroffen.
@@ -3165,8 +3187,8 @@
               <tr>
                 <td>Keine llms.txt-Datei (optional)</td>
                 <td>
-                  Die für KI-Assistenten vorgeschlagene Datei fehlt. Sie ist
-                  kein Standard, und Google nutzt sie nicht.
+                  Die für KI-Agenten vorgeschlagene Datei fehlt. Sie ist kein
+                  Standard, und Google nutzt sie nicht.
                 </td>
                 <td>
                   Wenn Sie möchten, legen Sie im Stammverzeichnis eine /llms.txt
@@ -3175,7 +3197,7 @@
                 <td>missing-llms-txt</td>
               </tr>
               <tr>
-                <td>Die Startseite kam unkomprimiert</td>
+                <td>Startseite kam unkomprimiert an</td>
                 <td>Die Seite kam ohne gzip- oder Brotli-Komprimierung.</td>
                 <td>
                   Schalten Sie die Komprimierung auf dem Server oder im CDN ein.
@@ -3183,7 +3205,7 @@
                 <td>no-compression</td>
               </tr>
               <tr>
-                <td>Open-Graph-Tags sind unvollständig</td>
+                <td>Open-Graph-Tags unvollständig</td>
                 <td>
                   Titel, Beschreibung oder Bild für die Vorschaukarte fehlen.
                 </td>
@@ -3217,7 +3239,9 @@
                 <td>title-equals-h1</td>
               </tr>
               <tr>
-                <td>Der Titel wird im Suchergebnis womöglich abgeschnitten</td>
+                <td>
+                  Titel wird in den Suchergebnissen womöglich abgeschnitten
+                </td>
                 <td>
                   Der Titel ist kurz, aber breite Buchstaben schieben ihn über
                   etwa 580 Pixel.
@@ -3229,7 +3253,7 @@
                 <td>title-pixel-too-wide</td>
               </tr>
               <tr>
-                <td>Überflüssiges meta-keywords-Tag</td>
+                <td>Unnötiges Meta-Keywords-Tag</td>
                 <td>Google verwendet dieses Tag überhaupt nicht.</td>
                 <td>
                   Entfernen Sie es aus der Vorlage oder in den Einstellungen
@@ -3238,7 +3262,10 @@
                 <td>meta-keywords-present</td>
               </tr>
               <tr>
-                <td>Externe Links öffnen sich in neuem Tab ohne noopener</td>
+                <td>
+                  Best Practice: Externe Links öffnen sich ohne noopener in
+                  einem neuen Tab
+                </td>
                 <td>
                   Ein Hinweis zu bewährter Praxis. Aktuelle Browser erledigen
                   das bereits selbst.
@@ -3247,7 +3274,7 @@
                 <td>blank-target-without-noopener</td>
               </tr>
               <tr>
-                <td>Weiter unten liegende Bilder laden sofort</td>
+                <td>Bilder weiter unten laden sofort</td>
                 <td>
                   Mehr als sechs Bilder unterhalb des ersten Bildschirms laden
                   gleich beim Öffnen.
@@ -3280,7 +3307,7 @@
                 <td>duplicate-ids</td>
               </tr>
               <tr>
-                <td>HTML-Elemente sind zu tief verschachtelt</td>
+                <td>HTML-Elemente zu tief verschachtelt</td>
                 <td>
                   Die Seite hat Elemente, die mehr als 32 Ebenen tief
                   verschachtelt sind.
@@ -3303,7 +3330,7 @@
                 <td>low-text-ratio</td>
               </tr>
               <tr>
-                <td>In den strukturierten Daten fehlen empfohlene Angaben</td>
+                <td>Empfohlene Eigenschaften fehlen in strukturierten Daten</td>
                 <td>
                   Bei Article- oder Organization-Auszeichnung fehlen von Google
                   empfohlene Felder. Rich Results werden dadurch nicht
@@ -3316,7 +3343,7 @@
                 <td>structured-data-recommended-props-missing</td>
               </tr>
               <tr>
-                <td>Auf den Seiten wurde kein Google-Analytics-Tag gefunden</td>
+                <td>Kein Google-Analytics-Tag auf den Seiten gefunden</td>
                 <td>
                   Im HTML steht keine G-, GTM- oder UA-Kennung. Lädt das Tag
                   erst später, ignorieren Sie diesen Fund.
@@ -3341,7 +3368,7 @@
               </tr>
               <tr>
                 <td>
-                  Die Seite lässt sich in Frames fremder Websites einbetten
+                  Seite kann in Frames anderer Websites eingebettet werden
                 </td>
                 <td>
                   Eine andere Website kann Ihre Seite in einen unsichtbaren
@@ -3399,16 +3426,22 @@
                 <td>lh-unused-css</td>
               </tr>
               <tr>
-                <td>JavaScript-Dateien sind nicht minimiert</td>
-                <td>JavaScript-Dateien sind nicht minimiert.</td>
+                <td>JavaScript-Dateien sind nicht minifiziert</td>
+                <td>
+                  Die Dateien enthalten Leerzeichen und Kommentare, die nur die
+                  Übertragung verlängern.
+                </td>
                 <td>
                   Schalten Sie die Minimierung im Build-Tool oder CDN ein.
                 </td>
                 <td>lh-unminified-javascript</td>
               </tr>
               <tr>
-                <td>CSS-Dateien sind nicht minimiert</td>
-                <td>CSS-Dateien sind nicht minimiert.</td>
+                <td>CSS-Dateien sind nicht minifiziert</td>
+                <td>
+                  Die Stylesheets enthalten Leerzeichen und Kommentare, die nur
+                  die Übertragung verlängern.
+                </td>
                 <td>
                   Schalten Sie die Minimierung im Build-Tool oder CDN ein.
                 </td>
@@ -3430,7 +3463,10 @@
               </tr>
               <tr>
                 <td>Die im Browser aufgebaute Seitenstruktur ist sehr groß</td>
-                <td>Die im Browser aufgebaute Seitenstruktur ist sehr groß.</td>
+                <td>
+                  Nach dem Ausführen von JavaScript hat die Seite sehr viele
+                  HTML-Elemente; das verlangsamt das Rendern.
+                </td>
                 <td>Bauen Sie verborgene Inhalte erst bei Bedarf auf.</td>
                 <td>lh-dom-size</td>
               </tr>
@@ -3447,7 +3483,9 @@
                 <td>lh-font-display</td>
               </tr>
               <tr>
-                <td>Das Hauptbild wird nicht vorrangig angefordert</td>
+                <td>
+                  Das Hauptbild der Seite wird nicht mit Priorität angefordert
+                </td>
                 <td>
                   Das Hauptbild wird spät entdeckt oder nicht priorisiert.
                 </td>
@@ -3459,7 +3497,10 @@
               </tr>
               <tr>
                 <td>Dateien werden über das alte HTTP/1.1 ausgeliefert</td>
-                <td>Dateien kommen über HTTP/1.1.</td>
+                <td>
+                  Viele Dateien müssen nacheinander statt parallel geladen
+                  werden.
+                </td>
                 <td>Schalten Sie HTTP/2 auf dem Server oder im CDN ein.</td>
                 <td>lh-modern-http</td>
               </tr>
@@ -3485,7 +3526,7 @@
                 <td>lh-third-parties</td>
               </tr>
               <tr>
-                <td>Das Laden des Hauptinhalts könnte schneller sein (LCP)</td>
+                <td>Hauptinhalt könnte schneller laden (LCP)</td>
                 <td>LCP liegt zwischen 2,5 und 4 Sekunden.</td>
                 <td>
                   Verkleinern Sie das Hauptbild und schalten Sie sein Lazy
@@ -3494,7 +3535,7 @@
                 <td>cwv-lcp-needs-improvement</td>
               </tr>
               <tr>
-                <td>Inhalte verschieben sich beim Laden etwas (CLS)</td>
+                <td>Inhalt verschiebt sich beim Laden etwas (CLS)</td>
                 <td>CLS liegt zwischen 0,1 und 0,25.</td>
                 <td>
                   Geben Sie Bildern Abmessungen und reservieren Sie Platz für
@@ -3503,7 +3544,7 @@
                 <td>cwv-cls-needs-improvement</td>
               </tr>
               <tr>
-                <td>Reaktionen auf Klicks könnten schneller sein (INP)</td>
+                <td>Reaktion auf Tippen könnte schneller sein (INP)</td>
                 <td>INP liegt zwischen 200 und 500 ms (Felddaten).</td>
                 <td>
                   Teilen Sie lange Skripte auf, die bei einem Klick laufen.
@@ -3523,21 +3564,24 @@
                 <td>lh-a11y-html-has-lang</td>
               </tr>
               <tr>
-                <td>Tippziele sind zu klein oder liegen zu dicht</td>
+                <td>
+                  Tippziele sind zu klein oder liegen zu dicht beieinander
+                </td>
                 <td>Tippziele sind klein oder liegen zu eng beieinander.</td>
                 <td>Geben Sie Tippzielen mindestens 24×24 Pixel.</td>
                 <td>lh-a11y-target-size</td>
               </tr>
               <tr>
                 <td>
-                  Die Überschriftenreihenfolge springt im Browser (Lighthouse)
+                  Die Überschriftenfolge überspringt im Browser Ebenen
+                  (Lighthouse)
                 </td>
                 <td>Überschriftenebenen werden im Browser übersprungen.</td>
                 <td>Verwenden Sie Überschriften der Reihe nach.</td>
                 <td>lh-a11y-heading-order</td>
               </tr>
               <tr>
-                <td>Der Browser protokolliert beim Öffnen Fehler</td>
+                <td>Der Browser protokolliert beim Öffnen der Seite Fehler</td>
                 <td>Beim Laden landen Fehler in der Konsole.</td>
                 <td>Sehen Sie in Chrome im Tab „Console“ nach.</td>
                 <td>lh-errors-in-console</td>
@@ -3558,7 +3602,7 @@
               </tr>
               <tr>
                 <td>
-                  Manche Bilder werden im falschen Seitenverhältnis gezeigt
+                  Einige Bilder werden im falschen Seitenverhältnis angezeigt
                 </td>
                 <td>Bilder werden verzerrt dargestellt.</td>
                 <td>
@@ -3568,8 +3612,8 @@
               </tr>
               <tr>
                 <td>
-                  Manche Bilder haben für den Bildschirm eine zu geringe
-                  Auflösung
+                  Einige Bilder haben eine zu geringe Auflösung für den
+                  Bildschirm
                 </td>
                 <td>Bilder sind für den Bildschirm zu niedrig aufgelöst.</td>
                 <td>Liefern Sie mit srcset größere Versionen aus.</td>
@@ -3577,25 +3621,36 @@
               </tr>
               <tr>
                 <td>Linktexte sind nicht aussagekräftig (Lighthouse)</td>
-                <td>Linktexte sagen nichts über ihr Ziel.</td>
+                <td>
+                  Texte wie „mehr“ oder „hier“ sagen nichts über das Linkziel.
+                </td>
                 <td>Formulieren Sie den Text nach dem Thema des Ziels.</td>
                 <td>lh-link-text</td>
               </tr>
               <tr>
                 <td>Die Seite leitet per Meta-Refresh weiter</td>
-                <td>Die Seite leitet per Meta-Refresh weiter.</td>
+                <td>
+                  Die Weiterleitung erfolgt erst im Browser über ein
+                  meta-refresh-Tag statt über den Server.
+                </td>
                 <td>Leiten Sie auf dem Server weiter (301).</td>
                 <td>meta-refresh-redirect</td>
               </tr>
               <tr>
-                <td>Die canonical-Adresse ist relativ angegeben</td>
-                <td>Das canonical ist ein relativer Pfad.</td>
+                <td>Die Canonical-Adresse ist relativ angegeben</td>
+                <td>
+                  Das Canonical-Tag nennt nur einen Pfad wie /seite statt der
+                  vollständigen Adresse.
+                </td>
                 <td>Schreiben Sie die vollständige Adresse (https://...).</td>
                 <td>canonical-relative</td>
               </tr>
               <tr>
-                <td>Die canonical-Adresse enthält ein #-Fragment</td>
-                <td>Das canonical enthält ein #-Fragment.</td>
+                <td>Die Canonical-Adresse enthält ein #-Fragment</td>
+                <td>
+                  Google ignoriert alles ab dem #; das Canonical-Tag zeigt damit
+                  nicht eindeutig auf die Seite.
+                </td>
                 <td>Entfernen Sie das # und alles danach.</td>
                 <td>canonical-with-fragment</td>
               </tr>
@@ -3608,21 +3663,22 @@
                 <td>snippet-blocked</td>
               </tr>
               <tr>
-                <td>Eine E-Mail-Adresse steht offen im Text</td>
-                <td>
-                  Eine E-Mail-Adresse steht als reiner Text auf der Seite.
-                </td>
+                <td>Eine E-Mail-Adresse steht offen als Text da</td>
+                <td>Bots sammeln solche Adressen für Spam.</td>
                 <td>Erwägen Sie ein Kontaktformular.</td>
                 <td>exposed-email-address</td>
               </tr>
               <tr>
                 <td>Die Wörter des Titels kommen im Seiteninhalt nicht vor</td>
-                <td>Die Wörter des Titels tauchen im Inhalt nicht auf.</td>
+                <td>Google ersetzt solche Titel häufig durch eigenen Text.</td>
                 <td>Formulieren Sie den Titel nach dem Thema der Seite.</td>
                 <td>title-content-mismatch</td>
               </tr>
               <tr>
-                <td>Organization-Daten nennen keine Social-Media-Profile</td>
+                <td>
+                  Strukturierte Daten zur Organisation nennen keine
+                  Social-Media-Profile
+                </td>
                 <td>In den Organization-Daten fehlt sameAs.</td>
                 <td>
                   Tragen Sie die offiziellen Profiladressen in sameAs ein.
@@ -3630,8 +3686,13 @@
                 <td>organization-missing-sameas</td>
               </tr>
               <tr>
-                <td>Eine tief liegende Seite hat keine Brotkrumennavigation</td>
-                <td>Eine tief liegende Seite hat keinen Brotkrumenpfad.</td>
+                <td>
+                  Einer tief liegenden Seite fehlt die Breadcrumb-Navigation
+                </td>
+                <td>
+                  Besucher und Google sehen nicht, wo die Seite in der Struktur
+                  liegt.
+                </td>
                 <td>Ergänzen Sie einen Brotkrumenpfad und BreadcrumbList.</td>
                 <td>missing-breadcrumbs</td>
               </tr>
@@ -3643,10 +3704,11 @@
               </tr>
               <tr>
                 <td>
-                  Es gibt einen Blog, aber keinen angemeldeten RSS-/Atom-Feed
+                  Es gibt einen Blog, aber keinen deklarierten RSS-/Atom-Feed
                 </td>
                 <td>
-                  Es gibt einen Blog, aber kein RSS-/Atom-Feed ist angegeben.
+                  Feedreader und manche Dienste finden neue Artikel nicht
+                  automatisch.
                 </td>
                 <td>
                   Geben Sie den Feed mit einem link-Tag
@@ -3655,7 +3717,7 @@
                 <td>missing-feed</td>
               </tr>
               <tr>
-                <td>robots.txt öffnet manche Pfade nur für Googlebot</td>
+                <td>robots.txt öffnet einige Pfade nur für Googlebot</td>
                 <td>
                   Diese Pfade sind für andere Bots gesperrt, daher hat das Audit
                   sie nicht gecrawlt. Google kann es.
@@ -3671,53 +3733,55 @@
         </div>
         <h2 id="wie-die-regeln-funktionieren">Wie die Regeln funktionieren</h2>
         <p>
-          Die meisten Regeln laufen pro Seite und listen jede Seite auf, die sie
-          betreffen. Einige betreffen die Website als Ganzes und erzeugen ein
-          einziges Problem. Das sind die Regeln zur robots.txt, die Regeln zur
-          Sitemap sowie „Auf der Website fehlen Tags für das Teilen in sozialen
-          Medien“ und „Die Website hat gar keine strukturierten Daten“.
+          <strong>Seiten- und Website-Regeln.</strong> Die meisten Regeln prüfen
+          jede Seite einzeln und listen alle betroffenen Seiten auf. Einige
+          prüfen die Website einmal zu Beginn des Audits und erzeugen höchstens
+          ein Problem: die Regeln zu robots.txt und Sitemap, die Erreichbarkeit
+          mit und ohne www, die Weiterleitung von http auf https, die Antwort
+          auf eine zufällige, nicht vorhandene Adresse, KI-Bots, das
+          Website-Symbol, llms.txt, die Sicherheits-Header (HSTS,
+          X-Content-Type-Options, Frame-Schutz, Referrer-Policy), Größe,
+          Komprimierung und Antwortzeit der Startseite sowie „Website hat keine
+          Social-Sharing-Tags (Open Graph)“ und „Website hat keine
+          strukturierten Daten“.
         </p>
         <p>
-          Regeln, deren Name mit „Google“ beginnt, stammen nicht aus dem Crawl
-          der App. Sie entstehen aus den Antworten, die im Reiter Indexstatus
-          von Google geholt werden. Haben Sie in diesem Reiter noch keine
-          Abfrage gestartet, laufen diese Regeln nicht. Die
-          Geschwindigkeitsregeln (LCP, CLS, INP, SEO-Wert) laufen nur, wenn
-          „Auch die Seitengeschwindigkeit messen“ eingeschaltet ist, und zwar
-          nach der Messung auf dem Smartphone.
+          <strong>Externe Quellen.</strong> Das Ablaufdatum des SSL-Zertifikats
+          stammt aus öffentlichen Zertifikatsprotokollen (Certificate
+          Transparency), das der Domain aus den Registrierungsdaten (RDAP), SPF
+          und DMARC aus dem DNS. „Analytics-ID auf den Seiten passt nicht zur
+          verbundenen Property“ vergleicht die Messkennung im HTML mit den
+          Kennungen der Google-Analytics-Property des Projekts.
         </p>
         <p>
-          Regeln, deren Kennung mit „lh-“ beginnt, sowie die
-          „verbesserungsbedürftig“-Regeln für LCP, CLS und INP werden aus dem
-          Lighthouse-Bericht gelesen, den PageSpeed Insights ohnehin für jede
-          Seite liefert. Auch sie laufen nur, wenn „Auch die
-          Seitengeschwindigkeit messen“ eingeschaltet ist, und nach der Messung
-          auf dem Smartphone. Eine Lighthouse-Prüfung, die auf einer Seite nicht
-          lief oder fehlschlug, gilt weder als Problem noch als bestanden. „Ein
-          Link zu einer anderen Website ist defekt“ und „Die Bilddatei ist zu
-          groß“ laufen nur, wenn beim Start „Auch ausgehende Links und
-          Bildgrößen prüfen“ eingeschaltet ist: Nach dem Crawl werden höchstens
-          300 Adressen abgefragt. Websites, die Bots sperren, etwa soziale
-          Netzwerke, und Adressen, die nicht antworten, gelten nie als defekt.
-          Eine Regel, die ein Audit nicht gemessen hat, erscheint im Reiter
-          Kontroller als „unbekannt“, auch bei Audits aus der Zeit, bevor es
-          diese Regel gab.
+          <strong>Google-Regeln.</strong> Regeln, deren Name mit „Google“
+          beginnt, beruhen nicht auf dem Crawl der App, sondern auf den
+          Antworten, die der Reiter <strong>Indexstatus</strong> von Google
+          abfragt. Solange dort keine Abfrage gelaufen ist, werden sie nicht
+          ausgewertet.
         </p>
         <p>
-          Einige Regeln betrachten nicht jede Seite einzeln, sondern prüfen die
-          Website einmal zu Beginn des Audits und erzeugen ein einziges Problem:
-          die Adressen mit und ohne www, die Weiterleitung von http auf https,
-          die Antwort auf eine zufällige, nicht vorhandene Adresse, eine
-          robots.txt, die die ganze Website sperrt, ihre Sitemap-Zeile und
-          KI-Bots, das Website-Symbol, llms.txt, Sicherheits-Header (HSTS,
-          X-Content-Type-Options, Frame-Schutz, Referrer-Policy) sowie Größe,
-          Komprimierung und erste Antwortzeit der Startseite. Das Ablaufdatum
-          des SSL-Zertifikats stammt aus öffentlichen Zertifikatsprotokollen
-          (Certificate Transparency), das der Domain aus den Registrierungsdaten
-          (RDAP), SPF und DMARC aus dem DNS. „Die Analytics-Kennung auf den
-          Seiten passt nicht zur verbundenen Property“ vergleicht die
-          Messkennung auf den Seiten mit den Kennungen der
-          Google-Analytics-Property, die mit dem Projekt verbunden ist.
+          <strong>Geschwindigkeits- und Lighthouse-Regeln.</strong> Die Regeln
+          zu LCP, CLS, INP und zum SEO-Wert sowie alle Regeln mit der Kennung
+          „lh-“ stammen aus dem Lighthouse-Bericht, den PageSpeed Insights für
+          die mobile Messung jeder Seite liefert. Sie laufen nur, wenn beim
+          Start „Auch die Seitengeschwindigkeit messen“ eingeschaltet war. Eine
+          Lighthouse-Prüfung, die auf einer Seite nicht lief oder fehlschlug,
+          zählt weder als Problem noch als bestanden.
+        </p>
+        <p>
+          <strong>Ausgehende Links und Bildgrößen.</strong> „Ein Link zu einer
+          anderen Website ist defekt“ und „Bilddatei ist zu groß“ laufen nur,
+          wenn beim Start „Auch ausgehende Links und Bildgrößen prüfen“
+          eingeschaltet war. Nach dem Crawl fragt die App höchstens 300 Adressen
+          ab. Websites, die Bots sperren (etwa soziale Netzwerke), und Adressen
+          ohne Antwort gelten nie als defekt.
+        </p>
+        <p>
+          <strong>Nicht gemessene Regeln.</strong> Eine Regel, die ein Audit
+          nicht ausgewertet hat, erscheint im Reiter
+          <strong>Prüfungen</strong> als nicht gemessen. Das gilt auch für
+          Audits aus der Zeit, bevor es die Regel gab.
         </p>
         <nav class="pager" aria-label="Vorherige und nächste Seite">
           <a class="pager-prev" rel="prev" href="/de/dokumentation/hilfe/"
@@ -3726,11 +3790,11 @@
             class="pager-next"
             rel="next"
             href="/de/dokumentation/assistent-einrichten/"
-            ><span>Weiter</span><strong>Assistent einrichten</strong></a
+            ><span>Weiter</span><strong>Agent einrichten</strong></a
           >
         </nav>
         <p class="meta">
-          Zuletzt aktualisiert: 27 Oktober 2026. Fehler entdeckt?
+          Zuletzt aktualisiert: 29 Oktober 2026. Fehler entdeckt?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -3757,7 +3821,7 @@
     <footer>
       <div class="wrap">
         <p class="star">
-          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          Ein Stern hilft anderen, das Werkzeug zu finden.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

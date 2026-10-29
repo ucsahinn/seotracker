@@ -107,7 +107,7 @@
       property="og:image:alt"
       content="Scheda di seowatcher: la dashboard dell’app con i dati di Search Console, Analytics 4 e dell’audit del sito, e un pulsante per scaricarla su Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/it/guide/regole-del-controllo/"
@@ -172,7 +172,7 @@
             "url": "https://seowatcher.io/it/guide/regole-del-controllo/",
             "inLanguage": "it",
             "datePublished": "2026-10-23",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-29",
             "articleSection": "Aiuto e riferimento",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1516,17 +1516,17 @@
                 >Parole chiave salvate</a
               >
             </li>
-            <li>
-              <a href="/it/guide/analisi/">Interpretare i dati di analisi</a>
-            </li>
+            <li><a href="/it/guide/analisi/">Capire i dati di Analytics</a></li>
             <li>
               <a href="/it/guide/controllo-del-sito/">Controllo del sito</a>
             </li>
-            <li><a href="/it/guide/stato-indice/">Stato dell'indice</a></li>
+            <li>
+              <a href="/it/guide/stato-indice/">Stato dell'indicizzazione</a>
+            </li>
             <li><a href="/it/guide/rapporti/">Report e modelli</a></li>
             <li>
               <a href="/it/guide/informazioni-progetto/"
-                >Informazioni sul progetto</a
+                >Contesto del progetto</a
               >
             </li>
             <li><a href="/it/guide/impostazioni/">Impostazioni</a></li>
@@ -1539,7 +1539,7 @@
             </li>
             <li>
               <a href="/it/guide/configurazione-assistente/"
-                >Configurazione dell'assistente</a
+                >Configurazione dell'agente</a
               >
             </li>
             <li>
@@ -1575,7 +1575,7 @@
           schermata, che cosa significa e il primo passo per correggerla. Il
           testo completo della correzione sta nella scheda del problema nella
           schermata. L'ultima colonna è l'identificativo della regola, che
-          compare nel file CSV e nelle risposte dell'assistente.
+          compare nel file CSV e nelle risposte dell'agente.
         </p>
         <h2 id="termini-ricorrenti">Termini ricorrenti</h2>
         <ul>
@@ -1779,7 +1779,7 @@
                   il sito.
                 </td>
                 <td>
-                  Eliminate la riga &quot;Disallow: /&quot; o limitatela alle
+                  Eliminare la riga &quot;Disallow: /&quot; o limitatela alle
                   cartelle che devono restare nascoste.
                 </td>
                 <td>robots-disallow-all</td>
@@ -1791,8 +1791,8 @@
                   sicura. I browser mostrano &quot;Non sicuro&quot;.
                 </td>
                 <td>
-                  Attivate &quot;Forza HTTPS&quot; nel pannello dell'hosting o
-                  aggiungete un reindirizzamento permanente (301).
+                  Attivare &quot;Forza HTTPS&quot; nel pannello dell'hosting o
+                  aggiungere un reindirizzamento permanente (301).
                 </td>
                 <td>no-https-redirect</td>
               </tr>
@@ -1803,7 +1803,7 @@
                   aprono il sito dietro un avviso a tutta pagina.
                 </td>
                 <td>
-                  Rinnovate subito il certificato. Se il rinnovo è automatico,
+                  Rinnovare subito il certificato. Se il rinnovo è automatico,
                   verificate perché non è avvenuto.
                 </td>
                 <td>ssl-expiring-very-soon</td>
@@ -2360,7 +2360,7 @@
                   all'altro. Google vede due copie dello stesso contenuto.
                 </td>
                 <td>
-                  Scegliete un indirizzo principale e reindirizzate l'altro su
+                  Scegliere un indirizzo principale e reindirizzate l'altro su
                   di esso in modo permanente (301).
                 </td>
                 <td>www-and-apex-both-serve</td>
@@ -2372,7 +2372,7 @@
                   Google lo considera un soft 404.
                 </td>
                 <td>
-                  Fate restituire alla pagina di errore il codice 404. Il
+                  Far restituire alla pagina di errore il codice 404. Il
                   contenuto può restare uguale.
                 </td>
                 <td>soft-404-on-missing-page</td>
@@ -2383,7 +2383,7 @@
                   Google elabora solo i primi 2 MB di HTML e ignora il resto.
                 </td>
                 <td>
-                  Spostate i grandi dati incorporati in file separati. Dividete
+                  Spostare i grandi dati incorporati in file separati. Dividere
                   gli elenchi lunghi in più pagine.
                 </td>
                 <td>html-too-large</td>
@@ -2395,7 +2395,7 @@
                   millisecondi.
                 </td>
                 <td>
-                  Attivate la cache delle pagine, trovate i plugin lenti e usate
+                  Attivare la cache delle pagine, trovare i plugin lenti e usare
                   una CDN vicina ai visitatori.
                 </td>
                 <td>slow-ttfb</td>
@@ -2407,7 +2407,7 @@
                   non può ingrandire il testo.
                 </td>
                 <td>
-                  Togliete user-scalable=no e maximum-scale dal tag viewport.
+                  Togliere user-scalable=no e maximum-scale dal tag viewport.
                 </td>
                 <td>viewport-zoom-disabled</td>
               </tr>
@@ -2418,7 +2418,7 @@
                   pagine per questa via.
                 </td>
                 <td>
-                  Se il link porta a una pagina, scrivete il suo vero indirizzo.
+                  Se il link porta a una pagina, scrivere il suo vero indirizzo.
                   Se esegue un'azione, usate un pulsante (button).
                 </td>
                 <td>javascript-href-links</td>
@@ -2430,7 +2430,7 @@
                   campo.
                 </td>
                 <td>
-                  Date a ogni campo un'etichetta visibile (label) o un
+                  Dare a ogni campo un'etichetta visibile (label) o un
                   aria-label.
                 </td>
                 <td>form-input-without-label</td>
@@ -2442,7 +2442,7 @@
                   sul telefono.
                 </td>
                 <td>
-                  Caricate il contenuto nascosto solo quando serve. Riducete gli
+                  Caricare il contenuto nascosto solo quando serve. Riducere gli
                   strati di contenitori inutili.
                 </td>
                 <td>dom-too-large</td>
@@ -2454,8 +2454,8 @@
                   poche parole. Google potrebbe mostrarne una sola.
                 </td>
                 <td>
-                  Date a ogni pagina un contenuto proprio, oppure unite le
-                  pagine e aggiungete un canonical.
+                  Dare a ogni pagina un contenuto proprio, oppure unite le
+                  pagine e aggiungere un canonical.
                 </td>
                 <td>near-duplicate-content</td>
               </tr>
@@ -2466,7 +2466,7 @@
                   Product o FAQPage). Non compare alcun risultato avanzato.
                 </td>
                 <td>
-                  Aggiungete i campi mancanti e verificate il risultato con il
+                  Aggiungere i campi mancanti e verificate il risultato con il
                   Test dei risultati avanzati di Google.
                 </td>
                 <td>structured-data-required-props-missing</td>
@@ -2481,7 +2481,7 @@
                   un'altra proprietà Analytics.
                 </td>
                 <td>
-                  Sostituite il tag delle pagine con l'ID giusto oppure
+                  Sostituire il tag delle pagine con l'ID giusto oppure
                   collegate la proprietà giusta nelle Impostazioni.
                 </td>
                 <td>analytics-id-mismatch</td>
@@ -2493,7 +2493,7 @@
                   questo sito&quot; non viene inviata.
                 </td>
                 <td>
-                  Aggiungete l'intestazione Strict-Transport-Security alla
+                  Aggiungere l'intestazione Strict-Transport-Security alla
                   risposta del server.
                 </td>
                 <td>missing-hsts</td>
@@ -2505,7 +2505,7 @@
                   scade entro 30 giorni.
                 </td>
                 <td>
-                  Controllate nel pannello dell'hosting che il rinnovo
+                  Controllare nel pannello dell'hosting che il rinnovo
                   automatico sia attivo.
                 </td>
                 <td>ssl-expiring-soon</td>
@@ -2516,7 +2516,7 @@
                   Se non viene rinnovato, sito ed e-mail si fermano. Qualcun
                   altro potrebbe registrare il dominio.
                 </td>
-                <td>Rinnovate il dominio e attivate il rinnovo automatico.</td>
+                <td>Rinnovare il dominio e attivare il rinnovo automatico.</td>
                 <td>domain-expiring-soon</td>
               </tr>
               <tr>
@@ -2525,14 +2525,14 @@
                 </td>
                 <td>CSS e script ritardano la prima visualizzazione.</td>
                 <td>
-                  Aggiungete defer agli script che non servono al primo schermo.
+                  Aggiungere defer agli script che non servono al primo schermo.
                 </td>
                 <td>lh-render-blocking</td>
               </tr>
               <tr>
                 <td>La pagina carica JavaScript che non usa</td>
                 <td>Viene scaricato JavaScript che non viene mai eseguito.</td>
-                <td>Togliete i plugin e i tag inutilizzati.</td>
+                <td>Togliere i plugin e i tag inutilizzati.</td>
                 <td>lh-unused-javascript</td>
               </tr>
               <tr>
@@ -2541,19 +2541,19 @@
                   Le immagini pesano più di quanto serve per la loro
                   visualizzazione.
                 </td>
-                <td>Convertite in WebP/AVIF, comprimete e ridimensionate.</td>
+                <td>Convertire in WebP/AVIF, comprimere e ridimensionare.</td>
                 <td>lh-image-delivery</td>
               </tr>
               <tr>
                 <td>La pagina reindirizza prima di aprirsi</td>
                 <td>Ci sono reindirizzamenti prima che la pagina si apra.</td>
-                <td>Fate puntare i link all'indirizzo finale.</td>
+                <td>Far puntare i link all'indirizzo finale.</td>
                 <td>lh-document-redirects</td>
               </tr>
               <tr>
                 <td>La pagina viene inviata senza compressione</td>
                 <td>L'HTML viene inviato senza compressione.</td>
-                <td>Attivate la compressione gzip o Brotli.</td>
+                <td>Attivare la compressione gzip o Brotli.</td>
                 <td>lh-text-compression</td>
               </tr>
               <tr>
@@ -2562,89 +2562,89 @@
                 </td>
                 <td>L'immagine principale ha loading=&quot;lazy&quot;.</td>
                 <td>
-                  Togliete lazy dall'immagine principale del primo schermo.
+                  Togliere lazy dall'immagine principale del primo schermo.
                 </td>
                 <td>lh-lcp-lazy-loaded</td>
               </tr>
               <tr>
                 <td>Alcuni testi hanno un contrasto di colore insufficiente</td>
                 <td>Il testo non si distingue abbastanza dallo sfondo.</td>
-                <td>Garantite un contrasto di almeno 4,5:1.</td>
+                <td>Garantire un contrasto di almeno 4,5:1.</td>
                 <td>lh-a11y-color-contrast</td>
               </tr>
               <tr>
                 <td>Alle immagini manca il testo alternativo (Lighthouse)</td>
                 <td>Nel browser ci sono immagini senza testo alt.</td>
-                <td>Scrivete un testo alt per le immagini significative.</td>
+                <td>Scrivere un testo alt per le immagini significative.</td>
                 <td>lh-a11y-image-alt</td>
               </tr>
               <tr>
                 <td>I campi del modulo non hanno etichetta (Lighthouse)</td>
                 <td>I campi del modulo non hanno etichetta.</td>
-                <td>Collegate un elemento label a ogni campo.</td>
+                <td>Collegare un elemento label a ogni campo.</td>
                 <td>lh-a11y-label</td>
               </tr>
               <tr>
                 <td>Alcuni link non hanno un nome leggibile</td>
                 <td>Alcuni link non hanno un nome leggibile.</td>
-                <td>Aggiungete un testo o un aria-label.</td>
+                <td>Aggiungere un testo o un aria-label.</td>
                 <td>lh-a11y-link-name</td>
               </tr>
               <tr>
                 <td>Alcuni pulsanti non hanno un nome leggibile</td>
                 <td>Alcuni pulsanti non hanno un nome leggibile.</td>
-                <td>Aggiungete un testo o un aria-label.</td>
+                <td>Aggiungere un testo o un aria-label.</td>
                 <td>lh-a11y-button-name</td>
               </tr>
               <tr>
                 <td>La pagina non ha un titolo nel browser (Lighthouse)</td>
                 <td>Nel browser non c'è un elemento title.</td>
-                <td>Aggiungete un titolo all'HTML inviato dal server.</td>
+                <td>Aggiungere un titolo all'HTML inviato dal server.</td>
                 <td>lh-a11y-document-title</td>
               </tr>
               <tr>
                 <td>Lo zoom è bloccato sul telefono (Lighthouse)</td>
                 <td>L'impostazione viewport impedisce lo zoom.</td>
-                <td>Togliete user-scalable=no e maximum-scale.</td>
+                <td>Togliere user-scalable=no e maximum-scale.</td>
                 <td>lh-a11y-meta-viewport</td>
               </tr>
               <tr>
                 <td>La pagina fa richieste non sicure (http)</td>
                 <td>La pagina carica elementi via http.</td>
-                <td>Servite tutti i file via https.</td>
+                <td>Servire tutti i file via https.</td>
                 <td>lh-is-on-https</td>
               </tr>
               <tr>
                 <td>Alcuni link non sono scansionabili (Lighthouse)</td>
                 <td>Ci sono link che Google non può seguire.</td>
-                <td>Date a ogni link un href vero.</td>
+                <td>Dare a ogni link un href vero.</td>
                 <td>lh-crawlable-anchors</td>
               </tr>
               <tr>
                 <td>Google non può indicizzare la pagina (Lighthouse)</td>
                 <td>Lighthouse ha trovato la pagina non indicizzabile.</td>
-                <td>Controllate robots.txt e le regole noindex.</td>
+                <td>Controllare robots.txt e le regole noindex.</td>
                 <td>lh-is-crawlable</td>
               </tr>
               <tr>
                 <td>Il file robots.txt contiene righe non valide</td>
                 <td>In robots.txt ci sono righe non valide.</td>
                 <td>
-                  Correggete le righe nel formato &quot;Campo: valore&quot;.
+                  Correggere le righe nel formato &quot;Campo: valore&quot;.
                 </td>
                 <td>lh-robots-txt</td>
               </tr>
               <tr>
                 <td>I tag hreflang non sono validi (Lighthouse)</td>
                 <td>I tag hreflang non sono validi.</td>
-                <td>Usate codici lingua validi e indirizzi completi.</td>
+                <td>Usare codici lingua validi e indirizzi completi.</td>
                 <td>lh-hreflang</td>
               </tr>
               <tr>
                 <td>Il tag canonical non è valido (Lighthouse)</td>
                 <td>Il tag canonical non è valido.</td>
                 <td>
-                  Lasciate un solo canonical che punti all'indirizzo della
+                  Lasciare un solo canonical che punti all'indirizzo della
                   pagina stessa.
                 </td>
                 <td>lh-canonical</td>
@@ -2654,25 +2654,25 @@
                 <td>
                   Una pagina https carica immagini, video o frame via http.
                 </td>
-                <td>Fate iniziare gli indirizzi con https.</td>
+                <td>Far iniziare gli indirizzi con https.</td>
                 <td>mixed-content-media</td>
               </tr>
               <tr>
                 <td>I dati del modulo vengono inviati senza cifratura</td>
                 <td>Il modulo invia i dati a un indirizzo http.</td>
-                <td>Portate a https l'indirizzo action del modulo.</td>
+                <td>Portare a https l'indirizzo action del modulo.</td>
                 <td>form-action-http</td>
               </tr>
               <tr>
                 <td>Il tag canonical è nel corpo della pagina</td>
                 <td>Il canonical è nel body; Google non lo legge.</td>
-                <td>Spostate il tag nel head.</td>
+                <td>Spostare il tag nel head.</td>
                 <td>canonical-outside-head</td>
               </tr>
               <tr>
                 <td>I tag robots si contraddicono</td>
                 <td>I tag robots della pagina si contraddicono.</td>
-                <td>Lasciate un solo tag robots.</td>
+                <td>Lasciare un solo tag robots.</td>
                 <td>robots-meta-conflict</td>
               </tr>
               <tr>
@@ -2697,7 +2697,7 @@
                   Una pagina successiva di un elenco è nascosta dalla ricerca
                 </td>
                 <td>Le pagine 2 e seguenti di un elenco sono noindex.</td>
-                <td>Togliete noindex e date a ogni pagina il suo canonical.</td>
+                <td>Togliere noindex e date a ogni pagina il suo canonical.</td>
                 <td>paginated-page-noindex</td>
               </tr>
               <tr>
@@ -2705,19 +2705,19 @@
                   Su un sito sicuro i link interni portano a indirizzi http
                 </td>
                 <td>Su un sito https i link interni puntano a http.</td>
-                <td>Scrivete i link interni con https o in forma relativa.</td>
+                <td>Scrivere i link interni con https o in forma relativa.</td>
                 <td>internal-http-links</td>
               </tr>
               <tr>
                 <td>Un link verso un altro sito non funziona</td>
                 <td>Un link verso un altro sito non si apre.</td>
-                <td>Aggiornate o eliminate il link.</td>
+                <td>Aggiornare o eliminate il link.</td>
                 <td>broken-external-link</td>
               </tr>
               <tr>
                 <td>Il file dell'immagine è troppo grande</td>
                 <td>Un file immagine supera i 200 KB.</td>
-                <td>Ridimensionate, comprimete, convertite in WebP/AVIF.</td>
+                <td>Ridimensionare, comprimere, convertire in WebP/AVIF.</td>
                 <td>image-file-too-large</td>
               </tr>
               <tr>
@@ -2727,8 +2727,8 @@
                   solito Google li ignora.
                 </td>
                 <td>
-                  Pubblicate la mappa sul sito a cui appartengono gli indirizzi,
-                  oppure correggete l'indirizzo del sito nell'impostazione che
+                  Pubblicare la mappa sul sito a cui appartengono gli indirizzi,
+                  oppure correggere l'indirizzo del sito nell'impostazione che
                   la genera.
                 </td>
                 <td>sitemap-off-host-urls</td>
@@ -2814,7 +2814,10 @@
               </tr>
               <tr>
                 <td>Codifica dei caratteri non indicata</td>
-                <td>I caratteri turchi possono rovinarsi in alcuni browser.</td>
+                <td>
+                  Le lettere accentate possono essere visualizzate male in
+                  alcuni browser.
+                </td>
                 <td>
                   All'inizio della sezione head aggiungere la riga meta
                   charset=&quot;utf-8&quot;.
@@ -2920,11 +2923,11 @@
               <tr>
                 <td>Lingua della pagina non indicata</td>
                 <td>
-                  Non è scritto in quale lingua è la pagina (manca lang
-                  nell'etichetta html).
+                  Non è indicata la lingua della pagina (manca lang nel tag
+                  html).
                 </td>
                 <td>
-                  Per una pagina in turco scrivere html lang=&quot;tr&quot;.
+                  Per una pagina in italiano scrivere html lang=&quot;it&quot;.
                 </td>
                 <td>missing-lang</td>
               </tr>
@@ -3103,8 +3106,8 @@
                   solito lo considera un soft 404.
                 </td>
                 <td>
-                  Mostrate una pagina di errore che restituisce 404.
-                  Reindirizzate solo le pagine spostate.
+                  Mostrare una pagina di errore che restituisce 404.
+                  Reindirizzare solo le pagine spostate.
                 </td>
                 <td>not-found-redirects-home</td>
               </tr>
@@ -3115,7 +3118,7 @@
                   un'icona generica.
                 </td>
                 <td>
-                  Caricate un'icona quadrata di almeno 48x48 pixel e
+                  Caricare un'icona quadrata di almeno 48x48 pixel e
                   dichiaratela nel head.
                 </td>
                 <td>missing-favicon</td>
@@ -3127,7 +3130,7 @@
                   crawler trovano lì la mappa.
                 </td>
                 <td>
-                  Aggiungete in fondo al file una riga &quot;Sitemap:&quot; con
+                  Aggiungere in fondo al file una riga &quot;Sitemap:&quot; con
                   l'indirizzo completo della mappa.
                 </td>
                 <td>robots-missing-sitemap-line</td>
@@ -3139,7 +3142,7 @@
                   ricerca Google non ne risente.
                 </td>
                 <td>
-                  Se è voluto, lasciate così. Per comparire nelle risposte
+                  Se è voluto, lasciare così. Per comparire nelle risposte
                   dell'IA, consentite i bot di ricerca.
                 </td>
                 <td>ai-crawlers-blocked</td>
@@ -3151,15 +3154,15 @@
                   standard e Google non lo usa.
                 </td>
                 <td>
-                  Se volete, mettete nella radice un /llms.txt con le pagine
-                  principali.
+                  Se lo si desidera, mettere nella radice un /llms.txt con le
+                  pagine principali.
                 </td>
                 <td>missing-llms-txt</td>
               </tr>
               <tr>
                 <td>La pagina iniziale è arrivata senza compressione</td>
                 <td>La pagina è arrivata senza compressione gzip o brotli.</td>
-                <td>Attivate la compressione sul server o sulla CDN.</td>
+                <td>Attivare la compressione sul server o sulla CDN.</td>
                 <td>no-compression</td>
               </tr>
               <tr>
@@ -3168,7 +3171,7 @@
                   Manca il titolo, la descrizione o l'immagine della scheda di
                   condivisione.
                 </td>
-                <td>Aggiungete insieme og:title, og:description e og:image.</td>
+                <td>Aggiungere insieme og:title, og:description e og:image.</td>
                 <td>og-incomplete</td>
               </tr>
               <tr>
@@ -3178,7 +3181,7 @@
                   scheda.
                 </td>
                 <td>
-                  Aggiungete nel head un tag twitter:card (summary_large_image).
+                  Aggiungere nel head un tag twitter:card (summary_large_image).
                 </td>
                 <td>twitter-card-missing</td>
               </tr>
@@ -3188,7 +3191,7 @@
                   Non è un errore, ma una delle due occasioni va sprecata.
                 </td>
                 <td>
-                  Scrivete il title per il risultato di ricerca e l'H1 per chi
+                  Scrivere il title per il risultato di ricerca e l'H1 per chi
                   legge la pagina.
                 </td>
                 <td>title-equals-h1</td>
@@ -3200,7 +3203,7 @@
                   580 pixel.
                 </td>
                 <td>
-                  Accorciate il titolo o scrivete in minuscolo le parole tutte
+                  Accorciare il titolo o scrivere in minuscolo le parole tutte
                   maiuscole.
                 </td>
                 <td>title-pixel-too-wide</td>
@@ -3221,7 +3224,7 @@
                   Una nota di buona pratica. I browser attuali lo fanno già da
                   soli.
                 </td>
-                <td>Aggiungete rel=&quot;noopener&quot; a questi link.</td>
+                <td>Aggiungere rel=&quot;noopener&quot; a questi link.</td>
                 <td>blank-target-without-noopener</td>
               </tr>
               <tr>
@@ -3231,7 +3234,7 @@
                   la pagina si apre.
                 </td>
                 <td>
-                  Aggiungete loading=&quot;lazy&quot;. Non sull'immagine
+                  Aggiungere loading=&quot;lazy&quot;. Non sull'immagine
                   principale del primo schermo.
                 </td>
                 <td>images-not-lazy</td>
@@ -3242,7 +3245,7 @@
                   Tre o più immagini sono JPEG, PNG o GIF senza alternativa in
                   un formato più recente.
                 </td>
-                <td>Convertite le immagini in WebP o AVIF.</td>
+                <td>Convertire le immagini in WebP o AVIF.</td>
                 <td>images-legacy-format</td>
               </tr>
               <tr>
@@ -3252,7 +3255,7 @@
                   puntare all'elemento sbagliato.
                 </td>
                 <td>
-                  Rendete unico ogni id. Se serve solo allo stile, usate una
+                  Rendere unico ogni id. Se serve solo allo stile, usare una
                   class.
                 </td>
                 <td>duplicate-ids</td>
@@ -3260,14 +3263,14 @@
               <tr>
                 <td>Elementi HTML annidati troppo in profondità</td>
                 <td>La pagina ha elementi annidati oltre 32 livelli.</td>
-                <td>Togliete dal modello gli strati di contenitori inutili.</td>
+                <td>Togliere dal modello gli strati di contenitori inutili.</td>
                 <td>dom-too-deep</td>
               </tr>
               <tr>
                 <td>Pochissimo testo visibile rispetto al codice</td>
                 <td>Il testo visibile è meno di un decimo dell'HTML.</td>
                 <td>
-                  Spostate il codice incorporato in file separati. Verificate
+                  Spostare il codice incorporato in file separati. Verificare
                   che il testo sia nel sorgente della pagina.
                 </td>
                 <td>low-text-ratio</td>
@@ -3279,7 +3282,7 @@
                   Google. I risultati avanzati non sono bloccati.
                 </td>
                 <td>
-                  Aggiungete i campi mancanti con informazioni visibili sulla
+                  Aggiungere i campi mancanti con informazioni visibili sulla
                   pagina. Non è urgente.
                 </td>
                 <td>structured-data-recommended-props-missing</td>
@@ -3291,7 +3294,7 @@
                   caricato dopo, ignorate questo problema.
                 </td>
                 <td>
-                  Aggiungete il codice di Analytics o di Tag Manager nel head di
+                  Aggiungere il codice di Analytics o di Tag Manager nel head di
                   ogni pagina.
                 </td>
                 <td>analytics-tag-missing</td>
@@ -3303,7 +3306,7 @@
                   posizionamento.
                 </td>
                 <td>
-                  Aggiungete &quot;X-Content-Type-Options: nosniff&quot; alle
+                  Aggiungere &quot;X-Content-Type-Options: nosniff&quot; alle
                   risposte del server.
                 </td>
                 <td>missing-x-content-type-options</td>
@@ -3317,7 +3320,7 @@
                   invisibile (clickjacking).
                 </td>
                 <td>
-                  Aggiungete l'intestazione &quot;frame-ancestors 'self'&quot; o
+                  Aggiungere l'intestazione &quot;frame-ancestors 'self'&quot; o
                   &quot;X-Frame-Options: SAMEORIGIN&quot;.
                 </td>
                 <td>missing-clickjacking-protection</td>
@@ -3330,7 +3333,7 @@
                   altro sito.
                 </td>
                 <td>
-                  Aggiungete l'intestazione &quot;Referrer-Policy:
+                  Aggiungere l'intestazione &quot;Referrer-Policy:
                   strict-origin-when-cross-origin&quot;.
                 </td>
                 <td>missing-referrer-policy</td>
@@ -3342,7 +3345,7 @@
                   direttamente sulla SEO.
                 </td>
                 <td>
-                  Aggiungete nel DNS, come TXT, il record SPF consigliato dal
+                  Aggiungere nel DNS, come TXT, il record SPF consigliato dal
                   vostro servizio di posta.
                 </td>
                 <td>missing-spf</td>
@@ -3354,7 +3357,7 @@
                   verifica. Non incide direttamente sulla SEO.
                 </td>
                 <td>
-                  Aggiungete nel DNS un record TXT chiamato \_dmarc. Iniziate
+                  Aggiungere nel DNS un record TXT chiamato \_dmarc. Iniziare
                   con p=none.
                 </td>
                 <td>missing-dmarc</td>
@@ -3362,14 +3365,14 @@
               <tr>
                 <td>La pagina carica CSS che non usa</td>
                 <td>Vengono scaricate regole di stile inutilizzate.</td>
-                <td>Disattivate i fogli di stile inutilizzati.</td>
+                <td>Disattivare i fogli di stile inutilizzati.</td>
                 <td>lh-unused-css</td>
               </tr>
               <tr>
                 <td>I file JavaScript non sono minimizzati</td>
                 <td>I file JavaScript non sono minimizzati.</td>
                 <td>
-                  Attivate la minimizzazione nello strumento di build o nella
+                  Attivare la minimizzazione nello strumento di build o nella
                   CDN.
                 </td>
                 <td>lh-unminified-javascript</td>
@@ -3378,7 +3381,7 @@
                 <td>I file CSS non sono minimizzati</td>
                 <td>I file CSS non sono minimizzati.</td>
                 <td>
-                  Attivate la minimizzazione nello strumento di build o nella
+                  Attivare la minimizzazione nello strumento di build o nella
                   CDN.
                 </td>
                 <td>lh-unminified-css</td>
@@ -3386,14 +3389,14 @@
               <tr>
                 <td>I file non restano abbastanza a lungo nel browser</td>
                 <td>I file hanno una durata di cache del browser breve.</td>
-                <td>Date ai file che non cambiano un Cache-Control lungo.</td>
+                <td>Dare ai file che non cambiano un Cache-Control lungo.</td>
                 <td>lh-cache-policy</td>
               </tr>
               <tr>
                 <td>Il peso totale della pagina è molto alto</td>
                 <td>La pagina supera in totale i 2,5 MB.</td>
                 <td>
-                  Alleggerite le immagini, i video e gli script più grandi.
+                  Alleggerire le immagini, i video e gli script più grandi.
                 </td>
                 <td>lh-total-byte-weight</td>
               </tr>
@@ -3404,13 +3407,13 @@
                 <td>
                   La struttura della pagina creata nel browser è molto grande.
                 </td>
-                <td>Create il contenuto nascosto solo quando serve.</td>
+                <td>Creare il contenuto nascosto solo quando serve.</td>
                 <td>lh-dom-size</td>
               </tr>
               <tr>
                 <td>Il server risponde lentamente (Lighthouse)</td>
                 <td>Il primo byte del server arriva dopo più di 600 ms.</td>
-                <td>Attivate la cache delle pagine.</td>
+                <td>Attivare la cache delle pagine.</td>
                 <td>lh-slow-server-response</td>
               </tr>
               <tr>
@@ -3418,7 +3421,7 @@
                 <td>
                   Il testo resta invisibile finché i font non sono caricati.
                 </td>
-                <td>Aggiungete font-display: swap.</td>
+                <td>Aggiungere font-display: swap.</td>
                 <td>lh-font-display</td>
               </tr>
               <tr>
@@ -3435,13 +3438,13 @@
               <tr>
                 <td>I file sono serviti con il vecchio HTTP/1.1</td>
                 <td>I file arrivano via HTTP/1.1.</td>
-                <td>Attivate HTTP/2 sul server o sulla CDN.</td>
+                <td>Attivare HTTP/2 sul server o sulla CDN.</td>
                 <td>lh-modern-http</td>
               </tr>
               <tr>
                 <td>Viene inviato JavaScript inutile per i browser vecchi</td>
                 <td>Viene inviato codice per browser vecchi che non serve.</td>
-                <td>Aggiornate l'impostazione dei browser di destinazione.</td>
+                <td>Aggiornare l'impostazione dei browser di destinazione.</td>
                 <td>lh-legacy-javascript</td>
               </tr>
               <tr>
@@ -3450,7 +3453,7 @@
                   Il codice di terze parti occupa il thread principale per oltre
                   0,5 s.
                 </td>
-                <td>Togliete i tag inutili e rimandate gli altri.</td>
+                <td>Togliere i tag inutili e rimandate gli altri.</td>
                 <td>lh-third-parties</td>
               </tr>
               <tr>
@@ -3460,7 +3463,7 @@
                 </td>
                 <td>L'LCP è tra 2,5 e 4 secondi.</td>
                 <td>
-                  Alleggerite l'immagine principale e disattivatene il
+                  Alleggerire l'immagine principale e disattivatene il
                   caricamento differito.
                 </td>
                 <td>cwv-lcp-needs-improvement</td>
@@ -3471,15 +3474,15 @@
                 </td>
                 <td>Il CLS è tra 0,1 e 0,25.</td>
                 <td>
-                  Date le dimensioni alle immagini e riservate lo spazio per gli
-                  annunci.
+                  Indicare le dimensioni alle immagini e riservate lo spazio per
+                  gli annunci.
                 </td>
                 <td>cwv-cls-needs-improvement</td>
               </tr>
               <tr>
                 <td>Le risposte ai clic potrebbero essere più rapide (INP)</td>
                 <td>L'INP è tra 200 e 500 ms (dati sul campo).</td>
-                <td>Spezzate gli script lunghi che girano al clic.</td>
+                <td>Spezzare gli script lunghi che girano al clic.</td>
                 <td>cwv-inp-needs-improvement</td>
               </tr>
               <tr>
@@ -3489,7 +3492,7 @@
                 </td>
                 <td>L'elemento html non ha l'attributo lang.</td>
                 <td>
-                  Dichiarate una lingua, per esempio lang=&quot;it&quot;
+                  Dichiarare una lingua, per esempio lang=&quot;it&quot;
                   sull'elemento html.
                 </td>
                 <td>lh-a11y-html-has-lang</td>
@@ -3497,7 +3500,7 @@
               <tr>
                 <td>Le aree da toccare sono troppo piccole o troppo vicine</td>
                 <td>Le aree da toccare sono piccole o troppo ravvicinate.</td>
-                <td>Date alle aree almeno 24×24 pixel.</td>
+                <td>Dare alle aree almeno 24×24 pixel.</td>
                 <td>lh-a11y-target-size</td>
               </tr>
               <tr>
@@ -3505,19 +3508,19 @@
                   L'ordine dei titoli salta livelli nel browser (Lighthouse)
                 </td>
                 <td>Nel browser alcuni livelli di titolo vengono saltati.</td>
-                <td>Usate i titoli in ordine.</td>
+                <td>Usare i titoli in ordine.</td>
                 <td>lh-a11y-heading-order</td>
               </tr>
               <tr>
                 <td>Il browser registra errori all'apertura della pagina</td>
                 <td>Al caricamento compaiono errori nella console.</td>
-                <td>Guardate la scheda Console di Chrome.</td>
+                <td>Guardare la scheda Console di Chrome.</td>
                 <td>lh-errors-in-console</td>
               </tr>
               <tr>
                 <td>La pagina usa funzioni che i browser stanno eliminando</td>
                 <td>Vengono usate funzioni del browser deprecate.</td>
-                <td>Aggiornate il vecchio plugin o la vecchia libreria.</td>
+                <td>Aggiornare il vecchio plugin o la vecchia libreria.</td>
                 <td>lh-deprecations</td>
               </tr>
               <tr>
@@ -3526,14 +3529,14 @@
                   Il pannello &quot;Issues&quot; di Chrome registra delle voci.
                 </td>
                 <td>
-                  Guardate la scheda Issues degli strumenti per sviluppatori.
+                  Guardare la scheda Issues degli strumenti per sviluppatori.
                 </td>
                 <td>lh-inspector-issues</td>
               </tr>
               <tr>
                 <td>Alcune immagini sono mostrate con proporzioni errate</td>
                 <td>Le immagini sono mostrate con proporzioni errate.</td>
-                <td>Usate width/height corretti o object-fit.</td>
+                <td>Usare width/height corretti o object-fit.</td>
                 <td>lh-image-aspect-ratio</td>
               </tr>
               <tr>
@@ -3543,39 +3546,39 @@
                 <td>
                   Le immagini hanno una risoluzione troppo bassa per lo schermo.
                 </td>
-                <td>Offrite versioni più grandi con srcset.</td>
+                <td>Offrire versioni più grandi con srcset.</td>
                 <td>lh-image-size-responsive</td>
               </tr>
               <tr>
                 <td>I testi dei link non sono descrittivi (Lighthouse)</td>
                 <td>I testi dei link non dicono nulla della destinazione.</td>
                 <td>
-                  Scrivete il testo in base all'argomento della destinazione.
+                  Scrivere il testo in base all'argomento della destinazione.
                 </td>
                 <td>lh-link-text</td>
               </tr>
               <tr>
                 <td>La pagina reindirizza con meta refresh</td>
                 <td>La pagina reindirizza con meta refresh.</td>
-                <td>Fate il reindirizzamento sul server (301).</td>
+                <td>Fare il reindirizzamento sul server (301).</td>
                 <td>meta-refresh-redirect</td>
               </tr>
               <tr>
                 <td>L'indirizzo canonical è scritto in forma relativa</td>
                 <td>Il canonical è un percorso relativo.</td>
-                <td>Scrivete l'indirizzo completo (https://...).</td>
+                <td>Scrivere l'indirizzo completo (https://...).</td>
                 <td>canonical-relative</td>
               </tr>
               <tr>
                 <td>L'indirizzo canonical contiene un frammento #</td>
                 <td>Il canonical contiene un frammento #.</td>
-                <td>Togliete il # e ciò che segue.</td>
+                <td>Togliere il # e ciò che segue.</td>
                 <td>canonical-with-fragment</td>
               </tr>
               <tr>
                 <td>La ricerca non mostra lo snippet della pagina</td>
                 <td>nosnippet o max-snippet:0 nascondono lo snippet.</td>
-                <td>Togliete la regola se non è voluta.</td>
+                <td>Togliere la regola se non è voluta.</td>
                 <td>snippet-blocked</td>
               </tr>
               <tr>
@@ -3583,20 +3586,20 @@
                 <td>
                   Un indirizzo e-mail compare come testo semplice nella pagina.
                 </td>
-                <td>Valutate un modulo di contatto.</td>
+                <td>Valutare un modulo di contatto.</td>
                 <td>exposed-email-address</td>
               </tr>
               <tr>
                 <td>Le parole del titolo non compaiono nel contenuto</td>
                 <td>Le parole del titolo non compaiono nel contenuto.</td>
-                <td>Scrivete il titolo intorno all'argomento della pagina.</td>
+                <td>Scrivere il titolo intorno all'argomento della pagina.</td>
                 <td>title-content-mismatch</td>
               </tr>
               <tr>
                 <td>I dati Organization non elencano profili social</td>
                 <td>Nei dati Organization manca sameAs.</td>
                 <td>
-                  Aggiungete in sameAs gli indirizzi dei profili ufficiali.
+                  Aggiungere in sameAs gli indirizzi dei profili ufficiali.
                 </td>
                 <td>organization-missing-sameas</td>
               </tr>
@@ -3606,14 +3609,14 @@
                   (breadcrumb)
                 </td>
                 <td>Una pagina profonda non ha il percorso di navigazione.</td>
-                <td>Aggiungete il percorso di navigazione e BreadcrumbList.</td>
+                <td>Aggiungere il percorso di navigazione e BreadcrumbList.</td>
                 <td>missing-breadcrumbs</td>
               </tr>
               <tr>
                 <td>Il codice incorporato nella pagina è molto grande</td>
                 <td>Script e stili incorporati superano i 100 KB.</td>
                 <td>
-                  Spostate il codice incorporato più grande in file separati.
+                  Spostare il codice incorporato più grande in file separati.
                 </td>
                 <td>large-inline-code</td>
               </tr>
@@ -3621,7 +3624,7 @@
                 <td>C'è un blog ma nessun feed RSS/Atom dichiarato</td>
                 <td>C'è un blog ma nessun feed RSS/Atom è dichiarato.</td>
                 <td>
-                  Dichiarate il feed con un tag link rel=&quot;alternate&quot;.
+                  Dichiarare il feed con un tag link rel=&quot;alternate&quot;.
                 </td>
                 <td>missing-feed</td>
               </tr>
@@ -3632,7 +3635,7 @@
                   controllo non li ha scansionati. Google invece può farlo.
                 </td>
                 <td>
-                  Non serve fare nulla. Se non c'è un motivo, rendete la regola
+                  Non serve fare nulla. Se non c'è un motivo, rendere la regola
                   uguale per tutti i bot.
                 </td>
                 <td>robots-googlebot-only-paths</td>
@@ -3671,9 +3674,9 @@
           immagini&quot;: finita la scansione, vengono interrogati al massimo
           300 indirizzi. I siti che bloccano i bot, come i social network, e gli
           indirizzi che non rispondono non contano mai come non funzionanti. Una
-          regola che un controllo non ha misurato compare come
-          &quot;sconosciuta&quot; nella scheda Kontroller, anche per i controlli
-          fatti prima che queste regole esistessero.
+          regola che un controllo non ha misurato compare come &quot;Non
+          misurato&quot; nella scheda <strong>Verifiche</strong>, anche per i
+          controlli fatti prima che queste regole esistessero.
         </p>
         <p>
           Alcune regole non guardano le pagine una per una: sondano il sito una
@@ -3699,16 +3702,16 @@
             rel="next"
             href="/it/guide/configurazione-assistente/"
             ><span>Successiva</span
-            ><strong>Configurazione dell'assistente</strong></a
+            ><strong>Configurazione dell'agente</strong></a
           >
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 27 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 29 ottobre 2026. Ha trovato un errore?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >segnalarlo su GitHub</a
+            >Lo segnali su GitHub</a
           >.
         </p>
       </article>

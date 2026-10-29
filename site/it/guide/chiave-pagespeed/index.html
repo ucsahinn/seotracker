@@ -14,7 +14,7 @@
     <title>Chiave PageSpeed | guida di seowatcher</title>
     <meta
       name="description"
-      content="Salvare la chiave API di PageSpeed Insights, verificare le richieste di prova e capire quote e contatori durante il controllo del sito."
+      content="Salvare la chiave API di PageSpeed Insights, interpretare la prova della chiave e capire quote e contatori del controllo del sito."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -94,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="Salvare la chiave API di PageSpeed Insights, verificare le richieste di prova e capire quote e contatori durante il controllo del sito."
+      content="Salvare la chiave API di PageSpeed Insights, interpretare la prova della chiave e capire quote e contatori del controllo del sito."
     />
     <meta
       property="og:image"
@@ -125,7 +125,7 @@
     />
     <meta
       name="twitter:description"
-      content="Salvare la chiave API di PageSpeed Insights, verificare le richieste di prova e capire quote e contatori durante il controllo del sito."
+      content="Salvare la chiave API di PageSpeed Insights, interpretare la prova della chiave e capire quote e contatori del controllo del sito."
     />
     <meta
       name="twitter:image"
@@ -168,7 +168,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/it/guide/chiave-pagespeed/#article",
             "headline": "Chiave PageSpeed",
-            "description": "Salvare la chiave API di PageSpeed Insights, verificare le richieste di prova e capire quote e contatori durante il controllo del sito.",
+            "description": "Salvare la chiave API di PageSpeed Insights, interpretare la prova della chiave e capire quote e contatori del controllo del sito.",
             "url": "https://seowatcher.io/it/guide/chiave-pagespeed/",
             "inLanguage": "it",
             "datePublished": "2026-10-23",
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1518,17 +1518,17 @@
                 >Parole chiave salvate</a
               >
             </li>
-            <li>
-              <a href="/it/guide/analisi/">Interpretare i dati di analisi</a>
-            </li>
+            <li><a href="/it/guide/analisi/">Capire i dati di Analytics</a></li>
             <li>
               <a href="/it/guide/controllo-del-sito/">Controllo del sito</a>
             </li>
-            <li><a href="/it/guide/stato-indice/">Stato dell'indice</a></li>
+            <li>
+              <a href="/it/guide/stato-indice/">Stato dell'indicizzazione</a>
+            </li>
             <li><a href="/it/guide/rapporti/">Report e modelli</a></li>
             <li>
               <a href="/it/guide/informazioni-progetto/"
-                >Informazioni sul progetto</a
+                >Contesto del progetto</a
               >
             </li>
             <li><a href="/it/guide/impostazioni/">Impostazioni</a></li>
@@ -1541,7 +1541,7 @@
             </li>
             <li>
               <a href="/it/guide/configurazione-assistente/"
-                >Configurazione dell'assistente</a
+                >Configurazione dell'agente</a
               >
             </li>
             <li>
@@ -1556,43 +1556,59 @@
       <article id="icerik" data-page="pagespeed-anahtari">
         <h1>Chiave PageSpeed</h1>
         <p class="lede">
-          Salvare la chiave API di PageSpeed Insights, verificare le richieste
-          di prova e capire quote e contatori durante il controllo del sito.
+          Salvare la chiave API di PageSpeed Insights, interpretare la prova
+          della chiave e capire quote e contatori del controllo del sito.
         </p>
         <p>
-          Una chiave API di PageSpeed Insights permette al controllo del sito di
-          misurare la velocità delle pagine con PageSpeed Insights di Google. La
-          chiave si crea gratis in Google Cloud ed è facoltativa: senza chiave,
-          l'app prova a misurare al massimo 50 pagine per controllo.
+          Con una chiave API di PageSpeed Insights, il controllo del sito misura
+          la velocità delle pagine tramite il servizio di Google. La chiave è
+          gratuita e facoltativa: senza chiave l'app tenta di misurare al
+          massimo 50 pagine per controllo, e Google può fermare le richieste
+          anche prima.
         </p>
         <h2 id="aggiungere-una-chiave">Aggiungere una chiave</h2>
+        <ol>
+          <li>In Google Cloud attivi la PageSpeed Insights API.</li>
+          <li>Crei una chiave API e la limiti a questa sola API.</li>
+          <li>La salvi in <strong>Impostazioni → Test di velocità</strong>.</li>
+        </ol>
         <p>
-          Attiva PageSpeed Insights API in Google Cloud, crea una chiave e
-          limita l'accesso a questa API. Salvala in Impostazioni → Misurazione
-          velocità. È cifrata e mai mostrata. Docker accetta PAGESPEED_API_KEY;
-          il valore salvato ha priorità.
+          La chiave viene cifrata e non è mai mostrata. In Docker si può usare
+          anche la variabile <code>PAGESPEED_API_KEY</code>; il valore salvato
+          in <strong>Impostazioni</strong> ha la precedenza.
         </p>
-        <h2 id="significato-del-test">Significato del test</h2>
+        <h2 id="che-cosa-dimostra-la-prova">Che cosa dimostra la prova</h2>
         <p>
-          Il test invia una richiesta mobile reale per example.com. Non misura
-          il tuo sito e non incrementa il contatore audit. Mostra risultato e
-          data. Il pulsante resta disabilitato durante la richiesta e per almeno
-          dieci secondi dal clic. Cambiare chiave rimuove il risultato
-          precedente.
-        </p>
-        <h2 id="limiti-e-problemi">Limiti e problemi</h2>
-        <p>
-          Senza chiave l'app tenta al massimo 50 pagine per audit. Google può
-          limitare prima; una chiave non garantisce successo. Verifica la quota
-          reale in Google Cloud. Il contatore PageSpeed copre solo audit
-          iniziati nelle ultime 24 ore, escludendo test e altri programmi.
+          <strong>Prova la chiave</strong> invia una richiesta reale da
+          dispositivo mobile per example.com. Non misura il Suo sito e non
+          incrementa il contatore dei controlli. Al termine compaiono risultato
+          e data. Il pulsante resta disattivato durante la richiesta e per
+          almeno dieci secondi dal clic. Cambiando chiave, il risultato
+          precedente viene rimosso.
         </p>
         <p>
-          Chiave invalida: copiala di nuovo. Per 403 verifica API attiva e
-          restrizioni. Attendi per limiti giornalieri o di frequenza e controlla
-          le quote Cloud. Riprova gli errori di rete. Salvato indica
-          configurazione; un test riuscito conferma solo quella richiesta.
+          Una chiave salvata conferma solo la configurazione; una prova riuscita
+          conferma solo quella singola richiesta.
         </p>
+        <h2 id="quote-e-problemi">Quote e problemi</h2>
+        <p>
+          Una chiave non garantisce che tutte le misure riescano. La quota reale
+          si controlla in Google Cloud. Il contatore PageSpeed in
+          <strong>Impostazioni</strong> comprende solo i controlli avviati nelle
+          ultime 24 ore; esclude le prove della chiave e gli altri programmi.
+        </p>
+        <ul>
+          <li><strong>Chiave non valida</strong>: la copi di nuovo.</li>
+          <li>
+            <strong>Errore 403 o accesso limitato</strong>: verifichi che l'API
+            sia attiva e controlli le restrizioni della chiave.
+          </li>
+          <li>
+            <strong>Limite giornaliero o di frequenza</strong>: attenda e
+            controlli le quote in Google Cloud.
+          </li>
+          <li><strong>Errore di rete</strong>: riprovi.</li>
+        </ul>
         <nav class="pager" aria-label="Pagina precedente e successiva">
           <a class="pager-prev" rel="prev" href="/it/guide/collegamento-google/"
             ><span>Precedente</span><strong>Collegamento con Google</strong></a
@@ -1601,12 +1617,12 @@
           >
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 29 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 29 ottobre 2026. Ha trovato un errore?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >segnalarlo su GitHub</a
+            >Lo segnali su GitHub</a
           >.
         </p>
       </article>
@@ -1614,8 +1630,10 @@
         <p class="toc-label">In questa pagina</p>
         <ol>
           <li><a href="#aggiungere-una-chiave">Aggiungere una chiave</a></li>
-          <li><a href="#significato-del-test">Significato del test</a></li>
-          <li><a href="#limiti-e-problemi">Limiti e problemi</a></li>
+          <li>
+            <a href="#che-cosa-dimostra-la-prova">Che cosa dimostra la prova</a>
+          </li>
+          <li><a href="#quote-e-problemi">Quote e problemi</a></li>
         </ol>
       </nav>
     </main>

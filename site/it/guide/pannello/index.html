@@ -14,7 +14,7 @@
     <title>Pannello | guida di seowatcher</title>
     <meta
       name="description"
-      content="La panoramica riunisce traffico di ricerca, prossime attività supportate dai dati e limiti delle fonti."
+      content="Il Pannello riunisce traffico di ricerca, prossime attività basate sui dati, stato del controllo e risultati Analytics del progetto."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/it/guide/pannello/" />
@@ -88,7 +88,7 @@
     <meta property="og:title" content="Pannello | guida di seowatcher" />
     <meta
       property="og:description"
-      content="La panoramica riunisce traffico di ricerca, prossime attività supportate dai dati e limiti delle fonti."
+      content="Il Pannello riunisce traffico di ricerca, prossime attività basate sui dati, stato del controllo e risultati Analytics del progetto."
     />
     <meta
       property="og:image"
@@ -101,7 +101,7 @@
       property="og:image:alt"
       content="Scheda di seowatcher: la dashboard dell’app con i dati di Search Console, Analytics 4 e dell’audit del sito, e un pulsante per scaricarla su Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/it/guide/pannello/"
@@ -116,7 +116,7 @@
     <meta name="twitter:title" content="Pannello | guida di seowatcher" />
     <meta
       name="twitter:description"
-      content="La panoramica riunisce traffico di ricerca, prossime attività supportate dai dati e limiti delle fonti."
+      content="Il Pannello riunisce traffico di ricerca, prossime attività basate sui dati, stato del controllo e risultati Analytics del progetto."
     />
     <meta
       name="twitter:image"
@@ -159,11 +159,11 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/it/guide/pannello/#article",
             "headline": "Pannello",
-            "description": "La panoramica riunisce traffico di ricerca, prossime attività supportate dai dati e limiti delle fonti.",
+            "description": "Il Pannello riunisce traffico di ricerca, prossime attività basate sui dati, stato del controllo e risultati Analytics del progetto.",
             "url": "https://seowatcher.io/it/guide/pannello/",
             "inLanguage": "it",
             "datePublished": "2026-10-23",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Schermate",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -198,7 +198,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1506,17 +1506,17 @@
                 >Parole chiave salvate</a
               >
             </li>
-            <li>
-              <a href="/it/guide/analisi/">Interpretare i dati di analisi</a>
-            </li>
+            <li><a href="/it/guide/analisi/">Capire i dati di Analytics</a></li>
             <li>
               <a href="/it/guide/controllo-del-sito/">Controllo del sito</a>
             </li>
-            <li><a href="/it/guide/stato-indice/">Stato dell'indice</a></li>
+            <li>
+              <a href="/it/guide/stato-indice/">Stato dell'indicizzazione</a>
+            </li>
             <li><a href="/it/guide/rapporti/">Report e modelli</a></li>
             <li>
               <a href="/it/guide/informazioni-progetto/"
-                >Informazioni sul progetto</a
+                >Contesto del progetto</a
               >
             </li>
             <li><a href="/it/guide/impostazioni/">Impostazioni</a></li>
@@ -1529,7 +1529,7 @@
             </li>
             <li>
               <a href="/it/guide/configurazione-assistente/"
-                >Configurazione dell'assistente</a
+                >Configurazione dell'agente</a
               >
             </li>
             <li>
@@ -1544,120 +1544,138 @@
       <article id="icerik" data-page="panel">
         <h1>Pannello</h1>
         <p class="lede">
-          La panoramica riunisce traffico di ricerca, prossime attività
-          supportate dai dati e limiti delle fonti.
+          Il Pannello riunisce traffico di ricerca, prossime attività basate sui
+          dati, stato del controllo e risultati Analytics del progetto.
         </p>
         <p>
-          La panoramica riunisce traffico di ricerca, prossime attività
-          supportate dai dati e limiti delle fonti. Aggiorna rilegge le fonti
-          attive, la configurazione e lo stato di installazione. Se una lettura
-          fallisce, segnala un aggiornamento parziale. L’ora di ricezione è
-          diversa dall’ultimo giorno misurato.
+          <strong>Aggiorna</strong> rilegge le fonti attive, la configurazione e
+          lo stato dell'installazione. Se una lettura non riesce, il Pannello
+          segnala un aggiornamento parziale. L'ora in cui i dati sono arrivati
+          non coincide con l'ultimo giorno misurato.
         </p>
-        <h2 id="riepilogo-ricerca">Riepilogo ricerca</h2>
+        <h2 id="riepilogo-della-ricerca">Riepilogo della ricerca</h2>
         <p>
-          L’ambito predefinito copre 28 giorni di ricerca Web, tutti i
-          dispositivi e paesi. I giorni recenti incompleti sono esclusi. Fanno
-          fede le date visibili e il fuso del Pacifico. Le righe della fonte
-          mostrano il periodo precedente reale, l’ultimo giorno con dati e i
-          giorni esclusi. Se Google non indica la completezza, l’esclusione
-          presunta viene spiegata. Query nascoste e limiti di righe impediscono
-          alla lista di rappresentare l’intero sito.
+          Per impostazione predefinita il riepilogo copre 28 giorni di ricerca
+          Web, su tutti i dispositivi e paesi. I giorni recenti ancora
+          incompleti sono esclusi. Fanno fede le date visibili, nel fuso orario
+          del Pacifico. Le righe sulla fonte indicano il periodo precedente
+          effettivo, l'ultimo giorno con dati e i giorni esclusi. Se Google non
+          dichiara che un giorno è completo, il Pannello spiega quale esclusione
+          ha presunto. Per via delle query nascoste e del limite di righe,
+          l'elenco non rappresenta l'intero sito.
         </p>
+        <ul>
+          <li>
+            <strong>Clic</strong>: clic dai risultati di Google verso il sito.
+          </li>
+          <li>
+            <strong>Impressioni</strong>: volte in cui il sito è comparso nei
+            risultati.
+          </li>
+          <li><strong>CTR</strong>: clic divisi per impressioni.</li>
+          <li>
+            <strong>Posizione media</strong>: media ponderata per le
+            impressioni; un valore più basso è migliore.
+          </li>
+        </ul>
         <p>
-          I clic contano gli accessi dai risultati di Google; le impressioni, le
-          apparizioni. Il CTR divide i clic per le impressioni. La posizione
-          media è ponderata per le impressioni; più bassa è, meglio è. Tutti e
-          quattro gli indicatori aprono le prestazioni di ricerca nello stesso
-          ambito. La crescita da zero usa un valore assoluto; un calo a zero può
-          avere una percentuale negativa valida. Senza periodo precedente non
-          viene inventata alcuna variazione. La linea tenue mostra i clic
-          giornalieri precedenti.
+          Ogni indicatore apre Rendimento della ricerca con lo stesso ambito.
+          Una crescita da zero è espressa in valore assoluto; un calo a zero può
+          dare una percentuale negativa valida. Senza periodo precedente non
+          viene mostrata alcuna variazione. La linea chiara nel grafico
+          rappresenta i clic giornalieri del periodo precedente.
         </p>
         <h2 id="attivita-e-configurazione">Attività e configurazione</h2>
         <p>
-          Al massimo tre attività derivano da problemi di connessione, risultati
-          del controllo, attività di ricerca effettive o scansioni datate.
-          Essere connessi non genera da solo un’opportunità. Una lettura fallita
-          non diventa un invito al primo controllo. Nessuna attività prioritaria
-          non certifica tutte le fonti.
+          Il Pannello propone al massimo tre attività. Nascono da problemi di
+          connessione, risultati del controllo, attività di ricerca effettive o
+          scansioni non più recenti. Una connessione attiva, da sola, non genera
+          opportunità. Una lettura non riuscita non diventa un invito a eseguire
+          il primo controllo. L'assenza di attività prioritarie non certifica
+          che tutte le fonti funzionino.
         </p>
         <p>
-          La configurazione usa gli stessi sei segnali delle informazioni del
-          progetto. Segnali mancanti e non leggibili restano distinti. Un
-          controllo completato del proprio sito diventa datato a sette giorni
-          esatti. Le preferenze sono un percorso facoltativo chiuso, senza un
-          secondo punteggio. I passaggi rimandati restano ripristinabili anche
-          senza attività aperte.
+          La configurazione usa gli stessi sei segnali di Contesto del progetto
+          e distingue i segnali mancanti da quelli non leggibili. Un controllo
+          completato del sito diventa datato dopo esattamente sette giorni. Le
+          preferenze sono un percorso facoltativo, chiuso per impostazione
+          predefinita, e non producono un secondo punteggio. I passaggi
+          rimandati si possono riprendere anche quando non ci sono attività
+          aperte.
         </p>
         <h2 id="stime-per-query">Stime per query</h2>
         <p>
-          Le query idonee hanno abbastanza impressioni e una posizione
-          arrotondata tra 4 e 20. I clic aggiuntivi modellano il passaggio alla
-          fascia successiva: sono un limite superiore, non traffico misurato. Le
-          stime note e sconosciute vengono contate sull’intero insieme prima
-          delle quattro righe visibili. Un insieme senza stime non diventa un
-          limite di zero. Viene dichiarato se i termini del marchio sono
-          confermati, suggeriti o assenti. Non sommare questa stima al totale
-          delle opportunità per pagina, che ha unità e periodo diversi.
+          Una query è idonea quando ha abbastanza impressioni e una posizione
+          arrotondata tra 4 e 20. I clic aggiuntivi stimano il guadagno se la
+          query salisse alla fascia successiva: sono un limite superiore, non
+          traffico misurato. Le stime note e sconosciute si contano sull'intero
+          insieme, non solo sulle quattro righe visibili. Se nessuna stima è
+          disponibile, il risultato non viene presentato come zero. La schermata
+          indica se i termini del brand sono confermati, suggeriti o assenti.
+          Non sommi questa stima al totale di Opportunità per pagina: unità e
+          periodo sono diversi.
         </p>
-        <h2 id="controllo-del-proprio-sito">Controllo del proprio sito</h2>
+        <h2 id="controllo-del-sito">Controllo del sito</h2>
         <p>
-          Vengono scelte solo scansioni del dominio del progetto. Un controllo
-          più recente di un altro sito viene ignorato. L’ultimo risultato
-          completato e un tentativo più recente in corso o fallito sono indicati
-          separatamente. Senza dominio, un collegamento porta alle impostazioni.
-          La scheda indica indirizzo iniziale, data, controlli misurati e limite
-          di pagine.
+          Il Pannello usa solo scansioni del dominio del progetto e ignora un
+          controllo più recente di un altro sito. L'ultimo risultato completato
+          e un tentativo più recente, in corso o non riuscito, sono indicati
+          separatamente. Se il progetto non ha un dominio, un collegamento porta
+          alle impostazioni. La scheda riporta indirizzo iniziale, data,
+          controlli misurati e limite di pagine.
         </p>
         <p>
-          Pagine uniche interessate, tipi di controllo e coppie pagina–controllo
-          sono unità diverse. Una pagina può fallire tre controlli. Le note
-          informative restano fuori dalla barra di criticità e avvisi. Il
-          giudizio vale solo nell’ambito misurato. Dati mancanti o limiti di
-          pagine non certificano l’intero sito. I confronti richiedono lo stesso
-          ambito iniziale, impostazioni e URL scansionati, con misure leggibili.
-          Solo i controlli misurati in entrambe le scansioni mostrano
-          variazioni. Una scansione ridotta o non leggibile non prova una
-          risoluzione. L’ambito sconosciuto viene spiegato. I collegamenti
-          aprono i problemi dello stesso controllo per l’URL scelto.
+          Pagine interessate, tipi di controllo e coppie pagina-controllo sono
+          unità diverse: una stessa pagina può non superare tre controlli. Le
+          note informative restano fuori dalla barra dei problemi critici e
+          degli avvisi. Il giudizio vale solo per l'ambito misurato; dati
+          mancanti o un limite di pagine non certificano l'intero sito.
+        </p>
+        <p>
+          Il confronto tra due scansioni richiede lo stesso indirizzo iniziale,
+          le stesse impostazioni e gli stessi URL, con misure leggibili in
+          entrambe. Le variazioni compaiono solo per i controlli misurati in
+          tutte e due. Una scansione ridotta o non leggibile non prova che un
+          problema sia risolto. Se l'ambito è sconosciuto, la scheda lo spiega.
+          I collegamenti aprono i problemi dello stesso controllo per l'URL
+          scelto; l'identificativo del controllo resta nella navigazione.
         </p>
         <h2 id="risultati-analytics">Risultati Analytics</h2>
         <p>
           Sessioni organiche, utenti attivi, coinvolgimento ed eventi chiave
-          provengono da Google Analytics. Date effettive e fuso della proprietà
-          sono visibili. Le sessioni differiscono dai clic Google e includono
-          altri motori. Una metrica sconosciuta o limitata non significa zero
-          traffico; le altre metriche leggibili restano visibili. Soglie di
-          privacy, campionamento e restrizioni sono spiegati. Confronti non
-          affidabili vengono omessi e i giorni sconosciuti restano vuoti.
+          provengono da Google Analytics 4, con le date effettive e il fuso
+          orario della proprietà. Le sessioni non coincidono con i clic di
+          Google e includono altri motori di ricerca. Una metrica sconosciuta o
+          limitata non significa traffico zero; le altre metriche leggibili
+          restano visibili. Il Pannello spiega soglie di privacy, campionamento
+          e limitazioni di accesso. I confronti non affidabili vengono omessi e
+          i giorni sconosciuti restano vuoti.
         </p>
         <p>
-          Dati commerciali positivi in uno dei periodi mantengono ricavi e
-          ordini visibili, compreso uno zero misurato in un periodo tranquillo.
-          Senza prove, la misurazione delle vendite resta non confermata. Una
-          valuta sconosciuta viene indicata.
+          Se uno dei due periodi ha dati commerciali positivi, ricavi e ordini
+          restano visibili, anche quando l'altro periodo misura zero. Senza
+          questa prova, la misurazione delle vendite resta non confermata. Una
+          valuta sconosciuta viene segnalata. La nota sulle vendite si trova
+          nella spiegazione espandibile dei ricavi organici.
         </p>
         <p>
-          La panoramica non contiene volumi di parole chiave, backlink o
-          posizioni dei concorrenti. Confronta i dati Google con date e filtri
-          identici.
+          Se le sessioni sono sconosciute, controlli gli avvisi sulla fonte
+          nella schermata Analytics, i permessi della proprietà e il tag sul
+          sito.
         </p>
-        <h2 id="interpretare-pochi-dati">Interpretare pochi dati</h2>
+        <h2 id="pochi-dati">Pochi dati</h2>
         <p>
           Se i clic del periodo di confronto sono sotto la soglia di analisi, il
-          riepilogo presenta prima clic e impressioni reali. Con pochi dati,
-          percentuali e medie da sole non dimostrano una crescita o una perdita.
-          Un elenco di opportunità vuoto non significa che nessuna query sia in
-          posizione 4–20: valgono anche la soglia di impressioni adattata al
-          periodo e l’esclusione delle query di marca.
+          riepilogo mostra prima clic e impressioni reali. Con pochi dati,
+          percentuali e medie non dimostrano da sole una crescita o un calo. Un
+          elenco di opportunità vuoto non significa che nessuna query sia tra le
+          posizioni 4 e 20: contano anche la soglia di impressioni adattata al
+          periodo e l'esclusione delle query di brand.
         </p>
         <p>
-          L’identificativo dell’audit resta nella navigazione; la scheda mostra
-          l’indirizzo iniziale. Se le sessioni sono sconosciute, controlla gli
-          avvisi della fonte nel report Analytics, i permessi e il tag sul sito.
-          La nota sulle vendite si trova nella spiegazione espandibile delle
-          entrate organiche.
+          Il Pannello non contiene volumi di ricerca, backlink o posizioni dei
+          concorrenti. Per confrontare i dati con Google, usi le stesse date e
+          gli stessi filtri.
         </p>
         <nav class="pager" aria-label="Pagina precedente e successiva">
           <a class="pager-prev" rel="prev" href="/it/guide/progetti/"
@@ -1670,30 +1688,28 @@
           >
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 28 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 29 ottobre 2026. Ha trovato un errore?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >segnalarlo su GitHub</a
+            >Lo segnali su GitHub</a
           >.
         </p>
       </article>
       <nav class="toc" aria-label="In questa pagina">
         <p class="toc-label">In questa pagina</p>
         <ol>
-          <li><a href="#riepilogo-ricerca">Riepilogo ricerca</a></li>
+          <li>
+            <a href="#riepilogo-della-ricerca">Riepilogo della ricerca</a>
+          </li>
           <li>
             <a href="#attivita-e-configurazione">Attività e configurazione</a>
           </li>
           <li><a href="#stime-per-query">Stime per query</a></li>
-          <li>
-            <a href="#controllo-del-proprio-sito">Controllo del proprio sito</a>
-          </li>
+          <li><a href="#controllo-del-sito">Controllo del sito</a></li>
           <li><a href="#risultati-analytics">Risultati Analytics</a></li>
-          <li>
-            <a href="#interpretare-pochi-dati">Interpretare pochi dati</a>
-          </li>
+          <li><a href="#pochi-dati">Pochi dati</a></li>
         </ol>
       </nav>
     </main>

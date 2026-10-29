@@ -1,45 +1,60 @@
 ---
-title: Übersicht (Panel)
-description: Die Übersicht verbindet Suchtraffic, belegte nächste Aufgaben und die Grenzen der Datenquellen.
+title: Übersicht
+description: Die Übersicht zeigt den Suchtraffic des Projekts, die nächsten belegten Aufgaben und die Grenzen jeder Datenquelle auf einen Blick.
 screen: Panel
 route: /p/<proje>
 updated: 2026-10-28
 ---
 
-Die Übersicht verbindet Suchtraffic, belegte nächste Aufgaben und die Grenzen der Datenquellen. Aktualisieren liest die aktiven Quellen, den Einrichtungsstatus und die Google-Konfiguration neu. Schlägt ein Abruf fehl, wird die Aktualisierung als teilweise gemeldet. Die Abrufzeit ist nicht der letzte gemessene Tag.
+**Aktualisieren** liest die aktiven Datenquellen, den Einrichtungsstatus und die Google-Konfiguration neu. Schlägt ein einzelner Abruf fehl, meldet die Übersicht die Aktualisierung als teilweise. Die angezeigte Abrufzeit ist nicht der letzte Tag, für den Messdaten vorliegen.
 
-## Suche verstehen
+## Suchdaten lesen
 
-Der Standard umfasst 28 Tage Websuche über alle Geräte und Länder. Noch unvollständige letzte Tage bleiben außerhalb der Summen. Maßgeblich sind die sichtbaren Daten und die pazifische Zeitzone. Die Quellenangaben nennen den tatsächlichen Vergleichszeitraum, den letzten Datentag und ausgeschlossene Tage. Fehlt Googles Vollständigkeitsdatum, wird der angenommene Ausschluss erklärt. Verborgene Suchanfragen und Zeilenlimits verhindern, dass die Liste die gesamte Website abbildet.
+Standardmäßig zeigt die Übersicht 28 Tage Websuche über alle Geräte und Länder. Die letzten, noch unvollständigen Tage zählen nicht zu den Summen. Die Tage folgen der pazifischen Zeitzone, die Google für Search Console verwendet. Die Quellenangaben nennen den tatsächlichen Vergleichszeitraum, den letzten Datentag und ausgeschlossene Tage. Liefert Google kein Vollständigkeitsdatum, erklärt die Übersicht, welche Tage sie deshalb ausschließt.
 
-Klicks zählen Zugriffe aus Google-Ergebnissen, Impressionen die Einblendungen. CTR ist der Anteil der Klicks an den Impressionen. Die durchschnittliche Position ist nach Impressionen gewichtet; kleiner ist besser. Alle vier Kacheln öffnen die Suchleistung im gleichen Standardumfang. Wachstum von null wird als absolute Zahl gezeigt. Ein Rückgang auf null kann eine gültige negative Prozentzahl haben. Ohne Vorperiode wird keine Änderung erfunden. Die blasse Linie zeigt die täglichen Klicks der Vorperiode.
+Die vier Kacheln zeigen:
+
+- **Klicks**: Besuche aus Google-Suchergebnissen.
+- **Impressionen**: wie oft Ihre Seiten in Suchergebnissen erschienen.
+- **CTR**: Anteil der Klicks an den Impressionen.
+- **Durchschnittliche Position**: nach Impressionen gewichtet; ein kleinerer Wert ist besser.
+
+Jede Kachel öffnet die Suchleistung mit demselben Zeitraum und denselben Filtern. Steigt ein Wert von null, zeigt die Kachel die absolute Änderung statt eines Prozentsatzes. Ohne Vorperiode wird keine Änderung angezeigt. Die blasse Linie im Diagramm sind die täglichen Klicks der Vorperiode.
+
+Google verbirgt seltene Suchanfragen und begrenzt die Zahl der Zeilen. Die Liste der Suchanfragen bildet daher nie die gesamte Website ab.
 
 ## Aufgaben und Einrichtung
 
-Höchstens drei Aufgaben folgen aus Verbindungsfehlern, gemessenen Audit-Befunden, tatsächlichen Suchaufgaben oder einem alten Crawl. Eine Verbindung allein erzeugt keine Chance. Ein Lesefehler wird nicht als erstes Audit interpretiert. Keine vorrangige Aufgabe bedeutet keine Bestätigung für alle Datenquellen.
+Die Übersicht nennt höchstens drei Aufgaben. Jede stammt aus einem Verbindungsfehler, einem gemessenen Audit-Befund, einer Suchanfrage mit Potenzial oder einem veralteten Crawl. Eine bloße Verbindung erzeugt keine Aufgabe, und ein Lesefehler wird nicht als „erstes Audit starten“ gedeutet. Erscheint keine Aufgabe, heißt das nicht, dass alle Datenquellen in Ordnung sind.
 
-Die Einrichtung nutzt dieselben sechs Signale wie die Projektinformationen. Fehlende und nicht lesbare Signale sind getrennt. Ein abgeschlossenes Audit der eigenen Website gilt ab genau sieben Tagen als veraltet. Die eingeklappte optionale Einrichtungstour hat keinen zweiten Bereitschaftswert. Zurückgestellte Schritte lassen sich auch ohne offene Schritte wiederherstellen.
+Die Einrichtung prüft dieselben sechs Signale wie der Projektkontext und trennt fehlende von nicht lesbaren Signalen. Ein abgeschlossenes Audit der eigenen Website gilt nach sieben Tagen als veraltet. Die optionale Einrichtungstour lässt sich einklappen; zurückgestellte Schritte können Sie jederzeit wiederherstellen.
 
-## Schätzungen für Suchanfragen
+## Geschätzte Zusatzklicks je Suchanfrage
 
-Geeignet sind Suchanfragen mit ausreichenden Impressionen und gerundeter Position 4–20. Zusätzliche Klicks modellieren das nächsthöhere Rangband und sind eine Obergrenze, kein gemessener Traffic. Bekannte und unbekannte Schätzungen werden vor der Auswahl der vier angezeigten Zeilen gezählt. Sind alle unbekannt, erscheint keine Null-Obergrenze. Bestätigte, vorgeschlagene oder fehlende Markenbegriffe werden offengelegt. Diese Schätzung darf nicht zur seitenbasierten Chancensumme mit anderer Zeitraum- und Einheitenbasis addiert werden.
+Berücksichtigt werden Suchanfragen mit ausreichend Impressionen und einer gerundeten Position von 4 bis 20. Die Schätzung nimmt an, dass die Suchanfrage in das nächsthöhere Positionsband aufsteigt. Sie ist eine Obergrenze, kein gemessener Traffic.
+
+Suchanfragen mit und ohne berechenbare Schätzung werden gezählt, bevor die vier angezeigten Zeilen ausgewählt werden. Ist keine Schätzung berechenbar, zeigt die Karte keine Obergrenze von null. Ob Markenbegriffe bestätigt, nur vorgeschlagen oder nicht hinterlegt sind, steht offen auf der Karte. Addieren Sie diese Schätzung nicht zur Summe auf dem Bildschirm Chancen: Diese rechnet pro Seite, mit anderem Zeitraum und anderer Einheit.
 
 ## Audit der eigenen Website
 
-Es zählen nur Crawls der Projektdomain. Neuere Audits anderer Websites bleiben unberücksichtigt. Der letzte abgeschlossene Stand und ein neuer laufender oder fehlgeschlagener Versuch werden getrennt benannt. Ohne Domain führt ein Link zu den Projekteinstellungen. Die Karte nennt Startadresse, Datum, gemessene Prüfungen und Seitenlimit.
+Die Karte berücksichtigt nur Crawls der Projektdomain; Audits anderer Websites zählen nicht, auch wenn sie neuer sind. Den letzten abgeschlossenen Stand und einen neueren laufenden oder fehlgeschlagenen Versuch zeigt sie getrennt. Hat das Projekt keine Domain, führt ein Link zu den Projekteinstellungen. Die Karte nennt Startadresse, Datum, Zahl der gemessenen Prüfungen und Seitenlimit.
 
-Eindeutige betroffene Seiten, Prüfungsarten und Paare aus Seite und Prüfungsart sind verschiedene Einheiten. Eine Seite kann drei Prüfungen nicht bestehen. Informationshinweise stehen außerhalb des Balkens für kritische Befunde und Warnungen. Aussagen zum Zustand gelten nur für den gemessenen Bereich. Fehlende Messungen oder Seitenlimits bestätigen nicht die gesamte Website. Vergleiche erfordern denselben Startbereich, gleiche Einstellungen und URL-Mengen sowie lesbare Messungen. Nur beidseitig gemessene Prüfungen zeigen Änderungen. Engere oder nicht lesbare Crawls gelten nicht als Behebung. Unbekannter Umfang wird erklärt. Seitenlinks öffnen die Probleme desselben Audits für die gewählte URL.
+Betroffene Seiten, Prüfungsarten und Kombinationen aus Seite und Prüfungsart sind verschiedene Einheiten: Eine einzelne Seite kann drei Prüfungen nicht bestehen. Der Balken zeigt nur kritische Befunde und Warnungen; Hinweise stehen daneben.
+
+Alle Aussagen gelten nur für den gecrawlten Bereich. Fehlende Messungen oder ein erreichtes Seitenlimit bestätigen nicht die gesamte Website. Änderungen zwischen zwei Audits zeigt die Karte nur, wenn Startadresse, Einstellungen und URL-Menge übereinstimmen und beide Messungen lesbar sind. Ein kleinerer oder nicht lesbarer Crawl gilt nicht als Behebung. Ein Klick auf eine Seite öffnet die Probleme desselben Audits für diese URL.
 
 ## Analytics
 
-Organische Sitzungen, aktive Nutzer, Interaktion und Schlüsselereignisse stammen aus Google Analytics. Tatsächliche Daten und Property-Zeitzone sind sichtbar. Sitzungen unterscheiden sich von Google-Klicks und enthalten weitere Suchmaschinen. Unbekannte oder gesperrte Sitzungswerte bedeuten keinen Null-Traffic. Lesbare Messwerte bleiben erhalten. Datenschutzschwellen, Stichproben und Zugriffsbeschränkungen werden erklärt. Unsichere Vergleiche entfallen; unbekannte Tage bleiben Lücken.
+Organische Sitzungen, aktive Nutzer, Interaktionen und Schlüsselereignisse stammen aus Google Analytics. Zeitraum und Zeitzone der Property sind sichtbar. Sitzungen sind keine Google-Klicks: Sie enthalten auch Besuche aus anderen Suchmaschinen. Ein unbekannter oder gesperrter Wert bedeutet nicht null Traffic; lesbare Werte bleiben sichtbar. Datenschutzschwellen, Stichproben und Zugriffsbeschränkungen werden erklärt. Ist ein Vergleich unsicher, entfällt er; unbekannte Tage bleiben Lücken im Diagramm.
 
-Positive Handelsdaten in einem der beiden Zeiträume halten Umsatz und Bestellungen sichtbar, auch bei einer gemessenen Null in einem ruhigen Zeitraum. Ohne Nachweis bleibt die Umsatzmessung unbestätigt. Eine unbekannte Währung wird ausdrücklich benannt.
+Hat einer der beiden Zeiträume Umsatz oder Bestellungen, bleiben beide Werte sichtbar, auch wenn der andere Zeitraum null zeigt. Ohne Nachweis gilt die Umsatzmessung als unbestätigt. Ist die Währung unbekannt, steht das am Betrag. Den Hinweis zur Verkaufsmessung finden Sie in der aufklappbaren Erklärung zum organischen Umsatz.
 
-Die Übersicht enthält weder Suchvolumen noch Backlinks oder Wettbewerber-Rankings. Ein Abgleich mit Google benötigt identische Daten und Filter.
+Zeigt die Karte unbekannte Sitzungen, prüfen Sie die Quellenwarnungen im Analytics-Bericht, die Zugriffsrechte und das Tag auf der Website.
 
-## Wenige Daten einordnen
+## Wenig Daten
 
-Liegt die Klickzahl des Vergleichszeitraums unter der Analyseschwelle, nennt die Zusammenfassung zuerst die tatsächlichen Klicks und Impressionen. Prozentsätze und Mittelwerte allein belegen bei wenigen Daten weder Wachstum noch Verlust. Eine leere Chancenliste bedeutet nicht, dass keine Suchanfrage auf Position 4–20 liegt: Es gelten auch die zeitabhängige Impressionsschwelle und der Ausschluss von Markensuchanfragen.
+Liegen die Klicks des Vergleichszeitraums unter der Analyseschwelle, nennt die Zusammenfassung zuerst die tatsächlichen Klicks und Impressionen. Prozentsätze und Mittelwerte belegen bei wenig Daten weder Wachstum noch Verlust.
 
-Die Prüfungskennung bleibt in der Navigation; die Karte zeigt die Startadresse. Bei unbekannten Sitzungen prüfen Sie die Quellenwarnungen im Analytics-Bericht, die Zugriffsrechte und das Tag auf der Website. Der Hinweis zur Verkaufsmessung steht in der aufklappbaren Erklärung zum organischen Umsatz.
+Eine leere Liste bedeutet nicht, dass keine Suchanfrage auf Position 4 bis 20 steht. Auch die zeitraumabhängige Impressionsschwelle und der Ausschluss von Markensuchanfragen können sie leeren.
+
+Die Übersicht enthält kein Suchvolumen, keine Backlinks und keine Rankings von Mitbewerbern. Wollen Sie Zahlen mit der Search Console abgleichen, verwenden Sie dort denselben Zeitraum und dieselben Filter.

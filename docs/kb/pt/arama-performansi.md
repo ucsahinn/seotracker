@@ -1,16 +1,14 @@
 ---
 title: Desempenho da pesquisa
-description: Você vê quantas vezes aparece no Google, quantos cliques recebe e o que corrigir primeiro. Os números vêm do Search Console. Os ganhos são um limite superior.
+description: Cliques, impressões e posições do Search Console, as páginas a melhorar primeiro e os limites dos ganhos estimados.
 screen: Arama performansı
 route: /p/<proje>/search-performance
 updated: 2026-10-28
 ---
 
-Aqui você vê quantas vezes aparece no Google, quantos cliques recebe e o que corrigir primeiro.
-
 Cliques, impressões, CTR e posição vêm direto do Search Console. O aplicativo não estima nenhum deles. As estimativas só existem nos números de "ganho possível", e eles sempre vêm marcados como "limite superior".
 
-Os filtros escolhidos são escritos na barra de endereço. Se quiser, compartilhe essa visão como link ou guarde nos favoritos.
+Os filtros escolhidos ficam salvos no endereço da página. Se quiser, compartilhe essa visão como link ou guarde nos favoritos.
 
 ## Três termos
 
@@ -24,13 +22,13 @@ Os filtros escolhidos são escritos na barra de endereço. Se quiser, compartilh
 
 **Barra superior.** No alto à direita há quatro coisas.
 
-- **Atualizar**: pede dados novos ao Search Console. O aplicativo normalmente reaproveita uma resposta de alguns minutos atrás.
+- **Atualizar**: pede dados novos ao Search Console. O aplicativo normalmente reaproveita uma resposta de até dez minutos atrás; **Atualizar** ignora esse cache.
 - **Baixar relatório**: transforma a visão mostrada em um relatório imprimível em um único arquivo, salva e baixa. O relatório também fica na tela **Relatórios**.
-- O menu de exportação: **Consultas (CSV)**, **Páginas (CSV)**, **Consultas perto das três primeiras posições (CSV)**, **Exportar consultas para o Sheets**, **Exportar páginas para o Sheets**. As exportações seguem os filtros da tela. Se na guia Pesquisas ou Páginas houver uma busca ou um filtro rápido, ele também vai para o arquivo.
+- O menu de exportação: **Consultas (CSV)**, **Páginas (CSV)**, **Consultas perto das três primeiras posições (CSV)**, **Exportar consultas para o Sheets**, **Exportar páginas para o Sheets**. As exportações seguem os filtros da tela. Se na guia Consultas ou Páginas houver uma busca ou um filtro rápido, ele também vai para o arquivo.
 
 **Filtros.** Uma barra de uma linha resume os filtros escolhidos: "(Web, Todos os dispositivos, Todos os países, Últimos 28 dias, Em relação ao período anterior)". Abrindo-a, você vê: **Tipo de pesquisa** (Web, Imagem, Vídeo, Notícias), **Filtro de dispositivo** (Todos os dispositivos, Celular, Computador, Tablet), **Filtro de país** (os países que o Google informa para aquele período), **Período** (Últimos 7 dias, Últimos 28 dias, Últimos três meses) e **Comparação** (Em relação ao período anterior, Em relação ao ano passado, Sem comparação).
 
-**Status dos dados.** Uma faixa que diz em que os números se apoiam. Por exemplo "Os dados são definitivos até 24 out.; os últimos 3 dias ainda estão sendo contados (tracejados no gráfico)." A mesma faixa diz com quais dias a comparação é feita e o nome da sua propriedade do Search Console. Um clique no nome leva às configurações de conexão do projeto. Se a comparação com o ano passado estiver escolhida e o Google já não fornecer esses dias, a faixa avisa (o Google volta no máximo 16 meses). Em **Sobre os dados**, você vê: a data dos dias definitivos, quantos dias ainda estão sendo contados e a data dos últimos dados, a parcela de cliques de consultas ocultas, se as tabelas foram lidas por inteiro (o Google devolve um número limitado de linhas por vez) e se esta visão enviou novas solicitações ao Google ou usou uma resposta tirada alguns minutos antes.
+**Status dos dados.** Uma faixa que diz em que os números se apoiam. Por exemplo "Os dados são definitivos até 24 out.; os últimos 3 dias ainda estão sendo contados (tracejados no gráfico)." A mesma faixa diz com quais dias a comparação é feita e o nome da sua propriedade do Search Console. Um clique no nome leva às configurações de conexão do projeto. Se a comparação com o ano passado estiver escolhida e o Google já não fornecer esses dias, a faixa avisa (o Google volta no máximo 16 meses). Em **Sobre os dados**, você vê: a data dos dias definitivos, quantos dias ainda estão sendo contados e a data dos últimos dados, a parcela de cliques de consultas ocultas, se as tabelas foram lidas por inteiro (o Google devolve um número limitado de linhas por vez) e se esta visão enviou novas solicitações ao Google ou reaproveitou uma resposta de até dez minutos atrás.
 
 **Frase de resumo.** Uma ou duas frases acima dos quadros dizem o que aconteceu. Por exemplo "Os cliques subiram 6,1% nos últimos 28 dias em relação ao período anterior. O CTR caiu 0,3 ponto." Depois diz quantos cliques a mais os três primeiros trabalhos poderiam trazer juntos, com a marca "(limite superior)". O link **A fazer** leva a essa guia.
 
@@ -66,26 +64,26 @@ Sob o título de cada grupo, **Por quê e o que fazer** dá o motivo e o que faz
 
 Você marca um trabalho com **Feito**. Os trabalhos marcados vão para "Marcadas como feitas (N)" e voltam com **Restaurar**. As marcas de "feito" ficam guardadas só neste navegador. **Detalhes** (ou **Abrir esta divisão**) numa linha abre o detalhe dessa pesquisa, página, dispositivo ou país. Se houver vários trabalhos para a mesma pesquisa ou página, o total no alto conta uma vez só.
 
-### Pesquisas e Páginas
+### Consultas e Páginas
 
-Uma tabela por pesquisas ou por páginas. As colunas são **Consulta** (ou **Página**), **Cliques**, **Diferença de cliques** (em relação à comparação), **Impressões**, **CTR** e **Posição**. Clique no título para ordenar. A barra atrás de uma linha é a parcela dela nos cliques desta tabela. A caixa no alto procura entre as linhas. Ao lado, fica escrito "{mostradas} / {total} linhas".
+Uma tabela por pesquisas ou por páginas. As colunas são **Consulta** (ou **Página**), **Cliques**, **Diferença de cliques** (em relação à comparação), **Impressões**, **CTR** e **Posição**. Clique no título para ordenar. A barra atrás de uma linha é a parcela dela nos cliques desta tabela. A caixa no alto procura entre as linhas. Ao lado, um contador mostra "N / M linhas".
 
 **Filtros rápidos.** Para pesquisas: **Nos 10 primeiros**, **Posição 4-10**, **Posição 11-20**, **CTR baixa**, **Sem cliques**. Para páginas: **Nos 10 primeiros**, **Com cliques**, **CTR baixa**, **Sem cliques**. CTR baixa quer dizer uma linha na primeira página, com pelo menos 100 impressões e taxa de cliques abaixo de 2 por cento.
 
-**Menu da linha.** Nos três pontos: **Abrir página em uma nova aba**, **Copiar URL**, **Copiar palavra-chave**, **Salvar como palavra-chave**. O que você salva vai para a tela de palavras-chave salvas. Clicar numa linha abre o painel de detalhes.
+**Menu da linha.** Nos três pontos: **Abrir página em uma nova aba**, **Copiar URL**, **Copiar palavra-chave**, **Salvar como palavra-chave**. O que você salva vai para a tela **Palavras-chave salvas**. Clicar numa linha abre o painel de detalhes.
 
-A nota abaixo da tabela diz a base: "lidas N consultas, N cliques. O total do site é de N cliques; a diferença vem das consultas que o Google oculta." Se o limite de linhas do Google foi atingido, a ponta menos clicada falta na lista e a nota avisa.
+A nota abaixo da tabela diz a base: "lidas N consultas, N cliques. O total do site é de N cliques; a diferença vem das consultas que o Google oculta."
 
-### Oportunidades de posição
+### Oportunidades de posicionamento
 
 São quatro seções.
 
-- **Consultas perto das três primeiras posições.** Pesquisas com posição média entre 4 e 20. As pesquisas de marca não entram. Está escrito quantos cliques a mais elas poderiam trazer juntas se cada uma subisse um degrau (de 6-10 para 4-5, de 4-5 para 2-3, de 11-20 para a primeira página). É um limite superior. O total cobre todas as consultas dessa faixa, não só as linhas listadas, e vem seguido das datas a que se refere, por exemplo "Período: 27/09/2026 – 24/10/2026." Se só os maiores ganhos estiverem listados, uma nota abaixo diz "São listadas as N com maior ganho." A tabela mostra **Consulta**, **Página de destino**, **Posição**, **Impressões**, **Cliques** e **Ganho possível**. A página de destino é a que o Google mais mostra para essa pesquisa. As pesquisas selecionadas você leva com **Copiar palavras-chave** ou **Salvar como palavra-chave**.
+- **Consultas perto das três primeiras posições.** Pesquisas com posição média entre 4 e 20. As pesquisas de marca não entram. A seção indica quantos cliques a mais elas poderiam trazer juntas se cada uma subisse um degrau (de 6-10 para 4-5, de 4-5 para 2-3, de 11-20 para a primeira página). É um limite superior. O total cobre todas as consultas dessa faixa, não só as linhas listadas, e vem seguido das datas a que se refere, por exemplo "Período: 27/09/2026 – 24/10/2026." Se só os maiores ganhos estiverem listados, uma nota abaixo diz "São listadas as N com maior ganho." A tabela mostra **Consulta**, **Página de destino**, **Posição**, **Impressões**, **Cliques** e **Ganho possível**. A página de destino é a que o Google mais mostra para essa pesquisa. As pesquisas selecionadas você leva com **Copiar palavras-chave** ou **Salvar como palavra-chave**.
 - **Resultados com menos cliques do que a posição faria esperar.** Pesquisas cuja taxa de cliques fica abaixo de 70 por cento da taxa do seu site para resultados na mesma posição. O ganho vem sem mudar de posição, só reescrevendo título e descrição. A tabela mostra a taxa da pesquisa, a taxa **Esperado nesta posição** e o ganho possível.
 - **Páginas que aparecem mas nunca são clicadas.** Páginas que no período tiveram pelo menos 100 impressões (para 28 dias) e nenhum clique.
 - **CTR do seu site por posição.** A régua dos ganhos acima. É a taxa de cliques dos seus próprios resultados em cada posição, não a de outros sites. Se uma posição tem poucas pesquisas ou impressões, aparece "Dados insuficientes" e nenhuma estimativa é feita para ela. Se você definiu nomes da marca, essas taxas são calculadas a partir das pesquisas sem marca.
 
-### Alterações
+### Variações
 
 Elas comparam o período escolhido com o anterior.
 
@@ -99,42 +97,42 @@ Elas comparam o período escolhido com o anterior.
 Mostra os casos em que várias páginas suas aparecem para a mesma pesquisa. As páginas podem dividir os cliques entre si. Em geral basta fazer de uma a página principal e ligar as outras a ela. O título do cartão é "Várias páginas para a mesma consulta".
 
 - Três quadros: **Consultas com páginas concorrentes**, **Impressões que vão para as outras páginas** e o quadro da consulta que perde mais. Um clique no último quadro estreita a lista a essa consulta.
-- A tabela **Páginas que competem pela mesma consulta** mostra, para cada consulta, as páginas dela com cliques, impressões e posições. A página que o Google mais mostra para essa consulta conta como a "preferida". A parcela de impressões que vai para as outras fica escrita "fora da parcela".
-- Esta análise olha 28 dias. Se 7 dias estiver escolhido, ela sobe para 28 na análise e o período real é escrito. Só pesquisas com pelo menos 100 impressões são examinadas. Para uma página entrar na disputa, ela precisa de pelo menos 10 impressões e 20 por cento de parcela nessa pesquisa.
+- A tabela **Páginas que competem pela mesma consulta** mostra, para cada consulta, as páginas dela com cliques, impressões e posições. A página que o Google mais mostra para essa consulta conta como a "preferida". A parcela de impressões que vai para as outras páginas aparece como "fora da parcela".
+- Esta análise cobre 28 dias. Se **Últimos 7 dias** estiver escolhido, ela usa mesmo assim 28 dias e mostra o período real. Só pesquisas com pelo menos 100 impressões são examinadas. Para uma página entrar na disputa, ela precisa de pelo menos 10 impressões e 20 por cento de parcela nessa pesquisa.
 - Se a busca bater no limite de linhas do Search Console, a tela avisa que algumas consultas não puderam ser examinadas.
 
 ### Distribuição
 
 - **Distribuição de posições.** Mostra em grupos em quais posições suas pesquisas aparecem. Se o arquivo tiver pelo menos duas semanas, abaixo aparece **Consultas por semana**. Esse gráfico vale só para pesquisas na Web. Com Imagem, Vídeo ou Notícias escolhido como tipo de pesquisa, aparece no lugar dele "A distribuição semanal é apenas para pesquisas na Web." Esse gráfico mostra a parcela dos grupos de posição semana a semana. Ele vem do arquivo de consultas no seu computador. Não aparece com filtro de dispositivo ou país, porque o arquivo não guarda essas divisões.
-- **Pesquisas de marca e sem marca.** As pesquisas que chegam com o seu nome e as de quem não conhecia você são medidas à parte: **Pesquisas de marca** e **Pesquisas sem marca**. Para cada uma, ficam escritos o número de consultas, os cliques, o CTR e a posição média. Se nenhum nome da marca estiver definido, aparece "Pesquisas de marca não separadas" e um botão **Adicionar nome da marca**. Se o aplicativo sugeriu nomes da marca a partir do seu domínio, aparece "Não confirmado." A medição foi então feita com os nomes sugeridos. Clique em **Confirmar sugestões** ou use **Editar nomes da marca**. As parcelas são das consultas lidas, as ocultas não estão incluídas.
+- **Pesquisas de marca e sem marca.** As pesquisas que chegam com o seu nome e as de quem não conhecia você são medidas à parte: **Pesquisas de marca** e **Pesquisas sem marca**. Para cada uma, aparecem o número de consultas, os cliques, o CTR e a posição média. Se nenhum nome da marca estiver definido, aparece "Pesquisas de marca não separadas" e um botão **Adicionar nome da marca**. Se o aplicativo sugeriu nomes da marca a partir do seu domínio, aparece "Não confirmado." A medição foi então feita com os nomes sugeridos. Clique em **Confirmar sugestões** ou use **Editar nomes da marca**. As parcelas são das consultas lidas, as ocultas não estão incluídas.
 - **Dispositivos** e **Países.** Um clique num dispositivo ou país estreita a tela inteira a ele.
 - **Aparência na pesquisa.** Em que formatos especiais seus resultados aparecem no Google (resultados enriquecidos, vídeo e assim por diante). Um resultado enriquecido é um resultado que aparece com informação extra, como produto ou vídeo. O Google soma essa divisão por página. Se o Google não informou nenhum formato especial, a tela avisa.
 - **Pesquisas em forma de pergunta.** Pesquisas em forma de pergunta e pesquisas de quatro ou mais palavras. São a fonte mais clara de ideias de conteúdo.
 
 **Nomes da marca.** Você informa os nomes da marca com **Editar nomes da marca**. Digite o nome do seu site e o jeito como as pessoas o escrevem, por exemplo o nome e a forma curta. Pesquisas que contêm essas palavras contam como pesquisas de marca. Há os botões **Salvar** e **Cancelar**, e a linha **Sugestões:** adiciona um nome com um clique. Definir nomes da marca muda não só esta tela, mas também a estimativa de ganho da tela **Oportunidades**, porque essa estimativa deixa de fora as pesquisas de marca.
 
-**Painel de detalhes.** Um clique numa pesquisa ou página (numa tabela, em A fazer, em Oportunidades de posição ou em Alterações) abre o painel pela direita. No alto estão o período e "dias definitivos". Depois quatro números (Cliques, Impressões, CTR, Posição média) e a variação deles em relação à comparação escolhida. Abaixo, a linha **Cliques diários**. Para uma página, aparece a lista "Consultas desta página (N)"; para uma pesquisa, "Páginas exibidas para esta consulta (N)". Cada linha dá cliques e posição. Se nenhuma pesquisa for listada para uma página, os cliques dela podem vir de consultas que o Google oculta. As consultas podem somar menos que o total da página, porque as ocultas não são listadas. **Abrir página** abre a página em uma nova guia. **Salvar como palavra-chave** adiciona a pesquisa às palavras-chave salvas.
+**Painel de detalhes.** Um clique numa pesquisa ou página (numa tabela, em A fazer, em Oportunidades de posicionamento ou em Variações) abre o painel pela direita. No alto estão o período e "dias definitivos". Depois quatro números (Cliques, Impressões, CTR, Posição média) e a variação deles em relação à comparação escolhida. Abaixo, a linha **Cliques diários**. Para uma página, aparece a lista "Consultas desta página (N)"; para uma pesquisa, "Páginas exibidas para esta consulta (N)". Cada linha dá cliques e posição. Se nenhuma pesquisa for listada para uma página, os cliques dela podem vir de consultas que o Google oculta. As consultas podem somar menos que o total da página, porque as ocultas não são listadas. **Abrir página** abre a página em uma nova guia. **Salvar como palavra-chave** adiciona a pesquisa às palavras-chave salvas.
 
 ## Como usar
 
 1. Leia primeiro a frase de resumo no alto. Ela diz se os cliques sobem ou descem.
 2. Olhe a faixa **Comece por estas** ou a guia **A fazer**. Os três primeiros trabalhos são os que mais rendem.
 3. Se houve uma queda grande, ponha o **Período** em **Últimos três meses**. Ache no gráfico o dia em que a queda começou. Se uma atualização do Google ou uma mudança sua cair nesse dia, ela aparece nos marcadores.
-4. Na guia **Oportunidades de posição**, olhe as **Consultas perto das três primeiras posições**. Abra a página das três pesquisas mais mostradas. Ajuste título e primeiro parágrafo a essa pesquisa.
-5. Na guia **Pesquisas**, aperte o botão **CTR baixa**. Sua posição é boa, mas ninguém clica. O problema provavelmente está no título e na descrição.
+4. Na guia **Oportunidades de posicionamento**, olhe as **Consultas perto das três primeiras posições**. Abra a página das três pesquisas mais mostradas. Ajuste título e primeiro parágrafo a essa pesquisa.
+5. Na guia **Consultas**, ative o filtro **CTR baixa**. Essas linhas têm boa posição, mas poucos cliques: o problema costuma estar no título e na descrição.
 6. Na guia **Variações**, olhe **Em queda**. Clique na pesquisa do topo e leia no painel de detalhes o dia em que a queda começou.
 7. Se na guia **Sobreposições** você vir páginas concorrendo para a mesma pesquisa, decida primeiro qual página deve responder. Depois aponte os links internos para essa página.
 8. Depois de uma correção, escreva a data dela no gráfico com **Adicionar uma nota**. Duas semanas depois você vê o efeito no gráfico.
-9. Quando um trabalho terminar, diga **Feito**. A lista encurta.
+9. Quando um trabalho terminar, clique em **Feito**. A lista encurta.
 10. No fim do mês, guarde a visão com **Baixar relatório**.
 
 ## Como os números são calculados
 
-O Google entrega os dados com três dias de atraso. Por isso o período não termina hoje, e sim três dias antes. Os últimos dias ainda podem mudar por mais alguns dias. O aplicativo não os inclui nos totais. O período anterior é o período de mesma duração logo antes deste. Na comparação com o ano passado, tomam-se os mesmos dias do ano passado. Você vê a variação de cliques e impressões em porcentagem e a do CTR em pontos.
+O Google entrega os dados com três dias de atraso. Por isso o período não termina hoje, e sim três dias antes. Os últimos dias ainda podem mudar por mais alguns dias. O aplicativo não os inclui nos totais. O período anterior é o período de mesma duração logo antes deste. Na comparação com o ano passado, tomam-se os mesmos dias do ano passado.
 
 Os quadros são os totais reais do site. As tabelas contam separadamente cada página que aparece para a mesma pesquisa. Se você somar a tabela de páginas, vai achar um número maior que o do quadro. Isso não é erro. Se somar a tabela de consultas, vai achar um número menor que o do quadro, porque as consultas ocultas não são listadas.
 
-O Google entrega no máximo 1.000 linhas por vez. Se o limite de linhas foi atingido, a ponta menos clicada falta na lista e a tela avisa.
+O aplicativo lê as tabelas por consulta, por página e por par consulta-página em blocos de 25.000 linhas, até o Google não devolver linhas novas. O Google fornece no máximo 50.000 linhas por dia e por tipo de pesquisa e pode omitir algumas linhas: ler todos os blocos não significa que toda pesquisa seja conhecida. Se o limite foi atingido, a ponta menos clicada fica de fora e a tela avisa. Os totais do site não são somados a partir dessas tabelas; são um total separado fornecido pelo Google.
 
 **Ganho possível.** O aplicativo aplica a cada pesquisa a taxa de cliques do próprio site. Pega a taxa um degrau acima da posição em que a pesquisa está, multiplica pelas impressões da pesquisa e subtrai os cliques atuais. Pesquisas com pouquíssimas impressões não contam (pelo menos 50 impressões para 28 dias). Nos problemas de título, a régua é a pesquisa alcançar a taxa do seu site na mesma posição. As pesquisas de marca ficam de fora. Por isso todo ganho é um limite superior. O mesmo cálculo vale na tela **Oportunidades**.
 
@@ -148,24 +146,28 @@ O Google entrega no máximo 1.000 linhas por vez. Se o limite de linhas foi atin
 
 **A minha posição é diferente quando pesquiso no Google.** A posição aqui é a média do período. Ela não reflete uma pesquisa isolada.
 
-**A consulta que procuro não está na lista.** O Google oculta as consultas pesquisadas muito raramente. Em sites pequenos pode não haver nenhuma linha de consulta.
+**A consulta que procuro não está na lista.** Ela provavelmente é uma consulta oculta (veja acima). Em sites pequenos, pode não haver nenhuma linha de consulta.
 
 **Por que um trabalho sumiu da lista A fazer?** Se você o marcou como feito, ele está em "Marcadas como feitas". As marcas ficam guardadas só neste navegador. Em outro navegador ou outro computador você o vê de novo.
 
-**Se as páginas se sobrepõem, devo juntá-las?** Em geral, não. Decida primeiro qual página deve responder. Depois aponte os links internos para essa página. Se as páginas respondem mesmo à mesma pergunta, junte-as.
+**Se as páginas se sobrepõem, devo juntá-las?** Em geral, não: siga o passo 7 acima. Junte as páginas só se elas responderem de fato à mesma pergunta.
 
-**Preciso informar um nome da marca?** Não, mas sem ele quem pesquisa o nome do seu próprio site distorce o cálculo do CTR e as oportunidades saem incompletas. A tela lembra isso com a tarefa "Defina o nome da sua marca". Se o aplicativo usa nomes sugeridos a partir do seu domínio, a tarefa se chama "Confirmar o nome da marca".
+**Preciso informar um nome da marca?** Não, mas sem ele quem pesquisa o nome do seu próprio site distorce o cálculo do CTR e as oportunidades saem incompletas. A tela lembra isso com as tarefas descritas acima.
 
 ## Limites
 
-Os tipos de pesquisa Discover e Google Notícias não estão incluídos. Não há volume de pesquisa nem posição de concorrentes. Os dados do Google não vão além de 16 meses. Para o que for mais antigo, olhe o arquivo neste computador: o gráfico de longo prazo da guia **Variações** e a tela **Acompanhamento de posições** leem dele. As marcas de "feito" e as notas ficam só nesta instalação.
+Os tipos de pesquisa Discover e Google Notícias não estão incluídos. Não há volume de pesquisa nem posição de concorrentes. Os dados do Google não vão além de 16 meses. Para o que for mais antigo, olhe o arquivo neste computador: o gráfico de longo prazo da guia **Variações** e a tela **Acompanhamento de posições** leem dele. O arquivo só é preenchido enquanto esta tela ou **Acompanhamento de posições** estiver aberta.
 
 <!-- Fontes: src/routes/_project/p/$projectId/search-performance.tsx; src/client/features/search-performance/SearchPerformancePage.tsx; SearchPageParts.tsx; SearchFilters.tsx; DataTrustStrip.tsx; SearchVerdict.tsx; KpiTiles.tsx; SearchTrendChart.tsx; TrendParts.tsx; SearchNotes.tsx; LongTermTrend.tsx; TodoTab.tsx; DimensionTab.tsx; DimensionTableParts.tsx; OpportunitiesTab.tsx; StrikingTable.tsx; ChangesTab.tsx; CannibalizationSummary.tsx; CannibalizationTable.tsx; DistributionTab.tsx; PositionDistribution.tsx; DrilldownPanel.tsx; BrandTerms.tsx; SearchReportButton.tsx; src/shared/searchInsights.ts; src/shared/searchTodoCopy.ts; src/shared/searchQuickFilters.ts; src/shared/dataFreshness.ts; src/serverFunctions/searchPerformance.ts; src/server/features/gsc/cannibalization.ts -->
 
-Os links de Oportunidades e Acompanhamento de posições abrem os detalhes da URL ou consulta exata nas datas de origem. Os totais gerais continuam sendo da propriedade; os valores da identidade selecionada ficam no painel de detalhes. Períodos indisponíveis nunca são substituídos silenciosamente. Escolher um período predefinido remove as datas fixadas. O relatório envia as datas exibidas ao servidor e fica indisponível durante a atualização. As datas permanecem fixas; o Google pode revisar as medições consultadas novamente.
+## Links de entrada e datas fixas
+
+Os links de Oportunidades e Acompanhamento de posições abrem o detalhe da URL ou da consulta exata, nas datas da origem. Os totais do alto continuam sendo da propriedade inteira; os valores do item escolhido ficam no painel de detalhes. Se essas datas não estiverem mais disponíveis, a tela avisa em vez de trocá-las em silêncio. Escolher um período predefinido remove as datas fixas.
+
+**Baixar relatório** envia ao servidor as datas exibidas e fica indisponível durante uma atualização. As datas do relatório ficam fixas, mas o Google pode revisar as medições lidas de novo.
 
 ## Interpretar poucos dados
 
-Quando os cliques do período de comparação ficam abaixo do limite de análise, o resumo apresenta primeiro os cliques e as impressões reais. Com poucos dados, percentuais e médias não comprovam crescimento ou perda por si só. Uma lista de oportunidades vazia não significa que nenhuma consulta esteja na posição 4–20: também se aplicam o limite de impressões ajustado ao período e a exclusão de consultas de marca.
+Quando os cliques do período de comparação ficam abaixo do limite de análise, o resumo apresenta primeiro os cliques e as impressões reais. Com poucos dados, percentuais e médias não comprovam crescimento ou perda por si só. Uma lista vazia em **Oportunidades de posicionamento** não significa que nenhuma consulta esteja na posição 4–20: também se aplicam o limite de impressões ajustado ao período e a exclusão de consultas de marca.
 
-Se a lista de tarefas estiver vazia, abra as consultas visíveis. Não é sugerido um período maior quando os últimos três meses já estão selecionados. Não se presume que o Google revele depois as consultas ocultas.
+Se a guia **A fazer** estiver vazia, consulte a guia **Consultas**. Nenhum período maior é sugerido quando **Últimos três meses** já está selecionado, e nada permite supor que o Google revele depois as consultas ocultas.

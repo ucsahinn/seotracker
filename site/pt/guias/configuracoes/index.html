@@ -14,7 +14,7 @@
     <title>Configurações | Guia do seowatcher</title>
     <meta
       name="description"
-      content="Âmbitos do navegador, instalação e projeto; credenciais Google, contadores e versões."
+      content="O que vale para o navegador, para a instalação ou para o projeto: idioma, credenciais do Google, chave do PageSpeed, limites e atualizações."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -91,7 +91,7 @@
     <meta property="og:title" content="Configurações | Guia do seowatcher" />
     <meta
       property="og:description"
-      content="Âmbitos do navegador, instalação e projeto; credenciais Google, contadores e versões."
+      content="O que vale para o navegador, para a instalação ou para o projeto: idioma, credenciais do Google, chave do PageSpeed, limites e atualizações."
     />
     <meta
       property="og:image"
@@ -119,7 +119,7 @@
     <meta name="twitter:title" content="Configurações | Guia do seowatcher" />
     <meta
       name="twitter:description"
-      content="Âmbitos do navegador, instalação e projeto; credenciais Google, contadores e versões."
+      content="O que vale para o navegador, para a instalação ou para o projeto: idioma, credenciais do Google, chave do PageSpeed, limites e atualizações."
     />
     <meta
       name="twitter:image"
@@ -162,7 +162,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/pt/guias/configuracoes/#article",
             "headline": "Configurações",
-            "description": "Âmbitos do navegador, instalação e projeto; credenciais Google, contadores e versões.",
+            "description": "O que vale para o navegador, para a instalação ou para o projeto: idioma, credenciais do Google, chave do PageSpeed, limites e atualizações.",
             "url": "https://seowatcher.io/pt/guias/configuracoes/",
             "inLanguage": "pt",
             "datePublished": "2026-10-23",
@@ -201,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1499,7 +1499,7 @@
               >
             </li>
             <li>
-              <a href="/pt/guias/analise/">Entender os dados de análise</a>
+              <a href="/pt/guias/analise/">Compreender os dados do Analytics</a>
             </li>
             <li>
               <a href="/pt/guias/auditoria-do-site/">Auditoria do site</a>
@@ -1510,7 +1510,7 @@
             <li><a href="/pt/guias/relatorios/">Relatórios e modelos</a></li>
             <li>
               <a href="/pt/guias/informacoes-do-projeto/"
-                >Informações do projeto</a
+                >Contexto do projeto</a
               >
             </li>
             <li class="current" aria-current="page">
@@ -1524,7 +1524,7 @@
               <a href="/pt/guias/regras-de-auditoria/">Regras de auditoria</a>
             </li>
             <li>
-              <a href="/pt/guias/configurar-agente/">Configurar o agente</a>
+              <a href="/pt/guias/configurar-agente/">Configuração do agente</a>
             </li>
             <li>
               <a href="/pt/guias/solucao-de-problemas/">Solução de problemas</a>
@@ -1536,112 +1536,190 @@
       <article id="icerik" data-page="ayarlar">
         <h1>Configurações</h1>
         <p class="lede">
-          Âmbitos do navegador, instalação e projeto; credenciais Google,
-          contadores e versões.
+          O que vale para o navegador, para a instalação ou para o projeto:
+          idioma, credenciais do Google, chave do PageSpeed, limites e
+          atualizações.
         </p>
         <p>
-          As Configurações guardam as escolhas que valem para este navegador
-          (aparência e idioma) e para toda a instalação (credenciais do Google,
-          chave do PageSpeed, limites e atualizações). Nome, domínio e
-          propriedades do Google de um projeto ficam em
-          <strong>Definições do projeto</strong>. Esta página explica o alcance
-          de cada configuração e onde alterá-la.
+          Nome, domínio e propriedades do Google de um projeto não ficam aqui:
+          ficam em <strong>Configurações do projeto</strong>.
         </p>
-        <h2 id="ambito-das-definicoes">Âmbito das definições</h2>
+        <h2 id="a-que-cada-configuracao-se-aplica">
+          A que cada configuração se aplica
+        </h2>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Configuração</th>
+                <th>Escopo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Aparência</strong>, <strong>Idioma</strong></td>
+                <td>este navegador</td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Google</strong>, <strong>Conta de serviço</strong>,
+                  <strong>Testes de velocidade</strong>, atualizações
+                </td>
+                <td>a instalação inteira</td>
+              </tr>
+              <tr>
+                <td><strong>Limites do Google e do sistema</strong></td>
+                <td>um projeto por vez</td>
+              </tr>
+              <tr>
+                <td>
+                  nome, domínio, país, idioma do mercado, propriedades do Google
+                </td>
+                <td>o projeto, em <strong>Configurações do projeto</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <p>
-          A aparência e o idioma aplicam-se a este navegador. Escolha o idioma e
-          confirme no botão; percorrer a lista não recarrega a página. O idioma
-          do mercado do projeto é separado.
+          Escolha o idioma na lista e confirme com
+          <strong>Aplicar idioma</strong>: navegar com as teclas de seta não
+          recarrega a página. O idioma do mercado do projeto é uma configuração
+          separada.
+        </p>
+        <h2 id="credenciais-do-google">Credenciais do Google</h2>
+        <p>
+          As credenciais valem para todos os projetos; se houver uma conta de
+          serviço e um cliente OAuth salvos, a conta de serviço prevalece.
+          Selecione o arquivo JSON da conta de serviço ou use o campo de colagem
+          oculto e salve. A chave privada nunca é exibida. Credenciais salvas e
+          propriedade selecionada não comprovam acesso aos dados. Se uma leitura
+          falhar, a última configuração continua visível com o botão para tentar
+          de novo. O passo a passo completo está em
+          <a href="/pt/guias/conexao-google/">Conectar ao Google</a>.
         </p>
         <p>
-          As credenciais Google aplicam-se a toda a instalação; a conta de
-          serviço tem prioridade. Credenciais guardadas e propriedade
-          selecionada não provam acesso aos dados. Uma falha de leitura mantém a
-          última configuração com opção de repetir. Selecione o ficheiro JSON ou
-          use o campo de colagem oculto e guarde. A chave privada não aparece.
-        </p>
-        <p>
-          Nome, domínio e propriedade pertencem às definições do projeto.
-          Alterar o domínio mantém a ligação Google e o histórico. País e idioma
-          são valores predefinidos das palavras-chave guardadas; o desempenho de
-          pesquisa tem um filtro de país separado.
+          Em <strong>Configurações do projeto</strong>, alterar o domínio mantém
+          a conexão com o Google e o histórico. País e idioma do projeto são os
+          valores padrão de <strong>Palavras-chave salvas</strong>;
+          <strong>Desempenho da pesquisa</strong> tem um filtro de país próprio.
         </p>
         <h2 id="windows-velocidade-e-limites">Windows, velocidade e limites</h2>
         <p>
-          As preferências Windows são confirmadas pela aplicação da área de
-          notificação. Docker não mostra interruptores. Um iniciador inacessível
-          significa desconhecido, não desligado. Repita a leitura; os bloqueios
-          administrativos são explicados.
+          As preferências do <strong>Windows</strong> são lidas do aplicativo na
+          bandeja do sistema. No Docker, a seção é apenas informativa, sem
+          botões de ativação. Se o inicializador não responder, o estado é
+          desconhecido, não desligado: tente de novo. Se um administrador
+          bloqueou uma configuração, a tela explica o motivo.
         </p>
         <p>
-          Sem chave PageSpeed, a aplicação tenta no máximo 50 páginas por
-          auditoria. O Google pode limitar antes; uma chave não garante sucesso.
-          O teste envia um pedido móvel para example.com, fora do contador de
-          auditorias. Mostra a data; alterar a chave remove o resultado
-          anterior.
+          Em <strong>Testes de velocidade</strong>, você salva a chave do
+          PageSpeed. Sem chave, o aplicativo tenta no máximo 50 páginas por
+          auditoria. Os detalhes estão em
+          <a href="/pt/guias/chave-pagespeed/">Chave do PageSpeed</a>.
         </p>
         <p>
-          Escolha o projeto em Limites. A inspeção de URL conta tentativas
-          locais da propriedade nas últimas 24 horas. PageSpeed conta auditorias
-          iniciadas nesse período. O saldo GA4 pertence à última resposta; os
-          limites padrão são pressupostos. Fontes antigas ou em falta permanecem
-          desconhecidas. As páginas vêm da última auditoria concluída do
-          domínio; relatórios e modelos abrangem todo o projeto.
+          Em <strong>Limites do Google e do sistema</strong>, os contadores
+          valem para um projeto por vez: escolha-o primeiro em
+          <strong>Projeto cujos limites são exibidos</strong>.
         </p>
-        <h2 id="versoes">Versões</h2>
+        <ul>
+          <li>
+            <strong>Inspeção de URL</strong>: tentativas locais na propriedade
+            nas últimas 24 horas.
+          </li>
+          <li>
+            <strong>PageSpeed</strong>: auditorias iniciadas nas últimas 24
+            horas.
+          </li>
+          <li>
+            <strong>GA4</strong>: cota restante da última resposta do Google; o
+            teto das propriedades padrão é uma suposição.
+          </li>
+          <li>
+            <strong>Páginas</strong>: vêm da última auditoria concluída do
+            domínio do projeto.
+          </li>
+          <li><strong>Relatórios e modelos</strong>: o projeto inteiro.</li>
+        </ul>
+        <p>Um dado antigo ou ausente aparece como desconhecido.</p>
+        <h2 id="atualizacoes">Atualizações</h2>
         <p>
-          A verificação na aplicação consulta o GitHub no máximo a cada seis
-          horas. A aplicação Windows pode verificar diariamente de forma
-          independente; a instalação automática configura-se em Windows. A data
-          do último sucesso indica a idade da versão conhecida. Aguarde perante
-          limites/restrições e repita; use o diagnóstico da Ajuda para uma fonte
-          em falta. Uma definição ilegível não pode ser alterada.
+          A verificação de versão no aplicativo consulta o GitHub no máximo a
+          cada seis horas. O aplicativo do Windows pode verificar diariamente
+          por conta própria; a instalação automática é definida nas preferências
+          do Windows. A data da última verificação bem-sucedida mostra quão
+          recente é a informação de versão. Em caso de limite ou restrição,
+          aguarde e tente de novo; se a fonte estiver ausente, use o diagnóstico
+          em <strong>Ajuda</strong>. Uma configuração ilegível não pode ser
+          alterada.
         </p>
         <h2 id="notificacoes-do-windows">Notificações do Windows</h2>
         <p>
-          Clique com o botão direito no ícone do seowatcher na bandeja e use
-          <strong>Windows bildirimleri</strong> (ativada por padrão). Enquanto o
-          inicializador estiver em execução, auditorias concluídas ou com falha
-          de todos os projetos e novos anúncios aparecem como balões do Windows
-          em cerca de 90 segundos, mesmo com o navegador fechado ou em segundo
-          plano. Um clique abre a página correspondente; vários eventos são
-          agrupados. O primeiro uso ignora eventos antigos; reiniciar não repete
-          eventos já recebidos. Eventos recebidos durante o silêncio não são
-          exibidos depois. Novas versões seguem a configuração de atualização
-          existente. O modo Foco/Não incomodar pode ocultar notificações. Com o
-          inicializador fechado, não há notificações. Este recurso não está
-          disponível no Docker.
+          Clique com o botão direito no ícone do seowatcher na bandeja do
+          sistema e use <strong>Windows bildirimleri</strong> (Notificações do
+          Windows), ativada por padrão. Enquanto o inicializador estiver em
+          execução, auditorias concluídas ou com falha de todos os projetos e
+          novos anúncios aparecem como notificações do Windows em cerca de 90
+          segundos, mesmo com o navegador fechado ou em segundo plano.
+        </p>
+        <ul>
+          <li>
+            Um clique na notificação abre a página correspondente; vários
+            eventos são reunidos em um único resumo.
+          </li>
+          <li>
+            Na primeira execução, eventos antigos são ignorados; reiniciar não
+            repete os já exibidos.
+          </li>
+          <li>
+            Eventos recebidos com as notificações desativadas não aparecem
+            depois.
+          </li>
+          <li>
+            As notificações de novas versões seguem a configuração de
+            atualização.
+          </li>
+          <li>O modo Não incomodar do Windows pode ocultá-las.</li>
+        </ul>
+        <p>
+          Com o inicializador fechado, nenhuma notificação aparece. O recurso
+          não existe no Docker.
         </p>
         <nav class="pager" aria-label="Página anterior e seguinte">
           <a
             class="pager-prev"
             rel="prev"
             href="/pt/guias/informacoes-do-projeto/"
-            ><span>Anterior</span><strong>Informações do projeto</strong></a
+            ><span>Anterior</span><strong>Contexto do projeto</strong></a
           ><a class="pager-next" rel="next" href="/pt/guias/ajuda/"
             ><span>Próxima</span><strong>Ajuda</strong></a
           >
         </nav>
         <p class="meta">
-          Última atualização: 29 de outubro de 2026. Viu algum erro?
+          Última atualização: 29 de outubro de 2026. Encontrou um erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >Relate no GitHub</a
+            >Informe no GitHub</a
           >.
         </p>
       </article>
       <nav class="toc" aria-label="Nesta página">
         <p class="toc-label">Nesta página</p>
         <ol>
-          <li><a href="#ambito-das-definicoes">Âmbito das definições</a></li>
+          <li>
+            <a href="#a-que-cada-configuracao-se-aplica"
+              >A que cada configuração se aplica</a
+            >
+          </li>
+          <li><a href="#credenciais-do-google">Credenciais do Google</a></li>
           <li>
             <a href="#windows-velocidade-e-limites"
               >Windows, velocidade e limites</a
             >
           </li>
-          <li><a href="#versoes">Versões</a></li>
+          <li><a href="#atualizacoes">Atualizações</a></li>
           <li>
             <a href="#notificacoes-do-windows">Notificações do Windows</a>
           </li>

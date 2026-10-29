@@ -1,53 +1,69 @@
 ---
 title: Reports and templates
-description: Save audit, search performance and assistant reports as standalone HTML files. Open them on a phone, print them or share them by email.
+description: Save search and audit reports as standalone HTML files, browse the library, print to PDF and keep templates for your assistant.
 screen: Raporlar
 route: /p/<proje>/reports
 updated: 2026-10-27
 ---
 
-Reports are saved HTML documents for this project. Opening one does not refresh Google data. The save time is not the observation date of its sources.
+**Reports** is the library of saved HTML reports for the project. A report is a fixed document: opening it does not refresh Google data, and the date it was saved is not the date its data covers.
 
 ## Create a report
 
-**Prepare Search report** opens Search performance. Select the period, device, country and search type, then download its report. **Prepare audit report** opens Site audit; select the crawl there. Copy the report command to ask your assistant to write a report. Templates are instructions for the assistant, not native generators or schedules. Reports are saved before downloading. If downloading fails, retry from this library. Saved documents remain readable when a source disconnects.
+- **Create search report** opens **Search performance**. Set the period, device, country and search type there, then select **Download report**.
+- **Create audit report** opens **Site audit**. Pick an audit there and select **Download report**.
+- **Copy report prompt** copies a prompt for Claude Code or Codex. The assistant studies the project and saves its report to this library.
 
-## Read and search the library
+Every report is saved before it downloads. If a download fails, download it again from the library. Saved reports stay readable even if a Google source is later disconnected.
 
-The latest updated report appears first with its saved summary, save time and open/download actions. Missing summaries and unrecorded structured periods are stated explicitly: inspect the document for its source dates and limitations. Neither the title nor HTML is mined to invent provenance.
+**Templates** are written instructions for your assistant. They do not generate reports by themselves and do not run on a schedule.
 
-Search covers titles and saved summaries. Type counts use the search and recent filters before the selected type. Recent means distinct files saved or updated during the rolling seven days, not edit events or fresh Google observations. Matching results and the full project inventory are separate counts.
+## Browse the library
 
-The server returns 25 metadata rows per page. Reports beyond the first 100 remain searchable and reachable with Previous/Next. Updated time is the default order, so editing an old file raises it. Creation-time and title ordering are available. Search, type, recent, sort and page stay in the URL for Back and reload.
+The **Most recently updated report** appears at the top with its saved summary, save time and open and download actions. It is not a current summary of the site. If a report has no summary or no recorded period, the library says so; open the document to see its dates and limits. The app never guesses a report's origin from its title or contents.
 
-Legacy native Search and Audit reports share a creator marker. They read **App report, type not recorded**, rather than all being counted as audits. Recorded assistant skills and template names remain visible. File count is not SEO progress. Size means stored HTML bytes; download security metadata can make the downloaded file slightly larger.
+Search covers titles and saved summaries. **Last 7 days** shows files saved or updated in the last seven days. The type counts reflect the search and the **Last 7 days** filter. The number of matching reports and the project's total are shown separately.
+
+The library loads 25 reports per page; use **Previous** and **Next** to reach older ones. The default order is last updated, so editing an old report moves it to the top. You can also sort by creation time or title. Search, type, filter, sort order and page are kept in the URL.
+
+Reports made by older versions of the app read **Application report, type not recorded** instead of being counted as audits. The assistant skill or template that produced a report is shown where it was recorded. Size is the stored HTML; a downloaded file can be slightly larger.
 
 ## Open, download and print
 
-The document opens inside an opaque frame without script or network permissions. Expand Source and save details for attribution, type, bytes and timestamps. The saved language remains fixed. Deliberately regenerate from the source screen for another language or current measurements.
+A report opens in a sandboxed frame with no scripts or network access. Expand the source and save details for its origin, type, size and timestamps. A report keeps the language it was written in; to get another language or current data, create it again from its source screen.
 
-Download HTML for offline reading or sending to another person. Print to PDF opens a browser tab; if blocked, allow popups or open the report in a new tab and print there. Fullscreen isolates background keyboard focus and keeps exit buttons above and below the document. A copied app link belongs to this installation; share the file itself.
+- **Download as HTML** saves a file you can read offline or send to someone.
+- **Save as PDF (print)** opens the report in a new tab for printing. If the browser blocks it, allow pop-ups for the app, or use **Open in new tab** and print from there.
+- **Full screen** shows the report alone, with exit buttons above and below it.
 
-A preview that has not opened after 15 seconds offers Retry and Open in new tab. Missing documents, access, connection and download-server problems have recovery messages. Failed list refreshes preserve cached rows with a warning. An unavailable storage check does not prove free capacity.
+A link to a report only works on your own installation; send the file instead. If a preview has not opened after 15 seconds, the library offers **Try again** and **Open in new tab**. If the list fails to refresh, the last loaded rows stay with a warning.
 
-## Search report evidence
+## What a search report contains
 
-The cover shows the actual resolved dates, previous period, filters and generation time. Search days use Pacific time. When Google supplies no finality boundary, the report says the last days were excluded using a lag assumption. A truncated residual query share includes privacy-hidden queries and rows beyond the cap. Query, page and query-by-page caps can limit opportunities; their row sums are not site totals.
+The cover shows the exact dates, the comparison period, the filters and when the report was generated. Days follow Pacific time; if Google did not report which days are final, the report says the last days were left out based on an assumed lag. The hidden-query share includes queries Google withholds for privacy and rows beyond the row limit. Query and page tables are capped, so their sums are not site totals.
 
-Overlap analysis prints its own period and thresholds even with zero results. A seven-day report can use a 28-day overlap window. Multiple pages appearing for a query do not prove lost clicks or SEO harm. Unavailable long-history or appearance data is not a zero. Capped lists state shown and observed counts. The request budget belongs to the Search view and excludes additional overlap analysis and cache effects.
+The overlap section states its own period and thresholds, even when it finds nothing; a seven-day report can use a 28-day overlap window. Several pages appearing for one query do not prove lost clicks. Missing long-term or search appearance data is reported as unavailable, not as zero.
 
-Generation re-reads server data. Google can revise past measurements and the period may be resolved again, so exact equality with an earlier screen is not guaranteed. The same localized title can be replaced; changing language may create another document. Long titles fit storage and include a server-derived collision guard for source/filter combinations.
+A report reads the data again when it is generated. Google can revise past figures, so a report may differ slightly from what the screen showed earlier.
 
-## Templates and storage
+## Regenerating and source identity
 
-Template limits: 80 characters for name, 200 for description, 3,000 for instructions, ten templates per project. Deleting a template preserves its reports. Clear search restores hidden templates.
+A search report is identified by the property, dates and filters; an audit report by its audit ID. Creating the same report again replaces the saved record, even in another language. Assistants cannot overwrite these app reports. If an assistant's report already has the same title, the new save is refused and the existing report is kept.
 
-Storage guards are 500,000 bytes per report, 120 title characters, 2,500 summary characters, 10,000 reports per project and 5 GB across the installation. These guard storage, not SEO coverage. For Audit reports inspect the document's own method for crawl, speed and optional Google evidence dates.
+An audit report names the source site when the audit confirms it, and warns if it belongs to a different site than the project. Older reports are labelled as having an unverified source and date. **Open site audits** opens the audit history; it does not start an audit or create a report. An audit report also records the Search Console period, the source row limit and any stored mobile CrUX data it used.
 
-## Source kinds and regeneration
+## Limits
 
-New native Search performance and Site audit reports have separate saved kinds. Older app reports are not classified from their titles. Search identity uses the property, resolved dates and filters; Audit identity uses the audit ID. Regenerating the same source in another language updates the same record and may change its language. Title collisions with agent reports are refused; an older document with the same title is preserved and the new save is refused.
+| Item                   | Limit            |
+| ---------------------- | ---------------- |
+| Template name          | 80 characters    |
+| Template description   | 200 characters   |
+| Template instructions  | 3,000 characters |
+| Templates per project  | 10               |
+| Report size            | 500,000 bytes    |
+| Report title           | 120 characters   |
+| Report summary         | 2,500 characters |
+| Reports per project    | 10,000           |
+| Storage across install | 5 GB             |
 
-Regenerate native reports from their source screen; agents cannot replace their content using `save_report`. Missing source data is never treated as zero. Audit methodology identifies the GSC traffic period, source row limit and available stored mobile CrUX measurement.
-
-The saved report at the top is not a current summary of the site. The source site is shown when the original audit verifies it; a different project site triggers a warning. Without verified provenance, the report may concern another site. Legacy reports are labelled with an unverified source and date. **Open site audits** opens the audit history. If a suitable saved audit exists, open it and download its report; this link does not start an audit or create a report automatically. Historical files remain unchanged.
+Deleting a template keeps the reports made with it.

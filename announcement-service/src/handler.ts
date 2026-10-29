@@ -2,6 +2,7 @@ import { adminPage } from "./admin";
 import { handleAdminApiRequest } from "./admin-api";
 import { handlePublicFeed, handlePublicResponse } from "./public-api";
 import type { AnnouncementRepository } from "./repository";
+import type { Translator } from "./translate";
 import { bearer, cors, json } from "./service-utils";
 
 export function createAnnouncementHandler(
@@ -12,6 +13,7 @@ export function createAnnouncementHandler(
     responseLimiter?: {
       limit(input: { key: string }): Promise<{ success: boolean }>;
     };
+    translator?: Translator;
   },
 ): (request: Request) => Promise<Response> {
   const now = options.now ?? (() => new Date());
@@ -57,12 +59,13 @@ export function createAnnouncementHandler(
 
     const isAdminPath =
       url.pathname.startsWith("/api/admin/announcements") ||
-      url.pathname.startsWith("/api/admin/responses");
+      url.pathname.startsWith("/api/admin/responses") ||
+      url.pathname === "/api/admin/translate";
     if (!isAdminPath) return json({ error: "Not found" }, 404);
     if (!bearer(request, options.adminToken))
       return json({ error: "Unauthorized" }, 401, {
         "www-authenticate": "Bearer",
       });
-    return handleAdminApiRequest(request, repository, now);
+    return handleAdminApiRequest(request, repository, now, options.translator);
   };
 }

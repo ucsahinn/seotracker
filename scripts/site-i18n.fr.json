@@ -60,10 +60,10 @@
   },
   "t": {
     "guide": "Guide",
-    "guideTitle": "Guide seowatcher : installation, écrans et dépannage",
-    "ogImageAlt": "Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows",
-    "guideDescription": "Les guides de seowatcher : l'installation, ce que montre chaque écran, la connexion à Google, les règles d'audit, l'installation de l'assistant et le dépannage.",
-    "guideLede": "Chaque étape et chaque écran, de l'installation au premier rapport, expliqués simplement. L'application s'appelle seotracker sur GitHub et seowatcher sur ce site ; c'est la même application. Son interface est en turc : le guide donne les noms turcs avec leur traduction française.",
+    "guideTitle": "Guide seowatcher : installation, écrans et dépannage",
+    "ogImageAlt": "Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows",
+    "guideDescription": "Les guides de seowatcher : installation, rôle de chaque écran, connexion à Google, règles d’audit, configuration de l’agent et dépannage.",
+    "guideLede": "Chaque étape et chaque écran, de l’installation au premier rapport. L’application s’appelle seowatcher sur ce site et seotracker sur GitHub : c’est la même. Son interface existe en français ; les rares éléments disponibles seulement en turc ou en anglais sont suivis de leur traduction.",
     "screenSuffix": "",
     "titleSuffix": " | Guide seowatcher",
     "onThisPage": "Sur cette page",
@@ -71,7 +71,7 @@
     "prev": "Précédent",
     "next": "Suivant",
     "updated": "Dernière mise à jour",
-    "reportIssue": "Vous voyez une erreur ?",
+    "reportIssue": "Vous voyez une erreur ?",
     "reportLink": "Signalez-la sur GitHub",
     "siteNav": "Site",
     "home": "Accueil",
@@ -92,7 +92,7 @@
     "switchTo": "English",
     "switchHref": "/en/docs/",
     "switchShort": "EN",
-    "starWhy": "Une étoile aide d'autres personnes à trouver un outil gratuit.",
+    "starWhy": "Une étoile aide d’autres personnes à trouver un outil gratuit.",
     "starLink": "Ajouter une étoile sur GitHub"
   }
 }

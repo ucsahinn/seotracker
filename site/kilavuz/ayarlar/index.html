@@ -14,7 +14,7 @@
     <title>Ayarlar ekranı | seowatcher kılavuzu</title>
     <meta
       name="description"
-      content="Tarayıcı, kurulum ve proje kapsamı; Google kimlikleri, yerel sayaçlar ve sürüm kontrolü."
+      content="Tema, dil, bildirimler, Google kimlikleri, PageSpeed anahtarı ve sürüm kontrolü; hangi ayar tarayıcıya, hangisi tüm kuruluma uygulanır."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/kilavuz/ayarlar/" />
@@ -88,7 +88,7 @@
     <meta property="og:title" content="Ayarlar ekranı | seowatcher kılavuzu" />
     <meta
       property="og:description"
-      content="Tarayıcı, kurulum ve proje kapsamı; Google kimlikleri, yerel sayaçlar ve sürüm kontrolü."
+      content="Tema, dil, bildirimler, Google kimlikleri, PageSpeed anahtarı ve sürüm kontrolü; hangi ayar tarayıcıya, hangisi tüm kuruluma uygulanır."
     />
     <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
     <meta property="og:image:type" content="image/png" />
@@ -110,7 +110,7 @@
     <meta name="twitter:title" content="Ayarlar ekranı | seowatcher kılavuzu" />
     <meta
       name="twitter:description"
-      content="Tarayıcı, kurulum ve proje kapsamı; Google kimlikleri, yerel sayaçlar ve sürüm kontrolü."
+      content="Tema, dil, bildirimler, Google kimlikleri, PageSpeed anahtarı ve sürüm kontrolü; hangi ayar tarayıcıya, hangisi tüm kuruluma uygulanır."
     />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta
@@ -150,7 +150,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/kilavuz/ayarlar/#article",
             "headline": "Ayarlar",
-            "description": "Tarayıcı, kurulum ve proje kapsamı; Google kimlikleri, yerel sayaçlar ve sürüm kontrolü.",
+            "description": "Tema, dil, bildirimler, Google kimlikleri, PageSpeed anahtarı ve sürüm kontrolü; hangi ayar tarayıcıya, hangisi tüm kuruluma uygulanır.",
             "url": "https://seowatcher.io/kilavuz/ayarlar/",
             "inLanguage": "tr",
             "datePublished": "2026-10-22",
@@ -189,7 +189,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1474,7 +1474,7 @@
             <li><a href="/kilavuz/firsatlar/">Fırsatlar</a></li>
             <li><a href="/kilavuz/kayitli-kelimeler/">Kayıtlı kelimeler</a></li>
             <li>
-              <a href="/kilavuz/analitik/">Analitik verilerini yorumlama</a>
+              <a href="/kilavuz/analitik/">Analytics verisini yorumlama</a>
             </li>
             <li><a href="/kilavuz/site-denetimi/">Site denetimi</a></li>
             <li><a href="/kilavuz/dizin-durumu/">Dizin durumu</a></li>
@@ -1497,84 +1497,187 @@
       <article id="icerik" data-page="ayarlar">
         <h1>Ayarlar</h1>
         <p class="lede">
-          Tarayıcı, kurulum ve proje kapsamı; Google kimlikleri, yerel sayaçlar
-          ve sürüm kontrolü.
+          Tema, dil, bildirimler, Google kimlikleri, PageSpeed anahtarı ve sürüm
+          kontrolü; hangi ayar tarayıcıya, hangisi tüm kuruluma uygulanır.
         </p>
         <p>
-          Ayarlar; bu tarayıcıya (görünüm ve dil), tüm kuruluma (Google
-          kimlikleri, PageSpeed anahtarı, sınırlar ve güncellemeler) uygulanan
-          seçimleri tutar. Projenin adı, alan adı ve Google mülkleri
-          <strong>Proje ayarları</strong> içindedir. Bu sayfa her ayarın
-          kapsamını ve nereden değiştirileceğini anlatır.
+          <strong>Ayarlar</strong> tüm kurulum için geçerli seçimleri tutar. Bir
+          projeye özel ayarlar (ad, alan adı, ülke, dil ve Google mülkleri)
+          burada değil, o projenin <strong>Proje ayarları</strong> ekranındadır.
         </p>
-        <h2 id="kapsam-ve-kullanim">Kapsam ve kullanım</h2>
+        <h2 id="hangi-ayar-nereye-uygulanir">Hangi ayar nereye uygulanır</h2>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Ayar</th>
+                <th>Kapsam</th>
+                <th>Nerede</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tema ve dil</td>
+                <td>Bu tarayıcı</td>
+                <td><strong>Ayarlar → Görünüm</strong></td>
+              </tr>
+              <tr>
+                <td>Bildirim sesi</td>
+                <td>Bu tarayıcı</td>
+                <td><strong>Ayarlar → Bildirimler</strong></td>
+              </tr>
+              <tr>
+                <td>Google kimlikleri</td>
+                <td>Tüm projeler</td>
+                <td>
+                  <strong>Ayarlar → Google</strong>,
+                  <strong>Hizmet hesabı</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>PageSpeed anahtarı</td>
+                <td>Tüm projeler</td>
+                <td><strong>Ayarlar → Hız ölçümü</strong></td>
+              </tr>
+              <tr>
+                <td>Ad, alan adı, ülke, dil</td>
+                <td>Tek proje</td>
+                <td><strong>Proje ayarları → Genel</strong></td>
+              </tr>
+              <tr>
+                <td>Search Console ve Analytics mülkü</td>
+                <td>Tek proje</td>
+                <td><strong>Proje ayarları → Bağlantılar</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h2 id="gorunum">Görünüm</h2>
         <p>
-          Görünüm bu tarayıcıda saklanır. Dil listesinden seçiminizi yapın ve
-          <strong>Dili uygula</strong> düğmesine basın; yalnızca listede
-          gezinmek sayfayı yenilemez. Projenin ülke/dil varsayılanı ayrı bir
-          ayardır.
+          Tema bu tarayıcıda saklanır. Dili değiştirmek için listeden seçin ve
+          <strong>Dili uygula</strong> düğmesine basın; listede gezinmek sayfayı
+          değiştirmez. Projenin ülke ve dil ayarı ayrı bir şeydir: kayıtlı
+          kelimelerin varsayılan pazarını belirler. Arama performansındaki ülke
+          filtresi de proje ülkesinden bağımsız seçilir.
+        </p>
+        <h2 id="bildirimler">Bildirimler</h2>
+        <p>
+          Uygulama açıkken bildirimler ekranda görünür. Sekme arka plandayken
+          gelenler bildirim geçmişinde saklanır.
+          <strong>Bildirim sesi</strong> önemli bildirimlerin sesini açar ya da
+          kapatır. <strong>Sesi dinle</strong> ve
+          <strong>Uygulama bildirimini dene</strong> ile deneyebilirsiniz.
+        </p>
+        <h2 id="google-kimlikleri">Google kimlikleri</h2>
+        <p>
+          Google kimliği tüm projeler için geçerlidir. Hem hizmet hesabı hem
+          OAuth istemcisi kayıtlıysa hizmet hesabı kullanılır. Adım adım kurulum
+          için
+          <a href="/kilavuz/google-baglantisi/">Google'a bağlanma</a> sayfasına
+          bakın.
         </p>
         <p>
-          Google kimlikleri bu kurulumdaki tüm projeler için geçerlidir. Hizmet
-          hesabı varsa önceliklidir. <strong>Kayıtlı</strong> rozeti anahtarın
-          saklandığını söyler; Google erişimini doğrulamaz. Kimlik okuması
-          başarısızsa son kayıt korunur ve yeniden deneme sunulur. Hizmet hesabı
-          JSON dosyasını seçin veya gizli yapıştırma alanını kullanın, ardından
-          <strong>Kaydet</strong> deyin. Özel anahtar ekranda gösterilmez.
+          Hizmet hesabını kaydetmek için JSON dosyasını seçin ya da
+          <strong>JSON içeriğini gizli yapıştır</strong> alanını kullanın, sonra
+          <strong>Kaydet</strong> düğmesine basın. Özel anahtar ekranda
+          gösterilmez.
         </p>
         <p>
-          Her projenin adını, alan adını ve Google mülkünü
-          <strong>Proje ayarları</strong> bölümünden yönetirsiniz. Alan adı
-          değişikliği mülkü veya geçmişi kendiliğinden değiştirmez. Ülke ve dil
-          kayıtlı kelimelerin varsayılan pazarıdır; Arama performansında ülke
-          filtresini ayrıca seçersiniz.
+          <strong>Kayıtlı</strong> rozeti yalnızca kimliğin saklandığını söyler;
+          Google'ın erişim verdiğini doğrulamaz. Kimlik okunamazsa son kayıt
+          korunur ve yeniden deneme önerilir.
         </p>
-        <h2 id="windows-hiz-ve-sinirlar">Windows, hız ve sınırlar</h2>
+        <h2 id="hiz-olcumu">Hız ölçümü</h2>
         <p>
-          Windows tercihleri tepsi uygulamasından doğrulanır. Docker'da
-          anahtarlar gösterilmez. Başlatıcıya ulaşılamaması ayarın kapalı
-          olduğunu göstermez; <strong>Tekrar dene</strong> ile okuyun. Yönetici
-          kilitlerinin nedeni görünür.
+          PageSpeed anahtarı isteğe bağlıdır. Anahtar yoksa her denetim en fazla
+          50 sayfayı ölçmeyi dener; Google daha erken durdurabilir. Anahtar da
+          başarı garantisi vermez. Ayrıntılar
+          <a href="/kilavuz/pagespeed-anahtari/">PageSpeed anahtarı</a>
+          sayfasındadır.
+        </p>
+        <h2 id="sinirlar">Sınırlar</h2>
+        <p>
+          <strong>Google ve sistem sınırları</strong> bölümü uygulamanın kendi
+          tuttuğu sayaçları gösterir.
+          <strong>Sınırları gösterilen proje</strong> listesinden bir proje
+          seçin.
+        </p>
+        <ul>
+          <li>
+            <strong>URL Denetimi:</strong> Bu mülk için uygulamanın son 24
+            saatte yaptığı istekler. Google'daki tüm kullanımı saymaz.
+          </li>
+          <li>
+            <strong>PageSpeed:</strong> Son 24 saatte başlayan denetimlerin
+            istekleri.
+          </li>
+          <li>
+            <strong>GA4:</strong> Son yanıttaki kalan kota. Standart mülk sınırı
+            bir varsayımdır.
+          </li>
+          <li>
+            <strong>Denetim sayfaları:</strong> Proje alan adındaki son
+            tamamlanan denetimden gelir.
+          </li>
+          <li><strong>Rapor ve şablon:</strong> Projenin tüm kayıtları.</li>
+        </ul>
+        <p>
+          Eski ya da okunamayan bir sayaç sıfır yazılmaz; özet satırı kaç
+          sınırın kullanımının bilinmediğini söyler.
+        </p>
+        <h2 id="windows">Windows</h2>
+        <p>
+          Bu bölüm yalnızca Windows sürümünde görünür.
+          <strong>Windows açılınca başlat</strong> ve
+          <strong>Otomatik güncelleme kurulumu</strong> tercihleri tepsi
+          uygulamasına kaydedilir. Docker sürümünde bu anahtarlar yoktur.
         </p>
         <p>
-          PageSpeed anahtarı başarı garantisi vermez. Anahtarsız denetim en
-          fazla 50 sayfayı dener; Google daha erken sınır koyabilir. Anahtar
-          testi example.com için bir mobil istek yapar, denetim ölçüm sayacına
-          eklenmez. Test tarihi görünür; anahtar değişince eski test kaldırılır.
+          Tepsi uygulamasına ulaşılamazsa bu, ayarın kapalı olduğu anlamına
+          gelmez; <strong>Tekrar dene</strong> ile yeniden okuyun. Bir ayarı
+          yönetici kilitlediyse nedeni yanında yazar.
+        </p>
+        <h3 id="windows-bildirimleri">Windows bildirimleri</h3>
+        <p>
+          Bu tercih tepsi menüsündedir: seowatcher simgesine sağ tıklayın ve
+          <strong>Windows bildirimleri</strong> seçeneğini açın ya da kapatın.
+          Varsayılan açıktır.
         </p>
         <p>
-          <strong>Sınırlar</strong> bölümündeki proje listesinden kapsamı seçin.
-          URL Denetimi sayacı uygulamanın son 24 saatlik mülk kaydıdır,
-          Google'ın tüm kullanımını saymaz. PageSpeed sayıları yalnızca son 24
-          saatte başlayan denetimlerindir. GA4 kalan değeri son yanıtın zamanına
-          aittir; standart mülk sınırı varsayımdır. Eski veya eksik kaynaklar
-          bilinmiyor olarak belirtilir. Denetim sayfa sayısı proje alan adındaki
-          son tamamlanan denetimden gelir; rapor ve şablon sayıları projenin tüm
-          kayıtlarıdır.
+          Açıkken, tarayıcı kapalı olsa bile tüm projelerdeki tamamlanan ya da
+          başarısız denetimler ve yeni duyurular yaklaşık 90 saniye içinde
+          Windows bildirimi olarak gelir. Bildirime tıklamak ilgili sayfayı
+          açar. Aynı anda birden çok olay varsa tek özette toplanır.
         </p>
-        <h2 id="surum-kontrolu">Sürüm kontrolü</h2>
+        <ul>
+          <li>
+            İlk açılışta geçmiş olaylar gösterilmez. Yeniden başlatmak
+            gösterilmiş olayları tekrarlamaz.
+          </li>
+          <li>
+            Tercih kapalıyken ya da başlatıcı çalışmazken gelen olaylar sonradan
+            gösterilmez.
+          </li>
+          <li>
+            Windows'un Odaklanma ya da Rahatsız etmeyin modu bildirimleri
+            gizleyebilir.
+          </li>
+          <li>Yeni sürüm bildirimleri, güncelleme ayarınıza uyar.</li>
+        </ul>
+        <h2 id="hakkinda-ve-surum-kontrolu">Hakkında ve sürüm kontrolü</h2>
         <p>
-          <strong>Uygulama içi sürüm kontrolü</strong> en çok altı saatte bir
-          GitHub'a bakar. Windows tepsisi bağımsız olarak günlük kontrol
-          yapabilir; otomatik kurulum için <strong>Windows</strong> bölümünü
-          kullanın. Son başarılı kontrol tarihi sürüm bilgisinin yaşını
-          gösterir. GitHub sınır/erişim hatasında bekleyin ve yeniden deneyin;
-          404 için Yardım tanılamasını kullanın. Ayar okunamazsa anahtar
-          değiştirilemez.
+          <strong>Uygulama içi sürüm kontrolü</strong> açıkken uygulama en çok
+          altı saatte bir GitHub'da yeni sürüm arar;
+          <strong>Şimdi kontrol et</strong> hemen bakar. Windows tepsisi bundan
+          bağımsız olarak günde bir kez kontrol edebilir; otomatik kurulum
+          <strong>Windows</strong> bölümünden ayarlanır.
         </p>
-        <h2 id="windows-bildirimleri">Windows bildirimleri</h2>
         <p>
-          Tepsideki seowatcher simgesine sağ tıklayın ve
-          <strong>Windows bildirimleri</strong> seçeneğini kullanın (varsayılan
-          açık). Başlatıcı çalışırken, tarayıcı kapalı veya arka planda olsa da
-          tüm projelerin tamamlanan/başarısız denetimleri ve yeni duyurular
-          yaklaşık 90 saniyede Windows baloncuğu olarak görünür. Tıklamak ilgili
-          sayfayı açar; birden fazla olay tek özette toplanır. İlk kullanım
-          geçmiş olayları göstermez; yeniden başlatmak görülen olayları
-          tekrarlamaz. Kapalıyken gelen olaylar sonradan gösterilmez. Yeni sürüm
-          bildirimleri mevcut güncelleme ayarını izler. Windows
-          Odaklanma/Rahatsız etmeyin bildirimleri gizleyebilir. Başlatıcı
-          kapalıysa bildirim gelmez. Docker sürümünde bu özellik yoktur.
+          Son başarılı kontrolün tarihi, sürüm bilgisinin ne kadar güncel
+          olduğunu gösterir. GitHub istek sınırı ya da erişim hatası verirse bir
+          süre bekleyip yeniden deneyin. 404 hatası için
+          <strong>Yardım</strong> ekranındaki tanılamayı kullanın. Ayar
+          okunamazsa anahtar değiştirilemez.
         </p>
         <nav class="pager" aria-label="Önceki ve sonraki sayfa">
           <a class="pager-prev" rel="prev" href="/kilavuz/proje-bilgisi/"
@@ -1596,12 +1699,20 @@
       <nav class="toc" aria-label="Bu sayfada">
         <p class="toc-label">Bu sayfada</p>
         <ol>
-          <li><a href="#kapsam-ve-kullanim">Kapsam ve kullanım</a></li>
           <li>
-            <a href="#windows-hiz-ve-sinirlar">Windows, hız ve sınırlar</a>
+            <a href="#hangi-ayar-nereye-uygulanir"
+              >Hangi ayar nereye uygulanır</a
+            >
           </li>
-          <li><a href="#surum-kontrolu">Sürüm kontrolü</a></li>
-          <li><a href="#windows-bildirimleri">Windows bildirimleri</a></li>
+          <li><a href="#gorunum">Görünüm</a></li>
+          <li><a href="#bildirimler">Bildirimler</a></li>
+          <li><a href="#google-kimlikleri">Google kimlikleri</a></li>
+          <li><a href="#hiz-olcumu">Hız ölçümü</a></li>
+          <li><a href="#sinirlar">Sınırlar</a></li>
+          <li><a href="#windows">Windows</a></li>
+          <li>
+            <a href="#hakkinda-ve-surum-kontrolu">Hakkında ve sürüm kontrolü</a>
+          </li>
         </ol>
       </nav>
     </main>

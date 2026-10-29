@@ -14,7 +14,7 @@
     <title>Acompanhamento de posições | Guia do seowatcher</title>
     <meta
       name="description"
-      content="Acompanhe posições médias no Google e mudanças nas consultas. O arquivo local guarda os dados mesmo além do limite de 16 meses do Google."
+      content="Acompanhe a posição média das consultas no Google e suas variações. O arquivo local guarda os dados além dos 16 meses do Search Console."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -94,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="Acompanhe posições médias no Google e mudanças nas consultas. O arquivo local guarda os dados mesmo além do limite de 16 meses do Google."
+      content="Acompanhe a posição média das consultas no Google e suas variações. O arquivo local guarda os dados além dos 16 meses do Search Console."
     />
     <meta
       property="og:image"
@@ -125,7 +125,7 @@
     />
     <meta
       name="twitter:description"
-      content="Acompanhe posições médias no Google e mudanças nas consultas. O arquivo local guarda os dados mesmo além do limite de 16 meses do Google."
+      content="Acompanhe a posição média das consultas no Google e suas variações. O arquivo local guarda os dados além dos 16 meses do Search Console."
     />
     <meta
       name="twitter:image"
@@ -168,7 +168,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/pt/guias/acompanhamento-de-posicoes/#article",
             "headline": "Acompanhamento de posições",
-            "description": "Acompanhe posições médias no Google e mudanças nas consultas. O arquivo local guarda os dados mesmo além do limite de 16 meses do Google.",
+            "description": "Acompanhe a posição média das consultas no Google e suas variações. O arquivo local guarda os dados além dos 16 meses do Search Console.",
             "url": "https://seowatcher.io/pt/guias/acompanhamento-de-posicoes/",
             "inLanguage": "pt",
             "datePublished": "2026-10-23",
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1511,7 +1511,7 @@
               >
             </li>
             <li>
-              <a href="/pt/guias/analise/">Entender os dados de análise</a>
+              <a href="/pt/guias/analise/">Compreender os dados do Analytics</a>
             </li>
             <li>
               <a href="/pt/guias/auditoria-do-site/">Auditoria do site</a>
@@ -1522,7 +1522,7 @@
             <li><a href="/pt/guias/relatorios/">Relatórios e modelos</a></li>
             <li>
               <a href="/pt/guias/informacoes-do-projeto/"
-                >Informações do projeto</a
+                >Contexto do projeto</a
               >
             </li>
             <li><a href="/pt/guias/configuracoes/">Configurações</a></li>
@@ -1534,7 +1534,7 @@
               <a href="/pt/guias/regras-de-auditoria/">Regras de auditoria</a>
             </li>
             <li>
-              <a href="/pt/guias/configurar-agente/">Configurar o agente</a>
+              <a href="/pt/guias/configurar-agente/">Configuração do agente</a>
             </li>
             <li>
               <a href="/pt/guias/solucao-de-problemas/">Solução de problemas</a>
@@ -1546,92 +1546,130 @@
       <article id="icerik" data-page="siralama-takibi">
         <h1>Acompanhamento de posições</h1>
         <p class="lede">
-          Acompanhe posições médias no Google e mudanças nas consultas. O
-          arquivo local guarda os dados mesmo além do limite de 16 meses do
-          Google.
+          Acompanhe a posição média das consultas no Google e suas variações. O
+          arquivo local guarda os dados além dos 16 meses do Search Console.
         </p>
         <p>
-          Este ecrã mostra as consultas Web do Search Console arquivadas neste
-          computador. A posição média não é uma classificação fixa em todas as
-          pesquisas: localização, dispositivo e contexto podem alterá-la.
-          Impressões não são volume de pesquisa.
+          A tela mostra as consultas da Web do Search Console arquivadas neste
+          computador. A posição média não é uma colocação fixa válida para toda
+          pesquisa: localização, dispositivo e contexto a alteram. Impressões
+          não são volume de busca.
         </p>
         <h2 id="por-onde-comecar">Por onde começar</h2>
         <p>
-          O resumo conta consultas observadas em ambos os períodos e variações
-          de pelo menos meia posição. As comparações desconhecidas são contadas
-          separadamente. Abra primeiro a descida sugerida. A prioridade
-          multiplica a variação absoluta pelas impressões registadas; não estima
-          cliques perdidos. As listas mostram três consultas, até cinco depois
-          de expandidas.
+          O resumo conta as consultas observadas nos dois períodos e as que se
+          moveram pelo menos meia posição. Comparações que não podem ser
+          calculadas são contadas à parte. Abra primeiro a queda sugerida. A
+          prioridade multiplica a variação absoluta pelas impressões
+          registradas: não é uma estimativa de cliques perdidos. Cada lista
+          mostra três consultas; expandida, chega a cinco, e só pode ser
+          expandida com mais de três movimentos.
+        </p>
+        <p>
+          Se nenhuma consulta foi observada nos dois períodos, subidas e quedas
+          não podem ser calculadas. O cartão de movimentos explica isso em vez
+          de mostrar um movimento igual a zero.
         </p>
         <h2 id="datas-e-cobertura">Datas e cobertura</h2>
         <p>
-          Escolha 30, 90, 180, 480 ou 1825 dias. A última opção abrange os
-          últimos cinco anos do arquivo, não todo o histórico. Os meses são
-          aproximações; os detalhes mostram datas exatas no calendário
-          America/Los_Angeles. A data final pressupõe três dias de atraso, sem
-          verificar a completude em tempo real. A importação pede apenas dados
-          finais do Google.
+          O período pode ser de 30, 90, 180, 480 ou 1825 dias. A última opção
+          cobre os últimos cinco anos do arquivo, não o histórico inteiro. Os
+          meses indicados são aproximados; os detalhes mostram as datas exatas
+          no calendário America/Los_Angeles. A data final presume três dias de
+          atraso e não verifica em tempo real se os dados estão completos. A
+          importação pede ao Google apenas dados definitivos.
         </p>
         <p>
-          Os dias com resposta da API completa, limite da aplicação, falha ou
-          cobertura desconhecida são contados separadamente. Os dias antigos não
-          são declarados completos retroativamente. Mesmo uma resposta completa
-          exclui consultas ocultas ou omitidas pelo Google. A última observação
-          difere da última data analisada. Continuar a preencher pode exigir
-          várias execuções. O histórico existente mantém-se disponível durante a
-          sincronização.
+          Os dias são contados por estado: resposta completa da API, limite do
+          aplicativo atingido, falha ou cobertura desconhecida. Dias importados
+          no passado não são declarados completos depois. Mesmo uma resposta
+          completa exclui as consultas que o Google oculta ou omite. A última
+          observação e a última data analisada são informações diferentes.
+          Completar o arquivo pode exigir várias execuções; durante a
+          sincronização, o histórico existente continua disponível.
+        </p>
+        <h2 id="como-o-arquivo-e-preenchido">Como o arquivo é preenchido</h2>
+        <p>
+          Enquanto esta tela está aberta, os dias que faltam são carregados
+          sozinhos; <strong>Desempenho da pesquisa</strong> também atualiza o
+          arquivo quando está aberta. Com as duas telas fechadas, ou com o
+          aplicativo fechado, nada é baixado.
+        </p>
+        <ul>
+          <li>
+            Depois de cada transferência parcial, o aplicativo espera 15
+            segundos antes de pedir o bloco seguinte.
+          </li>
+          <li>
+            Quando o arquivo está em dia, ele verifica de novo a cada 15
+            minutos.
+          </li>
+          <li>
+            Depois de um erro de conexão ou de cota, ele espera 15 minutos antes
+            de tentar de novo.
+          </li>
+          <li>
+            Depois de um erro de autorização, você precisa renovar a conexão.
+          </li>
+        </ul>
+        <p>
+          <strong>Continuar a preencher o arquivo</strong> retoma a
+          transferência manualmente. A primeira importação começa no início da
+          janela de 16 meses do Google; dias que o Google não fornece mais não
+          podem ser recuperados. Cada execução trata no máximo quatro janelas de
+          tempo; janelas com muitas linhas são divididas por dia e retomadas nas
+          execuções seguintes. Para um dia, o aplicativo lê até 50.000 linhas;
+          um dia que continua incompleto fica marcado como tal.
         </p>
         <h2 id="distribuicao-e-pesquisa">Distribuição e pesquisa</h2>
         <p>
-          A distribuição abrange todas as consultas observadas no período atual.
-          As posições são arredondadas: 3,4 fica no primeiro grupo, 3,5 no
-          segundo. As barras são relativas ao maior grupo; a percentagem
-          representa a quota das consultas observadas. As variações dos grupos
-          são líquidas e usam as mesmas consultas comparáveis. Uma comparação
-          ausente nunca se torna zero.
+          A distribuição inclui todas as consultas observadas no período atual.
+          As posições são arredondadas: 3,4 entra no primeiro grupo e 3,5 no
+          segundo. O tamanho das barras é relativo ao maior grupo; a porcentagem
+          é a participação nas consultas observadas. As variações dos grupos são
+          líquidas e usam as mesmas consultas comparáveis. Uma comparação
+          ausente não vira zero.
         </p>
         <p>
-          A pesquisa e os filtros ultrapassam o antigo limite de cem consultas.
-          Os contadores respeitam o texto e os outros filtros ativos. O quartil
-          superior por impressões inclui empates. As primeiras 10 incluem
-          consultas sem observação anterior; as saídas das primeiras 10 exigem
-          ambos os períodos. Um botão limpa todos os filtros. As páginas têm 25,
-          50 ou 100 linhas, sem alterar os resumos.
+          A pesquisa e os filtros atuam sobre todas as consultas, sem o antigo
+          limite de cem. Os contadores consideram o texto pesquisado e os demais
+          filtros ativos. O filtro do quartil superior por impressões inclui os
+          empates. O filtro &quot;top 10&quot; inclui consultas sem observação
+          anterior; as saídas do top 10 exigem dados nos dois períodos. Um botão
+          remove todos os filtros. As páginas mostram 25, 50 ou 100 linhas; o
+          número de linhas não altera os resumos.
         </p>
         <p>
-          As consultas observadas antes mas ausentes agora aparecem numa lista
-          separada. Isto não prova perda de posição nem posição zero. São
-          mostrados os primeiros 25 registos por impressões; o texto de pesquisa
-          também se aplica aqui.
+          As consultas observadas antes, mas ausentes no período atual, aparecem
+          em uma lista separada. A ausência delas não prova perda de posição nem
+          posição zero. A lista mostra as 25 primeiras por impressões e também
+          respeita o texto pesquisado.
         </p>
-        <h2 id="ler-o-historico">Ler o histórico</h2>
+        <h2 id="leia-o-historico">Leia o histórico</h2>
         <p>
           As posições médias são ponderadas pelas impressões. A variação é a
-          média anterior menos a atual. Abaixo de 0,05 posições é neutra; o
-          filtro significativo usa 0,5. O detalhe usa a mesma comparação entre
-          períodos da tabela. O primeiro e o último dia registado são
-          observações separadas.
+          média anterior menos a média atual. Abaixo de 0,05 posição, a variação
+          é neutra; o filtro de movimentos significativos usa 0,5. O detalhe de
+          uma consulta usa a mesma comparação entre períodos da tabela. O
+          primeiro e o último dia registrados são observações separadas.
         </p>
         <p>
-          Os dias observados estão sempre visíveis: 10 dias em 90 não significam
-          cobertura completa. Os pontos diários seguem o calendário real e as
-          lacunas interrompem a linha. Setas, Home e End percorrem as datas.
-          Expanda os valores diários para os ler. Semanas inteiramente ausentes
-          mantêm lacunas; as semanas nas extremidades podem ser parciais.
+          O número de dias observados está sempre visível: 10 dias em 90 não são
+          cobertura completa. Os pontos diários seguem o calendário real e os
+          dias ausentes interrompem a linha. As datas podem ser percorridas com
+          as teclas de seta, Home e End; os valores diários aparecem ao expandir
+          a lista. Semanas totalmente sem dados ficam em branco; as semanas nas
+          extremidades do período podem ser parciais.
         </p>
         <p>
-          A ligação para Desempenho de pesquisa preserva a consulta exata e as
-          datas do arquivo. Para períodos anteriores à retenção do Google, a
-          primeira data disponível é indicada antes da navegação. Não há
-          classificações de concorrentes, volume pago nem previsões de tráfego.
+          O link para <strong>Desempenho da pesquisa</strong> mantém a consulta
+          exata e as datas do arquivo. Se o período ultrapassar a retenção de
+          dados do Google, a primeira data disponível é informada antes de abrir
+          a página.
         </p>
         <p>
-          Se nenhuma consulta foi observada nos dois períodos, não é possível
-          calcular subidas e descidas. O cartão de movimentos explica isto, sem
-          apresentar movimento zero medido. A expansão só está disponível com
-          mais de três movimentos.
+          A tela não oferece posições de concorrentes, volume de busca nem
+          previsões de tráfego.
         </p>
         <nav class="pager" aria-label="Página anterior e seguinte">
           <a class="pager-prev" rel="prev" href="/pt/guias/desempenho-de-busca/"
@@ -1641,12 +1679,12 @@
           >
         </nav>
         <p class="meta">
-          Última atualização: 29 de outubro de 2026. Viu algum erro?
+          Última atualização: 29 de outubro de 2026. Encontrou um erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >Relate no GitHub</a
+            >Informe no GitHub</a
           >.
         </p>
       </article>
@@ -1656,9 +1694,14 @@
           <li><a href="#por-onde-comecar">Por onde começar</a></li>
           <li><a href="#datas-e-cobertura">Datas e cobertura</a></li>
           <li>
+            <a href="#como-o-arquivo-e-preenchido"
+              >Como o arquivo é preenchido</a
+            >
+          </li>
+          <li>
             <a href="#distribuicao-e-pesquisa">Distribuição e pesquisa</a>
           </li>
-          <li><a href="#ler-o-historico">Ler o histórico</a></li>
+          <li><a href="#leia-o-historico">Leia o histórico</a></li>
         </ol>
       </nav>
     </main>

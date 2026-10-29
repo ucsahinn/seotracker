@@ -195,7 +195,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1477,7 +1477,7 @@
             <li><a href="/kilavuz/firsatlar/">Fırsatlar</a></li>
             <li><a href="/kilavuz/kayitli-kelimeler/">Kayıtlı kelimeler</a></li>
             <li>
-              <a href="/kilavuz/analitik/">Analitik verilerini yorumlama</a>
+              <a href="/kilavuz/analitik/">Analytics verisini yorumlama</a>
             </li>
             <li><a href="/kilavuz/site-denetimi/">Site denetimi</a></li>
             <li><a href="/kilavuz/dizin-durumu/">Dizin durumu</a></li>
@@ -1504,160 +1504,185 @@
           saklayın. Raporları telefonda açın, yazdırın veya e-postayla paylaşın.
         </p>
         <p>
-          Raporlar, bu proje için kaydedilmiş HTML belgeleridir. Uygulama her
-          açışta Google verisini yenilemez. Kaydetme zamanı, kaynak verinin
-          ölçüm tarihi değildir.
+          Her rapor, bu projeye kaydedilmiş tek bir HTML belgesidir. Raporu
+          açmak Google verisini yenilemez. Kaydetme zamanı, içindeki verinin
+          ölçüldüğü dönemle aynı şey değildir.
         </p>
-        <h2 id="rapor-hazirlama">Rapor hazırlama</h2>
-        <p>
-          <strong>Arama raporu hazırla</strong>, Arama performansı ekranını
-          açar. Dönem, cihaz, ülke ve arama türünü seçip
-          <strong>Raporu indir</strong> kullanın.
-          <strong>Denetim raporu hazırla</strong>, Site denetimi ekranına gider;
-          seçili taramadan rapor alın. <strong>Rapor komutunu kopyala</strong>,
-          asistanınıza yapıştıracağınız isteği kopyalar. Şablonlar, asistana
-          raporun nasıl yazılacağını anlatır; uygulamanın raporlarını otomatik
-          üretmez ve zamanlamaz.
-        </p>
+        <h2 id="rapor-hazirlamanin-uc-yolu">Rapor hazırlamanın üç yolu</h2>
+        <ul>
+          <li>
+            <strong>Arama raporu hazırla</strong>, Arama performansı ekranını
+            açar. Dönemi, cihazı, ülkeyi ve arama türünü seçip
+            <strong>Raporu indir</strong> düğmesine basın.
+          </li>
+          <li>
+            <strong>Denetim raporu hazırla</strong>, Site denetimi ekranını
+            açar. Bir denetim seçip raporunu indirin.
+          </li>
+          <li>
+            <strong>Rapor komutunu kopyala</strong>, ajanınıza yapıştıracağınız
+            komutu kopyalar. Ajan projeyi inceler ve raporu buraya kaydeder.
+          </li>
+        </ul>
         <p>
           Rapor önce kaydedilir, sonra indirilir. İndirme başarısız olursa
-          kaydedilen dosyayı listeden tekrar indirebilirsiniz. Kaynak bağlantısı
-          kesilse de kayıtlı raporlar okunabilir.
+          dosyayı listeden yeniden indirebilirsiniz. Google bağlantısı kesilse
+          de kayıtlı raporlar açılır.
+        </p>
+        <h2 id="sablonlar">Şablonlar</h2>
+        <p>
+          Şablon, ajana bir raporu nasıl yazacağını anlatan yönergedir: raporun
+          kime yazıldığı ve hangi bölümlerden oluştuğu. Şablonlar raporu
+          kendiliğinden üretmez ve zamanlamaz.
+        </p>
+        <ul>
+          <li>Ad en fazla 80, açıklama 200, yönerge 3.000 karakterdir.</li>
+          <li>Bir projede en fazla 10 şablon olur.</li>
+          <li>Şablonu silmek, onunla yazılmış raporları silmez.</li>
+        </ul>
+        <h2 id="rapor-listesi">Rapor listesi</h2>
+        <p>
+          Listenin üstündeki <strong>Kaydedilmiş rapor</strong> kartı en son
+          güncellenen raporu gösterir: başlık, kayıtlı özet, kaydetme zamanı,
+          <strong>Raporu aç</strong> ve <strong>HTML olarak indir</strong>. Bu
+          kart sitenin güncel durumu değildir. Raporun kaynak sitesi
+          doğrulanabiliyorsa <strong>Kaynak site</strong> yazar; projenin
+          sitesinden farklıysa uyarı çıkar. Doğrulanamıyorsa raporun başka bir
+          siteye ait olabileceği belirtilir.
         </p>
         <p>
-          Projede henüz rapor yoksa arama, tür ve sayfalama yerine ilk raporu
-          hazırlama bağlantıları gösterilir. Kayıtlı raporlar yalnızca bir
-          filtre nedeniyle görünmüyorsa filtre temizleme düğmesi kalır. Eski
-          uygulama raporlarının başlığına eklenmiş teknik kimlik listede ve son
-          rapor özetinde gizlenir; kayıtlı başlık ve dosya değişmez.
-        </p>
-        <h2 id="listeyi-okuma">Listeyi okuma</h2>
-        <p>
-          Üstte <strong>Kaydedilmiş rapor</strong> vardır: başlık, kayıtlı özet,
-          kaydetme zamanı, açma ve HTML indirme düğmeleri. Özet yoksa açıkça
-          belirtilir. Yapılandırılmış veri dönemi eski raporlarda bulunmadığı
-          için dönem ve veri sınırları belgenin içinde kontrol edilir; başlıktan
-          veya HTML'den tahmin edilmez.
+          <strong>Raporlarda ara</strong> başlık ve özette arar. Tür düğmeleri
+          (<strong>Arama performansı raporu</strong>,
+          <strong>Site denetimi raporu</strong>,
+          <strong>Ajanın yazdığı raporlar</strong> ve diğerleri) arama ile
+          <strong>Son 7 gün</strong> süzgecinden sonra kalan sayıları gösterir.
+          <strong>Son 7 gün</strong>, son yedi günde yazılan ya da güncellenen
+          dosyalardır; Google verisinin güncelliğini göstermez.
         </p>
         <p>
-          Arama başlık ve kayıtlı özeti tarar. Tür düğmeleri, arama ve Son 7 gün
-          süzgecinden sonraki sayıları gösterir; seçili türden önce hesaplanır.
-          Son 7 gün, o sürede yazılan veya güncellenen ayrı dosyalar demektir,
-          düzenleme sayısı ya da Google verisinin güncelliği değildir. Sonuç
-          sayısı ve projedeki toplam ayrı gösterilir.
+          Liste 25'er kayıtlık sayfalar halinde gelir;
+          <strong>Önceki sayfa</strong> ve <strong>Sonraki sayfa</strong> ile
+          ilerleyin. Varsayılan sıra son güncellemedir, bu yüzden güncellenen
+          eski bir rapor yukarı çıkar. Oluşturulma zamanına ya da başlığa göre
+          de sıralayabilirsiniz. Arama, tür, süzgeç, sıralama ve sayfa adres
+          çubuğunda saklanır.
         </p>
         <p>
-          Liste sunucudan 25 kayıtlık sayfalar alır; 100. rapordan sonrası da
-          aranabilir ve açılabilir. <strong>Önceki</strong> ve
-          <strong>Sonraki</strong> ile ilerleyin. Varsayılan sıra son
-          güncellemedir; eski bir dosya güncellenince yukarı çıkar. Oluşturulma
-          zamanı veya başlığa göre de sıralanır. Arama, tür, Son 7 gün, sıralama
-          ve sayfa URL'de kalır; geri dönme ve yenileme bu seçimi korur.
+          Projede hiç rapor yoksa liste yerine ilk raporu hazırlama bağlantıları
+          görünür. Raporlar yalnızca bir süzgeç yüzünden gizleniyorsa
+          <strong>Filtreleri temizle</strong> görünür.
+        </p>
+        <h3 id="eski-raporlar">Eski raporlar</h3>
+        <p>
+          Eski sürümlerin ürettiği arama ve denetim belgeleri aynı oluşturucu
+          işaretini taşır, türleri kayıtlı değildir. Bunlar
+          <strong>Eski rapor · kaynak ve tarih doğrulanmamış</strong> etiketiyle
+          listelenir. Türleri ve veri dönemleri başlıktan tahmin edilmez; dönemi
+          belgenin içinden kontrol edin. Eski raporların başlığına eklenmiş
+          teknik kimlik listede gizlenir; kayıtlı dosya değişmez.
         </p>
         <p>
-          Uygulamanın eski Arama ve Denetim belgeleri aynı oluşturucu işaretini
-          taşır. Bu yüzden
-          <strong>Eski rapor · kaynak ve tarih doğrulanmamış</strong> yazılır;
-          hepsi Denetim sayılmaz. Asistan becerisi ve şablon adı kayıtlıysa
-          görünür. Dosya sayısı SEO başarısı değildir. Boyut, kayıtlı HTML'nin
-          bayt sayısıdır; indirmedeki güvenlik başlıkları dosyayı biraz
-          büyütebilir.
+          Yeni raporlarda tür kaydedilir. Arama raporu mülk, kesin tarihler ve
+          süzgeçlerle; denetim raporu denetim kimliğiyle tanımlanır.
         </p>
         <h2 id="acma-indirme-ve-yazdirma">Açma, indirme ve yazdırma</h2>
         <p>
-          Rapor güvenli, ağ ve betik yetkisi kapalı bir çerçevede açılır.
-          <strong>Kaynak ve kayıt bilgileri</strong>, oluşturucu, tür, boyut ve
-          kayıt zamanlarını açar. Rapor kaydedildiği dilde kalır. Başka dil veya
-          güncel veri için kaynak ekrandan bilinçli olarak yeniden hazırlayın.
+          Rapor, ağ ve betik izni kapalı güvenli bir çerçevede açılır.
+          <strong>Kaynak ve kayıt bilgileri</strong> oluşturucuyu, türü, boyutu
+          ve kayıt zamanlarını gösterir. Boyut, kayıtlı HTML'nin bayt sayısıdır.
+        </p>
+        <ul>
+          <li>
+            <strong>HTML olarak indir</strong> internetsiz açılabilen dosyayı
+            kaydeder.
+          </li>
+          <li>
+            <strong>PDF olarak kaydet (yazdır)</strong> tarayıcının yazdırma
+            sekmesini açar. Sekme engellenirse açılır pencerelere izin verin ya
+            da <strong>Yeni sekmede aç</strong> ile açıp oradan yazdırın.
+          </li>
+          <li>
+            <strong>Tam ekran</strong> raporu ekranı kaplayacak şekilde açar;
+            üstte ve altta çıkış düğmesi vardır.
+          </li>
+        </ul>
+        <p>
+          Rapor bağlantısı yalnızca bu kurulumda çalışır. Bir raporu başkasıyla
+          paylaşmak için HTML dosyasını gönderin.
         </p>
         <p>
-          <strong>HTML olarak indir</strong>, çevrimdışı açılabilen dosyayı
-          kaydeder. <strong>PDF olarak kaydet (yazdır)</strong> tarayıcı
-          yazdırma sekmesini açar. Sekme engellenirse açılır pencerelere izin
-          verin veya <strong>Yeni sekmede aç</strong> ile tarayıcıdan yazdırın.
-          <strong>Tam ekran</strong> arka planı klavye odağından çıkarır; üstte
-          ve altta çıkış düğmesi vardır. Bağlantı aynı kuruluma aittir;
-          başkasına paylaşmak için HTML dosyasını gönderin.
+          Önizleme 15 saniyede açılmazsa <strong>Yeniden dene</strong> ve
+          <strong>Yeni sekmede aç</strong> seçenekleri çıkar. Liste
+          yenilenemezse son alınan kayıtlar bir uyarıyla ekranda kalır.
+        </p>
+        <h2 id="yeniden-hazirlama">Yeniden hazırlama</h2>
+        <p>
+          Rapor kaydedildiği dilde ve kaydedildiği verilerle kalır. Güncel veri
+          ya da başka bir dil için raporu kaynak ekranından yeniden hazırlayın.
+          Aynı kaynaktan yeniden hazırlanan rapor aynı kaydı günceller.
         </p>
         <p>
-          Önizleme 15 saniyede açılmazsa yeniden deneme ve yeni sekmede açma
-          seçenekleri çıkar. Silinen veya erişilemeyen belge, bağlantı hatası ve
-          indirme sunucu hatası için kurtarma mesajı gösterilir. Liste
-          yenilenemezse son alınan kayıtlar uyarıyla korunur. Saklama bilgisi
-          alınamaması boş alan bulunduğu anlamına gelmez.
-        </p>
-        <h2 id="arama-raporunun-sinirlari">Arama raporunun sınırları</h2>
-        <p>
-          Kapak gerçek çözümlenmiş dönemi, önceki dönemi, süzgeçleri ve
-          oluşturulma zamanını gösterir. Günler Pasifik saatine göredir. Google
-          kesinleşme sınırı bildirmediyse son günlerin gecikme varsayımıyla
-          dışarıda bırakıldığı yazılır. Listelenmeyen tıklama payı, satır sınırı
-          varsa gizlenen ve sınır dışındaki sorguları birlikte kapsar. Sorgu,
-          sayfa ve sorgu×sayfa sınırları fırsatları etkileyebilir; site toplamı
-          bu tabloların toplamı değildir.
+          Uygulamanın ürettiği raporları ajanlar <code>save_report</code> ile
+          değiştiremez. Ajanın kaydettiği bir rapor, mevcut bir raporla aynı
+          başlığı taşıyorsa reddedilir ve eski belge korunur.
         </p>
         <p>
-          Çakışma analizi kendi dönemini ve eşiklerini sıfır sonuçta bile
-          açıklar. Yedi günlük ana raporda bu analiz 28 gün kullanabilir. Birden
-          çok sayfanın görünmesi kayıp tıklama veya zarar kanıtı değildir.
-          Alınamayan uzun dönem veya görünüm verisi sıfır diye sunulmaz. Kesilen
-          listeler gözlenen kayıt sayısını ve gösterilen kısmı belirtir. İstek
-          bütçesi Arama görünümüne aittir; ek çakışma analizi ve önbellek
-          etkileri toplam ağ isteği sayısını değiştirir.
+          <strong>Site denetimlerini aç</strong> denetim geçmişini açar. Oradan
+          uygun bir denetimin raporunu indirebilirsiniz; bağlantı kendiliğinden
+          yeni denetim ya da rapor başlatmaz.
+        </p>
+        <h2 id="arama-raporunun-icerigi">Arama raporunun içeriği</h2>
+        <p>
+          Kapak, çözümlenmiş gerçek dönemi, önceki dönemi, süzgeçleri ve
+          oluşturulma zamanını yazar. Günler Pasifik saatine göredir. Google
+          kesinleşme sınırı bildirmediyse son günlerin varsayımla dışarıda
+          bırakıldığı yazılır.
         </p>
         <p>
-          Veriler rapor hazırlanırken yeniden okunur. Google geçmiş değerleri
-          düzeltebilir ve dönem yeniden çözümlenebilir; önceki ekranla birebir
-          aynı ölçüm garantisi yoktur. Aynı yerelleştirilmiş başlık
-          güncellenebilir; dil değişimi ayrı belge oluşturabilir. Uzun başlıklar
-          saklama sınırına uyar; farklı kaynak ve süzgeçlerin çakışmasını
-          önleyen sunucu damgası taşır.
+          Veri rapor hazırlanırken Google'dan yeniden okunur. Google geçmiş
+          değerleri düzeltebileceği için rapor, daha önce ekranda gördüğünüz
+          sayılarla birebir aynı olmayabilir.
         </p>
-        <h2 id="sablonlar-ve-saklama">Şablonlar ve saklama</h2>
+        <ul>
+          <li>
+            <strong>Listelenmeyen tıklama payı</strong>, Google'ın gizlediği
+            sorguları ve satır sınırı dışında kalanları birlikte kapsar.
+          </li>
+          <li>
+            Sorgu, sayfa ve sorgu-sayfa tablolarının satır sınırı vardır. Site
+            toplamı bu tabloların toplamı değildir.
+          </li>
+          <li>
+            Çakışma analizi kendi dönemini ve eşiklerini, sonuç sıfır olsa bile
+            yazar. Yedi günlük raporda bu analiz 28 günlük veri kullanabilir.
+            Bir sorguda birden çok sayfanın görünmesi tek başına tıklama kaybı
+            kanıtı değildir.
+          </li>
+          <li>
+            Alınamayan veri sıfır olarak sunulmaz. Kısaltılmış listeler gözlenen
+            kayıt sayısını ve gösterilen kısmı yazar.
+          </li>
+        </ul>
+        <h2 id="denetim-raporunun-icerigi">Denetim raporunun içeriği</h2>
         <p>
-          Şablon adı en çok 80, açıklaması 200, yönergesi 3.000 karakterdir.
-          Projede en çok 10 şablon bulunur. Şablonu silmek raporlarını silmez;
-          arama sonucunu <strong>Aramayı temizle</strong> ile sıfırlayın.
+          Denetim raporunun yöntem bölümü taramanın, hız ölçümünün ve isteğe
+          bağlı Google verisinin tarihlerini yazar. Kullanılan Search Console
+          trafik dönemi, kaynağın satır sınırı ve kayıtlı mobil CrUX (gerçek
+          kullanıcı hız verisi) ölçümü de burada belirtilir. Eksik kaynak verisi
+          sıfır sayılmaz.
         </p>
-        <p>
-          Bir rapor en çok 500.000 bayt, başlık 120 ve özet 2.500 karakterdir.
-          Projede 10.000 rapor ve kurulum genelinde 5 GB koruma sınırı vardır.
-          Bunlar dosya saklama korumalarıdır, SEO kapsamı veya başarı ölçüsü
-          değildir. Denetim raporundaki tarama, hız ve isteğe bağlı Google
-          verisinin tarihlerini belgenin kendi yöntem bölümünden kontrol edin.
-        </p>
-        <h2 id="kaynak-turu-ve-yeniden-hazirlama">
-          Kaynak türü ve yeniden hazırlama
-        </h2>
-        <p>
-          Yeni yerel raporlarda Arama performansı ve Site denetimi ayrı türler
-          olarak kaydedilir. Eski uygulama raporlarının türü başlıktan tahmin
-          edilmez. Arama raporunun kaynak kimliği mülk, kesin tarihler ve
-          filtrelerden; denetim raporununki denetim kimliğinden oluşur. Aynı
-          kaynak başka bir dilde yeniden hazırlanırsa aynı kayıt güncellenir ve
-          raporun dili değişebilir. Ajan raporlarıyla başlık çakışmaları
-          reddedilir; eski bir belge aynı başlığı kullanıyorsa o belge korunur
-          ve yeni kayıt reddedilir.
-        </p>
-        <p>
-          Native raporları kaynak ekranından yeniden hazırlayın; ajanlar
-          <code>save_report</code> ile içeriklerini değiştiremez. Eksik kaynak
-          verisi sıfır kabul edilmez. Denetim yöntemi kullanılan GSC trafik
-          dönemini, kaynağın satır sınırını ve mevcut kayıtlı mobil CrUX
-          ölçümünü belirtir.
-        </p>
-        <p>
-          Üstteki <strong>Kaydedilmiş rapor</strong>, sitenin güncel özeti
-          değildir. Kaynak denetimin sitesi doğrulanabiliyorsa gösterilir;
-          projenin sitesiyle farklıysa uyarılır. Kaynak doğrulanamıyorsa başka
-          bir siteye ait olabileceği açıkça yazılır.
-          <strong>Eski rapor · kaynak ve tarih doğrulanmamış</strong>
-          belgelerinin türü başlıktan tahmin edilmez.
-          <strong>Site denetimlerini aç</strong> bağlantısı denetim geçmişini
-          açar. Uygun bir kayıtlı denetim varsa onu açıp raporunu
-          indirebilirsiniz; bağlantı kendiliğinden yeni denetim veya rapor
-          başlatmaz. Eski dosya değiştirilmez.
-        </p>
+        <h2 id="saklama-sinirlari">Saklama sınırları</h2>
+        <ul>
+          <li>
+            Bir rapor en fazla 500.000 bayt olabilir. Başlık en fazla 120, özet
+            en fazla 2.500 karakterdir.
+          </li>
+          <li>
+            Bir projede en fazla 10.000 rapor, tüm kurulumda en fazla 5 GB rapor
+            saklanır.
+          </li>
+        </ul>
+        <p>Bu sınırlar diski korumak içindir; SEO başarısıyla ilgisi yoktur.</p>
         <nav class="pager" aria-label="Önceki ve sonraki sayfa">
           <a class="pager-prev" rel="prev" href="/kilavuz/dizin-durumu/"
             ><span>Önceki</span><strong>Dizin durumu</strong></a
@@ -1678,20 +1703,22 @@
       <nav class="toc" aria-label="Bu sayfada">
         <p class="toc-label">Bu sayfada</p>
         <ol>
-          <li><a href="#rapor-hazirlama">Rapor hazırlama</a></li>
-          <li><a href="#listeyi-okuma">Listeyi okuma</a></li>
+          <li>
+            <a href="#rapor-hazirlamanin-uc-yolu">Rapor hazırlamanın üç yolu</a>
+          </li>
+          <li><a href="#sablonlar">Şablonlar</a></li>
+          <li><a href="#rapor-listesi">Rapor listesi</a></li>
           <li>
             <a href="#acma-indirme-ve-yazdirma">Açma, indirme ve yazdırma</a>
           </li>
+          <li><a href="#yeniden-hazirlama">Yeniden hazırlama</a></li>
           <li>
-            <a href="#arama-raporunun-sinirlari">Arama raporunun sınırları</a>
+            <a href="#arama-raporunun-icerigi">Arama raporunun içeriği</a>
           </li>
-          <li><a href="#sablonlar-ve-saklama">Şablonlar ve saklama</a></li>
           <li>
-            <a href="#kaynak-turu-ve-yeniden-hazirlama"
-              >Kaynak türü ve yeniden hazırlama</a
-            >
+            <a href="#denetim-raporunun-icerigi">Denetim raporunun içeriği</a>
           </li>
+          <li><a href="#saklama-sinirlari">Saklama sınırları</a></li>
         </ol>
       </nav>
     </main>

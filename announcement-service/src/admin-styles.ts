@@ -22,6 +22,7 @@ export const adminStyles = String.raw`
     .section-head h2,.section-head h3 { margin:0; } .eyebrow { color:var(--accent); font-size:.68rem; font-weight:750; letter-spacing:.12em; margin:0 0 4px; }
     .language-mark { border:1px solid var(--line); border-radius:999px; padding:4px 10px; font-size:.72rem; font-weight:700; color:var(--muted); }
     .language-mark i { color:var(--accent); font-style:normal; padding:0 3px; } .interaction-box { margin-top:18px; padding:14px; border:1px solid var(--line); border-radius:12px; background:var(--panel); }
+    .translate-row { display:flex; flex-wrap:wrap; align-items:center; gap:4px 14px; margin-top:12px; } .translate-row .hint { margin:0; flex:1 1 260px; }
     .prompt-grid { margin-top:12px; } .hint { color:var(--muted); font-size:.78rem; margin:12px 0 0; }
     .option-row { display:grid; grid-template-columns:1fr 1fr auto; gap:8px; margin-top:9px; align-items:end; }
     .filters { display:grid; grid-template-columns:minmax(0,1fr) 150px; gap:10px; margin:18px 0 8px; }

@@ -14,7 +14,7 @@
     <title>Mots-clés enregistrés | Guide seowatcher</title>
     <meta
       name="description"
-      content="Examiner les mots-clés enregistrés avec dates et couverture des archives."
+      content="Suivre vos mots-clés enregistrés avec les observations datées de l’archive Search Console locale, leur évolution de position et leur couverture."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -94,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="Examiner les mots-clés enregistrés avec dates et couverture des archives."
+      content="Suivre vos mots-clés enregistrés avec les observations datées de l’archive Search Console locale, leur évolution de position et leur couverture."
     />
     <meta
       property="og:image"
@@ -105,9 +105,9 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/guides/mots-cles-enregistres/"
@@ -125,7 +125,7 @@
     />
     <meta
       name="twitter:description"
-      content="Examiner les mots-clés enregistrés avec dates et couverture des archives."
+      content="Suivre vos mots-clés enregistrés avec les observations datées de l’archive Search Console locale, leur évolution de position et leur couverture."
     />
     <meta
       name="twitter:image"
@@ -133,7 +133,7 @@
     />
     <meta
       name="twitter:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
@@ -168,11 +168,11 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/fr/guides/mots-cles-enregistres/#article",
             "headline": "Mots-clés enregistrés",
-            "description": "Examiner les mots-clés enregistrés avec dates et couverture des archives.",
+            "description": "Suivre vos mots-clés enregistrés avec les observations datées de l’archive Search Console locale, leur évolution de position et leur couverture.",
             "url": "https://seowatcher.io/fr/guides/mots-cles-enregistres/",
             "inLanguage": "fr",
             "datePublished": "2026-10-23",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Les écrans",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1484,7 +1484,7 @@
           <ul>
             <li>
               <a href="/fr/guides/quest-ce-que-seowatcher/"
-                >Qu'est-ce que seowatcher ?</a
+                >Qu’est-ce que seowatcher ?</a
               >
             </li>
             <li>
@@ -1523,23 +1523,27 @@
               >
             </li>
             <li>
-              <a href="/fr/guides/statistiques/">Comprendre les statistiques</a>
+              <a href="/fr/guides/statistiques/"
+                >Comprendre les données Analytics</a
+              >
             </li>
             <li><a href="/fr/guides/audit-du-site/">Audit du site</a></li>
             <li>
-              <a href="/fr/guides/etat-de-l-index/">État de l'indexation</a>
+              <a href="/fr/guides/etat-de-l-index/">État de l’indexation</a>
             </li>
             <li><a href="/fr/guides/rapports/">Rapports et modèles</a></li>
-            <li><a href="/fr/guides/infos-du-projet/">Infos du projet</a></li>
+            <li>
+              <a href="/fr/guides/infos-du-projet/">Contexte du projet</a>
+            </li>
             <li><a href="/fr/guides/parametres/">Paramètres</a></li>
           </ul>
           <p class="nav-group">Aide et référence</p>
           <ul>
             <li><a href="/fr/guides/aide/">Aide</a></li>
-            <li><a href="/fr/guides/regles-d-audit/">Règles d'audit</a></li>
+            <li><a href="/fr/guides/regles-d-audit/">Règles d’audit</a></li>
             <li>
               <a href="/fr/guides/installation-assistant/"
-                >Installation de l'assistant</a
+                >Configuration de l’agent</a
               >
             </li>
             <li><a href="/fr/guides/depannage/">Dépannage</a></li>
@@ -1550,103 +1554,194 @@
       <article id="icerik" data-page="kayitli-kelimeler">
         <h1>Mots-clés enregistrés</h1>
         <p class="lede">
-          Examiner les mots-clés enregistrés avec dates et couverture des
-          archives.
+          Suivre vos mots-clés enregistrés avec les observations datées de
+          l’archive Search Console locale, leur évolution de position et leur
+          couverture.
         </p>
         <p>
-          Enregistrez les requêtes importantes depuis Performance de recherche
-          ou Classements. Cela ne lance pas un suivi Google : cette page relie
-          vos enregistrements aux observations de l'archive locale.
+          Vous enregistrez les requêtes qui comptent pour vous depuis
+          <strong>Performances de recherche</strong> ou
+          <strong>Suivi des classements</strong>. L’enregistrement ne lance
+          aucun suivi chez Google : cet écran rapproche vos mots-clés des
+          observations de l’archive Search Console conservée sur votre
+          ordinateur.
         </p>
-        <h2 id="dates-et-chiffres">Dates et chiffres</h2>
+        <h2 id="periode">Période</h2>
         <p>
-          Choisissez 30, 90 ou 180 jours, avec 90 par défaut. Les dates exactes
-          de la période et de la période précédente de même durée sont
-          affichées. Le calendrier est celui du Pacifique, avec un retard
-          supposé de trois jours ; cela ne garantit pas une archive complète.
+          Choisissez 30, 90 ou 180 jours ; 90 par défaut. L’écran indique les
+          dates exactes de la période choisie et de la période précédente de
+          même durée. Les dates suivent le calendrier du Pacifique de Google,
+          avec un retard supposé de trois jours. Cette hypothèse ne garantit pas
+          que l’archive est complète.
         </p>
+        <h2 id="cartes-du-haut">Cartes du haut</h2>
+        <ul>
+          <li>
+            <strong
+              >Enregistrements correspondant aux filtres de texte et
+              d’étiquettes</strong
+            > : nombre de mots-clés enregistrés retenus par les filtres.
+          </li>
+          <li>
+            <strong>Mots-clés observés</strong> : ceux qui ont au moins une
+            observation dans l’archive.
+          </li>
+          <li>
+            <strong>Baisses marquées</strong> et hausses : mots-clés comparables
+            sur les deux périodes, qui ont bougé d’au moins 0,5 position.
+          </li>
+          <li>
+            <strong>Position inconnue</strong> : enregistrements sans
+            observation de position sur la période.
+          </li>
+        </ul>
         <p>
-          Les cartes comptent les enregistrements correspondant au texte et aux
-          étiquettes, ceux observés, les mouvements significatifs comparables et
-          les positions inconnues. Les barres de position utilisent cette même
-          base et filtrent le tableau. Il ne s'agit ni du volume de recherche ni
-          de toutes les requêtes du site. Les marchés enregistrés gardent leurs
-          identités, mais les observations couvrent tous les pays et appareils.
-        </p>
-        <p>
-          La position est pondérée par les impressions. Les espaces sont
-          regroupés et la casse suit les règles turques, avec I/ı distinct de
-          İ/i. Les variantes brutes sont combinées selon leurs impressions. Une
-          donnée absente n'est ni une position zéro ni une perte prouvée. Un
-          mouvement significatif atteint 0,5 position ; les petits changements
-          restent visibles dans le détail. Sans comparaison et inchangé sont
-          différents.
-        </p>
-        <h2 id="examiner-la-liste">Examiner la liste</h2>
-        <p>
-          Le tableau présente mot, position moyenne, changement, impressions et
-          étiquettes. Sur téléphone, les mesures sont sous le mot. Le détail
-          d'archive reprend les mêmes dates, variantes, moyenne précédente,
-          jours observés et marché enregistré. La date d'ajout et l'ancienne
-          intention éventuelle restent dans le détail ; aucune intention
-          nouvelle n'est mesurée. Le lien secondaire ouvre une recherche par
-          texte contenu sur les 28 derniers jours de Performance de recherche,
-          pas une mesure d'archive identique.
-        </p>
-        <p>
-          Tous les termes inclus doivent correspondre ; aucun terme exclu ne
-          doit apparaître. Chaque champ accepte 20 termes. Une étiquette
-          sélectionnée suffit, avec 50 sélections au maximum, sans limiter le
-          nombre d'étiquettes du projet. Leurs compteurs sont globaux au projet.
-          Filtres, groupe, période, tri et page restent dans l'URL. Tout effacer
-          retire aussi un groupe actif vide.
-        </p>
-        <h2 id="archive-et-export">Archive et export</h2>
-        <p>
-          Déconnexion, absence d'import, archive partielle et erreur de lecture
-          sont expliquées séparément. Actualiser la liste ne lit que la base
-          locale. Pour de nouvelles données Google, utilisez l'actualisation
-          d'archive dans Classements. Google peut masquer des requêtes rares ;
-          leur absence ne prouve pas l'absence du site dans la recherche.
+          Ces nombres ne sont ni le nombre total de requêtes du site ni un
+          volume de recherche. Un même mot enregistré pour deux marchés compte
+          comme deux enregistrements. Les observations, elles, couvrent toujours
+          tous les pays et tous les appareils : le marché enregistré ne filtre
+          pas l’archive.
         </p>
         <p>
-          CSV et Sheets utilisent les mêmes enregistrements filtrés. Mot,
-          intention, étiquettes et ajout restent les premières colonnes.
-          S'ajoutent positions actuelle/précédente, changement, état, jours,
-          dates, couverture, variantes, portée, marché, ID et instantané. Les
-          mesures inconnues restent vides. Un changement pendant l'export impose
-          de recommencer.
+          Les barres <strong>Positions 1–3</strong>,
+          <strong>Positions 4–10</strong>, <strong>Positions 11–20</strong> et
+          <strong>Positions 21 et plus</strong> reposent sur la même base.
+          Cliquer sur un groupe restreint le tableau à ce groupe.
         </p>
         <p>
-          La sélection concerne cette page seulement. Les actions sur anciennes
-          lignes sont bloquées pendant filtrage ou actualisation. La suppression
-          demande confirmation. Le tri par défaut reste la date d'ajout ;
-          position, mouvement, impressions et mot sont disponibles. L'ordre des
-          baisses significatives aide l'enquête sans prouver leur cause.
+          Sans mot-clé comparable, la carte des mouvements affiche
+          <strong>Aucune comparaison</strong> au lieu de zéro. Sans résultat
+          correspondant, les boutons des cartes de mouvements et
+          <strong>Position inconnue</strong> sont désactivés.
+        </p>
+        <h2 id="calcul-de-la-position">Calcul de la position</h2>
+        <ul>
+          <li>La position moyenne est pondérée par les impressions.</li>
+          <li>
+            La correspondance ignore la casse et les espaces répétés. La
+            distinction turque entre I/ı et İ/i est conservée.
+          </li>
+          <li>
+            Les moyennes des requêtes brutes qui correspondent au mot-clé sont
+            combinées selon leurs impressions.
+          </li>
+          <li>
+            Une position absente n’est ni une position zéro ni la preuve d’un
+            recul.
+          </li>
+          <li>
+            Un mouvement est marqué à partir de 0,5 position ; les mouvements
+            plus petits figurent dans le détail de la ligne.
+          </li>
+          <li>
+            « Aucune comparaison » diffère de « inchangé » : il manque une
+            observation sur l’une des deux périodes.
+          </li>
+        </ul>
+        <h2 id="liste-et-detail">Liste et détail</h2>
+        <p>
+          Le tableau présente le mot-clé, la position moyenne, la variation, les
+          impressions et les étiquettes. Sur téléphone, les mesures principales
+          s’affichent sous le mot-clé.
         </p>
         <p>
-          <strong>Observations quotidiennes.</strong> Demandez explicitement le
-          détail quotidien dans les détails d’archive. Les dates et la règle de
-          correspondance restent identiques. Les jours absents restent des trous
-          ; navigation au clavier et liste textuelle des valeurs sont
-          disponibles.
+          Un clic sur un mot-clé ouvre les
+          <strong>Détails des archives</strong> : mêmes périodes, requêtes
+          brutes correspondantes, position précédente, nombre de jours observés
+          et marché enregistré. La date d’ajout et l’éventuelle ancienne
+          intention de recherche y figurent aussi ; l’intention n’est pas
+          mesurée de nouveau.
         </p>
         <p>
-          Sans mots-clés comparables, la carte des mouvements affiche Aucune
-          comparaison au lieu de zéro. Si tous les mots-clés ont été observés,
-          la carte Position inconnue ne signale pas d’observations manquantes.
-          Les boutons des cartes de mouvements et de positions inconnues sont
-          désactivés sans résultat correspondant.
+          <strong>Afficher les observations quotidiennes des archives</strong>
+          ouvre le graphique quotidien. Les jours manquants y restent vides. Le
+          clavier permet de parcourir les jours, et
+          <strong>Valeurs quotidiennes</strong> donne les valeurs sous forme de
+          texte.
+        </p>
+        <p>
+          Le lien
+          <strong
+            >Rechercher dans Performances de recherche (période en
+            direct)</strong
+          >
+          fait autre chose : il cherche, dans Performances de recherche, les
+          requêtes des 28 derniers jours qui contiennent ce texte. Il n’ouvre
+          pas la même mesure que le détail des archives.
+        </p>
+        <h2 id="recherche-etiquettes-et-tri">Recherche, étiquettes et tri</h2>
+        <ul>
+          <li>
+            Tous les termes saisis dans la zone de recherche doivent
+            correspondre, et aucun terme exclu ne doit apparaître. Chaque zone
+            accepte 20 termes au plus.
+          </li>
+          <li>
+            Le filtre d’étiquettes accepte 50 étiquettes sélectionnées au plus ;
+            un mot-clé portant l’une d’elles est listé. Le nombre d’étiquettes
+            du projet n’est pas limité à 50. Le nombre affiché à côté d’une
+            étiquette compte ses attributions dans tout le projet.
+          </li>
+          <li>
+            Le tri par défaut suit la date d’ajout. Vous pouvez aussi trier par
+            position, mouvement, impressions ou mot-clé.
+          </li>
+          <li>
+            Les filtres, le groupe de positions, la période, le tri et la page
+            sont conservés dans la barre d’adresse.
+            <strong>Effacer</strong> retire tous les filtres.
+          </li>
+        </ul>
+        <p>
+          <strong>Examiner les baisses</strong> place en tête les baisses
+          marquées comparables, pour les examiner. Il n’en donne pas la cause.
+        </p>
+        <h2 id="actions-groupees">Actions groupées</h2>
+        <p>
+          La sélection ne porte que sur les lignes de la page affichée. Les
+          actions groupées sont bloquées pendant l’actualisation de la liste ou
+          l’application d’un filtre. <strong>Étiqueter</strong> ajoute ou retire
+          des étiquettes aux mots-clés sélectionnés, sans les supprimer. La
+          suppression d’un mot-clé ou d’une étiquette demande confirmation ;
+          supprimer une étiquette ne supprime pas les mots-clés.
+        </p>
+        <h2 id="export">Export</h2>
+        <p>
+          <strong>Télécharger au format CSV</strong> et
+          <strong>Exporter vers Google Sheets</strong> exportent les
+          enregistrements filtrés et leurs mesures. Les premières colonnes sont
+          le mot-clé, l’intention, les étiquettes et la date d’ajout. Suivent la
+          position, la position précédente, la variation, l’état, les jours
+          observés, les dates, la couverture, les requêtes brutes
+          correspondantes, l’identifiant et l’instantané. Les mesures inconnues
+          restent vides. Si les données changent pendant l’export, relancez-le.
+        </p>
+        <h2 id="donnees-manquantes">Données manquantes</h2>
+        <p>
+          L’écran distingue quatre situations : Search Console non connecté,
+          archive jamais importée, archive partielle, erreur de lecture.
+        </p>
+        <p>
+          <strong>Actualiser la liste</strong> ne lit que la base locale. Pour
+          obtenir de nouvelles données de Google, utilisez la mise à jour de
+          l’archive dans <strong>Suivi des classements</strong> ; si Search
+          Console n’est pas connecté, connectez-le d’abord.
+        </p>
+        <p>
+          Google ne renvoie pas certaines requêtes rares. L’absence
+          d’observation dans l’archive ne signifie pas que votre site n’apparaît
+          jamais dans Google.
         </p>
         <nav class="pager" aria-label="Page précédente et suivante">
           <a class="pager-prev" rel="prev" href="/fr/guides/opportunites/"
             ><span>Précédent</span><strong>Opportunités</strong></a
           ><a class="pager-next" rel="next" href="/fr/guides/statistiques/"
-            ><span>Suivant</span><strong>Comprendre les statistiques</strong></a
+            ><span>Suivant</span
+            ><strong>Comprendre les données Analytics</strong></a
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 28 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1658,16 +1753,25 @@
       <nav class="toc" aria-label="Sur cette page">
         <p class="toc-label">Sur cette page</p>
         <ol>
-          <li><a href="#dates-et-chiffres">Dates et chiffres</a></li>
-          <li><a href="#examiner-la-liste">Examiner la liste</a></li>
-          <li><a href="#archive-et-export">Archive et export</a></li>
+          <li><a href="#periode">Période</a></li>
+          <li><a href="#cartes-du-haut">Cartes du haut</a></li>
+          <li><a href="#calcul-de-la-position">Calcul de la position</a></li>
+          <li><a href="#liste-et-detail">Liste et détail</a></li>
+          <li>
+            <a href="#recherche-etiquettes-et-tri"
+              >Recherche, étiquettes et tri</a
+            >
+          </li>
+          <li><a href="#actions-groupees">Actions groupées</a></li>
+          <li><a href="#export">Export</a></li>
+          <li><a href="#donnees-manquantes">Données manquantes</a></li>
         </ol>
       </nav>
     </main>
     <footer>
       <div class="wrap">
         <p class="star">
-          Une étoile aide d'autres personnes à trouver un outil gratuit.
+          Une étoile aide d’autres personnes à trouver un outil gratuit.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

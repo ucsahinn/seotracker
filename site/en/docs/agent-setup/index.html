@@ -12,7 +12,7 @@
     <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Agent setup | seowatcher guide</title>
-    <meta name="description" content="Connect your SEO assistant securely, verify a fresh tool call and use skills to audit your site and write reports from local data." />
+    <meta name="description" content="Connect Claude Code, Codex or another MCP client to seowatcher, confirm it with a fresh tool call and install the six SEO skills." />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/en/docs/agent-setup/" />
     <link rel="alternate" hreflang="tr" href="https://seowatcher.io/kilavuz/ajan-kurulumu/" />
@@ -55,7 +55,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="seowatcher" />
     <meta property="og:title" content="Agent setup | seowatcher guide" />
-    <meta property="og:description" content="Connect your SEO assistant securely, verify a fresh tool call and use skills to audit your site and write reports from local data." />
+    <meta property="og:description" content="Connect Claude Code, Codex or another MCP client to seowatcher, confirm it with a fresh tool call and install the six SEO skills." />
     <meta property="og:image" content="https://seowatcher.io/assets/og-en.png" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
@@ -71,12 +71,12 @@
     <meta property="og:locale:alternate" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Agent setup | seowatcher guide" />
-    <meta name="twitter:description" content="Connect your SEO assistant securely, verify a fresh tool call and use skills to audit your site and write reports from local data." />
+    <meta name="twitter:description" content="Connect Claude Code, Codex or another MCP client to seowatcher, confirm it with a fresh tool call and install the six SEO skills." />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og-en.png" />
     <meta name="twitter:image:alt" content="seowatcher card: the app's dashboard with Search Console, Analytics 4 and site audit data, and a download button for Windows" />
     <meta name="color-scheme" content="dark" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","alternateName":["seotracker"],"inLanguage":["tr","en","de","fr","it","pt"],"publisher":{"@id":"https://seowatcher.io/#author"}},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/agent-setup/#article","headline":"Agent setup","description":"Connect your SEO assistant securely, verify a fresh tool call and use skills to audit your site and write reports from local data.","url":"https://seowatcher.io/en/docs/agent-setup/","inLanguage":"en","datePublished":"2026-10-23","dateModified":"2026-10-29","articleSection":"Help and reference","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/agent-setup/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/agent-setup/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Agent setup","item":"https://seowatcher.io/en/docs/agent-setup/"}]}]}</script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","alternateName":["seotracker"],"inLanguage":["tr","en","de","fr","it","pt"],"publisher":{"@id":"https://seowatcher.io/#author"}},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/agent-setup/#article","headline":"Agent setup","description":"Connect Claude Code, Codex or another MCP client to seowatcher, confirm it with a fresh tool call and install the six SEO skills.","url":"https://seowatcher.io/en/docs/agent-setup/","inLanguage":"en","datePublished":"2026-10-23","dateModified":"2026-10-29","articleSection":"Help and reference","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/agent-setup/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/agent-setup/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Agent setup","item":"https://seowatcher.io/en/docs/agent-setup/"}]}]}</script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1217,24 +1217,31 @@
       <aside class="side" aria-label="Guide">
         <details class="side-dd" open>
           <summary>Guide</summary>
-          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/what-is-seowatcher/">What is seowatcher?</a></li><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Understanding Analytics data</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project context</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Help and reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li class="current" aria-current="page"><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
+          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/what-is-seowatcher/">What is seowatcher?</a></li><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Install with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Rank tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Understanding Analytics data</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project context</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Help and reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li class="current" aria-current="page"><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
         </details>
       </aside>
       <article id="icerik" data-page="ajan-kurulumu">
-        <h1>Agent setup</h1><p class="lede">Connect your SEO assistant securely, verify a fresh tool call and use skills to audit your site and write reports from local data.</p><p>Agent setup connects an AI assistant such as Claude Code, Codex or Cursor to seowatcher over MCP (Model Context Protocol). Once connected, the assistant reads your Search Console, Analytics and audit data from the app on your computer, runs audits and writes reports. What the assistant reads can go to that assistant's provider.</p>
+        <h1>Agent setup</h1><p class="lede">Connect Claude Code, Codex or another MCP client to seowatcher, confirm it with a fresh tool call and install the six SEO skills.</p><p>seowatcher exposes its data to AI assistants over MCP (Model Context Protocol). A connected assistant can read your Search Console, Analytics and audit data, start audits and save reports. It works with Claude Code, Codex, Cursor, ChatGPT and any other client that supports MCP. Anything the assistant reads can be sent to that assistant's provider.</p>
 <h2 id="connect-your-agent">Connect your agent</h2>
-<p>Open Agent setup in the running application. Choose Claude Code, Codex or Other and copy the setup prompt. Arrow keys, Home and End select the client without copying. The prompt contains no actual token; the agent uses the local installation secret. From-scratch installation is a separate option.</p>
-<h2 id="verify-a-new-call">Verify a new call</h2>
-<p>Select Verify connection and ask the agent to call a seowatcher tool. The page checks the local call record every five seconds for at most 60 seconds. A historical call cannot verify a new setup. Polling stops on a hidden tab, read error or cancellation. If no new call appears, inspect your client's MCP status and try again; this is not proof the connection failed.</p>
-<p>Connected and last-call dates describe historical use, not a continuously online session. Retry an unreadable status. Tool access covers the installation, rather than only the project open in the browser.</p>
-<h2 id="protect-the-token">Protect the token</h2>
-<p>Prefer the setup prompt. For manual setup, use only your client's local secret header field: <code>Authorization: Bearer &lt;token&gt;</code>. Windows PowerShell can copy without displaying:</p>
+<ol><li>Open <strong>Agent setup</strong> in the app.</li><li>Under <strong>Which agent do you use?</strong>, choose <strong>Claude Code</strong>, <strong>Codex</strong> or <strong>Other</strong>. Arrow keys, Home and End move between the options without copying anything.</li><li>Select <strong>Copy setup command</strong> and paste the command into your agent.</li></ol>
+<p>The agent connects seowatcher, installs the SEO skills and walks you through any step you must do by hand. The command contains no token: the agent reads the local token from your computer instead of writing it into the chat.</p>
+<p>If you have just installed seowatcher and nothing is configured yet, use <strong>Fresh install</strong> instead. That command has the agent check the install, the Google connection, the PageSpeed key and your first project before it connects itself.</p>
+<h2 id="confirm-the-connection">Confirm the connection</h2>
+<p>Select <strong>Verify connection</strong>, then ask your agent to call any seowatcher tool. The page checks for a new call every five seconds for up to 60 seconds. A call made before you started verifying does not count. Checking stops if you switch tabs, cancel or a read fails.</p>
+<p>If no new call arrives, check your client's MCP status and try again. A timeout does not prove that the connection is broken.</p>
+<p>The connected and last-call dates describe past use, not a live session. An assistant's access covers the whole installation, not only the project open in the browser.</p>
+<h2 id="skills">Skills</h2>
+<p>The <strong>Skills</strong> tab lists the six SEO workflows the setup command installs, such as <code>seo-audit</code> and <code>seo-report</code>. Call them as <code>/seo-audit</code> in Claude Code or <code>$seo-audit</code> in Codex. To refresh skills you installed earlier, use <strong>Copy update command</strong>; your connection settings and your own edits stay as they are.</p>
+<h2 id="manual-setup-and-the-token">Manual setup and the token</h2>
+<p>Use the setup command when you can. For a manual setup, put the token only in your client's local header field: <code>Authorization: Bearer &lt;token&gt;</code>. These PowerShell commands copy it to the clipboard without printing it.</p>
+<p>Windows package:</p>
 <p><code>(Get-Content &quot;$env:LOCALAPPDATA\seowatcher\mcp-token&quot;).Trim() | Set-Clipboard</code></p>
-<p>For Docker in PowerShell:</p>
+<p>Docker:</p>
 <p><code>(docker compose exec -T seotracker cat /app/.wrangler/mcp-token).Trim() | Set-Clipboard</code></p>
-<p>Paste into the local secret field and clear the clipboard. Never paste the token into chat, terminal output, screenshots or source code. The Windows tray's Open data folder action locates the token file.</p>
-<h2 id="skills-and-recovery">Skills and recovery</h2>
-<p>The Skills tab lists SEO workflows. The setup prompt installs them; copy the update prompt to refresh an existing installation. Use /seo-audit in Claude Code or $seo-audit in Codex. For 401, check that the client sends its local authorization header. For refused connections, check the running application and endpoint. Refresh MCP status in the client and verify a new tool call.</p> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/audit-rules/"><span>Previous</span><strong>Audit rules</strong></a><a class="pager-next" rel="next" href="/en/docs/troubleshooting/"><span>Next</span><strong>Troubleshooting</strong></a></nav>
+<p>After pasting, clear the clipboard. Never put the token in a chat, terminal output, screenshot or source code. On Windows, <strong>Veri klasörünü aç</strong> (Open data folder) in the tray menu opens the folder that holds the token file.</p>
+<h2 id="if-the-agent-cannot-connect">If the agent cannot connect</h2>
+<ul><li><strong>401 Unauthorized</strong>: the client is not sending the <code>Authorization</code> header, or the token is wrong.</li><li><strong>Connection refused</strong>: seowatcher is not running, or the client points to the wrong address or port.</li></ul>
+<p>After fixing either one, reconnect MCP in your client and verify with a new tool call. See <a href="/en/docs/troubleshooting/">Troubleshooting</a> for more detail.</p> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/audit-rules/"><span>Previous</span><strong>Audit rules</strong></a><a class="pager-next" rel="next" href="/en/docs/troubleshooting/"><span>Next</span><strong>Troubleshooting</strong></a></nav>
         <p class="meta">
           Last updated: October 29, 2026. Spotted a mistake?
           <a
@@ -1245,7 +1252,7 @@
           >.
         </p>
       </article>
-      <nav class="toc" aria-label="On this page"><p class="toc-label">On this page</p><ol><li><a href="#connect-your-agent">Connect your agent</a></li><li><a href="#verify-a-new-call">Verify a new call</a></li><li><a href="#protect-the-token">Protect the token</a></li><li><a href="#skills-and-recovery">Skills and recovery</a></li></ol></nav>
+      <nav class="toc" aria-label="On this page"><p class="toc-label">On this page</p><ol><li><a href="#connect-your-agent">Connect your agent</a></li><li><a href="#confirm-the-connection">Confirm the connection</a></li><li><a href="#skills">Skills</a></li><li><a href="#manual-setup-and-the-token">Manual setup and the token</a></li><li><a href="#if-the-agent-cannot-connect">If the agent cannot connect</a></li></ol></nav>
     </main>
     <footer>
       <div class="wrap">

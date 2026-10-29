@@ -14,7 +14,7 @@
     <title>Fehlerbehebung | seowatcher-Anleitung</title>
     <meta
       name="description"
-      content="Häufige Probleme mit Symptom, Ursache und Lösung: Port, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme, Assistent 401."
+      content="Häufige Probleme mit Symptom, Ursache und Lösung: Port, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme, Agent 401."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -91,7 +91,7 @@
     <meta property="og:title" content="Fehlerbehebung | seowatcher-Anleitung" />
     <meta
       property="og:description"
-      content="Häufige Probleme mit Symptom, Ursache und Lösung: Port, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme, Assistent 401."
+      content="Häufige Probleme mit Symptom, Ursache und Lösung: Port, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme, Agent 401."
     />
     <meta
       property="og:image"
@@ -122,7 +122,7 @@
     />
     <meta
       name="twitter:description"
-      content="Häufige Probleme mit Symptom, Ursache und Lösung: Port, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme, Assistent 401."
+      content="Häufige Probleme mit Symptom, Ursache und Lösung: Port, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme, Agent 401."
     />
     <meta
       name="twitter:image"
@@ -165,7 +165,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/de/dokumentation/fehlerbehebung/#article",
             "headline": "Fehlerbehebung",
-            "description": "Häufige Probleme mit Symptom, Ursache und Lösung: Port, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme, Assistent 401.",
+            "description": "Häufige Probleme mit Symptom, Ursache und Lösung: Port, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme, Agent 401.",
             "url": "https://seowatcher.io/de/dokumentation/fehlerbehebung/",
             "inLanguage": "de",
             "datePublished": "2026-10-23",
@@ -204,7 +204,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1505,9 +1505,7 @@
           <p class="nav-group">Bildschirme</p>
           <ul>
             <li><a href="/de/dokumentation/projekte/">Projekte</a></li>
-            <li>
-              <a href="/de/dokumentation/uebersicht/">Übersicht (Panel)</a>
-            </li>
+            <li><a href="/de/dokumentation/uebersicht/">Übersicht</a></li>
             <li><a href="/de/dokumentation/suchleistung/">Suchleistung</a></li>
             <li>
               <a href="/de/dokumentation/ranking-verfolgung/"
@@ -1517,12 +1515,12 @@
             <li><a href="/de/dokumentation/chancen/">Chancen</a></li>
             <li>
               <a href="/de/dokumentation/gespeicherte-suchbegriffe/"
-                >Gespeicherte Suchbegriffe</a
+                >Gespeicherte Keywords</a
               >
             </li>
             <li>
               <a href="/de/dokumentation/datenanalyse/"
-                >Analysedaten verstehen</a
+                >Analytics-Daten verstehen</a
               >
             </li>
             <li>
@@ -1532,7 +1530,7 @@
             <li>
               <a href="/de/dokumentation/berichte/">Berichte und Vorlagen</a>
             </li>
-            <li><a href="/de/dokumentation/projektinfo/">Projektinfo</a></li>
+            <li><a href="/de/dokumentation/projektinfo/">Projektkontext</a></li>
             <li>
               <a href="/de/dokumentation/einstellungen/">Einstellungen</a>
             </li>
@@ -1543,7 +1541,7 @@
             <li><a href="/de/dokumentation/audit-regeln/">Audit-Regeln</a></li>
             <li>
               <a href="/de/dokumentation/assistent-einrichten/"
-                >Assistent einrichten</a
+                >Agent einrichten</a
               >
             </li>
             <li class="current" aria-current="page">
@@ -1560,14 +1558,13 @@
         <p class="lede">
           Häufige Probleme mit Symptom, Ursache und Lösung: Port,
           Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere
-          Diagramme, Assistent 401.
+          Diagramme, Agent 401.
         </p>
         <p>
-          Wenn etwas nicht funktioniert, sehen Sie zuerst in der App auf dem
-          Bildschirm <strong>Hilfe</strong> auf die Karte „Zustand der App“. Die
-          Karte betrachtet diese Installation selbst und prüft Anmeldung und
-          Zugriff, die Google-Anmeldung, den PageSpeed-Schlüssel und die
-          Datenbank. Sagt sie „N Punkte erfordern Ihre Aufmerksamkeit“, führt
+          Sehen Sie zuerst auf dem Bildschirm <strong>Hilfe</strong> auf die
+          Karte „Zustand der App“. Sie prüft Anmeldung und Zugriff, die
+          Google-Anmeldung, den PageSpeed-Schlüssel und die Datenbank dieser
+          Installation. Sagt sie „N Punkte erfordern Ihre Aufmerksamkeit“, führt
           Sie die Schaltfläche daneben zur richtigen Einstellung. Die folgenden
           Probleme sind vom häufigsten zum seltensten geordnet.
         </p>
@@ -1588,13 +1585,14 @@
           <strong>Ursache:</strong> Die App läuft nicht.
         </p>
         <p class="callout callout-cozum">
-          <strong>Lösung:</strong> Sehen Sie unter Windows auf das Symbol in der
-          Taskleiste. Ist es nicht zu sehen, klicken Sie in der Taskleiste auf
-          den Pfeil ^. Fehlt es, öffnen Sie seowatcher über das Startmenü. Steht
-          am Symbol „Fehler“, klicken Sie mit der rechten Maustaste darauf und
-          wählen <strong>Yeniden başlat</strong> (Neu starten). Geben Sie bei
-          Docker <code>docker compose ps</code> ein. Ist der Status nicht
-          healthy, geben Sie <code>docker compose up -d</code> ein.
+          <strong>Lösung:</strong> Suchen Sie unter Windows das
+          seowatcher-Symbol im Infobereich der Taskleiste; ausgeblendete Symbole
+          zeigt der Pfeil ^. Fehlt es, starten Sie seowatcher über das
+          Startmenü. Steht am Symbol „Fehler“, klicken Sie mit der rechten
+          Maustaste darauf und wählen <strong>Yeniden başlat</strong> (Neu
+          starten). Geben Sie bei Docker <code>docker compose ps</code> ein. Ist
+          der Status nicht healthy, geben Sie
+          <code>docker compose up -d</code> ein.
         </p>
         <h2 id="die-portnummer-ist-belegt">Die Portnummer ist belegt</h2>
         <p class="callout callout-belirti">
@@ -1625,12 +1623,12 @@
           Docker-Kopie, stoppen Sie den Container seotracker in Docker Desktop
           oder führen Sie im Projektordner <code>docker compose stop</code> aus.
           Wählen Sie dann im Menü <strong>Yeniden başlat</strong> (Neu starten).
-          Die App kehrt zu 3001 zurück und der Streifen verschwindet. Den
-          Streifen zu schließen, blendet ihn nur für diesen Reiter aus und
-          behebt nichts. Sind alle belegt, schreiben Sie eine andere Nummer in
-          die Datei <code>config.json</code> im Datenordner. Legen Sie bei
-          Docker eine <code>.env</code> mit der Zeile <code>PORT=3002</code> an
-          und geben Sie
+          Die App kehrt zu 3001 zurück und der Streifen verschwindet. Das
+          Schließen des Streifens blendet ihn nur für diesen Tab aus und behebt
+          nichts. Sind alle Ports von 3001 bis 3010 belegt, tragen Sie in der
+          Datei <code>config.json</code> im Datenordner eine andere Nummer ein.
+          Legen Sie bei Docker eine <code>.env</code> mit der Zeile
+          <code>PORT=3002</code> an und geben Sie
           <code>docker compose up -d --force-recreate seotracker</code> ein.
           Ändert sich die Nummer, aktualisieren Sie auch die
           Weiterleitungsadressen bei Google.
@@ -1644,9 +1642,9 @@
           stehen „Workers runtime failed to start“ und „0xc0000005“.
         </p>
         <p class="callout callout-sebep">
-          <strong>Ursache:</strong> Die App benötigt das Visual-C++-Paket von
-          Microsoft (2015-2022, 64 Bit). Auf einem frisch installierten Windows
-          fehlt dieses Paket oder ist veraltet.
+          <strong>Ursache:</strong> Die App benötigt die Visual-C++-Laufzeit von
+          Microsoft (2015–2022, 64 Bit). Auf einem frisch installierten Windows
+          fehlt sie oft oder ist veraltet.
         </p>
         <p class="callout callout-cozum">
           <strong>Lösung:</strong> Klicken Sie auf die erscheinende Sprechblase
@@ -1654,23 +1652,23 @@
           Sie <strong>Eksik Windows bileşenini kur</strong> (Fehlende
           Windows-Komponente installieren). Windows fragt einmal nach der
           Administratorerlaubnis. Nach der Installation startet die App von
-          selbst neu. Haben Sie das Paket nicht, laden Sie es von der Seite von
-          Microsoft herunter:
-          <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code>
+          selbst neu. Alternativ laden Sie das Paket direkt bei Microsoft
+          herunter: <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code>
         </p>
         <h2 id="die-administratorerlaubnis-wurde-nicht-erteilt">
           Die Administratorerlaubnis wurde nicht erteilt
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptom:</strong> Bei der Installation wurde für Visual C++ um
-          Erlaubnis gebeten, Sie haben <strong>Nein</strong> gewählt. Die
-          Installation meldete „Microsoft Visual C++ çalışma zamanı kurulamadı“
-          (Die Microsoft-Visual-C++-Laufzeit konnte nicht installiert werden).
+          <strong>Symptom:</strong> Die Installation hat für Visual C++ um
+          Administratorrechte gebeten, und Sie haben
+          <strong>Nein</strong> gewählt. Die Installation meldete „Microsoft
+          Visual C++ çalışma zamanı kurulamadı“ (Die
+          Microsoft-Visual-C++-Laufzeit konnte nicht installiert werden).
         </p>
         <p class="callout callout-sebep">
-          <strong>Ursache:</strong> Die benötigte Windows-Komponente konnte
-          nicht installiert werden. Da die App eine Kopie der nötigen Dateien
-          mitbringt, startet sie auf den meisten Computern trotzdem.
+          <strong>Ursache:</strong> Die Windows-Komponente wurde nicht
+          installiert. Die App bringt eine Kopie der nötigen Dateien mit und
+          startet deshalb auf den meisten Computern trotzdem.
         </p>
         <p class="callout callout-cozum">
           <strong>Lösung:</strong> Ist die App gestartet, müssen Sie nichts tun.
@@ -1693,8 +1691,8 @@
           Visual-C++-Paket ist installiert.
         </p>
         <p class="callout callout-sebep">
-          <strong>Ursache:</strong> Der Programmkern der App (workerd) bleibt
-          auf diesem Computer an einer Systemdatei hängen. Die App testet ihn
+          <strong>Ursache:</strong> Der Programmkern der App (workerd) scheitert
+          auf diesem Computer an einer Systemdatei. Die App testet ihn deshalb
           beim Start einzeln. Sagt sie „Tek başına da başlayamıyor“ (Startet
           auch allein nicht), liegt das Problem am Computer. Sagt sie „Tek
           başına çalışıyor“ (Läuft allein), liegt das Problem im Datenordner
@@ -1704,12 +1702,12 @@
           <strong>Lösung:</strong> Wählen Sie zuerst
           <strong>Kurulumu onar</strong> (Installation reparieren). Hilft das
           nicht, klicken Sie mit der rechten Maustaste auf das Symbol und wählen
-          <strong>Sorunu bildir (GitHub)</strong> (Problem melden (GitHub)). Die
-          Diagnoseinformationen (Windows-Version, Prozessor, Name des
-          fehlerhaften Moduls, Absturzabbild) werden automatisch an die Meldung
-          angehängt, Sie müssen sie nur absenden. Die Absturzabbilder liegen im
-          Ordner <code>%LOCALAPPDATA%\seowatcher\logs\dumps</code>. Wenn Sie
-          möchten, hängen Sie sie auch an die Meldung an.
+          <strong>Sorunu bildir (GitHub)</strong> (Problem melden (GitHub)).
+          Windows-Version, Prozessor und Name des fehlerhaften Moduls stehen
+          bereits in der Meldung; Sie müssen sie nur absenden. Die
+          Absturzabbilder liegen im Ordner
+          <code>%LOCALAPPDATA%\seowatcher\logs\dumps</code>; hängen Sie sie bei
+          Bedarf an.
         </p>
         <h2 id="windows-meldet-der-computer-wurde-durch-windows-geschutzt">
           Windows meldet „Der Computer wurde durch Windows geschützt“
@@ -1719,15 +1717,15 @@
           erscheint ein blauer Warnbildschirm.
         </p>
         <p class="callout callout-sebep">
-          <strong>Ursache:</strong> Die Datei ist nicht signiert. Windows zeigt
-          diesen Bildschirm bei Herausgebern, die es nicht kennt.
+          <strong>Ursache:</strong> Die Datei ist nicht signiert, und Windows
+          zeigt diesen Bildschirm bei unbekannten Herausgebern.
         </p>
         <p class="callout callout-cozum">
-          <strong>Lösung:</strong> Klicken Sie auf dem Bildschirm auf den Text
-          <strong>Weitere Informationen</strong>. Die Schaltfläche
-          <strong>Trotzdem ausführen</strong> erscheint. Wenn Sie Bedenken
-          haben, vergleichen Sie die SHA-256-Prüfsumme (den Fingerabdruck) der
-          Datei mit <code>SHA256SUMS.txt</code> auf der Versionsseite.
+          <strong>Lösung:</strong> Klicken Sie auf
+          <strong>Weitere Informationen</strong> und dann auf
+          <strong>Trotzdem ausführen</strong>. Wenn Sie sichergehen wollen,
+          vergleichen Sie die SHA-256-Prüfsumme der Datei mit
+          <code>SHA256SUMS.txt</code> auf der Versionsseite.
         </p>
         <h2 id="google-meldet-redirect-uri-mismatch">
           Google meldet „redirect_uri_mismatch“
@@ -1743,14 +1741,11 @@
         <p class="callout callout-cozum">
           <strong>Lösung:</strong> Kopieren Sie die beiden Adressen mit der
           Kopierschaltfläche im Bereich <strong>Einstellungen → Google</strong>.
-          Fügen Sie sie in der Cloud Console in das Adressfeld des
-          Google-Zugangsschlüssels (des OAuth-Clients) ein. Schon localhost
-          statt 127.0.0.1, http statt https oder ein Schrägstrich am Ende lösen
-          den Fehler aus.
+          Fügen Sie sie in der Cloud Console beim OAuth-Client als autorisierte
+          Weiterleitungs-URIs ein. Schon localhost statt 127.0.0.1, http statt
+          https oder ein zusätzlicher Schrägstrich am Ende lösen den Fehler aus.
         </p>
-        <h2 id="google-zugriffsschlussel-fehlt">
-          „Google-Zugriffsschlüssel fehlt“
-        </h2>
+        <h2 id="google-zugangsdaten-fehlen">„Google-Zugangsdaten fehlen“</h2>
         <p class="callout callout-belirti">
           <strong>Symptom:</strong> Der Reiter Verbindungen in den
           Projekteinstellungen zeigt eine gelbe Warnung.
@@ -1762,15 +1757,19 @@
           Verschlüsselungsschlüssel kürzer als 32 Zeichen.
         </p>
         <p class="callout callout-cozum">
-          <strong>Lösung:</strong> Führen Sie Schritt 10 und 11 der Anleitung
-          zur Google-Verbindung aus. Haben Sie bei Docker
-          <code>BETTER_AUTH_SECRET</code> von Hand angegeben, verlängern Sie den
-          Wert. Lassen Sie ihn leer, erzeugt die App ihn selbst.
+          <strong>Lösung:</strong> Speichern Sie Client-ID und Clientschlüssel
+          wie unter
+          <a href="/de/dokumentation/google-verbindung/"
+            >Mit Google verbinden</a
+          >
+          beschrieben. Haben Sie bei Docker <code>BETTER_AUTH_SECRET</code> von
+          Hand gesetzt, verlängern Sie den Wert oder lassen Sie ihn leer; dann
+          erzeugt die App ihn selbst.
         </p>
         <h2 id="google-meldet-access-denied">Google meldet „access_denied“</h2>
         <p class="callout callout-belirti">
-          <strong>Symptom:</strong> Nach dem Zustimmungsbildschirm erscheint die
-          Meldung „iptal edildi“ (abgebrochen).
+          <strong>Symptom:</strong> Nach dem Zustimmungsbildschirm meldet die
+          App „Google-Anmeldung wurde abgebrochen“.
         </p>
         <p class="callout callout-sebep">
           <strong>Ursache:</strong> Das Google-Konto, mit dem Sie sich
@@ -1804,22 +1803,22 @@
           Keine Suchanfragedaten, die Diagramme sind leer
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptom:</strong> Die Karten im Panel (Übersicht) zeigen null.
+          <strong>Symptom:</strong> Die Kacheln in der Übersicht zeigen null.
           Suchleistung meldet „Noch keine Daten für diesen Zeitraum“.
         </p>
         <p class="callout callout-sebep">
-          <strong>Ursache:</strong> Es gibt drei Möglichkeiten. Die Website ist
-          neu, und Google liefert noch keine Impressionen. Oder die Search
-          Console hat drei Tage Verzögerung, und der gewählte Zeitraum ist zu
-          kurz. Oder es wurde die falsche Property gewählt.
+          <strong>Ursache:</strong> Die Website ist neu und hat noch keine
+          Impressionen, der gewählte Zeitraum ist kürzer als die rund drei Tage
+          Verzögerung der Search Console, oder die falsche Property ist
+          ausgewählt.
         </p>
         <p class="callout callout-cozum">
           <strong>Lösung:</strong> Stellen Sie den Zeitraum auf
           <strong>Letzte 3 Monate</strong>. Prüfen Sie in den
           Projekteinstellungen, ob die Property die richtige Website ist. Eine
           Domain-Property umfasst alle Subdomains, eine URL-Präfix-Property
-          nicht. Bei einer neuen Website können die Zeilen mit Suchanfragen erst
-          nach Wochen kommen. Die Seitentabelle füllt sich früher.
+          nicht. Bei einer neuen Website erscheinen Suchanfragen oft erst nach
+          Wochen; die Seitentabelle füllt sich früher.
         </p>
         <h2 id="die-tabellensumme-stimmt-nicht-mit-der-karte-uberein">
           Die Tabellensumme stimmt nicht mit der Karte überein
@@ -1834,8 +1833,8 @@
           Summe der Website.
         </p>
         <p class="callout callout-cozum">
-          <strong>Lösung:</strong> Lesen Sie die Summe von der Karte ab. Lesen
-          Sie die Tabelle Seite für Seite.
+          <strong>Lösung:</strong> Nehmen Sie die Summe von der Karte und lesen
+          Sie die Tabelle Zeile für Zeile.
         </p>
         <h2 id="das-audit-hangt-bei-in-bearbeitung">
           Das Audit hängt bei „In Bearbeitung“
@@ -1845,17 +1844,18 @@
           Fortschritt.
         </p>
         <p class="callout callout-sebep">
-          <strong>Ursache:</strong> Die App wurde möglicherweise neu gestartet,
-          oder der Vorgang ist abgebrochen.
+          <strong>Ursache:</strong> Die App wurde während des Audits neu
+          gestartet, oder der Vorgang ist abgebrochen.
         </p>
         <p class="callout callout-cozum">
           <strong>Lösung:</strong> Warten Sie. Die App prüft Audits, die länger
-          als 15 Minuten als „läuft“ erscheinen. Gibt es kein Lebenszeichen,
-          schließt sie das Audit als „Fehlgeschlagen“ ab und nennt den Grund.
-          Klicken Sie dann auf
+          als 15 Minuten als laufend gelten. Gibt es kein Lebenszeichen, beendet
+          sie das Audit als „Fehlgeschlagen“ und nennt den Grund. Klicken Sie
+          dann auf
           <strong>Erneut mit den gleichen Einstellungen ausführen</strong>.
-          Starten Sie nicht zwei Audits gleichzeitig mit
-          Geschwindigkeitsmessung, weil sie sich gegenseitig bremsen.
+          Starten Sie nicht zwei Audits mit Geschwindigkeitsmessung
+          gleichzeitig; sie teilen sich das PageSpeed-Kontingent und bremsen
+          sich gegenseitig.
         </p>
         <h2 id="das-audit-meldet-das-audit-wurde-vorzeitig-beendet">
           Das Audit meldet „Das Audit wurde vorzeitig beendet“
@@ -1867,14 +1867,13 @@
           Score“.
         </p>
         <p class="callout callout-sebep">
-          <strong>Ursache:</strong> Der Bildschirm sagt drei Dinge: was passiert
-          ist, ob der Fehler bei Ihrer Website oder bei der App liegt, und was
-          zu tun ist. Der Titel nennt die Phase, in der es endete:
-          URL-Erkennung, Crawl, Geschwindigkeitsmessung oder
-          Ergebnisaufbereitung.
+          <strong>Ursache:</strong> Der Bildschirm nennt, was passiert ist, ob
+          der Fehler bei Ihrer Website oder bei der App liegt und was zu tun
+          ist. Der Titel nennt die Phase, in der es endete: URL-Erkennung,
+          Crawl, Geschwindigkeitsmessung oder Ergebnisaufbereitung.
         </p>
         <p class="callout callout-cozum">
-          <strong>Lösung:</strong> Folgen Sie dem Satz auf dem Bildschirm.
+          <strong>Lösung:</strong> Folgen Sie dem Hinweis auf dem Bildschirm:
         </p>
         <ul>
           <li>
@@ -1897,9 +1896,9 @@
               >Beim Schreiben der Ergebnisse in die Datenbank ist ein Fehler
               aufgetreten.</strong
             >
-            Die Festplatte ist womöglich voll oder die Datendatei von einem
-            anderen Programm gesperrt. Prüfen Sie, ob auf der Festplatte Platz
-            ist, starten Sie die App neu und dann das Audit.
+            Die Festplatte ist womöglich voll, oder ein anderes Programm sperrt
+            die Datendatei. Schaffen Sie Platz, starten Sie die App neu und dann
+            das Audit.
           </li>
           <li>
             <strong
@@ -1919,9 +1918,9 @@
               >Der Installationsschlüssel hat den Teil, der Prüfungen ausführt,
               nicht erreicht.</strong
             >
-            Ihre gespeicherten Google- und PageSpeed-Schlüssel wurden nicht
-            gelöscht. Aktualisieren Sie die App oder starten Sie sie neu, dann
-            das Audit neu.
+            Ihre gespeicherten Google- und PageSpeed-Schlüssel bleiben erhalten.
+            Aktualisieren oder starten Sie die App neu und starten Sie dann das
+            Audit erneut.
           </li>
           <li>
             <strong>Ein unerwarteter Fehler.</strong> Starten Sie das Audit neu.
@@ -1931,21 +1930,20 @@
           </li>
         </ul>
         <p>
-          Der rohe Fehlertext gelangt nicht auf den Bildschirm. Er bleibt im
+          Den technischen Fehlertext zeigt die App nicht an; er steht im
           Diagnosepaket.
         </p>
         <h2 id="das-audit-meldet-vorlaufiger-score">
           Das Audit meldet „Vorläufiger Score“
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptom:</strong> Neben der Punktzahl steht kein
-          Bewertungswort. Eine Zeile wie „Vorläufiger Score — Messabdeckung 62
-          %“ ist da.
+          <strong>Symptom:</strong> Neben der Punktzahl steht keine Bewertung,
+          sondern eine Zeile wie „Vorläufiger Score — Messabdeckung 62 %“.
         </p>
         <p class="callout callout-sebep">
           <strong>Ursache:</strong> Ein großer Teil der Prüfungen konnte nicht
           gemessen werden (der Anteil gemessener Prüfungen liegt unter 70
-          Prozent, oder in Crawling, Indizierung, Inhalt oder Geschwindigkeit
+          Prozent, oder in Crawling, Indexierung, Inhalt oder Geschwindigkeit
           wurde weniger als die Hälfte gemessen). Die Zeilen unter der Karte
           nennen die Gründe: Das PageSpeed-Kontingent war aufgebraucht, es gibt
           keinen PageSpeed-Schlüssel, die Geschwindigkeitsmessung war aus oder
@@ -1954,16 +1952,15 @@
         <p class="callout callout-cozum">
           <strong>Lösung:</strong> Schalten Sie die Geschwindigkeitsmessung ein,
           tragen Sie einen PageSpeed-Schlüssel ein oder verbinden Sie die Search
-          Console, und führen Sie das Audit erneut aus. Die Punktzahl bezieht
-          sich auf das Gemessene. Über den Rest wurde weder gut noch schlecht
-          entschieden.
+          Console, und führen Sie das Audit erneut aus. Die Punktzahl bewertet
+          nur das Gemessene; über den Rest sagt sie nichts aus.
         </p>
         <h2 id="das-audit-meldet-unvollstandiges-audit-kein-score">
           Das Audit meldet „Unvollständiges Audit — kein Score“
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptom:</strong> Dieser Satz steht dort, wo die
-          Punktzahlkarte wäre. Die Befunde werden darunter trotzdem gezeigt.
+          <strong>Symptom:</strong> Dieser Satz steht anstelle der
+          Punktzahlkarte. Die Befunde erscheinen trotzdem darunter.
         </p>
         <p class="callout callout-sebep">
           <strong>Ursache:</strong> Das Audit wurde mit einem Fehler beendet,
@@ -1990,9 +1987,10 @@
           Geschwindigkeit hat höchstens 50 Seiten.
         </p>
         <p class="callout callout-sebep">
-          <strong>Ursache:</strong> Der Teil, der Prüfungen ausführt, hat den
-          Installationsschlüssel, der den gespeicherten Schlüssel öffnet, nicht
-          erhalten, die Geschwindigkeitsmessung lief deshalb ohne ihn. Die
+          <strong>Ursache:</strong> Der Teil der App, der Audits ausführt, hat
+          den Installationsschlüssel nicht erhalten, mit dem er den
+          gespeicherten PageSpeed-Schlüssel entschlüsselt. Die
+          Geschwindigkeitsmessung lief deshalb ohne Schlüssel. Die
           Crawl-Ergebnisse sind nicht betroffen.
         </p>
         <p class="callout callout-cozum">
@@ -2000,13 +1998,13 @@
           sie neu und starten Sie ein neues Audit. Hält es an, speichern Sie den
           PageSpeed-Schlüssel unter <strong>Einstellungen</strong> neu.
         </p>
-        <h2 id="das-audit-meldet-engellendik-wir-wurden-blockiert">
-          Das Audit meldet „Engellendik“ (Wir wurden blockiert)
+        <h2 id="die-website-blockiert-das-audit">
+          Die Website blockiert das Audit
         </h2>
         <p class="callout callout-belirti">
           <strong>Symptom:</strong> Es erscheint eine gelbe Warnung: „Das Audit
-          konnte diese Website nicht vollständig crawlen.“ oder „N sayfada
-          engellendik.“ (Auf N Seiten wurden wir blockiert.)
+          konnte diese Website nicht vollständig crawlen.“ oder „Wir wurden auf
+          N Seiten blockiert.“
         </p>
         <p class="callout callout-sebep">
           <strong>Ursache:</strong> Der Bot-Schutz der Website (Cloudflare oder
@@ -2014,50 +2012,52 @@
         </p>
         <p class="callout callout-cozum">
           <strong>Lösung:</strong> Erlauben Sie in der Firewall den User-Agent
-          namens <code>seotracker-audit</code> oder setzen Sie die
-          Netzwerkadresse (IP) Ihres Computers auf die Liste der erlaubten
-          Adressen. Gehört die Website nicht Ihnen, können Sie nichts tun. Die
-          Ergebnisse bleiben auf die Seiten beschränkt, die gecrawlt werden
-          konnten.
+          <code>seotracker-audit</code> oder setzen Sie die IP-Adresse Ihres
+          Computers auf die Liste erlaubter Adressen. Gehört die Website nicht
+          Ihnen, lässt sich das nicht ändern. Die Ergebnisse bleiben auf die
+          Seiten beschränkt, die gecrawlt werden konnten.
         </p>
         <h2 id="die-geschwindigkeitsmessung-ist-unvollstandig-oder-fehlt-ganz">
           Die Geschwindigkeitsmessung ist unvollständig oder fehlt ganz
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptom:</strong> Der Reiter Hız (Geschwindigkeit) ist leer
-          oder hat nur wenige Zeilen. Die Kontingentkarte meldet „Kontingent
-          aufgebraucht“, „Dakikalık sınır“ (Minutengrenze) oder „Anahtar yok“
-          (Kein Schlüssel).
+          <strong>Symptom:</strong> Der Reiter
+          <strong>Geschwindigkeit</strong> ist leer oder hat nur wenige Zeilen.
+          Die Kontingentkarte meldet „Kontingent aufgebraucht“, ein Minutenlimit
+          oder einen fehlenden Schlüssel.
         </p>
         <p class="callout callout-sebep">
-          <strong>Ursache:</strong> Es gibt keinen PageSpeed-Schlüssel (es
-          werden höchstens 50 Seiten gemessen). Oder Googles Tageskontingent ist
-          aufgebraucht.
+          <strong>Ursache:</strong> Es ist kein PageSpeed-Schlüssel gespeichert,
+          dann misst die App höchstens 50 Seiten. Oder Googles Tageskontingent
+          ist aufgebraucht.
         </p>
         <p class="callout callout-cozum">
-          <strong>Lösung:</strong> Holen Sie sich nach der Anleitung zum
-          PageSpeed-Schlüssel einen kostenlosen Schlüssel. Ist das
-          Tageskontingent aufgebraucht, können Sie die Messung morgen in einem
-          neuen Audit vervollständigen. War die Geschwindigkeitsmessung beim
-          Start des Audits ausgeschaltet, wird sie für dieses Audit nicht
-          nachgeholt.
+          <strong>Lösung:</strong> Legen Sie einen kostenlosen
+          <a href="/de/dokumentation/pagespeed-schluessel/"
+            >PageSpeed-Schlüssel</a
+          >
+          an. Ist das Tageskontingent aufgebraucht, starten Sie am nächsten Tag
+          ein neues Audit. War die Geschwindigkeitsmessung beim Start des Audits
+          ausgeschaltet, wird sie für dieses Audit nicht nachgeholt.
         </p>
         <h2 id="url-prufung-tagesgrenze-erreicht">
           URL-Prüfung: „Tagesgrenze erreicht“
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptom:</strong> Im Reiter Indexstatus funktioniert die
-          Schaltfläche nicht. Es steht „Google'ın günlük 2.000 adres sınırına
-          ulaşıldı“ (Googles Tagesgrenze von 2.000 Adressen ist erreicht).
+          <strong>Symptom:</strong> Im Reiter
+          <strong>Indexstatus</strong> reagiert die Schaltfläche nicht, und es
+          erscheint „Googles Tagesgrenze von 2.000 Adressen ist erreicht“.
         </p>
         <p class="callout callout-sebep">
-          <strong>Ursache:</strong> Pro Property gibt es 2.000 Fragen am Tag.
-          Die App, Ihr Assistent und die Abfragen, die Sie in der Search Console
-          von Hand stellen, verbrauchen aus demselben Vorrat.
+          <strong>Ursache:</strong> Google erlaubt 2.000 Abfragen pro Property
+          und Tag. Die App, Ihr KI-Agent und Ihre manuellen Abfragen in der
+          Search Console verbrauchen denselben Vorrat.
         </p>
         <p class="callout callout-cozum">
-          <strong>Lösung:</strong> Machen Sie morgen weiter. Die App fragt nur
-          veraltete Antworten neu ab, es wird also kein Kontingent verschwendet.
+          <strong>Lösung:</strong> Die Grenze gilt für die letzten 24 Stunden;
+          das Kontingent wird innerhalb weniger Stunden schrittweise wieder
+          frei. Machen Sie dann weiter. Die App fragt nur veraltete Antworten
+          neu ab.
         </p>
         <h2 id="die-analytics-karte-oder-der-bericht-zeigt-einen-fehler">
           Die Analytics-Karte oder der Bericht zeigt einen Fehler
@@ -2069,8 +2069,7 @@
           <strong>Erneut versuchen</strong>.
         </p>
         <p class="callout callout-sebep">
-          <strong>Ursache:</strong> Der Satz nennt Ursache und Lösung. Die
-          wichtigsten Fälle sind:
+          <strong>Ursache:</strong> Die Meldung nennt den konkreten Fall:
         </p>
         <ul>
           <li>
@@ -2127,18 +2126,18 @@
           </li>
         </ul>
         <p class="callout callout-cozum">
-          <strong>Lösung:</strong> Tun Sie, was der Satz nennt. Meist führt
+          <strong>Lösung:</strong> Folgen Sie der Meldung. Meist führt
           <strong>Verbindung reparieren</strong> zur richtigen Einstellung.
         </p>
         <h2 id="eine-anfrage-an-die-search-console-zeigt-einen-fehler">
           Eine Anfrage an die Search Console zeigt einen Fehler
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptom:</strong> Suchleistung, Gelegenheiten oder
-          Rangverfolgung zeigen statt Daten einen Fehler der Search Console.
+          <strong>Symptom:</strong> Suchleistung, Chancen oder
+          Ranking-Verfolgung zeigen statt Daten einen Fehler der Search Console.
         </p>
         <p class="callout callout-sebep">
-          <strong>Ursache:</strong> Der Fehlersatz nennt die Ursache.
+          <strong>Ursache:</strong> Die Meldung nennt den konkreten Fall:
         </p>
         <ul>
           <li>
@@ -2158,8 +2157,8 @@
           </li>
           <li>
             <strong>Die Property wurde nicht gefunden (HTTP 404).</strong> Sie
-            wurde womöglich aus der Search Console entfernt. Wählen Sie sie
-            unter <strong>Einstellungen</strong> neu.
+            wurde womöglich aus der Search Console entfernt. Wählen Sie unter
+            <strong>Einstellungen</strong> eine vorhandene Property.
           </li>
           <li>
             <strong>Das Anfragelimit ist aufgebraucht (HTTP 429).</strong>
@@ -2175,22 +2174,22 @@
             Googles Statusseite nach.
           </li>
           <li>
-            <strong>Google ist nicht erreichbar.</strong> Der Satz nennt in der
-            Zeile „Grund“ ein Detail. Hält es an, prüfen Sie die
+            <strong>Google ist nicht erreichbar.</strong> Die Zeile „Grund“
+            nennt Einzelheiten. Hält der Fehler an, prüfen Sie die
             Internetverbindung dieses Computers.
           </li>
         </ul>
         <p class="callout callout-cozum">
-          <strong>Lösung:</strong> Tun Sie, was der Satz nennt. Bei Konto- und
-          Property-Problemen genügt meist die Erneuerung der Verbindung unter
-          <strong>Einstellungen</strong>.
+          <strong>Lösung:</strong> Folgen Sie der Meldung. Bei Konto- und
+          Property-Problemen genügt meist, die Verbindung unter
+          <strong>Einstellungen</strong> zu erneuern.
         </p>
         <h2 id="in-analytics-erscheint-localhost-traffic">
           In Analytics erscheint Localhost-Traffic
         </h2>
         <p class="callout callout-belirti">
           <strong>Symptom:</strong> In der Tabelle der Einstiegsseiten steht in
-          der Spalte Alan adı (Domain) localhost oder 127.0.0.1.
+          der Spalte <strong>Domain</strong> localhost oder 127.0.0.1.
         </p>
         <p class="callout callout-sebep">
           <strong>Ursache:</strong> Auch die Testkopie Ihrer Website lädt
@@ -2198,35 +2197,89 @@
         </p>
         <p class="callout callout-cozum">
           <strong>Lösung:</strong> Stellen Sie das Tag so ein, dass es nur auf
-          der echten Domain geladen wird. In den meisten Werkzeugen gibt es
-          dafür die Option „Domainprüfung“. Die App filtert diese Zeilen nicht
-          von selbst heraus. Bis dahin beachten Sie in der Tabelle die Spalte
-          Alan adı.
+          der echten Domain geladen wird. Die App filtert diese Zeilen nicht
+          selbst heraus; bis dahin achten Sie auf die Spalte
+          <strong>Domain</strong>.
         </p>
-        <h2 id="der-assistent-kann-sich-nicht-verbinden-401">
-          Der Assistent kann sich nicht verbinden (401)
+        <h2 id="der-agent-kann-sich-nicht-verbinden-401">
+          Der Agent kann sich nicht verbinden (401)
         </h2>
         <p class="callout callout-belirti">
           <strong>Symptom:</strong> Claude Code oder Codex meldet
           „Unauthorized“.
         </p>
         <p class="callout callout-sebep">
-          <strong>Ursache:</strong> Das Passwort wird nicht gesendet oder ist
-          falsch.
+          <strong>Ursache:</strong> Der Agent sendet das MCP-Token nicht oder
+          ein falsches.
         </p>
         <p class="callout callout-cozum">
-          <strong>Lösung:</strong> Kopieren Sie das Passwort erneut. Unter
-          Windows steht es in der Datei <code>mcp-token</code> im Datenordner.
-          Geben Sie bei Docker
-          <code
-            >docker compose exec -T seotracker cat
-            /app/.wrangler/mcp-token</code
-          >
-          ein. Entfernen Sie den Zeilenumbruch am Ende des Wertes. Möchten Sie
-          kein Terminal benutzen, öffnen Sie die Datei mit dem Editor (Notepad),
-          markieren die ganze Zeile und kopieren sie. Achten Sie darauf, dass
-          kein Zeilenumbruch mitkopiert wird. Geben Sie in Claude Code
-          <code>/mcp</code> ein und wählen Sie <strong>Reconnect</strong>.
+          <strong>Lösung:</strong> Am einfachsten ist
+          <strong>Einrichtungsbefehl kopieren</strong> auf dem Bildschirm
+          <strong>Agent-Einrichtung</strong>: Der Befehl erkennt die
+          Installationsart und trägt das Token ein, ohne es anzuzeigen. Richten
+          Sie den Agenten von Hand ein, lesen Sie das Token erneut aus und fügen
+          Sie es nie in einen Chat oder Screenshot ein.
+        </p>
+        <ul>
+          <li>
+            <strong>Windows-Paket:</strong> Das Token steht in
+            <code>%LOCALAPPDATA%\seowatcher\mcp-token</code> (Menü:
+            <strong>Veri klasörünü aç</strong>, Datenordner öffnen). Ohne es
+            anzuzeigen, kopiert es dieser PowerShell-Befehl in die
+            Zwischenablage:
+            <code
+              >(Get-Content
+              &quot;$env:LOCALAPPDATA\seowatcher\mcp-token&quot;).Trim() |
+              Set-Clipboard</code
+            >. Leeren Sie die Zwischenablage nach dem Einfügen (Win+V, Alle
+            löschen).
+          </li>
+          <li>
+            <strong>Docker:</strong> Das Token liegt im Container:
+            <code
+              >docker compose exec -T seotracker cat
+              /app/.wrangler/mcp-token</code
+            >. In Git Bash setzen Sie <code>MSYS_NO_PATHCONV=1</code> davor,
+            sonst bleibt die Ausgabe leer. Lassen Sie den Zeilenumbruch am Ende
+            weg. Ein eigenes Token setzen Sie mit <code>MCP_TOKEN</code> in der
+            <code>.env</code>; danach ist
+            <code>docker compose up -d --force-recreate seotracker</code> nötig.
+          </li>
+        </ul>
+        <p>
+          Geben Sie danach in Claude Code <code>/mcp</code> ein und wählen Sie
+          <strong>Reconnect</strong>.
+        </p>
+        <h2 id="eine-geanderte-einstellung-wird-nicht-ubernommen">
+          Eine geänderte Einstellung wird nicht übernommen
+        </h2>
+        <p class="callout callout-belirti">
+          <strong>Symptom:</strong> Eine neue Portnummer, ein
+          <code>.env</code>-Wert oder ein Token kommt in der App nicht an.
+        </p>
+        <p class="callout callout-sebep">
+          <strong>Ursache:</strong> Was Sie auf dem Bildschirm
+          <strong>Einstellungen</strong> eingeben (Google, Dienstkonto,
+          PageSpeed-Schlüssel, Sprache), gilt sofort. Einstellungen in Dateien
+          liest die App erst beim nächsten Start, und die beiden
+          Installationsarten nutzen dafür verschiedene Dateien.
+        </p>
+        <p>
+          <strong>Lösung (Windows-Paket):</strong> Es gibt keine
+          <code>.env</code> und keine Umgebungsvariablen. Von Hand bearbeiten
+          Sie nur <code>config.json</code> im Datenordner:
+          <code>&quot;port&quot;</code> und <code>&quot;autoUpdate&quot;</code>.
+          Wählen Sie danach im Menü <strong>Yeniden başlat</strong> (Neu
+          starten). Die Datei <code>server.env</code> daneben bearbeiten Sie
+          nicht; der Starter schreibt sie bei jedem Start neu.
+        </p>
+        <p>
+          <strong>Lösung (Docker):</strong> Die Variablen stehen in der
+          <code>.env</code> im Projektordner (Liste:
+          <code>docs/ENVIRONMENT.md</code>). Erstellen Sie den Container danach
+          neu: <code>docker compose up -d --force-recreate seotracker</code>.
+          Ein einfaches <code>docker compose restart seotracker</code> startet
+          nur neu und übernimmt keine <code>.env</code>-Änderung.
         </p>
         <h2
           id="docker-braucht-beim-ersten-start-sehr-lange-oder-meldet-unhealthy"
@@ -2238,9 +2291,9 @@
           nach fünf Minuten nicht healthy.
         </p>
         <p class="callout callout-sebep">
-          <strong>Ursache:</strong> Beim ersten Start wird die App im Container
-          gebaut und braucht etwa 2 GB Arbeitsspeicher. Reicht der
-          Arbeitsspeicher nicht, bricht der Bau ab.
+          <strong>Ursache:</strong> Beim ersten Start baut Docker die App im
+          Container und braucht dafür etwa 2 GB Arbeitsspeicher. Reicht er
+          nicht, bricht der Bau ab.
         </p>
         <p class="callout callout-cozum">
           <strong>Lösung:</strong> Geben Sie
@@ -2257,19 +2310,18 @@
           <code>%LOCALAPPDATA%\seowatcher</code>: <code>data</code> (Datenbank),
           <code>logs\launcher.log</code>, <code>logs\server.log</code>,
           <code>logs\migrate.log</code>, <code>instance-secret</code>,
-          <code>mcp-token</code>, <code>config.json</code>. Wird eine
-          Protokolldatei zu groß (<code>server.log</code> 5 MB, die übrigen 1
-          MB), bleibt die alte Datei unter einem Namen wie
-          <code>server.old.log</code> daneben liegen, und eine neue beginnt von
-          vorn. Im Ordner <code>logs\wrangler</code> liegen die ausführlichen
-          Protokolle des Programmkerns; Dateien, die älter als 30 Tage sind,
-          werden automatisch gelöscht.
-          <strong>Günlükleri aç</strong> (Protokolle öffnen) und
-          <strong>Veri klasörünü aç</strong> (Datenordner öffnen) im Menü der
-          Taskleiste führen dorthin.
+          <code>mcp-token</code>, <code>config.json</code>. Erreicht eine
+          Protokolldatei ihre Größengrenze (<code>server.log</code> 5 MB, die
+          übrigen 1 MB), wird sie zu einem Namen wie
+          <code>server.old.log</code> umbenannt, und eine neue Datei beginnt. Im
+          Ordner <code>logs\wrangler</code> liegen die ausführlichen Protokolle
+          des Programmkerns; Dateien, die älter als 30 Tage sind, werden
+          automatisch gelöscht. <strong>Günlükleri aç</strong> (Protokolle
+          öffnen) und <strong>Veri klasörünü aç</strong> (Datenordner öffnen) im
+          Menü der Taskleiste führen dorthin.
         </p>
         <p>
-          Bei Docker liegen die Daten im Datenspeicher
+          Bei Docker liegen die Daten im Volume
           <code>seotracker_data</code> (<code>/app/.wrangler</code>). Die
           Protokolle sehen Sie mit dem Befehl
           <code>docker compose logs -f</code>.
@@ -2292,8 +2344,8 @@
           Bereich meldet, die Windows-Einstellungen seien nicht erreichbar.
         </p>
         <p class="callout callout-sebep">
-          <strong>Ursache:</strong> Dieser Bereich spricht mit der App in der
-          Taskleiste. Der Fehlersatz nennt, welcher dieser Fälle es ist.
+          <strong>Ursache:</strong> Dieser Bereich spricht mit der Tray-App. Die
+          Meldung nennt den konkreten Fall:
         </p>
         <ul>
           <li>
@@ -2337,14 +2389,13 @@
           </li>
         </ul>
         <p class="callout callout-cozum">
-          <strong>Lösung:</strong> Tun Sie, was der Satz nennt. Diese Optionen
-          gibt es nur im Windows-Paket. Bei Docker steuern Sie das
-          Startverhalten über Ihr Betriebssystem.
+          <strong>Lösung:</strong> Folgen Sie der Meldung. Diese Optionen gibt
+          es nur im Windows-Paket. Bei Docker steuern Sie das Startverhalten
+          über Ihr Betriebssystem.
         </p>
         <h2 id="warnungen-des-starters">Warnungen des Starters</h2>
         <p>
-          Warnungen, die am Symbol in der Taskleiste erscheinen, und was Sie
-          tun:
+          Diese Warnungen erscheinen am seowatcher-Symbol in der Taskleiste:
         </p>
         <ul>
           <li>
@@ -2375,10 +2426,10 @@
           </li>
           <li>
             <strong>„Kurulum eksik“ (Installation unvollständig).</strong>
-            <strong>Kurulumu onar</strong> legt fehlende Dateien zurück, indem
-            es die Installationsdatei herunterlädt. Ohne Internetverbindung
-            öffnet sich die Versionsseite; laden Sie die Installationsdatei
-            herunter und führen Sie sie aus.
+            <strong>Kurulumu onar</strong> (Installation reparieren) lädt die
+            Installationsdatei herunter und ersetzt fehlende Dateien. Ohne
+            Internetverbindung öffnet sich die Versionsseite; laden Sie die
+            Installationsdatei herunter und führen Sie sie aus.
           </li>
           <li>
             <strong
@@ -2412,7 +2463,7 @@
             >
             Das Installationsfenster wurde geschlossen, oder die
             Administratorerlaubnis wurde nicht erteilt. Versuchen Sie es im Menü
-            mit <strong>Güncelle</strong> noch einmal.
+            mit <strong>Güncelle</strong> (Aktualisieren) noch einmal.
           </li>
           <li>
             <strong
@@ -2427,7 +2478,7 @@
             class="pager-prev"
             rel="prev"
             href="/de/dokumentation/assistent-einrichten/"
-            ><span>Zurück</span><strong>Assistent einrichten</strong></a
+            ><span>Zurück</span><strong>Agent einrichten</strong></a
           ><a
             class="pager-next"
             rel="next"
@@ -2484,8 +2535,8 @@
             >
           </li>
           <li>
-            <a href="#google-zugriffsschlussel-fehlt"
-              >„Google-Zugriffsschlüssel fehlt“</a
+            <a href="#google-zugangsdaten-fehlen"
+              >„Google-Zugangsdaten fehlen“</a
             >
           </li>
           <li>
@@ -2536,8 +2587,8 @@
             >
           </li>
           <li>
-            <a href="#das-audit-meldet-engellendik-wir-wurden-blockiert"
-              >Das Audit meldet „Engellendik“ (Wir wurden blockiert)</a
+            <a href="#die-website-blockiert-das-audit"
+              >Die Website blockiert das Audit</a
             >
           </li>
           <li>
@@ -2567,8 +2618,13 @@
             >
           </li>
           <li>
-            <a href="#der-assistent-kann-sich-nicht-verbinden-401"
-              >Der Assistent kann sich nicht verbinden (401)</a
+            <a href="#der-agent-kann-sich-nicht-verbinden-401"
+              >Der Agent kann sich nicht verbinden (401)</a
+            >
+          </li>
+          <li>
+            <a href="#eine-geanderte-einstellung-wird-nicht-ubernommen"
+              >Eine geänderte Einstellung wird nicht übernommen</a
             >
           </li>
           <li>
@@ -2595,7 +2651,7 @@
     <footer>
       <div class="wrap">
         <p class="star">
-          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          Ein Stern hilft anderen, das Werkzeug zu finden.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

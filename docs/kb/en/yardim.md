@@ -1,61 +1,63 @@
 ---
 title: Help
-description: The setup status card, quick actions, common problems and the diagnostics package you send when you report a problem.
+description: Check the installation's health, find fixes for common problems and download the diagnostics bundle to attach when you report an issue.
 screen: Yardım
 route: /support
 updated: 2026-10-27
 ---
 
-This is the first place to look when something goes wrong. The screen checks your setup, tells you what is missing and takes you to the right setting.
+Open **Help** first when something does not work. It checks the installation, says what is missing and links to the setting that fixes it. It checks the setup only: for problems on your site use [Site audit](/docs/site-denetimi/), and for Google's view of your pages use [Index status](/docs/dizin-durumu/).
 
-The app's interface comes in six languages: Turkish, English, German, French, Italian and Portuguese. This guide uses the English names; to switch, go to **Settings → Appearance → Language**.
+The interface is available in Turkish, English, German, French, Italian and Portuguese; change it under **Settings → Appearance**. The Windows tray menu is in Turkish only, so this guide gives its items in Turkish with the English meaning in brackets.
 
-## What is on the screen
+## Quick actions
 
-**Quick actions**. The buttons at the top:
+- **Check status again** reruns the checks on the card below.
+- **Download diagnostics bundle** downloads a file to attach to a problem report (see below).
+- **Open the guide** opens this documentation on seowatcher.io.
+- **seowatcher.io** opens the website, where the download page lives.
+- **Release notes** opens the release notes screen (`/release-notes`).
+- **Agent setup** opens the assistant connection screen.
 
-- **Check status again**: refreshes the card below.
-- **Download diagnostics bundle**: downloads the file you send when you report a problem. It contains no secret values.
-- **Open the guide**: opens the guide on seowatcher.io.
-- **seowatcher.io**: opens the app's website, where the download page and the guide live.
-- **Release notes**: opens the dedicated Release notes screen (`/release-notes`).
-- **Agent setup**: goes to the assistant connection screen.
+## App health
 
-**App health.** This card checks this installation’s access, Google connection settings, PageSpeed key, runtime and database. A successful setup check does not prove that your site is healthy or that Google data is current. Unread settings are not treated as successful checks. Read the warning and use **Check status again**. The version and last-check time identify the result. **Copy summary** copies this status as text. Manage project connections with **Open connections**.
+The **App health** card checks five things: **Sign-in and access**, **Google sign-in**, **PageSpeed key**, **Runtime** and **Database**. A row that needs attention has a button to the right setting. Make the change, return and select **Check status again**. A row that could not be read is never shown as passing.
 
-**Port number warning.** If the Windows package opens on another port because a different program holds 3001 (for example an old Docker copy using 3001), a yellow strip appears at the top of every screen in the app: "seowatcher is running on 3002 this time because another program is using 3001 (for example an old Docker copy). Google sign-in is set up for 3001; close that program and restart seowatcher." The strip is there in case you missed the notification in the taskbar. Google sign-in goes back to address 3001 and fails if you opened the app on 3002. The close button on the right of the strip hides it for this tab. The same sentence is also written in the **App health** card. To fix it, close the program that holds 3001, then choose **Yeniden başlat** (Restart) in the tray menu. The app goes back to 3001 and the strip disappears. If no other program is using it, the app goes back to 3001 on the next start anyway.
+A passing card means the installation is set up. It does not mean your site is healthy or that Google data is current. The card shows the version and when it was checked. **Copy summary** copies the result as text.
 
-**Projects**. The status of each project's Search Console and Analytics connection. The **Open connections** button takes you to the project settings.
+**Google sign-in** stays yellow until a Google credential is saved; see [Connecting to Google](/docs/google-baglantisi/). **Sign-in and access** reports a single-user install without a password; that is expected, because the app opens only on your own computer. If you expose it to a network, put your own password-protected sign-in in front of it.
 
-**Common problems**. Six collapsible items: the page won't open or the app isn't running, the port is in use, my agent can't connect (401), speed measurement stops partway (429), no query data, and I changed a setting and the app doesn't see it. Each gives what to do and a link to the matching setting.
+## Port warning
 
-**Google and system limits**. With **Show limits** you see the current state of Google's daily limits.
+If another program, often an old Docker copy, holds port 3001, the Windows package starts on a free port such as 3002 for that session. A yellow bar then appears at the top of every screen: "seowatcher is running on 3002 this time because another program is using 3001 (for example an old Docker copy). Google sign-in is set up for 3001; close that program and restart seowatcher." The **App health** card repeats it.
 
-**Bottom list.** Shortcuts to the log files and to the health address (`/api/health`). In the Windows package, logs open with **Open logs** in the taskbar menu. In Docker, use the command given by **Copy command**.
+Google sign-in returns to port 3001, so it fails while the app runs on 3002. Close the program that holds 3001, then choose **Yeniden başlat** (Restart) in the tray menu. The app returns to 3001 and the bar disappears. Closing the bar only hides it in that tab.
 
-## How to use it
+## Projects and limits
 
-1. If something does not work, open this screen first and read the warning on the card.
-2. Press the button next to the warning. It takes you to the right setting. Make the change, come back and click **Check status again**.
-3. If setup checks pass but the problem continues, check **Common problems** and the relevant project screen.
-4. If it is still not solved, click **Download diagnostics bundle** and attach the file to the issue on GitHub. In the Windows package, **Sorunu bildir (GitHub)** (Report a problem (GitHub)) in the taskbar menu does the same in one click.
+**Projects** lists each project's Search Console and Analytics connection. **Open connections** goes to that project's settings. **Show limits** under **Google and system limits** shows the current state of Google's quotas.
 
-## Frequently asked questions
+## Common problems
 
-**Why is the "Google sign-in" row yellow?** No Google access key has been entered yet. The row stays yellow until Google is connected. Follow the guide for connecting to Google.
+Six expandable answers cover the most frequent issues, each with the steps and a link to the right setting:
 
-**The "Sign-in and access" row says it is a single-user setup without a password.** This is expected. The app opens only from your own computer. To open it to the outside, put your own password-protected sign-in in front of it.
+- The page won't open, or the app isn't running
+- The port is in use
+- My agent can't connect (401)
+- Speed measurement stops partway (429)
+- No query data, empty charts
+- I changed a setting and the app doesn't see it
 
-**What is in the diagnostics package?** The version, setup checks, table counts and phase and error summaries for the latest 25 audits. PageSpeed errors are summarized without page URLs. Secrets and passwords are excluded; project names, domains and Google property IDs may be included. Review the files before sending them.
+Longer explanations are in [Troubleshooting](/docs/sorun-giderme/).
 
-## Limits
+At the bottom, shortcuts lead to the log files and the health address (`/api/health`). In the Windows package, **Günlükleri aç** (Open logs) in the tray menu opens the logs; on Docker, **Copy command** gives the log command.
 
-The screen checks only the setup itself. To find a problem on your site, use Site denetimi (Site audit). To see a problem on Google's side, use the Dizin durumu (Index status) screen.
+## Report a problem
 
-## Which screen should I use?
+If the problem remains, select **Download diagnostics bundle** and attach the file to a GitHub issue. In the Windows package, **Sorunu bildir (GitHub)** (Report a problem on GitHub) in the tray menu prepares the issue in one step.
 
-[Dashboard](/docs/panel/) summarizes the selected project’s setup and data. [Opportunities](/docs/firsatlar/) helps you choose work from Search Console data. [Rank tracking](/docs/siralama-takibi/) follows saved keywords’ average positions in Google data; it is not a live search result. If data is missing, check project connections, the date range and the coverage warning on that screen. Help’s setup result does not validate those reports.
+The bundle contains the version, setup checks, table row counts, the connected Google properties, and phase and error summaries for the last 25 audits. PageSpeed errors are included without page URLs. It contains no secrets: no Google tokens or keys, no PageSpeed key, no agent token and no session cookies. It does include project names, domains and Google property IDs, because problems cannot be diagnosed without them. Read the files before you send them.
 
-On sites with little search traffic, Google hides some queries. The query list can be empty or show fewer clicks than the page totals; this alone does not mean the connection is broken.
+## Empty or thin search data
 
-<!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/quotas/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->
+On a site with little search traffic, Google hides many queries. The query list can be empty or show fewer clicks than the page totals; that alone does not mean the connection is broken. If data is missing, check the project's connections, the date range and the coverage note on that screen. A passing **App health** card does not validate those reports.

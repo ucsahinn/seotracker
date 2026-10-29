@@ -104,7 +104,7 @@
       property="og:image:alt"
       content="seowatcher tanıtım kartı: Search Console, Analytics 4 ve site denetimi verilerini gösteren uygulama paneli ve Windows için indirme düğmesi"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/kilavuz/kurulum-windows/"
@@ -166,7 +166,7 @@
             "url": "https://seowatcher.io/kilavuz/kurulum-windows/",
             "inLanguage": "tr",
             "datePublished": "2026-10-22",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Başlangıç",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -201,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1494,7 +1494,7 @@
             <li><a href="/kilavuz/firsatlar/">Fırsatlar</a></li>
             <li><a href="/kilavuz/kayitli-kelimeler/">Kayıtlı kelimeler</a></li>
             <li>
-              <a href="/kilavuz/analitik/">Analitik verilerini yorumlama</a>
+              <a href="/kilavuz/analitik/">Analytics verisini yorumlama</a>
             </li>
             <li><a href="/kilavuz/site-denetimi/">Site denetimi</a></li>
             <li><a href="/kilavuz/dizin-durumu/">Dizin durumu</a></li>
@@ -1520,9 +1520,11 @@
           aynı sayfada.
         </p>
         <p>
-          Bu sayfayı bitirince uygulama bilgisayarınızda kurulu ve tarayıcıda
-          açık olur. Kurulum iki dakika sürer. Yalnızca sizin kullanıcı
-          hesabınıza kurulur, yönetici izni gerekmez.
+          Kurulum yaklaşık iki dakika sürer. Sonunda uygulama bilgisayarınızda
+          kurulu ve tarayıcıda açık olur. Varsayılan olarak yalnızca sizin
+          kullanıcı hesabınıza,
+          <code>%LOCALAPPDATA%\Programs\seowatcher</code> klasörüne kurulur ve
+          yönetici izni istemez.
         </p>
         <h2 id="gerekenler">Gerekenler</h2>
         <ul>
@@ -1534,8 +1536,7 @@
           <li>Docker, Node ya da terminal (komut penceresi) gerekmez.</li>
           <li>
             Microsoft'un Visual C++ paketi. Bilgisayarda yoksa kurulum onu
-            kendisi kurar ve bir kez yönetici izni sorar. Uygulama
-            <code>%LOCALAPPDATA%\Programs\seowatcher</code> klasörüne kurulur.
+            kendisi kurar ve bir kez yönetici izni sorar.
           </li>
         </ul>
         <h2 id="adimlar">Adımlar</h2>
@@ -1563,8 +1564,7 @@
           <li>Hoş geldiniz sayfasında <strong>Sonraki</strong> deyin.</li>
           <li>
             &quot;Kim için kurulsun&quot; sorusunda
-            <strong>Yalnızca ben</strong> seçeneğini seçin. Önerilen budur ve
-            yalnızca sizin hesabınıza kurar.
+            <strong>Yalnızca ben</strong> seçeneğini seçin. Önerilen budur.
             <strong>Tüm kullanıcılar</strong> seçeneği yönetici izni ister.
           </li>
           <li>
@@ -1594,13 +1594,16 @@
             (port).
           </li>
         </ol>
-        <p>Sonraki adım: Google'a bağlanma kılavuzu.</p>
+        <p>
+          Sonraki adım:
+          <a href="/kilavuz/google-baglantisi/">Google'a bağlanma</a>.
+        </p>
         <h3 id="gorev-cubugu-menusu">Görev çubuğu menüsü</h3>
         <p>
-          Simgeye sağ tıklayın. Simge görünmüyorsa görev çubuğundaki ^ okuna
-          tıklayın. Menü dört bölümdür. En üstte uygulamayı açma ve durum
-          satırı, sonra güncelleme ile yeniden başlatma, sonra iki ayar, en
-          altta sorun giderme maddeleri durur.
+          Görev çubuğundaki seowatcher simgesine sağ tıklayın; simge
+          görünmüyorsa önce ^ okuna tıklayın. Uygulamanın ekranları bu menüye
+          &quot;tepsi menüsü&quot; der. Menü dört bölümdür: uygulamayı açma ve
+          durum satırı, güncelleme ve yeniden başlatma, ayarlar, sorun giderme.
         </p>
         <ul>
           <li>
@@ -1641,6 +1644,12 @@
           <li>
             <strong>Güncellemeleri kendiliğinden kur</strong>: işaretliyse yeni
             sürüm bulununca kendisi kurar.
+          </li>
+          <li>
+            <strong>Windows bildirimleri</strong>: işaretliyse (varsayılan)
+            denetim sonuçları ve duyurular tarayıcı kapalıyken de Windows
+            bildirimi olarak gelir. Ayrıntılar
+            <a href="/kilavuz/ayarlar/">Ayarlar</a> sayfasında.
           </li>
           <li>
             <strong>Kurulumu onar</strong>: geçici dosyaları temizler, paketin
@@ -1775,16 +1784,16 @@
           <li>
             <strong>Doğrulama</strong>: her sürüm yayımlanmadan önce temiz bir
             Windows makinesinde kurulur, açılır, sağlık adresi yanıt verene
-            kadar beklenir ve kaldırılır. Bu sınavı geçemeyen sürüm yayımlanmaz.
+            kadar beklenir ve kaldırılır. Bu kontrolden geçemeyen sürüm
+            yayımlanmaz.
           </li>
         </ul>
         <h3 id="onarma">Onarma</h3>
         <p>
           Bir şey takılırsa simgeye sağ tıklayıp
-          <strong>Kurulumu onar</strong> deyin (simge görünmüyorsa görev
-          çubuğundaki ^ okuna tıklayın). Uygulama geçici dosyaları temizler ve
-          paketin eksiksiz olduğunu kontrol eder. Sonra açılırken veritabanı
-          güncellemesini yeniden çalıştırır.
+          <strong>Kurulumu onar</strong> deyin. Uygulama geçici dosyaları
+          temizler ve paketin eksiksiz olduğunu kontrol eder. Sonra açılırken
+          veritabanı güncellemesini yeniden çalıştırır.
         </p>
         <p>
           Paketten bir dosya silinmişse (örneğin antivirüs programı karantinaya
@@ -1881,25 +1890,28 @@
           </li>
         </ol>
         <p>
-          Numara değişince Google'daki iki yönlendirme adresini de yeni
-          numarayla güncelleyin. Bu adresler Google'a bağlanma kılavuzunda
-          anlatılıyor.
+          OAuth istemcisi kullanıyorsanız Google'daki iki yönlendirme adresini
+          yeni numarayla güncelleyin (<a href="/kilavuz/google-baglantisi/"
+            >Google'a bağlanma</a
+          >).
         </p>
         <h2 id="kontrol">Kontrol</h2>
         <ul>
           <li>
             Fareyi görev çubuğu simgesinin üzerine getirince &quot;seowatcher
-            X.Y.Z: Çalışıyor: http://127.0.0.1:3001/&quot; yazmalı. Baştaki
-            sürüm numarası kurduğunuz sürümdür. 0.5.0 Alpha örnektir.
+            X.Y.Z Alpha: Çalışıyor: http://127.0.0.1:3001/&quot; yazmalı. X.Y.Z
+            kurduğunuz sürümdür.
           </li>
           <li>
             Tarayıcıda <code>http://127.0.0.1:3001/api/health</code> adresi
             &quot;status&quot;:&quot;ok&quot; ile başlayan bir yazı göstermeli.
           </li>
           <li>
-            <strong>Yardım</strong> ekranındaki &quot;Kurulumunuzun durumu&quot;
-            kartı &quot;Her şey yolunda.&quot; demeli. Google'a bağlanmadan önce
-            &quot;Google girişi&quot; satırı uyarı gösterir. Bu normaldir.
+            <strong>Yardım</strong> ekranındaki
+            <strong>Uygulamanın durumu</strong> kartı
+            <strong>Kurulum kontrollerinde sorun bulunmadı.</strong> demeli.
+            Google'a bağlanmadan önce &quot;Google girişi&quot; satırının uyarı
+            göstermesi normaldir.
           </li>
         </ul>
         <h2 id="sik-sorulanlar">Sık sorulanlar</h2>
@@ -1913,14 +1925,17 @@
           açılışta kendiliğinden başlar.
         </p>
         <p>
-          <strong>Başka bilgisayardan açabilir miyim?</strong> Hayır, bilerek
-          böyle. Uygulama yalnızca 127.0.0.1 adresini dinler. İnternete açmak
-          için önüne kendi kimlik doğrulamanızı koymanız gerekir.
+          <strong>Başka bilgisayardan açabilir miyim?</strong> Hayır, bu
+          bilinçli bir tercihtir. Uygulama yalnızca 127.0.0.1 adresini dinler.
+          İnternete açmak için önüne kendi kimlik doğrulamanızı koymanız
+          gerekir.
         </p>
         <p>
           <strong>Docker sürümünden geçebilir miyim?</strong> Evet, ama veri
           kendiliğinden taşınmaz. Projeleri yeniden oluşturur, Google'ı yeniden
-          bağlarsınız. Search Console arşivi ilk açılışta yeniden dolar.
+          bağlarsınız. Search Console arşivi, Arama performansı ya da Sıralama
+          takibi ekranını açtığınızda Google'ın sakladığı son 16 aydan yeniden
+          dolar.
         </p>
         <p>
           <strong>Antivirüs uyarı verdi.</strong> Dosya imzasız olduğu için bazı
@@ -1928,7 +1943,6 @@
           sayfasından indirin ve SHA-256 özetini karşılaştırın.
         </p>
         <h2 id="sorun-cikarsa">Sorun çıkarsa</h2>
-        <p>Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın.</p>
         <ul>
           <li>
             <strong
@@ -1971,20 +1985,6 @@
             adresi elle yazın: <code>http://127.0.0.1:3001</code>
           </li>
         </ul>
-        <h2 id="windows-bildirimleri">Windows bildirimleri</h2>
-        <p>
-          Tepsideki seowatcher simgesine sağ tıklayın ve
-          <strong>Windows bildirimleri</strong> seçeneğini kullanın (varsayılan
-          açık). Başlatıcı çalışırken, tarayıcı kapalı veya arka planda olsa da
-          tüm projelerin tamamlanan/başarısız denetimleri ve yeni duyurular
-          yaklaşık 90 saniyede Windows baloncuğu olarak görünür. Tıklamak ilgili
-          sayfayı açar; birden fazla olay tek özette toplanır. İlk kullanım
-          geçmiş olayları göstermez; yeniden başlatmak görülen olayları
-          tekrarlamaz. Kapalıyken gelen olaylar sonradan gösterilmez. Yeni sürüm
-          bildirimleri mevcut güncelleme ayarını izler. Windows
-          Odaklanma/Rahatsız etmeyin bildirimleri gizleyebilir. Başlatıcı
-          kapalıysa bildirim gelmez. Docker sürümünde bu özellik yoktur.
-        </p>
         <nav class="pager" aria-label="Önceki ve sonraki sayfa">
           <a class="pager-prev" rel="prev" href="/kilavuz/seowatcher-nedir/"
             ><span>Önceki</span><strong>seowatcher nedir?</strong></a
@@ -1993,7 +1993,7 @@
           >
         </nav>
         <p class="meta">
-          Son güncelleme: 28 Ekim 2026. Bir hata görürseniz
+          Son güncelleme: 29 Ekim 2026. Bir hata görürseniz
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -2010,7 +2010,6 @@
           <li><a href="#kontrol">Kontrol</a></li>
           <li><a href="#sik-sorulanlar">Sık sorulanlar</a></li>
           <li><a href="#sorun-cikarsa">Sorun çıkarsa</a></li>
-          <li><a href="#windows-bildirimleri">Windows bildirimleri</a></li>
         </ol>
       </nav>
     </main>

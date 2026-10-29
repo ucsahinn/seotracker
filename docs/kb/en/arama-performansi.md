@@ -1,20 +1,18 @@
 ---
 title: Search performance
-description: See how often you show up on Google, how many clicks you get and what to fix first. The numbers come from Search Console. Gain figures are an upper bound.
+description: Clicks, impressions, CTR and position from Search Console, with a ranked to-do list, changes, overlaps and the queries behind every page.
 screen: Arama performansı
 route: /p/<proje>/search-performance
 updated: 2026-10-28
 ---
 
-Here you see how often you show up on Google, how many clicks you get and what to fix first.
+**Search performance** shows how your site appears in Google Search and what to work on first. Clicks, impressions, CTR and position come straight from Search Console; the app estimates nothing except the possible-gain figures, which are always labelled as an upper bound.
 
-Clicks, impressions, CTR and position come straight from Search Console. The app does not estimate any of them. Estimates appear only in the "possible gain" figures, and those are always marked as an "upper bound".
-
-The filters you choose are written into the address bar. If you like, share that view as a link or bookmark it.
+The filters you choose are stored in the URL, so you can bookmark or share a view.
 
 ## Three terms
 
-**Final day.** Search Console keeps counting a day for several days. Totals and comparisons use only days whose count has finished. Days follow the Pacific time Google uses. Days that are still being counted show hatched on the chart and are left out of the totals.
+**Final day.** Search Console keeps counting a day for several days. Totals and comparisons use only days whose count has finished. Days follow the Pacific time Google uses. Days that are still being counted show hatched on the chart.
 
 **Hidden query.** Google does not list very rarely searched queries, for privacy. But it adds their clicks to the site total. That is why the query table adds up to less than the site total. The difference is the hidden queries.
 
@@ -22,15 +20,15 @@ The filters you choose are written into the address bar. If you like, share that
 
 ## What is on the screen
 
-**Top bar.** Four things sit at the top right.
+**Top bar.** At the top right:
 
-- **Refresh**: asks Search Console for fresh data. The app normally reuses an answer from a few minutes ago.
+- **Refresh**: asks Search Console for fresh data. The app normally reuses an answer up to ten minutes old; **Refresh** skips that cache.
 - **Download report**: turns the view on screen into a printable one-file report, saves it and downloads it. The report also sits in the **Reports** screen.
 - The export menu: **Queries (CSV)**, **Pages (CSV)**, **Queries close to the top three (CSV)**, **Export queries to Sheets**, **Export pages to Sheets**. Exports follow the filters on screen. If you have a search or a quick filter on the Queries or Pages tab, it carries into the file too.
 
 **Filters.** A one-line bar summarises the chosen filters: "(Web, All devices, All countries, Last 28 days, Against previous period)". Open it to see: **Search type** (Web, Image, Video, News), **Device filter** (All devices, Mobile, Desktop, Tablet), **Country filter** (the countries Google reports for that period), **Date range** (Last 7 days, Last 28 days, Last 3 months) and **Comparison** (Against previous period, Against last year, No comparison).
 
-**Data status.** A strip that says what the numbers rest on. For example "Data is final up to 24 Oct; the last 3 days are still being counted (hatched on the chart)." The same strip shows which days the comparison uses and the name of your Search Console property. Press the property name to go to the project's connection settings. If last year's comparison is chosen and Google no longer gives those days, the strip says so (Google goes back 16 months at most). Open **About the data** to see: the date of the final days, how many days are still being counted and the last data date, the share of clicks from hidden queries, whether the tables were read in full (Google returns a limited number of rows at a time) and whether this view sent new requests to Google or used an answer taken a few minutes ago.
+**Data status.** A strip that states what the numbers are based on. For example "Data is final up to 24 Oct; the last 3 days are still being counted (hatched on the chart)." The same strip shows which days the comparison uses and the name of your Search Console property. Press the property name to go to the project's connection settings. If last year's comparison is chosen and Google no longer gives those days, the strip says so (Google goes back 16 months at most). Open **About the data** to see: the date of the final days, how many days are still being counted and the last data date, the share of clicks from hidden queries, whether the tables were read in full (Google returns a limited number of rows at a time) and whether this view sent new requests to Google or used an answer taken a few minutes ago.
 
 **Summary sentence.** A sentence or two above the tiles says what happened. For example "Clicks rose 6.1% in the last 28 days against the previous period. CTR fell 0.3 points." Then it says how many extra clicks the first three jobs could bring together, marked "(upper bound)". The **To do** link takes you to that tab.
 
@@ -64,11 +62,11 @@ The app ranks the jobs it finds in Search Console data by estimated gain. Jobs a
 
 In each group's heading, **Why, and what to do** gives the reason and what to do. A row shows its rank number, the finding, the evidence (for example "Position 8.2 · 640 impressions · 12 clicks"), the possible gain written as "≈ +N clicks" and a confidence label (**Confidence: high**, medium or low). The first four jobs of a group are shown, and **Show all (N)** opens the rest.
 
-You mark a job with **Done**. Marked jobs go under "Marked as done (N)" and come back with **Restore**. The done marks are kept only in this browser. **Details** (or **Open this breakdown**) on a row opens the detail of that search, page, device or country. If there are several jobs for one search or page, the total at the top counts it once.
+Mark a job finished with **Done**. Marked jobs go under "Marked as done (N)" and come back with **Restore**. The done marks are kept only in this browser. **Details** (or **Open this breakdown**) on a row opens the detail of that search, page, device or country. If there are several jobs for one search or page, the total at the top counts it once.
 
 ### Queries and Pages
 
-A table by searches or by pages. The columns are **Query** (or **Page**), **Clicks**, **Click change** (against the comparison), **Impressions**, **CTR** and **Position**. Click a heading to sort. The bar behind a row is its share of the clicks in this table. The box at the top searches among the rows. Beside it, "{shown} / {total} rows" is written.
+A table of queries or pages. The columns are **Query** (or **Page**), **Clicks**, **Click change** (against the comparison), **Impressions**, **CTR** and **Position**. Click a heading to sort. The bar behind a row is its share of the clicks in this table. The box at the top searches among the rows. Beside it, "{shown} / {total} rows" is written.
 
 **Quick filters.** For queries: **In the top 10**, **Position 4-10**, **Position 11-20**, **Low CTR**, **No clicks**. For pages: **In the top 10**, **Clicked**, **Low CTR**, **No clicks**. Low CTR means a row on page one with at least 100 impressions and a click-through below 2 percent.
 
@@ -111,9 +109,15 @@ It shows cases where several of your pages appear for the same search. Pages can
 - **Search appearance.** Which special formats your results show in on Google (rich results, video and so on). A rich result is a result that shows extra information such as a product or video. Google adds up this breakdown by page. If Google reported no special format, the screen says so.
 - **Question searches.** Searches shaped as questions and searches of four or more words. They are the clearest source of content ideas.
 
-**Brand names.** You enter brand names with **Edit brand names**. Enter your site's name and the ways people spell it, for example the name and its short form. Searches containing these words count as brand searches. There are **Save** and **Cancel** buttons, and the **Suggestions:** line adds a name in one click. Defining brand names changes not only this screen but also the gain estimate on the **Opportunities** screen, because that estimate leaves brand searches out.
+**Brand names.** Enter brand names with **Edit brand names**. Enter your site's name and the ways people spell it, for example the name and its short form. Searches containing these words count as brand searches. There are **Save** and **Cancel** buttons, and the **Suggestions:** line adds a name in one click. Defining brand names changes not only this screen but also the gain estimate on the **Opportunities** screen, because that estimate leaves brand searches out.
 
-**Detail panel.** Click a search or a page (in a table, in To do, in Ranking opportunities or in Changes) and it opens from the right. At the top it says the date range and "final days". Then come four numbers (Clicks, Impressions, CTR, Average position) and their change against the chosen comparison. Below is the **Daily clicks** line. For a page, a list "This page's queries (N)" appears; for a search, "Pages showing for this query (N)". Each row gives clicks and position. If no search is listed for a page, its clicks may come from queries Google hides. The queries may add up to less than the page's total, because hidden queries are not listed. **Open page** opens the page in a new tab. **Save as keyword** adds the search to **Saved keywords**.
+**Detail panel.** Click a search or a page (in a table, in To do, in Ranking opportunities or in Changes) and it opens from the right. At the top it says the date range and "final days". Then come four numbers (Clicks, Impressions, CTR, Average position) and their change against the chosen comparison. Below is the **Daily clicks** line. For a page, a list "This page's queries (N)" appears; for a search, "Pages showing for this query (N)". Each row gives clicks and position. The listed queries can add up to less than the page's total, or be missing entirely: the difference is the queries Google hides. **Open page** opens the page in a new tab. **Save as keyword** adds the search to **Saved keywords**.
+
+## Links from other screens
+
+Links from **Opportunities** and **Rank tracking** open the exact page or query in the detail panel for the source dates. The tiles stay site-wide; the figures for the selected page or query are in the detail panel. If those dates cannot be read, the screen says so instead of quietly switching to other dates. Choosing a period preset clears dates set by a link.
+
+**Download report** sends the dates on screen to the server and is unavailable while a refresh runs. The report keeps those dates, but Google may have revised the figures by the time it reads them again.
 
 ## How to use it
 
@@ -123,28 +127,28 @@ It shows cases where several of your pages appear for the same search. Pages can
 4. On the **Ranking opportunities** tab, look at **Queries close to the top three**. Open the page of the three most-shown searches. Adjust the title and first paragraph to that search.
 5. On the **Queries** tab, press the **Low CTR** button. Your position is good but nobody clicks. The problem is most likely the title and description.
 6. On the **Changes** tab, look at **Falling**. Click the top search and read the day the drop began in the detail panel.
-7. If you see pages competing for the same search on the **Overlaps** tab, first decide which page you want to answer. Then point the internal links at that page.
+7. If the **Overlaps** tab shows several of your pages competing for one query, decide which page should rank for it and point your internal links to that page.
 8. After a fix, write its date on the chart with **Add a note**. Two weeks later you see its effect on the chart.
-9. When a job is finished, say **Done**. The list gets shorter.
+9. When a job is finished, mark it **Done**.
 10. At the end of the month, save the view with **Download report**.
 
 ## How the numbers are calculated
 
-Google delivers data three days late. The range therefore ends not today but three days before. The last days can also change for a few more days. The app leaves those days out of the totals. The previous period is the period of the same length right before this range. For the last-year comparison, the same days of last year are taken. You see the change in clicks and impressions as a percentage and the change in CTR as points.
+Google reports data about three days late, and the most recent days can still change. The range therefore ends about three days ago, and days that are not final are left out of the totals. The previous period is the period of the same length right before this range. For the last-year comparison, the same days of last year are taken. You see the change in clicks and impressions as a percentage and the change in CTR as points.
 
 The tiles are the real totals of the site. The tables count each page that appears for the same search separately. If you add up the page table, you get a larger number than the tile. That is not an error. If you add up the query table, you get a smaller number than the tile, because hidden queries are not listed.
 
-Google gives at most 1,000 rows at a time. If the row limit was reached, the least-clicked end is missing from the list and the screen says so.
+The app reads the query, page and query-page tables in chunks of 25,000 rows until Google returns no new rows. Google serves at most 50,000 rows per day per search type and can skip some rows, so reading every chunk does not mean every search is known. If the limit was reached, the least-clicked end is missing and the screen says so. Site totals are not added up from these tables; they are a separate total from Google.
+
+The app starts at most ten requests to Google per second. After a quota error from Google, new reads wait fifteen minutes. Sources: [Google's guide to getting all your data](https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data), [API quotas](https://developers.google.com/webmaster-tools/limits).
 
 **Possible gain.** The app applies your site's own click-through rate to each search. It takes the rate one step up from the position the search is at, multiplies it by the search's impressions and subtracts the current clicks. Searches with very few impressions do not count (at least 50 impressions for 28 days). For title problems, the yardstick is the search reaching your site's rate at the same position. Brand searches are left out. That is why every gain is an upper bound. The same calculation is used on the **Opportunities** screen.
 
 **Confidence label.** The label beside each job shows how solid the data behind the finding is: high, medium or low.
 
-## Frequently asked
+**Small samples.** When the comparison period has too few clicks for a reliable analysis, the summary leads with the actual clicks and impressions. With little data, percentages and averages alone do not show growth or decline. An empty opportunity list does not mean no query ranks between 4 and 20: the impression threshold scales with the period, and brand queries are excluded. When the to-do list is empty, review the visible queries yourself. The app does not suggest a longer period when the last three months are already selected, and it does not assume Google will later reveal hidden queries.
 
-**Why are the last three days hatched on the chart?** Google is still counting those days. They are left out of the totals. They become final in a few days.
-
-**The table total does not match the tile.** That is normal. The tile is the site total. The query table and the page table differ because of hidden queries and because they count several pages separately.
+## Questions
 
 **My position is different when I search on Google.** The position here is the average over the period. It does not reflect a single search.
 
@@ -152,20 +156,12 @@ Google gives at most 1,000 rows at a time. If the row limit was reached, the lea
 
 **Why did a job vanish from the To do list?** If you marked it done, it is under "Marked as done". The marks are kept only in this browser. In another browser or on another computer you see it again.
 
-**If pages overlap, should I merge them?** Most of the time, no. First decide which page you want to answer. Then point the internal links at that page. If the pages really answer the same question, merge them.
+**If pages overlap, should I merge them?** Usually not. Pick the page that should rank and link to it from the others. Merge pages only if they really answer the same question.
 
 **Do I have to enter a brand name?** No, but if you do not, people searching for your own name distort the CTR calculation and the opportunities come out incomplete. The screen reminds you with the "Set your brand name" job. When the app is using names it suggested from your domain, the job reads "Confirm your brand name".
 
 ## Limits
 
-The Discover and Google News search types are not included. There is no search volume and no competitor position. Data does not go back further than 16 months from Google. For older data, look at the archive on this computer: the long-term chart on the **Changes** tab and the **Rank tracking** screen read from it. The done marks and notes are kept only on this installation.
+The Discover and Google News search types are not included. There is no search volume and no competitor position. Data does not go back further than 16 months from Google. For older data, look at the archive on this computer: the long-term chart on the **Changes** tab and the **Rank tracking** screen read from it. The archive fills only while this screen or Rank tracking is open.
 
 <!-- Sources: src/routes/_project/p/$projectId/search-performance.tsx; src/client/features/search-performance/SearchPerformancePage.tsx; SearchPageParts.tsx; SearchFilters.tsx; DataTrustStrip.tsx; SearchVerdict.tsx; KpiTiles.tsx; SearchTrendChart.tsx; TrendParts.tsx; SearchNotes.tsx; LongTermTrend.tsx; TodoTab.tsx; DimensionTab.tsx; DimensionTableParts.tsx; OpportunitiesTab.tsx; StrikingTable.tsx; ChangesTab.tsx; CannibalizationSummary.tsx; CannibalizationTable.tsx; DistributionTab.tsx; PositionDistribution.tsx; DrilldownPanel.tsx; BrandTerms.tsx; SearchReportButton.tsx; src/shared/searchInsights.ts; src/shared/searchTodoCopy.ts; src/shared/searchQuickFilters.ts; src/shared/dataFreshness.ts; src/serverFunctions/searchPerformance.ts; src/server/features/gsc/cannibalization.ts -->
-
-Links from Opportunities and Rankings open exact URL/query details for the source dates. Overview totals remain property-wide; selected identity metrics are in the detail panel. Unreadable periods are never silently replaced. Choosing a period preset clears pinned dates. Download report sends the displayed dates to the server and is unavailable during refresh. Dates stay fixed; Google may revise the measurements read again for the report.
-
-## Interpreting small samples
-
-When the comparison period has fewer clicks than the analysis threshold, the summary leads with actual clicks and impressions. Percentages and averages alone do not establish growth or loss with little data. An empty opportunity list does not mean no query ranks at 4–20: the period-scaled impression threshold and brand exclusion also apply.
-
-When the to-do list is empty, open the visible queries for review. The app does not suggest a longer period when the last three months are already selected, or assume Google will later reveal withheld queries.

@@ -1,51 +1,83 @@
 ---
 title: Berichte und Vorlagen
-description: Audit-, Suchleistungs- und Assistentenberichte als einzelne HTML-Dateien speichern, auf dem Smartphone öffnen, drucken oder per E-Mail teilen.
+description: Audit-, Suchleistungs- und Agentenberichte als einzelne HTML-Dateien speichern, auf dem Smartphone öffnen, drucken oder per E-Mail teilen.
 screen: Raporlar
 route: /p/<proje>/reports
 updated: 2026-10-27
 ---
 
-Berichte sind gespeicherte HTML-Dokumente dieses Projekts. Beim Öffnen werden Google-Daten nicht aktualisiert. Der Speicherzeitpunkt ist kein Messdatum.
+Ein Bericht ist ein gespeichertes HTML-Dokument des Projekts. Beim Öffnen fragt die App Google nicht neu ab; der Bericht zeigt den Stand zum Zeitpunkt seiner Erstellung. Das Speicherdatum ist nicht das Datum der Messung.
 
-## Erstellen und finden
+## Berichte erstellen
 
-**Suchbericht vorbereiten** öffnet die Suchleistung. Wählen Sie Zeitraum, Gerät, Land und Suchtyp und laden Sie den Bericht herunter. **Auditbericht vorbereiten** öffnet das Website-Audit zur Auswahl eines Crawls. Der kopierte Berichtsbefehl beauftragt den Assistenten. Vorlagen sind Anweisungen an den Assistenten, keine automatischen Generatoren oder Zeitpläne. Berichte werden vor dem Download gespeichert und bleiben ohne verbundene Quelle lesbar.
+- **Suchbericht erstellen** öffnet die Suchleistung. Wählen Sie Zeitraum, Gerät, Land und Suchtyp und laden Sie den Bericht herunter.
+- **Auditbericht erstellen** öffnet das Website-Audit, wo Sie den Crawl auswählen.
+- **Berichts-Prompt kopieren** kopiert einen Prompt für Ihren KI-Agenten. Der Agent untersucht das Projekt und speichert seinen Bericht hier.
 
-Oben stehen der zuletzt aktualisierte Bericht, seine gespeicherte Zusammenfassung sowie Öffnen und Download. Fehlende Zusammenfassung und nicht strukturiert gespeicherter Datenzeitraum werden ausdrücklich benannt. Prüfen Sie Zeitraum und Grenzen im Dokument. Titel und HTML dienen nicht zur Ableitung fehlender Herkunftsdaten.
+Die App speichert jeden Bericht, bevor sie ihn herunterlädt. Er bleibt lesbar, auch wenn die Quelle später nicht mehr verbunden ist.
 
-Die Suche durchsucht Titel und Zusammenfassung. Typzahlen berücksichtigen Suche und die letzten sieben Tage vor dem Typfilter. Sieben Tage zählen verschiedene gespeicherte oder aktualisierte Dateien, keine Bearbeitungsvorgänge oder frischen Google-Messungen. Treffer und gesamter Projektbestand sind getrennte Zahlen.
+Beim Erstellen liest die App die Daten neu. Google kann historische Werte und den Rand des Zeitraums nachträglich ändern; ein Bericht muss deshalb nicht exakt mit einer früheren Bildschirmansicht übereinstimmen.
 
-Der Server liefert 25 Metadatensätze pro Seite. Auch der 101. oder 1.000. Bericht bleibt erreichbar und durchsuchbar. Standard ist die letzte Aktualisierung; ein bearbeiteter alter Bericht rückt nach oben. Erstellungszeit und Titel sind weitere Sortierungen. Suche, Typ, Zeitraumfilter, Sortierung und Seite bleiben für Zurück und Neuladen in der URL.
+## Berichte finden
 
-Ältere Such- und Auditberichte teilen denselben Erstellervermerk. Deshalb heißt ihr Typ **Anwendungsbericht, Typ nicht gespeichert**. Sie werden nicht pauschal als Audits gezählt. Gespeicherte Assistentenfähigkeiten und Vorlagennamen bleiben sichtbar. Dateizahlen zeigen keinen SEO-Erfolg. Die Größe bezeichnet gespeicherte HTML-Bytes; Sicherheitsmetadaten können den Download vergrößern.
+Oben steht der **Zuletzt aktualisierte Bericht** mit seiner gespeicherten Zusammenfassung und den Schaltflächen zum Öffnen und Herunterladen. Fehlen Zusammenfassung oder strukturiert gespeicherter Datenzeitraum, sagt die App das ausdrücklich. Prüfen Sie Zeitraum und Grenzen dann im Dokument selbst. Die App leitet fehlende Herkunftsangaben nicht aus Titel oder HTML ab.
 
-## Lesen und wiederherstellen
+**Berichte suchen** durchsucht Titel und Zusammenfassung. Die Zahlen an den Typen berücksichtigen Suche und den Filter **Letzte 7 Tage**, aber nicht den Typfilter selbst. „Letzte 7 Tage“ zählt Dateien, die in dieser Zeit gespeichert oder aktualisiert wurden, nicht einzelne Bearbeitungen oder neue Google-Messungen. Treffer und Gesamtbestand des Projekts sind getrennte Zahlen.
 
-Die Vorschau nutzt einen isolierten Rahmen ohne Skript- oder Netzwerkrechte. Herkunft und Speicherinformationen lassen sich aufklappen. Die gespeicherte Sprache bleibt erhalten; für eine andere Sprache oder neue Messwerte erstellen Sie den Bericht bewusst erneut.
+Die Liste lädt 25 Berichte pro Seite; auch der tausendste Bericht bleibt erreichbar und durchsuchbar. Voreingestellt ist die Sortierung nach **Letzte Aktualisierung**: Ein bearbeiteter alter Bericht rückt nach oben. Weitere Sortierungen sind **Erstellungszeit** und **Titel**. Suche, Typ, Zeitraumfilter, Sortierung und Seite stehen in der Adresse und bleiben beim Zurückgehen und Neuladen erhalten.
 
-HTML lässt sich offline lesen und versenden. PDF nutzt die Druckfunktion des Browsers. Bei blockiertem Druckfenster erlauben Sie Pop-ups oder öffnen den Bericht in einem neuen Tab und drucken dort. Vollbild sperrt den Hintergrund für den Tastaturfokus und bietet oben und unten einen Ausgang. Ein App-Link gilt für diese Installation; teilen Sie die Datei.
+### Berichtstypen
 
-Nach 15 Sekunden ohne Vorschau erscheinen Wiederholen und In neuem Tab öffnen. Fehlende Dokumente, Zugriffs-, Verbindungs- und Downloadfehler erhalten Handlungshinweise. Nach fehlgeschlagener Aktualisierung bleiben zuletzt geladene Daten mit Warnung erhalten. Eine fehlgeschlagene Speicherprüfung bedeutet nicht freien Speicher.
+Neue Berichte zur Suchleistung und zum Website-Audit speichern ihren Typ. Ältere Such- und Auditberichte tragen denselben Erstellervermerk und heißen deshalb **Anwendungsbericht, Typ nicht gespeichert**. Die App zählt sie nicht pauschal als Audits und klassifiziert sie auch nicht anhand des Titels. Bei Agentenberichten bleiben der verwendete Skill und der Vorlagenname sichtbar.
 
-## Messgrenzen
+Die Größe ist die gespeicherte HTML-Größe in Bytes; der Download kann durch Sicherheitsangaben etwas größer sein. Die Zahl der Berichte sagt nichts über SEO-Erfolg aus.
 
-Suchberichte nennen tatsächlichen Zeitraum, Vergleich, Filter und Erstellungszeit. Tage gelten in pazifischer Zeit. Ohne Googles Abschlussgrenze wird die angenommene Datenverzögerung benannt. Bei Zeilenbegrenzung umfasst der nicht gelistete Anteil sowohl verborgene als auch nicht gelesene Suchanfragen. Grenzen für Suchanfragen, Seiten und Suchanfrage×Seite betreffen Chancen, nicht die kanonischen Website-Gesamtwerte.
+## Lesen, drucken und teilen
 
-Überschneidungen nennen auch ohne Treffer ihren eigenen Zeitraum und Schwellen. Ein Sieben-Tage-Bericht kann dafür 28 Tage verwenden. Mehrere Seiten sind kein Beleg für verlorene Klicks oder SEO-Schaden. Nicht verfügbare Langzeit- oder Darstellungsdaten sind keine Null. Gekürzte Listen nennen gezeigte und beobachtete Datensätze. Das Anfragebudget gilt für die Suchansicht, ohne zusätzliche Überschneidungsanalyse und Cacheeffekte.
+Die Vorschau läuft in einem abgeschotteten Rahmen ohne Skripte und ohne Netzwerkzugriff. Herkunft und Speicherinformationen lassen sich aufklappen. Ein Bericht behält die Sprache, in der er erstellt wurde; für eine andere Sprache oder neue Zahlen erstellen Sie ihn neu.
 
-Beim Erstellen werden Daten erneut gelesen. Google kann historische Werte und die Zeitraumgrenze ändern; Gleichheit mit einem früheren Bildschirm ist nicht garantiert. Ein gleicher lokalisierter Titel kann ersetzt werden; eine andere Sprache kann ein weiteres Dokument erzeugen. Lange Titel beachten die Speichergrenze und erhalten einen serverseitigen Schutz gegen Quellen-/Filterkollisionen.
+- **Als HTML herunterladen**: Die Datei lässt sich offline lesen und per E-Mail versenden.
+- **Als PDF speichern (drucken)**: nutzt die Druckfunktion des Browsers. Blockiert der Browser das Druckfenster, erlauben Sie Pop-ups für die App oder öffnen den Bericht mit **In neuem Tab öffnen** und drucken dort.
+- **Vollbild**: hält den Tastaturfokus im Bericht und bietet oben und unten einen Ausgang.
 
-## Vorlagen und Speicherung
+Ein Link in die App funktioniert nur auf dieser Installation. Teilen Sie deshalb die Datei, nicht den Link.
 
-Vorlagen: Name 80, Beschreibung 200, Anweisungen 3.000 Zeichen; zehn pro Projekt. Löschen entfernt keine Berichte. Suche löschen zeigt ausgeblendete Vorlagen wieder.
+Erscheint die Vorschau nach 15 Sekunden nicht, bietet die App **Erneut versuchen** und **In neuem Tab öffnen** an. Für fehlende Dokumente, Zugriffs-, Verbindungs- und Downloadfehler nennt sie jeweils den nächsten Schritt. Schlägt eine Aktualisierung der Liste fehl, bleiben die zuletzt geladenen Daten mit einer Warnung stehen. Kann die App den Speicherstatus nicht prüfen, heißt das nicht, dass Speicher frei ist.
 
-Schutzgrenzen: 500.000 Bytes pro Bericht, 120 Titelzeichen, 2.500 Zusammenfassungszeichen, 10.000 Berichte pro Projekt und 5 GB je Installation. Das sind Speichergrenzen, keine SEO-Kennzahlen. Auditberichte erläutern Crawl-, Geschwindigkeits- und optionale Google-Messdaten im eigenen Methodenteil.
+## Was Suchberichte zeigen
 
-## Quelltypen und erneute Erstellung
+Ein Suchbericht nennt den tatsächlichen Zeitraum, den Vergleichszeitraum, die Filter und die Erstellungszeit. Die Tage gelten in pazifischer Zeit. Liefert Google keine Vollständigkeitsgrenze, nennt der Bericht die angenommene Verzögerung.
 
-Neue native Berichte zur Suchleistung und zum Website-Audit haben getrennte gespeicherte Typen. Ältere App-Berichte werden nicht anhand ihres Titels klassifiziert. Die Suchidentität umfasst Property, festgelegte Daten und Filter; die Auditidentität verwendet die Audit-ID. Eine erneute Erstellung derselben Quelle in einer anderen Sprache aktualisiert denselben Datensatz und kann seine Sprache ändern. Titelkonflikte mit Agentenberichten werden abgelehnt; ältere Dokumente mit gleichem Titel bleiben erhalten, und der neue Speichervorgang wird abgelehnt.
+Erreicht eine Abfrage das Zeilenlimit, umfasst der nicht aufgeführte Anteil sowohl von Google verborgene als auch nicht abgerufene Suchanfragen. Die Tabellen für Suchanfragen, Seiten und Suchanfrage-Seite-Paare haben ein Zeilenlimit; ihre Summen sind nicht die Gesamtwerte der Website.
 
-Erstellen Sie native Berichte über ihre Quellseite neu; Agenten können ihren Inhalt nicht mit `save_report` ersetzen. Fehlende Quelldaten gelten nie als null Zugriffe. Die Auditmethodik nennt den GSC-Trafficzeitraum, das Zeilenlimit und die verfügbare gespeicherte mobile CrUX-Messung.
+Der Abschnitt zu Überschneidungen nennt seinen eigenen Zeitraum und seine Schwellen, auch wenn er nichts findet; ein Sieben-Tage-Bericht kann dafür 28 Tage auswerten. Dass mehrere Seiten für dieselbe Suchanfrage erscheinen, belegt weder verlorene Klicks noch einen SEO-Schaden. Nicht verfügbare Langzeit- oder Darstellungsdaten sind keine Null. Gekürzte Listen nennen, wie viele Einträge sie zeigen und wie viele beobachtet wurden. Das angegebene Anfragebudget gilt für die Suchansicht ohne die zusätzliche Analyse der Überschneidungen und ohne Cache-Effekte.
 
-Der gespeicherte Bericht oben ist keine aktuelle Zusammenfassung der Website. Die Quellwebsite wird aus der ursprünglichen Prüfung bestätigt; bei einer Abweichung von der Projektwebsite erscheint eine Warnung. Ohne bestätigte Quelle kann der Bericht eine andere Website betreffen. Ältere Berichte werden mit unbestätigter Quelle und Datum gekennzeichnet. **Website-Audits öffnen** öffnet den Auditverlauf. Ein geeignetes gespeichertes Audit können Sie öffnen und seinen Bericht herunterladen; der Link startet weder ein Audit noch die Berichtserstellung automatisch. Alte Dateien bleiben erhalten.
+Fehlende Quelldaten zählen nie als null Besuche.
+
+## Auditberichte und Quellwebsite
+
+Auditberichte erklären in einem eigenen Methodenteil, welche Crawl-, Geschwindigkeits- und optionalen Google-Daten sie verwenden: den Search-Console-Zeitraum, das Zeilenlimit und, falls gespeichert, die mobile CrUX-Messung.
+
+Die Quellwebsite eines Berichts bestätigt die App anhand des ursprünglichen Audits. Weicht sie von der Projektwebsite ab, erscheint eine Warnung. Ohne bestätigte Quelle kann der Bericht eine andere Website betreffen; ältere Berichte tragen deshalb den Hinweis **Älterer Bericht · Quelle und Datum nicht bestätigt**. Der gespeicherte Bericht oben ist keine aktuelle Zusammenfassung der Website.
+
+**Website-Audits öffnen** führt zum Auditverlauf. Dort öffnen Sie ein gespeichertes Audit und laden seinen Bericht herunter. Der Link startet weder ein Audit noch eine Berichtserstellung. Bestehende Dateien bleiben erhalten.
+
+## Berichte neu erstellen
+
+Erstellen Sie App-Berichte über ihre Quellseite neu. Ein Agent kann ihren Inhalt nicht mit `save_report` ersetzen. Ein Suchbericht ist eindeutig durch Property, Zeitraum und Filter bestimmt, ein Auditbericht durch die Audit-ID. Erstellen Sie denselben Bericht in einer anderen Sprache, aktualisiert die App den vorhandenen Eintrag und ändert gegebenenfalls dessen Sprache.
+
+Lange Titel werden auf die Speichergrenze gekürzt; ein serverseitiger Schutz verhindert, dass dabei zwei verschiedene Quellen oder Filter denselben Titel erhalten. Kollidiert ein Titel mit einem Agentenbericht, lehnt die App das Speichern ab und lässt das ältere Dokument unverändert.
+
+## Vorlagen und Speichergrenzen
+
+Vorlagen sind Anweisungen an Ihren KI-Agenten. Sie erzeugen keine Berichte automatisch und planen nichts. Pro Projekt sind zehn Vorlagen möglich, mit bis zu 80 Zeichen Name, 200 Zeichen Beschreibung und 3.000 Zeichen Anweisungen. Das Löschen einer Vorlage löscht keine Berichte. **Suche löschen** zeigt ausgeblendete Vorlagen wieder an.
+
+| Grenze                   | Wert          |
+| ------------------------ | ------------- |
+| Größe eines Berichts     | 500.000 Bytes |
+| Titel                    | 120 Zeichen   |
+| Zusammenfassung          | 2.500 Zeichen |
+| Berichte pro Projekt     | 10.000        |
+| Speicher je Installation | 5 GB          |
+
+Diese Grenzen schützen den Speicher; sie sind keine SEO-Kennzahlen.

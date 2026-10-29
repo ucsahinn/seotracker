@@ -107,7 +107,7 @@
       property="og:image:alt"
       content="Cartão do seowatcher: o painel do aplicativo com dados do Search Console, do Analytics 4 e da auditoria do site, e um botão para baixar para Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/pt/guias/instalar-com-docker/"
@@ -172,7 +172,7 @@
             "url": "https://seowatcher.io/pt/guias/instalar-com-docker/",
             "inLanguage": "pt",
             "datePublished": "2026-10-23",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-29",
             "articleSection": "Primeiros passos",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1511,7 +1511,7 @@
               >
             </li>
             <li>
-              <a href="/pt/guias/analise/">Entender os dados de análise</a>
+              <a href="/pt/guias/analise/">Compreender os dados do Analytics</a>
             </li>
             <li>
               <a href="/pt/guias/auditoria-do-site/">Auditoria do site</a>
@@ -1522,7 +1522,7 @@
             <li><a href="/pt/guias/relatorios/">Relatórios e modelos</a></li>
             <li>
               <a href="/pt/guias/informacoes-do-projeto/"
-                >Informações do projeto</a
+                >Contexto do projeto</a
               >
             </li>
             <li><a href="/pt/guias/configuracoes/">Configurações</a></li>
@@ -1534,7 +1534,7 @@
               <a href="/pt/guias/regras-de-auditoria/">Regras de auditoria</a>
             </li>
             <li>
-              <a href="/pt/guias/configurar-agente/">Configurar o agente</a>
+              <a href="/pt/guias/configurar-agente/">Configuração do agente</a>
             </li>
             <li>
               <a href="/pt/guias/solucao-de-problemas/">Solução de problemas</a>
@@ -1551,23 +1551,23 @@
           dados do Docker.
         </p>
         <p>
-          Ao fim desta página, o aplicativo estará rodando no Docker (um
-          programa que executa aplicativos em contêineres isolados) e aberto em
-          <code>http://localhost:3001</code>. Se você usa Windows, o instalador
-          de arquivo único é bem mais fácil. Esta página é para Mac, Linux e
-          para quem já usa Docker. A primeira inicialização leva alguns minutos,
-          porque o aplicativo é construído dentro do contêiner. As
-          inicializações seguintes levam segundos.
+          O Docker executa aplicativos em ambientes isolados, chamados
+          contêineres. Ao fim deste procedimento, o aplicativo responde em
+          <code>http://localhost:3001</code>. O procedimento é para Mac, Linux e
+          para quem já usa Docker; no Windows, o
+          <a href="/pt/guias/instalar-no-windows/"
+            >instalador de arquivo único</a
+          >
+          é mais simples. A primeira inicialização leva alguns minutos, porque o
+          aplicativo é compilado dentro do contêiner; as seguintes levam
+          segundos.
         </p>
         <h2 id="o-que-voce-precisa">O que você precisa</h2>
         <ul>
           <li>
-            No Windows, o Docker Desktop exige o WSL 2 e a virtualização ativada
-            na BIOS/UEFI.
-          </li>
-          <li>
             Docker Desktop (Mac, Windows) ou Docker Engine com Docker Compose
-            (Linux).
+            (Linux). No Windows, o Docker Desktop exige o WSL 2 e a
+            virtualização ativada na BIOS/UEFI.
           </li>
           <li>
             Git. Se você não tiver, <strong>Code → Download ZIP</strong> na
@@ -1575,7 +1575,7 @@
           </li>
           <li>
             Cerca de 2 GB de espaço livre em disco e 2 GB de memória livre
-            durante a primeira construção.
+            durante a primeira compilação.
           </li>
         </ul>
         <h2 id="passos">Passos</h2>
@@ -1595,28 +1595,29 @@ cd seotracker</code></pre>
           <pre><code>docker compose up -d</code></pre>
         </div>
         <p>
-          É só isso. Não é preciso um arquivo <code>.env</code>. A chave de
-          criptografia e a senha do assistente são criadas automaticamente na
-          primeira inicialização e guardadas no volume de dados do Docker.
+          Não é preciso mais nada, nem um arquivo <code>.env</code>. A chave de
+          criptografia e o token MCP do agente são gerados na primeira
+          inicialização e guardados no volume de dados do Docker.
         </p>
         <ol>
-          <li>Se quiser acompanhar o progresso, execute isto:</li>
+          <li>Para acompanhar o progresso:</li>
         </ol>
         <div class="code">
           <pre><code>docker compose logs -f</code></pre>
         </div>
         <ol>
           <li>
-            Aguarde. No registro, a linha &quot;Building client + server&quot; é
-            a primeira construção. Espere até que
+            No registro, a linha &quot;Building client + server&quot; indica a
+            primeira compilação. Espere até que
             <code>docker compose ps</code> mostre o estado
             <strong>healthy</strong> e depois abra
             <code>http://localhost:3001</code> no navegador.
           </li>
         </ol>
         <p>
-          O próximo passo é o guia da conexão com o Google. No Docker, os dois
-          endereços de redirecionamento que você informa ao Google são:
+          O próximo passo é
+          <a href="/pt/guias/conexao-google/">conectar ao Google</a>. No Docker,
+          os endereços de redirecionamento que você registra no Google são:
         </p>
         <ul>
           <li><code>http://localhost:3001/api/gsc/oauth/callback</code></li>
@@ -1629,9 +1630,9 @@ cd seotracker</code></pre>
 docker compose up -d --build</code></pre>
         </div>
         <p>
-          <strong>Configurações → Sobre</strong> avisa da versão nova e mostra
-          esses dois comandos. Seus dados ficam no volume de dados chamado
-          <code>seotracker_data</code>, então a atualização não os apaga.
+          <strong>Configurações → Sobre</strong> avisa sobre a nova versão e
+          mostra os mesmos comandos. Os dados ficam no volume
+          <code>seotracker_data</code>: a atualização não os apaga.
         </p>
         <h3 id="parar-e-remover">Parar e remover</h3>
         <ul>
@@ -1667,8 +1668,8 @@ docker compose up -d</code></pre>
         </p>
         <h3 id="configuracoes-opcional">Configurações (opcional)</h3>
         <p>
-          Nenhuma configuração é obrigatória. Se quiser mudar algo, coloque um
-          arquivo <code>.env</code> na pasta do projeto. Depois execute
+          Nenhuma configuração é obrigatória. Para mudar alguma, crie um arquivo
+          <code>.env</code> na pasta do projeto e execute
           <code>docker compose up -d --force-recreate seotracker</code>.
         </p>
         <div class="tw">
@@ -1728,7 +1729,7 @@ docker compose up -d</code></pre>
                 <td>MCP_TOKEN</td>
                 <td>
                   Se estiver vazio, é criado na primeira inicialização. Se você
-                  escrever <code>off</code>, nenhuma senha é pedida. Qualquer
+                  escrever <code>off</code>, nenhum token é exigido. Qualquer
                   outro valor é usado como está
                 </td>
               </tr>
@@ -1744,22 +1745,23 @@ docker compose up -d</code></pre>
           </li>
           <li>
             A saída de
-            <code>curl.exe http://127.0.0.1:3001/api/health</code> deve começar
-            com &quot;status&quot;:&quot;ok&quot;. Você também pode abrir
+            <code>curl.exe http://127.0.0.1:3001/api/health</code> (no Windows;
+            no Mac e no Linux, <code>curl</code>) deve começar com
+            &quot;status&quot;:&quot;ok&quot;. Você também pode abrir
             <code>http://127.0.0.1:3001/api/health</code> no navegador.
           </li>
           <li>
-            <code>http://localhost:3001</code> deve abrir no navegador. O cartão
-            de estado da tela <strong>Ajuda</strong> deve dizer &quot;Tudo
-            parece bem.&quot; Antes de conectar o Google, a linha &quot;Login no
-            Google&quot; pede atenção. Isso é normal.
+            <code>http://localhost:3001</code> deve abrir no navegador. Na tela
+            <strong>Ajuda</strong>, o cartão <strong>Status do app</strong> não
+            deve mostrar erros. Até o Google ser conectado, a linha de login no
+            Google fica em aviso: isso é normal.
           </li>
         </ul>
         <h2 id="perguntas-frequentes">Perguntas frequentes</h2>
         <p>
           <strong>Por que a primeira inicialização demora?</strong> O aplicativo
-          é construído dentro do contêiner. Nas inicializações seguintes, a
-          construção é pulada.
+          é compilado dentro do contêiner. Nas inicializações seguintes, a
+          compilação é pulada.
         </p>
         <p>
           <strong>Onde está o arquivo <code>.env.example</code>?</strong> Não há
@@ -1768,15 +1770,14 @@ docker compose up -d</code></pre>
           no arquivo <code>docs/ENVIRONMENT.md</code>.
         </p>
         <p>
-          <strong>Posso abri-lo para a internet?</strong> O aplicativo não
-          pergunta quem você é. Não o abra sem colocar sua própria autenticação
-          na frente. Se você definir <code>ALLOWED_HOST</code>, o aplicativo
-          avisa na verificação de saúde.
+          <strong>Posso expô-lo na internet?</strong> O aplicativo não pede
+          identificação a ninguém. Não o exponha sem colocar na frente um
+          sistema de autenticação próprio. Se você definir
+          <code>ALLOWED_HOST</code>, o aplicativo avisa na verificação de saúde.
         </p>
         <p>
-          <strong>Onde pego a senha do meu assistente?</strong> A tela
-          <strong>Configuração do agente</strong> do aplicativo mostra o
-          comando:
+          <strong>Onde fica o token MCP do agente?</strong> A tela
+          <strong>Configuração do agente</strong> mostra o comando:
           <code
             >docker compose exec -T seotracker cat
             /app/.wrangler/mcp-token</code
@@ -1791,17 +1792,18 @@ docker compose up -d</code></pre>
             arquivo <code>.env</code> com a linha <code>PORT=3002</code> e
             recrie o contêiner. No Windows, o Bloco de Notas pode salvar o
             arquivo como <code>.env.txt</code>. No PowerShell,
-            <code>Set-Content -Encoding ascii .env 'PORT=3002'</code> é seguro.
+            <code>Set-Content -Encoding ascii .env 'PORT=3002'</code> é mais
+            seguro.
           </li>
           <li>
             <strong>O estado é &quot;unhealthy&quot;.</strong>
             <code>docker compose logs --tail 50</code> mostra as últimas linhas.
-            Se a memória acabou durante a construção, dê mais memória ao Docker
+            Se a memória acabou durante a compilação, dê mais memória ao Docker
             Desktop.
           </li>
           <li>
             <strong
-              >A conexão com o Google diz &quot;não configurada&quot;.</strong
+              >A conexão com o Google aparece como não configurada.</strong
             >
             Se <code>BETTER_AUTH_SECRET</code> tiver menos de 32 caracteres, o
             Google fica desligado. Se você a definiu à mão, deixe-a mais longa.
@@ -1825,12 +1827,12 @@ docker compose up -d</code></pre>
           >
         </nav>
         <p class="meta">
-          Última atualização: 27 de outubro de 2026. Viu algum erro?
+          Última atualização: 29 de outubro de 2026. Encontrou um erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >Relate no GitHub</a
+            >Informe no GitHub</a
           >.
         </p>
       </article>

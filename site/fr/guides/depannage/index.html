@@ -14,7 +14,7 @@
     <title>Dépannage | Guide seowatcher</title>
     <meta
       name="description"
-      content="Problèmes fréquents par symptôme, cause et solution : port occupé, alerte Windows, erreurs Google, quota, audit bloqué, graphiques vides, assistant 401."
+      content="Problèmes fréquents par symptôme, cause et solution : port occupé, alerte Windows, erreurs Google, quota, audit bloqué, graphiques vides, assistant 401."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/fr/guides/depannage/" />
@@ -88,7 +88,7 @@
     <meta property="og:title" content="Dépannage | Guide seowatcher" />
     <meta
       property="og:description"
-      content="Problèmes fréquents par symptôme, cause et solution : port occupé, alerte Windows, erreurs Google, quota, audit bloqué, graphiques vides, assistant 401."
+      content="Problèmes fréquents par symptôme, cause et solution : port occupé, alerte Windows, erreurs Google, quota, audit bloqué, graphiques vides, assistant 401."
     />
     <meta
       property="og:image"
@@ -99,7 +99,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta property="article:modified_time" content="2026-10-29" />
     <meta
@@ -116,7 +116,7 @@
     <meta name="twitter:title" content="Dépannage | Guide seowatcher" />
     <meta
       name="twitter:description"
-      content="Problèmes fréquents par symptôme, cause et solution : port occupé, alerte Windows, erreurs Google, quota, audit bloqué, graphiques vides, assistant 401."
+      content="Problèmes fréquents par symptôme, cause et solution : port occupé, alerte Windows, erreurs Google, quota, audit bloqué, graphiques vides, assistant 401."
     />
     <meta
       name="twitter:image"
@@ -124,7 +124,7 @@
     />
     <meta
       name="twitter:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
@@ -159,7 +159,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/fr/guides/depannage/#article",
             "headline": "Dépannage",
-            "description": "Problèmes fréquents par symptôme, cause et solution : port occupé, alerte Windows, erreurs Google, quota, audit bloqué, graphiques vides, assistant 401.",
+            "description": "Problèmes fréquents par symptôme, cause et solution : port occupé, alerte Windows, erreurs Google, quota, audit bloqué, graphiques vides, assistant 401.",
             "url": "https://seowatcher.io/fr/guides/depannage/",
             "inLanguage": "fr",
             "datePublished": "2026-10-23",
@@ -198,7 +198,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1475,7 +1475,7 @@
           <ul>
             <li>
               <a href="/fr/guides/quest-ce-que-seowatcher/"
-                >Qu'est-ce que seowatcher ?</a
+                >Qu’est-ce que seowatcher ?</a
               >
             </li>
             <li>
@@ -1514,23 +1514,27 @@
               >
             </li>
             <li>
-              <a href="/fr/guides/statistiques/">Comprendre les statistiques</a>
+              <a href="/fr/guides/statistiques/"
+                >Comprendre les données Analytics</a
+              >
             </li>
             <li><a href="/fr/guides/audit-du-site/">Audit du site</a></li>
             <li>
-              <a href="/fr/guides/etat-de-l-index/">État de l'indexation</a>
+              <a href="/fr/guides/etat-de-l-index/">État de l’indexation</a>
             </li>
             <li><a href="/fr/guides/rapports/">Rapports et modèles</a></li>
-            <li><a href="/fr/guides/infos-du-projet/">Infos du projet</a></li>
+            <li>
+              <a href="/fr/guides/infos-du-projet/">Contexte du projet</a>
+            </li>
             <li><a href="/fr/guides/parametres/">Paramètres</a></li>
           </ul>
           <p class="nav-group">Aide et référence</p>
           <ul>
             <li><a href="/fr/guides/aide/">Aide</a></li>
-            <li><a href="/fr/guides/regles-d-audit/">Règles d'audit</a></li>
+            <li><a href="/fr/guides/regles-d-audit/">Règles d’audit</a></li>
             <li>
               <a href="/fr/guides/installation-assistant/"
-                >Installation de l'assistant</a
+                >Configuration de l’agent</a
               >
             </li>
             <li class="current" aria-current="page">
@@ -1543,225 +1547,230 @@
       <article id="icerik" data-page="sorun-giderme">
         <h1>Dépannage</h1>
         <p class="lede">
-          Problèmes fréquents par symptôme, cause et solution : port occupé,
+          Problèmes fréquents par symptôme, cause et solution : port occupé,
           alerte Windows, erreurs Google, quota, audit bloqué, graphiques vides,
           assistant 401.
         </p>
         <p>
-          Si quelque chose ne fonctionne pas, regardez d'abord la carte « État
-          de l'application » de l'écran <strong>Aide</strong> dans
-          l'application. La carte regarde cette installation elle-même et
-          contrôle la connexion et l'accès, la connexion Google, la clé
-          PageSpeed et la base de données. Si elle dit « N éléments nécessitent
-          votre attention », le bouton à côté vous mène au bon réglage. Les
+          Si quelque chose ne fonctionne pas, regardez d’abord la carte « État
+          de l’application » de l’écran <strong>Aide</strong> dans
+          l’application. La carte regarde cette installation elle-même et
+          contrôle la connexion et l’accès, la connexion Google, la clé
+          PageSpeed et la base de données. Si elle dit « N éléments nécessitent
+          votre attention », le bouton à côté vous mène au bon réglage. Les
           problèmes ci-dessous sont classés du plus fréquent au plus rare.
         </p>
         <p>
-          L'interface de l'application existe en six langues : turc, anglais,
+          L’interface de l’application existe en six langues : turc, anglais,
           allemand, français, italien et portugais. La langue se choisit dans
           Paramètres → Apparence → Langue. Ce guide donne les boutons et les
-          écrans sous le nom qu'ils portent dans l'interface en français. Le
-          menu de la zone de notification de Windows n'existe qu'en turc. Là, le
+          écrans sous le nom qu’ils portent dans l’interface en français. Le
+          menu de la zone de notification de Windows n’existe qu’en turc. Là, le
           nom turc est suivi de sa traduction française entre parenthèses.
         </p>
-        <h2 id="la-page-ne-s-ouvre-pas">La page ne s'ouvre pas</h2>
+        <h2 id="la-page-ne-s-ouvre-pas">La page ne s’ouvre pas</h2>
         <p class="callout callout-belirti">
-          <strong>Symptôme :</strong> Le navigateur affiche « connexion refusée
-          ».
+          <strong>Symptôme :</strong> Le navigateur affiche « connexion
+          refusée ».
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> L'application n'est pas démarrée.
+          <strong>Cause :</strong> L’application n’est pas démarrée.
         </p>
         <p class="callout callout-cozum">
-          <strong>Solution :</strong> Sous Windows, regardez l'icône dans la
-          barre des tâches. Si l'icône n'est pas visible, cliquez sur la flèche
+          <strong>Solution :</strong> Sous Windows, regardez l’icône dans la
+          barre des tâches. Si l’icône n’est pas visible, cliquez sur la flèche
           ^ de la barre des tâches. Sinon, ouvrez seowatcher depuis le menu
-          Démarrer. Si l'icône indique « Erreur », faites un clic droit et
-          choisissez <strong>Yeniden başlat</strong> (Redémarrer). Avec Docker,
-          tapez <code>docker compose ps</code>. Si l'état n'est pas healthy,
-          tapez <code>docker compose up -d</code>.
+          Démarrer. Si l’icône indique « Hata » (Erreur), faites un clic droit
+          et choisissez <strong>Yeniden başlat</strong> (Redémarrer). Avec
+          Docker, tapez <code>docker compose ps</code>. Si l’état n’est pas
+          healthy, tapez <code>docker compose up -d</code>.
         </p>
         <h2 id="le-numero-de-port-est-occupe">Le numéro de port est occupé</h2>
         <p class="callout callout-belirti">
           <strong>Symptôme :</strong> Sous Windows, une bande jaune apparaît en
-          haut de chaque écran de l'application : « seowatcher tourne cette fois
+          haut de chaque écran de l’application : « seowatcher tourne cette fois
           sur 3002, car un autre programme utilise 3001 (par exemple une
-          ancienne copie Docker). La connexion Google est configurée pour 3001 ;
-          fermez ce programme et redémarrez seowatcher. » La connexion à Google
-          donne une erreur. Ou bien l'icône indique « 3001 ve sonraki 9 adres
-          numarası (port) dolu » (le port 3001 et les 9 suivants sont occupés).
-          La même phrase est écrite dans la carte « État de l'application » de
-          l'écran <strong>Aide</strong>. Avec Docker, « Bind for 127.0.0.1:3001
-          failed » s'affiche.
+          ancienne copie Docker). La connexion Google est configurée pour 3001 ;
+          fermez ce programme et redémarrez seowatcher. » La connexion à Google
+          donne une erreur. Ou bien l’icône indique « 3001 ve sonraki 9 adres
+          numarası (port) dolu » (le port 3001 et les 9 suivants sont occupés).
+          La même phrase figure dans la carte « État de l’application » de
+          l’écran <strong>Aide</strong>. Avec Docker, « Bind for 127.0.0.1:3001
+          failed » s’affiche.
         </p>
         <p class="callout callout-sebep">
           <strong>Cause :</strong> Un autre programme utilise le même numéro de
           port. La cause la plus fréquente est une ancienne copie Docker que
           vous avez lancée un jour. Docker Desktop peut la relancer tout seul au
-          démarrage de l'ordinateur. Les adresses de redirection de Google
+          démarrage de l’ordinateur. Les adresses de redirection de Google
           indiquent 3001, la connexion Google ne marche donc pas tant que
-          l'application est ouverte sur 3002.
+          l’application est ouverte sur 3002.
         </p>
         <p class="callout callout-cozum">
           <strong>Solution :</strong> Le paquet Windows choisit normalement un
-          numéro libre entre 3002 et 3010, vous l'indique dans une bulle et dans
-          la bande du haut, et ne l'utilise que pour ce démarrage. Fermez
-          d'abord le programme qui occupe 3001. Si c'est une ancienne copie
+          numéro libre entre 3002 et 3010, vous l’indique dans une bulle et dans
+          la bande du haut, et ne l’utilise que pour ce démarrage. Fermez
+          d’abord le programme qui occupe 3001. Si c’est une ancienne copie
           Docker, arrêtez le conteneur seotracker dans Docker Desktop ou lancez
           <code>docker compose stop</code> dans le dossier du projet. Choisissez
           ensuite <strong>Yeniden başlat</strong> (Redémarrer) dans le menu.
-          L'application revient au 3001 et la bande disparaît. Fermer la bande
-          ne fait que la masquer pour cet onglet ; cela ne règle rien. Si tous
-          sont pris, écrivez un autre numéro dans le fichier
-          <code>config.json</code> du dossier de données. Avec Docker, placez un
-          fichier <code>.env</code> contenant la ligne <code>PORT=3002</code> et
-          tapez <code>docker compose up -d --force-recreate seotracker</code>.
-          Quand le numéro change, mettez aussi à jour les adresses de
-          redirection Google.
+          L’application revient au 3001 et la bande disparaît. Fermer la bande
+          ne fait que la masquer pour cet onglet ; cela ne règle rien. Si les
+          numéros 3002 à 3010 sont tous pris, écrivez un autre numéro dans le
+          fichier <code>config.json</code> du dossier de données. Avec Docker,
+          placez un fichier <code>.env</code> contenant la ligne
+          <code>PORT=3002</code> et tapez
+          <code>docker compose up -d --force-recreate seotracker</code>. Quand
+          le numéro change, mettez aussi à jour les adresses de redirection
+          Google.
         </p>
         <h2 id="l-icone-indique-windows-bileseni-eksik">
-          L'icône indique « Windows bileşeni eksik »
+          L’icône indique « Windows bileşeni eksik »
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptôme :</strong> L'application ne s'ouvre pas. L'icône
-          indique « Windows bileşeni eksik » (Composant Windows manquant), ou le
-          journal mentionne « Workers runtime failed to start » et « 0xc0000005
-          ».
+          <strong>Symptôme :</strong> L’application ne s’ouvre pas. L’icône
+          indique « Windows bileşeni eksik » (Composant Windows manquant), ou le
+          journal mentionne « Workers runtime failed to start » et
+          « 0xc0000005 ».
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> Le moteur de l'application a besoin du paquet
+          <strong>Cause :</strong> Le moteur de l’application a besoin du paquet
           Visual C++ de Microsoft (2015-2022, 64 bits). Sur un Windows tout
           neuf, ce paquet est absent ou trop ancien.
         </p>
         <p class="callout callout-cozum">
           <strong>Solution :</strong> Cliquez sur la bulle qui apparaît, ou
-          faites un clic droit sur l'icône et choisissez
+          faites un clic droit sur l’icône et choisissez
           <strong>Eksik Windows bileşenini kur</strong> (Installer le composant
-          Windows manquant). Windows demande une fois l'autorisation d'un
-          administrateur. À la fin de l'installation, l'application redémarre
-          toute seule. Si vous n'avez pas le paquet, téléchargez-le sur la page
-          de Microsoft :
+          Windows manquant). Windows demande une fois l’autorisation d’un
+          administrateur. À la fin de l’installation, l’application redémarre
+          toute seule. Si vous n’avez pas le paquet, téléchargez-le sur la page
+          de Microsoft :
           <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code>
         </p>
         <h2 id="l-autorisation-d-administrateur-n-a-pas-ete-donnee">
-          L'autorisation d'administrateur n'a pas été donnée
+          L’autorisation d’administrateur n’a pas été donnée
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptôme :</strong> Pendant l'installation, l'autorisation
+          <strong>Symptôme :</strong> Pendant l’installation, l’autorisation
           pour Visual C++ a été demandée, vous avez répondu
-          <strong>Non</strong>. L'installation a affiché « Microsoft Visual C++
-          çalışma zamanı kurulamadı » (L'environnement d'exécution Microsoft
-          Visual C++ n'a pas pu être installé).
+          <strong>Non</strong>. L’installation a affiché « Microsoft Visual C++
+          çalışma zamanı kurulamadı » (L’environnement d’exécution Microsoft
+          Visual C++ n’a pas pu être installé).
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> Le composant Windows nécessaire n'a pas pu
-          être installé. Comme l'application embarque une copie des fichiers
+          <strong>Cause :</strong> Le composant Windows nécessaire n’a pas pu
+          être installé. Comme l’application embarque une copie des fichiers
           dont elle a besoin, elle démarre quand même sur la plupart des
           ordinateurs.
         </p>
         <p class="callout callout-cozum">
-          <strong>Solution :</strong> Si l'application a démarré, vous n'avez
-          rien à faire. Sinon, faites un clic droit sur l'icône de la barre des
-          tâches (si elle n'est pas visible, cliquez sur la flèche ^).
+          <strong>Solution :</strong> Si l’application a démarré, vous n’avez
+          rien à faire. Sinon, faites un clic droit sur l’icône de la barre des
+          tâches (si elle n’est pas visible, cliquez sur la flèche ^).
           Choisissez <strong>Eksik Windows bileşenini kur</strong> et donnez
-          cette fois l'autorisation. Ou téléchargez et installez le composant
-          depuis l'adresse
+          cette fois l’autorisation. Ou téléchargez et installez le composant
+          depuis l’adresse
           <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code>.
         </p>
-        <h2 id="l-icone-indique-uygulamanin-motoru-coktu">
-          L'icône indique « Uygulamanın motoru çöktü »
+        <h2
+          id="l-icone-indique-uygulamanin-motoru-coktu-le-moteur-de-l-application-a-plante"
+        >
+          L’icône indique « Uygulamanın motoru çöktü » (le moteur de
+          l’application a planté)
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptôme :</strong> L'application ne s'ouvre pas. Le journal
-          contient « Workers runtime failed to start » et « 0xc0000005 », mais
+          <strong>Symptôme :</strong> L’application ne s’ouvre pas. Le journal
+          contient « Workers runtime failed to start » et « 0xc0000005 », mais
           le paquet Visual C++ est installé.
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> Le moteur de l'application (workerd) bute sur
-          un fichier système de cet ordinateur. Au démarrage, l'application
-          essaie le moteur seul. S'il indique « Tek başına da başlayamıyor » (Il
+          <strong>Cause :</strong> Le moteur de l’application (workerd) bute sur
+          un fichier système de cet ordinateur. Au démarrage, l’application
+          essaie le moteur seul. S’il indique « Tek başına da başlayamıyor » (Il
           ne peut pas démarrer seul non plus), le problème est dans
-          l'ordinateur. S'il indique « Tek başına çalışıyor » (Il fonctionne
+          l’ordinateur. S’il indique « Tek başına çalışıyor » (Il fonctionne
           seul), le problème est dans le dossier de données ou dans la
           configuration.
         </p>
         <p class="callout callout-cozum">
-          <strong>Solution :</strong> Cliquez d'abord sur
-          <strong>Kurulumu onar</strong> (Réparer l'installation). Si cela ne
-          règle rien, faites un clic droit sur l'icône et choisissez
+          <strong>Solution :</strong> Cliquez d’abord sur
+          <strong>Kurulumu onar</strong> (Réparer l’installation). Si cela ne
+          règle rien, faites un clic droit sur l’icône et choisissez
           <strong>Sorunu bildir (GitHub)</strong> (Signaler un problème
           (GitHub)). Les informations de diagnostic (version de Windows,
           processeur, nom du module fautif, vidage de plantage) sont ajoutées
-          automatiquement au signalement : vous n'avez qu'à l'envoyer. Les
+          automatiquement au signalement : vous n’avez qu’à l’envoyer. Les
           vidages de plantage se trouvent dans le dossier
           <code>%LOCALAPPDATA%\seowatcher\logs\dumps</code>. Si vous le
           souhaitez, joignez-les aussi au signalement.
         </p>
         <h2 id="windows-indique-a-protege-votre-ordinateur">
-          Windows indique « a protégé votre ordinateur »
+          Windows indique « a protégé votre ordinateur »
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptôme :</strong> Le fichier d'installation ne s'ouvre pas,
-          un écran d'avertissement bleu apparaît.
+          <strong>Symptôme :</strong> Le fichier d’installation ne s’ouvre pas,
+          un écran d’avertissement bleu apparaît.
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> Le fichier n'est pas signé. Windows affiche
-          cet écran pour les éditeurs qu'il ne connaît pas.
+          <strong>Cause :</strong> Le fichier n’est pas signé. Windows affiche
+          cet écran pour les éditeurs qu’il ne connaît pas.
         </p>
         <p class="callout callout-cozum">
           <strong>Solution :</strong> Cliquez sur le texte
-          <strong>Informations complémentaires</strong> à l'écran. Le bouton
+          <strong>Informations complémentaires</strong> à l’écran. Le bouton
           <strong>Exécuter quand même</strong> apparaît. Si vous avez un doute,
           comparez le résumé SHA-256 du fichier (son empreinte) avec le fichier
           <code>SHA256SUMS.txt</code> de la page des versions.
         </p>
         <h2 id="google-indique-redirect-uri-mismatch">
-          Google indique « redirect_uri_mismatch »
+          Google indique « redirect_uri_mismatch »
         </h2>
         <p class="callout callout-belirti">
           <strong>Symptôme :</strong> Quand vous cliquez sur
-          <strong>Connecter</strong>, Google affiche une page d'erreur.
+          <strong>Connecter</strong>, Google affiche une page d’erreur.
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> L'adresse de redirection dans Google Cloud
-          Console n'est pas strictement identique à celle de l'application.
+          <strong>Cause :</strong> L’adresse de redirection dans Google Cloud
+          Console n’est pas strictement identique à celle de l’application.
         </p>
         <p class="callout callout-cozum">
           <strong>Solution :</strong> Copiez les deux adresses avec le bouton de
           copie de <strong>Paramètres → Google</strong>. Dans Cloud Console,
-          collez-les dans le champ d'adresse de la clé d'accès Google (le client
+          collez-les dans le champ d’adresse de la clé d’accès Google (le client
           OAuth). Localhost au lieu de 127.0.0.1, http au lieu de https, ou une
           barre oblique finale font la différence.
         </p>
         <h2 id="cle-d-acces-google-manquante">
-          « Clé d'accès Google manquante »
+          « Clé d’accès Google manquante »
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptôme :</strong> Dans les paramètres du projet, l'onglet
+          <strong>Symptôme :</strong> Dans les paramètres du projet, l’onglet
           Connexions affiche un avertissement jaune.
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> L'identifiant client et la clé secrète n'ont
+          <strong>Cause :</strong> L’identifiant client et la clé secrète n’ont
           pas été saisis dans <strong>Paramètres → Google</strong>. Ou, avec
           Docker, la clé de chiffrement fait moins de 32 caractères.
         </p>
         <p class="callout callout-cozum">
-          <strong>Solution :</strong> Faites les étapes 10 et 11 du guide de la
-          connexion à Google. Avec Docker, si vous avez fourni
-          <code>BETTER_AUTH_SECRET</code> à la main, rallongez-le. Si vous le
-          laissez vide, l'application le génère elle-même.
+          <strong>Solution :</strong> Suivez la voie 2 (client OAuth) du guide
+          <a href="/fr/guides/connexion-google/">Connexion à Google</a>. Avec
+          Docker, si vous avez fourni <code>BETTER_AUTH_SECRET</code> à la main,
+          rallongez-le. Si vous le laissez vide, l’application le génère
+          elle-même.
         </p>
         <h2 id="google-indique-access-denied">
-          Google indique « access_denied »
+          Google indique « access_denied »
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptôme :</strong> Après l'écran d'autorisation, un
-          avertissement « iptal edildi » (annulé) apparaît.
+          <strong>Symptôme :</strong> Après l’écran d’autorisation, le message
+          « La connexion à Google a été annulée » apparaît.
         </p>
         <p class="callout callout-sebep">
           <strong>Cause :</strong> Le compte Google avec lequel vous vous êtes
           connecté ne figure pas dans la liste des utilisateurs de test de
-          l'écran de consentement.
+          l’écran de consentement.
         </p>
         <p class="callout callout-cozum">
           <strong>Solution :</strong> Dans Cloud Console, ajoutez le compte dans
@@ -1770,32 +1779,31 @@
         </p>
         <h2 id="la-connexion-a-expire">La connexion a expiré</h2>
         <p class="callout callout-belirti">
-          <strong>Symptôme :</strong> La carte Connexions indique « La connexion
-          a expiré » et aucune donnée n'arrive.
+          <strong>Symptôme :</strong> La carte Connexions indique « La connexion
+          a expiré » et aucune donnée n’arrive.
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> Pour les applications à l'état « Test »,
-          Google peut révoquer l'autorisation au bout de sept jours. La clé de
+          <strong>Cause :</strong> Pour les applications à l’état « Test »,
+          Google peut révoquer l’autorisation au bout de sept jours. La clé de
           chiffrement a aussi pu changer.
         </p>
         <p class="callout callout-cozum">
           <strong>Solution :</strong> Cliquez sur
           <strong>Reconnecter</strong> dans la carte. Si cela se répète souvent,
-          passez l'écran de consentement en production, ou passez à un compte de
-          service (<strong>Paramètres → Compte de service</strong>, Paramètres →
-          Compte de service).
+          passez l’écran de consentement en production, ou passez à un compte de
+          service (<strong>Paramètres → Compte de service</strong>).
         </p>
         <h2 id="pas-de-donnees-de-requetes-graphiques-vides">
           Pas de données de requêtes, graphiques vides
         </h2>
         <p class="callout callout-belirti">
           <strong>Symptôme :</strong> Les cartes du tableau de bord sont à zéro.
-          Performance de recherche indique « Aucune donnée pour cette période
-          pour l'instant ».
+          Performances de recherche indique « Aucune donnée pour cette période
+          pour l’instant ».
         </p>
         <p class="callout callout-sebep">
           <strong>Cause :</strong> Il y a trois possibilités. Le site est récent
-          et Google n'affiche pas encore d'impressions. Ou Search Console a
+          et Google n’affiche pas encore d’impressions. Ou Search Console a
           trois jours de retard et la période choisie est trop courte. Ou la
           mauvaise propriété a été choisie.
         </p>
@@ -1803,7 +1811,7 @@
           <strong>Solution :</strong> Mettez la période sur
           <strong>3 derniers mois</strong>. Dans les paramètres du projet,
           vérifiez que la propriété est le bon site. Une propriété de domaine
-          couvre tous les sous-domaines, une propriété à préfixe d'URL ne les
+          couvre tous les sous-domaines, une propriété à préfixe d’URL ne les
           couvre pas. Sur un site récent, les lignes de requêtes peuvent arriver
           après des semaines. Le tableau des pages se remplit plus tôt.
         </p>
@@ -1816,7 +1824,7 @@
           carte.
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> Ce n'est pas une erreur. Google compte
+          <strong>Cause :</strong> Ce n’est pas une erreur. Google compte
           séparément chaque page qui apparaît pour la même recherche. La carte
           est le total du site.
         </p>
@@ -1825,54 +1833,54 @@
           le tableau page par page.
         </p>
         <h2 id="l-audit-est-reste-bloque-sur-en-cours">
-          L'audit est resté bloqué sur « En cours »
+          L’audit est resté bloqué sur « En cours »
         </h2>
         <p class="callout callout-belirti">
           <strong>Symptôme :</strong> Pas de progression depuis une demi-heure.
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> L'application a peut-être redémarré, ou le
+          <strong>Cause :</strong> L’application a peut-être redémarré, ou le
           traitement a été interrompu.
         </p>
         <p class="callout callout-cozum">
-          <strong>Solution :</strong> Patientez. L'application contrôle les
-          audits qui restent « en cours » depuis plus de 15 minutes. S'il n'y a
-          aucun signe de vie, elle le ferme avec « Échec » et en écrit la cause.
+          <strong>Solution :</strong> Patientez. L’application contrôle les
+          audits qui restent « en cours » depuis plus de 15 minutes. S’il n’y a
+          aucun signe de vie, elle le marque « Échec » et en indique la cause.
           Cliquez ensuite sur
           <strong>Relancer avec les mêmes paramètres</strong>. Ne lancez pas
-          deux audits en même temps avec la mesure de vitesse : ils se
+          deux audits en même temps avec la mesure de vitesse : ils se
           ralentissent mutuellement.
         </p>
         <h2 id="l-audit-indique-l-audit-s-est-arrete-avant-la-fin">
-          L'audit indique « L'audit s'est arrêté avant la fin »
+          L’audit indique « L’audit s’est arrêté avant la fin »
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptôme :</strong> L'écran d'audit indique « L'audit s'est
-          arrêté pendant la phase « exploration ». » ou « L'audit s'est arrêté
-          avant la fin. » À la place du score, il est écrit « Audit incomplet —
-          aucun score attribué ».
+          <strong>Symptôme :</strong> L’écran d’audit indique « L’audit s’est
+          arrêté pendant la phase « exploration ». » ou « L’audit s’est arrêté
+          avant la fin. » À la place du score, la carte affiche « Audit
+          incomplet — aucun score attribué ».
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> L'écran dit trois choses : ce qui s'est
-          passé, si le défaut vient de votre site ou de l'application, et ce que
-          vous devez faire. Le titre indique la phase où il s'est arrêté :
-          découverte des URL, exploration, mesure de vitesse ou préparation des
-          résultats.
+          <strong>Cause :</strong> L’audit s’est interrompu. L’écran dit trois
+          choses : ce qui s’est passé, si le défaut vient de votre site ou de
+          l’application, et ce que vous devez faire. Le titre indique la phase
+          où il s’est arrêté : découverte des URL, exploration, mesure de
+          vitesse ou préparation des résultats.
         </p>
         <p class="callout callout-cozum">
-          <strong>Solution :</strong> Suivez la phrase de l'écran.
+          <strong>Solution :</strong> Suivez la phrase de l’écran.
         </p>
         <ul>
           <li>
-            <strong>Une étape n'a pas terminé à temps.</strong> En général, le
+            <strong>Une étape n’a pas terminé à temps.</strong> En général, le
             site répond très lentement. Réessayez dans quelques minutes. Si cela
             se reproduit, lancez avec moins de pages.
           </li>
           <li>
-            <strong>L'audit ne tenait pas dans la mémoire</strong>,
+            <strong>L’audit ne tenait pas dans la mémoire</strong>,
             <strong>a dépassé le temps de processeur</strong> ou
             <strong
-              >le résultat d'une étape dépassait la taille que l'application
+              >le résultat d’une étape dépassait la taille que l’application
               peut stocker.</strong
             >
             Des pages très volumineuses ou complexes en sont la cause. Relancez
@@ -1880,173 +1888,174 @@
           </li>
           <li>
             <strong
-              >Une erreur est survenue lors de l'écriture des résultats dans la
+              >Une erreur est survenue lors de l’écriture des résultats dans la
               base de données.</strong
             >
             Le disque est peut-être plein ou le fichier de données verrouillé
-            par un autre programme. Vérifiez qu'il reste de la place sur le
-            disque, redémarrez l'application puis relancez l'audit.
+            par un autre programme. Vérifiez qu’il reste de la place sur le
+            disque, redémarrez l’application puis relancez l’audit.
           </li>
           <li>
             <strong
-              >Le moteur interne d'audit de l'application a signalé une
+              >Le moteur interne d’audit de l’application a signalé une
               erreur.</strong
             >
             Choisissez <strong>Yeniden başlat</strong> (Redémarrer) dans le menu
-            de la zone de notification, puis relancez l'audit.
+            de la zone de notification, puis relancez l’audit.
           </li>
           <li>
-            <strong>L'audit a été interrompu.</strong> L'application a peut-être
-            été fermée ou redémarrée en cours de route. Laissez l'application
-            ouverte et relancez l'audit.
+            <strong>L’audit a été interrompu.</strong> L’application a peut-être
+            été fermée ou redémarrée en cours de route. Laissez l’application
+            ouverte et relancez l’audit.
           </li>
           <li>
             <strong
-              >La clé d'installation n'est pas parvenue à la partie qui exécute
+              >La clé d’installation n’est pas parvenue à la partie qui exécute
               les audits.</strong
             >
-            Vos clés Google et PageSpeed enregistrées n'ont pas été supprimées.
-            Mettez l'application à jour ou redémarrez-la, puis relancez l'audit.
+            Vos clés Google et PageSpeed enregistrées n’ont pas été supprimées.
+            Mettez l’application à jour ou redémarrez-la, puis relancez l’audit.
           </li>
           <li>
-            <strong>Une erreur inattendue.</strong> Relancez l'audit. Si cela
-            continue, téléchargez le paquet de diagnostic depuis l'écran
+            <strong>Une erreur inattendue.</strong> Relancez l’audit. Si cela
+            continue, téléchargez le paquet de diagnostic depuis l’écran
             <strong>Aide</strong> et signalez le problème.
           </li>
         </ul>
         <p>
-          Le texte brut de l'erreur n'arrive pas à l'écran. Il reste dans le
+          Le texte brut de l’erreur n’arrive pas à l’écran. Il reste dans le
           paquet de diagnostic.
         </p>
         <h2 id="l-audit-indique-score-provisoire">
-          L'audit indique « Score provisoire »
+          L’audit indique « Score provisoire »
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptôme :</strong> Il n'y a pas de mot d'appréciation à côté
-          du score. Une ligne comme « Score provisoire — couverture des mesures
-          62 % » est là.
+          <strong>Symptôme :</strong> Il n’y a pas de mot d’appréciation à côté
+          du score. Une ligne comme « Score provisoire — couverture des mesures
+          62 % » est là.
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> Une grande partie des contrôles n'a pas pu
+          <strong>Cause :</strong> Une grande partie des contrôles n’a pas pu
           être mesurée (la part des contrôles mesurés est sous 70 pour cent, ou
-          moins de la moitié des contrôles d'Exploration, d'Indexation, de
+          moins de la moitié des contrôles d’Exploration, d’Indexation, de
           Contenu ou de Vitesse ont été mesurés). Les lignes sous la carte
-          donnent les raisons : le quota PageSpeed était épuisé, il n'y a pas de
+          donnent les raisons : le quota PageSpeed était épuisé, il n’y a pas de
           clé PageSpeed, la mesure de vitesse était désactivée ou les données
-          d'index n'ont pas pu être récupérées dans Search Console.
+          d’index n’ont pas pu être récupérées dans Search Console.
         </p>
         <p class="callout callout-cozum">
           <strong>Solution :</strong> Activez la mesure de vitesse, ajoutez une
-          clé PageSpeed ou connectez Search Console, puis relancez l'audit. Le
+          clé PageSpeed ou connectez Search Console, puis relancez l’audit. Le
           score porte sur ce qui a été mesuré. Aucun jugement, bon ou mauvais,
-          n'a été porté sur le reste.
+          n’a été porté sur le reste.
         </p>
         <h2 id="l-audit-indique-audit-incomplet-aucun-score-attribue">
-          L'audit indique « Audit incomplet — aucun score attribué »
+          L’audit indique « Audit incomplet — aucun score attribué »
         </h2>
         <p class="callout callout-belirti">
           <strong>Symptôme :</strong> Cette phrase est à la place de la carte du
           score. Les constats restent affichés en dessous.
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> L'audit s'est arrêté sur une erreur, il est
-          toujours en cours ou l'exploration s'est arrêtée prématurément en
+          <strong>Cause :</strong> L’audit s’est arrêté sur une erreur, il est
+          toujours en cours ou l’exploration s’est arrêtée prématurément en
           raison de la limite de débit du site. La liste des problèmes est
-          incomplète, aucun score n'a donc été calculé. Si aucune page n'a pu
-          être explorée, la carte du score n'apparaît pas du tout.
+          incomplète, aucun score n’a donc été calculé. Si aucune page n’a pu
+          être explorée, la carte du score n’apparaît pas du tout.
         </p>
         <p class="callout callout-cozum">
           <strong>Solution :</strong> Lisez la raison dans la section ci-dessus.
-          Relancez l'audit quand la limite de débit est réinitialisée ou que le
+          Relancez l’audit quand la limite de débit est réinitialisée ou que le
           problème est réglé. Les constats valent pour les pages explorées.
         </p>
         <h2
           id="l-audit-est-termine-mais-indique-la-mesure-de-vitesse-s-est-faite-sans-cle"
         >
-          L'audit est terminé mais indique « la mesure de vitesse s'est faite
-          sans clé »
+          L’audit est terminé mais indique « la mesure de vitesse s’est faite
+          sans clé »
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptôme :</strong> L'audit est terminé. Un avertissement dit
-          « La clé PageSpeed enregistrée n'a pas pu être lue ; la mesure de
-          vitesse s'est faite sans clé. » L'onglet Vitesse compte 50 pages au
+          <strong>Symptôme :</strong> L’audit est terminé. Un avertissement dit
+          « La clé PageSpeed enregistrée n’a pas pu être lue ; la mesure de
+          vitesse s’est faite sans clé. » L’onglet Vitesse compte 50 pages au
           plus.
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> La partie qui exécute les audits n'a pas reçu
-          la clé d'installation qui ouvre la clé enregistrée, la mesure de
-          vitesse s'est donc faite sans elle. Les résultats de l'exploration ne
+          <strong>Cause :</strong> La partie qui exécute les audits n’a pas reçu
+          la clé d’installation qui ouvre la clé enregistrée, la mesure de
+          vitesse s’est donc faite sans elle. Les résultats de l’exploration ne
           sont pas touchés.
         </p>
         <p class="callout callout-cozum">
-          <strong>Solution :</strong> Mettez l'application à jour ou
+          <strong>Solution :</strong> Mettez l’application à jour ou
           redémarrez-la, puis lancez un nouvel audit. Si cela continue,
           enregistrez de nouveau la clé PageSpeed dans
           <strong>Paramètres</strong>.
         </p>
-        <h2 id="l-audit-indique-engellendik-nous-avons-ete-bloques">
-          L'audit indique « Engellendik » (Nous avons été bloqués)
+        <h2 id="l-audit-indique-nous-avons-ete-bloques">
+          L’audit indique « Nous avons été bloqués »
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptôme :</strong> Un avertissement jaune apparaît : «
-          L'audit n'a pas pu explorer complètement ce site. » ou « N sayfada
-          engellendik. » (Nous avons été bloqués sur N pages.)
+          <strong>Symptôme :</strong> Un avertissement jaune apparaît :
+          « L’audit n’a pas pu explorer complètement ce site. » ou « Nous avons
+          été bloqués sur N pages. »
         </p>
         <p class="callout callout-sebep">
           <strong>Cause :</strong> La protection anti-bots du site (Cloudflare
-          ou un pare-feu) a arrêté l'explorateur de site de l'application.
+          ou un pare-feu) a arrêté l’explorateur de site de l’application.
         </p>
         <p class="callout callout-cozum">
-          <strong>Solution :</strong> Dans le pare-feu, autorisez l'agent
-          utilisateur nommé <code>seotracker-audit</code>, ou placez l'adresse
+          <strong>Solution :</strong> Dans le pare-feu, autorisez l’agent
+          utilisateur nommé <code>seotracker-audit</code>, ou placez l’adresse
           réseau (IP) de votre ordinateur dans la liste autorisée. Si le site
-          n'est pas le vôtre, il n'y a rien à faire. Les résultats restent
+          n’est pas le vôtre, il n’y a rien à faire. Les résultats restent
           limités aux pages qui ont pu être explorées.
         </p>
         <h2 id="la-mesure-de-vitesse-est-incomplete-ou-absente">
           La mesure de vitesse est incomplète ou absente
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptôme :</strong> L'onglet Vitesse est vide ou n'a que très
-          peu de lignes. La carte de quota indique « Quota épuisé », « Dakikalık
-          sınır » (Limite par minute) ou « Anahtar yok » (Pas de clé).
+          <strong>Symptôme :</strong> L’onglet Vitesse est vide ou n’a que très
+          peu de lignes. La carte des quotas signale un quota épuisé, une limite
+          par minute atteinte ou l’absence de clé.
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> Il n'y a pas de clé PageSpeed (au plus 50
+          <strong>Cause :</strong> Il n’y a pas de clé PageSpeed (au plus 50
           pages sont mesurées). Ou le quota quotidien de Google est épuisé.
         </p>
         <p class="callout callout-cozum">
           <strong>Solution :</strong> Obtenez une clé gratuite en suivant le
           guide de la clé PageSpeed. Si le quota quotidien est épuisé, le reste
-          est complété demain lors d'un nouvel audit. Si la mesure de vitesse
-          était désactivée au lancement de l'audit, elle n'est pas faite après
+          est complété demain lors d’un nouvel audit. Si la mesure de vitesse
+          était désactivée au lancement de l’audit, elle n’est pas faite après
           coup pour cet audit.
         </p>
         <h2 id="inspection-d-url-limite-quotidienne-atteinte">
-          Inspection d'URL : « limite quotidienne atteinte »
+          Inspection d’URL : limite quotidienne atteinte
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptôme :</strong> Dans l'onglet État de l'indexation, le
-          bouton ne fonctionne pas. « Google'ın günlük 2.000 adres sınırına
-          ulaşıldı » (La limite quotidienne de 2 000 adresses de Google est
-          atteinte) s'affiche.
+          <strong>Symptôme :</strong> Dans l’onglet État de l’indexation, le
+          bouton ne fonctionne pas. Le message « La limite quotidienne de 2 000
+          URL de Google est épuisée » s’affiche.
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> Il y a un quota de 2 000 questions par jour
-          et par propriété. L'application, votre assistant et les requêtes que
+          <strong>Cause :</strong> Google accorde 2 000 vérifications par jour
+          et par propriété. L’application, votre assistant et les requêtes que
           vous faites à la main dans Search Console puisent dans la même
           réserve.
         </p>
         <p class="callout callout-cozum">
-          <strong>Solution :</strong> Continuez demain. L'application ne repose
-          que les réponses devenues anciennes, votre quota n'est pas gaspillé.
+          <strong>Solution :</strong> La limite porte sur les 24 dernières
+          heures : des vérifications se libèrent donc peu à peu au fil des
+          heures ; reprenez ensuite. L’application ne redemande que les réponses
+          devenues anciennes, sans gaspiller de quota.
         </p>
         <h2 id="la-carte-ou-le-rapport-analytics-affiche-une-erreur">
           La carte ou le rapport Analytics affiche une erreur
         </h2>
         <p class="callout callout-belirti">
           <strong>Symptôme :</strong> La carte du trafic organique du Tableau de
-          bord, ou l'écran Analytics, affiche une phrase à la place des données,
+          bord, ou l’écran Analytics, affiche une phrase à la place des données,
           avec les boutons <strong>Réparer la connexion</strong> et
           <strong>Réessayer</strong>.
         </p>
@@ -2060,18 +2069,19 @@
             Reconnectez-la dans <strong>Paramètres</strong>.
           </li>
           <li>
-            <strong>L'accès à cette propriété a été refusé (HTTP 403).</strong>
+            <strong>L’accès à cette propriété a été refusé (HTTP 403).</strong>
             Donnez au compte connecté ou au compte de service au moins le rôle
             Lecteur sur la propriété.
           </li>
           <li>
             <strong>La propriété est introuvable (HTTP 404).</strong> Elle a
             peut-être été supprimée ou déplacée. Choisissez-la de nouveau dans
-            <strong>Paramètres</strong>.
+            <strong>Paramètres du projet → Connexions</strong>.
           </li>
           <li>
-            <strong>Aucune propriété n'est connectée à ce projet.</strong>
-            Choisissez-en une dans <strong>Paramètres</strong>.
+            <strong>Aucune propriété n’est connectée à ce projet.</strong>
+            Choisissez-en une dans
+            <strong>Paramètres du projet → Connexions</strong>.
           </li>
           <li>
             <strong>Le quota de rapports est épuisé (HTTP 429).</strong> Le
@@ -2083,12 +2093,12 @@
               >La Google Analytics Data API est désactivée dans le projet Google
               Cloud.</strong
             >
-            Activez « Google Analytics Data API » dans la Google Cloud Console
+            Activez « Google Analytics Data API » dans la Google Cloud Console
             et réessayez.
           </li>
           <li>
             <strong
-              >Le rapport n'est pas compatible avec la propriété choisie (HTTP
+              >Le rapport n’est pas compatible avec la propriété choisie (HTTP
               400).</strong
             >
             Vérifiez la propriété ou choisissez-en une autre.
@@ -2106,9 +2116,9 @@
           </li>
         </ul>
         <p class="callout callout-cozum">
-          <strong>Solution :</strong> Faites l'étape que la phrase indique. Le
-          plus souvent, <strong>Réparer la connexion</strong> mène au bon
-          réglage.
+          <strong>Solution :</strong> Appliquez l’action indiquée par le
+          message. Le plus souvent, <strong>Réparer la connexion</strong> mène
+          au bon réglage.
         </p>
         <h2 id="une-requete-vers-search-console-affiche-une-erreur">
           Une requête vers Search Console affiche une erreur
@@ -2119,26 +2129,26 @@
           place des données.
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> La phrase d'erreur indique la cause.
+          <strong>Cause :</strong> La phrase d’erreur indique la cause.
         </p>
         <ul>
           <li>
             <strong>La requête a été jugée invalide (HTTP 400).</strong> Ce
-            n'est pas un problème de connexion. La dimension, le filtre ou le
+            n’est pas un problème de connexion. La dimension, le filtre ou le
             type de recherche choisi ne peut pas être utilisé sur cette
             propriété. Retirez les filtres.
           </li>
           <li>
             <strong
-              >L'accès à la propriété a été refusé (HTTP 401 ou 403).</strong
+              >L’accès à la propriété a été refusé (HTTP 401 ou 403).</strong
             >
             Vérifiez que le compte a une autorisation vérifiée sur la propriété,
             ou renouvelez la connexion dans <strong>Paramètres</strong>.
           </li>
           <li>
             <strong>La propriété est introuvable (HTTP 404).</strong> Elle a
-            peut-être été retirée de Search Console. Choisissez-la de nouveau
-            dans <strong>Paramètres</strong>.
+            peut-être été retirée de Search Console. Sélectionnez une propriété
+            valide dans <strong>Paramètres du projet → Connexions</strong>.
           </li>
           <li>
             <strong>La limite de requêtes est atteinte (HTTP 429).</strong>
@@ -2149,97 +2159,119 @@
           </li>
           <li>
             <strong>Ne répond pas pour le moment (autre code HTTP).</strong>
-            Réessayez dans un instant. Si cela continue, regardez la page d'état
+            Réessayez dans un instant. Si cela continue, regardez la page d’état
             de Google.
           </li>
           <li>
             <strong>Google est injoignable.</strong> La phrase donne un détail à
-            la ligne « Cause ». Si cela continue, vérifiez la connexion internet
+            la ligne « Cause ». Si cela continue, vérifiez la connexion internet
             de cet ordinateur.
           </li>
         </ul>
         <p class="callout callout-cozum">
-          <strong>Solution :</strong> Faites l'étape que la phrase indique. Pour
-          les problèmes de compte et de propriété, renouveler la connexion dans
-          <strong>Paramètres</strong> suffit le plus souvent.
+          <strong>Solution :</strong> Suivez l’étape indiquée par le message.
+          Pour un problème de compte ou de propriété, renouveler la connexion
+          dans <strong>Paramètres du projet → Connexions</strong> suffit le plus
+          souvent.
         </p>
         <h2 id="le-trafic-localhost-apparait-dans-analytics">
           Le trafic localhost apparaît dans Analytics
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptôme :</strong> Dans le tableau des pages d'entrée, la
-          colonne Nom de domaine (Alan adı) indique localhost ou 127.0.0.1.
+          <strong>Symptôme :</strong> Dans le tableau des pages d’entrée, la
+          colonne <strong>Domaine</strong> indique localhost ou 127.0.0.1.
         </p>
         <p class="callout callout-sebep">
           <strong>Cause :</strong> La copie de test de votre site charge aussi
           la même balise Analytics.
         </p>
         <p class="callout callout-cozum">
-          <strong>Solution :</strong> Réglez la balise pour qu'elle ne se charge
+          <strong>Solution :</strong> Réglez la balise pour qu’elle ne se charge
           que sur le vrai nom de domaine. Dans la plupart des outils, il existe
-          une option de « contrôle du nom de domaine ». L'application n'écarte
+          une option de « contrôle du nom de domaine ». L’application n’écarte
           pas ces lignes toute seule. En attendant, repérez-les grâce à la
-          colonne Nom de domaine.
+          colonne <strong>Domaine</strong>.
         </p>
         <h2 id="l-assistant-ne-peut-pas-se-connecter-401">
-          L'assistant ne peut pas se connecter (401)
+          L’assistant ne peut pas se connecter (401)
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptôme :</strong> Claude Code ou Codex indique «
-          Unauthorized ».
+          <strong>Symptôme :</strong> Claude Code ou Codex indique
+          « Unauthorized ».
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> Le mot de passe n'est pas envoyé, ou il est
-          faux.
+          <strong>Cause :</strong> Le client n’envoie pas le jeton, ou le jeton
+          est faux.
         </p>
         <p class="callout callout-cozum">
-          <strong>Solution :</strong> Copiez de nouveau le mot de passe. Sous
-          Windows, il se trouve dans le fichier <code>mcp-token</code> du
-          dossier de données. Avec Docker, tapez
-          <code
-            >docker compose exec -T seotracker cat
-            /app/.wrangler/mcp-token</code
-          >. Supprimez le caractère de fin de ligne à la fin de la valeur. Si
-          vous ne voulez pas utiliser de terminal, ouvrez le fichier avec le
-          Bloc-notes, sélectionnez toute la ligne et copiez-la. Ne laissez pas
-          de saut de ligne. Dans Claude Code, tapez <code>/mcp</code> et
-          choisissez <strong>Reconnect</strong>.
+          <strong>Solution :</strong> Sur l’écran
+          <strong>Configuration de l’agent</strong>, utilisez
+          <strong>Copier la commande de configuration</strong> : l’agent lit
+          alors le jeton dans l’installation, sans l’afficher. Pour le saisir à
+          la main, copiez-le dans le presse-papiers sans l’afficher, collez-le
+          dans le champ d’en-tête de votre client MCP, puis videz le
+          presse-papiers. Ne le collez jamais dans une conversation ni dans une
+          capture d’écran.
+        </p>
+        <ul>
+          <li>
+            <strong>Paquet Windows :</strong> le jeton se trouve dans le fichier
+            <code>%LOCALAPPDATA%\seowatcher\mcp-token</code> (menu :
+            <strong>Veri klasörünü aç</strong>, Ouvrir le dossier de données).
+            Dans PowerShell :
+            <code
+              >(Get-Content
+              &quot;$env:LOCALAPPDATA\seowatcher\mcp-token&quot;).Trim() |
+              Set-Clipboard</code
+            >.
+          </li>
+          <li>
+            <strong>Docker :</strong> dans PowerShell,
+            <code
+              >(docker compose exec -T seotracker cat
+              /app/.wrangler/mcp-token).Trim() | Set-Clipboard</code
+            >.
+          </li>
+        </ul>
+        <p>
+          Dans Claude Code, tapez ensuite <code>/mcp</code> et choisissez
+          <strong>Reconnect</strong>.
         </p>
         <h2
           id="docker-demarre-tres-lentement-la-premiere-fois-ou-reste-unhealthy"
         >
-          Docker démarre très lentement la première fois, ou reste « unhealthy »
+          Docker démarre très lentement la première fois, ou reste « unhealthy »
         </h2>
         <p class="callout callout-belirti">
-          <strong>Symptôme :</strong> <code>docker compose ps</code> n'indique
+          <strong>Symptôme :</strong> <code>docker compose ps</code> n’indique
           pas healthy, même après cinq minutes.
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> Au premier démarrage, l'application est
-          compilée à l'intérieur du conteneur et demande environ 2 Go de
+          <strong>Cause :</strong> Au premier démarrage, l’application est
+          compilée à l’intérieur du conteneur et demande environ 2 Go de
           mémoire. Si la mémoire ne suffit pas, la compilation échoue.
         </p>
         <p class="callout callout-cozum">
           <strong>Solution :</strong> Tapez
           <code>docker compose logs --tail 50</code> et regardez les dernières
-          lignes. S'il y a une erreur de mémoire, donnez plus de mémoire aux
+          lignes. S’il y a une erreur de mémoire, donnez plus de mémoire aux
           conteneurs dans les paramètres de Docker Desktop. Tapez ensuite
           <code>docker compose up -d --build</code>.
         </p>
         <h2 id="ou-sont-les-donnees-et-les-journaux">
-          Où sont les données et les journaux ?
+          Où sont les données et les journaux ?
         </h2>
         <p>
           Sous Windows, tout est dans le dossier
-          <code>%LOCALAPPDATA%\seowatcher</code> : <code>data</code> (la base de
+          <code>%LOCALAPPDATA%\seowatcher</code> : <code>data</code> (la base de
           données), <code>logs\launcher.log</code>,
           <code>logs\server.log</code>, <code>logs\migrate.log</code>,
           <code>instance-secret</code>, <code>mcp-token</code>,
           <code>config.json</code>. Quand un fichier journal devient trop gros
-          (<code>server.log</code> 5 Mo, les autres 1 Mo), l'ancien reste à côté
+          (<code>server.log</code> 5 Mo, les autres 1 Mo), l’ancien reste à côté
           sous un nom comme <code>server.old.log</code> et un nouveau repart de
           zéro. Le dossier <code>logs\wrangler</code> contient les journaux
-          détaillés du moteur ; les fichiers de plus de 30 jours sont supprimés
+          détaillés du moteur ; les fichiers de plus de 30 jours sont supprimés
           automatiquement. <strong>Günlükleri aç</strong> (Ouvrir les journaux)
           et <strong>Veri klasörünü aç</strong> (Ouvrir le dossier de données),
           dans le menu de la barre des tâches, y mènent.
@@ -2251,9 +2283,9 @@
         </p>
         <p>
           Pour signaler un problème, cliquez sur
-          <strong>Télécharger le paquet de diagnostic</strong> dans l'écran
-          <strong>Aide</strong>. Le paquet résume l'étape et les erreurs des 25
-          derniers audits ; les URL des pages sont retirées des erreurs
+          <strong>Télécharger le paquet de diagnostic</strong> dans l’écran
+          <strong>Aide</strong>. Le paquet résume l’étape et les erreurs des 25
+          derniers audits ; les URL des pages sont retirées des erreurs
           PageSpeed. Il peut contenir des noms de projets et des domaines.
           Vérifiez le fichier avant de le joindre à un signalement GitHub.
         </p>
@@ -2266,52 +2298,52 @@
           indique que les préférences Windows ne sont pas disponibles.
         </p>
         <p class="callout callout-sebep">
-          <strong>Cause :</strong> Cette section parle à l'application de la
-          barre des tâches. La phrase d'erreur dit lequel de ces cas c'est.
+          <strong>Cause :</strong> Cette section parle à l’application de la
+          barre des tâches. La phrase d’erreur dit lequel de ces cas c’est.
         </p>
         <ul>
           <li>
             <strong
-              >L'application de la barre des tâches n'a pas répondu en 4
+              >L’application de la barre des tâches n’a pas répondu en 4
               secondes.</strong
             >
-            Si l'ordinateur sort de veille, cliquez sur
+            Si l’ordinateur sort de veille, cliquez sur
             <strong>Réessayer</strong> dans quelques secondes. Si cela persiste,
             choisissez <strong>Çıkış</strong> (Quitter) dans le menu de la zone
-            de notification et rouvrez l'application.
+            de notification et rouvrez l’application.
           </li>
           <li>
             <strong
-              >Impossible de joindre le service de réglages de l'application de
+              >Impossible de joindre le service de réglages de l’application de
               la barre des tâches.</strong
             >
-            Elle s'est peut-être fermée. Rouvrez seowatcher depuis le menu
+            Elle s’est peut-être fermée. Rouvrez seowatcher depuis le menu
             Démarrer.
           </li>
           <li>
             <strong>Ce réglage est verrouillé par un administrateur.</strong>
-            Seul l'administrateur de l'ordinateur peut le modifier.
+            Seul l’administrateur de l’ordinateur peut le modifier.
           </li>
           <li>
             <strong
-              >L'application de la barre des tâches n'a pas reconnu cette
+              >L’application de la barre des tâches n’a pas reconnu cette
               requête.</strong
             >
-            Le serveur et l'application proviennent peut-être de sessions
+            Le serveur et l’application proviennent peut-être de sessions
             différentes. Choisissez <strong>Çıkış</strong> (Quitter) dans le
-            menu et rouvrez l'application.
+            menu et rouvrez l’application.
           </li>
           <li>
             <strong
-              >L'application de la barre des tâches a refusé la requête de
+              >L’application de la barre des tâches a refusé la requête de
               réglage.</strong
             >
-            Redémarrez l'application depuis le menu. Si cela persiste, mettez à
+            Redémarrez l’application depuis le menu. Si cela persiste, mettez à
             jour le paquet Windows.
           </li>
           <li>
             <strong
-              >L'application de la barre des tâches a renvoyé une réponse non
+              >L’application de la barre des tâches a renvoyé une réponse non
               reconnue.</strong
             >
             Les versions ne correspondent peut-être pas. Mettez à jour le paquet
@@ -2319,19 +2351,19 @@
           </li>
         </ul>
         <p class="callout callout-cozum">
-          <strong>Solution :</strong> Faites l'étape que la phrase indique. Ces
-          options n'existent que dans le paquet Windows. Avec Docker, vous gérez
-          le comportement au démarrage depuis votre système d'exploitation.
+          <strong>Solution :</strong> Faites ce que demande le message. Ces
+          options n’existent que dans le paquet Windows. Avec Docker, vous gérez
+          le comportement au démarrage depuis votre système d’exploitation.
         </p>
         <h2 id="avertissements-du-lanceur">Avertissements du lanceur</h2>
         <p>
-          Les avertissements qui apparaissent sur l'icône de la barre des tâches
-          et ce qu'il faut faire :
+          Les avertissements qui apparaissent sur l’icône de la barre des tâches
+          et ce qu’il faut faire :
         </p>
         <ul>
           <li>
             <strong
-              >« Sunucu 120 saniyede yanıt vermedi » (Le serveur n'a pas répondu
+              >« Sunucu 120 saniyede yanıt vermedi » (Le serveur n’a pas répondu
               en 120 secondes).</strong
             >
             Dans le menu, cliquez sur <strong>Yeniden başlat</strong>. Sinon,
@@ -2340,66 +2372,66 @@
           </li>
           <li>
             <strong
-              >« seowatcher yeniden başlatılıyor » (seowatcher
+              >« seowatcher yeniden başlatılıyor » (seowatcher
               redémarre).</strong
             >
-            Le serveur s'est arrêté tout seul et l'application le relance.
+            Le serveur s’est arrêté tout seul et l’application le relance.
             Actualisez la page ouverte après quelques secondes.
           </li>
           <li>
             <strong
-              >« Sunucu 10 dakikada üç kez kapandı » (Le serveur s'est arrêté
+              >« Sunucu 10 dakikada üç kez kapandı » (Le serveur s’est arrêté
               trois fois en 10 minutes).</strong
             >
-            L'application a cessé de le relancer. Cliquez sur
+            L’application a cessé de le relancer. Cliquez sur
             <strong>Kurulumu onar</strong> et, si cela ne règle rien, sur
             <strong>Sorunu bildir (GitHub)</strong>.
           </li>
           <li>
-            <strong>« Kurulum eksik » (Installation incomplète).</strong>
+            <strong>« Kurulum eksik » (Installation incomplète).</strong>
             <strong>Kurulumu onar</strong> remet les fichiers manquants en
-            téléchargeant le fichier d'installation. S'il n'y a pas d'internet,
-            la page des versions s'ouvre ; téléchargez le fichier d'installation
+            téléchargeant le fichier d’installation. S’il n’y a pas d’internet,
+            la page des versions s’ouvre ; téléchargez le fichier d’installation
             et lancez-le.
           </li>
           <li>
             <strong
-              >« 3001 numarası dolu, 3002 kullanılıyor » (Le port 3001 est
+              >« 3001 numarası dolu, 3002 kullanılıyor » (Le port 3001 est
               occupé, utilisation du 3002).</strong
             >
             Un autre programme occupe le 3001, souvent une ancienne copie
             Docker. Le même avertissement apparaît aussi sous forme de bande
-            jaune dans l'application. Si vous obtenez une erreur en vous
+            jaune dans l’application. Si vous obtenez une erreur en vous
             connectant à Google, fermez ce programme et cliquez sur
-            <strong>Yeniden başlat</strong>. Voir plus haut « Le numéro de port
-            est occupé ».
+            <strong>Yeniden başlat</strong>. Voir plus haut « Le numéro de port
+            est occupé ».
           </li>
           <li>
             <strong
-              >« Güncelleme denetlenemedi » (La mise à jour n'a pas pu être
-              vérifiée) ou « Güncelleme yapılamadı » (La mise à jour n'a pas pu
+              >« Güncelleme denetlenemedi » (La mise à jour n’a pas pu être
+              vérifiée) ou « Güncelleme yapılamadı » (La mise à jour n’a pas pu
               être faite).</strong
             >
-            La bulle donne la cause. Si elle dit « GitHub'a ulaşılamadı »
+            La bulle donne la cause. Si elle dit « GitHub’a ulaşılamadı »
             (GitHub est inaccessible), vérifiez votre connexion internet. Si
-            elle dit « GitHub şu an çok fazla istek alıyor » (GitHub reçoit trop
-            de requêtes en ce moment), réessayez dans une heure. Si l'empreinte
-            ne correspond pas, téléchargez le fichier d'installation depuis la
+            elle dit « GitHub şu an çok fazla istek alıyor » (GitHub reçoit trop
+            de requêtes en ce moment), réessayez dans une heure. Si l’empreinte
+            ne correspond pas, téléchargez le fichier d’installation depuis la
             page des versions. Dans tous les cas, la version installée continue
             de fonctionner.
           </li>
           <li>
             <strong
-              >« Güncelleme kurulmadı » (La mise à jour n'a pas été
+              >« Güncelleme kurulmadı » (La mise à jour n’a pas été
               installée).</strong
             >
-            La fenêtre d'installation a été fermée ou l'autorisation
-            d'administrateur n'a pas été donnée. Réessayez avec
+            La fenêtre d’installation a été fermée ou l’autorisation
+            d’administrateur n’a pas été donnée. Réessayez avec
             <strong>Güncelle</strong> dans le menu.
           </li>
           <li>
             <strong
-              >« Windows bileşeni kurulamadı » (Le composant Windows n'a pas pu
+              >« Windows bileşeni kurulamadı » (Le composant Windows n’a pas pu
               être installé).</strong
             >
             Dans le menu, cliquez sur
@@ -2411,14 +2443,13 @@
             class="pager-prev"
             rel="prev"
             href="/fr/guides/installation-assistant/"
-            ><span>Précédent</span
-            ><strong>Installation de l'assistant</strong></a
+            ><span>Précédent</span><strong>Configuration de l’agent</strong></a
           ><a class="pager-next" rel="next" href="/fr/guides/notes-de-version/"
             ><span>Suivant</span><strong>Notes de version</strong></a
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -2430,7 +2461,7 @@
       <nav class="toc" aria-label="Sur cette page">
         <p class="toc-label">Sur cette page</p>
         <ol>
-          <li><a href="#la-page-ne-s-ouvre-pas">La page ne s'ouvre pas</a></li>
+          <li><a href="#la-page-ne-s-ouvre-pas">La page ne s’ouvre pas</a></li>
           <li>
             <a href="#le-numero-de-port-est-occupe"
               >Le numéro de port est occupé</a
@@ -2438,37 +2469,39 @@
           </li>
           <li>
             <a href="#l-icone-indique-windows-bileseni-eksik"
-              >L'icône indique « Windows bileşeni eksik »</a
+              >L’icône indique « Windows bileşeni eksik »</a
             >
           </li>
           <li>
             <a href="#l-autorisation-d-administrateur-n-a-pas-ete-donnee"
-              >L'autorisation d'administrateur n'a pas été donnée</a
+              >L’autorisation d’administrateur n’a pas été donnée</a
             >
           </li>
           <li>
-            <a href="#l-icone-indique-uygulamanin-motoru-coktu"
-              >L'icône indique « Uygulamanın motoru çöktü »</a
+            <a
+              href="#l-icone-indique-uygulamanin-motoru-coktu-le-moteur-de-l-application-a-plante"
+              >L’icône indique « Uygulamanın motoru çöktü » (le moteur de
+              l’application a planté)</a
             >
           </li>
           <li>
             <a href="#windows-indique-a-protege-votre-ordinateur"
-              >Windows indique « a protégé votre ordinateur »</a
+              >Windows indique « a protégé votre ordinateur »</a
             >
           </li>
           <li>
             <a href="#google-indique-redirect-uri-mismatch"
-              >Google indique « redirect_uri_mismatch »</a
+              >Google indique « redirect_uri_mismatch »</a
             >
           </li>
           <li>
             <a href="#cle-d-acces-google-manquante"
-              >« Clé d'accès Google manquante »</a
+              >« Clé d’accès Google manquante »</a
             >
           </li>
           <li>
             <a href="#google-indique-access-denied"
-              >Google indique « access_denied »</a
+              >Google indique « access_denied »</a
             >
           </li>
           <li><a href="#la-connexion-a-expire">La connexion a expiré</a></li>
@@ -2484,34 +2517,34 @@
           </li>
           <li>
             <a href="#l-audit-est-reste-bloque-sur-en-cours"
-              >L'audit est resté bloqué sur « En cours »</a
+              >L’audit est resté bloqué sur « En cours »</a
             >
           </li>
           <li>
             <a href="#l-audit-indique-l-audit-s-est-arrete-avant-la-fin"
-              >L'audit indique « L'audit s'est arrêté avant la fin »</a
+              >L’audit indique « L’audit s’est arrêté avant la fin »</a
             >
           </li>
           <li>
             <a href="#l-audit-indique-score-provisoire"
-              >L'audit indique « Score provisoire »</a
+              >L’audit indique « Score provisoire »</a
             >
           </li>
           <li>
             <a href="#l-audit-indique-audit-incomplet-aucun-score-attribue"
-              >L'audit indique « Audit incomplet — aucun score attribué »</a
+              >L’audit indique « Audit incomplet — aucun score attribué »</a
             >
           </li>
           <li>
             <a
               href="#l-audit-est-termine-mais-indique-la-mesure-de-vitesse-s-est-faite-sans-cle"
-              >L'audit est terminé mais indique « la mesure de vitesse s'est
-              faite sans clé »</a
+              >L’audit est terminé mais indique « la mesure de vitesse s’est
+              faite sans clé »</a
             >
           </li>
           <li>
-            <a href="#l-audit-indique-engellendik-nous-avons-ete-bloques"
-              >L'audit indique « Engellendik » (Nous avons été bloqués)</a
+            <a href="#l-audit-indique-nous-avons-ete-bloques"
+              >L’audit indique « Nous avons été bloqués »</a
             >
           </li>
           <li>
@@ -2521,7 +2554,7 @@
           </li>
           <li>
             <a href="#inspection-d-url-limite-quotidienne-atteinte"
-              >Inspection d'URL : « limite quotidienne atteinte »</a
+              >Inspection d’URL : limite quotidienne atteinte</a
             >
           </li>
           <li>
@@ -2541,19 +2574,19 @@
           </li>
           <li>
             <a href="#l-assistant-ne-peut-pas-se-connecter-401"
-              >L'assistant ne peut pas se connecter (401)</a
+              >L’assistant ne peut pas se connecter (401)</a
             >
           </li>
           <li>
             <a
               href="#docker-demarre-tres-lentement-la-premiere-fois-ou-reste-unhealthy"
-              >Docker démarre très lentement la première fois, ou reste «
-              unhealthy »</a
+              >Docker démarre très lentement la première fois, ou reste
+              « unhealthy »</a
             >
           </li>
           <li>
             <a href="#ou-sont-les-donnees-et-les-journaux"
-              >Où sont les données et les journaux ?</a
+              >Où sont les données et les journaux ?</a
             >
           </li>
           <li>
@@ -2570,7 +2603,7 @@
     <footer>
       <div class="wrap">
         <p class="star">
-          Une étoile aide d'autres personnes à trouver un outil gratuit.
+          Une étoile aide d’autres personnes à trouver un outil gratuit.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

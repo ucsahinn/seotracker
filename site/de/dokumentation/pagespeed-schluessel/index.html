@@ -14,7 +14,7 @@
     <title>PageSpeed-Schlüssel | seowatcher-Anleitung</title>
     <meta
       name="description"
-      content="PageSpeed-Schlüssel speichern und Testanfragen sowie Prüfungszähler verstehen."
+      content="Einen kostenlosen PageSpeed-Insights-Schlüssel anlegen und speichern und verstehen, was der Schlüsseltest und der Audit-Zähler aussagen."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -94,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="PageSpeed-Schlüssel speichern und Testanfragen sowie Prüfungszähler verstehen."
+      content="Einen kostenlosen PageSpeed-Insights-Schlüssel anlegen und speichern und verstehen, was der Schlüsseltest und der Audit-Zähler aussagen."
     />
     <meta
       property="og:image"
@@ -125,7 +125,7 @@
     />
     <meta
       name="twitter:description"
-      content="PageSpeed-Schlüssel speichern und Testanfragen sowie Prüfungszähler verstehen."
+      content="Einen kostenlosen PageSpeed-Insights-Schlüssel anlegen und speichern und verstehen, was der Schlüsseltest und der Audit-Zähler aussagen."
     />
     <meta
       name="twitter:image"
@@ -168,7 +168,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/de/dokumentation/pagespeed-schluessel/#article",
             "headline": "PageSpeed-Schlüssel",
-            "description": "PageSpeed-Schlüssel speichern und Testanfragen sowie Prüfungszähler verstehen.",
+            "description": "Einen kostenlosen PageSpeed-Insights-Schlüssel anlegen und speichern und verstehen, was der Schlüsseltest und der Audit-Zähler aussagen.",
             "url": "https://seowatcher.io/de/dokumentation/pagespeed-schluessel/",
             "inLanguage": "de",
             "datePublished": "2026-10-23",
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1502,9 +1502,7 @@
           <p class="nav-group">Bildschirme</p>
           <ul>
             <li><a href="/de/dokumentation/projekte/">Projekte</a></li>
-            <li>
-              <a href="/de/dokumentation/uebersicht/">Übersicht (Panel)</a>
-            </li>
+            <li><a href="/de/dokumentation/uebersicht/">Übersicht</a></li>
             <li><a href="/de/dokumentation/suchleistung/">Suchleistung</a></li>
             <li>
               <a href="/de/dokumentation/ranking-verfolgung/"
@@ -1514,12 +1512,12 @@
             <li><a href="/de/dokumentation/chancen/">Chancen</a></li>
             <li>
               <a href="/de/dokumentation/gespeicherte-suchbegriffe/"
-                >Gespeicherte Suchbegriffe</a
+                >Gespeicherte Keywords</a
               >
             </li>
             <li>
               <a href="/de/dokumentation/datenanalyse/"
-                >Analysedaten verstehen</a
+                >Analytics-Daten verstehen</a
               >
             </li>
             <li>
@@ -1529,7 +1527,7 @@
             <li>
               <a href="/de/dokumentation/berichte/">Berichte und Vorlagen</a>
             </li>
-            <li><a href="/de/dokumentation/projektinfo/">Projektinfo</a></li>
+            <li><a href="/de/dokumentation/projektinfo/">Projektkontext</a></li>
             <li>
               <a href="/de/dokumentation/einstellungen/">Einstellungen</a>
             </li>
@@ -1540,7 +1538,7 @@
             <li><a href="/de/dokumentation/audit-regeln/">Audit-Regeln</a></li>
             <li>
               <a href="/de/dokumentation/assistent-einrichten/"
-                >Assistent einrichten</a
+                >Agent einrichten</a
               >
             </li>
             <li>
@@ -1555,47 +1553,70 @@
       <article id="icerik" data-page="pagespeed-anahtari">
         <h1>PageSpeed-Schlüssel</h1>
         <p class="lede">
-          PageSpeed-Schlüssel speichern und Testanfragen sowie Prüfungszähler
-          verstehen.
+          Einen kostenlosen PageSpeed-Insights-Schlüssel anlegen und speichern
+          und verstehen, was der Schlüsseltest und der Audit-Zähler aussagen.
         </p>
         <p>
-          Ein PageSpeed-Insights-API-Schlüssel lässt das Website-Audit die
-          Geschwindigkeit Ihrer Seiten mit Googles PageSpeed Insights messen.
-          Sie erstellen den Schlüssel kostenlos in Google Cloud, und er ist
-          optional: Ohne Schlüssel versucht die App, pro Audit höchstens 50
-          Seiten zu messen.
+          Mit einem PageSpeed-Insights-API-Schlüssel misst das Website-Audit die
+          Geschwindigkeit Ihrer Seiten über Googles PageSpeed Insights. Der
+          Schlüssel ist kostenlos und optional. Ohne Schlüssel misst die App
+          höchstens 50 Seiten pro Audit, und Google kann schon früher begrenzen.
+          Auch mit Schlüssel ist eine vollständige Messung nicht garantiert; die
+          tatsächlichen Kontingente sehen Sie in Google Cloud.
         </p>
         <h2 id="schlussel-einrichten">Schlüssel einrichten</h2>
+        <ol>
+          <li>Aktivieren Sie in Google Cloud die PageSpeed Insights API.</li>
+          <li>
+            Erstellen Sie einen API-Schlüssel und beschränken Sie ihn auf die
+            PageSpeed Insights API.
+          </li>
+          <li>
+            Speichern Sie ihn in der App unter
+            <strong>Einstellungen → Geschwindigkeitstests</strong>.
+          </li>
+        </ol>
         <p>
-          Aktivieren Sie PageSpeed Insights API in Google Cloud. Erstellen Sie
-          einen API-Schlüssel und beschränken Sie ihn auf PageSpeed Insights.
-          Speichern Sie ihn unter Einstellungen → Geschwindigkeitsmessung. Der
-          Schlüssel wird verschlüsselt und nicht angezeigt. Docker unterstützt
-          auch PAGESPEED_API_KEY; der gespeicherte Wert hat Vorrang.
+          Die App speichert den Schlüssel verschlüsselt und zeigt ihn danach
+          nicht mehr an. Unter Docker können Sie ihn alternativ als
+          <code>PAGESPEED_API_KEY</code> setzen; ein in der App gespeicherter
+          Schlüssel hat Vorrang.
         </p>
-        <h2 id="aussage-des-tests">Aussage des Tests</h2>
+        <h2 id="was-der-test-aussagt">Was der Test aussagt</h2>
         <p>
-          Der Schlüsseltest sendet eine echte mobile Anfrage für example.com. Er
-          misst nicht Ihre Website und erhöht den Prüfungszähler nicht. Ergebnis
-          und Testdatum werden angezeigt. Die Schaltfläche bleibt während der
-          Anfrage und mindestens zehn Sekunden ab Klick gesperrt. Ein
-          Schlüsselwechsel entfernt das alte Ergebnis.
-        </p>
-        <h2 id="grenzen-und-fehler">Grenzen und Fehler</h2>
-        <p>
-          Ohne Schlüssel versucht die App höchstens 50 Seiten je Prüfung. Google
-          kann früher begrenzen; ein Schlüssel garantiert keinen Erfolg.
-          Tatsächliche Quoten stehen in Google Cloud. Der PageSpeed-Zähler
-          umfasst nur Prüfungen, die in den letzten 24 Stunden begonnen haben,
-          keine Tests oder andere Programme.
+          <strong>Schlüssel testen</strong> sendet eine echte mobile Anfrage für
+          example.com. Der Test misst nicht Ihre Website und zählt nicht zum
+          Audit-Zähler. Ergebnis und Testdatum werden angezeigt. Die
+          Schaltfläche bleibt während der Anfrage und mindestens zehn Sekunden
+          nach dem Klick gesperrt. Speichern Sie einen neuen Schlüssel,
+          verschwindet das alte Ergebnis.
         </p>
         <p>
-          Ungültiger Schlüssel: erneut kopieren. Bei 403 API-Aktivierung und
-          Beschränkungen prüfen. Bei Tages-/Anfragelimits warten und
-          Cloud-Quoten prüfen. Netzwerkfehler erneut versuchen. Gespeichert
-          bestätigt Konfiguration; ein erfolgreicher Test bestätigt nur diese
-          Anfrage.
+          Ein gespeicherter Schlüssel bestätigt nur die Konfiguration, ein
+          erfolgreicher Test nur diese eine Anfrage.
         </p>
+        <p>
+          Der PageSpeed-Zähler unter
+          <strong>Einstellungen → Google- und Systemlimits</strong> zählt
+          Audits, die in den letzten 24 Stunden begonnen haben. Schlüsseltests
+          und andere Programme, die denselben Schlüssel nutzen, zählt er nicht.
+        </p>
+        <h2 id="fehler-beheben">Fehler beheben</h2>
+        <ul>
+          <li>
+            <strong>Ungültiger Schlüssel</strong>: Kopieren Sie den Schlüssel
+            erneut aus Google Cloud.
+          </li>
+          <li>
+            <strong>Fehler 403</strong>: Prüfen Sie, ob die API aktiviert ist
+            und die Schlüsselbeschränkungen sie zulassen.
+          </li>
+          <li>
+            <strong>Tages- oder Minutenlimit erreicht</strong>: Warten Sie und
+            prüfen Sie die Kontingente in Google Cloud.
+          </li>
+          <li><strong>Netzwerkfehler</strong>: Versuchen Sie es erneut.</li>
+        </ul>
         <nav class="pager" aria-label="Vorherige und nächste Seite">
           <a
             class="pager-prev"
@@ -1620,15 +1641,15 @@
         <p class="toc-label">Auf dieser Seite</p>
         <ol>
           <li><a href="#schlussel-einrichten">Schlüssel einrichten</a></li>
-          <li><a href="#aussage-des-tests">Aussage des Tests</a></li>
-          <li><a href="#grenzen-und-fehler">Grenzen und Fehler</a></li>
+          <li><a href="#was-der-test-aussagt">Was der Test aussagt</a></li>
+          <li><a href="#fehler-beheben">Fehler beheben</a></li>
         </ol>
       </nav>
     </main>
     <footer>
       <div class="wrap">
         <p class="star">
-          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          Ein Stern hilft anderen, das Werkzeug zu finden.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

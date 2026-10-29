@@ -168,7 +168,7 @@ function ga4StatusCopy(
   }
   if (status === 403) {
     return t(
-      "Google Analytics bu mülke erişimi reddetti (HTTP 403). Bağlı hesaba ya da hizmet hesabına mülkte en az Görüntüleyen yetkisi verin.",
+      "Google Analytics bu mülke erişimi reddetti (HTTP 403). Bağlı hesaba ya da hizmet hesabına mülkte en az Görüntüleyici yetkisi verin.",
     );
   }
   if (status === 404) {

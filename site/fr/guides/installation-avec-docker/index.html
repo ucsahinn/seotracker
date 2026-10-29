@@ -14,7 +14,7 @@
     <title>Installation avec Docker | Guide seowatcher</title>
     <meta
       name="description"
-      content="Installez l'application avec Docker sur Mac, Linux et Windows. Une seule commande, sans fichier .env. Vos données restent dans le volume Docker."
+      content="Installez l’application avec Docker sur Mac, Linux et Windows. Une seule commande, sans fichier .env. Vos données restent dans le volume Docker."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -94,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="Installez l'application avec Docker sur Mac, Linux et Windows. Une seule commande, sans fichier .env. Vos données restent dans le volume Docker."
+      content="Installez l’application avec Docker sur Mac, Linux et Windows. Une seule commande, sans fichier .env. Vos données restent dans le volume Docker."
     />
     <meta
       property="og:image"
@@ -105,9 +105,9 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/guides/installation-avec-docker/"
@@ -125,7 +125,7 @@
     />
     <meta
       name="twitter:description"
-      content="Installez l'application avec Docker sur Mac, Linux et Windows. Une seule commande, sans fichier .env. Vos données restent dans le volume Docker."
+      content="Installez l’application avec Docker sur Mac, Linux et Windows. Une seule commande, sans fichier .env. Vos données restent dans le volume Docker."
     />
     <meta
       name="twitter:image"
@@ -133,7 +133,7 @@
     />
     <meta
       name="twitter:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
@@ -168,11 +168,11 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/fr/guides/installation-avec-docker/#article",
             "headline": "Installation avec Docker",
-            "description": "Installez l'application avec Docker sur Mac, Linux et Windows. Une seule commande, sans fichier .env. Vos données restent dans le volume Docker.",
+            "description": "Installez l’application avec Docker sur Mac, Linux et Windows. Une seule commande, sans fichier .env. Vos données restent dans le volume Docker.",
             "url": "https://seowatcher.io/fr/guides/installation-avec-docker/",
             "inLanguage": "fr",
             "datePublished": "2026-10-23",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-29",
             "articleSection": "Pour démarrer",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1481,7 +1481,7 @@
           <ul>
             <li>
               <a href="/fr/guides/quest-ce-que-seowatcher/"
-                >Qu'est-ce que seowatcher ?</a
+                >Qu’est-ce que seowatcher ?</a
               >
             </li>
             <li>
@@ -1520,23 +1520,27 @@
               >
             </li>
             <li>
-              <a href="/fr/guides/statistiques/">Comprendre les statistiques</a>
+              <a href="/fr/guides/statistiques/"
+                >Comprendre les données Analytics</a
+              >
             </li>
             <li><a href="/fr/guides/audit-du-site/">Audit du site</a></li>
             <li>
-              <a href="/fr/guides/etat-de-l-index/">État de l'indexation</a>
+              <a href="/fr/guides/etat-de-l-index/">État de l’indexation</a>
             </li>
             <li><a href="/fr/guides/rapports/">Rapports et modèles</a></li>
-            <li><a href="/fr/guides/infos-du-projet/">Infos du projet</a></li>
+            <li>
+              <a href="/fr/guides/infos-du-projet/">Contexte du projet</a>
+            </li>
             <li><a href="/fr/guides/parametres/">Paramètres</a></li>
           </ul>
           <p class="nav-group">Aide et référence</p>
           <ul>
             <li><a href="/fr/guides/aide/">Aide</a></li>
-            <li><a href="/fr/guides/regles-d-audit/">Règles d'audit</a></li>
+            <li><a href="/fr/guides/regles-d-audit/">Règles d’audit</a></li>
             <li>
               <a href="/fr/guides/installation-assistant/"
-                >Installation de l'assistant</a
+                >Configuration de l’agent</a
               >
             </li>
             <li><a href="/fr/guides/depannage/">Dépannage</a></li>
@@ -1547,21 +1551,21 @@
       <article id="icerik" data-page="kurulum-docker">
         <h1>Installation avec Docker</h1>
         <p class="lede">
-          Installez l'application avec Docker sur Mac, Linux et Windows. Une
+          Installez l’application avec Docker sur Mac, Linux et Windows. Une
           seule commande, sans fichier .env. Vos données restent dans le volume
           Docker.
         </p>
         <p>
-          À la fin, l'application tournera dans Docker (un programme qui fait
-          tourner chaque application dans un conteneur isolé) et sera ouverte à
-          l'adresse <code>http://localhost:3001</code>. Si vous utilisez
-          Windows, l'installation Windows en un seul fichier est bien plus
-          simple. Cette voie s'adresse aux utilisateurs de Mac et de Linux, et à
-          ceux qui utilisent déjà Docker. Le premier démarrage prend quelques
-          minutes, car l'application est compilée à l'intérieur du conteneur.
-          Les suivants ne prennent que quelques secondes.
+          À la fin de ce guide, l’application tournera dans Docker (un programme
+          qui fait tourner chaque application dans un conteneur isolé) et sera
+          ouverte à l’adresse <code>http://localhost:3001</code>. Sous Windows,
+          l’installation en un seul fichier est bien plus simple ; Docker
+          s’adresse surtout aux utilisateurs de Mac et de Linux, et à ceux qui
+          utilisent déjà Docker. Le premier démarrage prend quelques minutes,
+          car l’application est compilée à l’intérieur du conteneur. Les
+          suivants ne prennent que quelques secondes.
         </p>
-        <h2 id="ce-qu-il-vous-faut">Ce qu'il vous faut</h2>
+        <h2 id="ce-qu-il-vous-faut">Ce qu’il vous faut</h2>
         <ul>
           <li>
             Docker Desktop (Mac, Windows) ou Docker Engine avec Docker Compose
@@ -1574,7 +1578,7 @@
             page GitHub convient aussi.
           </li>
           <li>
-            Environ 2 Go d'espace disque libre et 2 Go de mémoire libre pendant
+            Environ 2 Go d’espace disque libre et 2 Go de mémoire libre pendant
             la première compilation.
           </li>
         </ul>
@@ -1582,7 +1586,7 @@
         <ol>
           <li>
             Téléchargez le dépôt (les fichiers du projet) et placez-vous dans
-            son dossier :
+            son dossier :
           </li>
         </ol>
         <div class="code">
@@ -1590,42 +1594,42 @@
 cd seotracker</code></pre>
         </div>
         <ol>
-          <li>Démarrez l'application :</li>
+          <li>Démarrez l’application :</li>
         </ol>
         <div class="code">
           <pre><code>docker compose up -d</code></pre>
         </div>
         <p>
-          C'est tout. Aucun fichier <code>.env</code> n'est nécessaire. La clé
-          de chiffrement et le mot de passe de l'assistant sont générés
-          automatiquement au premier démarrage et stockés dans le magasin de
-          données de Docker (le volume).
+          C’est tout. Aucun fichier <code>.env</code> n’est nécessaire. La clé
+          de chiffrement et le jeton MCP de l’agent sont générés automatiquement
+          au premier démarrage et stockés dans le magasin de données de Docker
+          (le volume).
         </p>
         <ol>
-          <li>Si vous voulez suivre la progression, tapez ceci :</li>
+          <li>Si vous voulez suivre la progression, tapez ceci :</li>
         </ol>
         <div class="code">
           <pre><code>docker compose logs -f</code></pre>
         </div>
         <ol>
           <li>
-            Patientez. La ligne « Building client + server » dans le journal
-            correspond à la première compilation. Attendez que l'état passe à
+            Patientez. La ligne « Building client + server » dans le journal
+            correspond à la première compilation. Attendez que l’état passe à
             <strong>healthy</strong> dans la sortie de
             <code>docker compose ps</code>, puis ouvrez
             <code>http://localhost:3001</code> dans le navigateur.
           </li>
         </ol>
         <p>
-          L'étape suivante est le guide de la connexion à Google. Avec Docker,
-          les deux adresses de redirection à donner à Google sont :
+          L’étape suivante est le guide de la connexion à Google. Avec Docker,
+          les deux adresses de redirection à donner à Google sont :
         </p>
         <ul>
           <li><code>http://localhost:3001/api/gsc/oauth/callback</code></li>
           <li><code>http://localhost:3001/api/ga4/oauth/callback</code></li>
         </ul>
         <h3 id="mise-a-jour">Mise à jour</h3>
-        <p>Tapez ces deux commandes :</p>
+        <p>Tapez ces deux commandes :</p>
         <div class="code">
           <pre><code>git pull
 docker compose up -d --build</code></pre>
@@ -1637,14 +1641,14 @@ docker compose up -d --build</code></pre>
         </p>
         <h3 id="arret-et-suppression">Arrêt et suppression</h3>
         <ul>
-          <li>Arrêter : <code>docker compose stop</code></li>
-          <li>Redémarrer : <code>docker compose up -d</code></li>
+          <li>Arrêter : <code>docker compose stop</code></li>
+          <li>Redémarrer : <code>docker compose up -d</code></li>
           <li>
-            Supprimer le conteneur en gardant les données :
+            Supprimer le conteneur en gardant les données :
             <code>docker compose down</code>
           </li>
           <li>
-            Supprimer aussi les données : <code>docker compose down -v</code>.
+            Supprimer aussi les données : <code>docker compose down -v</code>.
             Cette commande efface définitivement la base de données, les
             connexions à Google et les rapports.
           </li>
@@ -1652,8 +1656,8 @@ docker compose up -d --build</code></pre>
         <h3 id="sauvegarde">Sauvegarde</h3>
         <p>
           Vos données sont dans le volume <code>seotracker_data</code>, au
-          chemin <code>/app/.wrangler</code> à l'intérieur du conteneur. Pour
-          faire une sauvegarde, tapez ces trois commandes dans l'ordre :
+          chemin <code>/app/.wrangler</code> à l’intérieur du conteneur. Pour
+          faire une sauvegarde, tapez ces trois commandes dans l’ordre :
         </p>
         <div class="code">
           <pre><code>docker compose stop
@@ -1665,11 +1669,11 @@ docker compose up -d</code></pre>
           <code>tar czf</code> dans la même commande. Le fichier
           <code>instance-secret</code> du volume est la clé qui chiffre les
           connexions à Google. Si ce fichier manque dans la sauvegarde,
-          l'application s'ouvre mais les connexions à Google ne reviennent pas.
+          l’application s’ouvre mais les connexions à Google ne reviennent pas.
         </p>
         <h3 id="reglages-facultatifs">Réglages (facultatifs)</h3>
         <p>
-          Aucun réglage n'est obligatoire. Si vous voulez en changer, placez un
+          Aucun réglage n’est obligatoire. Si vous voulez en changer, placez un
           fichier <code>.env</code> dans le dossier du projet. Tapez ensuite
           <code>docker compose up -d --force-recreate seotracker</code>.
         </p>
@@ -1685,14 +1689,14 @@ docker compose up -d</code></pre>
               <tr>
                 <td>PORT</td>
                 <td>
-                  Le numéro de port, 3001 par défaut. S'il change, les adresses
+                  Le numéro de port, 3001 par défaut. S’il change, les adresses
                   de redirection Google changent aussi
                 </td>
               </tr>
               <tr>
                 <td>ALLOWED_HOST</td>
                 <td>
-                  Le nom visible de l'extérieur si vous êtes derrière un autre
+                  Le nom visible de l’extérieur si vous êtes derrière un autre
                   serveur. Vide, seul localhost est accepté
                 </td>
               </tr>
@@ -1706,7 +1710,7 @@ docker compose up -d</code></pre>
               <tr>
                 <td>BETTER_AUTH_SECRET</td>
                 <td>
-                  La clé de chiffrement. Laissez vide, l'application la génère.
+                  La clé de chiffrement. Laissez vide, l’application la génère.
                   Si vous la fournissez, 32 caractères au moins, puis ne la
                   changez plus
                 </td>
@@ -1714,20 +1718,20 @@ docker compose up -d</code></pre>
               <tr>
                 <td>GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET</td>
                 <td>
-                  Une alternative à la saisie dans l'écran Paramètres. La valeur
-                  saisie à l'écran est prioritaire
+                  Une alternative à la saisie dans l’écran Paramètres. La valeur
+                  saisie à l’écran est prioritaire
                 </td>
               </tr>
               <tr>
                 <td>PAGESPEED_API_KEY</td>
-                <td>Une alternative à la saisie dans l'écran Paramètres</td>
+                <td>Une alternative à la saisie dans l’écran Paramètres</td>
               </tr>
               <tr>
                 <td>MCP_TOKEN</td>
                 <td>
                   Vide, il est généré au premier démarrage. Avec
-                  <code>off</code>, aucun mot de passe n'est demandé. Toute
-                  autre valeur est utilisée telle quelle
+                  <code>off</code>, aucun jeton n’est demandé. Toute autre
+                  valeur est utilisée telle quelle
                 </td>
               </tr>
             </tbody>
@@ -1736,47 +1740,46 @@ docker compose up -d</code></pre>
         <h2 id="verification">Vérification</h2>
         <ul>
           <li>
-            Dans la sortie de <code>docker compose ps</code>, l'état doit être
-            <strong>healthy</strong>. Au premier démarrage, l'atteindre peut
-            prendre jusqu'à cinq minutes.
+            Dans la sortie de <code>docker compose ps</code>, l’état doit être
+            <strong>healthy</strong>. Au premier démarrage, l’atteindre peut
+            prendre jusqu’à cinq minutes.
           </li>
           <li>
             La sortie de
-            <code>curl.exe http://127.0.0.1:3001/api/health</code> (sous Windows
-            ; <code>curl</code> sur Mac et Linux) doit commencer par
+            <code>curl.exe http://127.0.0.1:3001/api/health</code> (sous
+            Windows ; <code>curl</code> sur Mac et Linux) doit commencer par
             &quot;status&quot;:&quot;ok&quot;. Vous pouvez aussi ouvrir cette
             adresse dans le navigateur.
           </li>
           <li>
-            <code>http://localhost:3001</code> doit s'ouvrir dans le navigateur.
-            La carte d'état de l'écran <strong>Aide</strong> doit dire « Tout
-            est en ordre. ». Avant la connexion à Google, la ligne « Connexion
-            Google » demande de l'attention. C'est normal.
+            <code>http://localhost:3001</code> doit s’ouvrir dans le navigateur.
+            Sur l’écran <strong>Aide</strong>, les lignes de la carte
+            <strong>État de l’application</strong> doivent indiquer « OK ».
+            Avant la connexion à Google, la ligne « Connexion Google » reste en
+            « Attention » : c’est normal.
           </li>
         </ul>
         <h2 id="questions-frequentes">Questions fréquentes</h2>
         <p>
-          <strong>Pourquoi le premier démarrage est-il long ?</strong>
-          L'application est compilée à l'intérieur du conteneur. Aux démarrages
-          suivants, la compilation est sautée.
+          <strong>Pourquoi le premier démarrage est-il long ?</strong> La
+          compilation n’a lieu qu’une fois ; les démarrages suivants la sautent.
         </p>
         <p>
-          <strong>Où est le fichier <code>.env.example</code> ?</strong> Il
-          n'existe pas. Ce fichier, hérité du projet d'origine, décrivait des
+          <strong>Où est le fichier <code>.env.example</code> ?</strong> Il
+          n’existe pas. Ce fichier, hérité du projet d’origine, décrivait des
           choses absentes de cette version. La liste complète est dans le
           tableau ci-dessus et dans le fichier <code>docs/ENVIRONMENT.md</code>.
         </p>
         <p>
-          <strong>Puis-je l'ouvrir sur internet ?</strong> L'application ne
-          demande aucune identité. Ne l'exposez pas sans placer devant elle
+          <strong>Puis-je l’ouvrir sur internet ?</strong> L’application ne
+          demande aucune identité. Ne l’exposez pas sans placer devant elle
           votre propre authentification. Si vous définissez
-          <code>ALLOWED_HOST</code>, l'application vous avertit dans son
+          <code>ALLOWED_HOST</code>, l’application vous avertit dans son
           contrôle de santé.
         </p>
         <p>
-          <strong>Où trouver le mot de passe de mon assistant ?</strong> L'écran
-          <strong>Configuration de l'agent</strong> de l'application affiche la
-          commande :
+          <strong>Où trouver le jeton de mon agent ?</strong> L’écran
+          <strong>Configuration de l’agent</strong> affiche la commande :
           <code
             >docker compose exec -T seotracker cat
             /app/.wrangler/mcp-token</code
@@ -1786,7 +1789,7 @@ docker compose up -d</code></pre>
         <h2 id="en-cas-de-probleme">En cas de problème</h2>
         <ul>
           <li>
-            <strong>« Bind for 127.0.0.1:3001 failed » s'affiche.</strong> Le
+            <strong>« Bind for 127.0.0.1:3001 failed » s’affiche.</strong> Le
             numéro de port est déjà utilisé. Placez dans le dossier du projet un
             fichier <code>.env</code> contenant la ligne <code>PORT=3002</code>,
             puis recréez le conteneur. Sous Windows, le Bloc-notes peut
@@ -1795,15 +1798,15 @@ docker compose up -d</code></pre>
             <code>Set-Content -Encoding ascii .env 'PORT=3002'</code> est sûr.
           </li>
           <li>
-            <strong>L'état est « unhealthy ».</strong>
+            <strong>L’état est « unhealthy ».</strong>
             <code>docker compose logs --tail 50</code> affiche les dernières
-            lignes. Si la mémoire s'est épuisée pendant la compilation, donnez
+            lignes. Si la mémoire s’est épuisée pendant la compilation, donnez
             plus de mémoire à Docker Desktop.
           </li>
           <li>
-            <strong>La connexion à Google indique « non configurée ».</strong>
+            <strong>La connexion à Google indique « non configurée ».</strong>
             Si <code>BETTER_AUTH_SECRET</code> fait moins de 32 caractères,
-            Google reste désactivé. Si vous l'avez fourni, rallongez-le. Sinon,
+            Google reste désactivé. Si vous l’avez fourni, rallongez-le. Sinon,
             le fichier <code>instance-secret</code> du volume est peut-être
             abîmé.
           </li>
@@ -1827,7 +1830,7 @@ docker compose up -d</code></pre>
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 27 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1839,7 +1842,7 @@ docker compose up -d</code></pre>
       <nav class="toc" aria-label="Sur cette page">
         <p class="toc-label">Sur cette page</p>
         <ol>
-          <li><a href="#ce-qu-il-vous-faut">Ce qu'il vous faut</a></li>
+          <li><a href="#ce-qu-il-vous-faut">Ce qu’il vous faut</a></li>
           <li><a href="#etapes">Étapes</a></li>
           <li><a href="#verification">Vérification</a></li>
           <li><a href="#questions-frequentes">Questions fréquentes</a></li>
@@ -1850,7 +1853,7 @@ docker compose up -d</code></pre>
     <footer>
       <div class="wrap">
         <p class="star">
-          Une étoile aide d'autres personnes à trouver un outil gratuit.
+          Une étoile aide d’autres personnes à trouver un outil gratuit.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

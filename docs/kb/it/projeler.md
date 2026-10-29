@@ -1,27 +1,33 @@
 ---
 title: Progetti
-description: Progetti aiuta a scegliere un sito e completare le connessioni. Ogni progetto conserva le proprie proprietà Google, verifiche e rapporti.
+description: Progetti elenca i siti monitorati e indica le connessioni mancanti. Ogni progetto ha proprietà Google, controlli e report propri.
 screen: Projeler, Proje ayarları
 route: /projects, /p/{proje}/settings
 updated: 2026-10-28
 ---
 
-Progetti aiuta a scegliere un sito e completare le connessioni. Ogni progetto conserva le proprie proprietà Google, verifiche e rapporti.
-
 ## Leggere la schermata
 
-Con più progetti puoi cercare e ordinare per nome o dominio. **Ultimo aperto** indica il progetto ricordato dal browser, non uno stato SEO. L’azione principale permette di aggiungere il sito, collegare Search Console o aprire la panoramica secondo la configurazione nota. Le informazioni del progetto aprono le note; le impostazioni aprono la configurazione.
+Con più progetti, l'elenco si può cercare e ordinare per nome o dominio. **Ultimo aperto** indica il progetto ricordato da questo browser; non è uno stato SEO. Il pulsante principale cambia secondo la configurazione: **Aggiungi sito**, **Collega Search Console** oppure **Apri dashboard**. **Contesto del progetto** apre le note, **Impostazioni** apre la configurazione.
 
-L’archivio di ricerca contiene dati Web locali per tutti i dispositivi e paesi. Le date sono visibili. La finestra termina all’ultimo giorno registrato, che può essere vecchio. Se mancano giorni, i clic sono il subtotale delle sole osservazioni presenti. Un giorno mancante è uno spazio nel grafico, non zero. Il confronto richiede due periodi completi. Totali uguali sono indicati come invariati; partendo da zero compaiono i conteggi precedenti e attuali. I dettagli mostrano ultimo giorno e orario di lettura disponibile. I vecchi record non conservano la prova della definitività.
+### Archivio di ricerca
 
-La verifica riguarda l’host del sito scelto. L’ultima completata è distinta da un tentativo più recente fallito o in corso. Una connessione salvata non dimostra una lettura Google riuscita. Una fonte illeggibile non è né scollegata né uno zero misurato: riprova. Aggiornare rilegge identità e dati locali senza chiamare Google o avviare verifiche.
+La riga **Archivio di ricerca · Web · tutti i dispositivi e paesi** riassume i dati di ricerca salvati in locale. Il periodo termina all'ultimo giorno registrato, che può essere lontano nel tempo; le date sono sempre indicate. Se mancano giorni, i clic sono il subtotale dei soli giorni osservati. Nel grafico un giorno mancante resta vuoto e non vale zero.
+
+La variazione compare solo quando entrambi i periodi sono completi. Totali uguali risultano invariati; una variazione da zero mostra entrambi i conteggi. Se il periodo precedente ha meno di 20 clic, il badge mostra la differenza in clic invece della percentuale: da 1 a 5 clic si legge +4 clic. Con numeri così piccoli la variazione non dimostra una crescita.
+
+I dettagli riportano l'ultimo giorno salvato e, quando è noto, l'orario della lettura. I record meno recenti non indicano su quale base un giorno è stato considerato definitivo.
+
+### Controllo e connessioni
+
+Il controllo riguarda l'host del sito scelto. L'ultimo controllo completato resta distinto da un tentativo più recente non riuscito o ancora in corso. Una connessione salvata non garantisce che la lettura da Google sia riuscita. Una fonte non leggibile non equivale a una fonte scollegata né a un valore zero: riprovi più tardi. **Aggiorna** rilegge identità e dati locali; non interroga Google e non avvia controlli.
 
 ## Creare e gestire
 
-Nuovo progetto richiede nome, dominio facoltativo, paese e lingua. Crearlo non raccoglie dati. Scegli le proprietà Google in Impostazioni → Connessioni. Le impostazioni generali cambiano identità e mercato. Ogni progetto ha una proprietà Search Console e una Analytics.
+**Nuovo progetto** chiede nome, paese, lingua e, facoltativamente, il dominio. La creazione non raccoglie dati. Le proprietà Google si scelgono in **Impostazioni progetto → Connessioni**: ogni progetto ha una proprietà Search Console e una Google Analytics. In **Generale** si modificano identità e mercato.
 
-Archiviare conserva i dati; Ripristina rende nuovamente visibile il progetto. L’ultimo progetto non può essere archiviato. I clic differiscono da sessioni GA4 e totali dell’archivio delle query. Periodi diversi non vengono sommati.
+**Archivia progetto** toglie il progetto dalla barra laterale senza cancellare dati; **Ripristina** lo rende di nuovo visibile. L'unico progetto rimasto non si può archiviare.
 
-Quando il periodo precedente ha meno di 20 clic, il badge mostra la differenza di clic anziché una percentuale. Passare da 1 a 5 significa per esempio +4 clic; con numeri piccoli, questa variazione da sola non dimostra una forte crescita.
+I clic di questa schermata non coincidono con le sessioni GA4 né con i totali per query dell'archivio. Periodi diversi non vengono sommati.
 
 <!-- Sources: src/routes/_app/projects.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/project-context/; src/server/features/projects/services/ProjectOverviewService.ts; src/server/features/project-context/ -->

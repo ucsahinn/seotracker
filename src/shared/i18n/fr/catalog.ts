@@ -46,7 +46,7 @@ export const frCatalog = {
     "Ce rapport n'est pas compatible avec la propriété Google Analytics sélectionnée (HTTP 400).",
   "Google Analytics bağlantısının süresi dolmuş ya da iptal edilmiş. Ayarlar'dan yeniden bağlayın.":
     "La connexion Google Analytics a expiré ou a été révoquée. Reconnectez-la dans les Paramètres.",
-  "Google Analytics bu mülke erişimi reddetti (HTTP 403). Bağlı hesaba ya da hizmet hesabına mülkte en az Görüntüleyen yetkisi verin.":
+  "Google Analytics bu mülke erişimi reddetti (HTTP 403). Bağlı hesaba ya da hizmet hesabına mülkte en az Görüntüleyici yetkisi verin.":
     "Google Analytics a refusé l'accès à cette propriété (HTTP 403). Accordez au compte connecté ou au compte de service au moins le rôle Lecteur sur la propriété.",
   "Google Analytics mülkü bulunamadı (HTTP 404). Mülk silinmiş ya da taşınmış olabilir; Ayarlar'dan yeniden seçin.":
     "Propriété Google Analytics introuvable (HTTP 404). Elle a peut-être été supprimée ou déplacée ; sélectionnez-la à nouveau dans les Paramètres.",
@@ -439,7 +439,7 @@ export const frCatalog = {
   "Bağlantının süresi doldu": "La connexion a expiré",
   "{account} hesabını yeniden bağla": "Reconnecter le compte {account}",
   "Yeniden bağlan": "Reconnecter",
-  "Bu hesabın görebildiği bir GA4 mülkü yok. Henüz mülk oluşturmadıysanız analytics.google.com'dan oluşturun, sonra bu hesabı ona Görüntüleyen olarak ekleyin.":
+  "Bu hesabın görebildiği bir GA4 mülkü yok. Henüz mülk oluşturmadıysanız analytics.google.com'dan oluşturun, sonra bu hesabı ona Görüntüleyici olarak ekleyin.":
     "Ce compte ne voit aucune propriété GA4. Si vous n'en avez pas encore créé, créez-la sur analytics.google.com, puis ajoutez-y ce compte avec le rôle Lecteur.",
   "Bu hesabın görebildiği bir Search Console mülkü yok. Mülkü doğruladıysanız bu hesabı search.google.com/search-console adresinden kullanıcı olarak ekleyin.":
     "Ce compte ne peut voir aucune propriété de la Search Console. Si vous avez vérifié la propriété, ajoutez ce compte en tant qu'utilisateur sur search.google.com/search-console.",
@@ -2800,7 +2800,7 @@ export const frCatalog = {
   "Toplam tıklama / gösterim: {clicks} / {impressions}":
     "Total de clics/impressions : {clicks} / {impressions}",
   "Arama performansında aç": "Ouvrir dans Performances de recherche",
-  Değişim: "Modifier",
+  Değişim: "Variation",
   "Bir önceki, aynı uzunluktaki dönemle karşılaştırılır. Sıra numarası küçüldüyse (12'den 8'e gibi) kelime yükselmiştir ve yeşil “Yükseldi” yazar. Büyüdüyse kırmızı “Düştü” yazar.":
     "Par rapport à la période précédente de même durée. Si le numéro de position a diminué (par exemple de 12 à 8), le mot-clé a progressé et affiche « En hausse » en vert. S'il a augmenté, il affiche « En baisse » en rouge.",
   "Sorgular yüklenemedi": "Impossible de charger les requêtes",
@@ -3034,9 +3034,9 @@ export const frCatalog = {
     "Cet audit ne peut pas être supprimé pour le moment. Attendez qu'il se termine et réessayez.",
   "Denetimin Lighthouse çıktıları silinemedi; denetim silinmedi. Lütfen tekrar deneyin.":
     "Impossible de supprimer les résultats Lighthouse de l'audit, l'audit n'a donc pas été supprimé. Veuillez réessayer.",
-  "Google Analytics bu hizmet hesabına izin vermedi. İki şey gerekiyor: Google Cloud projenizde Google Analytics Admin API etkin olmalı, ve GA4 mülkünüzde Yönetici → Erişim yönetimi altında {email} adresi Görüntüleyen olarak ekli olmalı.":
+  "Google Analytics bu hizmet hesabına izin vermedi. İki şey gerekiyor: Google Cloud projenizde Google Analytics Admin API etkin olmalı, ve GA4 mülkünüzde Yönetici → Erişim yönetimi altında {email} adresi Görüntüleyici olarak ekli olmalı.":
     "Google Analytics a refusé l'accès à ce compte de service. Deux conditions sont nécessaires : l'API Google Analytics Admin doit être activée dans votre projet Google Cloud, et {email} doit être ajouté avec le rôle Lecteur sous Administration → Gestion des accès dans votre propriété GA4.",
-  "Google Analytics bu hizmet hesabına izin vermedi. Google Analytics Admin API'yi etkinleştirin ve hesabın adresini GA4 mülkünüze Görüntüleyen olarak ekleyin.":
+  "Google Analytics bu hizmet hesabına izin vermedi. Google Analytics Admin API'yi etkinleştirin ve hesabın adresini GA4 mülkünüze Görüntüleyici olarak ekleyin.":
     "Google Analytics a refusé l'accès à ce compte de service. Activez l'API Google Analytics Admin et ajoutez l'adresse du compte à votre propriété GA4 avec le rôle Lecteur.",
   "Bu Google hesabı seowatcher hesabınıza bağlı değil.":
     "Ce compte Google n'est pas connecté à votre compte seowatcher.",
@@ -3662,7 +3662,7 @@ export const frCatalog = {
   "Hizmet hesapları": "Comptes de service",
   "Hizmet hesabı durumu okunamadı.":
     "Impossible de lire l'état du compte de service.",
-  "Bu adresi Search Console'da {path} ile mülkünüze ekleyin (yetki: {level}). Eklemeden veri gelmez. Analytics için de GA4 mülkünde {gaPath}'ne aynı adresi Görüntüleyen olarak ekleyin.":
+  "Bu adresi Search Console'da {path} ile mülkünüze ekleyin (yetki: {level}). Eklemeden veri gelmez. Analytics için de GA4 mülkünde {gaPath}'ne aynı adresi Görüntüleyici olarak ekleyin.":
     "Dans la Search Console, ajoutez cette adresse à votre propriété sous {path} (autorisation : {level}). Aucune donnée n'arrivera tant que ce ne sera pas fait. Pour Analytics, ajoutez aussi la même adresse avec le rôle Lecteur dans la propriété GA4 sous {gaPath}.",
   "Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle":
     "Paramètres → Utilisateurs et autorisations → Ajouter un utilisateur",

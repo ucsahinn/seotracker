@@ -42,14 +42,14 @@ test("every translated audit guide lists each rule registered by the app", () =>
   }
 });
 
-test("every 0.8.6 release note uses the current audit rule count", () => {
+test("every 0.8.7 release note uses the current audit rule count", () => {
   for (const language of languages) {
     const source = readFileSync(releaseNotesPath(language), "utf8");
-    const latest = source.split(/^## 0\.8\.6 Alpha/m)[1]?.split(/^## /m)[0];
+    const latest = source.split(/^## 0\.8\.7 Alpha/m)[1]?.split(/^## /m)[0];
 
-    expect(latest, `${language} 0.8.6 notes`).toBeDefined();
-    expect(latest, `${language} 0.8.6 notes`).toContain(String(ruleCount));
-    expect(latest, `${language} 0.8.6 notes`).not.toContain("201");
+    expect(latest, `${language} 0.8.7 notes`).toBeDefined();
+    expect(latest, `${language} 0.8.7 notes`).toContain(String(ruleCount));
+    expect(latest, `${language} 0.8.7 notes`).not.toContain("201");
   }
 });
 

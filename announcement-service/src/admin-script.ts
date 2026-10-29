@@ -1,3 +1,5 @@
+import { adminTranslateScript } from "./admin-translate-script";
+
 export const adminScript = String.raw`
     const authForm = document.querySelector('#auth');
     const tokenInput = document.querySelector('#token');
@@ -318,6 +320,7 @@ export const adminScript = String.raw`
     publishNowToggle.addEventListener('change', () => {
       saveButton.textContent = publishNowToggle.checked ? 'Şimdi yayımla' : 'Taslak kaydet';
     });
+${adminTranslateScript}
     document.querySelector('#add-option').addEventListener('click', () => { addOption(); updateInteractionFields(); });
     document.querySelector('#refresh').addEventListener('click', () => void loadSafely());
     document.querySelector('#close-responses').addEventListener('click', () => { responses.hidden = true; responseTrigger?.focus(); });

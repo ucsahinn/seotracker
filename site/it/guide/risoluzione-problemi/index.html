@@ -14,7 +14,7 @@
     <title>Risoluzione dei problemi | guida di seowatcher</title>
     <meta
       name="description"
-      content="I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, assistente 401."
+      content="I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, agente 401."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -94,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, assistente 401."
+      content="I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, agente 401."
     />
     <meta
       property="og:image"
@@ -125,7 +125,7 @@
     />
     <meta
       name="twitter:description"
-      content="I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, assistente 401."
+      content="I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, agente 401."
     />
     <meta
       name="twitter:image"
@@ -168,7 +168,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/it/guide/risoluzione-problemi/#article",
             "headline": "Risoluzione dei problemi",
-            "description": "I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, assistente 401.",
+            "description": "I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, agente 401.",
             "url": "https://seowatcher.io/it/guide/risoluzione-problemi/",
             "inLanguage": "it",
             "datePublished": "2026-10-23",
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1519,17 +1519,17 @@
                 >Parole chiave salvate</a
               >
             </li>
-            <li>
-              <a href="/it/guide/analisi/">Interpretare i dati di analisi</a>
-            </li>
+            <li><a href="/it/guide/analisi/">Capire i dati di Analytics</a></li>
             <li>
               <a href="/it/guide/controllo-del-sito/">Controllo del sito</a>
             </li>
-            <li><a href="/it/guide/stato-indice/">Stato dell'indice</a></li>
+            <li>
+              <a href="/it/guide/stato-indice/">Stato dell'indicizzazione</a>
+            </li>
             <li><a href="/it/guide/rapporti/">Report e modelli</a></li>
             <li>
               <a href="/it/guide/informazioni-progetto/"
-                >Informazioni sul progetto</a
+                >Contesto del progetto</a
               >
             </li>
             <li><a href="/it/guide/impostazioni/">Impostazioni</a></li>
@@ -1542,7 +1542,7 @@
             </li>
             <li>
               <a href="/it/guide/configurazione-assistente/"
-                >Configurazione dell'assistente</a
+                >Configurazione dell'agente</a
               >
             </li>
             <li class="current" aria-current="page">
@@ -1558,8 +1558,8 @@
         <h1>Risoluzione dei problemi</h1>
         <p class="lede">
           I problemi più comuni, con sintomo, causa e soluzione: porta occupata,
-          avviso di Windows, errori di Google, quota, controllo bloccato,
-          assistente 401.
+          avviso di Windows, errori di Google, quota, controllo bloccato, agente
+          401.
         </p>
         <p>
           Se qualcosa non funziona, guardare prima nell'app la scheda
@@ -1580,8 +1580,8 @@
         </p>
         <h2 id="la-pagina-non-si-apre">La pagina non si apre</h2>
         <p class="callout callout-belirti">
-          <strong>Sintomo:</strong> Il browser dice &quot;bağlantı
-          reddedildi&quot; (connessione rifiutata).
+          <strong>Sintomo:</strong> Il browser segnala &quot;connessione
+          rifiutata&quot; (ERR_CONNECTION_REFUSED).
         </p>
         <p class="callout callout-sebep">
           <strong>Causa:</strong> L'app non è in funzione.
@@ -1590,10 +1590,10 @@
           <strong>Soluzione:</strong> In Windows guardare l'icona nella barra
           delle applicazioni. Se l'icona non si vede, fare clic sulla freccia ^
           nella barra delle applicazioni. Se non c'è, aprire seowatcher dal menu
-          Start. Se l'icona dice &quot;Errore&quot;, fare clic con il tasto
-          destro e scegliere <strong>Yeniden başlat</strong> (Riavvia). Con
-          Docker scrivere <code>docker compose ps</code>. Se lo stato non è
-          healthy, scrivere <code>docker compose up -d</code>.
+          Start. Se l'icona dice &quot;Hata&quot; (Errore), fare clic con il
+          tasto destro e scegliere <strong>Yeniden başlat</strong> (Riavvia).
+          Con Docker eseguire <code>docker compose ps</code>. Se lo stato non è
+          healthy, eseguire <code>docker compose up -d</code>.
         </p>
         <h2 id="il-numero-di-porta-e-occupato">
           Il numero di porta è occupato
@@ -1606,7 +1606,7 @@
           chiudi quel programma e riavvia seowatcher.&quot; Il collegamento a
           Google dà un errore. Oppure l'icona dice &quot;3001 ve sonraki 9 adres
           numarası (port) dolu&quot; (la porta 3001 e le 9 successive sono
-          occupate). La stessa frase è scritta nella scheda &quot;Stato
+          occupate). La stessa frase compare anche nella scheda &quot;Stato
           dell'app&quot; della schermata <strong>Aiuto</strong>. Con Docker
           compare &quot;Bind for 127.0.0.1:3001 failed&quot;.
         </p>
@@ -1619,15 +1619,15 @@
         </p>
         <p class="callout callout-cozum">
           <strong>Soluzione:</strong> Il pacchetto Windows di norma sceglie un
-          numero libero tra 3002 e 3010, lo comunica con un fumetto e con la
+          numero libero tra 3002 e 3010, lo comunica con una notifica e con la
           striscia in alto, e lo usa solo per quell'avvio. Chiudere prima il
           programma che occupa la 3001. Se è una vecchia copia di Docker,
           fermare il contenitore seotracker in Docker Desktop oppure eseguire
           <code>docker compose stop</code> nella cartella del progetto. Poi
           scegliere <strong>Yeniden başlat</strong> (Riavvia) nel menu. L'app
           torna alla 3001 e la striscia scompare. Chiudere la striscia la
-          nasconde solo per quella scheda; non risolve nulla. Se sono tutti
-          occupati, scrivere un altro numero nel file
+          nasconde solo per quella scheda; non risolve nulla. Se i numeri da
+          3002 a 3010 sono tutti occupati, scrivere un altro numero nel file
           <code>config.json</code> della cartella dei dati. Con Docker mettere
           un <code>.env</code> con la riga <code>PORT=3002</code> e scrivere
           <code>docker compose up -d --force-recreate seotracker</code>. Quando
@@ -1649,8 +1649,8 @@
           questo pacchetto manca o è vecchio.
         </p>
         <p class="callout callout-cozum">
-          <strong>Soluzione:</strong> Fare clic sul fumetto che compare oppure
-          fare clic con il tasto destro sull'icona e scegliere
+          <strong>Soluzione:</strong> Fare clic sulla notifica che compare
+          oppure fare clic con il tasto destro sull'icona e scegliere
           <strong>Eksik Windows bileşenini kur</strong> (Installa il componente
           di Windows mancante). Windows chiede una volta il permesso di
           amministratore. Al termine dell'installazione l'app si riavvia da
@@ -1674,14 +1674,17 @@
         </p>
         <p class="callout callout-cozum">
           <strong>Soluzione:</strong> Se l'app si è avviata, non serve fare
-          nulla. Altrimenti fare clic con il tasto destro sull'icona nella barra
-          delle applicazioni (se non si vede, fare clic sulla freccia ^).
-          Scegliere <strong>Eksik Windows bileşenini kur</strong> e questa volta
-          dare il permesso. Oppure scaricare e installare il componente da
+          nulla. Altrimenti fare clic con il tasto destro sull'icona nell'area
+          di notifica. Scegliere <strong>Eksik Windows bileşenini kur</strong> e
+          questa volta dare il permesso. Oppure scaricare e installare il
+          componente da
           <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code>.
         </p>
-        <h2 id="l-icona-dice-uygulamanin-motoru-coktu">
-          L'icona dice &quot;Uygulamanın motoru çöktü&quot;
+        <h2
+          id="l-icona-dice-uygulamanin-motoru-coktu-il-motore-dell-app-si-e-bloccato"
+        >
+          L'icona dice &quot;Uygulamanın motoru çöktü&quot; (il motore dell'app
+          si è bloccato)
         </h2>
         <p class="callout callout-belirti">
           <strong>Sintomo:</strong> L'app non si apre. Nel registro ci sono
@@ -1757,17 +1760,17 @@
           Docker, la chiave di cifratura è più corta di 32 caratteri.
         </p>
         <p class="callout callout-cozum">
-          <strong>Soluzione:</strong> Eseguire i passaggi 10 e 11 della guida al
-          collegamento con Google. Con Docker, se
-          <code>BETTER_AUTH_SECRET</code> è stata indicata a mano, allungarla.
-          Se la si lascia vuota, l'app la genera da sola.
+          <strong>Soluzione:</strong> Seguire la sezione OAuth della guida
+          <a href="/it/guide/collegamento-google/">Collegamento con Google</a>.
+          Con Docker, se <code>BETTER_AUTH_SECRET</code> è stata indicata a
+          mano, allungarla. Se la si lascia vuota, l'app la genera da sola.
         </p>
         <h2 id="google-dice-access-denied">
           Google dice &quot;access_denied&quot;
         </h2>
         <p class="callout callout-belirti">
           <strong>Sintomo:</strong> Dopo la schermata di consenso compare
-          l'avviso &quot;iptal edildi&quot; (annullato).
+          l'avviso &quot;L'accesso a Google è stato annullato&quot;.
         </p>
         <p class="callout callout-sebep">
           <strong>Causa:</strong> L'account Google usato per l'accesso non è
@@ -1785,8 +1788,8 @@
         </p>
         <p class="callout callout-sebep">
           <strong>Causa:</strong> Nelle app in stato &quot;Test&quot;, Google
-          può ridurre il permesso a sette giorni. Può anche essere cambiata la
-          chiave di cifratura.
+          può revocare l'autorizzazione dopo sette giorni. Può anche essere
+          cambiata la chiave di cifratura.
         </p>
         <p class="callout callout-cozum">
           <strong>Soluzione:</strong> Nella scheda scegliere
@@ -1798,9 +1801,9 @@
           Nessun dato sulle query, grafici vuoti
         </h2>
         <p class="callout callout-belirti">
-          <strong>Sintomo:</strong> Le schede del Panel (Pannello) sono a zero.
-          Rendimento della ricerca dice &quot;Ancora nessun dato per questo
-          periodo&quot;.
+          <strong>Sintomo:</strong> Le schede del <strong>Pannello</strong> sono
+          a zero. Rendimento della ricerca dice &quot;Ancora nessun dato per
+          questo periodo&quot;.
         </p>
         <p class="callout callout-sebep">
           <strong>Causa:</strong> Ci sono tre possibilità. Il sito è nuovo e
@@ -1845,8 +1848,8 @@
         <p class="callout callout-cozum">
           <strong>Soluzione:</strong> Attendere. L'app verifica i controlli che
           risultano &quot;in corso&quot; da più di 15 minuti. Se non c'è segno
-          di vita, li chiude come &quot;Non riuscito&quot; e ne scrive il
-          motivo. Poi scegliere
+          di vita, li segna come &quot;Non riuscito&quot; e ne indica il motivo.
+          Poi scegliere
           <strong>Esegui di nuovo con le stesse impostazioni</strong>. Non
           avviare due controlli con la misurazione della velocità nello stesso
           momento: si rallentano a vicenda.
@@ -1861,15 +1864,14 @@
           <strong>Sintomo:</strong> La schermata del controllo dice &quot;La
           verifica si è interrotta nella fase «scansione».&quot; oppure &quot;Il
           controllo si è interrotto prima di terminare.&quot; Al posto del
-          punteggio c'è scritto &quot;Controllo incompleto — nessun
-          punteggio&quot;.
+          punteggio compare &quot;Controllo incompleto — nessun punteggio&quot;.
         </p>
         <p class="callout callout-sebep">
-          <strong>Causa:</strong> La schermata dice tre cose: che cosa è
-          successo, se il difetto è del sito o dell'app, e che cosa fare. Il
-          titolo indica la fase in cui si è interrotta: individuazione degli
-          URL, scansione, misurazione della velocità o preparazione dei
-          risultati.
+          <strong>Causa:</strong> Il controllo si è interrotto. La schermata
+          dice tre cose: che cosa è successo, se il difetto è del sito o
+          dell'app, e che cosa fare. Il titolo indica la fase in cui si è
+          interrotta: individuazione degli URL, scansione, misurazione della
+          velocità o preparazione dei risultati.
         </p>
         <p class="callout callout-cozum">
           <strong>Soluzione:</strong> Seguire la frase sulla schermata.
@@ -1998,13 +2000,13 @@
           una nuova verifica. Se continua, salvare di nuovo la chiave PageSpeed
           in <strong>Impostazioni</strong>.
         </p>
-        <h2 id="il-controllo-dice-engellendik">
-          Il controllo dice &quot;Engellendik&quot;
+        <h2 id="il-controllo-dice-siamo-stati-bloccati">
+          Il controllo dice &quot;Siamo stati bloccati&quot;
         </h2>
         <p class="callout callout-belirti">
           <strong>Sintomo:</strong> Compare un avviso giallo: &quot;Il controllo
           non è riuscito a scansionare completamente il sito.&quot; oppure
-          &quot;N sayfada engellendik.&quot; (Siamo stati bloccati in N pagine.)
+          &quot;Siamo stati bloccati su N pagine.&quot;
         </p>
         <p class="callout callout-sebep">
           <strong>Causa:</strong> La protezione anti-bot del sito (Cloudflare o
@@ -2021,10 +2023,9 @@
           La misurazione della velocità è incompleta o manca
         </h2>
         <p class="callout callout-belirti">
-          <strong>Sintomo:</strong> La scheda Hız (Velocità) è vuota o ha
-          pochissime righe. La scheda della quota dice &quot;Quota
-          esaurita&quot;, &quot;Dakikalık sınır&quot; (Limite al minuto) o
-          &quot;Anahtar yok&quot; (Nessuna chiave).
+          <strong>Sintomo:</strong> La scheda <strong>Velocità</strong> è vuota
+          o ha pochissime righe. La scheda delle quote segnala una quota
+          esaurita, un limite al minuto raggiunto o l'assenza della chiave.
         </p>
         <p class="callout callout-sebep">
           <strong>Causa:</strong> Manca la chiave PageSpeed (si misurano al
@@ -2032,28 +2033,29 @@
         </p>
         <p class="callout callout-cozum">
           <strong>Soluzione:</strong> Ottenere una chiave gratuita seguendo la
-          guida alla chiave PageSpeed. Se il limite giornaliero è finito, si
-          completa domani con un nuovo controllo. Se all'avvio del controllo la
-          misurazione della velocità era disattivata, quel controllo non può più
-          essere misurato in seguito.
+          guida alla chiave PageSpeed. Se la quota giornaliera è esaurita, il
+          resto si completa con un nuovo controllo il giorno successivo. Se
+          all'avvio del controllo la misurazione della velocità era disattivata,
+          quel controllo non può più essere misurato in seguito.
         </p>
         <h2 id="il-controllo-url-dice-limite-giornaliero-raggiunto">
           Il controllo URL dice &quot;limite giornaliero raggiunto&quot;
         </h2>
         <p class="callout callout-belirti">
           <strong>Sintomo:</strong> Nella scheda Stato dell'indicizzazione il
-          pulsante non funziona. C'è scritto &quot;Google'ın günlük 2.000 adres
-          sınırına ulaşıldı&quot; (Raggiunto il limite giornaliero di 2.000
-          indirizzi di Google).
+          pulsante non funziona. Compare il messaggio &quot;Il limite
+          giornaliero di Google di 2000 URL è esaurito&quot;.
         </p>
         <p class="callout callout-sebep">
           <strong>Causa:</strong> Per ogni proprietà ci sono 2.000 richieste al
-          giorno. L'app, l'assistente e i controlli fatti a mano in Search
-          Console consumano la stessa riserva.
+          giorno. L'app, l'agente e i controlli fatti a mano in Search Console
+          consumano la stessa riserva.
         </p>
         <p class="callout callout-cozum">
-          <strong>Soluzione:</strong> Continuare domani. L'app richiede di nuovo
-          solo le risposte invecchiate, quindi il limite non va sprecato.
+          <strong>Soluzione:</strong> Il limite conta le ultime 24 ore, quindi
+          la quota si libera gradualmente nel giro di qualche ora; riprendere
+          allora. L'app richiede di nuovo solo le risposte invecchiate, quindi
+          il limite non va sprecato.
         </p>
         <h2 id="la-scheda-o-il-report-di-analytics-mostra-un-errore">
           La scheda o il report di Analytics mostra un errore
@@ -2084,13 +2086,14 @@
           <li>
             <strong>La proprietà non è stata trovata (HTTP 404).</strong> Può
             essere stata eliminata o spostata. Sceglierla di nuovo in
-            <strong>Impostazioni</strong>.
+            <strong>Impostazioni progetto → Connessioni</strong>.
           </li>
           <li>
             <strong
               >A questo progetto non è collegata nessuna proprietà.</strong
             >
-            Sceglierne una in <strong>Impostazioni</strong>.
+            Sceglierne una in
+            <strong>Impostazioni progetto → Connessioni</strong>.
           </li>
           <li>
             <strong>La quota dei report è esaurita (HTTP 429).</strong> La quota
@@ -2124,7 +2127,7 @@
           </li>
         </ul>
         <p class="callout callout-cozum">
-          <strong>Soluzione:</strong> Fare il passo indicato dalla frase. Di
+          <strong>Soluzione:</strong> Seguire l'indicazione del messaggio. Di
           solito <strong>Ripristina la connessione</strong> porta
           all'impostazione giusta.
         </p>
@@ -2159,8 +2162,8 @@
           </li>
           <li>
             <strong>La proprietà non è stata trovata (HTTP 404).</strong> Può
-            essere stata rimossa da Search Console. Sceglierla di nuovo in
-            <strong>Impostazioni</strong>.
+            essere stata rimossa da Search Console: sceglierne una valida in
+            <strong>Impostazioni progetto → Connessioni</strong>.
           </li>
           <li>
             <strong>Il limite di richieste è esaurito (HTTP 429).</strong>
@@ -2174,22 +2177,22 @@
             tra poco. Se continua, guardare la pagina di stato di Google.
           </li>
           <li>
-            <strong>Google non è raggiungibile.</strong> La frase dà un
-            dettaglio nella riga &quot;Motivo&quot;. Se continua, controllare la
-            connessione a internet di questo computer.
+            <strong>Google non è raggiungibile.</strong> La riga
+            &quot;Motivo&quot; aggiunge un dettaglio. Se il problema persiste,
+            verificare la rete.
           </li>
         </ul>
         <p class="callout callout-cozum">
-          <strong>Soluzione:</strong> Fare il passo indicato dalla frase. Per i
-          problemi di account e proprietà di solito basta rinnovare il
-          collegamento in <strong>Impostazioni</strong>.
+          <strong>Soluzione:</strong> Per i problemi di account e proprietà di
+          solito basta rinnovare il collegamento in
+          <strong>Impostazioni progetto → Connessioni</strong>.
         </p>
         <h2 id="in-analytics-compare-il-traffico-di-localhost">
           In Analytics compare il traffico di localhost
         </h2>
         <p class="callout callout-belirti">
-          <strong>Sintomo:</strong> Nella tabella delle pagine di ingresso,
-          nella colonna Alan adı (Dominio) c'è scritto localhost o 127.0.0.1.
+          <strong>Sintomo:</strong> Nella tabella delle pagine di ingresso, la
+          colonna <strong>Dominio</strong> mostra localhost o 127.0.0.1.
         </p>
         <p class="callout callout-sebep">
           <strong>Causa:</strong> Anche la copia di prova del sito carica lo
@@ -2199,30 +2202,51 @@
           <strong>Soluzione:</strong> Impostare il tag in modo che si carichi
           solo sul dominio reale. Nella maggior parte degli strumenti c'è
           un'opzione di &quot;controllo del dominio&quot;. L'app non filtra da
-          sola queste righe. Nel frattempo, controllare la colonna Alan adı.
+          sola queste righe. Nel frattempo, riconoscerle dalla colonna
+          <strong>Dominio</strong>.
         </p>
-        <h2 id="l-assistente-non-riesce-a-collegarsi-401">
-          L'assistente non riesce a collegarsi (401)
+        <h2 id="l-agente-non-riesce-a-connettersi-401">
+          L'agente non riesce a connettersi (401)
         </h2>
         <p class="callout callout-belirti">
           <strong>Sintomo:</strong> Claude Code o Codex dicono
           &quot;Unauthorized&quot;.
         </p>
         <p class="callout callout-sebep">
-          <strong>Causa:</strong> La password non viene inviata oppure è
-          sbagliata.
+          <strong>Causa:</strong> Il client non invia il token, oppure il token
+          è sbagliato.
         </p>
         <p class="callout callout-cozum">
-          <strong>Soluzione:</strong> Copiare di nuovo la password. In Windows è
-          nel file <code>mcp-token</code> nella cartella dei dati. Con Docker
-          scrivere
-          <code
-            >docker compose exec -T seotracker cat
-            /app/.wrangler/mcp-token</code
-          >. Eliminare il carattere di fine riga alla fine del valore. Per non
-          usare il terminale, aprire il file con il Blocco note, selezionare
-          tutta la riga e copiarla. Non lasciare il fine riga. In Claude Code
-          scrivere <code>/mcp</code> e scegliere
+          <strong>Soluzione:</strong> Nella schermata
+          <strong>Configurazione dell'agente</strong> usare
+          <strong>Copia comando di configurazione</strong>: l'agente legge il
+          token dall'installazione senza mostrarlo. Per inserirlo a mano,
+          copiarlo negli appunti senza mostrarlo, incollarlo nel campo
+          dell'intestazione del client MCP e poi svuotare gli appunti. Non
+          incollarlo mai in una chat o in una schermata.
+        </p>
+        <ul>
+          <li>
+            <strong>Pacchetto Windows:</strong> il token è nel file
+            <code>%LOCALAPPDATA%\seowatcher\mcp-token</code> (menu:
+            <strong>Veri klasörünü aç</strong>, Apri la cartella dei dati). In
+            PowerShell:
+            <code
+              >(Get-Content
+              &quot;$env:LOCALAPPDATA\seowatcher\mcp-token&quot;).Trim() |
+              Set-Clipboard</code
+            >.
+          </li>
+          <li>
+            <strong>Docker:</strong> in PowerShell,
+            <code
+              >(docker compose exec -T seotracker cat
+              /app/.wrangler/mcp-token).Trim() | Set-Clipboard</code
+            >.
+          </li>
+        </ul>
+        <p>
+          Poi, in Claude Code, scrivere <code>/mcp</code> e scegliere
           <strong>Reconnect</strong> (Ricollega).
         </p>
         <h2 id="docker-e-molto-lento-al-primo-avvio-oppure-risulta-unhealthy">
@@ -2236,13 +2260,13 @@
         <p class="callout callout-sebep">
           <strong>Causa:</strong> Al primo avvio l'app viene compilata dentro il
           container e richiede circa 2 GB di memoria. Se la memoria non basta,
-          la compilazione cade.
+          la compilazione non riesce.
         </p>
         <p class="callout callout-cozum">
-          <strong>Soluzione:</strong> Scrivere
+          <strong>Soluzione:</strong> Eseguire
           <code>docker compose logs --tail 50</code> e guardare le ultime righe.
           Se c'è un errore di memoria, dare più memoria ai container dalle
-          impostazioni di Docker Desktop. Poi scrivere
+          impostazioni di Docker Desktop. Poi eseguire
           <code>docker compose up -d --build</code>.
         </p>
         <h2 id="dove-sono-i-dati-e-i-registri">
@@ -2318,8 +2342,8 @@
               >L'app nell'area di notifica non ha riconosciuto questa
               richiesta.</strong
             >
-            Server e app potrebbero provenire da sessioni diverse. Scegliere
-            <strong>Çıkış</strong> (Esci) nel menu e riaprire l'app.
+            Server e app potrebbero provenire da sessioni diverse. Chiudere
+            l'app con <strong>Çıkış</strong> (Esci) e riaprirla.
           </li>
           <li>
             <strong
@@ -2338,8 +2362,8 @@
           </li>
         </ul>
         <p class="callout callout-cozum">
-          <strong>Soluzione:</strong> Fare il passo indicato dalla frase. Queste
-          opzioni esistono solo nel pacchetto Windows. Con Docker il
+          <strong>Soluzione:</strong> Queste opzioni esistono solo nel pacchetto
+          Windows; seguire l'indicazione del messaggio. Con Docker il
           comportamento all'avvio si gestisce dal sistema operativo.
         </p>
         <h2 id="avvisi-dell-avvio">Avvisi dell'avvio</h2>
@@ -2399,7 +2423,7 @@
               l'aggiornamento) oppure &quot;Güncelleme yapılamadı&quot;
               (Aggiornamento non riuscito).</strong
             >
-            Il fumetto indica il motivo. Se dice &quot;GitHub'a
+            La notifica indica il motivo. Se dice &quot;GitHub'a
             ulaşılamadı&quot; (GitHub non raggiungibile), controllare la
             connessione a Internet. Se dice &quot;GitHub şu an çok fazla istek
             alıyor&quot; (GitHub sta ricevendo troppe richieste in questo
@@ -2430,18 +2454,18 @@
             rel="prev"
             href="/it/guide/configurazione-assistente/"
             ><span>Precedente</span
-            ><strong>Configurazione dell'assistente</strong></a
+            ><strong>Configurazione dell'agente</strong></a
           ><a class="pager-next" rel="next" href="/it/guide/note-di-rilascio/"
             ><span>Successiva</span><strong>Note di versione</strong></a
           >
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 29 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 29 ottobre 2026. Ha trovato un errore?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >segnalarlo su GitHub</a
+            >Lo segnali su GitHub</a
           >.
         </p>
       </article>
@@ -2465,8 +2489,10 @@
             >
           </li>
           <li>
-            <a href="#l-icona-dice-uygulamanin-motoru-coktu"
-              >L'icona dice &quot;Uygulamanın motoru çöktü&quot;</a
+            <a
+              href="#l-icona-dice-uygulamanin-motoru-coktu-il-motore-dell-app-si-e-bloccato"
+              >L'icona dice &quot;Uygulamanın motoru çöktü&quot; (il motore
+              dell'app si è bloccato)</a
             >
           </li>
           <li>
@@ -2533,8 +2559,8 @@
             >
           </li>
           <li>
-            <a href="#il-controllo-dice-engellendik"
-              >Il controllo dice &quot;Engellendik&quot;</a
+            <a href="#il-controllo-dice-siamo-stati-bloccati"
+              >Il controllo dice &quot;Siamo stati bloccati&quot;</a
             >
           </li>
           <li>
@@ -2563,8 +2589,8 @@
             >
           </li>
           <li>
-            <a href="#l-assistente-non-riesce-a-collegarsi-401"
-              >L'assistente non riesce a collegarsi (401)</a
+            <a href="#l-agente-non-riesce-a-connettersi-401"
+              >L'agente non riesce a connettersi (401)</a
             >
           </li>
           <li>

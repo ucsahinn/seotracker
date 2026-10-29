@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1508,9 +1508,7 @@
           <p class="nav-group">Bildschirme</p>
           <ul>
             <li><a href="/de/dokumentation/projekte/">Projekte</a></li>
-            <li>
-              <a href="/de/dokumentation/uebersicht/">Übersicht (Panel)</a>
-            </li>
+            <li><a href="/de/dokumentation/uebersicht/">Übersicht</a></li>
             <li><a href="/de/dokumentation/suchleistung/">Suchleistung</a></li>
             <li>
               <a href="/de/dokumentation/ranking-verfolgung/"
@@ -1520,12 +1518,12 @@
             <li><a href="/de/dokumentation/chancen/">Chancen</a></li>
             <li>
               <a href="/de/dokumentation/gespeicherte-suchbegriffe/"
-                >Gespeicherte Suchbegriffe</a
+                >Gespeicherte Keywords</a
               >
             </li>
             <li>
               <a href="/de/dokumentation/datenanalyse/"
-                >Analysedaten verstehen</a
+                >Analytics-Daten verstehen</a
               >
             </li>
             <li>
@@ -1535,7 +1533,7 @@
             <li>
               <a href="/de/dokumentation/berichte/">Berichte und Vorlagen</a>
             </li>
-            <li><a href="/de/dokumentation/projektinfo/">Projektinfo</a></li>
+            <li><a href="/de/dokumentation/projektinfo/">Projektkontext</a></li>
             <li>
               <a href="/de/dokumentation/einstellungen/">Einstellungen</a>
             </li>
@@ -1546,7 +1544,7 @@
             <li><a href="/de/dokumentation/audit-regeln/">Audit-Regeln</a></li>
             <li>
               <a href="/de/dokumentation/assistent-einrichten/"
-                >Assistent einrichten</a
+                >Agent einrichten</a
               >
             </li>
             <li>
@@ -1565,19 +1563,19 @@
           Terminal. Dazu Update, Deinstallation, Sicherung und Portnummer.
         </p>
         <p>
-          Am Ende ist die App auf Ihrem Computer installiert und im Browser
-          geöffnet. Die Installation dauert zwei Minuten und gilt nur für Ihr
-          eigenes Benutzerkonto. Administratorrechte sind nicht nötig.
+          Die Installation dauert etwa zwei Minuten und gilt standardmäßig nur
+          für Ihr eigenes Benutzerkonto; Administratorrechte brauchen Sie dafür
+          nicht. Danach läuft die App im Hintergrund und öffnet sich im Browser.
         </p>
         <p>
           Die Oberfläche der App gibt es in sechs Sprachen: Türkisch, Englisch,
           Deutsch, Französisch, Italienisch und Portugiesisch. Die Sprache lässt
           sich unter Einstellungen → Darstellung → Sprache ändern. Diese
           Anleitung nennt Schaltflächen und Bildschirme so, wie sie in der
-          deutschen Oberfläche heißen. Den Installationsassistenten gibt es nur
-          auf Türkisch und Englisch, das Tray-Menü in der Taskleiste nur auf
-          Türkisch. Dort steht der Name, den Sie sehen, mit der deutschen
-          Bedeutung in Klammern.
+          deutschen Oberfläche heißen. Das Setup gibt es nur auf Türkisch und
+          Englisch, das Tray-Menü nur auf Türkisch. Für diese Stellen nennt die
+          Anleitung den angezeigten Text mit der deutschen Bedeutung in
+          Klammern.
         </p>
         <h2 id="voraussetzungen">Voraussetzungen</h2>
         <ul>
@@ -1587,23 +1585,18 @@
             groß, installiert belegt die App 313 MB.
           </li>
           <li>Ein Browser wie Edge, Chrome oder Firefox.</li>
+          <li>Docker, Node oder ein Terminal brauchen Sie nicht.</li>
           <li>
-            Docker, Node oder ein Terminal (Eingabeaufforderung) brauchen Sie
-            nicht.
-          </li>
-          <li>
-            Die App benötigt das Visual-C++-Paket von Microsoft. Fehlt es auf
-            dem Computer, installiert das Setup es selbst und fragt dafür einmal
-            nach der Administratorerlaubnis. Die App wird in den Ordner
-            <code>%LOCALAPPDATA%\Programs\seowatcher</code> installiert.
+            Die Visual-C++-Laufzeit von Microsoft. Fehlt sie, installiert das
+            Setup sie selbst und fragt dafür einmal nach Administratorrechten.
           </li>
         </ul>
         <h2 id="schritte">Schritte</h2>
         <h3 id="erstinstallation">Erstinstallation</h3>
         <ol>
           <li>
-            Laden Sie die Datei <strong>seowatcher-setup.exe</strong> von der
-            GitHub-Seite mit den Versionen herunter. Die feste Adresse lautet:
+            Laden Sie <strong>seowatcher-setup.exe</strong> von der
+            Versionsseite auf GitHub herunter. Die feste Adresse lautet:
             <code
               >github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe</code
             >
@@ -1613,29 +1606,27 @@
             Meldet Windows „Der Computer wurde durch Windows geschützt“, klicken
             Sie auf <strong>Weitere Informationen</strong> und dann auf
             <strong>Trotzdem ausführen</strong>. Die Datei ist noch nicht
-            signiert, daher kennt Windows den Herausgeber nicht. Diese Warnung
-            ist normal.
+            signiert, deshalb kennt Windows den Herausgeber nicht.
           </li>
           <li>
-            Wenn Sie möchten, vergleichen Sie die SHA-256-Prüfsumme der Datei
-            (ihren Fingerabdruck) mit der Datei <code>SHA256SUMS.txt</code> auf
-            der Versionsseite.
+            Optional vergleichen Sie die SHA-256-Prüfsumme der Datei mit
+            <code>SHA256SUMS.txt</code> auf der Versionsseite.
           </li>
           <li>
-            Das Setup gibt es auf Türkisch und Englisch. Fragt es nach der
-            Sprache, wählen Sie <strong>English</strong>; die folgenden Schritte
-            nennen die englischen Namen. Klicken Sie auf der Willkommensseite
-            auf <strong>Next</strong> (Weiter).
+            Fragt das Setup nach der Sprache, wählen Sie
+            <strong>English</strong>; die folgenden Schritte nennen die
+            englischen Bezeichnungen. Klicken Sie auf der Willkommensseite auf
+            <strong>Next</strong> (Weiter).
           </li>
           <li>
             Bei der Frage, für wen installiert werden soll, wählen Sie
             <strong>Install for me only</strong> (Nur für mich installieren).
-            Das ist die empfohlene Wahl; die Installation gilt dann nur für Ihr
-            Konto. Die Option <strong>Install for all users</strong> (Für alle
-            Benutzer installieren) verlangt Administratorrechte.
+            Das ist die empfohlene Wahl. Die Option
+            <strong>Install for all users</strong> (Für alle Benutzer
+            installieren) verlangt Administratorrechte.
           </li>
           <li>
-            Der Assistent bietet zwei Optionen an:
+            Das Setup bietet zwei Optionen an:
             <strong>Start seowatcher when Windows starts</strong> (seowatcher
             mit Windows starten) und
             <strong>Create a desktop shortcut</strong> (Verknüpfung auf dem
@@ -1655,24 +1646,29 @@
             Taskleiste wechselt nacheinander zu „Anahtarlar hazırlanıyor“
             (Schlüssel werden vorbereitet), „Veritabanı güncelleniyor“
             (Datenbank wird aktualisiert) und „Sunucu başlatılıyor“ (Server wird
-            gestartet). Ist das Symbol nicht zu sehen, klicken Sie in der
-            Taskleiste auf den Pfeil ^. Sobald alles bereit ist, öffnet sich Ihr
-            Browser. Startet die App automatisch mit Windows, öffnet sich der
-            Browser nicht; stattdessen erscheint die Sprechblase „seowatcher
-            hazır“ (seowatcher ist bereit).
+            gestartet). Sobald alles bereit ist, öffnet sich Ihr Browser.
+            Startet die App automatisch mit Windows, öffnet sich der Browser
+            nicht; stattdessen erscheint die Sprechblase „seowatcher hazır“
+            (seowatcher ist bereit).
           </li>
           <li>
             Der Browser zeigt <code>http://127.0.0.1:3001</code>. 127.0.0.1 ist
-            die Adresse Ihres eigenen Computers, 3001 ist die Portnummer (Port).
+            die Adresse Ihres eigenen Computers, 3001 der Port.
           </li>
         </ol>
-        <p>Weiter geht es mit der Anleitung zur Google-Verbindung.</p>
+        <p>
+          Verbinden Sie danach Google wie unter
+          <a href="/de/dokumentation/google-verbindung/"
+            >Mit Google verbinden</a
+          >
+          beschrieben.
+        </p>
         <h3 id="menu-in-der-taskleiste">Menü in der Taskleiste</h3>
         <p>
-          Klicken Sie mit der rechten Maustaste auf das Symbol. Ist es nicht zu
-          sehen, klicken Sie in der Taskleiste auf den Pfeil ^. Das Menü hat
-          vier Abschnitte: Ganz oben stehen das Öffnen der App und die
-          Statuszeile, danach Update und Neustart, danach zwei Einstellungen,
+          Klicken Sie mit der rechten Maustaste auf das seowatcher-Symbol im
+          Infobereich der Taskleiste. Ausgeblendete Symbole zeigt der Pfeil ^.
+          Das Menü hat vier Abschnitte: Ganz oben stehen das Öffnen der App und
+          die Statuszeile, danach Update und Neustart, danach die Einstellungen,
           ganz unten die Einträge zur Fehlerbehebung.
         </p>
         <ul>
@@ -1700,12 +1696,12 @@
             <strong>Güncelle</strong> (Aktualisieren): steht immer im Menü. Ein
             Klick prüft sofort auf GitHub. Gibt es eine neue Version, wird sie
             heruntergeladen und installiert, sonst erscheint „Güncel“ (Aktuell).
-            Beim Prüfen lautet der Eintrag „Wird geprüft …“, beim Herunterladen
-            „Güncelleme indiriliyor: X.Y.Z (%45)“ (Update wird heruntergeladen:
-            X.Y.Z (45 %)); dann ist er nicht anklickbar. Wurde bereits eine neue
-            Version gefunden, lautet der Eintrag „Güncelle: X.Y.Z sürümü hazır“
-            (Aktualisieren: Version X.Y.Z ist bereit); die Versionsnummern sind
-            Beispiele.
+            Beim Prüfen lautet der Eintrag „Kontrol ediliyor…“ (Wird geprüft…),
+            beim Herunterladen „Güncelleme indiriliyor: X.Y.Z (%45)“ (Update
+            wird heruntergeladen: X.Y.Z (45 %)); dann ist er nicht anklickbar.
+            Wurde bereits eine neue Version gefunden, lautet der Eintrag
+            „Güncelle: X.Y.Z sürümü hazır“ (Aktualisieren: Version X.Y.Z ist
+            bereit); die Versionsnummern sind Beispiele.
           </li>
           <li>
             <strong>Yeniden başlat</strong> (Neu starten): schließt die App und
@@ -1726,6 +1722,13 @@
             die App eine neue Version selbst, sobald sie eine findet.
           </li>
           <li>
+            <strong>Windows bildirimleri</strong> (Windows-Benachrichtigungen):
+            standardmäßig angekreuzt. Windows meldet dann abgeschlossene oder
+            fehlgeschlagene Audits und neue Ankündigungen, auch bei
+            geschlossenem Browser. Einzelheiten stehen unter
+            <a href="/de/dokumentation/einstellungen/">Einstellungen</a>.
+          </li>
+          <li>
             <strong>Kurulumu onar</strong> (Installation reparieren): löscht
             temporäre Dateien, prüft, ob das Paket vollständig ist, und öffnet
             die App neu. Während der Reparatur lautet der Eintrag „Onarılıyor…“
@@ -1736,9 +1739,8 @@
             kopieren): kopiert die Windows-Version, den Prozessor, die
             Visual-C++-Version, einen Testlauf des Programmkerns, das
             fehlerhafte Modul aus dem Windows-Ereignisprotokoll, Absturzabbilder
-            und die letzten Protokollzeilen in die Zwischenablage. Die Angaben
-            sind nach einigen Sekunden bereit, dann erscheint die Sprechblase
-            „Kopiert“. Das hilft Ihnen beim Melden eines Problems.
+            und die letzten Protokollzeilen in die Zwischenablage. Nach einigen
+            Sekunden erscheint die Sprechblase „Kopyalandı“ (Kopiert).
           </li>
           <li>
             <strong>Sorunu bildir (GitHub)</strong> (Problem melden (GitHub)):
@@ -1781,18 +1783,18 @@
         <h3 id="update">Update</h3>
         <p>
           Die App aktualisiert sich selbst: Zwei Minuten nach dem Start und
-          danach einmal pro Tag prüft sie auf GitHub, ob es eine neuere Version
-          gibt. Findet sie eine, lädt sie diese herunter, vergleicht den
-          Fingerabdruck der Datei (SHA-256) mit dem Wert auf der Versionsseite,
-          installiert sie im Hintergrund und startet neu. Der Text am Symbol
-          lautet dabei „Güncelleme indiriliyor“ (Update wird heruntergeladen)
-          und „Güncelleme kuruluyor“ (Update wird installiert); kurz erscheint
-          ein kleines Installationsfenster. Startet die App wieder, erscheint
-          die Sprechblase „seowatcher X.Y.Z sürümüne güncellendi“ (seowatcher
-          wurde auf Version X.Y.Z aktualisiert); ein Klick darauf öffnet die
-          Liste der Neuerungen. Auch der Bereich
-          <strong>Einstellungen → Info</strong> in der App zeigt die neue
-          Version an und verweist auf <strong>Güncelle</strong> am Symbol.
+          danach einmal täglich prüft sie auf GitHub, ob es eine neuere Version
+          gibt. Findet sie eine, lädt sie die Datei herunter, vergleicht deren
+          SHA-256-Prüfsumme mit dem Wert auf der Versionsseite, installiert sie
+          im Hintergrund und startet neu. Der Text am Symbol lautet dabei
+          „Güncelleme indiriliyor“ (Update wird heruntergeladen) und „Güncelleme
+          kuruluyor“ (Update wird installiert); kurz erscheint ein kleines
+          Installationsfenster. Startet die App wieder, erscheint die
+          Sprechblase „seowatcher X.Y.Z sürümüne güncellendi“ (seowatcher wurde
+          auf Version X.Y.Z aktualisiert); ein Klick darauf öffnet die Liste der
+          Neuerungen. Auch der Bereich <strong>Einstellungen → Info</strong> in
+          der App zeigt die neue Version an und verweist auf
+          <strong>Güncelle</strong> am Symbol.
         </p>
         <ul>
           <li>
@@ -1809,8 +1811,8 @@
             Versuchen warnt sie pro Version nur einmal.
           </li>
           <li>
-            Stimmt der Fingerabdruck der heruntergeladenen Datei nicht, wird das
-            Update nicht installiert, und die installierte Version läuft weiter.
+            Stimmt die Prüfsumme der heruntergeladenen Datei nicht, installiert
+            die App das Update nicht; die installierte Version läuft weiter.
           </li>
           <li>
             Bei einer Installation für alle Benutzer des Computers braucht das
@@ -1821,12 +1823,10 @@
           </li>
           <li>
             Für ein manuelles Update laden Sie die neue Installationsdatei von
-            derselben Adresse herunter und führen sie aus. Der Assistent
-            schließt die laufende App selbst, ersetzt die Dateien und startet
-            sie neu. Das Kontrollkästchen
-            <strong>Windows açılınca seowatcher'ı başlat</strong> (seowatcher
-            mit Windows starten) im Assistenten zeigt Ihre aktuelle Einstellung
-            aus dem Menü.
+            derselben Adresse herunter und führen sie aus. Das Setup schließt
+            die laufende App, ersetzt die Dateien und startet sie neu. Das
+            Kontrollkästchen für den Start mit Windows übernimmt dabei Ihre
+            aktuelle Einstellung aus dem Menü.
           </li>
         </ul>
         <p>
@@ -1843,8 +1843,8 @@
         <ul>
           <li>
             <strong>Für alle Benutzer</strong>: Führen Sie die
-            Installationsdatei als Administrator aus und wählen Sie im
-            Assistenten die Option „alle Benutzer“. Die App wird unter
+            Installationsdatei als Administrator aus und wählen Sie
+            <strong>Install for all users</strong>. Die App wird unter
             <code>C:\Program Files\seowatcher</code> installiert (bei der
             Installation für einen einzelnen Benutzer ist der Ordner
             <code>%LOCALAPPDATA%\Programs\seowatcher</code>); die Daten jedes
@@ -1862,8 +1862,8 @@
           <li>
             <strong>Installationsprotokoll</strong>: Jede Installation schreibt
             in die Datei <code>%LOCALAPPDATA%\seowatcher\logs\setup.log</code>.
-            Mit <code>/LOG=&quot;yol&quot;</code> (yol = Pfad) geben Sie einen
-            anderen Ort an.
+            Mit <code>/LOG=&quot;Pfad&quot;</code> geben Sie einen anderen Ort
+            an.
           </li>
           <li>
             <strong>Stille Deinstallation</strong>:
@@ -1873,27 +1873,25 @@
             <code>C:\Program Files\seowatcher</code>).
           </li>
           <li>
-            <strong>Prüfung</strong>: Vor der Veröffentlichung wird jede Version
-            auf einem sauberen Windows-Rechner installiert und gestartet. Sobald
-            die Statusadresse (health) antwortet, wird sie wieder deinstalliert.
-            Besteht eine Version diese Prüfung nicht, wird sie nicht
+            <strong>Freigabetest</strong>: Vor der Veröffentlichung wird jede
+            Version auf einem frischen Windows-System installiert, gestartet,
+            über die Statusadresse <code>/api/health</code> geprüft und wieder
+            deinstalliert. Nur Versionen, die diesen Test bestehen, werden
             veröffentlicht.
           </li>
         </ul>
         <h3 id="reparieren">Reparieren</h3>
         <p>
-          Wenn etwas hängt, klicken Sie mit der rechten Maustaste auf das Symbol
-          und wählen Sie <strong>Kurulumu onar</strong> (Installation
-          reparieren); ist das Symbol nicht zu sehen, klicken Sie in der
-          Taskleiste auf den Pfeil ^. Die App löscht temporäre Dateien und
-          prüft, ob das Paket vollständig ist. Beim anschließenden Start führt
-          sie das Datenbank-Update erneut aus.
+          Hängt die App, wählen Sie im Tray-Menü
+          <strong>Kurulumu onar</strong> (Installation reparieren). Die App
+          löscht temporäre Dateien, prüft das Paket auf Vollständigkeit und
+          führt beim anschließenden Start das Datenbank-Update erneut aus.
         </p>
         <p>
           Wurde eine Datei aus dem Paket gelöscht (zum Beispiel, weil ein
           Virenschutzprogramm sie in Quarantäne verschoben hat), lädt die App
           die Installationsdatei der installierten Version von GitHub herunter,
-          prüft den Fingerabdruck und installiert sich neu. Ihre Daten bleiben
+          prüft die Prüfsumme und installiert sich neu. Ihre Daten bleiben
           unberührt. Gibt es keine Internetverbindung, meldet sie „Kurulum
           eksik“ (Installation unvollständig) und öffnet die Versionsseite;
           laden Sie dann die Installationsdatei herunter und führen Sie sie aus.
@@ -1908,13 +1906,12 @@
           <li>Klicken Sie auf <strong>Deinstallieren</strong>.</li>
         </ol>
         <p>
-          Das Deinstallationsprogramm entfernt das Programm, die Verknüpfung im
-          Startmenü und den Eintrag „Mit Windows starten“ (auch wenn Sie ihn
-          über das Menü eingeschaltet haben) und heruntergeladene
-          Update-Dateien. Den Datenordner lässt es unberührt; das
-          Deinstallationsfenster sagt das ebenfalls. Möchten Sie auch Datenbank,
-          Google-Verbindung und Berichte löschen, löschen Sie den Datenordner
-          selbst.
+          Die Deinstallation entfernt das Programm, die Verknüpfung im
+          Startmenü, den Autostart-Eintrag und heruntergeladene Update-Dateien.
+          Den Datenordner lässt sie unberührt, worauf auch das
+          Deinstallationsfenster hinweist. Wollen Sie Datenbank,
+          Google-Verbindung und Berichte ebenfalls entfernen, löschen Sie den
+          Datenordner selbst.
         </p>
         <h3 id="wo-liegen-die-daten-und-wie-sichere-ich-sie">
           Wo liegen die Daten, und wie sichere ich sie?
@@ -1933,12 +1930,12 @@
           </li>
           <li>
             <code>instance-secret</code>: der Schlüssel, der die
-            Google-Zugangsschlüssel verschlüsselt. Geht er verloren, müssen Sie
-            die Google-Verbindungen neu einrichten.
+            Google-Zugangsdaten verschlüsselt. Geht er verloren, müssen Sie die
+            Google-Verbindungen neu einrichten.
           </li>
           <li>
-            <code>mcp-token</code>: das Passwort, mit dem sich Ihr KI-Assistent
-            mit der App verbindet.
+            <code>mcp-token</code>: das Token, mit dem sich Ihr KI-Agent mit der
+            App verbindet.
           </li>
           <li>
             <code>server.env</code>, <code>config.json</code>,
@@ -1952,27 +1949,27 @@
         </ol>
         <p>
           Zum Wiederherstellen schließen Sie die App, legen den Ordner an seinen
-          Platz zurück und starten die App erneut. Der Umzug auf einen anderen
-          Computer funktioniert genauso. Kopieren Sie
-          <code>instance-secret</code> mit, bleiben die Google-Verbindungen
-          erhalten.
+          Platz zurück und starten die App erneut. Ein Umzug auf einen anderen
+          Computer funktioniert genauso; solange
+          <code>instance-secret</code> dabei ist, bleiben die
+          Google-Verbindungen erhalten.
         </p>
         <h3 id="portnummer-andern">Portnummer ändern</h3>
         <p>
-          Die App verwendet die Nummer 3001. Belegt ein anderes Programm diese
-          Nummer, wählt die App die erste freie zwischen 3002 und 3010, aber nur
-          für diesen einen Start, und zeigt die Sprechblase „3001 numarası dolu,
-          3002 kullanılıyor“ (Port 3001 ist belegt, 3002 wird verwendet). Die
-          Nummer wird nicht gespeichert. Sobald 3001 wieder frei ist, verwendet
-          die App beim nächsten Start wieder 3001, weil die
-          Weiterleitungsadressen bei Google diese Nummer enthalten.
+          Die App verwendet Port 3001. Belegt ein anderes Programm diesen Port,
+          wählt die App den ersten freien zwischen 3002 und 3010, aber nur für
+          diesen einen Start, und zeigt die Sprechblase „3001 numarası dolu,
+          3002 kullanılıyor“ (Port 3001 ist belegt, 3002 wird verwendet). Der
+          Ausweichport wird nicht gespeichert: Ist 3001 wieder frei, nutzt die
+          App beim nächsten Start wieder 3001, denn die Weiterleitungsadressen
+          bei Google enthalten diesen Port.
         </p>
-        <p>Wenn Sie eine bestimmte Nummer möchten:</p>
+        <p>So legen Sie einen festen Port fest:</p>
         <ol>
           <li>Schließen Sie die App.</li>
           <li>
             Öffnen Sie die Datei <code>config.json</code> im Datenordner mit dem
-            Editor (Notepad).
+            Editor.
           </li>
           <li>Schreiben Sie Folgendes hinein:</li>
         </ol>
@@ -1989,17 +1986,18 @@
           </li>
         </ol>
         <p>
-          Ändert sich die Nummer, tragen Sie sie auch in den beiden
-          Weiterleitungsadressen bei Google ein. Die Adressen stehen in der
-          Anleitung zur Google-Verbindung.
+          Ändern Sie den Port, passen Sie auch die beiden Weiterleitungsadressen
+          bei Google an (siehe
+          <a href="/de/dokumentation/google-verbindung/">Mit Google verbinden</a
+          >).
         </p>
         <h2 id="kontrolle">Kontrolle</h2>
         <ul>
           <li>
             Fahren Sie mit der Maus über das Symbol in der Taskleiste. Es sollte
             „seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/“ (seowatcher
-            X.Y.Z: Läuft: http://127.0.0.1:3001/) erscheinen. Die Zahl am Anfang
-            ist Ihre installierte Version; 0.5.0 Alpha ist nur ein Beispiel.
+            X.Y.Z: Läuft: http://127.0.0.1:3001/) erscheinen. X.Y.Z steht für
+            Ihre installierte Version.
           </li>
           <li>
             Im Browser sollte die Adresse
@@ -2007,10 +2005,11 @@
             der mit &quot;status&quot;:&quot;ok&quot; beginnt.
           </li>
           <li>
-            Auf dem Bildschirm <strong>Hilfe</strong> sollte die Karte „Status
-            Ihrer Installation“ „Alles ist in Ordnung.“ anzeigen. Solange Google
-            nicht verbunden ist, ist die Zeile „Google-Anmeldung“ als „braucht
-            Aufmerksamkeit“ markiert. Das ist normal.
+            Auf dem Bildschirm <strong>Hilfe</strong> sollte die Karte
+            <strong>Zustand der App</strong> „Die Installationsprüfungen haben
+            keine Probleme gefunden.“ melden. Solange Google nicht verbunden
+            ist, zeigt die Zeile <strong>Google-Anmeldung</strong> eine Warnung.
+            Das ist normal.
           </li>
         </ul>
         <h2 id="haufige-fragen">Häufige Fragen</h2>
@@ -2027,27 +2026,24 @@
         </p>
         <p>
           <strong>Kann ich sie von einem anderen Computer aus öffnen?</strong>
-          Nein, das ist Absicht. Die App hört nur auf die Adresse 127.0.0.1.
-          Wollen Sie sie im Internet erreichbar machen, müssen Sie selbst eine
-          Anmeldung davorschalten.
+          Nein, und das ist beabsichtigt: Die App nimmt nur Verbindungen über
+          127.0.0.1 an. Wollen Sie sie im Internet erreichbar machen, müssen Sie
+          selbst eine Anmeldung davorschalten.
         </p>
         <p>
           <strong>Kann ich von der Docker-Version wechseln?</strong> Ja, aber
-          die Daten ziehen nicht von selbst um. Sie legen die Projekte neu an
-          und verbinden Google erneut. Das Search-Console-Archiv füllt sich beim
-          ersten Start wieder.
+          die Daten werden nicht übernommen. Legen Sie die Projekte neu an und
+          verbinden Sie Google erneut; das Search-Console-Archiv füllt sich aus
+          Googles letzten 16 Monaten wieder, sobald Sie die Suchleistung oder
+          die Ranking-Verfolgung öffnen.
         </p>
         <p>
-          <strong>Mein Virenschutz hat eine Warnung ausgegeben.</strong> Da die
-          Datei nicht signiert ist, warnen manche Virenschutzprogramme. Laden
-          Sie die Datei nur von der GitHub-Seite mit den Versionen herunter und
+          <strong>Mein Virenschutz hat eine Warnung ausgegeben.</strong> Manche
+          Virenschutzprogramme warnen bei nicht signierten Dateien. Laden Sie
+          die Datei nur von der Versionsseite auf GitHub herunter und
           vergleichen Sie die SHA-256-Prüfsumme.
         </p>
         <h2 id="wenn-etwas-nicht-klappt">Wenn etwas nicht klappt</h2>
-        <p>
-          Ist das Symbol nicht zu sehen, klicken Sie in der Taskleiste auf den
-          Pfeil ^.
-        </p>
         <ul>
           <li>
             <strong
@@ -2085,9 +2081,9 @@
               >Das Symbol zeigt „Veritabanı güncellemesi 15 dakikada bitmedi“
               (Das Datenbank-Update war nach 15 Minuten nicht fertig).</strong
             >
-            Möglicherweise sperrt ein anderes Programm die Datenbankdatei (ein
-            Backup- oder Synchronisierungsprogramm). Beenden Sie dieses Programm
-            und wählen Sie <strong>Yeniden başlat</strong>.
+            Möglicherweise sperrt ein Backup- oder Synchronisierungsprogramm die
+            Datenbankdatei. Beenden Sie dieses Programm und wählen Sie
+            <strong>Yeniden başlat</strong>.
           </li>
           <li>
             <strong>Der Browser hat sich nicht geöffnet.</strong> Doppelklicken
@@ -2095,23 +2091,6 @@
             <code>http://127.0.0.1:3001</code>
           </li>
         </ul>
-        <h2 id="windows-benachrichtigungen">Windows-Benachrichtigungen</h2>
-        <p>
-          Klicken Sie mit der rechten Maustaste auf das seowatcher-Symbol im
-          Infobereich und wählen Sie
-          <strong>Windows bildirimleri</strong> (standardmäßig aktiv). Solange
-          der Starter läuft, erscheinen abgeschlossene oder fehlgeschlagene
-          Prüfungen aller Projekte und neue Ankündigungen nach etwa 90 Sekunden
-          als Windows-Sprechblase, auch bei geschlossenem Browser oder im
-          Hintergrund. Ein Klick öffnet die zugehörige Seite; mehrere Ereignisse
-          werden zusammengefasst. Der erste Start überspringt alte Ereignisse;
-          ein Neustart wiederholt erfasste Ereignisse nicht. Bei ausgeschalteten
-          Meldungen empfangene Ereignisse werden nicht nachgeholt. Neue
-          Versionen folgen weiterhin der Update-Einstellung. Der
-          Windows-Fokusmodus kann Meldungen ausblenden. Bei geschlossenem
-          Starter erscheinen keine Meldungen. Diese Funktion ist in Docker nicht
-          verfügbar.
-        </p>
         <nav class="pager" aria-label="Vorherige und nächste Seite">
           <a
             class="pager-prev"
@@ -2145,16 +2124,13 @@
           <li>
             <a href="#wenn-etwas-nicht-klappt">Wenn etwas nicht klappt</a>
           </li>
-          <li>
-            <a href="#windows-benachrichtigungen">Windows-Benachrichtigungen</a>
-          </li>
         </ol>
       </nav>
     </main>
     <footer>
       <div class="wrap">
         <p class="star">
-          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          Ein Stern hilft anderen, das Werkzeug zu finden.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

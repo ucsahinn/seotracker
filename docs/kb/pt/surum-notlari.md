@@ -1,16 +1,16 @@
 ---
 title: Notas da versão
-description: seowatcher 0.8.6 Alpha (29 de outubro de 2026): nova auditoria do site com 202 regras, seis idiomas, notificações e dados do Google mais precisos.
+description: seowatcher 0.8.7 Alpha (29 de outubro de 2026): nova auditoria do site com 202 regras, seis idiomas, notificações e dados do Google mais precisos.
 updated: 2026-10-29
 ---
 
-A versão mais recente é a **0.8.6 Alpha**, de 29 de outubro de 2026. Os dados são mantidos na atualização.
+A versão mais recente é a **0.8.7 Alpha**, de 29 de outubro de 2026. Os dados são mantidos na atualização.
 
 Para passar de 2.x para 0.x.x Alpha, execute o novo instalador manualmente; o atualizador antigo não reconhece o número menor como mais recente.
 
-## 0.8.6 Alpha — 2026-10-29
+## 0.8.7 Alpha — 2026-10-29
 
-Esta entrada reúne novidades e correções da 0.5.0 à 0.8.6: auditoria do site, painel, notificações e seis idiomas, com dados mais precisos e telas mais legíveis.
+Esta entrada reúne novidades e correções da 0.5.0 à 0.8.7: auditoria do site, painel, notificações e seis idiomas, com dados mais precisos e telas mais legíveis.
 
 ### ✨ Destaques
 
@@ -32,7 +32,7 @@ Esta entrada reúne novidades e correções da 0.5.0 à 0.8.6: auditoria do site
 ### 📊 Painel e relatórios
 
 - **Próximos passos:** O painel traz uma lista curta de tarefas e uma pontuação de preparo para concluir a configuração. Essa pontuação não é resultado de SEO.
-- **Relatórios prontos:** Seu assistente de IA prepara um relatório de melhorias com os dados de auditoria, busca e Analytics.
+- **Relatórios prontos:** O agente de IA prepara um relatório de melhorias com os dados de auditoria, busca e Analytics.
 - **Andamento da auditoria:** Enquanto a auditoria roda, você vê o tempo decorrido e o andamento, e um resumo curto no fim.
 - **Tipos de relatório:** Relatórios de pesquisa e de auditoria do site aparecem separados; relatórios antigos sem tipo conhecido são sinalizados.
 - **Datas dos relatórios:** Os relatórios de pesquisa mantêm as datas escolhidas e explicam dados ausentes e medições que ainda podem mudar.
@@ -58,6 +58,7 @@ Esta entrada reúne novidades e correções da 0.5.0 à 0.8.6: auditoria do site
 - **Guia:** O guia de uso, as regras de auditoria e as notas da versão existem em seis idiomas.
 - **Privacidade:** No seowatcher.io, a medição só funciona se você aceitar.
 - **Traduções revisadas:** Os textos e guias dos seis idiomas foram atualizados para acompanhar as telas revisadas.
+- **Traduções corrigidas:** Nomes de colunas e categorias mal traduzidos foram corrigidos nas telas em francês, alemão, italiano e português; a função do Analytics usa o nome do Google, "Leitor".
 
 ### 🎨 Aparência e ajuda
 
@@ -66,7 +67,7 @@ Esta entrada reúne novidades e correções da 0.5.0 à 0.8.6: auditoria do site
 - **Ajuda e versões:** As telas de ajuda e de notas da versão facilitam encontrar as informações desejadas.
 - **Cores dos dados:** Cliques em azul, impressões em violeta, taxa de cliques em turquesa, posição em ocre, sessões em verde e conversões em rosa: cartões e gráficos usam as mesmas cores mais vivas nos dois temas.
 - **Telas mais tranquilas:** Fonte, período e atualização dos dados aparecem juntos com rótulos curtos. Abra as explicações longas quando precisar; nomes curtos e botões claros facilitam as ações.
-- **No celular:** As listas aparecem como linhas legíveis em vez de tabelas no celular; consultas e rótulos não são mais cortados.
+- **No celular:** As listas aparecem como linhas legíveis em vez de tabelas; consultas e rótulos não são mais cortados.
 - **Visual único:** Botões, seções expansíveis, notificações e cartões têm a mesma aparência em todas as telas; listas de uma única página não mostram mais botões de página.
 
 ### 🗂️ Projetos e pesquisas salvas
@@ -83,13 +84,13 @@ Esta entrada reúne novidades e correções da 0.5.0 à 0.8.6: auditoria do site
 - **Números mais precisos:** Medições ausentes não contam como zero e dados limitados do Analytics não geram conclusões certas; as posições usam as mesmas datas, prioridades e limites das estimativas são explicados e os filtros não mudam o ganho mensal estimado. Oportunidades explica as pesquisas ocultadas pelo Google e não sugere mais ampliar para 90 dias quando esse período já está selecionado. Mesmo com poucos visitantes, dados ausentes são diferenciados de um zero real. O Analytics explica uma medida desconhecida uma única vez; tabelas vazias ocultam os botões de página anterior e próxima. Oportunidades lista as páginas com suas medições reais mesmo em sites com poucos visitantes. Quando a sugestão se baseia na posição média e não é possível calcular um ganho, o ganho aparece como desconhecido.
 - **Estado da conexão:** A escolha da propriedade é separada do acesso verificado e resultados antigos não são atuais após trocar de conta; conexões Google sem resposta param de esperar, erros temporários sugerem tentar novamente e serviços desativados explicam o que ativar.
 - **Dados salvos:** Adicionar ou remover etiquetas não deixa alterações pela metade, etiquetas em uso não podem ser excluídas, o histórico fica ligado à propriedade certa e as tarefas pendentes seguem a ordem correta.
-- **Abertura no Windows:** Os arquivos de trabalho ficam na pasta do usuário; conexões reparadas do assistente são mantidas ao reabrir e a verificação inicial não fica mais travada. Um link inutilizável para as configurações do Windows fica oculto. As notificações recebidas na sua ausência agora aparecem quando você volta ao aplicativo.
+- **Abertura no Windows:** Os arquivos de trabalho ficam na pasta do usuário; conexões reparadas do agente são mantidas ao reabrir e a verificação inicial não fica mais travada. Um link inutilizável para as configurações do Windows fica oculto. As notificações recebidas na sua ausência agora aparecem quando você volta ao aplicativo.
 
 ### 🔒 Segurança
 
 - **Componentes atualizados:** Falhas de segurança nos componentes usados pelo aplicativo foram corrigidas.
 - **Chaves secretas:** Salve seu arquivo de conexão Google sem mostrar o conteúdo na tela.
-- **Configuração do assistente:** As instruções não pedem que você exiba a chave de acesso na tela ou a cole em uma conversa.
+- **Configuração do agente:** As instruções não pedem que você exiba a chave de acesso na tela ou a cole em uma conversa.
 
 ## 0.4.3 Alpha — 2026-10-23
 
@@ -107,11 +108,11 @@ A instalação com um clique chegou ao Windows, e o site seowatcher.io com o gui
 - **Barra de tarefas:** Você gerencia o aplicativo pelo ícone na barra de tarefas.
 - **Atualização:** A opção Atualizar mostra o andamento; se quiser, as atualizações são instaladas sozinhas.
 - **Se recupera sozinho:** Se o aplicativo fechar de repente, ele reinicia, e os arquivos de registro não crescem mais.
-- **Reparar e relatar:** Reparar a instalação, na Ajuda, resolve problemas de abertura; Relatar um problema abre um registro pronto, com seus dados pessoais ocultos.
+- **Reparar e relatar:** Reparar a instalação, no menu da bandeja, resolve problemas de abertura; Relatar um problema abre um relato já preenchido, com seus dados pessoais ocultos.
 
 ### 🧭 Primeira configuração
 
-- **Começar do zero:** Na configuração do assistente, Configuração do zero fica no topo; um único botão de copiar basta.
+- **Começar do zero:** Em Configuração do agente, Nova instalação fica no topo; um único botão de copiar basta.
 - **Conexão com o Google:** Explicada em três passos curtos nas Configurações.
 - **Retorno claro:** Salvar, excluir e conectar dizem o que aconteceu; antes de excluir, o aplicativo pede confirmação.
 
@@ -151,7 +152,7 @@ A primeira versão do seowatcher: reúne seus dados do Google, a auditoria do si
 
 ### 🤖 Assistente de IA
 
-- **Configuração fácil:** Cole a instrução de configuração no seu assistente de IA; ele confere o resto.
+- **Configuração fácil:** Cole a instrução de configuração no agente de IA; ele cuida do resto.
 - **Sem pedir segredos:** Ele nunca pede que você cole senhas na conversa.
 - **Suporte ao Codex:** O Codex tem um guia próprio, com um único comando.
 

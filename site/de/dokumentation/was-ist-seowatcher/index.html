@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1505,9 +1505,7 @@
           <p class="nav-group">Bildschirme</p>
           <ul>
             <li><a href="/de/dokumentation/projekte/">Projekte</a></li>
-            <li>
-              <a href="/de/dokumentation/uebersicht/">Übersicht (Panel)</a>
-            </li>
+            <li><a href="/de/dokumentation/uebersicht/">Übersicht</a></li>
             <li><a href="/de/dokumentation/suchleistung/">Suchleistung</a></li>
             <li>
               <a href="/de/dokumentation/ranking-verfolgung/"
@@ -1517,12 +1515,12 @@
             <li><a href="/de/dokumentation/chancen/">Chancen</a></li>
             <li>
               <a href="/de/dokumentation/gespeicherte-suchbegriffe/"
-                >Gespeicherte Suchbegriffe</a
+                >Gespeicherte Keywords</a
               >
             </li>
             <li>
               <a href="/de/dokumentation/datenanalyse/"
-                >Analysedaten verstehen</a
+                >Analytics-Daten verstehen</a
               >
             </li>
             <li>
@@ -1532,7 +1530,7 @@
             <li>
               <a href="/de/dokumentation/berichte/">Berichte und Vorlagen</a>
             </li>
-            <li><a href="/de/dokumentation/projektinfo/">Projektinfo</a></li>
+            <li><a href="/de/dokumentation/projektinfo/">Projektkontext</a></li>
             <li>
               <a href="/de/dokumentation/einstellungen/">Einstellungen</a>
             </li>
@@ -1543,7 +1541,7 @@
             <li><a href="/de/dokumentation/audit-regeln/">Audit-Regeln</a></li>
             <li>
               <a href="/de/dokumentation/assistent-einrichten/"
-                >Assistent einrichten</a
+                >Agent einrichten</a
               >
             </li>
             <li>
@@ -1563,12 +1561,10 @@
           bündelt.
         </p>
         <p>
-          seowatcher ist eine kostenlose, MIT-lizenzierte Open-Source-SEO-App,
-          die Google Search Console, Google Analytics 4, ihren eigenen
-          Website-Crawler und PageSpeed Insights in einer Oberfläche zeigt. Sie
-          läuft auf Ihrem eigenen Computer, nicht in der Cloud: eine einzige
-          Installationsdatei für Windows 10 und 11, Docker auf Mac und Linux.
-          Auf GitHub heißt sie seotracker; es ist dieselbe App.
+          seowatcher steht unter der MIT-Lizenz und läuft auf Ihrem eigenen
+          Computer, nicht in der Cloud. Für Windows 10 und 11 gibt es eine
+          Installationsdatei, für Mac und Linux Docker. Das GitHub-Repository
+          heißt seotracker; es ist dieselbe App.
         </p>
         <h2 id="kurz-und-knapp">Kurz und knapp</h2>
         <div class="tw">
@@ -1609,8 +1605,8 @@
               <tr>
                 <td>KI-Anbindung</td>
                 <td>
-                  Assistenten wie Claude Code, Codex, Cursor und Gemini CLI über
-                  MCP; 6 fertige Aufgaben
+                  KI-Agenten wie Claude Code, Codex, Cursor und Gemini CLI über
+                  MCP; 6 fertige Skills
                 </td>
               </tr>
               <tr>
@@ -1633,7 +1629,7 @@
               </tr>
               <tr>
                 <td>Version</td>
-                <td>0.8.6 Alpha, 29. Oktober 2026</td>
+                <td>0.8.7 Alpha, 29. Oktober 2026</td>
               </tr>
               <tr>
                 <td>Größe</td>
@@ -1651,8 +1647,9 @@
           <li>
             <strong>Suchleistung:</strong> Klicks, Impressionen, Klickrate und
             durchschnittliche Position aus der Search Console, nach Suchanfrage,
-            Seite, Land und Gerät. Google liefert 16 Monate Verlauf; die App
-            legt zusätzlich ihr eigenes Archiv an.
+            Seite, Land und Gerät. Google liefert 16 Monate Verlauf; solange die
+            Suchleistung oder die Ranking-Verfolgung geöffnet ist, legt die App
+            zusätzlich ihr eigenes Archiv an.
           </li>
           <li>
             <strong>Chancen:</strong> ordnet die Seiten, die Google bereits
@@ -1661,10 +1658,10 @@
             eine Aufgabe vor.
           </li>
           <li>
-            <strong>Website-Audit:</strong> prüft Ihre Website (Webseiten-Audit)
-            anhand von 202 Regeln: defekte Links, fehlende oder zu lange Titel,
-            langsame Seiten, Seiten, die Google nicht indexiert. Zu jedem Befund
-            steht, was zu tun ist.
+            <strong>Website-Audit:</strong> prüft Ihre Website anhand von 202
+            Regeln: defekte Links, fehlende oder zu lange Titel, langsame
+            Seiten, Seiten, die Google nicht indexiert. Zu jedem Befund steht,
+            was zu tun ist.
           </li>
           <li>
             <strong>Indexstatus:</strong> liest über die URL-Prüfung Googles
@@ -1672,7 +1669,7 @@
             gecrawlt). Google begrenzt das auf 2.000 URLs pro Property und Tag.
           </li>
           <li>
-            <strong>Datenanalyse:</strong> zeigt Besuche, Interaktionen und
+            <strong>Analytics:</strong> zeigt Besuche, Interaktionen und
             Schlüsselereignisse aus GA4 neben den Suchdaten.
           </li>
           <li>
@@ -1681,8 +1678,8 @@
             senden.
           </li>
           <li>
-            <strong>KI-Assistent:</strong> Über MCP liest Ihr Assistent Ihre
-            Zahlen, startet das Audit und schreibt den Bericht.
+            <strong>KI-Agent:</strong> Über MCP liest Ihr Agent Ihre Zahlen,
+            startet Audits und schreibt Berichte.
           </li>
         </ul>
         <h2 id="was-macht-seowatcher-nicht">Was macht seowatcher nicht?</h2>
@@ -1693,7 +1690,7 @@
           </li>
           <li>Es zählt keine Websites, die auf Sie verlinken (Backlinks).</li>
           <li>
-            Es verfolgt keine Rankings von Wettbewerbern; es liest nur die
+            Es verfolgt keine Rankings von Mitbewerbern; es liest nur die
             Websites, die Sie als Projekt anlegen.
           </li>
           <li>
@@ -1709,28 +1706,27 @@
           Was unterscheidet es von der Search Console?
         </h2>
         <p>
-          Die Search Console ist die Quelle der Daten; seowatcher liest sie und
-          baut eine Arbeitsliste darauf. Die Search Console zeigt Ihnen Zahlen;
-          seowatcher zeigt an einem Ort, welche Seite Sie zuerst ansehen
-          sollten, wo Ihre Website gegen 202 Regeln verstößt und was Analytics
-          dazu gemessen hat. Weil die App ein Archiv auf Ihrem Computer anlegt,
-          können Sie mit der Zeit auch weiter zurückblicken als Googles
-          16-Monats-Fenster. Die Zahlen stammen aus derselben Quelle, aber
-          Google liefert sie etwa drei Tage verzögert und verbirgt sehr seltene
-          Suchanfragen; deshalb können Seitensumme und Websitesumme voneinander
-          abweichen.
+          Die Search Console ist die Quelle der Daten. Sie zeigt Zahlen;
+          seowatcher macht daraus eine Arbeitsliste und zeigt an einem Ort,
+          welche Seite Sie zuerst ansehen sollten, wo Ihre Website gegen 202
+          Regeln verstößt und was Analytics dazu gemessen hat. Weil die App ein
+          Archiv auf Ihrem Computer anlegt, können Sie mit der Zeit auch weiter
+          zurückblicken als Googles 16-Monats-Fenster. Die Zahlen stammen aus
+          derselben Quelle, aber Google liefert sie etwa drei Tage verzögert und
+          verbirgt sehr seltene Suchanfragen; deshalb ergibt die Tabelle der
+          Suchanfragen weniger als die Summe der Website.
         </p>
         <h2 id="was-unterscheidet-es-von-kostenpflichtigen-seo-suiten">
           Was unterscheidet es von kostenpflichtigen SEO-Suiten?
         </h2>
         <p>
           Kostenpflichtige SEO-Suiten verkaufen Schätzungen zu Suchvolumen,
-          Backlinks und Wettbewerber-Rankings aus eigenen Crawls und zugekauften
-          Daten. seowatcher tut nichts davon; es nutzt nur die Daten, die Google
-          Ihnen als Websitebetreiber ohnehin gibt, plus den eigenen Crawl. Darum
-          ist es kostenlos, und darum ist es nicht für Marktforschung gebaut. Es
-          passt, wenn Sie die Präsenz Ihrer eigenen Website in Google
-          beobachten, verbessern und darüber berichten wollen.
+          Backlinks und Rankings von Mitbewerbern aus eigenen Crawls und
+          zugekauften Daten. seowatcher tut nichts davon; es nutzt nur die
+          Daten, die Google Ihnen als Websitebetreiber ohnehin gibt, plus den
+          eigenen Crawl. Darum ist es kostenlos, und darum ist es nicht für
+          Marktforschung gebaut. Es passt, wenn Sie die Präsenz Ihrer eigenen
+          Website in Google beobachten, verbessern und darüber berichten wollen.
         </p>
         <h2 id="fur-wen-ist-es-gedacht">Für wen ist es gedacht?</h2>
         <p>
@@ -1755,9 +1751,9 @@
         <h3 id="womit-verbindet-sich-die-app">Womit verbindet sich die App?</h3>
         <p>
           Mit Google (Search Console, Analytics, PageSpeed), der geprüften
-          Website und GitHub für die Versionsprüfung. Wenn Sie einen
-          KI-Assistenten anbinden, können die Daten, die er liest, an dessen
-          Anbieter gehen; diese Verbindung ist optional.
+          Website und GitHub für die Versionsprüfung. Binden Sie einen
+          KI-Agenten an, können die Daten, die er liest, an seinen Anbieter
+          gehen; diese Verbindung ist optional.
         </p>
         <h3 id="lauft-es-auf-mac-oder-linux">Läuft es auf Mac oder Linux?</h3>
         <p>
@@ -1799,7 +1795,7 @@
             >
             und die
             <a href="/de/dokumentation/assistent-einrichten/"
-              >Assistenten-Einrichtung</a
+              >Agent-Einrichtung</a
             >.
           </li>
         </ol>
@@ -1851,7 +1847,7 @@
     <footer>
       <div class="wrap">
         <p class="star">
-          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          Ein Stern hilft anderen, das Werkzeug zu finden.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

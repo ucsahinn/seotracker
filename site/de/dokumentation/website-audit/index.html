@@ -201,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1496,9 +1496,7 @@
           <p class="nav-group">Bildschirme</p>
           <ul>
             <li><a href="/de/dokumentation/projekte/">Projekte</a></li>
-            <li>
-              <a href="/de/dokumentation/uebersicht/">Übersicht (Panel)</a>
-            </li>
+            <li><a href="/de/dokumentation/uebersicht/">Übersicht</a></li>
             <li><a href="/de/dokumentation/suchleistung/">Suchleistung</a></li>
             <li>
               <a href="/de/dokumentation/ranking-verfolgung/"
@@ -1508,12 +1506,12 @@
             <li><a href="/de/dokumentation/chancen/">Chancen</a></li>
             <li>
               <a href="/de/dokumentation/gespeicherte-suchbegriffe/"
-                >Gespeicherte Suchbegriffe</a
+                >Gespeicherte Keywords</a
               >
             </li>
             <li>
               <a href="/de/dokumentation/datenanalyse/"
-                >Analysedaten verstehen</a
+                >Analytics-Daten verstehen</a
               >
             </li>
             <li class="current" aria-current="page">
@@ -1523,7 +1521,7 @@
             <li>
               <a href="/de/dokumentation/berichte/">Berichte und Vorlagen</a>
             </li>
-            <li><a href="/de/dokumentation/projektinfo/">Projektinfo</a></li>
+            <li><a href="/de/dokumentation/projektinfo/">Projektkontext</a></li>
             <li>
               <a href="/de/dokumentation/einstellungen/">Einstellungen</a>
             </li>
@@ -1534,7 +1532,7 @@
             <li><a href="/de/dokumentation/audit-regeln/">Audit-Regeln</a></li>
             <li>
               <a href="/de/dokumentation/assistent-einrichten/"
-                >Assistent einrichten</a
+                >Agent einrichten</a
               >
             </li>
             <li>
@@ -1554,22 +1552,16 @@
           verstehen.
         </p>
         <p>
-          Hier erfahren Sie, wie Sie die Probleme Ihrer Website finden und
-          beheben.
-        </p>
-        <p>
-          Die App geht Ihre Website mit ihrem eigenen Crawler durch, einem
-          Programm, das Seiten einzeln öffnet und liest. Sie sucht nach defekten
-          Links, fehlenden Titeln und langsamen Seiten. Am Ende erhalten Sie
-          eine Punktzahl und eine nach Wichtigkeit sortierte Problemliste. Die
-          Punktzahl zeigt auch, wie viele der Prüfungen gemessen werden konnten.
-          Ein Audit, das auf halbem Weg stehen blieb, bekommt keine Punktzahl.
+          Der Crawler der App öffnet Ihre Seiten nacheinander und sucht unter
+          anderem nach defekten Links, fehlenden Titeln und langsamen Seiten.
+          Das Ergebnis ist eine Punktzahl mit Angabe der Messabdeckung und eine
+          nach Wichtigkeit sortierte Problemliste.
         </p>
         <h2 id="was-auf-dem-bildschirm-zu-sehen-ist">
           Was auf dem Bildschirm zu sehen ist
         </h2>
         <p>
-          <strong>Karte „Neues Audit starten“.</strong> Sie hat diese Felder.
+          <strong>Karte „Neues Audit starten“.</strong> Sie hat diese Felder:
         </p>
         <ul>
           <li>
@@ -1582,59 +1574,65 @@
             einer Bestätigung.
           </li>
           <li>
-            <strong>Seitengeschwindigkeit auch messen</strong>: standardmäßig
-            ausgeschaltet. Eingeschaltet wird jede Seite auf dem Smartphone und
-            auf dem Computer gemessen. Die Messung übernimmt Google Lighthouse
-            (Googles Werkzeug zur Seitenmessung). Die Karte nennt vorab, wie
-            lange es mindestens dauert.
+            <strong>Auch die Seitengeschwindigkeit messen</strong>:
+            standardmäßig ausgeschaltet. Eingeschaltet misst Google Lighthouse
+            über PageSpeed Insights jede Seite für Smartphone und Desktop. Die
+            Karte nennt vorab die Mindestdauer.
           </li>
           <li>
             <strong>Auch ausgehende Links und Bildgrößen prüfen</strong>: Nach
-            dem Crawl wird geprüft, ob Links auf andere Websites sich öffnen
-            lassen und wie groß Ihre Bilddateien sind. Es werden höchstens 300
-            Adressen abgefragt. Websites, die Bots aussperren, werden
-            übersprungen.
+            dem Crawl prüft die App, ob Links auf andere Websites erreichbar
+            sind und wie groß Ihre Bilddateien sind. Sie fragt höchstens 300
+            Adressen ab und überspringt Websites, die Bots aussperren.
           </li>
         </ul>
         <p>
-          Haben Sie keinen PageSpeed-Schlüssel (den kostenlosen Code, den Google
-          für die Geschwindigkeitsmessung vergibt), ist die
-          Geschwindigkeitsmessung auf höchstens 50 Seiten begrenzt. Um alle
-          Seiten zu messen, tragen Sie unter
-          <strong>Einstellungen</strong> einen kostenlosen Schlüssel ein.
-          <strong>Audit starten</strong> startet das Audit. Der Bereich
-          <strong>Kontingente</strong> darunter ist zugeklappt. Klappen Sie ihn
-          auf, sehen Sie den aktuellen Stand der Kontingente für PageSpeed und
-          URL-Prüfung.
+          Ohne
+          <a href="/de/dokumentation/pagespeed-schluessel/"
+            >PageSpeed-Schlüssel</a
+          >
+          misst die App höchstens 50 Seiten.
+          <strong>Audit starten</strong> startet das Audit. Der zugeklappte
+          Bereich <strong>Kontingente</strong> darunter zeigt den aktuellen
+          Stand für PageSpeed und URL-Prüfung.
         </p>
         <p>
-          <strong>Vorherige Audits.</strong> Datum, Adresse, Status, Seitenzahl
-          und Problemzahlen jedes Audits werden aufgelistet. Die Spalten
-          Kritisch, Warnung und Info zeigen alle gespeicherten Befunde,
-          einschließlich Seitenbefunden und websiteweiten Prüfungen; eine Seite
-          kann mehrere Befunde haben. Wurden im Projekt mehrere Websites
-          geprüft, erscheint über der Liste eine Auswahl der Website. Die Dichte
-          gibt Probleme pro hundert Seiten an. Trendlinien und
-          Veränderungspfeile erscheinen nur, wenn gespeicherte Belege dieselbe
-          Website, Seitenmenge, Crawling-Einstellungen und gemessenen Prüfungen
-          bestätigen. Bei unterschiedlichem oder unbekanntem Umfang werden
-          unabhängige Zahlen angezeigt; eine Veränderung lässt sich nicht
-          bestimmen. Sind mehrere Websites gewählt, ist das Diagramm
-          ausgeblendet. <strong>Ansehen</strong> in einer Zeile öffnet das
-          Audit. Das Zeilenmenü enthält
+          <strong>Vorherige Audits.</strong> Die Liste zeigt Datum, Adresse,
+          Status, Seitenzahl und Problemzahlen jedes Audits.
+          <strong>Gecrawlte Seiten</strong> ist die Zahl tatsächlich gecrawlter
+          Adressen, auch bei fehlgeschlagenen Audits, nicht das gewählte
+          Seitenlimit. Die Spalten Kritisch, Warnung und Info zählen alle
+          gespeicherten Befunde, auch websiteweite; eine Seite kann mehrere
+          Befunde haben.
+          <strong>Geschwindigkeitsmessung angefordert</strong> heißt nur, dass
+          die Messung beim Start eingeschaltet war, nicht dass sie gelungen ist.
+          Wurden im Projekt mehrere Websites geprüft, erscheint über der Liste
+          eine Auswahl der Website. Die Dichte gibt Probleme pro hundert Seiten
+          an. Trendlinien und Veränderungspfeile erscheinen nur, wenn
+          gespeicherte Belege dieselbe Website, Seitenmenge,
+          Crawling-Einstellungen und gemessenen Prüfungen bestätigen. Bei
+          unterschiedlichem oder unbekanntem Umfang stehen die Zahlen ohne
+          Vergleich nebeneinander. Sind mehrere Websites gewählt, ist das
+          Diagramm ausgeblendet. Auf dem Smartphone scrollen Sie die Tabelle
+          seitlich, um weitere Spalten und Aktionen zu sehen.
+          <strong>Ansehen</strong> in einer Zeile öffnet das Audit. Das
+          Zeilenmenü enthält
           <strong>Erneut mit den gleichen Einstellungen ausführen</strong> und
-          <strong>Audit löschen</strong>. Löschen entfernt auch die Seiten,
-          Probleme und Geschwindigkeitsmessungen des Audits und lässt sich nicht
+          <strong>Audit löschen</strong>. Löschen entfernt auch Seiten, Probleme
+          und Geschwindigkeitsmessungen des Audits und lässt sich nicht
           rückgängig machen.
         </p>
         <p>
           <strong>Audit-Details.</strong> Ganz oben lädt
-          <strong>Bericht herunterladen</strong> einen HTML-Bericht in einer
-          Datei herunter und legt ihn unter <strong>Berichte</strong> ab.
-          Darunter erscheinen bei Bedarf gelbe Warnungen (siehe unten). Dann
-          folgt die Punktzahlkarte.
+          <strong>Bericht herunterladen</strong> den Bericht als einzelne
+          HTML-Datei herunter und legt ihn unter <strong>Berichte</strong> ab.
+          Darunter stehen bei Bedarf gelbe Warnungen (siehe unten), dann folgt
+          die Punktzahlkarte. Der Bereich zum Prüfumfang listet gemessene und
+          nicht gemessene Prüfungen. Ein fehlgeschlagenes Audit zeigt die
+          gespeicherte Fehlererklärung und den nächsten Schritt; ist die Ursache
+          unbekannt, steht das ausdrücklich da.
         </p>
-        <p><strong>Punktzahlkarte.</strong> Sie zeigt Folgendes.</p>
+        <p><strong>Punktzahlkarte.</strong> Sie zeigt:</p>
         <ul>
           <li>
             In der Mitte den <strong>Website-Score</strong> und daneben ein
@@ -1648,20 +1646,19 @@
             Das Fragezeichen daneben erklärt, wie die Punktzahl entsteht.
           </li>
           <li>
-            Ein Satz zur Einordnung. Wird die Punktzahl an einer Grenze
-            gehalten, nennt er den Grund.
+            Einen Satz zur Einordnung. Hält eine Obergrenze die Punktzahl fest,
+            nennt er den Grund.
           </li>
           <li>
-            <strong>Gefundene Adressen: N, gecrawlt: M</strong>. Wie viele
-            Adressen der Crawl auf der Website gefunden und wie viele er
-            geöffnet hat. Endete das Audit an der von Ihnen gewählten
-            Seitengrenze, steht dort: „Die Prüfung war auf N Seiten begrenzt;
-            die Website kann mehr Seiten haben.“ Die Punktzahl bleibt in diesem
-            Fall gültig.
+            <strong>Gefundene Adressen: N, gecrawlt: M</strong>: wie viele
+            Adressen der Crawl gefunden und wie viele er geöffnet hat. Endete
+            das Audit an der von Ihnen gewählten Seitengrenze, steht dort: „Die
+            Prüfung war auf N Seiten begrenzt; die Website kann mehr Seiten
+            haben.“ Die Punktzahl bleibt in diesem Fall gültig.
           </li>
           <li>
-            Zeilen für schwere Kategorien, die nicht gemessen werden konnten.
-            Zum Beispiel „Geschwindigkeit nicht gemessen: das
+            Zeilen für wichtige Kategorien, die nicht gemessen werden konnten,
+            zum Beispiel „Geschwindigkeit nicht gemessen: das
             PageSpeed-Kontingent war aufgebraucht“.
           </li>
           <li>
@@ -1671,47 +1668,43 @@
             <strong>Nicht gemessen</strong>.
           </li>
           <li>
-            <strong>Kategorie-Scores</strong>: Crawling, Inhalt, Indizierung,
+            <strong>Kategorie-Scores</strong>: Crawling, Inhalt, Indexierung,
             Geschwindigkeit, Sicherheit, Barrierefreiheit, Social Media und
-            strukturierte Daten. Die niedrigste steht oben. Ein Klick auf eine
-            Kategorie öffnet den Reiter <strong>Prüfungen</strong> bei dieser
-            Kategorie. Eine Kategorie, in der nichts gemessen werden konnte,
-            zeigt „Nicht gemessen“. Eine nur teilweise gemessene zeigt
-            „Unvollständige Daten“.
+            strukturierte Daten. Die schwächste steht oben; ein Klick öffnet den
+            Reiter <strong>Prüfungen</strong> bei dieser Kategorie. Eine
+            Kategorie ohne Messung zeigt „Nicht gemessen“, eine teilweise
+            gemessene „Unvollständige Daten“.
           </li>
           <li>
             <strong>Score-Verlauf</strong>: die Punktzahlen der letzten Audits
-            derselben Website. Er erscheint, sobald zwei Audits eine Punktzahl
-            haben. Graue Balken sind vorläufige Punktzahlen. Audits ohne
-            Punktzahl fehlen im Diagramm, darunter steht, wie viele es sind.
+            derselben Website. Er erscheint ab zwei Audits mit Punktzahl. Graue
+            Balken sind vorläufige Punktzahlen. Audits ohne Punktzahl fehlen im
+            Diagramm; ihre Zahl steht darunter.
           </li>
         </ul>
         <p><strong>Reiter.</strong></p>
         <ul>
           <li>
-            <strong>Aufgaben (N)</strong>: die Arbeiten, beginnend mit der, die
-            die meisten Punkte bringt. Jede Arbeit zeigt die Punkte, die Sie
-            gewinnen, ein Etikett „Kleine Aufgabe“, „Mittlere Aufgabe“ oder
-            „Große Aufgabe“ und ein Feld
-            <strong>So beheben Sie das Problem</strong>. Ist die Search Console
-            verbunden, fließen auch die Klicks der betroffenen Seiten in die
-            Reihenfolge ein.
+            <strong>Aufgaben (N)</strong>: die Aufgaben, beginnend mit der, die
+            die meisten Punkte bringt. Jede zeigt den Punktgewinn, ein Etikett
+            „Kleine Aufgabe“, „Mittlere Aufgabe“ oder „Große Aufgabe“ und ein
+            Feld <strong>So beheben Sie das Problem</strong>. Ist die Search
+            Console verbunden, fließen auch die Klicks der betroffenen Seiten in
+            die Reihenfolge ein.
           </li>
           <li>
-            <strong>Prüfungen (N)</strong>: alle Prüfungen nach Kategorie. Jede
-            erscheint als bestanden, durchgefallen oder nicht gemessen. Bei
-            nicht gemessenen steht der Grund.
+            <strong>Prüfungen (N)</strong>: alle Prüfungen nach Kategorie,
+            jeweils als bestanden, nicht bestanden oder nicht gemessen, mit
+            Grund.
           </li>
           <li>
-            <strong>Momentaufnahme</strong>: die Website jenseits ihrer Seiten.
-            Zum Beispiel Zertifikat, Domainregistrierung, DNS und eine Vorschau
-            der Website.
+            <strong>Momentaufnahme</strong>: Angaben zur Website als Ganzes,
+            etwa Zertifikat, Domainregistrierung, DNS und eine Vorschau.
           </li>
           <li>
-            <strong>Seiten mit Problemen (N)</strong>: gruppiert die Probleme.
-            Öffnen Sie eine Karte, sehen Sie die Ursache, die betroffenen
-            Adressen und das Feld <strong>So beheben Sie das Problem</strong>.
-            Die Adressen lassen sich durchsuchen.
+            <strong>Seiten mit Problemen (N)</strong>: die Probleme nach Art
+            gruppiert. Jede Karte zeigt Ursache, betroffene Adressen
+            (durchsuchbar) und <strong>So beheben Sie das Problem</strong>.
           </li>
           <li>
             <strong>Seiten (N)</strong>: jede gecrawlte Seite. Schnellfilter:
@@ -1721,44 +1714,43 @@
             <strong>Nicht in der Sitemap</strong>.
           </li>
           <li>
-            <strong>Indexstatus</strong>: Googles Antwort zu jeder Seite. Er
-            wird in einem eigenen Leitfaden erklärt. Gehört die geprüfte Website
-            nicht zur Search-Console-Property des Projekts, zeigt dieser Reiter
-            keine Google-Daten, und der Bildschirm erklärt den Grund.
+            <strong>Indexstatus</strong>: Googles Antwort zu jeder Seite,
+            beschrieben unter
+            <a href="/de/dokumentation/indexstatus/">Indexstatus</a>. Gehört die
+            geprüfte Website nicht zur Search-Console-Property des Projekts,
+            zeigt dieser Reiter keine Google-Daten, und der Bildschirm erklärt
+            den Grund.
           </li>
           <li>
             <strong>Geschwindigkeit (N)</strong>: erscheint nur, wenn die
-            Geschwindigkeitsmessung an war. Konnten einige Seiten nicht gemessen
-            werden, steht die Zahl als „10/12“.
+            Geschwindigkeitsmessung an war. Konnten nicht alle Seiten gemessen
+            werden, steht dort zum Beispiel „10/12“.
           </li>
         </ul>
         <p>
           Das Menü <strong>Exportieren</strong> oben rechts gibt die Liste des
-          offenen Reiters als <strong>Nach Google Tabellen exportieren</strong>,
-          <strong>CSV</strong> oder <strong>JSON</strong> aus. Ist ein Filter
-          aktiv, gehen nur die sichtbaren Zeilen.
+          offenen Reiters nach Google Tabellen, als CSV oder als JSON aus. Bei
+          aktivem Filter werden nur die sichtbaren Zeilen exportiert.
         </p>
         <h2 id="die-drei-zustande-der-punktzahl">
           Die drei Zustände der Punktzahl
         </h2>
         <p>
           <strong>Volle Punktzahl.</strong> Wurde der größte Teil der Prüfungen
-          gemessen, kommt sie mit einem Bewertungswort. Die Punktzahl lesen Sie
-          so: ab 90 Ausgezeichnet, ab 70 Gut, ab 50 Durchschnittlich, darunter
-          Schlecht.
+          gemessen, steht neben der Zahl eine Bewertung: ab 90 Ausgezeichnet, ab
+          70 Gut, ab 50 Durchschnittlich, darunter Schlecht.
         </p>
         <p>
           <strong>Vorläufiger Score.</strong> Fällt der Anteil gemessener
           Prüfungen unter 70 Prozent, ist die Punktzahl vorläufig. Das gilt
-          auch, wenn in Crawling, Indizierung, Inhalt oder Geschwindigkeit
+          auch, wenn in Crawling, Indexierung, Inhalt oder Geschwindigkeit
           weniger als die Hälfte der Prüfungen gemessen wurde. Die Karte zeigt
-          „Vorläufiger Score, Messabdeckung 62 %“, vergibt kein Bewertungswort
-          und ist neutral gefärbt. Die Zahl bezieht sich nur auf die Prüfungen,
-          die sichtbar waren. Über den Rest wurde weder gut noch schlecht
-          entschieden. Meist liegt es daran: Das PageSpeed-Kontingent war
-          aufgebraucht, es gibt keinen PageSpeed-Schlüssel, die
-          Geschwindigkeitsmessung war aus oder aus der Search Console konnten
-          keine Indexdaten geholt werden.
+          dann „Vorläufiger Score — Messabdeckung 62 %“, ohne Bewertung und in
+          neutraler Farbe. Die Zahl bewertet nur die gemessenen Prüfungen; über
+          den Rest sagt sie nichts aus. Die häufigsten Gründe: Das
+          PageSpeed-Kontingent war aufgebraucht, es gibt keinen
+          PageSpeed-Schlüssel, die Geschwindigkeitsmessung war aus oder aus der
+          Search Console konnten keine Indexdaten geholt werden.
         </p>
         <p>
           <strong>Keine Punktzahl.</strong> In diesen Fällen steht auf der Karte
@@ -1770,7 +1762,7 @@
           <li>
             Der Crawl wurde wegen der Ratenbegrenzung der Website vorzeitig
             gestoppt. Die Problemliste ist unvollständig, eine Punktzahl wäre
-            nur geraten.
+            geraten.
           </li>
           <li>
             Es konnte keine Seite gecrawlt werden. Dann erscheint die
@@ -1781,13 +1773,11 @@
           Die Befunde werden trotzdem gezeigt und gelten für die gecrawlten
           Seiten. Für eine volle Punktzahl führen Sie das Audit erneut aus.
         </p>
-        <h2 id="wenn-das-audit-beendet-wurde-was-dort-steht">
-          Wenn das Audit beendet wurde, was dort steht
-        </h2>
+        <h2 id="wenn-ein-audit-fehlschlagt">Wenn ein Audit fehlschlägt</h2>
         <p>
-          Schlägt ein Audit fehl, nennt der Bildschirm drei Dinge: was passiert
-          ist, ob der Fehler bei Ihrer Website oder bei der App liegt, und was
-          Sie tun. Der Titel nennt die Phase, in der es endete:
+          Schlägt ein Audit fehl, nennt der Bildschirm, was passiert ist, ob der
+          Fehler bei Ihrer Website oder bei der App liegt und was Sie tun
+          können. Der Titel nennt die Phase, in der es endete:
           <strong>URL-Erkennung</strong>, <strong>Crawl</strong>,
           <strong>Geschwindigkeitsmessung</strong> oder
           <strong>Ergebnisaufbereitung</strong>.
@@ -1882,7 +1872,7 @@
           </table>
         </div>
         <p>
-          Der rohe Fehlertext gelangt nicht auf den Bildschirm. Er bleibt im
+          Den technischen Fehlertext zeigt die App nicht an; er steht im
           Diagnosepaket.
         </p>
         <h2 id="gelbe-warnungen-beim-crawl">Gelbe Warnungen beim Crawl</h2>
@@ -1891,28 +1881,28 @@
             <strong
               >Das Audit konnte diese Website nicht vollständig crawlen.</strong
             >
-            Der Bot-Schutz Ihrer Website hat den Crawler gestoppt. Die
-            Ergebnisse werden trotzdem gezeigt. Erlauben Sie in Ihrer Firewall
-            „seotracker-audit“ oder probieren Sie einen der Desktop-Crawler, die
-            der Leitfaden nennt.
+            Der Bot-Schutz Ihrer Website hat den Crawler gestoppt; die
+            bisherigen Ergebnisse werden trotzdem gezeigt. Erlauben Sie in Ihrer
+            Firewall den User-Agent <code>seotracker-audit</code> oder versuchen
+            Sie einen der vorgeschlagenen Desktop-Crawler (LibreCrawl, Screaming
+            Frog).
           </li>
           <li>
             <strong
               >N Seiten konnten nicht abgerufen werden (Netzwerkfehler).</strong
             >
             Die Verbindung kam auch beim erneuten Versuch nicht zustande. Diese
-            Seiten wurden nicht geprüft und nicht als defekt gezählt. Meist ist
-            es vorübergehend. Führen Sie das Audit erneut aus. Hält es an,
-            prüfen Sie, ob sich die Website von diesem Computer aus öffnen
-            lässt.
+            Seiten wurden weder geprüft noch als defekt gezählt. Meist ist das
+            vorübergehend; führen Sie das Audit erneut aus. Hält es an, prüfen
+            Sie, ob sich die Website von diesem Computer aus öffnen lässt.
           </li>
           <li>
             <strong
               >Die Website hat bei N Seiten die Ratenbegrenzung
               angewandt.</strong
             >
-            Die Website hat „zu viele Anfragen“ geantwortet. Diese Seiten
-            konnten nicht geprüft werden. Starten Sie neu, wenn die Begrenzung
+            Die Website hat mit „zu viele Anfragen“ geantwortet, diese Seiten
+            wurden nicht geprüft. Starten Sie neu, sobald die Begrenzung
             zurückgesetzt ist.
           </li>
           <li>
@@ -1928,21 +1918,20 @@
               >Der gespeicherte PageSpeed-Schlüssel konnte nicht gelesen werden;
               die Geschwindigkeitsmessung lief ohne Schlüssel.</strong
             >
-            Das Audit ist fertig, aber die Geschwindigkeitsmessung lief ohne
-            Schlüssel. Die Crawl-Ergebnisse sind nicht betroffen. Die
-            Geschwindigkeitsmessung blieb auf die ersten Seiten beschränkt.
-            Aktualisieren Sie die App oder starten Sie sie neu, dann starten Sie
-            ein neues Audit. Hält es an, speichern Sie den PageSpeed-Schlüssel
-            unter <strong>Einstellungen</strong> neu.
+            Das Audit ist fertig, aber die Geschwindigkeitsmessung blieb auf
+            höchstens 50 Seiten beschränkt. Die Crawl-Ergebnisse sind nicht
+            betroffen. Aktualisieren oder starten Sie die App neu und starten
+            Sie ein neues Audit. Hält es an, speichern Sie den
+            PageSpeed-Schlüssel unter <strong>Einstellungen</strong> neu.
           </li>
         </ul>
         <h2 id="so-gehen-sie-vor">So gehen Sie vor</h2>
         <ol>
           <li>
-            Lassen Sie beim ersten Audit die Seitenzahl bei 50. Lassen Sie die
-            Geschwindigkeitsmessung aus. Es ist in ein bis zwei Minuten fertig.
-            Bei ausgeschalteter Geschwindigkeitsmessung kann die Punktzahl
-            vorläufig ausfallen. Das ist normal.
+            Starten Sie das erste Audit mit 50 Seiten und ohne
+            Geschwindigkeitsmessung. Es ist in ein bis zwei Minuten fertig. Ohne
+            Geschwindigkeitsmessung kann die Punktzahl vorläufig sein; das ist
+            normal.
           </li>
           <li>
             Lesen Sie die Abdeckungszeile auf der Punktzahlkarte. Steht dort
@@ -1951,18 +1940,17 @@
           </li>
           <li>
             Beginnen Sie im Reiter <strong>Aufgaben</strong> mit den ersten drei
-            Arbeiten. Sie bringen mit dem geringsten Aufwand die meisten Punkte.
+            Einträgen. Sie bringen die meisten Punkte.
           </li>
           <li>
-            Erledigen Sie im Reiter <strong>Seiten mit Problemen</strong> zuerst
-            die kritischen Probleme. Ein kritisches Problem hindert Google
-            daran, die Seite zu sehen.
+            Beheben Sie im Reiter <strong>Seiten mit Problemen</strong> zuerst
+            die kritischen Probleme. Sie können verhindern, dass Google die
+            Seite crawlt oder indexiert.
           </li>
           <li>
-            Nehmen Sie die Liste mit <strong>Exportieren</strong> mit und geben
-            Sie sie Ihrer Website-Betreuung. Das Feld
-            <strong>So beheben Sie das Problem</strong> können Sie unverändert
-            weitergeben.
+            Exportieren Sie die Liste mit <strong>Exportieren</strong> und geben
+            Sie sie an die Betreuung Ihrer Website weiter. Der Text unter
+            <strong>So beheben Sie das Problem</strong> ist dafür geschrieben.
           </li>
           <li>
             Klicken Sie nach der Korrektur auf
@@ -1980,40 +1968,38 @@
           Wie die Zahlen berechnet werden
         </h2>
         <p>
-          <strong>Score.</strong> Jeder Befund nimmt seiner Kategorie Punkte.
-          Wie viele, hängt von der Wichtigkeit des Befunds und dem Anteil der
-          betroffenen Seiten ab. Die Gewichte sind: kritisch 40, Warnung 15,
-          Hinweis 3. Die Site-Punktzahl ist der gewichtete Durchschnitt von
-          sieben Kategorien. Crawling und Indizierung zählen am meisten, Social
-          Media und strukturierte Daten am wenigsten. Eine Prüfung, die nicht
-          gemessen werden konnte, hebt die Punktzahl weder an noch senkt sie.
-          Deshalb wird die Abdeckung gesondert gezeigt.
+          <strong>Score.</strong> Jeder Befund zieht seiner Kategorie Punkte ab.
+          Wie viele, hängt vom Schweregrad und vom Anteil der betroffenen Seiten
+          ab. Die Gewichte sind: kritisch 40, Warnung 15, Hinweis 3. Der
+          Website-Score ist der gewichtete Durchschnitt der sieben Kategorien.
+          Crawling und Indexierung zählen am meisten, Social Media und
+          strukturierte Daten am wenigsten. Eine nicht gemessene Prüfung
+          verändert die Punktzahl nicht; deshalb zeigt die Karte die Abdeckung
+          gesondert.
         </p>
         <p>
-          <strong>Obergrenzen.</strong> Gibt es auch nur ein Problem, beträgt
-          die Punktzahl höchstens 99. Gibt es ein kritisches Problem, höchstens
-          69. Bei 5 oder mehr Warnungen höchstens 89. So verschwindet eine
-          einzelne für die Indizierung gesperrte Seite auf einer großen Website
-          nicht unter einer hohen Punktzahl. Hält eine Grenze die Punktzahl
-          fest, steht das auf der Karte. Auch das „+N Punkte“ neben einer Arbeit
-          berücksichtigt die Grenze. Das einzige kritische Problem zu beheben,
-          hebt die ganze Grenze auf. Eine Warnung zu beheben, während eine
-          Grenze gilt, bringt sehr wenig.
+          <strong>Obergrenzen.</strong> Mit mindestens einem Problem beträgt die
+          Punktzahl höchstens 99, mit einem kritischen Problem höchstens 69, mit
+          fünf oder mehr Warnungen höchstens 89. So verschwindet etwa eine
+          einzelne für die Indexierung gesperrte Seite auf einer großen Website
+          nicht hinter einer hohen Punktzahl. Das „+N Punkte“ neben einer
+          Aufgabe berücksichtigt diese Grenzen: Ist ein einziges kritisches
+          Problem die Ursache, hebt seine Behebung die Grenze auf; eine Warnung
+          zu beheben, bringt währenddessen kaum etwas.
         </p>
         <p>
-          <strong>Crawl.</strong> Die App belastet Ihre Website nicht. Sie
-          sendet höchstens zwei Anfragen gleichzeitig. Antwortet die Website mit
-          „zu viele Anfragen“ (429), wartet sie. Übersteigt die Wartezeit
-          insgesamt 30 Minuten, stoppt der Crawl und das Audit bekommt keine
+          <strong>Crawl.</strong> Die App sendet höchstens zwei Anfragen
+          gleichzeitig, um Ihre Website nicht zu belasten. Antwortet die Website
+          mit „zu viele Anfragen“ (429), wartet sie. Übersteigt die Wartezeit
+          insgesamt 30 Minuten, stoppt der Crawl, und das Audit erhält keine
           Punktzahl.
         </p>
         <p>
           <strong>Geschwindigkeitsmessung.</strong> Bei einer Website mit 212
-          Seiten dauerte das ganze Audit 35 Minuten. Etwa 24 davon entfielen auf
-          die Geschwindigkeitsmessung. Ist das Tageskontingent aufgebraucht,
-          hört die Messung auf, die bisherigen Ergebnisse bleiben, und die
-          Punktzahl kann vorläufig sein. In diesen Fällen wird ein Problem
-          eingetragen:
+          Seiten dauerte das ganze Audit 35 Minuten, davon etwa 24 für die
+          Geschwindigkeitsmessung. Ist das Tageskontingent aufgebraucht, endet
+          die Messung; bisherige Ergebnisse bleiben, und die Punktzahl kann
+          vorläufig sein. Ein Problem wird gemeldet, wenn:
         </p>
         <ul>
           <li>Der Hauptinhalt erscheint nach mehr als 4 Sekunden (LCP).</li>
@@ -2032,74 +2018,45 @@
         </p>
         <p>
           <strong>Die Punktzahl ist 98, warum nicht 100?</strong> Schon ein
-          einziges Problem hält die Punktzahl bei 99 oder darunter.
+          einziges Problem begrenzt die Punktzahl auf 99.
         </p>
         <p>
-          <strong>Warum bleibt meine Punktzahl bei 69 hängen?</strong> Es gibt
-          ein kritisches Problem. Bis Sie es beheben, kann die Punktzahl 69
-          nicht überschreiten. Die Karte sagt das.
+          <strong>Warum bleibt meine Punktzahl bei 69?</strong> Es gibt ein
+          kritisches Problem. Bis Sie es beheben, kann die Punktzahl 69 nicht
+          überschreiten.
         </p>
         <p>
           <strong>Warum steht dort „Vorläufiger Score“?</strong> Ein großer Teil
           der Prüfungen konnte nicht gemessen werden. Die Abdeckungszeile und
-          die Zeilen darunter nennen den Grund. Die Geschwindigkeitsmessung
-          einzuschalten oder die Search Console zu verbinden, erhöht die
-          Abdeckung meist.
-        </p>
-        <p>
-          <strong
-            >Warum steht „Unvollständige Prüfung“ statt einer Punktzahl?</strong
-          >
-          Das Audit blieb auf halbem Weg stehen oder endete vorzeitig. Die
-          Problemliste ist unvollständig, deshalb gibt es keine Punktzahl.
-          Führen Sie das Audit erneut aus.
-        </p>
-        <p>
-          <strong>Was bedeutet die Warnung „blockiert“?</strong> Der Bot-Schutz
-          Ihrer Website hat den Crawler gestoppt. Erlauben Sie in der Firewall
-          „seotracker-audit“.
+          die Zeilen darunter nennen den Grund. Meist erhöht es die Abdeckung,
+          die Geschwindigkeitsmessung einzuschalten oder die Search Console zu
+          verbinden.
         </p>
         <p>
           <strong>Die Geschwindigkeitsmessung brach ab.</strong> Meist fehlt der
-          PageSpeed-Schlüssel oder das Tageskontingent ist verbraucht. Die
-          Kontingentkarte unter <strong>Einstellungen</strong> nennt den Grund.
+          PageSpeed-Schlüssel, oder das Tageskontingent ist verbraucht. Der
+          Bereich <strong>Google- und Systemlimits</strong> unter
+          <strong>Einstellungen</strong> nennt den Grund.
         </p>
         <p>
           <strong>Wie viele Audits laufen gleichzeitig?</strong> Höchstens drei.
-          Zwei Audits mit Geschwindigkeitsmessung bremsen sich gegenseitig.
+          Zwei Audits mit Geschwindigkeitsmessung teilen sich das
+          PageSpeed-Kontingent und brauchen dann jeweils etwa doppelt so lange.
         </p>
         <h2 id="grenzen">Grenzen</h2>
         <p>
-          Der Crawler sieht Inhalte, die JavaScript (Code, der auf der Seite
-          läuft) später hinzufügt, womöglich nicht. Ein Audit crawlt höchstens
-          10.000 Seiten. Die Geschwindigkeitsmessung ist Googles Labormessung,
-          keine Daten echter Besucher. Das Audit ändert nichts an Ihrer Website.
-          Die Korrekturen machen Sie oder Ihr Assistent.
-        </p>
-        <p>
-          Unter Vorherige Audits zeigt <strong>Gecrawlte Seiten</strong> die
-          tatsächlich gecrawlten Adressen, auch bei fehlgeschlagenen Audits,
-          statt des anfänglichen Seitenlimits. Die Spalten Kritisch und Warnung
-          zeigen die Gesamtzahl der Befunde.
-          <strong>Geschwindigkeitsmessung angefordert</strong> bedeutet, dass
-          die Messung beim Start aktiviert war; eine erfolgreiche Messung ist
-          damit nicht nachgewiesen. Auf dem Smartphone können Sie die Tabelle
-          seitlich scrollen, um weitere Spalten und Aktionen zu sehen.
-        </p>
-        <p>
-          Im Verlauf stehen kritische Befunde, Warnungen und Hinweise pro Seite;
-          eine Seite kann mehrere Befunde haben. Abgeschlossene Prüfungen zeigen
-          das gespeicherte Crawling-Limit oder dessen Fehlen. Die Details zum
-          Prüfumfang öffnen gemessene und nicht gemessene Kontrollen.
-          Fehlgeschlagene Prüfungen zeigen die gespeicherte Fehlererklärung und
-          den nächsten Schritt; unbekannte Ursachen werden ausdrücklich benannt.
+          Inhalte, die erst JavaScript nachlädt, sieht der Crawler womöglich
+          nicht. Ein Audit crawlt höchstens 10.000 Seiten. Die
+          Geschwindigkeitsmessung ist eine Labormessung von Google, keine
+          Messung echter Besucher. Das Audit ändert nichts an Ihrer Website; die
+          Korrekturen nehmen Sie oder Ihr KI-Agent vor.
         </p>
         <nav class="pager" aria-label="Vorherige und nächste Seite">
           <a
             class="pager-prev"
             rel="prev"
             href="/de/dokumentation/datenanalyse/"
-            ><span>Zurück</span><strong>Analysedaten verstehen</strong></a
+            ><span>Zurück</span><strong>Analytics-Daten verstehen</strong></a
           ><a
             class="pager-next"
             rel="next"
@@ -2131,9 +2088,7 @@
             >
           </li>
           <li>
-            <a href="#wenn-das-audit-beendet-wurde-was-dort-steht"
-              >Wenn das Audit beendet wurde, was dort steht</a
-            >
+            <a href="#wenn-ein-audit-fehlschlagt">Wenn ein Audit fehlschlägt</a>
           </li>
           <li>
             <a href="#gelbe-warnungen-beim-crawl">Gelbe Warnungen beim Crawl</a>
@@ -2152,7 +2107,7 @@
     <footer>
       <div class="wrap">
         <p class="star">
-          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          Ein Stern hilft anderen, das Werkzeug zu finden.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

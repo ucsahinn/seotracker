@@ -1,22 +1,31 @@
 ---
 title: Chave do PageSpeed
-description: Guardar uma chave PageSpeed e compreender testes e contadores de auditoria.
+description: Como salvar a chave da API do PageSpeed Insights, entender o teste da chave e acompanhar cotas e contadores da auditoria do site.
 kind: nasil-yapilir
 updated: 2026-10-27
 ---
 
-Uma chave da API do PageSpeed Insights permite que a auditoria do site meça a velocidade das suas páginas com o PageSpeed Insights do Google. A chave é criada de graça no Google Cloud e é opcional: sem ela, o app tenta medir no máximo 50 páginas por auditoria.
+Com uma chave da API do PageSpeed Insights, a auditoria do site mede a velocidade das páginas pelo serviço do Google. A chave é gratuita e opcional: sem ela, o aplicativo tenta medir no máximo 50 páginas por auditoria, e o Google pode interromper as solicitações antes disso.
 
-## Adicionar uma chave
+## Adicione uma chave
 
-Ative PageSpeed Insights API no Google Cloud, crie uma chave e restrinja-a a esta API. Guarde em Definições → Medição de velocidade. A chave é cifrada e nunca mostrada. Docker aceita PAGESPEED_API_KEY; o valor guardado tem prioridade.
+1. No Google Cloud, ative a PageSpeed Insights API.
+2. Crie uma chave de API e restrinja-a a essa API.
+3. Salve-a em **Configurações → Testes de velocidade**.
 
-## O que o teste prova
+A chave é criptografada e nunca é exibida. No Docker, também é possível usar a variável `PAGESPEED_API_KEY`; o valor salvo em **Configurações** tem prioridade.
 
-O teste envia um pedido móvel real para example.com. Não mede o seu site nem aumenta o contador de auditorias. Apresenta resultado e data. O botão permanece desativado durante o pedido e pelo menos dez segundos após o clique. Alterar a chave remove o resultado antigo.
+## O que o teste comprova
 
-## Limites e recuperação
+**Testar chave** envia uma solicitação real de dispositivo móvel para example.com. Ele não mede o seu site nem aumenta o contador de auditorias. Ao final, aparecem o resultado e a data. O botão fica desativado durante a solicitação e por pelo menos dez segundos após o clique. Ao trocar a chave, o resultado anterior é removido.
 
-Sem chave a aplicação tenta no máximo 50 páginas por auditoria. O Google pode limitar antes; uma chave não garante sucesso. Consulte a quota real no Google Cloud. O contador PageSpeed abrange apenas auditorias iniciadas nas últimas 24 horas, sem testes ou outros programas.
+Uma chave salva confirma apenas a configuração; um teste bem-sucedido confirma apenas aquela solicitação.
 
-Chave inválida: copie novamente. Para 403 confirme API ativa e restrições. Aguarde perante limites diários ou de frequência e consulte as quotas Cloud. Repita falhas de rede. Guardado indica configuração; um teste bem-sucedido confirma apenas esse pedido.
+## Cotas e problemas
+
+Uma chave não garante que todas as medições funcionem. A cota real fica no Google Cloud. O contador do PageSpeed em **Configurações** inclui apenas as auditorias iniciadas nas últimas 24 horas; não inclui os testes da chave nem outros programas.
+
+- **Chave inválida**: copie-a de novo.
+- **Erro 403 ou acesso restrito**: confira se a API está ativa e revise as restrições da chave.
+- **Limite diário ou de frequência**: aguarde e consulte as cotas no Google Cloud.
+- **Erro de rede**: tente de novo.

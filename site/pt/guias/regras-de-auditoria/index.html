@@ -107,7 +107,7 @@
       property="og:image:alt"
       content="Cartão do seowatcher: o painel do aplicativo com dados do Search Console, do Analytics 4 e da auditoria do site, e um botão para baixar para Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/pt/guias/regras-de-auditoria/"
@@ -172,7 +172,7 @@
             "url": "https://seowatcher.io/pt/guias/regras-de-auditoria/",
             "inLanguage": "pt",
             "datePublished": "2026-10-23",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-29",
             "articleSection": "Ajuda e referência",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1508,7 +1508,7 @@
               >
             </li>
             <li>
-              <a href="/pt/guias/analise/">Entender os dados de análise</a>
+              <a href="/pt/guias/analise/">Compreender os dados do Analytics</a>
             </li>
             <li>
               <a href="/pt/guias/auditoria-do-site/">Auditoria do site</a>
@@ -1519,7 +1519,7 @@
             <li><a href="/pt/guias/relatorios/">Relatórios e modelos</a></li>
             <li>
               <a href="/pt/guias/informacoes-do-projeto/"
-                >Informações do projeto</a
+                >Contexto do projeto</a
               >
             </li>
             <li><a href="/pt/guias/configuracoes/">Configurações</a></li>
@@ -1531,7 +1531,7 @@
               <a href="/pt/guias/regras-de-auditoria/">Regras de auditoria</a>
             </li>
             <li>
-              <a href="/pt/guias/configurar-agente/">Configurar o agente</a>
+              <a href="/pt/guias/configurar-agente/">Configuração do agente</a>
             </li>
             <li>
               <a href="/pt/guias/solucao-de-problemas/">Solução de problemas</a>
@@ -1563,7 +1563,7 @@
           A tabela traz o nome da regra mostrado na tela, o que ela significa e
           o primeiro passo para corrigir. O texto completo da correção está no
           cartão do problema na tela. A última coluna é o ID da regra, que
-          aparece no arquivo CSV e nas respostas do assistente.
+          aparece no arquivo CSV e nas respostas do agente.
         </p>
         <h2 id="termos-comuns">Termos comuns</h2>
         <ul>
@@ -2764,7 +2764,8 @@
               <tr>
                 <td>A codificação de caracteres não está declarada</td>
                 <td>
-                  Os caracteres turcos podem quebrar em alguns navegadores.
+                  Letras acentuadas podem aparecer erradas em alguns
+                  navegadores.
                 </td>
                 <td>
                   Acrescente a linha meta charset=&quot;utf-8&quot; no início da
@@ -2866,11 +2867,12 @@
               <tr>
                 <td>O idioma da página não está declarado</td>
                 <td>
-                  Não diz em que idioma a página está (sem lang na etiqueta
+                  A página não informa em que idioma está (sem lang na tag
                   html).
                 </td>
                 <td>
-                  Para uma página em turco, escreva html lang=&quot;tr&quot;.
+                  Para uma página em português, escreva html
+                  lang=&quot;pt-BR&quot;.
                 </td>
                 <td>missing-lang</td>
               </tr>
@@ -3570,8 +3572,8 @@
           consultados no máximo 300 endereços. Sites que bloqueiam robôs, como
           redes sociais, e endereços que não respondem nunca contam como
           quebrados. Uma regra que uma auditoria não mediu aparece como
-          &quot;desconhecida&quot; na aba Kontroller, inclusive em auditorias
-          feitas antes de essas regras existirem.
+          &quot;Não medido&quot; na aba <strong>Verificações</strong>, inclusive
+          em auditorias feitas antes de essas regras existirem.
         </p>
         <p>
           Algumas regras não olham as páginas uma a uma: elas sondam o site uma
@@ -3593,16 +3595,16 @@
           <a class="pager-prev" rel="prev" href="/pt/guias/ajuda/"
             ><span>Anterior</span><strong>Ajuda</strong></a
           ><a class="pager-next" rel="next" href="/pt/guias/configurar-agente/"
-            ><span>Próxima</span><strong>Configurar o agente</strong></a
+            ><span>Próxima</span><strong>Configuração do agente</strong></a
           >
         </nav>
         <p class="meta">
-          Última atualização: 27 de outubro de 2026. Viu algum erro?
+          Última atualização: 29 de outubro de 2026. Encontrou um erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >Relate no GitHub</a
+            >Informe no GitHub</a
           >.
         </p>
       </article>

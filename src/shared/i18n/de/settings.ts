@@ -122,7 +122,7 @@ export const deSettings: Catalog = {
   "Hizmet hesapları": "Dienstkonten",
   "Hizmet hesabı durumu okunamadı.":
     "Status des Dienstkontos konnte nicht gelesen werden.",
-  "Bu adresi Search Console'da {path} ile mülkünüze ekleyin (yetki: {level}). Eklemeden veri gelmez. Analytics için de GA4 mülkünde {gaPath}'ne aynı adresi Görüntüleyen olarak ekleyin.":
+  "Bu adresi Search Console'da {path} ile mülkünüze ekleyin (yetki: {level}). Eklemeden veri gelmez. Analytics için de GA4 mülkünde {gaPath}'ne aynı adresi Görüntüleyici olarak ekleyin.":
     "Fügen Sie diese Adresse in Search Console unter {path} Ihrer Property hinzu (Berechtigung: {level}). Vorher werden keine Daten geladen. Fügen Sie dieselbe Adresse für Analytics in der GA4-Property unter {gaPath} als Betrachter hinzu.",
   "Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle":
     "Einstellungen → Nutzer und Berechtigungen → Nutzer hinzufügen",

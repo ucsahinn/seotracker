@@ -14,7 +14,7 @@
     <title>Progetti | guida di seowatcher</title>
     <meta
       name="description"
-      content="Progetti aiuta a scegliere un sito e completare le connessioni. Ogni progetto conserva le proprie proprietà Google, verifiche e rapporti."
+      content="Progetti elenca i siti monitorati e indica le connessioni mancanti. Ogni progetto ha proprietà Google, controlli e report propri."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/it/guide/progetti/" />
@@ -88,7 +88,7 @@
     <meta property="og:title" content="Progetti | guida di seowatcher" />
     <meta
       property="og:description"
-      content="Progetti aiuta a scegliere un sito e completare le connessioni. Ogni progetto conserva le proprie proprietà Google, verifiche e rapporti."
+      content="Progetti elenca i siti monitorati e indica le connessioni mancanti. Ogni progetto ha proprietà Google, controlli e report propri."
     />
     <meta
       property="og:image"
@@ -101,7 +101,7 @@
       property="og:image:alt"
       content="Scheda di seowatcher: la dashboard dell’app con i dati di Search Console, Analytics 4 e dell’audit del sito, e un pulsante per scaricarla su Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/it/guide/progetti/"
@@ -116,7 +116,7 @@
     <meta name="twitter:title" content="Progetti | guida di seowatcher" />
     <meta
       name="twitter:description"
-      content="Progetti aiuta a scegliere un sito e completare le connessioni. Ogni progetto conserva le proprie proprietà Google, verifiche e rapporti."
+      content="Progetti elenca i siti monitorati e indica le connessioni mancanti. Ogni progetto ha proprietà Google, controlli e report propri."
     />
     <meta
       name="twitter:image"
@@ -159,11 +159,11 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/it/guide/progetti/#article",
             "headline": "Progetti",
-            "description": "Progetti aiuta a scegliere un sito e completare le connessioni. Ogni progetto conserva le proprie proprietà Google, verifiche e rapporti.",
+            "description": "Progetti elenca i siti monitorati e indica le connessioni mancanti. Ogni progetto ha proprietà Google, controlli e report propri.",
             "url": "https://seowatcher.io/it/guide/progetti/",
             "inLanguage": "it",
             "datePublished": "2026-10-23",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Schermate",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -198,7 +198,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1506,17 +1506,17 @@
                 >Parole chiave salvate</a
               >
             </li>
-            <li>
-              <a href="/it/guide/analisi/">Interpretare i dati di analisi</a>
-            </li>
+            <li><a href="/it/guide/analisi/">Capire i dati di Analytics</a></li>
             <li>
               <a href="/it/guide/controllo-del-sito/">Controllo del sito</a>
             </li>
-            <li><a href="/it/guide/stato-indice/">Stato dell'indice</a></li>
+            <li>
+              <a href="/it/guide/stato-indice/">Stato dell'indicizzazione</a>
+            </li>
             <li><a href="/it/guide/rapporti/">Report e modelli</a></li>
             <li>
               <a href="/it/guide/informazioni-progetto/"
-                >Informazioni sul progetto</a
+                >Contesto del progetto</a
               >
             </li>
             <li><a href="/it/guide/impostazioni/">Impostazioni</a></li>
@@ -1529,7 +1529,7 @@
             </li>
             <li>
               <a href="/it/guide/configurazione-assistente/"
-                >Configurazione dell'assistente</a
+                >Configurazione dell'agente</a
               >
             </li>
             <li>
@@ -1544,59 +1544,72 @@
       <article id="icerik" data-page="projeler">
         <h1>Progetti</h1>
         <p class="lede">
-          Progetti aiuta a scegliere un sito e completare le connessioni. Ogni
-          progetto conserva le proprie proprietà Google, verifiche e rapporti.
-        </p>
-        <p>
-          Progetti aiuta a scegliere un sito e completare le connessioni. Ogni
-          progetto conserva le proprie proprietà Google, verifiche e rapporti.
+          Progetti elenca i siti monitorati e indica le connessioni mancanti.
+          Ogni progetto ha proprietà Google, controlli e report propri.
         </p>
         <h2 id="leggere-la-schermata">Leggere la schermata</h2>
         <p>
-          Con più progetti puoi cercare e ordinare per nome o dominio.
-          <strong>Ultimo aperto</strong> indica il progetto ricordato dal
-          browser, non uno stato SEO. L’azione principale permette di aggiungere
-          il sito, collegare Search Console o aprire la panoramica secondo la
-          configurazione nota. Le informazioni del progetto aprono le note; le
-          impostazioni aprono la configurazione.
+          Con più progetti, l'elenco si può cercare e ordinare per nome o
+          dominio. <strong>Ultimo aperto</strong> indica il progetto ricordato
+          da questo browser; non è uno stato SEO. Il pulsante principale cambia
+          secondo la configurazione: <strong>Aggiungi sito</strong>,
+          <strong>Collega Search Console</strong> oppure
+          <strong>Apri dashboard</strong>.
+          <strong>Contesto del progetto</strong> apre le note,
+          <strong>Impostazioni</strong> apre la configurazione.
+        </p>
+        <h3 id="archivio-di-ricerca">Archivio di ricerca</h3>
+        <p>
+          La riga
+          <strong
+            >Archivio di ricerca · Web · tutti i dispositivi e paesi</strong
+          >
+          riassume i dati di ricerca salvati in locale. Il periodo termina
+          all'ultimo giorno registrato, che può essere lontano nel tempo; le
+          date sono sempre indicate. Se mancano giorni, i clic sono il subtotale
+          dei soli giorni osservati. Nel grafico un giorno mancante resta vuoto
+          e non vale zero.
         </p>
         <p>
-          L’archivio di ricerca contiene dati Web locali per tutti i dispositivi
-          e paesi. Le date sono visibili. La finestra termina all’ultimo giorno
-          registrato, che può essere vecchio. Se mancano giorni, i clic sono il
-          subtotale delle sole osservazioni presenti. Un giorno mancante è uno
-          spazio nel grafico, non zero. Il confronto richiede due periodi
-          completi. Totali uguali sono indicati come invariati; partendo da zero
-          compaiono i conteggi precedenti e attuali. I dettagli mostrano ultimo
-          giorno e orario di lettura disponibile. I vecchi record non conservano
-          la prova della definitività.
+          La variazione compare solo quando entrambi i periodi sono completi.
+          Totali uguali risultano invariati; una variazione da zero mostra
+          entrambi i conteggi. Se il periodo precedente ha meno di 20 clic, il
+          badge mostra la differenza in clic invece della percentuale: da 1 a 5
+          clic si legge +4 clic. Con numeri così piccoli la variazione non
+          dimostra una crescita.
         </p>
         <p>
-          La verifica riguarda l’host del sito scelto. L’ultima completata è
-          distinta da un tentativo più recente fallito o in corso. Una
-          connessione salvata non dimostra una lettura Google riuscita. Una
-          fonte illeggibile non è né scollegata né uno zero misurato: riprova.
-          Aggiornare rilegge identità e dati locali senza chiamare Google o
-          avviare verifiche.
+          I dettagli riportano l'ultimo giorno salvato e, quando è noto,
+          l'orario della lettura. I record meno recenti non indicano su quale
+          base un giorno è stato considerato definitivo.
+        </p>
+        <h3 id="controllo-e-connessioni">Controllo e connessioni</h3>
+        <p>
+          Il controllo riguarda l'host del sito scelto. L'ultimo controllo
+          completato resta distinto da un tentativo più recente non riuscito o
+          ancora in corso. Una connessione salvata non garantisce che la lettura
+          da Google sia riuscita. Una fonte non leggibile non equivale a una
+          fonte scollegata né a un valore zero: riprovi più tardi.
+          <strong>Aggiorna</strong> rilegge identità e dati locali; non
+          interroga Google e non avvia controlli.
         </p>
         <h2 id="creare-e-gestire">Creare e gestire</h2>
         <p>
-          Nuovo progetto richiede nome, dominio facoltativo, paese e lingua.
-          Crearlo non raccoglie dati. Scegli le proprietà Google in Impostazioni
-          → Connessioni. Le impostazioni generali cambiano identità e mercato.
-          Ogni progetto ha una proprietà Search Console e una Analytics.
+          <strong>Nuovo progetto</strong> chiede nome, paese, lingua e,
+          facoltativamente, il dominio. La creazione non raccoglie dati. Le
+          proprietà Google si scelgono in
+          <strong>Impostazioni progetto → Connessioni</strong>: ogni progetto ha
+          una proprietà Search Console e una Google Analytics. In
+          <strong>Generale</strong> si modificano identità e mercato.
         </p>
         <p>
-          Archiviare conserva i dati; Ripristina rende nuovamente visibile il
-          progetto. L’ultimo progetto non può essere archiviato. I clic
-          differiscono da sessioni GA4 e totali dell’archivio delle query.
-          Periodi diversi non vengono sommati.
+          <strong>Archivia progetto</strong> toglie il progetto dalla barra
+          laterale senza cancellare dati; <strong>Ripristina</strong> lo rende
+          di nuovo visibile. L'unico progetto rimasto non si può archiviare.
         </p>
         <p>
-          Quando il periodo precedente ha meno di 20 clic, il badge mostra la
-          differenza di clic anziché una percentuale. Passare da 1 a 5 significa
-          per esempio +4 clic; con numeri piccoli, questa variazione da sola non
-          dimostra una forte crescita.
+          I clic di questa schermata non coincidono con le sessioni GA4 né con i
+          totali per query dell'archivio. Periodi diversi non vengono sommati.
         </p>
         <nav class="pager" aria-label="Pagina precedente e successiva">
           <a class="pager-prev" rel="prev" href="/it/guide/chiave-pagespeed/"
@@ -1606,12 +1619,12 @@
           >
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 28 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 29 ottobre 2026. Ha trovato un errore?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
             rel="noopener noreferrer"
-            >segnalarlo su GitHub</a
+            >Lo segnali su GitHub</a
           >.
         </p>
       </article>

@@ -1,61 +1,72 @@
 ---
 title: Ajuda
-description: O cartão de estado da instalação, as ações rápidas, os problemas comuns e o pacote de diagnóstico que você envia ao relatar um problema.
+description: O primeiro lugar a conferir quando algo não funciona: status da instalação, problemas comuns e pacote de diagnóstico para relatar falhas.
 screen: Yardım
 route: /support
 updated: 2026-10-27
 ---
 
-Este é o primeiro lugar a olhar quando algo dá errado. A tela confere a sua instalação, diz o que está faltando e leva você à configuração certa.
+A tela confere a instalação, mostra o que está faltando e leva à configuração que precisa ser corrigida. Ela verifica apenas a instalação: problemas do site ficam em **Auditoria do site**, e problemas do lado do Google, em **Status de indexação**.
 
-A interface do aplicativo existe em seis idiomas: turco, inglês, alemão, francês, italiano e português. O idioma é escolhido em Configurações → Aparência → Idioma. Este guia mostra botões e telas com o nome que eles têm na interface em português. O menu da bandeja do Windows só existe em turco. Ali o nome em turco vem com o significado em português entre parênteses.
+## Idioma da interface
 
-## O que há na tela
+O aplicativo está disponível em seis idiomas: turco, inglês, alemão, francês, italiano e português. O idioma é escolhido em **Configurações → Aparência → Idioma**. Neste guia, botões e telas aparecem com o nome da interface em português. O menu da bandeja do Windows só existe em turco: neste guia, o nome em turco vem seguido da tradução entre parênteses.
 
-**Ações rápidas**. Os botões no alto:
+## O que a tela contém
 
-- **Verificar o status novamente**: atualiza o cartão abaixo.
-- **Baixar pacote de diagnóstico**: baixa o arquivo que você envia ao relatar um problema. Ele não contém nenhum valor secreto.
-- **Abrir guia**: abre o guia no seowatcher.io.
-- **seowatcher.io**: abre o site do aplicativo, onde ficam a página de download e o guia.
-- **Notas de versão**: abre a tela dedicada às notas de versão (`/release-notes`).
-- **Configuração do agente**: vai à tela de conexão do assistente.
+**Ações rápidas** reúne os botões do topo:
 
-**Status do app.** O cartão verifica acesso, configurações da conexão Google, chave do PageSpeed, ambiente de execução e banco de dados desta instalação. Uma verificação bem-sucedida não garante um site sem erros nem dados Google atualizados. Configurações não lidas não são consideradas verificadas. Leia o aviso e use **Verificar o status novamente**. A versão e a hora da verificação identificam o resultado. **Copiar resumo** copia esse estado como texto; **Abrir conexões** leva às conexões do projeto.
+- **Verificar o status novamente**: atualiza o cartão de status.
+- **Baixar pacote de diagnóstico**: baixa o arquivo para anexar a um relato de problema. Ele não contém valores secretos.
+- **Abrir guia**: abre este guia no seowatcher.io.
+- **seowatcher.io**: abre o site, com a página de download e o guia.
+- **Notas de versão**: abre a tela de notas de versão (`/release-notes`).
+- **Configuração do agente**: abre a tela para conectar um agente.
 
-**Aviso sobre o número da porta.** Se o pacote do Windows abrir em outro número de porta porque outro programa ocupa a 3001 (por exemplo, uma cópia antiga do Docker), aparece uma faixa amarela no alto de todas as telas do aplicativo: "Desta vez o seowatcher está rodando em 3002 porque outro programa está usando 3001 (por exemplo, uma cópia antiga do Docker). O login do Google está configurado para 3001; feche esse programa e reinicie o seowatcher." A faixa existe caso você tenha perdido a notificação da barra de tarefas. O login do Google volta ao endereço 3001 e falha se você abriu o aplicativo em 3002. O botão de fechar à direita da faixa a esconde nesta aba. A mesma frase também está escrita no cartão **Status do app**. Para resolver, feche o programa que ocupa a 3001 e escolha **Yeniden başlat** (Reiniciar) no menu da bandeja. O aplicativo volta para a 3001 e a faixa some. Se nenhum outro programa a usa, o aplicativo volta para a 3001 na próxima abertura de qualquer jeito.
+**Status do app** verifica acesso, conexão com o Google, chave do PageSpeed, ambiente de execução e banco de dados da instalação. Uma verificação bem-sucedida não garante um site sem erros nem dados do Google atualizados. Configurações que não puderam ser lidas não contam como verificadas. A versão e a hora da verificação identificam o resultado. **Copiar resumo** copia o status como texto; **Abrir conexões** leva às conexões do projeto.
 
-**Projetos**. O estado da conexão de cada projeto com o Search Console e o Analytics. O botão **Abrir conexões** leva às configurações do projeto.
+**Projetos** mostra, para cada projeto, o estado da conexão com o Search Console e o Analytics.
 
-**Problemas comuns.** Seis títulos recolhíveis: a página não abre ou o aplicativo não está em execução, a porta está em uso, o meu agente não consegue se conectar (401), a medição de velocidade para no meio (429), a falta de dados de consultas e mudei uma configuração e o app não reconhece. Cada um tem o que fazer e um link para a configuração correspondente.
+**Problemas comuns** tem seis itens expansíveis, cada um com a solução e o link para a configuração:
 
-**Limites do Google e do sistema**. Com **Mostrar limites**, você vê o estado atual dos limites diários do Google.
+- A página não abre ou o aplicativo não está em execução
+- A porta está em uso
+- Meu agente não consegue se conectar (401)
+- A medição de velocidade para no meio (429)
+- Nenhum dado de consulta, gráficos vazios
+- Mudei uma configuração e o app não reconhece
 
-**Lista no fim.** Atalhos para os arquivos de registro e para o endereço de verificação de saúde (`/api/health`). No pacote Windows, os registros abrem com **Günlükleri aç** (Abrir os registros) no menu da barra de tarefas. No Docker, use o comando dado por **Copiar comando**.
+**Mostrar limites** indica a situação dos limites diários do Google.
 
-## Como usar
+No fim da página ficam os links para os registros e para o **Endereço de status** (`/api/health`). No pacote do Windows, os registros também abrem com **Günlükleri aç** (Abrir os registros) no menu da bandeja; no Docker, use o comando copiado por **Copiar comando**.
 
-1. Se algo não funciona, abra esta tela primeiro e leia o aviso do cartão.
-2. Clique no botão ao lado do aviso. Ele leva você à configuração certa. Faça a mudança, volte e clique em **Verificar o status novamente**.
-3. Se as verificações da instalação passarem, mas o problema continuar, consulte **Problemas comuns** e a tela do projeto correspondente.
-4. Se ainda não resolver, clique em **Baixar pacote de diagnóstico** e anexe o arquivo ao relato no GitHub. No pacote Windows, **Sorunu bildir (GitHub)** (Relatar um problema no GitHub), no menu da barra de tarefas, faz o mesmo com um clique.
+### Aviso sobre a porta
+
+Se outro programa ocupar a porta 3001 (por exemplo, uma cópia antiga do Docker), o pacote do Windows abre em outra porta. Nesse caso, uma faixa amarela aparece no topo de todas as telas: "Desta vez o seowatcher está rodando em 3002 porque outro programa está usando 3001 (por exemplo, uma cópia antiga do Docker). O login do Google está configurado para 3001; feche esse programa e reinicie o seowatcher." A mesma frase aparece no cartão **Status do app**, caso a notificação do Windows tenha passado despercebida.
+
+O login do Google sempre retorna para a porta 3001, então falha se o aplicativo estiver aberto na 3002. Para resolver, feche o programa que ocupa a 3001 e escolha **Yeniden başlat** (Reiniciar) no menu da bandeja: o aplicativo volta para a 3001 e a faixa some. O X à direita da faixa a oculta apenas nesta aba do navegador.
+
+## Passo a passo
+
+1. Abra esta tela e leia o aviso no cartão **Status do app**.
+2. Clique no botão ao lado do aviso, que leva à configuração a corrigir. Faça a alteração, volte e clique em **Verificar o status novamente**.
+3. Se as verificações da instalação passarem, mas o problema continuar, consulte **Problemas comuns** e a tela do projeto afetado.
+4. Se o problema persistir, clique em **Baixar pacote de diagnóstico** e anexe o arquivo ao relato no GitHub. No pacote do Windows, **Sorunu bildir (GitHub)** (Relatar um problema no GitHub), no menu da bandeja, faz o mesmo com um clique.
 
 ## Perguntas frequentes
 
-**Por que a linha "Login no Google" está amarela?** Nenhuma chave de acesso do Google foi informada ainda. A linha fica amarela até que o Google seja conectado. Siga o guia para conectar ao Google.
+**Por que a linha de login no Google está amarela?** Nenhuma credencial do Google foi salva ainda. A linha fica amarela até o Google ser conectado; siga o guia [Conectar ao Google](/docs/google-baglantisi/).
 
-**A linha "Login e acesso" diz "um só usuário, sem senha".** Isso é normal. O aplicativo abre apenas a partir do seu próprio computador. Se você quiser abri-lo para fora, precisa colocar na frente o seu próprio login protegido por senha.
+**A linha de acesso diz "um só usuário, sem senha".** É normal: o aplicativo só abre neste computador. Para torná-lo acessível de fora, é preciso colocar na frente dele um login próprio protegido por senha.
 
-**O que há no pacote de diagnóstico?** A versão, as verificações da instalação, as contagens das tabelas e os resumos de etapa e erro das últimas 25 auditorias. Os erros do PageSpeed são resumidos sem os URLs das páginas. Segredos e senhas são excluídos; nomes de projetos, domínios e IDs de propriedades Google podem aparecer. Revise os arquivos antes de enviá-los.
+**O que há no pacote de diagnóstico?** Versão, verificações da instalação, contagem de linhas das tabelas e resumos de etapa e erro das últimas 25 auditorias. Os erros do PageSpeed são resumidos sem os URLs das páginas. Segredos e senhas ficam de fora; nomes de projetos, domínios e IDs de propriedades do Google podem aparecer. Revise os arquivos antes de enviá-los.
 
-## Limites
+## Qual tela usar
 
-A tela confere apenas a própria instalação. Para encontrar um problema no seu site, use Auditoria do site. Para ver um problema do lado do Google, use a tela Status de indexação.
+- O [Painel](/docs/panel/) resume a configuração e os dados do projeto escolhido.
+- [Oportunidades](/docs/firsatlar/) ajuda a escolher o trabalho a partir dos dados do Search Console.
+- [Acompanhamento de posições](/docs/siralama-takibi/) acompanha a posição média das consultas no arquivo local de dados do Google, não resultados de busca ao vivo.
 
-## Qual tela usar?
-
-O [Painel](/docs/panel/) resume a configuração e os dados do projeto selecionado. [Oportunidades](/docs/firsatlar/) ajuda a escolher ações a partir dos dados do Search Console. O [Acompanhamento de posições](/docs/siralama-takibi/) acompanha a posição média das palavras-chave salvas nos dados Google, não resultados de busca ao vivo. Se faltarem dados, confira as conexões do projeto, o período e os avisos de cobertura. O estado da instalação não valida esses relatórios.
-
-Em sites com pouco tráfego de pesquisa, o Google oculta algumas consultas. A lista pode estar vazia ou mostrar menos cliques que os totais por página. Isso, por si só, não indica falha na conexão.
+Se faltarem dados, confira as conexões do projeto, o período escolhido e os avisos de cobertura: o status da instalação não valida esses relatórios. Em sites com pouco tráfego, o Google oculta algumas consultas, então a lista pode ficar vazia ou mostrar menos cliques que os totais por página. Isso, sozinho, não indica falha na conexão.
 
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/quotas/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->

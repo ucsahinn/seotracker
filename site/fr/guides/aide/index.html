@@ -14,7 +14,7 @@
     <title>Aide | Guide seowatcher</title>
     <meta
       name="description"
-      content="En cas de souci, commencez ici : l'écran vérifie l'installation, donne la solution aux problèmes courants et prépare le fichier à joindre au signalement."
+      content="En cas de souci, commencez ici : l’écran vérifie l’installation, donne la solution aux problèmes courants et prépare le fichier à joindre au signalement."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/fr/guides/aide/" />
@@ -88,7 +88,7 @@
     <meta property="og:title" content="Aide | Guide seowatcher" />
     <meta
       property="og:description"
-      content="En cas de souci, commencez ici : l'écran vérifie l'installation, donne la solution aux problèmes courants et prépare le fichier à joindre au signalement."
+      content="En cas de souci, commencez ici : l’écran vérifie l’installation, donne la solution aux problèmes courants et prépare le fichier à joindre au signalement."
     />
     <meta
       property="og:image"
@@ -99,7 +99,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta property="article:modified_time" content="2026-10-29" />
     <meta property="og:url" content="https://seowatcher.io/fr/guides/aide/" />
@@ -113,7 +113,7 @@
     <meta name="twitter:title" content="Aide | Guide seowatcher" />
     <meta
       name="twitter:description"
-      content="En cas de souci, commencez ici : l'écran vérifie l'installation, donne la solution aux problèmes courants et prépare le fichier à joindre au signalement."
+      content="En cas de souci, commencez ici : l’écran vérifie l’installation, donne la solution aux problèmes courants et prépare le fichier à joindre au signalement."
     />
     <meta
       name="twitter:image"
@@ -121,7 +121,7 @@
     />
     <meta
       name="twitter:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
@@ -156,7 +156,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/fr/guides/aide/#article",
             "headline": "Aide",
-            "description": "En cas de souci, commencez ici : l'écran vérifie l'installation, donne la solution aux problèmes courants et prépare le fichier à joindre au signalement.",
+            "description": "En cas de souci, commencez ici : l’écran vérifie l’installation, donne la solution aux problèmes courants et prépare le fichier à joindre au signalement.",
             "url": "https://seowatcher.io/fr/guides/aide/",
             "inLanguage": "fr",
             "datePublished": "2026-10-23",
@@ -195,7 +195,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1463,7 +1463,7 @@
           <ul>
             <li>
               <a href="/fr/guides/quest-ce-que-seowatcher/"
-                >Qu'est-ce que seowatcher ?</a
+                >Qu’est-ce que seowatcher ?</a
               >
             </li>
             <li>
@@ -1502,14 +1502,18 @@
               >
             </li>
             <li>
-              <a href="/fr/guides/statistiques/">Comprendre les statistiques</a>
+              <a href="/fr/guides/statistiques/"
+                >Comprendre les données Analytics</a
+              >
             </li>
             <li><a href="/fr/guides/audit-du-site/">Audit du site</a></li>
             <li>
-              <a href="/fr/guides/etat-de-l-index/">État de l'indexation</a>
+              <a href="/fr/guides/etat-de-l-index/">État de l’indexation</a>
             </li>
             <li><a href="/fr/guides/rapports/">Rapports et modèles</a></li>
-            <li><a href="/fr/guides/infos-du-projet/">Infos du projet</a></li>
+            <li>
+              <a href="/fr/guides/infos-du-projet/">Contexte du projet</a>
+            </li>
             <li><a href="/fr/guides/parametres/">Paramètres</a></li>
           </ul>
           <p class="nav-group">Aide et référence</p>
@@ -1517,10 +1521,10 @@
             <li class="current" aria-current="page">
               <a href="/fr/guides/aide/">Aide</a>
             </li>
-            <li><a href="/fr/guides/regles-d-audit/">Règles d'audit</a></li>
+            <li><a href="/fr/guides/regles-d-audit/">Règles d’audit</a></li>
             <li>
               <a href="/fr/guides/installation-assistant/"
-                >Installation de l'assistant</a
+                >Configuration de l’agent</a
               >
             </li>
             <li><a href="/fr/guides/depannage/">Dépannage</a></li>
@@ -1531,47 +1535,47 @@
       <article id="icerik" data-page="yardim">
         <h1>Aide</h1>
         <p class="lede">
-          En cas de souci, commencez ici : l'écran vérifie l'installation, donne
+          En cas de souci, commencez ici : l’écran vérifie l’installation, donne
           la solution aux problèmes courants et prépare le fichier à joindre au
           signalement.
         </p>
         <p>
-          Si quelque chose ne va pas, regardez d'abord ici. Cet écran contrôle
-          votre installation, dit ce qui manque et vous conduit au bon réglage.
+          L’écran <strong>Aide</strong> contrôle votre installation, signale ce
+          qui manque et mène au réglage à corriger.
         </p>
         <p>
-          L'interface de l'application existe en six langues : turc, anglais,
+          L’interface de l’application existe en six langues : turc, anglais,
           allemand, français, italien et portugais. La langue se choisit dans
           Paramètres → Apparence → Langue. Ce guide donne les boutons et les
-          écrans sous le nom qu'ils portent dans l'interface en français. Le
-          menu de la zone de notification de Windows n'existe qu'en turc. Là, le
+          écrans sous le nom qu’ils portent dans l’interface en français. Le
+          menu de la zone de notification de Windows n’existe qu’en turc. Là, le
           nom turc est suivi de sa traduction française entre parenthèses.
         </p>
-        <h2 id="ce-que-l-ecran-affiche">Ce que l'écran affiche</h2>
-        <p><strong>Actions rapides.</strong> Les boutons du haut :</p>
+        <h2 id="ce-que-l-ecran-affiche">Ce que l’écran affiche</h2>
+        <p><strong>Actions rapides.</strong> Les boutons du haut :</p>
         <ul>
           <li>
-            <strong>Revérifier l'état</strong> : actualise la carte ci-dessous.
+            <strong>Revérifier l’état</strong> : actualise la carte ci-dessous.
           </li>
           <li>
-            <strong>Télécharger le paquet de diagnostic</strong> : télécharge le
+            <strong>Télécharger le paquet de diagnostic</strong> : télécharge le
             fichier à joindre quand vous signalez un problème. Il ne contient
             aucune valeur secrète.
           </li>
           <li>
-            <strong>Ouvrir le guide</strong> : ouvre le guide sur seowatcher.io.
+            <strong>Ouvrir le guide</strong> : ouvre le guide sur seowatcher.io.
           </li>
           <li>
-            <strong>seowatcher.io</strong> : ouvre le site de l'application ; la
-            page de téléchargement et le guide s'y trouvent.
+            <strong>seowatcher.io</strong> : ouvre le site de l’application ; la
+            page de téléchargement et le guide s’y trouvent.
           </li>
           <li>
-            <strong>Notes de version</strong> : ouvre l’écran dédié aux notes de
+            <strong>Notes de version</strong> : ouvre l’écran dédié aux notes de
             version (<code>/release-notes</code>).
           </li>
           <li>
-            <strong>Configuration de l'agent</strong> : mène à l'écran de
-            connexion de l'assistant.
+            <strong>Configuration de l’agent</strong> : mène à l’écran de
+            connexion de l’assistant.
           </li>
         </ul>
         <p>
@@ -1582,42 +1586,42 @@
           jour. Un réglage non lu ne vaut pas un contrôle réussi. Lisez
           l’avertissement puis utilisez <strong>Revérifier l’état</strong>. La
           version et l’heure du contrôle situent le résultat.
-          <strong>Copier le résumé</strong> copie cet état ;
+          <strong>Copier le résumé</strong> copie cet état ;
           <strong>Ouvrir les connexions</strong> mène aux connexions du projet.
         </p>
         <p>
           <strong>Avertissement sur le numéro de port.</strong> Si le paquet
-          Windows s'ouvre sur un autre numéro de port parce qu'un autre
+          Windows s’ouvre sur un autre numéro de port parce qu’un autre
           programme occupe 3001 (par exemple une ancienne copie Docker), une
-          bande jaune apparaît en haut de chaque écran de l'application : «
-          seowatcher tourne cette fois sur 3002, car un autre programme utilise
-          3001 (par exemple une ancienne copie Docker). La connexion Google est
-          configurée pour 3001 ; fermez ce programme et redémarrez seowatcher. »
-          La bande est là au cas où vous auriez manqué la notification de la
-          barre des tâches. La connexion Google revient à l'adresse 3001 et
-          échoue si vous avez ouvert l'application sur 3002. Le bouton de
-          fermeture à droite de la bande la masque pour cet onglet. La même
-          phrase est aussi écrite dans la carte
-          <strong>État de l'application</strong>. Pour résoudre, fermez le
+          bande jaune apparaît en haut de chaque écran de l’application :
+          « seowatcher tourne cette fois sur 3002, car un autre programme
+          utilise 3001 (par exemple une ancienne copie Docker). La connexion
+          Google est configurée pour 3001 ; fermez ce programme et redémarrez
+          seowatcher. » La bande est là au cas où vous auriez manqué la
+          notification de la barre des tâches. La connexion Google revient à
+          l’adresse 3001 et échoue si vous avez ouvert l’application sur 3002.
+          Le bouton de fermeture à droite de la bande la masque pour cet onglet.
+          La même phrase est aussi écrite dans la carte
+          <strong>État de l’application</strong>. Pour résoudre, fermez le
           programme qui occupe 3001, puis choisissez
           <strong>Yeniden başlat</strong> (Redémarrer) dans le menu de la zone
-          de notification. L'application revient sur 3001 et la bande disparaît.
-          Si aucun autre programme ne l'utilise, l'application revient de toute
+          de notification. L’application revient sur 3001 et la bande disparaît.
+          Si aucun autre programme ne l’utilise, l’application revient de toute
           façon sur 3001 au prochain démarrage.
         </p>
         <p>
-          <strong>Projets.</strong> L'état de la connexion Search Console et
-          Analytics de chaque projet s'affiche.
+          <strong>Projets.</strong> L’état de la connexion Search Console et
+          Analytics de chaque projet s’affiche.
           <strong>Ouvrir les connexions</strong> vous mène aux paramètres du
           projet.
         </p>
         <p>
-          <strong>Problèmes courants.</strong> Il y a six rubriques dépliables :
-          la page ne s'ouvre pas ou l'application ne fonctionne pas, le port est
-          en cours d'utilisation, mon agent ne parvient pas à se connecter
-          (401), la mesure de la vitesse s'arrête à mi-chemin (429), aucune
-          donnée de requête et j'ai modifié un réglage et l'application ne le
-          voit pas. Chacune dit ce qu'il faut faire et donne le lien du réglage
+          <strong>Problèmes courants.</strong> Il y a six rubriques dépliables :
+          la page ne s’ouvre pas ou l’application ne fonctionne pas, le port est
+          en cours d’utilisation, mon agent ne parvient pas à se connecter
+          (401), la mesure de la vitesse s’arrête à mi-chemin (429), aucune
+          donnée de requête et j’ai modifié un réglage et l’application ne le
+          voit pas. Chacune dit ce qu’il faut faire et donne le lien du réglage
           concerné.
         </p>
         <p>
@@ -1627,22 +1631,22 @@
         </p>
         <p>
           <strong>Liste du bas.</strong> Il y a des raccourcis vers les fichiers
-          de journal et vers l'adresse de santé (<code>/api/health</code>). Avec
+          de journal et vers l’adresse de santé (<code>/api/health</code>). Avec
           le paquet Windows, vous ouvrez les journaux par
           <strong>Günlükleri aç</strong> (Ouvrir les journaux) dans le menu de
           la barre des tâches. Avec Docker, vous utilisez la commande donnée
           avec <strong>Copier la commande</strong>.
         </p>
-        <h2 id="comment-l-utiliser">Comment l'utiliser</h2>
+        <h2 id="comment-l-utiliser">Comment l’utiliser</h2>
         <ol>
           <li>
-            Si quelque chose ne fonctionne pas, ouvrez d'abord cet écran et
-            lisez l'avertissement de la carte.
+            Si quelque chose ne fonctionne pas, ouvrez d’abord cet écran et
+            lisez l’avertissement de la carte.
           </li>
           <li>
-            Cliquez sur le bouton à côté de l'avertissement, il vous mène au bon
+            Cliquez sur le bouton à côté de l’avertissement, il vous mène au bon
             réglage. Faites le réglage, revenez et cliquez sur
-            <strong>Revérifier l'état</strong>.
+            <strong>Revérifier l’état</strong>.
           </li>
           <li>
             Si les contrôles d’installation réussissent mais que le problème
@@ -1650,7 +1654,7 @@
             du projet concerné.
           </li>
           <li>
-            Si le problème n'est toujours pas résolu, cliquez sur
+            Si le problème n’est toujours pas résolu, cliquez sur
             <strong>Télécharger le paquet de diagnostic</strong> et joignez le
             fichier au signalement sur GitHub. Avec le paquet Windows,
             <strong>Sorunu bildir (GitHub)</strong> (Signaler un problème
@@ -1661,46 +1665,47 @@
         <h2 id="questions-frequentes">Questions fréquentes</h2>
         <p>
           <strong
-            >Pourquoi la ligne « Connexion Google » est-elle jaune ?</strong
+            >Pourquoi la ligne « Connexion Google » est-elle jaune ?</strong
           >
-          La clé d'accès Google n'a pas encore été saisie : la ligne reste jaune
-          tant que Google n'est pas connecté. Suivez le guide de la connexion à
-          Google.
+          Aucun identifiant Google n’est encore enregistré ; la ligne reste en
+          « Attention » jusqu’à la connexion. Suivez le guide
+          <a href="/fr/guides/connexion-google/">Connexion à Google</a>.
         </p>
         <p>
           <strong
-            >La ligne « Connexion et accès » indique « utilisateur unique sans
-            mot de passe ».</strong
+            >La ligne « Connexion et accès » indique « utilisateur unique sans
+            mot de passe ».</strong
           >
-          C'est normal. L'application ne s'ouvre que depuis votre propre
-          ordinateur. Pour l'ouvrir depuis l'extérieur, vous devez placer devant
+          C’est normal. L’application ne s’ouvre que depuis votre propre
+          ordinateur. Pour y accéder depuis un autre appareil, placez devant
           elle votre propre accès protégé par mot de passe.
         </p>
         <p>
-          <strong>Que contient le paquet de diagnostic ?</strong> La version,
-          les contrôles d'installation, le nombre de lignes des tables et les
+          <strong>Que contient le paquet de diagnostic ?</strong> La version,
+          les contrôles d’installation, le nombre de lignes des tables et les
           étapes et erreurs des 25 derniers audits. Les erreurs PageSpeed sont
-          résumées sans URL de page. Les secrets et mots de passe sont exclus ;
+          résumées sans URL de page. Les secrets et mots de passe sont exclus ;
           les noms de projets, domaines et identifiants de propriétés Google
           peuvent apparaître. Vérifiez les fichiers avant de les envoyer.
         </p>
         <h2 id="limites">Limites</h2>
         <p>
-          Cet écran ne contrôle que l'installation elle-même. Pour trouver un
-          problème sur votre site, regardez l'écran Audit du site ; pour voir un
-          problème du côté de Google, regardez l'écran État de l'indexation.
+          Cet écran ne contrôle que l’installation elle-même. Pour trouver un
+          problème sur votre site, regardez l’écran Audit du site ; pour voir un
+          problème du côté de Google, regardez l’écran État de l’indexation.
         </p>
-        <h2 id="quel-ecran-utiliser">Quel écran utiliser ?</h2>
+        <h2 id="quel-ecran-utiliser">Quel écran utiliser ?</h2>
         <p>
           Le <a href="/fr/guides/tableau-de-bord/">Tableau de bord</a> résume la
           configuration et les données du projet sélectionné. Les
           <a href="/fr/guides/opportunites/">Opportunités</a> aident à choisir
           des actions à partir des données Search Console. Le
-          <a href="/fr/guides/suivi-du-classement/">Suivi du classement</a> suit
-          la position moyenne des mots-clés enregistrés dans les données Google,
-          pas les résultats de recherche en direct. Si des données manquent,
-          vérifiez les connexions du projet, la période et les avertissements de
-          couverture. L’état de l’installation ne valide pas ces rapports.
+          <a href="/fr/guides/suivi-du-classement/">Suivi des classements</a>
+          suit la position moyenne de vos requêtes dans l’archive Search
+          Console, pas les résultats de recherche en direct. Si des données
+          manquent, vérifiez les connexions du projet, la période et les
+          avertissements de couverture. L’état de l’installation ne valide pas
+          ces rapports.
         </p>
         <p>
           Sur les sites qui reçoivent peu de trafic de recherche, Google masque
@@ -1712,11 +1717,11 @@
           <a class="pager-prev" rel="prev" href="/fr/guides/parametres/"
             ><span>Précédent</span><strong>Paramètres</strong></a
           ><a class="pager-next" rel="next" href="/fr/guides/regles-d-audit/"
-            ><span>Suivant</span><strong>Règles d'audit</strong></a
+            ><span>Suivant</span><strong>Règles d’audit</strong></a
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1728,18 +1733,18 @@
       <nav class="toc" aria-label="Sur cette page">
         <p class="toc-label">Sur cette page</p>
         <ol>
-          <li><a href="#ce-que-l-ecran-affiche">Ce que l'écran affiche</a></li>
-          <li><a href="#comment-l-utiliser">Comment l'utiliser</a></li>
+          <li><a href="#ce-que-l-ecran-affiche">Ce que l’écran affiche</a></li>
+          <li><a href="#comment-l-utiliser">Comment l’utiliser</a></li>
           <li><a href="#questions-frequentes">Questions fréquentes</a></li>
           <li><a href="#limites">Limites</a></li>
-          <li><a href="#quel-ecran-utiliser">Quel écran utiliser ?</a></li>
+          <li><a href="#quel-ecran-utiliser">Quel écran utiliser ?</a></li>
         </ol>
       </nav>
     </main>
     <footer>
       <div class="wrap">
         <p class="star">
-          Une étoile aide d'autres personnes à trouver un outil gratuit.
+          Une étoile aide d’autres personnes à trouver un outil gratuit.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

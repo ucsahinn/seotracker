@@ -2,9 +2,9 @@
 
 Yenilikler ve düzeltmeler, en yeni sürümden başlayarak listelenir.
 
-## [0.8.6] Alpha — 2026-10-29
+## [0.8.7] Alpha — 2026-10-29
 
-Bu giriş 0.5.0'dan 0.8.6'ya kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
+Bu giriş 0.5.0'dan 0.8.7'ye kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
 
 ### ✨ Öne çıkanlar
 
@@ -52,6 +52,7 @@ Bu giriş 0.5.0'dan 0.8.6'ya kadar gelen yenilikleri ve düzeltmeleri toplar: si
 - **Kılavuz:** Kullanım kılavuzu, denetim kuralları ve sürüm notları altı dilde okunur.
 - **Gizlilik:** seowatcher.io'da ölçüm yalnızca siz kabul ederseniz çalışır.
 - **Gözden geçirilen çeviriler:** Ekran metinleri ve kılavuzlar altı dilde yeni ekranlara uyarlandı.
+- **Çeviri düzeltmeleri:** Fransızca, Almanca, İtalyanca ve Portekizce ekranlarda yanlış çevrilmiş sütun ve kategori adları düzeltildi; Analytics rolü Google'daki adıyla "Görüntüleyici" olarak geçer.
 
 ### 🎨 Görünüm ve yardım
 

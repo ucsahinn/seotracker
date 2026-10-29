@@ -1,16 +1,16 @@
 ---
 title: Versionshinweise
-description: seowatcher 0.8.6 Alpha (29. Oktober 2026): neues Website-Audit mit 202 Regeln, sechs Sprachen, Benachrichtigungen und genauere Google-Daten.
+description: seowatcher 0.8.7 Alpha (29. Oktober 2026): neues Website-Audit mit 202 Regeln, sechs Sprachen, Benachrichtigungen und genauere Google-Daten.
 updated: 2026-10-29
 ---
 
-Die neueste Version ist **0.8.6 Alpha** vom 29. Oktober 2026. Ihre Daten bleiben beim Aktualisieren erhalten.
+Die neueste Version ist **0.8.7 Alpha** vom 29. Oktober 2026. Ihre Daten bleiben beim Aktualisieren erhalten.
 
-Für den ersten Wechsel von 2.x zu 0.x.x Alpha das neue Installationsprogramm manuell starten; der alte Updater erkennt die kleinere Nummer nicht als neuer.
+Beim ersten Wechsel von 2.x auf 0.x.x Alpha starten Sie das neue Installationsprogramm von Hand: Der alte Updater erkennt die kleinere Versionsnummer nicht als neuere Version.
 
-## 0.8.6 Alpha — 2026-10-29
+## 0.8.7 Alpha — 2026-10-29
 
-Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.6: Website-Audit, Übersicht, Benachrichtigungen und sechs Sprachen sowie genauere Daten und besser lesbare Bildschirme.
+Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.7: Website-Audit, Übersicht, Benachrichtigungen und sechs Sprachen sowie genauere Daten und besser lesbare Bildschirme.
 
 ### ✨ Höhepunkte
 
@@ -25,14 +25,14 @@ Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.6: Website-
 - **Sicherheitsprüfungen:** Die Sicherheitseinstellungen Ihrer Website sowie das Ablaufdatum von SSL-Zertifikat und Domain werden geprüft.
 - **E-Mail-Einträge:** Geprüft werden die Einträge, die verhindern, dass andere E-Mails in Ihrem Namen versenden.
 - **KI-Bots:** Sie sehen, ob Ihre Website für KI-Bots wie ChatGPT und Claude offen ist.
-- **Tempo-Ergebnisse:** Ist die Geschwindigkeitsmessung aktiv, werden die Bremsen Ihrer Website mit geschätztem Gewinn aufgelistet.
+- **Geschwindigkeit:** Ist die Geschwindigkeitsmessung aktiv, listet das Audit die größten Bremsen Ihrer Website mit der geschätzten Zeitersparnis auf.
 - **Vorschauen:** Sie sehen vorab, wie eine Seite bei Google, in geteilten Beiträgen und auf dem Handy aussieht.
 - **Score-Verlauf:** Verfolgen Sie, was sich zwischen den Audits verbessert hat, und laden Sie den neuen Bericht herunter.
 
 ### 📊 Übersicht und Berichte
 
 - **Nächste Schritte:** Die Übersicht zeigt eine kurze Aufgabenliste und einen Bereitschafts-Score für Ihre Einrichtung. Dieser Score ist kein SEO-Ergebnis.
-- **Fertige Berichte:** Ihr KI-Assistent erstellt aus Audit-, Such- und Analytics-Daten einen Verbesserungsbericht.
+- **Fertige Berichte:** Ihr KI-Agent erstellt aus Audit-, Such- und Analytics-Daten einen Verbesserungsbericht.
 - **Audit-Fortschritt:** Während eines Audits sehen Sie die verstrichene Zeit und den Fortschritt, am Ende eine kurze Zusammenfassung.
 - **Berichtsarten:** Suchberichte und Website-Audits werden getrennt angezeigt; ältere Berichte ohne bekannte Art sind klar gekennzeichnet.
 - **Berichtszeitraum:** Suchberichte behalten die gewählten Daten bei und erklären fehlende sowie später noch veränderliche Messwerte.
@@ -58,6 +58,7 @@ Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.6: Website-
 - **Anleitung:** Anleitung, Audit-Regeln und Versionshinweise gibt es in sechs Sprachen.
 - **Datenschutz:** Auf seowatcher.io läuft die Messung nur, wenn Sie zustimmen.
 - **Überarbeitete Übersetzungen:** Bildschirmtexte und Anleitungen wurden in allen sechs Sprachen an die überarbeiteten Ansichten angepasst.
+- **Übersetzungen korrigiert:** Falsch übersetzte Spalten- und Kategorienamen in den französischen, deutschen, italienischen und portugiesischen Ansichten wurden korrigiert; die Analytics-Rolle heißt wie bei Google "Betrachter".
 
 ### 🎨 Darstellung und Hilfe
 
@@ -71,25 +72,25 @@ Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.6: Website-
 
 ### 🗂️ Projekte und gespeicherte Suchbegriffe
 
-- **Gespeicherte Suchbegriffe:** Positionen werden für Ihre gespeicherte Liste berechnet; Schreibvarianten überschreiben keine Messwerte, unbekannte Positionen sind klar markiert.
+- **Gespeicherte Keywords:** Positionen werden für Ihre gespeicherte Liste berechnet; Schreibvarianten überschreiben keine Messwerte, unbekannte Positionen sind klar markiert.
 - **Projektübersicht:** Fehlende Archivtage zählen nicht mehr als Besucherrückgang; die Audit-Zusammenfassung zeigt nur die Website Ihres Projekts.
-- **Projektinfo:** Bei widersprüchlichen Änderungen können Sie Ihren Entwurf behalten und mit dem aktuellen Text vergleichen.
+- **Projektkontext:** Bei widersprüchlichen Änderungen können Sie Ihren Entwurf behalten und mit dem aktuellen Text vergleichen.
 
 ### 🛠️ Fehlerbehebungen
 
 - **Genauere Audits:** Fehler auf echten Websites wurden behoben; Vergleiche nutzen die Seiten des jeweiligen Audits, und bei Startproblemen bleibt der Audit-Eintrag erhalten. Auch Fehlermeldungen im Audit-Verlauf passen auf den Bildschirm. Die Zahlen im Audit-Verlauf erklären, dass sie Ergebnisse einzelner Seiten und der gesamten Website umfassen.
-- **Menüs und Tastatur:** Ansichten, Berichte und Länderlisten passen aufs Handy; Menüs bleiben im Bildschirm, der Tastaturfokus im offenen Fenster, und Esc schließt nur die oberste Liste und behält Ihre Eingaben; Bildschirmleser melden die Auswahl, Analytics zeigt Kanalnamen in Ihrer Sprache. Auf dem Handy sind Aktualisierungszeit, Berichtstyp und die Beschriftungen jeder Zeile der Positionsverfolgung sichtbar.
-- **Korrekturen im Alltag:** Das Diagnosepaket in der Hilfe beschreibt das Problem besser und enthält Ihre Seitenadressen nicht. 25 mit echten Daten gefundene Probleme wurden behoben: Übersicht, Suchleistung, Positionen, gespeicherte Suchbegriffe, Analytics, Berichte, Website-Audit, Einstellungen, Verbindungen, Hilfe und englische Mehrzahlformen wurden korrigiert. Alle Ansichten wurden zweimal zusätzlich mit echten Daten geprüft, auch die unteren Seitenbereiche. Die Audit-Zahlen in der Übersicht erklären, was sie zählen, und Problemnamen werden vollständig angezeigt. Eine leere Liste gespeicherter Suchbegriffe ist sofort als leer erkennbar. Die Positionsverfolgung spricht von durchschnittlichen Positionen; Hilfe und Seitenwechsel verwenden die passenden Menünamen. Das Sitzungsdiagramm in der Übersicht ist richtig beschriftet; Positionen werden als Durchschnitt des gewählten Zeitraums beschrieben. Einzahl und Mehrzahl wurden auf Englisch, Deutsch, Französisch, Italienisch und Portugiesisch korrigiert. Ihr KI-Assistent findet wieder Seiten, die bei derselben Suche miteinander konkurrieren.
+- **Menüs und Tastatur:** Ansichten, Berichte und Länderlisten passen aufs Handy; Menüs bleiben im Bildschirm, der Tastaturfokus im offenen Fenster, und Esc schließt nur die oberste Liste und behält Ihre Eingaben; Screenreader melden die Auswahl, Analytics zeigt Kanalnamen in Ihrer Sprache. Auf dem Handy sind Aktualisierungszeit, Berichtstyp und die Beschriftungen jeder Zeile der Ranking-Verfolgung sichtbar.
+- **Korrekturen im Alltag:** Das Diagnosepaket in der Hilfe beschreibt das Problem besser und enthält Ihre Seitenadressen nicht. 25 mit echten Daten gefundene Probleme wurden behoben: Übersicht, Suchleistung, Ranking-Verfolgung, gespeicherte Keywords, Analytics, Berichte, Website-Audit, Einstellungen, Verbindungen, Hilfe und englische Mehrzahlformen wurden korrigiert. Alle Ansichten wurden zweimal zusätzlich mit echten Daten geprüft, auch die unteren Seitenbereiche. Die Audit-Zahlen in der Übersicht erklären, was sie zählen, und Problemnamen werden vollständig angezeigt. Eine leere Liste gespeicherter Keywords ist sofort als leer erkennbar. Die Ranking-Verfolgung spricht von durchschnittlichen Positionen; Hilfe und Seitenwechsel verwenden die passenden Menünamen. Das Sitzungsdiagramm in der Übersicht ist richtig beschriftet; Positionen werden als Durchschnitt des gewählten Zeitraums beschrieben. Einzahl und Mehrzahl wurden auf Englisch, Deutsch, Französisch, Italienisch und Portugiesisch korrigiert. Ihr KI-Agent findet wieder Seiten, die bei derselben Suche miteinander konkurrieren.
 - **Genauere Zahlen:** Fehlende Messwerte zählen nicht als null, begrenzte Analytics-Daten gelten nicht als sicheres Ergebnis; Positionen nutzen dieselben Zeiträume, vorrangige Aufgaben und Schätzgrenzen werden erklärt, und Filter ändern den geschätzten monatlichen Zugewinn nicht. Chancen erklärt die von Google verborgenen Suchanfragen und empfiehlt keine Erweiterung auf 90 Tage mehr, wenn bereits 90 Tage gewählt sind. Auch bei wenigen Besuchern werden fehlende Daten von einer echten Null unterschieden. Analytics erklärt unbekannte Messwerte nur einmal; leere Tabellen blenden die Schaltflächen für die vorherige und nächste Seite aus. Chancen zeigt auch bei wenigen Besuchern Seiten mit ihren echten Messwerten. Beruht ein Vorschlag auf der durchschnittlichen Position und lässt sich kein Zugewinn berechnen, wird dieser als unbekannt angezeigt.
 - **Verbindungsstatus:** Property-Auswahl und bestätigter Zugriff sind getrennt, nach einem Kontowechsel gelten alte Ergebnisse nicht als aktuell; antwortet Google nicht, endet das Warten, vorübergehende Fehler empfehlen einen neuen Versuch und deaktivierte Dienste erklären, was Sie einschalten müssen.
 - **Gespeicherte Daten:** Etiketten werden vollständig zugewiesen oder entfernt, verwendete Etiketten lassen sich nicht löschen, ältere Daten bleiben der richtigen Property zugeordnet und wartende Aufgaben werden richtig sortiert.
-- **Windows-Start:** Arbeitsdateien liegen im Benutzerordner; reparierte Assistentenverbindungen bleiben nach einem Neustart erhalten, und die Startprüfung hängt nicht mehr fest. Ein nicht nutzbarer Link zu den Windows-Einstellungen wird ausgeblendet. Während Ihrer Abwesenheit eingegangene Benachrichtigungen erscheinen jetzt, wenn Sie zur App zurückkehren.
+- **Windows-Start:** Arbeitsdateien liegen im Benutzerordner; reparierte Agentenverbindungen bleiben nach einem Neustart erhalten, und die Startprüfung hängt nicht mehr fest. Ein nicht nutzbarer Link zu den Windows-Einstellungen wird ausgeblendet. Während Ihrer Abwesenheit eingegangene Benachrichtigungen erscheinen jetzt, wenn Sie zur App zurückkehren.
 
 ### 🔒 Sicherheit
 
 - **Aktuelle Komponenten:** Sicherheitslücken in den von der App verwendeten Komponenten wurden geschlossen.
 - **Geheime Schlüssel:** Speichern Sie Ihre Google-Verbindungsdatei, ohne ihren Inhalt auf dem Bildschirm anzuzeigen.
-- **Assistent einrichten:** Die Anleitung verlangt nicht, Ihren Zugriffsschlüssel auf dem Bildschirm auszugeben oder in einen Chat einzufügen.
+- **Agent einrichten:** Die Anleitung verlangt nicht mehr, Ihr Token auf dem Bildschirm auszugeben oder in einen Chat einzufügen.
 
 ## 0.4.3 Alpha — 2026-10-23
 
@@ -111,7 +112,7 @@ Windows bekam die Installation mit einem Klick, und die Website seowatcher.io sa
 
 ### 🧭 Ersteinrichtung
 
-- **Bei null beginnen:** In der Assistenten-Einrichtung steht „Von Grund auf einrichten“ ganz oben; ein Kopier-Button genügt.
+- **Bei null beginnen:** In der Agent-Einrichtung steht „Von Grund auf einrichten“ ganz oben; ein Klick auf die Kopierschaltfläche genügt.
 - **Google-Verbindung:** In den Einstellungen in drei kurzen Schritten erklärt.
 - **Klare Rückmeldung:** Speichern, Löschen und Verbinden sagen Ihnen, was passiert ist; vor dem Löschen wird gefragt.
 
@@ -145,13 +146,13 @@ Die erste Version von seowatcher: Sie bündelt Ihre Google-Daten, das Website-Au
 
 ### 📈 Suchleistung
 
-- **Such-Beobachtung:** Verfolgen Sie Ihre Leistung bei Google und die Platzierungen Ihrer gespeicherten Suchbegriffe.
+- **Such-Beobachtung:** Verfolgen Sie Ihre Leistung bei Google und die Positionen Ihrer gespeicherten Keywords.
 - **Chancen:** Verbesserungen, die Ihre Platzierungen heben können, werden aufgelistet.
 - **Klare Grenzen:** Ihr tägliches Google-Kontingent und die verbleibenden Geschwindigkeitsmessungen stehen auf dem Bildschirm.
 
 ### 🤖 KI-Assistent
 
-- **Einfache Einrichtung:** Fügen Sie die Einrichtungsvorgabe in Ihren KI-Assistenten ein; den Rest prüft er.
+- **Einfache Einrichtung:** Fügen Sie den Einrichtungsbefehl in Ihren KI-Agenten ein; den Rest prüft er selbst.
 - **Keine Geheimnisse nötig:** Er verlangt nie, dass Sie Passwörter in den Chat einfügen.
 - **Codex-Unterstützung:** Für Codex gibt es eine eigene Anleitung mit einem einzigen Befehl.
 

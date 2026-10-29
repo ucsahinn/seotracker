@@ -102,7 +102,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta property="article:modified_time" content="2026-10-29" />
     <meta
@@ -130,7 +130,7 @@
     />
     <meta
       name="twitter:image:alt"
-      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
+      content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
@@ -204,7 +204,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1475,7 +1475,7 @@
           <ul>
             <li>
               <a href="/fr/guides/quest-ce-que-seowatcher/"
-                >Qu'est-ce que seowatcher ?</a
+                >Qu’est-ce que seowatcher ?</a
               >
             </li>
             <li>
@@ -1514,23 +1514,27 @@
               >
             </li>
             <li>
-              <a href="/fr/guides/statistiques/">Comprendre les statistiques</a>
+              <a href="/fr/guides/statistiques/"
+                >Comprendre les données Analytics</a
+              >
             </li>
             <li><a href="/fr/guides/audit-du-site/">Audit du site</a></li>
             <li>
-              <a href="/fr/guides/etat-de-l-index/">État de l'indexation</a>
+              <a href="/fr/guides/etat-de-l-index/">État de l’indexation</a>
             </li>
             <li><a href="/fr/guides/rapports/">Rapports et modèles</a></li>
-            <li><a href="/fr/guides/infos-du-projet/">Infos du projet</a></li>
+            <li>
+              <a href="/fr/guides/infos-du-projet/">Contexte du projet</a>
+            </li>
             <li><a href="/fr/guides/parametres/">Paramètres</a></li>
           </ul>
           <p class="nav-group">Aide et référence</p>
           <ul>
             <li><a href="/fr/guides/aide/">Aide</a></li>
-            <li><a href="/fr/guides/regles-d-audit/">Règles d'audit</a></li>
+            <li><a href="/fr/guides/regles-d-audit/">Règles d’audit</a></li>
             <li>
               <a href="/fr/guides/installation-assistant/"
-                >Installation de l'assistant</a
+                >Configuration de l’agent</a
               >
             </li>
             <li><a href="/fr/guides/depannage/">Dépannage</a></li>
@@ -1546,54 +1550,166 @@
           projet.
         </p>
         <p>
-          seowatcher lit la Search Console et Google Analytics 4 avec vos
-          propres identifiants Google Cloud : un compte de service ou un client
-          OAuth. Vous enregistrez l'identifiant une fois pour toute
-          l'installation, puis vous choisissez une propriété Search Console et
-          une propriété GA4 pour chaque projet.
+          La connexion se fait en deux temps. Vous enregistrez d’abord un
+          identifiant Google, une seule fois pour toute l’installation. Vous
+          choisissez ensuite, dans chaque projet, une propriété Search Console
+          et une propriété Google Analytics 4. L’identifiant peut être un compte
+          de service (la voie la plus courte) ou un client OAuth Google.
         </p>
-        <h2 id="identifiants-et-proprietes">Identifiants et propriétés</h2>
+        <h2 id="identifiant-et-propriete">Identifiant et propriété</h2>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Choix</th>
+                <th>Portée</th>
+                <th>Où</th>
+                <th>Badge</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Identifiant</td>
+                <td>Tous les projets</td>
+                <td><strong>Paramètres → Google</strong></td>
+                <td><strong>Enregistré</strong></td>
+              </tr>
+              <tr>
+                <td>Propriété</td>
+                <td>Un projet</td>
+                <td><strong>Paramètres du projet → Connexions</strong></td>
+                <td><strong>Propriété sélectionnée</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <p>
-          Les identifiants Google des Paramètres concernent l'installation. La
-          propriété dans Paramètres du projet → Connexions concerne un projet.
-          Enregistré et Propriété sélectionnée confirment seulement la
-          configuration. Vérifiez les données dans Performances de recherche ou
-          Analytics. Analytics affiche le fuseau et la devise de la propriété.
-          La sélection n'installe pas de suivi sur le site.
+          Ces badges confirment seulement l’enregistrement, pas que Google
+          fournit des données. Vous savez que l’accès fonctionne quand des
+          données apparaissent dans
+          <strong>Performances de recherche</strong> ou
+          <strong>Analytics</strong>. Choisir une propriété n’installe aucun
+          code de suivi sur votre site.
         </p>
-        <h2 id="compte-de-service-ou-oauth">Compte de service ou OAuth</h2>
+        <h2 id="voie-1-compte-de-service">Voie 1 : compte de service</h2>
+        <ol>
+          <li>
+            Dans Google Cloud, créez un projet et activez Search Console API,
+            Google Analytics Admin API et Google Analytics Data API.
+          </li>
+          <li>
+            Créez un compte de service et téléchargez son fichier de clé JSON.
+          </li>
+          <li>
+            Dans seowatcher, section
+            <strong>Paramètres → Compte de service</strong>, sélectionnez le
+            fichier ou utilisez
+            <strong>Coller le contenu JSON en le masquant</strong>, puis cliquez
+            sur <strong>Enregistrer</strong>. La clé privée n’est jamais
+            affichée.
+          </li>
+          <li>
+            Copiez l’adresse e-mail du compte de service affichée à l’écran.
+          </li>
+          <li>
+            Dans Search Console, ouvrez
+            <strong
+              >Paramètres → Utilisateurs et autorisations → Ajouter un
+              utilisateur</strong
+            >
+            et ajoutez cette adresse avec l’autorisation
+            <strong>Complète</strong>.
+          </li>
+          <li>
+            Dans Google Analytics, sous
+            <strong>Administration → Gestion des accès</strong>, ajoutez la même
+            adresse avec le rôle Lecteur.
+          </li>
+          <li>
+            Dans seowatcher, ouvrez le projet, puis
+            <strong>Paramètres du projet → Connexions</strong>. Utilisez
+            <strong>Choisir une propriété</strong> et cliquez sur
+            <strong>Enregistrer la propriété</strong>.
+          </li>
+        </ol>
+        <h2 id="voie-2-client-oauth-google">Voie 2 : client OAuth Google</h2>
+        <ol>
+          <li>
+            Dans Google Cloud, activez les mêmes API et créez un client OAuth de
+            type « Web application ».
+          </li>
+          <li>
+            Ajoutez au client, à l’identique, les deux adresses de redirection
+            affichées dans <strong>Paramètres</strong> (l’une pour Search
+            Console, l’autre pour Analytics).
+          </li>
+          <li>
+            Saisissez l’identifiant client et le code secret dans
+            <strong>Paramètres</strong>, puis enregistrez.
+          </li>
+          <li>
+            Dans <strong>Paramètres du projet → Connexions</strong>, autorisez
+            l’accès avec <strong>Ajouter un compte Google</strong>, puis
+            choisissez la propriété et enregistrez-la.
+          </li>
+        </ol>
         <p>
-          Activez Search Console API et, pour Analytics, Admin API et Data API
-          dans Google Cloud. Créez un compte de service et téléchargez sa clé
-          JSON. Dans Paramètres → Compte de service, sélectionnez le fichier ou
-          utilisez le collage masqué, puis enregistrez. La clé privée reste
-          invisible. Ajoutez l'adresse affichée avec accès Complet dans Search
-          Console et Lecteur dans Analytics. Choisissez ensuite la propriété du
-          projet.
+          Si un compte de service est aussi enregistré, l’application l’utilise
+          en priorité ; la carte OAuth indique alors « Non utilisé, un compte de
+          service est connecté ».
+        </p>
+        <h2 id="lire-la-carte-de-connexion">Lire la carte de connexion</h2>
+        <p>
+          La carte de connexion date la dernière lecture Google pour
+          l’identifiant et la propriété sélectionnés : « Dernière lecture Google
+          réussie » ou « Dernière lecture Google échouée ». Après une erreur
+          passagère, la date de la dernière lecture réussie est conservée. Sans
+          aucune lecture, la carte indique « L’accès aux données n’a pas encore
+          été vérifié. » Le fuseau horaire et la devise de la propriété
+          Analytics y figurent aussi.
         </p>
         <p>
-          Pour OAuth, créez un client Web application. Enregistrez exactement
-          les deux URL de retour affichées, puis l'identifiant et le secret.
-          Autorisez le compte depuis les connexions du projet et choisissez la
-          propriété. Un compte de service enregistré est prioritaire.
+          Ouvrir les paramètres n’envoie aucune requête à Google. Quand vous
+          changez d’identifiant, l’historique des lectures et des quotas n’est
+          pas transféré au nouveau ; actualisez vous-même les rapports.
         </p>
-        <h2 id="depannage">Dépannage</h2>
+        <h2 id="en-cas-de-probleme">En cas de problème</h2>
+        <ul>
+          <li>
+            <strong>Liste des propriétés vide :</strong> cela ne prouve pas à
+            lui seul un manque de droits. En cas d’erreur de lecture, la
+            dernière liste est conservée ; relisez-la avec
+            <strong>Réessayer</strong>.
+          </li>
+          <li>
+            <strong>Connexion expirée :</strong> renouvelez l’autorisation avec
+            <strong>Reconnecter</strong>.
+          </li>
+          <li>
+            <strong>Accès refusé :</strong> vérifiez que le compte de service ou
+            le compte Google a des droits sur la propriété.
+          </li>
+          <li>
+            <strong>API désactivée :</strong> activez l’API concernée dans le
+            projet Google Cloud.
+          </li>
+          <li>
+            <strong>Limite de requêtes :</strong> patientez, puis réessayez.
+          </li>
+          <li>
+            <strong>Erreur inconnue :</strong> cliquez sur
+            <strong>Réessayer</strong>, puis utilisez le diagnostic de l’écran
+            <strong>Aide</strong>.
+          </li>
+        </ul>
         <p>
-          Une erreur conserve l'ancienne liste; une liste vide seule ne prouve
-          pas l'absence de droits. Reconnectez une autorisation expirée,
-          vérifiez les droits pour un refus et le projet Cloud pour une API
-          inactive. Attendez en cas de limite. Sinon, réessayez et consultez le
-          diagnostic Aide. Supprimer un identifiant ici ne le révoque pas chez
-          Google. Modifier le domaine conserve l'association et l'historique.
+          Supprimer un identifiant dans seowatcher ne révoque pas la clé chez
+          Google ; faites-le dans Google Cloud. Modifier le domaine du projet ne
+          change ni la propriété sélectionnée ni l’historique.
         </p>
         <p>
-          La fiche de connexion date la dernière lecture Google déjà observée
-          pour les identifiants et la propriété actuels. Après un échec
-          temporaire, elle conserve la date de la précédente lecture réussie.
-          Sans historique, l’accès reste non vérifié. Ouvrir les paramètres ne
-          lance aucune requête Google. Un changement d’identifiants ne transfère
-          pas les anciennes preuves d’accès ou de quota à la nouvelle identité ;
-          actualisez explicitement les rapports.
+          La liste complète des symptômes et des solutions figure dans le guide
+          <a href="/fr/guides/depannage/">Dépannage</a>.
         </p>
         <nav class="pager" aria-label="Page précédente et suivante">
           <a
@@ -1606,7 +1722,7 @@
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1619,19 +1735,27 @@
         <p class="toc-label">Sur cette page</p>
         <ol>
           <li>
-            <a href="#identifiants-et-proprietes">Identifiants et propriétés</a>
+            <a href="#identifiant-et-propriete">Identifiant et propriété</a>
           </li>
           <li>
-            <a href="#compte-de-service-ou-oauth">Compte de service ou OAuth</a>
+            <a href="#voie-1-compte-de-service">Voie 1 : compte de service</a>
           </li>
-          <li><a href="#depannage">Dépannage</a></li>
+          <li>
+            <a href="#voie-2-client-oauth-google"
+              >Voie 2 : client OAuth Google</a
+            >
+          </li>
+          <li>
+            <a href="#lire-la-carte-de-connexion">Lire la carte de connexion</a>
+          </li>
+          <li><a href="#en-cas-de-probleme">En cas de problème</a></li>
         </ol>
       </nav>
     </main>
     <footer>
       <div class="wrap">
         <p class="star">
-          Une étoile aide d'autres personnes à trouver un outil gratuit.
+          Une étoile aide d’autres personnes à trouver un outil gratuit.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

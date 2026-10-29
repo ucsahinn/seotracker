@@ -1,51 +1,71 @@
 ---
 title: Report e modelli
-description: Salvare i report di controllo, ricerca e assistente in singoli file HTML. Aprirli sul telefono, stamparli o condividerli tramite e-mail.
+description: Salvare report di ricerca, controllo e agente come file HTML singoli, ritrovarli, stamparli in PDF e condividerli; modelli e limiti.
 screen: Raporlar
 route: /p/<proje>/reports
 updated: 2026-10-27
 ---
 
-I rapporti sono documenti HTML salvati per il progetto. Aprirli non aggiorna i dati Google. La data di salvataggio non è la data delle misurazioni.
+Un report è un documento HTML salvato nel progetto. Aprirlo non aggiorna i dati Google, e la data di salvataggio non coincide con la data delle misurazioni.
 
-## Creare e trovare
+## Creare un report
 
-**Prepara rapporto di ricerca** apre Rendimento di ricerca. Scegli periodo, dispositivo, paese e tipo di ricerca, poi scarica il rapporto. **Prepara rapporto di audit** apre l'audit per scegliere la scansione. Copia il comando per chiedere un rapporto all'assistente. I modelli sono istruzioni, non generatori automatici o pianificazioni. Il documento viene salvato prima del download e rimane leggibile quando la fonte è scollegata.
+- **Prepara report di ricerca** apre **Rendimento della ricerca**: scelga periodo, dispositivo, paese e tipo di ricerca, poi scarichi il report.
+- **Prepara report di audit** apre **Controllo del sito**, dove si sceglie la scansione da cui partire.
+- **Copia prompt del report** copia il comando da incollare nell'agente, che scrive il report e lo salva qui.
 
-In alto compare l'ultimo rapporto aggiornato con riepilogo salvato e azioni di apertura e download. Un riepilogo assente o un periodo non registrato in forma strutturata è indicato. Controlla date e limiti nel documento. Titolo e HTML non vengono analizzati per inventare la provenienza.
+Il documento viene salvato prima del download e resta leggibile anche se la fonte viene scollegata. I modelli sono istruzioni per l'agente: non generano report da soli e non li pianificano.
 
-La ricerca esamina titolo e riepilogo. I conteggi per tipo seguono ricerca e ultimi sette giorni prima del filtro di tipo. Sette giorni significa file distinti salvati o aggiornati, non operazioni di modifica né dati Google recenti. Risultati e totale del progetto sono separati.
+## Trovare un report
 
-Il server restituisce 25 righe di metadati per pagina. Anche i rapporti oltre il centesimo rimangono raggiungibili e ricercabili. L'ordine predefinito è l'ultimo aggiornamento: modificare un vecchio file lo porta in alto. Sono disponibili data di creazione e titolo. Ricerca, tipo, filtro recente, ordine e pagina restano nell'URL per Indietro e ricaricamento.
+In alto compare l'**Ultimo report aggiornato**, con il riepilogo salvato e i pulsanti per aprirlo e scaricarlo. Se mancano il riepilogo o il periodo in forma strutturata, la schermata lo indica: in quel caso controlli date e limiti nel documento. L'app non analizza titolo o HTML per ricostruirne la provenienza. Il report in alto non è un riepilogo aggiornato del sito.
 
-I vecchi rapporti Ricerca e Audit condividono il marcatore del creatore. Sono indicati come **Rapporto dell'applicazione, tipo non registrato**, senza contarli tutti come audit. Competenze dell'assistente e nomi dei modelli salvati restano visibili. Più file non significa progresso SEO. La dimensione indica byte HTML memorizzati; i metadati di sicurezza possono aumentare il file scaricato.
+**Cerca nei report** esamina titolo e riepilogo. I conteggi per tipo tengono conto della ricerca e del filtro degli ultimi sette giorni, ma non del filtro per tipo. "Ultimi sette giorni" indica i file salvati o aggiornati in quel periodo, non le singole modifiche né dati Google recenti. Il numero dei risultati e il totale del progetto sono indicati separatamente.
 
-## Leggere e recuperare
+Il server restituisce 25 report per pagina, e tutti restano raggiungibili e ricercabili, anche oltre il centesimo. L'ordine predefinito è l'ultimo aggiornamento: modificare un vecchio file lo riporta in cima. Si può ordinare anche per data di creazione e per titolo. Ricerca, tipo, filtro recente, ordinamento e pagina restano nell'URL, quindi Indietro e il ricaricamento li conservano.
 
-L'anteprima usa un riquadro isolato senza script o rete. Espandi le informazioni su fonte e salvataggio. Il rapporto conserva la lingua originale; per un'altra lingua o nuovi dati ricrealo consapevolmente dalla schermata della fonte.
+## Tipi di report
 
-L'HTML si legge offline e si invia come file. Il PDF usa la stampa del browser. Se la scheda è bloccata, consenti i popup oppure apri in una nuova scheda e stampa. Lo schermo intero isola il focus della tastiera e mantiene uscite sopra e sotto il documento. Il collegamento appartiene a questa installazione; condividi il file.
+I nuovi report su rendimento della ricerca e controllo del sito hanno ciascuno un tipo salvato. I report più vecchi creati dall'app compaiono come **Report dell'app, tipo non salvato**: il loro tipo non viene dedotto dal titolo e non vengono contati come controlli. Le skill dell'agente e i nomi dei modelli salvati restano visibili. Un numero maggiore di file non indica un progresso SEO. La dimensione mostrata è quella dell'HTML salvato; il file scaricato può essere più grande per i metadati di sicurezza.
 
-Dopo 15 secondi senza anteprima appaiono Riprova e Apri in nuova scheda. Documento assente, accesso, connessione ed errore del server di download hanno indicazioni operative. Se l'aggiornamento fallisce restano i dati precedenti con avviso. Un controllo di archiviazione non disponibile non dimostra spazio libero.
+Un report di ricerca si identifica per proprietà, date e filtri; un report di audit per l'ID del controllo. Rigenerare la stessa fonte in un'altra lingua aggiorna lo stesso record e può cambiarne la lingua. Un titolo già usato da un report dell'agente viene rifiutato; se un vecchio documento ha lo stesso titolo, resta com'è e il nuovo salvataggio viene rifiutato. I titoli lunghi rispettano il limite di lunghezza e il server li distingue in base a fonte e filtri.
 
-## Limiti dei dati
+I report dell'app si rigenerano dalla loro schermata di origine; gli agenti non possono sostituirne il contenuto con `save_report`.
 
-Il rapporto di ricerca indica periodo effettivo, confronto, filtri e generazione. I giorni seguono l'ora del Pacifico. Se Google non fornisce un confine di completamento, è dichiarata l'esclusione basata su un ritardo presunto. Con un limite di righe, la quota non elencata comprende query nascoste e righe non lette. I limiti query, pagina e query×pagina influenzano le opportunità, non i totali canonici del sito.
+## Leggere, stampare e condividere
 
-Le sovrapposizioni riportano periodo e soglie anche senza risultati. Un rapporto di sette giorni può usare 28 giorni per questa analisi. Più pagine non dimostrano clic persi o danni SEO. Dati storici o di aspetto non disponibili non diventano zero. Le liste limitate indicano righe mostrate e osservate. Il budget di richieste riguarda la vista Ricerca, escludendo analisi aggiuntiva e cache.
+L'anteprima si apre in un riquadro isolato, senza script né accesso alla rete. Le informazioni su fonte e salvataggio si espandono sotto il documento. Il report mantiene la lingua in cui è stato creato; per un'altra lingua o per dati nuovi lo ricrei dalla schermata di origine.
 
-La generazione rilegge i dati del server. Google può correggere il passato e il periodo può essere risolto di nuovo; non è garantita l'uguaglianza esatta con una schermata precedente. Lo stesso titolo localizzato può essere sostituito; una lingua diversa può produrre un altro documento. I titoli lunghi rispettano il limite e includono una protezione server contro collisioni di fonte e filtri.
+- **Scarica come HTML** produce un file leggibile offline, da inviare come allegato.
+- Il PDF si ottiene con la stampa del browser. Se la scheda di stampa è bloccata, consenta i popup oppure scelga **Apri in una nuova scheda** e stampi da lì.
+- A schermo intero il focus della tastiera resta nel documento; i comandi per uscire sono sopra e sotto.
 
-## Modelli e archiviazione
+Il link al report funziona solo in questa installazione: per condividerlo, invii il file.
 
-Modelli: nome 80, descrizione 200, istruzioni 3.000 caratteri; dieci per progetto. Eliminare il modello conserva i rapporti. Cancella ricerca ripristina i modelli nascosti.
+## Se l'anteprima non si apre
 
-Limiti di protezione: 500.000 byte per rapporto, titolo 120 caratteri, riepilogo 2.500, 10.000 rapporti per progetto e 5 GB per installazione. Sono limiti di archiviazione, non misure SEO. Nel metodo del rapporto di audit controlla date di scansione, velocità e fonti Google facoltative.
+Dopo 15 secondi senza anteprima compaiono **Riprova** e **Apri in una nuova scheda**. Documento mancante, accesso negato, problema di connessione ed errore del server hanno ciascuno un'indicazione propria. Se l'aggiornamento dell'elenco non riesce, restano i dati precedenti con un avviso. Se il controllo dello spazio di archiviazione non è disponibile, questo non prova che ci sia spazio libero.
 
-## Tipi di fonte e rigenerazione
+## Limiti dei dati nel report
 
-I nuovi rapporti nativi sulle prestazioni di ricerca e sull’audit del sito hanno tipi salvati distinti. Il tipo dei vecchi rapporti non viene dedotto dal titolo. L’identità di ricerca usa proprietà, date definite e filtri; quella di audit usa l’ID dell’audit. Rigenerare la stessa fonte in un’altra lingua aggiorna lo stesso record e può cambiarne la lingua. I conflitti di titolo con rapporti degli agenti vengono rifiutati; un vecchio documento con lo stesso titolo viene conservato e il nuovo salvataggio viene rifiutato.
+Il report di ricerca riporta periodo effettivo, confronto, filtri e momento di creazione. I giorni seguono l'ora del Pacifico. Se Google non indica fino a quando i dati sono completi, il report dichiara il ritardo presunto. Se è stato raggiunto il limite di righe, la parte non elencata comprende sia le query nascoste sia le righe non lette. I limiti per query, pagina e coppia query-pagina influiscono sulle opportunità, non sui totali del sito.
 
-Rigenerate i rapporti nativi dalla schermata di origine; gli agenti non possono sostituirne il contenuto con `save_report`. I dati mancanti non valgono mai zero. La metodologia dell’audit indica il periodo del traffico GSC, il limite di righe e la misurazione CrUX mobile salvata disponibile.
+La sezione sulle sovrapposizioni indica periodo e soglie anche quando non trova nulla; un report di sette giorni può usare 28 giorni per questa analisi. Più pagine sulla stessa query non provano clic persi o danni SEO. Dati storici o di aspetto non disponibili non diventano zero. Gli elenchi troncati indicano quante righe sono mostrate e quante osservate. Il budget di richieste riguarda la vista di ricerca e non comprende analisi aggiuntive e cache.
 
-Il report salvato in alto non è un riepilogo aggiornato del sito. Il sito di origine viene mostrato se verificabile dalla scansione originale; se è diverso da quello del progetto, compare un avviso. Senza una fonte verificata, il report potrebbe riguardare un altro sito. I report precedenti sono indicati come privi di fonte e data verificate. **Apri i controlli del sito** apre la cronologia. Se esiste un controllo salvato adatto, aprilo e scarica il rapporto; il collegamento non avvia automaticamente un controllo né crea un rapporto. I vecchi file restano invariati.
+Creare un report rilegge i dati dal server. Google può correggere il passato e il periodo può essere ricalcolato, quindi il risultato può differire da una schermata vista in precedenza.
+
+Il report di audit indica nella metodologia il periodo del traffico GSC, il limite di righe e l'eventuale misurazione CrUX da mobile salvata. Mostra il sito di origine quando la scansione originale permette di verificarlo; se è diverso dal sito del progetto, compare un avviso. Senza una fonte verificata il report potrebbe riguardare un altro sito, e i report precedenti sono marcati **Report precedente · fonte e data non verificate**. **Apri i controlli del sito** apre la cronologia dei controlli: se esiste un controllo adatto, lo apra e scarichi il report. Il link non avvia un controllo e non crea report; i vecchi file restano invariati.
+
+## Modelli e limiti di archiviazione
+
+Ogni progetto può avere dieci modelli. Il nome arriva a 80 caratteri, la descrizione a 200, le istruzioni a 3.000. Eliminare un modello non elimina i report creati con esso. **Cancella ricerca** mostra di nuovo i modelli nascosti dalla ricerca.
+
+| Limite                   | Valore          |
+| ------------------------ | --------------- |
+| dimensione di un report  | 500.000 byte    |
+| titolo                   | 120 caratteri   |
+| riepilogo                | 2.500 caratteri |
+| report per progetto      | 10.000          |
+| spazio per installazione | 5 GB            |
+
+Sono limiti di archiviazione, non misure SEO.

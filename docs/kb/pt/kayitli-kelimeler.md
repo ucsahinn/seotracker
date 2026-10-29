@@ -1,35 +1,54 @@
 ---
 title: Palavras-chave salvas
-description: Confira palavras-chave salvas com datas e cobertura do arquivo. Entenda as observações do Search Console, dados ausentes e mudanças no período.
+description: Como acompanhar as palavras-chave salvas no arquivo local: períodos, observações, dados ausentes, variações de posição e exportação.
 screen: Kayıtlı kelimeler
 route: /p/<proje>/saved
 updated: 2026-10-27
 ---
 
-Salve consultas importantes em Desempenho de pesquisa ou Classificações. Salvar não inicia um novo rastreamento no Google: esta tela relaciona seus registros às observações do arquivo local.
+As consultas importantes são salvas a partir de **Desempenho da pesquisa** ou de **Acompanhamento de posições**. Salvar não inicia um novo acompanhamento no Google: a tela relaciona as palavras salvas às observações que já estão no arquivo local.
 
-## Datas e números
+## Período e contagens
 
-Escolha 30, 90 ou 180 dias; o padrão é 90. As datas exatas do período atual e do anterior de mesma duração aparecem na tela. O calendário é o do Pacífico, com atraso presumido de três dias; isso não comprova um arquivo completo.
+O período pode ser de 30, 90 ou 180 dias; o padrão é 90. A tela mostra as datas exatas do período atual e do período anterior de mesma duração. As datas seguem o fuso horário do Pacífico, com um atraso presumido de três dias; esse atraso não garante que o arquivo esteja completo.
 
-Os cartões mostram registros salvos após filtros de texto e etiquetas, registros observados, movimentos significativos comparáveis e posições desconhecidas. As barras usam a mesma base e filtram a tabela. Não são volume de pesquisa nem todas as consultas do site. Registros de mercados diferentes mantêm identidade e contagem, mas as observações abrangem todos os países e dispositivos.
+Os cartões no topo contam:
 
-A posição é ponderada por impressões. Espaços são compactados e a comparação de maiúsculas segue o turco, distinguindo I/ı de İ/i. Variantes originais são combinadas pelas impressões. Dado ausente não é posição zero nem perda comprovada. Significativo significa pelo menos 0,5 posição; mudanças menores podem aparecer no detalhe. Sem comparação é diferente de inalterado.
+- as palavras salvas que passam pelos filtros de texto e etiquetas;
+- as **Palavras-chave observadas** no período;
+- os movimentos significativos comparáveis;
+- as palavras com **Posição desconhecida**.
 
-## Investigar um registro
+As barras usam a mesma base e, com um clique, filtram a tabela. Esses números não são volume de busca e não cobrem todas as consultas do site. Palavras salvas para mercados diferentes ficam separadas, mas as observações abrangem todos os países e dispositivos.
 
-A tabela mostra palavra, posição média, mudança, impressões e etiquetas. No celular, as métricas ficam abaixo da palavra. O detalhe do arquivo usa as mesmas datas e mostra variantes, média anterior, dias observados e mercado salvo. A data de inclusão e uma intenção antiga, se existente, permanecem no detalhe; nenhuma intenção nova é medida. O link secundário pesquisa texto contido nos últimos 28 dias de Desempenho de pesquisa, não a mesma medida do arquivo.
+Se nenhuma palavra for comparável, o cartão de movimentos mostra **Sem comparação** em vez de zero. Se todas as palavras foram observadas, o cartão **Posição desconhecida** não aponta observações ausentes. Cartões sem resultados correspondentes não são clicáveis.
 
-Todos os termos incluídos devem corresponder; nenhum termo excluído pode aparecer. Cada campo aceita até 20 termos. Qualquer etiqueta selecionada corresponde, com até 50 seleções; isso não limita quantas etiquetas podem existir no projeto. As contagens de etiquetas são atribuições no projeto inteiro. Filtros, faixa, período, ordem e página ficam na URL. Limpar tudo também remove uma faixa ativa vazia.
+## Como a posição é calculada
+
+A posição é uma média ponderada pelas impressões. Na comparação com as consultas do Google, espaços repetidos são reduzidos e as maiúsculas seguem as regras do turco, de modo que I/ı fica separado de İ/i. As variantes originais da mesma palavra são combinadas pelas impressões.
+
+Um dado ausente não é posição zero nem perda comprovada. Um movimento é significativo a partir de 0,5 posição; variações menores aparecem nos detalhes. "Sem comparação" não quer dizer "sem alteração".
+
+## Examine uma palavra
+
+A tabela mostra palavra, posição média, variação, impressões e etiquetas; no celular, as métricas aparecem abaixo da palavra. Os **Detalhes do arquivo** usam os mesmos períodos e mostram variantes originais, média anterior, dias observados e mercado salvo. Ali ficam também a data de inclusão e a intenção registrada no passado, se houver: o aplicativo não mede uma nova intenção.
+
+**Mostrar observações diárias do arquivo** carrega o histórico dia a dia, com as mesmas datas e a mesma correspondência. Dias ausentes ficam em branco. O gráfico pode ser percorrido pelo teclado e há também uma lista em texto dos valores.
+
+O link secundário pesquisa o texto da palavra nos últimos 28 dias de **Desempenho da pesquisa**; não é a mesma medida do arquivo.
+
+## Filtros e ordenação
+
+- **Contém**: todos os termos precisam aparecer. **Não contém**: nenhum dos termos pode aparecer. Cada campo aceita até 20 termos.
+- **Etiquetas**: basta uma das etiquetas escolhidas; é possível selecionar até 50. Isso não limita quantas etiquetas o projeto pode ter. As contagens por etiqueta valem para o projeto inteiro.
+- Filtros, faixa de posição, período, ordenação e página ficam na URL. **Limpar tudo** também remove uma faixa ativa sem resultados.
+
+A ordem padrão é pela data de inclusão; também é possível ordenar por posição, movimento, impressões e palavra. Ordenar por **Quedas significativas** ajuda a decidir por onde começar, mas não indica a causa da queda.
+
+A seleção de linhas vale apenas para a página atual. Enquanto um filtro ou uma atualização estiver em andamento, as ações nas linhas anteriores ficam bloqueadas. Remover palavras exige confirmação.
 
 ## Arquivo e exportação
 
-Sem conexão, nunca importado, arquivo parcial e falha de leitura têm explicações próprias. Atualizar lista lê apenas o banco local. Para novos dados Google, atualize o arquivo em Classificações. O Google pode omitir consultas raras; ausência no arquivo não comprova ausência na pesquisa.
+Conexão ausente, arquivo nunca importado, cobertura parcial e falha de leitura têm, cada um, sua própria explicação. **Atualizar lista** relê apenas o banco de dados local; para baixar novos dados do Google, atualize o arquivo em **Acompanhamento de posições**. O Google pode omitir consultas raras: a falta de observações não prova que a página esteja ausente da busca.
 
-CSV e Planilhas usam a mesma população filtrada. Palavra, intenção, etiquetas e inclusão continuam nas primeiras colunas; seguem posição atual/anterior, mudança, estado, dias, datas, cobertura, variantes, escopo, mercado, ID e snapshot. Medidas desconhecidas ficam vazias. Se os dados mudarem durante a exportação, reinicie-a.
-
-A seleção vale apenas para esta página. Filtros ou atualizações pendentes bloqueiam ações em linhas antigas. Remover exige confirmação. A ordem inicial é a data de inclusão; posição, movimento, impressões e palavra também podem ordenar. A ordem de quedas significativas orienta a investigação sem estabelecer uma causa.
-
-**Observações diárias.** Solicite o histórico diário nos detalhes do arquivo. Datas e correspondência são as mesmas. Dias ausentes ficam como lacunas; há navegação por teclado e uma lista textual de valores diários.
-
-Sem palavras-chave comparáveis, o cartão de movimentos mostra Sem comparação em vez de zero. Se todas as palavras-chave foram observadas, o cartão Posição desconhecida não avisa sobre observações em falta. Os botões dos cartões de movimentos e posições desconhecidas ficam desativados sem resultados correspondentes.
+**Baixar CSV** e **Exportar para Sheets** usam o mesmo conjunto filtrado. As primeiras colunas são palavra, intenção, etiquetas e data de inclusão; depois vêm posição atual e anterior, variação, status, dias, datas, cobertura, variantes, escopo, mercado, ID e snapshot. Medidas desconhecidas ficam vazias. Se os dados mudarem durante a exportação, comece de novo.

@@ -1,6 +1,6 @@
 ---
 title: Risoluzione dei problemi
-description: I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, assistente 401.
+description: I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, agente 401.
 kind: sorun-giderme
 updated: 2026-10-27
 ---
@@ -11,19 +11,19 @@ L'interfaccia dell'app esiste in sei lingue: turco, inglese, tedesco, francese, 
 
 ## La pagina non si apre
 
-**Sintomo:** Il browser dice "bağlantı reddedildi" (connessione rifiutata).
+**Sintomo:** Il browser segnala "connessione rifiutata" (ERR_CONNECTION_REFUSED).
 
 **Causa:** L'app non è in funzione.
 
-**Soluzione:** In Windows guardare l'icona nella barra delle applicazioni. Se l'icona non si vede, fare clic sulla freccia ^ nella barra delle applicazioni. Se non c'è, aprire seowatcher dal menu Start. Se l'icona dice "Errore", fare clic con il tasto destro e scegliere **Yeniden başlat** (Riavvia). Con Docker scrivere `docker compose ps`. Se lo stato non è healthy, scrivere `docker compose up -d`.
+**Soluzione:** In Windows guardare l'icona nella barra delle applicazioni. Se l'icona non si vede, fare clic sulla freccia ^ nella barra delle applicazioni. Se non c'è, aprire seowatcher dal menu Start. Se l'icona dice "Hata" (Errore), fare clic con il tasto destro e scegliere **Yeniden başlat** (Riavvia). Con Docker eseguire `docker compose ps`. Se lo stato non è healthy, eseguire `docker compose up -d`.
 
 ## Il numero di porta è occupato
 
-**Sintomo:** In Windows, in alto in ogni schermata dell'app compare una striscia gialla: "Questa volta seowatcher è in esecuzione su 3002 perché un altro programma usa 3001 (ad es. una vecchia copia Docker). L'accesso a Google è configurato per 3001; chiudi quel programma e riavvia seowatcher." Il collegamento a Google dà un errore. Oppure l'icona dice "3001 ve sonraki 9 adres numarası (port) dolu" (la porta 3001 e le 9 successive sono occupate). La stessa frase è scritta nella scheda "Stato dell'app" della schermata **Aiuto**. Con Docker compare "Bind for 127.0.0.1:3001 failed".
+**Sintomo:** In Windows, in alto in ogni schermata dell'app compare una striscia gialla: "Questa volta seowatcher è in esecuzione su 3002 perché un altro programma usa 3001 (ad es. una vecchia copia Docker). L'accesso a Google è configurato per 3001; chiudi quel programma e riavvia seowatcher." Il collegamento a Google dà un errore. Oppure l'icona dice "3001 ve sonraki 9 adres numarası (port) dolu" (la porta 3001 e le 9 successive sono occupate). La stessa frase compare anche nella scheda "Stato dell'app" della schermata **Aiuto**. Con Docker compare "Bind for 127.0.0.1:3001 failed".
 
 **Causa:** Un altro programma usa lo stesso numero di porta. La causa più frequente è una vecchia copia di Docker avviata un tempo. Docker Desktop può riavviarla da solo all'avvio del computer. Gli indirizzi di reindirizzamento di Google riportano la 3001, quindi l'accesso a Google non funziona finché l'app è aperta sulla 3002.
 
-**Soluzione:** Il pacchetto Windows di norma sceglie un numero libero tra 3002 e 3010, lo comunica con un fumetto e con la striscia in alto, e lo usa solo per quell'avvio. Chiudere prima il programma che occupa la 3001. Se è una vecchia copia di Docker, fermare il contenitore seotracker in Docker Desktop oppure eseguire `docker compose stop` nella cartella del progetto. Poi scegliere **Yeniden başlat** (Riavvia) nel menu. L'app torna alla 3001 e la striscia scompare. Chiudere la striscia la nasconde solo per quella scheda; non risolve nulla. Se sono tutti occupati, scrivere un altro numero nel file `config.json` della cartella dei dati. Con Docker mettere un `.env` con la riga `PORT=3002` e scrivere `docker compose up -d --force-recreate seotracker`. Quando il numero cambia, aggiornare anche gli indirizzi di reindirizzamento di Google.
+**Soluzione:** Il pacchetto Windows di norma sceglie un numero libero tra 3002 e 3010, lo comunica con una notifica e con la striscia in alto, e lo usa solo per quell'avvio. Chiudere prima il programma che occupa la 3001. Se è una vecchia copia di Docker, fermare il contenitore seotracker in Docker Desktop oppure eseguire `docker compose stop` nella cartella del progetto. Poi scegliere **Yeniden başlat** (Riavvia) nel menu. L'app torna alla 3001 e la striscia scompare. Chiudere la striscia la nasconde solo per quella scheda; non risolve nulla. Se i numeri da 3002 a 3010 sono tutti occupati, scrivere un altro numero nel file `config.json` della cartella dei dati. Con Docker mettere un `.env` con la riga `PORT=3002` e scrivere `docker compose up -d --force-recreate seotracker`. Quando il numero cambia, aggiornare anche gli indirizzi di reindirizzamento di Google.
 
 ## L'icona dice "Windows bileşeni eksik"
 
@@ -31,7 +31,7 @@ L'interfaccia dell'app esiste in sei lingue: turco, inglese, tedesco, francese, 
 
 **Causa:** Il motore dell'app richiede il pacchetto Visual C++ di Microsoft (2015-2022, 64 bit). Su un Windows pulito questo pacchetto manca o è vecchio.
 
-**Soluzione:** Fare clic sul fumetto che compare oppure fare clic con il tasto destro sull'icona e scegliere **Eksik Windows bileşenini kur** (Installa il componente di Windows mancante). Windows chiede una volta il permesso di amministratore. Al termine dell'installazione l'app si riavvia da sola. Se il pacchetto non c'è, scaricarlo dalla pagina di Microsoft: `https://aka.ms/vs/17/release/vc_redist.x64.exe`
+**Soluzione:** Fare clic sulla notifica che compare oppure fare clic con il tasto destro sull'icona e scegliere **Eksik Windows bileşenini kur** (Installa il componente di Windows mancante). Windows chiede una volta il permesso di amministratore. Al termine dell'installazione l'app si riavvia da sola. Se il pacchetto non c'è, scaricarlo dalla pagina di Microsoft: `https://aka.ms/vs/17/release/vc_redist.x64.exe`
 
 ## Il permesso di amministratore non è stato dato
 
@@ -39,9 +39,9 @@ L'interfaccia dell'app esiste in sei lingue: turco, inglese, tedesco, francese, 
 
 **Causa:** Il componente di Windows necessario non è stato installato. Poiché l'app porta con sé una copia dei file che le servono, sulla maggior parte dei computer si avvia comunque.
 
-**Soluzione:** Se l'app si è avviata, non serve fare nulla. Altrimenti fare clic con il tasto destro sull'icona nella barra delle applicazioni (se non si vede, fare clic sulla freccia ^). Scegliere **Eksik Windows bileşenini kur** e questa volta dare il permesso. Oppure scaricare e installare il componente da `https://aka.ms/vs/17/release/vc_redist.x64.exe`.
+**Soluzione:** Se l'app si è avviata, non serve fare nulla. Altrimenti fare clic con il tasto destro sull'icona nell'area di notifica. Scegliere **Eksik Windows bileşenini kur** e questa volta dare il permesso. Oppure scaricare e installare il componente da `https://aka.ms/vs/17/release/vc_redist.x64.exe`.
 
-## L'icona dice "Uygulamanın motoru çöktü"
+## L'icona dice "Uygulamanın motoru çöktü" (il motore dell'app si è bloccato)
 
 **Sintomo:** L'app non si apre. Nel registro ci sono "Workers runtime failed to start" e "0xc0000005", ma il pacchetto Visual C++ è installato.
 
@@ -71,11 +71,11 @@ L'interfaccia dell'app esiste in sei lingue: turco, inglese, tedesco, francese, 
 
 **Causa:** In **Impostazioni → Google** non sono stati inseriti l'ID client e la chiave segreta. Oppure, con Docker, la chiave di cifratura è più corta di 32 caratteri.
 
-**Soluzione:** Eseguire i passaggi 10 e 11 della guida al collegamento con Google. Con Docker, se `BETTER_AUTH_SECRET` è stata indicata a mano, allungarla. Se la si lascia vuota, l'app la genera da sola.
+**Soluzione:** Seguire la sezione OAuth della guida [Collegamento con Google](/docs/google-baglantisi/). Con Docker, se `BETTER_AUTH_SECRET` è stata indicata a mano, allungarla. Se la si lascia vuota, l'app la genera da sola.
 
 ## Google dice "access_denied"
 
-**Sintomo:** Dopo la schermata di consenso compare l'avviso "iptal edildi" (annullato).
+**Sintomo:** Dopo la schermata di consenso compare l'avviso "L'accesso a Google è stato annullato".
 
 **Causa:** L'account Google usato per l'accesso non è nell'elenco degli utenti di test della schermata di consenso.
 
@@ -85,13 +85,13 @@ L'interfaccia dell'app esiste in sei lingue: turco, inglese, tedesco, francese, 
 
 **Sintomo:** Nella scheda dei collegamenti c'è scritto "La connessione è scaduta" e non arrivano dati.
 
-**Causa:** Nelle app in stato "Test", Google può ridurre il permesso a sette giorni. Può anche essere cambiata la chiave di cifratura.
+**Causa:** Nelle app in stato "Test", Google può revocare l'autorizzazione dopo sette giorni. Può anche essere cambiata la chiave di cifratura.
 
 **Soluzione:** Nella scheda scegliere **Riconnetti**. Se si ripete spesso, portare la schermata di consenso in produzione oppure passare all'account di servizio (**Impostazioni → Account di servizio**).
 
 ## Nessun dato sulle query, grafici vuoti
 
-**Sintomo:** Le schede del Panel (Pannello) sono a zero. Rendimento della ricerca dice "Ancora nessun dato per questo periodo".
+**Sintomo:** Le schede del **Pannello** sono a zero. Rendimento della ricerca dice "Ancora nessun dato per questo periodo".
 
 **Causa:** Ci sono tre possibilità. Il sito è nuovo e Google non dà ancora impressioni. Oppure Search Console ha tre giorni di ritardo e il periodo scelto è troppo breve. Oppure è stata scelta la proprietà sbagliata.
 
@@ -111,13 +111,13 @@ L'interfaccia dell'app esiste in sei lingue: turco, inglese, tedesco, francese, 
 
 **Causa:** L'app può essere stata riavviata oppure l'operazione può essersi interrotta.
 
-**Soluzione:** Attendere. L'app verifica i controlli che risultano "in corso" da più di 15 minuti. Se non c'è segno di vita, li chiude come "Non riuscito" e ne scrive il motivo. Poi scegliere **Esegui di nuovo con le stesse impostazioni**. Non avviare due controlli con la misurazione della velocità nello stesso momento: si rallentano a vicenda.
+**Soluzione:** Attendere. L'app verifica i controlli che risultano "in corso" da più di 15 minuti. Se non c'è segno di vita, li segna come "Non riuscito" e ne indica il motivo. Poi scegliere **Esegui di nuovo con le stesse impostazioni**. Non avviare due controlli con la misurazione della velocità nello stesso momento: si rallentano a vicenda.
 
 ## Il controllo dice "Il controllo si è interrotto prima di terminare"
 
-**Sintomo:** La schermata del controllo dice "La verifica si è interrotta nella fase «scansione»." oppure "Il controllo si è interrotto prima di terminare." Al posto del punteggio c'è scritto "Controllo incompleto — nessun punteggio".
+**Sintomo:** La schermata del controllo dice "La verifica si è interrotta nella fase «scansione»." oppure "Il controllo si è interrotto prima di terminare." Al posto del punteggio compare "Controllo incompleto — nessun punteggio".
 
-**Causa:** La schermata dice tre cose: che cosa è successo, se il difetto è del sito o dell'app, e che cosa fare. Il titolo indica la fase in cui si è interrotta: individuazione degli URL, scansione, misurazione della velocità o preparazione dei risultati.
+**Causa:** Il controllo si è interrotto. La schermata dice tre cose: che cosa è successo, se il difetto è del sito o dell'app, e che cosa fare. Il titolo indica la fase in cui si è interrotta: individuazione degli URL, scansione, misurazione della velocità o preparazione dei risultati.
 
 **Soluzione:** Seguire la frase sulla schermata.
 
@@ -155,9 +155,9 @@ Il testo grezzo dell'errore non arriva sulla schermata. Resta nel pacchetto diag
 
 **Soluzione:** Aggiornare o riavviare l'app, poi avviare una nuova verifica. Se continua, salvare di nuovo la chiave PageSpeed in **Impostazioni**.
 
-## Il controllo dice "Engellendik"
+## Il controllo dice "Siamo stati bloccati"
 
-**Sintomo:** Compare un avviso giallo: "Il controllo non è riuscito a scansionare completamente il sito." oppure "N sayfada engellendik." (Siamo stati bloccati in N pagine.)
+**Sintomo:** Compare un avviso giallo: "Il controllo non è riuscito a scansionare completamente il sito." oppure "Siamo stati bloccati su N pagine."
 
 **Causa:** La protezione anti-bot del sito (Cloudflare o un firewall) ha fermato il crawler dell'app.
 
@@ -165,19 +165,19 @@ Il testo grezzo dell'errore non arriva sulla schermata. Resta nel pacchetto diag
 
 ## La misurazione della velocità è incompleta o manca
 
-**Sintomo:** La scheda Hız (Velocità) è vuota o ha pochissime righe. La scheda della quota dice "Quota esaurita", "Dakikalık sınır" (Limite al minuto) o "Anahtar yok" (Nessuna chiave).
+**Sintomo:** La scheda **Velocità** è vuota o ha pochissime righe. La scheda delle quote segnala una quota esaurita, un limite al minuto raggiunto o l'assenza della chiave.
 
 **Causa:** Manca la chiave PageSpeed (si misurano al massimo 50 pagine). Oppure il limite giornaliero di Google è finito.
 
-**Soluzione:** Ottenere una chiave gratuita seguendo la guida alla chiave PageSpeed. Se il limite giornaliero è finito, si completa domani con un nuovo controllo. Se all'avvio del controllo la misurazione della velocità era disattivata, quel controllo non può più essere misurato in seguito.
+**Soluzione:** Ottenere una chiave gratuita seguendo la guida alla chiave PageSpeed. Se la quota giornaliera è esaurita, il resto si completa con un nuovo controllo il giorno successivo. Se all'avvio del controllo la misurazione della velocità era disattivata, quel controllo non può più essere misurato in seguito.
 
 ## Il controllo URL dice "limite giornaliero raggiunto"
 
-**Sintomo:** Nella scheda Stato dell'indicizzazione il pulsante non funziona. C'è scritto "Google'ın günlük 2.000 adres sınırına ulaşıldı" (Raggiunto il limite giornaliero di 2.000 indirizzi di Google).
+**Sintomo:** Nella scheda Stato dell'indicizzazione il pulsante non funziona. Compare il messaggio "Il limite giornaliero di Google di 2000 URL è esaurito".
 
-**Causa:** Per ogni proprietà ci sono 2.000 richieste al giorno. L'app, l'assistente e i controlli fatti a mano in Search Console consumano la stessa riserva.
+**Causa:** Per ogni proprietà ci sono 2.000 richieste al giorno. L'app, l'agente e i controlli fatti a mano in Search Console consumano la stessa riserva.
 
-**Soluzione:** Continuare domani. L'app richiede di nuovo solo le risposte invecchiate, quindi il limite non va sprecato.
+**Soluzione:** Il limite conta le ultime 24 ore, quindi la quota si libera gradualmente nel giro di qualche ora; riprendere allora. L'app richiede di nuovo solo le risposte invecchiate, quindi il limite non va sprecato.
 
 ## La scheda o il report di Analytics mostra un errore
 
@@ -187,15 +187,15 @@ Il testo grezzo dell'errore non arriva sulla schermata. Resta nel pacchetto diag
 
 - **Il collegamento è scaduto o è stato revocato.** Ricollegarlo in **Impostazioni**.
 - **L'accesso a questa proprietà è stato rifiutato (HTTP 403).** Dare all'account collegato o all'account di servizio almeno il ruolo Visualizzatore sulla proprietà.
-- **La proprietà non è stata trovata (HTTP 404).** Può essere stata eliminata o spostata. Sceglierla di nuovo in **Impostazioni**.
-- **A questo progetto non è collegata nessuna proprietà.** Sceglierne una in **Impostazioni**.
+- **La proprietà non è stata trovata (HTTP 404).** Può essere stata eliminata o spostata. Sceglierla di nuovo in **Impostazioni progetto → Connessioni**.
+- **A questo progetto non è collegata nessuna proprietà.** Sceglierne una in **Impostazioni progetto → Connessioni**.
 - **La quota dei report è esaurita (HTTP 429).** La quota si rinnova ogni ora e ogni giorno. Riprovare più tardi.
 - **La Google Analytics Data API è disattivata nel progetto Google Cloud.** Attivare "Google Analytics Data API" nella Google Cloud Console e riprovare.
 - **Il report non è compatibile con la proprietà scelta (HTTP 400).** Controllare la proprietà o sceglierne un'altra.
 - **Google ha restituito una risposta non valida o per ora non risponde.** Riprovare tra poco.
 - **Google non è raggiungibile.** Controllare la connessione a internet di questo computer.
 
-**Soluzione:** Fare il passo indicato dalla frase. Di solito **Ripristina la connessione** porta all'impostazione giusta.
+**Soluzione:** Seguire l'indicazione del messaggio. Di solito **Ripristina la connessione** porta all'impostazione giusta.
 
 ## Una richiesta a Search Console mostra un errore
 
@@ -205,37 +205,42 @@ Il testo grezzo dell'errore non arriva sulla schermata. Resta nel pacchetto diag
 
 - **La richiesta è stata ritenuta non valida (HTTP 400).** Non è un problema di collegamento. La dimensione, il filtro o il tipo di ricerca scelto non si può usare su questa proprietà. Togliere i filtri.
 - **L'accesso alla proprietà è stato rifiutato (HTTP 401 o 403).** Controllare che l'account abbia un'autorizzazione verificata sulla proprietà, oppure rinnovare il collegamento in **Impostazioni**.
-- **La proprietà non è stata trovata (HTTP 404).** Può essere stata rimossa da Search Console. Sceglierla di nuovo in **Impostazioni**.
+- **La proprietà non è stata trovata (HTTP 404).** Può essere stata rimossa da Search Console: sceglierne una valida in **Impostazioni progetto → Connessioni**.
 - **Il limite di richieste è esaurito (HTTP 429).** Riprovare tra qualche minuto.
 - **Nessuna risposta in tempo.** Riprovare tra poco.
 - **Per ora non risponde (altro codice HTTP).** Riprovare tra poco. Se continua, guardare la pagina di stato di Google.
-- **Google non è raggiungibile.** La frase dà un dettaglio nella riga "Motivo". Se continua, controllare la connessione a internet di questo computer.
+- **Google non è raggiungibile.** La riga "Motivo" aggiunge un dettaglio. Se il problema persiste, verificare la rete.
 
-**Soluzione:** Fare il passo indicato dalla frase. Per i problemi di account e proprietà di solito basta rinnovare il collegamento in **Impostazioni**.
+**Soluzione:** Per i problemi di account e proprietà di solito basta rinnovare il collegamento in **Impostazioni progetto → Connessioni**.
 
 ## In Analytics compare il traffico di localhost
 
-**Sintomo:** Nella tabella delle pagine di ingresso, nella colonna Alan adı (Dominio) c'è scritto localhost o 127.0.0.1.
+**Sintomo:** Nella tabella delle pagine di ingresso, la colonna **Dominio** mostra localhost o 127.0.0.1.
 
 **Causa:** Anche la copia di prova del sito carica lo stesso tag di Analytics.
 
-**Soluzione:** Impostare il tag in modo che si carichi solo sul dominio reale. Nella maggior parte degli strumenti c'è un'opzione di "controllo del dominio". L'app non filtra da sola queste righe. Nel frattempo, controllare la colonna Alan adı.
+**Soluzione:** Impostare il tag in modo che si carichi solo sul dominio reale. Nella maggior parte degli strumenti c'è un'opzione di "controllo del dominio". L'app non filtra da sola queste righe. Nel frattempo, riconoscerle dalla colonna **Dominio**.
 
-## L'assistente non riesce a collegarsi (401)
+## L'agente non riesce a connettersi (401)
 
 **Sintomo:** Claude Code o Codex dicono "Unauthorized".
 
-**Causa:** La password non viene inviata oppure è sbagliata.
+**Causa:** Il client non invia il token, oppure il token è sbagliato.
 
-**Soluzione:** Copiare di nuovo la password. In Windows è nel file `mcp-token` nella cartella dei dati. Con Docker scrivere `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. Eliminare il carattere di fine riga alla fine del valore. Per non usare il terminale, aprire il file con il Blocco note, selezionare tutta la riga e copiarla. Non lasciare il fine riga. In Claude Code scrivere `/mcp` e scegliere **Reconnect** (Ricollega).
+**Soluzione:** Nella schermata **Configurazione dell'agente** usare **Copia comando di configurazione**: l'agente legge il token dall'installazione senza mostrarlo. Per inserirlo a mano, copiarlo negli appunti senza mostrarlo, incollarlo nel campo dell'intestazione del client MCP e poi svuotare gli appunti. Non incollarlo mai in una chat o in una schermata.
+
+- **Pacchetto Windows:** il token è nel file `%LOCALAPPDATA%\seowatcher\mcp-token` (menu: **Veri klasörünü aç**, Apri la cartella dei dati). In PowerShell: `(Get-Content "$env:LOCALAPPDATA\seowatcher\mcp-token").Trim() | Set-Clipboard`.
+- **Docker:** in PowerShell, `(docker compose exec -T seotracker cat /app/.wrangler/mcp-token).Trim() | Set-Clipboard`.
+
+Poi, in Claude Code, scrivere `/mcp` e scegliere **Reconnect** (Ricollega).
 
 ## Docker è molto lento al primo avvio oppure risulta "unhealthy"
 
 **Sintomo:** `docker compose ps` non dice healthy nemmeno dopo cinque minuti.
 
-**Causa:** Al primo avvio l'app viene compilata dentro il container e richiede circa 2 GB di memoria. Se la memoria non basta, la compilazione cade.
+**Causa:** Al primo avvio l'app viene compilata dentro il container e richiede circa 2 GB di memoria. Se la memoria non basta, la compilazione non riesce.
 
-**Soluzione:** Scrivere `docker compose logs --tail 50` e guardare le ultime righe. Se c'è un errore di memoria, dare più memoria ai container dalle impostazioni di Docker Desktop. Poi scrivere `docker compose up -d --build`.
+**Soluzione:** Eseguire `docker compose logs --tail 50` e guardare le ultime righe. Se c'è un errore di memoria, dare più memoria ai container dalle impostazioni di Docker Desktop. Poi eseguire `docker compose up -d --build`.
 
 ## Dove sono i dati e i registri?
 
@@ -254,11 +259,11 @@ Per segnalare un problema, selezionare **Scarica il pacchetto diagnostico** nell
 - **L'app nell'area di notifica non ha risposto entro 4 secondi.** Se il computer si è appena riattivato, premere **Riprova** dopo qualche secondo. Se persiste, scegliere **Çıkış** (Esci) nel menu dell'area di notifica e riaprire l'app.
 - **Impossibile connettersi al servizio impostazioni dell'app nell'area di notifica.** L'app potrebbe essersi chiusa. Riaprire seowatcher dal menu Start.
 - **Questa impostazione è bloccata da un amministratore.** Solo l'amministratore del computer può modificarla.
-- **L'app nell'area di notifica non ha riconosciuto questa richiesta.** Server e app potrebbero provenire da sessioni diverse. Scegliere **Çıkış** (Esci) nel menu e riaprire l'app.
+- **L'app nell'area di notifica non ha riconosciuto questa richiesta.** Server e app potrebbero provenire da sessioni diverse. Chiudere l'app con **Çıkış** (Esci) e riaprirla.
 - **L'app nell'area di notifica ha rifiutato la richiesta.** Riavviare l'app dal menu. Se persiste, aggiornare il pacchetto Windows.
 - **L'app nell'area di notifica ha restituito una risposta non riconosciuta.** Le versioni potrebbero non corrispondere. Aggiornare il pacchetto Windows.
 
-**Soluzione:** Fare il passo indicato dalla frase. Queste opzioni esistono solo nel pacchetto Windows. Con Docker il comportamento all'avvio si gestisce dal sistema operativo.
+**Soluzione:** Queste opzioni esistono solo nel pacchetto Windows; seguire l'indicazione del messaggio. Con Docker il comportamento all'avvio si gestisce dal sistema operativo.
 
 ## Avvisi dell'avvio
 
@@ -269,7 +274,7 @@ Gli avvisi che compaiono nell'icona della barra delle applicazioni e che cosa fa
 - **"Sunucu 10 dakikada üç kez kapandı" (Il server si è chiuso tre volte in 10 minuti).** L'app ha smesso di riaprirlo. Scegliere **Kurulumu onar** e, se non basta, **Sorunu bildir (GitHub)**.
 - **"Kurulum eksik" (Installazione incompleta).** **Kurulumu onar** rimette i file mancanti scaricando il file di installazione. Se non c'è internet, si apre la pagina delle versioni; scaricare il file di installazione ed eseguirlo.
 - **"3001 numarası dolu, 3002 kullanılıyor" (La porta 3001 è occupata, si usa la 3002).** Un altro programma occupa la 3001, spesso una vecchia copia di Docker. Lo stesso avviso compare anche come striscia gialla nell'app. Se si riceve un errore collegandosi a Google, chiudere quel programma e scegliere **Yeniden başlat**. Vedere sopra "Il numero di porta è occupato".
-- **"Güncelleme denetlenemedi" (Impossibile controllare l'aggiornamento) oppure "Güncelleme yapılamadı" (Aggiornamento non riuscito).** Il fumetto indica il motivo. Se dice "GitHub'a ulaşılamadı" (GitHub non raggiungibile), controllare la connessione a Internet. Se dice "GitHub şu an çok fazla istek alıyor" (GitHub sta ricevendo troppe richieste in questo momento), riprovare tra un'ora. Se l'impronta non corrisponde, scaricare il file di installazione dalla pagina delle versioni. In ogni caso la versione installata continua a funzionare.
+- **"Güncelleme denetlenemedi" (Impossibile controllare l'aggiornamento) oppure "Güncelleme yapılamadı" (Aggiornamento non riuscito).** La notifica indica il motivo. Se dice "GitHub'a ulaşılamadı" (GitHub non raggiungibile), controllare la connessione a Internet. Se dice "GitHub şu an çok fazla istek alıyor" (GitHub sta ricevendo troppe richieste in questo momento), riprovare tra un'ora. Se l'impronta non corrisponde, scaricare il file di installazione dalla pagina delle versioni. In ogni caso la versione installata continua a funzionare.
 - **"Güncelleme kurulmadı" (Aggiornamento non installato).** La finestra di installazione è stata chiusa oppure non è stato dato il permesso di amministratore. Riprovare dal menu con **Güncelle**.
 - **"Windows bileşeni kurulamadı" (Componente di Windows non installato).** Dal menu scegliere **Eksik Windows bileşenini kur**.
 

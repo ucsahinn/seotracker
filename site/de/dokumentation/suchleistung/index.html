@@ -201,7 +201,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1502,9 +1502,7 @@
           <p class="nav-group">Bildschirme</p>
           <ul>
             <li><a href="/de/dokumentation/projekte/">Projekte</a></li>
-            <li>
-              <a href="/de/dokumentation/uebersicht/">Übersicht (Panel)</a>
-            </li>
+            <li><a href="/de/dokumentation/uebersicht/">Übersicht</a></li>
             <li class="current" aria-current="page">
               <a href="/de/dokumentation/suchleistung/">Suchleistung</a>
             </li>
@@ -1516,12 +1514,12 @@
             <li><a href="/de/dokumentation/chancen/">Chancen</a></li>
             <li>
               <a href="/de/dokumentation/gespeicherte-suchbegriffe/"
-                >Gespeicherte Suchbegriffe</a
+                >Gespeicherte Keywords</a
               >
             </li>
             <li>
               <a href="/de/dokumentation/datenanalyse/"
-                >Analysedaten verstehen</a
+                >Analytics-Daten verstehen</a
               >
             </li>
             <li>
@@ -1531,7 +1529,7 @@
             <li>
               <a href="/de/dokumentation/berichte/">Berichte und Vorlagen</a>
             </li>
-            <li><a href="/de/dokumentation/projektinfo/">Projektinfo</a></li>
+            <li><a href="/de/dokumentation/projektinfo/">Projektkontext</a></li>
             <li>
               <a href="/de/dokumentation/einstellungen/">Einstellungen</a>
             </li>
@@ -1542,7 +1540,7 @@
             <li><a href="/de/dokumentation/audit-regeln/">Audit-Regeln</a></li>
             <li>
               <a href="/de/dokumentation/assistent-einrichten/"
-                >Assistent einrichten</a
+                >Agent einrichten</a
               >
             </li>
             <li>
@@ -1561,57 +1559,53 @@
           Seiten priorisieren und die Grenzen geschätzter Gewinne erkennen.
         </p>
         <p>
-          Hier sehen Sie, wie oft Sie bei Google erscheinen, wie viele Klicks
-          Sie bekommen und was Sie zuerst beheben sollten.
+          Klicks, Impressionen, CTR und Position kommen unverändert aus der
+          Search Console. Geschätzt wird nur der „mögliche Gewinn“, und diese
+          Zahlen sind immer als „Obergrenze“ gekennzeichnet.
         </p>
         <p>
-          Klicks, Impressionen, CTR und Position kommen direkt aus der Search
-          Console. Die App schätzt keine davon. Geschätzt wird nur bei den
-          Zahlen zum „möglichen Gewinn“, und die sind immer als „Obergrenze“
-          gekennzeichnet.
-        </p>
-        <p>
-          Die gewählten Filter werden in die Adressleiste geschrieben. Wenn Sie
-          möchten, teilen Sie diese Ansicht als Link oder legen ein Lesezeichen
-          an.
+          Die gewählten Filter stehen in der Adresse; Sie können eine Ansicht
+          also als Link teilen oder als Lesezeichen speichern.
         </p>
         <h2 id="drei-begriffe">Drei Begriffe</h2>
         <p>
           <strong>Endgültiger Tag.</strong> Die Search Console zählt einen Tag
-          mehrere Tage lang weiter. Summen und Vergleiche nutzen nur Tage, deren
-          Zählung abgeschlossen ist. Die Tage richten sich nach der pazifischen
-          Zeit, die Google verwendet. Tage, die noch gezählt werden, erscheinen
-          im Diagramm schraffiert und fließen nicht in die Summen ein.
+          noch mehrere Tage lang nach. Summen und Vergleiche nutzen nur Tage,
+          deren Zählung abgeschlossen ist; die Tage folgen der pazifischen Zeit,
+          die Google verwendet. Noch nicht endgültige Tage erscheinen im
+          Diagramm schraffiert.
         </p>
         <p>
-          <strong>Verborgene Suchanfrage.</strong> Google listet sehr selten
-          gesuchte Suchanfragen aus Datenschutzgründen nicht auf. Ihre Klicks
-          rechnet es aber in die Summe der Website ein. Deshalb ergibt die
-          Tabelle der Suchanfragen weniger als die Summe der Website. Der
-          Unterschied sind die verborgenen Suchanfragen.
+          <strong>Verborgene Suchanfrage.</strong> Sehr selten gesuchte
+          Suchanfragen listet Google aus Datenschutzgründen nicht einzeln auf,
+          rechnet ihre Klicks aber in die Summe der Website ein. Die Tabelle der
+          Suchanfragen ergibt deshalb weniger als die Summe; die Differenz sind
+          verborgene Suchanfragen.
         </p>
         <p>
-          <strong>Obergrenze.</strong> Eine Gewinnzahl heißt „höchstens so
-          viel“. Es sind die Zusatzklicks, die eine Suche bekäme, wenn sie eine
-          Stufe aufstiege, mit den Klickraten Ihrer eigenen Website. Das echte
-          Ergebnis hängt von den Mitbewerbern und von Google ab und fällt meist
-          kleiner aus.
+          <strong>Obergrenze.</strong> Eine Gewinnzahl bedeutet „höchstens so
+          viel“: die Zusatzklicks, die eine Suchanfrage bei einem Aufstieg um
+          eine Positionsstufe und den Klickraten Ihrer eigenen Website bekäme.
+          Das tatsächliche Ergebnis hängt von Mitbewerbern und von Google ab und
+          fällt meist kleiner aus.
         </p>
         <h2 id="was-auf-dem-bildschirm-zu-sehen-ist">
           Was auf dem Bildschirm zu sehen ist
         </h2>
-        <p><strong>Obere Leiste.</strong> Rechts oben stehen vier Dinge.</p>
+        <p><strong>Obere Leiste.</strong> Rechts oben stehen:</p>
         <ul>
           <li>
             <strong>Aktualisieren</strong>: holt frische Daten aus der Search
-            Console. Normalerweise nutzt die App eine Antwort von vor einigen
-            Minuten.
+            Console. Sonst nutzt die App eine höchstens zehn Minuten alte
+            Antwort.
           </li>
           <li>
-            <strong>Bericht herunterladen</strong>: macht aus der Ansicht auf
-            dem Bildschirm einen druckbaren Bericht in einer Datei, speichert
-            ihn und lädt ihn herunter. Der Bericht liegt auch im Bildschirm
-            <strong>Berichte</strong>.
+            <strong>Bericht herunterladen</strong>: speichert die aktuelle
+            Ansicht als druckbaren Bericht in einer Datei und lädt ihn herunter.
+            Der Bericht erscheint auch unter <strong>Berichte</strong>. Während
+            einer Aktualisierung ist der Download gesperrt. Die App liest die
+            Daten für den Bericht neu; der Zeitraum bleibt fest, Google kann
+            einzelne Werte aber inzwischen korrigiert haben.
           </li>
           <li>
             Das Exportmenü: <strong>Suchanfragen (CSV)</strong>,
@@ -1619,31 +1613,30 @@
             <strong>Suchanfragen nahe den Top drei (CSV)</strong>,
             <strong>Suchanfragen nach Google Tabellen exportieren</strong>,
             <strong>Seiten nach Google Tabellen exportieren</strong>. Exporte
-            folgen den Filtern auf dem Bildschirm. Haben Sie im Reiter
-            Suchanfragen oder Seiten eine Suche oder einen Schnellfilter
-            gesetzt, geht auch sie in die Datei.
+            folgen den Filtern auf dem Bildschirm, einschließlich Suchtext und
+            Schnellfilter in den Reitern Suchanfragen und Seiten.
           </li>
         </ul>
         <p>
-          <strong>Filter.</strong> Eine einzeilige Leiste fasst die gewählten
-          Filter zusammen: „(Web, Alle Geräte, Alle Länder, Letzte 28 Tage, Mit
-          Vorzeitraum)“. Klappen Sie sie auf, sehen Sie:
+          <strong>Filter.</strong> Eine Leiste fasst die gewählten Filter in
+          einer Zeile zusammen: „(Web, Alle Geräte, Alle Länder, Letzte 28 Tage,
+          Mit Vorzeitraum)“. Klappen Sie sie auf, sehen Sie:
           <strong>Suchtyp</strong> (Web, Bild, Video, Nachrichten),
           <strong>Gerätefilter</strong> (Alle Geräte, Mobil, Desktop, Tablet),
           <strong>Länderfilter</strong> (die Länder, die Google für diesen
           Zeitraum meldet), <strong>Zeitraum</strong> (Letzte 7 Tage, Letzte 28
           Tage, Letzte 3 Monate) und <strong>Vergleich</strong> (Mit
-          Vorzeitraum, Mit Vorjahr, Kein Vergleich).
+          Vorzeitraum, Mit Vorjahr, Kein Vergleich). Wählen Sie einen dieser
+          Zeiträume, ersetzt er fest übernommene Daten aus einem Link.
         </p>
         <p>
-          <strong>Datenstand.</strong> Eine Leiste, die sagt, worauf die Zahlen
-          beruhen. Zum Beispiel „Die Daten sind bis 24. Okt. endgültig; die
-          letzten 3 Tage werden noch gezählt (im Diagramm schraffiert).“
-          Dieselbe Leiste nennt, mit welchen Tagen verglichen wird, und den
-          Namen Ihrer Search-Console-Property. Ein Klick auf den Namen führt zu
-          den Verbindungseinstellungen des Projekts. Ist der Vorjahresvergleich
-          gewählt und Google liefert diese Tage nicht mehr, sagt die Leiste das
-          (Google reicht höchstens 16 Monate zurück). Unter
+          <strong>Datenstand.</strong> Diese Leiste nennt die Grundlage der
+          Zahlen, zum Beispiel „Die Daten sind bis 24. Okt. endgültig; die
+          letzten 3 Tage werden noch gezählt (im Diagramm schraffiert).“ Sie
+          nennt außerdem die Vergleichstage und den Namen Ihrer
+          Search-Console-Property; ein Klick darauf führt zu den
+          Verbindungseinstellungen. Liefert Google die Vorjahrestage nicht mehr
+          (Google reicht höchstens 16 Monate zurück), sagt die Leiste das. Unter
           <strong>Zu den Daten</strong> sehen Sie: das Datum der endgültigen
           Tage, wie viele Tage noch gezählt werden und das Datum der letzten
           Daten, den Klickanteil verborgener Suchanfragen, ob die Tabellen
@@ -1652,28 +1645,27 @@
           oder eine Antwort von vor einigen Minuten genutzt hat.
         </p>
         <p>
-          <strong>Zusammenfassungssatz.</strong> Ein bis zwei Sätze über den
-          Kacheln sagen, was passiert ist. Zum Beispiel „Die Klicks sind in den
+          <strong>Zusammenfassung.</strong> Ein bis zwei Sätze über den Kacheln
+          beschreiben die Entwicklung, zum Beispiel „Die Klicks sind in den
           letzten 28 Tagen gegenüber dem Vorzeitraum um 6,1 % gestiegen. Die CTR
-          ist um 0,3 Punkte gesunken.“ Danach steht, wie viele Zusatzklicks die
+          ist um 0,3 Punkte gesunken.“ Danach folgt, wie viele Zusatzklicks die
           ersten drei Aufgaben zusammen bringen könnten, gekennzeichnet mit
-          „(Obergrenze)“. Der Link <strong>Aufgaben</strong> führt zu diesem
-          Reiter.
+          „(Obergrenze)“; der Link <strong>Aufgaben</strong> führt zum
+          gleichnamigen Reiter.
         </p>
         <p>
           <strong>Vier Kacheln.</strong> <strong>Klicks</strong>,
-          <strong>Impressionen</strong>, <strong>CTR</strong> (wie viel Prozent
-          der Impressionen geklickt wurden) und
-          <strong>Durchschnittliche Position</strong>. Alle sind Summen der
-          endgültigen Tage. Jede Kachel zeigt die Veränderung gegenüber dem
-          gewählten Vergleich und eine kleine Linie. Die Veränderung bei Klicks
-          und Impressionen steht in Prozent, bei der CTR in Punkten, bei der
-          Position in Plätzen. Bei der Durchschnittsposition ist eine kleine
-          Zahl gut, 1 ist die oberste Position. Die Richtung einer Veränderung
-          zeigt neben der Farbe auch ein Pfeil.
+          <strong>Impressionen</strong>, <strong>CTR</strong> (Anteil der
+          Impressionen mit Klick) und
+          <strong>Durchschnittliche Position</strong>, jeweils über die
+          endgültigen Tage. Jede Kachel zeigt eine kleine Verlaufslinie und die
+          Veränderung gegenüber dem Vergleich: bei Klicks und Impressionen in
+          Prozent, bei der CTR in Prozentpunkten, bei der Position in Plätzen.
+          Bei der Position ist ein kleinerer Wert besser; 1 ist ganz oben. Die
+          Richtung zeigt neben der Farbe immer auch ein Pfeil.
         </p>
         <p>
-          <strong>Diagramm Im Zeitverlauf.</strong> Es zeichnet die Tageswerte.
+          <strong>Diagramm „Im Zeitverlauf“.</strong> Es zeigt die Tageswerte:
         </p>
         <ul>
           <li>
@@ -1701,20 +1693,20 @@
           <li>
             Mit <strong>Notiz hinzufügen</strong> hinterlassen Sie an einem
             Datum eine eigene Notiz, zum Beispiel „Neue Seitentitel
-            veröffentlicht“. Eine Notiz hat höchstens 280 Zeichen. Sie hilft
-            Ihnen später, sich an den Grund eines Rückgangs oder Anstiegs zu
-            erinnern. Notizen außerhalb des gewählten Zeitraums stehen unter
-            „Notizen außerhalb dieses Zeitraums (N)“.
+            veröffentlicht“. Eine Notiz fasst höchstens 280 Zeichen und hilft
+            später, Anstiege und Rückgänge zu erklären. Notizen außerhalb des
+            gewählten Zeitraums stehen unter „Notizen außerhalb dieses Zeitraums
+            (N)“.
           </li>
         </ul>
         <p>
-          <strong>Leiste Damit anfangen.</strong> Zwischen Diagramm und Reitern
-          stehen die ersten drei Aufgaben nebeneinander. Jede hat Titel,
-          möglichen Gewinn und eine Schaltfläche.
-          <strong>Alle Aufgaben (N)</strong> führt zum Reiter Aufgaben.
+          <strong>Leiste „Damit anfangen“.</strong> Zwischen Diagramm und
+          Reitern stehen die ersten drei Aufgaben mit Titel, möglichem Gewinn
+          und Schaltfläche. <strong>Alle Aufgaben (N)</strong> führt zum Reiter
+          Aufgaben.
         </p>
         <p>
-          <strong>Reiter.</strong> Es gibt sieben:
+          <strong>Reiter.</strong> Es gibt sieben Reiter:
           <strong>Aufgaben (N)</strong>, <strong>Suchanfragen (N)</strong>,
           <strong>Seiten (N)</strong>, <strong>Ranking-Chancen (N)</strong>,
           <strong>Veränderungen</strong>, <strong>Überschneidungen</strong> und
@@ -1725,21 +1717,21 @@
         </p>
         <h3 id="aufgaben">Aufgaben</h3>
         <p>
-          Die App ordnet die Arbeiten, die sie in den Search-Console-Daten
-          findet, nach geschätztem Gewinn. Die Arbeiten sind nach Art gruppiert,
-          und die Überschrift jeder Gruppe nennt die Zahl:
+          Die App ordnet die Aufgaben, die sie in den Search-Console-Daten
+          findet, nach geschätztem Gewinn. Sie sind nach Art gruppiert; jede
+          Gruppenüberschrift nennt die Anzahl:
         </p>
         <ul>
           <li>
             „N Suchanfragen knapp unter den Top drei“: Suchen mit einer
             Durchschnittsposition zwischen 4 und 20 und ausreichend
-            Impressionen. Markensuchen kommen nicht in diese Liste. Stärken Sie
-            die Seite für diese Suche.
+            Impressionen. Markensuchen sind ausgenommen. Stärken Sie die Seite
+            für diese Suchanfrage.
           </li>
           <li>
             „N Ergebnisse werden für ihre Position selten geklickt“: Suchen, die
             weniger geklickt werden als die anderen Suchen Ihrer Website auf
-            derselben Position. Titel und Beschreibung neu schreiben.
+            derselben Position. Überarbeiten Sie Titel und Beschreibung.
           </li>
           <li>
             „Klicks sind bei N Suchanfragen gesunken“ und „Klicks sind bei N
@@ -1750,13 +1742,14 @@
           <li>
             „N Seiten verlieren ihre frühere Stärke“: Seiten, die im letzten
             Quartal weit unter das beste der vier Quartale davor gefallen sind.
-            Die Seite auffrischen.
+            Aktualisieren Sie die Seite.
           </li>
           <li>
             „N Seiten werden gesehen, aber nie geklickt“. Die Gewinnschätzung
             ist hier vorsichtig: Sie rechnet mit der Klickrate der
             Positionsgruppe unterhalb der Seite, nicht mit ihrer eigenen. Für
-            Seiten ab Seite zwei gibt es keine Schätzung.
+            Seiten, die erst auf der zweiten Ergebnisseite oder später
+            erscheinen, gibt es keine Schätzung.
           </li>
           <li>
             „Bei N Suchanfragen erscheinen Sie nicht mehr“: Suchen, die im
@@ -1781,37 +1774,36 @@
           </li>
         </ul>
         <p>
-          Unter der Überschrift jeder Gruppe nennt
-          <strong>Warum, und was zu tun ist</strong> den Grund und was zu tun
-          ist. Eine Zeile zeigt ihre Rangnummer, den Befund, den Beleg (zum
-          Beispiel „Position 8,2 · 640 Impressionen · 12 Klicks“), den möglichen
-          Gewinn als „≈ +N Klicks“ und ein Vertrauensetikett (<strong
+          Unter jeder Gruppenüberschrift erklärt
+          <strong>Warum, und was zu tun ist</strong> Ursache und Maßnahme. Jede
+          Zeile zeigt ihre Rangnummer, den Befund, den Beleg (zum Beispiel
+          „Position 8,2 · 640 Impressionen · 12 Klicks“), den möglichen Gewinn
+          als „≈ +N Klicks“ und ein Vertrauensetikett (<strong
             >Vertrauen: hoch</strong
-          >, mittel oder niedrig). Von jeder Gruppe sind die ersten vier
-          Arbeiten sichtbar, der Rest öffnet mit
-          <strong>Alle anzeigen (N)</strong>.
+          >, mittel oder niedrig). Je Gruppe sind die ersten vier Aufgaben
+          sichtbar, der Rest öffnet sich mit <strong>Alle anzeigen (N)</strong>.
         </p>
         <p>
-          Eine Arbeit markieren Sie mit <strong>Erledigt</strong>. Markierte
-          Arbeiten wandern unter „Als erledigt markiert (N)“ und kommen mit
-          <strong>Wiederherstellen</strong> zurück. Die Erledigt-Markierungen
-          werden nur in diesem Browser gespeichert.
-          <strong>Details</strong> (oder
+          Erledigte Aufgaben markieren Sie mit <strong>Erledigt</strong>. Sie
+          wandern unter „Als erledigt markiert (N)“ und kommen mit
+          <strong>Wiederherstellen</strong> zurück. Die Markierungen speichert
+          nur dieser Browser; in einem anderen Browser erscheinen die Aufgaben
+          wieder. <strong>Details</strong> (oder
           <strong>Diese Aufschlüsselung öffnen</strong>) in einer Zeile öffnet
-          die Details dieser Suche, Seite, dieses Geräts oder Landes. Gibt es
-          mehrere Arbeiten für dieselbe Suche oder Seite, zählt die Summe oben
-          sie einmal.
+          die Details dieser Suche, Seite, dieses Geräts oder Landes. Betreffen
+          mehrere Aufgaben dieselbe Suchanfrage oder Seite, zählt die Summe oben
+          sie nur einmal.
         </p>
         <h3 id="suchanfragen-und-seiten">Suchanfragen und Seiten</h3>
         <p>
-          Eine Tabelle nach Suchen oder nach Seiten. Die Spalten sind
+          Eine Tabelle nach Suchanfragen oder nach Seiten. Die Spalten sind
           <strong>Suchanfrage</strong> (oder <strong>Seite</strong>),
           <strong>Klicks</strong>, <strong>Klickdifferenz</strong> (gegenüber
           dem Vergleich), <strong>Impressionen</strong>,
           <strong>CTR</strong> und <strong>Position</strong>. Mit einem Klick
-          auf die Überschrift sortieren Sie. Der Balken hinter einer Zeile ist
-          ihr Anteil an den Klicks dieser Tabelle. Das Feld oben durchsucht die
-          Zeilen. Daneben steht „{angezeigt} / {gesamt} Zeilen“.
+          auf die Überschrift sortieren Sie. Der Balken hinter einer Zeile zeigt
+          ihren Anteil an den Klicks der Tabelle. Das Suchfeld oben durchsucht
+          die Zeilen; daneben steht „{angezeigt} / {gesamt} Zeilen“.
         </p>
         <p>
           <strong>Schnellfilter.</strong> Für Suchanfragen:
@@ -1819,44 +1811,43 @@
           <strong>Position 11-20</strong>, <strong>Niedrige CTR</strong>,
           <strong>Keine Klicks</strong>. Für Seiten:
           <strong>In den Top 10</strong>, <strong>Angeklickt</strong>,
-          <strong>Niedrige CTR</strong>, <strong>Keine Klicks</strong>. Niedrige
-          CTR bedeutet: eine Zeile auf der ersten Seite mit mindestens 100
-          Impressionen und einer Klickrate unter 2 Prozent.
+          <strong>Niedrige CTR</strong>, <strong>Keine Klicks</strong>.
+          <strong>Niedrige CTR</strong> heißt: Position auf der ersten
+          Ergebnisseite, mindestens 100 Impressionen und eine Klickrate unter 2
+          Prozent.
         </p>
         <p>
           <strong>Zeilenmenü.</strong> Hinter den drei Punkten:
           <strong>Seite in einem neuen Tab öffnen</strong>,
           <strong>URL kopieren</strong>, <strong>Keyword kopieren</strong>,
-          <strong>Als Keyword speichern</strong>. Was Sie speichern, landet im
-          Bildschirm <strong>Gespeicherte Keywords</strong>. Ein Klick auf eine
-          Zeile öffnet das Detailfenster.
+          <strong>Als Keyword speichern</strong>. Gespeicherte Keywords
+          erscheinen unter <strong>Gespeicherte Keywords</strong>. Ein Klick auf
+          eine Zeile öffnet das Detailfenster.
         </p>
         <p>
           Der Hinweis unter der Tabelle nennt die Grundlage: „gelesen N
           Suchanfragen, N Klicks. Die Summe der Website beträgt N Klicks; der
           Unterschied stammt von den Suchanfragen, die Google verbirgt.“ Wurde
-          Googles Zeilengrenze erreicht, fehlt das am wenigsten geklickte Ende
-          der Liste, und der Hinweis sagt es.
+          Googles Zeilengrenze erreicht, weist der Hinweis darauf hin.
         </p>
         <h3 id="ranking-chancen">Ranking-Chancen</h3>
-        <p>Es gibt vier Abschnitte.</p>
+        <p>Der Reiter hat vier Abschnitte:</p>
         <ul>
           <li>
-            <strong>Suchanfragen nahe den Top drei.</strong> Suchen mit einer
-            Durchschnittsposition zwischen 4 und 20. Markensuchen sind nicht
-            enthalten. Es steht dort, wie viele Zusatzklicks sie zusammen
-            bringen könnten, wenn jede eine Stufe aufstiege (von 6-10 auf 4-5,
-            von 4-5 auf 2-3, von 11-20 auf Seite eins). Das ist eine Obergrenze.
-            Die Summe umfasst jede Suchanfrage in diesem Bereich, nicht nur die
-            aufgelisteten Zeilen, und danach steht der Zeitraum, für den sie
-            gilt, zum Beispiel „Zeitraum: 27. Sept. 2026 – 24. Okt. 2026.“
-            Werden nur die größten Gewinne aufgelistet, steht darunter „Die N
-            mit dem größten Gewinn werden gezeigt.“ Die Tabelle zeigt
-            <strong>Suchanfrage</strong>, <strong>Zielseite</strong>,
+            <strong>Suchanfragen nahe den Top drei.</strong> Suchanfragen ohne
+            Markenbezug mit einer Durchschnittsposition zwischen 4 und 20. Der
+            Abschnitt nennt als Obergrenze, wie viele Zusatzklicks sie zusammen
+            bringen könnten, wenn jede eine Stufe aufstiege (von 6–10 auf 4–5,
+            von 4–5 auf 2–3, von 11–20 auf Seite eins). Die Summe umfasst alle
+            Suchanfragen in diesem Bereich, nicht nur die aufgelisteten, und
+            nennt ihren Zeitraum, zum Beispiel „Zeitraum: 27. Sept. 2026 – 24.
+            Okt. 2026.“ Werden nur die größten Gewinne aufgelistet, steht
+            darunter „Die N mit dem größten Gewinn werden gezeigt.“ Die Tabelle
+            zeigt <strong>Suchanfrage</strong>, <strong>Zielseite</strong>,
             <strong>Position</strong>, <strong>Impressionen</strong>,
             <strong>Klicks</strong> und <strong>Möglicher Gewinn</strong>. Die
             Zielseite ist die Seite, die Google für diese Suche am häufigsten
-            zeigt. Ausgewählte Suchen übernehmen Sie mit
+            zeigt. Ausgewählte Suchanfragen übernehmen Sie mit
             <strong>Keywords kopieren</strong> oder
             <strong>Als Keyword speichern</strong>.
           </li>
@@ -1866,9 +1857,9 @@
               lässt.</strong
             >
             Suchen, deren Klickrate unter 70 Prozent der Rate Ihrer Website für
-            Ergebnisse auf derselben Position liegt. Der Gewinn kommt ohne
-            Positionswechsel, allein durch neu geschriebenen Titel und
-            Beschreibung. Die Tabelle zeigt die Rate der Suche, die
+            Ergebnisse auf derselben Position liegt. Der Gewinn entsteht ohne
+            Positionswechsel, allein durch bessere Titel und Beschreibungen. Die
+            Tabelle zeigt die Rate der Suche, die
             <strong>Erwartet auf dieser Position</strong> und den möglichen
             Gewinn.
           </li>
@@ -1879,11 +1870,11 @@
           </li>
           <li>
             <strong>CTR Ihrer Website nach Position.</strong> Der Maßstab für
-            die Gewinne oben. Es ist die Klickrate Ihrer eigenen Ergebnisse auf
-            jeder Position, nicht die fremder Websites. Hat eine Position zu
-            wenige Suchen oder Impressionen, steht dort „Zu wenig Daten“, und
-            für sie wird nicht geschätzt. Haben Sie Markennamen festgelegt,
-            werden diese Raten aus Nicht-Marken-Suchen berechnet.
+            die Gewinne oben: die Klickrate Ihrer eigenen Ergebnisse je
+            Position, nicht die anderer Websites. Hat eine Position zu wenige
+            Suchen oder Impressionen, steht dort „Zu wenig Daten“, und für sie
+            wird nicht geschätzt. Sind Markennamen festgelegt, beruhen diese
+            Raten nur auf Nicht-Marken-Suchen.
           </li>
         </ul>
         <h3 id="veranderungen">Veränderungen</h3>
@@ -1892,32 +1883,32 @@
           <li>
             <strong>Größte Veränderungen gegenüber dem Vorzeitraum.</strong>
             Zwei Listen: <strong>Fallend (N)</strong> und
-            <strong>Steigend (N)</strong>. Damit eine Suche oder Seite in eine
-            Liste kommt, müssen sich ihre Klicks um mindestens 3 Klicks und 20
-            Prozent ihres früheren Werts bewegen. Kleine Bewegungen kommen nicht
-            hinein. Eine Zeile zeigt frühere und neue Klicks, Impressionen und
-            Position.
+            <strong>Steigend (N)</strong>. Aufgenommen werden Suchanfragen und
+            Seiten, deren Klicks sich um mindestens 3 und zugleich um mindestens
+            20 Prozent des früheren Werts verändert haben. Eine Zeile zeigt
+            frühere und neue Klicks, Impressionen und Position.
           </li>
           <li>
             <strong>Neu sichtbar</strong> und
             <strong>Verloren (mit Werten aus dem Vorzeitraum).</strong> Nur
-            Suchen, die in genau einem Zeitraum mindestens 50 Impressionen (für
-            28 Tage) hatten. Ist die Tabelle eines Zeitraums wegen der
-            Zeilengrenze unvollständig, lässt sich nicht erkennen, welche Suche
-            neu oder verloren ist, und der Bildschirm sagt das.
+            Suchanfragen, die in genau einem der beiden Zeiträume mindestens 50
+            Impressionen (bezogen auf 28 Tage) hatten. Ist die Tabelle eines
+            Zeitraums wegen der Zeilengrenze unvollständig, lässt sich nicht
+            erkennen, welche Suche neu oder verloren ist, und der Bildschirm
+            sagt das.
           </li>
           <li>
             <strong>Seiten, die an Boden verlieren.</strong> Seiten, deren
             Klicks im letzten Quartal (91 Tage) unter 70 Prozent des besten der
             vier Quartale davor fielen und die auch hinter dem gleichen Quartal
-            des Vorjahres liegen. Dieser Vergleich braucht mehr als ein Jahr
-            Daten. Hat die Search Console keine so alten Daten geliefert oder
-            ist ein Filter aktiv, sagt der Bildschirm es.
+            des Vorjahres liegen. Dafür sind mehr als ein Jahr Daten nötig.
+            Liefert die Search Console keine so alten Daten oder ist ein Filter
+            aktiv, sagt der Bildschirm das.
           </li>
           <li>
             <strong>Langfristig: monatliche Klicks.</strong> Die Search Console
             reicht 16 Monate zurück. Die App bewahrt die Tagessummen auf diesem
-            Computer länger auf. Die Balken zeigen die monatlichen Klicks. Ein
+            Computer länger auf; die Balken zeigen die Klicks je Monat. Ein
             Balken mit gestricheltem Rand ist ein Monat, den das Archiv nicht
             vollständig enthält. Füllt sich das Archiv noch, steht dort „Noch
             keine Tage im Archiv“ oder das Startdatum. Dieser Abschnitt folgt
@@ -1926,11 +1917,8 @@
         </ul>
         <h3 id="uberschneidungen">Überschneidungen</h3>
         <p>
-          Er zeigt Fälle, in denen mehrere Ihrer Seiten bei derselben Suche
-          erscheinen. Seiten können sich gegenseitig die Klicks teilen. Meist
-          genügt es, eine zur Hauptseite zu machen und von den anderen darauf zu
-          verlinken. Die Überschrift der Karte lautet „Seiten, die um dieselbe
-          Suchanfrage konkurrieren“.
+          Dieser Reiter zeigt Suchanfragen, bei denen mehrere Ihrer Seiten
+          erscheinen und sich die Klicks teilen.
         </p>
         <ul>
           <li>
@@ -1949,11 +1937,11 @@
             der anderen steht als „außerhalb des Anteils“.
           </li>
           <li>
-            Diese Analyse betrachtet 28 Tage. Ist 7 Tage gewählt, wird für die
-            Analyse auf 28 erhöht und der echte Zeitraum angegeben. Es werden
-            nur Suchen mit mindestens 100 Impressionen geprüft. Damit eine Seite
-            mitzählt, braucht sie bei dieser Suche mindestens 10 Impressionen
-            und 20 Prozent Anteil.
+            Die Analyse betrachtet mindestens 28 Tage; ist „Letzte 7 Tage“
+            gewählt, nutzt sie 28 Tage und nennt den tatsächlichen Zeitraum.
+            Geprüft werden Suchanfragen ab 100 Impressionen. Eine Seite zählt
+            mit, wenn sie bei der Suchanfrage mindestens 10 Impressionen und 20
+            Prozent Anteil hat.
           </li>
           <li>
             Stößt die Abfrage an die Zeilengrenze der Search Console, warnt der
@@ -1963,32 +1951,26 @@
         <h3 id="verteilung">Verteilung</h3>
         <ul>
           <li>
-            <strong>Positionsverteilung.</strong> Zeigt in Gruppen, auf welchen
-            Positionen Ihre Suchen erscheinen. Enthält das Archiv mindestens
-            zwei Wochen, erscheint darunter
-            <strong>Suchanfragen nach Woche</strong>. Dieses Diagramm gilt nur
-            für die Websuche. Ist als Suchtyp Bild, Video oder News gewählt,
-            steht an seiner Stelle „Die wöchentliche Verteilung gibt es nur für
-            die Websuche.“ Dieses Diagramm zeigt den Anteil der Positionsgruppen
-            Woche für Woche. Es stammt aus dem Suchanfragen-Archiv auf Ihrem
-            Computer. Mit Geräte- oder Länderfilter wird es nicht gezeigt, weil
-            das Archiv diese Aufschlüsselungen nicht hält.
+            <strong>Positionsverteilung.</strong> Zeigt, in welchen
+            Positionsgruppen Ihre Suchanfragen erscheinen. Enthält das lokale
+            Archiv mindestens zwei Wochen, folgt
+            <strong>Suchanfragen nach Woche</strong> mit dem Anteil der
+            Positionsgruppen je Woche. Dieses Diagramm gibt es nur für die
+            Websuche und ohne Geräte- oder Länderfilter, weil das Archiv diese
+            Aufschlüsselungen nicht speichert.
           </li>
           <li>
-            <strong>Marken- und Nicht-Marken-Suchen.</strong> Suchen, die mit
-            Ihrem Namen kommen, und Suchen von Leuten, die Sie nicht kannten,
-            werden getrennt gemessen: <strong>Markensuchen</strong> und
-            <strong>Nicht-Marken-Suchen</strong>. Für jede stehen Zahl der
-            Suchanfragen, Klicks, CTR und Durchschnittsposition. Ist kein
-            Markenname festgelegt, steht dort „Markensuchen sind nicht
-            getrennt“, und die Schaltfläche
-            <strong>Markennamen hinzufügen</strong> erscheint. Hat die App aus
-            Ihrer Domain Markennamen vorgeschlagen, steht dort „Nicht
-            bestätigt.“ Gemessen wurde dann mit den vorgeschlagenen Namen.
-            Klicken Sie auf <strong>Vorschläge bestätigen</strong> oder nutzen
-            Sie <strong>Markennamen bearbeiten</strong>. Die Anteile beziehen
-            sich auf die gelesenen Suchanfragen, verborgene sind nicht
-            enthalten.
+            <strong>Marken- und Nicht-Marken-Suchen.</strong> Suchanfragen mit
+            Ihrem Markennamen und alle übrigen werden getrennt ausgewertet,
+            jeweils mit Zahl der Suchanfragen, Klicks, CTR und
+            durchschnittlicher Position. Ist kein Markenname festgelegt, steht
+            dort „Markensuchen sind nicht getrennt“, und die Schaltfläche
+            <strong>Markennamen hinzufügen</strong> erscheint. Hat die App
+            Markennamen aus Ihrer Domain abgeleitet, steht dort „Nicht
+            bestätigt.“, und gerechnet wurde mit diesen Vorschlägen. Klicken Sie
+            auf <strong>Vorschläge bestätigen</strong> oder nutzen Sie
+            <strong>Markennamen bearbeiten</strong>. Die Anteile beziehen sich
+            auf die abgerufenen Suchanfragen ohne verborgene.
           </li>
           <li>
             <strong>Geräte</strong> und <strong>Länder.</strong> Ein Klick auf
@@ -1996,96 +1978,86 @@
           </li>
           <li>
             <strong>Darstellung in der Suche.</strong> In welchen besonderen
-            Formaten Ihre Ergebnisse bei Google erscheinen (Rich Results, Video
-            und so weiter). Ein Rich Result ist ein Ergebnis, das mit
-            zusätzlichen Angaben wie Produkt oder Video erscheint. Google
-            summiert diese Aufschlüsselung nach Seite. Hat Google kein
-            besonderes Format gemeldet, sagt der Bildschirm das.
+            Formaten Ihre Ergebnisse erscheinen, etwa als Rich Result mit
+            Zusatzangaben wie Produktdaten oder als Video. Google summiert diese
+            Aufschlüsselung nach Seite. Hat Google kein besonderes Format
+            gemeldet, sagt der Bildschirm das.
           </li>
           <li>
-            <strong>Fragesuchen.</strong> Suchen in Frageform und Suchen mit
-            vier oder mehr Wörtern. Sie sind die klarste Quelle für
-            Inhaltsideen.
+            <strong>Fragesuchen.</strong> Suchanfragen in Frageform und mit vier
+            oder mehr Wörtern, eine gute Quelle für Inhaltsideen.
           </li>
         </ul>
         <p>
-          <strong>Markennamen.</strong> Markennamen tragen Sie mit
-          <strong>Markennamen bearbeiten</strong> ein. Geben Sie den Namen Ihrer
-          Website ein und wie Leute ihn schreiben, zum Beispiel den Namen und
-          seine Kurzform. Suchen mit diesen Wörtern gelten als Markensuchen. Es
-          gibt die Schaltflächen <strong>Speichern</strong> und
-          <strong>Abbrechen</strong>, und über die Zeile
-          <strong>Vorschläge:</strong> fügen Sie einen Namen mit einem Klick
-          hinzu. Markennamen festzulegen ändert nicht nur diesen Bildschirm,
-          sondern auch die Gewinnschätzung im Bildschirm
-          <strong>Chancen</strong>, denn diese Schätzung lässt Markensuchen aus.
+          <strong>Markennamen.</strong> Unter
+          <strong>Markennamen bearbeiten</strong> tragen Sie den Namen Ihrer
+          Website und gängige Schreibweisen ein, etwa eine Kurzform.
+          Suchanfragen mit diesen Wörtern gelten als Markensuchen. Über die
+          Zeile <strong>Vorschläge:</strong> übernehmen Sie einen Namen mit
+          einem Klick. Die Markennamen wirken auch auf die Gewinnschätzung unter
+          <strong>Chancen</strong>, die Markensuchen auslässt.
         </p>
         <p>
-          <strong>Detailfenster.</strong> Ein Klick auf eine Suche oder Seite
-          (in einer Tabelle, bei Aufgaben, Ranking-Chancen oder Veränderungen)
-          öffnet es von rechts. Oben stehen der Zeitraum und „endgültige Tage“.
-          Danach vier Zahlen (Klicks, Impressionen, CTR, Durchschnittliche
-          Position) und ihre Veränderung gegenüber dem gewählten Vergleich.
-          Darunter die Linie <strong>Tägliche Klicks</strong>. Bei einer Seite
-          erscheint eine Liste „Suchanfragen dieser Seite (N)“, bei einer Suche
-          „Seiten für diese Suchanfrage (N)“. Jede Zeile nennt Klicks und
-          Position. Wird zu einer Seite keine Suche aufgelistet, stammen ihre
-          Klicks womöglich aus Suchanfragen, die Google verbirgt. Die
-          Suchanfragen können weniger ergeben als die Summe der Seite, weil
-          verborgene nicht gelistet werden. <strong>Seite öffnen</strong> öffnet
-          die Seite in einem neuen Tab.
-          <strong>Als Keyword speichern</strong> legt die Suche unter
-          <strong>Gespeicherte Keywords</strong> ab.
+          <strong>Detailfenster.</strong> Ein Klick auf eine Suchanfrage oder
+          Seite in einer Tabelle, bei Aufgaben, Ranking-Chancen oder
+          Veränderungen öffnet es rechts. Es zeigt Zeitraum, die vier Kennzahlen
+          mit Veränderung und die Linie <strong>Tägliche Klicks</strong>. Bei
+          einer Seite erscheint eine Liste „Suchanfragen dieser Seite (N)“, bei
+          einer Suche „Seiten für diese Suchanfrage (N)“. Jede Zeile nennt
+          Klicks und Position. Ergeben die Suchanfragen einer Seite weniger als
+          ihre Summe oder fehlen sie ganz, stammen die Klicks aus verborgenen
+          Suchanfragen. <strong>Seite öffnen</strong> öffnet die Seite in einem
+          neuen Tab. <strong>Als Keyword speichern</strong> legt die Suchanfrage
+          unter <strong>Gespeicherte Keywords</strong> ab. Links aus Chancen und
+          Ranking-Verfolgung öffnen dieses Fenster direkt für die exakte URL
+          oder Suchanfrage und deren Zeitraum; ein nicht lesbarer Zeitraum wird
+          nie stillschweigend ersetzt.
         </p>
         <h2 id="so-gehen-sie-vor">So gehen Sie vor</h2>
         <ol>
           <li>
-            Lesen Sie zuerst den Zusammenfassungssatz oben. Er sagt, ob die
-            Klicks steigen oder fallen.
+            Lesen Sie zuerst die Zusammenfassung: Steigen oder fallen die
+            Klicks?
           </li>
           <li>
-            Sehen Sie sich die Leiste <strong>Damit anfangen</strong> oder den
-            Reiter <strong>Aufgaben</strong> an. Die ersten drei Arbeiten
-            bringen am meisten.
+            Sehen Sie sich <strong>Damit anfangen</strong> oder den Reiter
+            <strong>Aufgaben</strong> an. Die ersten drei Aufgaben bringen am
+            meisten.
           </li>
           <li>
             Gibt es einen großen Rückgang, stellen Sie den
             <strong>Zeitraum</strong> auf <strong>Letzte 3 Monate</strong>.
-            Finden Sie im Diagramm den Tag, an dem der Rückgang begann. Fällt
-            auf diesen Tag ein Google-Update oder eine eigene Änderung, sehen
-            Sie es in den Markierungen.
+            Suchen Sie im Diagramm den Tag, an dem der Rückgang begann; die
+            Markierungen zeigen, ob dort ein Google-Update oder eine eigene
+            Änderung liegt.
           </li>
           <li>
             Sehen Sie sich im Reiter <strong>Ranking-Chancen</strong> die
             <strong>Suchanfragen nahe den Top drei</strong> an. Öffnen Sie die
-            Seiten der drei am häufigsten angezeigten Suchen. Passen Sie Titel
-            und ersten Absatz an diese Suche an.
+            Seiten der drei Suchanfragen mit den meisten Impressionen und
+            richten Sie Titel und ersten Absatz auf die jeweilige Suchanfrage
+            aus.
           </li>
           <li>
-            Drücken Sie im Reiter <strong>Suchanfragen</strong> die Schaltfläche
-            <strong>Niedrige CTR</strong>. Ihre Position ist gut, aber niemand
-            klickt. Das Problem liegt sehr wahrscheinlich bei Titel und
-            Beschreibung.
+            Wählen Sie im Reiter <strong>Suchanfragen</strong> den Schnellfilter
+            <strong>Niedrige CTR</strong>. Diese Ergebnisse stehen gut, werden
+            aber kaum geklickt; meist liegt es an Titel und Beschreibung.
           </li>
           <li>
             Sehen Sie sich im Reiter <strong>Veränderungen</strong>
-            <strong>Fallend</strong> an. Klicken Sie die oberste Suche an und
-            lesen Sie im Detailfenster den Tag ab, an dem der Rückgang begann.
+            <strong>Fallend</strong> an. Öffnen Sie die oberste Suchanfrage und
+            lesen Sie im Detailfenster ab, wann der Rückgang begann.
           </li>
           <li>
-            Sehen Sie im Reiter <strong>Überschneidungen</strong> Seiten, die um
-            dieselbe Suche konkurrieren, entscheiden Sie zuerst, welche Seite
-            antworten soll. Richten Sie dann die internen Links auf diese Seite.
+            Konkurrieren im Reiter <strong>Überschneidungen</strong> mehrere
+            Seiten um dieselbe Suchanfrage, legen Sie eine Hauptseite fest und
+            richten Sie die internen Links auf sie aus.
           </li>
           <li>
-            Schreiben Sie nach einer Korrektur ihr Datum mit
-            <strong>Notiz hinzufügen</strong> ins Diagramm. Zwei Wochen später
-            sehen Sie ihre Wirkung im Diagramm.
+            Halten Sie jede Korrektur mit <strong>Notiz hinzufügen</strong> im
+            Diagramm fest. Nach etwa zwei Wochen sehen Sie dort ihre Wirkung.
           </li>
-          <li>
-            Ist eine Arbeit fertig, sagen Sie <strong>Erledigt</strong>. Die
-            Liste wird kürzer.
-          </li>
+          <li>Markieren Sie fertige Aufgaben mit <strong>Erledigt</strong>.</li>
           <li>
             Speichern Sie am Monatsende die Ansicht mit
             <strong>Bericht herunterladen</strong>.
@@ -2095,63 +2067,63 @@
           Wie die Zahlen berechnet werden
         </h2>
         <p>
-          Google liefert die Daten mit drei Tagen Verzögerung. Der Zeitraum
-          endet deshalb nicht heute, sondern drei Tage davor. Die letzten Tage
-          können sich noch einige Tage ändern. Die App nimmt diese Tage nicht in
-          die Summen auf. Der Vorzeitraum ist der gleich lange Zeitraum direkt
-          vor diesem. Beim Vorjahresvergleich werden dieselben Tage des
-          Vorjahres genommen. Die Veränderung bei Klicks und Impressionen sehen
-          Sie in Prozent, die der CTR in Punkten.
+          Google liefert die Daten mit etwa drei Tagen Verzögerung; der Zeitraum
+          endet deshalb drei Tage vor heute. Der Vorzeitraum ist der gleich
+          lange Zeitraum direkt davor, der Vorjahresvergleich nutzt dieselben
+          Tage des Vorjahres.
         </p>
         <p>
-          Die Kacheln sind die tatsächlichen Summen der Website. Die Tabellen
-          zählen jede Seite, die bei derselben Suche erscheint, einzeln.
-          Addieren Sie die Seitentabelle, kommt eine größere Zahl heraus als in
-          der Kachel. Das ist kein Fehler. Addieren Sie die
-          Suchanfragen-Tabelle, kommt eine kleinere Zahl heraus, weil verborgene
-          Suchanfragen nicht gelistet werden.
+          Die Kacheln zeigen die tatsächlichen Summen der Website. Die
+          Seitentabelle zählt jede Seite, die bei derselben Suche erscheint,
+          einzeln; ihre Summe ist deshalb größer als die Kachel. Die Summe der
+          Suchanfragen-Tabelle ist kleiner, weil verborgene Suchanfragen fehlen.
+          Beides ist kein Fehler.
         </p>
         <p>
-          Google liefert pro Abruf höchstens 1.000 Zeilen. Wurde die
-          Zeilengrenze erreicht, fehlt das am wenigsten geklickte Ende der
-          Liste, und der Bildschirm sagt es.
+          Die App liest die Tabellen für Suchanfragen, Seiten und
+          Suchanfrage-Seite-Paare in Abschnitten von 25.000 Zeilen, bis Google
+          keine neuen Zeilen mehr liefert. Google stellt pro Tag und Suchtyp
+          höchstens 50.000 Zeilen bereit und kann einzelne Zeilen auslassen;
+          auch vollständig gelesene Abschnitte enthalten also nicht jede Suche.
+          Ist die Grenze erreicht, fehlen die Zeilen mit den wenigsten Klicks,
+          und der Bildschirm weist darauf hin. Die Summen der Website stammen
+          nicht aus diesen Tabellen, sondern aus Googles eigener Gesamtzahl.
         </p>
         <p>
-          <strong>Möglicher Gewinn.</strong> Die App wendet auf jede Suche die
-          eigene Klickrate Ihrer Website an. Sie nimmt die Rate eine Stufe über
-          der Position der Suche, multipliziert sie mit den Impressionen der
-          Suche und zieht die aktuellen Klicks ab. Suchen mit sehr wenigen
-          Impressionen zählen nicht (mindestens 50 Impressionen für 28 Tage).
-          Bei Titelproblemen ist der Maßstab, dass die Suche die Rate Ihrer
-          Website auf derselben Position erreicht. Markensuchen bleiben außen
-          vor. Deshalb ist jeder Gewinn eine Obergrenze. Dieselbe Rechnung gilt
-          im Bildschirm <strong>Chancen</strong>.
+          Die App startet höchstens zehn Anfragen pro Sekunde an Google. Meldet
+          Google einen Kontingentfehler, warten neue Abrufe fünfzehn Minuten.
+          Quellen:
+          <a
+            href="https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Googles Anleitung zum Abruf aller Daten</a
+          >,
+          <a
+            href="https://developers.google.com/webmaster-tools/limits"
+            target="_blank"
+            rel="noopener noreferrer"
+            >API-Kontingente</a
+          >.
         </p>
         <p>
-          <strong>Vertrauensetikett.</strong> Das Etikett neben jeder Arbeit
-          zeigt, wie solide die Daten hinter dem Befund sind: hoch, mittel oder
-          niedrig.
+          <strong>Möglicher Gewinn.</strong> Die App nimmt die Klickrate Ihrer
+          Website für die nächsthöhere Positionsstufe, multipliziert sie mit den
+          Impressionen der Suchanfrage und zieht die aktuellen Klicks ab.
+          Suchanfragen unter 50 Impressionen (bezogen auf 28 Tage) zählen nicht,
+          Markensuchen ebenfalls nicht. Bei Titelproblemen ist der Maßstab die
+          Klickrate Ihrer Website auf derselben Position. Dieselbe Rechnung
+          nutzt der Bildschirm <strong>Chancen</strong>.
+        </p>
+        <p>
+          <strong>Vertrauensetikett.</strong> Es zeigt, wie belastbar die Daten
+          hinter einem Befund sind: hoch, mittel oder niedrig.
         </p>
         <h2 id="haufige-fragen">Häufige Fragen</h2>
         <p>
-          <strong
-            >Warum sind die letzten drei Tage im Diagramm schraffiert?</strong
-          >
-          Google zählt diese Tage noch. Sie fließen nicht in die Summen ein. In
-          einigen Tagen werden sie endgültig.
-        </p>
-        <p>
-          <strong
-            >Die Tabellensumme stimmt nicht mit der Kachel überein.</strong
-          >
-          Das ist normal. Die Kachel ist die Summe der Website. Die Tabelle der
-          Suchanfragen und die der Seiten weichen ab, weil verborgene
-          Suchanfragen fehlen und mehrere Seiten einzeln zählen.
-        </p>
-        <p>
-          <strong>Meine Position ist bei der Suche auf Google anders.</strong>
-          Die Position hier ist der Durchschnitt des Zeitraums. Sie gibt nicht
-          eine einzelne Suche wieder.
+          <strong>Meine Position ist bei einer Google-Suche anders.</strong> Die
+          Position hier ist ein Durchschnitt über den Zeitraum, nicht das
+          Ergebnis einer einzelnen Suche.
         </p>
         <p>
           <strong>Die gesuchte Suchanfrage steht nicht in der Liste.</strong>
@@ -2159,70 +2131,49 @@
           Websites gibt es womöglich gar keine Suchanfragenzeilen.
         </p>
         <p>
-          <strong
-            >Warum ist eine Arbeit aus der Liste Aufgaben verschwunden?</strong
-          >
-          Haben Sie sie als erledigt markiert, steht sie unter „Als erledigt
-          markiert“. Die Markierungen werden nur in diesem Browser gespeichert.
-          In einem anderen Browser oder auf einem anderen Computer sehen Sie sie
-          wieder.
+          <strong>Warum ist eine Aufgabe verschwunden?</strong> Wenn Sie sie als
+          erledigt markiert haben, steht sie unter „Als erledigt markiert“.
         </p>
         <p>
           <strong
             >Soll ich Seiten zusammenführen, wenn sie sich
             überschneiden?</strong
           >
-          Meist nein. Entscheiden Sie zuerst, welche Seite antworten soll.
-          Richten Sie dann die internen Links auf diese Seite. Beantworten die
-          Seiten wirklich dieselbe Frage, führen Sie sie zusammen.
+          Meist nicht. Legen Sie eine Hauptseite fest und richten Sie die
+          internen Links auf sie aus. Nur wenn die Seiten wirklich dieselbe
+          Frage beantworten, führen Sie sie zusammen.
         </p>
         <p>
-          <strong>Muss ich einen Markennamen eintragen?</strong> Nein, aber tun
-          Sie es nicht, verfälschen Leute, die Ihren eigenen Namen suchen, die
-          CTR-Rechnung, und die Chancen fallen unvollständig aus. Der Bildschirm
-          erinnert mit der Aufgabe „Legen Sie Ihren Markennamen fest“ daran.
-          Nutzt die App Namen, die sie aus Ihrer Domain vorgeschlagen hat, heißt
-          die Aufgabe „Markennamen bestätigen“.
+          <strong>Muss ich einen Markennamen eintragen?</strong> Nein. Ohne
+          Markennamen verzerren Suchen nach Ihrem eigenen Namen jedoch die
+          CTR-Werte, und die Chancen werden ungenau. Daran erinnert die Aufgabe
+          „Legen Sie Ihren Markennamen fest“ bzw. „Markennamen bestätigen“.
+        </p>
+        <h2 id="wenig-daten">Wenig Daten</h2>
+        <p>
+          Liegen die Klicks des Vergleichszeitraums unter der Analyseschwelle,
+          nennt die Zusammenfassung zuerst die tatsächlichen Klicks und
+          Impressionen; Prozentsätze und Mittelwerte belegen dann weder Wachstum
+          noch Verlust. Eine leere Liste der Ranking-Chancen heißt nicht, dass
+          keine Suchanfrage auf Position 4 bis 20 steht: Auch die
+          zeitraumabhängige Impressionsschwelle und der Ausschluss von
+          Markensuchen wirken. Ist die Aufgabenliste leer, öffnen Sie die
+          sichtbaren Suchanfragen; sind bereits die letzten drei Monate gewählt,
+          schlägt die App keinen längeren Zeitraum vor.
         </p>
         <h2 id="grenzen">Grenzen</h2>
         <p>
           Die Suchtypen Discover und Google News sind nicht enthalten. Es gibt
-          weder Suchvolumen noch Positionen von Mitbewerbern. Daten von Google
-          reichen nicht weiter als 16 Monate zurück. Für Älteres sehen Sie ins
-          Archiv auf diesem Computer: Das Langzeit-Diagramm im Reiter
-          <strong>Veränderungen</strong> und der Bildschirm
-          <strong>Ranking-Verfolgung</strong> lesen daraus.
-          Erledigt-Markierungen und Notizen liegen nur auf dieser Installation.
-        </p>
-        <p>
-          Links aus Chancen und Ranking-Verfolgung öffnen die exakte URL oder
-          Suchanfrage mit den Quelldaten. Die Übersicht bleibt auf die Property
-          bezogen; Werte des gewählten Eintrags stehen im Detailbereich. Nicht
-          lesbare Zeiträume werden nie still ersetzt. Eine Zeitraumvorgabe hebt
-          die fixierten Daten auf. Der Bericht übermittelt die angezeigten Daten
-          an den Server; während einer Aktualisierung ist der Download gesperrt.
-          Die Daten bleiben fest, Google kann die erneut gelesenen Messwerte
-          jedoch korrigieren.
-        </p>
-        <h2 id="wenige-daten-einordnen">Wenige Daten einordnen</h2>
-        <p>
-          Liegt die Klickzahl des Vergleichszeitraums unter der Analyseschwelle,
-          nennt die Zusammenfassung zuerst die tatsächlichen Klicks und
-          Impressionen. Prozentsätze und Mittelwerte allein belegen bei wenigen
-          Daten weder Wachstum noch Verlust. Eine leere Chancenliste bedeutet
-          nicht, dass keine Suchanfrage auf Position 4–20 liegt: Es gelten auch
-          die zeitabhängige Impressionsschwelle und der Ausschluss von
-          Markensuchanfragen.
-        </p>
-        <p>
-          Bei leerer Aufgabenliste können Sie die sichtbaren Suchanfragen
-          öffnen. Sind bereits die letzten drei Monate gewählt, wird kein
-          längerer Zeitraum empfohlen. Es wird nicht angenommen, dass Google
-          verborgene Suchanfragen später offenlegt.
+          weder Suchvolumen noch Positionen von Mitbewerbern. Google liefert
+          höchstens 16 Monate. Ältere Daten stehen im lokalen Archiv: Das
+          Langzeit-Diagramm im Reiter <strong>Veränderungen</strong> und der
+          Bildschirm <strong>Ranking-Verfolgung</strong> lesen daraus. Das
+          Archiv füllt sich nur, solange dieser Bildschirm oder die
+          Ranking-Verfolgung geöffnet ist.
         </p>
         <nav class="pager" aria-label="Vorherige und nächste Seite">
           <a class="pager-prev" rel="prev" href="/de/dokumentation/uebersicht/"
-            ><span>Zurück</span><strong>Übersicht (Panel)</strong></a
+            ><span>Zurück</span><strong>Übersicht</strong></a
           ><a
             class="pager-next"
             rel="next"
@@ -2256,15 +2207,15 @@
             >
           </li>
           <li><a href="#haufige-fragen">Häufige Fragen</a></li>
+          <li><a href="#wenig-daten">Wenig Daten</a></li>
           <li><a href="#grenzen">Grenzen</a></li>
-          <li><a href="#wenige-daten-einordnen">Wenige Daten einordnen</a></li>
         </ol>
       </nav>
     </main>
     <footer>
       <div class="wrap">
         <p class="star">
-          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          Ein Stern hilft anderen, das Werkzeug zu finden.
           <a
             href="https://github.com/ucsahinn/seotracker"
             target="_blank"

@@ -5,30 +5,63 @@ kind: nasil-yapilir
 updated: 2026-10-27
 ---
 
-Ajan kurulumu, Claude Code, Codex ya da Cursor gibi bir yapay zekâ asistanını MCP (Model Context Protocol) ile seowatcher'a bağlar. Bağlandıktan sonra asistan Search Console, Analytics ve denetim verinizi bilgisayarınızdaki uygulamadan okur, denetimi çalıştırır ve rapor yazar. Asistanın okuduğu veri o asistanın sağlayıcısına gidebilir.
+Claude Code, Codex ya da Cursor gibi bir yapay zekâ asistanı (ajan), MCP (asistan bağlantısı) üzerinden seowatcher'a bağlanır. Bağlanan ajan Search Console, Analytics ve denetim verinizi bilgisayarınızdaki uygulamadan okur, denetim başlatır ve rapor kaydeder. Ajanın okuduğu veri, o ajanın sağlayıcısına gidebilir.
 
 ## Ajanı bağlayın
 
-Çalışan uygulamada **Ajan kurulumu** sayfasını açın. Claude Code, Codex veya Diğer seçeneğini seçip **Kurulum komutunu kopyala** deyin. Seçenekler ok tuşları, Home ve End ile kullanılabilir; seçim komutu kendiliğinden kopyalamaz. Metni ajanınıza verin. Metin gerçek parola içermez; ajan parolayı yalnızca yerel kurulumdan kullanır. **Sıfırdan kurulum** ayrı bir seçenektir.
+1. Uygulamada sol menüden **Ajan kurulumu** sayfasını açın.
+2. **Hangi ajanı kullanıyorsunuz?** sorusuna **Claude Code**, **Codex** ya da **Diğer** ile cevap verin. Seçim ok tuşları, Home ve End ile de yapılır.
+3. **Kurulum komutunu kopyala** düğmesine basın. Seçim yapmak komutu kendiliğinden kopyalamaz.
+4. Kopyaladığınız metni ajanınıza yapıştırın.
 
-## Yeni çağrıyı doğrulayın
+Komut gerçek parolayı içermez; ajan parolayı bilgisayarınızdaki kurulumdan okur. Uygulamayı yeni kurduysanız ya da her şeyi baştan kontrol etmek istiyorsanız **Sıfırdan kurulum komutunu kopyala** düğmesini kullanın.
 
-**Bağlantıyı doğrula** deyin ve ajandan bir seowatcher aracı çağırmasını isteyin. Sayfa en fazla 60 saniye boyunca 5 saniyede bir yerel çağrı kaydını okur. Önceden yapılmış bir çağrı yeni kurulumu doğrulamaz. Sekme gizlenince, hata oluşunca veya iptal edince yoklama durur. Yeni çağrı görülmediyse ajanınızın MCP durumuna bakıp yeniden deneyin. Bu sonuç bağlantının kesin olarak bozuk olduğu anlamına gelmez.
+## Bağlantıyı doğrulayın
 
-**Bağlandı** ve son çağrı tarihi geçmiş kullanımı gösterir; sürekli çevrimiçi oturum değildir. Durum okunamazsa yeniden okuyun. Araç erişimi kurulum kapsamındadır, yalnızca açık projeyle sınırlı değildir.
+**Bağlantıyı doğrula** düğmesine basın ve ajanınızdan herhangi bir seowatcher aracını çağırmasını isteyin. Sayfa 60 saniye boyunca, beş saniyede bir yeni bir çağrı arar. Daha önce yapılmış bir çağrı sayılmaz.
+
+- **Yeni araç çağrısı doğrulandı.** görünürse kurulum tamamdır.
+- **Yeni araç çağrısı görülmedi.** görünürse ajanınızda MCP durumunu kontrol edin, bir araç çağrısı yaptırın ve yeniden doğrulayın. Bu sonuç bağlantının kesin bozuk olduğu anlamına gelmez.
+
+Sekmeyi arka plana almak, bir hata ya da **Vazgeç** beklemeyi durdurur.
+
+Sayfanın üstündeki **Araç çağrısı alındı** rozeti ve son çağrı zamanı geçmiş kullanımı gösterir; sürekli açık bir oturumu göstermez. Durum okunamazsa **Durumu yeniden oku** düğmesini kullanın. Bağlanan ajan yalnızca açık projeye değil, bu kurulumdaki tüm projelere erişir.
 
 ## Parolayı koruyun
 
-Hazır kurulum metnini tercih edin. Elle kurulumda yalnızca MCP istemcinizin yerel gizli başlık alanını kullanın: `Authorization: Bearer <token>`. Windows PowerShell'de parolayı ekrana yazdırmadan panoya almak için:
+Hazır kurulum komutunu tercih edin. Elle bağlamanız gerekirse parolayı yalnızca MCP istemcinizin gizli başlık alanına yazın: `Authorization: Bearer <parola>`.
+
+Parolayı ekrana yazdırmadan panoya almak için PowerShell'de şu komutu çalıştırın.
+
+Windows kurulumu:
 
 `(Get-Content "$env:LOCALAPPDATA\seowatcher\mcp-token").Trim() | Set-Clipboard`
 
-Docker için PowerShell:
+Docker kurulumu:
 
 `(docker compose exec -T seotracker cat /app/.wrangler/mcp-token).Trim() | Set-Clipboard`
 
-Yerel başlık alanına yapıştırınca panoyu temizleyin. Parolayı terminale, sohbete, ekran görüntüsüne veya kaynak koduna koymayın. Windows'ta parola dosyasını tepsi menüsündeki **Veri klasörünü aç** ile bulabilirsiniz.
+Parolayı başlık alanına yapıştırdıktan sonra panoyu temizleyin. Parolayı terminale, sohbete, ekran görüntüsüne ya da kaynak koduna koymayın. Windows'ta parola dosyasının bulunduğu klasörü tepsi menüsündeki **Veri klasörünü aç** açar.
 
-## Beceriler ve sorun giderme
+## Beceriler
 
-**Beceriler** sekmesi SEO iş akışlarını listeler. Kurulum metni becerileri yükler; **Güncelleme komutunu kopyala** mevcut kurulumu günceller. Claude Code'da /seo-audit, Codex'te $seo-audit kullanılır. 401 hatasında yerel istemcinin başlığı gönderdiğini kontrol edin. İstek reddedilirse uygulamanın açık olduğunu ve MCP adresini doğrulayın. MCP durumunu istemcinizde yenileyip yeni araç çağrısıyla tekrar doğrulayın.
+**Beceriler** sekmesi, kurulum komutunun ajanınıza yüklediği altı hazır SEO iş akışını listeler:
+
+| Beceri              | Ne yapar                                                                           |
+| ------------------- | ---------------------------------------------------------------------------------- |
+| `seo-coach`         | Nerede durduğunuzu anlatır ve sıradaki adımı seçer.                                |
+| `seo-project-setup` | Hedeflerinizi, rakiplerinizi ve önemli sayfalarınızı bir kez kaydeder.             |
+| `seo-audit`         | Sitenizi denetler ve bu hafta yapılacak tek bir işi öne çıkarır.                   |
+| `seo-check-in`      | Bu dönemi öncekiyle karşılaştırır: ne değişti, ne zaman, önemli mi.                |
+| `seo-triage`        | Trafik düştüyse düşüşün gerçek olup olmadığını, nerede ve ne zaman olduğunu bulur. |
+| `seo-report`        | Bir becerinin sonucunu Raporlar sayfasına kaydeder.                                |
+
+Claude Code'da beceriyi `/seo-audit`, Codex'te `$seo-audit` biçiminde çağırırsınız. Ajanı daha önce kurduysanız **Güncelleme komutunu kopyala** ile becerileri yenileyin; bağlantı ayarlarınız ve kendi düzenlemeleriniz korunur.
+
+## Bağlantı çalışmıyorsa
+
+- **401 hatası:** MCP istemciniz `Authorization` başlığını göndermiyor. Başlığı ve parolayı kontrol edin.
+- **Bağlantı reddedildi:** Uygulamanın açık olduğunu ve ajanın doğru MCP adresini kullandığını kontrol edin. Adres **Bu kurulumun MCP adresi:** satırında yazar.
+- Düzelttikten sonra ajanınızda MCP durumunu yenileyin ve yeni bir araç çağrısıyla yeniden doğrulayın.
+
+<!-- Sources: src/routes/_app/ai.tsx; src/client/features/ai-mcp/ -->

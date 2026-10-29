@@ -1,27 +1,37 @@
 ---
 title: Projects
-description: Projects helps you choose a site and complete its missing connections. Each project keeps its own Google properties, audits and reports.
+description: Create a project for each site, pick the one to work on, finish its connections and archive or restore projects without losing data.
 screen: Projeler, Proje ayarları
 route: /projects, /p/{proje}/settings
 updated: 2026-10-28
 ---
 
-Projects helps you choose a site and complete its missing connections. Each project keeps its own Google properties, audits and reports.
+A project is one site. It keeps its own Search Console property, GA4 property, audits, reports and notes. The **Projects** screen lists them, shows what each one still needs and takes you to its next step.
 
-## Read the screen
+## Find and open a project
 
-With multiple projects, search by name or domain and sort by either. **Last opened** is the project remembered by this browser, not an SEO status. Continue with **Add site**, **Connect Search Console**, or **Open dashboard**, according to the known configuration. **Project context** opens notes; **Settings** opens configuration.
+With several projects, search by name or domain and sort by either. **Last opened** marks the project this browser opened most recently; it says nothing about the site's health. Each card offers the next useful action for that project: **Add site**, **Connect Search Console** or **Open dashboard**. **Project context** opens the project's notes and **Settings** opens its configuration.
 
-**Search archive** means locally stored Web search data for all devices and countries. The dates are visible. The window ends on the newest stored day, which may be old. With missing days, clicks are the subtotal of observed days only. A missing day is a gap, not zero. A change is shown only when both periods are complete. Equal totals say “Unchanged”; changes from zero include explicit previous and current counts. Archive details show the last stored day and available read timestamp. Legacy records do not identify the evidence used to establish finality.
+## What a project card shows
 
-The audit belongs to the selected site's own host. The last completed snapshot and a newer failed or running attempt are distinct. A stored connection does not prove a successful Google read. Unavailable sources are neither disconnected nor measured zero: use **Retry**. Refresh reads identities and local facts together; it does not call Google or start an audit.
+**Search archive** shows clicks from the locally stored Search Console archive: Web search, all devices and all countries. The dates are on the card. The window ends on the newest stored day, which can be some time ago if the archive has not been updated. If days are missing, the click count covers only the days that were observed; a missing day is a gap, not zero. A change is shown only when both periods are complete. Equal totals read **No change**.
 
-## Create and manage
+When the previous period has fewer than 20 clicks, the badge shows the difference in clicks instead of a percentage. A rise from 1 to 5 clicks reads +4 clicks; a change that small is not evidence of growth on its own. A rise from zero shows both counts.
 
-Choose **New project**, enter a name, optional domain, country and language. Creating it collects no data. Choose Google properties in **Settings → Connections**. General settings change identity and market. One project has one Search Console and one Analytics property.
+The audit summary belongs to the project's own domain. The last completed audit and a newer attempt that is still running or failed are shown separately.
 
-Archiving preserves data. **Archived → Restore** brings the project back. The last remaining project cannot be archived. Search clicks differ from GA4 sessions and query-archive totals. Projects with different dates are not added together.
+A saved connection does not prove that Google data can be read. If a source cannot be read, the card says so instead of showing it as disconnected or as zero; use **Try again**. Refreshing the screen reads local data only. It does not call Google and does not start an audit.
 
-When the previous period has fewer than 20 clicks, the badge shows the click difference instead of a percentage. For example, 1 to 5 is +4 clicks; with small counts, that change alone is not strong evidence of growth.
+## Create a project
+
+Choose **New project** and enter a name. Domain, country and language are optional. Creating a project collects no data. Next, open **Project settings → Connections** and choose one Search Console property and one GA4 property for the project. The **Basics** tab changes the name, domain and market.
+
+## Archive and restore
+
+Archiving hides a project and keeps all its data. Restore it from the **Archived** list. You cannot archive your only project.
+
+## Comparing projects
+
+Search Console clicks, GA4 sessions and archive totals measure different things, so do not compare one project's clicks with another project's sessions. Cards can also cover different dates; do not add them together.
 
 <!-- Sources: src/routes/_app/projects.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/project-context/; src/server/features/projects/services/ProjectOverviewService.ts; src/server/features/project-context/ -->

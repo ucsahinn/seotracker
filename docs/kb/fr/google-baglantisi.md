@@ -5,20 +5,51 @@ kind: nasil-yapilir
 updated: 2026-10-27
 ---
 
-seowatcher lit la Search Console et Google Analytics 4 avec vos propres identifiants Google Cloud : un compte de service ou un client OAuth. Vous enregistrez l'identifiant une fois pour toute l'installation, puis vous choisissez une propriété Search Console et une propriété GA4 pour chaque projet.
+La connexion se fait en deux temps. Vous enregistrez d’abord un identifiant Google, une seule fois pour toute l’installation. Vous choisissez ensuite, dans chaque projet, une propriété Search Console et une propriété Google Analytics 4. L’identifiant peut être un compte de service (la voie la plus courte) ou un client OAuth Google.
 
-## Identifiants et propriétés
+## Identifiant et propriété
 
-Les identifiants Google des Paramètres concernent l'installation. La propriété dans Paramètres du projet → Connexions concerne un projet. Enregistré et Propriété sélectionnée confirment seulement la configuration. Vérifiez les données dans Performances de recherche ou Analytics. Analytics affiche le fuseau et la devise de la propriété. La sélection n'installe pas de suivi sur le site.
+| Choix       | Portée           | Où                                    | Badge                      |
+| ----------- | ---------------- | ------------------------------------- | -------------------------- |
+| Identifiant | Tous les projets | **Paramètres → Google**               | **Enregistré**             |
+| Propriété   | Un projet        | **Paramètres du projet → Connexions** | **Propriété sélectionnée** |
 
-## Compte de service ou OAuth
+Ces badges confirment seulement l’enregistrement, pas que Google fournit des données. Vous savez que l’accès fonctionne quand des données apparaissent dans **Performances de recherche** ou **Analytics**. Choisir une propriété n’installe aucun code de suivi sur votre site.
 
-Activez Search Console API et, pour Analytics, Admin API et Data API dans Google Cloud. Créez un compte de service et téléchargez sa clé JSON. Dans Paramètres → Compte de service, sélectionnez le fichier ou utilisez le collage masqué, puis enregistrez. La clé privée reste invisible. Ajoutez l'adresse affichée avec accès Complet dans Search Console et Lecteur dans Analytics. Choisissez ensuite la propriété du projet.
+## Voie 1 : compte de service
 
-Pour OAuth, créez un client Web application. Enregistrez exactement les deux URL de retour affichées, puis l'identifiant et le secret. Autorisez le compte depuis les connexions du projet et choisissez la propriété. Un compte de service enregistré est prioritaire.
+1. Dans Google Cloud, créez un projet et activez Search Console API, Google Analytics Admin API et Google Analytics Data API.
+2. Créez un compte de service et téléchargez son fichier de clé JSON.
+3. Dans seowatcher, section **Paramètres → Compte de service**, sélectionnez le fichier ou utilisez **Coller le contenu JSON en le masquant**, puis cliquez sur **Enregistrer**. La clé privée n’est jamais affichée.
+4. Copiez l’adresse e-mail du compte de service affichée à l’écran.
+5. Dans Search Console, ouvrez **Paramètres → Utilisateurs et autorisations → Ajouter un utilisateur** et ajoutez cette adresse avec l’autorisation **Complète**.
+6. Dans Google Analytics, sous **Administration → Gestion des accès**, ajoutez la même adresse avec le rôle Lecteur.
+7. Dans seowatcher, ouvrez le projet, puis **Paramètres du projet → Connexions**. Utilisez **Choisir une propriété** et cliquez sur **Enregistrer la propriété**.
 
-## Dépannage
+## Voie 2 : client OAuth Google
 
-Une erreur conserve l'ancienne liste; une liste vide seule ne prouve pas l'absence de droits. Reconnectez une autorisation expirée, vérifiez les droits pour un refus et le projet Cloud pour une API inactive. Attendez en cas de limite. Sinon, réessayez et consultez le diagnostic Aide. Supprimer un identifiant ici ne le révoque pas chez Google. Modifier le domaine conserve l'association et l'historique.
+1. Dans Google Cloud, activez les mêmes API et créez un client OAuth de type « Web application ».
+2. Ajoutez au client, à l’identique, les deux adresses de redirection affichées dans **Paramètres** (l’une pour Search Console, l’autre pour Analytics).
+3. Saisissez l’identifiant client et le code secret dans **Paramètres**, puis enregistrez.
+4. Dans **Paramètres du projet → Connexions**, autorisez l’accès avec **Ajouter un compte Google**, puis choisissez la propriété et enregistrez-la.
 
-La fiche de connexion date la dernière lecture Google déjà observée pour les identifiants et la propriété actuels. Après un échec temporaire, elle conserve la date de la précédente lecture réussie. Sans historique, l’accès reste non vérifié. Ouvrir les paramètres ne lance aucune requête Google. Un changement d’identifiants ne transfère pas les anciennes preuves d’accès ou de quota à la nouvelle identité ; actualisez explicitement les rapports.
+Si un compte de service est aussi enregistré, l’application l’utilise en priorité ; la carte OAuth indique alors « Non utilisé, un compte de service est connecté ».
+
+## Lire la carte de connexion
+
+La carte de connexion date la dernière lecture Google pour l’identifiant et la propriété sélectionnés : « Dernière lecture Google réussie » ou « Dernière lecture Google échouée ». Après une erreur passagère, la date de la dernière lecture réussie est conservée. Sans aucune lecture, la carte indique « L’accès aux données n’a pas encore été vérifié. » Le fuseau horaire et la devise de la propriété Analytics y figurent aussi.
+
+Ouvrir les paramètres n’envoie aucune requête à Google. Quand vous changez d’identifiant, l’historique des lectures et des quotas n’est pas transféré au nouveau ; actualisez vous-même les rapports.
+
+## En cas de problème
+
+- **Liste des propriétés vide :** cela ne prouve pas à lui seul un manque de droits. En cas d’erreur de lecture, la dernière liste est conservée ; relisez-la avec **Réessayer**.
+- **Connexion expirée :** renouvelez l’autorisation avec **Reconnecter**.
+- **Accès refusé :** vérifiez que le compte de service ou le compte Google a des droits sur la propriété.
+- **API désactivée :** activez l’API concernée dans le projet Google Cloud.
+- **Limite de requêtes :** patientez, puis réessayez.
+- **Erreur inconnue :** cliquez sur **Réessayer**, puis utilisez le diagnostic de l’écran **Aide**.
+
+Supprimer un identifiant dans seowatcher ne révoque pas la clé chez Google ; faites-le dans Google Cloud. Modifier le domaine du projet ne change ni la propriété sélectionnée ni l’historique.
+
+La liste complète des symptômes et des solutions figure dans le guide [Dépannage](/docs/sorun-giderme/).

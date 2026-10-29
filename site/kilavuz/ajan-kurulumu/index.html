@@ -192,7 +192,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.6" defer></script>
+    <script src="/assets/docs.js?v=0.8.7" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1483,7 +1483,7 @@
             <li><a href="/kilavuz/firsatlar/">Fırsatlar</a></li>
             <li><a href="/kilavuz/kayitli-kelimeler/">Kayıtlı kelimeler</a></li>
             <li>
-              <a href="/kilavuz/analitik/">Analitik verilerini yorumlama</a>
+              <a href="/kilavuz/analitik/">Analytics verisini yorumlama</a>
             </li>
             <li><a href="/kilavuz/site-denetimi/">Site denetimi</a></li>
             <li><a href="/kilavuz/dizin-durumu/">Dizin durumu</a></li>
@@ -1510,46 +1510,76 @@
           becerilerini kullanın.
         </p>
         <p>
-          Ajan kurulumu, Claude Code, Codex ya da Cursor gibi bir yapay zekâ
-          asistanını MCP (Model Context Protocol) ile seowatcher'a bağlar.
-          Bağlandıktan sonra asistan Search Console, Analytics ve denetim
-          verinizi bilgisayarınızdaki uygulamadan okur, denetimi çalıştırır ve
-          rapor yazar. Asistanın okuduğu veri o asistanın sağlayıcısına
-          gidebilir.
+          Claude Code, Codex ya da Cursor gibi bir yapay zekâ asistanı (ajan),
+          MCP (asistan bağlantısı) üzerinden seowatcher'a bağlanır. Bağlanan
+          ajan Search Console, Analytics ve denetim verinizi bilgisayarınızdaki
+          uygulamadan okur, denetim başlatır ve rapor kaydeder. Ajanın okuduğu
+          veri, o ajanın sağlayıcısına gidebilir.
         </p>
         <h2 id="ajani-baglayin">Ajanı bağlayın</h2>
+        <ol>
+          <li>
+            Uygulamada sol menüden <strong>Ajan kurulumu</strong> sayfasını
+            açın.
+          </li>
+          <li>
+            <strong>Hangi ajanı kullanıyorsunuz?</strong> sorusuna
+            <strong>Claude Code</strong>, <strong>Codex</strong> ya da
+            <strong>Diğer</strong> ile cevap verin. Seçim ok tuşları, Home ve
+            End ile de yapılır.
+          </li>
+          <li>
+            <strong>Kurulum komutunu kopyala</strong> düğmesine basın. Seçim
+            yapmak komutu kendiliğinden kopyalamaz.
+          </li>
+          <li>Kopyaladığınız metni ajanınıza yapıştırın.</li>
+        </ol>
         <p>
-          Çalışan uygulamada <strong>Ajan kurulumu</strong> sayfasını açın.
-          Claude Code, Codex veya Diğer seçeneğini seçip
-          <strong>Kurulum komutunu kopyala</strong> deyin. Seçenekler ok
-          tuşları, Home ve End ile kullanılabilir; seçim komutu kendiliğinden
-          kopyalamaz. Metni ajanınıza verin. Metin gerçek parola içermez; ajan
-          parolayı yalnızca yerel kurulumdan kullanır.
-          <strong>Sıfırdan kurulum</strong> ayrı bir seçenektir.
+          Komut gerçek parolayı içermez; ajan parolayı bilgisayarınızdaki
+          kurulumdan okur. Uygulamayı yeni kurduysanız ya da her şeyi baştan
+          kontrol etmek istiyorsanız
+          <strong>Sıfırdan kurulum komutunu kopyala</strong> düğmesini kullanın.
         </p>
-        <h2 id="yeni-cagriyi-dogrulayin">Yeni çağrıyı doğrulayın</h2>
+        <h2 id="baglantiyi-dogrulayin">Bağlantıyı doğrulayın</h2>
         <p>
-          <strong>Bağlantıyı doğrula</strong> deyin ve ajandan bir seowatcher
-          aracı çağırmasını isteyin. Sayfa en fazla 60 saniye boyunca 5 saniyede
-          bir yerel çağrı kaydını okur. Önceden yapılmış bir çağrı yeni kurulumu
-          doğrulamaz. Sekme gizlenince, hata oluşunca veya iptal edince yoklama
-          durur. Yeni çağrı görülmediyse ajanınızın MCP durumuna bakıp yeniden
-          deneyin. Bu sonuç bağlantının kesin olarak bozuk olduğu anlamına
-          gelmez.
+          <strong>Bağlantıyı doğrula</strong> düğmesine basın ve ajanınızdan
+          herhangi bir seowatcher aracını çağırmasını isteyin. Sayfa 60 saniye
+          boyunca, beş saniyede bir yeni bir çağrı arar. Daha önce yapılmış bir
+          çağrı sayılmaz.
+        </p>
+        <ul>
+          <li>
+            <strong>Yeni araç çağrısı doğrulandı.</strong> görünürse kurulum
+            tamamdır.
+          </li>
+          <li>
+            <strong>Yeni araç çağrısı görülmedi.</strong> görünürse ajanınızda
+            MCP durumunu kontrol edin, bir araç çağrısı yaptırın ve yeniden
+            doğrulayın. Bu sonuç bağlantının kesin bozuk olduğu anlamına gelmez.
+          </li>
+        </ul>
+        <p>
+          Sekmeyi arka plana almak, bir hata ya da
+          <strong>Vazgeç</strong> beklemeyi durdurur.
         </p>
         <p>
-          <strong>Bağlandı</strong> ve son çağrı tarihi geçmiş kullanımı
-          gösterir; sürekli çevrimiçi oturum değildir. Durum okunamazsa yeniden
-          okuyun. Araç erişimi kurulum kapsamındadır, yalnızca açık projeyle
-          sınırlı değildir.
+          Sayfanın üstündeki <strong>Araç çağrısı alındı</strong> rozeti ve son
+          çağrı zamanı geçmiş kullanımı gösterir; sürekli açık bir oturumu
+          göstermez. Durum okunamazsa
+          <strong>Durumu yeniden oku</strong> düğmesini kullanın. Bağlanan ajan
+          yalnızca açık projeye değil, bu kurulumdaki tüm projelere erişir.
         </p>
         <h2 id="parolayi-koruyun">Parolayı koruyun</h2>
         <p>
-          Hazır kurulum metnini tercih edin. Elle kurulumda yalnızca MCP
-          istemcinizin yerel gizli başlık alanını kullanın:
-          <code>Authorization: Bearer &lt;token&gt;</code>. Windows
-          PowerShell'de parolayı ekrana yazdırmadan panoya almak için:
+          Hazır kurulum komutunu tercih edin. Elle bağlamanız gerekirse parolayı
+          yalnızca MCP istemcinizin gizli başlık alanına yazın:
+          <code>Authorization: Bearer &lt;parola&gt;</code>.
         </p>
+        <p>
+          Parolayı ekrana yazdırmadan panoya almak için PowerShell'de şu komutu
+          çalıştırın.
+        </p>
+        <p>Windows kurulumu:</p>
         <p>
           <code
             >(Get-Content
@@ -1557,7 +1587,7 @@
             Set-Clipboard</code
           >
         </p>
-        <p>Docker için PowerShell:</p>
+        <p>Docker kurulumu:</p>
         <p>
           <code
             >(docker compose exec -T seotracker cat
@@ -1565,22 +1595,88 @@
           >
         </p>
         <p>
-          Yerel başlık alanına yapıştırınca panoyu temizleyin. Parolayı
-          terminale, sohbete, ekran görüntüsüne veya kaynak koduna koymayın.
-          Windows'ta parola dosyasını tepsi menüsündeki
-          <strong>Veri klasörünü aç</strong> ile bulabilirsiniz.
+          Parolayı başlık alanına yapıştırdıktan sonra panoyu temizleyin.
+          Parolayı terminale, sohbete, ekran görüntüsüne ya da kaynak koduna
+          koymayın. Windows'ta parola dosyasının bulunduğu klasörü tepsi
+          menüsündeki <strong>Veri klasörünü aç</strong> açar.
         </p>
-        <h2 id="beceriler-ve-sorun-giderme">Beceriler ve sorun giderme</h2>
+        <h2 id="beceriler">Beceriler</h2>
         <p>
-          <strong>Beceriler</strong> sekmesi SEO iş akışlarını listeler. Kurulum
-          metni becerileri yükler;
-          <strong>Güncelleme komutunu kopyala</strong> mevcut kurulumu
-          günceller. Claude Code'da /seo-audit, Codex'te $seo-audit kullanılır.
-          401 hatasında yerel istemcinin başlığı gönderdiğini kontrol edin.
-          İstek reddedilirse uygulamanın açık olduğunu ve MCP adresini
-          doğrulayın. MCP durumunu istemcinizde yenileyip yeni araç çağrısıyla
-          tekrar doğrulayın.
+          <strong>Beceriler</strong> sekmesi, kurulum komutunun ajanınıza
+          yüklediği altı hazır SEO iş akışını listeler:
         </p>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Beceri</th>
+                <th>Ne yapar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>seo-coach</code></td>
+                <td>Nerede durduğunuzu anlatır ve sıradaki adımı seçer.</td>
+              </tr>
+              <tr>
+                <td><code>seo-project-setup</code></td>
+                <td>
+                  Hedeflerinizi, rakiplerinizi ve önemli sayfalarınızı bir kez
+                  kaydeder.
+                </td>
+              </tr>
+              <tr>
+                <td><code>seo-audit</code></td>
+                <td>
+                  Sitenizi denetler ve bu hafta yapılacak tek bir işi öne
+                  çıkarır.
+                </td>
+              </tr>
+              <tr>
+                <td><code>seo-check-in</code></td>
+                <td>
+                  Bu dönemi öncekiyle karşılaştırır: ne değişti, ne zaman,
+                  önemli mi.
+                </td>
+              </tr>
+              <tr>
+                <td><code>seo-triage</code></td>
+                <td>
+                  Trafik düştüyse düşüşün gerçek olup olmadığını, nerede ve ne
+                  zaman olduğunu bulur.
+                </td>
+              </tr>
+              <tr>
+                <td><code>seo-report</code></td>
+                <td>Bir becerinin sonucunu Raporlar sayfasına kaydeder.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Claude Code'da beceriyi <code>/seo-audit</code>, Codex'te
+          <code>$seo-audit</code> biçiminde çağırırsınız. Ajanı daha önce
+          kurduysanız <strong>Güncelleme komutunu kopyala</strong> ile
+          becerileri yenileyin; bağlantı ayarlarınız ve kendi düzenlemeleriniz
+          korunur.
+        </p>
+        <h2 id="baglanti-calismiyorsa">Bağlantı çalışmıyorsa</h2>
+        <ul>
+          <li>
+            <strong>401 hatası:</strong> MCP istemciniz
+            <code>Authorization</code> başlığını göndermiyor. Başlığı ve
+            parolayı kontrol edin.
+          </li>
+          <li>
+            <strong>Bağlantı reddedildi:</strong> Uygulamanın açık olduğunu ve
+            ajanın doğru MCP adresini kullandığını kontrol edin. Adres
+            <strong>Bu kurulumun MCP adresi:</strong> satırında yazar.
+          </li>
+          <li>
+            Düzelttikten sonra ajanınızda MCP durumunu yenileyin ve yeni bir
+            araç çağrısıyla yeniden doğrulayın.
+          </li>
+        </ul>
         <nav class="pager" aria-label="Önceki ve sonraki sayfa">
           <a class="pager-prev" rel="prev" href="/kilavuz/denetim-kurallari/"
             ><span>Önceki</span><strong>Denetim kuralları</strong></a
@@ -1602,13 +1698,10 @@
         <p class="toc-label">Bu sayfada</p>
         <ol>
           <li><a href="#ajani-baglayin">Ajanı bağlayın</a></li>
-          <li>
-            <a href="#yeni-cagriyi-dogrulayin">Yeni çağrıyı doğrulayın</a>
-          </li>
+          <li><a href="#baglantiyi-dogrulayin">Bağlantıyı doğrulayın</a></li>
           <li><a href="#parolayi-koruyun">Parolayı koruyun</a></li>
-          <li>
-            <a href="#beceriler-ve-sorun-giderme">Beceriler ve sorun giderme</a>
-          </li>
+          <li><a href="#beceriler">Beceriler</a></li>
+          <li><a href="#baglanti-calismiyorsa">Bağlantı çalışmıyorsa</a></li>
         </ol>
       </nav>
     </main>

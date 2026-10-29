@@ -1,29 +1,58 @@
 ---
 title: Proje bilgisi
-description: Proje bilgisi, sizin ve bağladığınız ajanın kullanabileceği yerel notlardır. Her ajanın bunları okuduğu veya metnin doğrulandığı varsayılmaz.
+description: İşinizi, hedefinizi ve önemli sayfalarınızı bir kez yazın; siz ve bağladığınız ajan aynı yerel notlardan çalışın.
 screen: Proje bilgisi
 route: /p/<proje>/context
 updated: 2026-10-27
 ---
 
-Proje bilgisi, sizin ve bağladığınız ajanın kullanabileceği yerel notlardır. Her ajanın bunları okuduğu veya metnin doğrulandığı varsayılmaz.
+Buradaki notlar yalnızca sizin bilgisayarınızda durur. Ajan onları MCP üzerinden okuyabilir, ama her ajanın okuyacağı ya da metnin doğru olduğu kendiliğinden garanti edilmez.
 
-## Önce hedefinizi yazın
+## Dört ana bölüm
 
-Üstte dolu ana bölüm sayısı ve kayıtlı hedef görünür. İlk boş bölüme bağlantı veya **Bölüme git** seçimiyle ilerleyin. İşin özeti, şu anki hedef, konumlandırma ve yazım tercihleri en fazla 4.000 karakterdir. Son yazan ve mutlak güncelleme zamanı her bölümde görünür. **Değişiklikleri kaydet** yalnızca değişen ana bölümleri kaydeder.
+Ekranın üstünde kaç ana bölümün dolu olduğu ve kayıtlı hedefiniz görünür. Boş bir bölüm varsa **İlk boş bölümü doldur** bağlantısı ya da **Bölüme git** seçimi sizi oraya götürür.
 
-Rakipler ve önemli sayfalar isteğe bağlı kısa listelerdir; sıralama veya dönüşüm ölçümü değildir. Her listede en fazla 100 kayıt olabilir. Rakip alan adı 255, ad 120, not 500 karakterdir. Sayfa adresi 2.048, hedef konu 200, not 500 karakterdir. Roller sizin verdiğiniz etiketlerdir. Özel bölümleri ajan ekler; siz düzenleyip kaldırabilirsiniz. En fazla 20 özel bölüm, 120 karakter başlık ve 4.000 karakter içerik saklanır.
+| Bölüm                | Ne yazılır                                              |
+| -------------------- | ------------------------------------------------------- |
+| **İşin özeti**       | Ne satıyorsunuz, kim alıyor, nerede.                    |
+| **Şu anki hedef**    | Şu anda neyin peşindesiniz ve ne zamana kadar.          |
+| **Konumlandırma**    | Biri neden alternatifler yerine sizi seçsin.            |
+| **Yazım tercihleri** | Üslup, kullanılmayacak kelimeler, girilmeyecek konular. |
 
-## Kaydetme ve yenileme
+Her bölüm en fazla 4.000 karakterdir. Bölümün altında onu son kimin yazdığı ve ne zaman güncellendiği görünür. **Değişiklikleri kaydet** yalnızca değiştirdiğiniz bölümleri kaydeder.
 
-Yenileme notları ve kurulum durumunu yeniden okur. Yenileme hatasında kayıtlı bilgi ve taslaklar korunur, uyarı görünür. Kaydedilmemiş ana veya satır içi değişiklik varken sayfadan ayrılma uyarısı çıkar. Aynı bölümü eşzamanlı düzenleyen bir ajanla kayıt çakışmasını sunucu henüz engellemez; birlikte düzenliyorsanız kaydetmeden önce son metni karşılaştırın.
+## Rakipler ve önemli sayfalar
 
-**Ajanla taslak hazırla** altındaki istem, ajandan kaydetmeden önce onay istemesini ister. Uygulama araçları ayrıca onay beklemeden hemen yazabilir. Proje kimliği okunamazsa istem hazırlanmaz.
+Bu iki liste isteğe bağlıdır. Ajana bağlam verir; sıralama ya da dönüşüm ölçmez.
 
-**Araştırma günlüğü** son 90 gündeki en yeni 20 kaydı gösterir. Not tarihi sunucunun UTC günüdür; not en fazla 1.000 karakterdir. Eski kayıtlar yeni not eklenmese de listeden süzülür. Aynı aralıkta daha fazla kayıt varsa belirtilir. Görünen liste tüm geçmiş değildir.
+- Her listede en fazla 100 kayıt olur.
+- Rakip: alan adı 255, ad 120, not 500 karakter.
+- Önemli sayfa: adres 2.048, hedef konu 200, not 500 karakter. Rol, sizin verdiğiniz serbest bir etikettir.
 
-Bir bölümü düzenlerken başka bir istemci aynı metni değiştirirse bütün kaydetme işlemi reddedilir ve taslağınız korunur. Düzenleme başındaki metni, son kaydı ve taslağınızı karşılaştırıp birleştirdikten sonra yeniden kaydedebilirsiniz. Ajanlar da `expectedContent` göndererek aynı korumayı kullanabilir; bunu göndermeyen eski istemciler uyumlu kalır.
+## Özel bölümler
 
-**Kaynak ve kurulum** altı ortak yapılandırma sinyalini sayar. Eksik ve okunamayan ayrı gösterilir; rakipler ve önemli sayfalar sayılmaz. Bağlantı kaydı canlı veri testi, PageSpeed anahtarı kota garantisi, ajan araç çağrısı bu projeyi okuduğunun kanıtı değildir. Bu bir SEO başarı puanı değildir.
+Dört ana bölüme sığmayan notları ajan **Özel bölümler** altına ekler. Siz bunları düzenleyebilir ya da kaldırabilirsiniz. En fazla 20 özel bölüm saklanır; başlık 120, içerik 4.000 karakterdir.
 
-<!-- Sources: src/routes/_app/projects.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/project-context/; src/server/features/projects/services/ProjectOverviewService.ts; src/server/features/project-context/ -->
+## Ajanla doldurma
+
+**Ajanla taslak hazırla**, ajanınıza yapıştıracağınız bir istem üretir. İstem, ajandan kaydetmeden önce sizden onay almasını ister. Uygulamanın MCP araçları ise kendi başına onay beklemez; ajan aracı çağırdığı anda yazar. Proje kimliği okunamazsa istem hazırlanmaz; proje listesini yeniden yükleyin.
+
+## Kaydetme ve çakışmalar
+
+Kaydedilmemiş bir değişiklik varken sayfadan çıkmak isterseniz uygulama sizi uyarır.
+
+Siz bir bölümü düzenlerken ajan ya da başka bir sekme aynı bölümü değiştirirse kaydınız bütünüyle reddedilir; taslağınız silinmez. Bölümde üç metin görünür: **Düzenleme başındaki metin**, **Son kayıtlı metin** ve sizin taslağınız. Bunları birleştirin, **Karşılaştırdım, birleştirilmiş taslağı kullan** düğmesine basın ve yeniden kaydedin. Ajanlar da `expectedContent` göndererek aynı korumadan yararlanır.
+
+Yenileme notları ve kurulum durumunu yeniden okur. Yenileme başarısız olursa kayıtlı bilgi ve taslaklarınız yerinde kalır, ekranda bir uyarı çıkar.
+
+## Araştırma günlüğü
+
+**Araştırma günlüğü** ajanın tuttuğu kısa notlardır. Ekran son 90 günün en yeni 20 kaydını gösterir; daha eski kayıtlar varsa bunu belirtir. Not en fazla 1.000 karakterdir ve tarihi sunucunun UTC gününe göre yazılır.
+
+## Kaynak ve kurulum
+
+Bu kart altı kurulum adımını sayar: Search Console, Analytics, site denetimi, proje bilgisi, PageSpeed anahtarı ve ajan bağlantısı. Panel de aynı sayımı kullanır. Eksik adımlar ve okunamayan adımlar ayrı gösterilir. Rakipler ve önemli sayfalar öneri olarak listelenir, sayıma girmez.
+
+Sayım bir SEO puanı değildir. Bir adımın tamam görünmesi şunları kanıtlamaz: Google bağlantısının veri döndürdüğünü, PageSpeed kotasının yettiğini ya da ajanın bu projeyi gerçekten okuduğunu.
+
+<!-- Sources: src/routes/_app/projects.tsx; src/client/features/projects/ProjectFacts.tsx; src/client/features/projects/project-context/; src/server/features/projects/services/ProjectOverviewService.ts; src/server/features/project-context/; src/shared/projectSetup.ts -->
