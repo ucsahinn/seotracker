@@ -1,3 +1,4 @@
+import { HelpTip } from "@/client/components/HelpTip";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import { DATA_SERIES } from "@/client/components/Chart";
 import type { SummaryPlan } from "./reportBuckets";
@@ -22,7 +23,7 @@ export function ReportSummary({
   if (!plan && !kpis.length) return null;
   const max = Math.max(1, ...(plan?.segments.map((s) => s.value) ?? []));
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {kpis.length ? (
         <MetricRow>
           {kpis.map((k) => (
@@ -44,11 +45,11 @@ export function ReportSummary({
             {t("Birine tıklayın, aşağıdaki tablo o satırlara daralsın.")}
           </p>
           {!plan.showShares ? (
-            <p className="mb-2 text-xs text-muted">
+            <HelpTip label={t("Veri ayrıntıları")}>
               {t(
                 "Kullanıcılar kategoriler arasında tekrar sayılabilir; bu değerler benzersiz mülk toplamı değildir.",
               )}
-            </p>
+            </HelpTip>
           ) : null}
           <div className="space-y-1">
             {plan.segments.map((s) => (

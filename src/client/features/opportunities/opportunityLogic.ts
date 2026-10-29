@@ -95,13 +95,15 @@ export function pathOf(url: string): string {
 
 /** Why this page is on the list and what it is worth, in one sentence. */
 export function explainRow(row: OpportunityRow): string {
+  if (row.gain === null)
+    return t("Sıraya dayalı öneri; kazanç bilinmiyor (yetersiz veri).");
   return t(
     "Ortalama {position}. sıra; {impressions} gösterim, {clicks} tıklama ölçüldü. Hesaplanabilen aramalarda 30 güne ölçekli en fazla +{gain} tıklama (üst sınır); gerçekleşme sözü değildir.",
     {
       position: formatDecimal(row.position),
       impressions: formatCount(row.impressions),
       clicks: formatCount(row.clicks),
-      gain: formatCount(row.gainPerMonth),
+      gain: formatCount(row.gainPerMonth ?? 0),
     },
   );
 }
@@ -160,7 +162,8 @@ export function applyFilters(
 ): OpportunityRow[] {
   return rows.filter(
     (row) =>
-      (work === null || row.gainByWork[work] > 0) &&
+      (work === null ||
+        (row.gain === null ? row.work === work : row.gainByWork[work] > 0)) &&
       (quick === null || row.value === quick),
   );
 }
@@ -168,4 +171,9 @@ export function applyFilters(
 /** Monthly impressions, for the "demand" fact in the detail panel. */
 export function monthlyImpressions(row: OpportunityRow, days: number): number {
   return perMonth(row.impressions, days);
+}
+
+/** Unknown gain supports investigation, not a content-change prescription. */
+export function rowAction(row: OpportunityRow): string {
+  return row.gain === null ? "Sayfayı inceleyin" : WORK_COPY[row.work].action;
 }

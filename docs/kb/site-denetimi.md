@@ -1,6 +1,6 @@
 ---
 title: Site denetimi
-description: Uygulama sitenizi sayfa sayfa gezer, 202 kurala göre kontrol eder ve sorunları önem sırasına dizer. Puan, ne kadarının ölçülebildiğini de söyler. Eksik kalan denetime puan vermez.
+description: Sitenizi 202 kuralla denetleyin, sorunları önem sırasıyla inceleyin. Denetim puanını, ölçüm kapsamını ve eksik verilerin anlamını öğrenin.
 screen: Site denetimi
 route: /p/<proje>/audit
 updated: 2026-10-28
@@ -21,7 +21,7 @@ Uygulama sitenizi kendi tarayıcısıyla gezer (sayfaları tek tek açıp okuyan
 
 PageSpeed anahtarınız (Google'ın hız ölçümü için verdiği ücretsiz kod) yoksa hız ölçümü en çok 50 sayfayla sınırlanır. Tümünü ölçmek için **Ayarlar** ekranından ücretsiz bir anahtar ekleyin. **Denetimi başlat** denetimi başlatır. Altındaki **Kotalar** bölümü kapalı gelir. Açarsanız PageSpeed ve URL denetimi kotalarının güncel durumunu görürsünüz.
 
-**Önceki denetimler.** Her denetimin tarihi, adresi, durumu, sayfa sayısı ve sorun sayıları listelenir. Kritik, Uyarı ve Bilgi sütunları toplam sayfa bulgularını gösterir; aynı sayfada birden çok bulgu olabilir. Projede birden çok site denetlenmişse listenin üstünde bir site seçici çıkar. Puan grafiği ve değişim okları her zaman aynı sitenin denetimlerini karşılaştırır. Birden çok site seçiliyken grafik gizlenir. Satırdaki **Görüntüle** denetimi açar. Satır menüsünde **Aynı ayarlarla yeniden başlat** ve **Denetimi sil** vardır. Silmek denetimin sayfalarını, sorunlarını ve hız ölçümlerini de siler ve geri alınamaz.
+**Önceki denetimler.** Her denetimin tarihi, adresi, durumu, sayfa sayısı ve sorun sayıları listelenir. Kritik, Uyarı ve Bilgi sütunları kayıtlı tüm bulguları gösterir: sayfa bulguları ve site geneli kontroller birlikte; aynı sayfada birden çok bulgu olabilir. Projede birden çok site denetlenmişse listenin üstünde bir site seçici çıkar. Yoğunluk, yüz sayfa başına sorun sayısıdır. Grafik çizgileri ve değişim okları yalnızca kayıtlı kanıtlar aynı siteyi, sayfa kümesini, tarama ayarlarını ve ölçülen kontrolleri doğruladığında gösterilir. Kapsam farklıysa veya bilinmiyorsa bağımsız sayılar gösterilir; değişim belirlenemez. Birden çok site seçiliyken grafik gizlenir. Satırdaki **Görüntüle** denetimi açar. Satır menüsünde **Aynı ayarlarla yeniden başlat** ve **Denetimi sil** vardır. Silmek denetimin sayfalarını, sorunlarını ve hız ölçümlerini de siler ve geri alınamaz.
 
 **Denetim ayrıntısı.** Üstte **Raporu indir** düğmesi tek dosyalık HTML raporu indirir ve **Raporlar** ekranına kaydeder. Altında, gerekiyorsa sarı uyarılar çıkar (aşağıda). Sonra puan kartı gelir.
 

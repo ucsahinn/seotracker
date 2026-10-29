@@ -263,20 +263,25 @@ export function LongTermTrend({
           />
         </BarChart>
       </Chart>
-      <p className="px-2 pb-1 text-xs text-muted">
-        {running
-          ? `${
-              thisMonth
-                ? t("Son çubuk kesik çizgili: bu ay henüz tamamlanmadı.")
-                : t(
-                    "Son çubuk kesik çizgili: ayın son günleri Search Console'dan henüz gelmedi.",
-                  )
-            } `
-          : null}
-        {t(
-          "Bu bilgisayardaki arşivden, cihaz filtresine göre (ülke filtresi uygulanmaz). Kesik çizgili çubuk: arşivin o ayın tamamını tutmadığı ay.",
-        )}
-      </p>
+      <details className="px-2 pb-1 text-sm text-muted">
+        <summary className="min-h-11 cursor-pointer py-3">
+          {t("Veri hakkında")}
+        </summary>
+        <p className="max-w-prose leading-relaxed">
+          {running
+            ? `${
+                thisMonth
+                  ? t("Son çubuk kesik çizgili: bu ay henüz tamamlanmadı.")
+                  : t(
+                      "Son çubuk kesik çizgili: ayın son günleri Search Console'dan henüz gelmedi.",
+                    )
+              } `
+            : null}
+          {t(
+            "Bu bilgisayardaki arşivden, cihaz filtresine göre (ülke filtresi uygulanmaz). Kesik çizgili çubuk: arşivin o ayın tamamını tutmadığı ay.",
+          )}
+        </p>
+      </details>
     </div>
   );
 }

@@ -23,6 +23,7 @@ import {
 } from "@/serverFunctions/reports";
 import { reportInventorySchema } from "@/shared/reportInventory";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
+import { getProjects } from "@/serverFunctions/projects";
 import { t } from "@/shared/i18n";
 
 export const Route = createFileRoute("/_project/p/$projectId/reports/")({
@@ -32,6 +33,13 @@ export const Route = createFileRoute("/_project/p/$projectId/reports/")({
 
 function ReportsPage() {
   const { projectId } = Route.useParams();
+  const projects = useQuery({
+    queryKey: ["projects"],
+    queryFn: () => getProjects(),
+  });
+  const project = projects.data?.find(
+    (candidate) => candidate.id === projectId,
+  );
   const filters = Route.useSearch();
   const navigate = Route.useNavigate();
   const [pendingDelete, setPendingDelete] = useState<ReportListItem | null>(
@@ -140,6 +148,7 @@ function ReportsPage() {
           <ReportsSummary
             projectId={projectId}
             latest={reportsQuery.data.latest}
+            projectDomain={project?.domain}
           />
           <ReportsList
             projectId={projectId}

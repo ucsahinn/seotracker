@@ -1,6 +1,13 @@
 import type { Catalog } from "@/shared/i18n";
 
 export const ptAnalytics: Catalog = {
+  "Kazanç bilinmiyor": "Ganho desconhecido",
+  "Sıraya dayalı öneri; kazanç bilinmiyor (yetersiz veri).":
+    "Sugestão baseada na posição; ganho desconhecido (dados insuficientes).",
+  "Yalnızca marka aramaları": "Apenas consultas de marca",
+  "Kazanç için veri yetersiz: az gösterim {low}, eksik hedef oranı {curve}, eksik marka dışı sorgu {missing}. Sıraya dayalı öneriler tahmin değildir.":
+    "Dados insuficientes para o ganho: poucas impressões {low}, taxa alvo ausente {curve}, consultas sem marca ausentes {missing}. Sugestões por posição não são estimativas.",
+
   "Analytics verisini yorumlama": "Compreender os dados do Analytics",
   "Bu dönemin trafiği belirlenemedi":
     "Não foi possível determinar o tráfego deste período",

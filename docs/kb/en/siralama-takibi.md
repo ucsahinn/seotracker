@@ -1,6 +1,6 @@
 ---
 title: Ranking tracking
-description: See the average Google position of your searches, which ones are rising or falling and how the position groups change. The data is stored on this computer, so you can look further back than Google's 16-month limit.
+description: Track average Google positions and changes for Search Console queries. Use the local archive to review records beyond Google's 16-month window.
 screen: Sıralama takibi
 route: /p/<proje>/rankings
 updated: 2026-10-27

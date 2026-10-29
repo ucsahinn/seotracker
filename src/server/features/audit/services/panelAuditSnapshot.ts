@@ -1,4 +1,4 @@
-import { AuditService } from "./AuditService";
+import { getAuditResults } from "./auditResults";
 import { getIssueTypePageCountsForAudit } from "../repositories/auditSummaryQueries";
 import { buildAuditBreakdown, checkMeasured } from "@/shared/auditBreakdown";
 import { findingsFromIssues } from "@/shared/auditScore";
@@ -9,7 +9,7 @@ export async function loadPanelAuditSnapshot(
   auditId: string,
 ): Promise<PanelAuditSnapshot> {
   const [result, counts] = await Promise.all([
-    AuditService.getResults(auditId, projectId),
+    getAuditResults(auditId, projectId),
     getIssueTypePageCountsForAudit(auditId),
   ]);
   const ctx = {

@@ -54,6 +54,54 @@ const snapshot: SavedWatchlist = {
 };
 
 describe("SavedKeywordsSummary", () => {
+  it("keeps secondary counts and position bands in a closed summary", () => {
+    render(
+      <SavedKeywordsSummary
+        projectId="p1"
+        data={snapshot}
+        stale={false}
+        onRetry={vi.fn()}
+        onFilter={vi.fn()}
+        onFallers={vi.fn()}
+      />,
+    );
+    expect(
+      screen
+        .getByText(
+          "Kaydettiğiniz 5 kelimenin 5 tanesi bu aralıkta arşivde gözlendi.",
+        )
+        .closest("details"),
+    ).toBeNull();
+    const summary = screen.getByText("Arşiv özeti").closest("details");
+    expect(summary).not.toBeNull();
+    expect(summary?.open).toBe(false);
+    expect(screen.getByText("Gözlenen kelimeler").closest("details")).toBe(
+      summary,
+    );
+    expect(screen.getByText("Sıra 11–20").closest("details")).toBe(summary);
+  });
+
+  it("names the observed and complete-response days and the archive inspection action", () => {
+    render(
+      <SavedKeywordsSummary
+        projectId="p1"
+        data={snapshot}
+        stale={false}
+        onRetry={vi.fn()}
+        onFilter={vi.fn()}
+        onFallers={vi.fn()}
+      />,
+    );
+    expect(
+      screen
+        .getByText("2/90 gün gözlem; 0/90 gün tam yanıt.")
+        .closest("details"),
+    ).toBeNull();
+    const link = screen.getByRole("link", { name: "Arşiv kapsamını incele" });
+    expect(link.getAttribute("href")).toContain("rankings");
+    expect(screen.queryByText("Kısmi veri")).toBeNull();
+  });
+
   it("does not present zero movement as measured when there is no comparison", () => {
     render(
       <SavedKeywordsSummary
@@ -65,10 +113,18 @@ describe("SavedKeywordsSummary", () => {
         onFallers={vi.fn()}
       />,
     );
-    const card = screen.getByRole("button", { name: /Belirgin hareket/ });
+    const card = screen.getByText("Değişim").closest("button")!;
     expect(card.textContent).toContain("Karşılaştırma yok");
     expect(card.hasAttribute("disabled")).toBe(true);
     expect(card.textContent).not.toContain("↑ 0");
+    expect(screen.getByText("Gözlenen gün").tagName).toBe("DT");
+    const calculation = screen
+      .getByText(/Konum ve dil kayıt bilgisi/)
+      .closest("details");
+    expect(calculation?.open).toBe(false);
+    expect(
+      screen.getByText(/Önceki dönemde tam yanıt/).closest("details"),
+    ).toBe(calculation);
   });
 
   it("does not warn about missing current observations when all saved words were observed", () => {
@@ -82,7 +138,7 @@ describe("SavedKeywordsSummary", () => {
         onFallers={vi.fn()}
       />,
     );
-    const card = screen.getAllByRole("button", { name: /^Sıra bilinmiyor/ })[0];
+    const card = screen.getAllByText("Sıra bilinmiyor")[0].closest("button")!;
     expect(card.textContent).not.toContain("Eksik arşiv");
     expect(card.hasAttribute("disabled")).toBe(true);
   });

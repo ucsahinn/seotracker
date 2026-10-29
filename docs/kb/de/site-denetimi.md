@@ -1,6 +1,6 @@
 ---
 title: Website-Audit
-description: Die App prüft Ihre Website Seite für Seite anhand von 202 Regeln und sortiert die Probleme nach Wichtigkeit. Die Punktzahl zeigt auch, wie viel messbar war. Ein vorzeitig beendetes Audit bekommt keine Punktzahl.
+description: Ihre Website anhand von 202 Regeln prüfen und Probleme priorisieren. Punktzahl, Messabdeckung und unvollständige Ergebnisse richtig verstehen.
 screen: Site denetimi
 route: /p/<proje>/audit
 updated: 2026-10-28
@@ -21,7 +21,7 @@ Die App geht Ihre Website mit ihrem eigenen Crawler durch, einem Programm, das S
 
 Haben Sie keinen PageSpeed-Schlüssel (den kostenlosen Code, den Google für die Geschwindigkeitsmessung vergibt), ist die Geschwindigkeitsmessung auf höchstens 50 Seiten begrenzt. Um alle Seiten zu messen, tragen Sie unter **Einstellungen** einen kostenlosen Schlüssel ein. **Audit starten** startet das Audit. Der Bereich **Kontingente** darunter ist zugeklappt. Klappen Sie ihn auf, sehen Sie den aktuellen Stand der Kontingente für PageSpeed und URL-Prüfung.
 
-**Vorherige Audits.** Datum, Adresse, Status, Seitenzahl und Problemzahlen jedes Audits werden aufgelistet. Die Problemzahlen sind auf hundert Seiten umgerechnet, die Gesamtzahl steht in Klammern. So können Sie Audits mit 50 und mit 500 Seiten vergleichen. Wurden im Projekt mehrere Websites geprüft, erscheint über der Liste eine Auswahl der Website. Das Diagramm und die Veränderungspfeile vergleichen immer Audits derselben Website. Sind mehrere Websites gewählt, ist das Diagramm ausgeblendet. **Ansehen** in einer Zeile öffnet das Audit. Das Zeilenmenü enthält **Erneut mit den gleichen Einstellungen ausführen** und **Audit löschen**. Löschen entfernt auch die Seiten, Probleme und Geschwindigkeitsmessungen des Audits und lässt sich nicht rückgängig machen.
+**Vorherige Audits.** Datum, Adresse, Status, Seitenzahl und Problemzahlen jedes Audits werden aufgelistet. Die Spalten Kritisch, Warnung und Info zeigen alle gespeicherten Befunde, einschließlich Seitenbefunden und websiteweiten Prüfungen; eine Seite kann mehrere Befunde haben. Wurden im Projekt mehrere Websites geprüft, erscheint über der Liste eine Auswahl der Website. Die Dichte gibt Probleme pro hundert Seiten an. Trendlinien und Veränderungspfeile erscheinen nur, wenn gespeicherte Belege dieselbe Website, Seitenmenge, Crawling-Einstellungen und gemessenen Prüfungen bestätigen. Bei unterschiedlichem oder unbekanntem Umfang werden unabhängige Zahlen angezeigt; eine Veränderung lässt sich nicht bestimmen. Sind mehrere Websites gewählt, ist das Diagramm ausgeblendet. **Ansehen** in einer Zeile öffnet das Audit. Das Zeilenmenü enthält **Erneut mit den gleichen Einstellungen ausführen** und **Audit löschen**. Löschen entfernt auch die Seiten, Probleme und Geschwindigkeitsmessungen des Audits und lässt sich nicht rückgängig machen.
 
 **Audit-Details.** Ganz oben lädt **Bericht herunterladen** einen HTML-Bericht in einer Datei herunter und legt ihn unter **Berichte** ab. Darunter erscheinen bei Bedarf gelbe Warnungen (siehe unten). Dann folgt die Punktzahlkarte.
 

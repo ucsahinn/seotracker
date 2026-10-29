@@ -1,6 +1,6 @@
 ---
 title: Arama performansı
-description: Google'da kaç kez göründüğünüzü, kaç tıklama aldığınızı ve önce neyi düzeltmeniz gerektiğini görürsünüz. Sayılar Search Console'dan gelir. Kazanç rakamları bir üst sınırdır.
+description: Search Console'dan tıklama, gösterim ve ortalama sırayı inceleyin. Önce düzeltilecek sayfaları ve kazanç tahminlerinin sınırlarını öğrenin.
 screen: Arama performansı
 route: /p/<proje>/search-performance
 updated: 2026-10-28

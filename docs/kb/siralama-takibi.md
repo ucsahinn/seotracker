@@ -1,6 +1,6 @@
 ---
 title: Sıralama takibi
-description: Aramalarınızın Google'daki ortalama sırasını, hangilerinin yükselip düştüğünü ve sıra gruplarındaki değişimi görürsünüz. Veri bu bilgisayarda saklandığı için Google'ın 16 aylık sınırından da eskiye bakabilirsiniz.
+description: Search Console sorgularının ortalama sırasını ve değişimini izleyin. Yerel arşivle Google'ın 16 aylık sınırından eski kayıtları inceleyin.
 screen: Sıralama takibi
 route: /p/<proje>/rankings
 updated: 2026-10-28

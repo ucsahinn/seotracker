@@ -1,6 +1,6 @@
 ---
 title: Configurar o agente
-description: Ligar um agente com segurança e verificar uma nova chamada.
+description: Conecte um assistente SEO com segurança, verifique uma nova chamada e use as habilidades para auditar o site e escrever relatórios com dados locais.
 kind: nasil-yapilir
 updated: 2026-10-27
 ---

@@ -239,14 +239,19 @@ export function OverlapsTab({
 }) {
   return (
     <>
-      <p className="border-b border-[var(--hairline)] px-4 py-2.5 text-sm text-muted">
-        {t(
-          "Aynı sorguda birden çok sayfanızın göründüğü durumlar. Sayfalar birbirinin tıklamasını bölebilir; birini ana sayfa yapıp diğerlerinden ona bağlantı vermek çoğu zaman yeter.",
-        )}
-        {range === "last_7_days"
-          ? ` ${t("Bu analiz için 7 günlük seçim 28 güne çıkarılır. Gerçek tarih aralığı aşağıda yazar.")}`
-          : null}
-      </p>
+      <details className="border-b border-[var(--hairline)] px-4 py-2 text-sm text-muted">
+        <summary className="min-h-11 cursor-pointer py-3">
+          {t("Veri hakkında")}
+        </summary>
+        <p className="max-w-prose leading-relaxed">
+          {t(
+            "Aynı sorguda birden çok sayfanızın göründüğü durumlar. Sayfalar birbirinin tıklamasını bölebilir; birini ana sayfa yapıp diğerlerinden ona bağlantı vermek çoğu zaman yeter.",
+          )}
+          {range === "last_7_days"
+            ? ` ${t("Bu analiz için 7 günlük seçim 28 güne çıkarılır. Gerçek tarih aralığı aşağıda yazar.")}`
+            : null}
+        </p>
+      </details>
       <CannibalizationSummary
         projectId={projectId}
         dateRange={range}

@@ -2,6 +2,7 @@ import type { Catalog } from "@/shared/i18n";
 
 /** Portuguese for shared labels, Google states, and GA4 report names. */
 export const ptShared: Catalog = {
+  "Saat dilimi": "Fuso horário",
   "{start} – {end}. Search Console verisi {count} gün geriden gelir, bu yüzden son gün bugün olmaz.":
     {
       one: "{start} – {end}. Os dados do Search Console têm um atraso de {count} dia, por isso o último dia nunca é hoje.",

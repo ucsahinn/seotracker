@@ -12,6 +12,7 @@ type DeltaRow = {
   status: string;
   startedAt: string;
   issues: Counts;
+  comparison?: { previousAuditId: string; compatible: boolean };
 };
 
 export type IssueDelta = {
@@ -36,7 +37,12 @@ export function previousAuditIds(rows: DeltaRow[]): Map<string, string> {
   for (const row of completed) {
     const key = siteKey(row.startUrl);
     const base = lastBySite.get(key);
-    if (base) previous.set(row.id, base);
+    if (
+      base &&
+      row.comparison?.compatible &&
+      row.comparison.previousAuditId === base
+    )
+      previous.set(row.id, base);
     lastBySite.set(key, row.id);
   }
   return previous;

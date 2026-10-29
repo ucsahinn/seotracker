@@ -9,7 +9,6 @@ import {
 import { toast } from "sonner";
 import { formatCount } from "@/client/lib/format";
 import { downloadCsv } from "@/client/lib/csv";
-import type { IssueSeverity } from "@/shared/audit-issues";
 import { AffectedPageList } from "@/client/features/audit/results/AffectedPageList";
 import {
   buildCopyText,
@@ -24,12 +23,6 @@ import { SeverityIcon } from "./SeverityChip";
 
 const ACTION_BUTTON =
   "btn btn-xs btn-ghost gap-1.5 border border-[var(--control-border)]";
-
-const SEVERITY_RULE: Record<IssueSeverity, string> = {
-  critical: "border-l-error/60",
-  warning: "border-l-warning/60",
-  info: "border-l-base-content/20",
-};
 
 /**
  * One kind of problem, closed to a line and open to a card.
@@ -54,13 +47,7 @@ export function IssueCard({
   const countLabel = buildCountLabel(group, siteWide);
 
   return (
-    <div
-      className={
-        open
-          ? `border-l-2 ${SEVERITY_RULE[group.severity]} bg-base-200/20`
-          : "border-l-2 border-l-transparent"
-      }
-    >
+    <div className={open ? "rounded-box bg-base-200/30" : "rounded-box"}>
       <button
         type="button"
         className="focus-inset flex w-full items-center gap-3 px-3 py-2.5 text-left transition-colors hover:bg-base-200/40 sm:px-4"

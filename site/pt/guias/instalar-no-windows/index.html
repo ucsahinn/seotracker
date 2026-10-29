@@ -2,9 +2,14 @@
 <html lang="pt">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Instalar no Windows | Guia do seowatcher</title>
     <meta
@@ -102,7 +107,7 @@
       property="og:image:alt"
       content="Cartão do seowatcher: o painel do aplicativo com dados do Search Console, do Analytics 4 e da auditoria do site, e um botão para baixar para Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-28" />
     <meta
       property="og:url"
       content="https://seowatcher.io/pt/guias/instalar-no-windows/"
@@ -164,7 +169,7 @@
             "description": "Instale no Windows com um único arquivo: primeira abertura, atualização, desinstalação, backup e troca da porta. Sem Docker e sem terminal.",
             "url": "https://seowatcher.io/pt/guias/instalar-no-windows/",
             "inLanguage": "pt",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-28",
             "articleSection": "Primeiros passos",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -1499,7 +1504,9 @@
                 >Palavras-chave salvas</a
               >
             </li>
-            <li><a href="/pt/guias/analise/">Analytics</a></li>
+            <li>
+              <a href="/pt/guias/analise/">Entender os dados de análise</a>
+            </li>
             <li>
               <a href="/pt/guias/auditoria-do-site/">Auditoria do site</a>
             </li>
@@ -2058,6 +2065,21 @@
             ou digite o endereço à mão: <code>http://127.0.0.1:3001</code>
           </li>
         </ul>
+        <h2 id="notificacoes-do-windows">Notificações do Windows</h2>
+        <p>
+          Clique com o botão direito no ícone do seowatcher na bandeja e use
+          <strong>Windows bildirimleri</strong> (ativada por padrão). Enquanto o
+          inicializador estiver em execução, auditorias concluídas ou com falha
+          de todos os projetos e novos anúncios aparecem como balões do Windows
+          em cerca de 90 segundos, mesmo com o navegador fechado ou em segundo
+          plano. Um clique abre a página correspondente; vários eventos são
+          agrupados. O primeiro uso ignora eventos antigos; reiniciar não repete
+          eventos já recebidos. Eventos recebidos durante o silêncio não são
+          exibidos depois. Novas versões seguem a configuração de atualização
+          existente. O modo Foco/Não incomodar pode ocultar notificações. Com o
+          inicializador fechado, não há notificações. Este recurso não está
+          disponível no Docker.
+        </p>
         <nav class="pager" aria-label="Página anterior e seguinte">
           <span class="pager-prev empty"></span
           ><a
@@ -2068,7 +2090,7 @@
           >
         </nav>
         <p class="meta">
-          Última atualização: 27 de outubro de 2026. Viu algum erro?
+          Última atualização: 28 de outubro de 2026. Viu algum erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -2085,6 +2107,9 @@
           <li><a href="#verificacao">Verificação</a></li>
           <li><a href="#perguntas-frequentes">Perguntas frequentes</a></li>
           <li><a href="#se-algo-der-errado">Se algo der errado</a></li>
+          <li>
+            <a href="#notificacoes-do-windows">Notificações do Windows</a>
+          </li>
         </ol>
       </nav>
     </main>

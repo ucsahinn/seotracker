@@ -1,5 +1,4 @@
 import type { SearchPerformanceView } from "@/shared/searchPerformanceView";
-import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
@@ -72,7 +71,6 @@ export function DashboardMetrics({
           delta={countDelta(changes?.clicks)}
           deltaTitle={deltaTitle}
           href={href}
-          hint={t("Google aramasından sitenize gelen tıklamalar.")}
         />
         <MetricTile
           metric="impressions"
@@ -87,7 +85,6 @@ export function DashboardMetrics({
           delta={countDelta(changes?.impressions)}
           deltaTitle={deltaTitle}
           href={href}
-          hint={t("Sitenizin Google sonuçlarında gösterilme sayısı.")}
         />
         <MetricTile
           metric="ctr"
@@ -97,7 +94,6 @@ export function DashboardMetrics({
           delta={pointsDelta(current?.ctr, previous?.ctr)}
           deltaTitle={deltaTitle}
           href={href}
-          hint={t("Gösterimlerin yüzde kaçı tıklamaya döndü.")}
         />
         <MetricTile
           metric="position"
@@ -110,16 +106,19 @@ export function DashboardMetrics({
           deltaTitle={deltaTitle}
           inverted
           href={href}
-          hint={t("Düşük sayı daha iyi: 1, listenin en üstü demek.")}
         />
       </MetricRow>
-      <Link
-        to="/p/$projectId/rankings"
-        params={{ projectId }}
-        className="link inline-flex min-h-11 items-center text-xs text-muted"
-      >
-        {t("Sorgu arşivi")}
-      </Link>
+      <details className="text-sm text-muted">
+        <summary className="min-h-11 cursor-pointer py-3">
+          {t("Veri hakkında")}
+        </summary>
+        <div className="max-w-prose space-y-1.5 leading-relaxed">
+          <p>{t("Google aramasından sitenize gelen tıklamalar.")}</p>
+          <p>{t("Sitenizin Google sonuçlarında gösterilme sayısı.")}</p>
+          <p>{t("Gösterimlerin yüzde kaçı tıklamaya döndü.")}</p>
+          <p>{t("Düşük sayı daha iyi: 1, listenin en üstü demek.")}</p>
+        </div>
+      </details>
     </div>
   );
 }

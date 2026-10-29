@@ -1,6 +1,6 @@
 ---
 title: Saved keywords
-description: Inspect saved keywords with dated, scoped archive observations.
+description: Review saved keywords with dated Search Console observations. Understand archive coverage, missing data and changes within the selected period.
 screen: Kayıtlı kelimeler
 route: /p/<proje>/saved
 updated: 2026-10-27

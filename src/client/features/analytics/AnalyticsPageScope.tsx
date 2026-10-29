@@ -1,3 +1,4 @@
+import { FactStrip } from "@/client/components/FactStrip";
 import { t } from "@/shared/i18n";
 import type { ReportResult } from "./ReportView";
 
@@ -15,22 +16,34 @@ export function AnalyticsPageScope({
   return (
     <>
       {pageGroup ? (
-        <div className="space-y-1 text-xs text-muted" role="status">
-          <p className="break-all">
-            {t("Analytics adres grubu")} · {pageGroup.key}
-          </p>
-          <p>
-            {t(
-              "Adres varyantları sunucuda, sayfalamadan önce eşleştirilir. Tarihler Analytics mülkünün saat dilimindedir; Search Console Pasifik takvimini kullanır.",
-            )}
-          </p>
-          {!pageGroup.complete ? (
-            <p>
-              {t(
-                "Kaynak sınırlı; adres grubunun tamamı birebir doğrulanamıyor. Yalnızca alınan varyantlar gösteriliyor.",
-              )}
-            </p>
-          ) : null}
+        <div className="space-y-4" role="status">
+          <FactStrip
+            label={t("Analytics adres grubu")}
+            facts={[
+              {
+                label: t("Analytics adres grubu"),
+                value: <span className="break-all">{pageGroup.key}</span>,
+                tone: pageGroup.complete ? undefined : "warning",
+              },
+            ]}
+            detailsLabel={pageGroup.complete ? t("Ayrıntılar") : t("Uyarı")}
+            details={
+              <>
+                <p>
+                  {t(
+                    "Adres varyantları sunucuda, sayfalamadan önce eşleştirilir. Tarihler Analytics mülkünün saat dilimindedir; Search Console Pasifik takvimini kullanır.",
+                  )}
+                </p>
+                {!pageGroup.complete ? (
+                  <p>
+                    {t(
+                      "Kaynak sınırlı; adres grubunun tamamı birebir doğrulanamıyor. Yalnızca alınan varyantlar gösteriliyor.",
+                    )}
+                  </p>
+                ) : null}
+              </>
+            }
+          />
           {onClearPageGroup ? (
             <button
               type="button"
@@ -43,14 +56,29 @@ export function AnalyticsPageScope({
         </div>
       ) : null}
       {exactPage ? (
-        <div>
-          <p className="break-all text-xs text-muted">
-            {exactPage.host}
-            {exactPage.path} ·{" "}
-            {t(
-              "Birebir sayfa filtresi yalnızca listelenen satırlara uygulanır; diğer sayfalarda da arayın.",
-            )}
-          </p>
+        <div className="space-y-4">
+          <FactStrip
+            label={t("Giriş sayfası")}
+            facts={[
+              {
+                label: t("Giriş sayfası"),
+                value: (
+                  <span className="break-all">
+                    {exactPage.host}
+                    {exactPage.path}
+                  </span>
+                ),
+              },
+            ]}
+            detailsLabel={t("Ayrıntılar")}
+            details={
+              <p>
+                {t(
+                  "Birebir sayfa filtresi yalnızca listelenen satırlara uygulanır; diğer sayfalarda da arayın.",
+                )}
+              </p>
+            }
+          />
           {onClearExactPage ? (
             <button
               type="button"

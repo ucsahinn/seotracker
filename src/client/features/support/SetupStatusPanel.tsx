@@ -1,3 +1,4 @@
+import { FactStrip } from "@/client/components/FactStrip";
 import { Link } from "@tanstack/react-router";
 import {
   AlertCircle,
@@ -208,11 +209,16 @@ function StatusBody({
             {/* Install health, not a project's setup: that checklist is on
                 the dashboard and Proje bilgisi, and the two must not be
                 read as one verdict. */}
-            <p className="text-xs text-muted">
-              {t(
-                "Bu kurulumun kendisi. Bir projenin kurulum listesi Panel'de ve Proje bilgisi'nde.",
-              )}
-            </p>
+            <details className="text-sm text-muted">
+              <summary className="cursor-pointer py-2">
+                {t("Ayrıntılar")}
+              </summary>
+              <p className="text-xs text-muted">
+                {t(
+                  "Bu kurulumun kendisi. Bir projenin kurulum listesi Panel'de ve Proje bilgisi'nde.",
+                )}
+              </p>
+            </details>
             <p className="mt-0.5 text-sm" aria-live="polite">
               {checks.length === 0
                 ? t(
@@ -227,11 +233,15 @@ function StatusBody({
             <p className="mt-1 text-sm">
               <VersionLine version={data.version} update={update} />
             </p>
-            <p className="mt-0.5 text-xs text-muted">
-              {t("Son kontrol: {date}", {
-                date: formatDateTime(data.generatedAt),
-              })}
-            </p>
+            <FactStrip
+              label={t("Kaynak")}
+              facts={[
+                {
+                  label: t("Son kontrol"),
+                  value: formatDateTime(data.generatedAt),
+                },
+              ]}
+            />
             {data.setup.port.fallback ? (
               <p className="mt-2 flex max-w-prose items-start gap-1.5 text-sm">
                 <AlertTriangle
@@ -291,11 +301,14 @@ function StatusBody({
 
       <div className="space-y-2 border-t border-base-300 pt-3">
         <h3 className="text-xs font-medium text-muted">{t("Projeler")}</h3>
-        <p className="text-xs text-muted">
-          {t(
-            "Burada kayıtlı mülk seçimleri gösterilir; Google erişimi bu kontrolde sınanmaz. Güncel bir okuma denemek için Bağlantıları açın, seçili mülkün raporuna gidin ve Yenile düğmesine basın.",
-          )}
-        </p>
+        <details className="text-sm text-muted">
+          <summary className="cursor-pointer py-2">{t("Ayrıntılar")}</summary>
+          <p className="text-xs text-muted">
+            {t(
+              "Burada kayıtlı mülk seçimleri gösterilir; Google erişimi bu kontrolde sınanmaz. Güncel bir okuma denemek için Bağlantıları açın, seçili mülkün raporuna gidin ve Yenile düğmesine basın.",
+            )}
+          </p>
+        </details>
         {projects.length === 0 ? (
           <p className="text-sm text-muted">
             {fillParts(t("Henüz proje yok. {link}."), {

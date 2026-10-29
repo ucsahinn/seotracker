@@ -488,6 +488,11 @@ function build(locale, { strict = true } = {}) {
   const lang = locale.lang;
   const html = dropNewTab(cutLangBlocks(homeSource()));
   const map = readMap(lang);
+  // Keep the Portuguese search and social title concise without changing the
+  // shared Turkish source or the longer product descriptions.
+  if (lang === "pt")
+    map["seowatcher: Search Console ve GA4 için ücretsiz SEO paneli"] =
+      "seowatcher: SEO grátis para Search Console e GA4";
   const outFile = outFileOf(lang);
   const missing = [];
   const tr = (key) => {

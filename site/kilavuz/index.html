@@ -2,9 +2,14 @@
 <html lang="tr">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>seowatcher kılavuzu: kurulum, ekranlar ve sorun giderme</title>
     <meta
@@ -88,7 +93,7 @@
       property="og:image:alt"
       content="seowatcher tanıtım kartı: Search Console, Analytics 4 ve site denetimi verilerini gösteren uygulama paneli ve Windows için indirme düğmesi"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta property="og:url" content="https://seowatcher.io/kilavuz/" />
     <meta property="og:locale" content="tr_TR" />
     <meta property="og:locale:alternate" content="en_US" />
@@ -144,7 +149,7 @@
             "description": "seowatcher kılavuzu: kurulum, her ekranın ne gösterdiği, Google'a bağlanma, denetim kuralları, ajan kurulumu ve sorun giderme.",
             "url": "https://seowatcher.io/kilavuz/",
             "inLanguage": "tr",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "about": { "@id": "https://seowatcher.io/#app" },
             "isPartOf": { "@id": "https://seowatcher.io/#website" }
           },
@@ -1445,7 +1450,9 @@
             <li><a href="/kilavuz/siralama-takibi/">Sıralama takibi</a></li>
             <li><a href="/kilavuz/firsatlar/">Fırsatlar</a></li>
             <li><a href="/kilavuz/kayitli-kelimeler/">Kayıtlı kelimeler</a></li>
-            <li><a href="/kilavuz/analitik/">Analytics</a></li>
+            <li>
+              <a href="/kilavuz/analitik/">Analitik verilerini yorumlama</a>
+            </li>
             <li><a href="/kilavuz/site-denetimi/">Site denetimi</a></li>
             <li><a href="/kilavuz/dizin-durumu/">Dizin durumu</a></li>
             <li><a href="/kilavuz/raporlar/">Raporlar ve şablonlar</a></li>
@@ -1463,7 +1470,7 @@
         </details>
       </aside>
       <article id="icerik" data-page="index">
-        <h1>Kılavuz</h1>
+        <h1>seowatcher kılavuzu</h1>
         <p class="lede">
           Kurulumdan ilk rapora kadar her adım ve her ekran anlatılır.
           Uygulamanın adı bu sitede seowatcher, GitHub'da seotracker'dır. İkisi
@@ -1507,9 +1514,9 @@
           <li>
             <a href="/kilavuz/projeler/">Projeler</a
             ><span
-              >Projeler, hangi siteyi açacağınızı ve hangi bağlantıyı
-              tamamlayacağınızı gösterir. Her sitenin Search Console, Analytics,
-              denetim ve raporları kendi projesindedir.</span
+              >Sitelerinizi projelerle yönetin. Her sitenin Search Console ve
+              Analytics bağlantılarını, denetimlerini ve raporlarını ayrı
+              inceleyin.</span
             >
           </li>
           <li>
@@ -1522,26 +1529,24 @@
           <li>
             <a href="/kilavuz/arama-performansi/">Arama performansı</a
             ><span
-              >Google'da kaç kez göründüğünüzü, kaç tıklama aldığınızı ve önce
-              neyi düzeltmeniz gerektiğini görürsünüz. Sayılar Search
-              Console'dan gelir. Kazanç rakamları bir üst sınırdır.</span
+              >Search Console'dan tıklama, gösterim ve ortalama sırayı
+              inceleyin. Önce düzeltilecek sayfaları ve kazanç tahminlerinin
+              sınırlarını öğrenin.</span
             >
           </li>
           <li>
             <a href="/kilavuz/siralama-takibi/">Sıralama takibi</a
             ><span
-              >Aramalarınızın Google'daki ortalama sırasını, hangilerinin
-              yükselip düştüğünü ve sıra gruplarındaki değişimi görürsünüz. Veri
-              bu bilgisayarda saklandığı için Google'ın 16 aylık sınırından da
-              eskiye bakabilirsiniz.</span
+              >Search Console sorgularının ortalama sırasını ve değişimini
+              izleyin. Yerel arşivle Google'ın 16 aylık sınırından eski
+              kayıtları inceleyin.</span
             >
           </li>
           <li>
             <a href="/kilavuz/firsatlar/">Fırsatlar</a
             ><span
-              >Her sayfanızın ayda kaç tıklama daha getirebileceğini ve bunun
-              için hangi işi yapmanız gerektiğini gösterir. Rakam bir üst
-              sınırdır, söz değil.</span
+              >Gözlenen sayfaları, olası işleri ve veri yeterliyse ek tıklama
+              üst sınırını gösterir.</span
             >
           </li>
           <li>
@@ -1552,7 +1557,7 @@
             >
           </li>
           <li>
-            <a href="/kilavuz/analitik/">Analytics</a
+            <a href="/kilavuz/analitik/">Analitik verilerini yorumlama</a
             ><span
               >Bu ekran GA4 mülkünde ölçülen ziyaretleri, etkileşimi ve anahtar
               olayları gösterir.</span
@@ -1561,9 +1566,9 @@
           <li>
             <a href="/kilavuz/site-denetimi/">Site denetimi</a
             ><span
-              >Uygulama sitenizi sayfa sayfa gezer, 202 kurala göre kontrol eder
-              ve sorunları önem sırasına dizer. Puan, ne kadarının
-              ölçülebildiğini de söyler. Eksik kalan denetime puan vermez.</span
+              >Sitenizi 202 kuralla denetleyin, sorunları önem sırasıyla
+              inceleyin. Denetim puanını, ölçüm kapsamını ve eksik verilerin
+              anlamını öğrenin.</span
             >
           </li>
           <li>
@@ -1576,10 +1581,9 @@
           <li>
             <a href="/kilavuz/raporlar/">Raporlar ve şablonlar</a
             ><span
-              >Denetimden ya da Arama performansı ekranından indirdiğiniz ve
-              asistanınıza yazdırdığınız her rapor tek bir HTML dosyasıdır.
-              Telefonda açarsınız, yazdırırsınız, e-postayla
-              gönderirsiniz.</span
+              >Denetim, arama performansı ve asistan raporlarını tek HTML
+              dosyasında saklayın. Raporları telefonda açın, yazdırın veya
+              e-postayla paylaşın.</span
             >
           </li>
           <li>
@@ -1625,9 +1629,9 @@
           <li>
             <a href="/kilavuz/sorun-giderme/">Sorun giderme</a
             ><span
-              >Sık görülen sorunlar belirti, sebep ve çözümle: dolu adres
-              numarası, Windows uyarısı, Google hataları, kota, takılan ya da
-              durup puan vermeyen denetim, boş grafik, 401.</span
+              >Windows uyarıları, Google bağlantı hataları, kota ve takılan
+              denetimler için belirti, neden ve çözümü bulun. Boş grafik ve
+              erişim sorunlarını giderin.</span
             >
           </li>
           <li>
@@ -1640,7 +1644,7 @@
           </li>
         </ul>
         <p class="meta">
-          Son güncelleme: 28 Ekim 2026. Bir hata görürseniz
+          Son güncelleme: 29 Ekim 2026. Bir hata görürseniz
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

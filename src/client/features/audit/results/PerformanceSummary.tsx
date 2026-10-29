@@ -94,12 +94,19 @@ export function PerformanceSummary({
           </p>
         ) : null}
         {reason ? (
-          <p className="mt-1 text-xs text-muted">
-            {reason}{" "}
-            <Link to="/settings" hash="hiz-olcumu" className="link">
+          <details className="mt-3 max-w-prose text-sm text-muted">
+            <summary className="cursor-pointer py-1.5 text-[var(--ink-warning)]">
+              {t("Hız ölçümü")}
+            </summary>
+            <p className="mt-1.5 leading-relaxed">{reason}</p>
+            <Link
+              to="/settings"
+              hash="hiz-olcumu"
+              className="btn btn-sm mt-3 min-h-11"
+            >
               {t("Ayarlar'ı aç")}
             </Link>
-          </p>
+          </details>
         ) : null}
       </section>
       <section className="rounded-box border border-[var(--hairline)] bg-base-100 px-3 py-3">

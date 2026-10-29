@@ -1,6 +1,6 @@
 ---
 title: Configurazione dell'assistente
-description: Collegare un agente in sicurezza e verificare una nuova chiamata.
+description: Collegare un assistente SEO in sicurezza, verificare una nuova chiamata e usare le competenze per controllare il sito e scrivere report.
 kind: nasil-yapilir
 updated: 2026-10-27
 ---

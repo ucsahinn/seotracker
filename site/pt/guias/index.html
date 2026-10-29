@@ -2,9 +2,14 @@
 <html lang="pt">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Guia do seowatcher: instalação, telas e solução de problemas</title>
     <meta
@@ -91,7 +96,7 @@
       property="og:image:alt"
       content="Cartão do seowatcher: o painel do aplicativo com dados do Search Console, do Analytics 4 e da auditoria do site, e um botão para baixar para Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta property="og:url" content="https://seowatcher.io/pt/guias/" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:locale:alternate" content="tr_TR" />
@@ -150,7 +155,7 @@
             "description": "Guias do seowatcher: instalação, o que cada tela mostra, a conexão com o Google, as regras de auditoria, a configuração do agente e a solução de problemas.",
             "url": "https://seowatcher.io/pt/guias/",
             "inLanguage": "pt",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "about": { "@id": "https://seowatcher.io/#app" },
             "isPartOf": { "@id": "https://seowatcher.io/#website" }
           },
@@ -1462,7 +1467,9 @@
                 >Palavras-chave salvas</a
               >
             </li>
-            <li><a href="/pt/guias/analise/">Analytics</a></li>
+            <li>
+              <a href="/pt/guias/analise/">Entender os dados de análise</a>
+            </li>
             <li>
               <a href="/pt/guias/auditoria-do-site/">Auditoria do site</a>
             </li>
@@ -1494,7 +1501,7 @@
         </details>
       </aside>
       <article id="icerik" data-page="index">
-        <h1>Guia</h1>
+        <h1>Guia do seowatcher</h1>
         <p class="lede">
           Um passo a passo curto de cada etapa e de cada tela, da instalação ao
           primeiro relatório. O aplicativo se chama seotracker no GitHub e
@@ -1562,29 +1569,28 @@
             <a href="/pt/guias/acompanhamento-de-posicoes/"
               >Acompanhamento de posições</a
             ><span
-              >Posição média das suas pesquisas no Google, quais estão subindo
-              ou caindo e como mudam os grupos de posições, mesmo além do limite
-              de 16 meses do Google, porque os dados ficam guardados neste
-              computador.</span
+              >Acompanhe posições médias no Google e mudanças nas consultas. O
+              arquivo local guarda os dados mesmo além do limite de 16 meses do
+              Google.</span
             >
           </li>
           <li>
             <a href="/pt/guias/oportunidades/">Oportunidades</a
             ><span
-              >Mostra quantos cliques a mais por mês cada uma das suas páginas
-              poderia trazer e que trabalho os traz. O número é um limite
-              superior, não uma promessa.</span
+              >Mostra páginas observadas, possíveis ações e um limite de cliques
+              adicionais quando há dados suficientes.</span
             >
           </li>
           <li>
             <a href="/pt/guias/palavras-chave-salvas/">Palavras-chave salvas</a
             ><span
-              >Investigue palavras salvas com datas e cobertura do
-              arquivo.</span
+              >Confira palavras-chave salvas com datas e cobertura do arquivo.
+              Entenda as observações do Search Console, dados ausentes e
+              mudanças no período.</span
             >
           </li>
           <li>
-            <a href="/pt/guias/analise/">Analytics</a
+            <a href="/pt/guias/analise/">Entender os dados de análise</a
             ><span
               >Analytics mostra visitas, engajamento e eventos principais
               medidos na propriedade GA4.</span
@@ -1593,10 +1599,9 @@
           <li>
             <a href="/pt/guias/auditoria-do-site/">Auditoria do site</a
             ><span
-              >O aplicativo percorre o seu site página por página, confere 202
-              regras e ordena os problemas por importância. A pontuação também
-              diz quanto pôde ser medido. Uma auditoria interrompida não recebe
-              pontuação.</span
+              >Confira seu site com 202 regras e priorize os problemas. Entenda
+              a pontuação da auditoria, a cobertura das medições e os resultados
+              incompletos.</span
             >
           </li>
           <li>
@@ -1610,9 +1615,9 @@
           <li>
             <a href="/pt/guias/relatorios/">Relatórios e modelos</a
             ><span
-              >Todo relatório que você baixa de uma auditoria ou do Desempenho
-              da pesquisa, ou que o seu assistente escreve, é um único arquivo
-              HTML. Você abre no celular, imprime ou envia por e-mail.</span
+              >Salve relatórios de auditoria, pesquisa e do assistente em
+              arquivos HTML. Abra no celular, imprima ou compartilhe os
+              resultados por e-mail.</span
             >
           </li>
           <li>
@@ -1652,7 +1657,9 @@
           <li>
             <a href="/pt/guias/configurar-agente/">Configurar o agente</a
             ><span
-              >Ligar um agente com segurança e verificar uma nova chamada.</span
+              >Conecte um assistente SEO com segurança, verifique uma nova
+              chamada e use as habilidades para auditar o site e escrever
+              relatórios com dados locais.</span
             >
           </li>
           <li>
@@ -1672,7 +1679,7 @@
           </li>
         </ul>
         <p class="meta">
-          Última atualização: 28 de outubro de 2026. Viu algum erro?
+          Última atualização: 29 de outubro de 2026. Viu algum erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

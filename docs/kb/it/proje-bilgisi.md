@@ -1,6 +1,6 @@
 ---
 title: Informazioni sul progetto
-description: Le informazioni del progetto sono note locali per te e per un assistente collegato. Un testo compilato non è verificato e non tutti gli assistenti lo leggono automaticamente.
+description: Conservare obiettivi e note del progetto in locale per te e per un assistente collegato. Capire la portata delle note e i loro limiti.
 screen: Proje bilgisi
 route: /p/<proje>/context
 updated: 2026-10-27

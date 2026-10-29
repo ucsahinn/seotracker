@@ -41,4 +41,9 @@ export const frNotifications: Catalog = {
   "Google hesabıyla giriş seçeneği": "Se connecter avec un compte Google",
   "Az trafik alan sitelerde Google bazı sorguları gizler. Sayfa toplamlarında tıklama varken sorgu listesi boş veya daha küçük olabilir; bu tek başına bağlantı hatası değildir.":
     "Sur les sites qui reçoivent peu de trafic de recherche, Google masque certaines requêtes. La liste peut être vide ou afficher moins de clics que les totaux par page. Cela ne signifie pas à lui seul que la connexion est défaillante.",
+  "Bu tarayıcı": "Ce navigateur",
+  "Henüz bildirim yok": "Aucune notification pour le moment",
+  "Para birimi": "Devise",
+  "Mülk alan adını kapsamıyor.": "La propriété ne couvre pas ce domaine.",
+  "Denetim eski": "Audit ancien",
 };

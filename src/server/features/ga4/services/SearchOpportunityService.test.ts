@@ -265,14 +265,17 @@ describe("SearchOpportunityService", () => {
       }),
     );
     // 1000 x 15% - 40 over 28 days, scaled to 30.
-    expect(result.rows).toEqual([
-      expect.objectContaining({
-        page: "https://example.com/a",
-        work: "page1",
-        gain: 110,
-        gainPerMonth: 118,
-      }),
-    ]);
+    expect(result.rows[0]).toMatchObject({
+      page: "https://example.com/a",
+      work: "page1",
+      gain: 110,
+      gainPerMonth: 118,
+    });
+    expect(result.rows[1]).toMatchObject({
+      page: "https://example.com/top",
+      gain: null,
+    });
+    expect(result.rows).toHaveLength(2);
     expect(result.totals).toMatchObject({
       noGainPages: 0,
       unknownPages: 1,
@@ -382,7 +385,7 @@ describe("SearchOpportunityService", () => {
       NOW,
     );
     expect(result.method.brandSource).toBe("suggested");
-    expect(result.rows).toEqual([]);
+    expect(result.rows).toMatchObject([{ gain: null, brandOnly: true }]);
   });
 
   it("fails before asking anything when Search Console is not connected", async () => {

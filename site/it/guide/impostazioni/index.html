@@ -2,9 +2,14 @@
 <html lang="it">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Impostazioni | guida di seowatcher</title>
     <meta
@@ -96,7 +101,7 @@
       property="og:image:alt"
       content="Scheda di seowatcher: la dashboard dell’app con i dati di Search Console, Analytics 4 e dell’audit del sito, e un pulsante per scaricarla su Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-28" />
     <meta
       property="og:url"
       content="https://seowatcher.io/it/guide/impostazioni/"
@@ -155,7 +160,7 @@
             "description": "Ambito di browser, installazione e progetto; credenziali Google, contatori e versioni.",
             "url": "https://seowatcher.io/it/guide/impostazioni/",
             "inLanguage": "it",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-28",
             "articleSection": "Schermate",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -1496,7 +1501,9 @@
                 >Parole chiave salvate</a
               >
             </li>
-            <li><a href="/it/guide/analisi/">Analytics</a></li>
+            <li>
+              <a href="/it/guide/analisi/">Interpretare i dati di analisi</a>
+            </li>
             <li>
               <a href="/it/guide/controllo-del-sito/">Controllo del sito</a>
             </li>
@@ -1588,6 +1595,22 @@
           riprova; usa la diagnostica Aiuto per una fonte assente.
           Un'impostazione illeggibile non può essere modificata.
         </p>
+        <h2 id="notifiche-di-windows">Notifiche di Windows</h2>
+        <p>
+          Fai clic destro sull’icona seowatcher nell’area di notifica e usa
+          <strong>Windows bildirimleri</strong> (attiva per impostazione
+          predefinita). Finché il programma di avvio è in esecuzione, le
+          verifiche completate o non riuscite di tutti i progetti e i nuovi
+          annunci appaiono come fumetti Windows entro circa 90 secondi, anche
+          con il browser chiuso o in secondo piano. Un clic apre la pagina
+          relativa; più eventi vengono riuniti. Il primo avvio ignora gli eventi
+          precedenti; il riavvio non ripete quelli già ricevuti. Gli eventi
+          ricevuti con le notifiche disattivate non vengono mostrati in seguito.
+          Le nuove versioni seguono l’impostazione di aggiornamento esistente.
+          La modalità Concentrazione/Non disturbare può nascondere le notifiche.
+          Nessuna notifica con il programma di avvio chiuso. Questa funzione non
+          è disponibile in Docker.
+        </p>
         <nav class="pager" aria-label="Pagina precedente e successiva">
           <a
             class="pager-prev"
@@ -1600,7 +1623,7 @@
           >
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 27 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 28 ottobre 2026. Se si nota un errore,
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1619,6 +1642,7 @@
             <a href="#windows-velocita-e-limiti">Windows, velocità e limiti</a>
           </li>
           <li><a href="#versioni">Versioni</a></li>
+          <li><a href="#notifiche-di-windows">Notifiche di Windows</a></li>
         </ol>
       </nav>
     </main>

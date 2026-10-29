@@ -31,6 +31,7 @@ const audit = (id: string, startedAt: string, critical: number) => ({
   pagesCrawled: 20,
   pagesTotal: 20,
   ranLighthouse: false,
+  comparison: { previousAuditId: "old", compatible: true },
   issues: { critical, warning: 0, info: 0 },
 });
 
@@ -183,4 +184,23 @@ describe("AuditHistorySection", () => {
       screen.queryByRole("button", { name: "Site adresini gir" }),
     ).toBeNull();
   });
+});
+
+it("C24 retains raw issue counts without directional arrows for incompatible scopes", () => {
+  renderSection([
+    {
+      ...audit("new", "2026-02-01", 0),
+      pagesCrawled: 144,
+      issues: { critical: 0, warning: 157, info: 0 },
+      comparison: { previousAuditId: "old", compatible: false },
+    },
+    {
+      ...audit("old", "2026-01-01", 0),
+      issues: { critical: 0, warning: 32, info: 0 },
+    },
+  ]);
+  expect(screen.queryByText("arttı")).toBeNull();
+  expect(screen.queryByText("azaldı")).toBeNull();
+  expect(screen.getByRole("cell", { name: "157" })).toBeTruthy();
+  expect(screen.getByRole("cell", { name: "32" })).toBeTruthy();
 });

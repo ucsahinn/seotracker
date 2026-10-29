@@ -2,9 +2,14 @@
 <html lang="it">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Note di versione | guida di seowatcher</title>
     <meta
@@ -102,7 +107,7 @@
       property="og:image:alt"
       content="Scheda di seowatcher: la dashboard dell’app con i dati di Search Console, Analytics 4 e dell’audit del sito, e un pulsante per scaricarla su Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/it/guide/note-di-rilascio/"
@@ -164,7 +169,7 @@
             "description": "seowatcher 0.8.4 Alpha — dati Google completi, colori vivaci e schermate riviste con dati reali, più leggibili sul telefono.",
             "url": "https://seowatcher.io/it/guide/note-di-rilascio/",
             "inLanguage": "it",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Aiuto e riferimento",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -1505,7 +1510,9 @@
                 >Parole chiave salvate</a
               >
             </li>
-            <li><a href="/it/guide/analisi/">Analytics</a></li>
+            <li>
+              <a href="/it/guide/analisi/">Interpretare i dati di analisi</a>
+            </li>
             <li>
               <a href="/it/guide/controllo-del-sito/">Controllo del sito</a>
             </li>
@@ -1547,7 +1554,7 @@
           schermate riviste con dati reali, più leggibili sul telefono.
         </p>
         <p>
-          L’ultima versione è la <strong>0.8.4 Alpha</strong>, del 28 ottobre
+          L’ultima versione è la <strong>0.8.5 Alpha</strong>, del 28 ottobre
           2026. I dati restano intatti durante l’aggiornamento.
         </p>
         <p>
@@ -1555,9 +1562,9 @@
           programma di installazione; il vecchio aggiornamento non riconosce il
           numero inferiore come più recente.
         </p>
-        <h2 id="0-8-4-alpha-2026-10-28">0.8.4 Alpha — 2026-10-28</h2>
+        <h2 id="0-8-5-alpha-2026-10-28">0.8.5 Alpha — 2026-10-28</h2>
         <p>
-          Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.4:
+          Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.5:
           verifica del sito, dashboard, notifiche e sei lingue, con dati più
           precisi e schermate più leggibili.
         </p>
@@ -1664,7 +1671,9 @@
           </li>
           <li>
             <strong>Notifiche di Windows:</strong> Aggiornamenti e annunci
-            compaiono anche nell'area notifiche di Windows.
+            compaiono anche nell'area notifiche di Windows. Windows ti avvisa
+            anche quando una verifica termina o non riesce. Puoi disattivare
+            queste notifiche dal menu dell’icona nella barra delle applicazioni.
           </li>
           <li>
             <strong>Annunci:</strong> Le novità compaiono nella schermata
@@ -1727,6 +1736,12 @@
             schede e grafici usano gli stessi colori più vivaci in entrambi i
             temi.
           </li>
+          <li>
+            <strong>Schermate più ordinate:</strong> Fonte, periodo e
+            aggiornamento dei dati sono riuniti con etichette brevi. Apri le
+            spiegazioni lunghe quando servono; nomi brevi e pulsanti chiari
+            rendono più facili le azioni.
+          </li>
         </ul>
         <h3 id="progetti-e-ricerche-salvate">🗂️ Progetti e ricerche salvate</h3>
         <ul>
@@ -1753,7 +1768,9 @@
             reali sono stati corretti; i confronti usano le pagine di ciascuna
             verifica e la verifica resta registrata se l’avvio non riesce. Anche
             i messaggi di errore nella cronologia delle verifiche rientrano
-            nello schermo.
+            nello schermo. I conteggi nella cronologia delle verifiche spiegano
+            che includono i problemi delle singole pagine e quelli dell’intero
+            sito.
           </li>
           <li>
             <strong>Menu e tastiera:</strong> Schermate, report ed elenchi dei
@@ -1777,7 +1794,12 @@
             delle verifiche nel pannello spiegano cosa contano e i nomi dei
             problemi appaiono per intero. Un elenco vuoto di parole salvate lo
             indica subito. Il monitoraggio delle posizioni parla di posizioni
-            medie; Aiuto e comandi per cambiare pagina usano i nomi dei menu.
+            medie; Aiuto e comandi per cambiare pagina usano i nomi dei menu. Il
+            grafico delle sessioni nella dashboard ha il nome corretto; le
+            posizioni sono descritte come medie del periodo scelto. Singolare e
+            plurale sono stati corretti in inglese, tedesco, francese, italiano
+            e portoghese. Il tuo assistente IA trova di nuovo le pagine che
+            competono per la stessa ricerca.
           </li>
           <li>
             <strong>Numeri più precisi:</strong> Le misure mancanti non contano
@@ -1789,7 +1811,10 @@
             pochi visitatori, i dati mancanti vengono distinti da uno zero
             reale. Analytics spiega una misura sconosciuta una sola volta; le
             tabelle vuote nascondono i pulsanti per la pagina precedente e
-            successiva.
+            successiva. Opportunità elenca le pagine con le misure reali anche
+            sui siti con pochi visitatori. Se il consiglio si basa sulla
+            posizione media e non è possibile calcolare un guadagno, il guadagno
+            è indicato come sconosciuto.
           </li>
           <li>
             <strong>Stato della connessione:</strong> La scelta della proprietà
@@ -1809,7 +1834,8 @@
             nella cartella utente; le connessioni riparate dell’assistente
             restano valide al riavvio e il controllo iniziale non si blocca più.
             Un collegamento inutilizzabile alle impostazioni Windows viene
-            nascosto.
+            nascosto. Le notifiche ricevute mentre eri assente ora compaiono
+            quando torni nell’app.
           </li>
         </ul>
         <h3 id="sicurezza">🔒 Sicurezza</h3>
@@ -1833,7 +1859,7 @@
           Su Windows è arrivata l'installazione con un clic, ed è online il sito
           seowatcher.io con la guida d'uso.
         </p>
-        <h3 id="in-evidenza">✨ In evidenza</h3>
+        <h3 id="in-evidenza-2">✨ In evidenza</h3>
         <ul>
           <li>
             <strong>Installazione con un clic:</strong> Installa su Windows con
@@ -1848,7 +1874,7 @@
             online in sei lingue.
           </li>
         </ul>
-        <h3 id="windows">🪟 Windows</h3>
+        <h3 id="windows-2">🪟 Windows</h3>
         <ul>
           <li>
             <strong>Installazione facile:</strong> Avvia il file: prepara tutto
@@ -1919,7 +1945,7 @@
             chiaro e scuro sono coerenti con il sito.
           </li>
         </ul>
-        <h3 id="correzioni">🛠️ Correzioni</h3>
+        <h3 id="correzioni-2">🛠️ Correzioni</h3>
         <ul>
           <li>
             <strong>Connessione Google:</strong> Un falso avviso «chiave di
@@ -1942,7 +1968,7 @@
           verifica del sito e la misurazione della velocità in un'unica app sul
           tuo computer.
         </p>
-        <h3 id="in-evidenza">✨ In evidenza</h3>
+        <h3 id="in-evidenza-3">✨ In evidenza</h3>
         <ul>
           <li>
             <strong>Dati in un solo posto:</strong> Search Console, Analytics,
@@ -2003,7 +2029,7 @@
             riduzione del movimento è attiva.
           </li>
         </ul>
-        <h3 id="correzioni">🛠️ Correzioni</h3>
+        <h3 id="correzioni-3">🛠️ Correzioni</h3>
         <ul>
           <li>
             <strong>Verifiche bloccate:</strong> Una verifica interrotta a metà
@@ -2023,7 +2049,7 @@
             richiesta di riconnessione dopo circa un'ora è risolto.
           </li>
         </ul>
-        <h3 id="sicurezza">🔒 Sicurezza</h3>
+        <h3 id="sicurezza-2">🔒 Sicurezza</h3>
         <ul>
           <li>
             <strong>Report sicuri:</strong> Un report scaricato è protetto da
@@ -2065,7 +2091,7 @@
           ><span class="pager-next empty"></span>
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 28 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 29 ottobre 2026. Se si nota un errore,
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -2078,7 +2104,7 @@
         <p class="toc-label">In questa pagina</p>
         <ol>
           <li>
-            <a href="#0-8-4-alpha-2026-10-28">0.8.4 Alpha — 2026-10-28</a>
+            <a href="#0-8-5-alpha-2026-10-28">0.8.5 Alpha — 2026-10-28</a>
           </li>
           <li>
             <a href="#0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</a>

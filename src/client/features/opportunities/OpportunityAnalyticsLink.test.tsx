@@ -41,19 +41,52 @@ it("links collapsed variants to the canonical group with organic source dates", 
 });
 
 it.each([
-  { normalizedPage: null },
-  { normalizedPage: "example.com/other", joinPrecision: "exact" as const },
-  { joinPrecision: null },
+  {
+    normalizedPage: null,
+    expected: "Sayfa adresi Analytics bağlantısı için doğrulanamadı.",
+  },
+  {
+    normalizedPage: "example.com/other",
+    joinPrecision: "exact" as const,
+    expected: "Sayfa adresi Analytics bağlantısı için doğrulanamadı.",
+  },
+  {
+    joinPrecision: null,
+    expected: "Analytics eşleşmesi doğrulanamadı; nedeni bilinmiyor.",
+  },
 ])("explains an unavailable or inconsistent match", (overrides) => {
   render(
     <OpportunityAnalyticsLink
-      row={makeRow(overrides)}
+      row={makeRow({ ...overrides, joinStatus: "joined" })}
       projectId="p"
       dateRange={{ startDate: "2026-09-22", endDate: "2026-09-28" }}
     />,
   );
   expect(screen.queryByRole("link")).toBeNull();
+  expect(screen.getByText(overrides.expected)).toBeTruthy();
+});
+
+it("distinguishes a missing Analytics row from an unverifiable match", () => {
+  render(
+    <OpportunityAnalyticsLink
+      row={makeRow()}
+      projectId="p"
+      dateRange={{ startDate: "2026-09-22", endDate: "2026-09-28" }}
+    />,
+  );
   expect(
-    screen.getByText("Analytics adres grubu birebir eşleştirilemiyor."),
-  ).toBeTruthy();
+    screen.getByText("Bu sayfa için eşleşen Analytics verisi dönmedi."),
+  ).toBeDefined();
+});
+
+it("names missing report dates without diagnosing a failed page match", () => {
+  render(
+    <OpportunityAnalyticsLink
+      row={makeRow({ joinPrecision: "exact" })}
+      projectId="p"
+    />,
+  );
+  expect(
+    screen.getByText("Analytics bağlantısı için rapor tarihleri eksik."),
+  ).toBeDefined();
 });

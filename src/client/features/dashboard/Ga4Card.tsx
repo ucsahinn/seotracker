@@ -22,7 +22,6 @@ import {
   formatPercent,
 } from "@/client/lib/format";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
-import { formatDate } from "@/client/lib/format";
 import { t } from "@/shared/i18n";
 
 function formatTrendDay(date: string): string {
@@ -141,11 +140,7 @@ export function Ga4Card({
   return (
     <CardShell
       title={t("Organik trafik")}
-      stamp={
-        covered
-          ? `Google Analytics · ${formatDate(covered.startDate)} – ${formatDate(covered.endDate)}`
-          : "Google Analytics"
-      }
+      stamp={covered ? undefined : "Google Analytics"}
       action={
         <div className="flex items-center gap-1">
           {report?.connected ? (
@@ -293,11 +288,16 @@ export function Ga4Card({
             </details>
           ) : null}
           {report.totals.sessions === null ? (
-            <p className="text-sm text-muted">
-              {t(
-                "Oturum sayısı bilinmiyor. Analytics raporunu açarak kaynak uyarılarını inceleyin; bağlantı erişimini ve sitedeki Analytics etiketini kontrol edin.",
-              )}
-            </p>
+            <details className="text-sm text-muted">
+              <summary className="min-h-11 cursor-pointer py-3 text-[var(--ink-warning)]">
+                {t("Yetersiz veri")}
+              </summary>
+              <p className="max-w-prose leading-relaxed">
+                {t(
+                  "Oturum sayısı bilinmiyor. Analytics raporunu açarak kaynak uyarılarını inceleyin; bağlantı erişimini ve sitedeki Analytics etiketini kontrol edin.",
+                )}
+              </p>
+            </details>
           ) : null}
           {report.totals.sessions === 0 && !limited ? (
             <p className="text-sm text-muted">

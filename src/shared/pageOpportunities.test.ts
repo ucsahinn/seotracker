@@ -79,6 +79,77 @@ function run(
 }
 
 describe("pageOpportunities", () => {
+  it("keeps all impression-bearing pages when no CTR band supports an estimate", () => {
+    const small = qp("/small", "small query", 15, 6, 0);
+    const result = pageOpportunities({
+      days: 90,
+      queries: [{ ...small, key: small.query }],
+      queryPages: [small],
+      pages: [
+        pageRow("/small", [small]),
+        { key: "/hidden", clicks: 1, impressions: 10, ctr: 0.1, position: 8 },
+      ],
+      brandTerms: [],
+    });
+    expect(result.curveInsufficient).toBe(true);
+    expect(
+      result.pages.map((page) => [page.page, page.gain, page.work]),
+    ).toEqual([
+      ["/hidden", null, "page1"],
+      ["/small", null, "page2"],
+    ]);
+    expect(result.reasons).toMatchObject({
+      belowThreshold: 1,
+      missingQueryPairs: 1,
+      calculablePositive: 0,
+      calculableZero: 0,
+    });
+  });
+  it("keeps unknown pages after estimates with observed queries and brand markers", () => {
+    const result = run(
+      [
+        qp("/small", "small query", 15, 6, 0),
+        qp("/estimated", "known", 7, 1000, 40),
+        qp("/brand", "example", 2, 20, 3),
+      ],
+      ["example"],
+    );
+    expect(result.pages.map((page) => page.page)).toEqual([
+      "/estimated",
+      "/brand",
+      "/small",
+    ]);
+    expect(result.pages[1]).toMatchObject({
+      gain: null,
+      gainStatus: "unknown",
+      gainReason: "missingQueryPairs",
+      brandOnly: true,
+      work: "snippet",
+    });
+    expect(result.pages[2]).toMatchObject({
+      gain: null,
+      gainStatus: "unknown",
+      gainReason: "belowThreshold",
+      work: "page2",
+      observedQueries: [{ query: "small query", impressions: 6, position: 15 }],
+    });
+  });
+  it.each([
+    [2, "snippet"],
+    [5, "snippet"],
+    [6, "page1"],
+    [10, "page1"],
+    [11, "page2"],
+    [20, "page2"],
+    [21, "deep"],
+  ])(
+    "suggests work at position %s without inventing gain",
+    (position, work) => {
+      expect(
+        run([qp("/small", "query", Number(position), 6, 0)]).pages[0],
+      ).toMatchObject({ gain: null, work });
+    },
+  );
   it("retains every contributing query on an opportunity page", () => {
     const queries = Array.from({ length: 15 }, (_, i) =>
       qp("/all", `query ${i}`, 8, 1000, 10),
@@ -100,7 +171,10 @@ describe("pageOpportunities", () => {
       pages: rows.map((row) => pageRow(row.page, [row])),
       brandTerms: [],
     });
-    expect(result.pages.map((page) => page.page)).toEqual(["/known"]);
+    expect(result.pages.map((page) => page.page)).toEqual([
+      "/known",
+      "/unknown",
+    ]);
     expect(result.noGainPages).toBe(0);
     expect(result.reasons.insufficientTargetCurve).toBe(1);
   });
@@ -140,7 +214,7 @@ describe("pageOpportunities", () => {
     expect(
       page.queries.reduce((sum, query) => sum + (query.gainPerMonth ?? 0), 0) +
         (page.otherQueryGainPerMonth ?? 0),
-    ).toBe(perMonth(page.gain, 28));
+    ).toBe(perMonth(page.gain ?? 0, 28));
     expect(
       Object.values(page.gainByWork).reduce((sum, gain) => sum + gain, 0),
     ).toBe(page.gain);
@@ -192,7 +266,9 @@ describe("pageOpportunities", () => {
 
     const withTerms = run(rows, ["ornek"], true);
     expect(withTerms.curve).toBe("nonBrand");
-    expect(withTerms.pages).toEqual([]);
+    expect(withTerms.pages).toMatchObject([
+      { page: "/", gain: null, brandOnly: true },
+    ]);
   });
 
   it("sums a page's queries and names the work that holds most of it", () => {

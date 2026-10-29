@@ -1,6 +1,7 @@
 import { ManualAgentConnection } from "@/client/features/ai-mcp/ManualAgentConnection";
 import { useAgentVerification } from "@/client/features/ai-mcp/useAgentVerification";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
+import { FactStrip } from "@/client/components/FactStrip";
 import { StatusPill } from "@/client/components/StatusPill";
 import { TabPanel, Tabs } from "@/client/components/Tabs";
 import { formatDateTime, formatRelativeTime } from "@/client/lib/format";
@@ -108,19 +109,30 @@ function AiPage() {
                   tone={isRecent ? "success" : "warning"}
                   label={t("Araç çağrısı alındı")}
                 />
-                <span className="break-words text-xs text-muted">
-                  {fillParts(t("{client} · son çağrı {time}"), {
-                    client: connection.data?.clientLabel ?? t("Bir ajan"),
-                    time: (
-                      <time
-                        dateTime={lastCallAt}
-                        title={formatDateTime(lastCallAt)}
-                      >
-                        {formatRelativeTime(lastCallAt)}
-                      </time>
-                    ),
-                  })}
-                </span>
+                <FactStrip
+                  label={t("Kaynak")}
+                  facts={[
+                    {
+                      label: t("Kaynak"),
+                      value: (
+                        <span className="break-words">
+                          {fillParts(t("{client} · son çağrı {time}"), {
+                            client:
+                              connection.data?.clientLabel ?? t("Bir ajan"),
+                            time: (
+                              <time
+                                dateTime={lastCallAt}
+                                title={formatDateTime(lastCallAt)}
+                              >
+                                {formatRelativeTime(lastCallAt)}
+                              </time>
+                            ),
+                          })}
+                        </span>
+                      ),
+                    },
+                  ]}
+                />
               </>
             ) : (
               /* "Bağlanmadı" alone is a plain negative past — a failed
@@ -133,11 +145,14 @@ function AiPage() {
         }
       />
 
-      <p className="text-sm text-muted">
-        {t(
-          "Ajan araçları bu kurulumdaki projelere erişir. Son çağrı geçmiş kullanım kaydıdır; sürekli çevrimiçi bağlantı anlamına gelmez.",
-        )}
-      </p>
+      <details className="text-sm text-muted">
+        <summary className="cursor-pointer py-2">{t("Ayrıntılar")}</summary>
+        <p className="max-w-prose leading-relaxed">
+          {t(
+            "Ajan araçları bu kurulumdaki projelere erişir. Son çağrı geçmiş kullanım kaydıdır; sürekli çevrimiçi bağlantı anlamına gelmez.",
+          )}
+        </p>
+      </details>
       {statusUnknown && !connection.isPending ? (
         <button
           type="button"
@@ -242,11 +257,16 @@ function AiPage() {
                   <h2 className="text-sm font-semibold">
                     {t("Becerileri güncelleyin")}
                   </h2>
-                  <p className="mt-1 text-sm leading-relaxed text-muted">
-                    {t(
-                      "Ajanınızı daha önce kurduysanız güncelleme komutunu yapıştırın. Beceriler yenilenir, bağlantı ayarlarınız ve kendi düzenlemeleriniz olduğu gibi kalır.",
-                    )}
-                  </p>
+                  <details className="mt-1 text-sm text-muted">
+                    <summary className="cursor-pointer py-2">
+                      {t("Ayrıntılar")}
+                    </summary>
+                    <p className="max-w-prose leading-relaxed">
+                      {t(
+                        "Ajanınızı daha önce kurduysanız güncelleme komutunu yapıştırın. Beceriler yenilenir, bağlantı ayarlarınız ve kendi düzenlemeleriniz olduğu gibi kalır.",
+                      )}
+                    </p>
+                  </details>
                 </div>
                 <CopyButton
                   value={agentUpdatePrompt}

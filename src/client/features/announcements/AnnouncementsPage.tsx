@@ -1,3 +1,4 @@
+import { FactStrip } from "@/client/components/FactStrip";
 import { useEffect, useState } from "react";
 import { Megaphone, RefreshCw } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
@@ -181,17 +182,29 @@ function AnnouncementCard({
         {unread ? (
           <span className="text-xs font-medium text-primary">{t("Yeni")}</span>
         ) : null}
-        <time
-          className="ml-auto text-xs text-subtle"
-          dateTime={announcement.publish_at}
-        >
-          {formatDateTime(announcement.publish_at)}
-        </time>
+      </div>
+      <div className="mt-4">
+        <FactStrip
+          label={t("Kaynak")}
+          facts={[
+            {
+              label: t("Yayımlandı"),
+              value: (
+                <time
+                  className="ml-auto text-xs text-subtle"
+                  dateTime={announcement.publish_at}
+                >
+                  {formatDateTime(announcement.publish_at)}
+                </time>
+              ),
+            },
+          ]}
+        />
       </div>
       <h2 className="mt-3 text-base font-semibold text-base-content">
         {title}
       </h2>
-      <p className="mt-1 whitespace-pre-wrap break-words text-sm leading-relaxed text-muted">
+      <p className="mt-2 max-w-prose whitespace-pre-wrap break-words text-sm leading-relaxed text-muted">
         {body}
       </p>
       {announcement.interaction_type === "poll" ? (
@@ -205,7 +218,7 @@ function AnnouncementCard({
               <div key={option.id}>
                 <button
                   type="button"
-                  className="btn btn-outline btn-sm w-full justify-between"
+                  className="btn btn-outline btn-sm min-h-11 h-auto w-full justify-between gap-3 whitespace-normal py-2"
                   onClick={() => void respond({ optionId: option.id })}
                   disabled={answered || pending}
                 >

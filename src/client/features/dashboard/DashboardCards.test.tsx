@@ -241,9 +241,10 @@ it("labels affected pages as distinct from finding counts", () => {
       audit={audit({ affectedPages: 20, totalIssueTypes: 11 })}
     />,
   );
-  expect(
-    screen.getByText("Etkilenen benzersiz sayfa: 20 · Kontrol türü: 11."),
-  ).toBeDefined();
+  const scope = screen.getByText(
+    "Etkilenen benzersiz sayfa: 20 · Kontrol türü: 11.",
+  );
+  expect(scope.closest("details")?.open).toBe(false);
 });
 
 // H02: ellipsis hides the actionable noindex qualifier on narrow cards.

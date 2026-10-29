@@ -1,6 +1,6 @@
 ---
 title: Palavras-chave salvas
-description: Investigue palavras salvas com datas e cobertura do arquivo.
+description: Confira palavras-chave salvas com datas e cobertura do arquivo. Entenda as observações do Search Console, dados ausentes e mudanças no período.
 screen: Kayıtlı kelimeler
 route: /p/<proje>/saved
 updated: 2026-10-27

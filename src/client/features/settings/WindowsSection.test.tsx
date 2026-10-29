@@ -111,3 +111,12 @@ it("keeps tray exit guidance for a supported Windows installation", async () => 
   await screen.findByRole("checkbox", { name: "Windows açılınca başlat" });
   expect(screen.getByText(/tepsi menüsünden Çıkış/)).toBeDefined();
 });
+
+it("C29 names Windows preference and stop guidance disclosures", async () => {
+  native.get.mockResolvedValue({ status: "unsupported" });
+  mount();
+  await screen.findByText(/Bu seçenekler Windows paketinde/);
+  expect(screen.getByText("Windows tercihleri").tagName).toBe("SUMMARY");
+  expect(screen.getByText("Uygulamayı durdurma").tagName).toBe("SUMMARY");
+  expect(screen.queryByText("Ayrıntılar")).toBeNull();
+});

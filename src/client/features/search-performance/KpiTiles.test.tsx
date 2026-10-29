@@ -12,6 +12,8 @@ it("explains the CTR change as a difference between the two percentages", () => 
   render(<KpiTiles view={view} compare="previous" />);
   expect(screen.getByText("-18,2 yüzde puan")).toBeDefined();
   expect(
-    screen.getByText(/iki dönemin yüzdeleri arasındaki farktır/),
-  ).toBeDefined();
+    screen
+      .getByText(/iki dönemin yüzdeleri arasındaki farktır/)
+      .closest("details")?.open,
+  ).toBe(false);
 });

@@ -1,6 +1,6 @@
 ---
 title: Sorun giderme
-description: Sık görülen sorunlar belirti, sebep ve çözümle: dolu adres numarası, Windows uyarısı, Google hataları, kota, takılan ya da durup puan vermeyen denetim, boş grafik, 401.
+description: Windows uyarıları, Google bağlantı hataları, kota ve takılan denetimler için belirti, neden ve çözümü bulun. Boş grafik ve erişim sorunlarını giderin.
 kind: sorun-giderme
 updated: 2026-10-27
 ---

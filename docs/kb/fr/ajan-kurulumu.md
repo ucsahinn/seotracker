@@ -1,6 +1,6 @@
 ---
 title: Installation de l'assistant
-description: Connecter un agent sans exposer le jeton et vérifier un nouvel appel.
+description: Connecter votre assistant SEO sans exposer le jeton, vérifier un nouvel appel et utiliser les compétences pour auditer le site et rédiger un rapport.
 kind: nasil-yapilir
 updated: 2026-10-27
 ---

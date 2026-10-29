@@ -90,9 +90,8 @@ it("retains a measured quiet commerce period and explicitly names an unknown cur
 
 it("qualifies dashboard Analytics totals as property-wide", () => {
   render(<Ga4Card projectId="p1" connected />);
-  expect(
-    screen.getByText(/Mülk kapsamı: tüm ana makineler ve akışlar/),
-  ).toBeDefined();
+  const scope = screen.getByText(/Mülk kapsamı: tüm ana makineler ve akışlar/);
+  expect(scope.closest("details")?.open).toBe(false);
 });
 
 it("names the sessions trend so it is not read as the revenue above it", () => {

@@ -6,6 +6,10 @@ import type { Catalog } from "@/shared/i18n";
  * Google concepts use Search Console's own English UI names.
  */
 export const enSearch: Catalog = {
+  "{count} sorgu gözlendi.": "Observed queries: {count}.",
+  "En çok gösterilenler": "Most-viewed queries",
+  "Tam yanıtlı gün: {current}/{days}; önceki dönem: {previous}/{days}.":
+    "Days with complete responses: {current}/{days}; previous period: {previous}/{days}.",
   "Arşivde en çok gösterim": "Most impressions in this archive",
   "{date} tarihli geçmiş bu bilgisayarda saklı; Google'ın 16 ay sınırı buna uygulanmaz.":
     "History for {date} is stored on this computer; Google's 16-month limit does not apply to it.",
@@ -1613,6 +1617,13 @@ export const enSearch: Catalog = {
   "Google anonim sorguları gizler. API, arama türü başına günde en fazla {limit} satır sunar; sorgu ve sayfa ayrıntılarında başka satırları da atlayabilir. Tam sayfalama, tüm aramaların listelendiği anlamına gelmez.":
     "Google hides anonymized queries. The API exposes at most {limit} rows per day per search type and can omit additional query and page detail. Full pagination does not mean every search is listed.",
   // Dashboard source scope and measured next steps.
+  "Ölçüler ne demek?": "What do these mean?",
+  Kaynak: "Source",
+  "Kesin veri": "Final data",
+  "Geçici veri": "Provisional data",
+  "Google son günleri sonradan düzeltebilir.":
+    "Google may still revise the latest days.",
+  Yok: "None",
   "Toplamların son günü: {date}.": "Totals through: {date}.",
   "Geçici verinin son günü: {date}.": "Provisional data through: {date}.",
   "Bu dönemden sonra geçici veri alınmadı.":
@@ -1630,4 +1641,44 @@ export const enSearch: Catalog = {
   "{value} yüzde puan": "{value} percentage points",
   "Oran değişimi yüzde puanla gösterilir: iki dönemin yüzdeleri arasındaki farktır.":
     "Rate changes are shown in percentage points: the difference between the two periods’ percentages.",
+  "Sayfayı inceleyin": "Inspect this page",
+  "Önce ölçülen aramalarla başlığın ve içeriğin uyumunu kontrol edin; yalnızca bir sorun doğrularsanız değişiklik yapın.":
+    "First check whether the title and content match the observed queries; make changes only if you confirm a problem.",
+  "Bu sayfa için eşleşen Analytics verisi dönmedi.":
+    "No matching Analytics data was returned for this page.",
+  "Analytics eşleşmesi doğrulanamadı; nedeni bilinmiyor.":
+    "The Analytics match could not be verified; the reason is unknown.",
+  "İş türüne göre sayfalar": "Pages by type of work",
+  "Aday sayfa yok": "No candidate pages",
+  "Ölçülen aramaları incelemek için bir satıra tıklayın.":
+    "Click a row to inspect the observed queries.",
+  "Gözlenen sayfalar ve olası işler; kazanç henüz hesaplanamıyor.":
+    "Observed pages and possible work; gain cannot yet be estimated.",
+  "Gözlenen sayfalar, olası işler ve hesaplanabilen ek tıklamalar.":
+    "Observed pages, possible work and estimable extra clicks.",
+  "Fırsatların kaynağı": "Opportunity sources",
+  "Dönüşüm bilgisi bilinmiyor.": "Conversion data is unknown.",
+  "Doğrulanmış dönüşüm: {count} sayfa": "Confirmed conversions: {count} pages",
+  "Eşleşen veride doğrulanmış dönüşüm yok.":
+    "No confirmed conversions in matched data.",
+  "Eşleşen: {matched} / {total} sayfa": "Matched: {matched} / {total} pages",
+  "Dönüşüm durumu bilinmeyen: {count} sayfa":
+    "Conversion status unknown: {count} pages",
+  "Dönüşüm getirenleri göster": "Show converting pages",
+  "Bazı sayfalarda kazanç bilinmiyor; bu, sıfır kazanç demek değildir.":
+    "Gain is unknown for some pages; this does not mean zero gain.",
+  "Günlük tıklamalar; kesikli çizgi önceki dönemi gösterir.":
+    "Daily clicks; the dashed line shows the previous period.",
+  "Toplamların son günü": "Totals through",
+  "Google'ın kesinleştirdiği veri": "Google-confirmed final data",
+  "Gecikme varsayıldı": "Lag assumed",
+  "Google kesinleşme tarihi bildirmedi; son günler gecikme varsayımıyla toplamların dışında tutuldu.":
+    "Google did not provide a finality date; recent days were excluded from totals using an assumed delay.",
+  "Toplamlara dahil günler: {start} – {end} ({days} gün). Günler Google'ın kullandığı Pasifik saatine göredir.":
+    "Days included in totals: {start} – {end} ({days} days). Dates use Google’s Pacific time zone.",
+  "Veri durumu": "Data status",
+  "Analytics bağlantısı için rapor tarihleri eksik.":
+    "Report dates are missing for the Analytics link.",
+  "Sayfa adresi Analytics bağlantısı için doğrulanamadı.":
+    "The page address could not be verified for the Analytics link.",
 };

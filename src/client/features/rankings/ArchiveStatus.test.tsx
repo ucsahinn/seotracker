@@ -31,4 +31,6 @@ it("renders a single-day archive once and separates check time from caveats", ()
   const checked = screen.getByText(/Son kontrol:/);
   expect(checked.textContent).not.toContain("Google");
   expect(checked.tagName).toBe("P");
+  expect(screen.getByText("Arşiv dönemi").tagName).toBe("DT");
+  expect(span.closest("details")?.open).toBe(false);
 });

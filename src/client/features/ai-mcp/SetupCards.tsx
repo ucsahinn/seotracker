@@ -181,11 +181,14 @@ export function ConnectAgentCard({
           </>
         )}
       </p>
-      <p className="mt-2 text-xs text-muted">
-        {t(
-          "Claude Code, Codex, Cursor, ChatGPT ve MCP destekleyen diğer uygulamalarla çalışır.",
-        )}
-      </p>
+      <details className="text-sm text-muted">
+        <summary className="cursor-pointer py-2">{t("Ayrıntılar")}</summary>
+        <p className="mt-2 text-xs text-muted">
+          {t(
+            "Claude Code, Codex, Cursor, ChatGPT ve MCP destekleyen diğer uygulamalarla çalışır.",
+          )}
+        </p>
+      </details>
     </section>
   );
 }
@@ -209,14 +212,17 @@ export function InstallCard({ lead }: { lead: boolean }) {
       >
         {t("Sıfırdan kurulum")}
       </h2>
-      <p className="mt-2 text-sm leading-relaxed text-muted">
-        {lead
-          ? `${t("Uygulamayı yeni kurduysanız ilk adım bu.")} `
-          : `${t("Yeni bir kurulum ya da baştan kontrol için.")} `}
-        {t(
-          "Ajanınız kurulumu, Google bağlantısını, PageSpeed anahtarını ve ilk projenizi sırayla kontrol eder, sonra kendini bağlar. Windows paketini de Docker'ı da tanır. Google Cloud'daki adımları siz yaparsınız. Anahtarlar sohbete değil, yalnızca Ayarlar'a girilir.",
-        )}
-      </p>
+      <details className="text-sm text-muted">
+        <summary className="cursor-pointer py-2">{t("Ayrıntılar")}</summary>
+        <p className="mt-2 text-sm leading-relaxed text-muted">
+          {lead
+            ? `${t("Uygulamayı yeni kurduysanız ilk adım bu.")} `
+            : `${t("Yeni bir kurulum ya da baştan kontrol için.")} `}
+          {t(
+            "Ajanınız kurulumu, Google bağlantısını, PageSpeed anahtarını ve ilk projenizi sırayla kontrol eder, sonra kendini bağlar. Windows paketini de Docker'ı da tanır. Google Cloud'daki adımları siz yaparsınız. Anahtarlar sohbete değil, yalnızca Ayarlar'a girilir.",
+          )}
+        </p>
+      </details>
       <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:gap-2">
         <InstallPromptButton
           primary={lead}

@@ -1,6 +1,6 @@
 ---
 title: Reports and templates
-description: Every report you download from an audit or from the Search performance screen, or have your assistant write, is a single HTML file. You open it on a phone, print it or send it by email.
+description: Save audit, search performance and assistant reports as standalone HTML files. Open them on a phone, print them or share them by email.
 screen: Raporlar
 route: /p/<proje>/reports
 updated: 2026-10-27
@@ -50,4 +50,4 @@ New native Search performance and Site audit reports have separate saved kinds. 
 
 Regenerate native reports from their source screen; agents cannot replace their content using `save_report`. Missing source data is never treated as zero. Audit methodology identifies the GSC traffic period, source row limit and available stored mobile CrUX measurement.
 
-The saved report at the top is not a current summary of the site. The source site is shown when the original audit verifies it; a different project site triggers a warning. Without verified provenance, the report may concern another site. Legacy reports are labelled with an unverified source and date. Create a current audit report from the project’s audit screen before making decisions today. Historical files remain unchanged.
+The saved report at the top is not a current summary of the site. The source site is shown when the original audit verifies it; a different project site triggers a warning. Without verified provenance, the report may concern another site. Legacy reports are labelled with an unverified source and date. **Open site audits** opens the audit history. If a suitable saved audit exists, open it and download its report; this link does not start an audit or create a report automatically. Historical files remain unchanged.

@@ -41,4 +41,9 @@ export const itNotifications: Catalog = {
   "Google hesabıyla giriş seçeneği": "Accedi con un account Google",
   "Az trafik alan sitelerde Google bazı sorguları gizler. Sayfa toplamlarında tıklama varken sorgu listesi boş veya daha küçük olabilir; bu tek başına bağlantı hatası değildir.":
     "Nei siti con poco traffico di ricerca, Google nasconde alcune query. L’elenco può essere vuoto o mostrare meno clic dei totali delle pagine. Questo da solo non indica un problema di connessione.",
+  "Bu tarayıcı": "Questo browser",
+  "Henüz bildirim yok": "Nessuna notifica per ora",
+  "Para birimi": "Valuta",
+  "Mülk alan adını kapsamıyor.": "La proprietà non copre questo dominio.",
+  "Denetim eski": "Audit precedente",
 };

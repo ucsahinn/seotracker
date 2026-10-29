@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="fr">
   <id>https://seowatcher.io/fr/feed.xml</id>
   <title>seowatcher: Notes de version</title>
-  <updated>2026-10-28T00:00:00Z</updated>
+  <updated>2026-10-29T00:00:00Z</updated>
   <link rel="self" type="application/atom+xml" href="https://seowatcher.io/fr/feed.xml" />
   <link rel="alternate" type="text/html" href="https://seowatcher.io/fr/" />
   <author>
@@ -13,7 +13,7 @@
   <entry>
     <id>https://seowatcher.io/fr/guides/notes-de-version/#0.8.4</id>
     <title>Notes de version: seowatcher 0.8.4</title>
-    <updated>2026-10-28T00:00:00Z</updated>
+    <updated>2026-10-29T00:00:00Z</updated>
     <link rel="alternate" type="text/html" href="https://seowatcher.io/fr/guides/notes-de-version/" />
     <summary>seowatcher 0.8.4 Alpha — données Google complètes, couleurs vives et écrans revus avec des données réelles, plus lisibles sur téléphone.</summary>
   </entry>

@@ -1,4 +1,5 @@
 import { formatCount } from "@/client/lib/format";
+import { FactStrip } from "@/client/components/FactStrip";
 import { Tabs } from "@/client/components/Tabs";
 import {
   ChevronDown,
@@ -55,9 +56,7 @@ export function LighthouseIssuesHeader({
           &larr; {t("{label} sayfasına dön", { label: backLabel })}
         </button>
         <span className="text-xs text-muted">
-          {scannedAt ? (
-            t("{date} tarihinde tarandı", { date: formatDateTime(scannedAt) })
-          ) : loading ? (
+          {loading ? (
             <span className="skeleton inline-block h-3 w-36 align-middle" />
           ) : null}
         </span>
@@ -69,32 +68,50 @@ export function LighthouseIssuesHeader({
             <h1 className="text-2xl font-semibold">
               {t("Sayfa hızı sorunları (Lighthouse)")}
             </h1>
-            {finalUrl ? (
-              <p className="text-sm text-muted break-all">{finalUrl}</p>
-            ) : loading ? (
-              <div className="skeleton h-4 w-64 max-w-full" />
-            ) : null}
+            {loading ? <div className="skeleton h-4 w-64 max-w-full" /> : null}
           </div>
+          {finalUrl || scannedAt ? (
+            <FactStrip
+              label={t("Hız ölçümü")}
+              facts={[
+                {
+                  label: t("Kaynak"),
+                  value: "PageSpeed Insights",
+                  hint: finalUrl,
+                },
+                {
+                  label: t("Tarih"),
+                  value: scannedAt
+                    ? formatDateTime(scannedAt)
+                    : t("Belirtilmemiş"),
+                },
+              ]}
+            />
+          ) : null}
           <LighthouseIssuesSummary
             scores={scores}
             metrics={metrics}
             fieldData={fieldData}
             originFieldData={originFieldData}
           />
-          <div className="flex flex-wrap gap-2 text-xs">
-            <span className="badge border border-error/30 bg-error/10 text-[var(--ink-error)] gap-1">
-              <FileWarning className="size-3" />
-              {t("Kritik")} {severityCounts.critical}
-            </span>
-            <span className="badge border border-warning/30 bg-warning/10 text-[var(--ink-warning)] gap-1">
-              <TriangleAlert className="size-3" />
-              {t("Uyarı")} {severityCounts.warning}
-            </span>
-            <span className="badge border border-info/30 bg-info/10 text-[var(--ink-info)] gap-1">
-              <Info className="size-3" />
-              {t("Bilgi")} {severityCounts.info}
-            </span>
-          </div>
+          {loading ? (
+            <div className="skeleton h-6 w-48" aria-hidden />
+          ) : scannedAt || finalUrl ? (
+            <div className="flex flex-wrap gap-2 text-xs">
+              <span className="badge border border-error/30 bg-error/10 text-[var(--ink-error)] gap-1">
+                <FileWarning className="size-3" />
+                {t("Kritik")} {formatCount(severityCounts.critical)}
+              </span>
+              <span className="badge border border-warning/30 bg-warning/10 text-[var(--ink-warning)] gap-1">
+                <TriangleAlert className="size-3" />
+                {t("Uyarı")} {formatCount(severityCounts.warning)}
+              </span>
+              <span className="badge border border-info/30 bg-info/10 text-[var(--ink-info)] gap-1">
+                <Info className="size-3" />
+                {t("Bilgi")} {formatCount(severityCounts.info)}
+              </span>
+            </div>
+          ) : null}
         </div>
       </div>
     </>

@@ -30,7 +30,7 @@ export function WithheldScore({
         aria-hidden
         className="mt-0.5 size-5 shrink-0 text-subtle"
       />
-      <div className="min-w-0 space-y-1">
+      <div className="min-w-0 space-y-3">
         <h2 id="audit-withheld-heading" className="text-base font-semibold">
           {t("Eksik denetim — puan verilmedi")}
         </h2>
@@ -41,11 +41,16 @@ export function WithheldScore({
               ? t("Tarama, sitenin istek sınırı yüzünden erken durdu.")
               : t("Denetim hâlâ çalışıyor.")}
         </p>
-        <p className="max-w-prose text-sm text-muted">
-          {t(
-            "Sorun listesi tam olmadığı için puan hesaplanmadı. Aşağıdaki bulgular taranan sayfalar için geçerli; tam bir puan için denetimi yeniden çalıştırın.",
-          )}
-        </p>
+        <details className="max-w-prose text-sm text-muted">
+          <summary className="cursor-pointer py-1.5">
+            {t("Kapsam ayrıntıları")}
+          </summary>
+          <p className="mt-1.5 leading-relaxed">
+            {t(
+              "Sorun listesi tam olmadığı için puan hesaplanmadı. Aşağıdaki bulgular taranan sayfalar için geçerli; tam bir puan için denetimi yeniden çalıştırın.",
+            )}
+          </p>
+        </details>
       </div>
     </section>
   );

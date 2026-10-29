@@ -62,25 +62,38 @@ export function TodoTab({
 
   if (todo.length === 0) {
     return (
-      <EmptyState
-        icon={ListChecks}
-        title={t("Şu an önerilecek iş yok")}
-        description={[
-          t(
-            "Alınan veride öneri eşiklerini geçen bir fırsat ya da düşüş bulunmadı. Bu, sitenizde yapılacak iş olmadığı anlamına gelmez. Google bazı sorguları gizlilik için gizler; görünen sorguları ve sayfaları inceleyin.",
-          ),
-          days < 84
-            ? t("Daha uzun bir dönem seçmek daha çok arama gösterebilir.")
-            : null,
-        ]
-          .filter(Boolean)
-          .join(" ")}
-        action={
-          <button type="button" className="btn btn-sm" onClick={onShowQueries}>
-            {t("Sorguları aç")}
-          </button>
-        }
-      />
+      <div>
+        <EmptyState
+          icon={ListChecks}
+          title={t("Şu an önerilecek iş yok")}
+          action={
+            <button
+              type="button"
+              className="btn btn-sm"
+              onClick={onShowQueries}
+            >
+              {t("Sorguları aç")}
+            </button>
+          }
+        />
+        <details className="px-4 pb-4 text-sm text-muted">
+          <summary className="min-h-11 cursor-pointer py-3">
+            {t("Veri hakkında")}
+          </summary>
+          <p className="max-w-prose leading-relaxed">
+            {[
+              t(
+                "Alınan veride öneri eşiklerini geçen bir fırsat ya da düşüş bulunmadı. Bu, sitenizde yapılacak iş olmadığı anlamına gelmez. Google bazı sorguları gizlilik için gizler; görünen sorguları ve sayfaları inceleyin.",
+              ),
+              days < 84
+                ? t("Daha uzun bir dönem seçmek daha çok arama gösterebilir.")
+                : null,
+            ]
+              .filter(Boolean)
+              .join(" ")}
+          </p>
+        </details>
+      </div>
     );
   }
 
@@ -152,11 +165,16 @@ export function TodoTab({
         </details>
       ) : null}
 
-      <p className="text-xs text-muted">
-        {t(
-          "Tıklama kazançları, sitenizin kendi sıra ve tıklama oranlarından hesaplanan yaklaşık değerlerdir. Aynı sorgu ya da sayfa için birden çok iş varsa üstteki özet onu bir kez sayar. Yapıldı işaretleri yalnızca bu tarayıcıda saklanır.",
-        )}
-      </p>
+      <details className="text-sm text-muted">
+        <summary className="min-h-11 cursor-pointer py-3">
+          {t("Veri hakkında")}
+        </summary>
+        <p className="max-w-prose leading-relaxed">
+          {t(
+            "Tıklama kazançları, sitenizin kendi sıra ve tıklama oranlarından hesaplanan yaklaşık değerlerdir. Aynı sorgu ya da sayfa için birden çok iş varsa üstteki özet onu bir kez sayar. Yapıldı işaretleri yalnızca bu tarayıcıda saklanır.",
+          )}
+        </p>
+      </details>
     </div>
   );
 }

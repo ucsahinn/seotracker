@@ -11,7 +11,7 @@ import { TableExportMenu } from "@/client/components/table/TableBulkActionBar";
 import { buildOpportunityColumns } from "@/client/features/opportunities/OpportunityColumns";
 import { OpportunityDetail } from "@/client/features/opportunities/OpportunityDetail";
 import {
-  WORK_COPY,
+  rowAction,
   type OpportunityRow,
 } from "@/client/features/opportunities/opportunityLogic";
 import { buildCsv, downloadCsv, type CsvValue } from "@/client/lib/csv";
@@ -66,7 +66,10 @@ export function OpportunitiesTable({
   const [ownPage, setOwnPage] = useState<string | null>(null);
   const openPage = controlledPage === undefined ? ownPage : controlledPage;
   const setOpenPage = onOpenPageChange ?? setOwnPage;
-  const maxGain = rows.reduce((max, row) => Math.max(max, row.gainPerMonth), 0);
+  const maxGain = rows.reduce(
+    (max, row) => Math.max(max, row.gainPerMonth ?? 0),
+    0,
+  );
   const columns = useMemo(
     () =>
       buildOpportunityColumns((row) => setOpenPage(row.page), maxGain, {
@@ -101,11 +104,15 @@ export function OpportunitiesTable({
     "windowGain",
     "ga4Cohort",
     "ga4JoinPrecision",
+    "gainStatus",
+    "gainReason",
+    "brandOnly",
+    "observedNonBrandQueries",
   ];
   const csvRows = rows.map((row): CsvValue[] => [
     row.gainPerMonth,
     row.page,
-    t(WORK_COPY[row.work].action),
+    t(rowAction(row)),
     row.position,
     row.impressions,
     row.clicks,
@@ -136,6 +143,10 @@ export function OpportunitiesTable({
     row.gain,
     row.normalizedPage,
     row.joinPrecision ?? null,
+    row.gainStatus ?? "estimated",
+    row.gainReason ?? null,
+    row.brandOnly ?? false,
+    JSON.stringify(row.observedQueries ?? []),
   ]);
 
   return (
@@ -164,9 +175,7 @@ export function OpportunitiesTable({
           </select>
         </label>
         <p className="text-xs text-muted">
-          {t(
-            "Hangi aramaların kazandıracağını görmek için bir satıra tıklayın.",
-          )}
+          {t("Ölçülen aramaları incelemek için bir satıra tıklayın.")}
         </p>
         <TableExportMenu
           buttonClassName="btn btn-ghost btn-sm gap-1"
@@ -197,14 +206,25 @@ export function OpportunitiesTable({
           <article key={row.page} className="space-y-2 p-3">
             <p className="break-all text-sm font-medium">{row.page}</p>
             <p className="text-sm">
-              {t("En fazla +{gain} tıklama / 30 gün (üst sınır)", {
-                gain: formatCount(row.gainPerMonth),
-              })}{" "}
-              · {t(WORK_COPY[row.work].action)}
+              {row.gainPerMonth === null
+                ? t("Kazanç bilinmiyor")
+                : t("En fazla +{gain} tıklama / 30 gün (üst sınır)", {
+                    gain: formatCount(row.gainPerMonth),
+                  })}{" "}
+              · {t(rowAction(row))}
             </p>
+            {row.brandOnly ? (
+              <p className="text-xs text-muted">
+                {t("Yalnızca marka aramaları")}
+              </p>
+            ) : null}
             <p className="text-xs text-muted">
               {t("Sıra")}: {formatDecimal(row.position)} · {t("Tıklama oranı")}:{" "}
               {formatPercent(row.ctr)}
+            </p>
+            <p className="text-xs text-muted">
+              {t("Tıklama")}: {formatCount(row.clicks)} · {t("Gösterim")}:{" "}
+              {formatCount(row.impressions)}
             </p>
             <button
               type="button"
@@ -218,6 +238,7 @@ export function OpportunitiesTable({
               row={row}
               projectId={projectId}
               dateRange={report?.request.dateRange}
+              compact
             />
           </article>
         ))}

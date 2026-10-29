@@ -55,7 +55,7 @@ type OpportunityRow = Omit<PageOpportunity, "page"> & {
   page: string;
   normalizedPage: string | null;
   band: BandId;
-  gainPerMonth: number;
+  gainPerMonth: number | null;
   joinStatus: "joined" | "gsc_only";
   ga4: Ga4PageValue | null;
   value: ValueSignal | null;
@@ -233,9 +233,12 @@ async function getOpportunities(
     (totals) => totals.keyEvents !== null && totals.keyEvents > 0,
   );
   const minSessions = scaleThreshold(VALUE_MIN_SESSIONS_28D, days);
-  const totalGain = result.pages.reduce((sum, page) => sum + page.gain, 0);
+  const totalGain = result.pages.reduce(
+    (sum, page) => sum + (page.gain ?? 0),
+    0,
+  );
   const monthlyPages = allocateGain(
-    result.pages.map((page) => page.gain),
+    result.pages.map((page) => page.gain ?? 0),
     perMonth(totalGain, days),
   );
 
@@ -268,10 +271,11 @@ async function getOpportunities(
         ...query,
         gainPerMonth: monthlyQueries[queryIndex],
       })),
-      otherQueryGainPerMonth: monthlyQueries[page.queries.length],
+      otherQueryGainPerMonth:
+        page.gain === null ? undefined : monthlyQueries[page.queries.length],
       normalizedPage,
       band: bandOf(page.position),
-      gainPerMonth,
+      gainPerMonth: page.gain === null ? null : gainPerMonth,
       joinStatus: ga4 ? "joined" : "gsc_only",
       ga4,
       value:
@@ -287,7 +291,9 @@ async function getOpportunities(
   const workTotals = (kind: WorkKind) => {
     const gain = candidates.reduce((sum, row) => sum + row.gainByWork[kind], 0);
     return {
-      pages: candidates.filter((row) => row.gainByWork[kind] > 0).length,
+      pages: candidates.filter((row) =>
+        row.gain === null ? row.work === kind : row.gainByWork[kind] > 0,
+      ).length,
       gain,
       gainPerMonth: perMonth(gain, days),
     };
@@ -311,7 +317,10 @@ async function getOpportunities(
   const matchedGa4Pages = new Set(joined.map((row) => row.normalizedPage)).size;
   const filtered = candidates.filter(
     (row) =>
-      (!input.work || row.gainByWork[input.work] > 0) &&
+      (!input.work ||
+        (row.gain === null
+          ? row.work === input.work
+          : row.gainByWork[input.work] > 0)) &&
       (!input.quick || row.value === input.quick),
   );
   const returned = filtered.slice(0, limit);

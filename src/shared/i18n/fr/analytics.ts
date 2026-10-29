@@ -1,6 +1,13 @@
 import type { Catalog } from "@/shared/i18n";
 
 export const frAnalytics: Catalog = {
+  "Kazanç bilinmiyor": "Gain inconnu",
+  "Sıraya dayalı öneri; kazanç bilinmiyor (yetersiz veri).":
+    "Suggestion fondée sur la position ; gain inconnu (données insuffisantes).",
+  "Yalnızca marka aramaları": "Requêtes de marque uniquement",
+  "Kazanç için veri yetersiz: az gösterim {low}, eksik hedef oranı {curve}, eksik marka dışı sorgu {missing}. Sıraya dayalı öneriler tahmin değildir.":
+    "Données insuffisantes pour le gain : faibles impressions {low}, taux cible absent {curve}, requêtes hors marque absentes {missing}. Les suggestions de position ne sont pas des estimations.",
+
   "Analytics verisini yorumlama": "Comprendre les données Analytics",
   "Bu dönemin trafiği belirlenemedi":
     "Le trafic de cette période n’a pas pu être déterminé",

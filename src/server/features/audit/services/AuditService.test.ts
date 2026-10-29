@@ -3,6 +3,7 @@ import { AUDIT_LIMITS } from "@/server/features/audit/services/audit-capacity";
 import type * as UrlPolicy from "@/server/lib/audit/url-policy";
 
 const mocks = vi.hoisted(() => ({
+  loadSnapshot: vi.fn(),
   createAudit: vi.fn(),
   getAuditsByProject: vi.fn(),
   getIssueCountsByAudit: vi.fn(),
@@ -47,6 +48,10 @@ vi.mock("@/server/lib/audit/url-policy", async (importOriginal) => ({
 vi.mock("@/server/features/audit/services/auditReconciler", () => ({
   reconcileRunningAudit: vi.fn(),
   reconcileStaleAudits: vi.fn(),
+}));
+
+vi.mock("./panelAuditSnapshot", () => ({
+  loadPanelAuditSnapshot: mocks.loadSnapshot,
 }));
 
 import { AuditService } from "./AuditService";
@@ -232,4 +237,46 @@ it("F17/F18 history retains stored scope and safe failure codes without raw diag
     issues: { critical: 0, warning: 0, info: 0 },
   });
   expect(row).not.toHaveProperty("errorDetail");
+});
+
+const historySnapshot = (pages: number) => ({
+  startUrl: "https://example.com",
+  completed: true,
+  config: { maxPages: 300, lighthouseStrategy: "none" },
+  pages: Array.from({ length: pages }, (_, i) => ({
+    url: "https://example.com/" + i,
+    fetchClass: "ok",
+  })),
+  measuredChecks: ["title-missing"],
+  counts: [],
+});
+const historyRow = (id: string, pagesCrawled: number, startedAt: string) => ({
+  id,
+  startUrl: "https://example.com",
+  status: "completed",
+  pagesCrawled,
+  startedAt,
+  config: JSON.stringify({ maxPages: 300, lighthouseStrategy: "none" }),
+});
+
+it("C24 history uses persisted population and coverage instead of count normalization", async () => {
+  mocks.getAuditsByProject.mockResolvedValue([
+    historyRow("a", 20, "2026-01-01"),
+    historyRow("b", 144, "2026-02-01"),
+    historyRow("c", 144, "2026-03-01"),
+  ]);
+  mocks.getIssueCountsByAudit.mockResolvedValue(new Map());
+  mocks.loadSnapshot.mockImplementation(
+    async (_projectId: string, id: string) =>
+      historySnapshot(id === "a" ? 20 : 144),
+  );
+  const rows = await AuditService.getHistory("p");
+  expect(rows.find((row) => row.id === "b")?.comparison).toEqual({
+    previousAuditId: "a",
+    compatible: false,
+  });
+  expect(rows.find((row) => row.id === "c")?.comparison).toEqual({
+    previousAuditId: "b",
+    compatible: true,
+  });
 });

@@ -57,66 +57,74 @@ export function KpiTiles({
   );
 
   return (
-    <MetricRow>
-      <MetricTile
-        metric="clicks"
-        label={t("Tıklama")}
-        trend={days.map((p) => p.clicks)}
-        value={formatCount(current.clicks)}
-        animateTo={{ value: current.clicks, format: formatCount }}
-        delta={countDelta(changes?.clicks)}
-        deltaTitle={deltaTitle}
-      />
-      <MetricTile
-        metric="impressions"
-        label={t("Gösterim")}
-        trend={days.map((p) => p.impressions)}
-        value={formatCount(current.impressions)}
-        animateTo={{ value: current.impressions, format: formatCount }}
-        delta={countDelta(changes?.impressions)}
-        deltaTitle={deltaTitle}
-      />
-      <MetricTile
-        metric="ctr"
-        label={t("Tıklama oranı")}
-        trend={days.map((p) => p.ctr)}
-        hint={
-          t("Gösterimlerin yüzde kaçı tıklamaya döndü.") +
-          " " +
-          t(
-            "Oran değişimi yüzde puanla gösterilir: iki dönemin yüzdeleri arasındaki farktır.",
-          )
-        }
-        value={current.ctr === null ? null : formatPercent(current.ctr)}
-        animateTo={
-          current.ctr === null
-            ? undefined
-            : { value: current.ctr, format: (n) => formatPercent(n) }
-        }
-        delta={hasImpressions ? pointsDelta(current.ctr, against?.ctr) : null}
-        deltaTitle={deltaTitle}
-      />
-      <MetricTile
-        metric="position"
-        label={t("Ortalama sıra")}
-        trend={days.map((p) => p.position)}
-        hint={t("Düşük sayı daha iyi: 1, listenin en üstü demek.")}
-        value={
-          current.position === null ? null : formatDecimal(current.position)
-        }
-        animateTo={
-          current.position === null
-            ? undefined
-            : { value: current.position, format: (n) => formatDecimal(n) }
-        }
-        delta={
-          hasImpressions
-            ? placesDelta(current.position, against?.position)
-            : null
-        }
-        deltaTitle={deltaTitle}
-        inverted
-      />
-    </MetricRow>
+    <div className="space-y-1.5">
+      <MetricRow>
+        <MetricTile
+          metric="clicks"
+          label={t("Tıklama")}
+          trend={days.map((p) => p.clicks)}
+          value={formatCount(current.clicks)}
+          animateTo={{ value: current.clicks, format: formatCount }}
+          delta={countDelta(changes?.clicks)}
+          deltaTitle={deltaTitle}
+        />
+        <MetricTile
+          metric="impressions"
+          label={t("Gösterim")}
+          trend={days.map((p) => p.impressions)}
+          value={formatCount(current.impressions)}
+          animateTo={{ value: current.impressions, format: formatCount }}
+          delta={countDelta(changes?.impressions)}
+          deltaTitle={deltaTitle}
+        />
+        <MetricTile
+          metric="ctr"
+          label={t("Tıklama oranı")}
+          trend={days.map((p) => p.ctr)}
+          value={current.ctr === null ? null : formatPercent(current.ctr)}
+          animateTo={
+            current.ctr === null
+              ? undefined
+              : { value: current.ctr, format: (n) => formatPercent(n) }
+          }
+          delta={hasImpressions ? pointsDelta(current.ctr, against?.ctr) : null}
+          deltaTitle={deltaTitle}
+        />
+        <MetricTile
+          metric="position"
+          label={t("Ortalama sıra")}
+          trend={days.map((p) => p.position)}
+          value={
+            current.position === null ? null : formatDecimal(current.position)
+          }
+          animateTo={
+            current.position === null
+              ? undefined
+              : { value: current.position, format: (n) => formatDecimal(n) }
+          }
+          delta={
+            hasImpressions
+              ? placesDelta(current.position, against?.position)
+              : null
+          }
+          deltaTitle={deltaTitle}
+          inverted
+        />
+      </MetricRow>
+      <details className="text-sm text-muted">
+        <summary className="min-h-11 cursor-pointer py-3">
+          {t("Ölçüler ne demek?")}
+        </summary>
+        <div className="max-w-prose space-y-1.5 leading-relaxed">
+          <p>
+            {t("Gösterimlerin yüzde kaçı tıklamaya döndü.")}{" "}
+            {t(
+              "Oran değişimi yüzde puanla gösterilir: iki dönemin yüzdeleri arasındaki farktır.",
+            )}
+          </p>
+          <p>{t("Düşük sayı daha iyi: 1, listenin en üstü demek.")}</p>
+        </div>
+      </details>
+    </div>
   );
 }

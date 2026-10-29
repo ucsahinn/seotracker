@@ -201,3 +201,25 @@ it("gives an owner somewhere useful to go when no announcements are published", 
     screen.getByRole("link", { name: "Sürüm notları" }).getAttribute("href"),
   ).toBe("/release-notes");
 });
+
+it("C31 labels the announcement timestamp as Published", () => {
+  const announcement: PublicAnnouncement = {
+    id: "69b74d29-13c5-4099-9d99-3d83dc0d12b4",
+    title_tr: "Bakım",
+    body_tr: "Kısa bakım.",
+    title_en: "Maintenance",
+    body_en: "Brief maintenance.",
+    category: "maintenance",
+    publish_at: "2026-10-25T09:00:00.000Z",
+    expires_at: null,
+    interaction_type: "none",
+    prompt_tr: "",
+    prompt_en: "",
+    options: [],
+    response_count: 0,
+  };
+  fetchAnnouncements.mockResolvedValue([announcement]);
+  renderPage([announcement]);
+  expect(screen.getByText("Yayımlandı")).toBeTruthy();
+  expect(screen.queryByText("Dönem")).toBeNull();
+});

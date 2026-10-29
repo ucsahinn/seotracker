@@ -2,14 +2,19 @@
 <html lang="de">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Website-Audit | seowatcher-Anleitung</title>
     <meta
       name="description"
-      content="Die App prüft Ihre Website Seite für Seite anhand von 202 Regeln und sortiert die Probleme nach Wichtigkeit. Die Punktzahl zeigt auch, wie viel messbar war. Ein vorzeitig beendetes Audit bekommt keine Punktzahl."
+      content="Ihre Website anhand von 202 Regeln prüfen und Probleme priorisieren. Punktzahl, Messabdeckung und unvollständige Ergebnisse richtig verstehen."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -86,7 +91,7 @@
     <meta property="og:title" content="Website-Audit | seowatcher-Anleitung" />
     <meta
       property="og:description"
-      content="Die App prüft Ihre Website Seite für Seite anhand von 202 Regeln und sortiert die Probleme nach Wichtigkeit. Die Punktzahl zeigt auch, wie viel messbar war. Ein vorzeitig beendetes Audit bekommt keine Punktzahl."
+      content="Ihre Website anhand von 202 Regeln prüfen und Probleme priorisieren. Punktzahl, Messabdeckung und unvollständige Ergebnisse richtig verstehen."
     />
     <meta
       property="og:image"
@@ -99,7 +104,7 @@
       property="og:image:alt"
       content="seowatcher-Karte: das Dashboard der App mit Daten aus Search Console, Analytics 4 und dem Website-Audit, dazu eine Download-Schaltfläche für Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/de/dokumentation/website-audit/"
@@ -114,7 +119,7 @@
     <meta name="twitter:title" content="Website-Audit | seowatcher-Anleitung" />
     <meta
       name="twitter:description"
-      content="Die App prüft Ihre Website Seite für Seite anhand von 202 Regeln und sortiert die Probleme nach Wichtigkeit. Die Punktzahl zeigt auch, wie viel messbar war. Ein vorzeitig beendetes Audit bekommt keine Punktzahl."
+      content="Ihre Website anhand von 202 Regeln prüfen und Probleme priorisieren. Punktzahl, Messabdeckung und unvollständige Ergebnisse richtig verstehen."
     />
     <meta
       name="twitter:image"
@@ -155,10 +160,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/de/dokumentation/website-audit/#article",
             "headline": "Website-Audit",
-            "description": "Die App prüft Ihre Website Seite für Seite anhand von 202 Regeln und sortiert die Probleme nach Wichtigkeit. Die Punktzahl zeigt auch, wie viel messbar war. Ein vorzeitig beendetes Audit bekommt keine Punktzahl.",
+            "description": "Ihre Website anhand von 202 Regeln prüfen und Probleme priorisieren. Punktzahl, Messabdeckung und unvollständige Ergebnisse richtig verstehen.",
             "url": "https://seowatcher.io/de/dokumentation/website-audit/",
             "inLanguage": "de",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Bildschirme",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -1498,7 +1503,11 @@
                 >Gespeicherte Suchbegriffe</a
               >
             </li>
-            <li><a href="/de/dokumentation/datenanalyse/">Analytics</a></li>
+            <li>
+              <a href="/de/dokumentation/datenanalyse/"
+                >Analysedaten verstehen</a
+              >
+            </li>
             <li class="current" aria-current="page">
               <a href="/de/dokumentation/website-audit/">Website-Audit</a>
             </li>
@@ -1532,10 +1541,9 @@
       <article id="icerik" data-page="site-denetimi">
         <h1>Website-Audit</h1>
         <p class="lede">
-          Die App prüft Ihre Website Seite für Seite anhand von 202 Regeln und
-          sortiert die Probleme nach Wichtigkeit. Die Punktzahl zeigt auch, wie
-          viel messbar war. Ein vorzeitig beendetes Audit bekommt keine
-          Punktzahl.
+          Ihre Website anhand von 202 Regeln prüfen und Probleme priorisieren.
+          Punktzahl, Messabdeckung und unvollständige Ergebnisse richtig
+          verstehen.
         </p>
         <p>
           Hier erfahren Sie, wie Sie die Probleme Ihrer Website finden und
@@ -1593,14 +1601,19 @@
         </p>
         <p>
           <strong>Vorherige Audits.</strong> Datum, Adresse, Status, Seitenzahl
-          und Problemzahlen jedes Audits werden aufgelistet. Die Problemzahlen
-          sind auf hundert Seiten umgerechnet, die Gesamtzahl steht in Klammern.
-          So können Sie Audits mit 50 und mit 500 Seiten vergleichen. Wurden im
-          Projekt mehrere Websites geprüft, erscheint über der Liste eine
-          Auswahl der Website. Das Diagramm und die Veränderungspfeile
-          vergleichen immer Audits derselben Website. Sind mehrere Websites
-          gewählt, ist das Diagramm ausgeblendet. <strong>Ansehen</strong> in
-          einer Zeile öffnet das Audit. Das Zeilenmenü enthält
+          und Problemzahlen jedes Audits werden aufgelistet. Die Spalten
+          Kritisch, Warnung und Info zeigen alle gespeicherten Befunde,
+          einschließlich Seitenbefunden und websiteweiten Prüfungen; eine Seite
+          kann mehrere Befunde haben. Wurden im Projekt mehrere Websites
+          geprüft, erscheint über der Liste eine Auswahl der Website. Die Dichte
+          gibt Probleme pro hundert Seiten an. Trendlinien und
+          Veränderungspfeile erscheinen nur, wenn gespeicherte Belege dieselbe
+          Website, Seitenmenge, Crawling-Einstellungen und gemessenen Prüfungen
+          bestätigen. Bei unterschiedlichem oder unbekanntem Umfang werden
+          unabhängige Zahlen angezeigt; eine Veränderung lässt sich nicht
+          bestimmen. Sind mehrere Websites gewählt, ist das Diagramm
+          ausgeblendet. <strong>Ansehen</strong> in einer Zeile öffnet das
+          Audit. Das Zeilenmenü enthält
           <strong>Erneut mit den gleichen Einstellungen ausführen</strong> und
           <strong>Audit löschen</strong>. Löschen entfernt auch die Seiten,
           Probleme und Geschwindigkeitsmessungen des Audits und lässt sich nicht
@@ -2078,7 +2091,7 @@
             class="pager-prev"
             rel="prev"
             href="/de/dokumentation/datenanalyse/"
-            ><span>Zurück</span><strong>Analytics</strong></a
+            ><span>Zurück</span><strong>Analysedaten verstehen</strong></a
           ><a
             class="pager-next"
             rel="next"
@@ -2087,7 +2100,7 @@
           >
         </nav>
         <p class="meta">
-          Zuletzt aktualisiert: 28 Oktober 2026. Fehler entdeckt?
+          Zuletzt aktualisiert: 29 Oktober 2026. Fehler entdeckt?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

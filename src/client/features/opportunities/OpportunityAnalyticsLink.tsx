@@ -8,20 +8,36 @@ export function OpportunityAnalyticsLink({
   row,
   projectId,
   dateRange,
+  compact = false,
 }: {
   row: OpportunityRow;
   projectId: string;
+  compact?: boolean;
   dateRange?: { startDate: string; endDate: string };
 }) {
+  if (!row.ga4 && !row.joinPrecision && row.joinStatus === "gsc_only") {
+    return compact ? null : (
+      <span className="text-xs text-muted">
+        {t("Bu sayfa için eşleşen Analytics verisi dönmedi.")}
+      </span>
+    );
+  }
   if (
     !dateRange ||
     !row.joinPrecision ||
     !row.normalizedPage ||
     normalizePageKey(row.page) !== row.normalizedPage
   ) {
-    return (
+    return compact ? null : (
       <span className="text-xs text-muted">
-        {t("Analytics adres grubu birebir eşleştirilemiyor.")}
+        {t(
+          !dateRange
+            ? "Analytics bağlantısı için rapor tarihleri eksik."
+            : !row.normalizedPage ||
+                normalizePageKey(row.page) !== row.normalizedPage
+              ? "Sayfa adresi Analytics bağlantısı için doğrulanamadı."
+              : "Analytics eşleşmesi doğrulanamadı; nedeni bilinmiyor.",
+        )}
       </span>
     );
   }

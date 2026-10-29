@@ -1,3 +1,4 @@
+import { FactStrip } from "@/client/components/FactStrip";
 import { invalidateGoogleCredentials } from "@/client/features/integrations/invalidateGoogleCredentials";
 import { formatDateTime } from "@/client/lib/format";
 import { Skeleton } from "@/client/components/Skeleton";
@@ -138,13 +139,6 @@ export function GoogleOAuthClientSection() {
 
   return (
     <section id="google" className="scroll-mt-16 space-y-3">
-      {status?.updatedAt ? (
-        <p className="text-xs text-muted">
-          {t("Kimlik kayıt tarihi: {date}", {
-            date: formatDateTime(status.updatedAt),
-          })}
-        </p>
-      ) : null}
       <SectionHeaderRow
         badge={
           statusQuery.isError || serviceAccountQuery.isError
@@ -154,6 +148,20 @@ export function GoogleOAuthClientSection() {
       >
         <h2 className="text-base font-semibold">{t("Google bağlantısı")}</h2>
       </SectionHeaderRow>
+      {status?.updatedAt ? (
+        <FactStrip
+          label={t("Kaynak")}
+          facts={[
+            {
+              label: t("Dönem"),
+              value: t("Kimlik kayıt tarihi: {date}", {
+                date: formatDateTime(status.updatedAt),
+              }),
+            },
+          ]}
+        />
+      ) : null}
+
       {credentialNote ? (
         <p className="text-xs font-medium text-muted">{credentialNote}</p>
       ) : null}

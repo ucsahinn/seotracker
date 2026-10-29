@@ -1,4 +1,5 @@
 import { PageShell } from "@/client/components/PageShell";
+import { FactStrip } from "@/client/components/FactStrip";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
@@ -220,48 +221,41 @@ function ReportDetailPage() {
               >
                 {report.title}
               </h1>
-              <p className="mt-2 text-sm text-muted">
-                {t(
-                  "Bu raporun veri dönemi yapılandırılmış olarak kaydedilmemiş. Dönemi ve veri sınırlarını raporun içinde kontrol edin.",
-                )}
-              </p>
               <details className="mt-2">
-                <summary className="cursor-pointer text-sm">
+                <summary className="cursor-pointer py-2 text-sm text-muted">
                   {t("Kaynak ve kayıt bilgileri")}
                 </summary>
-                <dl className="mt-1.5 flex flex-wrap items-baseline gap-x-6 gap-y-1 text-sm">
-                  <div className="flex items-baseline gap-1.5">
-                    <dt className="text-muted">{t("Oluşturan")}</dt>
-                    <dd>{formatCreatedBy(report)}</dd>
-                  </div>
-                  <div className="flex items-baseline gap-1.5">
-                    <dt className="text-muted">{t("Tür")}</dt>
-                    {/* As in the list's Type column: the template name when the
-                    report followed one, else the skill, else an em dash. */}
-                    <dd>
-                      <ReportKindChip
-                        kind={reportKind(report)}
-                        isTemplate={hasTemplate(report)}
-                      />
-                    </dd>
-                  </div>
-                  <div className="flex items-baseline gap-1.5">
-                    <dt className="text-muted">{t("Oluşturuldu")}</dt>
-                    <dd title={formatRelativeTime(report.createdAt)}>
-                      {formatDateTime(report.createdAt)}
-                    </dd>
-                  </div>
-                  <div className="flex items-baseline gap-1.5">
-                    <dt className="text-muted">{t("Boyut")}</dt>
-                    <dd>{formatBytes(report.sizeBytes)}</dd>
-                  </div>
-                  <div className="flex items-baseline gap-1.5">
-                    <dt className="text-muted">{t("Güncellendi")}</dt>
-                    <dd title={formatDateTime(report.updatedAt)}>
-                      {formatRelativeTime(report.updatedAt)}
-                    </dd>
-                  </div>
-                </dl>
+                <FactStrip
+                  label={t("Kaynak ve kayıt bilgileri")}
+                  facts={[
+                    { label: t("Oluşturan"), value: formatCreatedBy(report) },
+                    {
+                      label: t("Tür"),
+                      value: (
+                        <ReportKindChip
+                          kind={reportKind(report)}
+                          isTemplate={hasTemplate(report)}
+                        />
+                      ),
+                    },
+                    {
+                      label: t("Oluşturuldu"),
+                      value: formatDateTime(report.createdAt),
+                      hint: formatRelativeTime(report.createdAt),
+                    },
+                    { label: t("Boyut"), value: formatBytes(report.sizeBytes) },
+                    {
+                      label: t("Güncellendi"),
+                      value: formatDateTime(report.updatedAt),
+                      hint: formatRelativeTime(report.updatedAt),
+                    },
+                  ]}
+                />
+                <p className="mt-3 max-w-prose text-sm leading-relaxed text-muted">
+                  {t(
+                    "Bu raporun veri dönemi yapılandırılmış olarak kaydedilmemiş. Dönemi ve veri sınırlarını raporun içinde kontrol edin.",
+                  )}
+                </p>
               </details>
             </div>
             <div className="flex flex-wrap items-center gap-2">

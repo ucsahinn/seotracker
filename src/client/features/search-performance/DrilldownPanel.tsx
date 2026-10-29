@@ -1,4 +1,5 @@
 import { t } from "@/shared/i18n";
+import { FactStrip } from "@/client/components/FactStrip";
 import * as React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Area, AreaChart, Tooltip, XAxis } from "recharts";
@@ -167,12 +168,21 @@ export function DrilldownPanel({
             </p>
           ) : (
             <div className="flex flex-col gap-4">
-              <p className="text-xs text-muted">
-                {t("{start} – {end}, kesin günler", {
-                  start: formatDate(span.startDate),
-                  end: formatDate(span.endDate),
-                })}
-              </p>
+              <FactStrip
+                label={t("Verinin durumu")}
+                facts={[
+                  {
+                    label: t("Kesin veri"),
+                    value: `${formatDate(span.startDate)} – ${formatDate(span.endDate)}`,
+                  },
+                  {
+                    label: t("Karşılaştırma"),
+                    value: previous
+                      ? `${formatDate(data.previousWindow.startDate)} – ${formatDate(data.previousWindow.endDate)}`
+                      : t("Karşılaştırma yok"),
+                  },
+                ]}
+              />
               {/* The key's four numbers with their change against the period
                   before, like the screen's own tiles, so a drill-down says
                   whether this query or page is the one that moved. */}
@@ -339,20 +349,7 @@ export function DrilldownPanel({
                     ))}
                   </ul>
                 )}
-                {data.truncated ? (
-                  <p className="mt-2 text-xs text-muted">
-                    {t(
-                      "Sorgu-sayfa tablosu satır sınırında kesildi; bazı eşleşmeler eksik olabilir.",
-                    )}
-                  </p>
-                ) : null}
-                {isPage ? (
-                  <p className="mt-2 text-xs text-subtle">
-                    {t(
-                      "Sorgu satırlarının toplamı sayfanın toplamından küçük olabilir: gizli sorgular listelenmez.",
-                    )}
-                  </p>
-                ) : null}
+                <DrilldownNotes truncated={data.truncated} isPage={isPage} />
               </section>
             </div>
           )}
@@ -360,4 +357,36 @@ export function DrilldownPanel({
       </aside>
     </>
   );
+}
+
+function DrilldownNotes({
+  truncated,
+  isPage,
+}: {
+  truncated: boolean;
+  isPage: boolean;
+}) {
+  return truncated || isPage ? (
+    <details className="mt-2 text-sm text-muted">
+      <summary className="min-h-11 cursor-pointer py-3">
+        {t("Veri hakkında")}
+      </summary>
+      <div className="max-w-prose space-y-1.5 leading-relaxed">
+        {truncated ? (
+          <p>
+            {t(
+              "Sorgu-sayfa tablosu satır sınırında kesildi; bazı eşleşmeler eksik olabilir.",
+            )}
+          </p>
+        ) : null}
+        {isPage ? (
+          <p>
+            {t(
+              "Sorgu satırlarının toplamı sayfanın toplamından küçük olabilir: gizli sorgular listelenmez.",
+            )}
+          </p>
+        ) : null}
+      </div>
+    </details>
+  ) : null;
 }

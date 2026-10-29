@@ -35,20 +35,25 @@ export function MeasurementWarning({
   if (!unknown && reasons.length === 0) return null;
   return (
     <div role="status" className="space-y-2 text-sm text-[var(--ink-warning)]">
-      {reasons.length ? (
-        reasons.map((reason) => <p key={reason}>{reason}</p>)
-      ) : (
-        <p>
-          {t(
-            "Bazı ölçümler belirlenemedi. Nedeni bilinmiyor; bu, hiç ziyaret olmadığı anlamına gelmez.",
+      <details>
+        <summary className="min-h-11 cursor-pointer py-3">{t("Uyarı")}</summary>
+        <div className="max-w-prose space-y-1.5 pb-3 text-muted">
+          {reasons.length ? (
+            reasons.map((reason) => <p key={reason}>{reason}</p>)
+          ) : (
+            <p>
+              {t(
+                "Bazı ölçümler belirlenemedi. Nedeni bilinmiyor; bu, hiç ziyaret olmadığı anlamına gelmez.",
+              )}
+            </p>
           )}
-        </p>
-      )}
+        </div>
+      </details>
       <div className="flex flex-wrap gap-2">
         {onRetry ? (
           <button
             type="button"
-            className="btn btn-sm min-h-11"
+            className="btn btn-sm min-h-11 rounded-full"
             onClick={onRetry}
           >
             {t("Yeniden dene")}
@@ -60,7 +65,7 @@ export function MeasurementWarning({
             className="btn btn-sm min-h-11"
             onClick={onOpenHealth}
           >
-            {t("Ölçüm durumunu kontrol et")}
+            {t("Ölçüm durumu")}
           </button>
         ) : null}
       </div>

@@ -1,6 +1,6 @@
 ---
 title: Report e modelli
-description: Ogni report scaricato da un controllo o dal Rendimento della ricerca, o scritto dall'assistente, è un solo file HTML. Si apre sul telefono, si stampa o si invia per e-mail.
+description: Salvare i report di controllo, ricerca e assistente in singoli file HTML. Aprirli sul telefono, stamparli o condividerli tramite e-mail.
 screen: Raporlar
 route: /p/<proje>/reports
 updated: 2026-10-27
@@ -48,4 +48,4 @@ I nuovi rapporti nativi sulle prestazioni di ricerca e sull’audit del sito han
 
 Rigenerate i rapporti nativi dalla schermata di origine; gli agenti non possono sostituirne il contenuto con `save_report`. I dati mancanti non valgono mai zero. La metodologia dell’audit indica il periodo del traffico GSC, il limite di righe e la misurazione CrUX mobile salvata disponibile.
 
-Il report salvato in alto non è un riepilogo aggiornato del sito. Il sito di origine viene mostrato se verificabile dalla scansione originale; se è diverso da quello del progetto, compare un avviso. Senza una fonte verificata, il report potrebbe riguardare un altro sito. I report precedenti sono indicati come privi di fonte e data verificate. Per prendere decisioni oggi, crea un report aggiornato dalla schermata di verifica del progetto. I vecchi file restano invariati.
+Il report salvato in alto non è un riepilogo aggiornato del sito. Il sito di origine viene mostrato se verificabile dalla scansione originale; se è diverso da quello del progetto, compare un avviso. Senza una fonte verificata, il report potrebbe riguardare un altro sito. I report precedenti sono indicati come privi di fonte e data verificate. **Apri i controlli del sito** apre la cronologia. Se esiste un controllo salvato adatto, aprilo e scarica il rapporto; il collegamento non avvia automaticamente un controllo né crea un rapporto. I vecchi file restano invariati.

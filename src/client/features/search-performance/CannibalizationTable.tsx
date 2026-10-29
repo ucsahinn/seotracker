@@ -1,4 +1,5 @@
 import { t } from "@/shared/i18n";
+import { FactStrip } from "@/client/components/FactStrip";
 import { CheckCircle2, ChevronRight, SearchX } from "lucide-react";
 import * as React from "react";
 import { EmptyState } from "@/client/components/EmptyState";
@@ -134,34 +135,50 @@ export function CannibalizationTable({
 
   return (
     <div className="space-y-3 p-4">
-      <p className="text-sm text-muted">
-        {introBefore}
-        <span className="font-medium text-base-content">
-          {t("{impressions} gösterim", {
-            impressions: formatNumber(data.splitImpressions),
-          })}
-        </span>
-        {introAfter}
-      </p>
+      <FactStrip
+        label={t("Verinin durumu")}
+        facts={[
+          {
+            label: t("Dönem"),
+            value: `${formatDate(data.startDate)} – ${formatDate(data.endDate)}`,
+          },
+          { label: t("Sorgular"), value: formatNumber(data.queriesAnalyzed) },
+          { label: t("Gösterim"), value: formatNumber(data.splitImpressions) },
+        ]}
+        detailsLabel={t("Veri hakkında")}
+        details={
+          <div className="max-w-prose space-y-4 text-sm text-muted">
+            <p className="leading-relaxed">
+              {introBefore}
+              <span className="font-medium text-base-content">
+                {t("{impressions} gösterim", {
+                  impressions: formatNumber(data.splitImpressions),
+                })}
+              </span>
+              {introAfter}
+            </p>
 
-      {/* The window is printed because it is not always the one the dropdown
+            {/* The window is printed because it is not always the one the dropdown
           says: a 7-day selection is widened to 28, since the impression floor
           this analysis needs almost never clears in a week. */}
-      <p className="text-xs text-muted">
-        {t("{start} – {end} · {queries} sorgu incelendi", {
-          start: formatDate(data.startDate),
-          end: formatDate(data.endDate),
-          queries: formatNumber(data.queriesAnalyzed),
-        })}
-      </p>
+            <p className="text-xs text-muted">
+              {t("{start} – {end} · {queries} sorgu incelendi", {
+                start: formatDate(data.startDate),
+                end: formatDate(data.endDate),
+                queries: formatNumber(data.queriesAnalyzed),
+              })}
+            </p>
 
-      {data.truncated ? (
-        <p className="text-xs text-muted">
-          {t(
-            "Search Console tek seferde sınırlı satır döndürür ve bu sınıra takıldık. Listede olmayan çakışmalar olabilir.",
-          )}
-        </p>
-      ) : null}
+            {data.truncated ? (
+              <p className="text-xs text-muted">
+                {t(
+                  "Search Console tek seferde sınırlı satır döndürür ve bu sınıra takıldık. Listede olmayan çakışmalar olabilir.",
+                )}
+              </p>
+            ) : null}
+          </div>
+        }
+      />
 
       {needle ? (
         <p className="flex flex-wrap items-center gap-2 text-xs text-muted">

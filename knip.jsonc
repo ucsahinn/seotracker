@@ -48,5 +48,9 @@
      * worker, the workflows and the D1 client. Verified 2026-09-30.
      */
     "cloudflare",
+    // scripts/generate-site-images.mjs is run by hand when site screenshots
+    // change and borrows the Sharp copy already in the lockfile (pulled in by
+    // the toolchain) instead of adding a dependency; its outputs are committed.
+    "sharp",
   ],
 }

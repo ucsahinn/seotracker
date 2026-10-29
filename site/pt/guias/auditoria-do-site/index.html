@@ -2,14 +2,19 @@
 <html lang="pt">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Auditoria do site | Guia do seowatcher</title>
     <meta
       name="description"
-      content="O aplicativo percorre o seu site página por página, confere 202 regras e ordena os problemas por importância. A pontuação também diz quanto pôde ser medido. Uma auditoria interrompida não recebe pontuação."
+      content="Confira seu site com 202 regras e priorize os problemas. Entenda a pontuação da auditoria, a cobertura das medições e os resultados incompletos."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -89,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="O aplicativo percorre o seu site página por página, confere 202 regras e ordena os problemas por importância. A pontuação também diz quanto pôde ser medido. Uma auditoria interrompida não recebe pontuação."
+      content="Confira seu site com 202 regras e priorize os problemas. Entenda a pontuação da auditoria, a cobertura das medições e os resultados incompletos."
     />
     <meta
       property="og:image"
@@ -102,7 +107,7 @@
       property="og:image:alt"
       content="Cartão do seowatcher: o painel do aplicativo com dados do Search Console, do Analytics 4 e da auditoria do site, e um botão para baixar para Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/pt/guias/auditoria-do-site/"
@@ -120,7 +125,7 @@
     />
     <meta
       name="twitter:description"
-      content="O aplicativo percorre o seu site página por página, confere 202 regras e ordena os problemas por importância. A pontuação também diz quanto pôde ser medido. Uma auditoria interrompida não recebe pontuação."
+      content="Confira seu site com 202 regras e priorize os problemas. Entenda a pontuação da auditoria, a cobertura das medições e os resultados incompletos."
     />
     <meta
       name="twitter:image"
@@ -161,10 +166,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/pt/guias/auditoria-do-site/#article",
             "headline": "Auditoria do site",
-            "description": "O aplicativo percorre o seu site página por página, confere 202 regras e ordena os problemas por importância. A pontuação também diz quanto pôde ser medido. Uma auditoria interrompida não recebe pontuação.",
+            "description": "Confira seu site com 202 regras e priorize os problemas. Entenda a pontuação da auditoria, a cobertura das medições e os resultados incompletos.",
             "url": "https://seowatcher.io/pt/guias/auditoria-do-site/",
             "inLanguage": "pt",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Telas",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -1493,7 +1498,9 @@
                 >Palavras-chave salvas</a
               >
             </li>
-            <li><a href="/pt/guias/analise/">Analytics</a></li>
+            <li>
+              <a href="/pt/guias/analise/">Entender os dados de análise</a>
+            </li>
             <li class="current" aria-current="page">
               <a href="/pt/guias/auditoria-do-site/">Auditoria do site</a>
             </li>
@@ -1527,9 +1534,9 @@
       <article id="icerik" data-page="site-denetimi">
         <h1>Auditoria do site</h1>
         <p class="lede">
-          O aplicativo percorre o seu site página por página, confere 202 regras
-          e ordena os problemas por importância. A pontuação também diz quanto
-          pôde ser medido. Uma auditoria interrompida não recebe pontuação.
+          Confira seu site com 202 regras e priorize os problemas. Entenda a
+          pontuação da auditoria, a cobertura das medições e os resultados
+          incompletos.
         </p>
         <p>
           Esta página explica como encontrar os problemas do seu site e
@@ -1586,13 +1593,17 @@
         <p>
           <strong>Auditorias anteriores.</strong> Cada auditoria é listada com a
           data, o endereço, o estado, o número de páginas e a contagem de
-          problemas. A contagem de problemas é por cem páginas, com o total
-          entre parênteses. Isso permite comparar uma auditoria de 50 páginas
-          com uma de 500. Se mais de um site foi auditado no projeto, aparece um
-          seletor de site acima da lista. O gráfico e as setas de variação
-          sempre comparam auditorias do mesmo site. Com vários sites
-          selecionados, o gráfico fica oculto. <strong>Ver</strong> numa linha
-          abre a auditoria. O menu da linha tem
+          problemas. As colunas Crítico, Aviso e Informação mostram todos os
+          problemas registrados, incluindo os das páginas e as verificações do
+          site inteiro; uma página pode ter vários problemas. Se mais de um site
+          foi auditado no projeto, aparece um seletor de site acima da lista. A
+          densidade indica problemas por cem páginas. As linhas de tendência e
+          as setas de variação só aparecem quando os dados registrados confirmam
+          o mesmo site, conjunto de páginas, configurações de rastreamento e
+          verificações medidas. Escopos diferentes ou desconhecidos são exibidos
+          como contagens independentes; não é possível determinar a alteração.
+          Com vários sites selecionados, o gráfico fica oculto.
+          <strong>Ver</strong> numa linha abre a auditoria. O menu da linha tem
           <strong>Executar novamente com as mesmas configurações</strong> e
           <strong>Excluir auditoria</strong>. Excluir apaga também as páginas,
           os problemas e as medições de velocidade da auditoria, e não dá para
@@ -2048,7 +2059,8 @@
         </p>
         <nav class="pager" aria-label="Página anterior e seguinte">
           <a class="pager-prev" rel="prev" href="/pt/guias/analise/"
-            ><span>Anterior</span><strong>Analytics</strong></a
+            ><span>Anterior</span
+            ><strong>Entender os dados de análise</strong></a
           ><a
             class="pager-next"
             rel="next"
@@ -2057,7 +2069,7 @@
           >
         </nav>
         <p class="meta">
-          Última atualização: 28 de outubro de 2026. Viu algum erro?
+          Última atualização: 29 de outubro de 2026. Viu algum erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

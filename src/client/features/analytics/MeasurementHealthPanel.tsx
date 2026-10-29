@@ -1,3 +1,4 @@
+import { FactStrip } from "@/client/components/FactStrip";
 import { useQuery } from "@tanstack/react-query";
 import { Check, X } from "lucide-react";
 import { AnalyticsNotConnected } from "@/client/features/analytics/AnalyticsNotConnected";
@@ -111,18 +112,30 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
 
   return (
     <div className="space-y-4">
-      <p className="text-xs text-muted">
-        {t(
-          "Bu kontrol yalnızca mülk ayarlarını okur; etiketin veri gönderdiğini doğrulamaz.",
-        )}
-      </p>
-      <p className="text-xs text-muted">
-        {t("Veri alındı: {time}", {
-          time: formatDateTime(health.fetchedAt ?? query.dataUpdatedAt),
-        })}
-      </p>
+      <FactStrip
+        label={t("Ölçüm durumu")}
+        facts={[
+          {
+            label: t("Kaynak"),
+            value: "Google Analytics",
+            hint: health.propertyDisplayName ?? health.propertyId,
+          },
+          {
+            label: t("Yenilendi"),
+            value: formatDateTime(health.fetchedAt ?? query.dataUpdatedAt),
+          },
+        ]}
+        detailsLabel={t("Veri ayrıntıları")}
+        details={
+          <p>
+            {t(
+              "Bu kontrol yalnızca mülk ayarlarını okur; etiketin veri gönderdiğini doğrulamaz.",
+            )}
+          </p>
+        }
+      />
       <a
-        className="link text-sm"
+        className="btn btn-sm min-h-11 h-auto rounded-full py-2 text-left"
         href="https://developers.google.com/analytics/devguides/collection/ga4/troubleshoot"
         target="_blank"
         rel="noopener noreferrer"
@@ -150,9 +163,13 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
         <MetricTile
           label={t("Anahtar olay")}
           value={count(health.summary.keyEventCount, "key_events")}
-          hint={t(
-            "Tanımlanmış olay sayısıdır; bu dönemde tetiklenen olay sayısı veya veri toplama kanıtı değildir.",
-          )}
+          hint={
+            <HelpTip label={t("Veri ayrıntıları")}>
+              {t(
+                "Tanımlanmış olay sayısıdır; bu dönemde tetiklenen olay sayısı veya veri toplama kanıtı değildir.",
+              )}
+            </HelpTip>
+          }
         />
         <MetricTile
           label={t("Özel boyut")}
@@ -196,7 +213,12 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
                   {copy ? t(copy.title) : issue}
                 </p>
                 {copy ? (
-                  <p className="mt-1 text-sm text-muted">{t(copy.fix)}</p>
+                  <details className="max-w-prose text-sm text-muted">
+                    <summary className="min-h-11 cursor-pointer py-3">
+                      {t("Ayrıntılar")}
+                    </summary>
+                    <p>{t(copy.fix)}</p>
+                  </details>
                 ) : null}
                 <a
                   href={
@@ -208,9 +230,12 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
                   }
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="link mt-2 inline-flex min-h-11 items-center text-sm"
+                  className="btn btn-sm mt-3 min-h-11 rounded-full"
+                  aria-label={t(
+                    "GA4 yönetiminde akış ve anahtar olay ayarlarını aç",
+                  )}
                 >
-                  {t("GA4 yönetiminde akış ve anahtar olay ayarlarını aç")}
+                  {t("Aç")}
                 </a>
               </li>
             );
@@ -225,10 +250,10 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
         >
           <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
             <div className="min-w-0">
-              <h3 className="truncate text-sm font-medium">
+              <h3 className="break-words text-base font-semibold">
                 {stream.displayName}
               </h3>
-              <p className="truncate text-xs text-muted">
+              <p className="break-all text-sm text-muted">
                 {stream.defaultUri ?? t("adres yok")}
                 {stream.measurementId ? ` · ${stream.measurementId}` : ""}
               </p>
@@ -262,7 +287,7 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
               )}
             </HelpTip>
           </p>
-          <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1.5">
+          <ul className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {MEASUREMENT_TOGGLES.map(([key, label]) => {
               const on =
                 stream.enhancedMeasurement.streamEnabled &&

@@ -19,14 +19,17 @@ export function NotificationSettings() {
   return (
     <section id="bildirimler" className="scroll-mt-16 space-y-3">
       <h2 className="text-base font-semibold">{t("Bildirimler")}</h2>
-      <p className="text-sm text-muted">
-        {t(
-          "Uygulama açıkken bildirimler ekranda görünür; sekme arka plandayken bildirim geçmişinde saklanır. Önemli bildirimlerin sesini buradan açıp kapatabilirsiniz.",
-        )}{" "}
-        {t(
-          "Geri döndüğünüzde kaçırdığınız bir veya iki bildirim ayrı ayrı, üç veya daha fazlası özet olarak gösterilir.",
-        )}
-      </p>
+      <details className="text-sm text-muted">
+        <summary className="cursor-pointer py-2">{t("Ayrıntılar")}</summary>
+        <p className="max-w-prose leading-relaxed">
+          {t(
+            "Uygulama açıkken bildirimler ekranda görünür; sekme arka plandayken bildirim geçmişinde saklanır. Önemli bildirimlerin sesini buradan açıp kapatabilirsiniz.",
+          )}{" "}
+          {t(
+            "Geri döndüğünüzde kaçırdığınız bir veya iki bildirim ayrı ayrı, üç veya daha fazlası özet olarak gösterilir.",
+          )}
+        </p>
+      </details>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <label className="flex items-center gap-2 text-sm">
           <input

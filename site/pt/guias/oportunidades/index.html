@@ -2,14 +2,19 @@
 <html lang="pt">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Oportunidades | Guia do seowatcher</title>
     <meta
       name="description"
-      content="Mostra quantos cliques a mais por mês cada uma das suas páginas poderia trazer e que trabalho os traz. O número é um limite superior, não uma promessa."
+      content="Mostra páginas observadas, possíveis ações e um limite de cliques adicionais quando há dados suficientes."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -86,7 +91,7 @@
     <meta property="og:title" content="Oportunidades | Guia do seowatcher" />
     <meta
       property="og:description"
-      content="Mostra quantos cliques a mais por mês cada uma das suas páginas poderia trazer e que trabalho os traz. O número é um limite superior, não uma promessa."
+      content="Mostra páginas observadas, possíveis ações e um limite de cliques adicionais quando há dados suficientes."
     />
     <meta
       property="og:image"
@@ -99,7 +104,7 @@
       property="og:image:alt"
       content="Cartão do seowatcher: o painel do aplicativo com dados do Search Console, do Analytics 4 e da auditoria do site, e um botão para baixar para Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/pt/guias/oportunidades/"
@@ -114,7 +119,7 @@
     <meta name="twitter:title" content="Oportunidades | Guia do seowatcher" />
     <meta
       name="twitter:description"
-      content="Mostra quantos cliques a mais por mês cada uma das suas páginas poderia trazer e que trabalho os traz. O número é um limite superior, não uma promessa."
+      content="Mostra páginas observadas, possíveis ações e um limite de cliques adicionais quando há dados suficientes."
     />
     <meta
       name="twitter:image"
@@ -155,10 +160,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/pt/guias/oportunidades/#article",
             "headline": "Oportunidades",
-            "description": "Mostra quantos cliques a mais por mês cada uma das suas páginas poderia trazer e que trabalho os traz. O número é um limite superior, não uma promessa.",
+            "description": "Mostra páginas observadas, possíveis ações e um limite de cliques adicionais quando há dados suficientes.",
             "url": "https://seowatcher.io/pt/guias/oportunidades/",
             "inLanguage": "pt",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Telas",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -1486,7 +1491,9 @@
                 >Palavras-chave salvas</a
               >
             </li>
-            <li><a href="/pt/guias/analise/">Analytics</a></li>
+            <li>
+              <a href="/pt/guias/analise/">Entender os dados de análise</a>
+            </li>
             <li>
               <a href="/pt/guias/auditoria-do-site/">Auditoria do site</a>
             </li>
@@ -1520,9 +1527,8 @@
       <article id="icerik" data-page="firsatlar">
         <h1>Oportunidades</h1>
         <p class="lede">
-          Mostra quantos cliques a mais por mês cada uma das suas páginas
-          poderia trazer e que trabalho os traz. O número é um limite superior,
-          não uma promessa.
+          Mostra páginas observadas, possíveis ações e um limite de cliques
+          adicionais quando há dados suficientes.
         </p>
         <p>
           “Examinar grupo de endereços do Analytics” na linha e nos detalhes
@@ -1535,7 +1541,7 @@
           intervalos diferentes no fuso GA4 e no calendário do Pacífico do
           Search Console.
         </p>
-        <h1 id="como-usar-oportunidades">Como usar Oportunidades</h1>
+        <h2 id="como-usar-oportunidades">Como usar Oportunidades</h2>
         <p>
           <strong>Veja isto primeiro</strong> abre a página com o maior limite
           calculável de cliques adicionais e sugere um trabalho a investigar.
@@ -1562,7 +1568,7 @@
         <h2 id="lista-e-filtros">Lista e filtros</h2>
         <p>
           Os filtros de trabalho e conversão se combinam com E. O servidor
-          filtra todas as páginas calculáveis antes de mostrar as primeiras 25,
+          filtra todas as páginas candidatas antes de mostrar as primeiras 25,
           50 ou 100 correspondências. Os totais gerais não mudam. Uma página
           pode contar em várias categorias; não some seus números de páginas.
           Período, limite e filtros ficam na URL.
@@ -1619,6 +1625,32 @@
           consultas com impressões. Os detalhes do cálculo expandem-se na secção
           de cobertura dos dados.
         </p>
+        <p>
+          Páginas com impressões e ganho desconhecido também aparecem: primeiro
+          estimativas por ganho, depois páginas desconhecidas por impressões.
+          Desconhecido não significa zero; os totais somam apenas ganhos
+          calculados. Os detalhes mostram consultas sem marca por impressões e
+          indicam páginas com apenas consultas de marca. As sugestões usam
+          apenas posição (1–5 revisar título/snippet, 6–10 conteúdo, 11–20 links
+          internos/conteúdo, 21+ intenção). Não comprovam CTR baixo nem ganho
+          futuro. Os filtros de trabalho seguem essas sugestões; os de conversão
+          usam sinais medidos do Analytics. CSV e Planilhas deixam o ganho
+          desconhecido vazio e incluem estado, motivo, marca e consultas
+          medidas.
+        </p>
+        <p>
+          Quando o ganho for desconhecido, examine primeiro a página e as buscas
+          observadas; altere o título ou o conteúdo apenas após confirmar uma
+          incompatibilidade. Se todos os ganhos forem desconhecidos, as
+          categorias mostram contagens de páginas candidatas sem barras de
+          ganho. O resumo de conversões separa páginas correspondentes daquelas
+          com status de conversão desconhecido; a falta de cobertura do
+          Analytics não significa zero conversões. O botão de filtro aparece
+          apenas quando há conversões confirmadas. Fonte e período são dados
+          identificados, e os cálculos ficam nos detalhes recolhidos. A falta de
+          dados do Analytics é explicada nos detalhes da página, sem se repetir
+          em todas as linhas.
+        </p>
         <nav class="pager" aria-label="Página anterior e seguinte">
           <a
             class="pager-prev"
@@ -1633,7 +1665,7 @@
           >
         </nav>
         <p class="meta">
-          Última atualização: 28 de outubro de 2026. Viu algum erro?
+          Última atualização: 29 de outubro de 2026. Viu algum erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1645,6 +1677,9 @@
       <nav class="toc" aria-label="Nesta página">
         <p class="toc-label">Nesta página</p>
         <ol>
+          <li>
+            <a href="#como-usar-oportunidades">Como usar Oportunidades</a>
+          </li>
           <li><a href="#datas-e-escopo">Datas e escopo</a></li>
           <li><a href="#lista-e-filtros">Lista e filtros</a></li>
           <li>

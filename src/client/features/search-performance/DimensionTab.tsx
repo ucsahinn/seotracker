@@ -1,4 +1,5 @@
 import { t } from "@/shared/i18n";
+import { FactStrip } from "@/client/components/FactStrip";
 import * as React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { BookmarkPlus, Copy, ExternalLink, Search } from "lucide-react";
@@ -331,34 +332,71 @@ export function DimensionTab({
               setPage(1);
             }}
           />
-          <p className="border-t border-[var(--hairline)] px-4 py-2 text-xs text-muted">
-            {dimension === "query"
-              ? t(
-                  "Taban: okunan {rows} sorgu, {clicks} tıklama. Sitenin toplamı {site} tıklama; aradaki fark Google'ın gizlediği sorgulardan.",
-                  {
-                    rows: formatCount(data.fetched),
-                    clicks: formatCount(data.base.clicks),
-                    site: formatCount(site.clicks),
-                  },
-                )
-              : t(
-                  "Taban: okunan {rows} sayfa, {clicks} tıklama. Google sayfa satırlarını sayfa bazında topladığı için site toplamından ({site}) biraz farklı olabilir.",
-                  {
-                    rows: formatCount(data.fetched),
-                    clicks: formatCount(data.base.clicks),
-                    site: formatCount(site.clicks),
-                  },
-                )}{" "}
-            {t("Çubuk, satırın bu tablodaki tıklama payı.")}
-            {data.googleTruncated
-              ? ` ${t("Google'ın satır sınırına ulaşıldı; en az tıklanan uç listede yok.")}`
-              : ""}
-            {data.previousTruncated
-              ? ` ${t("Önceki dönem tablosu da kesildi; değişimi bilinmeyen satırlarda – yazar.")}`
-              : ""}
-          </p>
+          <TableProvenance dimension={dimension} data={data} site={site} />
         </>
       )}
     </div>
+  );
+}
+
+function TableProvenance({
+  dimension,
+  data,
+  site,
+}: {
+  dimension: SearchPerformanceTableDimension;
+  data: {
+    fetched: number;
+    base: { clicks: number };
+    googleTruncated: boolean;
+    previousTruncated: boolean;
+  };
+  site: { clicks: number };
+}) {
+  return (
+    <FactStrip
+      label={t("Verinin durumu")}
+      facts={[
+        {
+          label: dimension === "query" ? t("Sorgular") : t("Sayfalar"),
+          value: formatCount(data.fetched),
+        },
+        { label: t("Tıklama"), value: formatCount(data.base.clicks) },
+        {
+          label: t("Site"),
+          value: formatCount(site.clicks),
+          hint: t("Tıklama"),
+        },
+      ]}
+      detailsLabel={t("Veri hakkında")}
+      details={
+        <p className="max-w-prose text-sm leading-relaxed text-muted">
+          {dimension === "query"
+            ? t(
+                "Taban: okunan {rows} sorgu, {clicks} tıklama. Sitenin toplamı {site} tıklama; aradaki fark Google'ın gizlediği sorgulardan.",
+                {
+                  rows: formatCount(data.fetched),
+                  clicks: formatCount(data.base.clicks),
+                  site: formatCount(site.clicks),
+                },
+              )
+            : t(
+                "Taban: okunan {rows} sayfa, {clicks} tıklama. Google sayfa satırlarını sayfa bazında topladığı için site toplamından ({site}) biraz farklı olabilir.",
+                {
+                  rows: formatCount(data.fetched),
+                  clicks: formatCount(data.base.clicks),
+                  site: formatCount(site.clicks),
+                },
+              )}{" "}
+          {t("Çubuk, satırın bu tablodaki tıklama payı.")}
+          {data.googleTruncated
+            ? ` ${t("Google'ın satır sınırına ulaşıldı; en az tıklanan uç listede yok.")}`
+            : ""}
+          {data.previousTruncated
+            ? ` ${t("Önceki dönem tablosu da kesildi; değişimi bilinmeyen satırlarda – yazar.")}`
+            : ""}
+        </p>
+      }
+    />
   );
 }

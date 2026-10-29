@@ -1,6 +1,6 @@
 ---
 title: Auditoria do site
-description: O aplicativo percorre o seu site página por página, confere 202 regras e ordena os problemas por importância. A pontuação também diz quanto pôde ser medido. Uma auditoria interrompida não recebe pontuação.
+description: Confira seu site com 202 regras e priorize os problemas. Entenda a pontuação da auditoria, a cobertura das medições e os resultados incompletos.
 screen: Site denetimi
 route: /p/<proje>/audit
 updated: 2026-10-28
@@ -21,7 +21,7 @@ O aplicativo percorre o seu site com o seu próprio rastreador (um programa que 
 
 Se você não tem uma chave do PageSpeed (a chave gratuita que o Google fornece para medir velocidade), a medição de velocidade fica limitada a 50 páginas. Para medir todas as páginas, adicione uma chave gratuita em **Configurações**. **Iniciar auditoria** começa a auditoria. A seção **Cotas** logo abaixo vem fechada. Se você abrir, vê o estado atual das cotas do PageSpeed e da inspeção de URL.
 
-**Auditorias anteriores.** Cada auditoria é listada com a data, o endereço, o estado, o número de páginas e a contagem de problemas. A contagem de problemas é por cem páginas, com o total entre parênteses. Isso permite comparar uma auditoria de 50 páginas com uma de 500. Se mais de um site foi auditado no projeto, aparece um seletor de site acima da lista. O gráfico e as setas de variação sempre comparam auditorias do mesmo site. Com vários sites selecionados, o gráfico fica oculto. **Ver** numa linha abre a auditoria. O menu da linha tem **Executar novamente com as mesmas configurações** e **Excluir auditoria**. Excluir apaga também as páginas, os problemas e as medições de velocidade da auditoria, e não dá para desfazer.
+**Auditorias anteriores.** Cada auditoria é listada com a data, o endereço, o estado, o número de páginas e a contagem de problemas. As colunas Crítico, Aviso e Informação mostram todos os problemas registrados, incluindo os das páginas e as verificações do site inteiro; uma página pode ter vários problemas. Se mais de um site foi auditado no projeto, aparece um seletor de site acima da lista. A densidade indica problemas por cem páginas. As linhas de tendência e as setas de variação só aparecem quando os dados registrados confirmam o mesmo site, conjunto de páginas, configurações de rastreamento e verificações medidas. Escopos diferentes ou desconhecidos são exibidos como contagens independentes; não é possível determinar a alteração. Com vários sites selecionados, o gráfico fica oculto. **Ver** numa linha abre a auditoria. O menu da linha tem **Executar novamente com as mesmas configurações** e **Excluir auditoria**. Excluir apaga também as páginas, os problemas e as medições de velocidade da auditoria, e não dá para desfazer.
 
 **Detalhes da auditoria.** No alto, **Baixar relatório** baixa um relatório HTML em um único arquivo e o guarda em **Relatórios**. Abaixo, aparecem avisos amarelos quando for preciso (veja adiante). Depois vem o cartão da pontuação.
 

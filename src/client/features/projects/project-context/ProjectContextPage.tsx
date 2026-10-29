@@ -15,6 +15,7 @@ import { KeyPagesSection } from "./KeyPagesSection";
 import { ResearchLog } from "./ResearchLog";
 import { projectContextQueryKey } from "./shared";
 import { PageHeader } from "@/client/components/PageShell";
+import { FactStrip } from "@/client/components/FactStrip";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
 import { ProseSections } from "./ProseSections";
@@ -127,10 +128,23 @@ function ProjectContextContent({
     <>
       {header}
       <div key={projectId} className="space-y-8">
-        <p className="break-all text-sm text-muted">
-          {projectName}
-          {domain ? " · " + domain : ""}
-        </p>
+        <FactStrip
+          label={t("Proje bilgisi")}
+          facts={[
+            {
+              label: t("Ad"),
+              value: <span className="break-all">{projectName}</span>,
+            },
+            ...(domain
+              ? [
+                  {
+                    label: t("Alan adı"),
+                    value: <span className="break-all">{domain}</span>,
+                  },
+                ]
+              : []),
+          ]}
+        />
         {contextQuery.isError ? (
           <div
             role="status"
@@ -167,7 +181,7 @@ function ProjectContextContent({
           </p>
           {context.missingSections[0] ? (
             <a
-              className="link inline-flex min-h-11 items-center"
+              className="btn btn-ghost btn-sm min-h-11"
               href={
                 "#context-" +
                 (context.missingSections.includes("current_goal")

@@ -2,9 +2,9 @@
 
 Yenilikler ve düzeltmeler, en yeni sürümden başlayarak listelenir.
 
-## [0.8.4] Alpha — 2026-10-28
+## [0.8.5] Alpha — 2026-10-28
 
-Bu giriş 0.5.0'dan 0.8.4'e kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
+Bu giriş 0.5.0'dan 0.8.5'e kadar gelen yenilikleri ve düzeltmeleri toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha doğru veriler ve daha okunaklı ekranlar.
 
 ### ✨ Öne çıkanlar
 
@@ -37,7 +37,7 @@ Bu giriş 0.5.0'dan 0.8.4'e kadar gelen yenilikleri ve düzeltmeleri toplar: sit
 
 - **Bildirim merkezi:** Denetim sonuçları, yeni sürümler ve Google bağlantı sorunları tek yerde toplanır.
 - **Bildirim sesi:** Önemli bildirimlerin sesini Ayarlar’dan açıp kapatabilirsiniz.
-- **Windows bildirimleri:** Güncellemeler ve duyurular Windows'un bildirim alanında da görünür.
+- **Windows bildirimleri:** Güncellemeler ve duyurular Windows'un bildirim alanında da görünür. Denetim bittiğinde veya başarısız olduğunda da Windows bildirimi gelir. Görev çubuğundaki simgenin menüsünden bu bildirimleri kapatabilirsiniz.
 - **Duyurular:** Yeni haberler uygulamadaki Duyurular ekranında yayımlanır.
 
 ### 🪟 Windows
@@ -59,6 +59,7 @@ Bu giriş 0.5.0'dan 0.8.4'e kadar gelen yenilikleri ve düzeltmeleri toplar: sit
 - **Kartlar ve sayılar:** Özet kartları sadeleştirildi; değişen sayılar hareketi azaltma tercihinize uyar.
 - **Yardım ve notlar:** Yardım ve sürüm notları ekranlarında aradığınız bilgiyi bulmak kolaylaştı.
 - **Verinin renkleri:** Tıklama mavi, gösterim mor, tıklama oranı turkuaz, sıra hardal, oturum yeşil ve dönüşüm gül rengindedir. Kartlar ve grafikler iki temada da aynı, daha canlı renkleri kullanır.
+- **Daha sakin ekranlar:** Kaynak, dönem ve güncellik kısa etiketlerle bir arada gösterilir. Uzun açıklamaları gerektiğinde açarsınız; kısa adlar ve belirgin düğmeler işlemleri kolaylaştırır.
 
 ### 🗂️ Projeler ve kayıtlar
 
@@ -68,13 +69,13 @@ Bu giriş 0.5.0'dan 0.8.4'e kadar gelen yenilikleri ve düzeltmeleri toplar: sit
 
 ### 🛠️ Düzeltmeler
 
-- **Daha doğru denetim:** Gerçek sitelerdeki hatalar giderildi; karşılaştırmalar her denetimin kendi sayfalarını kullanır, başlatılamayan denetimin kaydı korunur. Denetim geçmişindeki hata açıklamaları da ekrana sığar.
+- **Daha doğru denetim:** Gerçek sitelerdeki hatalar giderildi; karşılaştırmalar her denetimin kendi sayfalarını kullanır, başlatılamayan denetimin kaydı korunur. Denetim geçmişindeki hata açıklamaları da ekrana sığar. Denetim geçmişindeki sayılar hem sayfalardaki hem site genelindeki bulguları kapsadığını açıklar.
 - **Menüler ve klavye:** Telefonda ekranlar, raporlar ve ülke listesi taşmaz; menüler ekrana sığar, klavye odağı açık pencerede kalır, Esc yalnızca üstteki listeyi kapatır ve yazdıklarınızı korur; ekran okuyucular seçimleri, Analytics ise kanal adlarını seçtiğiniz dilde bildirir. Telefonda güncelleme saati, rapor türü ve Sıralama takibi satırlarının etiketleri görünür.
-- **Ekran düzeltmeleri:** Yardım’daki tanılama paketi sorunu daha iyi anlatır ve sayfa adreslerinizi içermez. Gerçek verilerle bulunan 25 sorun giderildi: pano, arama performansı, sıralama, kayıtlı kelimeler, Analytics, raporlar, denetim, ayarlar, bağlantılar, Yardım ve İngilizce çoğullar daha doğru görünür. Ekranlar gerçek verilerle iki kez daha, sayfaların alt kısımları da dahil incelendi. Panodaki denetim sayılarının neyi saydığı açık, sorun adları tamdır. Boş kayıtlı kelime listesi bunu hemen gösterir. Sıralama takibi ortalama sırayı belirtir; Yardım ve sayfa geçişleri menüdeki adlarla uyumludur.
-- **Daha doğru sayılar:** Eksik ölçümler sıfır sayılmaz, sınırlı Analytics verisi kesin sonuç gibi sunulmaz; sıralamalar aynı tarihleri kullanır, öncelikli işler ve tahminlerin sınırları açıklanır, filtrelemek aylık kazanç tahminini değiştirmez. Fırsatlar, Google'ın gizlediği aramaları açıklar; 90 gün seçiliyken aynı süreye genişletmenizi önermez. Az ziyaretçili sitelerde de eksik veriyle gerçek sıfır birbirinden ayrılır. Analytics bilinmeyen ölçümü bir kez açıklar; boş tablolarda önceki ve sonraki sayfa düğmeleri görünmez.
+- **Ekran düzeltmeleri:** Yardım’daki tanılama paketi sorunu daha iyi anlatır ve sayfa adreslerinizi içermez. Gerçek verilerle bulunan 25 sorun giderildi: pano, arama performansı, sıralama, kayıtlı kelimeler, Analytics, raporlar, denetim, ayarlar, bağlantılar, Yardım ve İngilizce çoğullar daha doğru görünür. Ekranlar gerçek verilerle iki kez daha, sayfaların alt kısımları da dahil incelendi. Panodaki denetim sayılarının neyi saydığı açık, sorun adları tamdır. Boş kayıtlı kelime listesi bunu hemen gösterir. Sıralama takibi ortalama sırayı belirtir; Yardım ve sayfa geçişleri menüdeki adlarla uyumludur. Panodaki oturum grafiğinin adı düzeltildi; sıralamalar seçili dönemin ortalaması olarak anlatılır. İngilizce, Almanca, Fransızca, İtalyanca ve Portekizce tekil ve çoğul ifadeler düzeltildi. Yapay zekâ asistanı aynı aramada birbiriyle yarışan sayfaları yeniden bulabilir.
+- **Daha doğru sayılar:** Eksik ölçümler sıfır sayılmaz, sınırlı Analytics verisi kesin sonuç gibi sunulmaz; sıralamalar aynı tarihleri kullanır, öncelikli işler ve tahminlerin sınırları açıklanır, filtrelemek aylık kazanç tahminini değiştirmez. Fırsatlar, Google'ın gizlediği aramaları açıklar; 90 gün seçiliyken aynı süreye genişletmenizi önermez. Az ziyaretçili sitelerde de eksik veriyle gerçek sıfır birbirinden ayrılır. Analytics bilinmeyen ölçümü bir kez açıklar; boş tablolarda önceki ve sonraki sayfa düğmeleri görünmez. Fırsatlar az ziyaretçili sitelerde de sayfaları gerçek ölçümleriyle listeler. Öneri ortalama sıraya dayanıyorsa ve kazanç hesaplanamıyorsa kazanç bilinmiyor diye gösterilir.
 - **Bağlantı durumu:** Mülk seçimi ile doğrulanmış erişim ayrıdır, hesap değişince eski sonuçlar güncel sayılmaz; yanıt vermeyen Google bağlantısı beklemede kalmaz, geçici hatada yeniden denemeniz, kapalı hizmette neyi açmanız gerektiği söylenir.
 - **Kayıtların korunması:** Etiket ekleme ve kaldırma yarım kalmaz, kullanılan etiket silinmez; geçmiş veriler doğru mülkle tamamlanır ve bekleyen işler doğru sırada ele alınır.
-- **Windows açılışı:** Çalışma dosyaları kullanıcı klasörüne yazılır; onarılan asistan bağlantısı yeniden açılışta korunur ve başlangıç kontrolü takılı kalmaz. Kullanılamayan Windows ayarı bağlantısı gizlenir.
+- **Windows açılışı:** Çalışma dosyaları kullanıcı klasörüne yazılır; onarılan asistan bağlantısı yeniden açılışta korunur ve başlangıç kontrolü takılı kalmaz. Kullanılamayan Windows ayarı bağlantısı gizlenir. Uygulamaya döndüğünüzde siz yokken gelen bildirimler de açılır.
 
 ### 🔒 Güvenlik
 

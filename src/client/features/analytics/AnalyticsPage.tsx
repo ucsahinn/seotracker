@@ -249,13 +249,9 @@ export function AnalyticsPage({
       />
 
       <div className="space-y-4">
-        {view !== "landing_pages" ? (
+        {view !== "landing_pages" && view !== HEALTH ? (
           <p className="max-w-[75ch] text-sm text-muted">
-            {view === HEALTH
-              ? t(
-                  "Bu kontrol yalnızca mülk ayarlarını okur; etiketin veri gönderdiğini doğrulamaz.",
-                )
-              : t(REPORT_QUESTIONS[kind])}
+            {t(REPORT_QUESTIONS[kind])}
           </p>
         ) : null}
         {/* The report query keeps its last result while the health tab is

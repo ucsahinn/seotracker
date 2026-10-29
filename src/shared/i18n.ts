@@ -196,8 +196,11 @@ function display(name: string, value: string | number): string {
  * The text for `source` in the current locale.
  *
  * `{name}` placeholders are filled from `vars`. An English value may be
- * `{ one, other }`; the form is picked by `vars.count` when it is a number,
- * and `other` otherwise. Turkish needs no plural forms.
+ * `{ one, other }`; the form is picked by `vars.count` when it is a number
+ * or an already formatted whole number below a thousand ("1"), and `other`
+ * otherwise. Call sites routinely pass `formatCount(n)`, and every value with
+ * a grouping separator is plural in every supported locale. Turkish needs no
+ * plural forms.
  */
 export function t(
   source: string,
@@ -210,7 +213,9 @@ export function t(
     if (typeof entry === "string") {
       text = entry;
     } else if (entry) {
-      const count = vars?.count;
+      const raw = vars?.count;
+      const count =
+        typeof raw === "string" && /^\d{1,3}$/.test(raw) ? Number(raw) : raw;
       const rules = (pluralRules[locale] ??= new Intl.PluralRules(
         INTL_LOCALE[locale],
       ));

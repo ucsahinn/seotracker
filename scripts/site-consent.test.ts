@@ -20,15 +20,22 @@ describe.each(["consent.js", "generated/consent.min.js"])("%s", (filename) => {
     choice,
     lang = "tr",
     ga4 = id,
+    pendingStyles = false,
   }: {
     choice?: { analytics: boolean; savedAt: number };
     lang?: string;
     ga4?: string;
+    pendingStyles?: boolean;
   } = {}) {
     const window = new Window({ url: "https://seowatcher.io/" });
     windows.push(window);
     window.document.documentElement.lang = lang;
     window.document.head.innerHTML = `<meta name="ga4-id" content="${ga4}">`;
+    if (pendingStyles)
+      window.document.head.insertAdjacentHTML(
+        "beforeend",
+        '<link rel="stylesheet" href="/assets/consent.css?v=3" media="print" data-consent-css>',
+      );
     window.document.body.innerHTML = "<main>Content</main><footer></footer>";
     if (choice) window.localStorage.setItem(key, JSON.stringify(choice));
     // Execute the shipped classic browser script, with its actual DOM and storage.
@@ -58,6 +65,18 @@ describe.each(["consent.js", "generated/consent.min.js"])("%s", (filename) => {
     await Promise.all(
       windows.splice(0).map((window) => window.happyDOM.close()),
     );
+  });
+
+  test("waits for nonblocking styles before mounting the banner", () => {
+    const window = openSite({ pendingStyles: true });
+    expect(window.document.querySelector("[data-consent-banner]")).toBeNull();
+    const stylesheet = window.document.querySelector("link[data-consent-css]")!;
+    stylesheet.dispatchEvent(new window.Event("load"));
+    expect(stylesheet.getAttribute("media")).toBe("all");
+    expect(
+      window.document.querySelector("[data-consent-banner]"),
+    ).not.toBeNull();
+    expect(googleTags(window)).toHaveLength(0);
   });
 
   test("without a measurement id nothing reaches Google and no banner shows", () => {

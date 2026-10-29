@@ -50,11 +50,14 @@ export function ThemeSection() {
     <section id="gorunum" className="scroll-mt-16 space-y-3">
       <div className="space-y-1">
         <h2 className="text-base font-semibold">{t("Görünüm")}</h2>
-        <p className="text-sm text-muted">
-          {t(
-            "Varsayılan koyu tema seowatcher.io ile aynı görünür. Sistem, işletim sisteminizin tercihini izler. Seçim bu tarayıcıda saklanır.",
-          )}
-        </p>
+        <details className="text-sm text-muted">
+          <summary className="cursor-pointer py-2">{t("Tema kaydı")}</summary>
+          <p className="text-sm text-muted">
+            {t(
+              "Varsayılan koyu tema seowatcher.io ile aynı görünür. Sistem, işletim sisteminizin tercihini izler. Seçim bu tarayıcıda saklanır.",
+            )}
+          </p>
+        </details>
       </div>
       <div className="flex items-center justify-between gap-6">
         <span className="text-sm">{t("Tema")}</span>
@@ -111,11 +114,14 @@ export function ThemeSection() {
           </button>
         </div>
       </form>
-      <p className="text-xs text-muted">
-        {t(
-          "Arayüz dili bu tarayıcıda saklanır; projenin varsayılan pazar dilini değiştirmez.",
-        )}
-      </p>
+      <details className="text-sm text-muted">
+        <summary className="cursor-pointer py-2">{t("Dil kapsamı")}</summary>
+        <p className="text-xs text-muted">
+          {t(
+            "Arayüz dili bu tarayıcıda saklanır; projenin varsayılan pazar dilini değiştirmez.",
+          )}
+        </p>
+      </details>
     </section>
   );
 }

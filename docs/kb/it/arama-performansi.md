@@ -1,6 +1,6 @@
 ---
 title: Rendimento della ricerca
-description: Si vede quante volte si compare su Google, quanti clic si ottengono e cosa correggere per primo. I numeri arrivano da Search Console. I guadagni sono un limite superiore.
+description: Leggere clic, impressioni e posizioni da Search Console. Scegliere le pagine da migliorare e capire i limiti dei guadagni stimati.
 screen: Arama performansı
 route: /p/<proje>/search-performance
 updated: 2026-10-28

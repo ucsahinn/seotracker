@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { FactStrip } from "@/client/components/FactStrip";
 import { Link } from "@tanstack/react-router";
 import * as React from "react";
 import { formatDate } from "@/client/lib/format";
@@ -145,11 +146,29 @@ function Trends({ series }: { series: CruxSeries[] }) {
 
   return (
     <>
-      <p className="mt-1 text-xs leading-relaxed text-muted">
-        {t(
-          "Her nokta, o haftada biten 28 günde ziyaretçilerin yüzde 75'inin gördüğü değerdir (p75). Kesikli çizgiler iyi ile zayıf arasındaki sınırlardır.",
-        )}
-      </p>
+      <FactStrip
+        label={t("Kaynak")}
+        facts={[
+          { label: t("Kaynak"), value: "Chrome UX Report History" },
+          {
+            label: t("Tarih"),
+            value: lastDate ? formatDate(lastDate) : t("Belirtilmemiş"),
+            hint: lastDate
+              ? t("Son pencere {date} tarihinde bitiyor.", {
+                  date: formatDate(lastDate),
+                })
+              : undefined,
+          },
+        ]}
+        detailsLabel={t("Ayrıntılar")}
+        details={
+          <p className="max-w-prose leading-relaxed">
+            {t(
+              "Her nokta, o haftada biten 28 günde ziyaretçilerin yüzde 75'inin gördüğü değerdir (p75). Kesikli çizgiler iyi ile zayıf arasındaki sınırlardır.",
+            )}
+          </p>
+        }
+      />
       <ul className="mt-3 grid gap-3 sm:grid-cols-3">
         {items.map(({ entry, summary }) => (
           <li
@@ -162,13 +181,6 @@ function Trends({ series }: { series: CruxSeries[] }) {
           </li>
         ))}
       </ul>
-      {lastDate ? (
-        <p className="mt-2 text-xs text-subtle">
-          {t("Son pencere {date} tarihinde bitiyor.", {
-            date: formatDate(lastDate),
-          })}
-        </p>
-      ) : null}
     </>
   );
 }

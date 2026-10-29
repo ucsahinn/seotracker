@@ -29,6 +29,11 @@ it("puts the real click counts ahead of percentages when the comparison base is 
     />,
   );
   expect(screen.getByText(/5 tıklama, 276 gösterim/)).toBeDefined();
-  expect(screen.getByText(/Önceki dönemde 1 tıklama/)).toBeDefined();
+  const caveat = screen.getByText(/Önceki dönemde 1 tıklama/);
+  // The comparison is the second thing read, not hidden behind a toggle.
+  expect(caveat.closest("details")).toBeNull();
+  expect(screen.getByRole("heading", { level: 2 }).textContent).toContain(
+    "5 tıklama, 276 gösterim",
+  );
   expect(screen.queryByText(/400,0/)).toBeNull();
 });

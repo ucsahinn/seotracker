@@ -17,4 +17,8 @@ it("distinguishes no history from a timestamped rejected read without echoing an
   );
   expect(screen.getByText(/Son başarısız Google okuması/)).toBeTruthy();
   expect(screen.getByText(/Google bu mülke erişimi reddetti/)).toBeTruthy();
+  expect(
+    screen.getByText(/Google bu mülke erişimi reddetti/).closest("details")
+      ?.open,
+  ).toBe(false);
 });

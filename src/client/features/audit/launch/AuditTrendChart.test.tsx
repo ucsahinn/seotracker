@@ -11,6 +11,7 @@ const audit = (id: string, startedAt: string, warning: number) => ({
   pagesCrawled: 300,
   pagesTotal: 300,
   ranLighthouse: false,
+  comparison: { previousAuditId: "b", compatible: true },
   issues: { critical: 0, warning, info: 0 },
 });
 
@@ -40,4 +41,42 @@ describe("AuditTrendChart", () => {
 
     expect(screen.getByText(/hiçbirinde kritik sorun/)).toBeTruthy();
   });
+});
+
+it("C24 preserves independent counts without connecting incompatible crawls", () => {
+  render(
+    <AuditTrendChart
+      history={[
+        { ...audit("a", "2026-01-01", 32), pagesCrawled: 20 },
+        { ...audit("b", "2026-02-01", 157), pagesCrawled: 144 },
+      ]}
+    />,
+  );
+  expect(
+    screen.getByText(
+      "Karşılaştırma yapılamadı: tarama kapsamları farklı veya bilinmiyor.",
+    ),
+  ).toBeTruthy();
+  expect(screen.queryByText(/azaldı|arttı/)).toBeNull();
+  expect(
+    screen.getByRole("table", {
+      name: "Denetim başına sayfa yoğunluğu: yüz sayfa başına sorun",
+    }).textContent,
+  ).toContain("157");
+});
+it("C25 labels the visible severity series for compatible audits", () => {
+  render(
+    <AuditTrendChart
+      history={[
+        audit("a", "2026-01-01", 32),
+        {
+          ...audit("b", "2026-02-01", 30),
+          comparison: { previousAuditId: "a", compatible: true },
+        },
+      ]}
+    />,
+  );
+  const legend = screen.getByRole("group", { name: "Grafik serileri" });
+  expect(legend.textContent).toContain("Kritik");
+  expect(legend.textContent).toContain("Uyarı");
 });

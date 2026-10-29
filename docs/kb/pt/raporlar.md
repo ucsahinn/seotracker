@@ -1,6 +1,6 @@
 ---
 title: Relatórios e modelos
-description: Todo relatório que você baixa de uma auditoria ou do Desempenho da pesquisa, ou que o seu assistente escreve, é um único arquivo HTML. Você abre no celular, imprime ou envia por e-mail.
+description: Salve relatórios de auditoria, pesquisa e do assistente em arquivos HTML. Abra no celular, imprima ou compartilhe os resultados por e-mail.
 screen: Raporlar
 route: /p/<proje>/reports
 updated: 2026-10-27
@@ -48,4 +48,4 @@ Os novos relatórios nativos de desempenho de pesquisa e auditoria do site têm 
 
 Gere novamente relatórios nativos na tela de origem; agentes não podem substituir seu conteúdo com `save_report`. Dados ausentes nunca são tratados como zero. A metodologia de auditoria identifica o período de tráfego GSC, o limite de linhas e a medição CrUX móvel salva disponível.
 
-O relatório salvo no topo não é um resumo atual do site. O site de origem aparece quando pode ser verificado pela auditoria original; se for diferente do site do projeto, um aviso é exibido. Sem uma fonte verificada, o relatório pode se referir a outro site. Relatórios antigos indicam fonte e data não verificadas. Para tomar decisões hoje, crie um relatório atualizado na tela de auditoria do projeto. Os arquivos antigos são preservados.
+O relatório salvo no topo não é um resumo atual do site. O site de origem aparece quando pode ser verificado pela auditoria original; se for diferente do site do projeto, um aviso é exibido. Sem uma fonte verificada, o relatório pode se referir a outro site. Relatórios antigos indicam fonte e data não verificadas. **Abrir auditorias do site** abre o histórico. Se houver uma auditoria salva adequada, abra-a e baixe o relatório; o link não inicia uma auditoria nem cria um relatório automaticamente. Os arquivos antigos são preservados.

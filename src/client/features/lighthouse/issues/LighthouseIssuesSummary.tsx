@@ -1,4 +1,5 @@
 import { lighthouseBand } from "@/shared/lighthouse";
+import { FactStrip } from "@/client/components/FactStrip";
 import { formatDecimal, formatDuration } from "@/client/lib/format";
 import { t } from "@/shared/i18n";
 import { LabFieldComparison } from "./LabFieldComparison";
@@ -79,11 +80,6 @@ export function LighthouseIssuesSummary({
       {fieldItems.length > 0 ? (
         <div className="rounded-box border border-base-300 bg-base-200/25 px-4 py-3">
           <div className="flex items-baseline justify-between gap-2">
-            <span className="text-xs uppercase tracking-wide text-muted">
-              {usingOrigin
-                ? t("Gerçek kullanıcı verisi · site geneli · son 28 gün")
-                : t("Gerçek kullanıcı verisi · bu sayfa · son 28 gün")}
-            </span>
             {shownFieldData?.overall ? (
               <span
                 className={`text-xs font-semibold ${fieldCategoryClass(shownFieldData.overall)}`}
@@ -92,14 +88,29 @@ export function LighthouseIssuesSummary({
               </span>
             ) : null}
           </div>
-          <p className="mt-1 text-xs leading-relaxed text-muted">
-            {t(
-              "Yukarıdaki puanlar Google'ın test makinesinde ölçüldü. Bunlar sitenizi gerçekten ziyaret eden Chrome kullanıcılarından geliyor.",
-            )}
-            {usingOrigin
-              ? ` ${t("Bu sayfanın kendi ziyaretçi sayısı Google'ın eşiğinin altında kaldığı için sitenizin tamamının ortalaması gösteriliyor.")}`
-              : ""}
-          </p>
+          <FactStrip
+            label={t("Kaynak")}
+            facts={[
+              {
+                label: t("Kaynak"),
+                value: "Chrome UX Report",
+                hint: usingOrigin
+                  ? t("Gerçek kullanıcı verisi · site geneli · son 28 gün")
+                  : t("Gerçek kullanıcı verisi · bu sayfa · son 28 gün"),
+              },
+            ]}
+            detailsLabel={t("Ayrıntılar")}
+            details={
+              <p className="max-w-prose leading-relaxed">
+                {t(
+                  "Yukarıdaki puanlar Google'ın test makinesinde ölçüldü. Bunlar sitenizi gerçekten ziyaret eden Chrome kullanıcılarından geliyor.",
+                )}
+                {usingOrigin
+                  ? ` ${t("Bu sayfanın kendi ziyaretçi sayısı Google'ın eşiğinin altında kaldığı için sitenizin tamamının ortalaması gösteriliyor.")}`
+                  : ""}
+              </p>
+            }
+          />
           <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-4">
             {fieldItems.map((metric) => (
               <div key={metric.label} className="flex flex-col gap-0.5">

@@ -1,3 +1,4 @@
+import { GrowingTextarea } from "./GrowingTextarea";
 import * as React from "react";
 import {
   PROJECT_CONTEXT_SECTION_KEYS,
@@ -87,7 +88,7 @@ export function ProseSections({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-6">
       {missingSections.length === PROJECT_CONTEXT_SECTION_KEYS.length ? (
         <EmptyListNote>
           {t(
@@ -115,10 +116,15 @@ export function ProseSections({
                 </span>
               )}
             </div>
-            <p id={"hint-" + key} className="text-xs text-muted">
-              {t(SECTION_HINTS[key])}{" "}
-              {t("En fazla {count} karakter", { count: PROSE_MAX_CHARS })}
-            </p>
+            <details className="text-sm text-muted">
+              <summary className="cursor-pointer py-2">
+                {t("Ayrıntılar")}
+              </summary>
+              <p id={"hint-" + key} className="max-w-prose leading-relaxed">
+                {t(SECTION_HINTS[key])}{" "}
+                {t("En fazla {count} karakter", { count: PROSE_MAX_CHARS })}
+              </p>
+            </details>
             {key in bases.current &&
             bases.current[key] !== (section?.content ?? null) ? (
               <div
@@ -148,7 +154,7 @@ export function ProseSections({
                 </button>
               </div>
             ) : null}
-            <textarea
+            <GrowingTextarea
               id={`context-${key}`}
               aria-describedby={"hint-" + key}
               value={draftOf(key)}

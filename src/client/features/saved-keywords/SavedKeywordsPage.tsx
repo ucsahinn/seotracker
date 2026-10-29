@@ -212,10 +212,20 @@ export function SavedKeywordsPage(props: SavedPageProps) {
               title={t("Kayıtlı kelimeler yüklenemedi")}
             />
           ) : data?.bandUnavailable ? (
-            <div role="alert" className="text-sm text-[var(--ink-warning)]">
-              {t(
-                "Sıra grubu uygulanamadı; sıra arşivi okunamadı. Yeniden deneyin veya grubu temizleyin.",
-              )}
+            <div role="alert" className="space-y-1.5 text-sm">
+              <p className="text-[var(--ink-warning)]">
+                {t("Sıra bilinmiyor")}
+              </p>
+              <details className="max-w-prose text-muted">
+                <summary className="min-h-11 cursor-pointer">
+                  {t("Ayrıntılar")}
+                </summary>
+                <p>
+                  {t(
+                    "Sıra grubu uygulanamadı; sıra arşivi okunamadı. Yeniden deneyin veya grubu temizleyin.",
+                  )}
+                </p>
+              </details>
               <button
                 className="btn btn-ghost min-h-11"
                 onClick={() => void query.refetch()}

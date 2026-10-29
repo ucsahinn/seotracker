@@ -1,5 +1,5 @@
 ---
-title: Analytics
+title: Analitik verilerini yorumlama
 description: Bu ekran GA4 mülkünde ölçülen ziyaretleri, etkileşimi ve anahtar olayları gösterir.
 screen: Analytics
 route: /p/<proje>/analytics

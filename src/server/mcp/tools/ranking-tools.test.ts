@@ -1,13 +1,25 @@
 import { expect, it, vi } from "vitest";
+import { z } from "zod";
 import { GscHistoryRepository } from "@/server/features/gsc/repositories/GscHistoryRepository";
 import { readRankingArchive } from "@/server/features/gsc/services/rankingArchiveRead";
-import { getRankingHistoryTool } from "./ranking-tools";
+import { getCannibalizationTool, getRankingHistoryTool } from "./ranking-tools";
 import { makeToolContext } from "./tool-test-support";
 
 const testDb = await vi.hoisted(async () =>
   (await import("@/server/test-support/sqlite-test-db")).createTestDb(),
 );
 vi.mock("cloudflare:workers", () => ({ env: {} }));
+vi.mock("@/server/features/gsc/services/CannibalizationService", () => ({
+  getCannibalization: vi.fn(async () => ({
+    rows: [],
+    queriesAnalyzed: 3,
+    splitImpressions: 0,
+    analyzedImpressions: 40,
+    truncated: false,
+    startDate: "2026-10-01",
+    endDate: "2026-10-28",
+  })),
+}));
 vi.mock("@/db", () => ({ db: testDb.db }));
 vi.mock("@/db/runBatch", () => testDb.runBatchModule);
 vi.mock("@/server/features/projects/services/ProjectService", () => ({
@@ -116,4 +128,18 @@ it("NUM-02: MCP summary and detail share the UI's complete 90-day archive window
   } finally {
     vi.useRealTimers();
   }
+});
+
+// The MCP SDK rejects a result with a field its output schema does not list,
+// which turned the whole tool into an error for every caller.
+it("returns cannibalization content that its strict output schema accepts", async () => {
+  testDb.database.exec(
+    "INSERT INTO gsc_connections (id, project_id, organization_id, site_url, connected_by_user_id) VALUES ('cc', 'pc', 'o1', 'sc-domain:cannibal.test', 'u1')",
+  );
+  const result = await getCannibalizationTool.handler(
+    { projectId: "pc" },
+    makeToolContext(),
+  );
+  const schema = z.object(getCannibalizationTool.config.outputSchema).strict();
+  expect(schema.safeParse(result.structuredContent).success).toBe(true);
 });

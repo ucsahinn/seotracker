@@ -9,6 +9,7 @@ import {
   hasTemplate,
   kindLabel,
   reportKind,
+  UNKNOWN_APP_KIND,
 } from "./reportStats";
 import { formatCreatedBy } from "./shared";
 import { formatBytes, formatCount, formatDateTime } from "@/client/lib/format";
@@ -134,11 +135,12 @@ export function ReportsList({
         })}
       </p>
       {filters.recent || filters.query ? (
-        <p className="text-xs text-subtle">
+        <details className="max-w-prose text-sm text-muted">
+          <summary className="cursor-pointer py-2">{t("Ayrıntılar")}</summary>
           {t(
             "Son 7 gün, bu sürede kaydedilen veya güncellenen ayrı dosyaları süzer; kaynak verinin güncelliğini göstermez. Arama başlık ve kayıtlı özeti tarar.",
           )}
-        </p>
+        </details>
       ) : null}
       <div
         className="flex flex-wrap gap-2"
@@ -166,16 +168,24 @@ export function ReportsList({
               update({ kind: filters.kind === facet.key ? "" : facet.key })
             }
           >
-            {facet.name ?? kindLabel(facet.key)} ({formatCount(facet.value)})
+            <span title={facet.name ?? kindLabel(facet.key)}>
+              {facet.key === UNKNOWN_APP_KIND
+                ? t("Eski rapor")
+                : (facet.name ?? kindLabel(facet.key))}
+            </span>{" "}
+            ({formatCount(facet.value)})
           </button>
         ))}
       </div>
       {inventory.facets.length > 1 ? (
-        <p className="text-xs text-subtle">
+        <details className="max-w-prose text-sm text-muted">
+          <summary className="cursor-pointer py-2">
+            {t("Türe göre raporlar")}
+          </summary>
           {t(
             "Tür sayıları arama ve Son 7 gün süzgecine göredir; seçili türden önce hesaplanır.",
           )}
-        </p>
+        </details>
       ) : null}
       {inventory.reports.length === 0 ? (
         <EmptyState

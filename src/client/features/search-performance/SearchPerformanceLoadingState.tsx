@@ -21,11 +21,14 @@ export function SearchPerformanceLoadingState() {
         ))}
       </div>
       <div
-        className="grid gap-2 rounded-box border border-[var(--hairline)] p-4 sm:grid-cols-2 xl:grid-cols-3"
+        className="grid grid-cols-2 gap-4 rounded-box border border-[var(--hairline)] p-4 xl:grid-cols-3"
         aria-hidden
       >
-        {[0, 1, 2, 3, 4].map((index) => (
-          <div key={index} className="skeleton h-3.5 w-4/5" />
+        {[0, 1, 2, 3, 4, 5].map((index) => (
+          <div key={index} className="space-y-2">
+            <div className="skeleton h-3 w-16" />
+            <div className="skeleton h-5 w-4/5" />
+          </div>
         ))}
       </div>
       <div aria-hidden>

@@ -1,6 +1,6 @@
 ---
 title: Raporlar ve şablonlar
-description: Denetimden ya da Arama performansı ekranından indirdiğiniz ve asistanınıza yazdırdığınız her rapor tek bir HTML dosyasıdır. Telefonda açarsınız, yazdırırsınız, e-postayla gönderirsiniz.
+description: Denetim, arama performansı ve asistan raporlarını tek HTML dosyasında saklayın. Raporları telefonda açın, yazdırın veya e-postayla paylaşın.
 screen: Raporlar
 route: /p/<proje>/reports
 updated: 2026-10-28
@@ -54,4 +54,4 @@ Yeni yerel raporlarda Arama performansı ve Site denetimi ayrı türler olarak k
 
 Native raporları kaynak ekranından yeniden hazırlayın; ajanlar `save_report` ile içeriklerini değiştiremez. Eksik kaynak verisi sıfır kabul edilmez. Denetim yöntemi kullanılan GSC trafik dönemini, kaynağın satır sınırını ve mevcut kayıtlı mobil CrUX ölçümünü belirtir.
 
-Üstteki **Kaydedilmiş rapor**, sitenin güncel özeti değildir. Kaynak denetimin sitesi doğrulanabiliyorsa gösterilir; projenin sitesiyle farklıysa uyarılır. Kaynak doğrulanamıyorsa başka bir siteye ait olabileceği açıkça yazılır. **Eski rapor · kaynak ve tarih doğrulanmamış** belgelerinin türü başlıktan tahmin edilmez. Bugünkü kararlar için **Güncel bir denetim raporu oluştur** bağlantısından projenin sitesini denetleyin. Eski dosya değiştirilmez.
+Üstteki **Kaydedilmiş rapor**, sitenin güncel özeti değildir. Kaynak denetimin sitesi doğrulanabiliyorsa gösterilir; projenin sitesiyle farklıysa uyarılır. Kaynak doğrulanamıyorsa başka bir siteye ait olabileceği açıkça yazılır. **Eski rapor · kaynak ve tarih doğrulanmamış** belgelerinin türü başlıktan tahmin edilmez. **Site denetimlerini aç** bağlantısı denetim geçmişini açar. Uygun bir kayıtlı denetim varsa onu açıp raporunu indirebilirsiniz; bağlantı kendiliğinden yeni denetim veya rapor başlatmaz. Eski dosya değiştirilmez.

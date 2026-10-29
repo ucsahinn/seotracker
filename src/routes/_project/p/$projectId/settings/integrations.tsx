@@ -1,3 +1,4 @@
+import { FactStrip } from "@/client/components/FactStrip";
 import { useQuery } from "@tanstack/react-query";
 import { getProjects } from "@/serverFunctions/projects";
 import { gscPropertyMismatch } from "@/shared/settingsPropertyScope";
@@ -33,21 +34,33 @@ function ProjectIntegrationsRoute() {
 
   return (
     <div className="space-y-8">
-      <p className="text-sm text-muted">
-        {t("Proje alan adı: {domain} · Search Console mülkü: {property}", {
-          domain: project?.domain ?? t("Alan adı belirtilmedi"),
-          property: gsc.data?.siteUrl ?? t("Mülk seçilmedi"),
-        })}
-      </p>
+      <FactStrip
+        label={t("Bağlantılar")}
+        facts={[
+          {
+            label: t("Alan adı"),
+            value: project?.domain ?? t("Alan adı belirtilmedi"),
+          },
+          {
+            label: "Search Console",
+            value: gsc.data?.siteUrl ?? t("Mülk seçilmedi"),
+          },
+        ]}
+      />
       {gscPropertyMismatch(
         project?.domain ?? null,
         gsc.data?.siteUrl ?? null,
       ) ? (
-        <p role="status" className="text-sm text-[var(--ink-warning)]">
-          {t(
-            "Seçilen Search Console mülkü proje alan adını kapsamıyor. Ayrı bir mülkü bilerek seçtiyseniz koruyabilirsiniz; değiştirmek için aşağıdaki mülk seçimini kullanın.",
-          )}
-        </p>
+        <details className="text-sm text-muted">
+          <summary className="cursor-pointer py-2 text-[var(--ink-warning)]">
+            {t("Mülk alan adını kapsamıyor.")}
+          </summary>
+          <p className="max-w-prose leading-relaxed">
+            {t(
+              "Seçilen Search Console mülkü proje alan adını kapsamıyor. Ayrı bir mülkü bilerek seçtiyseniz koruyabilirsiniz; değiştirmek için aşağıdaki mülk seçimini kullanın.",
+            )}
+          </p>
+        </details>
       ) : null}
       {/* The ids are the targets old #search-console / #google-analytics deep
           links are redirected to from the settings index. */}

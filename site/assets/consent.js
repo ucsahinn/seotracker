@@ -10,8 +10,25 @@
  * or is sent until the visitor accepts. "Accept" grants analytics storage
  * only, then loads the Google tag; advertising consent is never granted.
  */
-(() => {
+(function mountConsent() {
   "use strict";
+  // Activate the nonblocking stylesheet before creating any consent UI.
+  // A cached sheet is ready immediately; a cold request mounts on load.
+  const stylesheet = document.querySelector("link[data-consent-css]");
+  if (stylesheet && stylesheet.media !== "all") {
+    if (!stylesheet.sheet) {
+      stylesheet.addEventListener(
+        "load",
+        () => {
+          stylesheet.media = "all";
+          mountConsent();
+        },
+        { once: true },
+      );
+      return;
+    }
+    stylesheet.media = "all";
+  }
   const key = "seowatcher-consent-v1";
   const maxAge = 180 * 86400000;
   const copy = {

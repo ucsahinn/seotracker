@@ -22,5 +22,10 @@ const INTRO: Record<AuditTab, string> = {
 };
 
 export function TabIntro({ tab }: { tab: AuditTab }) {
-  return <p className="max-w-prose text-sm text-muted">{t(INTRO[tab])}</p>;
+  return (
+    <details className="mb-3 max-w-prose text-sm text-muted">
+      <summary className="cursor-pointer py-2">{t("Nasıl çalışır?")}</summary>
+      <p className="mt-1.5 leading-relaxed">{t(INTRO[tab])}</p>
+    </details>
+  );
 }

@@ -5,7 +5,12 @@ import { MoversCard } from "./MoversCard";
 describe("MoversCard", () => {
   it("does not claim stable rankings when no queries can be compared", () => {
     render(<MoversCard rows={[]} comparableCount={0} onPick={vi.fn()} />);
-    expect(screen.getByText(/İki dönemde de gözlenen sorgu yok/)).toBeDefined();
+    const explanation = screen.getByText(/İki dönemde de gözlenen sorgu yok/);
+    expect(explanation.closest("details")?.open).toBe(false);
+    expect(
+      screen.queryByRole("heading", { name: "Yükselenler ve düşenler" }),
+    ).toBeNull();
+    expect(screen.queryByText("Karşılaştırma yok")).toBeNull();
     expect(screen.queryByText(/belirgin yükselen sorgu yok/)).toBeNull();
     expect(
       screen.queryByRole("button", { name: /Daha fazla hareket/ }),

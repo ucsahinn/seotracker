@@ -142,15 +142,19 @@ function BrandSplitBlock({
   return (
     <div className="flex flex-col gap-3 px-4">
       {unconfirmed ? (
-        <p className="text-sm">
-          <span className="font-medium">{t("Onaylanmadı.")}</span>{" "}
-          <span className="text-muted">
-            {t(
-              "Alan adından önerilen marka adlarıyla ölçüldü: {terms}. Onaylayın ya da düzeltin.",
-              { terms: brand.terms.join(", ") },
-            )}
-          </span>
-        </p>
+        <details className="text-sm text-muted">
+          <summary className="min-h-11 cursor-pointer py-3 text-[var(--ink-warning)]">
+            {t("Onaylanmadı.")}
+          </summary>
+          <p className="max-w-prose leading-relaxed">
+            <span className="text-muted">
+              {t(
+                "Alan adından önerilen marka adlarıyla ölçüldü: {terms}. Onaylayın ya da düzeltin.",
+                { terms: brand.terms.join(", ") },
+              )}
+            </span>
+          </p>
+        </details>
       ) : null}
       <div className="grid gap-4 sm:grid-cols-2">
         {segments.map((segment) => (
@@ -189,14 +193,19 @@ function BrandSplitBlock({
         ))}
       </div>
       <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted">
-        <span>
-          {t(
-            "Marka adları: {terms}. Paylar okunan sorgulara göre; gizli sorgular dahil değil.",
-            {
-              terms: brand.terms.join(", "),
-            },
-          )}
-        </span>
+        <details className="text-sm text-muted">
+          <summary className="min-h-11 cursor-pointer py-3">
+            {t("Veri hakkında")}
+          </summary>
+          <p className="max-w-prose leading-relaxed">
+            {t(
+              "Marka adları: {terms}. Paylar okunan sorgulara göre; gizli sorgular dahil değil.",
+              {
+                terms: brand.terms.join(", "),
+              },
+            )}
+          </p>
+        </details>
         <button
           type="button"
           className="btn btn-ghost btn-xs"

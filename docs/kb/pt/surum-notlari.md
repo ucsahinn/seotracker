@@ -1,16 +1,16 @@
 ---
 title: Notas da versão
 description: seowatcher 0.8.4 Alpha — dados Google completos, cores vivas e telas revistas com dados reais, mais legíveis no celular.
-updated: 2026-10-28
+updated: 2026-10-29
 ---
 
-A versão mais recente é a **0.8.4 Alpha**, de 28 de outubro de 2026. Os dados são mantidos na atualização.
+A versão mais recente é a **0.8.5 Alpha**, de 28 de outubro de 2026. Os dados são mantidos na atualização.
 
 Para passar de 2.x para 0.x.x Alpha, execute o novo instalador manualmente; o atualizador antigo não reconhece o número menor como mais recente.
 
-## 0.8.4 Alpha — 2026-10-28
+## 0.8.5 Alpha — 2026-10-28
 
-Esta entrada reúne novidades e correções da 0.5.0 à 0.8.4: auditoria do site, painel, notificações e seis idiomas, com dados mais precisos e telas mais legíveis.
+Esta entrada reúne novidades e correções da 0.5.0 à 0.8.5: auditoria do site, painel, notificações e seis idiomas, com dados mais precisos e telas mais legíveis.
 
 ### ✨ Destaques
 
@@ -43,7 +43,7 @@ Esta entrada reúne novidades e correções da 0.5.0 à 0.8.4: auditoria do site
 
 - **Central de notificações:** Resultados de auditorias, novas versões e problemas na conexão com o Google ficam reunidos num só lugar.
 - **Som das notificações:** Ative ou desative o som dos alertas importantes nas Configurações.
-- **Notificações do Windows:** Atualizações e anúncios também aparecem na área de notificações do Windows.
+- **Notificações do Windows:** Atualizações e anúncios também aparecem na área de notificações do Windows. O Windows também avisa quando uma auditoria termina ou falha. Você pode desativar essas notificações no menu do ícone na barra de tarefas.
 - **Anúncios:** As novidades aparecem na tela Anúncios do aplicativo.
 
 ### 🪟 Windows
@@ -65,6 +65,7 @@ Esta entrada reúne novidades e correções da 0.5.0 à 0.8.4: auditoria do site
 - **Cartões e números:** Os cartões de resumo estão mais simples; os números animados respeitam sua preferência por movimento reduzido.
 - **Ajuda e versões:** As telas de ajuda e de notas da versão facilitam encontrar as informações desejadas.
 - **Cores dos dados:** Cliques em azul, impressões em violeta, taxa de cliques em turquesa, posição em ocre, sessões em verde e conversões em rosa: cartões e gráficos usam as mesmas cores mais vivas nos dois temas.
+- **Telas mais tranquilas:** Fonte, período e atualização dos dados aparecem juntos com rótulos curtos. Abra as explicações longas quando precisar; nomes curtos e botões claros facilitam as ações.
 
 ### 🗂️ Projetos e pesquisas salvas
 
@@ -74,13 +75,13 @@ Esta entrada reúne novidades e correções da 0.5.0 à 0.8.4: auditoria do site
 
 ### 🛠️ Correções
 
-- **Auditorias mais precisas:** Erros encontrados em sites reais foram corrigidos; as comparações usam as páginas de cada auditoria e o registro é mantido se a auditoria não conseguir iniciar. As mensagens de falha no histórico de auditorias também cabem na tela.
+- **Auditorias mais precisas:** Erros encontrados em sites reais foram corrigidos; as comparações usam as páginas de cada auditoria e o registro é mantido se a auditoria não conseguir iniciar. As mensagens de falha no histórico de auditorias também cabem na tela. Os números no histórico de auditorias explicam que incluem os problemas das páginas e os do site inteiro.
 - **Menus e teclado:** Telas, relatórios e listas de países cabem no celular; os menus ficam visíveis, o foco fica na janela aberta e Esc fecha só a lista da frente sem apagar seu texto; leitores de tela anunciam as seleções e o Analytics mostra os canais no seu idioma. No celular, o horário de atualização, o tipo de relatório e os rótulos de cada linha do acompanhamento de posições ficam visíveis.
-- **Correções do dia:** O pacote de diagnóstico da Ajuda descreve melhor o problema e não inclui os endereços das suas páginas. Foram corrigidos 25 problemas encontrados com dados reais no painel, no desempenho de pesquisa, nas posições, nas pesquisas salvas, no Analytics, nos relatórios, na auditoria, nas configurações, nas conexões, na Ajuda e nos plurais em inglês. Todas as telas foram revistas mais duas vezes com dados reais, incluindo a parte inferior das páginas. Os números de auditoria no painel explicam o que contam, e os nomes dos problemas aparecem por inteiro. Uma lista vazia de palavras salvas informa isso logo ao abrir. O acompanhamento de posições fala de posições médias; a Ajuda e os controles de troca de página usam os nomes dos menus.
-- **Números mais precisos:** Medições ausentes não contam como zero e dados limitados do Analytics não geram conclusões certas; as posições usam as mesmas datas, prioridades e limites das estimativas são explicados e os filtros não mudam o ganho mensal estimado. Oportunidades explica as pesquisas ocultadas pelo Google e não sugere mais ampliar para 90 dias quando esse período já está selecionado. Mesmo com poucos visitantes, dados ausentes são diferenciados de um zero real. O Analytics explica uma medida desconhecida uma única vez; tabelas vazias ocultam os botões de página anterior e próxima.
+- **Correções do dia:** O pacote de diagnóstico da Ajuda descreve melhor o problema e não inclui os endereços das suas páginas. Foram corrigidos 25 problemas encontrados com dados reais no painel, no desempenho de pesquisa, nas posições, nas pesquisas salvas, no Analytics, nos relatórios, na auditoria, nas configurações, nas conexões, na Ajuda e nos plurais em inglês. Todas as telas foram revistas mais duas vezes com dados reais, incluindo a parte inferior das páginas. Os números de auditoria no painel explicam o que contam, e os nomes dos problemas aparecem por inteiro. Uma lista vazia de palavras salvas informa isso logo ao abrir. O acompanhamento de posições fala de posições médias; a Ajuda e os controles de troca de página usam os nomes dos menus. O gráfico de sessões do painel tem o nome correto; as posições são descritas como médias do período escolhido. Singular e plural foram corrigidos em inglês, alemão, francês, italiano e português. Seu assistente de IA volta a encontrar páginas que competem pela mesma pesquisa.
+- **Números mais precisos:** Medições ausentes não contam como zero e dados limitados do Analytics não geram conclusões certas; as posições usam as mesmas datas, prioridades e limites das estimativas são explicados e os filtros não mudam o ganho mensal estimado. Oportunidades explica as pesquisas ocultadas pelo Google e não sugere mais ampliar para 90 dias quando esse período já está selecionado. Mesmo com poucos visitantes, dados ausentes são diferenciados de um zero real. O Analytics explica uma medida desconhecida uma única vez; tabelas vazias ocultam os botões de página anterior e próxima. Oportunidades lista as páginas com suas medições reais mesmo em sites com poucos visitantes. Quando a sugestão se baseia na posição média e não é possível calcular um ganho, o ganho aparece como desconhecido.
 - **Estado da conexão:** A escolha da propriedade é separada do acesso verificado e resultados antigos não são atuais após trocar de conta; conexões Google sem resposta param de esperar, erros temporários sugerem tentar novamente e serviços desativados explicam o que ativar.
 - **Dados salvos:** Adicionar ou remover etiquetas não deixa alterações pela metade, etiquetas em uso não podem ser excluídas, o histórico fica ligado à propriedade certa e as tarefas pendentes seguem a ordem correta.
-- **Abertura no Windows:** Os arquivos de trabalho ficam na pasta do usuário; conexões reparadas do assistente são mantidas ao reabrir e a verificação inicial não fica mais travada. Um link inutilizável para as configurações do Windows fica oculto.
+- **Abertura no Windows:** Os arquivos de trabalho ficam na pasta do usuário; conexões reparadas do assistente são mantidas ao reabrir e a verificação inicial não fica mais travada. Um link inutilizável para as configurações do Windows fica oculto. As notificações recebidas na sua ausência agora aparecem quando você volta ao aplicativo.
 
 ### 🔒 Segurança
 

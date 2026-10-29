@@ -1,7 +1,7 @@
 import { UNKEYED_LIGHTHOUSE_PAGE_CAP } from "@/shared/audit-limits";
 import { Skeleton } from "@/client/components/Skeleton";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CheckCircle2, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import * as React from "react";
 import { toast } from "sonner";
 import { ConfirmDeleteModal } from "@/client/components/ConfirmDeleteModal";
@@ -94,21 +94,24 @@ export function PageSpeedKeySection() {
         <h2 className="text-base font-semibold">{t("Hız ölçümü")}</h2>
       </SectionHeaderRow>
 
-      <p className="text-sm text-muted">
-        {t(
-          "Anahtarsız ölçüm sınırlıdır; bu uygulama denetim başına en fazla {count} sayfayı dener. Google daha önce sınır koyabilir. Anahtar başarı garantisi vermez.",
-          { count: UNKEYED_LIGHTHOUSE_PAGE_CAP },
-        )}{" "}
-        <a
-          href={KEY_URL}
-          target="_blank"
-          rel="noreferrer noopener"
-          className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
-        >
-          PageSpeed Insights API
-          <ExternalLink className="size-3" />
-        </a>
-      </p>
+      <details className="text-sm text-muted">
+        <summary className="cursor-pointer py-2">{t("Ayrıntılar")}</summary>
+        <p className="text-sm text-muted">
+          {t(
+            "Anahtarsız ölçüm sınırlıdır; bu uygulama denetim başına en fazla {count} sayfayı dener. Google daha önce sınır koyabilir. Anahtar başarı garantisi vermez.",
+            { count: UNKEYED_LIGHTHOUSE_PAGE_CAP },
+          )}{" "}
+          <a
+            href={KEY_URL}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
+          >
+            PageSpeed Insights API
+            <ExternalLink className="size-3" />
+          </a>
+        </p>
+      </details>
 
       {statusQuery.isPending ? <Skeleton variant="form" rows={1} /> : null}
 
@@ -141,39 +144,39 @@ export function PageSpeedKeySection() {
         </div>
       ) : null}
 
-      {(stored && !editing) || fromEnvironment ? (
-        <PageSpeedKeyTest
-          key={`${keyRevision}:${status?.updatedAt ?? status?.source}`}
-        />
-      ) : null}
+      <div
+        role="group"
+        aria-label={t("Anahtar işlemleri")}
+        className="flex flex-wrap items-start gap-2"
+      >
+        {(stored && !editing) || fromEnvironment ? (
+          <PageSpeedKeyTest
+            key={`${keyRevision}:${status?.updatedAt ?? status?.source}`}
+          />
+        ) : null}
 
-      {stored && !editing ? (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-box border border-base-300 p-3">
-          <div className="flex min-w-0 items-center gap-2">
-            <CheckCircle2 className="size-4 shrink-0 text-success" />
-            {/* The key itself never leaves the server, so there is nothing to
-                show here but the fact that one is stored. */}
-            <span className="truncate text-sm">{t("Anahtar kayıtlı")}</span>
+        {stored && !editing ? (
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex gap-2">
+              <button
+                type="button"
+                className="btn btn-sm"
+                onClick={() => setEditing(true)}
+              >
+                {t("Değiştir")}
+              </button>
+              <button
+                type="button"
+                className="btn btn-sm btn-ghost text-[var(--ink-error)]"
+                disabled={clear.isPending}
+                onClick={() => setConfirmingClear(true)}
+              >
+                {t("Sil")}
+              </button>
+            </div>
           </div>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              className="btn btn-sm"
-              onClick={() => setEditing(true)}
-            >
-              {t("Değiştir")}
-            </button>
-            <button
-              type="button"
-              className="btn btn-sm btn-ghost text-[var(--ink-error)]"
-              disabled={clear.isPending}
-              onClick={() => setConfirmingClear(true)}
-            >
-              {t("Sil")}
-            </button>
-          </div>
-        </div>
-      ) : null}
+        ) : null}
+      </div>
 
       {showForm ? (
         <form

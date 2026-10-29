@@ -2,9 +2,14 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Guide seowatcher : installation, écrans et dépannage</title>
     <meta
@@ -91,7 +96,7 @@
       property="og:image:alt"
       content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta property="og:url" content="https://seowatcher.io/fr/guides/" />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:locale:alternate" content="tr_TR" />
@@ -150,7 +155,7 @@
             "description": "Les guides de seowatcher : l'installation, ce que montre chaque écran, la connexion à Google, les règles d'audit, l'installation de l'assistant et le dépannage.",
             "url": "https://seowatcher.io/fr/guides/",
             "inLanguage": "fr",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "about": { "@id": "https://seowatcher.io/#app" },
             "isPartOf": { "@id": "https://seowatcher.io/#website" }
           },
@@ -1476,7 +1481,9 @@
                 >Mots-clés enregistrés</a
               >
             </li>
-            <li><a href="/fr/guides/statistiques/">Analytics</a></li>
+            <li>
+              <a href="/fr/guides/statistiques/">Comprendre les statistiques</a>
+            </li>
             <li><a href="/fr/guides/audit-du-site/">Audit du site</a></li>
             <li>
               <a href="/fr/guides/etat-de-l-index/">État de l'indexation</a>
@@ -1500,7 +1507,7 @@
         </details>
       </aside>
       <article id="icerik" data-page="index">
-        <h1>Guide</h1>
+        <h1>Guide seowatcher</h1>
         <p class="lede">
           Chaque étape et chaque écran, de l'installation au premier rapport,
           expliqués simplement. L'application s'appelle seotracker sur GitHub et
@@ -1564,27 +1571,24 @@
             <a href="/fr/guides/performance-de-recherche/"
               >Performances de recherche</a
             ><span
-              >Vous voyez combien de fois vous apparaissez sur Google, combien
-              de clics vous obtenez et ce qu'il faut corriger d'abord. Les
-              chiffres viennent de Search Console. Les gains sont un
-              plafond.</span
+              >Comprendre clics, impressions et positions dans Search Console.
+              Prioriser les pages à corriger et lire les limites des gains
+              estimés.</span
             >
           </li>
           <li>
             <a href="/fr/guides/suivi-du-classement/">Suivi des classements</a
             ><span
-              >Position moyenne de vos recherches sur Google, celles qui montent
-              ou baissent et l'évolution des groupes de positions, même au-delà
-              de la limite de 16 mois de Google, car les données sont conservées
-              sur cet ordinateur.</span
+              >Suivre les positions moyennes Google de vos requêtes et leur
+              évolution. L’archive locale conserve les données au-delà de la
+              limite de 16 mois.</span
             >
           </li>
           <li>
             <a href="/fr/guides/opportunites/">Opportunités</a
             ><span
-              >Montre combien de clics de plus par mois chacune de vos pages
-              pourrait apporter et quel travail les apporte. Le chiffre est un
-              plafond, pas une promesse.</span
+              >Présente les pages observées, les travaux possibles et une limite
+              de clics supplémentaires si les données le permettent.</span
             >
           </li>
           <li>
@@ -1595,7 +1599,7 @@
             >
           </li>
           <li>
-            <a href="/fr/guides/statistiques/">Analytics</a
+            <a href="/fr/guides/statistiques/">Comprendre les statistiques</a
             ><span
               >Analytics présente les visites, l’engagement et les événements
               clés mesurés dans votre propriété GA4.</span
@@ -1604,10 +1608,9 @@
           <li>
             <a href="/fr/guides/audit-du-site/">Audit du site</a
             ><span
-              >L'application parcourt votre site page par page, applique 202
-              règles et classe les problèmes par importance. Le score dit aussi
-              quelle part a pu être mesurée. Un audit arrêté en route n'a pas de
-              score.</span
+              >Vérifier votre site avec 202 règles et traiter les problèmes par
+              priorité. Comprendre le score, la couverture des mesures et les
+              résultats incomplets.</span
             >
           </li>
           <li>
@@ -1621,19 +1624,17 @@
           <li>
             <a href="/fr/guides/rapports/">Rapports et modèles</a
             ><span
-              >Chaque rapport que vous téléchargez depuis un audit ou depuis les
-              performances de recherche, ou que votre assistant écrit, est un
-              seul fichier HTML. Vous l'ouvrez sur un téléphone, l'imprimez ou
-              l'envoyez par e-mail.</span
+              >Conserver les rapports d’audit, de recherche et de votre
+              assistant en fichiers HTML. Les ouvrir sur mobile, les imprimer ou
+              les partager par e-mail.</span
             >
           </li>
           <li>
             <a href="/fr/guides/infos-du-projet/">Infos du projet</a
             ><span
-              >Les informations du projet sont des notes locales utilisables par
-              vous et votre assistant connecté. Un texte rempli n’est pas
-              vérifié ; tous les assistants ne le lisent pas
-              automatiquement.</span
+              >Conserver les objectifs et les notes du projet en local pour vous
+              et votre assistant connecté. Comprendre leur portée et leurs
+              limites.</span
             >
           </li>
           <li>
@@ -1665,8 +1666,9 @@
             <a href="/fr/guides/installation-assistant/"
               >Installation de l'assistant</a
             ><span
-              >Connecter un agent sans exposer le jeton et vérifier un nouvel
-              appel.</span
+              >Connecter votre assistant SEO sans exposer le jeton, vérifier un
+              nouvel appel et utiliser les compétences pour auditer le site et
+              rédiger un rapport.</span
             >
           </li>
           <li>
@@ -1687,7 +1689,7 @@
           </li>
         </ul>
         <p class="meta">
-          Dernière mise à jour: 28 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

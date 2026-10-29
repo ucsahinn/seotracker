@@ -36,11 +36,12 @@
  * Brand queries are skipped: someone typing the brand finds the site anyway,
  * and their click-through would make every other query look like a gap.
  *
- * Pages with nothing to gain (a top page with a normal click-through) are
- * counted but not listed. Sibling imports stay relative, like the rest of
- * `shared/`.
+ * Pages with a measured zero gain are counted but not listed. Pages whose
+ * gain is unknown retain their observed metrics and a position-based suggestion.
+ * Sibling imports stay relative, like the rest of `shared/`.
  */
 import { bandOf } from "./positionBands";
+import { sortBy } from "remeda";
 import { allocateGain } from "./opportunityAllocation";
 import {
   clicksAtCtr,
@@ -82,7 +83,16 @@ export type PageOpportunity = {
   ctr: number;
   position: number;
   /** Extra clicks over the window, summed over the page's queries. */
-  gain: number;
+  gain: number | null;
+  gainStatus?: "estimated" | "unknown";
+  gainReason?:
+    | "belowThreshold"
+    | "insufficientTargetCurve"
+    | "missingQueryPairs"
+    | null;
+  brandOnly?: boolean;
+  /** Observed non-brand queries, ranked by impressions; no implied gain. */
+  observedQueries?: QueryPageRow[];
   gainByWork: Record<WorkKind, number>;
   /** The kind of work that holds most of the gain. */
   work: WorkKind;
@@ -231,8 +241,13 @@ export function pageOpportunities(input: {
   );
 
   const byPage = new Map<string, QueryPageRow[]>();
+  const brandPages = new Set<string>();
   for (const row of input.queryPages) {
-    if (isBrand(row.query)) continue;
+    if (isBrand(row.query)) {
+      if (row.impressions > 0) brandPages.add(row.page);
+      continue;
+    }
+    if (row.impressions <= 0) continue;
     const list = byPage.get(row.page);
     if (list) list.push(row);
     else byPage.set(row.page, [row]);
@@ -270,6 +285,35 @@ export function pageOpportunities(input: {
             ? "belowThreshold"
             : null;
     if (unknown) reasons[unknown] += 1;
+    const addUnknownPage = () => {
+      if (unknown) {
+        pages.push({
+          page: pageRow.key,
+          clicks: pageRow.clicks,
+          impressions: pageRow.impressions,
+          ctr: pageRow.clicks / pageRow.impressions,
+          position: pageRow.position,
+          gain: null,
+          gainStatus: "unknown",
+          gainReason: unknown,
+          brandOnly: rows.length === 0 && brandPages.has(pageRow.key),
+          observedQueries: sortBy(rows, [(row) => row.impressions, "desc"]),
+          gainByWork: zeroByWork(),
+          work:
+            pageRow.position <= 5
+              ? "snippet"
+              : pageRow.position <= 10
+                ? "page1"
+                : pageRow.position <= 20
+                  ? "page2"
+                  : "deep",
+          nonBrandCtr: null,
+          siteCtr: null,
+          queries: [],
+          capped: false,
+        });
+      }
+    };
     const gainByWork = zeroByWork();
     const queries: QueryUpside[] = [];
     for (const row of rows) {
@@ -280,6 +324,7 @@ export function pageOpportunities(input: {
     }
     const raw = WORK_KINDS.reduce((sum, kind) => sum + gainByWork[kind], 0);
     if (raw <= 0) {
+      addUnknownPage();
       if (!unknown) {
         noGainPages += 1;
         reasons.calculableZero += 1;
@@ -305,6 +350,7 @@ export function pageOpportunities(input: {
     );
     const gain = Math.min(raw, pageCap(rows, queries, curve));
     if (gain <= 0) {
+      addUnknownPage();
       if (!unknown) {
         noGainPages += 1;
         reasons.calculableZero += 1;
@@ -348,6 +394,8 @@ export function pageOpportunities(input: {
       ctr: pageRow.impressions > 0 ? pageRow.clicks / pageRow.impressions : 0,
       position: pageRow.position,
       gain,
+      gainStatus: "estimated",
+      gainReason: null,
       gainByWork,
       work,
       nonBrandCtr:
@@ -370,7 +418,12 @@ export function pageOpportunities(input: {
       capped: gain < raw,
     });
   }
-  pages.sort((a, b) => b.gain - a.gain || b.impressions - a.impressions);
+  pages.sort(
+    (a, b) =>
+      Number(a.gain === null) - Number(b.gain === null) ||
+      (b.gain ?? 0) - (a.gain ?? 0) ||
+      b.impressions - a.impressions,
+  );
   return {
     pages,
     noGainPages,

@@ -213,7 +213,9 @@
     <link
       rel="preload"
       as="image"
-      href="/assets/hero-dark-m1.webp"
+      href="/assets/hero-dark-mobile-560.webp"
+      imagesrcset="/assets/hero-dark-mobile-360.webp 360w, /assets/hero-dark-mobile-560.webp 560w, /assets/hero-dark-mobile-1000.webp 1000w"
+      imagesizes="calc(100vw - 48px)"
       media="(max-width: 640px)"
       fetchpriority="high"
     />
@@ -729,30 +731,42 @@
                 <source
                   type="image/webp"
                   media="(max-width: 640px)"
-                  srcset="/assets/hero-dark-m1.webp 560w"
-                  sizes="100vw"
+                  srcset="
+                    /assets/hero-dark-mobile-360.webp   360w,
+                    /assets/hero-dark-mobile-560.webp   560w,
+                    /assets/hero-dark-mobile-1000.webp 1000w
+                  "
+                  sizes="calc(100vw - 48px)"
+                  width="1000"
+                  height="1250"
                 />
                 <source
                   type="image/webp"
                   srcset="
-                    /assets/hero-dark-1x.webp 1200w,
-                    /assets/hero-dark.webp    2400w
+                    /assets/hero-dark-desktop-560.webp   560w,
+                    /assets/hero-dark-desktop-1120.webp 1120w
                   "
                   sizes="(max-width: 900px) 100vw, 560px"
                 />
                 <img
-                  src="/assets/hero-dark.png"
+                  src="/assets/hero-dark-desktop-1120.webp"
                   alt="seowatcher paneli: son 28 günün tıklama ve gösterimi, sıradaki adımlar, son denetimde yeni çıkan ve düzelen bulgular"
                   width="2400"
                   height="1600"
                   fetchpriority="high"
+                  loading="eager"
                   decoding="async"
                 />
               </picture>
             </div>
             <div class="frame card" aria-hidden="true">
               <img
-                src="/assets/walk-firsatlar-dark-1x.webp"
+                src="/assets/walk-firsatlar-dark-desktop-560.webp"
+                srcset="
+                  /assets/walk-firsatlar-dark-desktop-560.webp   560w,
+                  /assets/walk-firsatlar-dark-desktop-1120.webp 1120w
+                "
+                sizes="260px"
                 alt=""
                 width="960"
                 height="800"
@@ -1051,13 +1065,14 @@
                   ><source
                     type="image/webp"
                     srcset="
-                      /assets/walk-firsatlar-dark-m1.webp  560w,
-                      /assets/walk-firsatlar-dark-m.webp  1000w
+                      /assets/walk-firsatlar-dark-mobile-360.webp   360w,
+                      /assets/walk-firsatlar-dark-mobile-560.webp   560w,
+                      /assets/walk-firsatlar-dark-mobile-1000.webp 1000w
                     "
-                    sizes="100vw" />
+                    sizes="calc(100vw - 48px)" />
                   <img
                     class="frame"
-                    src="/assets/walk-firsatlar-dark-m.webp"
+                    src="/assets/walk-firsatlar-dark-mobile-560.webp"
                     alt="Fırsatlar ekranı: dört grupta sayfa listesi, puan, sıra ve yapılacak iş"
                     width="1000"
                     height="1250"
@@ -1083,13 +1098,14 @@
                   ><source
                     type="image/webp"
                     srcset="
-                      /assets/walk-denetim-dark-m1.webp  560w,
-                      /assets/walk-denetim-dark-m.webp  1000w
+                      /assets/walk-denetim-dark-mobile-360.webp   360w,
+                      /assets/walk-denetim-dark-mobile-560.webp   560w,
+                      /assets/walk-denetim-dark-mobile-1000.webp 1000w
                     "
-                    sizes="100vw" />
+                    sizes="calc(100vw - 48px)" />
                   <img
                     class="frame"
-                    src="/assets/walk-denetim-dark-m.webp"
+                    src="/assets/walk-denetim-dark-mobile-560.webp"
                     alt="Site denetimi: puan halkası, önem sırasına göre bulgular ve düzeltme adımları"
                     width="1000"
                     height="1250"
@@ -1112,13 +1128,14 @@
                   ><source
                     type="image/webp"
                     srcset="
-                      /assets/walk-performans-dark-m1.webp  560w,
-                      /assets/walk-performans-dark-m.webp  1000w
+                      /assets/walk-performans-dark-mobile-360.webp   360w,
+                      /assets/walk-performans-dark-mobile-560.webp   560w,
+                      /assets/walk-performans-dark-mobile-1000.webp 1000w
                     "
-                    sizes="100vw" />
+                    sizes="calc(100vw - 48px)" />
                   <img
                     class="frame"
-                    src="/assets/walk-performans-dark-m.webp"
+                    src="/assets/walk-performans-dark-mobile-560.webp"
                     alt="Arama performansı: tıklama zaman serisi ve sorgu tablosu"
                     width="1000"
                     height="1250"
@@ -1143,13 +1160,14 @@
                   ><source
                     type="image/webp"
                     srcset="
-                      /assets/walk-ajan-dark-m1.webp  560w,
-                      /assets/walk-ajan-dark-m.webp  1000w
+                      /assets/walk-ajan-dark-mobile-360.webp   360w,
+                      /assets/walk-ajan-dark-mobile-560.webp   560w,
+                      /assets/walk-ajan-dark-mobile-1000.webp 1000w
                     "
-                    sizes="100vw" />
+                    sizes="calc(100vw - 48px)" />
                   <img
                     class="frame"
-                    src="/assets/walk-ajan-dark-m.webp"
+                    src="/assets/walk-ajan-dark-mobile-560.webp"
                     alt="Ajan kurulumu ekranı: bağlantı adresi, parola ve kopyalanacak kurulum metni"
                     width="1000"
                     height="1250"
@@ -1162,10 +1180,10 @@
               <picture class="walk-shot is-active" data-step="1"
                 ><div class="frame">
                   <img
-                    src="/assets/walk-firsatlar-dark-1x.webp"
+                    src="/assets/walk-firsatlar-dark-desktop-560.webp"
                     srcset="
-                      /assets/walk-firsatlar-dark-1x.webp  960w,
-                      /assets/walk-firsatlar-dark.webp    1920w
+                      /assets/walk-firsatlar-dark-desktop-560.webp   560w,
+                      /assets/walk-firsatlar-dark-desktop-1120.webp 1120w
                     "
                     sizes="(max-width: 1200px) 58vw, 680px"
                     alt=""
@@ -1178,10 +1196,10 @@
               <picture class="walk-shot" data-step="2"
                 ><div class="frame">
                   <img
-                    src="/assets/walk-denetim-dark-1x.webp"
+                    src="/assets/walk-denetim-dark-desktop-560.webp"
                     srcset="
-                      /assets/walk-denetim-dark-1x.webp  960w,
-                      /assets/walk-denetim-dark.webp    1920w
+                      /assets/walk-denetim-dark-desktop-560.webp   560w,
+                      /assets/walk-denetim-dark-desktop-1120.webp 1120w
                     "
                     sizes="(max-width: 1200px) 58vw, 680px"
                     alt=""
@@ -1194,10 +1212,10 @@
               <picture class="walk-shot" data-step="3"
                 ><div class="frame">
                   <img
-                    src="/assets/walk-performans-dark-1x.webp"
+                    src="/assets/walk-performans-dark-desktop-560.webp"
                     srcset="
-                      /assets/walk-performans-dark-1x.webp  960w,
-                      /assets/walk-performans-dark.webp    1920w
+                      /assets/walk-performans-dark-desktop-560.webp   560w,
+                      /assets/walk-performans-dark-desktop-1120.webp 1120w
                     "
                     sizes="(max-width: 1200px) 58vw, 680px"
                     alt=""
@@ -1210,10 +1228,10 @@
               <picture class="walk-shot" data-step="4"
                 ><div class="frame">
                   <img
-                    src="/assets/walk-ajan-dark-1x.webp"
+                    src="/assets/walk-ajan-dark-desktop-560.webp"
                     srcset="
-                      /assets/walk-ajan-dark-1x.webp  960w,
-                      /assets/walk-ajan-dark.webp    1920w
+                      /assets/walk-ajan-dark-desktop-560.webp   560w,
+                      /assets/walk-ajan-dark-desktop-1120.webp 1120w
                     "
                     sizes="(max-width: 1200px) 58vw, 680px"
                     alt=""

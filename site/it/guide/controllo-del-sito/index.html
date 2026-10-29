@@ -2,14 +2,19 @@
 <html lang="it">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Controllo del sito | guida di seowatcher</title>
     <meta
       name="description"
-      content="L'app visita il sito pagina per pagina, lo controlla con 202 regole e ordina i problemi per gravità. Il punteggio dice anche quanto è stato possibile misurare. Una verifica interrotta non ha punteggio."
+      content="Controllare il sito con 202 regole e ordinare i problemi per priorità. Capire il punteggio, la copertura delle misure e i risultati incompleti."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -89,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="L'app visita il sito pagina per pagina, lo controlla con 202 regole e ordina i problemi per gravità. Il punteggio dice anche quanto è stato possibile misurare. Una verifica interrotta non ha punteggio."
+      content="Controllare il sito con 202 regole e ordinare i problemi per priorità. Capire il punteggio, la copertura delle misure e i risultati incompleti."
     />
     <meta
       property="og:image"
@@ -102,7 +107,7 @@
       property="og:image:alt"
       content="Scheda di seowatcher: la dashboard dell’app con i dati di Search Console, Analytics 4 e dell’audit del sito, e un pulsante per scaricarla su Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/it/guide/controllo-del-sito/"
@@ -120,7 +125,7 @@
     />
     <meta
       name="twitter:description"
-      content="L'app visita il sito pagina per pagina, lo controlla con 202 regole e ordina i problemi per gravità. Il punteggio dice anche quanto è stato possibile misurare. Una verifica interrotta non ha punteggio."
+      content="Controllare il sito con 202 regole e ordinare i problemi per priorità. Capire il punteggio, la copertura delle misure e i risultati incompleti."
     />
     <meta
       name="twitter:image"
@@ -161,10 +166,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/it/guide/controllo-del-sito/#article",
             "headline": "Controllo del sito",
-            "description": "L'app visita il sito pagina per pagina, lo controlla con 202 regole e ordina i problemi per gravità. Il punteggio dice anche quanto è stato possibile misurare. Una verifica interrotta non ha punteggio.",
+            "description": "Controllare il sito con 202 regole e ordinare i problemi per priorità. Capire il punteggio, la copertura delle misure e i risultati incompleti.",
             "url": "https://seowatcher.io/it/guide/controllo-del-sito/",
             "inLanguage": "it",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Schermate",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -1505,7 +1510,9 @@
                 >Parole chiave salvate</a
               >
             </li>
-            <li><a href="/it/guide/analisi/">Analytics</a></li>
+            <li>
+              <a href="/it/guide/analisi/">Interpretare i dati di analisi</a>
+            </li>
             <li class="current" aria-current="page">
               <a href="/it/guide/controllo-del-sito/">Controllo del sito</a>
             </li>
@@ -1541,9 +1548,9 @@
       <article id="icerik" data-page="site-denetimi">
         <h1>Controllo del sito</h1>
         <p class="lede">
-          L'app visita il sito pagina per pagina, lo controlla con 202 regole e
-          ordina i problemi per gravità. Il punteggio dice anche quanto è stato
-          possibile misurare. Una verifica interrotta non ha punteggio.
+          Controllare il sito con 202 regole e ordinare i problemi per priorità.
+          Capire il punteggio, la copertura delle misure e i risultati
+          incompleti.
         </p>
         <p>Qui si trovano i problemi del sito e si vede come correggerli.</p>
         <p>
@@ -1596,14 +1603,18 @@
         </p>
         <p>
           <strong>Controlli precedenti.</strong> Di ogni verifica sono elencati
-          data, indirizzo, stato, numero di pagine e numero di problemi. Il
-          numero di problemi è riferito a ogni cento pagine, il totale è tra
-          parentesi. Così si possono confrontare verifiche da 50 e da 500
-          pagine. Se nel progetto sono stati controllati più siti, sopra
-          l'elenco compare un selettore del sito. Il grafico e le frecce di
-          variazione confrontano sempre verifiche dello stesso sito. Con più
-          siti selezionati il grafico è nascosto. <strong>Visualizza</strong> su
-          una riga apre la verifica. Il menu della riga ha
+          data, indirizzo, stato, numero di pagine e numero di problemi. Le
+          colonne Critico, Avviso e Info mostrano tutti i riscontri salvati,
+          compresi quelli delle pagine e i controlli dell’intero sito; una
+          pagina può avere più riscontri. Se nel progetto sono stati controllati
+          più siti, sopra l'elenco compare un selettore del sito. La densità
+          indica i problemi ogni cento pagine. Le linee e le frecce di
+          variazione compaiono solo quando i dati salvati confermano lo stesso
+          sito, insieme di pagine, impostazioni di scansione e controlli
+          misurati. Con ambiti diversi o sconosciuti si mostrano conteggi
+          indipendenti; la variazione non può essere determinata. Con più siti
+          selezionati il grafico è nascosto. <strong>Visualizza</strong> su una
+          riga apre la verifica. Il menu della riga ha
           <strong>Esegui di nuovo con le stesse impostazioni</strong> e
           <strong>Elimina controllo</strong>. Eliminare cancella anche le
           pagine, i problemi e le misurazioni di velocità della verifica e non
@@ -2059,13 +2070,14 @@
         </p>
         <nav class="pager" aria-label="Pagina precedente e successiva">
           <a class="pager-prev" rel="prev" href="/it/guide/analisi/"
-            ><span>Precedente</span><strong>Analytics</strong></a
+            ><span>Precedente</span
+            ><strong>Interpretare i dati di analisi</strong></a
           ><a class="pager-next" rel="next" href="/it/guide/stato-indice/"
             ><span>Successiva</span><strong>Stato dell'indice</strong></a
           >
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 28 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 29 ottobre 2026. Se si nota un errore,
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

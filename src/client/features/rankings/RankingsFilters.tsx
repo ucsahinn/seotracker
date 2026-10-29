@@ -99,7 +99,7 @@ export function RankingsFilters({
               },
               {
                 id: "top10",
-                label: t("Dönem ortalaması ilk 10"),
+                label: t("İlk 10"),
                 icon: Trophy,
                 count: data.moveCounts.top10,
                 hint: t("Dönem ortalaması ilk 10"),
@@ -123,7 +123,7 @@ export function RankingsFilters({
             chips={[
               {
                 id: "highImpressions",
-                label: t("Arşivde en çok gösterim"),
+                label: t("En çok gösterilenler"),
                 icon: Eye,
                 count: data.chipCounts.highImpressions,
                 hint: t(

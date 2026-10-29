@@ -33,6 +33,15 @@ it("F14 does not promote an unverified legacy title as the current site summary"
       "Kaynak site doğrulanamadı. Bu rapor başka bir siteye ait olabilir.",
     ),
   ).toBeTruthy();
+  const caveat = screen
+    .getByText(
+      "Kaynak site doğrulanamadı. Bu rapor başka bir siteye ait olabilir.",
+    )
+    .closest("details");
+  expect(caveat?.open).toBe(false);
+  expect(screen.getByText("Historical text").closest("details")?.open).toBe(
+    false,
+  );
 });
 it("F14 flags a verified source that differs from the project site", () => {
   render(
@@ -58,8 +67,32 @@ it("F15 offers a current audit without classifying a legacy report from its titl
   ).toBeTruthy();
   expect(
     screen
-      .getByRole("link", { name: "Güncel bir denetim raporu oluştur" })
+      .getByRole("link", { name: "Site denetimlerini aç" })
       .getAttribute("href"),
   ).toBe("/p/$projectId/audit");
   expect(screen.queryByText("Uygulama raporu, tür kaydedilmemiş")).toBeNull();
+});
+
+it("C22 keeps an unverified-source caution and active site visible", () => {
+  render(
+    <ReportsSummary
+      projectId="p"
+      latest={{ ...legacy, projectDomain: "vaultpilot.io" }}
+    />,
+  );
+  expect(
+    screen
+      .getByText("Kaynak site doğrulanmadı; kullanmadan önce kontrol edin.")
+      .closest("details"),
+  ).toBeNull();
+  expect(screen.getByText("vaultpilot.io").closest("details")).toBeNull();
+  expect(screen.getByText(legacy.title)).toBeTruthy();
+});
+it("C23 names the audit destination without promising report creation", () => {
+  render(<ReportsSummary projectId="p" latest={legacy} />);
+  expect(
+    screen
+      .getByRole("link", { name: "Site denetimlerini aç" })
+      .getAttribute("href"),
+  ).toBe("/p/$projectId/audit");
 });

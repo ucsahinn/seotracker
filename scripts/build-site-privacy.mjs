@@ -11,6 +11,11 @@ import {
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const site = path.join(root, "site");
+// The privacy page styles itself with the consent sheet, so it is inlined
+// like on the home page: styled at first paint without a blocking request.
+const consentCss = fs
+  .readFileSync(new URL("../site/assets/consent.css", import.meta.url), "utf8")
+  .trim();
 const copy = JSON.parse(
   fs.readFileSync(new URL("./site-privacy.json", import.meta.url), "utf8"),
 );
@@ -70,7 +75,7 @@ ${otherLocales}
 ${alternates.map(([code, href]) => `<link rel="alternate" hreflang="${code}" href="${href}">`).join("\n")}
 <link rel="icon" href="/assets/icon.svg" type="image/svg+xml"><link rel="manifest" href="/site.webmanifest" />
 <link rel="alternate" type="application/atom+xml" title="seowatcher" href="${locale.base}/feed.xml">
-<link rel="stylesheet" href="/assets/consent.css?v=2"><meta name="ga4-id" content="" /><script src="/assets/consent.js?v=3" defer></script>
+<style data-consent-css>${consentCss}</style><meta name="ga4-id" content="" /><script src="/assets/consent.js?v=4" defer></script>
 </head><body data-privacy-page><main><a href="${lang === "tr" ? "/" : `/${lang}/`}">seowatcher · ${escape(text.home)}</a><h1>${escape(text.title)}</h1><p>${escape(text.intro)}</p><p><small>${locale.t.updated}: <time datetime="${updated}">${readableDate(locale, updated)}</time></small></p>
 ${text.sections.map(([title, paragraph]) => `<section><h2>${escape(title)}</h2><p>${escape(paragraph)}</p></section>`).join("\n")}
 <p><a href="https://policies.google.com/privacy" rel="noopener noreferrer" target="_blank">Google Privacy</a> · <a href="https://policies.google.com/technologies/cookies" rel="noopener noreferrer" target="_blank">Google Cookies</a> · <a href="https://github.com/ucsahinn" rel="noopener noreferrer" target="_blank">GitHub / ucsahinn</a></p>

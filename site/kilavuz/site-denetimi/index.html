@@ -2,14 +2,19 @@
 <html lang="tr">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Site denetimi ekranı | seowatcher kılavuzu</title>
     <meta
       name="description"
-      content="Uygulama sitenizi sayfa sayfa gezer, 202 kurala göre kontrol eder ve sorunları önem sırasına dizer. Puan, ne kadarının ölçülebildiğini de söyler. Eksik kalan denetime puan vermez."
+      content="Sitenizi 202 kuralla denetleyin, sorunları önem sırasıyla inceleyin. Denetim puanını, ölçüm kapsamını ve eksik verilerin anlamını öğrenin."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/kilavuz/site-denetimi/" />
@@ -86,7 +91,7 @@
     />
     <meta
       property="og:description"
-      content="Uygulama sitenizi sayfa sayfa gezer, 202 kurala göre kontrol eder ve sorunları önem sırasına dizer. Puan, ne kadarının ölçülebildiğini de söyler. Eksik kalan denetime puan vermez."
+      content="Sitenizi 202 kuralla denetleyin, sorunları önem sırasıyla inceleyin. Denetim puanını, ölçüm kapsamını ve eksik verilerin anlamını öğrenin."
     />
     <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
     <meta property="og:image:type" content="image/png" />
@@ -96,7 +101,7 @@
       property="og:image:alt"
       content="seowatcher tanıtım kartı: Search Console, Analytics 4 ve site denetimi verilerini gösteren uygulama paneli ve Windows için indirme düğmesi"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/kilavuz/site-denetimi/"
@@ -114,7 +119,7 @@
     />
     <meta
       name="twitter:description"
-      content="Uygulama sitenizi sayfa sayfa gezer, 202 kurala göre kontrol eder ve sorunları önem sırasına dizer. Puan, ne kadarının ölçülebildiğini de söyler. Eksik kalan denetime puan vermez."
+      content="Sitenizi 202 kuralla denetleyin, sorunları önem sırasıyla inceleyin. Denetim puanını, ölçüm kapsamını ve eksik verilerin anlamını öğrenin."
     />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta
@@ -152,10 +157,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/kilavuz/site-denetimi/#article",
             "headline": "Site denetimi",
-            "description": "Uygulama sitenizi sayfa sayfa gezer, 202 kurala göre kontrol eder ve sorunları önem sırasına dizer. Puan, ne kadarının ölçülebildiğini de söyler. Eksik kalan denetime puan vermez.",
+            "description": "Sitenizi 202 kuralla denetleyin, sorunları önem sırasıyla inceleyin. Denetim puanını, ölçüm kapsamını ve eksik verilerin anlamını öğrenin.",
             "url": "https://seowatcher.io/kilavuz/site-denetimi/",
             "inLanguage": "tr",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Ekranlar",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -1473,7 +1478,9 @@
             <li><a href="/kilavuz/siralama-takibi/">Sıralama takibi</a></li>
             <li><a href="/kilavuz/firsatlar/">Fırsatlar</a></li>
             <li><a href="/kilavuz/kayitli-kelimeler/">Kayıtlı kelimeler</a></li>
-            <li><a href="/kilavuz/analitik/">Analytics</a></li>
+            <li>
+              <a href="/kilavuz/analitik/">Analitik verilerini yorumlama</a>
+            </li>
             <li class="current" aria-current="page">
               <a href="/kilavuz/site-denetimi/">Site denetimi</a>
             </li>
@@ -1495,9 +1502,8 @@
       <article id="icerik" data-page="site-denetimi">
         <h1>Site denetimi</h1>
         <p class="lede">
-          Uygulama sitenizi sayfa sayfa gezer, 202 kurala göre kontrol eder ve
-          sorunları önem sırasına dizer. Puan, ne kadarının ölçülebildiğini de
-          söyler. Eksik kalan denetime puan vermez.
+          Sitenizi 202 kuralla denetleyin, sorunları önem sırasıyla inceleyin.
+          Denetim puanını, ölçüm kapsamını ve eksik verilerin anlamını öğrenin.
         </p>
         <p>
           Sitenizdeki sorunları nasıl bulacağınızı ve düzelteceğinizi burada
@@ -1545,13 +1551,16 @@
         <p>
           <strong>Önceki denetimler.</strong> Her denetimin tarihi, adresi,
           durumu, sayfa sayısı ve sorun sayıları listelenir. Kritik, Uyarı ve
-          Bilgi sütunları toplam sayfa bulgularını gösterir; aynı sayfada birden
-          çok bulgu olabilir. Projede birden çok site denetlenmişse listenin
-          üstünde bir site seçici çıkar. Puan grafiği ve değişim okları her
-          zaman aynı sitenin denetimlerini karşılaştırır. Birden çok site
-          seçiliyken grafik gizlenir. Satırdaki
-          <strong>Görüntüle</strong> denetimi açar. Satır menüsünde
-          <strong>Aynı ayarlarla yeniden başlat</strong> ve
+          Bilgi sütunları kayıtlı tüm bulguları gösterir: sayfa bulguları ve
+          site geneli kontroller birlikte; aynı sayfada birden çok bulgu
+          olabilir. Projede birden çok site denetlenmişse listenin üstünde bir
+          site seçici çıkar. Yoğunluk, yüz sayfa başına sorun sayısıdır. Grafik
+          çizgileri ve değişim okları yalnızca kayıtlı kanıtlar aynı siteyi,
+          sayfa kümesini, tarama ayarlarını ve ölçülen kontrolleri
+          doğruladığında gösterilir. Kapsam farklıysa veya bilinmiyorsa bağımsız
+          sayılar gösterilir; değişim belirlenemez. Birden çok site seçiliyken
+          grafik gizlenir. Satırdaki <strong>Görüntüle</strong> denetimi açar.
+          Satır menüsünde <strong>Aynı ayarlarla yeniden başlat</strong> ve
           <strong>Denetimi sil</strong> vardır. Silmek denetimin sayfalarını,
           sorunlarını ve hız ölçümlerini de siler ve geri alınamaz.
         </p>
@@ -1952,13 +1961,14 @@
         </p>
         <nav class="pager" aria-label="Önceki ve sonraki sayfa">
           <a class="pager-prev" rel="prev" href="/kilavuz/analitik/"
-            ><span>Önceki</span><strong>Analytics</strong></a
+            ><span>Önceki</span
+            ><strong>Analitik verilerini yorumlama</strong></a
           ><a class="pager-next" rel="next" href="/kilavuz/dizin-durumu/"
             ><span>Sonraki</span><strong>Dizin durumu</strong></a
           >
         </nav>
         <p class="meta">
-          Son güncelleme: 28 Ekim 2026. Bir hata görürseniz
+          Son güncelleme: 29 Ekim 2026. Bir hata görürseniz
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

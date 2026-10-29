@@ -1,6 +1,6 @@
 ---
 title: Site audit
-description: The app walks your site page by page, checks it against 202 rules and ranks the problems by importance. The score also says how much could be measured. An audit that stops early gets no score.
+description: Audit your site against 202 rules and review issues by priority. Understand the audit score, measurement coverage and incomplete results.
 screen: Site denetimi
 route: /p/<proje>/audit
 updated: 2026-10-28
@@ -21,7 +21,7 @@ The app walks through your site with its own crawler (a program that opens and r
 
 If you have no PageSpeed key (the free code Google gives for speed measurement), speed measurement is limited to 50 pages. To measure all pages, add a free key in **Settings**. **Start audit** starts the audit. The **Quotas** section below it is closed. Open it to see the current state of the PageSpeed and URL inspection quotas.
 
-**Previous audits.** Each audit is listed with its date, address, status, page count and problem counts. The problem counts are per hundred pages, with the total in brackets. That way you can compare audits of 50 and 500 pages. If more than one site has been audited in the project, a site picker appears above the list. The score chart and the change arrows always compare audits of the same site. While several sites are selected, the chart is hidden. **View** on a row opens the audit. The row menu has **Run again with the same settings** and **Delete audit**. Deleting also deletes the audit's pages, problems and speed measurements, and cannot be undone.
+**Previous audits.** Each audit is listed with its date, address, status, page count and problem counts. The Critical, Warning and Info columns show all stored findings, including page findings and site-wide checks; one page may have multiple findings. If more than one site has been audited in the project, a site picker appears above the list. Density means issues per hundred pages. Trend lines and change arrows appear only when stored evidence confirms the same site, page population, crawl settings and measured checks. Different or unknown scopes are shown as independent counts; change cannot be determined. While several sites are selected, the chart is hidden. **View** on a row opens the audit. The row menu has **Run again with the same settings** and **Delete audit**. Deleting also deletes the audit's pages, problems and speed measurements, and cannot be undone.
 
 **Audit details.** At the top, **Download report** downloads a one-file HTML report and saves it in **Reports**. Below it, yellow warnings appear when needed (see below). Then comes the score card.
 

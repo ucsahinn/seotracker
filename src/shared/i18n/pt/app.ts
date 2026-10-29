@@ -2,6 +2,10 @@ import type { Catalog } from "@/shared/i18n";
 
 /** Portuguese for the main app, projects, reports and saved keywords. */
 export const ptApp: Catalog = {
+  "Arşiv özeti": "Resumo do arquivo",
+  "{observed}/{days} gün gözlem; {complete}/{days} gün tam yanıt.":
+    "Observações em {observed}/{days} dias; respostas completas em {complete}/{days} dias.",
+  "Arşiv kapsamını incele": "Verificar a cobertura do arquivo",
   "Bu bölüm başka bir yerde değişti. Metinleri karşılaştırıp taslağınızı birleştirin.":
     "Esta secção foi alterada noutro local. Compare os textos e integre o seu rascunho.",
   "Düzenleme başındaki metin": "Texto no início da edição",
@@ -357,6 +361,9 @@ export const ptApp: Catalog = {
   "Burada kayıtlı mülk seçimleri gösterilir; Google erişimi bu kontrolde sınanmaz. Güncel bir okuma denemek için Bağlantıları açın, seçili mülkün raporuna gidin ve Yenile düğmesine basın.":
     "Estas são as propriedades salvas; esta verificação não testa o acesso ao Google. Para tentar uma leitura atual, abra Conexões, vá ao relatório da propriedade selecionada e pressione Atualizar.",
   "Kaydedilmiş rapor": "Relatório salvo",
+  "Eski rapor": "Relatório antigo",
+  "Dosya kaydı": "Arquivo salvo",
+  Doğrulanmadı: "Não verificado",
   "Eski rapor · kaynak ve tarih doğrulanmamış":
     "Relatório antigo · fonte e data não verificadas",
   "Kaynak site: {domain}": "Site de origem: {domain}",
@@ -369,4 +376,33 @@ export const ptApp: Catalog = {
     "Antes de tomar decisões hoje, confira o site, a data da medição e os limites dos dados no relatório.",
   "Güncel bir denetim raporu oluştur":
     "Criar um relatório de auditoria atualizado",
+
+  // Calm-reading QA: reports, audit history, projects and settings.
+  "Grafik serileri": "Séries do gráfico",
+  "Yüz sayfa başına sorun sayısı; değişim yalnızca aynı kapsam ve kontrollerde gösterilir.":
+    "Problemas por cem páginas; alterações só são exibidas para o mesmo escopo e as mesmas verificações.",
+  "Kaynak site doğrulanmadı; kullanmadan önce kontrol edin.":
+    "Site de origem não verificado; confira antes de usar.",
+  "Etkin proje": "Projeto ativo",
+  "Site denetimlerini aç": "Abrir auditorias do site",
+  Mülk: "Propriedade",
+  Seçildi: "Selecionada",
+  "Bağlantı ayrıntıları": "Detalhes da conexão",
+  "Proje özeti": "Visão geral do projeto",
+  "Son denetim": "Última auditoria",
+  Başlangıç: "Início",
+  Tamamlanma: "Conclusão",
+  "Proje ayrıntıları": "Detalhes do projeto",
+  "Tema kaydı": "Armazenamento do tema",
+  "Dil kapsamı": "Escopo do idioma",
+  "Google kimlikleri": "Credenciais do Google",
+  "Kimlik yöntemleri": "Métodos de autenticação",
+  "Anahtar işlemleri": "Ações da chave",
+  Kaydedildi: "Salvas",
+  "Son kontrol": "Última verificação",
+  Yayımlandı: "Publicação",
+  "Tam metin": "Texto completo",
+  "Duyuruyu oku": "Ler comunicado",
+  "Windows tercihleri": "Preferências do Windows",
+  "Uygulamayı durdurma": "Parar o aplicativo",
 };

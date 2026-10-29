@@ -123,13 +123,16 @@ export function SearchVerdict({
   const second =
     searchSampleNote(view, compare) ?? secondSentence(view, compare);
   return (
-    <p className="max-w-[90ch] text-base leading-relaxed text-base-content">
-      {clicksSentence(view, compare)}
-      {second ? ` ${second}` : null}
+    <div className="max-w-prose space-y-4">
+      <h2 className="text-lg font-semibold leading-snug text-base-content">
+        {clicksSentence(view, compare)}
+      </h2>
+      {second ? (
+        <p className="text-sm leading-relaxed text-muted">{second}</p>
+      ) : null}
       {first.length > 0 ? (
-        <>
-          {" "}
-          <span className="text-muted">
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="text-sm text-muted">
             {gain === null
               ? t("Önce yapılacak {count} iş hazır.", { count: first.length })
               : t(
@@ -142,15 +145,15 @@ export function SearchVerdict({
           </span>{" "}
           <button
             type="button"
-            className="link link-primary inline-flex items-center gap-0.5 font-medium no-underline hover:underline"
+            className="btn btn-sm gap-2 max-sm:min-h-11"
             onClick={onShowTodo}
           >
             {t("Yapılacaklar")}
             <ArrowRight className="size-3.5" aria-hidden />
           </button>
-        </>
+        </div>
       ) : null}
-    </p>
+    </div>
   );
 }
 

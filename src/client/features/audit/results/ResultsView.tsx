@@ -1,4 +1,6 @@
 import { SafeExternalLink } from "@/client/components/SafeExternalLink";
+import { FactStrip } from "@/client/components/FactStrip";
+import { formatCount, formatDateTime } from "@/client/lib/format";
 import { ScoreOverview } from "@/client/features/audit/results/ScoreOverview";
 import { WithheldScore } from "@/client/features/audit/results/WithheldScore";
 import { ChecksView } from "@/client/features/audit/results/ChecksView";
@@ -185,6 +187,7 @@ export function ResultsView({
 
   return (
     <>
+      <AuditProvenance audit={audit} pageCount={pages.length} />
       {blockedCount > 0 && (
         <CrawlWarning
           headline={t("{count} sayfada engellendik.", { count: blockedCount })}
@@ -311,9 +314,7 @@ export function ResultsView({
             />
 
             <TabPanel group="audit-results" value={activeTab}>
-              <div className="mb-3">
-                <TabIntro tab={activeTab} />
-              </div>
+              <TabIntro tab={activeTab} />
               {activeTab === "todo" && (
                 <TodoView
                   todos={overview.todos}
@@ -419,6 +420,25 @@ export function ResultsView({
   );
 }
 
+function AuditProvenance({
+  audit,
+  pageCount,
+}: {
+  audit: AuditResultsData["audit"];
+  pageCount: number;
+}) {
+  return (
+    <FactStrip
+      label={t("Site denetimi")}
+      facts={[
+        { label: t("Kaynak"), value: audit.startUrl, hint: t("Site denetimi") },
+        { label: t("Tarih"), value: formatDateTime(audit.startedAt) },
+        { label: t("Taranan sayfa"), value: formatCount(pageCount) },
+      ]}
+    />
+  );
+}
+
 /** Banner for pages the crawler could not read (bot protection, rate limits). */
 function CrawlWarning({
   headline,
@@ -430,10 +450,12 @@ function CrawlWarning({
   return (
     <div className="flex items-start gap-3 rounded-box border border-warning/30 bg-warning/5 px-4 py-3 text-sm">
       <ShieldAlert className="mt-0.5 size-4 shrink-0 text-warning" />
-      <p>
-        <span className="font-medium">{headline}</span>{" "}
-        <span className="text-muted">{children}</span>
-      </p>
+      <details className="min-w-0 max-w-prose">
+        <summary className="cursor-pointer font-medium text-[var(--ink-warning)]">
+          {headline}
+        </summary>
+        <div className="mt-3 leading-relaxed text-muted">{children}</div>
+      </details>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 ---
 title: Opportunities
-description: Shows how many more clicks a month each of your pages could bring and what work gets them. The number is an upper bound, not a promise.
+description: Shows observed pages, possible work and an extra-click upper bound when the data supports one.
 screen: Fırsatlar
 route: /p/<proje>/opportunities
 updated: 2026-10-27
@@ -20,7 +20,7 @@ The **upper bound scaled to 30 days** normalizes the selected window. It is not 
 
 ## Worklist and filters
 
-Work and conversion filters combine with AND. The server filters all estimable pages before showing the first 25, 50 or 100 matches. Global totals do not change with filters or row limits. A page may appear in several work categories; their page counts are not additive. Period, row limit and filters stay in the URL.
+Work and conversion filters combine with AND. The server filters all candidate pages before showing the first 25, 50 or 100 matches. Global totals do not change with filters or row limits. A page may appear in several work categories; their page counts are not additive. Period, row limit and filters stay in the URL.
 
 Desktop has a sortable table; phones have wrapping page rows and a Details action. Details show impressions, position, target position band and the allocated contribution for each query. The top ten queries are shown with a separate remainder. Allocated queries plus the remainder reconcile with the page's displayed bound. The CTR gap uses only comparable non-brand queries and the same supported impressions on both sides, in percentage points.
 
@@ -37,3 +37,7 @@ CSV and Sheets exports include the displayed filtered rows, observed dates, norm
 Open in Search performance preserves the source start/end dates and opens the exact URL's detail panel. Unreadable periods are explained instead of substituting other dates. Record your change, then compare measured clicks, CTR and position for equivalent periods. A shrinking estimate alone does not prove success. Low rank or a low estimate does not justify deleting content; consider merging only after confirming overlapping intent.
 
 Thin data does not mean zero potential gain. Missing usable non-brand queries may result from hidden queries, brand exclusions or data limits. The longest period never suggests extending it again. Open Search performance to review queries with impressions. Calculation details expand under Data coverage and calculation.
+
+Pages with impressions and unknown gain also appear: estimated pages first by gain, then unknown pages by impressions. Unknown gain is not zero; totals sum only computed gains. Details list observed non-brand queries by impressions and mark pages with only brand queries. Suggestions use position alone (1–5 review title/snippet, 6–10 content, 11–20 internal links/content, 21+ search intent); they do not prove low CTR or future gain. Work filters match these suggestions; conversion filters use observed Analytics signals. CSV and Sheets leave unknown gain blank and include status, reason, brand marker and observed queries.
+
+When gain is unknown, inspect the page and observed queries first; consider title or content changes only after confirming a mismatch. When all gains are unknown, work categories show candidate counts without gain bars. The conversion summary separates matched pages from pages with unknown conversion status; missing Analytics coverage does not mean zero conversions. A conversion filter button appears only when confirmed records exist. Source and period are labelled facts; calculations remain in the closed disclosure. Missing Analytics data is explained in page details rather than repeated on every row.

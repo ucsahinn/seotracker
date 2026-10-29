@@ -2,14 +2,19 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Rapports et modèles | Guide seowatcher</title>
     <meta
       name="description"
-      content="Chaque rapport que vous téléchargez depuis un audit ou depuis les performances de recherche, ou que votre assistant écrit, est un seul fichier HTML. Vous l'ouvrez sur un téléphone, l'imprimez ou l'envoyez par e-mail."
+      content="Conserver les rapports d’audit, de recherche et de votre assistant en fichiers HTML. Les ouvrir sur mobile, les imprimer ou les partager par e-mail."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/fr/guides/rapports/" />
@@ -86,7 +91,7 @@
     />
     <meta
       property="og:description"
-      content="Chaque rapport que vous téléchargez depuis un audit ou depuis les performances de recherche, ou que votre assistant écrit, est un seul fichier HTML. Vous l'ouvrez sur un téléphone, l'imprimez ou l'envoyez par e-mail."
+      content="Conserver les rapports d’audit, de recherche et de votre assistant en fichiers HTML. Les ouvrir sur mobile, les imprimer ou les partager par e-mail."
     />
     <meta
       property="og:image"
@@ -99,7 +104,7 @@
       property="og:image:alt"
       content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/guides/rapports/"
@@ -117,7 +122,7 @@
     />
     <meta
       name="twitter:description"
-      content="Chaque rapport que vous téléchargez depuis un audit ou depuis les performances de recherche, ou que votre assistant écrit, est un seul fichier HTML. Vous l'ouvrez sur un téléphone, l'imprimez ou l'envoyez par e-mail."
+      content="Conserver les rapports d’audit, de recherche et de votre assistant en fichiers HTML. Les ouvrir sur mobile, les imprimer ou les partager par e-mail."
     />
     <meta
       name="twitter:image"
@@ -158,10 +163,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/fr/guides/rapports/#article",
             "headline": "Rapports et modèles",
-            "description": "Chaque rapport que vous téléchargez depuis un audit ou depuis les performances de recherche, ou que votre assistant écrit, est un seul fichier HTML. Vous l'ouvrez sur un téléphone, l'imprimez ou l'envoyez par e-mail.",
+            "description": "Conserver les rapports d’audit, de recherche et de votre assistant en fichiers HTML. Les ouvrir sur mobile, les imprimer ou les partager par e-mail.",
             "url": "https://seowatcher.io/fr/guides/rapports/",
             "inLanguage": "fr",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Les écrans",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -1497,7 +1502,9 @@
                 >Mots-clés enregistrés</a
               >
             </li>
-            <li><a href="/fr/guides/statistiques/">Analytics</a></li>
+            <li>
+              <a href="/fr/guides/statistiques/">Comprendre les statistiques</a>
+            </li>
             <li><a href="/fr/guides/audit-du-site/">Audit du site</a></li>
             <li>
               <a href="/fr/guides/etat-de-l-index/">État de l'indexation</a>
@@ -1525,10 +1532,9 @@
       <article id="icerik" data-page="raporlar">
         <h1>Rapports et modèles</h1>
         <p class="lede">
-          Chaque rapport que vous téléchargez depuis un audit ou depuis les
-          performances de recherche, ou que votre assistant écrit, est un seul
-          fichier HTML. Vous l'ouvrez sur un téléphone, l'imprimez ou l'envoyez
-          par e-mail.
+          Conserver les rapports d’audit, de recherche et de votre assistant en
+          fichiers HTML. Les ouvrir sur mobile, les imprimer ou les partager par
+          e-mail.
         </p>
         <p>
           Les rapports sont des documents HTML enregistrés pour ce projet. Leur
@@ -1667,9 +1673,11 @@
           site source est affiché si l’audit d’origine permet de le vérifier ;
           une différence avec le site du projet déclenche un avertissement. Sans
           source vérifiée, le rapport peut concerner un autre site. Les anciens
-          rapports portent une mention de source et de date non vérifiées. Pour
-          décider aujourd’hui, créez un rapport d’audit à jour depuis l’écran
-          d’audit du projet. Les anciens fichiers sont conservés.
+          rapports portent une mention de source et de date non vérifiées.
+          <strong>Ouvrir les audits du site</strong> ouvre l’historique. Si un
+          audit enregistré convient, ouvrez-le et téléchargez son rapport ; ce
+          lien ne lance pas automatiquement un audit et ne crée pas de rapport.
+          Les anciens fichiers sont conservés.
         </p>
         <nav class="pager" aria-label="Page précédente et suivante">
           <a class="pager-prev" rel="prev" href="/fr/guides/etat-de-l-index/"
@@ -1679,7 +1687,7 @@
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 28 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

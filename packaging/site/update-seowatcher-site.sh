@@ -12,6 +12,8 @@ cert=/etc/letsencrypt/live/seowatcher.io/fullchain.pem
 key=/etc/letsencrypt/live/seowatcher.io/privkey.pem
 release=$base/releases/20261028-0.8.4-alpha
 archive=$bundle/site.tar.gz
+redirects=$bundle/seowatcher-redirects.conf
+snippet=/etc/nginx/snippets/seowatcher-redirects.conf
 
 for path in "$base" "$current" "$enabled" "$available" "$cert" "$key"; do
   [[ -e "$path" || -L "$path" ]] || { printf 'STOP: expected existing deployment path is missing: %s\n' "$path" >&2; exit 1; }
@@ -20,6 +22,8 @@ done
 [[ -L "$enabled" ]] || { printf 'STOP: enabled nginx vhost must be a symlink; no files were changed.\n' >&2; exit 1; }
 [[ $(readlink -f "$enabled") == "$available" ]] || { printf 'STOP: enabled seowatcher vhost points to an unexpected file.\n' >&2; exit 1; }
 [[ -f "$archive" && ! -L "$archive" ]] || { printf 'STOP: package site.tar.gz is missing or a symlink.\n' >&2; exit 1; }
+[[ -f "$redirects" && ! -L "$redirects" ]] || { printf 'STOP: package seowatcher-redirects.conf is missing or a symlink.\n' >&2; exit 1; }
+[[ ! -L "$snippet" && ( ! -e "$snippet" || -f "$snippet" ) ]] || { printf 'STOP: redirect snippet must be a regular file or absent.\n' >&2; exit 1; }
 [[ ! -e "$release" && ! -L "$release" ]] || { printf 'STOP: release already exists: %s\n' "$release" >&2; exit 1; }
 
 (cd "$bundle" && sha256sum --check SHA256SUMS.txt)
@@ -32,9 +36,23 @@ case "$old_target" in
   *) printf 'STOP: current points outside the managed releases directory: %s\n' "$old_target" >&2; exit 1 ;;
 esac
 switched=0
+snippet_changed=0
+snippet_existed=0
+if [[ -f "$snippet" ]]; then
+  cp -p -- "$snippet" "$stage/redirects.previous"
+  snippet_existed=1
+fi
 rollback() {
   result=$?
   trap - ERR
+  set +e
+  if [[ $snippet_changed -eq 1 ]]; then
+    if [[ $snippet_existed -eq 1 ]]; then
+      install -m 644 "$stage/redirects.previous" "$snippet"
+    else
+      rm -f -- "$snippet"
+    fi
+  fi
   if [[ $switched -eq 1 ]]; then
     rollback_link="$base/current.rollback.$$"
     ln -s "$old_target" "$rollback_link"
@@ -45,6 +63,44 @@ rollback() {
   exit "$result"
 }
 trap rollback ERR
+
+nginx -T > "$stage/nginx-active.conf"
+# Inspect server-block scope, not a grep hit in comments, HTTP or another vhost.
+python3 - "$stage/nginx-active.conf" <<'NGINX'
+import pathlib, re, sys
+text = pathlib.Path(sys.argv[1]).read_text()
+tokens = re.findall(r'''\#[^\n]*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|[{};]|[^\s{};"'\#]+''', text)
+stack = []
+pending = []
+servers = []
+for token in tokens:
+    if token.startswith('#'):
+        continue
+    if token == '{':
+        stack.append((pending, []))
+        pending = []
+    elif token == ';':
+        if stack:
+            stack[-1][1].append(pending)
+        pending = []
+    elif token == '}':
+        header, directives = stack.pop()
+        if header == ['server']:
+            servers.append(directives)
+        pending = []
+    else:
+        pending.append(token.strip('"\''))
+include = ['include', '/etc/nginx/snippets/seowatcher-redirects.conf']
+https = [server for server in servers
+         if any(d[:1] == ['server_name'] and 'seowatcher.io' in d[1:] for d in server)
+         and any(d[:1] == ['listen'] and len(d) > 1
+                 and re.search(r'(^|:)443$', d[1]) and 'ssl' in d[2:] for d in server)]
+if not https or any(server.count(include) != 1 for server in https):
+    raise SystemExit('STOP: every active seowatcher.io HTTPS server block must contain exactly once:\n'
+                     'include /etc/nginx/snippets/seowatcher-redirects.conf;\n'
+                     'Add it inside that block, remove old privacy redirect locations, then retry. No release was switched.')
+print(f'Active HTTPS redirect include verified in {len(https)} server block(s)')
+NGINX
 
 python3 - "$archive" <<'PY'
 import pathlib, sys, tarfile, urllib.parse, xml.etree.ElementTree as ET
@@ -236,6 +292,11 @@ find "$release" -type d -exec chmod 755 {} +
 find "$release" -type f -exec chmod 644 {} +
 test -f "$release/index.html"
 test -f "$release/sitemap.xml"
+install -d -m 755 /etc/nginx/snippets
+snippet_changed=1
+install -m 644 "$redirects" "$snippet.next.$$"
+mv -Tf "$snippet.next.$$" "$snippet"
+nginx -t
 switched=1
 next_link="$base/current.next.$$"
 ln -s "$release" "$next_link"
@@ -251,5 +312,6 @@ grep -q '<loc>https://seowatcher.io/fr/confidentialite/</loc>' "$stage/sitemap.x
 grep -q '<loc>https://seowatcher.io/it/privacy/</loc>' "$stage/sitemap.xml"
 grep -q '<loc>https://seowatcher.io/pt/privacidade/</loc>' "$stage/sitemap.xml"
 switched=0
+snippet_changed=0
 trap - ERR
 printf '\nSEOWATCHER_UPDATE_OK\nRelease: %s\nPrevious release retained: %s\n' "$release" "$old_target"

@@ -38,3 +38,9 @@ it("avoids plural nouns for independently varying formatted counts", () => {
     }),
   ).toBe("Results: 1 / reports in the project: 2");
 });
+
+it("picks the singular for a count that was already formatted", () => {
+  setLocale("en");
+  expect(t("{count} sayfa", { count: "1" })).toBe("1 page");
+  expect(t("{count} sayfa", { count: "1,204" })).toBe("1,204 pages");
+});

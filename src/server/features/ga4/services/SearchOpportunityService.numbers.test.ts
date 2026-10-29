@@ -123,6 +123,40 @@ describe("SearchOpportunityService number consistency", () => {
     mocks.runGa4Report.mockResolvedValue(ga4Result([]));
   });
 
+  it("filters unknown-gain pages by suggested work and observed conversions before limiting", async () => {
+    gsc([
+      row(["known", "https://example.com/estimated"], 5, 1000, 40),
+      row(["small", "https://example.com/small"], 15, 6, 0),
+      row(["deep", "https://example.com/deep"], 30, 4, 0),
+    ]);
+    mocks.runGa4Report.mockResolvedValue(ga4Result([ga4Row("/small", 200, 5)]));
+    const all = await SearchOpportunityService.getOpportunities(
+      { projectId: "p", limit: 1 },
+      NOW,
+    );
+    const filtered = await SearchOpportunityService.getOpportunities(
+      { projectId: "p", limit: 1, work: "page2", quick: "converts" },
+      NOW,
+    );
+    expect(all.rows[0].gainStatus).toBe("estimated");
+    expect(filtered.rows).toMatchObject([
+      {
+        page: "https://example.com/small",
+        gain: null,
+        gainPerMonth: null,
+        work: "page2",
+        value: "converts",
+      },
+    ]);
+    expect(filtered.filteredCount).toBe(1);
+    expect(filtered.totals.gain).toBe(all.totals.gain);
+    expect(filtered.totals.byWork.page2).toMatchObject({
+      pages: 1,
+      gain: 0,
+      gainPerMonth: 0,
+    });
+  });
+
   it("NUM-01: withholds conversion verdicts until the normalized GA4 cohort is complete", async () => {
     gsc([row(["q", "https://example.com/a"], 5, 1000, 40)]);
     const rows = [
@@ -178,9 +212,9 @@ describe("SearchOpportunityService number consistency", () => {
     );
     expect(result.rows.map((page) => page.gain)).toEqual([7, 7]);
     expect(result.totals.gainPerMonth).toBe(15);
-    expect(result.rows.reduce((sum, page) => sum + page.gainPerMonth, 0)).toBe(
-      15,
-    );
+    expect(
+      result.rows.reduce((sum, page) => sum + (page.gainPerMonth ?? 0), 0),
+    ).toBe(15);
     expect(
       Object.values(result.totals.byWork).reduce(
         (sum, work) => sum + work.gainPerMonth,

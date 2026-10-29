@@ -2,14 +2,19 @@
 <html lang="tr">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Raporlar ve şablonlar ekranı | seowatcher kılavuzu</title>
     <meta
       name="description"
-      content="Denetimden ya da Arama performansı ekranından indirdiğiniz ve asistanınıza yazdırdığınız her rapor tek bir HTML dosyasıdır. Telefonda açarsınız, yazdırırsınız, e-postayla gönderirsiniz."
+      content="Denetim, arama performansı ve asistan raporlarını tek HTML dosyasında saklayın. Raporları telefonda açın, yazdırın veya e-postayla paylaşın."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/kilavuz/raporlar/" />
@@ -86,7 +91,7 @@
     />
     <meta
       property="og:description"
-      content="Denetimden ya da Arama performansı ekranından indirdiğiniz ve asistanınıza yazdırdığınız her rapor tek bir HTML dosyasıdır. Telefonda açarsınız, yazdırırsınız, e-postayla gönderirsiniz."
+      content="Denetim, arama performansı ve asistan raporlarını tek HTML dosyasında saklayın. Raporları telefonda açın, yazdırın veya e-postayla paylaşın."
     />
     <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
     <meta property="og:image:type" content="image/png" />
@@ -96,7 +101,7 @@
       property="og:image:alt"
       content="seowatcher tanıtım kartı: Search Console, Analytics 4 ve site denetimi verilerini gösteren uygulama paneli ve Windows için indirme düğmesi"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta property="og:url" content="https://seowatcher.io/kilavuz/raporlar/" />
     <meta property="og:locale" content="tr_TR" />
     <meta property="og:locale:alternate" content="en_US" />
@@ -111,7 +116,7 @@
     />
     <meta
       name="twitter:description"
-      content="Denetimden ya da Arama performansı ekranından indirdiğiniz ve asistanınıza yazdırdığınız her rapor tek bir HTML dosyasıdır. Telefonda açarsınız, yazdırırsınız, e-postayla gönderirsiniz."
+      content="Denetim, arama performansı ve asistan raporlarını tek HTML dosyasında saklayın. Raporları telefonda açın, yazdırın veya e-postayla paylaşın."
     />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta
@@ -149,10 +154,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/kilavuz/raporlar/#article",
             "headline": "Raporlar ve şablonlar",
-            "description": "Denetimden ya da Arama performansı ekranından indirdiğiniz ve asistanınıza yazdırdığınız her rapor tek bir HTML dosyasıdır. Telefonda açarsınız, yazdırırsınız, e-postayla gönderirsiniz.",
+            "description": "Denetim, arama performansı ve asistan raporlarını tek HTML dosyasında saklayın. Raporları telefonda açın, yazdırın veya e-postayla paylaşın.",
             "url": "https://seowatcher.io/kilavuz/raporlar/",
             "inLanguage": "tr",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Ekranlar",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -1467,7 +1472,9 @@
             <li><a href="/kilavuz/siralama-takibi/">Sıralama takibi</a></li>
             <li><a href="/kilavuz/firsatlar/">Fırsatlar</a></li>
             <li><a href="/kilavuz/kayitli-kelimeler/">Kayıtlı kelimeler</a></li>
-            <li><a href="/kilavuz/analitik/">Analytics</a></li>
+            <li>
+              <a href="/kilavuz/analitik/">Analitik verilerini yorumlama</a>
+            </li>
             <li><a href="/kilavuz/site-denetimi/">Site denetimi</a></li>
             <li><a href="/kilavuz/dizin-durumu/">Dizin durumu</a></li>
             <li class="current" aria-current="page">
@@ -1489,9 +1496,8 @@
       <article id="icerik" data-page="raporlar">
         <h1>Raporlar ve şablonlar</h1>
         <p class="lede">
-          Denetimden ya da Arama performansı ekranından indirdiğiniz ve
-          asistanınıza yazdırdığınız her rapor tek bir HTML dosyasıdır.
-          Telefonda açarsınız, yazdırırsınız, e-postayla gönderirsiniz.
+          Denetim, arama performansı ve asistan raporlarını tek HTML dosyasında
+          saklayın. Raporları telefonda açın, yazdırın veya e-postayla paylaşın.
         </p>
         <p>
           Raporlar, bu proje için kaydedilmiş HTML belgeleridir. Uygulama her
@@ -1642,9 +1648,11 @@
           projenin sitesiyle farklıysa uyarılır. Kaynak doğrulanamıyorsa başka
           bir siteye ait olabileceği açıkça yazılır.
           <strong>Eski rapor · kaynak ve tarih doğrulanmamış</strong>
-          belgelerinin türü başlıktan tahmin edilmez. Bugünkü kararlar için
-          <strong>Güncel bir denetim raporu oluştur</strong> bağlantısından
-          projenin sitesini denetleyin. Eski dosya değiştirilmez.
+          belgelerinin türü başlıktan tahmin edilmez.
+          <strong>Site denetimlerini aç</strong> bağlantısı denetim geçmişini
+          açar. Uygun bir kayıtlı denetim varsa onu açıp raporunu
+          indirebilirsiniz; bağlantı kendiliğinden yeni denetim veya rapor
+          başlatmaz. Eski dosya değiştirilmez.
         </p>
         <nav class="pager" aria-label="Önceki ve sonraki sayfa">
           <a class="pager-prev" rel="prev" href="/kilavuz/dizin-durumu/"
@@ -1654,7 +1662,7 @@
           >
         </nav>
         <p class="meta">
-          Son güncelleme: 28 Ekim 2026. Bir hata görürseniz
+          Son güncelleme: 29 Ekim 2026. Bir hata görürseniz
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

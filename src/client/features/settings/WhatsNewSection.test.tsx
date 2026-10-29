@@ -73,6 +73,10 @@ describe("WhatsNewSection", () => {
 
     expect(screen.getByRole("heading", { name: /Site audit/ })).toBeDefined();
     expect(screen.getByText(/Your site's security settings/)).toBeDefined();
+    expect(
+      screen.getByText(/Your site's security settings/).closest("details")
+        ?.open,
+    ).toBe(false);
     expect(screen.queryByText(/Sitenizin güvenlik ayarları/)).toBeNull();
   });
 

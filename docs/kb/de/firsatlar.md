@@ -1,6 +1,6 @@
 ---
 title: Chancen
-description: Zeigt, wie viele Klicks pro Monat jede Ihrer Seiten zusätzlich bringen könnte und welche Arbeit sie bringt. Die Zahl ist eine Obergrenze, kein Versprechen.
+description: Zeigt erfasste Seiten, mögliche Aufgaben und bei ausreichenden Daten eine Obergrenze für zusätzliche Klicks.
 screen: Fırsatlar
 route: /p/<proje>/opportunities
 updated: 2026-10-27
@@ -20,7 +20,7 @@ Die **auf 30 Tage skalierte Obergrenze** ist eine Umrechnung des gewählten Zeit
 
 ## Arbeitsliste und Filter
 
-Arbeits- und Conversion-Filter gelten gemeinsam als UND-Bedingung. Der Server filtert alle berechenbaren Seiten und zeigt danach die ersten 25, 50 oder 100 Treffer. Gesamtsummen bleiben bei Filter- und Limitänderungen gleich. Eine Seite kann in mehreren Arbeitskategorien zählen; deren Seitenzahlen nicht addieren. Zeitraum, Limit und Filter bleiben in der URL.
+Arbeits- und Conversion-Filter gelten gemeinsam als UND-Bedingung. Der Server filtert alle Kandidatenseiten und zeigt danach die ersten 25, 50 oder 100 Treffer. Gesamtsummen bleiben bei Filter- und Limitänderungen gleich. Eine Seite kann in mehreren Arbeitskategorien zählen; deren Seitenzahlen nicht addieren. Zeitraum, Limit und Filter bleiben in der URL.
 
 Am Desktop erscheint eine sortierbare Tabelle, am Telefon eine umbrechende Seitenliste mit Details. Die Details zeigen Impressionen, Position, Zielpositionsgruppe und zugeteilten Klickanteil je Suchanfrage. Die zehn größten Beiträge werden mit einer gesonderten Restzeile gezeigt. Beiträge und Rest ergeben die angezeigte Seitenobergrenze. Die CTR-Differenz vergleicht nur unterstützte markenunabhängige Suchanfragen auf derselben Impressionsbasis, in Prozentpunkten.
 
@@ -37,3 +37,7 @@ CSV und Google Tabellen enthalten die sichtbaren gefilterten Zeilen samt Zeitrau
 Der Link zur Suchleistung übernimmt das genaue Start- und Enddatum und öffnet die Details der exakten URL. Nicht lesbare Zeiträume werden erklärt, statt andere Daten einzusetzen. Änderungen notieren und gemessene Klicks, CTR und Position in vergleichbaren Zeiträumen prüfen. Eine sinkende Schätzung allein beweist keinen Erfolg. Inhalte nicht allein wegen niedriger Position oder Schätzung löschen; Zusammenführen erst bei bestätigtem gleichem Nutzerbedarf erwägen.
 
 Wenige Daten bedeuten keinen Zugewinn von null. Fehlende geeignete Suchanfragen ohne Markenbezug können an verborgenen Suchanfragen, Markenausschlüssen oder Datenlimits liegen. Beim längsten Zeitraum wird keine weitere Verlängerung vorgeschlagen. Öffnen Sie die Suchleistung, um Suchanfragen mit Impressionen zu prüfen. Berechnungsdetails lassen sich im Abschnitt zur Datenabdeckung öffnen.
+
+Seiten mit Impressionen und unbekanntem Gewinn erscheinen ebenfalls: zuerst Schätzungen nach Gewinn, danach unbekannte Seiten nach Impressionen. Unbekannt ist nicht null; Summen enthalten nur berechnete Gewinne. Details zeigen Nicht-Markenanfragen nach Impressionen und kennzeichnen reine Markenseiten. Vorschläge beruhen nur auf der Position (1–5 Titel/Snippet prüfen, 6–10 Inhalt, 11–20 interne Links/Inhalt, 21+ Suchabsicht). Sie belegen weder niedrige CTR noch künftigen Gewinn. Arbeitsfilter berücksichtigen diese Vorschläge; Conversion-Filter nutzen gemessene Analytics-Signale. CSV und Sheets lassen unbekannte Gewinne leer und enthalten Status, Grund, Markenhinweis und gemessene Anfragen.
+
+Bei unbekanntem Zugewinn prüfen Sie zuerst die Seite und die erfassten Suchanfragen. Ändern Sie Titel oder Inhalt erst nach einer bestätigten Abweichung. Sind alle Zugewinne unbekannt, zeigen die Aufgabenarten Seitenzahlen ohne Gewinnbalken. Die Conversion-Übersicht trennt zugeordnete Seiten von Seiten mit unbekanntem Conversion-Status; fehlende Analytics-Abdeckung bedeutet nicht null Conversions. Ein Conversion-Filter erscheint nur bei bestätigten Einträgen. Quelle und Zeitraum stehen als beschriftete Angaben da, Berechnungen im geschlossenen Detailbereich. Fehlende Analytics-Daten werden in den Seitendetails erklärt und nicht in jeder Zeile wiederholt.

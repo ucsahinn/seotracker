@@ -6,6 +6,10 @@ import type { Catalog } from "@/shared/i18n";
  * Keys are the Turkish source strings exactly as passed to t().
  */
 export const enApp: Catalog = {
+  "Arşiv özeti": "Archive summary",
+  "{observed}/{days} gün gözlem; {complete}/{days} gün tam yanıt.":
+    "Observations on {observed}/{days} days; complete responses on {complete}/{days} days.",
+  "Arşiv kapsamını incele": "Inspect archive coverage",
   "Bu bölüm başka bir yerde değişti. Metinleri karşılaştırıp taslağınızı birleştirin.":
     "This section changed elsewhere. Compare the texts and merge your draft.",
   "Düzenleme başındaki metin": "Text when editing began",
@@ -1093,6 +1097,9 @@ export const enApp: Catalog = {
   "Burada kayıtlı mülk seçimleri gösterilir; Google erişimi bu kontrolde sınanmaz. Güncel bir okuma denemek için Bağlantıları açın, seçili mülkün raporuna gidin ve Yenile düğmesine basın.":
     "These are saved property selections; this check does not test Google access. To try a current read, open Connections, go to the selected property’s report and press Refresh.",
   "Kaydedilmiş rapor": "Saved report",
+  "Eski rapor": "Legacy report",
+  "Dosya kaydı": "File saved",
+  Doğrulanmadı: "Unverified",
   "Eski rapor · kaynak ve tarih doğrulanmamış":
     "Legacy report · source and date unverified",
   "Kaynak site: {domain}": "Source site: {domain}",
@@ -1104,4 +1111,33 @@ export const enApp: Catalog = {
   "Bugün karar vermeden önce raporun içindeki siteyi, ölçüm tarihini ve veri sınırlarını kontrol edin.":
     "Before making decisions today, check the site, measurement date and data limits inside the report.",
   "Güncel bir denetim raporu oluştur": "Create a current audit report",
+
+  // Calm-reading QA: reports, audit history, projects and settings.
+  "Grafik serileri": "Chart series",
+  "Yüz sayfa başına sorun sayısı; değişim yalnızca aynı kapsam ve kontrollerde gösterilir.":
+    "Issues per hundred pages; change is shown only for the same scope and checks.",
+  "Kaynak site doğrulanmadı; kullanmadan önce kontrol edin.":
+    "Source site unverified; check before use.",
+  "Etkin proje": "Active project",
+  "Site denetimlerini aç": "Open site audits",
+  Mülk: "Property",
+  Seçildi: "Selected",
+  "Bağlantı ayrıntıları": "Connection details",
+  "Proje özeti": "Project overview",
+  "Son denetim": "Last audit",
+  Başlangıç: "Started",
+  Tamamlanma: "Completed",
+  "Proje ayrıntıları": "Project details",
+  "Tema kaydı": "Theme storage",
+  "Dil kapsamı": "Language scope",
+  "Google kimlikleri": "Google credentials",
+  "Kimlik yöntemleri": "Credential methods",
+  "Anahtar işlemleri": "Key actions",
+  Kaydedildi: "Saved",
+  "Son kontrol": "Last checked",
+  Yayımlandı: "Published",
+  "Tam metin": "Full text",
+  "Duyuruyu oku": "Read announcement",
+  "Windows tercihleri": "Windows preferences",
+  "Uygulamayı durdurma": "Stopping the app",
 };

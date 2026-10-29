@@ -57,6 +57,7 @@ export function OrganicTrendChart({ rows }: { rows: TrendRow[] }) {
         <YAxis
           {...CHART_AXIS}
           width={48}
+          allowDecimals={false}
           tickFormatter={formatCount}
           domain={[0, "auto"]}
         />

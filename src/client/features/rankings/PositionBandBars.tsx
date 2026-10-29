@@ -82,24 +82,29 @@ export function PositionBandBars({
   return (
     <section className="rounded-box border border-base-300 bg-base-100 px-4 py-4">
       <div className="flex items-center gap-1.5">
-        <h2 className="text-sm font-medium">{t("Sıra dağılımı")}</h2>
+        <h2 className="text-base font-semibold">{t("Sıra dağılımı")}</h2>
         <HelpTip label={t("Sıra dağılımı")}>
           {t(
             "Takip edilen sorgular ortalama sırasına göre gruplanır. Bir çubuğa tıklayınca tablo o gruba daralır.",
           )}
         </HelpTip>
       </div>
-      <p className="mt-0.5 text-xs text-muted">
-        {paired === 0
-          ? t(
-              "Seçili dönemdeki ortalama sıralar: {count} sorgu. Önceki dönemle karşılaştırılabilecek sorgu yok.",
-              { count: total },
-            )
-          : t(
-              "{count} sorgu; aynı {paired} sorguda net değişim. Çubuklar en büyük gruba görelidir.",
-              { count: formatCount(total), paired: formatCount(paired) },
-            )}
-      </p>
+      <details className="mt-2 max-w-prose text-sm text-muted">
+        <summary className="min-h-11 cursor-pointer">{t("Ayrıntılar")}</summary>
+        <p>
+          {paired === 0
+            ? t(
+                "Seçili dönemdeki ortalama sıralar: {count} sorgu. Önceki dönemle karşılaştırılabilecek sorgu yok.",
+                // A number, not formatted text: the English catalog picks
+                // "query" or "queries" from it.
+                { count: total },
+              )
+            : t(
+                "{count} sorgu; aynı {paired} sorguda net değişim. Çubuklar en büyük gruba görelidir.",
+                { count: formatCount(total), paired: formatCount(paired) },
+              )}
+        </p>
+      </details>
       <div
         role="group"
         aria-label={t("Sıra grupları")}
@@ -148,7 +153,9 @@ export function PositionBandBars({
                   {formatPercent(count / total, 0)}
                 </span>
               </span>
-              <BandChange band={id} change={changes[id]} />
+              {paired > 0 ? (
+                <BandChange band={id} change={changes[id]} />
+              ) : null}
             </button>
           );
         })}

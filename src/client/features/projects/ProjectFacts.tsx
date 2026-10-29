@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { FactStrip } from "@/client/components/FactStrip";
 import { DeltaBadge } from "@/client/components/MetricTile";
 import { Sparkline } from "@/client/components/Sparkline";
 import { formatCount, formatDate, formatDateTime } from "@/client/lib/format";
@@ -38,7 +39,7 @@ export function ProjectFacts({
         </button>
       </p>
     );
-  const { clicks, projectId, snapshot, latestAttempt } = overview;
+  const { clicks, projectId, snapshot } = overview;
   const prior = clicks?.previousClicks;
   const delta =
     clicks && prior !== null && prior !== undefined
@@ -57,7 +58,7 @@ export function ProjectFacts({
     overview.archiveStatus === "unavailable" ||
     overview.auditStatus === "unavailable";
   return (
-    <div className="space-y-3 text-xs text-muted">
+    <div className="space-y-4 text-sm">
       {unknown ? (
         <p role="status">
           {t("Bazı kaynaklar okunamadı; gösterilen diğer bilgiler korunuyor.")}{" "}
@@ -71,23 +72,119 @@ export function ProjectFacts({
         </p>
       ) : null}
       {clicks ? (
-        <div className="space-y-1">
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="text-lg font-semibold text-base-content">
+            {t("{count} tıklama", { count: formatCount(clicks.clicks) })}
+          </span>
+          <DeltaBadge value={delta} />
+          <span className="w-24">
+            <Sparkline values={clicks.daily} />
+          </span>
+        </div>
+      ) : null}
+      <p className="text-xs text-muted">
+        Search Console: {connectionLabel(overview.searchConsole)} · Analytics:{" "}
+        {connectionLabel(overview.analytics)}
+      </p>
+      <FactStrip
+        label={t("Proje özeti")}
+        facts={[
+          {
+            label: t("Dönem"),
+            value: clicks
+              ? formatDate(clicks.startDate) +
+                " – " +
+                formatDate(clicks.endDate)
+              : t("Yok"),
+          },
+          {
+            label: t("Son denetim"),
+            value:
+              overview.auditStatus !== "available"
+                ? t("Okunamadı")
+                : snapshot
+                  ? formatDateTime(snapshot.startedAt)
+                  : t("Yok"),
+            hint: snapshot?.stale ? t("Denetim eski") : undefined,
+          },
+          {
+            label: t("Kaynak"),
+            value: "Search Console",
+            hint: overview.property ? (
+              <span className="break-all">{overview.property}</span>
+            ) : undefined,
+          },
+          ...(clicks
+            ? [
+                {
+                  label: t("Karşılaştırma"),
+                  value:
+                    formatDate(clicks.previousStartDate) +
+                    " – " +
+                    formatDate(clicks.previousEndDate),
+                },
+              ]
+            : []),
+          ...(snapshot
+            ? [
+                {
+                  label: t("Bu sitenin son tamamlanan denetimi"),
+                  value: <span className="break-all">{snapshot.siteKey}</span>,
+                },
+                {
+                  label: t("Başlangıç"),
+                  value: formatDateTime(snapshot.startedAt),
+                },
+                ...(snapshot.completedAt
+                  ? [
+                      {
+                        label: t("Tamamlanma"),
+                        value: formatDateTime(snapshot.completedAt),
+                      },
+                    ]
+                  : []),
+              ]
+            : []),
+        ]}
+        detailsLabel={t("Proje ayrıntıları")}
+        details={<ProjectProvenance overview={overview} />}
+      />
+      <div className="flex flex-wrap gap-2">
+        <Link
+          className="btn btn-ghost btn-sm min-h-11"
+          to="/p/$projectId/search-performance"
+          params={{ projectId }}
+        >
+          {t("Arama performansı")}
+        </Link>
+        <Link
+          className="btn btn-ghost btn-sm min-h-11"
+          to="/p/$projectId/audit"
+          params={{ projectId }}
+          search={snapshot ? { auditId: snapshot.id } : {}}
+        >
+          {snapshot ? t("Denetimi aç") : t("Site denetimlerini aç")}
+        </Link>
+      </div>
+    </div>
+  );
+}
+function connectionLabel(value: boolean | null) {
+  return value === null
+    ? t("Okunamadı")
+    : value
+      ? t("Bağlantı kayıtlı")
+      : t("Bağlı değil");
+}
+
+function ProjectProvenance({ overview }: { overview: Overview }) {
+  const { clicks, snapshot, latestAttempt, projectId } = overview;
+  const prior = clicks?.previousClicks;
+  return (
+    <>
+      {clicks ? (
+        <>
           <p>{t("Arama arşivi · Web · tüm cihazlar ve ülkeler")}</p>
-          {overview.property ? (
-            <p className="break-all">{overview.property}</p>
-          ) : null}
-          <p>
-            {formatDate(clicks.startDate)} – {formatDate(clicks.endDate)}
-          </p>
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-lg font-semibold text-base-content">
-              {t("{count} tıklama", { count: clicks.clicks })}
-            </span>
-            <DeltaBadge value={delta} />
-            <span className="w-24">
-              <Sparkline values={clicks.daily} />
-            </span>
-          </div>
           <p>
             {t(
               "{observed}/{total} gün kayıtlı; toplam yalnızca kayıtlı günleri içerir.",
@@ -125,25 +222,20 @@ export function ProjectFacts({
               )}
             </p>
           )}
-          <details>
-            <summary className="cursor-pointer focus-visible:outline-2 focus-visible:outline-primary">
-              {t("Arşiv kaynağı")}
-            </summary>
+          <p>
+            {t("Son kayıtlı gün: {date}", {
+              date: formatDate(clicks.endDate),
+            })}
+          </p>
+          {clicks.fetchedAt ? (
             <p>
-              {t("Son kayıtlı gün: {date}", {
-                date: formatDate(clicks.endDate),
+              {t("Son arşiv okuması: {date}", {
+                date: formatDateTime(clicks.fetchedAt),
               })}
             </p>
-            {clicks.fetchedAt ? (
-              <p>
-                {t("Son arşiv okuması: {date}", {
-                  date: formatDateTime(clicks.fetchedAt),
-                })}
-              </p>
-            ) : null}
-            <p>{t("Kesinleşme kaynağı arşivde kayıtlı değil")}</p>
-          </details>
-        </div>
+          ) : null}
+          <p>{t("Kesinleşme kaynağı arşivde kayıtlı değil")}</p>
+        </>
       ) : overview.archiveStatus === "available" &&
         overview.searchConsole === true ? (
         <p>
@@ -152,88 +244,39 @@ export function ProjectFacts({
           )}
         </p>
       ) : null}
-      <Link
-        className="link inline-flex min-h-11 items-center"
-        to="/p/$projectId/search-performance"
-        params={{ projectId }}
-      >
-        {t("Arama performansı")}
-      </Link>
-      <div className="space-y-1">
-        {overview.auditStatus === "available" ? (
-          snapshot ? (
-            <>
-              <p>
-                {t("Bu sitenin son tamamlanan denetimi")}:{" "}
-                <span className="break-all">{snapshot.siteKey}</span>
-              </p>
-              <p>
-                {t("Başlangıç: {date}", {
-                  date: formatDateTime(snapshot.startedAt),
-                })}
-              </p>
-              {snapshot.completedAt ? (
-                <p>
-                  {t("Tamamlanma: {date}", {
-                    date: formatDateTime(snapshot.completedAt),
-                  })}
-                </p>
-              ) : null}
-              {snapshot.stale ? (
-                <p>
-                  {t(
-                    "Bu denetim en az yedi gün önce başlatıldı. Güncel durum için yeni denetim başlatın.",
-                  )}
-                </p>
-              ) : null}
-              <Link
-                className="link inline-flex min-h-11 items-center break-all"
-                to="/p/$projectId/audit"
-                params={{ projectId }}
-                search={{ auditId: snapshot.id }}
-              >
-                {t("Denetimi aç")}
-              </Link>
-            </>
-          ) : (
-            <p>
-              {t(
-                "Bu site için tamamlanmış denetim yok. Siteyi seçip denetim başlatın.",
-              )}
-            </p>
-          )
-        ) : null}
-        {latestAttempt && latestAttempt.id !== snapshot?.id ? (
-          <p>
-            {latestAttempt.status === "failed"
-              ? t("Son deneme başarısız")
-              : latestAttempt.status === "running"
-                ? t("Son denetim sürüyor")
-                : t("Son deneme tamamlanmadı")}
-            :{" "}
-            <Link
-              className="link break-all"
-              to="/p/$projectId/audit"
-              params={{ projectId }}
-              search={{ auditId: latestAttempt.id }}
-            >
-              {formatDateTime(latestAttempt.startedAt)}
-            </Link>
-          </p>
-        ) : null}
-      </div>
-      <p>
-        Search Console: {connectionLabel(overview.searchConsole)} · Analytics:{" "}
-        {connectionLabel(overview.analytics)}
-      </p>
+      {overview.auditStatus === "available" && !snapshot ? (
+        <p>
+          {t(
+            "Bu site için tamamlanmış denetim yok. Siteyi seçip denetim başlatın.",
+          )}
+        </p>
+      ) : null}
+      {snapshot?.stale ? (
+        <p>
+          {t(
+            "Bu denetim en az yedi gün önce başlatıldı. Güncel durum için yeni denetim başlatın.",
+          )}
+        </p>
+      ) : null}
+      {latestAttempt && latestAttempt.id !== snapshot?.id ? (
+        <p>
+          {latestAttempt.status === "failed"
+            ? t("Son deneme başarısız")
+            : latestAttempt.status === "running"
+              ? t("Son denetim sürüyor")
+              : t("Son deneme tamamlanmadı")}
+          :{" "}
+          <Link
+            className="link break-all"
+            to="/p/$projectId/audit"
+            params={{ projectId }}
+            search={{ auditId: latestAttempt.id }}
+          >
+            {formatDateTime(latestAttempt.startedAt)}
+          </Link>
+        </p>
+      ) : null}
       <p>{t("Bağlantı kaydı, verinin başarıyla okunduğunu göstermez.")}</p>
-    </div>
+    </>
   );
-}
-function connectionLabel(value: boolean | null) {
-  return value === null
-    ? t("Okunamadı")
-    : value
-      ? t("Bağlantı kayıtlı")
-      : t("Bağlı değil");
 }

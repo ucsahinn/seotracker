@@ -186,6 +186,38 @@ describe("Google Analytics MCP tools", () => {
     });
   });
 
+  it("exposes unknown gains without presenting null as estimated clicks", async () => {
+    mocks.getOpportunities.mockResolvedValue({
+      status: "ok",
+      rowCount: 1,
+      totalCandidateRows: 1,
+      rows: [
+        {
+          page: "https://example.com/a",
+          gain: null,
+          gainPerMonth: null,
+          gainStatus: "unknown",
+          gainReason: "belowThreshold",
+        },
+      ],
+      request: {
+        dateRange: { startDate: "2026-07-07", endDate: "2026-08-03" },
+      },
+      totals: { gainPerMonth: null, noGainPages: 0, unknownPages: 1 },
+      analytics: { state: "not_connected" },
+    });
+    const result = await tools.getSearchOpportunitiesTool.handler(
+      { projectId: "project_1", limit: 25 },
+      toolContext,
+    );
+    expect(result.structuredContent).toMatchObject({
+      rows: [
+        { gain: null, gainStatus: "unknown", gainReason: "belowThreshold" },
+      ],
+    });
+    expect(JSON.stringify(result.content)).not.toContain("+null");
+  });
+
   it.each([
     [
       "traffic_acquisition",

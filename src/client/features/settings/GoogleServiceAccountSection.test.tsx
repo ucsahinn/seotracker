@@ -47,3 +47,18 @@ it("keeps pasted JSON in a password control", async () => {
   const input = await screen.findByLabelText("JSON içeriğini gizli yapıştır");
   expect(input.getAttribute("type")).toBe("password");
 });
+
+it("C31 labels the credential save time as an event", async () => {
+  api.get.mockResolvedValue({
+    clientEmail: "owner@example.com",
+    updatedAt: "2026-10-23T08:30:00Z",
+  });
+  render(
+    <QueryClientProvider client={new QueryClient()}>
+      <GoogleServiceAccountSection />
+    </QueryClientProvider>,
+  );
+  expect(await screen.findByText("Kaydedildi")).toBeTruthy();
+  expect(screen.queryByText("Dönem")).toBeNull();
+  expect(screen.queryByText(/Kimlik kayıt tarihi:/)).toBeNull();
+});

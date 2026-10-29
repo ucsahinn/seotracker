@@ -1,6 +1,6 @@
 ---
 title: Suchleistung
-description: Sie sehen, wie oft Sie bei Google erscheinen, wie viele Klicks Sie bekommen und was Sie zuerst beheben sollten. Die Zahlen kommen aus der Search Console. Gewinnzahlen sind eine Obergrenze.
+description: Klicks, Impressionen und Positionen aus der Search Console verstehen. Seiten priorisieren und die Grenzen geschätzter Gewinne erkennen.
 screen: Arama performansı
 route: /p/<proje>/search-performance
 updated: 2026-10-28

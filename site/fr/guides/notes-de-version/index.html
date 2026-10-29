@@ -2,9 +2,14 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Notes de version | Guide seowatcher</title>
     <meta
@@ -99,7 +104,7 @@
       property="og:image:alt"
       content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/guides/notes-de-version/"
@@ -158,7 +163,7 @@
             "description": "seowatcher 0.8.4 Alpha — données Google complètes, couleurs vives et écrans revus avec des données réelles, plus lisibles sur téléphone.",
             "url": "https://seowatcher.io/fr/guides/notes-de-version/",
             "inLanguage": "fr",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Aide et référence",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -1497,7 +1502,9 @@
                 >Mots-clés enregistrés</a
               >
             </li>
-            <li><a href="/fr/guides/statistiques/">Analytics</a></li>
+            <li>
+              <a href="/fr/guides/statistiques/">Comprendre les statistiques</a>
+            </li>
             <li><a href="/fr/guides/audit-du-site/">Audit du site</a></li>
             <li>
               <a href="/fr/guides/etat-de-l-index/">État de l'indexation</a>
@@ -1529,7 +1536,7 @@
           écrans revus avec des données réelles, plus lisibles sur téléphone.
         </p>
         <p>
-          La dernière version est la <strong>0.8.4 Alpha</strong>, du 28 octobre
+          La dernière version est la <strong>0.8.5 Alpha</strong>, du 28 octobre
           2026. Vos données sont conservées lors de la mise à jour.
         </p>
         <p>
@@ -1537,10 +1544,10 @@
           manuellement ; l’ancien outil ne reconnaît pas le numéro inférieur
           comme plus récent.
         </p>
-        <h2 id="0-8-4-alpha-2026-10-28">0.8.4 Alpha — 2026-10-28</h2>
+        <h2 id="0-8-5-alpha-2026-10-28">0.8.5 Alpha — 2026-10-28</h2>
         <p>
           Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la
-          0.8.4 : audit du site, tableau de bord, notifications et six langues,
+          0.8.5 : audit du site, tableau de bord, notifications et six langues,
           avec des données plus justes et des écrans plus lisibles.
         </p>
         <h3 id="points-forts">✨ Points forts</h3>
@@ -1648,6 +1655,9 @@
           <li>
             <strong>Notifications Windows:</strong> Les mises à jour et les
             annonces apparaissent aussi dans la zone de notification de Windows.
+            Windows vous avertit aussi quand un audit se termine ou échoue. Vous
+            pouvez désactiver ces notifications dans le menu de l’icône de la
+            barre des tâches.
           </li>
           <li>
             <strong>Annonces:</strong> Les nouvelles s'affichent sur l'écran
@@ -1710,6 +1720,12 @@
             conversions roses : cartes et graphiques gardent les mêmes couleurs,
             plus vives, dans les deux thèmes.
           </li>
+          <li>
+            <strong>Écrans plus calmes:</strong> La source, la période et la
+            fraîcheur des données sont regroupées sous des libellés courts.
+            Ouvrez les longues explications au besoin ; des noms courts et des
+            boutons clairs facilitent les actions.
+          </li>
         </ul>
         <h3 id="projets-et-recherches-enregistrees">
           🗂️ Projets et recherches enregistrées
@@ -1738,7 +1754,9 @@
             vrais sites ont été corrigées ; les comparaisons utilisent les pages
             de chaque audit et un audit reste enregistré si son démarrage
             échoue. Les messages d’échec dans l’historique des audits tiennent
-            aussi à l’écran.
+            aussi à l’écran. Les chiffres de l’historique des audits expliquent
+            qu’ils incluent les problèmes des pages et ceux de l’ensemble du
+            site.
           </li>
           <li>
             <strong>Menus et clavier:</strong> Écrans, rapports et listes de
@@ -1763,7 +1781,12 @@
             problèmes apparaissent en entier. Une liste de recherches
             enregistrées vide l’indique dès l’ouverture. Le suivi des positions
             parle de positions moyennes ; l’Aide et les changements de page
-            reprennent les noms des menus.
+            reprennent les noms des menus. Le graphique des sessions du tableau
+            de bord porte le bon nom ; les positions sont décrites comme des
+            moyennes sur la période choisie. Le singulier et le pluriel ont été
+            corrigés en anglais, allemand, français, italien et portugais. Votre
+            assistant IA retrouve les pages qui se font concurrence pour une
+            même recherche.
           </li>
           <li>
             <strong>Chiffres plus justes:</strong> Les mesures absentes ne
@@ -1776,6 +1799,10 @@
             visiteurs, les données manquantes sont distinguées d’un vrai zéro.
             Analytics explique une mesure inconnue une seule fois ; les tableaux
             vides masquent les boutons de page précédente et suivante.
+            Opportunités liste les pages avec leurs mesures réelles même sur les
+            sites peu visités. Quand un conseil repose sur la position moyenne
+            et qu’aucun gain ne peut être calculé, le gain est indiqué comme
+            inconnu.
           </li>
           <li>
             <strong>État de connexion:</strong> Le choix d’une propriété est
@@ -1795,7 +1822,8 @@
             enregistrés dans votre dossier utilisateur ; les connexions réparées
             de l’assistant sont conservées au redémarrage et le contrôle de
             démarrage ne reste plus bloqué. Un lien inutilisable vers les
-            réglages Windows est masqué.
+            réglages Windows est masqué. Les notifications reçues pendant votre
+            absence s’affichent désormais à votre retour dans l’application.
           </li>
         </ul>
         <h3 id="securite">🔒 Sécurité</h3>
@@ -1819,7 +1847,7 @@
           L'installation en un clic est arrivée sur Windows, et le site
           seowatcher.io avec son guide d'utilisation est en ligne.
         </p>
-        <h3 id="points-forts">✨ Points forts</h3>
+        <h3 id="points-forts-2">✨ Points forts</h3>
         <ul>
           <li>
             <strong>Installation en un clic:</strong> Installez sous Windows
@@ -1834,7 +1862,7 @@
             d'utilisation sont en ligne en six langues.
           </li>
         </ul>
-        <h3 id="windows">🪟 Windows</h3>
+        <h3 id="windows-2">🪟 Windows</h3>
         <ul>
           <li>
             <strong>Installation facile:</strong> Lancez le fichier : il prépare
@@ -1909,7 +1937,7 @@
             ; clair et sombre sont cohérents avec le site.
           </li>
         </ul>
-        <h3 id="corrections">🛠️ Corrections</h3>
+        <h3 id="corrections-2">🛠️ Corrections</h3>
         <ul>
           <li>
             <strong>Connexion Google:</strong> Un faux avertissement « clé
@@ -1933,7 +1961,7 @@
           l'audit du site et la mesure de vitesse dans une seule application sur
           votre propre ordinateur.
         </p>
-        <h3 id="points-forts">✨ Points forts</h3>
+        <h3 id="points-forts-3">✨ Points forts</h3>
         <ul>
           <li>
             <strong>Données au même endroit:</strong> Search Console, Analytics,
@@ -1995,7 +2023,7 @@
             réduction des animations est activée.
           </li>
         </ul>
-        <h3 id="corrections">🛠️ Corrections</h3>
+        <h3 id="corrections-3">🛠️ Corrections</h3>
         <ul>
           <li>
             <strong>Audits bloqués:</strong> Un audit interrompu en route ne
@@ -2016,7 +2044,7 @@
             demandée au bout d'environ une heure est corrigé.
           </li>
         </ul>
-        <h3 id="securite">🔒 Sécurité</h3>
+        <h3 id="securite-2">🔒 Sécurité</h3>
         <ul>
           <li>
             <strong>Rapports sûrs:</strong> Un rapport téléchargé est protégé
@@ -2056,7 +2084,7 @@
           ><span class="pager-next empty"></span>
         </nav>
         <p class="meta">
-          Dernière mise à jour: 28 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -2069,7 +2097,7 @@
         <p class="toc-label">Sur cette page</p>
         <ol>
           <li>
-            <a href="#0-8-4-alpha-2026-10-28">0.8.4 Alpha — 2026-10-28</a>
+            <a href="#0-8-5-alpha-2026-10-28">0.8.5 Alpha — 2026-10-28</a>
           </li>
           <li>
             <a href="#0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</a>

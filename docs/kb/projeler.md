@@ -1,6 +1,6 @@
 ---
 title: Projeler
-description: Projeler, hangi siteyi açacağınızı ve hangi bağlantıyı tamamlayacağınızı gösterir. Her sitenin Search Console, Analytics, denetim ve raporları kendi projesindedir.
+description: Sitelerinizi projelerle yönetin. Her sitenin Search Console ve Analytics bağlantılarını, denetimlerini ve raporlarını ayrı inceleyin.
 screen: Projeler, Proje ayarları
 route: /projects, /p/{proje}/settings
 updated: 2026-10-28

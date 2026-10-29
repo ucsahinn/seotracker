@@ -38,20 +38,29 @@ export function SavedDailyHistory({
       <button
         className="btn btn-outline min-h-11"
         aria-expanded={open}
+        title={t("Günlük arşiv gözlemlerini göster")}
         onClick={() => setOpen((v) => !v)}
       >
-        {t("Günlük arşiv gözlemlerini göster")}
+        {t("Günlük değerler")}
       </button>
       {open ? (
         daily.isPending ? (
           <div className="skeleton h-28" aria-busy />
         ) : daily.isError ? (
-          <div role="alert" className="text-sm text-[var(--ink-warning)]">
-            <p>
-              {t(
-                "Günlük arşiv okunamadı veya liste değişti. Ayrıntıyı kapatıp listeyi yenileyin; ardından yeniden açın.",
-              )}
+          <div role="alert" className="space-y-1.5 text-sm">
+            <p className="text-[var(--ink-warning)]">
+              {t("Sorgu geçmişi yüklenemedi")}
             </p>
+            <details className="max-w-prose text-muted">
+              <summary className="min-h-11 cursor-pointer">
+                {t("Ayrıntılar")}
+              </summary>
+              <p>
+                {t(
+                  "Günlük arşiv okunamadı veya liste değişti. Ayrıntıyı kapatıp listeyi yenileyin; ardından yeniden açın.",
+                )}
+              </p>
+            </details>
             <button
               className="btn btn-ghost min-h-11"
               onClick={() => void daily.refetch()}

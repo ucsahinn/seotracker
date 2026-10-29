@@ -2,14 +2,19 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Audit du site | Guide seowatcher</title>
     <meta
       name="description"
-      content="L'application parcourt votre site page par page, applique 202 règles et classe les problèmes par importance. Le score dit aussi quelle part a pu être mesurée. Un audit arrêté en route n'a pas de score."
+      content="Vérifier votre site avec 202 règles et traiter les problèmes par priorité. Comprendre le score, la couverture des mesures et les résultats incomplets."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -86,7 +91,7 @@
     <meta property="og:title" content="Audit du site | Guide seowatcher" />
     <meta
       property="og:description"
-      content="L'application parcourt votre site page par page, applique 202 règles et classe les problèmes par importance. Le score dit aussi quelle part a pu être mesurée. Un audit arrêté en route n'a pas de score."
+      content="Vérifier votre site avec 202 règles et traiter les problèmes par priorité. Comprendre le score, la couverture des mesures et les résultats incomplets."
     />
     <meta
       property="og:image"
@@ -99,7 +104,7 @@
       property="og:image:alt"
       content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/guides/audit-du-site/"
@@ -114,7 +119,7 @@
     <meta name="twitter:title" content="Audit du site | Guide seowatcher" />
     <meta
       name="twitter:description"
-      content="L'application parcourt votre site page par page, applique 202 règles et classe les problèmes par importance. Le score dit aussi quelle part a pu être mesurée. Un audit arrêté en route n'a pas de score."
+      content="Vérifier votre site avec 202 règles et traiter les problèmes par priorité. Comprendre le score, la couverture des mesures et les résultats incomplets."
     />
     <meta
       name="twitter:image"
@@ -155,10 +160,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/fr/guides/audit-du-site/#article",
             "headline": "Audit du site",
-            "description": "L'application parcourt votre site page par page, applique 202 règles et classe les problèmes par importance. Le score dit aussi quelle part a pu être mesurée. Un audit arrêté en route n'a pas de score.",
+            "description": "Vérifier votre site avec 202 règles et traiter les problèmes par priorité. Comprendre le score, la couverture des mesures et les résultats incomplets.",
             "url": "https://seowatcher.io/fr/guides/audit-du-site/",
             "inLanguage": "fr",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Les écrans",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -1497,7 +1502,9 @@
                 >Mots-clés enregistrés</a
               >
             </li>
-            <li><a href="/fr/guides/statistiques/">Analytics</a></li>
+            <li>
+              <a href="/fr/guides/statistiques/">Comprendre les statistiques</a>
+            </li>
             <li class="current" aria-current="page">
               <a href="/fr/guides/audit-du-site/">Audit du site</a>
             </li>
@@ -1525,9 +1532,9 @@
       <article id="icerik" data-page="site-denetimi">
         <h1>Audit du site</h1>
         <p class="lede">
-          L'application parcourt votre site page par page, applique 202 règles
-          et classe les problèmes par importance. Le score dit aussi quelle part
-          a pu être mesurée. Un audit arrêté en route n'a pas de score.
+          Vérifier votre site avec 202 règles et traiter les problèmes par
+          priorité. Comprendre le score, la couverture des mesures et les
+          résultats incomplets.
         </p>
         <p>
           Cet écran trouve les problèmes de votre site et vous dit comment les
@@ -1585,12 +1592,17 @@
         <p>
           <strong>Audits précédents.</strong> La date, l'adresse, l'état, le
           nombre de pages et le nombre de problèmes de chaque audit sont listés.
-          Les nombres de problèmes sont ramenés à cent pages, le total est entre
-          parenthèses. Vous pouvez ainsi comparer des audits de 50 et de 500
-          pages. Si plusieurs sites ont été audités dans le projet, un sélecteur
-          de site apparaît au-dessus de la liste. Le graphique et les flèches de
-          variation comparent toujours des audits du même site. Quand plusieurs
-          sites sont sélectionnés, le graphique est masqué.
+          Les colonnes Critique, Avertissement et Info affichent tous les
+          constats enregistrés, y compris ceux des pages et les contrôles du
+          site entier ; une page peut avoir plusieurs constats. Si plusieurs
+          sites ont été audités dans le projet, un sélecteur de site apparaît
+          au-dessus de la liste. La densité correspond aux problèmes pour cent
+          pages. Les courbes et les flèches de variation apparaissent uniquement
+          si les données enregistrées confirment le même site, le même ensemble
+          de pages, les mêmes paramètres d’exploration et les mêmes contrôles
+          mesurés. Si les périmètres diffèrent ou sont inconnus, les nombres
+          restent indépendants ; la variation ne peut pas être déterminée. Quand
+          plusieurs sites sont sélectionnés, le graphique est masqué.
           <strong>Afficher</strong> sur une ligne ouvre l'audit. Le menu de la
           ligne propose <strong>Relancer avec les mêmes paramètres</strong> et
           <strong>Supprimer l'audit</strong>. Supprimer efface aussi les pages,
@@ -2052,13 +2064,14 @@
         </p>
         <nav class="pager" aria-label="Page précédente et suivante">
           <a class="pager-prev" rel="prev" href="/fr/guides/statistiques/"
-            ><span>Précédent</span><strong>Analytics</strong></a
+            ><span>Précédent</span
+            ><strong>Comprendre les statistiques</strong></a
           ><a class="pager-next" rel="next" href="/fr/guides/etat-de-l-index/"
             ><span>Suivant</span><strong>État de l'indexation</strong></a
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 28 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 29 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

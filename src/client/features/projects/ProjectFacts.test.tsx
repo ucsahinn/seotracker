@@ -4,7 +4,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { ProjectFacts } from "./ProjectFacts";
 import { archiveTrend } from "@/shared/archiveTrend";
 vi.mock("@tanstack/react-router", () => ({
-  Link: ({ children }: { children: ReactNode }) => <a>{children}</a>,
+  // An href gives the stand-in the link role the real Link renders with.
+  Link: ({ children }: { children: ReactNode }) => <a href="/">{children}</a>,
 }));
 afterEach(cleanup);
 const facts = (current: number, prior: number) => ({
@@ -31,6 +32,12 @@ describe("ProjectFacts", () => {
     expect(
       screen.getByText("Kayıtlı günlerde ölçülen tıklama sayısı sıfır."),
     ).toBeDefined();
+    expect(
+      screen
+        .getByText("Kayıtlı günlerde ölçülen tıklama sayısı sıfır.")
+        .closest("details")?.open,
+    ).toBe(false);
+    expect(screen.getByText("sc-domain:example.com")).toBeDefined();
   });
   it("prints explicit counts for a zero-base comparison", () => {
     render(<ProjectFacts overview={facts(8, 0)} onRetry={() => {}} />);
@@ -53,4 +60,19 @@ describe("ProjectFacts", () => {
     ).toBeDefined();
     expect(screen.queryByText("Değişmedi")).toBeNull();
   });
+});
+
+it("C28 keeps one provenance disclosure and one action row per project", () => {
+  const { container } = render(
+    <ProjectFacts overview={facts(8, 0)} onRetry={() => {}} />,
+  );
+  expect(container.querySelectorAll("details")).toHaveLength(1);
+  const search = screen.getByRole("link", { name: "Arama performansı" });
+  const audit = screen.getByRole("link", { name: "Site denetimlerini aç" });
+  expect(search.parentElement).toBe(audit.parentElement);
+  expect(
+    screen
+      .getByText("Bağlantı kaydı, verinin başarıyla okunduğunu göstermez.")
+      .closest("details")?.open,
+  ).toBe(false);
 });

@@ -1,6 +1,6 @@
 ---
 title: Berichte und Vorlagen
-description: Jeder Bericht, den Sie aus einem Audit oder aus der Suchleistung herunterladen oder von Ihrem Assistenten schreiben lassen, ist eine einzelne HTML-Datei: auf dem Smartphone öffnen, drucken oder per E-Mail senden. Mit Vorlagen wiederholen Sie ihn.
+description: Audit-, Suchleistungs- und Assistentenberichte als einzelne HTML-Dateien speichern, auf dem Smartphone öffnen, drucken oder per E-Mail teilen.
 screen: Raporlar
 route: /p/<proje>/reports
 updated: 2026-10-27
@@ -48,4 +48,4 @@ Neue native Berichte zur Suchleistung und zum Website-Audit haben getrennte gesp
 
 Erstellen Sie native Berichte über ihre Quellseite neu; Agenten können ihren Inhalt nicht mit `save_report` ersetzen. Fehlende Quelldaten gelten nie als null Zugriffe. Die Auditmethodik nennt den GSC-Trafficzeitraum, das Zeilenlimit und die verfügbare gespeicherte mobile CrUX-Messung.
 
-Der gespeicherte Bericht oben ist keine aktuelle Zusammenfassung der Website. Die Quellwebsite wird aus der ursprünglichen Prüfung bestätigt; bei einer Abweichung von der Projektwebsite erscheint eine Warnung. Ohne bestätigte Quelle kann der Bericht eine andere Website betreffen. Ältere Berichte werden mit unbestätigter Quelle und Datum gekennzeichnet. Erstellen Sie für heutige Entscheidungen einen aktuellen Prüfbericht über die Website-Prüfung des Projekts. Alte Dateien bleiben erhalten.
+Der gespeicherte Bericht oben ist keine aktuelle Zusammenfassung der Website. Die Quellwebsite wird aus der ursprünglichen Prüfung bestätigt; bei einer Abweichung von der Projektwebsite erscheint eine Warnung. Ohne bestätigte Quelle kann der Bericht eine andere Website betreffen. Ältere Berichte werden mit unbestätigter Quelle und Datum gekennzeichnet. **Website-Audits öffnen** öffnet den Auditverlauf. Ein geeignetes gespeichertes Audit können Sie öffnen und seinen Bericht herunterladen; der Link startet weder ein Audit noch die Berichtserstellung automatisch. Alte Dateien bleiben erhalten.

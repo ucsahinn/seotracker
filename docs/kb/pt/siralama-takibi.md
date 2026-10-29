@@ -1,6 +1,6 @@
 ---
 title: Acompanhamento de posições
-description: Posição média das suas pesquisas no Google, quais estão subindo ou caindo e como mudam os grupos de posições, mesmo além do limite de 16 meses do Google, porque os dados ficam guardados neste computador.
+description: Acompanhe posições médias no Google e mudanças nas consultas. O arquivo local guarda os dados mesmo além do limite de 16 meses do Google.
 screen: Sıralama takibi
 route: /p/<proje>/rankings
 updated: 2026-10-27

@@ -1,4 +1,5 @@
 import { QuotaCard } from "@/client/features/quotas/QuotaCard";
+import { FactStrip } from "@/client/components/FactStrip";
 import { t } from "@/shared/i18n";
 import { ProgressBar } from "@/client/components/ProgressBar";
 import { notify } from "@/client/features/notifications/notify";
@@ -195,6 +196,55 @@ export function IndexCoverageView({
 
   return (
     <div className="space-y-4">
+      <FactStrip
+        label={t("Dizin durumu")}
+        facts={[
+          {
+            label: t("Kaynak"),
+            value: "Search Console",
+            hint: "URL Inspection",
+          },
+          {
+            label: t("Tarih"),
+            value: data.lastCheckedAt
+              ? formatDateTime(data.lastCheckedAt)
+              : t("Henüz kontrol edilmedi"),
+          },
+        ]}
+        detailsLabel={t("Ayrıntılar")}
+        details={
+          <div className="max-w-prose space-y-1.5">
+            <p>
+              {data.canonicalMismatches > 0
+                ? t(
+                    "Kontrol edilen {checked} sayfa içinde. Google başka bir adresi asıl saydı: bu sayfaların canonical etiketini ve iç bağlantılarını kontrol edin.",
+                    { checked: formatNumber(data.asked) },
+                  )
+                : t(
+                    "Kontrol edilen {checked} sayfanın hiçbirinde Google başka bir adresi asıl saymadı.",
+                    { checked: formatNumber(data.asked) },
+                  )}
+            </p>
+            <p>
+              {data.lastCheckedAt
+                ? t(
+                    "Bu denetimin Google'a sorulmamış sayfaları. Son kontrol {date}",
+                    { date: formatDateTime(data.lastCheckedAt) },
+                  )
+                : t("Bu denetimin Google'a sorulmamış sayfaları.")}
+            </p>
+            <p>
+              {t(
+                "Google günde en çok {limit} adres sormanıza izin verir. Her seferde {batch} sayfa kontrol edilir. Önce hiç sorulmamış olanlara, sonra Google'ın dizine almadıklarına bakılır.",
+                {
+                  limit: formatNumber(2000),
+                  batch: formatNumber(INSPECT_BATCH),
+                },
+              )}
+            </p>
+          </div>
+        }
+      />
       {neverChecked ? null : (
         <CoverageVerdictDonut
           counts={bucketCounts}
@@ -207,47 +257,18 @@ export function IndexCoverageView({
           label={t("Google'ın farklı adresi seçtiği sayfalar")}
           value={neverChecked ? null : formatNumber(data.canonicalMismatches)}
           animateTo={{ value: data.canonicalMismatches, format: formatNumber }}
-          /* The finding and the fix, with its base, rather than how the
-             tile relates to the chart above it. */
-          hint={
-            data.canonicalMismatches > 0
-              ? t(
-                  "Kontrol edilen {checked} sayfa içinde. Google başka bir adresi asıl saydı: bu sayfaların canonical etiketini ve iç bağlantılarını kontrol edin.",
-                  { checked: formatNumber(data.asked) },
-                )
-              : t(
-                  "Kontrol edilen {checked} sayfanın hiçbirinde Google başka bir adresi asıl saymadı.",
-                  { checked: formatNumber(data.asked) },
-                )
-          }
         />
         <MetricTile
           label={t("Henüz kontrol edilmedi")}
           value={formatNumber(data.due)}
           animateTo={{ value: data.due, format: formatNumber }}
-          hint={
-            data.lastCheckedAt
-              ? t(
-                  "Bu denetimin Google'a sorulmamış sayfaları. Son kontrol {date}",
-                  {
-                    date: formatDateTime(data.lastCheckedAt),
-                  },
-                )
-              : t("Bu denetimin Google'a sorulmamış sayfaları.")
-          }
         />
       </MetricRow>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm text-muted">
-          {t(
-            "Google günde en çok {limit} adres sormanıza izin verir. Her seferde {batch} sayfa kontrol edilir. Önce hiç sorulmamış olanlara, sonra Google'ın dizine almadıklarına bakılır.",
-            { limit: formatNumber(2000), batch: formatNumber(INSPECT_BATCH) },
-          )}
-        </p>
         <button
           type="button"
-          className="btn btn-primary btn-sm"
+          className="btn btn-primary min-h-11"
           /* `due`, not `pending`: a page Google already answered becomes
              worth re-asking once the answer ages out, and keying off
              `pending` left the button disabled while there was work. */

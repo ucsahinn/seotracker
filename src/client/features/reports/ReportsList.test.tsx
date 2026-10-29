@@ -109,7 +109,7 @@ it("H07 labels each mobile report with its kind and the full legacy qualificatio
     />,
   );
   for (const [title, label] of [
-    ["October report", "Eski rapor · kaynak ve tarih doğrulanmamış"],
+    ["October report", "Eski rapor"],
     ["Current report", "Site denetimi raporu"],
   ]) {
     const titleCell = screen.getByRole("link", { name: title }).closest("td")!;
@@ -121,5 +121,12 @@ it("H07 labels each mobile report with its kind and the full legacy qualificatio
       "td.hidden.md\\:table-cell",
     )!;
     expect(within(desktopCell).getByText(label)).toBeTruthy();
+    if (title === "October report") {
+      expect(
+        within(desktopCell).getByTitle(
+          "Eski rapor · kaynak ve tarih doğrulanmamış",
+        ),
+      ).toBeTruthy();
+    }
   }
 });

@@ -1,6 +1,6 @@
 ---
 title: Monitoraggio del posizionamento
-description: Posizione media delle ricerche su Google, quali salgono o scendono e come cambiano i gruppi di posizioni, anche oltre il limite di 16 mesi di Google, perché i dati restano su questo computer.
+description: Seguire le posizioni medie Google delle ricerche e le variazioni. L’archivio locale conserva i dati anche oltre il limite di 16 mesi.
 screen: Sıralama takibi
 route: /p/<proje>/rankings
 updated: 2026-10-27

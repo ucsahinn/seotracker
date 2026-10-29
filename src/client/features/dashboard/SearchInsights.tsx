@@ -133,7 +133,9 @@ export function SearchInsights({
               </p>
               <p className="text-sm text-muted">
                 {view?.series.previousDaily
-                  ? t("Günlük tıklamalar; soluk çizgi önceki dönemi gösterir.")
+                  ? t(
+                      "Günlük tıklamalar; kesikli çizgi önceki dönemi gösterir.",
+                    )
                   : t("Karşılaştırma yok")}
               </p>
               {delta !== null ? (
@@ -235,17 +237,10 @@ export function SearchInsights({
             </Link>
           }
         >
-          <p className="mb-2 text-xs text-muted">
-            {strikingMethodText(
-              view?.insights.brandState.source ?? "none",
-              view?.coverage.queries.truncated ?? false,
-            )}
-          </p>
           {striking.length === 0 ? (
             <EmptyState
               compact
               title={empty?.title ?? t("Bu kapsamda uygun sorgu bulunmadı.")}
-              description={empty?.description}
             />
           ) : (
             <>
@@ -256,11 +251,6 @@ export function SearchInsights({
               </p>
               <p className="mb-3 text-sm text-muted">
                 {strikingEstimateText(estimate)}
-              </p>
-              <p className="mb-3 text-xs text-subtle">
-                {t(
-                  "Bu bir tahmindir; sayfa bazlı Fırsatlar toplamına eklenmez.",
-                )}
               </p>
               <ul className="space-y-1">
                 {striking.map((row) => (
@@ -290,6 +280,31 @@ export function SearchInsights({
               </ul>
             </>
           )}
+          {/* One disclosure per card: method, then what this result means. */}
+          <details className="mt-3 text-sm text-muted">
+            <summary className="min-h-11 cursor-pointer py-3">
+              {t("Veri hakkında")}
+            </summary>
+            <div className="max-w-prose space-y-2 leading-relaxed">
+              <p>
+                {strikingMethodText(
+                  view?.insights.brandState.source ?? "none",
+                  view?.coverage.queries.truncated ?? false,
+                )}
+              </p>
+              {striking.length === 0 ? (
+                empty?.description ? (
+                  <p>{empty.description}</p>
+                ) : null
+              ) : (
+                <p>
+                  {t(
+                    "Bu bir tahmindir; sayfa bazlı Fırsatlar toplamına eklenmez.",
+                  )}
+                </p>
+              )}
+            </div>
+          </details>
         </CardShell>
       </div>
     </div>

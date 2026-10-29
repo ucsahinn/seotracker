@@ -120,14 +120,17 @@ export function LighthouseIssuesScreen(props: LighthouseIssuesScreenProps) {
           ) : null}
 
           {showsLegacyPayloadNotice ? (
-            <div className="alert alert-warning">
-              <TriangleAlert className="size-4" />
-              <span>
+            <details className="max-w-prose rounded-box bg-warning/5 p-4 text-sm text-muted">
+              <summary className="cursor-pointer font-medium text-[var(--ink-warning)]">
+                <TriangleAlert className="mr-2 inline size-4" aria-hidden />
+                {t("Ayrıntılar")}
+              </summary>
+              <p className="mt-3 leading-relaxed">
                 {t(
                   "Bu Lighthouse çalışması, sorun ayrıntıları saklanmaya başlamadan önce kaydedilmiş. Kategori sayılarını ve sorun kartlarını görmek için denetimi yeniden başlatın.",
                 )}
-              </span>
-            </div>
+              </p>
+            </details>
           ) : null}
 
           {/* Everything below reads from `issuesQuery.data`, so on a failure

@@ -2,6 +2,10 @@ import type { Catalog } from "@/shared/i18n";
 
 /** French for app-wide labels: Google access status, settings help, feedback form and audit errors. */
 export const frApp: Catalog = {
+  "Arşiv özeti": "Résumé de l’archive",
+  "{observed}/{days} gün gözlem; {complete}/{days} gün tam yanıt.":
+    "Observations sur {observed}/{days} jours ; réponses complètes sur {complete}/{days} jours.",
+  "Arşiv kapsamını incele": "Examiner la couverture de l’archive",
   "Bu bölüm başka bir yerde değişti. Metinleri karşılaştırıp taslağınızı birleştirin.":
     "Cette section a été modifiée ailleurs. Comparez les textes et fusionnez votre brouillon.",
   "Düzenleme başındaki metin": "Texte au début de la modification",
@@ -357,6 +361,9 @@ export const frApp: Catalog = {
   "Burada kayıtlı mülk seçimleri gösterilir; Google erişimi bu kontrolde sınanmaz. Güncel bir okuma denemek için Bağlantıları açın, seçili mülkün raporuna gidin ve Yenile düğmesine basın.":
     "Les propriétés affichées sont celles enregistrées ; ce contrôle ne teste pas l’accès à Google. Pour tenter une lecture actuelle, ouvrez Connexions, accédez au rapport de la propriété sélectionnée et cliquez sur Actualiser.",
   "Kaydedilmiş rapor": "Rapport enregistré",
+  "Eski rapor": "Ancien rapport",
+  "Dosya kaydı": "Fichier enregistré",
+  Doğrulanmadı: "Non vérifié",
   "Eski rapor · kaynak ve tarih doğrulanmamış":
     "Ancien rapport · source et date non vérifiées",
   "Kaynak site: {domain}": "Site source : {domain}",

@@ -1,6 +1,4 @@
-import { GoogleAccessEvidence } from "@/client/features/integrations/GoogleAccessEvidence";
 import { ConnectionRefreshWarning } from "@/client/features/integrations/ConnectionRefreshWarning";
-import { formatDateTime } from "@/client/lib/format";
 import { ga4ConnectionOptions } from "@/client/features/integrations/googleConnectionQueries";
 import * as React from "react";
 import { invalidatePropertyDependents } from "@/client/features/gsc/invalidatePropertyDependents";
@@ -179,7 +177,7 @@ export function GoogleAnalyticsConnectionCard({
             reportLabel="Google Analytics"
             property={connection?.propertyDisplayName ?? ""}
             detail={connection?.propertyId}
-            metadata={<PropertyMetadata connection={connection} />}
+            {...propertyMetadata(connection)}
             canManageAccounts={hasGrant}
             email={connection?.connectedByEmail}
             onChange={() => {
@@ -280,46 +278,27 @@ function DismissButton({
   );
 }
 
-function PropertyMetadata({
-  connection,
-}: {
+function propertyMetadata(
   connection:
     | {
-        propertyTimeZone: string | null;
-        propertyCurrencyCode: string | null;
         connectedAt: string | null;
         usesServiceAccount: boolean;
+        propertyTimeZone: string | null;
+        propertyCurrencyCode: string | null;
         accessEvidence?: {
           observedAt: string;
           reason: string | null;
           lastSuccessAt?: string | null;
         } | null;
       }
-    | undefined;
-}) {
-  return (
-    <div className="space-y-1 text-xs text-muted">
-      <GoogleAccessEvidence evidence={connection?.accessEvidence} />
-      {connection?.connectedAt ? (
-        <p>
-          {t("Mülk seçim tarihi: {date}", {
-            date: formatDateTime(connection.connectedAt),
-          })}
-        </p>
-      ) : null}
-      {connection ? (
-        <p>
-          {connection.usesServiceAccount
-            ? t("Kimlik yöntemi: hizmet hesabı")
-            : t("Kimlik yöntemi: Google OAuth")}
-        </p>
-      ) : null}
-      <p>
-        {t("Saat dilimi: {timezone} · Para birimi: {currency}", {
-          timezone: connection?.propertyTimeZone ?? t("Bilinmiyor"),
-          currency: connection?.propertyCurrencyCode ?? t("Bilinmiyor"),
-        })}
-      </p>
-    </div>
-  );
+    | undefined,
+) {
+  if (!connection) return {};
+  return {
+    bindingDate: connection.connectedAt,
+    usesServiceAccount: connection.usesServiceAccount,
+    accessEvidence: connection.accessEvidence,
+    propertyTimeZone: connection.propertyTimeZone,
+    propertyCurrencyCode: connection.propertyCurrencyCode,
+  };
 }

@@ -22,7 +22,13 @@ export function AuditHistorySeverityCell({
   // Counts of a crawl that is still running or failed are partial.
   if (row.status !== "completed") return <span className="text-subtle">–</span>;
   const count = row.issues[severity];
-  const delta = previous ? issueDelta(count, previous.issues[severity]) : null;
+  const compatible =
+    previous &&
+    row.comparison?.compatible &&
+    row.comparison.previousAuditId === previous.id;
+  const delta = compatible
+    ? issueDelta(count, previous.issues[severity])
+    : null;
 
   return (
     <div className="flex flex-col items-end gap-0.5">

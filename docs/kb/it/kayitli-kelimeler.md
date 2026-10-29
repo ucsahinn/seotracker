@@ -1,6 +1,6 @@
 ---
 title: Parole chiave salvate
-description: Esamina le parole salvate con date e copertura dell’archivio.
+description: Esaminare le parole chiave salvate con date e copertura dell’archivio. Capire osservazioni, dati mancanti e variazioni nel periodo scelto.
 screen: Kayıtlı kelimeler
 route: /p/<proje>/saved
 updated: 2026-10-27

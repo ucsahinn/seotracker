@@ -1,5 +1,5 @@
 import { WindowPicker, LimitPicker } from "./OpportunityPickers";
-import { strikingMethodText } from "@/shared/strikingEstimateCopy";
+import { FactStrip } from "@/client/components/FactStrip";
 import { t } from "@/shared/i18n";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
@@ -14,7 +14,7 @@ import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
 import { refreshState } from "@/client/lib/refreshState";
 import { OpportunitiesTable } from "@/client/features/opportunities/OpportunitiesTable";
 import type { OpportunityReport } from "@/client/features/opportunities/report";
-import { formatCount, formatDate, formatPercent } from "@/client/lib/format";
+import { formatCount, formatDate } from "@/client/lib/format";
 import type { WorkKind } from "@/shared/pageOpportunities";
 import { getSearchOpportunities } from "@/serverFunctions/opportunities";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
@@ -24,7 +24,7 @@ import { OpportunityQuickFilters } from "@/client/features/opportunities/Opportu
 import {
   pathOf,
   usefulChips,
-  WORK_COPY,
+  rowAction,
   type QuickId,
 } from "@/client/features/opportunities/opportunityLogic";
 
@@ -122,7 +122,9 @@ export function OpportunitiesPage({
       <PageHeader
         title={t("Fırsatlar")}
         description={t(
-          "Her sayfanın ayda kaç tıklama daha getirebileceği ve bunun için ne yapmanız gerektiği.",
+          data?.status === "ok" && data.report.totals.gainPerMonth === null
+            ? "Gözlenen sayfalar ve olası işler; kazanç henüz hesaplanamıyor."
+            : "Gözlenen sayfalar, olası işler ve hesaplanabilen ek tıklamalar.",
         )}
         actions={
           <PageActions>
@@ -225,7 +227,7 @@ function Report({
   });
   const analyticsOn = data.analytics.state === "connected";
 
-  if (data.totalCandidateRows === 0) {
+  if (totals.pagesConsidered === 0) {
     return (
       <div className="space-y-4" aria-busy={stale}>
         {stale ? (
@@ -259,21 +261,34 @@ function Report({
 
   return (
     <div className="flex flex-col gap-6" aria-busy={stale}>
-      {/* The window, once, above everything it covers. */}
-      <p className="text-xs text-muted">
-        {period} · {data.request.searchConsoleTimeZone} ·{" "}
-        {t(
-          data.request.completeness.incompleteSource === "google"
-            ? "Tam günler Google tarafından doğrulandı"
-            : "Tam gün sınırı veri gecikmesine göre varsayıldı",
-        )}
-        {stale ? (
-          <span role="status">
-            {" "}
-            · {t("Önceki sonuç gösteriliyor; seçili dönem henüz yüklenmedi.")}
-          </span>
-        ) : null}
-      </p>
+      <FactStrip
+        label={t("Fırsatların kaynağı")}
+        facts={[
+          {
+            label: t("Kaynak"),
+            value: "Search Console",
+            hint: data.source.searchConsoleSiteUrl,
+          },
+          {
+            label: t("Dönem"),
+            value: period,
+            hint: data.request.searchConsoleTimeZone,
+          },
+          {
+            label: t("Veri durumu"),
+            value: t(
+              data.request.completeness.incompleteSource === "google"
+                ? "Tam günler Google tarafından doğrulandı"
+                : "Tam gün sınırı veri gecikmesine göre varsayıldı",
+            ),
+          },
+        ]}
+      />
+      {stale ? (
+        <p role="status" className="text-sm text-muted">
+          {t("Önceki sonuç gösteriliyor; seçili dönem henüz yüklenmedi.")}
+        </p>
+      ) : null}
 
       <section className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4">
         <h2 className="text-sm font-medium">{t("Önce şuna bakın")}</h2>
@@ -292,63 +307,66 @@ function Report({
         ) : null}
         {top ? (
           <p className="text-sm">
-            {t(WORK_COPY[top.work].action)} ·{" "}
-            {t("En fazla +{gain} tıklama / 30 gün (üst sınır)", {
-              gain: formatCount(top.gainPerMonth),
-            })}
+            {t(rowAction(top))} ·{" "}
+            {top.gainPerMonth === null
+              ? t("Sıraya dayalı öneri; kazanç bilinmiyor (yetersiz veri).")
+              : t("En fazla +{gain} tıklama / 30 gün (üst sınır)", {
+                  gain: formatCount(top.gainPerMonth),
+                })}
           </p>
         ) : null}
         <p className="text-sm font-semibold">
           {t("En fazla kazanılabilecek tıklama / ay (üst sınır)")}:{" "}
           {totals.gainPerMonth === null ? "–" : plusCount(totals.gainPerMonth)}
         </p>
-        <p className="text-xs text-muted">
+        <p className="text-sm">
           {t(
-            "{count} sayfada · bu sayfaların tüm tıklamaları 30 güne ölçekli: {clicks}; üst sınırın bu tabana oranı {share}",
-            {
-              count: data.totalCandidateRows,
-              clicks: formatCount(totals.clicksPerMonth),
-              share:
-                totals.clicksPerMonth > 0 && totals.gainPerMonth !== null
-                  ? formatPercent(
-                      totals.gainPerMonth / totals.clicksPerMonth,
-                      0,
-                    )
-                  : "–",
-            },
+            !analyticsOn || data.coverage.matchedRows === 0
+              ? "Dönüşüm bilgisi bilinmiyor."
+              : counts.converts > 0
+                ? "Doğrulanmış dönüşüm: {count} sayfa"
+                : "Eşleşen veride doğrulanmış dönüşüm yok.",
+            { count: formatCount(counts.converts) },
           )}
         </p>
         <p className="text-xs text-muted">
-          {strikingMethodText(data.method.brandSource, data.truncated.gsc)}
+          {t("Eşleşen: {matched} / {total} sayfa", {
+            matched: formatCount(data.coverage.matchedRows),
+            total: formatCount(data.totalCandidateRows),
+          })}{" "}
+          ·{" "}
+          {t("Dönüşüm durumu bilinmeyen: {count} sayfa", {
+            count: formatCount(
+              Math.max(
+                0,
+                data.totalCandidateRows -
+                  counts.converts -
+                  counts.no_conversions,
+              ),
+            ),
+          })}
         </p>
-        <p className="text-xs text-muted">
-          {t("Hesaplanamayan kapsam")}: {formatCount(totals.unknownPages)}.{" "}
-          {t(
-            "Eksik sorgu, yetersiz gösterim veya eksik hedef oranı; kazanç yok anlamına gelmez.",
-          )}
-        </p>
-        <p className="text-xs text-muted">
-          {t("Dönüşüm getiren sayfalar")}:{" "}
-          {analyticsOn ? formatCount(counts.converts) : "–"} ·{" "}
-          {t(
-            !analyticsOn
-              ? data.analytics.state === "not_connected"
-                ? "Analytics bağlanınca görünür"
-                : "Analytics bu kez okunamadı; aşağıdaki kaynak notunu kontrol edin."
-              : data.reportMetadata?.hasLimitedData
-                ? "Analytics verisi sınırlı; eksik ölçümler sıfır değildir ve dönüşüm yorumu yapılamayabilir."
-                : "Hesaplanabilen tüm sayfalardaki ölçülmüş dönüşüm sinyali · listele",
-          )}
-        </p>
+        {analyticsOn && counts.converts > 0 ? (
+          <button
+            type="button"
+            className="btn btn-sm"
+            onClick={() => setQuick(quick === "converts" ? null : "converts")}
+          >
+            {t("Dönüşüm getirenleri göster")}
+          </button>
+        ) : null}
+        {totals.unknownPages > 0 ? (
+          <p className="text-sm text-[var(--ink-warning)]">
+            {t(
+              "Bazı sayfalarda kazanç bilinmiyor; bu, sıfır kazanç demek değildir.",
+            )}
+          </p>
+        ) : null}
       </section>
 
-      <p className="text-xs text-muted">
-        {t(
-          "Hesaplanan kazanç yalnızca alınan ve tanımlanabilen aramaları kapsar; gizli sorguların payı bilinmiyor. Panelin sorgu tahminiyle toplanmaz.",
-        )}
-      </p>
       <OpportunityWorkBars
         byWork={totals.byWork}
+        gainKnown={totals.gainPerMonth !== null}
         selected={work}
         onSelect={setWork}
       />

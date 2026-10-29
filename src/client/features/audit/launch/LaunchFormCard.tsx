@@ -182,45 +182,48 @@ function LighthouseEstimate({ maxPages }: { maxPages: number }) {
   const minutes = estimateLighthouseMinutes(pages);
 
   return (
-    <div className="space-y-1">
-      <p className="text-xs text-muted">
-        {hasKey
-          ? t(
-              "Taranan her sayfanın hızı telefonda ve bilgisayarda ölçülür. En çok {pages} sayfa, yani {checks} ölçüm. Hız aşaması en az yaklaşık {minutes} dakika sürer, Google sınırına takılırsa daha uzun.",
+    <details className="max-w-prose text-sm text-muted sm:col-span-2">
+      <summary className="cursor-pointer py-2">{t("Hız ölçümü")}</summary>
+      <div className="mt-1.5 space-y-3 leading-relaxed">
+        <p className="text-xs text-muted">
+          {hasKey
+            ? t(
+                "Taranan her sayfanın hızı telefonda ve bilgisayarda ölçülür. En çok {pages} sayfa, yani {checks} ölçüm. Hız aşaması en az yaklaşık {minutes} dakika sürer, Google sınırına takılırsa daha uzun.",
+                {
+                  pages: formatNumber(pages),
+                  checks: formatNumber(checks),
+                  minutes: formatNumber(minutes),
+                },
+              )
+            : t(
+                "PageSpeed anahtarınız yok. Google'ın ücretsiz kotası küçük olduğu için en çok {pages} sayfa ({checks} ölçüm) ölçülür. Hız aşaması en az yaklaşık {minutes} dakika sürer, Google sınırına takılırsa daha uzun sürer.",
+                {
+                  pages: formatNumber(UNKEYED_LIGHTHOUSE_PAGE_CAP),
+                  checks: formatNumber(
+                    UNKEYED_LIGHTHOUSE_PAGE_CAP * LIGHTHOUSE_CHECKS_PER_PAGE,
+                  ),
+                  minutes: formatNumber(minutes),
+                },
+              )}
+        </p>
+        {hasKey ? null : (
+          <p className="text-xs text-muted">
+            {fillParts(
+              t(
+                "Tüm sayfaları ölçmek için {settings}'dan ücretsiz bir PageSpeed anahtarı ekleyin.",
+              ),
               {
-                pages: formatNumber(pages),
-                checks: formatNumber(checks),
-                minutes: formatNumber(minutes),
-              },
-            )
-          : t(
-              "PageSpeed anahtarınız yok. Google'ın ücretsiz kotası küçük olduğu için en çok {pages} sayfa ({checks} ölçüm) ölçülür. Hız aşaması en az yaklaşık {minutes} dakika sürer, Google sınırına takılırsa daha uzun sürer.",
-              {
-                pages: formatNumber(UNKEYED_LIGHTHOUSE_PAGE_CAP),
-                checks: formatNumber(
-                  UNKEYED_LIGHTHOUSE_PAGE_CAP * LIGHTHOUSE_CHECKS_PER_PAGE,
+                settings: (
+                  <Link to="/settings" className="btn btn-sm min-h-11">
+                    {t("Ayarlar")}
+                  </Link>
                 ),
-                minutes: formatNumber(minutes),
               },
             )}
-      </p>
-      {hasKey ? null : (
-        <p className="text-xs text-muted">
-          {fillParts(
-            t(
-              "Tüm sayfaları ölçmek için {settings}'dan ücretsiz bir PageSpeed anahtarı ekleyin.",
-            ),
-            {
-              settings: (
-                <Link to="/settings" className="link">
-                  {t("Ayarlar")}
-                </Link>
-              ),
-            },
-          )}
-        </p>
-      )}
-    </div>
+          </p>
+        )}
+      </div>
+    </details>
   );
 }
 

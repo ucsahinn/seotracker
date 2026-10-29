@@ -15,9 +15,7 @@ it("offers all traffic and measurement checks for an empty organic landing repor
     />,
   );
   fireEvent.click(screen.getByRole("button", { name: "Tüm trafiğe bak" }));
-  fireEvent.click(
-    screen.getByRole("button", { name: "Ölçüm durumunu kontrol et" }),
-  );
+  fireEvent.click(screen.getByRole("button", { name: "Ölçüm durumu" }));
   expect(allTraffic).toHaveBeenCalledOnce();
   expect(health).toHaveBeenCalledOnce();
   expect(screen.queryByText(/birkaç gün sonra/)).toBeNull();

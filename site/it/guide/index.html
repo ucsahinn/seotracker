@@ -2,9 +2,14 @@
 <html lang="it">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Guida di seowatcher: installazione, schermate, problemi</title>
     <meta
@@ -91,7 +96,7 @@
       property="og:image:alt"
       content="Scheda di seowatcher: la dashboard dell’app con i dati di Search Console, Analytics 4 e dell’audit del sito, e un pulsante per scaricarla su Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta property="og:url" content="https://seowatcher.io/it/guide/" />
     <meta property="og:locale" content="it_IT" />
     <meta property="og:locale:alternate" content="tr_TR" />
@@ -150,7 +155,7 @@
             "description": "Guide di seowatcher: installazione, schermate, collegamento con Google, regole del controllo, assistente e risoluzione dei problemi.",
             "url": "https://seowatcher.io/it/guide/",
             "inLanguage": "it",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "about": { "@id": "https://seowatcher.io/#app" },
             "isPartOf": { "@id": "https://seowatcher.io/#website" }
           },
@@ -1474,7 +1479,9 @@
                 >Parole chiave salvate</a
               >
             </li>
-            <li><a href="/it/guide/analisi/">Analytics</a></li>
+            <li>
+              <a href="/it/guide/analisi/">Interpretare i dati di analisi</a>
+            </li>
             <li>
               <a href="/it/guide/controllo-del-sito/">Controllo del sito</a>
             </li>
@@ -1508,7 +1515,7 @@
         </details>
       </aside>
       <article id="icerik" data-page="index">
-        <h1>Guida</h1>
+        <h1>Guida di seowatcher</h1>
         <p class="lede">
           Ogni passaggio e ogni schermata, dall'installazione al primo report,
           spiegati in modo breve e semplice. L'app si chiama seotracker su
@@ -1544,8 +1551,9 @@
           <li>
             <a href="/it/guide/chiave-pagespeed/">Chiave PageSpeed</a
             ><span
-              >Salvare una chiave PageSpeed e capire test e contatori
-              audit.</span
+              >Salvare la chiave API di PageSpeed Insights, verificare le
+              richieste di prova e capire quote e contatori durante il controllo
+              del sito.</span
             >
           </li>
         </ul>
@@ -1570,38 +1578,37 @@
             <a href="/it/guide/prestazioni-di-ricerca/"
               >Rendimento della ricerca</a
             ><span
-              >Si vede quante volte si compare su Google, quanti clic si
-              ottengono e cosa correggere per primo. I numeri arrivano da Search
-              Console. I guadagni sono un limite superiore.</span
+              >Leggere clic, impressioni e posizioni da Search Console.
+              Scegliere le pagine da migliorare e capire i limiti dei guadagni
+              stimati.</span
             >
           </li>
           <li>
             <a href="/it/guide/monitoraggio-posizioni/"
               >Monitoraggio del posizionamento</a
             ><span
-              >Posizione media delle ricerche su Google, quali salgono o
-              scendono e come cambiano i gruppi di posizioni, anche oltre il
-              limite di 16 mesi di Google, perché i dati restano su questo
-              computer.</span
+              >Seguire le posizioni medie Google delle ricerche e le variazioni.
+              L’archivio locale conserva i dati anche oltre il limite di 16
+              mesi.</span
             >
           </li>
           <li>
             <a href="/it/guide/opportunita/">Opportunità</a
             ><span
-              >Mostra quanti clic in più al mese potrebbe portare ciascuna
-              pagina del sito e quale lavoro li porta. Il numero è un limite
-              superiore, non una promessa.</span
+              >Mostra pagine osservate, possibili interventi e un limite di clic
+              aggiuntivi quando i dati lo consentono.</span
             >
           </li>
           <li>
             <a href="/it/guide/parole-chiave-salvate/">Parole chiave salvate</a
             ><span
-              >Esamina le parole salvate con date e copertura
-              dell’archivio.</span
+              >Esaminare le parole chiave salvate con date e copertura
+              dell’archivio. Capire osservazioni, dati mancanti e variazioni nel
+              periodo scelto.</span
             >
           </li>
           <li>
-            <a href="/it/guide/analisi/">Analytics</a
+            <a href="/it/guide/analisi/">Interpretare i dati di analisi</a
             ><span
               >Analytics mostra visite, coinvolgimento ed eventi chiave misurati
               nella proprietà GA4.</span
@@ -1610,10 +1617,9 @@
           <li>
             <a href="/it/guide/controllo-del-sito/">Controllo del sito</a
             ><span
-              >L'app visita il sito pagina per pagina, lo controlla con 202
-              regole e ordina i problemi per gravità. Il punteggio dice anche
-              quanto è stato possibile misurare. Una verifica interrotta non ha
-              punteggio.</span
+              >Controllare il sito con 202 regole e ordinare i problemi per
+              priorità. Capire il punteggio, la copertura delle misure e i
+              risultati incompleti.</span
             >
           </li>
           <li>
@@ -1627,18 +1633,18 @@
           <li>
             <a href="/it/guide/rapporti/">Report e modelli</a
             ><span
-              >Ogni report scaricato da un controllo o dal Rendimento della
-              ricerca, o scritto dall'assistente, è un solo file HTML. Si apre
-              sul telefono, si stampa o si invia per e-mail.</span
+              >Salvare i report di controllo, ricerca e assistente in singoli
+              file HTML. Aprirli sul telefono, stamparli o condividerli tramite
+              e-mail.</span
             >
           </li>
           <li>
             <a href="/it/guide/informazioni-progetto/"
               >Informazioni sul progetto</a
             ><span
-              >Le informazioni del progetto sono note locali per te e per un
-              assistente collegato. Un testo compilato non è verificato e non
-              tutti gli assistenti lo leggono automaticamente.</span
+              >Conservare obiettivi e note del progetto in locale per te e per
+              un assistente collegato. Capire la portata delle note e i loro
+              limiti.</span
             >
           </li>
           <li>
@@ -1671,8 +1677,9 @@
             <a href="/it/guide/configurazione-assistente/"
               >Configurazione dell'assistente</a
             ><span
-              >Collegare un agente in sicurezza e verificare una nuova
-              chiamata.</span
+              >Collegare un assistente SEO in sicurezza, verificare una nuova
+              chiamata e usare le competenze per controllare il sito e scrivere
+              report.</span
             >
           </li>
           <li>
@@ -1694,7 +1701,7 @@
           </li>
         </ul>
         <p class="meta">
-          Ultimo aggiornamento: 28 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 29 ottobre 2026. Se si nota un errore,
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

@@ -1,6 +1,6 @@
 ---
 title: Rapports et modèles
-description: Chaque rapport que vous téléchargez depuis un audit ou depuis les performances de recherche, ou que votre assistant écrit, est un seul fichier HTML. Vous l'ouvrez sur un téléphone, l'imprimez ou l'envoyez par e-mail.
+description: Conserver les rapports d’audit, de recherche et de votre assistant en fichiers HTML. Les ouvrir sur mobile, les imprimer ou les partager par e-mail.
 screen: Raporlar
 route: /p/<proje>/reports
 updated: 2026-10-27
@@ -48,4 +48,4 @@ Les nouveaux rapports natifs de performances de recherche et d’audit du site o
 
 Régénérez les rapports natifs depuis leur écran source ; les agents ne peuvent pas remplacer leur contenu avec `save_report`. Une source manquante ne vaut jamais zéro. La méthode d’audit précise la période de trafic GSC, la limite de lignes et la mesure CrUX mobile enregistrée disponible.
 
-Le rapport enregistré en haut n’est pas un bilan actuel du site. Le site source est affiché si l’audit d’origine permet de le vérifier ; une différence avec le site du projet déclenche un avertissement. Sans source vérifiée, le rapport peut concerner un autre site. Les anciens rapports portent une mention de source et de date non vérifiées. Pour décider aujourd’hui, créez un rapport d’audit à jour depuis l’écran d’audit du projet. Les anciens fichiers sont conservés.
+Le rapport enregistré en haut n’est pas un bilan actuel du site. Le site source est affiché si l’audit d’origine permet de le vérifier ; une différence avec le site du projet déclenche un avertissement. Sans source vérifiée, le rapport peut concerner un autre site. Les anciens rapports portent une mention de source et de date non vérifiées. **Ouvrir les audits du site** ouvre l’historique. Si un audit enregistré convient, ouvrez-le et téléchargez son rapport ; ce lien ne lance pas automatiquement un audit et ne crée pas de rapport. Les anciens fichiers sont conservés.

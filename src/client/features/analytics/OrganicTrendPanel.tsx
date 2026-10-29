@@ -1,14 +1,11 @@
+import { AnalyticsTotal } from "./AnalyticsTotal";
+import { FactStrip } from "@/client/components/FactStrip";
 import { DataTruncationNotice } from "./DataTruncationNotice";
 import { GA4_HELP } from "@/client/features/analytics/metricHelp";
-import { HeaderHelpLabel } from "@/client/features/saved-keywords/components/HeaderHelpLabel";
-import { pointsDelta } from "@/shared/delta";
-import { AnimatedNumber } from "@/client/components/AnimatedNumber";
-import { DATA_SERIES } from "@/client/components/Chart";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { getGa4DashboardReport } from "@/serverFunctions/ga4";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
-import { countComparison, DeltaBadge } from "@/client/components/MetricTile";
 import {
   formatCount,
   formatDate,
@@ -112,7 +109,7 @@ export function OrganicTrendPanel({
       ) : null}
       <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-b border-base-300 px-4 py-3">
         <div>
-          <h2 className="text-sm font-medium">
+          <h2 className="text-base font-semibold">
             {channel === "all" ? t("Tüm trafik") : t("Organik arama motorları")}
           </h2>
           <p className="mt-0.5 text-xs text-muted">
@@ -120,7 +117,7 @@ export function OrganicTrendPanel({
           </p>
         </div>
         <div className="grid w-full grid-cols-2 gap-4 sm:w-auto sm:grid-cols-4">
-          <Total
+          <AnalyticsTotal
             metric="sessions"
             label={t("Oturum")}
             value={totals.sessions}
@@ -128,7 +125,7 @@ export function OrganicTrendPanel({
             deltaTitle={deltaTitle}
             format={formatCount}
           />
-          <Total
+          <AnalyticsTotal
             label={t("Etkileşim oranı")}
             help={t(GA4_HELP.engagementRate)}
             value={totals.engagementRate}
@@ -137,7 +134,7 @@ export function OrganicTrendPanel({
             format={(n) => formatPercent(n)}
             rate
           />
-          <Total
+          <AnalyticsTotal
             metric="conversions"
             label={t("Anahtar olay")}
             help={t(GA4_HELP.keyEvents)}
@@ -147,7 +144,7 @@ export function OrganicTrendPanel({
             format={formatCount}
           />
           {/* Zero and unknown revenue remain visible with currency context. */}
-          <Total
+          <AnalyticsTotal
             label={t("Gelir")}
             value={totals.purchaseRevenue}
             previous={limited ? null : prevTotals.purchaseRevenue}
@@ -163,56 +160,78 @@ export function OrganicTrendPanel({
         </div>
       </div>
 
-      <div className="px-4 py-3">
-        <p className="mb-2 text-xs text-muted">
-          {formatDate(query.data.resolvedDateRange.startDate)} –{" "}
-          {formatDate(query.data.resolvedDateRange.endDate)} ·{" "}
-          {query.data.propertyTimeZone ?? t("Saat dilimi bilinmiyor")}
-        </p>
-        <p className="mb-2 text-xs text-muted">
-          {t(
-            "Mülk kapsamı: tüm ana makineler ve akışlar. Bu toplam yalnızca projenin sitesine ait olmayabilir.",
-          )}
-        </p>
+      <div className="space-y-4 px-4 py-4">
+        <FactStrip
+          label={t("Veri ayrıntıları")}
+          facts={[
+            { label: t("Kaynak"), value: "Google Analytics" },
+            {
+              label: t("Dönem"),
+              value:
+                formatDate(query.data.resolvedDateRange.startDate) +
+                " – " +
+                formatDate(query.data.resolvedDateRange.endDate),
+              hint: query.data.propertyTimeZone ?? t("Saat dilimi bilinmiyor"),
+            },
+            {
+              label: t("Karşılaştırma"),
+              value:
+                formatDate(previousDateRange.startDate) +
+                " – " +
+                formatDate(previousDateRange.endDate),
+            },
+            ...(query.data.fetchedAt
+              ? [
+                  {
+                    label: t("Yenilendi"),
+                    value: formatDateTime(query.data.fetchedAt),
+                  },
+                ]
+              : []),
+          ]}
+          detailsLabel={limited ? t("Uyarı") : t("Veri ayrıntıları")}
+          details={
+            <div className="max-w-prose space-y-4">
+              <p>
+                {t(
+                  "Mülk kapsamı: tüm ana makineler ve akışlar. Bu toplam yalnızca projenin sitesine ait olmayabilir.",
+                )}
+              </p>
+              {limited ? (
+                <p role="status" className="text-[var(--ink-warning)]">
+                  {t(
+                    "Analytics verisi sınırlı veya eksik. Bilinmeyen değerler çizilmez; dönem karşılaştırması gösterilmez.",
+                  )}
+                </p>
+              ) : null}
+              <DataTruncationNotice
+                reasons={query.data.reportMetadata.reports.flatMap(
+                  (report) => report.dataTruncationReasons ?? [],
+                )}
+              />
+              {query.data.warnings.includes("property_time_zone_changed") ? (
+                <p role="status">
+                  {t(
+                    "Mülkün saat dilimi değişmiş; bağlantı ayarlarını yenileyip tarihleri yeniden kontrol edin.",
+                  )}
+                </p>
+              ) : null}
+              {query.data.warnings.includes("end_date_clamped") ? (
+                <p role="status">
+                  {t(
+                    "Bitiş tarihi, mülkün saat diliminde düne çekildi; gösterilen tarihleri kullanın.",
+                  )}
+                </p>
+              ) : null}
+            </div>
+          }
+        />
         <MeasurementWarning
           reports={query.data.reportMetadata.reports}
           unknown={totals.sessions === null || totals.keyEvents === null}
           onRetry={() => void query.refetch()}
           onOpenHealth={onOpenHealth}
         />
-        {query.data.fetchedAt ? (
-          <p className="mb-2 text-xs text-muted">
-            {t("Veri alındı: {time}", {
-              time: formatDateTime(query.data.fetchedAt),
-            })}
-          </p>
-        ) : null}
-        {limited ? (
-          <p role="status" className="mb-2 text-xs text-[var(--ink-warning)]">
-            {t(
-              "Analytics verisi sınırlı veya eksik. Bilinmeyen değerler çizilmez; dönem karşılaştırması gösterilmez.",
-            )}
-          </p>
-        ) : null}
-        <DataTruncationNotice
-          reasons={query.data.reportMetadata.reports.flatMap(
-            (report) => report.dataTruncationReasons ?? [],
-          )}
-        />
-        {query.data.warnings.includes("property_time_zone_changed") ? (
-          <p role="status" className="text-xs text-muted">
-            {t(
-              "Mülkün saat dilimi değişmiş; bağlantı ayarlarını yenileyip tarihleri yeniden kontrol edin.",
-            )}
-          </p>
-        ) : null}
-        {query.data.warnings.includes("end_date_clamped") ? (
-          <p role="status" className="text-xs text-muted">
-            {t(
-              "Bitiş tarihi, mülkün saat diliminde düne çekildi; gösterilen tarihleri kullanın.",
-            )}
-          </p>
-        ) : null}
         {hasSessions ? (
           <div className="py-3">
             <OrganicTrendChart rows={rows} />
@@ -287,7 +306,7 @@ export function OrganicTrendPanel({
               className="btn btn-sm mt-2 min-h-11"
               onClick={onOpenHealth}
             >
-              {t("Ölçüm durumunu kontrol et")}
+              {t("Ölçüm durumu")}
             </button>
           ) : null}
         </details>
@@ -323,71 +342,5 @@ export function OrganicTrendPanel({
         </table>
       </details>
     </section>
-  );
-}
-
-function Total({
-  label,
-  value,
-  previous,
-  deltaTitle,
-  format,
-  help,
-  metric,
-  rate = false,
-}: {
-  label: string;
-  metric?: keyof typeof DATA_SERIES;
-  help?: string;
-  /** A rate moves in points ("-0,3 puan"), as CTR does, not as a percentage of itself. */
-  rate?: boolean;
-  value: number | null;
-  previous: number | null;
-  /** What the delta is measured against, named rather than implied. */
-  deltaTitle: string;
-  format: (value: number) => string;
-}) {
-  const change =
-    value === null || previous === null
-      ? null
-      : rate
-        ? pointsDelta(value, previous)
-        : countComparison(value, previous, format);
-  const style:
-    | (React.CSSProperties & { "--metric-color": string })
-    | undefined = metric
-    ? { "--metric-color": DATA_SERIES[metric] }
-    : undefined;
-  return (
-    <div
-      className={
-        metric
-          ? "metric-tile min-w-0 rounded-field p-2 text-left"
-          : "min-w-0 text-left"
-      }
-      data-metric={metric}
-      style={style}
-    >
-      <p className="text-xs text-muted">
-        {help ? <HeaderHelpLabel label={label} helpText={help} /> : label}
-      </p>
-      <p className="flex items-center gap-1.5 text-sm font-medium tabular-nums">
-        {value === null ? (
-          t("Bilinmiyor")
-        ) : (
-          <span className="metric-value">
-            <AnimatedNumber value={value} format={format} />
-          </span>
-        )}
-        {change === null ? null : (
-          <DeltaBadge value={change} title={deltaTitle} />
-        )}
-      </p>
-      {value !== null && previous === null ? (
-        <p className="text-xs text-muted">
-          {t("Karşılaştırma yok; önceki değer okunamadı veya veri sınırlı.")}
-        </p>
-      ) : null}
-    </div>
   );
 }

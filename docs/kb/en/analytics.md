@@ -1,5 +1,5 @@
 ---
-title: Analytics
+title: Understanding Analytics data
 description: Analytics shows measured visits, engagement and key events from your GA4 property.
 screen: Analytics
 route: /p/<proje>/analytics

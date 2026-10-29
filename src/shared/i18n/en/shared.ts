@@ -5,6 +5,7 @@ import type { Catalog } from "@/shared/i18n";
  * Keys are the Turkish source strings exactly as passed to t().
  */
 export const enShared: Catalog = {
+  "Saat dilimi": "Time zone",
   // dataFreshness.ts
   "{start} – {end}. Search Console verisi {count} gün geriden gelir, bu yüzden son gün bugün olmaz.":
     {

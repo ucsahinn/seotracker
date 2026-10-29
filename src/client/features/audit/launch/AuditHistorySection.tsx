@@ -129,8 +129,8 @@ export function AuditHistorySection({
   const byId = new Map(history.map((row) => [row.id, row]));
 
   return (
-    <section className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4">
-      <div className="space-y-3">
+    <section className="space-y-4 rounded-box border border-[var(--hairline)] bg-base-100 p-4 sm:p-5">
+      <div className="space-y-4">
         <h2 className="text-sm font-semibold">{t("Önceki denetimler")}</h2>
         {sites.length > 1 ? (
           <AuditSiteFilter
@@ -152,11 +152,12 @@ export function AuditHistorySection({
         <p className="text-xs text-muted sm:hidden">
           {t("Tüm sütunları ve işlemleri görmek için tabloyu yana kaydırın.")}
         </p>
-        <p className="text-xs text-muted">
+        <details className="max-w-prose text-sm text-muted">
+          <summary className="cursor-pointer py-1.5">{t("Ayrıntılar")}</summary>
           {t(
             "Sayılar kaydedilen tüm bulgulardır: sayfa bulguları ve site geneli kontroller birlikte; aynı sayfada birden çok bulgu olabilir.",
           )}
-        </p>
+        </details>
         <div
           className="overflow-x-auto"
           role="region"
@@ -267,7 +268,7 @@ export function AuditHistorySection({
                           to="/p/$projectId/audit"
                           params={{ projectId }}
                           search={{ auditId: audit.id, tab: "checks" }}
-                          className="link link-hover"
+                          className="btn btn-ghost btn-sm mt-1 min-h-11"
                         >
                           {t("Kapsam ayrıntıları")}
                         </Link>
@@ -346,11 +347,14 @@ export function AuditHistorySection({
 function FailureReason({ audit }: { audit: HistoryRow }) {
   const copy = describeAuditFailure(audit);
   return (
-    <div className="max-w-xs space-y-1 whitespace-normal text-xs text-muted">
-      <p>{t(copy.cause)}</p>
-      {copy.side === "Nedeni belirlenemedi." ? <p>{t(copy.side)}</p> : null}
-      <p>{t(copy.action)}</p>
-    </div>
+    <details className="mt-2 max-w-xs whitespace-normal text-sm text-muted">
+      <summary className="cursor-pointer py-1.5">{t("Ayrıntılar")}</summary>
+      <div className="mt-1.5 space-y-1.5 leading-relaxed">
+        <p>{t(copy.cause)}</p>
+        {copy.side === "Nedeni belirlenemedi." ? <p>{t(copy.side)}</p> : null}
+        <p>{t(copy.action)}</p>
+      </div>
+    </details>
   );
 }
 

@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { FactStrip } from "@/client/components/FactStrip";
 import { ReportDownloadButton } from "./ReportDownloadButton";
 import { ReportKindChip } from "./ReportKindChip";
 import {
@@ -25,8 +26,10 @@ export function ReportsSummarySkeleton() {
 export function ReportsSummary({
   projectId,
   latest,
+  projectDomain,
 }: {
   projectId: string;
+  projectDomain?: string | null;
   latest:
     | (ReportListItem & {
         sourceUrl?: string | null;
@@ -36,21 +39,23 @@ export function ReportsSummary({
 }) {
   if (!latest) return null;
   const source = latest.sourceUrl ? siteHost(latest.sourceUrl) : null;
-  const projectSite = latest.projectDomain
-    ? siteHost(latest.projectDomain)
-    : null;
+  const activeSite = projectDomain ?? latest.projectDomain;
+  const projectSite = activeSite ? siteHost(activeSite) : null;
   const mismatch = source && projectSite && source !== projectSite;
   const legacy = reportKind(latest) === UNKNOWN_APP_KIND;
   return (
     <section
-      className="space-y-3 rounded-box border border-[var(--hairline)] bg-base-100 p-5"
+      className="space-y-4 rounded-box border border-[var(--hairline)] bg-base-100 p-5"
       aria-label={t("Kaydedilmiş rapor")}
     >
       <div className="flex flex-wrap items-center gap-2">
         <h2 className="text-sm text-muted">{t("Kaydedilmiş rapor")}</h2>
         {legacy ? (
-          <span className="text-sm text-muted">
-            {t("Eski rapor · kaynak ve tarih doğrulanmamış")}
+          <span
+            className="text-sm text-muted"
+            title={t("Eski rapor · kaynak ve tarih doğrulanmamış")}
+          >
+            {t("Eski rapor")}
           </span>
         ) : (
           <ReportKindChip
@@ -59,13 +64,11 @@ export function ReportsSummary({
           />
         )}
       </div>
-      <p className="text-sm font-medium">
-        {source
-          ? t("Kaynak site: {domain}", { domain: source })
-          : t(
-              "Kaynak site doğrulanamadı. Bu rapor başka bir siteye ait olabilir.",
-            )}
-      </p>
+      {!source ? (
+        <p className="text-sm text-[var(--ink-warning)]">
+          {t("Kaynak site doğrulanmadı; kullanmadan önce kontrol edin.")}
+        </p>
+      ) : null}
       {mismatch ? (
         <p className="text-sm text-[var(--ink-warning)]">
           {t("Bu rapor projenin sitesine ait değil: {domain}.", {
@@ -80,27 +83,60 @@ export function ReportsSummary({
       >
         {displayReportTitle(latest)}
       </Link>
-      <p className="max-w-prose whitespace-pre-line text-sm">
-        {latest.summary ||
-          t(
-            "Bu rapora özet kaydedilmemiş. Bulguları ve ilk adımı raporun içinde kontrol edin.",
-          )}
-      </p>
-      <p className="text-sm text-muted">
-        {t("Dosya kaydı: {date}", { date: formatDateTime(latest.updatedAt) })}
-      </p>
-      <p className="text-sm text-subtle">
-        {t(
-          "Bugün karar vermeden önce raporun içindeki siteyi, ölçüm tarihini ve veri sınırlarını kontrol edin.",
-        )}
-      </p>
+      <FactStrip
+        label={t("Kaydedilmiş rapor")}
+        facts={[
+          { label: t("Etkin proje"), value: projectSite ?? projectId },
+          {
+            label: t("Kaynak"),
+            value: source ?? t("Doğrulanmadı"),
+            tone: !source || mismatch ? "warning" : undefined,
+          },
+          {
+            label: t("Güncellendi"),
+            value: formatDateTime(latest.updatedAt),
+            hint: t("Dosya kaydı"),
+          },
+        ]}
+        detailsLabel={t("Ayrıntılar")}
+        details={
+          <>
+            <p>
+              {source
+                ? t("Kaynak site: {domain}", { domain: source })
+                : t(
+                    "Kaynak site doğrulanamadı. Bu rapor başka bir siteye ait olabilir.",
+                  )}
+            </p>
+            {legacy ? (
+              <p>{t("Eski rapor · kaynak ve tarih doğrulanmamış")}</p>
+            ) : null}
+            <p>
+              {t(
+                "Bugün karar vermeden önce raporun içindeki siteyi, ölçüm tarihini ve veri sınırlarını kontrol edin.",
+              )}
+            </p>
+          </>
+        }
+      />
+      <details className="max-w-prose text-sm text-muted">
+        <summary className="cursor-pointer py-2 font-medium">
+          {t("Özet")}
+        </summary>
+        <p className="mt-1.5 whitespace-pre-line leading-relaxed">
+          {latest.summary ||
+            t(
+              "Bu rapora özet kaydedilmemiş. Bulguları ve ilk adımı raporun içinde kontrol edin.",
+            )}
+        </p>
+      </details>
       <div className="flex flex-wrap gap-2">
         <Link
           to="/p/$projectId/audit"
           params={{ projectId }}
           className="btn min-h-11"
         >
-          {t("Güncel bir denetim raporu oluştur")}
+          {t("Site denetimlerini aç")}
         </Link>
         <Link
           to="/p/$projectId/reports/$reportId"

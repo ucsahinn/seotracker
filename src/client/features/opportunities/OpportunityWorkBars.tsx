@@ -25,10 +25,12 @@ const plusCount = (n: number) => `+${formatCount(n)}`;
  */
 export function OpportunityWorkBars({
   byWork,
+  gainKnown = true,
   selected,
   onSelect,
 }: {
   byWork: ByWork;
+  gainKnown?: boolean;
   selected: WorkKind | null;
   onSelect: (work: WorkKind | null) => void;
 }) {
@@ -36,12 +38,9 @@ export function OpportunityWorkBars({
 
   return (
     <section className="rounded-box border border-base-300 bg-base-100 px-4 py-4 shadow-[var(--shadow-raise)]">
-      <h2 className="text-sm font-semibold">{t("Kazanç hangi işte?")}</h2>
-      <p className="mt-0.5 text-xs text-muted">
-        {t(
-          "30 güne ölçekli üst sınır; çubuklar en büyük iş türüne göredir. Bir sayfa birden fazla işte sayılabilir. Seçim tüm hesaplanabilir sayfalara uygulanır.",
-        )}
-      </p>
+      <h2 className="text-sm font-semibold">
+        {t(gainKnown ? "Kazanç hangi işte?" : "İş türüne göre sayfalar")}
+      </h2>
       <div role="group" aria-label={t("İş türleri")} className="mt-3 space-y-1">
         {WORK_KINDS.map((id) => {
           const entry = byWork[id];
@@ -65,34 +64,48 @@ export function OpportunityWorkBars({
                 </span>
                 <span className="block text-xs text-muted">
                   {empty
-                    ? t("Bu türde kazanç beklenen sayfa yok.")
-                    : t(copy.action)}
+                    ? t("Aday sayfa yok")
+                    : gainKnown
+                      ? t(copy.action)
+                      : t("Sayfayı inceleyin")}
                 </span>
               </span>
-              <span
-                aria-hidden
-                className="h-2.5 min-w-0 rounded-full bg-base-200"
-              >
+              {gainKnown && entry.gain > 0 ? (
                 <span
-                  className="block h-full origin-left rounded-full transition-transform duration-200 ease-out motion-reduce:transition-none"
-                  style={{
-                    transform: `scaleX(${entry.gainPerMonth / max})`,
-                    backgroundColor: workColor(id),
-                  }}
-                />
-              </span>
-              <span className="tabular-nums sm:text-right">
-                <span className="block text-sm">
-                  <span className="font-semibold">
-                    <AnimatedNumber
-                      value={entry.gainPerMonth}
-                      format={plusCount}
-                    />
-                  </span>{" "}
-                  <span className="text-xs text-muted">{t("tıklama/ay")}</span>
+                  aria-hidden
+                  className="h-2.5 min-w-0 rounded-full bg-base-200"
+                >
+                  <span
+                    className="block h-full origin-left rounded-full transition-transform duration-200 ease-out motion-reduce:transition-none"
+                    style={{
+                      transform: `scaleX(${entry.gainPerMonth / max})`,
+                      backgroundColor: workColor(id),
+                    }}
+                  />
                 </span>
+              ) : (
+                <span />
+              )}
+              <span className="tabular-nums sm:text-right">
+                {!gainKnown || entry.pages === 0 ? null : entry.gain === 0 ? (
+                  <span className="block text-sm text-muted">
+                    {t("Kazanç bilinmiyor")}
+                  </span>
+                ) : (
+                  <span className="block text-sm">
+                    <span className="font-semibold">
+                      <AnimatedNumber
+                        value={entry.gainPerMonth}
+                        format={plusCount}
+                      />
+                    </span>{" "}
+                    <span className="text-xs text-muted">
+                      {t("tıklama/ay")}
+                    </span>
+                  </span>
+                )}
                 <span className="block text-xs text-muted">
-                  {t("{count} sayfa", { count: entry.pages })}
+                  {t("{count} sayfa", { count: formatCount(entry.pages) })}
                 </span>
               </span>
             </button>

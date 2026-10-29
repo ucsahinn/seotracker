@@ -53,3 +53,34 @@ it("separates report and credential destinations with a wrapping gap", () => {
   expect(report.parentElement?.className).toMatch(/gap-3/);
   expect(report.className).toContain("min-h-11");
 });
+
+it("C27/C31 groups property and read status with selection and identity in one disclosure", () => {
+  const { container } = render(
+    <GoogleConnectedState
+      property="sc-domain:example.com"
+      email="owner@example.com"
+      bindingDate="2026-10-23T08:30:00Z"
+      usesServiceAccount
+      accessEvidence={{ observedAt: "2026-10-28T08:30:00Z", reason: null }}
+      canManage={false}
+      canManageAccounts={false}
+      disabled={false}
+      disconnecting={false}
+      onChange={() => {}}
+      onDisconnect={() => {}}
+    />,
+  );
+  expect(container.querySelectorAll(".fact-strip")).toHaveLength(1);
+  expect(screen.getByText("example.com").closest("details")).toBeNull();
+  expect(
+    screen.getByText(/Son başarılı Google okuması/).closest("details"),
+  ).toBeNull();
+  expect(screen.getByText("Seçildi").closest("details")).not.toBeNull();
+  expect(screen.queryByText("Dönem")).toBeNull();
+  expect(
+    screen
+      .getByText("owner@example.com")
+      .closest("details")
+      ?.querySelector("summary")?.textContent,
+  ).toContain("Bağlantı ayrıntıları");
+});

@@ -13,7 +13,7 @@ export function GoogleOAuthSetupWarning({
   return (
     <div className="alert alert-warning items-start text-sm">
       <AlertTriangle className="mt-0.5 size-4 shrink-0" />
-      <div className="space-y-1">
+      <div className="space-y-4">
         <p className="font-medium">{t("Google erişim anahtarı eksik")}</p>
         <p className="text-muted">
           {t(
@@ -22,17 +22,13 @@ export function GoogleOAuthSetupWarning({
           )}
         </p>
         <div className="flex flex-wrap items-center gap-3">
-          <Link
-            to="/settings"
-            hash="google"
-            className="font-medium underline underline-offset-2"
-          >
+          <Link to="/settings" hash="google" className="btn btn-sm min-h-11">
             {t("Ayarlar'ı aç")}
           </Link>
           <SafeExternalLink
             url={docsUrl}
             label={t("Kurulum kılavuzunu aç")}
-            className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
+            className="btn btn-ghost btn-sm min-h-11 gap-1"
           />
         </div>
       </div>

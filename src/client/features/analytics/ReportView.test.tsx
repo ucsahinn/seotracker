@@ -38,9 +38,7 @@ it("does not call unknown activity an empty period or suggest channel switching 
   expect(screen.getByText("Bu dönemin trafiği belirlenemedi")).toBeTruthy();
   expect(screen.queryByText("Bu dönemde veri yok")).toBeNull();
   expect(screen.queryByRole("button", { name: "Tüm trafiğe bak" })).toBeNull();
-  fireEvent.click(
-    screen.getByRole("button", { name: "Ölçüm durumunu kontrol et" }),
-  );
+  fireEvent.click(screen.getByRole("button", { name: "Ölçüm durumu" }));
   expect(onOpenHealth).toHaveBeenCalledOnce();
 });
 
@@ -193,21 +191,30 @@ describe("ReportView quick chips", () => {
     expect(bodyRows()).toHaveLength(1);
   });
 
-  it("reports the organic toggle to its owner", () => {
-    const onChange = vi.fn();
-    render(
-      <ReportView
-        kind="traffic_acquisition"
-        result={channels}
-        organicOnly={false}
-        onOrganicOnlyChange={onChange}
-      />,
-    );
-
-    fireEvent.click(screen.getByRole("button", { name: "Sadece organik" }));
-
-    expect(onChange).toHaveBeenCalledWith(true);
-  });
+  it.each([true, false])(
+    "shows channel scope without a second channel control (organic=%s)",
+    (organicOnly) => {
+      const onChange = vi.fn();
+      render(
+        <ReportView
+          kind="traffic_acquisition"
+          result={channels}
+          organicOnly={organicOnly}
+          onOrganicOnlyChange={onChange}
+        />,
+      );
+      const filters = within(
+        screen.getByRole("group", { name: "Hızlı filtreler" }),
+      );
+      expect(
+        filters.getByText(organicOnly ? "Organik arama" : "Tüm trafik"),
+      ).toBeDefined();
+      expect(
+        filters.queryByRole("button", { name: "Sadece organik" }),
+      ).toBeNull();
+      expect(onChange).not.toHaveBeenCalled();
+    },
+  );
 
   it("says so, and offers a way out, when the filters match nothing", () => {
     mount(channels, "traffic_acquisition");
@@ -362,7 +369,7 @@ describe("ReportView per-tab summaries", () => {
     );
 
     expect(screen.getByText("Bu dönemde anahtar olay kaydı yok")).toBeDefined();
-    fireEvent.click(screen.getByRole("button", { name: /Ölçüm durumunu/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Ölçüm durumu" }));
     expect(onOpenHealth).toHaveBeenCalled();
   });
 

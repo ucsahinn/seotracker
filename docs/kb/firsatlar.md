@@ -1,6 +1,6 @@
 ---
 title: Fırsatlar
-description: Her sayfanızın ayda kaç tıklama daha getirebileceğini ve bunun için hangi işi yapmanız gerektiğini gösterir. Rakam bir üst sınırdır, söz değil.
+description: Gözlenen sayfaları, olası işleri ve veri yeterliyse ek tıklama üst sınırını gösterir.
 screen: Fırsatlar
 route: /p/<proje>/opportunities
 updated: 2026-10-27
@@ -20,7 +20,7 @@ Bu ekran, önce hangi sayfaya bakacağınızı ve hangi işi inceleyeceğinizi g
 
 ## İş listesi ve filtreler
 
-İş türü ve dönüşüm filtresi birlikte, **ve** koşuluyla çalışır. Sunucu filtreyi bütün hesaplanabilir sayfalara uygular, sonra ilk 25, 50 veya 100 eşleşmeyi gösterir. Üst toplamlar satır sınırından ve filtrelerden etkilenmez. Bir sayfa birden fazla iş türünde sayılabilir; iş türlerinin sayfa sayılarını toplamayın. Dönem, satır sınırı ve filtreler URL'de saklanır.
+İş türü ve dönüşüm filtresi birlikte, **ve** koşuluyla çalışır. Sunucu filtreyi bütün aday sayfalara uygular, sonra ilk 25, 50 veya 100 eşleşmeyi gösterir. Üst toplamlar satır sınırından ve filtrelerden etkilenmez. Bir sayfa birden fazla iş türünde sayılabilir; iş türlerinin sayfa sayılarını toplamayın. Dönem, satır sınırı ve filtreler URL'de saklanır.
 
 Masaüstünde sıralanabilir tablo, telefonda adresi saran iş satırları vardır. **Ayrıntı** ile ölçülen sorguları açın. Her sorguda gösterim, sıra, hedef sıra grubu ve sayfa sınırından dağıtılan ek tıklama görünür. En çok kazançlı 10 sorgu gösterilir; geri kalanların katkısı ayrı satırdadır. Sorgu payları ve kalan, sayfanın gösterilen kazancını tamamlar. CTR farkı yalnızca karşılaştırılabilir marka dışı sorgularda, aynı gösterim tabanıyla ve yüzde puan olarak hesaplanır.
 
@@ -37,3 +37,7 @@ CSV veya E-Tablolar aktarımı yalnızca görünen filtreli satırları içerir.
 **Arama performansında aç** kaynak başlangıç ve bitiş tarihlerini ve birebir URL'yi koruyarak ayrıntı panelini açar. Dönem artık okunamıyorsa farklı günlere geçilmez; kullanılabilir dönem açıklanır. Yaptığınız değişikliği not edin ve aynı kapsamlı dönemlerin ölçülen tıklama, CTR ve sırasını karşılaştırın. Tahminin küçülmesi tek başına başarı kanıtı değildir. Düşük sıra veya düşük tahmin nedeniyle içerik silmeyin; birleştirmeyi ancak aynı ihtiyacın tekrarlandığını doğruladığınızda değerlendirin.
 
 Az veride bu ekran kazancı sıfır saymaz. Tahmine uygun marka dışı sorgu olmayışı; gizli sorgular, marka ayrımı veya veri sınırlarından kaynaklanabilir. En uzun dönem seçiliyse daha uzun dönem önerilmez. Arama performansını açarak gösterim alan sorguları inceleyin. Hesabın ayrıntıları Veri kapsamı ve hesaplama bölümünde açılır.
+
+Gösterim alan ancak kazancı hesaplanamayan sayfalar da listelenir: önce tahminli sayfalar kazanca göre, ardından kazancı bilinmeyen sayfalar gösterime göre. Bilinmeyen kazanç sıfır değildir; toplamlar yalnızca hesaplanan kazançları toplar. Ayrıntıda marka dışı sorgular gösterime göre sıralanır; yalnızca marka sorgusu görülen sayfalar işaretlenir. Öneri yalnızca sıraya dayanır (1–5 başlık/açıklama inceleme, 6–10 içerik, 11–20 iç bağlantı ve içerik, 21+ arama niyeti); düşük tıklama oranı veya kazanım kanıtı değildir. İş filtresi bu öneriye, dönüşüm filtresi ölçülen Analytics sinyaline uygulanır. CSV ve E-Tablolar bilinmeyen kazancı boş bırakır; durum, neden, marka işareti ve ölçülen sorguları içerir.
+
+Kazanç bilinmiyorsa önce sayfayı ve ölçülen sorguları inceleyin; başlık veya içerik değişikliği ancak uyumsuzluk doğrulanınca düşünülür. Tüm kazançlar bilinmiyorsa iş türleri çubuk yerine aday sayfa sayısıyla gösterilir. Dönüşüm özeti eşleşen ve dönüşüm durumu bilinmeyen sayfaları ayrı sayar; Analytics kapsamı yoksa sıfır dönüşüm iddia etmez. Dönüşüm filtresi yalnızca doğrulanmış kayıt varsa düğme olarak görünür. Kaynak ve dönem etiketli alanda, hesaplama ayrıntıları kapalı açıklamadadır. Eşleşmeyen Analytics verisinin nedeni ayrıntıda açıklanır; her satırda tekrarlanmaz.

@@ -59,9 +59,7 @@ it("shows unknown movement as a dash while keeping current top ten selectable", 
     expect(button.textContent).toContain("—");
     expect(button.hasAttribute("disabled")).toBe(true);
   }
-  fireEvent.click(
-    screen.getByRole("button", { name: /Dönem ortalaması ilk 10 1/ }),
-  );
+  fireEvent.click(screen.getByRole("button", { name: /İlk 10 1/ }));
   expect(setMove).toHaveBeenCalledWith("top10");
 });
 
@@ -73,8 +71,9 @@ it("keeps measured zero movement numeric when comparisons exist", () => {
 it("describes the upper quartile relative to the archive even for one impression", () => {
   mount(0);
   const chip = screen.getByRole("button", {
-    name: /Arşivde en çok gösterim 1/,
+    name: /En çok gösterilenler 1/,
   });
+  expect(screen.queryByRole("button", { name: /^Gösterimler 1/ })).toBeNull();
   expect(chip.getAttribute("title")).toContain("üst çeyrek");
   expect(chip.getAttribute("title")).toContain("1");
 });

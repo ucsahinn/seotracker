@@ -2,6 +2,7 @@ import type { Catalog } from "@/shared/i18n";
 
 /** French for shared data labels and Google API terminology. */
 export const frShared: Catalog = {
+  "Saat dilimi": "Fuseau horaire",
   "{start} – {end}. Search Console verisi {count} gün geriden gelir, bu yüzden son gün bugün olmaz.":
     {
       one: "{start} – {end}. Les données de Search Console ont {count} jour de retard ; le dernier jour ne peut donc jamais être aujourd'hui.",
@@ -125,4 +126,32 @@ export const frShared: Catalog = {
     "Aucune des pages lues ne remplit le critère de baisse.",
   "Kaydedilmiş harita keşif toplamı mevcut değil; kapsam oranı yalnızca taranan sayfaları kullanır.":
     "Aucun total d’URL découvertes dans le sitemap n’a été enregistré ; le taux de couverture utilise uniquement les pages explorées.",
+  // Calm-reading QA: reports, audit history, projects and settings.
+  "Grafik serileri": "Séries du graphique",
+  "Yüz sayfa başına sorun sayısı; değişim yalnızca aynı kapsam ve kontrollerde gösterilir.":
+    "Problèmes pour cent pages ; les évolutions ne sont affichées que pour un périmètre et des contrôles identiques.",
+  "Kaynak site doğrulanmadı; kullanmadan önce kontrol edin.":
+    "Site source non vérifié ; vérifiez avant utilisation.",
+  "Etkin proje": "Projet actif",
+  "Site denetimlerini aç": "Ouvrir les audits du site",
+  Mülk: "Propriété",
+  Seçildi: "Sélectionnée",
+  "Bağlantı ayrıntıları": "Détails de la connexion",
+  "Proje özeti": "Aperçu du projet",
+  "Son denetim": "Dernier audit",
+  Başlangıç: "Début",
+  Tamamlanma: "Fin",
+  "Proje ayrıntıları": "Détails du projet",
+  "Tema kaydı": "Enregistrement du thème",
+  "Dil kapsamı": "Portée de la langue",
+  "Google kimlikleri": "Identifiants Google",
+  "Kimlik yöntemleri": "Méthodes d’authentification",
+  "Anahtar işlemleri": "Actions sur la clé",
+  Kaydedildi: "Enregistrés",
+  "Son kontrol": "Dernière vérification",
+  Yayımlandı: "Publication",
+  "Tam metin": "Texte complet",
+  "Duyuruyu oku": "Lire l’annonce",
+  "Windows tercihleri": "Préférences Windows",
+  "Uygulamayı durdurma": "Arrêter l’application",
 };

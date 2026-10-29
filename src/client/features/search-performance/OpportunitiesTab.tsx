@@ -69,27 +69,32 @@ function CtrCurve({ view }: { view: SearchPerformanceView }) {
           </li>
         ))}
       </ul>
-      <p className="text-xs text-muted">
-        {curve.nonBrand
-          ? t(
-              "Marka dışı sorgularınızın her sıradaki tıklama oranı. Bir sırada en az {queries} sorgu ve {impressions} gösterim yoksa o sıra hesaba katılmaz; tahmin yapılmaz.",
-              {
-                queries: INSIGHT_RULES.curveMinQueries,
-                impressions: formatCount(
-                  view.insights.thresholds.curveBucketMinImpressions,
-                ),
-              },
-            )
-          : t(
-              "Sorgularınızın her sıradaki tıklama oranı (marka adları tanımlanmadığı için marka aramaları dahil). Bir sırada en az {queries} sorgu ve {impressions} gösterim yoksa o sıra hesaba katılmaz; tahmin yapılmaz.",
-              {
-                queries: INSIGHT_RULES.curveMinQueries,
-                impressions: formatCount(
-                  view.insights.thresholds.curveBucketMinImpressions,
-                ),
-              },
-            )}
-      </p>
+      <details className="text-sm text-muted">
+        <summary className="min-h-11 cursor-pointer py-3">
+          {t("Veri hakkında")}
+        </summary>
+        <p className="max-w-prose leading-relaxed">
+          {curve.nonBrand
+            ? t(
+                "Marka dışı sorgularınızın her sıradaki tıklama oranı. Bir sırada en az {queries} sorgu ve {impressions} gösterim yoksa o sıra hesaba katılmaz; tahmin yapılmaz.",
+                {
+                  queries: INSIGHT_RULES.curveMinQueries,
+                  impressions: formatCount(
+                    view.insights.thresholds.curveBucketMinImpressions,
+                  ),
+                },
+              )
+            : t(
+                "Sorgularınızın her sıradaki tıklama oranı (marka adları tanımlanmadığı için marka aramaları dahil). Bir sırada en az {queries} sorgu ve {impressions} gösterim yoksa o sıra hesaba katılmaz; tahmin yapılmaz.",
+                {
+                  queries: INSIGHT_RULES.curveMinQueries,
+                  impressions: formatCount(
+                    view.insights.thresholds.curveBucketMinImpressions,
+                  ),
+                },
+              )}
+        </p>
+      </details>
     </div>
   );
 }
@@ -152,12 +157,15 @@ export function OpportunitiesTab({
         }
       >
         {striking.rows.length === 0 ? (
-          <EmptyState
-            compact
-            icon={Target}
-            title={empty.title}
-            description={empty.description}
-          />
+          <div className="px-4">
+            <EmptyState compact icon={Target} title={empty.title} />
+            <details className="text-sm text-muted">
+              <summary className="min-h-11 cursor-pointer py-3">
+                {t("Veri hakkında")}
+              </summary>
+              <p className="max-w-prose leading-relaxed">{empty.description}</p>
+            </details>
+          </div>
         ) : (
           <StrikingTable
             projectId={projectId}

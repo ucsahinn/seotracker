@@ -1,4 +1,5 @@
 import { t } from "@/shared/i18n";
+import { FactStrip } from "@/client/components/FactStrip";
 import * as React from "react";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { Link } from "@tanstack/react-router";
@@ -106,13 +107,19 @@ export function QueryHistoryCard({
       <div
         ref={ref}
         tabIndex={-1}
-        className="rounded-box border border-base-300 bg-base-100 p-4 text-sm text-muted"
+        className="space-y-4 rounded-box border border-base-300 bg-base-100 p-4 text-sm text-muted"
       >
         <h2 className="break-all font-semibold">{query}</h2>
         {range ? (
-          <p>
-            {formatDate(range.startDate)} – {formatDate(range.endDate)}
-          </p>
+          <FactStrip
+            label={t("Dönem")}
+            facts={[
+              {
+                label: t("Dönem"),
+                value: `${formatDate(range.startDate)} – ${formatDate(range.endDate)}`,
+              },
+            ]}
+          />
         ) : null}
         <p>
           {t("Bu sorgu için kayıtlı gün yok.")}{" "}
@@ -136,19 +143,27 @@ export function QueryHistoryCard({
     <div
       ref={ref}
       tabIndex={-1}
-      className="enter space-y-3 rounded-box border border-base-300 bg-base-100 p-4"
+      className="enter space-y-4 rounded-box border border-base-300 bg-base-100 p-4"
     >
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="min-w-0 break-all text-sm font-semibold">{query}</h2>
+        <h2 className="min-w-0 break-words text-lg font-semibold">{query}</h2>
         <PositionChange delta={comparison?.delta ?? null} />
       </div>
       {range ? (
-        <p className="text-xs text-muted">
-          {formatDate(range.startDate)} – {formatDate(range.endDate)} ·{" "}
-          {formatCount(rows.length)} /{" "}
-          {formatCount(isoDaysInclusive(range.startDate, range.endDate))}{" "}
-          {t("Gözlenen gün")}
-        </p>
+        <FactStrip
+          label={t("Dönem")}
+          facts={[
+            { label: t("Kaynak"), value: "GSC Web" },
+            {
+              label: t("Dönem"),
+              value: `${formatDate(range.startDate)} – ${formatDate(range.endDate)}`,
+            },
+            {
+              label: t("Gözlenen gün"),
+              value: `${formatCount(rows.length)} / ${formatCount(isoDaysInclusive(range.startDate, range.endDate))}`,
+            },
+          ]}
+        />
       ) : null}
       {comparison?.position != null ? (
         <p className="text-sm">
@@ -160,11 +175,29 @@ export function QueryHistoryCard({
         </p>
       ) : null}
       <PositionSparkline rows={rows} range={range} coverage={coverage} />
-      <p className="text-xs text-muted">
-        {t("İlk/son kayıtlı gün")}: {formatDate(first.date)} ·{" "}
-        {formatDecimal(first.position)} → {formatDate(last.date)} ·{" "}
-        {formatDecimal(last.position)} <PositionChange delta={delta} />
-      </p>
+      <details className="max-w-prose text-sm text-muted">
+        <summary className="min-h-11 cursor-pointer">{t("Ayrıntılar")}</summary>
+        <p>
+          {t("İlk/son kayıtlı gün")}: {formatDate(first.date)} ·{" "}
+          {formatDecimal(first.position)} → {formatDate(last.date)} ·{" "}
+          {formatDecimal(last.position)} <PositionChange delta={delta} />
+        </p>
+        <div className="space-y-1.5">
+          <p>
+            {t("{start} – {end} · {count} gün kayıtlı", {
+              start: formatDate(first.date),
+              end: formatDate(last.date),
+              count: formatCount(rows.length),
+            })}
+          </p>
+          <p>
+            {t("Toplam tıklama / gösterim: {clicks} / {impressions}", {
+              clicks: formatCount(totalClicks),
+              impressions: formatCount(totalImpressions),
+            })}
+          </p>
+        </div>
+      </details>
       <details className="text-xs">
         <summary className="min-h-11 cursor-pointer">
           {t("Günlük değerler")}
@@ -178,21 +211,6 @@ export function QueryHistoryCard({
           ))}
         </ul>
       </details>
-      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-xs text-muted">
-        <p>
-          {t("{start} – {end} · {count} gün kayıtlı", {
-            start: formatDate(first.date),
-            end: formatDate(last.date),
-            count: formatCount(rows.length),
-          })}
-        </p>
-        <p>
-          {t("Toplam tıklama / gösterim: {clicks} / {impressions}", {
-            clicks: formatCount(totalClicks),
-            impressions: formatCount(totalImpressions),
-          })}
-        </p>
-      </div>
       {range && searchScopeUnavailableReason(range.startDate) ? (
         <p role="status" className="text-xs text-muted">
           {searchScopeUnavailableReason(range.startDate)}
@@ -202,7 +220,7 @@ export function QueryHistoryCard({
           to="/p/$projectId/search-performance"
           params={{ projectId }}
           search={{ tab: "queries" as const, exactQuery: query, ...range }}
-          className="link link-primary text-xs"
+          className="btn btn-outline min-h-11 h-auto max-w-full rounded-full whitespace-normal"
         >
           {t("Arama performansında aç")}
         </Link>

@@ -56,3 +56,10 @@ it("names the current Project context destination in English Help", () => {
     setLocale("tr");
   }
 });
+
+it("C31 labels the diagnostic timestamp as Last checked", () => {
+  render(<SetupStatusPanel />);
+  expect(screen.getByText("Son kontrol")).toBeTruthy();
+  expect(screen.queryByText("Dönem")).toBeNull();
+  expect(screen.queryByText(/Son kontrol:/)).toBeNull();
+});

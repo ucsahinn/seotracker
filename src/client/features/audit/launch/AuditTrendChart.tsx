@@ -18,20 +18,7 @@ import {
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { t } from "@/shared/i18n";
 
-/**
- * Whether the site is getting better, which the table under it cannot say.
- *
- * The history list has always held every completed audit with its date, and
- * the only way to answer "did last month's work help?" was to open two of
- * them in two tabs and subtract by eye. The counts were already in the
- * database; nothing here costs an extra crawl.
- *
- * Plotted per hundred pages rather than raw. A 20-page spot check and a
- * 212-page full crawl produce counts an order of magnitude apart for the
- * same site, so raw totals draw a mountain range out of the crawl settings
- * and hide the trend underneath. Density is the number that survives a
- * change of scope.
- */
+/** Density is descriptive; only persisted population and coverage evidence permits a trend. */
 
 const SEVERITY = {
   critical: "var(--color-error)",
@@ -47,10 +34,12 @@ type HistoryRow = {
   pagesCrawled: number;
   startedAt: string;
   completedAt: string | null;
+  comparison?: { previousAuditId: string; compatible: boolean };
   issues: { critical: number; warning: number; info: number };
 };
 
 type Point = {
+  comparableWithPrevious: boolean;
   key: string;
   date: string;
   pages: number;
@@ -77,6 +66,9 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
    * and deserves to be said, not drawn -- the same call the search trend
    * panel makes for a property with no impressions yet.
    */
+  const comparable = points
+    .slice(1)
+    .every((point) => point.comparableWithPrevious);
   const anyFindings = points.some(
     (point) => point.criticalTotal > 0 || point.warningTotal > 0,
   );
@@ -87,11 +79,88 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
         <h3 className="text-sm font-medium">{t("Denetimler arası değişim")}</h3>
         <p className="mt-0.5 text-xs text-muted">
           {t(
-            "Yüz sayfa başına sorun sayısı. Farklı büyüklükteki taramalar bu ölçüyle karşılaştırılabilir.",
+            "Yüz sayfa başına sorun sayısı; değişim yalnızca aynı kapsam ve kontrollerde gösterilir.",
           )}
         </p>
       </div>
-      {!anyFindings ? (
+      <div
+        role="group"
+        aria-label={t("Grafik serileri")}
+        className="flex flex-wrap gap-4 px-2 py-2 text-xs text-muted"
+      >
+        <span className="inline-flex items-center gap-2">
+          <svg width="24" height="6" aria-hidden>
+            <line
+              x1="0"
+              y1="3"
+              x2="24"
+              y2="3"
+              stroke={SEVERITY.critical}
+              strokeWidth="2"
+            />
+          </svg>
+          {t("Kritik")}
+        </span>
+        <span className="inline-flex items-center gap-2">
+          <svg width="24" height="6" aria-hidden>
+            <line
+              x1="0"
+              y1="3"
+              x2="24"
+              y2="3"
+              stroke={SEVERITY.warning}
+              strokeWidth="2"
+              strokeDasharray="4 3"
+            />
+          </svg>
+          {t("Uyarı")}
+        </span>
+      </div>
+      {!comparable ? (
+        <div className="space-y-3 px-2">
+          <p className="text-sm text-muted">
+            {t(
+              "Karşılaştırma yapılamadı: tarama kapsamları farklı veya bilinmiyor.",
+            )}
+          </p>
+          <div className="overflow-x-auto">
+            <table className="table table-sm">
+              <caption className="sr-only">
+                {t("Denetim başına sayfa yoğunluğu: yüz sayfa başına sorun")}
+              </caption>
+              <thead>
+                <tr>
+                  {[t("Tarih"), t("Sayfa"), t("Kritik"), t("Uyarı")].map(
+                    (label) => (
+                      <th key={label}>{label}</th>
+                    ),
+                  )}
+                </tr>
+              </thead>
+              <tbody>
+                {points.map((point) => (
+                  <tr key={point.key}>
+                    <td>{formatDateTime(point.date)}</td>
+                    <td>{formatCount(point.pages)}</td>
+                    <td>
+                      {t("{density} ({total} toplam)", {
+                        density: formatDecimal(point.critical),
+                        total: formatCount(point.criticalTotal),
+                      })}
+                    </td>
+                    <td>
+                      {t("{density} ({total} toplam)", {
+                        density: formatDecimal(point.warning),
+                        total: formatCount(point.warningTotal),
+                      })}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ) : !anyFindings ? (
         <p className="px-2 pt-3 text-sm text-muted">
           {t(
             "Bu {count} denetimin hiçbirinde kritik sorun ya da uyarı çıkmadı, grafik boş. Bilgi düzeyindeki bulgular denetimlerin kendi sayfalarında.",
@@ -251,7 +320,11 @@ function getPoints(history: HistoryRow[]): Point[] {
 
   // Start time, like the history list below: one audit, one time.
   return sort(usable, (a, b) => a.startedAt.localeCompare(b.startedAt)).map(
-    (row) => ({
+    (row, index, rows) => ({
+      comparableWithPrevious: Boolean(
+        row.comparison?.compatible &&
+        row.comparison.previousAuditId === rows[index - 1]?.id,
+      ),
       key: row.id,
       date: row.startedAt,
       pages: row.pagesCrawled,

@@ -109,14 +109,19 @@ export function UpdateSection({ version }: { version: string }) {
         <h2 className="text-base font-semibold">{t("Hakkında")}</h2>
       </SectionHeaderRow>
 
-      <p className="text-sm text-muted">
-        {fillParts(
-          t(
-            "Uygulama yeni sürümü fark eder ve ne yapacağınızı söyler. Windows paketi güncellemeyi kendisi kurar, Docker'da verilen komutu siz çalıştırırsınız. Docker'da kontrolü kapatırsanız GitHub'a istek gitmez. Windows paketinde görev çubuğu uygulaması günde bir kez GitHub'a bakar. Kendiliğinden kurup kurmayacağını menüdeki {option} seçeneği belirler.",
-          ),
-          { option: <strong>{t("Güncellemeleri kendiliğinden kur")}</strong> },
-        )}
-      </p>
+      <details className="text-sm text-muted">
+        <summary className="cursor-pointer py-2">{t("Ayrıntılar")}</summary>
+        <p className="text-sm text-muted">
+          {fillParts(
+            t(
+              "Uygulama yeni sürümü fark eder ve ne yapacağınızı söyler. Windows paketi güncellemeyi kendisi kurar, Docker'da verilen komutu siz çalıştırırsınız. Docker'da kontrolü kapatırsanız GitHub'a istek gitmez. Windows paketinde görev çubuğu uygulaması günde bir kez GitHub'a bakar. Kendiliğinden kurup kurmayacağını menüdeki {option} seçeneği belirler.",
+            ),
+            {
+              option: <strong>{t("Güncellemeleri kendiliğinden kur")}</strong>,
+            },
+          )}
+        </p>
+      </details>
 
       <div className="flex items-center justify-between gap-6">
         <span className="text-sm">{t("Sürüm")}</span>
@@ -247,7 +252,7 @@ export function UpdateSection({ version }: { version: string }) {
           {t("Sürüm kontrolü ayarı okunamadı. Son kayıt güncel olmayabilir.")}{" "}
           <button
             type="button"
-            className="link min-h-11"
+            className="btn btn-ghost btn-sm min-h-11"
             onClick={() => void statusQuery.refetch()}
           >
             {t("Tekrar dene")}
@@ -311,14 +316,17 @@ export function UpdateSection({ version }: { version: string }) {
 
       {/* Said plainly, because it is an outbound request the operator did not
           ask for individually and can switch off. */}
-      <p className="text-xs text-subtle">
-        {t(
-          "Kontrol açıkken uygulama, bir sekmede açık olduğu sürece en çok altı saatte bir GitHub'a bağlanıp en son sürümü sorar. GitHub bu istekte yalnızca genel IP adresinizi, uygulama adını ve sürümü görür; siteleriniz, Google hesabınız ya da denetimleriniz gönderilmez.",
-        )}
-        {status?.checkedAt
-          ? ` ${t("Son kontrol: {date}.", { date: formatDateTime(status.checkedAt) })}`
-          : ""}
-      </p>
+      <details className="text-sm text-muted">
+        <summary className="cursor-pointer py-2">{t("Ayrıntılar")}</summary>
+        <p className="text-xs text-subtle">
+          {t(
+            "Kontrol açıkken uygulama, bir sekmede açık olduğu sürece en çok altı saatte bir GitHub'a bağlanıp en son sürümü sorar. GitHub bu istekte yalnızca genel IP adresinizi, uygulama adını ve sürümü görür; siteleriniz, Google hesabınız ya da denetimleriniz gönderilmez.",
+          )}
+          {status?.checkedAt
+            ? ` ${t("Son kontrol: {date}.", { date: formatDateTime(status.checkedAt) })}`
+            : ""}
+        </p>
+      </details>
     </section>
   );
 }
@@ -329,7 +337,7 @@ function WindowsSettingsLink() {
   return (
     <a
       href="#windows"
-      className="link inline-flex min-h-11 items-center text-sm"
+      className="btn btn-ghost btn-sm min-h-11 h-auto whitespace-normal"
     >
       {t("Windows otomatik kurulum ayarları")}
     </a>

@@ -2,9 +2,14 @@
 <html lang="de">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Versionshinweise | seowatcher-Anleitung</title>
     <meta
@@ -102,7 +107,7 @@
       property="og:image:alt"
       content="seowatcher-Karte: das Dashboard der App mit Daten aus Search Console, Analytics 4 und dem Website-Audit, dazu eine Download-Schaltfläche für Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/de/dokumentation/versionshinweise/"
@@ -164,7 +169,7 @@
             "description": "seowatcher 0.8.4 Alpha — vollständige Google-Daten, lebendige Farben und erneut mit echten Daten geprüfte, auf dem Handy besser lesbare Ansichten.",
             "url": "https://seowatcher.io/de/dokumentation/versionshinweise/",
             "inLanguage": "de",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Hilfe und Nachschlagen",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -1504,7 +1509,11 @@
                 >Gespeicherte Suchbegriffe</a
               >
             </li>
-            <li><a href="/de/dokumentation/datenanalyse/">Analytics</a></li>
+            <li>
+              <a href="/de/dokumentation/datenanalyse/"
+                >Analysedaten verstehen</a
+              >
+            </li>
             <li>
               <a href="/de/dokumentation/website-audit/">Website-Audit</a>
             </li>
@@ -1543,7 +1552,7 @@
           Ansichten.
         </p>
         <p>
-          Die neueste Version ist <strong>0.8.4 Alpha</strong> vom 28. Oktober
+          Die neueste Version ist <strong>0.8.5 Alpha</strong> vom 28. Oktober
           2026. Ihre Daten bleiben beim Aktualisieren erhalten.
         </p>
         <p>
@@ -1551,9 +1560,9 @@
           Installationsprogramm manuell starten; der alte Updater erkennt die
           kleinere Nummer nicht als neuer.
         </p>
-        <h2 id="0-8-4-alpha-2026-10-28">0.8.4 Alpha — 2026-10-28</h2>
+        <h2 id="0-8-5-alpha-2026-10-28">0.8.5 Alpha — 2026-10-28</h2>
         <p>
-          Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.4:
+          Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.5:
           Website-Audit, Übersicht, Benachrichtigungen und sechs Sprachen sowie
           genauere Daten und besser lesbare Bildschirme.
         </p>
@@ -1664,7 +1673,9 @@
           <li>
             <strong>Windows-Benachrichtigungen:</strong> Updates und
             Ankündigungen erscheinen auch im Benachrichtigungsbereich von
-            Windows.
+            Windows. Windows meldet auch abgeschlossene oder fehlgeschlagene
+            Audits. Im Menü des Taskleistensymbols können Sie diese
+            Benachrichtigungen ausschalten.
           </li>
           <li>
             <strong>Ankündigungen:</strong> Neuigkeiten erscheinen im Bildschirm
@@ -1729,6 +1740,12 @@
             Conversions rosé. Karten und Diagramme nutzen in beiden Designs
             dieselben kräftigeren Farben.
           </li>
+          <li>
+            <strong>Ruhigere Ansichten:</strong> Quelle, Zeitraum und Aktualität
+            stehen mit kurzen Beschriftungen zusammen. Längere Erklärungen
+            öffnen Sie bei Bedarf; kurze Namen und klare Schaltflächen
+            erleichtern die Bedienung.
+          </li>
         </ul>
         <h3 id="projekte-und-gespeicherte-suchbegriffe">
           🗂️ Projekte und gespeicherte Suchbegriffe
@@ -1756,7 +1773,9 @@
             <strong>Genauere Audits:</strong> Fehler auf echten Websites wurden
             behoben; Vergleiche nutzen die Seiten des jeweiligen Audits, und bei
             Startproblemen bleibt der Audit-Eintrag erhalten. Auch
-            Fehlermeldungen im Audit-Verlauf passen auf den Bildschirm.
+            Fehlermeldungen im Audit-Verlauf passen auf den Bildschirm. Die
+            Zahlen im Audit-Verlauf erklären, dass sie Ergebnisse einzelner
+            Seiten und der gesamten Website umfassen.
           </li>
           <li>
             <strong>Menüs und Tastatur:</strong> Ansichten, Berichte und
@@ -1779,7 +1798,13 @@
             zählen, und Problemnamen werden vollständig angezeigt. Eine leere
             Liste gespeicherter Suchbegriffe ist sofort als leer erkennbar. Die
             Positionsverfolgung spricht von durchschnittlichen Positionen; Hilfe
-            und Seitenwechsel verwenden die passenden Menünamen.
+            und Seitenwechsel verwenden die passenden Menünamen. Das
+            Sitzungsdiagramm in der Übersicht ist richtig beschriftet;
+            Positionen werden als Durchschnitt des gewählten Zeitraums
+            beschrieben. Einzahl und Mehrzahl wurden auf Englisch, Deutsch,
+            Französisch, Italienisch und Portugiesisch korrigiert. Ihr
+            KI-Assistent findet wieder Seiten, die bei derselben Suche
+            miteinander konkurrieren.
           </li>
           <li>
             <strong>Genauere Zahlen:</strong> Fehlende Messwerte zählen nicht
@@ -1791,7 +1816,10 @@
             mehr, wenn bereits 90 Tage gewählt sind. Auch bei wenigen Besuchern
             werden fehlende Daten von einer echten Null unterschieden. Analytics
             erklärt unbekannte Messwerte nur einmal; leere Tabellen blenden die
-            Schaltflächen für die vorherige und nächste Seite aus.
+            Schaltflächen für die vorherige und nächste Seite aus. Chancen zeigt
+            auch bei wenigen Besuchern Seiten mit ihren echten Messwerten.
+            Beruht ein Vorschlag auf der durchschnittlichen Position und lässt
+            sich kein Zugewinn berechnen, wird dieser als unbekannt angezeigt.
           </li>
           <li>
             <strong>Verbindungsstatus:</strong> Property-Auswahl und bestätigter
@@ -1811,7 +1839,8 @@
             Benutzerordner; reparierte Assistentenverbindungen bleiben nach
             einem Neustart erhalten, und die Startprüfung hängt nicht mehr fest.
             Ein nicht nutzbarer Link zu den Windows-Einstellungen wird
-            ausgeblendet.
+            ausgeblendet. Während Ihrer Abwesenheit eingegangene
+            Benachrichtigungen erscheinen jetzt, wenn Sie zur App zurückkehren.
           </li>
         </ul>
         <h3 id="sicherheit">🔒 Sicherheit</h3>
@@ -1836,7 +1865,7 @@
           Windows bekam die Installation mit einem Klick, und die Website
           seowatcher.io samt Anleitung ging online.
         </p>
-        <h3 id="hohepunkte">✨ Höhepunkte</h3>
+        <h3 id="hohepunkte-2">✨ Höhepunkte</h3>
         <ul>
           <li>
             <strong>Installation mit einem Klick:</strong> Installieren Sie
@@ -1852,7 +1881,7 @@
             Anleitung sind in sechs Sprachen online.
           </li>
         </ul>
-        <h3 id="windows">🪟 Windows</h3>
+        <h3 id="windows-2">🪟 Windows</h3>
         <ul>
           <li>
             <strong>Einfache Installation:</strong> Starten Sie die Datei; sie
@@ -1923,7 +1952,7 @@
             und dunkles Design passen zur Website.
           </li>
         </ul>
-        <h3 id="fehlerbehebungen">🛠️ Fehlerbehebungen</h3>
+        <h3 id="fehlerbehebungen-2">🛠️ Fehlerbehebungen</h3>
         <ul>
           <li>
             <strong>Google-Verbindung:</strong> Eine falsche Warnung
@@ -1946,7 +1975,7 @@
           Website-Audit und Geschwindigkeitsmessungen in einer App auf Ihrem
           eigenen Computer.
         </p>
-        <h3 id="hohepunkte">✨ Höhepunkte</h3>
+        <h3 id="hohepunkte-3">✨ Höhepunkte</h3>
         <ul>
           <li>
             <strong>Daten an einem Ort:</strong> Search Console, Analytics,
@@ -2010,7 +2039,7 @@
             Animation.
           </li>
         </ul>
-        <h3 id="fehlerbehebungen">🛠️ Fehlerbehebungen</h3>
+        <h3 id="fehlerbehebungen-3">🛠️ Fehlerbehebungen</h3>
         <ul>
           <li>
             <strong>Hängende Audits:</strong> Ein Audit, das auf halbem Weg
@@ -2030,7 +2059,7 @@
             Verbinden nach etwa einer Stunde ist behoben.
           </li>
         </ul>
-        <h3 id="sicherheit">🔒 Sicherheit</h3>
+        <h3 id="sicherheit-2">🔒 Sicherheit</h3>
         <ul>
           <li>
             <strong>Sichere Berichte:</strong> Ein heruntergeladener Bericht ist
@@ -2072,7 +2101,7 @@
           ><span class="pager-next empty"></span>
         </nav>
         <p class="meta">
-          Zuletzt aktualisiert: 28 Oktober 2026. Fehler entdeckt?
+          Zuletzt aktualisiert: 29 Oktober 2026. Fehler entdeckt?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -2085,7 +2114,7 @@
         <p class="toc-label">Auf dieser Seite</p>
         <ol>
           <li>
-            <a href="#0-8-4-alpha-2026-10-28">0.8.4 Alpha — 2026-10-28</a>
+            <a href="#0-8-5-alpha-2026-10-28">0.8.5 Alpha — 2026-10-28</a>
           </li>
           <li>
             <a href="#0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</a>

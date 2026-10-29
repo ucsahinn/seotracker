@@ -1,5 +1,6 @@
 import { formatDateTime } from "@/client/lib/format";
-import { GoogleAccessEvidence } from "./GoogleAccessEvidence";
+import { FactStrip } from "@/client/components/FactStrip";
+import { googleAuthErrorCopy } from "./googleAuthErrorCopy";
 import { Loader2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { t } from "@/shared/i18n";
@@ -14,7 +15,8 @@ export function GoogleConnectedState({
   canManage,
   canManageAccounts,
   disabled,
-  metadata,
+  propertyTimeZone,
+  propertyCurrencyCode,
   bindingDate,
   usesServiceAccount,
   accessEvidence,
@@ -28,7 +30,8 @@ export function GoogleConnectedState({
     reason: string | null;
     lastSuccessAt?: string | null;
   } | null;
-  metadata?: React.ReactNode;
+  propertyTimeZone?: string | null;
+  propertyCurrencyCode?: string | null;
   bindingDate?: string | null;
   usesServiceAccount?: boolean;
   property: string;
@@ -56,60 +59,111 @@ export function GoogleConnectedState({
 
   return (
     <div className="space-y-4">
-      <div className="min-w-0">
-        <p className="break-words text-sm font-semibold">
-          {domainProperty ?? (property || detail)}
-        </p>
-        {domainProperty ? (
-          <p className="mt-1 text-xs text-muted">
-            {t(
-              "Alan adı mülkü: tüm alt alan adlarını ve http/https adreslerini kapsar.",
-            )}
-          </p>
-        ) : null}
-        {detail ? (
-          <p className="mt-1 text-xs text-muted">
-            ID {detail.replace(/^properties\//, "")}
-          </p>
-        ) : null}
-        {email ? (
-          <p className="mt-1 break-all text-sm text-muted">{email}</p>
-        ) : null}
-      </div>
-      {bindingDate ? (
-        <p className="text-xs text-muted">
-          {t("Mülk seçim tarihi: {date}", {
-            date: formatDateTime(bindingDate),
-          })}
-        </p>
-      ) : null}
-      {usesServiceAccount !== undefined ? (
-        <p className="text-xs text-muted">
-          {usesServiceAccount
-            ? t("Kimlik yöntemi: hizmet hesabı")
-            : t("Kimlik yöntemi: Google OAuth")}
-        </p>
-      ) : null}
-      {metadata ?? <GoogleAccessEvidence evidence={accessEvidence} />}
-      <p className="text-sm text-muted">
-        {t(
-          "Bu ekran Google’dan yeni veri istemez. Buradaki okuma bilgisi kayıtlı geçmişe aittir; güncel veriyi raporda görebilirsiniz.",
-        )}
-      </p>
+      <FactStrip
+        label={t("Bağlantılar")}
+        facts={[
+          {
+            label: t("Mülk"),
+            value: (
+              <span className="break-all">
+                {domainProperty ?? (property || detail)}
+              </span>
+            ),
+          },
+          {
+            label: t("Durum"),
+            tone: accessEvidence?.reason ? "warning" : undefined,
+            value: !accessEvidence
+              ? t("Veri erişimi henüz doğrulanmadı.")
+              : accessEvidence.reason === null
+                ? t("Son başarılı Google okuması: {date}", {
+                    date: formatDateTime(accessEvidence.observedAt),
+                  })
+                : t("Son başarısız Google okuması: {date}", {
+                    date: formatDateTime(accessEvidence.observedAt),
+                  }),
+          },
+          ...(bindingDate
+            ? [{ label: t("Seçildi"), value: formatDateTime(bindingDate) }]
+            : []),
+          ...(email
+            ? [
+                {
+                  label: t("E-posta"),
+                  value: <span className="break-all">{email}</span>,
+                },
+              ]
+            : []),
+          ...(detail
+            ? [{ label: "ID", value: detail.replace(/^properties\//, "") }]
+            : []),
+          ...(usesServiceAccount !== undefined
+            ? [
+                {
+                  label: t("Kaynak"),
+                  value: usesServiceAccount
+                    ? t("Kimlik yöntemi: hizmet hesabı")
+                    : t("Kimlik yöntemi: Google OAuth"),
+                },
+              ]
+            : []),
+          ...(propertyTimeZone !== undefined
+            ? [
+                {
+                  label: t("Saat dilimi"),
+                  value: propertyTimeZone ?? t("Bilinmiyor"),
+                },
+              ]
+            : []),
+          ...(propertyCurrencyCode !== undefined
+            ? [
+                {
+                  label: t("Para birimi"),
+                  value: propertyCurrencyCode ?? t("Bilinmiyor"),
+                },
+              ]
+            : []),
+        ]}
+        detailsLabel={t("Bağlantı ayrıntıları")}
+        details={
+          <>
+            {domainProperty ? (
+              <p>
+                {t(
+                  "Alan adı mülkü: tüm alt alan adlarını ve http/https adreslerini kapsar.",
+                )}
+              </p>
+            ) : null}
+            <p>
+              {t(
+                "Bu ekran Google’dan yeni veri istemez. Buradaki okuma bilgisi kayıtlı geçmişe aittir; güncel veriyi raporda görebilirsiniz.",
+              )}
+            </p>
+            {accessEvidence?.reason ? (
+              <p>{googleAuthErrorCopy(accessEvidence.reason).description}</p>
+            ) : null}
+            {accessEvidence?.reason && accessEvidence.lastSuccessAt ? (
+              <p>
+                {t("Son başarılı Google okuması: {date}", {
+                  date: formatDateTime(accessEvidence.lastSuccessAt),
+                })}
+              </p>
+            ) : null}
+          </>
+        }
+      />
       <div className="flex flex-wrap gap-3">
         {reportHref && reportLabel ? (
-          <a
-            href={reportHref}
-            className="link inline-flex min-h-11 items-center text-sm"
-          >
+          <a href={reportHref} className="btn btn-ghost btn-sm min-h-11">
             {reportLabel}
           </a>
         ) : null}
         <a
           href="/settings#google"
-          className="link inline-flex min-h-11 items-center text-sm"
+          aria-label={t("Kurulumun Google kimlik ayarları")}
+          className="btn btn-ghost btn-sm min-h-11 max-w-full h-auto whitespace-normal text-left"
         >
-          {t("Kurulumun Google kimlik ayarları")}
+          {t("Ayarlar")}
         </a>
       </div>
       {canManage || canManageAccounts ? (
@@ -122,11 +176,14 @@ export function GoogleConnectedState({
             className="btn btn-outline btn-sm border-base-300"
             ref={changeButton}
             data-google-change
+            aria-label={
+              canManage
+                ? t("Mülkü veya hesabı değiştir")
+                : t("Google hesaplarını yönet")
+            }
             onClick={onChange}
           >
-            {canManage
-              ? t("Mülkü veya hesabı değiştir")
-              : t("Google hesaplarını yönet")}
+            {t("Değiştir")}
           </button>
           {canManage && !confirming ? (
             <button

@@ -16,6 +16,7 @@ import type { DashboardAuditSummary } from "@/types/schemas/dashboard";
 import { formatCount } from "@/shared/format";
 import { describeAuditFailure } from "@/client/features/audit/results/auditFailureCopy";
 import { t } from "@/shared/i18n";
+import { FactStrip } from "@/client/components/FactStrip";
 
 // Plain string-keyed view of the registry: issue types from the DB are not
 // statically guaranteed to be registry keys. Read at render time and passed
@@ -96,19 +97,6 @@ function RunningAuditCard({
   return (
     <CardShell
       title={t("Site denetimi")}
-      // Not prefixed with "Site denetimi": CardShell renders that as the
-      // title directly above, so the one metadata line was spending its
-      // first third repeating it.
-      stamp={
-        audit.status === "completed"
-          ? t("{count} sayfa tarandı · {date}", {
-              count: audit.pagesCrawled,
-              date: formatDay(audit.startedAt),
-            })
-          : audit.status === "running"
-            ? t("denetim sürüyor")
-            : t("son denetim başarısız")
-      }
       action={
         <Link
           to="/p/$projectId/audit"
@@ -124,28 +112,62 @@ function RunningAuditCard({
       }
     >
       <div key={flash.key} className={flash.className}>
-        <p className="mb-3 break-words text-xs text-muted">{audit.startUrl}</p>
-        {audit.coverage ? (
-          <p className="mb-3 text-sm text-muted">
-            {t("{measured} / {total} kontrol ölçüldü.", {
-              measured: formatCount(audit.coverage.measured),
-              total: formatCount(audit.coverage.total),
-            })}
-          </p>
-        ) : null}
-        {audit.affectedPages !== undefined ? (
-          <p className="mb-3 text-sm">
-            {t("Etkilenen benzersiz sayfa: {pages} · Kontrol türü: {types}.", {
-              types: formatCount(audit.totalIssueTypes),
-              pages: formatCount(audit.affectedPages),
-            })}
-          </p>
-        ) : null}
-        {audit.limitNote ? (
-          <p className="mb-3 text-sm text-[var(--ink-warning)]">
-            {audit.limitNote}
-          </p>
-        ) : null}
+        <div className="mb-4">
+          <FactStrip
+            label={t("Site denetimi")}
+            facts={[
+              { label: t("Kaynak"), value: audit.startUrl },
+              {
+                label: t("Tarih"),
+                value:
+                  audit.status === "completed"
+                    ? t("{count} sayfa tarandı · {date}", {
+                        count: formatCount(audit.pagesCrawled),
+                        date: formatDay(audit.startedAt),
+                      })
+                    : audit.status === "running"
+                      ? t("denetim sürüyor")
+                      : t("son denetim başarısız"),
+                hint: audit.limitNote ? t("Kısmi veri") : undefined,
+                tone: audit.limitNote ? "warning" : undefined,
+              },
+              ...(audit.coverage
+                ? [
+                    {
+                      label: t("Site denetimi"),
+                      value: t("{measured} / {total} kontrol ölçüldü.", {
+                        measured: formatCount(audit.coverage.measured),
+                        total: formatCount(audit.coverage.total),
+                      }),
+                    },
+                  ]
+                : []),
+            ]}
+            detailsLabel={t("Veri hakkında")}
+            details={
+              audit.affectedPages !== undefined || audit.limitNote ? (
+                <div className="max-w-prose space-y-1.5 text-sm text-muted">
+                  {audit.affectedPages !== undefined ? (
+                    <p>
+                      {t(
+                        "Etkilenen benzersiz sayfa: {pages} · Kontrol türü: {types}.",
+                        {
+                          types: formatCount(audit.totalIssueTypes),
+                          pages: formatCount(audit.affectedPages),
+                        },
+                      )}
+                    </p>
+                  ) : null}
+                  {audit.limitNote ? (
+                    <p className="text-[var(--ink-warning)]">
+                      {audit.limitNote}
+                    </p>
+                  ) : null}
+                </div>
+              ) : undefined
+            }
+          />
+        </div>
         {/* An empty issue list only means "healthy" for an audit that finished.
           A crawl still running has not looked yet, and one that failed at
           discovery never looked at all -- both used to get the green check,

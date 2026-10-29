@@ -1,6 +1,6 @@
 ---
 title: Audit du site
-description: L'application parcourt votre site page par page, applique 202 règles et classe les problèmes par importance. Le score dit aussi quelle part a pu être mesurée. Un audit arrêté en route n'a pas de score.
+description: Vérifier votre site avec 202 règles et traiter les problèmes par priorité. Comprendre le score, la couverture des mesures et les résultats incomplets.
 screen: Site denetimi
 route: /p/<proje>/audit
 updated: 2026-10-28
@@ -21,7 +21,7 @@ L'application parcourt votre site avec son propre explorateur (un programme qui 
 
 Si vous n'avez pas de clé PageSpeed (le code gratuit que Google fournit pour la mesure de vitesse), la mesure de vitesse est limitée à 50 pages. Pour tout mesurer, ajoutez une clé gratuite dans **Paramètres**. **Démarrer l'audit** lance l'audit. La section **Quotas** en dessous est repliée. Dépliez-la pour voir l'état actuel des quotas PageSpeed et d'inspection d'URL.
 
-**Audits précédents.** La date, l'adresse, l'état, le nombre de pages et le nombre de problèmes de chaque audit sont listés. Les nombres de problèmes sont ramenés à cent pages, le total est entre parenthèses. Vous pouvez ainsi comparer des audits de 50 et de 500 pages. Si plusieurs sites ont été audités dans le projet, un sélecteur de site apparaît au-dessus de la liste. Le graphique et les flèches de variation comparent toujours des audits du même site. Quand plusieurs sites sont sélectionnés, le graphique est masqué. **Afficher** sur une ligne ouvre l'audit. Le menu de la ligne propose **Relancer avec les mêmes paramètres** et **Supprimer l'audit**. Supprimer efface aussi les pages, les problèmes et les mesures de vitesse de l'audit, et ne peut pas être annulé.
+**Audits précédents.** La date, l'adresse, l'état, le nombre de pages et le nombre de problèmes de chaque audit sont listés. Les colonnes Critique, Avertissement et Info affichent tous les constats enregistrés, y compris ceux des pages et les contrôles du site entier ; une page peut avoir plusieurs constats. Si plusieurs sites ont été audités dans le projet, un sélecteur de site apparaît au-dessus de la liste. La densité correspond aux problèmes pour cent pages. Les courbes et les flèches de variation apparaissent uniquement si les données enregistrées confirment le même site, le même ensemble de pages, les mêmes paramètres d’exploration et les mêmes contrôles mesurés. Si les périmètres diffèrent ou sont inconnus, les nombres restent indépendants ; la variation ne peut pas être déterminée. Quand plusieurs sites sont sélectionnés, le graphique est masqué. **Afficher** sur une ligne ouvre l'audit. Le menu de la ligne propose **Relancer avec les mêmes paramètres** et **Supprimer l'audit**. Supprimer efface aussi les pages, les problèmes et les mesures de vitesse de l'audit, et ne peut pas être annulé.
 
 **Détail de l'audit.** En haut, **Télécharger le rapport** télécharge un rapport HTML d'un seul fichier et l'enregistre dans **Rapports**. En dessous, des avertissements jaunes apparaissent au besoin (voir plus bas). Vient ensuite la carte du score.
 

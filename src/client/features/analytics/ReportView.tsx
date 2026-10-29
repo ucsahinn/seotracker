@@ -25,7 +25,7 @@ import { buildKpis } from "@/client/features/analytics/reportKpis";
 import { buildSummary } from "@/client/features/analytics/reportBuckets";
 import { buildCsv, downloadCsv } from "@/client/lib/csv";
 import { exportTableToSheets } from "@/client/lib/exportToSheets";
-import { formatCount, formatDate } from "@/client/lib/format";
+import { formatCount } from "@/client/lib/format";
 import { WeakConversionTile } from "./WeakConversionTile";
 import { buildReportExport } from "./reportExport";
 import type { Ga4ReportKindName } from "@/shared/ga4-reports";
@@ -243,7 +243,7 @@ export function ReportView({
     );
   }
   return (
-    <div className="space-y-3" id="analytics-report">
+    <div className="space-y-4" id="analytics-report">
       <AnalyticsEvidence result={result} onOpenHealth={onOpenHealth} />
       <ReportListScope
         scope={scope}
@@ -274,20 +274,6 @@ export function ReportView({
         }}
       />
 
-      <p className="text-xs text-muted">
-        {result.propertyDisplayName ?? t("Analytics mülkü")} ·{" "}
-        {formatDate(result.dateRange.startDate)} –{" "}
-        {formatDate(result.dateRange.endDate)} ·{" "}
-        {result.rowCount < result.totalRowCount
-          ? t("{shown} / {count} satır", {
-              shown: formatCount(result.rowCount),
-              count: result.totalRowCount,
-            })
-          : t("{count} satır", { count: result.totalRowCount })}
-        {result.sampled ? ` · ${t("örneklenmiş")}` : ""}
-        {result.thresholded ? ` · ${t("eşik altı satırlar gizlendi")}` : ""}
-      </p>
-
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div
           ref={filtersRef}
@@ -297,17 +283,9 @@ export function ReportView({
           aria-label={t("Hızlı filtreler")}
         >
           {kind !== "site_search" ? (
-            <button
-              type="button"
-              aria-pressed={organicOnly}
-              title={t(
-                "Organik arama motorlarından gelen ziyaretleri gösterir.",
-              )}
-              className={`btn btn-sm min-h-11 sm:min-h-0 rounded-full ${organicOnly ? "btn-neutral" : "btn-ghost border-base-300"}`}
-              onClick={() => onOrganicOnlyChange(!organicOnly)}
-            >
-              {t("Sadece organik")}
-            </button>
+            <span className="text-sm text-muted">
+              {organicOnly ? t("Organik arama") : t("Tüm trafik")}
+            </span>
           ) : null}
           {chips.map((chip) => {
             const on = activeChips.includes(chip.id);
@@ -383,13 +361,20 @@ export function ReportView({
         ) : null}
       </div>
 
-      {chips
-        .filter((chip) => chip.disabledReason)
-        .map((chip) => (
-          <p key={chip.id} className="text-xs text-muted">
-            {chip.disabledReason}
-          </p>
-        ))}
+      {chips.some((chip) => chip.disabledReason) ? (
+        <details className="text-sm text-muted">
+          <summary className="min-h-11 cursor-pointer py-3">
+            {t("Hızlı filtreler")}
+          </summary>
+          <div className="max-w-prose space-y-1.5">
+            {chips
+              .filter((chip) => chip.disabledReason)
+              .map((chip) => (
+                <p key={chip.id}>{chip.disabledReason}</p>
+              ))}
+          </div>
+        </details>
+      ) : null}
 
       {rows.length === 0 ? (
         <div className="rounded-box border border-base-300 bg-base-100">

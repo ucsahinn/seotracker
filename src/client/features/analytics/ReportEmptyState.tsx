@@ -126,7 +126,7 @@ export function ReportEmptyState({
                 className="btn btn-sm min-h-11"
                 onClick={onOpenHealth}
               >
-                {t("Ölçüm durumunu kontrol et")}
+                {t("Ölçüm durumu")}
               </button>
             ) : null}
           </div>
@@ -139,21 +139,30 @@ export function ReportEmptyState({
     <EmptyState
       icon={copy.icon}
       title={t(copy.title)}
-      description={[
-        narrowedByChannel
-          ? t(
-              "Şu an organik arama motorlarından gelen ziyaretler sayılıyor; tüm trafiğe bakmak sonucu değiştirebilir.",
-            )
-          : null,
-        t(copy.because),
-        emptyReason
-          ? t("Google'ın verdiği not: {reason}.", { reason: emptyReason })
-          : null,
-      ]
-        .filter(Boolean)
-        .join(" ")}
       action={
         <div className="flex flex-wrap items-center justify-center gap-2">
+          <details className="w-full max-w-prose text-sm text-muted">
+            <summary className="min-h-11 cursor-pointer py-3">
+              {t("Ayrıntılar")}
+            </summary>
+            <p className="pb-4">
+              {[
+                narrowedByChannel
+                  ? t(
+                      "Şu an organik arama motorlarından gelen ziyaretler sayılıyor; tüm trafiğe bakmak sonucu değiştirebilir.",
+                    )
+                  : null,
+                t(copy.because),
+                emptyReason
+                  ? t("Google'ın verdiği not: {reason}.", {
+                      reason: emptyReason,
+                    })
+                  : null,
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            </p>
+          </details>
           {narrowedByChannel ? (
             <button
               type="button"
@@ -170,13 +179,13 @@ export function ReportEmptyState({
               onClick={onOpenHealth}
             >
               <Activity aria-hidden className="size-3.5" />
-              {t("Ölçüm durumunu kontrol et")}
+              {t("Ölçüm durumu")}
             </button>
           ) : null}
           <SafeExternalLink
             url={copy.help.url}
             label={t(copy.help.label)}
-            className="link inline-flex items-center gap-1 text-sm"
+            className="btn btn-sm min-h-11 h-auto rounded-full py-2"
           />
         </div>
       }

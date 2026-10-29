@@ -41,4 +41,9 @@ export const ptNotifications: Catalog = {
   "Google hesabıyla giriş seçeneği": "Entrar com uma conta do Google",
   "Az trafik alan sitelerde Google bazı sorguları gizler. Sayfa toplamlarında tıklama varken sorgu listesi boş veya daha küçük olabilir; bu tek başına bağlantı hatası değildir.":
     "Em sites com pouco tráfego de pesquisa, o Google oculta algumas consultas. A lista pode estar vazia ou mostrar menos cliques que os totais por página. Isso, por si só, não indica falha na conexão.",
+  "Bu tarayıcı": "Este navegador",
+  "Henüz bildirim yok": "Ainda não há notificações",
+  "Para birimi": "Moeda",
+  "Mülk alan adını kapsamıyor.": "A propriedade não abrange este domínio.",
+  "Denetim eski": "Auditoria antiga",
 };

@@ -1,4 +1,5 @@
 import { PageHeader, PageShell } from "@/client/components/PageShell";
+import { FactStrip } from "@/client/components/FactStrip";
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { getProjects } from "@/serverFunctions/projects";
@@ -32,23 +33,33 @@ function ProjectSettingsLayout() {
         <Link to="/projects" className={backLinkClass}>
           <BackLinkLabel>{t("Projeler")}</BackLinkLabel>
         </Link>
-        {/* The non-breaking space is a placeholder: the project name
-            arrives a beat after the heading, and without it the tab
-            strip below jumped up a line and back. */}
-        <PageHeader
-          title={t("Proje ayarları")}
-          description={
-            project
-              ? t(
+        <PageHeader title={t("Proje ayarları")} />
+        {project ? (
+          <FactStrip
+            label={t("Proje ayarları")}
+            facts={[
+              { label: t("Ad"), value: project.name },
+              {
+                label: t("Alan adı"),
+                value: project.domain ?? t("Alan adı belirtilmedi"),
+              },
+            ]}
+            detailsLabel={t("Ayrıntılar")}
+            details={
+              <p>
+                {t(
                   "{name} · {domain}. Değişiklikler yalnızca bu projeye uygulanır.",
                   {
                     name: project.name,
                     domain: project.domain ?? t("Alan adı belirtilmedi"),
                   },
-                )
-              : " "
-          }
-        />
+                )}
+              </p>
+            }
+          />
+        ) : (
+          <div className="skeleton h-16 w-full" aria-busy="true" />
+        )}
         {/* Navigation, not tabs: each one changes the URL and swaps the
             <Outlet/>. `role="tab"` here announced "tab" instead of "link" and
             promised an `aria-controls` panel that never existed. The daisyUI

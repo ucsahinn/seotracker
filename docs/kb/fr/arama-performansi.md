@@ -1,6 +1,6 @@
 ---
 title: Performances de recherche
-description: Vous voyez combien de fois vous apparaissez sur Google, combien de clics vous obtenez et ce qu'il faut corriger d'abord. Les chiffres viennent de Search Console. Les gains sont un plafond.
+description: Comprendre clics, impressions et positions dans Search Console. Prioriser les pages à corriger et lire les limites des gains estimés.
 screen: Arama performansı
 route: /p/<proje>/search-performance
 updated: 2026-10-28

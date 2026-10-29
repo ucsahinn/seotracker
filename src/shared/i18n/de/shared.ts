@@ -2,6 +2,7 @@ import type { Catalog } from "@/shared/i18n";
 
 /** German for shared data labels and Google API terminology. */
 export const deShared: Catalog = {
+  "Saat dilimi": "Zeitzone",
   "{start} – {end}. Search Console verisi {count} gün geriden gelir, bu yüzden son gün bugün olmaz.":
     {
       one: "{start} – {end}. Die Search-Console-Daten liegen {count} Tag zurück, deshalb ist der letzte Tag nie heute.",

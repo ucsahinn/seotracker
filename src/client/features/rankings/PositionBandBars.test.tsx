@@ -47,6 +47,16 @@ describe("PositionBandBars", () => {
     expect(screen.queryByText(/aynı 0 sorguda net değişim/)).toBeNull();
   });
 
+  it("omits unavailable deltas from each band when the whole comparison is missing", () => {
+    render(
+      <PositionBandBars rows={rows} active={undefined} onChange={vi.fn()} />,
+    );
+    expect(screen.queryByText("Karşılaştırma yok")).toBeNull();
+    expect(
+      screen.getByRole("button", { name: "Sıra 1-3: 2 sorgu" }),
+    ).toBeDefined();
+  });
+
   it("counts each band and filters on click", () => {
     const onChange = vi.fn();
     render(

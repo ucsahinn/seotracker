@@ -11,6 +11,7 @@ import { AlertCircle } from "lucide-react";
 import { formatDate, formatDateTime, formatNumber } from "@/client/lib/format";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { Link } from "@tanstack/react-router";
+import { FactStrip } from "@/client/components/FactStrip";
 
 export function ArchiveStatus({
   sync,
@@ -40,13 +41,8 @@ export function ArchiveStatus({
   };
 }) {
   if (sync.isLoading) {
-    /*
-     * A line of text where a line of text is coming. `ArchiveStatus` renders
-     * one sentence, so a skeleton of the same shape is the honest
-     * placeholder -- and unlike the spinner it does not claim motion the
-     * archive sync may not have.
-     */
-    return <div className="skeleton h-4 w-72" aria-busy />;
+    // Match the loaded archive's fact strip rather than a single text line.
+    return <div className="skeleton h-24 w-full rounded-box" aria-busy />;
   }
 
   // An unexpected server error used to render nothing at all, leaving the
@@ -72,33 +68,44 @@ export function ArchiveStatus({
   // instruction rather than a warning alert.
   if (data.notConnected) {
     return (
-      <p className="text-sm text-muted">
-        {t(
-          "Sıralama arşivi Search Console verisinden doldurulur. Bağladığınızda geçmiş günler kendiliğinden birikmeye başlar.",
-        )}
-      </p>
+      <details className="max-w-prose text-sm text-muted">
+        <summary className="min-h-11 cursor-pointer">{t("Ayrıntılar")}</summary>
+        <p>
+          {t(
+            "Sıralama arşivi Search Console verisinden doldurulur. Bağladığınızda geçmiş günler kendiliğinden birikmeye başlar.",
+          )}
+        </p>
+      </details>
     );
   }
 
   if (data.error) {
     return (
-      <div className="alert alert-warning text-sm">
-        <AlertCircle className="size-4 shrink-0" />
-        <span>
-          {t("Arşiv güncellenemedi: {error}", { error: data.error })}{" "}
-          {t(
-            "Kayıtlı geçmiş korunur. Bağlantıyı ve kotayı kontrol edin, sonra yeniden deneyin.",
-          )}
-          {data.errorCode === "quota"
-            ? t("Google kotası doldu. Kota yenilendiğinde yeniden deneyin.")
-            : data.errorCode === "network"
-              ? t(
-                  "Ağ bağlantısı kurulamadı. İnternet bağlantınızı kontrol edip yeniden deneyin.",
-                )
-              : null}
-          {data.lastDate ? ` ${formatDate(data.lastDate)}` : ""}
-          {lastChecked ? ` ${lastChecked}` : ""}
-        </span>
+      <div className="space-y-4 text-sm">
+        <p className="flex items-center gap-2 text-[var(--ink-warning)]">
+          <AlertCircle className="size-4 shrink-0" aria-hidden />
+          {t("Arşiv durumu okunamadı")}
+        </p>
+        <details className="max-w-prose text-muted">
+          <summary className="min-h-11 cursor-pointer">
+            {t("Ayrıntılar")}
+          </summary>
+          <p>
+            {t("Arşiv güncellenemedi: {error}", { error: data.error })}{" "}
+            {t(
+              "Kayıtlı geçmiş korunur. Bağlantıyı ve kotayı kontrol edin, sonra yeniden deneyin.",
+            )}
+            {data.errorCode === "quota"
+              ? t("Google kotası doldu. Kota yenilendiğinde yeniden deneyin.")
+              : data.errorCode === "network"
+                ? t(
+                    "Ağ bağlantısı kurulamadı. İnternet bağlantınızı kontrol edip yeniden deneyin.",
+                  )
+                : null}
+            {data.lastDate ? ` ${formatDate(data.lastDate)}` : ""}
+            {lastChecked ? ` ${lastChecked}` : ""}
+          </p>
+        </details>
         {data.errorCode === "auth" ? (
           <Link
             className="btn btn-outline min-h-11"
@@ -128,18 +135,32 @@ export function ArchiveStatus({
      * "Google has nothing for this property".
      */
     return (
-      <p className="text-xs text-muted">
-        {lastChecked ? `${lastChecked}. ` : ""}
-        {data.scannedThrough
-          ? t(
-              "{date} tarihine kadar kontrol edildi, kelime verisi bulunamadı.",
-              { date: formatDate(data.scannedThrough) },
-            )
-          : t("Veri yükleme henüz başlamadı.")}
-        {data.hasMore
-          ? ` ${t("Bu sayfa açıkken kalan günler otomatik yüklenir; bağlantı veya kota hatasında beklenir.")}`
-          : ""}
-      </p>
+      <FactStrip
+        label={t("Arşiv dönemi")}
+        facts={[
+          {
+            label: t("Güncellendi"),
+            value: data.lastRunAt
+              ? formatDateTime(data.lastRunAt)
+              : t("Bilinmiyor"),
+          },
+        ]}
+        detailsLabel={t("Ayrıntılar")}
+        details={
+          <p>
+            {lastChecked ? `${lastChecked}. ` : ""}
+            {data.scannedThrough
+              ? t(
+                  "{date} tarihine kadar kontrol edildi, kelime verisi bulunamadı.",
+                  { date: formatDate(data.scannedThrough) },
+                )
+              : t("Veri yükleme henüz başlamadı.")}
+            {data.hasMore
+              ? ` ${t("Bu sayfa açıkken kalan günler otomatik yüklenir; bağlantı veya kota hatasında beklenir.")}`
+              : ""}
+          </p>
+        }
+      />
     );
   }
 
@@ -165,32 +186,55 @@ export function ArchiveStatus({
         : t("Arşiv {rows} satır.", { rows });
 
   return (
-    <div className="space-y-1 text-xs text-muted">
-      <p>{summary}</p>
-      {lastChecked ? <p>{lastChecked}</p> : null}
-      <p>
-        {` ${t("Google anonim sorguları gizler ve günlük satırları sınırlar; bu arşiv tüm aramaları içermez.")}`}
-      </p>
-      {data.scannedThrough ? (
-        <p>
-          {t("Taranan son gün: {date}", {
-            date: formatDate(data.scannedThrough),
-          })}
-        </p>
-      ) : null}
-      <p>
-        {/* `newDays`, not the days written. A caught-up archive re-reads the
+    <FactStrip
+      label={t("Arşiv dönemi")}
+      facts={[
+        {
+          label: t("Arşiv dönemi"),
+          value:
+            data.earliestDate && data.lastDate
+              ? data.earliestDate === data.lastDate
+                ? formatDate(data.lastDate)
+                : `${formatDate(data.earliestDate)} – ${formatDate(data.lastDate)}`
+              : t("Bilinmiyor"),
+        },
+        {
+          label: t("Güncellendi"),
+          value: data.lastRunAt
+            ? formatDateTime(data.lastRunAt)
+            : t("Bilinmiyor"),
+        },
+      ]}
+      detailsLabel={t("Ayrıntılar")}
+      details={
+        <>
+          <p>{summary}</p>
+          {lastChecked ? <p>{lastChecked}</p> : null}
+          <p>
+            {` ${t("Google anonim sorguları gizler ve günlük satırları sınırlar; bu arşiv tüm aramaları içermez.")}`}
+          </p>
+          {data.scannedThrough ? (
+            <p>
+              {t("Taranan son gün: {date}", {
+                date: formatDate(data.scannedThrough),
+              })}
+            </p>
+          ) : null}
+          <p>
+            {/* `newDays`, not the days written. A caught-up archive re-reads the
           three days Search Console is still revising on every open, and
           reporting that as days added claimed growth that never happened. */}
-        {data.newDays > 0
-          ? ` ${t("Bu açılışta {count} gün eklendi.", { count: formatNumber(data.newDays) })}`
-          : ""}
-        {/* The backfill walks oldest to newest, so what is left is the recent
+            {data.newDays > 0
+              ? ` ${t("Bu açılışta {count} gün eklendi.", { count: formatNumber(data.newDays) })}`
+              : ""}
+            {/* The backfill walks oldest to newest, so what is left is the recent
           end, not the old one. */}
-        {data.hasMore
-          ? ` ${t("Bu sayfa açıkken kalan günler otomatik yüklenir; bağlantı veya kota hatasında beklenir.")}`
-          : ""}
-      </p>
-    </div>
+            {data.hasMore
+              ? ` ${t("Bu sayfa açıkken kalan günler otomatik yüklenir; bağlantı veya kota hatasında beklenir.")}`
+              : ""}
+          </p>
+        </>
+      }
+    />
   );
 }

@@ -2,9 +2,9 @@
 
 Novità e correzioni, dalla versione più recente.
 
-## [0.8.4] Alpha — 2026-10-28
+## [0.8.5] Alpha — 2026-10-28
 
-Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.4: verifica del sito, dashboard, notifiche e sei lingue, con dati più precisi e schermate più leggibili.
+Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.5: verifica del sito, dashboard, notifiche e sei lingue, con dati più precisi e schermate più leggibili.
 
 ### ✨ In evidenza
 
@@ -37,7 +37,7 @@ Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.4: verifica del s
 
 - **Centro notifiche:** Risultati delle verifiche, nuove versioni e problemi di connessione Google sono raccolti in un unico posto.
 - **Suono delle notifiche:** Attiva o disattiva il suono degli avvisi importanti nelle Impostazioni.
-- **Notifiche di Windows:** Aggiornamenti e annunci compaiono anche nell'area notifiche di Windows.
+- **Notifiche di Windows:** Aggiornamenti e annunci compaiono anche nell'area notifiche di Windows. Windows ti avvisa anche quando una verifica termina o non riesce. Puoi disattivare queste notifiche dal menu dell’icona nella barra delle applicazioni.
 - **Annunci:** Le novità compaiono nella schermata Annunci dell'app.
 
 ### 🪟 Windows
@@ -59,6 +59,7 @@ Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.4: verifica del s
 - **Schede e numeri:** Le schede riepilogative sono più semplici; i numeri animati rispettano la preferenza per il movimento ridotto.
 - **Aiuto e versioni:** Nelle schermate di aiuto e delle note di versione è più facile trovare le informazioni desiderate.
 - **Colori dei dati:** Clic blu, impressioni viola, tasso di clic turchese, posizione ocra, sessioni verdi e conversioni rosa: schede e grafici usano gli stessi colori più vivaci in entrambi i temi.
+- **Schermate più ordinate:** Fonte, periodo e aggiornamento dei dati sono riuniti con etichette brevi. Apri le spiegazioni lunghe quando servono; nomi brevi e pulsanti chiari rendono più facili le azioni.
 
 ### 🗂️ Progetti e ricerche salvate
 
@@ -68,13 +69,13 @@ Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.4: verifica del s
 
 ### 🛠️ Correzioni
 
-- **Verifiche più accurate:** Gli errori trovati su siti reali sono stati corretti; i confronti usano le pagine di ciascuna verifica e la verifica resta registrata se l’avvio non riesce. Anche i messaggi di errore nella cronologia delle verifiche rientrano nello schermo.
+- **Verifiche più accurate:** Gli errori trovati su siti reali sono stati corretti; i confronti usano le pagine di ciascuna verifica e la verifica resta registrata se l’avvio non riesce. Anche i messaggi di errore nella cronologia delle verifiche rientrano nello schermo. I conteggi nella cronologia delle verifiche spiegano che includono i problemi delle singole pagine e quelli dell’intero sito.
 - **Menu e tastiera:** Schermate, report ed elenchi dei paesi restano nei limiti del telefono; i menu restano visibili, il focus resta nella finestra aperta ed Esc chiude solo l’elenco in primo piano senza cancellare il testo; i lettori di schermo annunciano le selezioni e Analytics mostra i canali nella tua lingua. Sul telefono sono visibili l’ora di aggiornamento, il tipo di rapporto e le etichette di ogni riga del monitoraggio delle posizioni.
-- **Correzioni quotidiane:** Il pacchetto diagnostico nell’Aiuto descrive meglio il problema e non include gli indirizzi delle tue pagine. Sono stati corretti 25 problemi trovati con dati reali nella dashboard, nel rendimento di ricerca, nelle posizioni, nelle ricerche salvate, in Analytics, nei report, nella verifica, nelle impostazioni, nelle connessioni, nell’Aiuto e nei plurali inglesi. Tutte le schermate sono state riviste altre due volte con dati reali, anche nella parte inferiore delle pagine. I conteggi delle verifiche nel pannello spiegano cosa contano e i nomi dei problemi appaiono per intero. Un elenco vuoto di parole salvate lo indica subito. Il monitoraggio delle posizioni parla di posizioni medie; Aiuto e comandi per cambiare pagina usano i nomi dei menu.
-- **Numeri più precisi:** Le misure mancanti non contano come zero e i dati Analytics limitati non danno conclusioni certe; le posizioni usano le stesse date, priorità e limiti delle stime sono spiegati e i filtri non cambiano il guadagno mensile stimato. Opportunità spiega le ricerche nascoste da Google e non suggerisce più di passare a 90 giorni quando sono già selezionati. Anche con pochi visitatori, i dati mancanti vengono distinti da uno zero reale. Analytics spiega una misura sconosciuta una sola volta; le tabelle vuote nascondono i pulsanti per la pagina precedente e successiva.
+- **Correzioni quotidiane:** Il pacchetto diagnostico nell’Aiuto descrive meglio il problema e non include gli indirizzi delle tue pagine. Sono stati corretti 25 problemi trovati con dati reali nella dashboard, nel rendimento di ricerca, nelle posizioni, nelle ricerche salvate, in Analytics, nei report, nella verifica, nelle impostazioni, nelle connessioni, nell’Aiuto e nei plurali inglesi. Tutte le schermate sono state riviste altre due volte con dati reali, anche nella parte inferiore delle pagine. I conteggi delle verifiche nel pannello spiegano cosa contano e i nomi dei problemi appaiono per intero. Un elenco vuoto di parole salvate lo indica subito. Il monitoraggio delle posizioni parla di posizioni medie; Aiuto e comandi per cambiare pagina usano i nomi dei menu. Il grafico delle sessioni nella dashboard ha il nome corretto; le posizioni sono descritte come medie del periodo scelto. Singolare e plurale sono stati corretti in inglese, tedesco, francese, italiano e portoghese. Il tuo assistente IA trova di nuovo le pagine che competono per la stessa ricerca.
+- **Numeri più precisi:** Le misure mancanti non contano come zero e i dati Analytics limitati non danno conclusioni certe; le posizioni usano le stesse date, priorità e limiti delle stime sono spiegati e i filtri non cambiano il guadagno mensile stimato. Opportunità spiega le ricerche nascoste da Google e non suggerisce più di passare a 90 giorni quando sono già selezionati. Anche con pochi visitatori, i dati mancanti vengono distinti da uno zero reale. Analytics spiega una misura sconosciuta una sola volta; le tabelle vuote nascondono i pulsanti per la pagina precedente e successiva. Opportunità elenca le pagine con le misure reali anche sui siti con pochi visitatori. Se il consiglio si basa sulla posizione media e non è possibile calcolare un guadagno, il guadagno è indicato come sconosciuto.
 - **Stato della connessione:** La scelta della proprietà è distinta dall’accesso verificato e i vecchi risultati non sono attuali dopo un cambio di account; le connessioni Google senza risposta smettono di attendere, gli errori temporanei invitano a riprovare e i servizi disattivati indicano cosa attivare.
 - **Dati salvati:** Aggiungere o rimuovere etichette non lascia modifiche a metà, le etichette in uso non si possono eliminare, lo storico resta legato alla proprietà corretta e le attività in attesa seguono l’ordine giusto.
-- **Avvio Windows:** I file di lavoro vengono salvati nella cartella utente; le connessioni riparate dell’assistente restano valide al riavvio e il controllo iniziale non si blocca più. Un collegamento inutilizzabile alle impostazioni Windows viene nascosto.
+- **Avvio Windows:** I file di lavoro vengono salvati nella cartella utente; le connessioni riparate dell’assistente restano valide al riavvio e il controllo iniziale non si blocca più. Un collegamento inutilizzabile alle impostazioni Windows viene nascosto. Le notifiche ricevute mentre eri assente ora compaiono quando torni nell’app.
 
 ### 🔒 Sicurezza
 

@@ -90,6 +90,28 @@ beforeEach(() => {
 });
 
 describe("OpportunitiesPage", () => {
+  it("shows measured pages instead of the empty state when gain is unknown", async () => {
+    const data = makeReport([
+      makeRow({
+        gain: null,
+        gainPerMonth: null,
+        gainStatus: "unknown",
+        gainReason: "belowThreshold",
+        impressions: 6,
+      }),
+    ]);
+    data.totals.gain = null;
+    data.totals.gainPerMonth = null;
+    data.totals.unknownPages = 1;
+    data.totals.reasons.belowThreshold = 1;
+    getSearchOpportunities.mockResolvedValue({ status: "ok", report: data });
+    renderPage();
+    expect(await screen.findByRole("table")).toBeDefined();
+    expect(
+      screen.queryByText("Bu sayfalar için tahmin edilebilir arama yok"),
+    ).toBeNull();
+    expect(screen.getAllByText("Kazanç bilinmiyor").length).toBeGreaterThan(0);
+  });
   it("keeps detailed calculations collapsed and offers a useful next step on thin data", async () => {
     getSearchOpportunities.mockResolvedValue(report([]));
     renderPage();
@@ -120,7 +142,7 @@ describe("OpportunitiesPage", () => {
     const change = vi.fn();
     renderPage(change);
     fireEvent.click(
-      await screen.findByRole("button", { name: /^Dönüşüm getirenler/ }),
+      await screen.findByRole("button", { name: /^Dönüşüm getirenler(?!i)/ }),
     );
     expect(change).toHaveBeenCalledWith({ quick: "converts" });
     expect(
@@ -171,4 +193,90 @@ describe("OpportunitiesPage", () => {
     ).toBeDefined();
     expect(screen.getByText("Bağlantıları ayarla")).toBeDefined();
   });
+});
+
+function unknownReport() {
+  const data = makeReport([
+    makeRow({
+      gain: null,
+      gainPerMonth: null,
+      work: "snippet",
+      impressions: 2,
+      clicks: 0,
+      position: 1,
+    }),
+  ]);
+  data.totals.gainPerMonth = null;
+  data.totals.unknownPages = 1;
+  return data;
+}
+it("investigates thin evidence before prescribing content changes (C06)", async () => {
+  getSearchOpportunities.mockResolvedValue({
+    status: "ok",
+    report: unknownReport(),
+  });
+  renderPage();
+  const start = await screen.findByRole("button", { name: "Önce şuna bakın" });
+  expect(start.closest("section")?.textContent).toContain("Sayfayı inceleyin");
+  expect(screen.queryByText("Başlığı ve açıklamayı yenileyin")).toBeNull();
+  fireEvent.click(start);
+  const dialog = screen.getByRole("dialog");
+  expect(
+    within(dialog).getByText(/Önce ölçülen aramalarla başlığın/),
+  ).toBeDefined();
+  expect(within(dialog).queryByText(/Meta açıklamayı,/)).toBeNull();
+});
+it("does not promise estimates when every gain is unknown (C07)", async () => {
+  getSearchOpportunities.mockResolvedValue({
+    status: "ok",
+    report: unknownReport(),
+  });
+  renderPage();
+  await screen.findByRole("table");
+  expect(screen.getByText(/Gözlenen sayfalar ve olası işler/)).toBeDefined();
+  expect(screen.getByText(/Ölçülen aramaları incelemek için/)).toBeDefined();
+});
+it("keeps absent conversion coverage unknown and removes empty actions (C08-C09)", async () => {
+  getSearchOpportunities.mockResolvedValue({
+    status: "ok",
+    report: unknownReport(),
+  });
+  renderPage();
+  expect(await screen.findByText("Dönüşüm bilgisi bilinmiyor.")).toBeDefined();
+  expect(screen.getByText(/Eşleşen: 0 \/ 1 sayfa/)).toBeDefined();
+  expect(screen.getByText(/Dönüşüm durumu bilinmeyen: 1 sayfa/)).toBeDefined();
+  expect(screen.queryByText(/· listele/)).toBeNull();
+  expect(
+    screen.queryByRole("button", { name: "Dönüşüm getirenleri göster" }),
+  ).toBeNull();
+});
+it("keeps provenance labelled and calculation details collapsed (C10)", async () => {
+  getSearchOpportunities.mockResolvedValue({
+    status: "ok",
+    report: unknownReport(),
+  });
+  renderPage();
+  const summary = await screen.findByText("Veri kapsamı ve hesaplama");
+  const method = summary.closest("details");
+  expect(method?.open).toBe(false);
+  expect(
+    screen.getByText(/bu sayfaların tüm tıklamaları/).closest("details"),
+  ).toBe(method);
+  expect(
+    screen.getByRole("region", { name: "Fırsatların kaynağı" }),
+  ).toBeDefined();
+});
+
+it("offers a real conversion filter even when every candidate converts", async () => {
+  getSearchOpportunities.mockResolvedValue(
+    report([
+      makeRow({ value: "converts", ga4: traffic, joinStatus: "joined" }),
+    ]),
+  );
+  const change = vi.fn();
+  renderPage(change);
+  fireEvent.click(
+    await screen.findByRole("button", { name: "Dönüşüm getirenleri göster" }),
+  );
+  expect(change).toHaveBeenCalledWith({ quick: "converts" });
 });

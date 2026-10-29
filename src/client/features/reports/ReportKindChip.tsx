@@ -13,6 +13,7 @@ import {
   UNKNOWN_APP_KIND,
   kindLabel,
 } from "@/client/features/reports/reportStats";
+import { t } from "@/shared/i18n";
 
 const KIND_ICONS: Record<string, LucideIcon> = {
   [AUDIT_EXPORT_KIND]: ClipboardCheck,
@@ -36,10 +37,13 @@ export function ReportKindChip({
 }) {
   const Icon = KIND_ICONS[kind] ?? (isTemplate ? LayoutTemplate : Sparkles);
   return (
-    <span className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-base-300 px-2 py-0.5 text-xs text-muted">
+    <span
+      title={kindLabel(kind)}
+      className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-[var(--hairline)] px-2 py-0.5 text-xs text-muted"
+    >
       <Icon aria-hidden className="size-3.5 shrink-0" />
       <span className={wrap ? "min-w-0 whitespace-normal" : "truncate"}>
-        {kindLabel(kind)}
+        {kind === UNKNOWN_APP_KIND ? t("Eski rapor") : kindLabel(kind)}
       </span>
     </span>
   );

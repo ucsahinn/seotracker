@@ -2,9 +2,14 @@
 <html lang="tr">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Sürüm notları | seowatcher kılavuzu</title>
     <meta
@@ -93,7 +98,7 @@
       property="og:image:alt"
       content="seowatcher tanıtım kartı: Search Console, Analytics 4 ve site denetimi verilerini gösteren uygulama paneli ve Windows için indirme düğmesi"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta
       property="og:url"
       content="https://seowatcher.io/kilavuz/surum-notlari/"
@@ -149,7 +154,7 @@
             "description": "seowatcher 0.8.4 Alpha — eksiksiz Google verisi, canlı renkler ve gerçek verilerle yeniden incelenen, telefonda daha okunaklı ekranlar.",
             "url": "https://seowatcher.io/kilavuz/surum-notlari/",
             "inLanguage": "tr",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "articleSection": "Yardım ve başvuru",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -1467,7 +1472,9 @@
             <li><a href="/kilavuz/siralama-takibi/">Sıralama takibi</a></li>
             <li><a href="/kilavuz/firsatlar/">Fırsatlar</a></li>
             <li><a href="/kilavuz/kayitli-kelimeler/">Kayıtlı kelimeler</a></li>
-            <li><a href="/kilavuz/analitik/">Analytics</a></li>
+            <li>
+              <a href="/kilavuz/analitik/">Analitik verilerini yorumlama</a>
+            </li>
             <li><a href="/kilavuz/site-denetimi/">Site denetimi</a></li>
             <li><a href="/kilavuz/dizin-durumu/">Dizin durumu</a></li>
             <li><a href="/kilavuz/raporlar/">Raporlar ve şablonlar</a></li>
@@ -1493,7 +1500,7 @@
           gerçek verilerle yeniden incelenen, telefonda daha okunaklı ekranlar.
         </p>
         <p>
-          Son sürüm <strong>0.8.4 Alpha</strong>, 28 Ekim 2026. Güncellerken
+          Son sürüm <strong>0.8.5 Alpha</strong>, 28 Ekim 2026. Güncellerken
           veriniz korunur.
         </p>
         <p>
@@ -1501,9 +1508,9 @@
           dosyasını elle çalıştırın; eski otomatik güncelleyici küçük numarayı
           yeni sürüm olarak tanımaz.
         </p>
-        <h2 id="0-8-4-alpha-2026-10-28">0.8.4 Alpha — 2026-10-28</h2>
+        <h2 id="0-8-5-alpha-2026-10-28">0.8.5 Alpha — 2026-10-28</h2>
         <p>
-          Bu giriş 0.5.0'dan 0.8.4'e kadar gelen yenilikleri ve düzeltmeleri
+          Bu giriş 0.5.0'dan 0.8.5'e kadar gelen yenilikleri ve düzeltmeleri
           toplar: site denetimi, pano, bildirimler ve altı dilin yanında daha
           doğru veriler ve daha okunaklı ekranlar.
         </p>
@@ -1605,7 +1612,9 @@
           </li>
           <li>
             <strong>Windows bildirimleri:</strong> Güncellemeler ve duyurular
-            Windows'un bildirim alanında da görünür.
+            Windows'un bildirim alanında da görünür. Denetim bittiğinde veya
+            başarısız olduğunda da Windows bildirimi gelir. Görev çubuğundaki
+            simgenin menüsünden bu bildirimleri kapatabilirsiniz.
           </li>
           <li>
             <strong>Duyurular:</strong> Yeni haberler uygulamadaki Duyurular
@@ -1666,6 +1675,12 @@
             rengindedir. Kartlar ve grafikler iki temada da aynı, daha canlı
             renkleri kullanır.
           </li>
+          <li>
+            <strong>Daha sakin ekranlar:</strong> Kaynak, dönem ve güncellik
+            kısa etiketlerle bir arada gösterilir. Uzun açıklamaları
+            gerektiğinde açarsınız; kısa adlar ve belirgin düğmeler işlemleri
+            kolaylaştırır.
+          </li>
         </ul>
         <h3 id="projeler-ve-kayitlar">🗂️ Projeler ve kayıtlar</h3>
         <ul>
@@ -1689,7 +1704,9 @@
             <strong>Daha doğru denetim:</strong> Gerçek sitelerdeki hatalar
             giderildi; karşılaştırmalar her denetimin kendi sayfalarını
             kullanır, başlatılamayan denetimin kaydı korunur. Denetim
-            geçmişindeki hata açıklamaları da ekrana sığar.
+            geçmişindeki hata açıklamaları da ekrana sığar. Denetim geçmişindeki
+            sayılar hem sayfalardaki hem site genelindeki bulguları kapsadığını
+            açıklar.
           </li>
           <li>
             <strong>Menüler ve klavye:</strong> Telefonda ekranlar, raporlar ve
@@ -1710,7 +1727,11 @@
             dahil incelendi. Panodaki denetim sayılarının neyi saydığı açık,
             sorun adları tamdır. Boş kayıtlı kelime listesi bunu hemen gösterir.
             Sıralama takibi ortalama sırayı belirtir; Yardım ve sayfa geçişleri
-            menüdeki adlarla uyumludur.
+            menüdeki adlarla uyumludur. Panodaki oturum grafiğinin adı
+            düzeltildi; sıralamalar seçili dönemin ortalaması olarak anlatılır.
+            İngilizce, Almanca, Fransızca, İtalyanca ve Portekizce tekil ve
+            çoğul ifadeler düzeltildi. Yapay zekâ asistanı aynı aramada
+            birbiriyle yarışan sayfaları yeniden bulabilir.
           </li>
           <li>
             <strong>Daha doğru sayılar:</strong> Eksik ölçümler sıfır sayılmaz,
@@ -1721,7 +1742,9 @@
             aynı süreye genişletmenizi önermez. Az ziyaretçili sitelerde de
             eksik veriyle gerçek sıfır birbirinden ayrılır. Analytics bilinmeyen
             ölçümü bir kez açıklar; boş tablolarda önceki ve sonraki sayfa
-            düğmeleri görünmez.
+            düğmeleri görünmez. Fırsatlar az ziyaretçili sitelerde de sayfaları
+            gerçek ölçümleriyle listeler. Öneri ortalama sıraya dayanıyorsa ve
+            kazanç hesaplanamıyorsa kazanç bilinmiyor diye gösterilir.
           </li>
           <li>
             <strong>Bağlantı durumu:</strong> Mülk seçimi ile doğrulanmış erişim
@@ -1738,7 +1761,8 @@
             <strong>Windows açılışı:</strong> Çalışma dosyaları kullanıcı
             klasörüne yazılır; onarılan asistan bağlantısı yeniden açılışta
             korunur ve başlangıç kontrolü takılı kalmaz. Kullanılamayan Windows
-            ayarı bağlantısı gizlenir.
+            ayarı bağlantısı gizlenir. Uygulamaya döndüğünüzde siz yokken gelen
+            bildirimler de açılır.
           </li>
         </ul>
         <h3 id="guvenlik">🔒 Güvenlik</h3>
@@ -1761,7 +1785,7 @@
           Windows'a tek tıkla kurulum geldi; seowatcher.io sitesi ve kullanım
           kılavuzu da yayında.
         </p>
-        <h3 id="one-cikanlar">✨ Öne çıkanlar</h3>
+        <h3 id="one-cikanlar-2">✨ Öne çıkanlar</h3>
         <ul>
           <li>
             <strong>Tek tıkla kurulum:</strong> Docker veya terminal olmadan
@@ -1776,7 +1800,7 @@
             altı dilde yayında.
           </li>
         </ul>
-        <h3 id="windows">🪟 Windows</h3>
+        <h3 id="windows-2">🪟 Windows</h3>
         <ul>
           <li>
             <strong>Kolay kurulum:</strong> Dosyayı çalıştırın; gerekli her şeyi
@@ -1845,7 +1869,7 @@
             tema siteyle uyumludur.
           </li>
         </ul>
-        <h3 id="duzeltmeler">🛠️ Düzeltmeler</h3>
+        <h3 id="duzeltmeler-2">🛠️ Düzeltmeler</h3>
         <ul>
           <li>
             <strong>Google bağlantısı:</strong> Yalnızca hizmet hesabıyla bağlı
@@ -1867,7 +1891,7 @@
           seowatcher'ın ilk sürümü: Google verilerinizi, site denetiminizi ve
           hız ölçümünüzü kendi bilgisayarınızda tek uygulamada toplar.
         </p>
-        <h3 id="one-cikanlar">✨ Öne çıkanlar</h3>
+        <h3 id="one-cikanlar-3">✨ Öne çıkanlar</h3>
         <ul>
           <li>
             <strong>Tek yerde veri:</strong> Search Console, Analytics, site
@@ -1926,7 +1950,7 @@
             tahminiyle görünür; hareketi azaltma açıksa animasyon oynamaz.
           </li>
         </ul>
-        <h3 id="duzeltmeler">🛠️ Düzeltmeler</h3>
+        <h3 id="duzeltmeler-3">🛠️ Düzeltmeler</h3>
         <ul>
           <li>
             <strong>Takılan denetimler:</strong> Yarım kalan bir denetim artık
@@ -1946,7 +1970,7 @@
             bağlanma istenmesi sorunu giderildi.
           </li>
         </ul>
-        <h3 id="guvenlik">🔒 Güvenlik</h3>
+        <h3 id="guvenlik-2">🔒 Güvenlik</h3>
         <ul>
           <li>
             <strong>Güvenli raporlar:</strong> İndirilen rapor, kötü niyetle
@@ -1986,7 +2010,7 @@
           ><span class="pager-next empty"></span>
         </nav>
         <p class="meta">
-          Son güncelleme: 28 Ekim 2026. Bir hata görürseniz
+          Son güncelleme: 29 Ekim 2026. Bir hata görürseniz
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1999,7 +2023,7 @@
         <p class="toc-label">Bu sayfada</p>
         <ol>
           <li>
-            <a href="#0-8-4-alpha-2026-10-28">0.8.4 Alpha — 2026-10-28</a>
+            <a href="#0-8-5-alpha-2026-10-28">0.8.5 Alpha — 2026-10-28</a>
           </li>
           <li>
             <a href="#0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</a>

@@ -78,14 +78,17 @@ export function PagesSummary({
         <h3 className="px-2 text-sm font-medium">
           {t("Sayfalar nasıl yanıt verdi?")}
         </h3>
-        <p className="mb-2 px-2 text-xs text-muted">
-          {averageMs === null
-            ? t("Bir çubuğa tıklayarak tabloyu daraltın.")
-            : t(
-                "Ortalama yanıt süresi {duration}. Bir çubuğa tıklayarak tabloyu daraltın.",
-                { duration: formatDuration(averageMs) },
-              )}
-        </p>
+        <details className="mb-3 px-2 text-sm text-muted">
+          <summary className="cursor-pointer py-2">{t("Ayrıntılar")}</summary>
+          <p className="mt-1.5 max-w-prose leading-relaxed">
+            {averageMs === null
+              ? t("Bir çubuğa tıklayarak tabloyu daraltın.")
+              : t(
+                  "Ortalama yanıt süresi {duration}. Bir çubuğa tıklayarak tabloyu daraltın.",
+                  { duration: formatDuration(averageMs) },
+                )}
+          </p>
+        </details>
         <DistributionBars
           rows={toRows(
             status,
@@ -101,14 +104,19 @@ export function PagesSummary({
         <h3 className="px-2 text-sm font-medium">
           {t("Ana sayfadan kaç tık uzakta?")}
         </h3>
-        <p className="mb-2 px-2 text-xs text-muted">
-          {unlinked > 0
-            ? t(
-                "{count} sayfaya hiçbir bağlantı verilmemiş, bu yüzden çubuklarda yok.",
-                { count: unlinked },
-              )
-            : t("Derindeki sayfaları Google geç bulur ve daha az değer verir.")}
-        </p>
+        <details className="mb-3 px-2 text-sm text-muted">
+          <summary className="cursor-pointer py-2">{t("Ayrıntılar")}</summary>
+          <p className="mt-1.5 max-w-prose leading-relaxed">
+            {unlinked > 0
+              ? t(
+                  "{count} sayfaya hiçbir bağlantı verilmemiş, bu yüzden çubuklarda yok.",
+                  { count: unlinked },
+                )
+              : t(
+                  "Derindeki sayfaları Google geç bulur ve daha az değer verir.",
+                )}
+          </p>
+        </details>
         <DistributionBars
           rows={toRows(depth, () => "var(--color-primary)")}
           onSelect={select(depth)}

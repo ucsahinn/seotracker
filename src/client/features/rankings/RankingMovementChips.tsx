@@ -25,7 +25,7 @@ export function RankingMovementChips({
             disabled={(unknown || chip.count === 0) && !pressed}
             title={unknown ? t("Karşılaştırma yok") : chip.hint}
             onClick={() => onChange(pressed ? undefined : chip.id)}
-            className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${pressed ? "border-primary bg-primary/10 text-[var(--ink-primary)]" : "border-[var(--control-border)] bg-base-100 hover:bg-base-200/60"}`}
+            className={`inline-flex min-h-11 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${pressed ? "border-primary bg-primary/10 text-[var(--ink-primary)]" : "border-[var(--control-border)] bg-base-100 hover:bg-base-200/60"}`}
           >
             <Icon className="size-3.5" aria-hidden />
             {chip.label}{" "}

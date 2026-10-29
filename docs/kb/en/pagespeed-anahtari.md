@@ -1,6 +1,6 @@
 ---
 title: PageSpeed key
-description: Save a PageSpeed key and understand test requests and audit counters.
+description: Save your PageSpeed Insights API key, check test requests and understand request quotas and the counters shown during site audits.
 kind: nasil-yapilir
 updated: 2026-10-27
 ---

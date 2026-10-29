@@ -1,4 +1,5 @@
 import { formatDateTime } from "@/client/lib/format";
+import { FactStrip } from "@/client/components/FactStrip";
 import { useRef, useState, type ReactNode } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
@@ -77,14 +78,23 @@ const AUTHOR_LABELS: Record<ContextAuthor, string> = {
 
 export function Provenance({ by, at }: { by: ContextAuthor; at?: string }) {
   return (
-    <span className="text-xs text-muted">
-      {at
-        ? t("{author} güncelledi · {time}", {
-            author: t(AUTHOR_LABELS[by]),
-            time: formatDateTime(at),
-          })
-        : t("{author} ekledi", { author: t(AUTHOR_LABELS[by]) })}
-    </span>
+    <details className="text-sm text-muted">
+      <summary className="cursor-pointer py-2">{t("Kaynak")}</summary>
+      <FactStrip
+        label={t("Kaynak")}
+        facts={[
+          {
+            label: t("Kaynak"),
+            value: at
+              ? t("{author} güncelledi · {time}", {
+                  author: t(AUTHOR_LABELS[by]),
+                  time: formatDateTime(at),
+                })
+              : t("{author} ekledi", { author: t(AUTHOR_LABELS[by]) }),
+          },
+        ]}
+      />
+    </details>
   );
 }
 
@@ -98,10 +108,10 @@ export function SectionHeader({
   action?: ReactNode;
 }) {
   return (
-    <div className="flex items-start justify-between gap-3">
+    <div className="flex flex-wrap items-start justify-between gap-4">
       <div className="space-y-0.5">
-        <h2 className="text-sm font-medium text-muted">{title}</h2>
-        {hint ? <p className="text-xs text-muted">{hint}</p> : null}
+        <h2 className="text-base font-semibold">{title}</h2>
+        {hint ? <p className="max-w-prose text-sm text-muted">{hint}</p> : null}
       </div>
       {action}
     </div>

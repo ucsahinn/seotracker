@@ -1,5 +1,5 @@
 ---
-title: Analytics
+title: Entender os dados de análise
 description: Analytics mostra visitas, engajamento e eventos principais medidos na propriedade GA4.
 screen: Analytics
 route: /p/<proje>/analytics

@@ -22,11 +22,17 @@ const row = (
 describe("previousAuditIds", () => {
   it("pairs each audit with the nearest earlier completed one of the same site", () => {
     const previous = previousAuditIds([
-      row("c", "https://example.com", "2026-03-01"),
+      {
+        ...row("c", "https://example.com", "2026-03-01"),
+        comparison: { previousAuditId: "b", compatible: true },
+      },
       row("a", "https://www.example.com/", "2026-01-01"),
       row("other", "https://other.com", "2026-02-01"),
       row("failed", "https://example.com", "2026-02-15", "failed"),
-      row("b", "http://example.com", "2026-02-01"),
+      {
+        ...row("b", "http://example.com", "2026-02-01"),
+        comparison: { previousAuditId: "a", compatible: true },
+      },
     ]);
     expect(previous.get("c")).toBe("b");
     expect(previous.get("b")).toBe("a");
@@ -41,7 +47,10 @@ describe("scope", () => {
     const previous = previousAuditIds([
       row("root", "https://example.com", "2026-01-01"),
       row("blog", "https://example.com/blog", "2026-02-01"),
-      row("blog2", "https://www.example.com/blog/", "2026-03-01"),
+      {
+        ...row("blog2", "https://www.example.com/blog/", "2026-03-01"),
+        comparison: { previousAuditId: "blog", compatible: true },
+      },
     ]);
     expect(previous.has("blog")).toBe(false);
     expect(previous.get("blog2")).toBe("blog");
@@ -75,4 +84,19 @@ describe("auditSites", () => {
       ["npr.org", 2],
     ]);
   });
+});
+
+it("C24 excludes a previous audit unless persisted scope and coverage agree", () => {
+  const a = row("a", "https://example.com", "2026-01-01");
+  const b = {
+    ...row("b", "https://example.com", "2026-02-01"),
+    comparison: { previousAuditId: "a", compatible: false },
+  };
+  expect(previousAuditIds([a, b]).has("b")).toBe(false);
+  expect(
+    previousAuditIds([
+      a,
+      { ...b, comparison: { previousAuditId: "a", compatible: true } },
+    ]).get("b"),
+  ).toBe("a");
 });

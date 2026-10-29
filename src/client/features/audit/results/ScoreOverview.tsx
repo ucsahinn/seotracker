@@ -120,13 +120,18 @@ export function ScoreOverview({
             {standingVerdict(standing, counters.errors)}
           </p>
           {thinLines.length > 0 || limitNote || countLine ? (
-            <ul className="mt-1 max-w-prose text-sm text-muted">
-              {thinLines.map((line) => (
-                <li key={line}>{line}</li>
-              ))}
-              {limitNote ? <li>{limitNote}</li> : null}
-              {countLine ? <li>{countLine}</li> : null}
-            </ul>
+            <details className="mt-3 max-w-prose text-sm text-muted">
+              <summary className="cursor-pointer py-1.5">
+                {t("Kapsam ayrıntıları")}
+              </summary>
+              <ul className="mt-1.5 space-y-1.5">
+                {thinLines.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+                {limitNote ? <li>{limitNote}</li> : null}
+                {countLine ? <li>{countLine}</li> : null}
+              </ul>
+            </details>
           ) : null}
           <dl className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-box border border-[var(--hairline)] bg-[var(--hairline)] lg:grid-cols-4">
             <Counter
@@ -168,7 +173,7 @@ export function ScoreOverview({
             <h3 className="text-sm font-medium">{t("Kategori puanları")}</h3>
             <button
               type="button"
-              className="link link-primary text-xs"
+              className="btn btn-ghost btn-sm min-h-11"
               onClick={() => onOpenChecks()}
             >
               {t("Tüm kontroller")}

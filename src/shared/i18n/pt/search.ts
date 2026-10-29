@@ -3,6 +3,10 @@ import type { Catalog } from "@/shared/i18n";
 
 /** Portuguese (Portugal) for the Search performance screen, its to-do copy and the printable report. */
 export const ptSearch: Catalog = {
+  "{count} sorgu gözlendi.": "Consultas observadas: {count}.",
+  "En çok gösterilenler": "Consultas mais exibidas",
+  "Tam yanıtlı gün: {current}/{days}; önceki dönem: {previous}/{days}.":
+    "Dias com resposta completa: {current}/{days}; período anterior: {previous}/{days}.",
   "Arşivde en çok gösterim": "Mais impressões neste arquivo",
   "{date} tarihli geçmiş bu bilgisayarda saklı; Google'ın 16 ay sınırı buna uygulanmaz.":
     "O histórico de {date} está guardado neste computador; o limite de 16 meses do Google não se aplica.",
@@ -860,6 +864,13 @@ export const ptSearch: Catalog = {
   "Google anonim sorguları gizler. API, arama türü başına günde en fazla {limit} satır sunar; sorgu ve sayfa ayrıntılarında başka satırları da atlayabilir. Tam sayfalama, tüm aramaların listelendiği anlamına gelmez.":
     "O Google oculta consultas anonimizadas. A API disponibiliza no máximo {limit} linhas por dia e tipo de pesquisa e pode omitir outros detalhes de consultas e páginas. A paginação completa não significa que todas as pesquisas estejam listadas.",
   // Dashboard source scope and measured next steps.
+  Dönem: "Período",
+  "Ölçüler ne demek?": "O que significam estas medidas?",
+  "Kesin veri": "Dados finais",
+  "Geçici veri": "Dados provisórios",
+  "Google son günleri sonradan düzeltebilir.":
+    "O Google ainda pode corrigir os últimos dias.",
+  Yok: "Nenhum",
   "Toplamların son günü: {date}.": "Totais até: {date}.",
   "Geçici verinin son günü: {date}.": "Dados provisórios até: {date}.",
   "Bu dönemden sonra geçici veri alınmadı.":
@@ -877,4 +888,46 @@ export const ptSearch: Catalog = {
   "{value} yüzde puan": "{value} pontos percentuais",
   "Oran değişimi yüzde puanla gösterilir: iki dönemin yüzdeleri arasındaki farktır.":
     "A variação da taxa é apresentada em pontos percentuais: a diferença entre as percentagens dos dois períodos.",
+  "Sayfayı inceleyin": "Examine esta página",
+  "Önce ölçülen aramalarla başlığın ve içeriğin uyumunu kontrol edin; yalnızca bir sorun doğrularsanız değişiklik yapın.":
+    "Primeiro, verifique se o título e o conteúdo correspondem às buscas observadas; faça alterações apenas se confirmar um problema.",
+  "Bu sayfa için eşleşen Analytics verisi dönmedi.":
+    "Não foram retornados dados correspondentes do Analytics para esta página.",
+  "Analytics eşleşmesi doğrulanamadı; nedeni bilinmiyor.":
+    "Não foi possível verificar a correspondência do Analytics; o motivo é desconhecido.",
+  "İş türüne göre sayfalar": "Páginas por tipo de trabalho",
+  "Aday sayfa yok": "Nenhuma página candidata",
+  "Ölçülen aramaları incelemek için bir satıra tıklayın.":
+    "Clique em uma linha para examinar as buscas observadas.",
+  "Gözlenen sayfalar ve olası işler; kazanç henüz hesaplanamıyor.":
+    "Páginas observadas e possíveis ações; ainda não é possível estimar o ganho.",
+  "Gözlenen sayfalar, olası işler ve hesaplanabilen ek tıklamalar.":
+    "Páginas observadas, possíveis ações e cliques adicionais que podem ser estimados.",
+  "Fırsatların kaynağı": "Fontes das oportunidades",
+  "Dönüşüm bilgisi bilinmiyor.": "Os dados de conversão são desconhecidos.",
+  "Doğrulanmış dönüşüm: {count} sayfa":
+    "Conversões confirmadas: {count} páginas",
+  "Eşleşen veride doğrulanmış dönüşüm yok.":
+    "Nenhuma conversão confirmada nos dados correspondentes.",
+  "Eşleşen: {matched} / {total} sayfa":
+    "Correspondências: {matched} / {total} páginas",
+  "Dönüşüm durumu bilinmeyen: {count} sayfa":
+    "Status de conversão desconhecido: {count} páginas",
+  "Dönüşüm getirenleri göster": "Mostrar páginas com conversões",
+  "Bazı sayfalarda kazanç bilinmiyor; bu, sıfır kazanç demek değildir.":
+    "O ganho de algumas páginas é desconhecido; isso não significa ganho zero.",
+  "Günlük tıklamalar; kesikli çizgi önceki dönemi gösterir.":
+    "Cliques diários; a linha tracejada mostra o período anterior.",
+  "Toplamların son günü": "Último dia dos totais",
+  "Google'ın kesinleştirdiği veri": "Dados finais confirmados pelo Google",
+  "Gecikme varsayıldı": "Atraso presumido",
+  "Google kesinleşme tarihi bildirmedi; son günler gecikme varsayımıyla toplamların dışında tutuldu.":
+    "O Google não informou uma data de finalização; os dias mais recentes foram excluídos dos totais com base em um atraso presumido.",
+  "Toplamlara dahil günler: {start} – {end} ({days} gün). Günler Google'ın kullandığı Pasifik saatine göredir.":
+    "Dias incluídos nos totais: {start} – {end} ({days} dias). As datas seguem o fuso horário do Pacífico usado pelo Google.",
+  "Veri durumu": "Status dos dados",
+  "Analytics bağlantısı için rapor tarihleri eksik.":
+    "Faltam as datas do relatório para o link do Analytics.",
+  "Sayfa adresi Analytics bağlantısı için doğrulanamadı.":
+    "Não foi possível verificar o endereço da página para o link do Analytics.",
 };

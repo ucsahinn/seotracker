@@ -1,5 +1,5 @@
 ---
-title: Analytics
+title: Comprendre les statistiques
 description: Analytics présente les visites, l’engagement et les événements clés mesurés dans votre propriété GA4.
 screen: Analytics
 route: /p/<proje>/analytics

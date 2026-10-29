@@ -1,6 +1,6 @@
 ---
 title: Controllo del sito
-description: L'app visita il sito pagina per pagina, lo controlla con 202 regole e ordina i problemi per gravità. Il punteggio dice anche quanto è stato possibile misurare. Una verifica interrotta non ha punteggio.
+description: Controllare il sito con 202 regole e ordinare i problemi per priorità. Capire il punteggio, la copertura delle misure e i risultati incompleti.
 screen: Site denetimi
 route: /p/<proje>/audit
 updated: 2026-10-28
@@ -21,7 +21,7 @@ L'app visita il sito con il proprio crawler (il programma che apre e legge le pa
 
 Senza la chiave PageSpeed (il codice gratuito che Google dà per la misurazione della velocità), la misurazione è limitata a 50 pagine. Per misurarle tutte, aggiungere una chiave gratuita in **Impostazioni**. **Avvia controllo** avvia la verifica. La sezione **Quote** sotto è chiusa. Aprendola si vede lo stato attuale delle quote PageSpeed e dell'ispezione URL.
 
-**Controlli precedenti.** Di ogni verifica sono elencati data, indirizzo, stato, numero di pagine e numero di problemi. Il numero di problemi è riferito a ogni cento pagine, il totale è tra parentesi. Così si possono confrontare verifiche da 50 e da 500 pagine. Se nel progetto sono stati controllati più siti, sopra l'elenco compare un selettore del sito. Il grafico e le frecce di variazione confrontano sempre verifiche dello stesso sito. Con più siti selezionati il grafico è nascosto. **Visualizza** su una riga apre la verifica. Il menu della riga ha **Esegui di nuovo con le stesse impostazioni** e **Elimina controllo**. Eliminare cancella anche le pagine, i problemi e le misurazioni di velocità della verifica e non si può annullare.
+**Controlli precedenti.** Di ogni verifica sono elencati data, indirizzo, stato, numero di pagine e numero di problemi. Le colonne Critico, Avviso e Info mostrano tutti i riscontri salvati, compresi quelli delle pagine e i controlli dell’intero sito; una pagina può avere più riscontri. Se nel progetto sono stati controllati più siti, sopra l'elenco compare un selettore del sito. La densità indica i problemi ogni cento pagine. Le linee e le frecce di variazione compaiono solo quando i dati salvati confermano lo stesso sito, insieme di pagine, impostazioni di scansione e controlli misurati. Con ambiti diversi o sconosciuti si mostrano conteggi indipendenti; la variazione non può essere determinata. Con più siti selezionati il grafico è nascosto. **Visualizza** su una riga apre la verifica. Il menu della riga ha **Esegui di nuovo con le stesse impostazioni** e **Elimina controllo**. Eliminare cancella anche le pagine, i problemi e le misurazioni di velocità della verifica e non si può annullare.
 
 **Dettaglio della verifica.** In alto, **Scarica report** scarica un rapporto HTML in un solo file e lo salva in **Report**. Sotto compaiono, se serve, avvisi gialli (vedi più avanti). Poi viene la scheda del punteggio.
 

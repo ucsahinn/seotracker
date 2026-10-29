@@ -1,16 +1,16 @@
 ---
 title: Versionshinweise
 description: seowatcher 0.8.4 Alpha — vollständige Google-Daten, lebendige Farben und erneut mit echten Daten geprüfte, auf dem Handy besser lesbare Ansichten.
-updated: 2026-10-28
+updated: 2026-10-29
 ---
 
-Die neueste Version ist **0.8.4 Alpha** vom 28. Oktober 2026. Ihre Daten bleiben beim Aktualisieren erhalten.
+Die neueste Version ist **0.8.5 Alpha** vom 28. Oktober 2026. Ihre Daten bleiben beim Aktualisieren erhalten.
 
 Für den ersten Wechsel von 2.x zu 0.x.x Alpha das neue Installationsprogramm manuell starten; der alte Updater erkennt die kleinere Nummer nicht als neuer.
 
-## 0.8.4 Alpha — 2026-10-28
+## 0.8.5 Alpha — 2026-10-28
 
-Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.4: Website-Audit, Übersicht, Benachrichtigungen und sechs Sprachen sowie genauere Daten und besser lesbare Bildschirme.
+Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.5: Website-Audit, Übersicht, Benachrichtigungen und sechs Sprachen sowie genauere Daten und besser lesbare Bildschirme.
 
 ### ✨ Höhepunkte
 
@@ -43,7 +43,7 @@ Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.4: Website-
 
 - **Benachrichtigungszentrum:** Audit-Ergebnisse, neue Versionen und Probleme mit der Google-Verbindung sammeln sich an einem Ort.
 - **Benachrichtigungston:** Den Ton wichtiger Hinweise schalten Sie in den Einstellungen ein oder aus.
-- **Windows-Benachrichtigungen:** Updates und Ankündigungen erscheinen auch im Benachrichtigungsbereich von Windows.
+- **Windows-Benachrichtigungen:** Updates und Ankündigungen erscheinen auch im Benachrichtigungsbereich von Windows. Windows meldet auch abgeschlossene oder fehlgeschlagene Audits. Im Menü des Taskleistensymbols können Sie diese Benachrichtigungen ausschalten.
 - **Ankündigungen:** Neuigkeiten erscheinen im Bildschirm „Ankündigungen“ der App.
 
 ### 🪟 Windows
@@ -65,6 +65,7 @@ Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.4: Website-
 - **Karten und Zahlen:** Übersichtskarten sind einfacher; wechselnde Zahlen beachten Ihre Einstellung für reduzierte Bewegung.
 - **Hilfe und Versionshinweise:** Die gesuchten Informationen sind in Hilfe und Versionshinweisen leichter zu finden.
 - **Farben der Daten:** Klicks sind blau, Impressionen violett, Klickrate türkis, Position ocker, Sitzungen grün und Conversions rosé. Karten und Diagramme nutzen in beiden Designs dieselben kräftigeren Farben.
+- **Ruhigere Ansichten:** Quelle, Zeitraum und Aktualität stehen mit kurzen Beschriftungen zusammen. Längere Erklärungen öffnen Sie bei Bedarf; kurze Namen und klare Schaltflächen erleichtern die Bedienung.
 
 ### 🗂️ Projekte und gespeicherte Suchbegriffe
 
@@ -74,13 +75,13 @@ Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.4: Website-
 
 ### 🛠️ Fehlerbehebungen
 
-- **Genauere Audits:** Fehler auf echten Websites wurden behoben; Vergleiche nutzen die Seiten des jeweiligen Audits, und bei Startproblemen bleibt der Audit-Eintrag erhalten. Auch Fehlermeldungen im Audit-Verlauf passen auf den Bildschirm.
+- **Genauere Audits:** Fehler auf echten Websites wurden behoben; Vergleiche nutzen die Seiten des jeweiligen Audits, und bei Startproblemen bleibt der Audit-Eintrag erhalten. Auch Fehlermeldungen im Audit-Verlauf passen auf den Bildschirm. Die Zahlen im Audit-Verlauf erklären, dass sie Ergebnisse einzelner Seiten und der gesamten Website umfassen.
 - **Menüs und Tastatur:** Ansichten, Berichte und Länderlisten passen aufs Handy; Menüs bleiben im Bildschirm, der Tastaturfokus im offenen Fenster, und Esc schließt nur die oberste Liste und behält Ihre Eingaben; Bildschirmleser melden die Auswahl, Analytics zeigt Kanalnamen in Ihrer Sprache. Auf dem Handy sind Aktualisierungszeit, Berichtstyp und die Beschriftungen jeder Zeile der Positionsverfolgung sichtbar.
-- **Korrekturen im Alltag:** Das Diagnosepaket in der Hilfe beschreibt das Problem besser und enthält Ihre Seitenadressen nicht. 25 mit echten Daten gefundene Probleme wurden behoben: Übersicht, Suchleistung, Positionen, gespeicherte Suchbegriffe, Analytics, Berichte, Website-Audit, Einstellungen, Verbindungen, Hilfe und englische Mehrzahlformen wurden korrigiert. Alle Ansichten wurden zweimal zusätzlich mit echten Daten geprüft, auch die unteren Seitenbereiche. Die Audit-Zahlen in der Übersicht erklären, was sie zählen, und Problemnamen werden vollständig angezeigt. Eine leere Liste gespeicherter Suchbegriffe ist sofort als leer erkennbar. Die Positionsverfolgung spricht von durchschnittlichen Positionen; Hilfe und Seitenwechsel verwenden die passenden Menünamen.
-- **Genauere Zahlen:** Fehlende Messwerte zählen nicht als null, begrenzte Analytics-Daten gelten nicht als sicheres Ergebnis; Positionen nutzen dieselben Zeiträume, vorrangige Aufgaben und Schätzgrenzen werden erklärt, und Filter ändern den geschätzten monatlichen Zugewinn nicht. Chancen erklärt die von Google verborgenen Suchanfragen und empfiehlt keine Erweiterung auf 90 Tage mehr, wenn bereits 90 Tage gewählt sind. Auch bei wenigen Besuchern werden fehlende Daten von einer echten Null unterschieden. Analytics erklärt unbekannte Messwerte nur einmal; leere Tabellen blenden die Schaltflächen für die vorherige und nächste Seite aus.
+- **Korrekturen im Alltag:** Das Diagnosepaket in der Hilfe beschreibt das Problem besser und enthält Ihre Seitenadressen nicht. 25 mit echten Daten gefundene Probleme wurden behoben: Übersicht, Suchleistung, Positionen, gespeicherte Suchbegriffe, Analytics, Berichte, Website-Audit, Einstellungen, Verbindungen, Hilfe und englische Mehrzahlformen wurden korrigiert. Alle Ansichten wurden zweimal zusätzlich mit echten Daten geprüft, auch die unteren Seitenbereiche. Die Audit-Zahlen in der Übersicht erklären, was sie zählen, und Problemnamen werden vollständig angezeigt. Eine leere Liste gespeicherter Suchbegriffe ist sofort als leer erkennbar. Die Positionsverfolgung spricht von durchschnittlichen Positionen; Hilfe und Seitenwechsel verwenden die passenden Menünamen. Das Sitzungsdiagramm in der Übersicht ist richtig beschriftet; Positionen werden als Durchschnitt des gewählten Zeitraums beschrieben. Einzahl und Mehrzahl wurden auf Englisch, Deutsch, Französisch, Italienisch und Portugiesisch korrigiert. Ihr KI-Assistent findet wieder Seiten, die bei derselben Suche miteinander konkurrieren.
+- **Genauere Zahlen:** Fehlende Messwerte zählen nicht als null, begrenzte Analytics-Daten gelten nicht als sicheres Ergebnis; Positionen nutzen dieselben Zeiträume, vorrangige Aufgaben und Schätzgrenzen werden erklärt, und Filter ändern den geschätzten monatlichen Zugewinn nicht. Chancen erklärt die von Google verborgenen Suchanfragen und empfiehlt keine Erweiterung auf 90 Tage mehr, wenn bereits 90 Tage gewählt sind. Auch bei wenigen Besuchern werden fehlende Daten von einer echten Null unterschieden. Analytics erklärt unbekannte Messwerte nur einmal; leere Tabellen blenden die Schaltflächen für die vorherige und nächste Seite aus. Chancen zeigt auch bei wenigen Besuchern Seiten mit ihren echten Messwerten. Beruht ein Vorschlag auf der durchschnittlichen Position und lässt sich kein Zugewinn berechnen, wird dieser als unbekannt angezeigt.
 - **Verbindungsstatus:** Property-Auswahl und bestätigter Zugriff sind getrennt, nach einem Kontowechsel gelten alte Ergebnisse nicht als aktuell; antwortet Google nicht, endet das Warten, vorübergehende Fehler empfehlen einen neuen Versuch und deaktivierte Dienste erklären, was Sie einschalten müssen.
 - **Gespeicherte Daten:** Etiketten werden vollständig zugewiesen oder entfernt, verwendete Etiketten lassen sich nicht löschen, ältere Daten bleiben der richtigen Property zugeordnet und wartende Aufgaben werden richtig sortiert.
-- **Windows-Start:** Arbeitsdateien liegen im Benutzerordner; reparierte Assistentenverbindungen bleiben nach einem Neustart erhalten, und die Startprüfung hängt nicht mehr fest. Ein nicht nutzbarer Link zu den Windows-Einstellungen wird ausgeblendet.
+- **Windows-Start:** Arbeitsdateien liegen im Benutzerordner; reparierte Assistentenverbindungen bleiben nach einem Neustart erhalten, und die Startprüfung hängt nicht mehr fest. Ein nicht nutzbarer Link zu den Windows-Einstellungen wird ausgeblendet. Während Ihrer Abwesenheit eingegangene Benachrichtigungen erscheinen jetzt, wenn Sie zur App zurückkehren.
 
 ### 🔒 Sicherheit
 

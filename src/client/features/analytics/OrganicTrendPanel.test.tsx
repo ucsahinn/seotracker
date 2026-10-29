@@ -42,7 +42,7 @@ beforeEach(() => {
   state.warnings = [];
 });
 
-it("keeps source timezone warnings visible beside the metrics", () => {
+it("keeps source timezone warnings reachable in closed data details", () => {
   state.warnings = ["property_time_zone_changed"];
   render(<OrganicTrendPanel projectId="p" windowDays={28} />);
   expect(
@@ -51,10 +51,10 @@ it("keeps source timezone warnings visible beside the metrics", () => {
         "Mülkün saat dilimi değişmiş; bağlantı ayarlarını yenileyip tarihleri yeniden kontrol edin.",
       )
       .closest("details"),
-  ).toBeNull();
+  ).not.toBeNull();
 });
 
-it("keeps background explanations collapsed and scope visible", () => {
+it("keeps background explanations collapsed and scope reachable", () => {
   state.sessions = 6;
   state.events = 0;
   const { container } = render(
@@ -67,18 +67,23 @@ it("keeps background explanations collapsed and scope visible", () => {
   expect(screen.getByText(/Az sayıda oturumda/).closest("details")).toBe(
     background,
   );
-  expect(screen.getByText(/Mülk kapsamı:/).closest("details")).toBeNull();
+  expect(
+    screen
+      .getByText(/Mülk kapsamı:/)
+      .closest("details")
+      ?.hasAttribute("open"),
+  ).toBe(false);
   expect(container.textContent?.match(/Mülk kapsamı:/g)).toHaveLength(1);
 });
 
-it("names an unknown cause beside unknown totals without diagnosing the tag", () => {
+it("keeps the unknown cause reachable without diagnosing the tag", () => {
   state.sessions = null;
   state.events = null;
   render(<OrganicTrendPanel projectId="p" windowDays={28} />);
   const reason = screen.getByText(
     "Bazı ölçümler belirlenemedi. Nedeni bilinmiyor; bu, hiç ziyaret olmadığı anlamına gelmez.",
   );
-  expect(reason.closest("details")).toBeNull();
+  expect(reason.closest("details")?.hasAttribute("open")).toBe(false);
 });
 
 it("does not repeat a previous-value explanation for every unknown current metric", () => {

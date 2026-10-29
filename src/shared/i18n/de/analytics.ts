@@ -1,6 +1,13 @@
 import type { Catalog } from "@/shared/i18n";
 
 export const deAnalytics: Catalog = {
+  "Kazanç bilinmiyor": "Gewinn unbekannt",
+  "Sıraya dayalı öneri; kazanç bilinmiyor (yetersiz veri).":
+    "Positionsbasierter Vorschlag; Gewinn unbekannt (zu wenig Daten).",
+  "Yalnızca marka aramaları": "Nur Markenanfragen",
+  "Kazanç için veri yetersiz: az gösterim {low}, eksik hedef oranı {curve}, eksik marka dışı sorgu {missing}. Sıraya dayalı öneriler tahmin değildir.":
+    "Zu wenig Daten für den Gewinn: wenige Impressionen {low}, fehlende Zielrate {curve}, fehlende Nicht-Markenanfragen {missing}. Positionsbasierte Vorschläge sind keine Schätzungen.",
+
   "Analytics verisini yorumlama": "Analytics-Daten verstehen",
   "Bu dönemin trafiği belirlenemedi":
     "Der Traffic für diesen Zeitraum konnte nicht ermittelt werden",

@@ -213,11 +213,16 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
 
           <div className="flex flex-col gap-1.5">
             <ProjectMarketFields value={market} onChange={setMarket} />
-            <span className="text-xs text-muted">
-              {t(
-                "Bunlar kaydedilen pazar tercihleridir. Arşivdeki sıralamalar tüm ülkeleri ve cihazları kapsar; bu tercihler sıralamaları filtrelemez.",
-              )}
-            </span>
+            <details className="text-sm text-muted">
+              <summary className="cursor-pointer py-2">
+                {t("Ayrıntılar")}
+              </summary>
+              <p className="max-w-prose text-sm leading-relaxed">
+                {t(
+                  "Bunlar kaydedilen pazar tercihleridir. Arşivdeki sıralamalar tüm ülkeleri ve cihazları kapsar; bu tercihler sıralamaları filtrelemez.",
+                )}
+              </p>
+            </details>
           </div>
 
           {(domain.trim() || "") !== (project.domain ?? "") ? (
@@ -229,16 +234,17 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
           ) : null}
           <div className="flex flex-wrap gap-3 text-sm">
             <a
-              className="link min-h-11 inline-flex items-center"
+              className="btn btn-ghost btn-sm min-h-11"
               href={`/p/${project.id}/settings/context`}
             >
               {t("Proje bilgisi")}
             </a>
             <a
-              className="link min-h-11 inline-flex items-center"
+              className="btn btn-ghost btn-sm min-h-11 h-auto max-w-full whitespace-normal text-left"
               href={`/p/${project.id}/search-performance`}
+              title={t("Marka terimlerini Arama performansında düzenleyin")}
             >
-              {t("Marka terimlerini Arama performansında düzenleyin")}
+              {t("Arama performansı")}
             </a>
           </div>
           {(domain.trim() || "") !== (project.domain ?? "") ? (

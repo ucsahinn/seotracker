@@ -1,6 +1,6 @@
 ---
 title: Agent setup
-description: Connect an agent safely, verify a new tool call and use SEO skills.
+description: Connect your SEO assistant securely, verify a fresh tool call and use skills to audit your site and write reports from local data.
 kind: nasil-yapilir
 updated: 2026-10-27
 ---

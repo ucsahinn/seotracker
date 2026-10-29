@@ -1,6 +1,6 @@
 ---
 title: Opportunità
-description: Mostra quanti clic in più al mese potrebbe portare ciascuna pagina del sito e quale lavoro li porta. Il numero è un limite superiore, non una promessa.
+description: Mostra pagine osservate, possibili interventi e un limite di clic aggiuntivi quando i dati lo consentono.
 screen: Fırsatlar
 route: /p/<proje>/opportunities
 updated: 2026-10-27
@@ -20,7 +20,7 @@ Il **limite massimo su base di 30 giorni** normalizza il periodo scelto. Non è 
 
 ## Elenco e filtri
 
-I filtri per lavoro e conversioni si combinano con E. Il server filtra tutte le pagine valutabili prima di mostrare le prime 25, 50 o 100 corrispondenze. I totali globali non cambiano. Una pagina può figurare in più categorie: non sommare i conteggi delle categorie. Periodo, limite e filtri restano nell’URL.
+I filtri per lavoro e conversioni si combinano con E. Il server filtra tutte le pagine candidate prima di mostrare le prime 25, 50 o 100 corrispondenze. I totali globali non cambiano. Una pagina può figurare in più categorie: non sommare i conteggi delle categorie. Periodo, limite e filtri restano nell’URL.
 
 Sul computer trovi una tabella ordinabile; sul telefono, righe con indirizzi a capo e pulsante Dettagli. I dettagli mostrano impressioni, posizione, gruppo di posizione obiettivo e contributo assegnato per query. Sono visibili i dieci contributi maggiori e una quota residua separata. Contributi e residuo corrispondono al limite della pagina. Lo scarto CTR usa solo query non di marca confrontabili, con la stessa base di impressioni, in punti percentuali.
 
@@ -37,3 +37,7 @@ CSV e Fogli Google includono le righe filtrate visibili, date, unità normalizza
 Il collegamento a Rendimento di ricerca conserva le date iniziale e finale e apre i dettagli dell’URL esatto. I periodi non leggibili vengono spiegati senza sostituire le date. Annota le modifiche e confronta clic, CTR e posizione misurati su periodi equivalenti. Una stima in calo non dimostra da sola il successo. Non eliminare contenuti solo per una posizione bassa; valuta l’unione solo dopo aver confermato che le pagine rispondono alla stessa esigenza.
 
 Pochi dati non significano un guadagno potenziale pari a zero. L’assenza di query non di marca utilizzabili può dipendere da query nascoste, esclusioni del marchio o limiti dei dati. Il periodo massimo non suggerisce ulteriori estensioni. Apri Rendimento della ricerca per esaminare le query con impressioni. I dettagli del calcolo si espandono nella sezione sulla copertura dei dati.
+
+Sono elencate anche le pagine con impressioni e guadagno sconosciuto: prima le stime per guadagno, poi le altre per impressioni. Sconosciuto non significa zero; i totali sommano solo guadagni calcolati. I dettagli mostrano le ricerche non di marca per impressioni e segnalano le pagine con sole ricerche di marca. I suggerimenti usano solo la posizione (1–5 esaminare titolo/snippet, 6–10 contenuto, 11–20 link interni/contenuto, 21+ intento). Non dimostrano CTR basso o guadagno futuro. I filtri di lavoro seguono questi suggerimenti; quelli di conversione usano i segnali Analytics misurati. CSV e Fogli lasciano vuoto il guadagno sconosciuto e includono stato, motivo, indicatore del marchio e ricerche misurate.
+
+Se il guadagno è sconosciuto, esamina prima la pagina e le ricerche osservate; modifica titolo o contenuti solo dopo aver confermato una mancata corrispondenza. Se tutti i guadagni sono sconosciuti, le categorie mostrano il numero di pagine candidate senza barre di guadagno. Il riepilogo delle conversioni distingue le pagine corrispondenti da quelle con stato sconosciuto; la mancanza di copertura Analytics non equivale a zero conversioni. Il pulsante del filtro appare solo in presenza di conversioni confermate. Fonte e periodo sono dati etichettati, i calcoli restano nei dettagli chiusi. I dati Analytics mancanti vengono spiegati nei dettagli della pagina anziché ripetuti in ogni riga.

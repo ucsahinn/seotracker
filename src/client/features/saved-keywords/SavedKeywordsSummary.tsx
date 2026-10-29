@@ -2,13 +2,9 @@ import { SavedSummaryCard } from "./SavedSummaryCard";
 import { Link } from "@tanstack/react-router";
 import type { SavedWatchlist } from "@/server/features/keywords/services/SavedWatchlistService";
 import type { SavedBand } from "@/shared/savedWatchlist";
-import {
-  formatCount,
-  formatDecimal,
-  formatDate,
-  formatPercent,
-} from "@/shared/format";
+import { formatCount, formatPercent } from "@/shared/format";
 import { t } from "@/shared/i18n";
+import { SavedSourceEvidence } from "./SavedSourceEvidence";
 export function SavedKeywordsSummary({
   projectId,
   data,
@@ -43,8 +39,8 @@ export function SavedKeywordsSummary({
       className="space-y-4"
       aria-label={t("Kayıtlı kelimelerin arşiv özeti")}
     >
-      <div className="space-y-2 text-sm">
-        <p className="font-medium">
+      <div className="space-y-4 text-sm">
+        <p className="max-w-prose text-lg font-semibold">
           {data.archiveError
             ? t(
                 "Kelimeler kayıtlı; sıra karşılaştırması şu anda kullanılamıyor.",
@@ -57,35 +53,6 @@ export function SavedKeywordsSummary({
                 },
               )}
         </p>
-        <p className="text-muted">
-          {t("Google Web · tüm ülkeler ve cihazlar · {zone}", {
-            zone: data.timeZone,
-          })}
-          <br />
-          {t("Dönem: {start} – {end}", {
-            start: formatDate(data.range.startDate),
-            end: formatDate(data.range.endDate),
-          })}
-          <br />
-          {t("Önceki dönem: {start} – {end}", {
-            start: formatDate(data.previousRange.startDate),
-            end: formatDate(data.previousRange.endDate),
-          })}
-        </p>
-        <p className="text-muted">
-          {t("Eşleşen kelimelerde gözlenen gün: {observed} / {requested}", {
-            observed: data.archiveError
-              ? t("Bilinmiyor")
-              : formatCount(data.observedDates.length),
-            requested: formatCount(data.requestedDays),
-          })}
-          {data.observedDates.length
-            ? " · " +
-              formatDate(data.observedDates[0]) +
-              " – " +
-              formatDate(data.observedDates.at(-1)!)
-            : ""}
-        </p>
         {stale ? (
           <p role="status" className="text-[var(--ink-warning)]">
             {t(
@@ -93,7 +60,27 @@ export function SavedKeywordsSummary({
             )}
           </p>
         ) : null}
-        <p className="text-muted">{reason}</p>
+        {!stale &&
+        (partial ||
+          archiveStale ||
+          data.archiveError ||
+          data.connectionError ||
+          data.statusError) ? (
+          <p className="text-[var(--ink-warning)]">
+            {data.archiveError
+              ? t("Karşılaştırma yok")
+              : data.connectionError || data.statusError
+                ? t("Kısmi veri")
+                : t(
+                    "{observed}/{days} gün gözlem; {complete}/{days} gün tam yanıt.",
+                    {
+                      observed: formatCount(data.observedDates.length),
+                      complete: formatCount(data.coverage.complete),
+                      days: formatCount(data.requestedDays),
+                    },
+                  )}
+          </p>
+        ) : null}
         <div className="flex flex-wrap gap-2">
           {data.archiveError || data.connectionError || data.statusError ? (
             <button className="btn btn-outline min-h-11" onClick={onRetry}>
@@ -113,7 +100,7 @@ export function SavedKeywordsSummary({
               params={{ projectId }}
               className="btn btn-outline min-h-11"
             >
-              {t("Sıralama takibi'nde arşivi güncelle")}
+              {t("Arşiv kapsamını incele")}
             </Link>
           ) : data.downSignificant > 0 ? (
             <button className="btn btn-outline min-h-11" onClick={onFallers}>
@@ -122,194 +109,131 @@ export function SavedKeywordsSummary({
           ) : null}
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <SavedSummaryCard
-          label={t("Kayıtlı kelimeler")}
-          value={formatCount(data.totalSavedMatching)}
-          numericValue={data.totalSavedMatching}
-          note={t("Metin ve etiket filtresine uyan kayıtlar")}
-          onClick={() => onFilter(undefined)}
-        />
-        <SavedSummaryCard
-          label={t("Gözlenen kelimeler")}
-          numericValue={
-            data.archiveError ? undefined : data.totalObservedMatching
-          }
-          value={
-            data.archiveError ? "—" : formatCount(data.totalObservedMatching)
-          }
-          note={t("{count} kayıtlı kelime içinde", {
-            count: formatCount(data.totalSavedMatching),
-          })}
-          onClick={() => onFilter("observed")}
-          disabled={data.archiveError}
-        />
-        <SavedSummaryCard
-          label={t("Belirgin hareket ≥{value} sıra", {
-            value: formatDecimal(0.5),
-          })}
-          value={
-            data.archiveError ||
-            data.previousError ||
-            data.comparableCount === 0
-              ? t("Karşılaştırma yok")
-              : t("↑ {up} · ↓ {down}", {
-                  up: formatCount(data.upSignificant),
-                  down: formatCount(data.downSignificant),
-                })
-          }
-          note={t("Karşılaştırılabilen: {comparable} / {total}", {
-            comparable: formatCount(data.comparableCount),
-            total: formatCount(data.totalSavedMatching),
-          })}
-          onClick={onFallers}
-          disabled={
-            data.archiveError ||
-            data.previousError ||
-            data.comparableCount === 0 ||
-            data.downSignificant === 0
-          }
-        />
-        <SavedSummaryCard
-          label={t("Sıra bilinmiyor")}
-          numericValue={data.archiveError ? undefined : data.noCurrent}
-          value={data.archiveError ? "—" : formatCount(data.noCurrent)}
-          note={
-            data.noCurrent === 0
-              ? t("Tüm kayıtlı kelimeler bu dönemde gözlendi.")
-              : partial
-                ? t("Eksik arşiv nedeniyle gözlem yokluğu doğrulanamaz")
-                : t("Okunan arşivde eşleşen gözlem yok")
-          }
-          onClick={() => onFilter("none")}
-          disabled={data.archiveError || data.noCurrent === 0}
-        />
-      </div>
-      {!data.archiveError ? (
-        <>
-          <p className="text-xs text-muted">
-            {data.previousError
-              ? t("Önceki dönem okunamadı; karşılaştırma için yeniden deneyin.")
-              : data.comparableCount === 0
-                ? t("Karşılaştırma yok")
-                : t(
-                    "Belirgin değişmedi: {stable}; önceki gözlem yok: {previous}; güncel gözlem yok: {current}.",
-                    {
-                      stable: formatCount(data.stableComparable),
-                      previous: formatCount(data.noPrevious),
-                      current: formatCount(data.noCurrent),
-                    },
-                  )}
-          </p>
-          <p className="text-xs text-muted">
-            {t(
-              "Sıra gruplarının tabanı: {count} kayıtlı kelime (sıra grubu uygulanmadan önce).",
-              { count: data.totalSavedMatching },
-            )}
-          </p>
-          <div
-            className="grid gap-2 sm:grid-cols-5"
-            aria-label={t(
-              "Sıra grupları; metin ve etiket filtresi sonrası tüm kayıtlar",
-            )}
-          >
-            {bands.map((band) => (
-              <button
-                key={band.id}
-                className="min-h-20 rounded-field border border-[var(--control-border)] p-3 text-left focus-visible:outline-2 focus-visible:outline-primary"
-                aria-pressed={filter === band.id}
-                onClick={() =>
-                  onFilter(filter === band.id ? undefined : band.id)
-                }
-              >
-                <span className="block text-xs text-muted">
-                  {band.label}
-                  {filter === band.id ? " ✓" : ""}
-                </span>
-                <strong>{formatCount(data.bands[band.id])}</strong>
-                <span className="ml-2 text-xs text-muted">
-                  {formatPercent(data.bands[band.id] / data.totalSavedMatching)}
-                </span>
-                <span
-                  className="mt-2 block h-1.5 rounded-full bg-base-300"
-                  aria-hidden
-                >
-                  <span
-                    className={
-                      band.id === "none"
-                        ? "block h-full rounded-full"
-                        : "block h-full rounded-full bg-[var(--data-position)]"
-                    }
-                    style={{
-                      backgroundImage:
-                        band.id === "none"
-                          ? "repeating-linear-gradient(135deg, var(--color-base-content) 0, var(--color-base-content) 2px, transparent 2px, transparent 4px)"
-                          : undefined,
-                      width: formatBar(
-                        data.bands[band.id],
-                        data.totalSavedMatching,
-                      ),
-                    }}
-                  />
-                </span>
-              </button>
-            ))}
-          </div>
-        </>
-      ) : null}
-      <details className="rounded-box border border-base-300 p-3 text-xs text-muted">
-        <summary className="cursor-pointer">
-          {t("Veri kapsamı ve hesaplama")}
+      <details>
+        <summary className="min-h-11 cursor-pointer text-sm text-muted">
+          {t("Kaynak")}
         </summary>
-        <div className="mt-3 space-y-2">
-          <p>
-            {t("Son arşiv aktarımı: {date}", {
-              date: data.status?.lastRunAt
-                ? formatDate(data.status.lastRunAt)
-                : t("Bilinmiyor"),
+        <SavedSourceEvidence data={data} reason={reason} />
+      </details>
+      <details className="space-y-4" open={filter !== undefined}>
+        <summary className="min-h-11 cursor-pointer text-sm text-muted">
+          {t("Arşiv özeti")}
+        </summary>
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          <SavedSummaryCard
+            label={t("Kayıtlı kelimeler")}
+            value={formatCount(data.totalSavedMatching)}
+            numericValue={data.totalSavedMatching}
+            note={t("Metin ve etiket filtresine uyan kayıtlar")}
+            onClick={() => onFilter(undefined)}
+          />
+          <SavedSummaryCard
+            label={t("Gözlenen kelimeler")}
+            numericValue={
+              data.archiveError ? undefined : data.totalObservedMatching
+            }
+            value={
+              data.archiveError ? "—" : formatCount(data.totalObservedMatching)
+            }
+            note={t("{count} kayıtlı kelime içinde", {
+              count: formatCount(data.totalSavedMatching),
             })}
-          </p>
-          <p>
-            {t(
-              "Tam yanıt: {complete}; sınırlı: {limited}; başarısız: {failed}; doğrulanmamış gün: {unknown}.",
-              {
-                complete: formatCount(data.coverage.complete),
-                limited: formatCount(data.coverage.limited),
-                failed: formatCount(data.coverage.failed),
-                unknown: formatCount(data.coverage.unknown),
-              },
-            )}
-          </p>
-          <p>
-            {t(
-              "Önceki dönemde tam yanıt: {complete} / {days}; eşleşen gözlem günü: {observed}.",
-              {
-                complete: formatCount(data.previousCoverage.complete),
-                days: formatCount(data.requestedDays),
-                observed: data.previousError
-                  ? t("Bilinmiyor")
-                  : formatCount(data.previousObservedDates.length),
-              },
-            )}
-          </p>
-          <p>
-            {t(
-              "Konum ve dil kayıt bilgisi olarak korunur. Arşiv tüm ülkeleri ve cihazları kapsar. Türkçe büyük/küçük harf ve birden fazla boşluk eşleştirilir; ham sorgular gösterimle ağırlıklandırılır. Google bazı nadir sorguları döndürmeyebilir.",
-            )}
-          </p>
-          <p>
-            {t(
-              "Listeyi yenile yalnızca yerel veritabanını okur; Google'dan yeni veri almaz. Tarihler Pasifik takviminde üç günlük gecikme varsayımıyla seçilir; bu, tam arşiv kanıtı değildir.",
-            )}
-          </p>
-          {data.statusError ? (
-            <p>
-              {t(
-                "Arşiv aktarım durumu okunamadı. Son aktarım bilgisi için yeniden deneyin.",
-              )}
-            </p>
-          ) : null}
+            onClick={() => onFilter("observed")}
+            disabled={data.archiveError}
+          />
+          <SavedSummaryCard
+            label={t("Değişim")}
+            value={
+              data.archiveError ||
+              data.previousError ||
+              data.comparableCount === 0
+                ? t("Karşılaştırma yok")
+                : t("↑ {up} · ↓ {down}", {
+                    up: formatCount(data.upSignificant),
+                    down: formatCount(data.downSignificant),
+                  })
+            }
+            note={t("Karşılaştırılabilen: {comparable} / {total}", {
+              comparable: formatCount(data.comparableCount),
+              total: formatCount(data.totalSavedMatching),
+            })}
+            onClick={onFallers}
+            disabled={
+              data.archiveError ||
+              data.previousError ||
+              data.comparableCount === 0 ||
+              data.downSignificant === 0
+            }
+          />
+          <SavedSummaryCard
+            label={t("Sıra bilinmiyor")}
+            numericValue={data.archiveError ? undefined : data.noCurrent}
+            value={data.archiveError ? "—" : formatCount(data.noCurrent)}
+            note={
+              data.noCurrent === 0
+                ? t("Tüm kayıtlı kelimeler bu dönemde gözlendi.")
+                : partial
+                  ? t("Eksik arşiv nedeniyle gözlem yokluğu doğrulanamaz")
+                  : t("Okunan arşivde eşleşen gözlem yok")
+            }
+            onClick={() => onFilter("none")}
+            disabled={data.archiveError || data.noCurrent === 0}
+          />
         </div>
+        {!data.archiveError ? (
+          <>
+            <div
+              className="grid grid-cols-2 gap-2 sm:grid-cols-5"
+              aria-label={t(
+                "Sıra grupları; metin ve etiket filtresi sonrası tüm kayıtlar",
+              )}
+            >
+              {bands.map((band) => (
+                <button
+                  key={band.id}
+                  className="min-h-20 rounded-field border border-[var(--control-border)] p-3 text-left focus-visible:outline-2 focus-visible:outline-primary"
+                  aria-pressed={filter === band.id}
+                  onClick={() =>
+                    onFilter(filter === band.id ? undefined : band.id)
+                  }
+                >
+                  <span className="block text-xs text-muted">
+                    {band.label}
+                    {filter === band.id ? " ✓" : ""}
+                  </span>
+                  <strong>{formatCount(data.bands[band.id])}</strong>
+                  <span className="ml-2 text-xs text-muted">
+                    {formatPercent(
+                      data.bands[band.id] / data.totalSavedMatching,
+                    )}
+                  </span>
+                  <span
+                    className="mt-2 block h-1.5 rounded-full bg-base-300"
+                    aria-hidden
+                  >
+                    <span
+                      className={
+                        band.id === "none"
+                          ? "block h-full rounded-full"
+                          : "block h-full rounded-full bg-[var(--data-position)]"
+                      }
+                      style={{
+                        backgroundImage:
+                          band.id === "none"
+                            ? "repeating-linear-gradient(135deg, var(--color-base-content) 0, var(--color-base-content) 2px, transparent 2px, transparent 4px)"
+                            : undefined,
+                        width: formatBar(
+                          data.bands[band.id],
+                          data.totalSavedMatching,
+                        ),
+                      }}
+                    />
+                  </span>
+                </button>
+              ))}
+            </div>
+          </>
+        ) : null}
       </details>
     </section>
   );

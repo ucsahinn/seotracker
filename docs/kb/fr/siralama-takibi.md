@@ -1,6 +1,6 @@
 ---
 title: Suivi des classements
-description: Position moyenne de vos recherches sur Google, celles qui montent ou baissent et l'évolution des groupes de positions, même au-delà de la limite de 16 mois de Google, car les données sont conservées sur cet ordinateur.
+description: Suivre les positions moyennes Google de vos requêtes et leur évolution. L’archive locale conserve les données au-delà de la limite de 16 mois.
 screen: Sıralama takibi
 route: /p/<proje>/rankings
 updated: 2026-10-27

@@ -102,11 +102,16 @@ export function SeverityBar({
         <h3 className="mt-2 text-xs font-medium text-muted">
           {t("Sayfa bulguları")}
         </h3>
-        <p className="mt-1 text-xs text-muted">
-          {t(
-            "Her sayfa ve kontrol türü çifti bir bulgudur; aynı sayfa birden fazla kez sayılabilir.",
-          )}
-        </p>
+        <details className="text-sm text-muted">
+          <summary className="min-h-11 cursor-pointer py-3">
+            {t("Veri hakkında")}
+          </summary>
+          <p className="max-w-prose leading-relaxed">
+            {t(
+              "Her sayfa ve kontrol türü çifti bir bulgudur; aynı sayfa birden fazla kez sayılabilir.",
+            )}
+          </p>
+        </details>
         <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
           {present.map((segment) => (
             <li key={segment.key}>

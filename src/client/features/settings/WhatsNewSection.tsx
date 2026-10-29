@@ -3,6 +3,7 @@ import * as React from "react";
 import { formatDate } from "@/client/lib/format";
 import { CopyButton } from "@/client/components/CopyButton";
 import { EmptyState } from "@/client/components/EmptyState";
+import { FactStrip } from "@/client/components/FactStrip";
 import { guideUrl } from "@/client/features/support/links";
 import { getLocale, t } from "@/shared/i18n";
 import {
@@ -30,17 +31,18 @@ export function WhatsNewSection({ version }: { version: string }) {
 
   return (
     <section id="surum-notlari" className="scroll-mt-16 space-y-3">
-      <div className="space-y-1">
-        <p className="flex flex-wrap items-baseline gap-2 text-sm">
-          <span className="text-muted">{t("Kurulu sürüm")}</span>
-          <span className="font-semibold">v{version}</span>
-        </p>
-        <p className="text-sm text-muted">
-          {t(
-            "Her sürümde nelerin eklendiğini ve düzeltildiğini burada bulabilirsiniz.",
-          )}
-        </p>
-      </div>
+      <FactStrip
+        label={t("Sürüm notları")}
+        facts={[{ label: t("Kurulu sürüm"), value: `v${version}` }]}
+        detailsLabel={t("Ayrıntılar")}
+        details={
+          <p>
+            {t(
+              "Her sürümde nelerin eklendiğini ve düzeltildiğini burada bulabilirsiniz.",
+            )}
+          </p>
+        }
+      />
 
       {entries.length === 0 ? (
         <EmptyState
@@ -200,10 +202,13 @@ function ReleaseNotes({
             stripLeadingEmoji(section.heading) === HIGHLIGHTS[getLocale()] ? (
               <Highlights key={section.heading} items={section.items} />
             ) : (
-              <div key={section.heading} className="space-y-2">
-                <h3 className="flex items-center gap-2 text-sm font-semibold">
-                  {section.heading}
-                </h3>
+              <details
+                key={section.heading}
+                className="border-t border-[var(--hairline)] pt-2"
+              >
+                <summary className="cursor-pointer py-3 text-sm font-semibold">
+                  <h3 className="inline">{section.heading}</h3>
+                </summary>
                 <ul className="list-disc space-y-2 pl-5 text-muted marker:text-subtle">
                   {section.items.map((item, index) =>
                     item.code ? (
@@ -230,7 +235,7 @@ function ReleaseNotes({
                     ),
                   )}
                 </ul>
-              </div>
+              </details>
             ),
           )}
         </div>

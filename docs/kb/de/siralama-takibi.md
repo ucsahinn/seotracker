@@ -1,6 +1,6 @@
 ---
 title: Ranking-Verfolgung
-description: Durchschnittliche Google-Position Ihrer Suchanfragen, welche steigen oder fallen und wie sich die Positionsgruppen verändern, auch über Googles 16-Monate-Grenze hinaus, weil die Daten auf Ihrem Computer liegen.
+description: Google-Positionen Ihrer Suchanfragen und deren Entwicklung verfolgen. Das lokale Archiv bewahrt Daten auch über die 16-Monate-Grenze hinaus.
 screen: Sıralama takibi
 route: /p/<proje>/rankings
 updated: 2026-10-27

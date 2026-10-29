@@ -8,7 +8,7 @@ import { getSafeExternalUrl } from "@/client/components/table/url";
 import { nullableNumberSort } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
 import {
   pathOf,
-  WORK_COPY,
+  rowAction,
   workColor,
   type OpportunityRow,
 } from "@/client/features/opportunities/opportunityLogic";
@@ -76,6 +76,8 @@ export function buildOpportunityColumns(
       ),
       cell: ({ getValue, row }) => {
         const gain = getValue();
+        if (gain === null)
+          return <span className="text-muted">{t("Kazanç bilinmiyor")}</span>;
         return (
           <span className="flex flex-col items-end gap-1">
             <span className="font-semibold">
@@ -100,6 +102,9 @@ export function buildOpportunityColumns(
         );
       },
       meta: right,
+      sortingFn: (a, b) =>
+        (a.original.gainPerMonth ?? -1) - (b.original.gainPerMonth ?? -1) ||
+        a.original.impressions - b.original.impressions,
     }),
     opportunityHelper.accessor("page", {
       header: ({ column }) => (
@@ -129,8 +134,13 @@ export function buildOpportunityColumns(
                   className="inline-block size-2 shrink-0 rounded-full"
                   style={{ backgroundColor: workColor(work) }}
                 />
-                {t(WORK_COPY[work].action)}
+                {t(rowAction(row.original))}
               </span>
+              {row.original.brandOnly ? (
+                <span className="block text-xs text-muted">
+                  {t("Yalnızca marka aramaları")}
+                </span>
+              ) : null}
             </span>
             <button
               type="button"
@@ -255,6 +265,7 @@ export function buildOpportunityColumns(
               <OpportunityAnalyticsLink
                 row={row.original}
                 {...analyticsScope}
+                compact
               />
             ) : null}
             {signal ? (

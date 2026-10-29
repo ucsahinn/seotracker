@@ -268,7 +268,6 @@ export function SearchPerformancePage({
             onViewChange={onViewChange}
           />
 
-          <DataTrustStrip projectId={projectId} view={view} compare={compare} />
           <SearchVerdict
             view={view}
             compare={compare}
@@ -276,6 +275,7 @@ export function SearchPerformancePage({
             onShowTodo={showTodo}
           />
           <KpiTiles view={view} compare={compare} />
+          <DataTrustStrip projectId={projectId} view={view} compare={compare} />
 
           {view.totals.current.impressions === 0 ? (
             <EmptyState

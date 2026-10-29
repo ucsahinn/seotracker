@@ -591,4 +591,9 @@ export const enSettings: Catalog = {
   "Google hesabıyla giriş seçeneği": "Sign in with a Google account",
   "Az trafik alan sitelerde Google bazı sorguları gizler. Sayfa toplamlarında tıklama varken sorgu listesi boş veya daha küçük olabilir; bu tek başına bağlantı hatası değildir.":
     "On sites with little search traffic, Google hides some queries. The query list can be empty or show fewer clicks than the page totals; this alone does not mean the connection is broken.",
+  "Bu tarayıcı": "This browser",
+  "Henüz bildirim yok": "No notifications yet",
+  "Para birimi": "Currency",
+  "Mülk alan adını kapsamıyor.": "Property does not cover this domain.",
+  "Denetim eski": "Older audit",
 };

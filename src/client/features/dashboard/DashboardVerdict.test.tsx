@@ -17,12 +17,13 @@ it("separates the totals cutoff from the provisional data date and excluded inte
   const view = searchViewFixture();
   mocks.query.mockReturnValue({ data: view });
   render(<DashboardVerdict projectId="p1" connected />);
-  const note = screen.getByText(/Toplamların son günü:/);
-  expect(note.textContent).toContain(formatDate("2026-10-23"));
-  expect(note.textContent).toContain("Geçici verinin son günü:");
-  expect(note.textContent).toContain(formatDate("2026-10-25"));
-  expect(note.textContent).toContain(formatDate("2026-10-24"));
-  expect(note.textContent).toContain("toplamlara dahil değil");
+  const fact = (label: string) =>
+    screen.getByText(label, { selector: "dt" }).nextElementSibling
+      ?.textContent ?? "";
+  expect(fact("Kesin veri")).toContain(formatDate("2026-10-23"));
+  expect(fact("Kesin veri")).toContain(formatDate("2026-10-24"));
+  expect(fact("Kesin veri")).toContain("toplamlara dahil değil");
+  expect(fact("Geçici veri")).toContain(formatDate("2026-10-25"));
   expect(screen.getByText(/America\/Los_Angeles/)).toBeDefined();
 });
 it("labels Search Console source details distinctly from the refresh help", () => {

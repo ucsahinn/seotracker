@@ -5,6 +5,13 @@ import type { Catalog } from "@/shared/i18n";
  * Keys are the Turkish source strings exactly as passed to t().
  */
 export const enAnalytics: Catalog = {
+  "Kazanç bilinmiyor": "Gain unknown",
+  "Sıraya dayalı öneri; kazanç bilinmiyor (yetersiz veri).":
+    "Position-based suggestion; gain unknown (insufficient data).",
+  "Yalnızca marka aramaları": "Only brand queries",
+  "Kazanç için veri yetersiz: az gösterim {low}, eksik hedef oranı {curve}, eksik marka dışı sorgu {missing}. Sıraya dayalı öneriler tahmin değildir.":
+    "Insufficient evidence for gain: low impressions {low}, missing target rate {curve}, missing non-brand queries {missing}. Position-based suggestions are not estimates.",
+
   "Etkilenen benzersiz sayfa: {pages} · Kontrol türü: {types}.":
     "Distinct affected pages: {pages} · Check types: {types}.",
   "Sayfa bulguları": "Page findings",

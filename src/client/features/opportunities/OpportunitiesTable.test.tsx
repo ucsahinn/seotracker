@@ -36,6 +36,41 @@ const row = (page: string, gainPerMonth: number, impressions: number) =>
  * Search Console data, so the live screen renders its empty state.
  */
 describe("OpportunitiesTable", () => {
+  it("orders unknown gain after estimates and shows observed queries without a gain number", () => {
+    render(
+      <OpportunitiesTable
+        projectId="p1"
+        days={28}
+        rows={[
+          makeRow({
+            page: "https://example.com/unknown",
+            gain: null,
+            gainPerMonth: null,
+            gainStatus: "unknown",
+            gainReason: "belowThreshold",
+            impressions: 6,
+            observedQueries: [
+              {
+                page: "https://example.com/unknown",
+                query: "small query",
+                clicks: 0,
+                impressions: 6,
+                ctr: 0,
+                position: 15,
+              },
+            ],
+          }),
+          makeRow({ page: "https://example.com/estimated", gainPerMonth: 10 }),
+        ]}
+      />,
+    );
+    const cells = screen.getAllByRole("row").slice(1);
+    expect(cells[0].textContent).toContain("/estimated");
+    expect(cells[1].textContent).toContain("Kazanç bilinmiyor");
+    fireEvent.click(cells[1]);
+    expect(screen.getByRole("dialog").textContent).toContain("small query");
+    expect(screen.getByRole("dialog").textContent).not.toContain("En fazla +");
+  });
   const rows = [
     row("https://example.com/high-gain", 90, 10),
     row("https://example.com/many-impressions", 10, 9_999),
@@ -130,4 +165,23 @@ describe("OpportunitiesTable", () => {
 
     expect(screen.getByText(/CSV \(2 satır\)/)).toBeDefined();
   });
+});
+
+it("keeps shared unknown-gain and missing-Analytics explanations out of rows (C12)", () => {
+  render(
+    <OpportunitiesTable
+      projectId="p"
+      days={28}
+      rows={[makeRow({ gain: null, gainPerMonth: null })]}
+    />,
+  );
+  expect(screen.getAllByText("Kazanç bilinmiyor").length).toBeGreaterThan(0);
+  expect(
+    screen.queryByText(
+      "Sıraya dayalı öneri; kazanç bilinmiyor (yetersiz veri).",
+    ),
+  ).toBeNull();
+  expect(
+    screen.queryByText("Bu sayfa için eşleşen Analytics verisi dönmedi."),
+  ).toBeNull();
 });

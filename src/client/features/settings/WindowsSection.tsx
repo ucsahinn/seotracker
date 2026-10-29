@@ -35,11 +35,16 @@ export function WindowsSection() {
       aria-busy={status.isFetching || save.isPending}
     >
       <h2 className="text-base font-semibold">Windows</h2>
-      <p className="max-w-prose text-sm text-muted">
-        {t(
-          "Bu tercihler Windows uygulamasına kaydedilir ve tepsi menüsüyle aynı ayarları kullanır.",
-        )}
-      </p>
+      <details className="text-sm text-muted">
+        <summary className="cursor-pointer py-2">
+          {t("Windows tercihleri")}
+        </summary>
+        <p className="max-w-prose text-sm text-muted">
+          {t(
+            "Bu tercihler Windows uygulamasına kaydedilir ve tepsi menüsüyle aynı ayarları kullanır.",
+          )}
+        </p>
+      </details>
       {status.isPending ? (
         <div
           role="status"
@@ -198,14 +203,19 @@ function WindowsToggle({
 function WindowsStopHelp({ status }: { status: string | undefined }) {
   if (!status) return null;
   return (
-    <p className="max-w-prose text-sm text-subtle">
-      {status === "unsupported"
-        ? t(
-            "Tarayıcı sekmesini kapatmak uygulamayı durdurmaz. Tamamen kapatmak için kurulumunuza göre Docker kapsayıcısını veya geliştirici sunucusunu durdurun. Bilgisayar uyurken denetimler çalışmaz.",
-          )
-        : t(
-            "Tarayıcı sekmesini kapatmak uygulamayı durdurmaz. Tamamen kapatmak için tepsi menüsünden Çıkış deyin. Bilgisayar uyurken denetimler çalışmaz.",
-          )}
-    </p>
+    <details className="text-sm text-muted">
+      <summary className="cursor-pointer py-2">
+        {t("Uygulamayı durdurma")}
+      </summary>{" "}
+      <p className="max-w-prose text-sm text-subtle">
+        {status === "unsupported"
+          ? t(
+              "Tarayıcı sekmesini kapatmak uygulamayı durdurmaz. Tamamen kapatmak için kurulumunuza göre Docker kapsayıcısını veya geliştirici sunucusunu durdurun. Bilgisayar uyurken denetimler çalışmaz.",
+            )
+          : t(
+              "Tarayıcı sekmesini kapatmak uygulamayı durdurmaz. Tamamen kapatmak için tepsi menüsünden Çıkış deyin. Bilgisayar uyurken denetimler çalışmaz.",
+            )}
+      </p>
+    </details>
   );
 }

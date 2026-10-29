@@ -13,6 +13,7 @@ import {
   pathOf,
   valueText,
   WORK_COPY,
+  rowAction,
   workColor,
   type OpportunityRow,
 } from "@/client/features/opportunities/opportunityLogic";
@@ -128,9 +129,11 @@ export function OpportunityDetail({
 
       <div className="rounded-box bg-primary/8 px-4 py-3">
         <p className="text-2xl font-semibold tabular-nums">
-          {t("En fazla +{gain} tıklama / 30 gün (üst sınır)", {
-            gain: formatCount(row.gainPerMonth),
-          })}
+          {row.gainPerMonth === null
+            ? t("Kazanç bilinmiyor")
+            : t("En fazla +{gain} tıklama / 30 gün (üst sınır)", {
+                gain: formatCount(row.gainPerMonth),
+              })}
         </p>
         <p className="text-sm">{explainRow(row)}</p>
         {dateRange ? (
@@ -186,8 +189,18 @@ export function OpportunityDetail({
       </p>
       <section aria-labelledby="opportunity-queries" className="space-y-2">
         <h3 id="opportunity-queries" className="text-sm font-medium">
-          {t("Hangi aramalar?")} {formatCount(row.queries.length)} /{" "}
-          {formatCount(row.queryCount ?? row.queries.length)}
+          {t("Hangi aramalar?")}{" "}
+          {formatCount(
+            row.gain === null
+              ? (row.observedQueries?.length ?? 0)
+              : row.queries.length,
+          )}{" "}
+          /{" "}
+          {formatCount(
+            row.gain === null
+              ? (row.observedQueries?.length ?? 0)
+              : (row.queryCount ?? row.queries.length),
+          )}
         </h3>
         <div className="overflow-x-auto">
           <table className="table table-xs">
@@ -201,6 +214,21 @@ export function OpportunityDetail({
               </tr>
             </thead>
             <tbody>
+              {row.observedQueries?.map((query) => (
+                <tr key={query.query}>
+                  <td className="max-w-56 break-words whitespace-normal">
+                    {query.query}
+                  </td>
+                  <td className="text-right">
+                    {formatCount(query.impressions)}
+                  </td>
+                  <td className="text-right">
+                    {formatDecimal(query.position)}
+                  </td>
+                  <td className="text-right">{formatPercent(query.ctr)}</td>
+                  <td className="text-right">{t("Kazanç bilinmiyor")}</td>
+                </tr>
+              ))}
               {row.queries.map((query) => (
                 <tr key={query.query}>
                   <td className="max-w-56">
@@ -249,12 +277,21 @@ export function OpportunityDetail({
         </div>
       </section>
 
+      {row.brandOnly ? (
+        <p className="text-xs text-muted">{t("Yalnızca marka aramaları")}</p>
+      ) : null}
+
       <section aria-label={t("Ne yapmalı?")} className="space-y-2">
         <h3 className="text-sm font-medium">
-          {t("Ne yapmalı? {action}", { action: t(work.action) })}
+          {t("Ne yapmalı? {action}", { action: t(rowAction(row)) })}
         </h3>
         <ul className="space-y-1.5">
-          {work.todo.map((item) => (
+          {(row.gain === null
+            ? [
+                "Önce ölçülen aramalarla başlığın ve içeriğin uyumunu kontrol edin; yalnızca bir sorun doğrularsanız değişiklik yapın.",
+              ]
+            : work.todo
+          ).map((item) => (
             <li key={item} className="flex gap-2 text-sm">
               <Check
                 aria-hidden

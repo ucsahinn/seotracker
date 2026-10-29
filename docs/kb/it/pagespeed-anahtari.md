@@ -1,6 +1,6 @@
 ---
 title: Chiave PageSpeed
-description: Salvare una chiave PageSpeed e capire test e contatori audit.
+description: Salvare la chiave API di PageSpeed Insights, verificare le richieste di prova e capire quote e contatori durante il controllo del sito.
 kind: nasil-yapilir
 updated: 2026-10-27
 ---

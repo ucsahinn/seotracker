@@ -1,5 +1,9 @@
+import { comparePanelAudits } from "@/shared/panelAuditComparison";
+import { siteKey } from "@/shared/auditTodo";
+import { loadPanelAuditSnapshot } from "./panelAuditSnapshot";
 import { env } from "cloudflare:workers";
-import { AuditSiteFactsRepository } from "@/server/features/audit/repositories/AuditSiteFactsRepository";
+import { sort } from "remeda";
+import { getAuditResults as getResults } from "./auditResults";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
 import {
   AUDIT_LIMITS,
@@ -157,45 +161,6 @@ async function getStatus(auditId: string, projectId: string) {
   };
 }
 
-async function getResults(auditId: string, projectId: string) {
-  const { audit, pages, lighthouse, issues } =
-    await AuditRepository.getAuditResultsForProject(auditId, projectId);
-
-  if (!audit) throw new AppError("NOT_FOUND");
-  // Null for an audit that predates the site probes, or one still running.
-  const siteFacts = await AuditSiteFactsRepository.getSiteFacts(audit.id);
-
-  const parsedConfig = parseAuditConfig(audit.config);
-  if (!parsedConfig) {
-    throw new AppError("INTERNAL_ERROR", t("Denetim ayarları geçersiz."));
-  }
-
-  return {
-    audit: {
-      id: audit.id,
-      startUrl: redactUrlUserinfo(audit.startUrl),
-      status: audit.status,
-      pagesCrawled: audit.pagesCrawled,
-      pagesTotal: audit.pagesTotal,
-      lighthouseTotal: audit.lighthouseTotal,
-      startedAt: audit.startedAt,
-      completedAt: audit.completedAt,
-      config: parsedConfig,
-      analyticsCompared: audit.analyticsCompared,
-      // Why a failed audit stopped, for the "no score" panel on its results.
-      errorCode: storedAuditErrorCode(audit),
-      failedPhase: audit.failedPhase,
-      noticeCode: audit.noticeCode,
-      // Null on audits from before it was recorded.
-      urlsDiscovered: audit.urlsDiscovered,
-    },
-    pages,
-    lighthouse,
-    issues,
-    siteFacts,
-  };
-}
-
 async function getHistory(projectId: string) {
   /*
    * Sweep before listing, because the cron that was supposed to do this
@@ -216,15 +181,59 @@ async function getHistory(projectId: string) {
     AuditRepository.getIssueCountsByAudit(projectId),
   ]);
 
+  // Read each stored snapshot at most once; failures withhold comparison only.
+  const completed = sort(
+    auditList.filter((audit) => audit.status === "completed"),
+    (a, b) => a.startedAt.localeCompare(b.startedAt),
+  );
+  const comparisons = new Map<
+    string,
+    { previousAuditId: string; compatible: boolean }
+  >();
+  const snapshots = new Map<
+    string,
+    ReturnType<typeof loadPanelAuditSnapshot>
+  >();
+  const snapshot = (id: string) => {
+    let pending = snapshots.get(id);
+    if (!pending) {
+      pending = loadPanelAuditSnapshot(projectId, id);
+      snapshots.set(id, pending);
+    }
+    return pending;
+  };
+  const lastBySite = new Map<string, string>();
+  for (const audit of completed) {
+    const key = siteKey(audit.startUrl);
+    const previousAuditId = lastBySite.get(key);
+    lastBySite.set(key, audit.id);
+    if (!previousAuditId) continue;
+    let compatible = false;
+    try {
+      const [current, previous] = await Promise.all([
+        snapshot(audit.id),
+        snapshot(previousAuditId),
+      ]);
+      const comparison = comparePanelAudits(current, previous);
+      // History totals include all checks; a partial intersection cannot justify a total delta.
+      compatible = comparison !== null && !comparison.partial;
+    } catch {
+      // Missing historical evidence must never turn into an inferred trend.
+    }
+    comparisons.set(audit.id, { previousAuditId, compatible });
+  }
+
   return auditList.map((audit) => {
     const parsedConfig = parseAuditConfig(audit.config);
     const ranLighthouse = parsedConfig?.lighthouseStrategy !== "none";
     // Optional on older history responses already held in the client cache.
     const evidence: {
+      comparison?: { previousAuditId: string; compatible: boolean };
       maxPages?: number;
       errorCode?: string | null;
       failedPhase?: string | null;
     } = {
+      comparison: comparisons.get(audit.id),
       maxPages: parsedConfig?.maxPages,
       errorCode: storedAuditErrorCode(audit),
       failedPhase: audit.failedPhase,

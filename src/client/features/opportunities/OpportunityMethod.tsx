@@ -1,7 +1,8 @@
 import { t } from "@/shared/i18n";
 import { Link } from "@tanstack/react-router";
 import type { OpportunityReport } from "@/client/features/opportunities/report";
-import { formatCount } from "@/client/lib/format";
+import { strikingMethodText } from "@/shared/strikingEstimateCopy";
+import { formatPercent, formatCount } from "@/client/lib/format";
 
 /** How the number is made, and what it leaves out, in plain words. */
 export function OpportunityMethod({
@@ -11,13 +12,44 @@ export function OpportunityMethod({
   data: OpportunityReport;
   projectId: string;
 }) {
-  const { method, analytics, coverage } = data;
+  const { method, analytics, coverage, totals } = data;
   return (
     <details className="rounded-box border border-base-300 bg-base-100 p-4 text-sm text-muted">
       <summary className="min-h-11 cursor-pointer font-medium text-base-content">
         {t("Veri kapsamı ve hesaplama")}
       </summary>
       <div className="max-w-[75ch] space-y-3 leading-relaxed">
+        <p className="text-xs text-muted">
+          {t(
+            "{count} sayfada · bu sayfaların tüm tıklamaları 30 güne ölçekli: {clicks}; üst sınırın bu tabana oranı {share}",
+            {
+              count: formatCount(data.totalCandidateRows),
+              clicks: formatCount(totals.clicksPerMonth),
+              share:
+                totals.clicksPerMonth > 0 && totals.gainPerMonth !== null
+                  ? formatPercent(
+                      totals.gainPerMonth / totals.clicksPerMonth,
+                      0,
+                    )
+                  : "–",
+            },
+          )}
+        </p>
+        <p className="text-xs text-muted">
+          {strikingMethodText(data.method.brandSource, data.truncated.gsc)}
+        </p>
+        <p className="text-xs text-muted">
+          {t("Hesaplanamayan kapsam")}: {formatCount(totals.unknownPages)}.{" "}
+          {t(
+            "Eksik sorgu, yetersiz gösterim veya eksik hedef oranı; kazanç yok anlamına gelmez.",
+          )}
+        </p>
+
+        <p className="mt-0.5 text-xs text-muted">
+          {t(
+            "30 güne ölçekli üst sınır; çubuklar en büyük iş türüne göredir. Bir sayfa birden fazla işte sayılabilir. Seçim tüm hesaplanabilir sayfalara uygulanır.",
+          )}
+        </p>
         <p>
           {t(
             "Hesaplanan kazanç yalnızca alınan ve tanımlanabilen aramaları kapsar; gizli sorguların payı bilinmiyor. Panelin sorgu tahminiyle toplanmaz.",

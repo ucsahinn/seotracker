@@ -1,13 +1,7 @@
 import { t } from "@/shared/i18n";
+import { FactStrip } from "@/client/components/FactStrip";
 import { Link } from "@tanstack/react-router";
-import {
-  CalendarCheck,
-  ChevronDown,
-  EyeOff,
-  Globe,
-  Hourglass,
-  Rows3,
-} from "lucide-react";
+import { CalendarCheck, EyeOff, Globe, Hourglass, Rows3 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { SearchPerformanceView } from "@/shared/searchPerformanceView";
 import type { CompareMode } from "@/client/features/search-performance/searchTabs";
@@ -72,8 +66,10 @@ export function DataTrustStrip({
     coverage.queryPages.truncated ? t("sorgu-sayfa eşleşmeleri") : null,
   ].filter(Boolean);
 
-  const settled =
-    provisionalDays > 0
+  const assumed = window.incompleteSource === "assumed";
+  const settled = assumed
+    ? t("Toplamların son günü: {date}.", { date: formatDate(window.endDate) })
+    : provisionalDays > 0
       ? t(
           "Veriler {date} tarihine kadar kesin; son {count} gün hâlâ sayılıyor (grafikte taralı).",
           { date: formatDate(window.endDate), count: provisionalDays },
@@ -103,119 +99,149 @@ export function DataTrustStrip({
           : t("Önceki dönem karşılaştırılamıyor: Google bu günleri vermiyor.");
 
   return (
-    <section
-      aria-label={t("Verinin durumu")}
-      className="rounded-box border border-[var(--hairline)] bg-base-100 text-xs text-muted"
-    >
-      <div className="flex flex-col gap-2 px-4 py-2.5 lg:flex-row lg:items-center lg:gap-4">
-        <p className="flex min-w-0 flex-1 items-start gap-2">
-          <CalendarCheck
-            className="mt-0.5 size-3.5 shrink-0 text-subtle"
-            aria-hidden
-          />
-          <span className="min-w-0">
-            {settled}
-            {comparison ? ` ${comparison}` : null}
-          </span>
-        </p>
-        <Link
-          to="/p/$projectId/settings/integrations"
-          params={{ projectId }}
-          className="link link-hover inline-flex min-w-0 shrink-0 items-center gap-1.5 self-start lg:self-auto"
-          title={t("Search Console mülkü: {site}", { site: view.siteUrl })}
-        >
-          <Globe className="size-3.5 shrink-0 text-subtle" aria-hidden />
-          <span className="truncate">{propertyLabel(view.siteUrl)}</span>
-        </Link>
-      </div>
-      <details className="group border-t border-[var(--hairline)]">
-        <summary className="flex min-h-9 cursor-pointer list-none items-center gap-1.5 px-4 py-1.5 font-medium text-muted hover:text-base-content focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden">
-          <ChevronDown
-            className="size-3.5 transition-transform group-open:rotate-180"
-            aria-hidden
-          />
-          {t("Veri hakkında")}
-        </summary>
-        <ul className="grid gap-x-6 gap-y-2 px-4 pb-3 pt-1 sm:grid-cols-2">
-          <Item icon={CalendarCheck}>
-            {t(
-              "Kesin günler: {start} – {end} ({days} gün). Search Console bir günü birkaç gün boyunca saymaya devam eder; toplamlar ve karşılaştırmalar yalnızca sayımı bitmiş günleri kullanır. Günler Google'ın kullandığı Pasifik saatine göredir.",
-              {
-                start: formatDate(window.startDate),
-                end: formatDate(window.endDate),
-                days: window.days,
-              },
-            )}
-          </Item>
-          <Item icon={Hourglass}>
-            {provisionalDays > 0
-              ? window.incompleteSource === "assumed"
+    <FactStrip
+      label={t("Verinin durumu")}
+      facts={[
+        { label: t("Kaynak"), value: "Search Console" },
+        {
+          label: t("Site"),
+          value: (
+            <Link
+              to="/p/$projectId/settings/integrations"
+              params={{ projectId }}
+              className="btn btn-ghost btn-sm max-w-full"
+              title={t("Search Console mülkü: {site}", { site: view.siteUrl })}
+            >
+              <Globe className="size-3.5 shrink-0 text-subtle" aria-hidden />
+              <span className="truncate">{propertyLabel(view.siteUrl)}</span>
+            </Link>
+          ),
+        },
+        {
+          label: t("Dönem"),
+          value: `${formatDate(window.startDate)} – ${formatDate(window.endDate)}`,
+        },
+        {
+          label: assumed
+            ? t("Toplamların son günü")
+            : t("Google'ın kesinleştirdiği veri"),
+          value: formatDate(window.endDate),
+          hint: assumed ? t("Gecikme varsayıldı") : undefined,
+        },
+        {
+          label: t("Geçici veri"),
+          value: t("{count} gün", { count: formatCount(provisionalDays) }),
+          hint:
+            provisionalDays > 0
+              ? t("Google son günleri sonradan düzeltebilir.")
+              : undefined,
+        },
+        {
+          label: t("Karşılaştırma"),
+          value:
+            compare === "none"
+              ? t("Yok")
+              : compare === "yoy" && window.yoy && totals.yoy
+                ? `${formatDate(window.yoy.startDate)} – ${formatDate(window.yoy.endDate)}`
+                : compare === "previous" && totals.previous
+                  ? `${formatDate(window.previous.startDate)} – ${formatDate(window.previous.endDate)}`
+                  : t("Karşılaştırma yok"),
+        },
+      ]}
+      detailsLabel={t("Veri hakkında")}
+      details={
+        <div className="space-y-4 text-sm text-muted">
+          <p className="max-w-prose">
+            {settled} {comparison}
+            {assumed
+              ? ` ${t("Google kesinleşme tarihi bildirmedi; son günler gecikme varsayımıyla toplamların dışında tutuldu.")}`
+              : null}
+          </p>
+          <ul className="grid gap-x-6 gap-y-4 sm:grid-cols-2">
+            <Item icon={CalendarCheck}>
+              {t(
+                assumed
+                  ? "Toplamlara dahil günler: {start} – {end} ({days} gün). Günler Google'ın kullandığı Pasifik saatine göredir."
+                  : "Kesin günler: {start} – {end} ({days} gün). Search Console bir günü birkaç gün boyunca saymaya devam eder; toplamlar ve karşılaştırmalar yalnızca sayımı bitmiş günleri kullanır. Günler Google'ın kullandığı Pasifik saatine göredir.",
+                {
+                  start: formatDate(window.startDate),
+                  end: formatDate(window.endDate),
+                  days: window.days,
+                },
+              )}
+            </Item>
+            <Item icon={Hourglass}>
+              {provisionalDays > 0
+                ? window.incompleteSource === "assumed"
+                  ? t(
+                      "Son {count} gün hâlâ sayılıyor olabilir (Google tarih bildirmedi); toplamlara katılmadı.",
+                      { count: provisionalDays },
+                    )
+                  : t("Son {count} gün hâlâ sayılıyor; toplamlara katılmadı.", {
+                      count: provisionalDays,
+                    })
+                : assumed
+                  ? t("Bu dönemden sonra geçici veri alınmadı.")
+                  : t("Kesinleşmemiş gün yok.")}
+              {window.lastDataDate
+                ? ` ${t("Son veri: {date}.", { date: formatDate(window.lastDataDate) })}`
+                : ` ${t("Bu dönem için Google'dan hiç satır gelmedi.")}`}
+            </Item>
+            <Item icon={EyeOff}>
+              {hidden.clickShare === null
+                ? t("Gizli sorgu payı hesaplanamadı (tıklama yok).")
+                : hidden.exact
+                  ? t(
+                      "Tıklamaların {share} kadarı ({clicks}) Google'ın gizlilik nedeniyle göstermediği aramalardan geliyor. Site toplamına dahil, sorgu tablosunda yok; bu yüzden sorgu tablosunun toplamı daha küçüktür.",
+                      {
+                        share: formatPercent(hidden.clickShare),
+                        clicks: formatCount(hidden.clicks ?? 0),
+                      },
+                    )
+                  : t(
+                      "Tıklamaların {share} kadarı, Google'ın gizlilik nedeniyle göstermediği ya da satır sınırının dışında kalan aramalardan geliyor. Site toplamına dahil, sorgu tablosunda yok.",
+                      { share: formatPercent(hidden.clickShare) },
+                    )}
+            </Item>
+            <Item icon={Rows3}>
+              {truncatedTables.length > 0
                 ? t(
-                    "Son {count} gün hâlâ sayılıyor olabilir (Google tarih bildirmedi); toplamlara katılmadı.",
-                    { count: provisionalDays },
+                    "Satır sınırına ulaşıldı ({tables}); en az tıklanan uç eksik. Daraltmak için filtre kullanın.",
+                    { tables: truncatedTables.join(", ") },
                   )
-                : t("Son {count} gün hâlâ sayılıyor; toplamlara katılmadı.", {
-                    count: provisionalDays,
+                : t("Tablolar tam: {queries} sorgu, {pages} sayfa okundu.", {
+                    queries: formatCount(coverage.queries.rows),
+                    pages: formatCount(coverage.pages.rows),
+                  })}
+            </Item>
+            <Item icon={Globe}>
+              {view.quota.fetchedAt && (
+                <span>
+                  {t("Google verisi alındı: {date}", {
+                    date: formatDateTime(view.quota.fetchedAt),
+                  })}{" "}
+                </span>
+              )}
+              {view.quota.requests > 0
+                ? t("Bu görünüm için Google'a {count} istek gönderildi.", {
+                    count: view.quota.requests,
                   })
-              : t("Kesinleşmemiş gün yok.")}
-            {window.lastDataDate
-              ? ` ${t("Son veri: {date}.", { date: formatDate(window.lastDataDate) })}`
-              : ` ${t("Bu dönem için Google'dan hiç satır gelmedi.")}`}
-          </Item>
-          <Item icon={EyeOff}>
-            {hidden.clickShare === null
-              ? t("Gizli sorgu payı hesaplanamadı (tıklama yok).")
-              : hidden.exact
-                ? t(
-                    "Tıklamaların {share} kadarı ({clicks}) Google'ın gizlilik nedeniyle göstermediği aramalardan geliyor. Site toplamına dahil, sorgu tablosunda yok; bu yüzden sorgu tablosunun toplamı daha küçüktür.",
-                    {
-                      share: formatPercent(hidden.clickShare),
-                      clicks: formatCount(hidden.clicks ?? 0),
-                    },
-                  )
                 : t(
-                    "Tıklamaların {share} kadarı, Google'ın gizlilik nedeniyle göstermediği ya da satır sınırının dışında kalan aramalardan geliyor. Site toplamına dahil, sorgu tablosunda yok.",
-                    { share: formatPercent(hidden.clickShare) },
-                  )}
-          </Item>
-          <Item icon={Rows3}>
-            {truncatedTables.length > 0
-              ? t(
-                  "Satır sınırına ulaşıldı ({tables}); en az tıklanan uç eksik. Daraltmak için filtre kullanın.",
-                  { tables: truncatedTables.join(", ") },
-                )
-              : t("Tablolar tam: {queries} sorgu, {pages} sayfa okundu.", {
-                  queries: formatCount(coverage.queries.rows),
-                  pages: formatCount(coverage.pages.rows),
-                })}
-          </Item>
-          <Item icon={Globe}>
-            {view.quota.fetchedAt && (
-              <span>
-                {t("Google verisi alındı: {date}", {
-                  date: formatDateTime(view.quota.fetchedAt),
-                })}{" "}
+                    "Bu görünüm birkaç dakika içinde alınmış yanıtlardan geldi; Google'a yeni istek gönderilmedi.",
+                  )}{" "}
+              <span className="text-subtle">
+                {t("Mülk: {site}", { site: view.siteUrl })}
               </span>
-            )}
-            {view.quota.requests > 0
-              ? t("Bu görünüm için Google'a {count} istek gönderildi.", {
-                  count: view.quota.requests,
-                })
-              : t(
-                  "Bu görünüm birkaç dakika içinde alınmış yanıtlardan geldi; Google'a yeni istek gönderilmedi.",
-                )}{" "}
-            <span className="text-subtle">
-              {t("Mülk: {site}", { site: view.siteUrl })}
-            </span>
-          </Item>
-          <Item icon={EyeOff}>
-            {t(
-              "Google anonim sorguları gizler. API, arama türü başına günde en fazla {limit} satır sunar; sorgu ve sayfa ayrıntılarında başka satırları da atlayabilir. Tam sayfalama, tüm aramaların listelendiği anlamına gelmez.",
-              { limit: formatCount(50_000) },
-            )}
-          </Item>
-        </ul>
-      </details>
-    </section>
+            </Item>
+            <Item icon={EyeOff}>
+              {t(
+                "Google anonim sorguları gizler. API, arama türü başına günde en fazla {limit} satır sunar; sorgu ve sayfa ayrıntılarında başka satırları da atlayabilir. Tam sayfalama, tüm aramaların listelendiği anlamına gelmez.",
+                { limit: formatCount(50_000) },
+              )}
+            </Item>
+          </ul>
+        </div>
+      }
+    />
   );
 }

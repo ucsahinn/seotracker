@@ -2,9 +2,14 @@
 <html lang="de">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>seowatcher-Anleitung: Installation, Bildschirme, Probleme</title>
     <meta
@@ -91,7 +96,7 @@
       property="og:image:alt"
       content="seowatcher-Karte: das Dashboard der App mit Daten aus Search Console, Analytics 4 und dem Website-Audit, dazu eine Download-Schaltfläche für Windows"
     />
-    <meta property="article:modified_time" content="2026-10-28" />
+    <meta property="article:modified_time" content="2026-10-29" />
     <meta property="og:url" content="https://seowatcher.io/de/dokumentation/" />
     <meta property="og:locale" content="de_DE" />
     <meta property="og:locale:alternate" content="tr_TR" />
@@ -150,7 +155,7 @@
             "description": "seowatcher-Anleitungen: Installation, was jeder Bildschirm zeigt, die Google-Verbindung, Audit-Regeln, Einrichtung des Assistenten und Fehlerbehebung.",
             "url": "https://seowatcher.io/de/dokumentation/",
             "inLanguage": "de",
-            "dateModified": "2026-10-28",
+            "dateModified": "2026-10-29",
             "about": { "@id": "https://seowatcher.io/#app" },
             "isPartOf": { "@id": "https://seowatcher.io/#website" }
           },
@@ -1480,7 +1485,11 @@
                 >Gespeicherte Suchbegriffe</a
               >
             </li>
-            <li><a href="/de/dokumentation/datenanalyse/">Analytics</a></li>
+            <li>
+              <a href="/de/dokumentation/datenanalyse/"
+                >Analysedaten verstehen</a
+              >
+            </li>
             <li>
               <a href="/de/dokumentation/website-audit/">Website-Audit</a>
             </li>
@@ -1512,7 +1521,7 @@
         </details>
       </aside>
       <article id="icerik" data-page="index">
-        <h1>Anleitung</h1>
+        <h1>seowatcher-Anleitung</h1>
         <p class="lede">
           Jeder Schritt und jeder Bildschirm, von der Installation bis zum
           ersten Bericht, kurz erklärt. Die App heißt auf GitHub seotracker und
@@ -1575,27 +1584,25 @@
           <li>
             <a href="/de/dokumentation/suchleistung/">Suchleistung</a
             ><span
-              >Sie sehen, wie oft Sie bei Google erscheinen, wie viele Klicks
-              Sie bekommen und was Sie zuerst beheben sollten. Die Zahlen kommen
-              aus der Search Console. Gewinnzahlen sind eine Obergrenze.</span
+              >Klicks, Impressionen und Positionen aus der Search Console
+              verstehen. Seiten priorisieren und die Grenzen geschätzter Gewinne
+              erkennen.</span
             >
           </li>
           <li>
             <a href="/de/dokumentation/ranking-verfolgung/"
               >Ranking-Verfolgung</a
             ><span
-              >Durchschnittliche Google-Position Ihrer Suchanfragen, welche
-              steigen oder fallen und wie sich die Positionsgruppen verändern,
-              auch über Googles 16-Monate-Grenze hinaus, weil die Daten auf
-              Ihrem Computer liegen.</span
+              >Google-Positionen Ihrer Suchanfragen und deren Entwicklung
+              verfolgen. Das lokale Archiv bewahrt Daten auch über die
+              16-Monate-Grenze hinaus.</span
             >
           </li>
           <li>
             <a href="/de/dokumentation/chancen/">Chancen</a
             ><span
-              >Zeigt, wie viele Klicks pro Monat jede Ihrer Seiten zusätzlich
-              bringen könnte und welche Arbeit sie bringt. Die Zahl ist eine
-              Obergrenze, kein Versprechen.</span
+              >Zeigt erfasste Seiten, mögliche Aufgaben und bei ausreichenden
+              Daten eine Obergrenze für zusätzliche Klicks.</span
             >
           </li>
           <li>
@@ -1607,7 +1614,7 @@
             >
           </li>
           <li>
-            <a href="/de/dokumentation/datenanalyse/">Analytics</a
+            <a href="/de/dokumentation/datenanalyse/">Analysedaten verstehen</a
             ><span
               >Analytics zeigt gemessene Besuche, Interaktionen und
               Schlüsselereignisse Ihrer GA4-Property.</span
@@ -1616,10 +1623,9 @@
           <li>
             <a href="/de/dokumentation/website-audit/">Website-Audit</a
             ><span
-              >Die App prüft Ihre Website Seite für Seite anhand von 202 Regeln
-              und sortiert die Probleme nach Wichtigkeit. Die Punktzahl zeigt
-              auch, wie viel messbar war. Ein vorzeitig beendetes Audit bekommt
-              keine Punktzahl.</span
+              >Ihre Website anhand von 202 Regeln prüfen und Probleme
+              priorisieren. Punktzahl, Messabdeckung und unvollständige
+              Ergebnisse richtig verstehen.</span
             >
           </li>
           <li>
@@ -1633,10 +1639,9 @@
           <li>
             <a href="/de/dokumentation/berichte/">Berichte und Vorlagen</a
             ><span
-              >Jeder Bericht, den Sie aus einem Audit oder aus der Suchleistung
-              herunterladen oder von Ihrem Assistenten schreiben lassen, ist
-              eine einzelne HTML-Datei: auf dem Smartphone öffnen, drucken oder
-              per E-Mail senden. Mit Vorlagen wiederholen Sie ihn.</span
+              >Audit-, Suchleistungs- und Assistentenberichte als einzelne
+              HTML-Dateien speichern, auf dem Smartphone öffnen, drucken oder
+              per E-Mail teilen.</span
             >
           </li>
           <li>
@@ -1699,7 +1704,7 @@
           </li>
         </ul>
         <p class="meta">
-          Zuletzt aktualisiert: 28 Oktober 2026. Fehler entdeckt?
+          Zuletzt aktualisiert: 29 Oktober 2026. Fehler entdeckt?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

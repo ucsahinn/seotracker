@@ -75,7 +75,7 @@ export function ProjectMarketFields({
           ))}
         </select>
         {languageOptions.length <= 1 ? (
-          <span className="text-xs text-muted">
+          <span className="text-sm text-muted">
             {t(
               "Dil, seçilen ülkeye göre belirlenir. Bu, arayüz dilini değiştirmez.",
             )}

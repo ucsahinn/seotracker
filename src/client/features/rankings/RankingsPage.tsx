@@ -1,5 +1,6 @@
 import { RankingsFilters } from "./RankingsFilters";
 import { RankingSourceEvidence } from "./RankingSourceEvidence";
+import { HelpTip } from "@/client/components/HelpTip";
 import { useEffect, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { t } from "@/shared/i18n";
@@ -160,9 +161,16 @@ export function RankingsPage({
     <PageShell>
       <PageHeader
         title={t("Sıralama takibi")}
-        description={t(
-          "GSC Web · Ortalama sıra, sabit bir Google sırası değildir. Konum ve cihazla değişebilir.",
-        )}
+        description={
+          <span className="inline-flex items-center gap-1.5">
+            {t("Ortalama sıra")}
+            <HelpTip label={t("Ortalama sıra")}>
+              {t(
+                "GSC Web · Ortalama sıra, sabit bir Google sırası değildir. Konum ve cihazla değişebilir.",
+              )}
+            </HelpTip>
+          </span>
+        }
         actions={
           <PageActions>
             <fieldset
@@ -220,7 +228,9 @@ export function RankingsPage({
       ) : (
         <>
           {data ? (
-            <div className="grid min-w-0 gap-4 xl:grid-cols-2">
+            <div
+              className={`grid min-w-0 gap-4 ${data.comparableCount > 0 ? "xl:grid-cols-2" : ""}`}
+            >
               <PositionBandBars
                 rows={[]}
                 counts={data.bands}
@@ -284,11 +294,14 @@ export function RankingsPage({
           {data && data.unobservedCount > 0 ? (
             <details className="text-sm text-muted">
               <summary className="min-h-11 cursor-pointer">
+                {t("Gözlem yok")} · {formatCount(data.unobservedCount)}
+              </summary>
+              <p className="max-w-prose">
                 {t(
                   "Bu dönemde gözlenmeyen: {count}. Bu, sıra kaybı anlamına gelmez.",
                   { count: formatCount(data.unobservedCount) },
                 )}
-              </summary>
+              </p>
               <ul>
                 {data.unobserved.map((query) => (
                   <li key={query}>

@@ -2,9 +2,14 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <link
+      rel="stylesheet"
+      href="/assets/consent.css?v=3"
+      media="print"
+      data-consent-css
+    />
     <meta name="ga4-id" content="G-DFPDX00V4R" />
-    <script src="/assets/consent.js?v=3" defer></script>
+    <script src="/assets/consent.js?v=4" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Installation sous Windows | Guide seowatcher</title>
     <meta
@@ -102,7 +107,7 @@
       property="og:image:alt"
       content="Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows"
     />
-    <meta property="article:modified_time" content="2026-10-27" />
+    <meta property="article:modified_time" content="2026-10-28" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/guides/installation-sous-windows/"
@@ -164,7 +169,7 @@
             "description": "Installez l'application sous Windows avec un seul fichier : premier lancement, mise à jour, désinstallation, sauvegarde et port. Ni Docker ni terminal.",
             "url": "https://seowatcher.io/fr/guides/installation-sous-windows/",
             "inLanguage": "fr",
-            "dateModified": "2026-10-27",
+            "dateModified": "2026-10-28",
             "articleSection": "Pour démarrer",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -1506,7 +1511,9 @@
                 >Mots-clés enregistrés</a
               >
             </li>
-            <li><a href="/fr/guides/statistiques/">Analytics</a></li>
+            <li>
+              <a href="/fr/guides/statistiques/">Comprendre les statistiques</a>
+            </li>
             <li><a href="/fr/guides/audit-du-site/">Audit du site</a></li>
             <li>
               <a href="/fr/guides/etat-de-l-index/">État de l'indexation</a>
@@ -2081,6 +2088,22 @@
             <code>http://127.0.0.1:3001</code>
           </li>
         </ul>
+        <h2 id="notifications-windows">Notifications Windows</h2>
+        <p>
+          Faites un clic droit sur l’icône seowatcher dans la zone de
+          notification et utilisez <strong>Windows bildirimleri</strong> (activé
+          par défaut). Tant que le lanceur fonctionne, les audits terminés ou
+          échoués de tous les projets et les nouvelles annonces apparaissent en
+          bulles Windows sous environ 90 secondes, même avec le navigateur fermé
+          ou en arrière-plan. Un clic ouvre la page concernée ; plusieurs
+          événements sont regroupés. Le premier lancement ignore les anciens
+          événements ; un redémarrage ne répète pas ceux déjà reçus. Les
+          événements reçus pendant la désactivation ne sont pas affichés
+          ensuite. Les nouvelles versions suivent le réglage de mise à jour
+          existant. Le mode Concentration/Ne pas déranger peut masquer les
+          notifications. Aucune notification si le lanceur est fermé. Cette
+          fonction est absente de Docker.
+        </p>
         <nav class="pager" aria-label="Page précédente et suivante">
           <span class="pager-prev empty"></span
           ><a
@@ -2091,7 +2114,7 @@
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 27 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 28 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -2108,6 +2131,7 @@
           <li><a href="#verification">Vérification</a></li>
           <li><a href="#questions-frequentes">Questions fréquentes</a></li>
           <li><a href="#en-cas-de-probleme">En cas de problème</a></li>
+          <li><a href="#notifications-windows">Notifications Windows</a></li>
         </ol>
       </nav>
     </main>

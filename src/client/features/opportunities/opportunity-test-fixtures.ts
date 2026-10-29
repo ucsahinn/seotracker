@@ -63,8 +63,8 @@ export function makeReport(rows: OpportunityRow[]): OpportunityReport {
     totalCandidateRows: rows.length,
     rows,
     totals: {
-      gain: rows.reduce((s, r) => s + r.gain, 0),
-      gainPerMonth: rows.reduce((s, r) => s + r.gainPerMonth, 0),
+      gain: rows.reduce((s, r) => s + (r.gain ?? 0), 0),
+      gainPerMonth: rows.reduce((s, r) => s + (r.gainPerMonth ?? 0), 0),
       clicksPerMonth: rows.reduce((s, r) => s + r.clicks, 0),
       byWork: {
         snippet: byWork,
