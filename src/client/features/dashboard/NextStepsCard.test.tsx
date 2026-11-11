@@ -156,6 +156,19 @@ describe("NextStepsCard", () => {
     expect(screen.getByText(/İlk denetimi başlatın/)).toBeDefined();
   });
 
+  it("shows a crawl started since the last completed audit instead of asking for one", () => {
+    render(
+      <NextStepsCard
+        projectId="p1"
+        gscConnected
+        audit={audit({ startedAt: daysAgo(30) })}
+        latestAttempt={{ auditId: "audit_2", status: "running" }}
+      />,
+    );
+    expect(screen.getByText("Denetim sürüyor")).toBeDefined();
+    expect(screen.queryByText("Denetimi tazeleyin")).toBeNull();
+  });
+
   it("offers a retry when the last audit failed", () => {
     render(
       <NextStepsCard

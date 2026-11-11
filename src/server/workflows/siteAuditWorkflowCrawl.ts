@@ -466,6 +466,7 @@ async function persistCrawledPages(input: {
   }
 
   const stats = await scratchpad.recordBatch({
+    maxPages: input.maxPages,
     crawledUrls: pages.map((page) => page.url),
     pages: pages.map((page) => ({
       pageId: page.id,

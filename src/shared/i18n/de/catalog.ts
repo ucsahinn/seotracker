@@ -326,6 +326,8 @@ export const deCatalog = {
   "Google Analytics bağlandı": "Google Analytics verbunden",
   "Google Analytics bağlantısı kesildi": "Google Analytics getrennt",
   "Bağlantı yükleniyor": "Verbindung wird geladen",
+  "Analytics bağlantısı kurulamadı":
+    "Die Analytics-Verbindung konnte nicht hergestellt werden",
   "Bu projenin bağlantısı kontrol edilemedi.":
     "Die Verbindung dieses Projekts konnte nicht überprüft werden.",
   "Tekrar dene": "Erneut versuchen",
@@ -4062,4 +4064,14 @@ export const deCatalog = {
     "In diesem Zeitraum wurden keine Sitzungen erfasst.",
   "Başlık veya özet": "Titel oder Zusammenfassung",
   "Tarama bittikten sonra çalışır.": "Läuft nach Abschluss des Crawls.",
+  "Görev çubuğu menüsünden Günlükleri aç deyip server.log dosyasına bakın; düzelmezse uygulamayı kapatıp yeniden açın.":
+    "Wählen Sie im Taskleistenmenü „Protokolle öffnen“ und lesen Sie server.log; bleibt das Problem, schließen Sie die App und öffnen Sie sie erneut.",
+  "Search Console ve Analytics kapalı. Uygulamanın şifreleme anahtarı (veri klasöründeki instance-secret dosyası) eksik ya da bozuk. Uygulamayı kapatıp yeniden açın; düzelmezse bu ekrandan tanılama paketini indirip sorunu bildirin.":
+    "Search Console und Analytics sind aus. Der Verschlüsselungsschlüssel der App (die Datei instance-secret im Datenordner) fehlt oder ist beschädigt. Schließen Sie die App und öffnen Sie sie erneut; bleibt das Problem, laden Sie auf diesem Bildschirm das Diagnosepaket herunter und melden Sie das Problem.",
+  "Uygulama içi sürüm kontrolü kapalı.":
+    "Die Versionsprüfung in der App ist aus.",
+  "Görev çubuğundaki seowatcher simgesine bakın; üzerine gelince {running} yazmalı. Simge yoksa Başlat menüsünden seowatcher'ı açın. Simgede {error} yazıyorsa sağ tıklayıp {restart} deyin.":
+    "Sehen Sie sich das seowatcher-Symbol in der Taskleiste an; beim Darüberfahren sollte {running} stehen. Fehlt das Symbol, öffnen Sie seowatcher über das Startmenü. Steht dort {error}, klicken Sie mit der rechten Maustaste und wählen Sie {restart}.",
+  "Elle değiştirilebilen tek dosya {config}: adres numarası (port). {dataFolder} ile açın, değiştirin, sonra {restart} deyin. Yanındaki {serverEnv} dosyasını düzenlemeyin; uygulama her açılışta onu yeniden yazar.":
+    "Die einzige Datei, die Sie von Hand ändern dürfen, ist {config}: der Port. Öffnen Sie sie mit {dataFolder}, ändern Sie sie und wählen Sie dann {restart}. Bearbeiten Sie die Datei {serverEnv} daneben nicht; die App schreibt sie bei jedem Start neu.",
 } as const;

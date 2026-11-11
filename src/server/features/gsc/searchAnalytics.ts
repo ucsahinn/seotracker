@@ -89,6 +89,11 @@ function subtractUtcMonths(date: Date, months: number): Date {
   return d;
 }
 
+function dayAfter(date: Date): Date {
+  date.setUTCDate(date.getUTCDate() + 1);
+  return date;
+}
+
 /*
  * Google's date range is inclusive of both ends, so a 28-day window starts 27
  * days before the end date, not 28. Subtracting the full count asked Google
@@ -105,14 +110,16 @@ function subtractRange(end: Date, range: GscDateRange): Date {
     case "last_28_days":
       d.setUTCDate(d.getUTCDate() - 27);
       break;
+    // Inclusive on both ends, like the day presets above: three months
+    // ending 25 May start on 26 February, not on the 25th.
     case "last_3_months":
-      return subtractUtcMonths(d, 3);
+      return dayAfter(subtractUtcMonths(d, 3));
     case "last_6_months":
-      return subtractUtcMonths(d, 6);
+      return dayAfter(subtractUtcMonths(d, 6));
     case "last_12_months":
-      return subtractUtcMonths(d, 12);
+      return dayAfter(subtractUtcMonths(d, 12));
     case "last_16_months":
-      return subtractUtcMonths(d, 16);
+      return dayAfter(subtractUtcMonths(d, 16));
   }
   return d;
 }

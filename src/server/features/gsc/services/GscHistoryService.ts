@@ -1,7 +1,7 @@
 import { GscHistoryRepository } from "@/server/features/gsc/repositories/GscHistoryRepository";
 import type { GscDailyRow } from "@/server/features/gsc/repositories/GscHistoryRepository";
 import {
-  GSC_MAX_ROW_LIMIT,
+  GSC_API_MAX_ROW_LIMIT,
   sixteenMonthFloor,
 } from "@/server/features/gsc/searchAnalytics";
 import { GscApiError, GscNotConnectedError } from "@/server/lib/gscErrors";
@@ -38,19 +38,21 @@ const CHUNK_DAYS = 30;
  * the archive systematically kept the peaks and discarded the decline it
  * exists to reveal.
  *
- * The request is paginated instead. `GSC_MAX_ROW_LIMIT` is the wrapper's cap
- * per response, and the page budget bounds a chunk so one catch-up cannot
- * stall the page for minutes on a large site.
+ * The request is paginated instead, at Google's own page size. It used to
+ * page at the 1,000 rows the agent surface is capped to, which spent 25 times
+ * the requests and left any site past 400 query-days a day permanently
+ * re-reading single days. The page budget bounds a chunk at 50,000 rows, the
+ * most a single retry day can hold, so one catch-up cannot stall the page.
  */
-const ROWS_PER_REQUEST = GSC_MAX_ROW_LIMIT;
-const MAX_REQUESTS_PER_CHUNK = 12;
+const ROWS_PER_REQUEST = GSC_API_MAX_ROW_LIMIT;
+const MAX_REQUESTS_PER_CHUNK = 2;
 /**
  * A window re-read after overflowing is a single day, which cannot be split
  * further, so it gets a deeper page budget instead.
  */
-// Google exposes up to 50,000 rows per day per search type. Include one
-// terminal-page probe when all 50 pages are full; 36 silently lost 14,000 rows.
-const MAX_REQUESTS_PER_RETRY_DAY = 51;
+// Google exposes up to 50,000 rows per day per search type: two full pages,
+// plus one terminal-page probe when both are full.
+const MAX_REQUESTS_PER_RETRY_DAY = 3;
 /** Chunks per catch-up, so opening the page cannot stall for minutes. */
 const MAX_CHUNKS_PER_RUN = 4;
 
@@ -145,17 +147,20 @@ async function fetchRange(
   let siteUrl = expectedSiteUrl;
 
   for (let page = 0; page < maxRequests; page += 1) {
-    const performance = await GscService.getPerformance({
-      projectId,
-      // The date dimension is what makes this an archive rather than a
-      // snapshot: without it Google returns one aggregate for the range.
-      dimensions: ["date", "query"],
-      startDate,
-      endDate,
-      rowLimit: ROWS_PER_REQUEST,
-      startRow: page * ROWS_PER_REQUEST,
-      dataState: "final",
-    });
+    const performance = await GscService.getPerformance(
+      {
+        projectId,
+        // The date dimension is what makes this an archive rather than a
+        // snapshot: without it Google returns one aggregate for the range.
+        dimensions: ["date", "query"],
+        startDate,
+        endDate,
+        rowLimit: ROWS_PER_REQUEST,
+        startRow: page * ROWS_PER_REQUEST,
+        dataState: "final",
+      },
+      { maxRowLimit: ROWS_PER_REQUEST },
+    );
 
     // Every page of a run must come from one property. A project pointed at
     // another property mid-run would otherwise mix two properties' rows.

@@ -52,6 +52,11 @@ describe("shared time formatting", () => {
       expect(formatRelativeTime("2026-10-27T11:59:45Z")).toBe(expected);
     },
   );
+  it("rounds before selecting the relative-time unit", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime("2026-10-27T12:00:00Z");
+    expect(formatRelativeTime("2026-10-27T11:00:24Z")).toBe("1 saat önce");
+  });
   it("identifies a prior-year timestamp (previously its year was omitted)", () => {
     vi.useFakeTimers();
     vi.setSystemTime("2026-10-27T12:00:00Z");

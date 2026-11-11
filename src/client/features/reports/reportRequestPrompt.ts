@@ -24,7 +24,7 @@ import prompts from "./reportRequestPrompt.json";
  * together.
  */
 export function reportRequestPrompt(projectId: string): string {
-  const lines = getLocale() === "en" ? prompts.en : prompts.tr;
+  const lines = getLocale() === "tr" ? prompts.tr : prompts.en;
   // A function replacement: `$&` in an id must not be read as a pattern.
   return lines.join("\n").replace("{{PROJECT_ID}}", () => projectId);
 }

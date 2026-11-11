@@ -274,6 +274,8 @@ export const enAnalytics: Catalog = {
   "Google Analytics bağlandı": "Google Analytics connected",
   "Google Analytics bağlantısı kesildi": "Google Analytics disconnected",
   "Bağlantı yükleniyor": "Loading connection",
+  "Analytics bağlantısı kurulamadı":
+    "The Analytics connection could not be established",
   "Bu projenin bağlantısı kontrol edilemedi.":
     "Couldn't check this project's connection.",
   "Tekrar dene": "Try again",

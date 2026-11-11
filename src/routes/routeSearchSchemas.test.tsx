@@ -52,6 +52,29 @@ describe("route search schemas", () => {
   );
 });
 
+// Fields that are only valid together: half of a pair is a hand-edited link,
+// and it must open the default view rather than the route error screen.
+it.each([
+  ["analytics", analytics, { startDate: "2026-01-01" }],
+  ["analytics", analytics, { host: "example.com" }],
+  ["analytics", analytics, { pageGroup: "blog", view: "key_events" }],
+  ["rankings", rankings, { startDate: "2026-02-01", endDate: "2026-01-01" }],
+  ["search-performance", searchPerformance, { endDate: "2026-01-01" }],
+  [
+    "search-performance",
+    searchPerformance,
+    { exactQuery: "a", exactPage: "/b" },
+  ],
+] as const)("%s drops an incomplete field group %#", (_, route, input) => {
+  const parsed = z
+    .record(z.string(), z.unknown())
+    .parse(parseSearch(route, input));
+  for (const key of ["startDate", "endDate", "host", "path", "pageGroup"]) {
+    expect(parsed[key]).toBeUndefined();
+  }
+  expect(parsed).not.toHaveProperty("exactQuery", "a");
+});
+
 // Links and bookmarks from before the tab redesign still land on the list.
 it("maps old Search performance tabs onto the tabs that hold them now", () => {
   expect(parseSearch(searchPerformance, { tab: "striking" })).toMatchObject({

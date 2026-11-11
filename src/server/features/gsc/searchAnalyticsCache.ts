@@ -17,6 +17,12 @@ const MAX_CACHED_ROWS = 400_000;
 type Entry<T> = { value: T; rows: number; storedAt: number };
 
 const entries = new Map<string, Entry<unknown>>();
+/**
+ * Loads still on their way. One view asks the same question from several
+ * panels at once; without this each of them paid Google for it, because the
+ * answer is only stored once the first one finishes.
+ */
+const inFlight = new Map<string, Promise<unknown>>();
 let heldRows = 0;
 
 function evict(key: string): void {
@@ -47,8 +53,18 @@ export async function cachedSearchAnalytics<T>(
   }
   // A slow multi-page acquisition must not receive a brand-new ten-minute
   // lease when it finishes: the first rows are already that much older.
+  const pending = options.fresh ? undefined : inFlight.get(key);
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- one key, one request shape: the promise under it came from the same `load` type
+  if (pending) return pending as Promise<T>;
   const storedAt = now();
-  const value = await load();
+  const loading = load();
+  inFlight.set(key, loading);
+  let value: T;
+  try {
+    value = await loading;
+  } finally {
+    if (inFlight.get(key) === loading) inFlight.delete(key);
+  }
   const rows = rowsOf(value);
   evict(key);
   // A single answer larger than the whole budget is served, never held.

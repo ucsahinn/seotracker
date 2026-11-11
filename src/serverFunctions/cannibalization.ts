@@ -19,11 +19,17 @@ import {
  * "no conflicts" would be the wrong answer to give for "not enough data".
  * The report returns the window it actually used, and the panel prints it.
  */
+const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+
 const schema = z.object({
   projectId: z.string().min(1),
   dateRange: z
     .enum(["last_7_days", "last_28_days", "last_3_months", "last_6_months"])
     .default("last_28_days"),
+  // An exact period pinned by a link. Every other tab honours it; this one
+  // used to analyse the default 28 days beside them.
+  startDate: isoDate.optional(),
+  endDate: isoDate.optional(),
   device: z.enum(GSC_DEVICES).optional(),
   searchType: z.enum(SEARCH_PERFORMANCE_TYPES).default("web"),
   country: z
@@ -41,6 +47,10 @@ export const getCannibalizationReport = createServerFn({ method: "POST" })
       projectId: context.projectId,
       dateRange:
         data.dateRange === "last_7_days" ? "last_28_days" : data.dateRange,
+      window:
+        data.startDate && data.endDate && data.startDate <= data.endDate
+          ? { startDate: data.startDate, endDate: data.endDate }
+          : undefined,
       device: data.device,
       country: data.country,
       searchType: data.searchType,

@@ -1,3 +1,4 @@
+import { useDoneTodos } from "@/client/features/search-performance/useDoneTodos";
 import { useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
@@ -42,6 +43,7 @@ export function DashboardPage({ projectId }: { projectId: string }) {
     dashboardSearchViewQuery(projectId, activation?.gsc.connected === true),
   );
   const attempt = overview?.latestAttempt;
+  const doneTodos = useDoneTodos(projectId);
   const progress = useQuery({
     queryKey: ["audit-status", projectId, attempt?.auditId],
     queryFn: () =>
@@ -165,8 +167,15 @@ export function DashboardPage({ projectId }: { projectId: string }) {
             audit={audit}
             overviewUnavailable={overviewQuery.isError}
             siteSelected={siteSelected}
-            searchUnavailable={searchQuery.isError}
-            searchTodo={view?.todo ?? []}
+            latestAttempt={attempt}
+            // A failed refetch keeps the earlier answer on screen; only a
+            // failure with nothing to show is "could not be read".
+            searchUnavailable={searchQuery.isError && !searchQuery.data}
+            // Without the marks, the step ticked "done" on the Search screen
+            // stayed first here for the 28 days it is hidden there.
+            searchTodo={(view?.todo ?? []).filter(
+              (item) => !doneTodos.done.has(item.id),
+            )}
           />
           <StrikingQueriesCard
             projectId={projectId}

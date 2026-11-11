@@ -37,4 +37,12 @@ describe("audit step budget", () => {
     });
     expect(worst).toBeLessThan(WORKFLOW_STEP_LIMIT);
   });
+
+  it("adds the external-check steps when external checks are on", () => {
+    const off = auditStepCount(10, { speed: false });
+    // external-targets, up to 5 link chunks, up to 8 image chunks, findings.
+    expect(auditStepCount(10, { speed: false, externalChecks: true })).toBe(
+      off + 15,
+    );
+  });
 });

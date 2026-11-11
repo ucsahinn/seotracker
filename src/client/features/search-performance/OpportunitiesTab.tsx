@@ -35,7 +35,12 @@ const BAND_LABEL: Record<string, string> = {
 function CtrCurve({ view }: { view: SearchPerformanceView }) {
   const curve = view.insights.ctrCurve;
   const points = curve.nonBrand ?? curve.all;
-  const max = Math.max(...points.map((p) => p.ctr ?? 0), 0.0001);
+  // Only the bands drawn as bars. A band with too little data is hatched,
+  // and its 60% from two queries flattened every real bar to a sliver.
+  const max = Math.max(
+    ...points.map((p) => (p.sufficient ? (p.ctr ?? 0) : 0)),
+    0.0001,
+  );
   return (
     <div className="flex flex-col gap-2">
       <ul className="flex flex-col gap-1.5">

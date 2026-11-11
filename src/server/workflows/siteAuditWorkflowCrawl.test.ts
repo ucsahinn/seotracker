@@ -187,7 +187,7 @@ describe("crawl pacing and cooldowns", () => {
     expect(peak).toBe(2);
   });
 
-  it("retains slower pacing across chunks after recovering from the first 429", async () => {
+  it("carries slower pacing across chunks after the first 429, then speeds back up", async () => {
     const starts: number[] = [];
     vi.spyOn(globalThis, "fetch").mockImplementation(async () => {
       starts.push(Date.now());
@@ -200,9 +200,12 @@ describe("crawl pacing and cooldowns", () => {
     await vi.runAllTimersAsync();
     expect(await result).toEqual({ pagesCrawled: 100, completed: true });
     expect(starts[1]).toBe(30_000);
-    expect(starts.slice(2).every((at, i) => at - starts[i + 1] >= 2_000)).toBe(
-      true,
-    );
+    // Slower pacing survives chunk boundaries until a run of served pages
+    // earns the base interval back.
+    expect(
+      starts.slice(2, 15).every((at, i) => at - starts[i + 1] >= 2_000),
+    ).toBe(true);
+    expect(starts.at(-1)! - starts.at(-2)!).toBe(1_000);
     expect(saved.every((page) => page.fetchClass === "ok")).toBe(true);
     expect(mocks.claimChunk.mock.calls.length).toBeGreaterThan(1);
   });

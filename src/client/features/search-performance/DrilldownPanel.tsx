@@ -63,18 +63,24 @@ export function DrilldownPanel({
     drilldownQueryOptions(projectId, filters, span, target),
   );
 
+  // The page hands a new `onClose` on every render. With it as a
+  // dependency, each re-render pulled focus back to the close button.
+  const onCloseRef = React.useRef(onClose);
+  React.useEffect(() => {
+    onCloseRef.current = onClose;
+  });
   React.useEffect(() => {
     const previous = document.activeElement;
     closeRef.current?.focus();
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") onCloseRef.current();
     };
     document.addEventListener("keydown", onKey);
     return () => {
       document.removeEventListener("keydown", onKey);
       if (previous instanceof HTMLElement) previous.focus();
     };
-  }, [onClose]);
+  }, []);
 
   const isPage = target.dimension === "page";
   const data = query.data?.connected ? query.data : null;

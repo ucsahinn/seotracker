@@ -21,6 +21,8 @@ export type ReportPage = {
   redirectUrl?: string | null;
   canonicalUrl?: string | null;
   fetchClass?: string;
+  /** Null for a row that was not analysed as HTML (a PDF, an error). */
+  htmlBytes?: number | null;
 };
 
 export type ReportIssue = {

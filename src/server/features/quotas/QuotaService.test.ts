@@ -258,6 +258,26 @@ it("retains expired quota as historical remaining without a current green bar", 
   expect(items.get("ga4_hourly")?.state).toBe("unknown");
 });
 
+it("keeps a minutes-old GA4 reading across the UTC date change", async () => {
+  recordGa4Quota(
+    owner,
+    {
+      tokensPerDay: { consumed: 10, remaining: 199_990 },
+      tokensPerHour: { consumed: 10, remaining: 39_990 },
+    },
+    new Date("2026-10-02T23:58:00Z"),
+  );
+  const status = await getQuotaStatus({
+    projectId: "p1",
+    kinds: ["ga4"],
+    now: new Date("2026-10-03T00:02:00Z"),
+  });
+  const states = new Map(status.items.map((item) => [item.id, item.used]));
+  // Same Pacific day, four minutes old: both are still current readings.
+  expect(states.get("ga4_hourly")).toBe(10);
+  expect(states.get("ga4_daily")).toBe(10);
+});
+
 describe("stateFromUsage", () => {
   it.each([
     [0, "ok"],

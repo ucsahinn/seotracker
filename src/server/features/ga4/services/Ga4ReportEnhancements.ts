@@ -2,8 +2,12 @@ import type { Ga4ReportInput } from "./Ga4ReportingService";
 import type { NormalizedGa4Report } from "./Ga4ReportNormalization";
 import { inclusiveGa4Days, shiftGa4Date } from "./Ga4Dates";
 
-/** Rows per request, not a total cap: complete reports follow every offset. */
-export const COMPLETE_REPORT_LIMIT = 1_000;
+/**
+ * Rows per request, not a total cap: complete reports follow every offset.
+ * It was 1,000, the cap on what a caller may ask to see, so a site with
+ * 20,000 landing pages took twenty requests where two do.
+ */
+export const COMPLETE_REPORT_LIMIT = 10_000;
 
 type DateRange = { startDate: string; endDate: string };
 type ReportRow = Record<string, string | number | null>;

@@ -161,6 +161,19 @@ async function getStatus(auditId: string, projectId: string) {
   };
 }
 
+/** The settings comparePanelAudits requires to be equal, read from the rows. */
+function sameRunSettings(config: string, previousConfig: string | undefined) {
+  const current = parseAuditConfig(config);
+  const previous = previousConfig ? parseAuditConfig(previousConfig) : null;
+  return (
+    !!current &&
+    !!previous &&
+    current.maxPages === previous.maxPages &&
+    current.lighthouseStrategy === previous.lighthouseStrategy &&
+    !!current.externalChecks === !!previous.externalChecks
+  );
+}
+
 async function getHistory(projectId: string) {
   /*
    * Sweep before listing, because the cron that was supposed to do this
@@ -203,12 +216,22 @@ async function getHistory(projectId: string) {
     return pending;
   };
   const lastBySite = new Map<string, string>();
+  const previousConfigs = new Map(
+    completed.map((audit) => [audit.id, audit.config]),
+  );
   for (const audit of completed) {
     const key = siteKey(audit.startUrl);
     const previousAuditId = lastBySite.get(key);
     lastBySite.set(key, audit.id);
     if (!previousAuditId) continue;
     let compatible = false;
+    // A snapshot is every page, issue and speed row of an audit. Two audits
+    // run with different settings never compare (comparePanelAudits says so
+    // first), so their rows are not read to learn that.
+    if (!sameRunSettings(audit.config, previousConfigs.get(previousAuditId))) {
+      comparisons.set(audit.id, { previousAuditId, compatible });
+      continue;
+    }
     try {
       const [current, previous] = await Promise.all([
         snapshot(audit.id),
@@ -230,11 +253,13 @@ async function getHistory(projectId: string) {
     const evidence: {
       comparison?: { previousAuditId: string; compatible: boolean };
       maxPages?: number;
+      externalChecks?: boolean;
       errorCode?: string | null;
       failedPhase?: string | null;
     } = {
       comparison: comparisons.get(audit.id),
       maxPages: parsedConfig?.maxPages,
+      externalChecks: parsedConfig?.externalChecks,
       errorCode: storedAuditErrorCode(audit),
       failedPhase: audit.failedPhase,
     };

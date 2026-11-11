@@ -4,6 +4,7 @@
  * orphans) live in multipage.ts.
  */
 import type { DetectedIssue } from "@/server/lib/audit/issues/page-reporters";
+import { headerAppliesToGoogle } from "@/server/lib/audit/issues/page-markup-checks";
 import {
   canonicalUrlKey,
   sameCanonicalTarget,
@@ -42,18 +43,25 @@ export interface SlimPage {
   xRobotsTag: string | null;
   /** Whether the page carries any schema.org JSON-LD block. */
   hasStructuredData: boolean;
+  /**
+   * Stored only for analysed HTML, null for a redirect, an error or a PDF
+   * that answered 200: the one column that says a row was read as a page.
+   */
+  htmlBytes: number | null;
   /** Open Graph, read only site-wide: see `findMissingOpenGraph`. */
   ogTitle: string | null;
   ogImage: string | null;
   hreflangAlternates: HreflangAlternate[];
 }
 
-function isOkHtmlPage(page: SlimPage): boolean {
+/** A 2xx answer that was analysed as HTML, not a PDF or image with a 200. */
+export function isOkHtmlPage(page: SlimPage): boolean {
   return (
     page.fetchClass === "ok" &&
     page.statusCode !== null &&
     page.statusCode >= 200 &&
-    page.statusCode < 300
+    page.statusCode < 300 &&
+    page.htmlBytes !== null
   );
 }
 
@@ -83,9 +91,14 @@ const NOINDEX_TOKEN = /\b(noindex|none)\b/i;
 function isNoindexedByDirective(page: SlimPage): boolean {
   return (
     !page.isIndexable &&
-    [page.robotsMeta, page.googlebotMeta, page.xRobotsTag].some(
-      (directive) => directive !== null && NOINDEX_TOKEN.test(directive),
-    )
+    [
+      page.robotsMeta,
+      page.googlebotMeta,
+      // A header scoped to another crawler is not Google's rule.
+      page.xRobotsTag && headerAppliesToGoogle(page.xRobotsTag)
+        ? page.xRobotsTag
+        : null,
+    ].some((directive) => directive !== null && NOINDEX_TOKEN.test(directive))
   );
 }
 
@@ -273,7 +286,8 @@ export function findHreflangReturnTagProblems(
        * the comment above promised a fold.
        */
       const target = byFoldedUrl.get(foldUrl(alternate.href));
-      if (!target || !isOkHtmlPage(target)) continue;
+      // The page itself, under another spelling of its own URL.
+      if (!target || target.id === page.id || !isOkHtmlPage(target)) continue;
 
       /*
        * The return tag is matched on a folded key, not byte-for-byte. An

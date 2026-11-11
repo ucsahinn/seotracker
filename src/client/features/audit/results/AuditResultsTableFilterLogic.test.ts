@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   EMPTY_PAGES_FILTERS,
   filterPages,
+  nullableNumberSort,
   scopeToUrls,
   type PageRow,
 } from "./AuditResultsTableFilterLogic";
@@ -17,6 +18,7 @@ function page(overrides: Partial<PageRow>): PageRow {
     id: "page-1",
     url: "https://example.com/",
     statusCode: 200,
+    htmlBytes: 1000,
     redirectUrl: null,
     title: null,
     metaDescription: null,
@@ -106,4 +108,30 @@ describe("filterPages Turkish search", () => {
     expect(run("İstanbul")).toEqual(["b"]);
     expect(run("istanbul")).toEqual(["b"]);
   });
+});
+
+it("keeps redirects out of a word-count filter, as the table shows no count for them", () => {
+  const rows = [
+    page({ id: "thin", wordCount: 120 }),
+    page({ id: "moved", statusCode: 301, wordCount: 0 }),
+  ];
+  const kept = filterPages(rows, { ...EMPTY_PAGES_FILTERS, maxWords: "300" });
+  expect(kept.map((row) => row.id)).toEqual(["thin"]);
+});
+
+const sortRow = (value: number | null, direction: "asc" | "desc") => ({
+  getValue: () => value,
+  getAllCells: () => [
+    { column: { id: "speed", getIsSorted: () => direction } },
+  ],
+});
+
+it("sorts an empty value last in both directions", () => {
+  // The table negates the sorter when the column is descending.
+  expect(
+    nullableNumberSort(sortRow(null, "asc"), sortRow(900, "asc"), "speed"),
+  ).toBeGreaterThan(0);
+  expect(
+    -nullableNumberSort(sortRow(null, "desc"), sortRow(900, "desc"), "speed"),
+  ).toBeGreaterThan(0);
 });

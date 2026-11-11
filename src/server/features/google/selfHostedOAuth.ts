@@ -17,7 +17,7 @@ import {
   type OAuthState,
 } from "@/server/features/google/selfHostedOAuthState";
 import { captureServerError } from "@/server/lib/observability";
-import { getPublicOrigin } from "@/server/mcp/public-origin";
+import { getConfiguredPublicOrigin } from "@/server/mcp/public-origin";
 import { GA4_OAUTH_PROVIDER_ID, GA4_OAUTH_SCOPES } from "@/shared/ga4";
 import { GSC_OAUTH_PROVIDER_ID, GSC_OAUTH_SCOPES } from "@/shared/gsc";
 import {
@@ -192,6 +192,9 @@ async function exchangeCode(input: {
       redirect_uri: input.redirectUri,
       grant_type: "authorization_code",
     }),
+    // The browser tab waits on this; a stalled Google must end in the error
+    // redirect, not in a tab that never finishes loading.
+    signal: AbortSignal.timeout(15_000),
   });
   if (!response.ok) {
     throw new AppError(
@@ -336,7 +339,7 @@ export async function handleSelfHostedGoogleOAuthCallbackRequest(
         userId: context.userId,
         userEmail: context.userEmail,
       },
-      publicOrigin: getPublicOrigin(request),
+      publicOrigin: await getConfiguredPublicOrigin(request),
     });
   } catch (error) {
     /*

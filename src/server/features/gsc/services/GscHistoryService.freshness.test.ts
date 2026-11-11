@@ -56,7 +56,7 @@ it("stores all 50,000 query rows for a retry day and probes the terminal page", 
     siteUrl,
     rows:
       request.startDate === "2026-06-01" && (request.startRow ?? 0) < 50_000
-        ? Array.from({ length: 1000 }, (_, index) => ({
+        ? Array.from({ length: 25_000 }, (_, index) => ({
             keys: ["2026-06-01", `q${(request.startRow ?? 0) + index}`],
             clicks: 1,
             impressions: 2,
@@ -101,7 +101,7 @@ it("keeps a retry day pending if its deeper page budget still overflows", async 
   });
   mocks.getPerformance.mockResolvedValue({
     siteUrl,
-    rows: Array.from({ length: 1000 }, (_, index) => ({
+    rows: Array.from({ length: 25_000 }, (_, index) => ({
       keys: ["2026-06-01", `q${index}`],
       clicks: 1,
       impressions: 2,

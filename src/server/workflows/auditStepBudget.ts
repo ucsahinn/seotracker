@@ -33,6 +33,12 @@ const CRAWL_CHUNK_PAGES = 200;
  * multipage-checks, finalize, plus mark-failed on a failed run.
  */
 const FIXED_AUDIT_STEPS = 7;
+/**
+ * external-targets, up to 5 external-links-N chunks, up to 8
+ * external-images-N chunks, external-findings (siteAuditWorkflowExternal.ts).
+ * Bounded by the chunk caps, not by the page count.
+ */
+const EXTERNAL_CHECK_STEPS = 15;
 
 /** Steps the speed phase creates for this many measured pages. */
 export function lighthouseStepCount(pages: number, worstCase = false) {
@@ -50,7 +56,11 @@ export function lighthouseStepCount(pages: number, worstCase = false) {
  */
 export function auditStepCount(
   pages: number,
-  options: { speed: boolean; pagesPerCrawlChunk?: number } = { speed: true },
+  options: {
+    speed: boolean;
+    externalChecks?: boolean;
+    pagesPerCrawlChunk?: number;
+  } = { speed: true },
 ) {
   const perChunk = options.pagesPerCrawlChunk ?? CRAWL_CHUNK_PAGES;
   const crawl = Math.ceil(pages / perChunk);
@@ -58,6 +68,7 @@ export function auditStepCount(
   return (
     FIXED_AUDIT_STEPS +
     crawl +
+    (options.externalChecks ? EXTERNAL_CHECK_STEPS : 0) +
     (options.speed ? lighthouseStepCount(pages, worst) : 0)
   );
 }

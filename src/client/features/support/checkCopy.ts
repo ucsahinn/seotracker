@@ -29,15 +29,23 @@ export function describeCheck(
   key: string,
   check: { status: CheckStatus; detail?: string },
   googleReady: boolean | null,
-  installKind: "windows" | "docker" = "docker",
+  /** "windows-store" is the Microsoft Store build of the Windows package:
+   *  its tray has no repair or update item. */
+  install: "windows" | "windows-store" | "docker" = "docker",
   authMode?: string,
 ): DescribedCheck {
+  const store = install === "windows-store";
+  const installKind = store ? "windows" : install;
   const detail = check.detail ?? "";
   const logs =
     installKind === "windows"
-      ? t(
-          "Görev çubuğu menüsünden Günlükleri aç deyip server.log dosyasına bakın; düzelmezse Kurulumu onar.",
-        )
+      ? store
+        ? t(
+            "Görev çubuğu menüsünden Günlükleri aç deyip server.log dosyasına bakın; düzelmezse uygulamayı kapatıp yeniden açın.",
+          )
+        : t(
+            "Görev çubuğu menüsünden Günlükleri aç deyip server.log dosyasına bakın; düzelmezse Kurulumu onar.",
+          )
       : t("Ayrıntı için docker compose logs --tail 50 çıktısına bakın.");
   const say = (text: string, status: CheckStatus = check.status) =>
     spoken(text, status);
@@ -46,9 +54,13 @@ export function describeCheck(
     if (/DISABLED/.test(detail)) {
       return say(
         installKind === "windows"
-          ? t(
-              "Search Console ve Analytics kapalı. Uygulamanın şifreleme anahtarı (veri klasöründeki instance-secret dosyası) eksik ya da bozuk. Görev çubuğu menüsünden Kurulumu onar deyin.",
-            )
+          ? store
+            ? t(
+                "Search Console ve Analytics kapalı. Uygulamanın şifreleme anahtarı (veri klasöründeki instance-secret dosyası) eksik ya da bozuk. Uygulamayı kapatıp yeniden açın; düzelmezse bu ekrandan tanılama paketini indirip sorunu bildirin.",
+              )
+            : t(
+                "Search Console ve Analytics kapalı. Uygulamanın şifreleme anahtarı (veri klasöründeki instance-secret dosyası) eksik ya da bozuk. Görev çubuğu menüsünden Kurulumu onar deyin.",
+              )
           : t(
               "Search Console ve Analytics kapalı. Google bağlantılarını şifreleyen gizli kurulum anahtarı (BETTER_AUTH_SECRET) eksik ya da çok kısa. Uygulama bu anahtarı kendisi üretir; elle kısa bir değer girdiyseniz silin.",
             ),

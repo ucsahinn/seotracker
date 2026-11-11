@@ -160,6 +160,7 @@ export async function runMultipageChecks(input: {
       xRobotsTag: auditPages.xRobotsTag,
       hreflangTagsJson: auditPages.hreflangTagsJson,
       hasStructuredData: auditPages.hasStructuredData,
+      htmlBytes: auditPages.htmlBytes,
       ogTitle: auditPages.ogTitle,
       ogImage: auditPages.ogImage,
       hasFeedLink: auditPages.hasFeedLink,

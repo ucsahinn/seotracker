@@ -20,6 +20,17 @@ describe("describeCheck", () => {
     expect(result.text).toContain("No sign-in");
     expect(result.text).not.toContain("protection is set up");
   });
+  it("never sends a Store install to the repair item its tray does not have", () => {
+    const result = describeCheck(
+      "gsc",
+      { status: "warn", detail: "DISABLED" },
+      null,
+      "windows-store",
+      "local_noauth",
+    );
+    expect(result.text).not.toContain("Kurulumu onar");
+    expect(result.text).toContain("instance-secret");
+  });
   it("does not report an unread Google configuration as successful", () => {
     const result = describeCheck("gsc", { status: "ok" }, null);
     expect(result.status).toBe("warn");

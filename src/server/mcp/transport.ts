@@ -180,6 +180,7 @@ export async function handleSelfHostedMcpRequest(
   authMode: "cloudflare_access" | "local_noauth",
   env: unknown,
   ctx: ExecutionContext,
+  publicHosts: readonly (string | undefined)[] = [],
 ): Promise<Response> {
   // Preflight does not carry an authenticated application context.
   if (request.method === "OPTIONS") {
@@ -197,7 +198,7 @@ export async function handleSelfHostedMcpRequest(
     userId: identity.userId,
     userEmail: identity.userEmail,
     organizationId: identity.organizationId,
-    baseUrl: getPublicOrigin(request),
+    baseUrl: getPublicOrigin(request, publicHosts),
     userAgent: request.headers.get("user-agent") ?? undefined,
   });
 

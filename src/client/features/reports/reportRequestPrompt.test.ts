@@ -11,6 +11,17 @@ describe("reportRequestPrompt", () => {
     expect(prompt).toContain("project_123");
   });
 
+  it.each(["de", "fr", "it", "pt"] as const)(
+    "uses the English agent prompt for %s",
+    (locale) => {
+      setLocale(locale);
+      expect(reportRequestPrompt("project_123")).toContain(
+        "Task: use seotracker",
+      );
+      expect(reportRequestPrompt("project_123")).not.toContain("Uydurma");
+    },
+  );
+
   // A tool name that does not exist sends the agent guessing, so every name
   // the prompt mentions must be a tool this server registers.
   it("names only real seotracker tools", async () => {

@@ -4,6 +4,12 @@ import {
   useQueryClient,
   type Query,
 } from "@tanstack/react-query";
+import {
+  DASHBOARD_FILTERS,
+  dashboardSearchViewQuery,
+} from "@/client/features/dashboard/dashboardGscReport";
+import { getSearchPerformanceView } from "@/serverFunctions/searchPerformance";
+
 const PROJECT_QUERIES = [
   "dashboardActivation",
   "dashboardOverview",
@@ -19,6 +25,7 @@ const GLOBAL_QUERIES = [
 ];
 export function useDashboardRefresh(projectId: string) {
   const client = useQueryClient();
+  const searchView = dashboardSearchViewQuery(projectId, true);
   const predicate = (q: Query) =>
     GLOBAL_QUERIES.includes(String(q.queryKey[0])) ||
     (q.queryKey[1] === projectId &&
@@ -44,6 +51,13 @@ export function useDashboardRefresh(projectId: string) {
     dataUpdatedAt: timestamps.length ? Math.min(...timestamps) : 0,
     onRefresh: async () => {
       setOutcome(null);
+      // The server remembers Google's answers for ten minutes. Without this
+      // the button said "refreshed" over the same remembered numbers; the
+      // fresh read replaces that memory, and the refetch below then reads it.
+      if (client.getQueryCache().find(searchView)?.isActive())
+        await getSearchPerformanceView({
+          data: { ...DASHBOARD_FILTERS, projectId, fresh: true },
+        }).catch(() => undefined);
       await client.refetchQueries({ predicate, type: "active" });
       setOutcome(
         client

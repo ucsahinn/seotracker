@@ -7,7 +7,7 @@ import type {
   RowSelectionState,
   SortingState,
 } from "@tanstack/react-table";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { RemovalTarget } from "./SavedKeywordsModals";
 import { useSavedKeywordPositions } from "./useSavedKeywordPositions";
 import { compileSavedKeywordsFilters } from "./savedKeywordsFilterTypes";
@@ -39,7 +39,23 @@ export function useSavedWatchlistPage({
   const [showTagModal, setShowTagModal] = useState(false);
   const [detailId, setDetailId] = useState<string | null>(null);
   const filters = useSavedKeywordsFilters();
+  const lastUrlValues = useRef<{
+    projectId: string;
+    include: string;
+    exclude: string;
+  } | null>(null);
   useEffect(() => {
+    if (
+      lastUrlValues.current?.projectId === projectId &&
+      lastUrlValues.current.include === search.include &&
+      lastUrlValues.current.exclude === search.exclude
+    )
+      return;
+    lastUrlValues.current = {
+      projectId,
+      include: search.include,
+      exclude: search.exclude,
+    };
     filters.filtersForm.setFieldValue("include", search.include);
     filters.filtersForm.setFieldValue("exclude", search.exclude);
   }, [search.include, search.exclude, projectId, filters.filtersForm]);
@@ -61,15 +77,18 @@ export function useSavedWatchlistPage({
     filters.values.exclude !== search.exclude;
   useEffect(() => {
     if (!pending || invalid) return;
-    const timer = window.setTimeout(
-      () =>
-        update({
-          include: filters.values.include,
-          exclude: filters.values.exclude,
-          page: 1,
-        }),
-      350,
-    );
+    const timer = window.setTimeout(() => {
+      lastUrlValues.current = {
+        projectId,
+        include: filters.values.include,
+        exclude: filters.values.exclude,
+      };
+      update({
+        include: filters.values.include,
+        exclude: filters.values.exclude,
+        page: 1,
+      });
+    }, 350);
     return () => window.clearTimeout(timer);
   }, [
     pending,
@@ -77,6 +96,7 @@ export function useSavedWatchlistPage({
     filters.values.include,
     filters.values.exclude,
     update,
+    projectId,
   ]);
   const queryInput = useMemo(
     () => ({

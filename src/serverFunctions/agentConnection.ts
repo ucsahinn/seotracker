@@ -27,6 +27,7 @@ export const getAgentConnection = createServerFn({ method: "POST" })
     const activation = await ActivationRepository.getOrganizationActivation(
       context.organizationId,
     );
+    const token = (await getOptionalEnvValue("MCP_TOKEN"))?.trim();
 
     return {
       lastCallAt: activation?.lastMcpToolCallAt ?? null,
@@ -37,9 +38,7 @@ export const getAgentConnection = createServerFn({ method: "POST" })
        * page said flatly "this address requires no authentication", which was
        * a lie on any install that had set one.
        */
-      tokenConfigured: Boolean(
-        (await getOptionalEnvValue("MCP_TOKEN"))?.trim(),
-      ),
+      tokenConfigured: Boolean(token && token.toLowerCase() !== "off"),
       /** Decides which install path the prompts and the token help describe. */
       installKind: await getInstallKind(),
       /** The Store build's data folder, where the prompts find the token. */

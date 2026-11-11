@@ -155,7 +155,10 @@ function ReportsPage() {
             inventory={reportsQuery.data}
             pending={reportsQuery.isPlaceholderData}
             filters={filters}
-            onChange={(next) => void navigate({ search: next })}
+            onChange={(next) =>
+              // Filtering is one visit to this page, not a trail of them.
+              void navigate({ search: next, replace: true })
+            }
             onDelete={setPendingDelete}
           />
         </div>

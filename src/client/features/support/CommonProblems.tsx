@@ -12,6 +12,7 @@ import {
   Problem,
   TRAY,
   TrayItem,
+  PendingNote,
 } from "./problemParts";
 
 /**
@@ -32,13 +33,7 @@ export function CommonProblems({
   const origin = useOrigin();
   const windows = installKind === "windows";
   const pending = installKind === null;
-  const pendingNote = (
-    <p className="text-muted">
-      {t(
-        "Kurulum türü henüz doğrulanamadı. Üstteki durumu kontrol edin ve gerekirse yeniden deneyin.",
-      )}
-    </p>
-  );
+  const pendingNote = <PendingNote />;
 
   return (
     <section
@@ -58,9 +53,13 @@ export function CommonProblems({
         <Problem title={t("Sayfa açılmıyor ya da uygulama kapalı")}>
           <p>
             {fillParts(
-              t(
-                "Görev çubuğundaki seowatcher simgesine bakın; üzerine gelince {running} yazmalı. Simge yoksa Başlat menüsünden seowatcher'ı açın. Simgede {error} yazıyorsa sağ tıklayıp {restart}, olmazsa {repair} deyin.",
-              ),
+              storeDataDir
+                ? t(
+                    "Görev çubuğundaki seowatcher simgesine bakın; üzerine gelince {running} yazmalı. Simge yoksa Başlat menüsünden seowatcher'ı açın. Simgede {error} yazıyorsa sağ tıklayıp {restart} deyin.",
+                  )
+                : t(
+                    "Görev çubuğundaki seowatcher simgesine bakın; üzerine gelince {running} yazmalı. Simge yoksa Başlat menüsünden seowatcher'ı açın. Simgede {error} yazıyorsa sağ tıklayıp {restart}, olmazsa {repair} deyin.",
+                  ),
               {
                 running: TRAY.running,
                 error: TRAY.error,
@@ -170,7 +169,11 @@ export function CommonProblems({
         </p>
       </Problem>
 
-      <SettingChangeProblem windows={windows} pending={pending} />
+      <SettingChangeProblem
+        windows={windows}
+        pending={pending}
+        store={Boolean(storeDataDir)}
+      />
 
       <Problem title={t("Ajanım bağlanamıyor (401)")}>
         {pending ? (
@@ -324,16 +327,6 @@ export function CommonProblems({
   );
 }
 
-function PendingNote() {
-  return (
-    <p className="text-muted">
-      {t(
-        "Kurulum türü henüz doğrulanamadı. Üstteki durumu kontrol edin ve gerekirse yeniden deneyin.",
-      )}
-    </p>
-  );
-}
-
 /*
  * Settings typed into the app apply at once; settings in files are read at
  * the next start, and the two installs keep them in different files.
@@ -341,9 +334,11 @@ function PendingNote() {
 function SettingChangeProblem({
   windows,
   pending,
+  store,
 }: {
   windows: boolean;
   pending: boolean;
+  store: boolean;
 }) {
   return (
     <Problem title={t("Bir ayarı değiştirdim, uygulama görmüyor")}>
@@ -358,9 +353,13 @@ function SettingChangeProblem({
           </p>
           <p>
             {fillParts(
-              t(
-                "Elle değiştirilebilen tek dosya {config}: adres numarası (port) ve kendiliğinden güncelleme. {dataFolder} ile açın, değiştirin, sonra {restart} deyin. Yanındaki {serverEnv} dosyasını düzenlemeyin; uygulama her açılışta onu yeniden yazar.",
-              ),
+              store
+                ? t(
+                    "Elle değiştirilebilen tek dosya {config}: adres numarası (port). {dataFolder} ile açın, değiştirin, sonra {restart} deyin. Yanındaki {serverEnv} dosyasını düzenlemeyin; uygulama her açılışta onu yeniden yazar.",
+                  )
+                : t(
+                    "Elle değiştirilebilen tek dosya {config}: adres numarası (port) ve kendiliğinden güncelleme. {dataFolder} ile açın, değiştirin, sonra {restart} deyin. Yanındaki {serverEnv} dosyasını düzenlemeyin; uygulama her açılışta onu yeniden yazar.",
+                  ),
               {
                 config: code("config.json"),
                 dataFolder: <TrayItem name="dataFolder" />,

@@ -10,6 +10,11 @@ describe("isMcpRequestAuthorized", () => {
     expect(isMcpRequestAuthorized(null, "   ")).toBe(true);
   });
 
+  it("treats the explicit off sentinel as no token", () => {
+    expect(isMcpRequestAuthorized(null, "off")).toBe(true);
+    expect(isMcpRequestAuthorized(null, " OFF ")).toBe(true);
+  });
+
   it("accepts the token however the client cased the scheme", () => {
     expect(isMcpRequestAuthorized("Bearer s3cret", "s3cret")).toBe(true);
     expect(isMcpRequestAuthorized("bearer s3cret", "s3cret")).toBe(true);

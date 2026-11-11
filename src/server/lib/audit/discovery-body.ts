@@ -35,10 +35,69 @@ export async function readBodyPrefix(
 }
 
 /** Read a response body up to maxBytes; null when the body exceeds it. */
-export async function readBodyCapped(
+async function readBodyCapped(
   response: Response,
   maxBytes: number,
 ): Promise<string | null> {
   const body = await readBodyPrefix(response, maxBytes);
   return body.truncated ? null : decodeUtf8(body.bytes);
+}
+
+/**
+ * Read a gzipped body and return the decompressed text; null when either the
+ * compressed or the decompressed bytes exceed maxBytes. A body that is not
+ * gzip (some servers send Content-Encoding and fetch has already inflated it)
+ * is decoded as plain text.
+ */
+async function readGzipBodyCapped(
+  response: Response,
+  maxBytes: number,
+): Promise<string | null> {
+  const compressed = await readBodyPrefix(response, maxBytes);
+  if (compressed.truncated) return null;
+  const { bytes } = compressed;
+  if (bytes[0] !== 0x1f || bytes[1] !== 0x8b) return decodeUtf8(bytes);
+  try {
+    const inflated = new Blob([new Uint8Array(bytes)])
+      .stream()
+      .pipeThrough(new DecompressionStream("gzip"));
+    return await readBodyCapped(new Response(inflated), maxBytes);
+  } catch {
+    // Corrupt gzip: report it as "not a sitemap" rather than a network fault.
+    return "";
+  }
+}
+
+/**
+ * A sitemap's text: gunzipped when the URL ends in .gz or the content type
+ * says gzip (a valid .xml.gz is often served as application/gzip), capped at
+ * maxBytes both compressed and decompressed. Null when over the cap.
+ */
+export function readSitemapBody(
+  response: Response,
+  url: string,
+  maxBytes: number,
+): Promise<string | null> {
+  const gzipped =
+    /\.gz$/i.test(new URL(url).pathname) ||
+    (response.headers.get("content-type") ?? "").toLowerCase().includes("gzip");
+  return gzipped
+    ? readGzipBodyCapped(response, maxBytes)
+    : readBodyCapped(response, maxBytes);
+}
+
+export function isProbablySitemapXml(
+  contentType: string | null,
+  body: string,
+): boolean {
+  if (contentType?.toLowerCase().includes("xml")) {
+    return true;
+  }
+
+  const trimmed = body.trimStart().toLowerCase();
+  return (
+    trimmed.startsWith("<?xml") ||
+    trimmed.startsWith("<urlset") ||
+    trimmed.startsWith("<sitemapindex")
+  );
 }

@@ -135,7 +135,9 @@ function performanceRows(
       result.accessibilityScore,
       result.seoScore,
       result.lcpMs,
-      result.cls,
+      // As text: numbers are written to two decimals, and CLS is judged
+      // at 0.1 and 0.25, so 0.104 must not read 0.1.
+      result.cls == null ? null : result.cls.toFixed(3),
       result.inpMs,
       result.ttfbMs,
     ];
@@ -246,9 +248,11 @@ const COVERAGE_HEADERS = [
  * export since they existed.
  */
 export function exportIndexCoverage(
-  rows: CoverageRow[],
+  rows: CoverageRow[] | null,
   format: "csv" | "json" | "sheets",
 ) {
+  // Not loaded yet: a file of headers alone would read as "no pages".
+  if (!rows) return;
   if (format === "json") {
     downloadFile(
       JSON.stringify(rows, null, 2),

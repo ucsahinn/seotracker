@@ -5,11 +5,18 @@ import { reconcileRunningAudit, reconcileStaleAudits } from "./auditReconciler";
 const testDb = await vi.hoisted(async () =>
   (await import("@/server/test-support/sqlite-test-db")).createTestDb(),
 );
-const workflow = vi.hoisted(() => ({ status: vi.fn(), heartbeat: vi.fn() }));
+const workflow = vi.hoisted(() => ({
+  status: vi.fn(),
+  heartbeat: vi.fn(),
+  terminate: vi.fn(),
+}));
 vi.mock("cloudflare:workers", () => ({
   env: {
     SITE_AUDIT_WORKFLOW: {
-      get: async () => ({ status: workflow.status }),
+      get: async () => ({
+        status: workflow.status,
+        terminate: workflow.terminate,
+      }),
     },
   },
 }));
@@ -72,6 +79,18 @@ describe("audit watchdog", () => {
       error_code: "instance_lost",
     });
     expect(statusOf("mine")).toMatchObject({ status: "running" });
+    // The silent instance may still be alive: it is told to stop, once.
+    expect(workflow.terminate).toHaveBeenCalledTimes(1);
+  });
+
+  it("still fails the abandoned audit when its instance cannot be terminated", async () => {
+    workflow.terminate.mockRejectedValue(new Error("instance not found"));
+    await afterBoot(46, async () => {
+      insertRunning("zombie", 60);
+      await reconcileStaleAudits();
+    });
+
+    expect(statusOf("zombie")).toMatchObject({ status: "failed" });
   });
 
   it("does not fail a pre-boot audit whose worker is still beating, or that is inside the window", async () => {

@@ -9,16 +9,10 @@
  * why the missing-tag finding is `info` and its copy says so.
  */
 import type { DetectedIssue } from "@/server/lib/audit/issues/page-reporters";
-import type { SlimPage } from "@/server/lib/audit/issues/multipage-checks";
-
-function isOkPage(page: SlimPage): boolean {
-  return (
-    page.fetchClass === "ok" &&
-    page.statusCode !== null &&
-    page.statusCode >= 200 &&
-    page.statusCode < 300
-  );
-}
+import {
+  isOkHtmlPage,
+  type SlimPage,
+} from "@/server/lib/audit/issues/multipage-checks";
 
 /**
  * Whether the pages' GA4 ids could be held against the property's: both
@@ -33,7 +27,7 @@ export function analyticsWasCompared(input: {
   const expected = input.propertyMeasurementIds;
   if (!expected || expected.length === 0) return false;
   return input.pages
-    .filter(isOkPage)
+    .filter(isOkHtmlPage)
     .some((page) =>
       (input.tagIdsByPage.get(page.id) ?? []).some((id) => id.startsWith("G-")),
     );
@@ -50,7 +44,7 @@ export function findAnalyticsTagProblems(input: {
    */
   propertyMeasurementIds: string[] | null;
 }): DetectedIssue[] {
-  const okPages = input.pages.filter(isOkPage);
+  const okPages = input.pages.filter(isOkHtmlPage);
   if (okPages.length === 0) return [];
   const found = new Set(
     okPages.flatMap((page) => input.tagIdsByPage.get(page.id) ?? []),

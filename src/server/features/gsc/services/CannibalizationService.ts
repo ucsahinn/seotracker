@@ -5,11 +5,14 @@ import {
 import type { GscSearchType } from "@/server/features/gsc/searchAnalytics";
 import { buildGscFilters } from "@/server/features/gsc/performanceFilters";
 import { GscService } from "@/server/features/gsc/services/GscService";
+import { isoDaysInclusive } from "@/shared/dataFreshness";
 
 export async function getCannibalization(input: {
   projectId: string;
   /** Matches the Search Performance page's own windows. */
   dateRange?: "last_28_days" | "last_3_months" | "last_6_months";
+  /** An exact period; wins over `dateRange`. */
+  window?: { startDate: string; endDate: string };
   /*
    * The panel sits under the page's device and country dropdowns and used to
    * ignore both, so a report filtered to Mobile/Turkey showed all-device,
@@ -23,13 +26,19 @@ export async function getCannibalization(input: {
     projectId: input.projectId,
     dimensions: ["query", "page"],
     type: input.searchType,
-    dateRange: input.dateRange ?? "last_28_days",
+    ...(input.window ?? { dateRange: input.dateRange ?? "last_28_days" }),
     filters: buildGscFilters(input).filters,
     // Cannibalisation is read against settled numbers, not today's partials.
     dataState: "final",
   });
   return {
-    ...findCannibalizedQueries(performance.rows),
+    ...findCannibalizedQueries(
+      performance.rows,
+      isoDaysInclusive(
+        performance.request.startDate,
+        performance.request.endDate,
+      ),
+    ),
     truncated: performance.truncated,
     startDate: performance.request.startDate,
     endDate: performance.request.endDate,

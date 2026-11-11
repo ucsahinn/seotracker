@@ -603,4 +603,13 @@ export const enSettings: Catalog = {
   "İlgili ayarlar": "Related settings",
   Kaynaklar: "Resources",
   "{count} okunmamış": "{count} unread",
+  "Görev çubuğu menüsünden Günlükleri aç deyip server.log dosyasına bakın; düzelmezse uygulamayı kapatıp yeniden açın.":
+    "Choose Open logs in the taskbar menu and read server.log; if it persists, close the app and open it again.",
+  "Search Console ve Analytics kapalı. Uygulamanın şifreleme anahtarı (veri klasöründeki instance-secret dosyası) eksik ya da bozuk. Uygulamayı kapatıp yeniden açın; düzelmezse bu ekrandan tanılama paketini indirip sorunu bildirin.":
+    "Search Console and Analytics are off. The app's encryption key (the instance-secret file in the data folder) is missing or damaged. Close the app and open it again; if it persists, download the diagnostics bundle from this screen and report the problem.",
+  "Uygulama içi sürüm kontrolü kapalı.": "The in-app version check is off.",
+  "Görev çubuğundaki seowatcher simgesine bakın; üzerine gelince {running} yazmalı. Simge yoksa Başlat menüsünden seowatcher'ı açın. Simgede {error} yazıyorsa sağ tıklayıp {restart} deyin.":
+    "Look at the seowatcher icon in the taskbar; hovering over it should say {running}. If there is no icon, open seowatcher from the Start menu. If the icon says {error}, right-click it and choose {restart}.",
+  "Elle değiştirilebilen tek dosya {config}: adres numarası (port). {dataFolder} ile açın, değiştirin, sonra {restart} deyin. Yanındaki {serverEnv} dosyasını düzenlemeyin; uygulama her açılışta onu yeniden yazar.":
+    "The only file you may edit by hand is {config}: the port. Open it with {dataFolder}, change it, then choose {restart}. Do not edit the {serverEnv} file beside it; the app rewrites it on every start.",
 };

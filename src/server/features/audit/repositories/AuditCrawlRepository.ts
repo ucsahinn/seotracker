@@ -10,7 +10,9 @@ import {
   gt,
   gte,
   inArray,
+  isNotNull,
   isNull,
+  lt,
   notInArray,
   or,
   sql,
@@ -279,6 +281,13 @@ async function backfillCrawlDepths(
       and(
         eq(auditPages.auditId, auditId),
         gte(auditPages.crawlDepth, DEEP_PAGE_DEPTH),
+        // The same pages the per-page reporter judges: a redirect, a 404 or a
+        // PDF is not a "deep page" finding. `htmlBytes` is null unless the
+        // page's HTML was analysed.
+        eq(auditPages.fetchClass, "ok"),
+        gte(auditPages.statusCode, 200),
+        lt(auditPages.statusCode, 300),
+        isNotNull(auditPages.htmlBytes),
       ),
     );
   const exact = depths.every((entry) => entry.exact);

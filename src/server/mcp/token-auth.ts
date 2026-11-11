@@ -38,7 +38,7 @@ export function isMcpRequestAuthorized(
   expectedToken: string | undefined,
 ): boolean {
   const expected = expectedToken?.trim();
-  if (!expected) return true;
+  if (!expected || expected.toLowerCase() === "off") return true;
 
   const presented = authorizationHeader?.replace(/^Bearer\s+/i, "").trim();
   return Boolean(presented) && tokenMatches(presented!, expected);

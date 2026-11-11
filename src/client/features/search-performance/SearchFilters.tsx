@@ -189,6 +189,12 @@ export function SearchFilters({
             }
           >
             <option value={ALL}>{t("Tüm ülkeler")}</option>
+            {/* A filtered view lists only its own country, or none when it
+                has no rows; without this the box read "all countries" over
+                filtered data. */}
+            {country && !countries.some((row) => row.key === country) ? (
+              <option value={country}>{formatCountry(country)}</option>
+            ) : null}
             {countries.map((row) => (
               <option key={row.key} value={row.key}>
                 {formatCountry(row.key)}

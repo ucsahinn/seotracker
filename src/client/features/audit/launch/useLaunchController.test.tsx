@@ -56,4 +56,27 @@ describe("useLaunchController.rerunAudit", () => {
 
     expect(mocks.startAudit).toHaveBeenCalledTimes(1);
   });
+
+  it("repeats the audit's own external-link setting, not the form's", async () => {
+    mocks.startAudit.mockResolvedValue({ auditId: "a2" });
+    const client = new QueryClient();
+    const { result } = renderHook(
+      () => useLaunchController({ projectId: "p1", onAuditStarted: vi.fn() }),
+      {
+        wrapper: ({ children }: { children: ReactNode }) => (
+          <QueryClientProvider client={client}>{children}</QueryClientProvider>
+        ),
+      },
+    );
+
+    await act(async () => {
+      result.current.rerunAudit({ ...past, externalChecks: false });
+      await Promise.resolve();
+    });
+
+    await vi.waitFor(() => expect(mocks.startAudit).toHaveBeenCalled());
+    expect(mocks.startAudit.mock.calls[0]?.[0]).toMatchObject({
+      data: { externalChecks: false },
+    });
+  });
 });

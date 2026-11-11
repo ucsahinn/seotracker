@@ -155,6 +155,29 @@ describe("announcement service", () => {
     );
   });
 
+  it("returns a JSON error when deleting a response fails", async () => {
+    const handler = createAnnouncementHandler(
+      repository({
+        deleteResponse: async () => {
+          throw new Error("database unavailable");
+        },
+      }),
+      { adminToken: TOKEN },
+    );
+
+    const response = await handler(
+      request("/api/admin/responses/ec030f51-80bc-4679-841b-a1d9b79ab42e", {
+        method: "DELETE",
+        headers: { authorization: `Bearer ${TOKEN}` },
+      }),
+    );
+
+    expect(response.status).toBe(500);
+    expect(await response.json()).toEqual({
+      error: "Request could not be completed",
+    });
+  });
+
   it("paginates response history so older answers remain reviewable", async () => {
     const listResponses = vi.fn(async () => [
       {

@@ -261,3 +261,70 @@ Mock veri hiç kullanılmadı. Tek proje: `df26abab-fa39-4133-96cc-a5627d8b80ad`
 
 - Aynı projede bir denetim hız ölçümü aşamasındayken ikinci bir denetim başlatılırsa uyarı vermek: ikisi PageSpeed kotasını paylaşıp birbirini yaklaşık yarı hıza düşürüyor (212 sayfa tek başına 24 dakika, iki denetim yan yana 48 dakika sürdü).
 - Rapor ve bağlantı yazarını MCP `clientInfo.name` yerine HTTP `User-Agent` başlığından türetmek: istemci adı ajanın kendi bildirimi, başlık sunucunun gördüğü değer. Düşük öncelik.
+
+### 2026-11-11 hata denetimi turu (commit'lenmedi; çalışma kopyasında)
+
+Tüm kod tabanı okundu: sunucu, Google servisleri ve MCP araçları, tarama
+motoru, denetim kuralları, arayüz, CI. Doğrulama: `pnpm run ci:check` temiz,
+`pnpm test` 2420 test, sahte site düzeneği (badseo) geçti. Kurulu uygulamada
+ya da tarayıcıda denenmedi.
+
+Yapılanlar:
+
+- **Güvenlik:** girişsiz kurulumda tanınmayan Host başlığı 421 alır (DNS
+  yeniden bağlama). `X-Forwarded-*` yalnız `ALLOWED_HOST` tanımlıyken okunur.
+- **Tarama motoru:** `www` yönlendirmesinde robots.txt kuralları, 429 sonrası
+  hızın toparlanması, başarısız site haritası parçası, tuzak site sınırı,
+  `.xml.gz` site haritaları.
+- **Denetim kuralları ve rapor:** `X-Robots-Tag` bot kapsamı, hreflang,
+  canonical, sayfalama, alt metni örnekleri, rapor sayıları.
+- **Google:** sıralama arşivi 25.000 satırlık sayfalarla okur (eskiden 1.000);
+  eşzamanlı aynı sorgu bir kez gider; mülk dışı URL denetim kotası harcamaz;
+  çakışma eşikleri pencereye ölçeklenir.
+- **MCP araçları:** `get_search_console_performance` süzgeçli taramada 10
+  sayfada durur; `get_cannibalization` sayfalanır; `get_ranking_history`
+  arşiv kapsamını söyler; `save_keywords` yalnız niyet kabul eder,
+  `list_saved_keywords` kaynağı olmayan hacim/zorluk/TBM sütunlarını basmaz.
+- **Arayüz:** boş değerler azalan sıralamada da sonda; "Görsel" sütunu
+  sıralanır; dizin sekmesinde "Henüz kontrol edilmedi" doğru sayıyı gösterir;
+  dizin dışa aktarımı halka süzgecini izler; CLS dışa aktarımda üç ondalık;
+  rapor araması taslak tutar; eski rapor başlıklarında UUID görünmez; pano
+  "Yapıldı" işaretlerini ve süren/başarısız denetimi görür; başarısız
+  yenilemede pano kartları kaybolmaz; "Çakışmalar" sekmesi sabit tarih
+  penceresini izler; ayrıntı panelinde odak sıçramaz.
+- **GA4:** tam raporlar 10.000 satırlık sayfalarla okunur (eskiden 1.000).
+- **Drizzle:** `drizzle/meta/0075_snapshot.json` güncel şemadan üretildi;
+  geçici kopyada ikinci `drizzle-kit generate` "değişiklik yok" dedi. Depo
+  dışı iki tablo (`gsc_archive_coverage`, `gsc_query_daily_stage`) şema
+  dosyasında olmadığı için anlık görüntüde de yok.
+- **Host denetimi çalışan sunucuda denendi:** derlenmiş uygulama `wrangler dev`
+  altında yabancı alan adına her yolda 421 verdi; `localhost`, `*.localhost`
+  ve IP adresi geçti; sahte `X-Forwarded-Host` işe yaramadı.
+- **Güvenlik denetimi (bağımsız okuma) ve sertleştirme:** kritik ya da yüksek
+  bulgu yok. Host başlığı yokken istek satırındaki ada bakılır; `x@127.0.0.1`
+  gibi değerler reddedilir; `localhost.` localhost sayılır; `X-Forwarded-Host`
+  yalnız `ALLOWED_HOST` ya da `BETTER_AUTH_URL` adına eşitse dikkate alınır.
+  Ölçüldü: `MCP_TOKEN=off` iken yabancı `Origin` ile `/mcp` 403 alır. Bilinen
+  ve kabul edilen: `/assets/*` (herkese açık istemci paketi) Host denetiminden
+  önce sunulur.
+- **Pano "Yenile":** Google'a yeniden sorar (arama ekranındaki düğme gibi).
+- **Sayfalar tablosu:** site haritası sonuna kadar okunamadıysa "Harita"
+  sütunu "Yok" yerine "-" yazar; içeriği okunmamış sayfa "Görsel"
+  sıralamasında sonda kalır.
+- **Tarayıcıda denendi** (geliştirme sunucusu, demo proje): pano, denetim
+  sayfaları, dizin sekmesi, raporlar, arama performansı. Dizin sekmesinde
+  halka grubuna tıklayınca çöken bir döngü bulundu ve düzeltildi.
+- **CI:** tüm eylemler commit özetine sabitlendi; Store paketi için kurulum
+  denemesi adımı eklendi (henüz hiç koşmadı, yayını engellemez).
+
+Açık kalanlar:
+
+| İş                                                              | Durum                 | Not                                                                                                  |
+| --------------------------------------------------------------- | --------------------- | ---------------------------------------------------------------------------------------------------- |
+| 366 kullanılmayan çeviri anahtarı                               | **karar bekliyor**    | Veritabanında saklı Türkçe cümleler bu anahtarlarla çevriliyor olabilir; silmeden önce onay gerekir. |
+| Ücretli veri sütunlarının şemadan sökülmesi (`keyword_metrics`) | **karar bekliyor**    | Veritabanı göçü ister. Araçlar artık bu sütunları yazmıyor ve göstermiyor.                           |
+| Denetim geçmişinin bellek kullanımı                             | **açık**              | Tam çözüm şema değişikliği ister; ön süzme eklendi.                                                  |
+| Kayıtlı kelimeler ekranı tüm arşivi okur                        | **bilerek yapılmadı** | Eşleşme anahtarı SQL'de üretilemiyor; tek kullanıcılı yerel SQLite'ta yalnız hız konusu.             |
+| Hızlı süzgeçlerin başka süzgeçleri sıfırlaması                  | **karar bekliyor**    | Radyo düğmesi davranışı bilerek olabilir.                                                            |
+| İki `window.confirm` kutusu                                     | **bilerek yapılmadı** | İşlevsel olarak doğru; yalnız görünüm.                                                               |
+| Store paketi yolları                                            | **açık**              | Hiçbir makinede koşmadı; ilk yayında CI adımı izlenmeli.                                             |

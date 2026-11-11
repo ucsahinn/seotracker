@@ -21,6 +21,7 @@ import type {
 } from "@/types/schemas/search-performance";
 import { SearchPerformanceLoadingState } from "@/client/features/search-performance/SearchPerformanceLoadingState";
 import { SearchFilters } from "@/client/features/search-performance/SearchFilters";
+import { CHIPS } from "@/client/features/search-performance/DimensionTableParts";
 import { DataTrustStrip } from "@/client/features/search-performance/DataTrustStrip";
 import { KpiTiles } from "@/client/features/search-performance/KpiTiles";
 import {
@@ -73,6 +74,15 @@ type ViewChange = {
   exactQuery?: string;
   exactPage?: string;
 };
+
+/**
+ * Only a chip this table offers: the table ignores any other, and the file
+ * must hold the rows on screen.
+ */
+function exportChip(what: "query" | "page", quickFilter: string | undefined) {
+  const chip = CHIPS[what].find((candidate) => candidate.id === quickFilter);
+  return chip ? { quickFilter: chip.id } : {};
+}
 
 export function SearchPerformancePage({
   projectId,
@@ -170,7 +180,7 @@ export function SearchPerformancePage({
             endDate: view.window.endDate,
           },
           ...(onThisTab && query ? { search: query } : {}),
-          ...(onThisTab && quickFilter ? { quickFilter } : {}),
+          ...(onThisTab ? exportChip(what, quickFilter) : {}),
         },
       });
       runExport(dimensionExportTable(result), target);
@@ -367,6 +377,7 @@ export function SearchPerformancePage({
                 <OverlapsTab
                   projectId={projectId}
                   range={range}
+                  window={pinnedWindow}
                   device={device}
                   country={country}
                   searchType={searchType}

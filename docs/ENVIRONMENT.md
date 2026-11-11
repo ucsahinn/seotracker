@@ -24,10 +24,10 @@ oluşturmak güvenlidir, örneğin `Set-Content -Encoding ascii .env 'PORT=3002'
 
 ## Ağ
 
-| Değişken       | Varsayılan | Ne işe yarar                                                                                                               |
-| -------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `PORT`         | `3001`     | Konteynerin yayın yaptığı port. 127.0.0.1'e bağlı.                                                                         |
-| `ALLOWED_HOST` | boş        | localhost dışında bir adla eriştiğinizde (Tailscale adı, ters vekil) eklenecek ad. Boşken yalnızca localhost kabul edilir. |
+| Değişken       | Varsayılan | Ne işe yarar                                                                                                                                                                                                                                                               |
+| -------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PORT`         | `3001`     | Konteynerin yayın yaptığı port. 127.0.0.1'e bağlı.                                                                                                                                                                                                                         |
+| `ALLOWED_HOST` | boş        | localhost dışında bir adla eriştiğinizde (Tailscale adı, ters vekil) eklenecek ad. Boşken yalnızca localhost kabul edilir; `local_noauth` modunda diğer Host değerleri 421 ile reddedilir. Forwarded public origin başlıkları yalnızca bu değer ayarlandığında kullanılır. |
 
 ## Kimlik doğrulama
 

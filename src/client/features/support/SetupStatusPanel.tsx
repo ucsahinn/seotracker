@@ -171,7 +171,7 @@ function StatusBody({
       key,
       check,
       googleReady,
-      data.setup.installKind,
+      data.setup.storeDataDir ? "windows-store" : data.setup.installKind,
       data.setup.authMode,
     ),
   }));

@@ -15,7 +15,7 @@ export type SearchPerformanceViewFilters = {
 };
 
 /** What the dashboard shows: the screen's default view. */
-const DASHBOARD_FILTERS: SearchPerformanceViewFilters = {
+export const DASHBOARD_FILTERS: SearchPerformanceViewFilters = {
   dateRange: "last_28_days",
   searchType: "web",
 };

@@ -72,7 +72,7 @@ export function TableBulkActionButton({
 }) {
   const color =
     variant === "danger"
-      ? "text-error hover:bg-error/10"
+      ? "text-[var(--ink-error)] hover:bg-error/10"
       : "text-muted hover:bg-base-content/10";
 
   return (

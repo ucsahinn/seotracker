@@ -182,6 +182,89 @@ jobs:
           if (Test-Path $app) { throw "launcher still present after uninstall" }
           Write-Host "install, start, health, quit, uninstall: all ok"
 
+      # The packaged code paths (package data folder, adoption of the
+      # installer's data, health, token) run nowhere else: a local machine
+      # needs Developer Mode and the Store needs a submission. The package is
+      # signed here with a throwaway certificate that never leaves the runner.
+      # Not yet seen green, so it reports without blocking the release; make
+      # it blocking (drop continue-on-error) after its first passing run.
+      - name: Smoke test the Store package
+        continue-on-error: true
+        shell: pwsh
+        env:
+          MSIX_PUBLISHER: ${{ vars.MSIX_PUBLISHER }}
+        run: |
+          $ErrorActionPreference = "Stop"
+          $msix = Get-ChildItem packaging/windows/out -Filter "seowatcher-*.msix" | Select-Object -First 1
+          if (-not $msix) { throw "Store package is missing" }
+          $publisher = if ($env:MSIX_PUBLISHER) { $env:MSIX_PUBLISHER } else { "CN=seowatcher-dev" }
+          $testMsix = Join-Path $env:RUNNER_TEMP $msix.Name
+          $cert = $null
+          $trusted = $null
+          $package = $null
+          $app = $null
+          try {
+            Copy-Item $msix.FullName $testMsix
+            $cert = New-SelfSignedCertificate -Type CodeSigningCert -Subject $publisher -CertStoreLocation "Cert:\LocalMachine\My"
+            $trusted = Import-Certificate -FilePath (Export-Certificate -Cert $cert -FilePath (Join-Path $env:RUNNER_TEMP "store-smoke.cer") -Force).FullName -CertStoreLocation "Cert:\LocalMachine\TrustedPeople"
+            $sdk = Join-Path ${env:ProgramFiles(x86)} "Windows Kits\10\bin"
+            $signtool = Get-ChildItem $sdk -Filter signtool.exe -Recurse | Where-Object { $_.FullName -match "\\x64\\signtool.exe$" } | Sort-Object FullName -Descending | Select-Object -First 1
+            if (-not $signtool) { throw "Windows SDK signtool.exe (x64) was not found under $sdk" }
+            & $signtool.FullName sign /fd SHA256 /sha1 $cert.Thumbprint $testMsix
+            if ($LASTEXITCODE -ne 0) { throw "signtool failed with exit $LASTEXITCODE" }
+            Add-AppxPackage -Path $testMsix -ErrorAction Stop
+            $package = Get-AppxPackage | Where-Object { $_.Name -eq "seowatcher.dev" -or $_.Publisher -eq $publisher } | Sort-Object InstallDate -Descending | Select-Object -First 1
+            if (-not $package) { throw "Installed Store package could not be found" }
+            $family = $package.PackageFamilyName
+            $dataRoot = Join-Path $env:LOCALAPPDATA "Packages\$family\LocalCache\seowatcher"
+            # The installer smoke test above left its data folder behind, as
+            # an uninstall does: the first packaged start must adopt it and
+            # must not write into it.
+            $legacy = Join-Path $env:LOCALAPPDATA "seowatcher"
+            $legacyToken = Join-Path $legacy "mcp-token"
+            if (-not (Test-Path $legacyToken -PathType Leaf)) { throw "the installer's data folder is missing; adoption cannot be tested" }
+            $legacyLog = Join-Path $legacy "logs\launcher.log"
+            $legacyLogStamp = if (Test-Path $legacyLog) { (Get-Item $legacyLog).LastWriteTimeUtc } else { $null }
+            Start-Process -FilePath "explorer.exe" -ArgumentList "shell:AppsFolder\$family!seowatcher"
+            $ok = $false
+            $health = $null
+            foreach ($i in 1..60) {
+              Start-Sleep -Seconds 3
+              try {
+                $response = Invoke-WebRequest -Uri "http://127.0.0.1:3001/api/health" -UseBasicParsing -TimeoutSec 3
+                if ($response.StatusCode -eq 200) { $health = $response.Content | ConvertFrom-Json; $ok = $true; break }
+              } catch {}
+            }
+            $logs = Join-Path $dataRoot "logs"
+            Write-Host "---- launcher.log (package)"; Get-Content (Join-Path $logs "launcher.log") -ErrorAction SilentlyContinue
+            if (-not $ok) {
+              Write-Host "---- server.log (tail)"; Get-Content (Join-Path $logs "server.log") -Tail 60 -ErrorAction SilentlyContinue
+              Write-Host "---- migrate.log (tail)"; Get-Content (Join-Path $logs "migrate.log") -Tail 20 -ErrorAction SilentlyContinue
+              throw "Store app did not answer /api/health within 3 min"
+            }
+            if (-not $health.storeDataDir) { throw "health response did not contain storeDataDir" }
+            # Read from this unpackaged shell, as an agent would: the file must
+            # be at the real path, not in the package's redirected copy.
+            $packageToken = Join-Path $dataRoot "mcp-token"
+            if (-not (Test-Path $packageToken -PathType Leaf)) { throw "Store mcp-token is missing under package LocalCache" }
+            # Compared by hash; neither value is printed.
+            if ((Get-FileHash $packageToken).Hash -ne (Get-FileHash $legacyToken).Hash) { throw "the installer's token was not adopted by the Store package" }
+            if (-not (Test-Path (Join-Path $dataRoot "data"))) { throw "the installer's database was not adopted by the Store package" }
+            if ((Test-Path $legacyLog) -and (Get-Item $legacyLog).LastWriteTimeUtc -ne $legacyLogStamp) { throw "the Store app wrote into the installer's data folder" }
+            $mcp = $null
+            try { $mcp = Invoke-WebRequest -Uri "http://127.0.0.1:3001/mcp" -Method Post -ContentType "application/json" -Body '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' -UseBasicParsing -TimeoutSec 5 } catch { $mcp = $_.Exception.Response }
+            $code = if ($mcp) { [int]$mcp.StatusCode } else { 0 }
+            if ($code -ne 401) { throw "Store POST /mcp without a token answered $code, expected 401" }
+            Write-Host "Store data folder, adoption, health and MCP assertions passed"
+          } finally {
+            if ($package) {
+              Get-Process -Name seowatcher -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+              Remove-AppxPackage -Package $package.PackageFullName -ErrorAction SilentlyContinue
+            }
+            if ($trusted) { Remove-Item "Cert:\LocalMachine\TrustedPeople\$($cert.Thumbprint)" -ErrorAction SilentlyContinue }
+            if ($cert) { Remove-Item "Cert:\LocalMachine\My\$($cert.Thumbprint)" -ErrorAction SilentlyContinue }
+          }
+
   release:
     needs: [package, quality]
     if: startsWith(github.ref, 'refs/tags/v')

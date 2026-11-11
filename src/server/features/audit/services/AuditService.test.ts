@@ -280,3 +280,27 @@ it("C24 history uses persisted population and coverage instead of count normaliz
     compatible: true,
   });
 });
+
+it("history does not read the rows of two audits whose settings differ", async () => {
+  mocks.getAuditsByProject.mockResolvedValue([
+    historyRow("a", 144, "2026-01-01"),
+    {
+      ...historyRow("b", 144, "2026-02-01"),
+      config: JSON.stringify({
+        maxPages: 300,
+        lighthouseStrategy: "none",
+        externalChecks: true,
+      }),
+    },
+  ]);
+  mocks.getIssueCountsByAudit.mockResolvedValue(new Map());
+  const rows = await AuditService.getHistory("p");
+  const latest = rows.find((row) => row.id === "b");
+  expect(latest?.comparison).toEqual({
+    previousAuditId: "a",
+    compatible: false,
+  });
+  expect(mocks.loadSnapshot).not.toHaveBeenCalled();
+  // The setting a rerun has to repeat travels with the row.
+  expect(latest?.externalChecks).toBe(true);
+});

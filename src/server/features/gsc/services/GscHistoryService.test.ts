@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { GSC_MAX_ROW_LIMIT } from "@/server/features/gsc/searchAnalytics";
+import { GSC_API_MAX_ROW_LIMIT } from "@/server/features/gsc/searchAnalytics";
 import type { GscPerformanceInput } from "@/server/features/gsc/searchAnalytics";
 import type { GscHistoryRepository } from "../repositories/GscHistoryRepository";
 
@@ -94,16 +94,16 @@ describe("backfill", () => {
     expect(requestAt(0).startDate).toBe("2025-02-28");
   });
 
-  it("finishes a retry day beyond the former 36-page cap", async () => {
+  it("finishes a retry day that fills both of Google's pages", async () => {
     mocks.getArchiveState.mockResolvedValue({
       lastDate: "2026-06-27",
       incompleteFrom: "2026-06-01",
       incompleteThrough: "2026-06-01",
     });
-    const page = Array.from({ length: GSC_MAX_ROW_LIMIT }, (_, i) =>
+    const page = Array.from({ length: GSC_API_MAX_ROW_LIMIT }, (_, i) =>
       performanceRow("2026-06-01", `q${i}`, 4),
     );
-    for (let i = 0; i < 37; i += 1)
+    for (let i = 0; i < 2; i += 1)
       mocks.getPerformance.mockResolvedValueOnce({ siteUrl: SITE, rows: page });
     const outcome = await GscHistoryService.backfill({
       projectId: "p1",
@@ -379,11 +379,11 @@ describe("empty windows", () => {
   // A window that ran out of page budget holds only its top queries. It must
   // not be recorded as archived: it is remembered and re-read one day at a time.
   it("remembers a truncated window and re-reads it in single days", async () => {
-    const page = Array.from({ length: GSC_MAX_ROW_LIMIT }, (_, i) =>
+    const page = Array.from({ length: GSC_API_MAX_ROW_LIMIT }, (_, i) =>
       performanceRow("2026-06-01", `q${i}`, 4),
     );
-    // Twelve full pages exhaust the first window's budget.
-    for (let i = 0; i < 12; i += 1) {
+    // Two full pages exhaust the first window's budget.
+    for (let i = 0; i < 2; i += 1) {
       mocks.getPerformance.mockResolvedValueOnce({ siteUrl: SITE, rows: page });
     }
 
@@ -393,11 +393,11 @@ describe("empty windows", () => {
     });
 
     const first = requestAt(0);
-    const retry = requestAt(12);
+    const retry = requestAt(2);
     expect(retry.startDate).toBe(first.startDate);
     expect(retry.endDate).toBe(first.startDate);
     expect(outcome.incomplete).toMatchObject({
-      through: requestAt(11).endDate,
+      through: requestAt(1).endDate,
     });
     expect(outcome.hasMore).toBe(true);
     expect(mocks.markRun.mock.calls[0]?.[0].incomplete).not.toBeNull();

@@ -4,7 +4,12 @@
 import robotsParser from "robots-parser";
 import { XMLParser } from "fast-xml-parser";
 import { assertPublicHostname, isCrawlableUrl } from "./url-policy";
-import { decodeUtf8, readBodyCapped, readBodyPrefix } from "./discovery-body";
+import {
+  decodeUtf8,
+  isProbablySitemapXml,
+  readBodyPrefix,
+  readSitemapBody,
+} from "./discovery-body";
 import {
   getParsedSitemapSections,
   getSitemapLocations,
@@ -200,32 +205,28 @@ export function parseRobotsTxt(
   }
 
   const robots = robotsParser(`${origin}/robots.txt`, text);
+  const robotsOrigin = new URL(origin);
+  /*
+   * robots-parser answers undefined for a URL whose protocol, host or port
+   * differs from the robots.txt URL, and undefined read as allowed. The crawl
+   * treats www and the apex as one site, so a page on the twin never met a
+   * Disallow rule. A URL on this site is judged as if it sat on the robots
+   * origin; anything else is not ours to judge.
+   */
+  const onRobotsOrigin = (url: string): string => {
+    if (!isSameOrigin(url, origin)) return url;
+    // isSameOrigin parsed this URL, so the constructor cannot throw here.
+    const parsed = new URL(url);
+    parsed.protocol = robotsOrigin.protocol;
+    parsed.host = robotsOrigin.host;
+    return parsed.href;
+  };
   return {
-    isAllowed: (url: string) => robots.isAllowed(url) ?? true,
+    isAllowed: (url: string) => robots.isAllowed(onRobotsOrigin(url)) ?? true,
     googlebotAllows: (url: string) =>
-      robots.isAllowed(url, "Googlebot") ?? true,
+      robots.isAllowed(onRobotsOrigin(url), "Googlebot") ?? true,
     sitemapUrls: robots.getSitemaps(),
   };
-}
-
-/**
- * Fetch and parse a sitemap (supports sitemap index recursion).
- * Returns a flat list of page URLs found.
- */
-function isProbablySitemapXml(
-  contentType: string | null,
-  body: string,
-): boolean {
-  if (contentType?.toLowerCase().includes("xml")) {
-    return true;
-  }
-
-  const trimmed = body.trimStart().toLowerCase();
-  return (
-    trimmed.startsWith("<?xml") ||
-    trimmed.startsWith("<urlset") ||
-    trimmed.startsWith("<sitemapindex")
-  );
 }
 
 function isTimeoutError(error: unknown): boolean {
@@ -287,7 +288,7 @@ async function fetchSitemapDocumentWithRetry(
         return sitemapFailure("status", response.status);
       }
 
-      const body = await readBodyCapped(response, MAX_SITEMAP_BYTES);
+      const body = await readSitemapBody(response, finalUrl, MAX_SITEMAP_BYTES);
       if (body === null) {
         return {
           nestedSitemaps: [],
@@ -491,6 +492,9 @@ export async function discoverUrls(
             robots.sitemapUrls,
           );
           if (failure) failedSitemaps.push(failure);
+          // A shard that failed may have listed pages, so "not in the
+          // sitemap" no longer follows from "not in urls".
+          membershipComplete &&= failure === null;
           return;
         }
         if (depth === MAX_SITEMAP_DEPTH) rootsWithEntries.add(normalizedUrl);

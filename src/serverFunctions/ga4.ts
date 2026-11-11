@@ -16,7 +16,7 @@ import {
 import { hasOrgPermission } from "@/lib/org-permissions";
 import { requireOrgPermission } from "@/server/auth/org-gate";
 import { captureServerEvent } from "@/server/lib/observability";
-import { getPublicOrigin } from "@/server/mcp/public-origin";
+import { getConfiguredPublicOrigin } from "@/server/mcp/public-origin";
 import {
   requireAuthenticatedContext,
   requireProjectContext,
@@ -253,6 +253,6 @@ export const startSelfHostedGa4Link = createServerFn({ method: "POST" })
         userEmail: context.userEmail,
       },
       callbackURL: data.callbackURL,
-      publicOrigin: getPublicOrigin(getRequest()),
+      publicOrigin: await getConfiguredPublicOrigin(getRequest()),
     }),
   }));

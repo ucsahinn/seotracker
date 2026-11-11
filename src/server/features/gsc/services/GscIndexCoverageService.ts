@@ -19,6 +19,7 @@ import {
   type IndexCoverage,
 } from "@/server/features/gsc/indexCoverage";
 import { GscService } from "@/server/features/gsc/services/GscService";
+import { gscPropertyCoversHost } from "@/shared/gscProperty";
 import { reserveInspection } from "@/server/features/gsc/repositories/GscInspectionQuotaRepository";
 
 /**
@@ -257,6 +258,14 @@ export async function getIndexCoverage(input: {
  * Returns what was actually asked, since the caller cannot assume it got the
  * whole list.
  */
+function hostOf(url: string) {
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return null;
+  }
+}
+
 export async function inspectAndRecord(input: {
   projectId: string;
   urls: string[];
@@ -272,11 +281,27 @@ export async function inspectAndRecord(input: {
   /** Not asked because a recent answer is already stored. */
   fresh: number;
   quotaRemaining: number;
+  /** Not asked: Google cannot answer for a URL outside the property. */
+  offProperty: string[];
 }> {
   const now = input.now ?? new Date();
+  /*
+   * Google answers "not in property" for a foreign URL, but only after the
+   * call was reserved against the 2000-a-day allowance. An agent that lifts
+   * a URL out of page text would spend the allowance on a guaranteed error.
+   */
+  const connection = await GscConnectionRepository.getByProjectId(
+    input.projectId,
+  );
+  const offProperty: string[] = [];
   // A URL listed twice would be bought twice and counted twice in
   // `requested`, `fresh` and `skipped`.
-  const urls = [...new Set(input.urls)];
+  const urls = [...new Set(input.urls)].filter((url) => {
+    if (!connection || gscPropertyCoversHost(connection.siteUrl, hostOf(url)))
+      return true;
+    offProperty.push(url);
+    return false;
+  });
   const spent = await inspectionsInLastDay(input.projectId, now);
   const budget = Math.max(DAILY_QUOTA - spent, 0);
   /*
@@ -301,6 +326,7 @@ export async function inspectAndRecord(input: {
       skipped: due.length,
       fresh,
       quotaRemaining: budget,
+      offProperty,
     };
   }
 
@@ -373,6 +399,7 @@ export async function inspectAndRecord(input: {
       DAILY_QUOTA - (await inspectionsInLastDay(input.projectId, now)),
       0,
     ),
+    offProperty,
   };
 }
 

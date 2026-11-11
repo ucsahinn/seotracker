@@ -9,6 +9,7 @@ import {
   findCanonicalTargetProblems,
   findDuplicates,
   findHreflangReturnTagProblems,
+  findHreflangTargetProblems,
   findMissingStructuredData,
   findRedirectChainsAndLoops,
   type SlimPage,
@@ -31,6 +32,7 @@ function makeSlimPage(overrides: Partial<SlimPage>): SlimPage {
     wordCount: 100,
     isIndexable: true,
     hasStructuredData: false,
+    htmlBytes: 10_000,
     ogTitle: null,
     ogImage: null,
     canonicalUrl: null,
@@ -267,6 +269,20 @@ describe("findCanonicalTargetProblems", () => {
 });
 
 describe("findHreflangReturnTagProblems", () => {
+  // The self-reference is a different spelling of the page's own URL, so the
+  // folded lookup finds the page itself; it is not an alternate to reciprocate.
+  it("does not flag a page against its own self-reference", () => {
+    const pages = [
+      makeSlimPage({
+        url: "https://example.com/a/",
+        hreflangAlternates: [alternate("https://example.com/a", "en")],
+      }),
+    ];
+
+    expect(findHreflangReturnTagProblems(pages)).toEqual([]);
+    expect(findHreflangTargetProblems(pages)).toEqual([]);
+  });
+
   // The defect exists only in the relationship: read either page on its own
   // and the tags are valid.
   it("flags an alternate that does not name the page back", () => {
@@ -377,6 +393,13 @@ describe("findMissingStructuredData", () => {
       findMissingStructuredData(site(6, { fetchClass: "blocked" }), START),
     ).toEqual([]);
   });
+
+  // A PDF or image answering 200 has no analysed HTML, so it is no evidence.
+  it("does not count a 200 that was never analysed as HTML", () => {
+    expect(
+      findMissingStructuredData(site(6, { htmlBytes: null }), START),
+    ).toEqual([]);
+  });
 });
 
 describe("canonical-to-noindex and the googlebot directive", () => {
@@ -413,6 +436,17 @@ describe("canonical-to-noindex and the googlebot directive", () => {
    */
   it("stays quiet when no directive says so in writing", () => {
     const issues = findCanonicalTargetProblems([source, target({})]);
+
+    expect(issues.map((i) => i.issueType)).not.toContain(
+      "canonical-to-noindex",
+    );
+  });
+
+  it("ignores a noindex header scoped to another crawler", () => {
+    const issues = findCanonicalTargetProblems([
+      source,
+      target({ xRobotsTag: "bingbot: noindex" }),
+    ]);
 
     expect(issues.map((i) => i.issueType)).not.toContain(
       "canonical-to-noindex",

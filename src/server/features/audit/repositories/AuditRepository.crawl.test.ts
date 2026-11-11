@@ -63,11 +63,13 @@ describe("backfillCrawlDepths", () => {
         id: "dp1",
         url: "https://example.com/a",
         crawlDepth: null,
+        signals: makePageSignals(),
       }),
       makeCrawledPage({
         id: "dp2",
         url: "https://example.com/b",
         crawlDepth: 7,
+        signals: makePageSignals(),
       }),
     ];
     await AuditRepository.insertCrawledBatch("d1", pages, [
@@ -89,6 +91,47 @@ describe("backfillCrawlDepths", () => {
       { url: "https://example.com/b", depth: 2, exact: true },
     ]);
     expect(deepPageIds()).toEqual(["dp1"]);
+  });
+
+  // The per-page reporter only fires for analysed 2xx HTML.
+  it("rebuilds deep-page findings only for analysed 2xx HTML pages", async () => {
+    const deep = { crawlDepth: 7 };
+    await AuditRepository.insertCrawledBatch(
+      "d1",
+      [
+        makeCrawledPage({
+          id: "ok",
+          url: "https://example.com/ok",
+          signals: makePageSignals(),
+          ...deep,
+        }),
+        makeCrawledPage({
+          id: "gone",
+          url: "https://example.com/gone",
+          statusCode: 404,
+          ...deep,
+        }),
+        makeCrawledPage({
+          id: "moved",
+          url: "https://example.com/moved",
+          statusCode: 301,
+          ...deep,
+        }),
+        makeCrawledPage({
+          id: "pdf",
+          url: "https://example.com/a.pdf",
+          isHtml: false,
+          ...deep,
+        }),
+      ],
+      [],
+    );
+
+    await AuditRepository.backfillCrawlDepths("d1", [
+      { url: "https://example.com/ok", depth: 7, exact: true },
+    ]);
+
+    expect(deepPageIds()).toEqual(["ok"]);
   });
 
   it("only removes disproved deep-page findings when the graph was incomplete", async () => {

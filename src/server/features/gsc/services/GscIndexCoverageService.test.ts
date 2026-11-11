@@ -132,6 +132,20 @@ describe("inspectAndRecord", () => {
     expect(await inspectionsInLastDay("p1", now)).toBe(2);
   });
 
+  it("spends nothing on a URL outside the connected property", async () => {
+    const now = new Date("2026-06-01T10:00:00.000Z");
+    const foreign = "https://not-this-site.test/page";
+    const result = await inspectAndRecord({
+      projectId: "p1",
+      urls: [foreign],
+      now,
+    });
+
+    expect(result.offProperty).toEqual([foreign]);
+    expect(inspectUrls).not.toHaveBeenCalled();
+    expect(await inspectionsInLastDay("p1", now)).toBe(0);
+  });
+
   it("does not forget spent inspections when the cache is cleared", async () => {
     const now = new Date("2026-06-01T10:00:00.000Z");
     inspectUrls.mockResolvedValueOnce(answer(URL_A, "PASS"));

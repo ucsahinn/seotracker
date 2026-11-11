@@ -20,12 +20,18 @@ const inputSchema = {
     .min(1)
     .max(100)
     .describe("Keywords to save (1-100)."),
+  /*
+   * Only intent. This used to accept search volume, difficulty, CPC and
+   * competition with a description asking agents not to send them; a number
+   * sent anyway was stored and read back as if it had been measured, and
+   * this build has no source for any of them.
+   */
   metrics: z
-    .array(savedKeywordMetricSchema)
+    .array(savedKeywordMetricSchema.pick({ keyword: true, intent: true }))
     .max(100)
     .optional()
     .describe(
-      "Optional metrics, matched to a keyword by its `keyword` field. There is no keyword-research tool in this build and no third-party market data behind it: `searchVolume`, `keywordDifficulty`, `cpc` and `competition` have no source here, so leave them out rather than estimating them — a number you supplied from memory will be stored and read back as if it were measured. `intent` is a judgement you can make from the keyword itself and is fine to pass.",
+      "Optional search intent per keyword, matched by its `keyword` field. Intent is a judgement you can make from the keyword itself. Nothing else is accepted: this build has no source for search volume, difficulty, CPC or competition.",
     ),
   tags: z
     .array(z.string().min(1).max(64))
@@ -88,7 +94,8 @@ export const saveKeywordsTool = {
     const { savedKeywordIds } = await KeywordResearchService.saveKeywords({
       projectId: args.projectId,
       keywords: args.keywords,
-      metrics: args.metrics,
+      // A row without an intent would only blank what is stored.
+      metrics: args.metrics?.filter((metric) => metric.intent != null),
       tags: args.tags,
       tagMode: args.tagMode ?? "append",
       locationCode,

@@ -23,12 +23,12 @@ const inputSchema = {
     .max(255)
     .optional()
     .describe(
-      'Optional root domain for the project, e.g. "example.com" (host only, no scheme or path). Sets the default target for domain, backlink, and rank tools.',
+      'Optional root domain for the project, e.g. "example.com" (host only, no scheme or path). It is the site that audits crawl and that Search Console data is read for.',
     ),
   locationCode: locationCodeSchema
     .optional()
     .describe(
-      "Optional numeric location code for the project's default market (e.g. 2840 = United States, 2504 = Morocco). Falls back to the organization default when omitted.",
+      "Optional numeric location code for the project's default market (e.g. 2840 = United States, 2504 = Morocco). Optional; leave it out when unsure.",
     ),
   languageCode: languageCodeSchema
     .optional()
@@ -103,7 +103,7 @@ export const createProjectTool = {
   config: {
     title: "Create project",
     description:
-      "Create a new project in the user's organization. Provide a name, and optionally a domain and default market (locationCode/languageCode; a languageCode requires a locationCode). Returns the created {id, name, domain, locationCode, languageCode, url}; pass the returned `id` as `projectId` to other seotracker tools. Call list_projects first to avoid creating a duplicate.",
+      "Create a new project in the user's organization. Provide a name, and optionally a domain and default market (locationCode/languageCode; a languageCode requires a locationCode). Market settings support the project's Google Search Console and Analytics context; this tool does not provide keyword-volume, CPC, difficulty, backlink, or rank data. Returns the created {id, name, domain, locationCode, languageCode, url}; pass the returned `id` as `projectId` to other seotracker tools. Call list_projects first to avoid creating a duplicate.",
     inputSchema,
     outputSchema: {
       project: z

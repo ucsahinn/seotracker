@@ -13,7 +13,10 @@
  * kind of traffic and worth saying plainly in the explanation.
  */
 import type { DetectedIssue } from "@/server/lib/audit/issues/page-reporters";
-import type { SlimPage } from "@/server/lib/audit/issues/multipage-checks";
+import {
+  isOkHtmlPage,
+  type SlimPage,
+} from "@/server/lib/audit/issues/multipage-checks";
 
 /** Under this, the absence says more about the crawl than about the site. */
 const MIN_PAGES = 5;
@@ -22,17 +25,12 @@ export function findMissingOpenGraph(
   pages: SlimPage[],
   startUrl: string,
 ): DetectedIssue[] {
-  const html = pages.filter(
-    (page) =>
-      page.fetchClass === "ok" &&
-      page.statusCode !== null &&
-      page.statusCode >= 200 &&
-      page.statusCode < 300,
-  );
+  const html = pages.filter(isOkHtmlPage);
   if (html.length < MIN_PAGES) return [];
   // Either tag anywhere means somebody has set this up; the gaps are then a
   // per-template question this check is the wrong shape to answer.
-  if (html.some((page) => page.ogTitle ?? page.ogImage)) return [];
+  if (html.some((page) => page.ogTitle?.trim() || page.ogImage?.trim()))
+    return [];
 
   return [
     {

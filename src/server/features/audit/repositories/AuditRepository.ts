@@ -206,6 +206,9 @@ const slimPageColumns = {
   id: auditPages.id,
   url: auditPages.url,
   statusCode: auditPages.statusCode,
+  // Null unless the page was analysed as HTML: tells a PDF answering 200
+  // apart from a page that can have a title.
+  htmlBytes: auditPages.htmlBytes,
   fetchClass: auditPages.fetchClass,
   redirectUrl: auditPages.redirectUrl,
   title: auditPages.title,

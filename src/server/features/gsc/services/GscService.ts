@@ -151,6 +151,8 @@ async function disconnect(input: { projectId: string }): Promise<void> {
 /** Pass-through of GSC `searchAnalytics.query` for a project's connected property. */
 async function getPerformance(
   input: GscPerformanceInput,
+  /** The agent surface keeps the default cap; the archive pages at Google's. */
+  options: { maxRowLimit?: number } = {},
 ): Promise<GscPerformanceResult> {
   const connection = await GscConnectionRepository.getByProjectId(
     input.projectId,
@@ -158,7 +160,7 @@ async function getPerformance(
   if (!connection) {
     throw new GscNotConnectedError(input.projectId);
   }
-  const request = buildSearchAnalyticsRequest(input);
+  const request = buildSearchAnalyticsRequest(input, new Date(), options);
   const client = createGscClient({
     userId: connection.connectedByUserId,
     gscAccountId: connection.gscAccountId ?? undefined,

@@ -3,6 +3,7 @@ import type { PageFetchClass } from "@/shared/audit-fetch-class";
 import { sha256Hex } from "@/server/lib/audit/ids";
 import { assertPublicHostname } from "@/server/lib/audit/url-policy";
 import { normalizeUrl } from "@/server/lib/audit/url-utils";
+import { headerAppliesToGoogle } from "@/server/lib/audit/issues/page-markup-checks";
 import type { CrawlThrottle } from "@/server/lib/audit/crawl-throttle";
 import {
   isTransientNetworkError,
@@ -96,6 +97,11 @@ async function fetchOnceRetryingTransport(url: string): Promise<Response> {
   }
 }
 
+/** Free the connection of a body nobody will read; never throws. */
+function discardBody(response: Response) {
+  return response.body?.cancel().catch(() => undefined);
+}
+
 /**
  * Fetch one URL, pausing the whole chunk and retrying while the site 429s
  * (see crawl-throttle.ts). `responseTimeMs` is measured from the last attempt
@@ -120,9 +126,13 @@ async function fetchPage(url: string, throttle: CrawlThrottle) {
       rateLimited: attempt > 1,
     };
     if (response.status !== 429) {
-      // `response.ok` decides whether this repays the budget: a 403 or a
-      // challenge page ends the run of refusals without being a page.
-      await throttle.recovered(response.ok);
+      // A 403 or a challenge page ends the run of refusals without being a
+      // page, and a 5xx is the site failing, so neither repays the budget.
+      // A redirect or a 404 is the site answering: on a site where most URLs
+      // do that, treating them as unserved never repaid the cooldown.
+      const served =
+        ![401, 403].includes(response.status) && response.status < 500;
+      await throttle.recovered(served);
       return result;
     }
 
@@ -201,6 +211,7 @@ export async function crawlPage(
     if (statusCode >= 300 && statusCode < 400) {
       const location = response.headers.get("location");
       const redirectUrl = location ? normalizeUrl(location, url) : null;
+      await discardBody(response);
       return emptyPageResult({
         url,
         statusCode,
@@ -220,6 +231,7 @@ export async function crawlPage(
     // Cap what we read: the first 1 MiB still contains the SEO metadata and
     // navigation needed by the audit in normal documents.
     const body = isHtml ? await readTextUpTo(response, MAX_HTML_BYTES) : "";
+    if (!isHtml) await discardBody(response);
     const fetchClass = classifyFetch(
       statusCode,
       response.headers,
@@ -264,7 +276,9 @@ export async function crawlPage(
         analysis.googlebotMeta,
         ...analysis.signals.markup.robotsMeta,
         ...analysis.signals.markup.googlebotMeta,
-        xRobotsTag,
+        // A header scoped to another crawler ("bingbot: noindex") is not
+        // Google's rule.
+        xRobotsTag && headerAppliesToGoogle(xRobotsTag) ? xRobotsTag : null,
       ]
         .filter(Boolean)
         .join(",")

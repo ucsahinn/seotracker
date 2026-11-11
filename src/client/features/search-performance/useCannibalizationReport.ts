@@ -17,8 +17,10 @@ export function useCannibalizationReport(input: {
   device?: SearchPerformanceDevice;
   country?: string;
   searchType: SearchPerformanceType;
+  /** An exact period pinned by a link; it wins over the preset. */
+  window?: { startDate: string; endDate: string };
 }) {
-  const { projectId, dateRange, device, country, searchType } = input;
+  const { projectId, dateRange, device, country, searchType, window } = input;
   return useQuery({
     // The filters belong in the key as well as the payload: without them the
     // panel kept serving its first answer while the dropdowns above changed.
@@ -29,10 +31,12 @@ export function useCannibalizationReport(input: {
       device,
       country,
       searchType,
+      window?.startDate,
+      window?.endDate,
     ],
     queryFn: () =>
       getCannibalizationReport({
-        data: { projectId, dateRange, device, country, searchType },
+        data: { projectId, dateRange, device, country, searchType, ...window },
       }),
   });
 }

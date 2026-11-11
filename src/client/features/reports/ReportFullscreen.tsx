@@ -2,6 +2,7 @@ import { Minimize2 } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { ReportDownloadButton } from "./ReportDownloadButton";
 import { ReportViewer } from "./ReportViewer";
+import { displayReportTitle } from "./reportStats";
 import { formatDateTime } from "@/client/lib/format";
 import { t } from "@/shared/i18n";
 
@@ -33,7 +34,9 @@ export function ReportFullscreen({
     >
       <div className="flex shrink-0 flex-col gap-3 border-b border-[var(--hairline)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
-          <p className="break-words text-sm font-medium">{report.title}</p>
+          <p className="break-words text-sm font-medium">
+            {displayReportTitle(report)}
+          </p>
           <time dateTime={report.updatedAt} className="text-xs text-muted">
             {t("Kaydedildi: {date}", {
               date: formatDateTime(report.updatedAt),
@@ -43,7 +46,7 @@ export function ReportFullscreen({
         <div className="flex flex-wrap items-center gap-2">
           <ReportDownloadButton
             reportId={report.id}
-            title={report.title}
+            title={displayReportTitle(report)}
             label={t("HTML olarak indir")}
           />
           <button

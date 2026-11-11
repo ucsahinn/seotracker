@@ -15,8 +15,8 @@ import {
 const DEFAULT_DAYS = 90;
 const searchSchema = z
   .object({
-    startDate: z.iso.date().optional(),
-    endDate: z.iso.date().optional(),
+    startDate: z.iso.date().optional().catch(undefined),
+    endDate: z.iso.date().optional().catch(undefined),
     days: z
       .number()
       .int()
@@ -26,16 +26,19 @@ const searchSchema = z
       .catch(DEFAULT_DAYS)
       .default(DEFAULT_DAYS),
   })
-  .refine(
-    (input) =>
-      (!input.startDate && !input.endDate) ||
-      (!!input.startDate &&
-        !!input.endDate &&
-        isoDaysInclusive(input.startDate, input.endDate) >= 1 &&
-        isoDaysInclusive(input.startDate, input.endDate) <= 1825 &&
-        input.endDate <= gscHistoryWindow(1).endDate),
-    "Invalid archive window",
-  );
+  // An archive window that is half there, backwards, too long or in the
+  // future falls back to the day preset instead of the route error screen.
+  .transform((input) => {
+    const windowOk =
+      !!input.startDate &&
+      !!input.endDate &&
+      isoDaysInclusive(input.startDate, input.endDate) >= 1 &&
+      isoDaysInclusive(input.startDate, input.endDate) <= 1825 &&
+      input.endDate <= gscHistoryWindow(1).endDate;
+    return windowOk
+      ? input
+      : { ...input, startDate: undefined, endDate: undefined };
+  });
 
 export const Route = createFileRoute("/_project/p/$projectId/rankings")({
   component: RankingsRoute,

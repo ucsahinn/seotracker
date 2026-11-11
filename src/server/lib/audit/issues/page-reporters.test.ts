@@ -131,6 +131,17 @@ describe("runPageReporters", () => {
     ).not.toContain("sitemap-noindex-page");
   });
 
+  it("does not read a self-reference written with another query order as a foreign cluster", () => {
+    const page = makePage({
+      url: "https://example.com/a?x=1&y=2",
+      hreflangAlternates: [
+        { hreflang: "en", href: "https://example.com/a?y=2&x=1" },
+      ],
+    });
+
+    expect(issueTypes(page)).not.toContain("hreflang-missing-x-default");
+  });
+
   it("flags an hreflang set with no x-default, and only then", () => {
     expect(
       issueTypes(makePage({ hreflangAlternates: alts("en", "de") })),
@@ -319,6 +330,15 @@ describe("checks traced to Google's documentation", () => {
     expect(listsItsCanonical).not.toContain("hreflang-missing-self");
   });
 
+  it("ignores a nofollow header scoped to another crawler", () => {
+    expect(
+      issueTypes(makePage({ xRobotsTag: "bingbot: nofollow" })),
+    ).not.toContain("nofollow-page");
+    expect(
+      issueTypes(makePage({ xRobotsTag: "googlebot: nofollow" })),
+    ).toContain("nofollow-page");
+  });
+
   it("flags nofollow only where Google would otherwise follow the links", () => {
     expect(
       issueTypes(makePage({ robotsMeta: "nofollow", isIndexable: true })),
@@ -409,6 +429,16 @@ describe("checks traced to Google's documentation", () => {
         makePage({
           url: "https://example.com/blog?page=2&sort=asc",
           canonicalUrl: "https://example.com/blog?sort=asc",
+        }),
+      ),
+    ).toContain("paginated-canonical-to-first-page");
+
+    // WordPress-style path pagination: the first page lives at /blog/.
+    expect(
+      issueTypes(
+        makePage({
+          url: "https://example.com/blog/page/2/",
+          canonicalUrl: "https://example.com/blog/",
         }),
       ),
     ).toContain("paginated-canonical-to-first-page");

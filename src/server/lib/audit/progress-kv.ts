@@ -40,6 +40,9 @@ function key(auditId: string): string {
 /**
  * Append multiple crawled URL entries in one KV write.
  * New entries are prepended and the list is capped.
+ *
+ * Never throws: the feed is a live-progress convenience, and a transient KV
+ * error must not fail the crawl chunk that persisted its pages.
  */
 async function pushCrawledUrls(
   auditId: string,
@@ -47,14 +50,18 @@ async function pushCrawledUrls(
 ): Promise<void> {
   if (nextEntries.length === 0) return;
 
-  const k = key(auditId);
-  const existing = await env.KV.get(k, "text");
-  const entries = parseCrawledEntries(existing);
-  const merged = [...nextEntries, ...entries].slice(0, MAX_ENTRIES);
+  try {
+    const k = key(auditId);
+    const existing = await env.KV.get(k, "text");
+    const entries = parseCrawledEntries(existing);
+    const merged = [...nextEntries, ...entries].slice(0, MAX_ENTRIES);
 
-  await env.KV.put(k, JSON.stringify(merged), {
-    expirationTtl: TTL_SECONDS,
-  });
+    await env.KV.put(k, JSON.stringify(merged), {
+      expirationTtl: TTL_SECONDS,
+    });
+  } catch (error) {
+    console.warn(`Failed to write crawl progress of audit ${auditId}:`, error);
+  }
 }
 
 /**

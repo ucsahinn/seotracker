@@ -390,7 +390,7 @@ function OAuthSetupInstructions({
               // Turkish adds Google's English name, which is what the
               // console shows; in English that name is the field itself.
               field:
-                getLocale() === "en" ? (
+                getLocale() !== "tr" ? (
                   <strong lang="en">Authorized redirect URIs</strong>
                 ) : (
                   <>

@@ -31,6 +31,7 @@ import { QueryErrorState } from "@/client/components/QueryErrorState";
 export function CannibalizationTable({
   projectId,
   dateRange,
+  window,
   device,
   country,
   searchType,
@@ -39,6 +40,7 @@ export function CannibalizationTable({
 }: {
   projectId: string;
   dateRange: SearchPerformanceDateRange;
+  window?: { startDate: string; endDate: string };
   device?: SearchPerformanceDevice;
   country?: string;
   searchType: SearchPerformanceType;
@@ -49,6 +51,7 @@ export function CannibalizationTable({
   const report = useCannibalizationReport({
     projectId,
     dateRange,
+    window,
     device,
     country,
     searchType,

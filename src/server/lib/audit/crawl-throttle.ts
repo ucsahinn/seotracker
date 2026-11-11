@@ -3,6 +3,9 @@ const MAX_RETRIES = 3;
 const FIRST_DELAY_MS = 30_000;
 const MAX_INTERVAL_MS = 30_000;
 const MAX_COOLDOWN_MS = 30 * 60_000;
+const BASE_INTERVAL_MS = 1_000;
+/** Served pages in a row that earn one halving of the slowed interval. */
+const SERVED_PER_DECAY = 20;
 
 /** Checkpointed between chunks so a new step does not forget site limits. */
 export type CrawlThrottleState = {
@@ -11,6 +14,8 @@ export type CrawlThrottleState = {
   pausedUntil: number;
   consecutiveRateLimits: number;
   cooldownMs: number;
+  /** Pages served since the last refusal or decay; absent in older state. */
+  servedRun?: number;
 };
 
 /** `Retry-After` is either delay-seconds or an HTTP-date. */
@@ -65,7 +70,7 @@ export function createCrawlThrottle(
   const state: CrawlThrottleState = previous
     ? { ...previous }
     : {
-        intervalMs: 1_000,
+        intervalMs: BASE_INTERVAL_MS,
         nextRequestAt: 0,
         pausedUntil: 0,
         consecutiveRateLimits: 0,
@@ -105,6 +110,7 @@ export function createCrawlThrottle(
     },
     async backoff(attempt, retryAfter) {
       state.consecutiveRateLimits += 1;
+      state.servedRun = 0;
       state.intervalMs = Math.min(maxIntervalMs, state.intervalMs * 2);
       const delayMs = Math.max(
         state.intervalMs,
@@ -154,7 +160,29 @@ export function createCrawlThrottle(
       const repaid = served
         ? Math.max(0, state.cooldownMs - firstDelayMs / 2)
         : state.cooldownMs;
-      if (state.consecutiveRateLimits === 0 && repaid === state.cooldownMs) {
+      /*
+       * `backoff` doubles the interval and nothing lowered it, so a few
+       * scattered 429s left a ten-thousand-page crawl at one page per thirty
+       * seconds for good. A run of served pages halves it back toward the
+       * base; a refusal restarts the count.
+       */
+      let decayed = false;
+      if (served && state.intervalMs > BASE_INTERVAL_MS) {
+        state.servedRun = (state.servedRun ?? 0) + 1;
+        if (state.servedRun >= SERVED_PER_DECAY) {
+          state.intervalMs = Math.max(
+            BASE_INTERVAL_MS,
+            Math.floor(state.intervalMs / 2),
+          );
+          state.servedRun = 0;
+          decayed = true;
+        }
+      }
+      if (
+        !decayed &&
+        state.consecutiveRateLimits === 0 &&
+        repaid === state.cooldownMs
+      ) {
         return;
       }
       state.consecutiveRateLimits = 0;

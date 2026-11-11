@@ -66,12 +66,19 @@ function IndexRedirect() {
     return (
       <div className="flex items-center justify-center h-full p-4">
         <div className="flex flex-col items-center gap-3 max-w-xl">
-          <p className="text-error text-center">
+          <p className="text-[var(--ink-error)] text-center">
             {getStandardErrorMessage(
               error,
               t("Bir şeyler ters gitti. Yardım ekranındaki günlüklere bakın."),
             )}
           </p>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => void refetch()}
+          >
+            {t("Yeniden dene")}
+          </button>
         </div>
       </div>
     );

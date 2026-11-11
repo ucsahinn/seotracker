@@ -18,7 +18,11 @@ import { PortalMenu } from "@/client/components/PortalMenu";
 import { ReportDownloadButton } from "@/client/features/reports/ReportDownloadButton";
 import { ReportFullscreen } from "@/client/features/reports/ReportFullscreen";
 import { ReportKindChip } from "@/client/features/reports/ReportKindChip";
-import { hasTemplate, reportKind } from "@/client/features/reports/reportStats";
+import {
+  displayReportTitle,
+  hasTemplate,
+  reportKind,
+} from "@/client/features/reports/reportStats";
 import { ReportViewer } from "@/client/features/reports/ReportViewer";
 import {
   DeleteReportModal,
@@ -219,7 +223,7 @@ function ReportDetailPage() {
                 tabIndex={-1}
                 className="text-2xl font-semibold [overflow-wrap:anywhere] focus:outline-none"
               >
-                {report.title}
+                {displayReportTitle(report)}
               </h1>
               <details className="mt-2">
                 <summary className="cursor-pointer py-2 text-sm text-muted">
@@ -261,7 +265,7 @@ function ReportDetailPage() {
             <div className="flex flex-wrap items-center gap-2">
               <ReportDownloadButton
                 reportId={report.id}
-                title={report.title}
+                title={displayReportTitle(report)}
                 label={t("HTML olarak indir")}
                 primary
               />

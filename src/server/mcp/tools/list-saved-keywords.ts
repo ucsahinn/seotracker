@@ -9,13 +9,11 @@ import type { SavedKeywordRow, SavedKeywordTagSummary } from "@/types/keywords";
 
 // The app reads the full SavedKeywordRow through its own server functions. The
 // MCP row keeps only what an agent acts on: ids, timestamps, tag colors, and the
-// monthly trend array were ~60% of the bytes and never used.
+// monthly trend array were ~60% of the bytes and never used. Volume,
+// difficulty, CPC and competition are left out as well: nothing in this build
+// measures them, so a stored value can only be one an agent once made up.
 const savedKeywordOutputSchema = z.object({
   keyword: z.string(),
-  searchVolume: z.number().nullable(),
-  keywordDifficulty: z.number().nullable(),
-  cpc: z.number().nullable(),
-  competition: z.number().nullable(),
   intent: z.string().nullable(),
   tags: z.array(z.string()),
 });
@@ -25,10 +23,6 @@ function toMcpRow(
 ): z.infer<typeof savedKeywordOutputSchema> {
   return {
     keyword: row.keyword,
-    searchVolume: row.searchVolume,
-    keywordDifficulty: row.keywordDifficulty,
-    cpc: row.cpc,
-    competition: row.competition,
     intent: row.intent,
     tags: row.tags.map((tag) => tag.name),
   };
@@ -98,7 +92,7 @@ export const listSavedKeywordsTool = {
                   row.tags.length > 0
                     ? `  tags:${row.tags.map((tag) => tag.name).join(",")}`
                     : "";
-                return `- ${row.keyword}  vol:${row.searchVolume ?? "?"}  kd:${row.keywordDifficulty ?? "?"}  cpc:${row.cpc != null ? `$${row.cpc.toFixed(2)}` : "?"}${tagText}`;
+                return `- ${row.keyword}${row.intent ? `  intent:${row.intent}` : ""}${tagText}`;
               })
               .join("\n");
       return mcpResponse({

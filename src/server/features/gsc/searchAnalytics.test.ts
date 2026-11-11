@@ -97,13 +97,22 @@ describe("resolveDateRange", () => {
     expect(startDate).toBe("2026-01-01");
   });
 
-  it("subtracts calendar months without overflowing short months", () => {
+  it("requests the exact inclusive month window without overflowing short months", () => {
     const { startDate, endDate } = resolveDateRange(
       { dateRange: "last_3_months" },
       new Date("2026-06-03T12:00:00Z"),
     );
-    expect(startDate).toBe("2026-02-28");
+    expect(startDate).toBe("2026-03-01");
     expect(endDate).toBe("2026-05-31");
+  });
+
+  it("counts a month window inclusively from the day after", () => {
+    const { startDate, endDate } = resolveDateRange(
+      { dateRange: "last_6_months" },
+      new Date("2026-06-18T12:00:00Z"),
+    );
+    expect(endDate).toBe("2026-06-15");
+    expect(startDate).toBe("2025-12-16");
   });
 
   it("clamps the 16-month floor to the last valid day of a short month", () => {

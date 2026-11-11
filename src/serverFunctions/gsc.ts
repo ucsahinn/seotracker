@@ -13,7 +13,7 @@ import {
 import { hasOrgPermission } from "@/lib/org-permissions";
 import { requireOrgPermission } from "@/server/auth/org-gate";
 import { captureServerEvent } from "@/server/lib/observability";
-import { getPublicOrigin } from "@/server/mcp/public-origin";
+import { getConfiguredPublicOrigin } from "@/server/mcp/public-origin";
 import {
   requireAuthenticatedContext,
   requireProjectContext,
@@ -155,7 +155,7 @@ export const startSelfHostedGscLink = createServerFn({ method: "POST" })
   .middleware(requireAuthenticatedContext)
   .validator(startSelfHostedLinkSchema)
   .handler(async ({ data, context }) => {
-    const publicOrigin = getPublicOrigin(getRequest());
+    const publicOrigin = await getConfiguredPublicOrigin(getRequest());
     const url = await createSelfHostedGoogleAuthorizationUrl({
       integration: GSC_INTEGRATION,
       user: {

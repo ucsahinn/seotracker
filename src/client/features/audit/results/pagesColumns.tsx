@@ -8,6 +8,7 @@ import {
   HttpStatusBadge,
 } from "@/client/features/audit/shared";
 import {
+  emptyLast,
   nullableNumberSort,
   nullableStringSort,
   type PageRow,
@@ -72,8 +73,11 @@ export function buildPagesColumns({
   issueCountByPageId,
   onShowIssues,
   sitemapFound,
+  sitemapPartial,
 }: {
   canonicalHost: string;
+  /** The sitemap was not read to its end, so "not listed" is not known. */
+  sitemapPartial: boolean;
   /**
    * False when the audit read no sitemap: a column of "Yok" on every row
    * then says nothing about the pages, only about the missing file.
@@ -190,7 +194,9 @@ export function buildPagesColumns({
           <EmptyCell />
         ),
     }),
-    pageColumnHelper.display({
+    // An accessor, not a display column: the table refuses to sort a column
+    // that has no value, so this header's sort button did nothing.
+    pageColumnHelper.accessor("imagesMissingAlt", {
       id: "images",
       header: ({ column }) => (
         <SortableHeader
@@ -211,10 +217,17 @@ export function buildPagesColumns({
           row.original.imagesTotal
         );
       },
-      enableSorting: true,
-      sortingFn: (left, right) =>
-        left.original.imagesMissingAlt - right.original.imagesMissingAlt ||
-        left.original.imagesTotal - right.original.imagesTotal,
+      sortingFn: (left, right, columnId) => {
+        // A page that was not read shows "-", not zero images: last.
+        const a = hasAnalyzedContent(left.original);
+        const b = hasAnalyzedContent(right.original);
+        if (!a || !b)
+          return a === b ? 0 : (a ? -1 : 1) * emptyLast(left, columnId);
+        return (
+          left.original.imagesMissingAlt - right.original.imagesMissingAlt ||
+          left.original.imagesTotal - right.original.imagesTotal
+        );
+      },
     }),
     /*
      * Both link counts, written by every crawl since the crawler was built
@@ -315,7 +328,10 @@ export function buildPagesColumns({
         getValue() ? (
           <span className="text-xs text-muted">{t("Var")}</span>
         ) : (
-          <span className="text-xs text-subtle">{t("Yok")}</span>
+          // "Yok" would be a claim about a list that was cut short.
+          <span className="text-xs text-subtle">
+            {sitemapPartial ? "-" : t("Yok")}
+          </span>
         ),
     }),
   ];

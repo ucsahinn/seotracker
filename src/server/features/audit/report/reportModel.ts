@@ -237,10 +237,26 @@ export function depthBuckets(pages: ReportPage[]): Bucket[] {
     : buckets;
 }
 
+/**
+ * The rows the missing-title and missing-description issues are raised for:
+ * a 2xx answer that was analysed as HTML. A redirect, a 4xx, a fetch error or
+ * a PDF has no title tag to miss, so counting it would make the report say
+ * more than the issue list does.
+ */
+function isAnalysedHtml(page: ReportPage): boolean {
+  return (
+    page.statusCode !== null &&
+    page.statusCode >= 200 &&
+    page.statusCode < 300 &&
+    (page.fetchClass === undefined || page.fetchClass === "ok") &&
+    page.htmlBytes !== null
+  );
+}
+
 export function titleLengthBuckets(pages: ReportPage[]): Bucket[] {
   const labels = [t("Yok"), "1-29", "30-60", "61+"];
   const counts = [0, 0, 0, 0];
-  for (const page of pages) {
+  for (const page of pages.filter(isAnalysedHtml)) {
     const length = page.title?.trim().length ?? 0;
     counts[length === 0 ? 0 : length < 30 ? 1 : length <= 60 ? 2 : 3] += 1;
   }
@@ -264,8 +280,11 @@ export function describePages(pages: ReportPage[]) {
   return {
     indexable: pages.filter((page) => page.isIndexable).length,
     inSitemap: pages.filter((page) => page.inSitemap).length,
-    missingTitle: pages.filter((page) => !page.title).length,
-    missingDescription: pages.filter((page) => !page.metaDescription).length,
+    missingTitle: pages.filter((page) => isAnalysedHtml(page) && !page.title)
+      .length,
+    missingDescription: pages.filter(
+      (page) => isAnalysedHtml(page) && !page.metaDescription,
+    ).length,
     avgResponseMs: timed.length === 0 ? null : Math.round(total / timed.length),
   };
 }

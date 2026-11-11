@@ -10,6 +10,32 @@ import {
 } from "./handler.test-support";
 
 describe("announcement service", () => {
+  it("returns a JSON error when a status change cannot be saved", async () => {
+    const item = makeAnnouncement();
+    const handler = createAnnouncementHandler(
+      repository({
+        get: async () => item,
+        setStatus: async () => {
+          throw new Error("database unavailable");
+        },
+      }),
+      { adminToken: TOKEN, now: () => new Date(NOW) },
+    );
+
+    const response = await handler(
+      request(`/api/admin/announcements/${item.id}`, {
+        method: "PATCH",
+        headers: { authorization: `Bearer ${TOKEN}` },
+        body: JSON.stringify({ status: "archived" }),
+      }),
+    );
+
+    expect(response.status).toBe(500);
+    expect(await response.json()).toEqual({
+      error: "Request could not be completed",
+    });
+  });
+
   it("stores valid new announcements and allows status changes", async () => {
     const saved: Announcement[] = [];
     const setStatus = vi.fn(async () => undefined);

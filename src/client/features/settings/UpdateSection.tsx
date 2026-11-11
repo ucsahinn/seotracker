@@ -34,6 +34,19 @@ const UPDATE_COMMAND = "git pull && docker compose up -d --build";
  * notice, say so once, and hand over the exact line. The Windows package has
  * its own updater in the tray app, so there the copy points at the tray icon.
  */
+/** Only the installer's tray app checks for versions on its own. */
+type InstallFacts = { installKind: string; storeDataDir?: string | null };
+
+const isStore = (status?: InstallFacts | null) => Boolean(status?.storeDataDir);
+
+function checkOffText(status: InstallFacts) {
+  return status.installKind === "windows" && !isStore(status)
+    ? t(
+        "Uygulama içi sürüm kontrolü kapalı. Windows tepsisi bağımsız olarak günlük sürüm kontrolü yapabilir.",
+      )
+    : t("Uygulama içi sürüm kontrolü kapalı.");
+}
+
 export function UpdateSection({ version }: { version: string }) {
   const queryClient = useQueryClient();
 
@@ -209,11 +222,7 @@ export function UpdateSection({ version }: { version: string }) {
       ) : null}
 
       {status && !status.enabled ? (
-        <p className="text-sm text-muted">
-          {t(
-            "Uygulama içi sürüm kontrolü kapalı. Windows tepsisi bağımsız olarak günlük sürüm kontrolü yapabilir.",
-          )}
-        </p>
+        <p className="text-sm text-muted">{checkOffText(status)}</p>
       ) : null}
 
       {status?.outcome === "error" && status.reason !== "rate_limited" ? (
@@ -310,7 +319,7 @@ export function UpdateSection({ version }: { version: string }) {
           ask for individually and can switch off. */}
       <details className="text-xs text-muted">
         <summary className="cursor-pointer py-1">{t("Ayrıntılar")}</summary>
-        <p className="max-w-prose text-sm">
+        <p className="max-w-prose text-sm" hidden={isStore(status)}>
           {fillParts(
             t(
               "Uygulama yeni sürümü fark eder ve ne yapacağınızı söyler. Windows paketi güncellemeyi kendisi kurar, Docker'da verilen komutu siz çalıştırırsınız. Docker'da kontrolü kapatırsanız GitHub'a istek gitmez. Windows paketinde görev çubuğu uygulaması günde bir kez GitHub'a bakar. Kendiliğinden kurup kurmayacağını menüdeki {option} seçeneği belirler.",

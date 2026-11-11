@@ -64,6 +64,26 @@ type RunningAudit = {
  * flip the row to failed with a classified error. Returns the error info
  * when the row was flipped, null when the audit is genuinely still running.
  */
+/**
+ * Silence is evidence, not proof: an instance that outlived the app worker's
+ * reload and merely went quiet would keep crawling and writing pages under an
+ * audit this module just failed, and would no longer count against the
+ * running-audit limit. Ask it to stop first. An instance that is gone or
+ * already finished throws here, which is the expected case and changes
+ * nothing.
+ */
+async function stopAbandonedWorkflow(auditId: string, instanceId: string) {
+  try {
+    const instance = await env.SITE_AUDIT_WORKFLOW.get(instanceId);
+    await instance.terminate();
+  } catch (error) {
+    console.warn(
+      `Abandoned audit ${auditId}: workflow was not terminated:`,
+      error instanceof Error ? error.message : error,
+    );
+  }
+}
+
 export async function reconcileRunningAudit(
   audit: RunningAudit,
 ): Promise<AuditErrorInfo | null> {
@@ -101,6 +121,7 @@ export async function reconcileRunningAudit(
         errorDetail:
           "Interrupted: the process running this audit restarted and the audit made no progress since",
       };
+      await stopAbandonedWorkflow(audit.id, audit.workflowInstanceId);
       await AuditRepository.failAudit(audit.id, audit.workflowInstanceId, {
         ...abandoned,
         failedPhase: audit.currentPhase,

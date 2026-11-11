@@ -65,7 +65,7 @@ describe("Analytics address groups", () => {
       complete: true,
     });
     expect(mocks.runReport).toHaveBeenCalledWith(
-      expect.objectContaining({ limit: "1000", offset: "0" }),
+      expect.objectContaining({ limit: "10000", offset: "0" }),
     );
   });
 

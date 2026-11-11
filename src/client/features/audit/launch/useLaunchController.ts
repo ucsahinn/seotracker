@@ -166,6 +166,8 @@ export function useLaunchController({
       pagesTotal: number;
       pagesCrawled: number;
       ranLighthouse: boolean;
+      /** Absent on history rows cached before the server sent it. */
+      externalChecks?: boolean;
     }) => {
       // A second click (or a click while the form is submitting) used to
       // queue a second audit and overwrite what the operator had typed.
@@ -178,6 +180,8 @@ export function useLaunchController({
       launchForm.setFieldValue("url", audit.startUrl);
       launchForm.setFieldValue("maxPagesInput", String(pages));
       launchForm.setFieldValue("runLighthouse", audit.ranLighthouse);
+      if (audit.externalChecks !== undefined)
+        launchForm.setFieldValue("checkExternal", audit.externalChecks);
       startedRef.current = false;
       void launchForm.handleSubmit().then(() => {
         // The large-crawl confirmation was declined: nothing started and
@@ -187,6 +191,7 @@ export function useLaunchController({
         launchForm.setFieldValue("url", previous.url);
         launchForm.setFieldValue("maxPagesInput", previous.maxPagesInput);
         launchForm.setFieldValue("runLighthouse", previous.runLighthouse);
+        launchForm.setFieldValue("checkExternal", previous.checkExternal);
       });
     },
   };

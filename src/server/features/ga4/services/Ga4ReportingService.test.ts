@@ -367,7 +367,7 @@ describe("Ga4ReportingService", () => {
         expect(mocks.runReport).toHaveBeenCalledTimes(2);
         expect(mocks.runReport.mock.calls[1]?.[0]).toMatchObject({
           offset: "1000",
-          limit: "1000",
+          limit: "10000",
         });
         expect(result.rows).toHaveLength(100);
         expect(result.rows[0]?.sessionSourceMedium).toBe(

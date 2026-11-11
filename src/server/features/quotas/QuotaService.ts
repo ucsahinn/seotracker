@@ -117,6 +117,14 @@ function pageSpeedItem(
 // left, never the ceiling, so these are assumptions the card labels as such.
 const GA4_STANDARD_CEILING = { daily: 200_000, hourly: 40_000 } as const;
 
+const PACIFIC_DAY = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "America/Los_Angeles",
+});
+
+function pacificDay(date: Date) {
+  return Number.isNaN(date.getTime()) ? null : PACIFIC_DAY.format(date);
+}
+
 function ga4Item(input: {
   id: string;
   label: string;
@@ -152,7 +160,10 @@ function ga4Item(input: {
     !Number.isFinite(age) ||
     age < 0 ||
     age >= (id === "ga4_hourly" ? 3_600_000 : DAY_MS) ||
-    seenAt?.slice(0, 10) !== input.now.toISOString().slice(0, 10);
+    // Only the daily allowance has a date to cross, and Google resets it at
+    // Pacific midnight; the hourly one is covered by its age alone.
+    (id === "ga4_daily" &&
+      pacificDay(new Date(seenAt ?? "")) !== pacificDay(input.now));
   if (expired)
     return {
       ...base,

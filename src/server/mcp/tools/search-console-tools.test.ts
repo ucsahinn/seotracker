@@ -95,6 +95,30 @@ it("continues metric filtering past an entire page with no matches", async () =>
   );
 });
 
+it("hands back after ten pages when a metric filter matches nothing", async () => {
+  mocks.getProjectForOrganization.mockResolvedValue({ id: "project_1" });
+  mocks.hasSelfHostedGoogleOAuthConfig.mockResolvedValue(true);
+  mocks.hasServiceAccount.mockResolvedValue(false);
+  mocks.GscService.getPerformance.mockImplementation(
+    async (input: GscPerformanceInput) => ({
+      siteUrl: "sc-domain:example.com",
+      request: { ...input, startDate: "2026-10-01", endDate: "2026-10-24" },
+      rows: Array.from({ length: 1000 }, () => gscRow(1)),
+    }),
+  );
+  const result =
+    await searchConsoleTools.getSearchConsolePerformanceTool.handler(
+      { projectId: "project_1", rowLimit: 2, minPosition: 5 },
+      toolContext,
+    );
+  expect(mocks.GscService.getPerformance).toHaveBeenCalledTimes(10);
+  expect(result.structuredContent).toMatchObject({
+    rowCount: 0,
+    hasMore: true,
+    nextStartRow: 10_000,
+  });
+});
+
 describe("search console MCP tools", () => {
   it("P1-3: MCP accepts the first Pacific-readable day before UTC midnight catches up", async () => {
     vi.useFakeTimers({ toFake: ["Date"] });

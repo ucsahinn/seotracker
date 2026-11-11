@@ -136,9 +136,10 @@ describe("SearchOpportunityService", () => {
       );
       expect(result.request.dateRange).toEqual({ startDate, endDate });
       expect(result.request.completeness.incompleteSource).toBe("google");
-      expect(mocks.runGa4Report).toHaveBeenCalledWith(
-        expect.objectContaining({ startDate, endDate }),
-      );
+      expect(mocks.runGa4Report.mock.calls[0]?.[0]).toMatchObject({
+        startDate,
+        endDate,
+      });
     },
   );
 
@@ -258,12 +259,10 @@ describe("SearchOpportunityService", () => {
       startDate: "2026-07-07",
       endDate: "2026-08-03",
     });
-    expect(mocks.runGa4Report).toHaveBeenCalledWith(
-      expect.objectContaining({
-        startDate: "2026-07-07",
-        endDate: "2026-08-03",
-      }),
-    );
+    expect(mocks.runGa4Report.mock.calls[0]?.[0]).toMatchObject({
+      startDate: "2026-07-07",
+      endDate: "2026-08-03",
+    });
     // 1000 x 15% - 40 over 28 days, scaled to 30.
     expect(result.rows[0]).toMatchObject({
       page: "https://example.com/a",

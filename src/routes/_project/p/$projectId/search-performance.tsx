@@ -52,9 +52,18 @@ const searchSchema = z
     /* Chart grain; daily by default. */
     g: z.enum(GRANULARITIES).optional().catch(undefined),
   })
-  .refine(
-    (value) => searchPerformanceLinkSchema.safeParse(value).success,
-    "Invalid exact Search scope.",
+  // The exact scope (dates and one exact query or page) is all or nothing:
+  // a broken one is dropped and the preset view shows, not the error screen.
+  .transform((value) =>
+    searchPerformanceLinkSchema.safeParse(value).success
+      ? value
+      : {
+          ...value,
+          startDate: undefined,
+          endDate: undefined,
+          exactQuery: undefined,
+          exactPage: undefined,
+        },
   );
 
 export const Route = createFileRoute(

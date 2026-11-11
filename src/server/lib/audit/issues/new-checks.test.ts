@@ -31,6 +31,7 @@ function slim(overrides: Partial<SlimPage>): SlimPage {
     wordCount: 100,
     isIndexable: true,
     hasStructuredData: false,
+    htmlBytes: 10_000,
     ogTitle: null,
     ogImage: null,
     canonicalUrl: null,

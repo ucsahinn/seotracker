@@ -87,7 +87,7 @@ describe("saved keyword MCP tools", () => {
     });
   });
 
-  it("accepts and passes keyword metrics through save_keywords", async () => {
+  it("passes intent through save_keywords and drops numbers it has no source for", async () => {
     mocks.saveKeywords.mockResolvedValue({
       success: true,
       savedKeywordIds: ["saved_1"],
@@ -117,7 +117,7 @@ describe("saved keyword MCP tools", () => {
     expect(mocks.saveKeywords).toHaveBeenCalledWith({
       projectId: "project_1",
       keywords: ["technical seo"],
-      metrics,
+      metrics: [{ keyword: "technical seo", intent: "commercial" }],
       tagMode: "append",
       locationCode: 2840,
       languageCode: "en",

@@ -107,7 +107,23 @@ export function filterPages(rows: PageRow[], filters: PagesFilters) {
   return rows.filter((row) => {
     if (query && !haystackOf(row).includes(query)) return false;
     if (!matchesStatus(row.statusCode, filters.status)) return false;
-    if (!matchesRange(row.wordCount, filters.minWords, filters.maxWords)) {
+    // A redirect or a blocked page stores 0 words and 0 images because
+    // nothing was read; the table shows "-" for them, so "at most 300 words"
+    // and "alt text complete" must not list them as findings.
+    const analysed =
+      row.fetchClass === "ok" &&
+      !(
+        row.statusCode !== null &&
+        row.statusCode >= 300 &&
+        row.statusCode < 400
+      );
+    if (
+      !matchesRange(
+        analysed ? row.wordCount : null,
+        filters.minWords,
+        filters.maxWords,
+      )
+    ) {
       return false;
     }
     if (
@@ -122,7 +138,10 @@ export function filterPages(rows: PageRow[], filters: PagesFilters) {
     if (filters.missingAlt === "yes" && row.imagesMissingAlt <= 0) {
       return false;
     }
-    if (filters.missingAlt === "no" && row.imagesMissingAlt > 0) {
+    if (
+      filters.missingAlt === "no" &&
+      (row.imagesMissingAlt > 0 || !analysed)
+    ) {
       return false;
     }
     if (!matchesYesNo(row.isIndexable, filters.indexable)) return false;
@@ -213,28 +232,50 @@ function parseFilterNumber(value: string) {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
+type SortRow<T> = {
+  getValue: (columnId: string) => T | null;
+  getAllCells?: () => Array<{
+    column: { id: string; getIsSorted: () => false | "asc" | "desc" };
+  }>;
+};
+
+/**
+ * Where an empty value goes so it ends up last. The table negates a sorter's
+ * answer when the column is descending, which put pages with no response time
+ * above the slowest one; the answer for an empty value is flipped first so
+ * the negation lands it at the bottom again.
+ */
+export function emptyLast(row: SortRow<unknown>, columnId: string) {
+  const descending =
+    row
+      .getAllCells?.()
+      .find((cell) => cell.column.id === columnId)
+      ?.column.getIsSorted() === "desc";
+  return descending ? -1 : 1;
+}
+
 export function nullableNumberSort(
-  left: { getValue: (columnId: string) => number | null },
-  right: { getValue: (columnId: string) => number | null },
+  left: SortRow<number>,
+  right: SortRow<number>,
   columnId: string,
 ) {
   const a = left.getValue(columnId);
   const b = right.getValue(columnId);
   if (a == null && b == null) return 0;
-  if (a == null) return 1;
-  if (b == null) return -1;
+  if (a == null) return emptyLast(left, columnId);
+  if (b == null) return -emptyLast(left, columnId);
   return a - b;
 }
 
 export function nullableStringSort(
-  left: { getValue: (columnId: string) => string | null },
-  right: { getValue: (columnId: string) => string | null },
+  left: SortRow<string>,
+  right: SortRow<string>,
   columnId: string,
 ) {
   const a = left.getValue(columnId);
   const b = right.getValue(columnId);
   if (!a && !b) return 0;
-  if (!a) return 1;
-  if (!b) return -1;
+  if (!a) return emptyLast(left, columnId);
+  if (!b) return -emptyLast(left, columnId);
   return a.localeCompare(b);
 }

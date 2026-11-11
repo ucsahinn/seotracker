@@ -19,6 +19,7 @@ function page(overrides: Partial<SlimPage> = {}): SlimPage {
     wordCount: 100,
     isIndexable: true,
     hasStructuredData: false,
+    htmlBytes: 10_000,
     ogTitle: null,
     ogImage: null,
     canonicalUrl: null,
@@ -38,6 +39,26 @@ function pages(count: number, overrides: Partial<SlimPage> = {}) {
 }
 
 describe("findMissingOpenGraph", () => {
+  it("does not count a 200 that was never analysed as HTML", () => {
+    expect(findMissingOpenGraph(pages(8, { htmlBytes: null }), START)).toEqual(
+      [],
+    );
+  });
+
+  // `??` took the empty title as the answer and never looked at the image.
+  it("stays quiet when an empty og:title sits beside a real og:image", () => {
+    const withImage = [
+      page({
+        url: "https://example.com/card",
+        ogTitle: "",
+        ogImage: "https://example.com/card.png",
+      }),
+      ...pages(6),
+    ];
+
+    expect(findMissingOpenGraph(withImage, START)).toEqual([]);
+  });
+
   it("raises one site-level finding when no page carries either tag", () => {
     const issues = findMissingOpenGraph(pages(8), START);
 

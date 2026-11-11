@@ -285,7 +285,10 @@ export function analyzeHtml(
        * disagreement that no crawler sees.
        */
       const href = attribs["href"];
-      if (!sawBody && href) canonicalTargets.add(href.trim());
+      // Resolved against the page, so "/a" and "https://x/a" are one target.
+      if (!sawBody && href?.trim()) {
+        canonicalTargets.add(normalizeUrl(href.trim(), pageUrl) ?? href.trim());
+      }
       canonical ??= href ?? null;
     } else if (
       rel === "alternate" &&

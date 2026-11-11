@@ -451,7 +451,8 @@ export function formatRelativeTime(value: string): string {
     numeric: "auto",
   });
   for (const [unit, ms] of RELATIVE_UNITS) {
-    if (absolute >= ms) return formatter.format(Math.round(diff / ms), unit);
+    if (Math.round(absolute / ms) >= 1)
+      return formatter.format(Math.round(diff / ms), unit);
   }
   return formatter.format(0, "second");
 }

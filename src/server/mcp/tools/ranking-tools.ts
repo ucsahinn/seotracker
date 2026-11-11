@@ -11,10 +11,11 @@
  * surface a strictly smaller product than the screens beside it.
  */
 import { z } from "zod";
-import { gscHistoryWindow } from "@/shared/dataFreshness";
+import { gscHistoryWindow, isoDaysInclusive } from "@/shared/dataFreshness";
 import type { CannibalizedQuery } from "@/server/features/gsc/cannibalization";
 import { getCannibalization } from "@/server/features/gsc/services/CannibalizationService";
 import { GscConnectionRepository } from "@/server/features/gsc/repositories/GscConnectionRepository";
+import { GscHistoryRepository } from "@/server/features/gsc/repositories/GscHistoryRepository";
 import { GscHistoryService } from "@/server/features/gsc/services/GscHistoryService";
 import { buildProjectMeta } from "@/server/mcp/context";
 import { mcpResponse } from "@/server/mcp/formatters";
@@ -77,6 +78,38 @@ const historyInputSchema = {
 
 type HistoryArgs = z.infer<z.ZodObject<typeof historyInputSchema>>;
 
+/**
+ * How much of the window the archive actually holds. A day read past the page
+ * budget keeps only its top queries, and a failed or unread day keeps none, so
+ * figures over such a window are a lower bound; the screen says so and the
+ * tool used to present them as complete.
+ */
+async function archiveCoverage(
+  projectId: string,
+  range: { startDate: string; endDate: string },
+) {
+  const entries = await GscHistoryRepository.getCoverage({
+    projectId,
+    since: range.startDate,
+    until: range.endDate,
+  });
+  const count = (status: string) =>
+    entries.filter((day) => day.status === status).length;
+  const days = isoDaysInclusive(range.startDate, range.endDate);
+  const coverage = {
+    days,
+    complete: count("complete-response"),
+    limited: count("own-cap-limited"),
+    failed: count("failed"),
+    unknown: days - entries.length,
+  };
+  const note =
+    coverage.complete === days
+      ? ""
+      : `\nArchive coverage: ${coverage.complete} of ${days} days complete (${coverage.limited} hold only their top queries, ${coverage.failed} failed, ${coverage.unknown} not read yet). Clicks and impressions over this window are a lower bound.`;
+  return { coverage, note };
+}
+
 export const getRankingHistoryTool = {
   name: "get_ranking_history",
   config: {
@@ -91,6 +124,15 @@ export const getRankingHistoryTool = {
       rows: z.array(z.record(z.string(), z.unknown())),
       hasMore: z.boolean().optional(),
       nextOffset: z.number().optional(),
+      coverage: z
+        .object({
+          days: z.number(),
+          complete: z.number(),
+          limited: z.number(),
+          failed: z.number(),
+          unknown: z.number(),
+        })
+        .optional(),
       ...optionalMetaOutputSchema,
     },
     annotations: {
@@ -107,11 +149,14 @@ export const getRankingHistoryTool = {
       args.projectId,
       `/p/${args.projectId}/rankings`,
     );
+    const { coverage, note } = await archiveCoverage(args.projectId, range);
 
     if (args.query) {
       const rows = await GscHistoryService.getQueryHistory({
         projectId: args.projectId,
-        query: args.query,
+        // Search Console reports queries lowercased; "Best Shoes" typed by
+        // an agent is the archived "best shoes".
+        query: args.query.trim().toLowerCase(),
         since: range.startDate,
         until: range.endDate,
       });
@@ -126,9 +171,9 @@ export const getRankingHistoryTool = {
               )
               .join("\n");
       return mcpResponse({
-        text,
+        text: text + note,
         meta,
-        structuredContent: { days, ...range, rows },
+        structuredContent: { days, ...range, rows, coverage },
       });
     }
 
@@ -171,7 +216,8 @@ export const getRankingHistoryTool = {
         text +
         (hasMore
           ? `\nMore archived queries available; continue with offset ${offset + rows.length}.`
-          : ""),
+          : "") +
+        (connected ? note : ""),
       meta,
       structuredContent: {
         days,
@@ -179,6 +225,7 @@ export const getRankingHistoryTool = {
         rows,
         hasMore,
         nextOffset: hasMore ? offset + rows.length : undefined,
+        coverage,
       },
     });
   }),
@@ -192,6 +239,16 @@ const cannibalizationInputSchema = {
     .enum(["last_28_days", "last_3_months", "last_6_months"])
     .optional()
     .describe("Window to compare over. Default last_28_days."),
+  limit: z
+    .number()
+    .int()
+    .min(1)
+    .max(100)
+    .optional()
+    .describe(
+      "Conflicts per output page, largest by impressions first. Default 25; continue with nextOffset when hasMore is true.",
+    ),
+  offset: z.number().int().min(0).optional().describe("Default 0."),
 } as const;
 
 type CannibalizationArgs = z.infer<
@@ -227,6 +284,9 @@ export const getCannibalizationTool = {
     inputSchema: cannibalizationInputSchema,
     outputSchema: {
       rows: z.array(z.record(z.string(), z.unknown())),
+      totalRows: z.number(),
+      hasMore: z.boolean(),
+      nextOffset: z.number().optional(),
       queriesAnalyzed: z.number(),
       splitImpressions: z.number(),
       analyzedImpressions: z.number(),
@@ -263,6 +323,8 @@ export const getCannibalizationTool = {
         ),
         structuredContent: {
           rows: [],
+          totalRows: 0,
+          hasMore: false,
           queriesAnalyzed: 0,
           splitImpressions: 0,
           analyzedImpressions: 0,
@@ -288,12 +350,27 @@ export const getCannibalizationTool = {
      * Google sorts by clicks descending and truncates the tail, which is
      * exactly where cannibalisation lives.
      */
+    // A large site over six months has thousands of conflicts; every one of
+    // them used to be printed into the agent's context.
+    const offset = args.offset ?? 0;
+    const page = result.rows.slice(offset, offset + (args.limit ?? 25));
+    const hasMore = offset + page.length < result.rows.length;
     const text =
       result.rows.length === 0
         ? `No query has two of your pages competing for it between ${result.startDate} and ${result.endDate}, out of ${result.queriesAnalyzed} examined. That is the healthy answer, not a missing one.${result.truncated ? " Google truncated its answer, so the low-click tail was not fully seen." : ""}`
-        : `${result.rows.length} of ${result.queriesAnalyzed} queries have competing pages, ${result.startDate} to ${result.endDate}. ${result.splitImpressions} impressions are going to a page Google did not pick.${result.truncated ? " Truncated by Google." : ""}\n` +
-          conflictLines(result.rows);
+        : `${result.rows.length} of ${result.queriesAnalyzed} queries have competing pages, ${result.startDate} to ${result.endDate}. ${result.splitImpressions} impressions are going to a page Google did not pick.${result.truncated ? " Truncated by Google." : ""}${page.length < result.rows.length ? ` Showing ${page.length} from offset ${offset}, largest first${hasMore ? `; continue with offset ${offset + page.length}` : ""}.` : ""}\n` +
+          conflictLines(page);
 
-    return mcpResponse({ text, meta, structuredContent: result });
+    return mcpResponse({
+      text,
+      meta,
+      structuredContent: {
+        ...result,
+        rows: page,
+        totalRows: result.rows.length,
+        hasMore,
+        nextOffset: hasMore ? offset + page.length : undefined,
+      },
+    });
   }),
 };

@@ -113,7 +113,7 @@ describe("images-missing-alt names its images", () => {
       makePage({
         images: images.map((image) => ({ ...image, missingDimensions: false })),
         imagesTotal: images.length,
-        imagesMissingAlt: images.filter((image) => !image.alt?.trim()).length,
+        imagesMissingAlt: images.filter((image) => image.alt === null).length,
       }),
     ).find((issue) => issue.issueType === "images-missing-alt");
 
@@ -122,7 +122,8 @@ describe("images-missing-alt names its images", () => {
    * opening the page and hunting. `images_json` had carried every src since
    * the analyzer was written.
    */
-  it("lists the addresses of the images with no alt text", () => {
+  // alt="" is decorative and is not counted, so it is not listed either.
+  it("lists the addresses of the images with no alt attribute", () => {
     const issue = missingAlt([
       { src: "/img/hero.jpg", alt: "Ekip toplantısı" },
       { src: "/img/logo-old.png", alt: null },
@@ -130,7 +131,7 @@ describe("images-missing-alt names its images", () => {
     ]);
 
     expect(issue?.details).toMatchObject({
-      examples: ["/img/logo-old.png", "/img/banner.webp"],
+      examples: ["/img/logo-old.png"],
     });
   });
 

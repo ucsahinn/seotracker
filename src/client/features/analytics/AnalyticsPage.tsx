@@ -193,7 +193,7 @@ export function AnalyticsPage({
         <QueryErrorState
           error={connection.error}
           onRetry={() => void connection.refetch()}
-          title={t("Bağlantı yükleniyor")}
+          title={t("Analytics bağlantısı kurulamadı")}
         />
       </PageShell>
     );

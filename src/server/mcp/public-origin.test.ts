@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { getPublicOrigin, requestWithPublicOrigin } from "./public-origin";
 
+const TUNNEL = ["scenario-tools.trycloudflare.com"];
+
 describe("getPublicOrigin", () => {
   it("uses the forwarded public protocol and host for tunneled requests", () => {
     const request = new Request("http://localhost:3102/api/oauth/consent", {
@@ -10,15 +12,37 @@ describe("getPublicOrigin", () => {
       },
     });
 
-    expect(getPublicOrigin(request)).toBe(
+    expect(getPublicOrigin(request, TUNNEL)).toBe(
       "https://scenario-tools.trycloudflare.com",
     );
+  });
+
+  it("does not believe a forwarded host the operator did not configure", () => {
+    const request = new Request("http://localhost:3102/api/oauth/consent", {
+      headers: {
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "evil.test",
+      },
+    });
+
+    expect(getPublicOrigin(request, TUNNEL)).toBe("http://localhost:3102");
+  });
+
+  it("ignores forwarded headers unless ALLOWED_HOST is configured", () => {
+    const request = new Request("http://localhost:3102/api/oauth/consent", {
+      headers: {
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "scenario-tools.trycloudflare.com",
+      },
+    });
+
+    expect(getPublicOrigin(request, [])).toBe("http://localhost:3102");
   });
 
   it("falls back to the request origin without proxy headers", () => {
     const request = new Request("http://localhost:3102/api/oauth/consent");
 
-    expect(getPublicOrigin(request)).toBe("http://localhost:3102");
+    expect(getPublicOrigin(request, [])).toBe("http://localhost:3102");
   });
 
   it("ignores forwarded hosts when the request is already public https", () => {
@@ -29,7 +53,7 @@ describe("getPublicOrigin", () => {
       },
     });
 
-    expect(getPublicOrigin(request)).toBe("https://localhost:3001");
+    expect(getPublicOrigin(request, TUNNEL)).toBe("https://localhost:3001");
   });
 });
 
@@ -45,7 +69,7 @@ describe("requestWithPublicOrigin", () => {
       body: JSON.stringify({ method: "initialize" }),
     });
 
-    const publicRequest = requestWithPublicOrigin(request);
+    const publicRequest = requestWithPublicOrigin(request, TUNNEL);
 
     expect(publicRequest.url).toBe(
       "https://scenario-tools.trycloudflare.com/mcp?x=1",

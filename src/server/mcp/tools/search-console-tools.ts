@@ -260,6 +260,9 @@ const perfInputSchema = {
 
 type PerfArgs = z.infer<z.ZodObject<typeof perfInputSchema>>;
 
+/** Pages of GSC_MAX_ROW_LIMIT one filtered call may read before handing back. */
+const MAX_FILTER_SCAN_PAGES = 10;
+
 export const getSearchConsolePerformanceTool = {
   name: "get_search_console_performance",
   config: {
@@ -405,8 +408,14 @@ export const getSearchConsolePerformanceTool = {
       // A full page without matches is not an empty filtered table. Continue
       // sequentially until the requested output page fills or Google ends.
       let lastPageSize = fetched.length;
+      let scannedPages = 1;
       while (kept.length < requestedLimit && lastPageSize >= fetchLimit) {
         if (!metricFilter) break;
+        // A strict filter on a large property matches almost nothing, and the
+        // scan then ran for hundreds of requests until the call timed out.
+        // Stop here; the caller continues from nextStartRow.
+        if (scannedPages >= MAX_FILTER_SCAN_PAGES) break;
+        scannedPages += 1;
         const next = await GscService.getPerformance({
           projectId: args.projectId,
           dimensions: args.dimensions,
@@ -443,8 +452,12 @@ export const getSearchConsolePerformanceTool = {
           ? startRow + fetched.indexOf(lastReturned) + 1
           : startRow + fetched.length;
 
+      const scanStopped =
+        Boolean(metricFilter) &&
+        kept.length < requestedLimit &&
+        lastPageSize >= fetchLimit;
       const filterText = metricFilter
-        ? ` · filtered ${fetched.length} rows → ${kept.length}`
+        ? ` · filtered ${fetched.length} rows → ${kept.length}${scanStopped ? ` (scan stopped after ${fetched.length} rows; continue with startRow ${nextStartRow})` : ""}`
         : "";
       const header =
         `${result.siteUrl} · ${dimensions.join("+")} · ${result.request.startDate}→${result.request.endDate} · ` +
@@ -588,13 +601,20 @@ export const inspectUrlsTool = {
        * raw both ignored the remaining budget and left no ledger row, so the
        * spend was invisible to the Index Coverage screen's own accounting.
        */
-      const { siteUrl, results, requested, skipped, fresh, quotaRemaining } =
-        await inspectAndRecord({
-          projectId: args.projectId,
-          urls: args.urls,
-          languageCode: args.languageCode,
-          force: args.force,
-        });
+      const {
+        siteUrl,
+        results,
+        requested,
+        skipped,
+        fresh,
+        quotaRemaining,
+        offProperty = [],
+      } = await inspectAndRecord({
+        projectId: args.projectId,
+        urls: args.urls,
+        languageCode: args.languageCode,
+        force: args.force,
+      });
 
       const quotaNote =
         skipped > 0
@@ -626,7 +646,10 @@ ${fresh} ${plural(fresh)} skipped, already answered recently. Read those with ge
         `${siteUrl ?? "Search Console"} · inspected ${results.length} URL${results.length === 1 ? "" : "s"}\n` +
         summaryLines.join("\n") +
         quotaNote +
-        freshNote;
+        freshNote +
+        (offProperty.length > 0
+          ? `\n${offProperty.length} ${plural(offProperty.length)} not inspected and no quota spent: outside the connected property (${offProperty.join(", ")}).`
+          : "");
 
       return mcpResponse({
         text,

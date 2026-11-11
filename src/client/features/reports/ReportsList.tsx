@@ -1,3 +1,4 @@
+import { useDebouncedUrlSearch } from "@/client/features/search-performance/useDebouncedUrlSearch";
 import { Link } from "@tanstack/react-router";
 import { Check, FileText, Search, Trash2 } from "lucide-react";
 import { HelpTip } from "@/client/components/HelpTip";
@@ -43,6 +44,12 @@ export function ReportsList({
 }) {
   const update = (patch: Partial<Filters>) =>
     onChange({ ...filters, ...patch, page: 1 });
+  // Typed text is a draft; the URL (and the server query behind it) follows
+  // once typing pauses, instead of one history entry and one request a letter.
+  const [queryDraft, setQueryDraft] = useDebouncedUrlSearch(
+    filters.query,
+    (query) => update({ query }),
+  );
   const clear = () =>
     onChange({
       query: "",
@@ -94,8 +101,8 @@ export function ReportsList({
               className="min-w-0 grow"
               placeholder={t("Başlık veya özet")}
               maxLength={200}
-              value={filters.query}
-              onChange={(event) => update({ query: event.target.value })}
+              value={queryDraft}
+              onChange={(event) => setQueryDraft(event.target.value)}
             />
           </span>
         </label>
@@ -261,7 +268,7 @@ export function ReportsList({
                       <div className="ml-auto flex shrink-0 items-center gap-1">
                         <ReportDownloadButton
                           reportId={report.id}
-                          title={report.title}
+                          title={displayReportTitle(report)}
                           iconOnPhone
                         />
                         <RowActions

@@ -39,7 +39,10 @@ export function PagesTable({
   onShowIssues,
   scopeLabel,
   onClearScope,
+  sitemapPartial = false,
 }: {
+  /** The sitemap's size is unknown: it was cut short or a part failed. */
+  sitemapPartial?: boolean;
   pages: AuditResultsData["pages"];
   startUrl: string;
   issues: AuditResultsData["issues"];
@@ -91,6 +94,7 @@ export function PagesTable({
         issueCountByPageId,
         onShowIssues,
         sitemapFound,
+        sitemapPartial,
       }),
     [
       issueCountByPageId,
@@ -99,6 +103,7 @@ export function PagesTable({
       pages,
       startUrl,
       sitemapFound,
+      sitemapPartial,
     ],
   );
   const table = useAppTable({

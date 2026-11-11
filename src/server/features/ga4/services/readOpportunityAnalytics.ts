@@ -3,6 +3,9 @@ import { Ga4ConnectionRepository } from "../repositories/Ga4ConnectionRepository
 import { Ga4ReportingService } from "./Ga4ReportingService";
 import { Ga4ReportError } from "@/server/lib/ga4Errors";
 
+/** This read pages through the whole report, so it may ask for full pages. */
+const PAGING = { maxLimit: COMPLETE_REPORT_LIMIT };
+
 /**
  * Analytics for the same days, joined by host and path. Analytics is the
  * secondary factor here, so a project without it still gets every estimate;
@@ -16,15 +19,18 @@ export async function readAnalytics(
   const connection = await Ga4ConnectionRepository.getByProjectId(projectId);
   if (!connection) return { state: "not_connected" as const };
   try {
-    let report = await Ga4ReportingService.runReport({
-      projectId,
-      kind: "landing_pages",
-      startDate: dates.startDate,
-      endDate: dates.endDate,
-      limit: COMPLETE_REPORT_LIMIT,
-      offset: 0,
-      channel: "organic_search",
-    });
+    let report = await Ga4ReportingService.runReport(
+      {
+        projectId,
+        kind: "landing_pages",
+        startDate: dates.startDate,
+        endDate: dates.endDate,
+        limit: COMPLETE_REPORT_LIMIT,
+        offset: 0,
+        channel: "organic_search",
+      },
+      PAGING,
+    );
     const rows = [...report.rows];
     while (report.pageInfo.hasMore) {
       const offset = report.pageInfo.nextOffset;
@@ -51,14 +57,17 @@ export async function readAnalytics(
           3600,
         );
       }
-      const next = await Ga4ReportingService.runReport({
-        projectId,
-        kind: "landing_pages",
-        ...dates,
-        limit: COMPLETE_REPORT_LIMIT,
-        offset,
-        channel: "organic_search",
-      });
+      const next = await Ga4ReportingService.runReport(
+        {
+          projectId,
+          kind: "landing_pages",
+          ...dates,
+          limit: COMPLETE_REPORT_LIMIT,
+          offset,
+          channel: "organic_search",
+        },
+        PAGING,
+      );
       if (
         next.totalRowCount !== report.totalRowCount ||
         next.rows.length === 0

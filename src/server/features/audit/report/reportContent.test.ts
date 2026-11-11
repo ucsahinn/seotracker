@@ -2,7 +2,13 @@ import { describe, expect, it } from "vitest";
 import { buildAuditReportHtml } from "./buildAuditReportHtml";
 import { barChart, donutChart } from "./reportCharts";
 import { capList } from "./reportFormat";
-import { depthBuckets, scoreVerdict, statusBuckets } from "./reportModel";
+import {
+  depthBuckets,
+  describePages,
+  scoreVerdict,
+  statusBuckets,
+  titleLengthBuckets,
+} from "./reportModel";
 import { ISSUE_PAGE_CAP } from "./reportIssueSections";
 import type { AuditReportInput, ReportPage } from "./reportTypes";
 
@@ -32,6 +38,34 @@ function input(overrides: Partial<AuditReportInput>): AuditReportInput {
     ...overrides,
   };
 }
+
+/*
+ * The title and description issues are raised only for analysed 2xx HTML, so
+ * the report's counts have to cover the same rows or the bar and the issue
+ * list disagree.
+ */
+describe("missing title and description counts", () => {
+  const untitled = { title: null, metaDescription: null };
+  const rows = [
+    page("https://a.test/ok", untitled),
+    page("https://a.test/moved", { ...untitled, statusCode: 301 }),
+    page("https://a.test/gone", { ...untitled, statusCode: 404 }),
+    page("https://a.test/down", {
+      ...untitled,
+      statusCode: 0,
+      fetchClass: "error",
+    }),
+    page("https://a.test/file.pdf", { ...untitled, htmlBytes: null }),
+  ];
+
+  it("counts only analysed 2xx HTML pages", () => {
+    expect(describePages(rows)).toMatchObject({
+      missingTitle: 1,
+      missingDescription: 1,
+    });
+    expect(titleLengthBuckets(rows)[0]).toMatchObject({ value: 1 });
+  });
+});
 
 describe("issue section", () => {
   /*

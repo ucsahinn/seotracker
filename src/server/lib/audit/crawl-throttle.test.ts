@@ -130,6 +130,20 @@ describe("createCrawlThrottle", () => {
     expect(throttle.stopped).toBe(false);
   });
 
+  it("returns to the base pacing after scattered refusals once pages serve", async () => {
+    const throttle = createCrawlThrottle(Date.now() + 4 * 60 * 60_000);
+    for (let refusal = 0; refusal < 2; refusal++) {
+      await throttle.backoff(1, "1");
+      await vi.advanceTimersByTimeAsync(30_000);
+      for (let page = 0; page < 10; page++) await throttle.recovered();
+    }
+    expect(throttle.state.intervalMs).toBeGreaterThan(1_000);
+
+    for (let page = 0; page < 50; page++) await throttle.recovered();
+
+    expect(throttle.state.intervalMs).toBe(1_000);
+  });
+
   it("defers a ten-minute wait without marking the audit stopped", async () => {
     const throttle = createCrawlThrottle(90_000);
     expect(await throttle.backoff(1, "600")).toBe(true);

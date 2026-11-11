@@ -120,12 +120,12 @@ export function resolveGa4DateRange(
   };
 }
 
-function normalizeLimit(value: number | undefined): number {
+function normalizeLimit(value: number | undefined, max: number): number {
   const limit = value ?? DEFAULT_LIMIT;
-  if (!Number.isInteger(limit) || limit < 1 || limit > MAX_LIMIT) {
+  if (!Number.isInteger(limit) || limit < 1 || limit > max) {
     throw new Ga4ReportError(
       "validation_error",
-      `limit must be an integer from 1 to ${MAX_LIMIT}.`,
+      `limit must be an integer from 1 to ${max}.`,
     );
   }
   return limit;
@@ -205,7 +205,8 @@ async function resolveReportPage(input: {
   };
 }
 
-async function runReport(input: Ga4ReportInput, opts: { now?: Date } = {}) {
+type RunOptions = { now?: Date; maxLimit?: number };
+async function runReport(input: Ga4ReportInput, opts: RunOptions = {}) {
   const connection = await Ga4ConnectionRepository.getByProjectId(
     input.projectId,
   );
@@ -215,7 +216,7 @@ async function runReport(input: Ga4ReportInput, opts: { now?: Date } = {}) {
       "Google Analytics is not connected for this project.",
     );
   }
-  const limit = normalizeLimit(input.limit);
+  const limit = normalizeLimit(input.limit, opts.maxLimit ?? MAX_LIMIT);
   const offset = normalizeOffset(input.offset);
   const channel = input.channel ?? "organic_search";
   const dateRange = resolveGa4DateRange(

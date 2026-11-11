@@ -96,7 +96,7 @@ function contradicts(values: string[]): boolean {
 const DIRECTIVES_WITH_VALUE =
   /^(max-snippet|max-image-preview|max-video-preview|unavailable_after)$/i;
 
-function headerAppliesToGoogle(header: string): boolean {
+export function headerAppliesToGoogle(header: string): boolean {
   const scope = /^\s*([a-z0-9_-]+)\s*:/i.exec(header)?.[1];
   if (!scope || DIRECTIVES_WITH_VALUE.test(scope)) return true;
   return scope.toLowerCase() === "googlebot";

@@ -327,6 +327,8 @@ export const frCatalog = {
   "Google Analytics bağlandı": "Google Analytics connecté",
   "Google Analytics bağlantısı kesildi": "Google Analytics déconnecté",
   "Bağlantı yükleniyor": "Chargement de la connexion",
+  "Analytics bağlantısı kurulamadı":
+    "La connexion Analytics n’a pas pu être établie",
   "Bu projenin bağlantısı kontrol edilemedi.":
     "Impossible de vérifier la connexion de ce projet.",
   "Tekrar dene": "Réessayer",
@@ -4061,4 +4063,14 @@ export const frCatalog = {
   "Başlık veya özet": "Titre ou résumé",
   "Tarama bittikten sonra çalışır.":
     "S’exécute une fois l’exploration terminée.",
+  "Görev çubuğu menüsünden Günlükleri aç deyip server.log dosyasına bakın; düzelmezse uygulamayı kapatıp yeniden açın.":
+    "Dans le menu de la barre des tâches, choisissez Ouvrir les journaux et lisez server.log ; si le problème persiste, fermez l’application puis rouvrez-la.",
+  "Search Console ve Analytics kapalı. Uygulamanın şifreleme anahtarı (veri klasöründeki instance-secret dosyası) eksik ya da bozuk. Uygulamayı kapatıp yeniden açın; düzelmezse bu ekrandan tanılama paketini indirip sorunu bildirin.":
+    "Search Console et Analytics sont désactivés. La clé de chiffrement de l’application (le fichier instance-secret du dossier de données) est absente ou endommagée. Fermez l’application puis rouvrez-la ; si le problème persiste, téléchargez le paquet de diagnostic depuis cet écran et signalez le problème.",
+  "Uygulama içi sürüm kontrolü kapalı.":
+    "La vérification de version dans l’application est désactivée.",
+  "Görev çubuğundaki seowatcher simgesine bakın; üzerine gelince {running} yazmalı. Simge yoksa Başlat menüsünden seowatcher'ı açın. Simgede {error} yazıyorsa sağ tıklayıp {restart} deyin.":
+    "Regardez l’icône seowatcher dans la barre des tâches ; au survol, elle doit indiquer {running}. S’il n’y a pas d’icône, ouvrez seowatcher depuis le menu Démarrer. Si l’icône indique {error}, faites un clic droit et choisissez {restart}.",
+  "Elle değiştirilebilen tek dosya {config}: adres numarası (port). {dataFolder} ile açın, değiştirin, sonra {restart} deyin. Yanındaki {serverEnv} dosyasını düzenlemeyin; uygulama her açılışta onu yeniden yazar.":
+    "Le seul fichier modifiable à la main est {config} : le port. Ouvrez-le avec {dataFolder}, modifiez-le, puis choisissez {restart}. Ne modifiez pas le fichier {serverEnv} situé à côté ; l’application le réécrit à chaque démarrage.",
 } as const;

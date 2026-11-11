@@ -55,8 +55,11 @@ function useSearchInsights(projectId: string, connected: boolean) {
   const query = useQuery(dashboardGscReportQuery(projectId, connected));
   // The same cache entry as above, read whole for the striking list.
   const viewQuery = useQuery(dashboardSearchViewQuery(projectId, connected));
-  if (!connected || query.isError) return { state: "hidden" as const };
-  if (query.isPending) return { state: "pending" as const };
+  // A failed background refetch keeps its earlier data; hiding the cards
+  // then removed numbers the tiles above were still showing.
+  if (!connected || (query.isError && !query.data))
+    return { state: "hidden" as const };
+  if (!query.data) return { state: "pending" as const };
   const report: ReturnType<typeof toLegacyReport> | null = query.data.connected
     ? query.data
     : null;

@@ -4,12 +4,17 @@ import {
 } from "@tanstack/react-start/server";
 import { reconcileStaleAudits } from "@/server/features/audit/services/auditReconciler";
 import { getAuthMode } from "@/lib/auth-mode";
-import { requestWithPublicOrigin } from "@/server/mcp/public-origin";
+import {
+  publicHostsOf,
+  requestWithPublicOrigin,
+} from "@/server/mcp/public-origin";
 import { MCP_ROUTE } from "@/server/mcp/context";
 import { handleSelfHostedMcpRequest } from "@/server/mcp/transport";
 import { enableDemoGoogle } from "@/server/dev/demoGoogle";
 import { resolveLocale } from "@/shared/i18n";
 import { runWithLocale } from "@/server/localeScope";
+import { hostGuardRejection } from "@/server/lib/host-guard";
+import { getOptionalEnvValue } from "@/server/lib/runtime-env";
 
 const startHandler = createStartHandler(defaultStreamHandler);
 
@@ -41,15 +46,29 @@ async function appFetch(request: Request): Promise<Response> {
   });
 }
 
-function fetch(
+async function fetch(
   request: Request,
   env: Env,
   ctx: ExecutionContext,
-): Response | Promise<Response> {
+): Promise<Response> {
   // Developer-only: `.dev.vars` sets DEMO_GOOGLE=1 for the demo project.
   enableDemoGoogle(env.DEMO_GOOGLE === "1");
   const authMode = getAuthMode(env.AUTH_MODE);
-  const publicRequest = requestWithPublicOrigin(request);
+  // Read the way MCP_TOKEN is: Docker hands these over through the process
+  // environment, the Windows launcher through server.env.
+  const [allowedHost, authUrl] = await Promise.all([
+    getOptionalEnvValue("ALLOWED_HOST"),
+    getOptionalEnvValue("BETTER_AUTH_URL"),
+  ]);
+  const hostRejection = hostGuardRejection(request, authMode, {
+    allowedHost,
+    authUrl,
+  });
+  if (hostRejection) return hostRejection;
+  // Forwarded headers are a proxy's to set; without a configured public
+  // name there is no proxy, and any caller could claim an origin.
+  const publicHosts = publicHostsOf(allowedHost, authUrl);
+  const publicRequest = requestWithPublicOrigin(request, publicHosts);
   const pathname = new URL(publicRequest.url).pathname;
 
   /*
@@ -59,7 +78,13 @@ function fetch(
    */
   if (pathname === MCP_ROUTE) {
     return runWithLocale("tr", () =>
-      handleSelfHostedMcpRequest(publicRequest, authMode, env, ctx),
+      handleSelfHostedMcpRequest(
+        publicRequest,
+        authMode,
+        env,
+        ctx,
+        publicHosts,
+      ),
     );
   }
   const locale = resolveLocale(

@@ -56,6 +56,7 @@ export function NextStepsCard({
   setup,
   googleMissing = false,
   audit,
+  latestAttempt,
   overviewUnavailable = false,
   siteSelected = true,
   searchUnavailable = false,
@@ -76,6 +77,7 @@ export function NextStepsCard({
    * panel handles it, and Search Console cannot be connected before it.
    */
   googleMissing?: boolean;
+  latestAttempt?: { auditId: string; status: string } | null;
   audit: {
     auditId: string;
     status: "running" | "completed" | "failed";
@@ -92,6 +94,7 @@ export function NextStepsCard({
     gscConnected,
     googleMissing,
     audit,
+    latestAttempt,
     overviewUnavailable,
     searchTodo,
     now,
@@ -239,12 +242,14 @@ function buildPanelActions({
   gscConnected,
   googleMissing,
   audit,
+  latestAttempt,
   overviewUnavailable,
   searchTodo,
   now,
   siteSelected,
   searchUnavailable,
 }: {
+  latestAttempt?: { auditId: string; status: string } | null;
   projectId: string;
   gscConnected: boolean;
   googleMissing: boolean;
@@ -338,28 +343,13 @@ function buildPanelActions({
   if (!audit) return steps;
 
   const findingTypes = audit.severityCheckTypes ?? audit.severityTotals;
-  if (audit.status === "failed") {
-    steps.push({
-      key: "retry-audit",
-      icon: Radar,
-      title: t("Denetimi yeniden başlatın"),
-      detail: failedAuditDetail(audit),
-      to: "/p/$projectId/audit",
-      params,
-      cta: t("Yeniden denetle"),
-    });
-  } else if (audit.status === "running") {
-    steps.push({
-      key: "running-audit",
-      icon: Radar,
-      title: t("Denetim sürüyor"),
-      detail: t("İlerlemeyi ve bitiş özetini denetim ekranında izleyin."),
-      to: "/p/$projectId/audit",
-      params,
-      search: { auditId: audit.auditId },
-      cta: t("İlerlemeyi gör"),
-    });
-  }
+  const ownStep = attemptStep(audit, params);
+  if (ownStep) steps.push(ownStep);
+  // `audit` is the last completed run when there is one; a run started since
+  // was invisible here ("refresh the audit" during a crawl, no retry after).
+  const newer = latestAttempt?.auditId === audit.auditId ? null : latestAttempt;
+  const newerStep = newer ? attemptStep(newer, params) : null;
+  if (newerStep) steps.push(newerStep);
 
   if (audit.status === "completed" && findingTypes.critical > 0) {
     steps.push({
@@ -408,6 +398,7 @@ function buildPanelActions({
    */
   if (
     audit.status === "completed" &&
+    newer?.status !== "running" &&
     auditIsStale(parseTimestamp(audit.startedAt), now)
   ) {
     steps.push({
@@ -425,6 +416,40 @@ function buildPanelActions({
   }
 
   return steps;
+}
+
+/** The step a running or failed run asks for. */
+function attemptStep(
+  attempt: Parameters<typeof failedAuditDetail>[0] & {
+    auditId: string;
+    status: string;
+  },
+  params: Record<string, string>,
+): PanelAction | null {
+  if (attempt.status === "running") {
+    return {
+      key: "running-audit",
+      icon: Radar,
+      title: t("Denetim sürüyor"),
+      detail: t("İlerlemeyi ve bitiş özetini denetim ekranında izleyin."),
+      to: "/p/$projectId/audit",
+      params,
+      search: { auditId: attempt.auditId },
+      cta: t("İlerlemeyi gör"),
+    };
+  }
+  if (attempt.status === "failed") {
+    return {
+      key: "retry-audit",
+      icon: Radar,
+      title: t("Denetimi yeniden başlatın"),
+      detail: failedAuditDetail(attempt),
+      to: "/p/$projectId/audit",
+      params,
+      cta: t("Yeniden denetle"),
+    };
+  }
+  return null;
 }
 
 /** The same reason-aware wording as the audit screen's banner. */

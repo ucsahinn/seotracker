@@ -1,3 +1,4 @@
+import { scaleThreshold } from "@/shared/searchInsights";
 import { sort } from "remeda";
 import type { GscSearchAnalyticsRow } from "@/server/lib/gscClient";
 
@@ -113,6 +114,8 @@ function betterThan(a: CompetingPage, b: CompetingPage): boolean {
  */
 export function findCannibalizedQueries(
   rows: GscSearchAnalyticsRow[],
+  /** Days in the window the rows cover; the floors are set for 28. */
+  days = 28,
 ): Pick<
   CannibalizationReport,
   "rows" | "queriesAnalyzed" | "splitImpressions" | "analyzedImpressions"
@@ -139,13 +142,13 @@ export function findCannibalizedQueries(
 
   for (const [query, pages] of byQuery) {
     const impressions = pages.reduce((sum, page) => sum + page.impressions, 0);
-    if (impressions < MIN_QUERY_IMPRESSIONS) continue;
+    if (impressions < scaleThreshold(MIN_QUERY_IMPRESSIONS, days)) continue;
     queriesAnalyzed += 1;
     analyzedImpressions += impressions;
 
     const contenders = pages.filter(
       (page) =>
-        page.impressions >= MIN_PAGE_IMPRESSIONS &&
+        page.impressions >= scaleThreshold(MIN_PAGE_IMPRESSIONS, days) &&
         page.impressions / impressions >= MIN_PAGE_SHARE,
     );
     if (contenders.length < 2) continue;

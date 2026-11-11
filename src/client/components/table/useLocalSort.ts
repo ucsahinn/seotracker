@@ -17,10 +17,13 @@ import { sort as sortWith } from "remeda";
  * tables keep the shared header — and with it `aria-sort`, the arrow, and
  * the 24px target — rather than growing their own.
  */
-export function useLocalSort<Key extends string>(initial: {
-  key: Key;
-  desc: boolean;
-}) {
+export function useLocalSort<Key extends string>(
+  initial: {
+    key: Key;
+    desc: boolean;
+  },
+  onChange?: () => void,
+) {
   const [sort, setSort] = React.useState(initial);
 
   /**
@@ -33,6 +36,7 @@ export function useLocalSort<Key extends string>(initial: {
       getIsSorted: (): false | "asc" | "desc" =>
         sort.key === key ? (sort.desc ? "desc" : "asc") : false,
       getToggleSortingHandler: () => () => {
+        onChange?.();
         setSort((current) =>
           current.key === key
             ? { key, desc: !current.desc }
@@ -40,7 +44,7 @@ export function useLocalSort<Key extends string>(initial: {
         );
       },
     }),
-    [sort],
+    [sort, onChange],
   );
 
   /** Goes on the `<th>`, not the button: direction describes the column. */

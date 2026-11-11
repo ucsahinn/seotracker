@@ -88,3 +88,14 @@ export function Problem({
 }
 
 export const code = (value: string) => <code className="text-xs">{value}</code>;
+
+/** Shown instead of install-specific advice while the install kind is unknown. */
+export function PendingNote() {
+  return (
+    <p className="text-muted">
+      {t(
+        "Kurulum türü henüz doğrulanamadı. Üstteki durumu kontrol edin ve gerekirse yeniden deneyin.",
+      )}
+    </p>
+  );
+}

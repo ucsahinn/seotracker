@@ -2,7 +2,11 @@ import { RankingsFilters } from "./RankingsFilters";
 import { RankingSourceEvidence } from "./RankingSourceEvidence";
 import { HelpTip } from "@/client/components/HelpTip";
 import { useEffect, useRef, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { t } from "@/shared/i18n";
 import { formatCount } from "@/client/lib/format";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
@@ -14,6 +18,7 @@ import type { BandId } from "@/shared/positionBands";
 import type { ChipId } from "./positionBands";
 import type { MoveId } from "./rankingMoves";
 import type { SortKey } from "./rankingsSort";
+import { DEFAULT_TRACKED_QUERY_PAGE_SIZE } from "@/shared/rankingConstants";
 import { QueryHistoryCard } from "./QueryHistoryCard";
 import { TrackedQueriesTable } from "./TrackedQueriesTable";
 import { PositionBandBars } from "./PositionBandBars";
@@ -52,12 +57,22 @@ export function RankingsPage({
   const client = useQueryClient();
   const [selected, setSelected] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [band, setBand] = useState<BandId>();
   const [chip, setChip] = useState<ChipId>();
   const [move, setMove] = useState<MoveId>();
-  const [pageSize, setPageSize] = useState<number>(25);
+  const [pageSize, setPageSize] = useState<number>(
+    DEFAULT_TRACKED_QUERY_PAGE_SIZE,
+  );
   const [page, setPage] = useState(1);
-  const sorting = useLocalSort<SortKey>({ key: "impressions", desc: true });
+  const sorting = useLocalSort<SortKey>(
+    { key: "impressions", desc: true },
+    () => setPage(1),
+  );
+  useEffect(() => {
+    const timer = window.setTimeout(() => setDebouncedSearch(search), 300);
+    return () => window.clearTimeout(timer);
+  }, [search]);
   const historyRef = useRef<HTMLDivElement>(null);
   const returnFocus = useRef<HTMLElement | null>(null);
   const sync = useQuery({
@@ -83,7 +98,7 @@ export function RankingsPage({
       days,
       startDate,
       endDate,
-      search,
+      debouncedSearch,
       band,
       chip,
       move,
@@ -98,7 +113,7 @@ export function RankingsPage({
           days,
           startDate,
           endDate,
-          search,
+          search: debouncedSearch,
           band,
           chip,
           move,
@@ -108,6 +123,7 @@ export function RankingsPage({
           limit: pageSize,
         },
       }),
+    placeholderData: keepPreviousData,
   });
   const range = tracked.data?.range;
   const history = useQuery({
@@ -128,9 +144,6 @@ export function RankingsPage({
     });
     historyRef.current.focus({ preventScroll: true });
   }, [selected]);
-  useEffect(() => {
-    setPage(1);
-  }, [days, startDate, endDate, sorting.sort]);
   const pick = (query: string | null) => {
     if (query)
       returnFocus.current =
@@ -315,7 +328,7 @@ export function RankingsPage({
               <p>
                 {t(
                   "En çok gösterim alan ilk {count} kayıt; arama kutusu bu listede de geçerlidir.",
-                  { count: formatCount(25) },
+                  { count: formatCount(DEFAULT_TRACKED_QUERY_PAGE_SIZE) },
                 )}
               </p>
             </details>

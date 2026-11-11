@@ -127,3 +127,9 @@ clear.
 - 2026-11-10: `pnpm run ci:check` fails at `prettier --check .` on a Windows checkout because the four `packaging/winget/manifests/.../0.8.6/*.yaml` files are CRLF in the working tree (`text=auto`, LF in the index); the README beside them is pinned `eol=lf` and passes. Run the remaining stages one by one to see the real result.
 - 2026-11-10: A Python heredoc in the Bash tool (even with a quoted `<<'EOF'`) loses one backslash level, so `"\n"` and regex literals in replacement text silently stop matching; write the edit script with the Write tool and run the file.
 - 2026-11-10: `packaging/windows/README.md` documented `build.ps1 -SkipAppBuild`, which the script rejects; to build without touching `out\stage`, pass `-OutputDirectory packaging\windows\out\<name>`.
+
+- 2026-11-11: `beyin takim` write scopes do not match `**` globs, so Codex workers that edited inside `src/client/features/x/**` were flagged `scope_violation`; list directories or files explicitly in the plan.
+- 2026-11-11: Codex team-run worktrees have no `node_modules`, so workers cannot run vitest, tsc or prettier; junction the main repo's `node_modules` into the integration worktree and verify there.
+- 2026-11-11: `node badseo/harness` needs the dev server on 8787 already running; without it the harness fails with a connection error that reads like a fixture failure.
+- 2026-11-11: a patch exported from a CRLF worktree applies with `git apply --ignore-whitespace` but leaves the touched files CRLF, and `prettier --check .` then fails on all of them; run `prettier --write` on `prettier --list-different .` output.
+- 2026-11-11: oxlint `max-lines` counts code lines only; deleting comments or blank lines does not bring a file back under 400.

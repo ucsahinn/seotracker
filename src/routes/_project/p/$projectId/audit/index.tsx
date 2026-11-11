@@ -72,6 +72,9 @@ function SiteAuditPage() {
 
   return (
     <AuditDetail
+      // Filters and the page scope belong to one audit; without the key a
+      // jump from one audit's URL to another kept the old audit's scope.
+      key={auditId}
       projectId={projectId}
       auditId={auditId}
       tab={tab}

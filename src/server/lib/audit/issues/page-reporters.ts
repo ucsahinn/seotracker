@@ -13,7 +13,10 @@ import { sameCanonicalTarget } from "@/server/lib/audit/url-utils";
 import type { CrawledPageResult } from "@/server/lib/audit/types";
 import { reportHygiene } from "@/server/lib/audit/issues/page-hygiene-checks";
 import { reportSignals } from "@/server/lib/audit/issues/page-signal-checks";
-import { reportMarkupChecks } from "@/server/lib/audit/issues/page-markup-checks";
+import {
+  headerAppliesToGoogle,
+  reportMarkupChecks,
+} from "@/server/lib/audit/issues/page-markup-checks";
 import {
   MIN_IMAGES_MISSING_DIMENSIONS,
   countImagesMissingDimensions,
@@ -121,7 +124,8 @@ function withoutPageToken(url: string): string | null {
   const pathMatch = /\/page\/(\d+)\/?$/i.exec(url);
   if (pathMatch) {
     if (pathMatch[1] === "1") return null;
-    return url.replace(/\/page\/\d+\/?$/i, "");
+    // Keep the slash before /page: WordPress serves page one at /blog/.
+    return url.replace(/\/page\/\d+\/?$/i, "/");
   }
   try {
     const parsed = new URL(url);
@@ -182,7 +186,10 @@ function reportIndexability(page: CrawledPageResult, report: ReportIssue) {
       page.googlebotMeta,
       ...(page.signals?.markup.robotsMeta ?? []),
       ...(page.signals?.markup.googlebotMeta ?? []),
-      page.xRobotsTag,
+      // A header scoped to another crawler is not Google's rule.
+      page.xRobotsTag && headerAppliesToGoogle(page.xRobotsTag)
+        ? page.xRobotsTag
+        : null,
     ]
       .filter(Boolean)
       .join(",")
@@ -243,7 +250,8 @@ function reportIndexability(page: CrawledPageResult, report: ReportIssue) {
     effectiveCanonical &&
     effectiveCanonical !== page.url &&
     firstPage !== null &&
-    sameCanonicalTarget(effectiveCanonical, firstPage)
+    (sameCanonicalTarget(effectiveCanonical, firstPage) ||
+      sameCanonicalTarget(effectiveCanonical, firstPage.replace(/\/$/, "")))
   ) {
     report("paginated-canonical-to-first-page", {
       canonicalUrl: effectiveCanonical,
@@ -291,7 +299,7 @@ function metaRefreshRedirectTarget(page: CrawledPageResult): string | null {
 function reportHreflang(page: CrawledPageResult, report: ReportIssue) {
   // Google matches the value case-insensitively, so the comparison does too.
   const foreignAlternates = page.hreflangAlternates.filter(
-    (alternate) => alternate.href !== page.url,
+    (alternate) => !sameCanonicalTarget(alternate.href, page.url),
   );
   const codes = page.hreflangAlternates.map((a) => a.hreflang);
 
@@ -536,7 +544,7 @@ export function runPageReporters(
        * `details_json`, which is read on every issues screen.
        */
       examples: page.images
-        .filter((image) => !image.alt?.trim() && image.src)
+        .filter((image) => image.alt === null && image.src)
         .slice(0, MISSING_ALT_EXAMPLES)
         .map((image) => image.src),
     });

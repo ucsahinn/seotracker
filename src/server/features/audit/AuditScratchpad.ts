@@ -98,6 +98,8 @@ interface RecordBatchInput {
   links: ScratchpadPageLinksRow[];
   /** Absent when the audit runs without the external checks. */
   externalRefs?: ScratchpadExternalRefsRow[];
+  /** The audit's page limit; sizes the frontier bound. */
+  maxPages: number;
   /** Newly discovered same-origin URLs to enqueue (already policy-filtered). */
   discovered: Array<{ url: string; depth: number | null }>;
 }
@@ -123,7 +125,16 @@ interface OrphanPageRow {
   url: string;
 }
 
+/** Each of the broken-link and redirect-link queries is cut at this many rows. */
 const BROKEN_LINK_ISSUE_CAP = 2_000;
+/**
+ * Frontier rows past which new URLs are no longer queued: the larger of this
+ * floor and FRONTIER_ROWS_PER_PAGE x maxPages. Only maxPages are ever
+ * crawled, so a faceted or calendar trap listing endless URLs would
+ * otherwise grow the table without limit.
+ */
+const MIN_FRONTIER_ROWS = 100_000;
+const FRONTIER_ROWS_PER_PAGE = 50;
 const CLEANUP_AFTER_MS = 7 * 24 * 60 * 60 * 1000;
 /**
  * Stop storing link targets once the database reaches this size. The link
@@ -270,7 +281,26 @@ export class AuditScratchpad extends DurableObject {
         );
       }
     }
+    const frontierFull =
+      this.stats().seen >=
+      Math.max(MIN_FRONTIER_ROWS, FRONTIER_ROWS_PER_PAGE * input.maxPages);
+    if (frontierFull && input.discovered.length > 0) {
+      console.warn(
+        `Crawl frontier is full (maxPages=${input.maxPages}); new URLs are no longer queued`,
+      );
+    }
     for (const found of input.discovered) {
+      if (frontierFull) {
+        // Known URLs still get their depth lowered; unknown ones are dropped.
+        if (found.depth !== null) {
+          this.ctx.storage.sql.exec(
+            `UPDATE frontier SET depth = MIN(COALESCE(depth, ?1), ?1) WHERE url = ?2`,
+            found.depth,
+            found.url,
+          );
+        }
+        continue;
+      }
       // Already-seen URLs keep their row — this is the global dedup — but
       // depth is still filled in or lowered. Sitemap seeding inserts every
       // URL with depth NULL before the crawl starts, and this used to be
@@ -331,8 +361,8 @@ export class AuditScratchpad extends DurableObject {
      * Internal links to a page that redirects. Not broken -- the reader
      * still arrives -- but every one is a hop the crawler and the visitor
      * pay for, and the usual cause is a URL change nobody followed through
-     * the templates. Shares the broken-link cap: the two together are one
-     * budget of link findings.
+     * the templates. Uses the same cap value as the broken-link query, but
+     * each query is cut on its own: the two do not share one budget.
      */
     const redirectLinks = this.ctx.storage.sql
       .exec<{
@@ -350,6 +380,17 @@ export class AuditScratchpad extends DurableObject {
         targetStatus: row.target_status,
         finalUrl: row.final_url,
       }));
+
+    if (brokenLinks.length >= BROKEN_LINK_ISSUE_CAP) {
+      console.warn(
+        `broken-link findings cut at ${BROKEN_LINK_ISSUE_CAP}; more broken links exist`,
+      );
+    }
+    if (redirectLinks.length >= BROKEN_LINK_ISSUE_CAP) {
+      console.warn(
+        `redirect-link findings cut at ${BROKEN_LINK_ISSUE_CAP}; more redirecting links exist`,
+      );
+    }
 
     // A live 2xx page is an orphan when no OTHER crawled page links to it
     // and nothing redirects to it. Only meaningful on a completed crawl with

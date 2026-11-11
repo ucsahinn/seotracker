@@ -55,12 +55,24 @@ export async function runExternalChecksPhase(
 
   const targets = await step.do("external-targets", DB_STEP, async () => {
     const scratchpad = getAuditScratchpad(auditId);
-    const links = await scratchpad.listExternalTargets("link", MAX_LINKS);
-    const images = await scratchpad.listExternalTargets(
-      "image",
-      MAX_URLS - links.length,
+    /* One past each cap, to learn whether the list was cut without a count
+       query: an extra row means targets were left unchecked. */
+    const allLinks = await scratchpad.listExternalTargets(
+      "link",
+      MAX_LINKS + 1,
     );
-    return { links, images };
+    const links = allLinks.slice(0, MAX_LINKS);
+    const imageCap = MAX_URLS - links.length;
+    const allImages = await scratchpad.listExternalTargets(
+      "image",
+      imageCap + 1,
+    );
+    return {
+      links,
+      images: allImages.slice(0, imageCap),
+      linksCut: allLinks.length > MAX_LINKS,
+      imagesCut: allImages.length > imageCap,
+    };
   });
 
   const verdicts: LinkVerdict[] = [];
@@ -107,8 +119,11 @@ export async function runExternalChecksPhase(
     ];
     await AuditRepository.insertIssues(auditId, issues);
 
+    /* Not measured when the target list was cut: the unchecked remainder
+       would read as passed, and the record cannot say "partly measured". */
     const measured: string[] = [];
     if (
+      !targets.linksCut &&
       externalMeasured(
         targets.links.length,
         verdicts.filter((verdict) => verdict.state !== "unknown").length,
@@ -117,6 +132,7 @@ export async function runExternalChecksPhase(
       measured.push("broken-external-link");
     }
     if (
+      !targets.imagesCut &&
       externalMeasured(
         targets.images.length,
         measures.filter((measure) => measure.bytes !== null).length,

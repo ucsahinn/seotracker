@@ -27,7 +27,8 @@ function analyzeHtmlWithCheerio(
     $('head link[rel="canonical"]')
       .map((_, el) => ($(el).attr("href") ?? "").trim())
       .get()
-      .filter(Boolean),
+      .filter(Boolean)
+      .map((href) => normalizeUrl(href, pageUrl) ?? href),
   ).size;
   const robotsMeta = $('meta[name="robots"]').first().attr("content") ?? null;
   const googlebotMeta =
@@ -362,6 +363,18 @@ describe("canonical counting", () => {
   it("does not count two tags naming the same address as a contradiction", () => {
     const analysis = analyzeHtml(
       `<html><head><link rel="canonical" href="/a"><link rel="canonical" href="/a"></head><body>x</body></html>`,
+      "https://example.com/a",
+      200,
+      0,
+    );
+
+    expect(analysis.canonicalCount).toBe(1);
+  });
+
+  // A relative and an absolute href can be one address; the page URL decides.
+  it("does not count a relative and an absolute spelling of one address twice", () => {
+    const analysis = analyzeHtml(
+      `<html><head><link rel="canonical" href="/a"><link rel="canonical" href="https://example.com/a"></head><body>x</body></html>`,
       "https://example.com/a",
       200,
       0,

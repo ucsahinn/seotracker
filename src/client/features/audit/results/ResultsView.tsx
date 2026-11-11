@@ -151,11 +151,11 @@ export function ResultsView({
    * says nothing rather than claiming "(0)" for a table nobody has loaded.
    */
   const [coverageRows, setCoverageRows] = useState<CoverageRow[] | null>(null);
+  const [coverageVisible, setCoverageVisible] = useState(coverageRows);
   /*
-   * The export has to follow the focus chip, the same way the pages and
-   * performance exports follow their filters. Without this, focusing one
-   * page and clicking CSV wrote every issue in the audit while the screen
-   * showed one.
+   * The export follows the focus chip, as the pages and performance exports
+   * follow their filters. Without this, focusing one page and clicking CSV
+   * wrote every issue in the audit while the screen showed one.
    */
   const scopedIssues = useMemo(
     () =>
@@ -295,10 +295,8 @@ export function ResultsView({
                 foreignIndex
                   ? undefined
                   : (format) => {
-                      if (activeTab === "index") {
-                        exportIndexCoverage(coverageRows ?? [], format);
-                        return;
-                      }
+                      if (activeTab === "index")
+                        return exportIndexCoverage(coverageVisible, format);
                       if (activeTab === "performance") {
                         exportPerformance(filteredLighthouse, pages, format);
                         return;
@@ -350,6 +348,7 @@ export function ResultsView({
                       projectId={projectId}
                       auditId={audit.id}
                       onRowsChange={(rows) => setCoverageRows(rows ?? null)}
+                      onVisibleChange={setCoverageVisible}
                     />
                   </div>
                 ) : (
@@ -383,6 +382,7 @@ export function ResultsView({
               )}
               {activeTab === "pages" && (
                 <PagesTable
+                  sitemapPartial={data.siteFacts?.sitemap.urlCount === null}
                   pages={pages}
                   startUrl={audit.startUrl}
                   issues={issues}
@@ -449,7 +449,7 @@ function CrawlWarning({
 }) {
   return (
     <div className="flex items-start gap-3 rounded-box border border-warning/30 bg-warning/5 px-4 py-3 text-sm">
-      <ShieldAlert className="mt-0.5 size-4 shrink-0 text-warning" />
+      <ShieldAlert className="mt-0.5 size-4 shrink-0 text-[var(--ink-warning)]" />
       <details className="min-w-0 max-w-prose">
         <summary className="cursor-pointer font-medium text-[var(--ink-warning)]">
           {headline}

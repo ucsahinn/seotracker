@@ -14,6 +14,9 @@ export async function loadPanelAuditSnapshot(
   ]);
   const ctx = {
     pagesCrawled: result.audit.pagesCrawled,
+    // Stricter than the screens, which show speed when any page was
+    // measured: a delta between two audits needs the same pages measured in
+    // both, so one failed measurement withholds the speed checks here.
     hasLighthouse:
       result.lighthouse.length > 0 &&
       result.lighthouse.every((row) => row.performanceScore !== null),

@@ -80,6 +80,7 @@ function Stat({
 function CannibalizationSummary({
   projectId,
   dateRange,
+  window,
   device,
   country,
   searchType,
@@ -87,6 +88,7 @@ function CannibalizationSummary({
 }: {
   projectId: string;
   dateRange: SearchPerformanceDateRange;
+  window?: { startDate: string; endDate: string };
   device?: SearchPerformanceDevice;
   country?: string;
   searchType: SearchPerformanceType;
@@ -96,6 +98,7 @@ function CannibalizationSummary({
   const report = useCannibalizationReport({
     projectId,
     dateRange,
+    window,
     device,
     country,
     searchType,
@@ -223,6 +226,7 @@ function CannibalizationSummary({
 export function OverlapsTab({
   projectId,
   range,
+  window,
   device,
   country,
   searchType,
@@ -231,6 +235,7 @@ export function OverlapsTab({
 }: {
   projectId: string;
   range: SearchPerformanceDateRange;
+  window?: { startDate: string; endDate: string };
   device?: SearchPerformanceDevice;
   country?: string;
   searchType: SearchPerformanceType;
@@ -255,6 +260,7 @@ export function OverlapsTab({
       <CannibalizationSummary
         projectId={projectId}
         dateRange={range}
+        window={window}
         device={device}
         country={country}
         searchType={searchType}
@@ -263,6 +269,7 @@ export function OverlapsTab({
       <CannibalizationTable
         projectId={projectId}
         dateRange={range}
+        window={window}
         device={device}
         country={country}
         searchType={searchType}

@@ -1,4 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  saveKeywords,
+  getSavedKeywords,
+  updateSavedKeywordTags,
+  updateSavedKeywordTag,
+  deleteSavedKeywordTag,
+  exportSavedKeywords,
+} from "./saved-keywords";
 
 const mocks = vi.hoisted(() => ({
   addTagsToSavedKeywords: vi.fn(),
@@ -31,7 +39,6 @@ const savedKeywordRow = {
 
 describe("saved keyword service", () => {
   beforeEach(() => {
-    vi.resetModules();
     for (const mock of Object.values(mocks)) mock.mockReset();
   });
 
@@ -45,7 +52,6 @@ describe("saved keyword service", () => {
    */
   it("stores a Turkish keyword as typed, and folds only the match key", async () => {
     mocks.saveKeywordsToProject.mockResolvedValue([savedKeywordRow]);
-    const { saveKeywords } = await import("./saved-keywords");
 
     await saveKeywords({
       projectId: "project_1",
@@ -77,7 +83,6 @@ describe("saved keyword service", () => {
       savedKeywordCount: 2,
       tags: [],
     });
-    const { saveKeywords } = await import("./saved-keywords");
 
     await saveKeywords({
       projectId: "project_1",
@@ -111,7 +116,6 @@ describe("saved keyword service", () => {
 
   it("does not call tag assignment when no tags are provided", async () => {
     mocks.saveKeywordsToProject.mockResolvedValue([savedKeywordRow]);
-    const { saveKeywords } = await import("./saved-keywords");
 
     await saveKeywords({
       projectId: "project_1",
@@ -168,7 +172,6 @@ describe("saved keyword service", () => {
         },
       ],
     });
-    const { getSavedKeywords } = await import("./saved-keywords");
 
     const result = await getSavedKeywords({
       projectId: "project_1",
@@ -219,7 +222,6 @@ describe("saved keyword service", () => {
       removedCount: 2,
       tags: [{ id: "tag_2" }],
     });
-    const { updateSavedKeywordTags } = await import("./saved-keywords");
 
     const result = await updateSavedKeywordTags({
       projectId: "project_1",
@@ -253,7 +255,6 @@ describe("saved keyword service", () => {
       removedCount: 1,
       tags: [{ id: "tag_new", name: "US", normalizedName: "us" }],
     });
-    const { saveKeywords } = await import("./saved-keywords");
 
     const result = await saveKeywords({
       projectId: "project_1",
@@ -275,7 +276,6 @@ describe("saved keyword service", () => {
 
   it("rejects replace mode without replacement tags", async () => {
     mocks.saveKeywordsToProject.mockResolvedValue([savedKeywordRow]);
-    const { saveKeywords } = await import("./saved-keywords");
 
     await expect(
       saveKeywords({
@@ -297,7 +297,6 @@ describe("saved keyword service", () => {
         ),
       }),
     );
-    const { updateSavedKeywordTag } = await import("./saved-keywords");
 
     await expect(
       updateSavedKeywordTag({
@@ -313,7 +312,6 @@ describe("saved keyword service", () => {
       status: "in_use",
       assignmentCount: 3,
     });
-    const { deleteSavedKeywordTag } = await import("./saved-keywords");
 
     await expect(
       deleteSavedKeywordTag({ projectId: "project_1", tagId: "tag_1" }),
@@ -329,7 +327,6 @@ describe("saved keyword service", () => {
         rows: Array.from({ length: 500 }, () => entry),
       })
       .mockResolvedValueOnce({ totalCount: 501, tags: [], rows: [entry] });
-    const { exportSavedKeywords } = await import("./saved-keywords");
 
     const result = await exportSavedKeywords({
       projectId: "project_1",

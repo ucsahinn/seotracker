@@ -209,4 +209,85 @@ describe("discoverUrls robots.txt and sitemap handling", () => {
       .mock.calls.map(([input]) => requestUrl(input));
     expect(requested).not.toContain("https://www.example.com/robots.txt");
   });
+
+  // robots-parser answers undefined for a URL on another host, which used to
+  // read as allowed.
+  it("applies robots rules to the www twin of the audited host", () => {
+    const robots = parseRobotsTxt(
+      "https://example.com",
+      "User-agent: *\nDisallow: /admin/\n",
+    );
+    expect(robots.isAllowed("https://www.example.com/admin/x")).toBe(false);
+    expect(robots.googlebotAllows("https://www.example.com/admin/x")).toBe(
+      false,
+    );
+    expect(robots.isAllowed("https://www.example.com/blog")).toBe(true);
+  });
+
+  it("marks membership incomplete when a named sitemap fails with a server error", async () => {
+    vi.mocked(fetch).mockImplementation(async (input) => {
+      const url = requestUrl(input);
+      if (url.endsWith("/robots.txt")) {
+        return new Response(
+          "Sitemap: https://example.com/a.xml\nSitemap: https://example.com/b.xml\n",
+        );
+      }
+      if (url.endsWith("/a.xml")) {
+        return new Response(
+          "<?xml version='1.0'?><urlset><url><loc>https://example.com/p</loc></url></urlset>",
+          { headers: { "content-type": "application/xml" } },
+        );
+      }
+      return new Response("", { status: 503 });
+    });
+
+    const result = await discoverUrls("https://example.com");
+
+    expect(result.urls).toEqual(["https://example.com/p"]);
+    expect(result.membershipComplete).toBe(false);
+  });
+
+  it("keeps membership complete when only the unnamed /sitemap.xml guess is missing", async () => {
+    vi.mocked(fetch).mockImplementation(async (input) => {
+      const url = requestUrl(input);
+      if (url.endsWith("/robots.txt")) {
+        return new Response("Sitemap: https://example.com/a.xml\n");
+      }
+      if (url.endsWith("/a.xml")) {
+        return new Response(
+          "<?xml version='1.0'?><urlset><url><loc>https://example.com/p</loc></url></urlset>",
+          { headers: { "content-type": "application/xml" } },
+        );
+      }
+      return new Response("", { status: 404 });
+    });
+
+    const result = await discoverUrls("https://example.com");
+
+    expect(result.membershipComplete).toBe(true);
+  });
+
+  it("reads a gzipped sitemap served as application/gzip", async () => {
+    const xml =
+      "<?xml version='1.0'?><urlset><url><loc>https://example.com/p</loc></url></urlset>";
+    const gzipped = await new Response(
+      new Blob([xml]).stream().pipeThrough(new CompressionStream("gzip")),
+    ).arrayBuffer();
+    vi.mocked(fetch).mockImplementation(async (input) => {
+      const url = requestUrl(input);
+      if (url.endsWith("/robots.txt")) {
+        return new Response("Sitemap: https://example.com/sitemap.xml.gz\n");
+      }
+      return url.endsWith("/sitemap.xml.gz")
+        ? new Response(gzipped, {
+            headers: { "content-type": "application/gzip" },
+          })
+        : new Response("", { status: 404 });
+    });
+
+    const result = await discoverUrls("https://example.com");
+
+    expect(result.urls).toEqual(["https://example.com/p"]);
+    expect(result.sitemapProblems.failedCount).toBe(0);
+  });
 });

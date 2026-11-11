@@ -42,11 +42,14 @@ export function IndexCoverageView({
   projectId,
   auditId,
   onRowsChange,
+  onVisibleChange,
 }: {
   projectId: string;
   auditId: string;
   /** Hands the rows to the export menu a level up; undefined while loading. */
   onRowsChange?: (rows: CoverageRow[] | undefined) => void;
+  /** What the donut filter leaves on screen, which is what an export writes. */
+  onVisibleChange?: (rows: CoverageRow[] | null) => void;
 }) {
   const queryClient = useQueryClient();
   const queryKey = ["indexCoverage", projectId, auditId] as const;
@@ -64,6 +67,15 @@ export function IndexCoverageView({
   const rows = coverage.data?.rows;
   // Set by the donut; the table below shows only this group. Null is all.
   const [bucket, setBucket] = useState<CoverageBucket | null>(null);
+  // Memoised: the parent stores this array, and a new one on every render
+  // made the two components re-render each other without end.
+  const shownRows = useMemo(
+    () =>
+      bucket === null
+        ? rows
+        : rows?.filter((row) => coverageBucket(row) === bucket),
+    [rows, bucket],
+  );
   useEffect(() => {
     /*
      * `undefined` while the query is in flight, the rows once they arrive.
@@ -76,7 +88,8 @@ export function IndexCoverageView({
      * an export in that moment wrote a different audit's coverage.
      */
     onRowsChange?.(rows);
-  }, [onRowsChange, rows]);
+    onVisibleChange?.(shownRows ?? null);
+  }, [onRowsChange, onVisibleChange, rows, shownRows]);
 
   const refresh = useMutation({
     mutationFn: () =>
@@ -148,6 +161,12 @@ export function IndexCoverageView({
   const data = coverage.data;
   const allRows = data?.rows;
   const bucketCounts = useMemo(() => countCoverage(allRows ?? []), [allRows]);
+  // A group emptied by a refresh would leave a header over no rows and a
+  // donut selection pointing at nothing.
+  useEffect(() => {
+    if (bucket !== null && allRows && bucketCounts[bucket] === 0)
+      setBucket(null);
+  }, [allRows, bucket, bucketCounts]);
   const visibleRows = useMemo(
     () =>
       bucket === null
@@ -260,8 +279,11 @@ export function IndexCoverageView({
         />
         <MetricTile
           label={t("Henüz kontrol edilmedi")}
-          value={formatNumber(data.due)}
-          animateTo={{ value: data.due, format: formatNumber }}
+          // `pending`, as the donut and the row badges count it. `due` also
+          // holds answered pages whose answer has aged, and read "40 not
+          // checked yet" beside forty rows saying "on Google".
+          value={formatNumber(data.pending)}
+          animateTo={{ value: data.pending, format: formatNumber }}
         />
       </MetricRow>
 
