@@ -315,6 +315,10 @@ describe("ReportView per-tab summaries", () => {
     );
     expect(chip.getAttribute("aria-pressed")).toBe("true");
     expect(bodyRows()).toHaveLength(1);
+    // The tile only switches the chip on. It used to pin the table to one
+    // page as well, which stayed after the chip was switched off again.
+    fireEvent.click(chip);
+    expect(bodyRows().length).toBeGreaterThan(1);
   });
 
   it("disables the weak-conversion filter when no key event is defined", () => {
