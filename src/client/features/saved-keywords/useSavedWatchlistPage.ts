@@ -160,6 +160,8 @@ export function useSavedWatchlistPage({
     setSelectionScope(scopeKey);
     setRowSelection({});
     setRemoving(null);
+    // The banner of a failed delete belongs to the list it was tried on.
+    setRemoveError(null);
     setShowTagModal(false);
     setDetailId(null);
   }, [scopeKey, pending, projectId]);
@@ -210,6 +212,9 @@ export function useSavedWatchlistPage({
       ...search,
       sort: next[0]?.id,
       order: next[0]?.desc ? "desc" : "asc",
+      // "Fallers" fixes the order to the biggest drops first. Left on, a
+      // click on any other header moved the arrow and not one row.
+      fallers: search.fallers && next[0]?.id === "delta" && !next[0]?.desc,
       page: 1,
     });
     update(parsed);

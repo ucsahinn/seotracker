@@ -263,8 +263,9 @@ export function ReportView({
         active={activeChips.includes("weakConversion")}
         candidate={candidate}
         onShow={() => {
-          if (candidate)
-            setFocusedRowKey(reportIdentity(candidate, "landingPage"));
+          // The tile counts every weak page, so it lists every one. It used
+          // to narrow the table to the single top page under a count of N.
+          setFocusedRowKey(null);
           setActiveChips((current) =>
             current.includes("weakConversion")
               ? current

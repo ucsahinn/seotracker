@@ -81,6 +81,8 @@ const storedLighthouseIssueSchema = z.object({
   impactBytes: z.number().nullable(),
   severity: z.enum(["critical", "warning", "info"]),
   items: z.array(z.string()),
+  /** How many items Lighthouse reported; `items` keeps the first ten. Absent on older rows. */
+  itemCount: z.number().optional(),
 });
 
 /**
@@ -307,7 +309,8 @@ export function buildStoredLighthouseIssues(input: {
         : isRecord(rawItems)
           ? [rawItems]
           : [];
-      const items = itemList.filter(isRecord).slice(0, 10).map(compactItem);
+      const records = itemList.filter(isRecord);
+      const items = records.slice(0, 10).map(compactItem);
 
       issues.push({
         category,
@@ -321,6 +324,7 @@ export function buildStoredLighthouseIssues(input: {
         impactBytes,
         severity: getSeverity({ score, impactMs, impactBytes }),
         items,
+        itemCount: records.length,
       });
     }
   }

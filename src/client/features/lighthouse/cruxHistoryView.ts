@@ -26,6 +26,12 @@ export function formatCruxValue(metric: CruxMetric, value: number): string {
 
 /** A change smaller than this is noise in a 28-day rolling p75. */
 const STEADY = 0.1;
+/** The smallest move worth calling a trend: one printed step of the metric. */
+const MIN_VISIBLE_CHANGE: Record<CruxMetric, number> = {
+  cls: 0.02,
+  lcp: 100,
+  inp: 20,
+};
 
 export type CruxSeriesSummary = {
   metric: CruxMetric;
@@ -48,8 +54,11 @@ export function summarizeCruxSeries(
   const latest = values[values.length - 1];
   if (first === undefined || latest === undefined) return null;
 
-  const change =
-    first === 0 ? (latest === 0 ? 0 : 1) : (latest - first) / first;
+  // A relative test alone called CLS 0 -> 0.01 "getting worse" under values
+  // that both print as 0,01 and both rate "good". The move also has to be
+  // large enough to see.
+  const visible = Math.abs(latest - first) >= MIN_VISIBLE_CHANGE[series.metric];
+  const change = !visible ? 0 : first === 0 ? 1 : (latest - first) / first;
   return {
     metric: series.metric,
     latest,

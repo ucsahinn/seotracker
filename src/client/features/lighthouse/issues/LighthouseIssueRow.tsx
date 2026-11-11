@@ -110,7 +110,7 @@ export function LighthouseIssueRow({ issue }: { issue: LighthouseIssue }) {
                 <details className="text-sm">
                   <summary className="cursor-pointer font-medium text-muted text-xs">
                     {t("Etkilenen öğeler ({count})", {
-                      count: issue.items.length,
+                      count: issue.itemCount ?? issue.items.length,
                     })}
                   </summary>
                   <div className="mt-2 space-y-1.5">
