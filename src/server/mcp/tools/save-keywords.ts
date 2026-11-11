@@ -16,7 +16,7 @@ import { savedKeywordMetricSchema } from "@/types/schemas/keywords";
 const inputSchema = {
   projectId: projectIdSchema,
   keywords: z
-    .array(z.string().min(1))
+    .array(z.string().min(1).max(512))
     .min(1)
     .max(100)
     .describe("Keywords to save (1-100)."),

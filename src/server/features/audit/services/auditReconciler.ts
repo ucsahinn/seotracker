@@ -10,6 +10,7 @@
  *     zombie rows die even if nobody ever reopens the page, and the instance
  *     error is copied into the row before Workflows retention deletes it.
  */
+import { processBootMs } from "@/server/lib/processBoot";
 import { env } from "cloudflare:workers";
 import { and, eq, sql } from "drizzle-orm";
 import { db } from "@/db";
@@ -28,8 +29,13 @@ import { captureServerEvent } from "@/server/lib/observability";
  * previous process, and unless the audit worker kept running through a mere
  * reload of this one, nothing is executing it now. Truncated to whole
  * seconds because audit timestamps have second precision.
+ *
+ * Stamped by the first request (processBoot.ts), not when this module loads:
+ * the Workers runtime reports the clock as 0 at load, so a constant set there
+ * was 0, no audit was ever "from before this boot", and an audit interrupted
+ * by a restart stayed "running" for good.
  */
-const PROCESS_BOOT_MS = Math.floor(Date.now() / 1000) * 1000;
+const processBoot = processBootMs;
 
 /**
  * How long an audit from before this boot may stay silent, counted from the
@@ -107,14 +113,14 @@ export async function reconcileRunningAudit(
    * read the state is unknown, and unknown never fails an audit.
    * `failAudit` keeps the pages already crawled, which are persisted per batch.
    */
-  if (parseStartedAt(audit.startedAt) < PROCESS_BOOT_MS) {
+  if (parseStartedAt(audit.startedAt) < processBoot()) {
     let lastHeartbeat: number | null;
     try {
       lastHeartbeat = await getAuditHeartbeat(audit.id);
     } catch {
       return null;
     }
-    const lastSign = Math.max(PROCESS_BOOT_MS, lastHeartbeat ?? 0);
+    const lastSign = Math.max(processBoot(), lastHeartbeat ?? 0);
     if (Date.now() - lastSign > WORKER_SILENCE_MS) {
       const abandoned: AuditErrorInfo = {
         errorCode: "instance_lost",
@@ -177,7 +183,7 @@ export async function reconcileStaleAudits() {
   // heartbeat decides whether it is really abandoned); a newer one only once
   // it has been running suspiciously long.
   const cutoff = new Date(
-    Math.max(Date.now() - STALE_RUNNING_AFTER_MS, PROCESS_BOOT_MS),
+    Math.max(Date.now() - STALE_RUNNING_AFTER_MS, processBoot()),
   );
   const stale = await getStaleRunningAudits(cutoff, WATCHDOG_BATCH_LIMIT);
 

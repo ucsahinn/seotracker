@@ -1,3 +1,4 @@
+import { processBootMs } from "@/server/lib/processBoot";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
 import { reconcileRunningAudit, reconcileStaleAudits } from "./auditReconciler";
@@ -56,6 +57,9 @@ beforeEach(() => {
 });
 
 describe("audit watchdog", () => {
+  // The process is "up" from its first request; here, from now.
+  processBootMs();
+
   /** Run `body` with the clock `minutes` after this module booted. */
   async function afterBoot(minutes: number, body: () => Promise<void>) {
     vi.useFakeTimers({ toFake: ["Date"] });
