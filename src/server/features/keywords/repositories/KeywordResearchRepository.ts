@@ -144,10 +144,6 @@ async function saveKeywordsToProject(params: {
   return listSavedKeywordRowsByKeywords(params);
 }
 
-function escapeLike(value: string) {
-  return value.replace(/[\\%_]/g, (char) => `\\${char}`);
-}
-
 /*
  * Matching runs against the folded `keyword_key` column, never `lower()` of
  * the display form: SQLite's `lower()` is ASCII-only, so "ÇAY" stayed "Çay"
@@ -167,11 +163,14 @@ function foldForMatch(term: string) {
     .replace(/\u0131/g, "i");
 }
 
+/*
+ * `instr`, not LIKE: D1 refuses a LIKE pattern longer than 50 bytes, so a
+ * long-tail term of 49 characters failed the whole list. Both sides are
+ * already folded, and `instr` needs no escaping.
+ */
 function keywordContains(term: string, negate = false) {
-  const pattern = `%${escapeLike(foldForMatch(term))}%`;
-  return negate
-    ? sql`${matchableKey} not like ${pattern} escape '\\'`
-    : sql`${matchableKey} like ${pattern} escape '\\'`;
+  const found = sql`instr(${matchableKey}, ${foldForMatch(term)})`;
+  return negate ? sql`${found} = 0` : sql`${found} > 0`;
 }
 
 function buildSavedKeywordWhere(params: {

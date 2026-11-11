@@ -39,10 +39,9 @@ export function PagesTable({
   onShowIssues,
   scopeLabel,
   onClearScope,
-  sitemapPartial = false,
+  siteFacts,
 }: {
-  /** The sitemap's size is unknown: it was cut short or a part failed. */
-  sitemapPartial?: boolean;
+  siteFacts?: AuditResultsData["siteFacts"];
   pages: AuditResultsData["pages"];
   startUrl: string;
   issues: AuditResultsData["issues"];
@@ -76,6 +75,14 @@ export function PagesTable({
     () => pages.some((page) => page.inSitemap),
     [pages],
   );
+  /*
+   * A sitemap that is named but whose size is unknown was cut short or had a
+   * part fail, so "not listed" is not known for its pages. An audit from
+   * before these facts were stored has neither a name nor a size; its column
+   * stays as it was.
+   */
+  const sitemap = siteFacts?.sitemap;
+  const sitemapPartial = Boolean(sitemap?.url) && sitemap?.urlCount === null;
   const { issueCountByPageId, missingTitlePageIds } = useMemo(() => {
     const counts = new Map<string, number>();
     const missingTitle = new Set<string>();

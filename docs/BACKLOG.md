@@ -314,6 +314,15 @@ Yapılanlar:
 - **Tarayıcıda denendi** (geliştirme sunucusu, demo proje): pano, denetim
   sayfaları, dizin sekmesi, raporlar, arama performansı. Dizin sekmesinde
   halka grubuna tıklayınca çöken bir döngü bulundu ve düzeltildi.
+- **Derlenmiş uygulamada tarayıcı denemesi** (`wrangler dev`, demo proje):
+  denetim sayfaları, dizin sekmesi ve rapor araması geçti. İki hata buldu ve
+  ikisi de düzeltildi: 12 harften uzun rapor araması ve 48 bayttan uzun kayıtlı
+  kelime terimi D1'in 50 baytlık LIKE/GLOB sınırına takılıp listeyi hataya
+  düşürüyordu. Pano ve arama performansı bu kurulumda denenemedi: demo veri
+  modülü tarihlerini modül yüklenirken hesaplıyor ve Workers çalışma zamanında
+  o anda saat sıfır; yalnız geliştirici demo modunu etkiler.
+- **"Harita" sütunu:** yalnız site haritası adı varken sayısı bilinmiyorsa "-"
+  yazar; site bilgisi saklanmadan önceki denetimlerde "Yok" olarak kalır.
 - **CI:** tüm eylemler commit özetine sabitlendi; Store paketi için kurulum
   denemesi adımı eklendi (ilk koşuda geçti; yayını engeller).
 

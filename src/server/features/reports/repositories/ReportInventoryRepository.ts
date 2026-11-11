@@ -1,7 +1,7 @@
 import { and, asc, count, desc, eq, gte, notInArray, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { audits, projects, reports, reportTemplates } from "@/db/schema";
-import { reportSearchPattern } from "@/shared/reportSearch";
+import { reportSearchPatterns } from "@/shared/reportSearch";
 import { metadataColumns } from "./ReportRepository";
 import {
   APP_REPORT_CREATOR,
@@ -24,9 +24,12 @@ const kindExpression = sql<string>`case
 export async function listReportInventory(input: ReportInventoryInput) {
   const projectScope = eq(reports.projectId, input.projectId);
   // Parameterized GLOB escapes its metacharacters and supports Latin case pairs.
-  const searchScope = input.query.trim()
-    ? sql`(${reports.title} || ' ' || ${reports.summary}) glob ${reportSearchPattern(input.query.trim())}`
-    : undefined;
+  const searchScope = and(
+    ...reportSearchPatterns(input.query.trim()).map(
+      (pattern) =>
+        sql`(${reports.title} || ' ' || ${reports.summary}) glob ${pattern}`,
+    ),
+  );
   const recentScope = input.recent
     ? gte(reports.updatedAt, new Date(Date.now() - 7 * 86400000).toISOString())
     : undefined;

@@ -382,7 +382,7 @@ export function ResultsView({
               )}
               {activeTab === "pages" && (
                 <PagesTable
-                  sitemapPartial={data.siteFacts?.sitemap.urlCount === null}
+                  siteFacts={data.siteFacts}
                   pages={pages}
                   startUrl={audit.startUrl}
                   issues={issues}
