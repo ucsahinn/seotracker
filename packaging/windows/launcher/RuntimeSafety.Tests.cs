@@ -37,6 +37,7 @@ namespace SeoWatcher
                 Run("P2-3 probe drains stderr without deadlock", () => Probe("flood", false), ref failures);
                 Run("P2-3 probe timeout reaps its child", () => Probe("hang", false), ref failures);
                 Run("P2-3 Server.Stop cancels and reaps its preflight child", () => Probe("hang", true), ref failures);
+                Run("report keeps file names and masks sites", ReportMasking, ref failures);
             }
             finally { Directory.Delete(root, true); }
             return failures == 0 ? 0 : 1;
@@ -160,6 +161,14 @@ namespace SeoWatcher
         {
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             File.WriteAllText(path, value);
+        }
+
+        private static void ReportMasking()
+        {
+            string kept = Diag.Scrub("launcher.log (son 25 satır): workerd.exe -> modül ntdll.dll kod 0xc0000005, wrangler.json");
+            Assert(kept.Contains("launcher.log") && kept.Contains("workerd.exe") && kept.Contains("ntdll.dll") && kept.Contains("wrangler.json"), "file names were masked: " + kept);
+            string masked = Diag.Scrub("GET https://musteri-sitesi.com/sayfa ve musteri-sitesi.com, bitti");
+            Assert(!masked.Contains("musteri-sitesi"), "a site name survived: " + masked);
         }
 
         private static void Run(string name, Action test, ref int failures)
