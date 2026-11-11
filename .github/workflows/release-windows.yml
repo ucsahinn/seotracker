@@ -210,7 +210,9 @@ jobs:
             $sdk = Join-Path ${env:ProgramFiles(x86)} "Windows Kits\10\bin"
             $signtool = Get-ChildItem $sdk -Filter signtool.exe -Recurse | Where-Object { $_.FullName -match "\\x64\\signtool.exe$" } | Sort-Object FullName -Descending | Select-Object -First 1
             if (-not $signtool) { throw "Windows SDK signtool.exe (x64) was not found under $sdk" }
-            & $signtool.FullName sign /fd SHA256 /sha1 $cert.Thumbprint $testMsix
+            # /sm: the certificate was created in the machine store, and
+            # signtool looks in the current user store unless told otherwise.
+            & $signtool.FullName sign /sm /fd SHA256 /sha1 $cert.Thumbprint $testMsix
             if ($LASTEXITCODE -ne 0) { throw "signtool failed with exit $LASTEXITCODE" }
             Add-AppxPackage -Path $testMsix -ErrorAction Stop
             $package = Get-AppxPackage | Where-Object { $_.Name -eq "seowatcher.dev" -or $_.Publisher -eq $publisher } | Sort-Object InstallDate -Descending | Select-Object -First 1
