@@ -148,7 +148,13 @@ export function UpdateSection({ version }: { version: string }) {
               </a>
             ) : null}
           </div>
-          {status.installKind === "windows" ? (
+          {status.storeDataDir ? (
+            <p className="text-xs text-subtle">
+              {t(
+                "Bu kurulum Microsoft Store'dan geldi: yeni sürümü Store kendisi indirir ve kurar. Bir sürümün Store'da yayımlanması birkaç gün sürebilir. Verileriniz ve Google bağlantınız olduğu gibi kalır.",
+              )}
+            </p>
+          ) : status.installKind === "windows" ? (
             <p className="text-xs text-subtle">
               {fillParts(
                 t(

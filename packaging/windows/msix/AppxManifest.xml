@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Microsoft Store package of seowatcher. build.ps1 fills the {{...}} fields:
+  the identity comes from the name reserved in Partner Center (Product identity
+  page), the version from package.json. The Store signs the package, so nothing
+  here names a certificate.
+-->
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap desktop rescap">
+  <Identity Name="{{IdentityName}}" Publisher="{{Publisher}}" Version="{{Version}}" ProcessorArchitecture="x64" />
+  <Properties>
+    <DisplayName>seowatcher</DisplayName>
+    <PublisherDisplayName>{{PublisherDisplayName}}</PublisherDisplayName>
+    <Logo>assets\StoreLogo.png</Logo>
+  </Properties>
+  <Dependencies>
+    <!-- 17763 is Windows 10 1809, the oldest build the bundled engine runs on. -->
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.26100.0" />
+  </Dependencies>
+  <Resources>
+    <Resource Language="tr-TR" />
+    <Resource Language="en-US" />
+  </Resources>
+  <Applications>
+    <Application Id="seowatcher" Executable="seowatcher.exe" EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements
+        DisplayName="seowatcher"
+        Description="Search Console, Analytics and site audits on your own computer"
+        BackgroundColor="transparent"
+        Square150x150Logo="assets\Square150x150Logo.png"
+        Square44x44Logo="assets\Square44x44Logo.png" />
+      <Extensions>
+        <!-- Replaces the Run registry value of the Inno install. Off until the
+             user switches it on; StorePackage.cs reads and changes it. -->
+        <desktop:Extension Category="windows.startupTask" Executable="seowatcher.exe" EntryPoint="Windows.FullTrustApplication">
+          <desktop:StartupTask TaskId="seowatcherStartup" Enabled="false" DisplayName="seowatcher" />
+        </desktop:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+    <!-- A tray launcher that runs node and workerd as ordinary processes. -->
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+</Package>

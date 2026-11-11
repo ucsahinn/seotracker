@@ -39,6 +39,10 @@ export const enSettings: Catalog = {
   "Otomatik güncelleme kurulumu": "Install updates automatically",
   "Yeni sürümü indirir, doğrular ve kurar. Kapalıyken tepsi menüsünden Güncelle seçeneğiyle kurabilirsiniz.":
     "Downloads, verifies and installs new releases. When off, use Update in the tray menu to install them.",
+  "Bu ayarı Windows tutuyor. Değiştirmek için Windows Ayarları > Uygulamalar > Başlangıç bölümünü kullanın.":
+    "Windows keeps this setting. To change it, use Windows Settings > Apps > Startup.",
+  "Bu kurulum Microsoft Store'dan geldi: yeni sürümü Store kendisi indirir ve kurar. Bir sürümün Store'da yayımlanması birkaç gün sürebilir. Verileriniz ve Google bağlantınız olduğu gibi kalır.":
+    "This install came from the Microsoft Store: the Store downloads and installs new versions itself. A release can take a few days to appear in the Store. Your data and Google connection stay as they are.",
   "Tüm kullanıcılar için kurulumda güncellemeyi yönetici kurar. Uygulama yeni sürümü haber verir.":
     "For all-user installations, an administrator installs updates. The app notifies you of new releases.",
   "Tarayıcı sekmesini kapatmak uygulamayı durdurmaz. Tamamen kapatmak için tepsi menüsünden Çıkış deyin. Bilgisayar uyurken denetimler çalışmaz.":

@@ -98,6 +98,7 @@ export function DashboardSetupAction({
                 {
                   tokenConfigured: connection.data?.tokenConfigured,
                   installKind: connection.data?.installKind,
+                  storeDataDir: connection.data?.storeDataDir,
                 },
               )}
               label={t("Kurulum istemini kopyala")}

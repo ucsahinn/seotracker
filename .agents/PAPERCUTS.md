@@ -123,3 +123,7 @@ clear.
 
 - 2026-10-29: `tsc --noEmit` reported 37 false column-type errors in unrelated files when `OpportunityPhoneList` was imported near the top of `OpportunitiesTable.tsx`; moving the import last made them go away. Likely `AppDataTable` `ColumnMeta.__valueType` inference depending on module order.
 - 2026-10-29: under full `pnpm test` load, `src/server/mcp/project-auth.test.ts` and `saved-keywords.test.ts` each failed once and passed alone (17/17); likely a default-timeout race when the machine is busy.
+
+- 2026-11-10: `pnpm run ci:check` fails at `prettier --check .` on a Windows checkout because the four `packaging/winget/manifests/.../0.8.6/*.yaml` files are CRLF in the working tree (`text=auto`, LF in the index); the README beside them is pinned `eol=lf` and passes. Run the remaining stages one by one to see the real result.
+- 2026-11-10: A Python heredoc in the Bash tool (even with a quoted `<<'EOF'`) loses one backslash level, so `"\n"` and regex literals in replacement text silently stop matching; write the edit script with the Write tool and run the file.
+- 2026-11-10: `packaging/windows/README.md` documented `build.ps1 -SkipAppBuild`, which the script rejects; to build without touching `out\stage`, pass `-OutputDirectory packaging\windows\out\<name>`.

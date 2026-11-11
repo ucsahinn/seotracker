@@ -15,8 +15,11 @@
 // and logs\. Mirrors docker-entrypoint.sh: keys are generated once, never
 // replaced, and never printed.
 //
-// Compiled with the .NET Framework 4.x C# compiler that ships with Windows:
-//   csc /target:winexe /optimize /r:System.Windows.Forms.dll /r:System.Drawing.dll ...
+// The Microsoft Store package runs this same executable; StorePackage.cs holds
+// what differs there (data folder, startup task, no self-update).
+//
+// Targets .NET Framework 4.x, which every supported Windows has. Compiled by
+// the Roslyn csc with /deterministic; launcher\compiler.ps1 has the command.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -48,7 +51,7 @@ namespace SeoWatcher
         private static int Main(string[] args)
         {
             bool quit = Array.IndexOf(args, "--quit") >= 0;
-            bool silent = Array.IndexOf(args, "--silent") >= 0;
+            bool silent = Array.IndexOf(args, "--silent") >= 0 || StorePackage.StartedAtSignIn();
 
             if (quit)
             {
@@ -103,6 +106,19 @@ namespace SeoWatcher
                     return 0;
                 }
 
+                // Asked until it works or the user gives up on the old data:
+                // starting the server in between would create an empty database.
+                for (string problem; (problem = StorePackage.AdoptLegacyData()) != null;)
+                {
+                    var answer = MessageBox.Show(
+                        "Önceki seowatcher kurulumunun verileri yeni konumuna kopyalanamadı:\n" + problem + "\n\n"
+                        + "Yeniden Dene: kopyalamayı tekrarlar.\n"
+                        + "Yoksay: boş bir veritabanıyla başlar; eski verileriniz eski klasörde durur.\n"
+                        + "Durdur: seowatcher'ı kapatır.",
+                        "seowatcher", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Warning);
+                    if (answer == DialogResult.Abort) return 1;
+                    if (answer == DialogResult.Ignore) { StorePackage.SkipLegacyData(); break; }
+                }
                 LauncherLog.Write("start" + (silent ? " --silent" : ""));
                 foreach (var line in Diag.Summary().Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries)) LauncherLog.Write("  " + line);
                 Application.EnableVisualStyles();
@@ -126,8 +142,9 @@ namespace SeoWatcher
         public static readonly string AuditConfig = Path.Combine(AppDir, "dist", "seotracker_audit", "wrangler.json");
         public static readonly string VersionFile = Path.Combine(ExeDir, "VERSION");
 
-        public static readonly string DataRoot = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Program.AppName);
+        public static readonly string DataRoot = StorePackage.IsPackaged
+            ? StorePackage.DataRoot
+            : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Program.AppName);
         public static readonly string PersistDir = Path.Combine(DataRoot, "data");
         public static readonly string LogDir = Path.Combine(DataRoot, "logs");
         public static readonly string ServerLog = Path.Combine(LogDir, "server.log");
@@ -388,6 +405,9 @@ namespace SeoWatcher
         /// names the faulting module, which the stack in server.log does not.</summary>
         public static void EnableEngineDumps()
         {
+            // A Store package writes HKCU into its own private hive, where
+            // Windows Error Reporting never looks.
+            if (StorePackage.IsPackaged) return;
             try
             {
                 Directory.CreateDirectory(DumpDir);
@@ -481,7 +501,7 @@ namespace SeoWatcher
                 + "Visual C++ çalışma zamanı: " + (v == null ? "yok" : v.ToString()) + (VcRuntimeDllsPresent() ? "" : " (DLL eksik)") + "\r\n"
                 + "Sistem DLL'leri: " + RuntimeDlls() + "\r\n"
                 + "Motor yanındaki DLL'ler: " + EngineLocalDlls() + "\r\n"
-                + "Kurulum: " + Paths.ExeDir + (IsAscii(Paths.ExeDir) ? "" : " (yolda ASCII dışı karakter var)") + "\r\n"
+                + "Kurulum: " + (StorePackage.IsPackaged ? "Microsoft Store paketi, " : "") + Paths.ExeDir + (IsAscii(Paths.ExeDir) ? "" : " (yolda ASCII dışı karakter var)") + "\r\n"
                 + "Veri: " + Paths.DataRoot + (IsAscii(Paths.DataRoot) ? "" : " (yolda ASCII dışı karakter var)");
         }
 
@@ -1584,6 +1604,10 @@ namespace SeoWatcher
             // Lets the app tell the Windows package from Docker: Ayarlar > Hakkında
             // then describes the tray updater instead of a docker compose command.
             sb.Append("INSTALL_KIND=windows\n");
+            // The Store package keeps its data elsewhere and is updated by the
+            // Store: the app names this folder wherever it tells an agent or
+            // the user where the token and the logs are.
+            if (StorePackage.IsPackaged) sb.Append("WINDOWS_STORE_DATA_DIR=").Append(StorePackage.DataRootDisplay).Append('\n');
             // Only when the configured port was taken and this run fell back
             // to another one: the app shows a banner naming both numbers.
             if (Port != ConfiguredPort)
@@ -1893,6 +1917,9 @@ namespace SeoWatcher
             repairItem = new ToolStripMenuItem("Kurulumu onar", null, (s, e) => RepairInstall());
             copyDiagItem = new ToolStripMenuItem("Tanı bilgisini kopyala", null, (s, e) => PrepareReport(false));
             reportItem = new ToolStripMenuItem("Sorunu bildir (GitHub)", null, (s, e) => PrepareReport(true));
+            // The Store replaces and repairs its own packages; this launcher
+            // must not download or run an installer there.
+            updateItem.Visible = autoUpdateItem.Visible = repairItem.Visible = !StorePackage.IsPackaged;
 
             // Grouped: use the app, settings, troubleshooting, about and exit.
             menu.Items.Add(openItem);
@@ -1969,7 +1996,7 @@ namespace SeoWatcher
             // once a day. The timer ticks hourly and compares wall-clock time, so
             // a laptop that sleeps through the night still checks daily, and a
             // check that failed (offline) is retried an hour later.
-            updateTimer = new System.Threading.Timer(_ => Invoke(UpdateTick), null, TimeSpan.FromMinutes(2), TimeSpan.FromHours(1));
+            if (!StorePackage.IsPackaged) updateTimer = new System.Threading.Timer(_ => Invoke(UpdateTick), null, TimeSpan.FromMinutes(2), TimeSpan.FromHours(1));
             notificationTimer = new System.Threading.Timer(_ => Invoke(PollNotifications), null, TimeSpan.FromSeconds(90), TimeSpan.FromSeconds(90));
         }
 
@@ -2456,11 +2483,12 @@ namespace SeoWatcher
 
         private string ReadNativeSettings()
         {
-            bool managed = Autostart.IsEnabledForAllUsers();
-            return "{\"autostart\":" + JsonBool(managed || Autostart.IsEnabled()) +
+            bool managed = Autostart.IsLocked();
+            return "{\"autostart\":" + JsonBool(Autostart.IsOn()) +
                 ",\"autostartManaged\":" + JsonBool(managed) +
                 ",\"autoUpdate\":" + JsonBool(Config.Load().AutoUpdate) +
-                ",\"autoUpdateManaged\":" + JsonBool(!Updater.IsPerUserInstall()) + "}";
+                ",\"autoUpdateManaged\":" + JsonBool(!Updater.IsPerUserInstall()) +
+                ",\"store\":" + JsonBool(StorePackage.IsPackaged) + "}";
         }
 
         private static string JsonBool(bool value) { return value ? "true" : "false"; }
@@ -2469,7 +2497,7 @@ namespace SeoWatcher
         {
             if (setting == "autostart")
             {
-                if (Autostart.IsEnabledForAllUsers()) throw new InvalidOperationException("Managed startup");
+                if (Autostart.IsLocked()) throw new InvalidOperationException("Managed startup");
                 Autostart.Set(enabled);
                 if (Autostart.IsEnabled() != enabled) throw new IOException("Startup preference was not saved");
             }
@@ -2486,12 +2514,14 @@ namespace SeoWatcher
         {
             notificationsItem.Checked = Config.Load().WindowsNotifications;
             autoUpdateItem.Checked = Config.Load().AutoUpdate;
-            bool machine = Autostart.IsEnabledForAllUsers();
-            autostartItem.Checked = machine || Autostart.IsEnabled();
-            // Set for every user by an administrator install: only an
-            // administrator can change it, so it is shown but not clickable.
-            autostartItem.Enabled = !machine;
-            autostartItem.ToolTipText = machine ? "Yönetici bu bilgisayardaki herkes için açtı; yalnızca yönetici kapatabilir." : null;
+            bool locked = Autostart.IsLocked();
+            autostartItem.Checked = Autostart.IsOn();
+            // Set for every user by an administrator install, or held by
+            // Windows for a Store package: shown but not clickable.
+            autostartItem.Enabled = !locked;
+            autostartItem.ToolTipText = !locked ? null : StorePackage.IsPackaged
+                ? "Windows bu ayarı tutuyor. Değiştirmek için Windows Ayarları > Uygulamalar > Başlangıç bölümünü kullanın."
+                : "Yönetici bu bilgisayardaki herkes için açtı; yalnızca yönetici kapatabilir.";
         }
 
         private void ToggleAutostart()
@@ -2731,7 +2761,8 @@ namespace SeoWatcher
 
     /// <summary>"Windows açılınca başlat": the HKCU Run value, quoted path
     /// plus --silent (no browser at sign-in). The installer writes the same
-    /// value; an all-users install writes it under HKLM instead.</summary>
+    /// value; an all-users install writes it under HKLM instead. The Store
+    /// package has no Run value: Windows keeps its startup task.</summary>
     internal static class Autostart
     {
         private const string RunKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
@@ -2741,8 +2772,21 @@ namespace SeoWatcher
             return "\"" + Application.ExecutablePath + "\" --silent";
         }
 
+        /// <summary>Starts at sign-in, whoever switched it on.</summary>
+        public static bool IsOn()
+        {
+            return StorePackage.IsPackaged ? StorePackage.StartupEnabled() : IsEnabledForAllUsers() || IsEnabled();
+        }
+
+        /// <summary>This user cannot change it from the app.</summary>
+        public static bool IsLocked()
+        {
+            return StorePackage.IsPackaged ? StorePackage.StartupLocked() : IsEnabledForAllUsers();
+        }
+
         public static bool IsEnabled()
         {
+            if (StorePackage.IsPackaged) return StorePackage.StartupEnabled();
             using (var key = Registry.CurrentUser.OpenSubKey(RunKey, false))
             {
                 return key != null && key.GetValue(Program.AppName) != null;
@@ -2764,6 +2808,7 @@ namespace SeoWatcher
 
         public static void Set(bool enabled)
         {
+            if (StorePackage.IsPackaged) { StorePackage.SetStartup(enabled); return; }
             using (var key = Registry.CurrentUser.CreateSubKey(RunKey))
             {
                 if (key == null) return;
@@ -2776,6 +2821,7 @@ namespace SeoWatcher
         /// launcher that is not there any more: point it at this one.</summary>
         public static void Repair()
         {
+            if (StorePackage.IsPackaged) return;
             try
             {
                 using (var key = Registry.CurrentUser.OpenSubKey(RunKey, true))

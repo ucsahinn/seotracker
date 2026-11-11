@@ -1,6 +1,7 @@
 import installerSkill from "../../../../.agents/skills/setup-seotracker/SKILL.md?raw";
 import codexPrompt from "./agentCodexSetupPrompt.md?raw";
 import installPrompt from "./agentInstallPrompt.md?raw";
+import { withWindowsDataDir } from "@/shared/windowsDataDir";
 import updatePrompt from "./agentUpdatePrompt.md?raw";
 
 export const agentUpdatePrompt = updatePrompt.trim();
@@ -24,15 +25,26 @@ const TOKEN_SENTENCE =
 // The Windows package keeps the token in a plain file next to the data; the
 // commands differ, the rules do not.
 const TOKEN_SENTENCE_WINDOWS =
-  'This install is behind a shared secret, so the MCP server needs the header `Authorization: Bearer <token>`: follow the token rules below now.\nThe token goes ONLY into the MCP client config, read by the shell inside one command. Never ask me to paste it into chat,\nand never print, log or write it anywhere else. This is the The token is the file `%LOCALAPPDATA%\\seowatcher\\mcp-token` (PowerShell: `(Get-Content "$env:LOCALAPPDATA\\seowatcher\\mcp-token").Trim()`; Git Bash: `cat "$LOCALAPPDATA/seowatcher/mcp-token" | tr -d \'\\r\\n\'`). Use those instead of any `docker compose exec` command below, and only inside the one command that writes the header: never run the bare read on its own, because its output would be the secret.';
+  'This install is behind a shared secret, so the MCP server needs the header `Authorization: Bearer <token>`: follow the token rules below now.\nThe token goes ONLY into the MCP client config, read by the shell inside one command. Never ask me to paste it into chat,\nand never print, log or write it anywhere else. The token is the file `%LOCALAPPDATA%\\seowatcher\\mcp-token` (PowerShell: `(Get-Content "$env:LOCALAPPDATA\\seowatcher\\mcp-token").Trim()`; Git Bash: `cat "$LOCALAPPDATA/seowatcher/mcp-token" | tr -d \'\\r\\n\'`). Use those instead of any `docker compose exec` command below, and only inside the one command that writes the header: never run the bare read on its own, because its output would be the secret.';
 
-type PromptInstallKind = "windows" | "docker";
+type PromptOptions = {
+  tokenConfigured?: boolean;
+  installKind?: "windows" | "docker";
+  /** The Microsoft Store build keeps the token in its package folder. */
+  storeDataDir?: string | null;
+};
+
+// Applied last, so the skill text, the prompt files and the sentences above
+// all name the folder this install really uses.
+function forInstall(text: string, origin: string, options?: PromptOptions) {
+  return withWindowsDataDir(text, options?.storeDataDir).replaceAll(
+    "http://localhost:3001",
+    origin,
+  );
+}
 
 // The copyable installer and internal skill share one source of truth.
-export function getAgentSetupPrompt(
-  origin: string,
-  options?: { tokenConfigured?: boolean; installKind?: PromptInstallKind },
-) {
+export function getAgentSetupPrompt(origin: string, options?: PromptOptions) {
   const instructions = installerSkill
     .replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, "")
     .trim()
@@ -45,7 +57,7 @@ export function getAgentSetupPrompt(
           : TOKEN_SENTENCE,
       )
     : instructions;
-  return authed.replaceAll("http://localhost:3001", origin);
+  return forInstall(authed, origin, options);
 }
 
 const CODEX_TOKEN_FLAG = " --bearer-token-env-var SEOTRACKER_MCP_AUTH";
@@ -57,10 +69,7 @@ const CODEX_TOKEN_FLAG = " --bearer-token-env-var SEOTRACKER_MCP_AUTH";
  * flag are the only parts that depend on the install, and they are filled from
  * placeholders so a reword cannot silently desync them.
  */
-export function getCodexSetupPrompt(
-  origin: string,
-  options?: { tokenConfigured?: boolean; installKind?: PromptInstallKind },
-) {
+export function getCodexSetupPrompt(origin: string, options?: PromptOptions) {
   const tokenConfigured = options?.tokenConfigured === true;
   const windows = options?.installKind === "windows";
   const auth = tokenConfigured
@@ -69,12 +78,15 @@ export function getCodexSetupPrompt(
         ? " This is the Windows package: read the token from the file `%LOCALAPPDATA%\\seowatcher\\mcp-token`, not with `docker compose`."
         : "")
     : "seotracker runs on my own machine and answers only to me, so there is no sign-in. If the server answers 401, it needs the token: re-add the entry with `--bearer-token-env-var SEOTRACKER_MCP_AUTH` and follow the token steps.";
-  return codexPrompt
-    .trim()
-    .replace(/\r\n/g, "\n")
-    .replace("{{AUTH}}", auth)
-    .replace("{{FLAG}}", tokenConfigured ? CODEX_TOKEN_FLAG : "")
-    .replaceAll("http://localhost:3001", origin);
+  return forInstall(
+    codexPrompt
+      .trim()
+      .replace(/\r\n/g, "\n")
+      .replace("{{AUTH}}", auth)
+      .replace("{{FLAG}}", tokenConfigured ? CODEX_TOKEN_FLAG : ""),
+    origin,
+    options,
+  );
 }
 
 /*
@@ -84,19 +96,16 @@ export function getCodexSetupPrompt(
  * cannot silently desync it. Phase 5 points at the setup prompts above rather
  * than repeating them.
  */
-export function getInstallPrompt(
-  origin: string,
-  options?: { tokenConfigured?: boolean; installKind?: PromptInstallKind },
-) {
+export function getInstallPrompt(origin: string, options?: PromptOptions) {
   const windows = options?.installKind === "windows";
   const token = options?.tokenConfigured
     ? windows
       ? 'The MCP server needs the header `Authorization: Bearer <token>`. The token is the file `%LOCALAPPDATA%\\seowatcher\\mcp-token`, read by the shell inside one command (PowerShell `(Get-Content "$env:LOCALAPPDATA\\seowatcher\\mcp-token").Trim()`, Git Bash `cat "$LOCALAPPDATA/seowatcher/mcp-token" | tr -d \'\\r\\n\'`); it goes ONLY there. Never run it alone, print it or ask me to paste it in chat.'
       : "This install is behind a shared secret, so the MCP server needs the header `Authorization: Bearer <token>`. The token is read by the shell inside one command (`docker compose exec -T seotracker cat /app/.wrangler/mcp-token`; Git Bash needs `MSYS_NO_PATHCONV=1` in front, PowerShell does not) and goes ONLY into the MCP client config. Never print it, never ask me to paste it into chat."
     : "seotracker runs on my own machine and answers only to me, so there is no sign-in. If the server answers 401, it needs the token: the setup prompt covers it; never print it or ask me to paste it into chat.";
-  return installPrompt
-    .trim()
-    .replace(/\r\n/g, "\n")
-    .replace("{{TOKEN}}", token)
-    .replaceAll("http://localhost:3001", origin);
+  return forInstall(
+    installPrompt.trim().replace(/\r\n/g, "\n").replace("{{TOKEN}}", token),
+    origin,
+    options,
+  );
 }

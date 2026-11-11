@@ -4,10 +4,26 @@ import { toast } from "sonner";
 import { t } from "@/shared/i18n";
 import { setWindowsSetting } from "@/serverFunctions/windowsSettings";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
-import type { WindowsSetting } from "@/shared/windows-settings";
+import type {
+  WindowsSetting,
+  WindowsSettings,
+} from "@/shared/windows-settings";
 import { windowsSettingsOptions } from "./settingsQueries";
 
 const KEY = windowsSettingsOptions().queryKey;
+
+/** Why the startup switch is locked: Windows holds it for a Store install,
+ * an administrator for an all-users install. */
+function autostartNote(state: WindowsSettings) {
+  if (!state.autostartManaged) return undefined;
+  return state.store
+    ? t(
+        "Bu ayarı Windows tutuyor. Değiştirmek için Windows Ayarları > Uygulamalar > Başlangıç bölümünü kullanın.",
+      )
+    : t(
+        "Bu ayar yönetici tarafından tüm kullanıcılar için açılmış. Yalnızca yönetici kapatabilir.",
+      );
+}
 
 /** Preferences come from the tray process and are confirmed before rendering. */
 export function WindowsSection() {
@@ -76,37 +92,34 @@ export function WindowsSection() {
             description={t(
               "Windows oturumu açıldığında arka planda başlar. Kapalıyken uygulamayı kendiniz açarsınız.",
             )}
-            checked={state?.autostart ?? false}
-            disabled={disabled || Boolean(state?.autostartManaged)}
-            note={
-              state?.autostartManaged
-                ? t(
-                    "Bu ayar yönetici tarafından tüm kullanıcılar için açılmış. Yalnızca yönetici kapatabilir.",
-                  )
-                : undefined
-            }
+            checked={state.autostart}
+            disabled={disabled || state.autostartManaged}
+            note={autostartNote(state)}
             onChange={(enabled) =>
               save.mutate({ setting: "autostart", enabled })
             }
           />
-          <WindowsToggle
-            label={t("Otomatik güncelleme kurulumu")}
-            description={t(
-              "Yeni sürümü indirir, doğrular ve kurar. Kapalıyken tepsi menüsünden Güncelle seçeneğiyle kurabilirsiniz.",
-            )}
-            checked={state?.autoUpdate ?? false}
-            disabled={disabled || Boolean(state?.autoUpdateManaged)}
-            note={
-              state?.autoUpdateManaged
-                ? t(
-                    "Tüm kullanıcılar için kurulumda güncellemeyi yönetici kurar. Uygulama yeni sürümü haber verir.",
-                  )
-                : undefined
-            }
-            onChange={(enabled) =>
-              save.mutate({ setting: "auto-update", enabled })
-            }
-          />
+          {/* The Store installs its own updates: nothing to switch here. */}
+          {state.store ? null : (
+            <WindowsToggle
+              label={t("Otomatik güncelleme kurulumu")}
+              description={t(
+                "Yeni sürümü indirir, doğrular ve kurar. Kapalıyken tepsi menüsünden Güncelle seçeneğiyle kurabilirsiniz.",
+              )}
+              checked={state.autoUpdate}
+              disabled={disabled || state.autoUpdateManaged}
+              note={
+                state.autoUpdateManaged
+                  ? t(
+                      "Tüm kullanıcılar için kurulumda güncellemeyi yönetici kurar. Uygulama yeni sürümü haber verir.",
+                    )
+                  : undefined
+              }
+              onChange={(enabled) =>
+                save.mutate({ setting: "auto-update", enabled })
+              }
+            />
+          )}
         </div>
       ) : null}
       {state && (status.isError || status.isFetching) ? (

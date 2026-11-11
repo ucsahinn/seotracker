@@ -3567,6 +3567,10 @@ export const ptCatalog = {
   "Otomatik güncelleme kurulumu": "Instalar atualizações automaticamente",
   "Yeni sürümü indirir, doğrular ve kurar. Kapalıyken tepsi menüsünden Güncelle seçeneğiyle kurabilirsiniz.":
     "Baixa, verifica e instala novas versões. Quando desativada, use Atualizar no menu da bandeja para instalá-las.",
+  "Bu ayarı Windows tutuyor. Değiştirmek için Windows Ayarları > Uygulamalar > Başlangıç bölümünü kullanın.":
+    "Esta definição é gerida pelo Windows. Para a alterar, abra Definições do Windows > Aplicações > Arranque.",
+  "Bu kurulum Microsoft Store'dan geldi: yeni sürümü Store kendisi indirir ve kurar. Bir sürümün Store'da yayımlanması birkaç gün sürebilir. Verileriniz ve Google bağlantınız olduğu gibi kalır.":
+    "Esta instalação veio da Microsoft Store: a Store transfere e instala as novas versões por si. Uma versão pode demorar alguns dias a aparecer na Store. Os seus dados e a ligação à Google mantêm-se.",
   "Tüm kullanıcılar için kurulumda güncellemeyi yönetici kurar. Uygulama yeni sürümü haber verir.":
     "Em instalações para todos os usuários, um administrador instala as atualizações. O app avisa você sobre novas versões.",
   "Tarayıcı sekmesini kapatmak uygulamayı durdurmaz. Tamamen kapatmak için tepsi menüsünden Çıkış deyin. Bilgisayar uyurken denetimler çalışmaz.":

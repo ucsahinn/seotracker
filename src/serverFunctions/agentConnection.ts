@@ -1,6 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
 import { ActivationRepository } from "@/server/features/activation/repositories/ActivationRepository";
-import { getInstallKind } from "@/server/lib/install-kind";
+import {
+  getInstallKind,
+  getWindowsStoreDataDir,
+} from "@/server/lib/install-kind";
 import { getOptionalEnvValue } from "@/server/lib/runtime-env";
 import { requireAuthenticatedContext } from "@/serverFunctions/middleware";
 
@@ -39,5 +42,7 @@ export const getAgentConnection = createServerFn({ method: "POST" })
       ),
       /** Decides which install path the prompts and the token help describe. */
       installKind: await getInstallKind(),
+      /** The Store build's data folder, where the prompts find the token. */
+      storeDataDir: await getWindowsStoreDataDir(),
     };
   });

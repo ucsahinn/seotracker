@@ -18,7 +18,7 @@ You are the setup agent for seotracker, a self-hosted SEO tool. Goal: connect th
 
 - Name the client you run in (Claude Code, Codex, Cursor, VS Code Copilot, Gemini CLI, other) and its version. Ask only if you cannot tell.
 - Check whether a seotracker MCP entry and the skills already exist. Keep other integrations; avoid duplicates.
-- Find out how seotracker is installed: `GET http://localhost:3001/api/health` returns `installKind`: `windows` (the Windows package: a tray icon, data under `%LOCALAPPDATA%\seowatcher`, no repository folder) or `docker` (a git checkout run with `docker compose`; use the seotracker folder). The token and skill steps below name both.
+- Find out how seotracker is installed: `GET http://localhost:3001/api/health` returns `installKind`: `windows` (the Windows package: a tray icon, data under `%LOCALAPPDATA%\seowatcher`, no repository folder) or `docker` (a git checkout run with `docker compose`; use the seotracker folder). The token and skill steps below name both. If the answer also has `storeDataDir`, this is the Microsoft Store build of the Windows package and its data folder is that value: use it for every Windows-package path and command below.
 
 ## 2. Connect the MCP server
 

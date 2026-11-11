@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { fillParts } from "@/client/features/settings/fillParts";
 import { useOrigin } from "@/client/features/settings/useOrigin";
 import { t } from "@/shared/i18n";
+import { withWindowsDataDir } from "@/shared/windowsDataDir";
 import { DOCS } from "./links";
 import {
   code,
@@ -21,10 +22,12 @@ import {
 export function CommonProblems({
   projectId,
   installKind = null,
+  storeDataDir = null,
 }: {
   projectId: string | null;
   /** null while the install kind is still unknown: no install-specific advice yet. */
   installKind?: "windows" | "docker" | null;
+  storeDataDir?: string | null;
 }) {
   const origin = useOrigin();
   const windows = installKind === "windows";
@@ -179,13 +182,19 @@ export function CommonProblems({
                 "Ajan bağlantısı bir parola (token) ister. Windows paketinde bu parola {path} dosyasındadır ({dataFolder}). Panoya kopyalamak için PowerShell (değer ekrana yazılmaz): {command} Değeri sohbete yazmayın; yapıştırdıktan sonra panoyu temizleyin (Win+V, Tümünü temizle).",
               ),
               {
-                path: code("%LOCALAPPDATA%\\seowatcher\\mcp-token"),
+                path: code(
+                  withWindowsDataDir(
+                    "%LOCALAPPDATA%\\seowatcher\\mcp-token",
+                    storeDataDir,
+                  ),
+                ),
                 dataFolder: <TrayItem name="dataFolder" />,
                 command: (
                   <Command
-                    value={
-                      '(Get-Content "$env:LOCALAPPDATA\\seowatcher\\mcp-token").Trim() | Set-Clipboard'
-                    }
+                    value={withWindowsDataDir(
+                      '(Get-Content "$env:LOCALAPPDATA\\seowatcher\\mcp-token").Trim() | Set-Clipboard',
+                      storeDataDir,
+                    )}
                   />
                 ),
               },

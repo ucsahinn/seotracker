@@ -12,10 +12,13 @@
     3. npm ci the runtime (packaging\windows\runtime: wrangler only)
     4. place node.exe (from -NodeExe, or downloaded from nodejs.org and
        verified against SHASUMS256.txt)
-    5. compile launcher\SeoWatcher.cs with the .NET Framework csc
+    5. compile the launcher with the Roslyn csc, deterministically
     6. ISCC seowatcher.iss -> out\seowatcher-setup-<version>.exe
+    7. makeappx msix\AppxManifest.xml -> out\seowatcher-<version>.msix, the
+       unsigned package uploaded to the Microsoft Store
 
-  Runs on a developer machine or in GitHub Actions (windows-latest).
+  Runs on a developer machine or in GitHub Actions (windows-latest). Needs
+  Visual Studio Build Tools (csc), Inno Setup 6 and the Windows SDK (makeappx).
 
 .PARAMETER Version
   Package version. Must match the version in package.json.
@@ -37,6 +40,19 @@
 .PARAMETER NoInstaller
   Stop after staging; do not run Inno Setup.
 
+.PARAMETER NoMsix
+  Do not build the Microsoft Store package.
+
+.PARAMETER MsixIdentityName
+  Package/Identity/Name from the Partner Center "Product identity" page. The
+  default is a placeholder that only builds a package for local inspection.
+
+.PARAMETER MsixPublisher
+  Package/Identity/Publisher from the same page ("CN=...").
+
+.PARAMETER MsixPublisherDisplayName
+  Package/Properties/PublisherDisplayName from the same page.
+
 .PARAMETER OutputDirectory
   Optional output folder below packaging/windows/out, for example when another
   staged runtime is running. Builds must run sequentially: the runtime and cache are shared.
@@ -49,7 +65,11 @@ param(
   [string]$VcRedistExe,
   [string]$OutputDirectory,
   [switch]$SkipAppBuild,
-  [switch]$NoInstaller
+  [switch]$NoInstaller,
+  [switch]$NoMsix,
+  [string]$MsixIdentityName = "seowatcher.dev",
+  [string]$MsixPublisher = "CN=seowatcher-dev",
+  [string]$MsixPublisherDisplayName = "seowatcher"
 )
 
 $ErrorActionPreference = "Stop"
@@ -240,14 +260,17 @@ foreach ($name in $crtNames) {
 
 # 5. Launcher -------------------------------------------------------------------
 Step "launcher (csc)"
-$csc = Get-ChildItem "C:\Windows\Microsoft.NET\Framework64\v4*\csc.exe" | Select-Object -First 1
-if (-not $csc) { throw "csc.exe (.NET Framework 4.x) not found" }
+. (Join-Path $here "launcher\compiler.ps1")
+$csc = Get-LauncherCompiler
 $assemblyInfo = Join-Path $out "AssemblyInfo.cs"
 $fileVersion = ($Version -replace "[^0-9.]", "")
 if (-not $fileVersion) { $fileVersion = "0.0.0" }
+# Antivirus reputation checks weigh an executable with empty version fields
+# as anonymous: every field Explorer shows under Details is filled.
 @"
 using System.Reflection;
 [assembly: AssemblyTitle("seowatcher")]
+[assembly: AssemblyCompany("seowatcher")]
 [assembly: AssemblyProduct("seowatcher")]
 [assembly: AssemblyDescription("seowatcher: Search Console, Analytics and site audits on your own computer")]
 [assembly: AssemblyCopyright("MIT License")]
@@ -258,19 +281,15 @@ using System.Reflection;
 $launcherExe = Join-Path $stage "seowatcher.exe"
 $launcherIcon = Join-Path $here "icon\seowatcher.ico"
 $launcherManifest = Join-Path $here "launcher\app.manifest"
-$launcherSource = Join-Path $here "launcher\SeoWatcher.cs"
+# /deterministic: the same sources and compiler give the same bytes, so one
+# version is one file hash however many times it is rebuilt.
 $cscArgs = @(
-  "/nologo", "/target:winexe", "/optimize+", "/warn:3",
+  "/nologo", "/target:winexe", "/optimize+", "/warn:3", "/deterministic",
   "/out:$launcherExe",
   "/win32icon:$launcherIcon",
-  "/win32manifest:$launcherManifest",
-  "/r:System.Windows.Forms.dll", "/r:System.Drawing.dll",
-  $launcherSource,
-  (Join-Path $here "launcher\StartupProgress.cs"),
-  (Join-Path $here "launcher\WindowsSettingsBridge.cs"),
-  $assemblyInfo
-)
-$cscOutput = & $csc.FullName @cscArgs 2>&1
+  "/win32manifest:$launcherManifest"
+) + (Get-LauncherReferences) + (Get-LauncherSources) + @($assemblyInfo)
+$cscOutput = & $csc @cscArgs 2>&1
 $cscExit = $LASTEXITCODE
 if ($cscOutput) { $cscOutput | ForEach-Object { Write-Host $_ } }
 if ($cscExit -ne 0) { throw "csc failed (exit $cscExit)" }
@@ -282,21 +301,67 @@ $stageMb = [math]::Round((Get-ChildItem $stage -Recurse -File | Measure-Object L
 Write-Host "staged: $stage ($stageMb MB)"
 
 # 6. Installer -------------------------------------------------------------------
-if ($NoInstaller) { Write-Host "skipping installer (-NoInstaller)"; exit 0 }
+if ($NoInstaller) { Write-Host "skipping installer (-NoInstaller)" } else {
+  Step "installer (Inno Setup)"
+  $iscc = Get-Command ISCC.exe -ErrorAction SilentlyContinue
+  if ($iscc) { $iscc = $iscc.Source } else {
+    $iscc = @(
+      "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe",
+      "$env:ProgramFiles\Inno Setup 6\ISCC.exe",
+      "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe"
+    ) | Where-Object { Test-Path $_ } | Select-Object -First 1
+  }
+  if (-not $iscc) {
+    throw "Inno Setup 6 not found. Install it (winget install JRSoftware.InnoSetup) or rerun with -NoInstaller."
+  }
+  $iss = Join-Path $here "seowatcher.iss"
+  Invoke-Tool "`"$iscc`" /Q `"/DAppVersion=$Version`" `"/DStageDir=$stage`" `"/O$out`" `"$iss`""
+  $setup = Get-ChildItem $out -Filter "seowatcher-setup-*.exe" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+  Write-Host ("installer: {0} ({1} MB)" -f $setup.FullName, [math]::Round($setup.Length / 1MB))
+}
 
-Step "installer (Inno Setup)"
-$iscc = Get-Command ISCC.exe -ErrorAction SilentlyContinue
-if ($iscc) { $iscc = $iscc.Source } else {
-  $iscc = @(
-    "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe",
-    "$env:ProgramFiles\Inno Setup 6\ISCC.exe",
-    "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe"
-  ) | Where-Object { Test-Path $_ } | Select-Object -First 1
+# 7. Microsoft Store package -------------------------------------------------------
+# The same staged files as the installer, packed straight from the stage (no
+# second copy of the executables). The package is not signed here: the Store
+# signs what it publishes, which is the point of this channel.
+if ($NoMsix) { Write-Host "skipping Store package (-NoMsix)"; exit 0 }
+
+Step "Store package (MSIX)"
+$makeappx = Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin\*\x64\makeappx.exe" -ErrorAction SilentlyContinue |
+  Sort-Object { [version]$_.Directory.Parent.Name } -Descending | Select-Object -First 1
+if (-not $makeappx) { throw "makeappx.exe (Windows SDK) not found. Install the Windows SDK or rerun with -NoMsix." }
+if ($Version -notmatch '^\d+\.\d+\.\d+$') { throw "A Store package needs an x.y.z version, got $Version" }
+$msixSource = Join-Path $here "msix"
+$msixWork = Join-Path $out "msix"
+New-Item -ItemType Directory -Force $msixWork | Out-Null
+$manifest = Get-Content (Join-Path $msixSource "AppxManifest.xml") -Raw -Encoding UTF8
+foreach ($field in @{
+    IdentityName = $MsixIdentityName; Publisher = $MsixPublisher
+    PublisherDisplayName = $MsixPublisherDisplayName
+    # The Store reserves the fourth part of the version for itself.
+    Version = "$Version.0"
+  }.GetEnumerator()) {
+  $manifest = $manifest.Replace("{{$($field.Key)}}", [Security.SecurityElement]::Escape($field.Value))
 }
-if (-not $iscc) {
-  throw "Inno Setup 6 not found. Install it (winget install JRSoftware.InnoSetup) or rerun with -NoInstaller."
+$manifestPath = Join-Path $msixWork "AppxManifest.xml"
+[IO.File]::WriteAllText($manifestPath, $manifest, (New-Object Text.UTF8Encoding $false))
+# The Visual C++ installer is for the Inno install, where it can ask for an
+# administrator. A Store package cannot run it; the engine carries its own
+# copy of the runtime DLLs (step 4c).
+$mapping = @("[Files]", "`"$manifestPath`" `"AppxManifest.xml`"")
+$mapping += Get-ChildItem (Join-Path $msixSource "assets") -File | ForEach-Object { "`"$($_.FullName)`" `"assets\$($_.Name)`"" }
+$mapping += Get-ChildItem $stage -Recurse -File |
+  ForEach-Object { @{ Path = $_.FullName; Name = $_.FullName.Substring($stage.Length + 1) } } |
+  Where-Object { -not $_.Name.StartsWith("redist\", [StringComparison]::OrdinalIgnoreCase) } |
+  ForEach-Object { "`"$($_.Path)`" `"$($_.Name)`"" }
+$mappingPath = Join-Path $msixWork "mapping.txt"
+[IO.File]::WriteAllLines($mappingPath, $mapping, (New-Object Text.UTF8Encoding $false))
+$msix = Join-Path $out "seowatcher-$Version.msix"
+# makeappx prints two lines for each of some two thousand files; only a
+# failure is worth reading.
+$packOutput = & $makeappx.FullName pack /o /f $mappingPath /p $msix
+if ($LASTEXITCODE -ne 0) {
+  $packOutput | Select-Object -Last 40 | ForEach-Object { Write-Host $_ }
+  throw "makeappx failed (exit $LASTEXITCODE)"
 }
-$iss = Join-Path $here "seowatcher.iss"
-Invoke-Tool "`"$iscc`" /Q `"/DAppVersion=$Version`" `"/DStageDir=$stage`" `"/O$out`" `"$iss`""
-$setup = Get-ChildItem $out -Filter "seowatcher-setup-*.exe" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-Write-Host ("installer: {0} ({1} MB)" -f $setup.FullName, [math]::Round($setup.Length / 1MB))
+Write-Host ("Store package: {0} ({1} MB), identity {2}" -f $msix, [math]::Round((Get-Item $msix).Length / 1MB), $MsixIdentityName)

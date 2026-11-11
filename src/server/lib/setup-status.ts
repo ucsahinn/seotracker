@@ -1,5 +1,9 @@
 import { count } from "drizzle-orm";
-import { getInstallKind, type InstallKind } from "@/server/lib/install-kind";
+import {
+  getInstallKind,
+  getWindowsStoreDataDir,
+  type InstallKind,
+} from "@/server/lib/install-kind";
 import { version } from "../../../package.json";
 import { db } from "@/db";
 import { projects } from "@/db/schema";
@@ -26,6 +30,11 @@ type SelfHostSetupStatus = {
   authMode: string;
   /** "windows" for the Windows package, "docker" for everything else. */
   installKind: InstallKind;
+  /**
+   * The data folder of the Microsoft Store build of the Windows package, null
+   * for every other install. An agent reads the MCP token from this folder.
+   */
+  storeDataDir: string | null;
   /**
    * The port this instance runs on and the one it was set up for; `fallback`
    * is set when the Windows launcher found the configured port taken.
@@ -134,6 +143,7 @@ export async function getSelfHostSetupStatus(options?: {
     version,
     authMode: getAuthMode(env.AUTH_MODE),
     installKind,
+    storeDataDir: await getWindowsStoreDataDir(),
     port: await getPortFacts(options?.requestUrl, installKind),
     checks,
   };

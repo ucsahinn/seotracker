@@ -16,7 +16,7 @@ export const Route = createFileRoute("/_app/support")({
 });
 
 function SupportPage() {
-  const { diagnostics, installKind } = useSetupSnapshot();
+  const { diagnostics, installKind, storeDataDir } = useSetupSnapshot();
   const windows = installKind === "windows";
   const pending = installKind === null && diagnostics.isPending;
   const projectId =
@@ -36,7 +36,11 @@ function SupportPage() {
 
       <SetupStatusPanel />
 
-      <CommonProblems projectId={projectId} installKind={installKind} />
+      <CommonProblems
+        projectId={projectId}
+        installKind={installKind}
+        storeDataDir={storeDataDir}
+      />
 
       <SystemLimitsSection />
 

@@ -56,6 +56,9 @@ export function useSetupSnapshot() {
      * screen guesses Docker for a Windows user. */
     installKind:
       diagnostics.data?.setup.installKind ?? update.data?.installKind ?? null,
+    /** Set on the Microsoft Store build only: where its data and token are. */
+    storeDataDir:
+      diagnostics.data?.setup.storeDataDir ?? update.data?.storeDataDir ?? null,
     googleReady,
     isFetching,
     refresh,

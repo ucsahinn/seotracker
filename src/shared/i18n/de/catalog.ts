@@ -3581,6 +3581,10 @@ export const deCatalog = {
   "Otomatik güncelleme kurulumu": "Updates automatisch installieren",
   "Yeni sürümü indirir, doğrular ve kurar. Kapalıyken tepsi menüsünden Güncelle seçeneğiyle kurabilirsiniz.":
     "Lädt neue Versionen herunter, prüft sie und installiert sie. Ist die Option aus, können Sie das Update über Aktualisieren im Infobereichsmenü installieren.",
+  "Bu ayarı Windows tutuyor. Değiştirmek için Windows Ayarları > Uygulamalar > Başlangıç bölümünü kullanın.":
+    "Diese Einstellung wird von Windows verwaltet. Ändern Sie sie in den Windows-Einstellungen unter Apps > Autostart.",
+  "Bu kurulum Microsoft Store'dan geldi: yeni sürümü Store kendisi indirir ve kurar. Bir sürümün Store'da yayımlanması birkaç gün sürebilir. Verileriniz ve Google bağlantınız olduğu gibi kalır.":
+    "Diese Installation stammt aus dem Microsoft Store: Der Store lädt neue Versionen selbst herunter und installiert sie. Es kann einige Tage dauern, bis eine Version im Store erscheint. Ihre Daten und Ihre Google-Verbindung bleiben erhalten.",
   "Tüm kullanıcılar için kurulumda güncellemeyi yönetici kurar. Uygulama yeni sürümü haber verir.":
     "Bei einer Installation für alle Benutzer installiert ein Administrator Updates. Die App informiert Sie über neue Versionen.",
   "Tarayıcı sekmesini kapatmak uygulamayı durdurmaz. Tamamen kapatmak için tepsi menüsünden Çıkış deyin. Bilgisayar uyurken denetimler çalışmaz.":

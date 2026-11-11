@@ -14,6 +14,7 @@ beforeEach(() => {
     clientLabel: null,
     tokenConfigured: false,
     installKind: "windows",
+    storeDataDir: null,
   });
 });
 it("keeps verification waiting when the operator switches to their agent", async () => {

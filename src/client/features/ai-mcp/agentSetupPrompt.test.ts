@@ -90,6 +90,24 @@ describe("agent setup prompt", () => {
     );
   });
 
+  // The Store build keeps its data in its package folder: an agent sent to
+  // the installer's folder finds no token file there.
+  it("names the Store build's folder in every shell spelling", () => {
+    const folder = String.raw`Packages\Pub.seowatcher_abc\LocalCache\seowatcher`;
+    const prompt = getAgentSetupPrompt(ORIGIN, {
+      tokenConfigured: true,
+      installKind: "windows",
+      storeDataDir: `%LOCALAPPDATA%\\${folder}`,
+    });
+
+    expect(prompt).toContain(`%LOCALAPPDATA%\\${folder}\\mcp-token`);
+    expect(prompt).toContain(`$env:LOCALAPPDATA\\${folder}\\mcp-token`);
+    expect(prompt).toContain(
+      `$LOCALAPPDATA/${folder.replaceAll("\\", "/")}/mcp-token`,
+    );
+    expect(prompt).not.toMatch(/LOCALAPPDATA[%/\\]+seowatcher/);
+  });
+
   // A tool name that does not exist sends the agent guessing.
   it("names only real seotracker tools", () => {
     const mentioned = [

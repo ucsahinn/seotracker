@@ -3,13 +3,18 @@ import { CopyButton } from "@/client/components/CopyButton";
 import { fillParts } from "@/client/features/settings/fillParts";
 import { captureClientEvent } from "@/client/lib/observability";
 import { t } from "@/shared/i18n";
+import { withWindowsDataDir } from "@/shared/windowsDataDir";
 export function ManualAgentConnection({
   mcpUrl,
   connection,
 }: {
   mcpUrl: string;
   connection:
-    | { tokenConfigured: boolean; installKind: "windows" | "docker" }
+    | {
+        tokenConfigured: boolean;
+        installKind: "windows" | "docker";
+        storeDataDir: string | null;
+      }
     | undefined;
 }) {
   return (
@@ -50,16 +55,22 @@ export function ManualAgentConnection({
                     { menu: <strong>{t("Veri klasörünü aç")}</strong> },
                   )}
                 </p>
-                <CodeLine>%LOCALAPPDATA%\seowatcher\mcp-token</CodeLine>
+                <CodeLine>
+                  {withWindowsDataDir(
+                    "%LOCALAPPDATA%\\seowatcher\\mcp-token",
+                    connection.storeDataDir,
+                  )}
+                </CodeLine>
                 <p>
                   {t(
                     "Panoya kopyalamak için PowerShell (değer ekrana yazılmaz):",
                   )}
                 </p>
                 <CodeLine>
-                  (Get-Content
-                  &quot;$env:LOCALAPPDATA\seowatcher\mcp-token&quot;).Trim() |
-                  Set-Clipboard
+                  {withWindowsDataDir(
+                    '(Get-Content "$env:LOCALAPPDATA\\seowatcher\\mcp-token").Trim() | Set-Clipboard',
+                    connection.storeDataDir,
+                  )}
                 </CodeLine>
                 <p>
                   {t(

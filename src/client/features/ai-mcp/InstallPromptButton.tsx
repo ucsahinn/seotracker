@@ -38,6 +38,7 @@ export function InstallPromptButton({
       value={getInstallPrompt(origin, {
         tokenConfigured: connection.data?.tokenConfigured,
         installKind: connection.data?.installKind,
+        storeDataDir: connection.data?.storeDataDir,
       })}
       label={label}
       successMessage={t("Kurulum komutu kopyalandı")}

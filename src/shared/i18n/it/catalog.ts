@@ -3575,6 +3575,10 @@ export const itCatalog = {
   "Otomatik güncelleme kurulumu": "Installa gli aggiornamenti automaticamente",
   "Yeni sürümü indirir, doğrular ve kurar. Kapalıyken tepsi menüsünden Güncelle seçeneğiyle kurabilirsiniz.":
     "Scarica, verifica e installa le nuove versioni. Quando è disattivata, usa Aggiorna nel menu della barra delle applicazioni per installarle.",
+  "Bu ayarı Windows tutuyor. Değiştirmek için Windows Ayarları > Uygulamalar > Başlangıç bölümünü kullanın.":
+    "Questa impostazione è gestita da Windows. Per modificarla, aprite Impostazioni di Windows > App > Avvio.",
+  "Bu kurulum Microsoft Store'dan geldi: yeni sürümü Store kendisi indirir ve kurar. Bir sürümün Store'da yayımlanması birkaç gün sürebilir. Verileriniz ve Google bağlantınız olduğu gibi kalır.":
+    "Questa installazione proviene dal Microsoft Store: lo Store scarica e installa da solo le nuove versioni. Una versione può richiedere alcuni giorni per comparire nello Store. I vostri dati e la connessione a Google restano invariati.",
   "Tüm kullanıcılar için kurulumda güncellemeyi yönetici kurar. Uygulama yeni sürümü haber verir.":
     "Per le installazioni per tutti gli utenti, un amministratore installa gli aggiornamenti. L'app ti avvisa delle nuove versioni.",
   "Tarayıcı sekmesini kapatmak uygulamayı durdurmaz. Tamamen kapatmak için tepsi menüsünden Çıkış deyin. Bilgisayar uyurken denetimler çalışmaz.":

@@ -3576,6 +3576,10 @@ export const frCatalog = {
   "Otomatik güncelleme kurulumu": "Installer les mises à jour automatiquement",
   "Yeni sürümü indirir, doğrular ve kurar. Kapalıyken tepsi menüsünden Güncelle seçeneğiyle kurabilirsiniz.":
     "Télécharge, vérifie et installe les nouvelles versions. Lorsque l'option est désactivée, utilisez Mettre à jour dans le menu de la zone de notification pour les installer.",
+  "Bu ayarı Windows tutuyor. Değiştirmek için Windows Ayarları > Uygulamalar > Başlangıç bölümünü kullanın.":
+    "Ce réglage est géré par Windows. Pour le modifier, ouvrez Paramètres Windows > Applications > Démarrage.",
+  "Bu kurulum Microsoft Store'dan geldi: yeni sürümü Store kendisi indirir ve kurar. Bir sürümün Store'da yayımlanması birkaç gün sürebilir. Verileriniz ve Google bağlantınız olduğu gibi kalır.":
+    "Cette installation provient du Microsoft Store : le Store télécharge et installe lui-même les nouvelles versions. Une version peut mettre quelques jours à apparaître dans le Store. Vos données et votre connexion Google restent inchangées.",
   "Tüm kullanıcılar için kurulumda güncellemeyi yönetici kurar. Uygulama yeni sürümü haber verir.":
     "Pour les installations pour tous les utilisateurs, un administrateur installe les mises à jour. L'application vous informe des nouvelles versions.",
   "Tarayıcı sekmesini kapatmak uygulamayı durdurmaz. Tamamen kapatmak için tepsi menüsünden Çıkış deyin. Bilgisayar uyurken denetimler çalışmaz.":

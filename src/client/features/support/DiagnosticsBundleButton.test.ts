@@ -14,6 +14,7 @@ describe("buildDiagnosticsSummary", () => {
         version: "0.7.1",
         authMode: "local_noauth",
         installKind: "windows",
+        storeDataDir: null,
         port: {
           configured: 8787,
           actual: 8788,

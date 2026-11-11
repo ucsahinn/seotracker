@@ -84,6 +84,8 @@ Değişkenlerin Windows karşılığı:
 
 Uygulama hangi kurulumda çalıştığını `INSTALL_KIND` ile bilir: başlatıcı `windows` yazar, Docker'da tanımsızdır ve `docker` sayılır. `/api/health` yanıtındaki `installKind` alanı bunu gösterir; elle ayarlamayın.
 
+Microsoft Store'dan kurulan paket de `windows` türündedir; farkı, verinin `%LOCALAPPDATA%\seowatcher` yerine `%LOCALAPPDATA%\Packages\<paket ailesi adı>\LocalCache\seowatcher` klasöründe durması ve güncellemeyi Store'un kurmasıdır. Başlatıcı bu klasörü `WINDOWS_STORE_DATA_DIR` olarak `server.env` dosyasına yazar; `/api/health` yanıtındaki `storeDataDir` alanı onu gösterir (diğer kurulumlarda `null`). Yukarıdaki tablodaki dosyalar o klasördedir.
+
 ## Neden `.env.example` yok
 
 Vardı ve yanlıştı: upstream projeden gelen dosya `DATAFORSEO_API_KEY`,

@@ -1,17 +1,25 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { UpdateCheckService } from "@/server/features/updates/UpdateCheckService";
-import { getInstallKind } from "@/server/lib/install-kind";
+import {
+  getInstallKind,
+  getWindowsStoreDataDir,
+} from "@/server/lib/install-kind";
 import { requireAuthenticatedContext } from "@/serverFunctions/middleware";
 
 /**
  * How this install was set up decides what "update" means on the Settings
  * page: the Windows package (its launcher writes INSTALL_KIND=windows into
  * server.env) updates itself from the tray icon, everything else is a git
- * checkout updated with a docker compose command.
+ * checkout updated with a docker compose command. The Store build of the
+ * Windows package (storeDataDir is set) is updated by the Microsoft Store.
  */
 async function withInstallKind<T extends object>(status: T) {
-  return { ...status, installKind: await getInstallKind() };
+  return {
+    ...status,
+    installKind: await getInstallKind(),
+    storeDataDir: await getWindowsStoreDataDir(),
+  };
 }
 
 /**

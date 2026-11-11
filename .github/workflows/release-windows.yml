@@ -1,8 +1,9 @@
 name: Windows package
 
 # Builds the one-click Windows installer (packaging/windows) and attaches it
-# to the GitHub release of the pushed tag. Also runnable by hand to get the
-# installer as a workflow artifact without cutting a release.
+# to the GitHub release of the pushed tag, and builds the Microsoft Store
+# package as a workflow artifact. Also runnable by hand to get both without
+# cutting a release.
 
 on:
   workflow_dispatch:
@@ -74,7 +75,34 @@ jobs:
         shell: pwsh
         env:
           VERSION: ${{ steps.version.outputs.version }}
-        run: ./packaging/windows/build.ps1 -Version $env:VERSION
+          # The Store identity reserved in Partner Center (docs/CODE_SIGNING.md).
+          # Not secrets: the package manifest carries them in the clear.
+          MSIX_IDENTITY_NAME: ${{ vars.MSIX_IDENTITY_NAME }}
+          MSIX_PUBLISHER: ${{ vars.MSIX_PUBLISHER }}
+          MSIX_PUBLISHER_DISPLAY_NAME: ${{ vars.MSIX_PUBLISHER_DISPLAY_NAME }}
+        run: |
+          # Without the identity the package is still built with a placeholder,
+          # so a broken manifest fails here, but it is not offered for upload.
+          $identity = @{}
+          if ($env:MSIX_IDENTITY_NAME) {
+            if (-not $env:MSIX_PUBLISHER -or -not $env:MSIX_PUBLISHER_DISPLAY_NAME) { throw "MSIX_PUBLISHER and MSIX_PUBLISHER_DISPLAY_NAME must be set with MSIX_IDENTITY_NAME" }
+            $identity = @{
+              MsixIdentityName = $env:MSIX_IDENTITY_NAME
+              MsixPublisher = $env:MSIX_PUBLISHER
+              MsixPublisherDisplayName = $env:MSIX_PUBLISHER_DISPLAY_NAME
+            }
+          }
+          ./packaging/windows/build.ps1 -Version $env:VERSION @identity
+
+      # Uploaded by hand to the Microsoft Store, which signs it. Never attached
+      # to the GitHub release: an unsigned package cannot be installed from there.
+      - name: Upload Store package
+        if: ${{ vars.MSIX_IDENTITY_NAME != '' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: seowatcher-${{ steps.version.outputs.version }}-store
+          path: packaging/windows/out/seowatcher-*.msix
+          if-no-files-found: error
 
       - name: Upload unsigned installer for signing
         id: unsigned

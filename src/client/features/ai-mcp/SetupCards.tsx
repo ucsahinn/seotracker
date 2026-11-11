@@ -35,6 +35,7 @@ type AgentChoice = (typeof AGENT_CHOICES)[number]["id"];
 type ConnectionFacts = {
   tokenConfigured: boolean;
   installKind: "windows" | "docker";
+  storeDataDir: string | null;
 };
 
 /*
@@ -62,6 +63,7 @@ export function ConnectAgentCard({
   const facts = {
     tokenConfigured: connection?.tokenConfigured,
     installKind: connection?.installKind,
+    storeDataDir: connection?.storeDataDir,
   };
   const prompt = getAgentSetupPrompt(origin, facts);
   const codexPrompt = getCodexSetupPrompt(origin, facts);
