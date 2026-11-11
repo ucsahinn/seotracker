@@ -45,6 +45,15 @@ if ($LASTEXITCODE -ne 0) { throw 'Event notification test compilation failed.' }
 & $notificationExe
 if ($LASTEXITCODE -ne 0) { throw 'Event notification tests failed.' }
 Remove-Item -LiteralPath $notificationExe
+# The packaged build's adoption of an installer's data, between temp folders:
+# the only part of the Store path that can run without a package.
+$storeTests = Join-Path $launcherDir 'StorePackage.Tests.cs'
+$storeExe = Join-Path $testDir 'store-package-tests.exe'
+& $compiler /nologo /target:exe /main:SeoWatcher.StorePackageTests "/out:$storeExe" @launcherReferences @launcherSources $storeTests
+if ($LASTEXITCODE -ne 0) { throw 'Store package test compilation failed.' }
+& $storeExe
+if ($LASTEXITCODE -ne 0) { throw 'Store package tests failed.' }
+Remove-Item -LiteralPath $storeExe
 $pnpmCommand = (Get-Command pnpm.cmd -ErrorAction Stop).Source
 & $pnpmCommand exec tsx (Join-Path $PSScriptRoot 'probe-windows-settings.ts') $testExe
 if ($LASTEXITCODE -ne 0) { throw 'TypeScript/native bridge consumer probe failed.' }

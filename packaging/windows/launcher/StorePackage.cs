@@ -78,7 +78,13 @@ namespace SeoWatcher
         {
             if (!IsPackaged) return null;
             string legacy = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Program.AppName);
-            string target = DataRoot;
+            return AdoptData(legacy, DataRoot);
+        }
+
+        /// <summary>The copy itself, apart from where the two folders are, so
+        /// that it can run without a package (StorePackage.Tests.cs).</summary>
+        internal static string AdoptData(string legacy, string target)
+        {
             string data = Path.Combine(target, "data");
             try
             {

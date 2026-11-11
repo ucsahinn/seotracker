@@ -262,7 +262,7 @@ Mock veri hiç kullanılmadı. Tek proje: `df26abab-fa39-4133-96cc-a5627d8b80ad`
 - Aynı projede bir denetim hız ölçümü aşamasındayken ikinci bir denetim başlatılırsa uyarı vermek: ikisi PageSpeed kotasını paylaşıp birbirini yaklaşık yarı hıza düşürüyor (212 sayfa tek başına 24 dakika, iki denetim yan yana 48 dakika sürdü).
 - Rapor ve bağlantı yazarını MCP `clientInfo.name` yerine HTTP `User-Agent` başlığından türetmek: istemci adı ajanın kendi bildirimi, başlık sunucunun gördüğü değer. Düşük öncelik.
 
-### 2026-11-11 hata denetimi turu (commit'lenmedi; çalışma kopyasında)
+### 2026-11-11 hata denetimi turu (commit `7b95a90f`)
 
 Tüm kod tabanı okundu: sunucu, Google servisleri ve MCP araçları, tarama
 motoru, denetim kuralları, arayüz, CI. Doğrulama: `pnpm run ci:check` temiz,
@@ -319,12 +319,12 @@ Yapılanlar:
 
 Açık kalanlar:
 
-| İş                                                              | Durum                 | Not                                                                                                  |
-| --------------------------------------------------------------- | --------------------- | ---------------------------------------------------------------------------------------------------- |
-| 366 kullanılmayan çeviri anahtarı                               | **karar bekliyor**    | Veritabanında saklı Türkçe cümleler bu anahtarlarla çevriliyor olabilir; silmeden önce onay gerekir. |
-| Ücretli veri sütunlarının şemadan sökülmesi (`keyword_metrics`) | **karar bekliyor**    | Veritabanı göçü ister. Araçlar artık bu sütunları yazmıyor ve göstermiyor.                           |
-| Denetim geçmişinin bellek kullanımı                             | **açık**              | Tam çözüm şema değişikliği ister; ön süzme eklendi.                                                  |
-| Kayıtlı kelimeler ekranı tüm arşivi okur                        | **bilerek yapılmadı** | Eşleşme anahtarı SQL'de üretilemiyor; tek kullanıcılı yerel SQLite'ta yalnız hız konusu.             |
-| Hızlı süzgeçlerin başka süzgeçleri sıfırlaması                  | **karar bekliyor**    | Radyo düğmesi davranışı bilerek olabilir.                                                            |
-| İki `window.confirm` kutusu                                     | **bilerek yapılmadı** | İşlevsel olarak doğru; yalnız görünüm.                                                               |
-| Store paketi yolları                                            | **açık**              | Hiçbir makinede koşmadı; ilk yayında CI adımı izlenmeli.                                             |
+| İş                                                              | Durum                 | Not                                                                                                                                                                                                                                                                                      |
+| --------------------------------------------------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 366 kullanılmayan çeviri anahtarı                               | **karar bekliyor**    | Veritabanında saklı Türkçe cümleler bu anahtarlarla çevriliyor olabilir; silmeden önce onay gerekir.                                                                                                                                                                                     |
+| Ücretli veri sütunlarının şemadan sökülmesi (`keyword_metrics`) | **karar bekliyor**    | Veritabanı göçü ister. Araçlar artık bu sütunları yazmıyor ve göstermiyor.                                                                                                                                                                                                               |
+| Denetim geçmişinin bellek kullanımı                             | **açık**              | Tam çözüm şema değişikliği ister; ön süzme eklendi.                                                                                                                                                                                                                                      |
+| Kayıtlı kelimeler ekranı tüm arşivi okur                        | **bilerek yapılmadı** | Eşleşme anahtarı SQL'de üretilemiyor; tek kullanıcılı yerel SQLite'ta yalnız hız konusu.                                                                                                                                                                                                 |
+| Hızlı süzgeçlerin başka süzgeçleri sıfırlaması                  | **karar bekliyor**    | Radyo düğmesi davranışı bilerek olabilir.                                                                                                                                                                                                                                                |
+| İki `window.confirm` kutusu                                     | **bilerek yapılmadı** | İşlevsel olarak doğru; yalnız görünüm.                                                                                                                                                                                                                                                   |
+| Store paketi yolları                                            | **kısmen**            | Paketsiz çalışabilen kısımlar denendi: veri devralma (`StorePackage.Tests.cs`, 4 test) ve sunucunun `WINDOWS_STORE_DATA_DIR` ile `wrangler dev` altında açılması. Paket kimliği, StartupTask ve gerçek kurulum yalnız CI adımında ya da Store gönderiminde koşar; ilk yayında izlenmeli. |
