@@ -73,6 +73,12 @@ namespace SeoWatcher
             WriteFixture(Path.Combine(Paths.AppDir, "dist", "seotracker_audit", "index.js"), "audit bundle");
             WriteFixture(Path.Combine(Paths.AppDir, "dist", "client", "index.html"), "assets");
             WriteFixture(Path.Combine(Paths.AppDir, "drizzle", "0001.sql"), "migration");
+            // What an earlier version left in the per-user copy: a migration
+            // the package no longer ships, and wrangler's own scratch folder.
+            string stale = Path.Combine(Paths.DataRoot, "runtime", "drizzle", "0000_renamed.sql");
+            string scratch = Path.Combine(Paths.DataRoot, "runtime", "dist", "server", ".wrangler", "tmp.txt");
+            WriteFixture(stale, "old migration");
+            WriteFixture(scratch, "scratch");
             var server = new Server();
             typeof(Server).GetMethod("WriteServerEnv", BindingFlags.Instance | BindingFlags.NonPublic)
                 .Invoke(server, new object[] { "synthetic-instance-key", "synthetic-mcp-token" });
@@ -82,6 +88,8 @@ namespace SeoWatcher
             Assert(File.ReadAllText(Path.Combine(runtime, "dist", "server", "index.js")) == "main bundle", "main bundle missing");
             Assert(File.Exists(Path.Combine(runtime, "dist", "client", "index.html")), "relative assets missing");
             Assert(File.Exists(Path.Combine(runtime, "drizzle", "0001.sql")), "relative migrations missing");
+            Assert(!File.Exists(stale), "a migration the package no longer ships stayed in the runtime copy");
+            Assert(File.Exists(scratch), "wrangler's scratch folder was removed");
         }
 
         private static void TokenRepair()
