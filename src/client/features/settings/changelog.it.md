@@ -2,9 +2,9 @@
 
 Novità e correzioni, dalla versione più recente.
 
-## [0.8.7] Alpha — 2026-10-29
+## [0.8.8] Alpha — 2026-11-12
 
-Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.7: verifica del sito, dashboard, notifiche e sei lingue, con dati più precisi e schermate più leggibili.
+Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.8: verifica del sito, dashboard, notifiche e sei lingue, con dati più precisi e schermate più leggibili.
 
 ### ✨ In evidenza
 
@@ -79,12 +79,17 @@ Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.7: verifica del s
 - **Stato della connessione:** La scelta della proprietà è distinta dall’accesso verificato e i vecchi risultati non sono attuali dopo un cambio di account; le connessioni Google senza risposta smettono di attendere, gli errori temporanei invitano a riprovare e i servizi disattivati indicano cosa attivare.
 - **Dati salvati:** Aggiungere o rimuovere etichette non lascia modifiche a metà, le etichette in uso non si possono eliminare, lo storico resta legato alla proprietà corretta e le attività in attesa seguono l’ordine giusto.
 - **Avvio Windows:** I file di lavoro vengono salvati nella cartella utente; le connessioni riparate dell’assistente restano valide al riavvio e il controllo iniziale non si blocca più. Un collegamento inutilizzabile alle impostazioni Windows viene nascosto. Le notifiche ricevute mentre eri assente ora compaiono quando torni nell’app.
+- **Sitemap e robots.txt:** Nei siti che reindirizzano all'indirizzo con www, le regole del robots.txt ora vengono applicate; le sitemap compresse vengono lette e una sitemap letta solo in parte non è considerata completa.
+- **Tabelle della verifica:** I valori vuoti restano sempre in fondo all'ordinamento; la scheda dello stato su Google mostra il numero corretto di pagine non ancora richieste e le esportazioni seguono il filtro sullo schermo.
+- **Ricerche lunghe:** Un testo di ricerca lungo nei report e nelle parole chiave salvate non causa più un errore.
+- **Passaggi nella dashboard:** I passaggi segnati come fatti e una verifica in corso compaiono anche nella dashboard; il pulsante Aggiorna recupera i dati aggiornati da Google.
 
 ### 🔒 Sicurezza
 
 - **Componenti aggiornati:** Sono state chiuse falle di sicurezza nei componenti usati dall'app.
 - **Chiavi segrete:** Salva il file di connessione Google senza mostrarne il contenuto sullo schermo.
 - **Configurazione dell’assistente:** Le istruzioni non chiedono di mostrare la chiave di accesso sullo schermo o di incollarla in una chat.
+- **Accesso locale:** L'app risponde solo alle richieste inviate al proprio indirizzo; un altro sito web non può raggiungere l'app tramite il browser.
 
 ## [0.4.3] Alpha — 2026-10-23
 

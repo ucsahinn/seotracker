@@ -1,16 +1,16 @@
 ---
 title: Sürüm notları
-description: seowatcher 0.8.7 Alpha (29 Ekim 2026): 202 kurallı yeni site denetimi, altı dilli arayüz, bildirimler ve daha doğru Google verisi.
-updated: 2026-10-29
+description: seowatcher 0.8.8 Alpha (12 Kasım 2026): 202 kurallı yeni site denetimi, altı dilli arayüz, bildirimler ve daha doğru Google verisi.
+updated: 2026-11-12
 ---
 
-Son sürüm **0.8.7 Alpha**, 29 Ekim 2026. Güncellerken veriniz korunur.
+Son sürüm **0.8.8 Alpha**, 12 Kasım 2026. Güncellerken veriniz korunur.
 
 2.x serisinden 0.x.x Alpha serisine ilk geçiş için yeni kurulum dosyasını elle çalıştırın; eski otomatik güncelleyici küçük numarayı yeni sürüm olarak tanımaz.
 
-## 0.8.7 Alpha — 2026-10-29
+## 0.8.8 Alpha — 2026-11-12
 
-Bu giriş 0.5.0'dan 0.8.7'ye kadarki yenilikleri ve düzeltmeleri toplar: yeni site denetimi, Panel, bildirimler, altı dil, daha doğru veriler ve daha okunaklı ekranlar.
+Bu giriş 0.5.0'dan 0.8.8'e kadarki yenilikleri ve düzeltmeleri toplar: yeni site denetimi, Panel, bildirimler, altı dil, daha doğru veriler ve daha okunaklı ekranlar.
 
 ### ✨ Öne çıkanlar
 
@@ -85,12 +85,17 @@ Bu giriş 0.5.0'dan 0.8.7'ye kadarki yenilikleri ve düzeltmeleri toplar: yeni s
 - **Bağlantı durumu:** Mülk seçimi ile doğrulanmış erişim ayrı gösterilir; hesap değişince eski sonuçlar güncel sayılmaz. Yanıt vermeyen Google bağlantısı askıda kalmaz. Geçici hatada yeniden denemeniz, kapalı bir hizmette neyi açmanız gerektiği söylenir.
 - **Kayıtların korunması:** Etiket ekleme ve kaldırma yarım kalmaz, kullanılan etiket silinmez; geçmiş veriler doğru mülkle tamamlanır ve bekleyen işler doğru sırada ele alınır.
 - **Windows açılışı:** Çalışma dosyaları kullanıcı klasörüne yazılır; onarılan asistan bağlantısı yeniden açılışta korunur ve başlangıç kontrolü takılmaz. Kullanılamayan Windows ayarı bağlantısı gizlenir. Uygulamaya döndüğünüzde siz yokken gelen bildirimler de gösterilir.
+- **Site haritası ve robots.txt:** www'lu adrese yönlenen sitelerde robots.txt kuralları artık uygulanır; sıkıştırılmış site haritaları okunur ve yarım okunan site haritası tam sayılmaz.
+- **Denetim tabloları:** Boş değerler sıralamada hep sonda kalır; Google'daki durum sekmesinde henüz sorulmamış sayfa sayısı doğru görünür ve dışa aktarım ekrandaki süzgeci izler.
+- **Uzun aramalar:** Raporlarda ve kayıtlı kelimelerde uzun arama metinleri artık hata vermez.
+- **Pano adımları:** Yapıldı olarak işaretlediğiniz adımlar ve süren denetim panoda da görünür; Yenile düğmesi Google'dan güncel veriyi alır.
 
 ### 🔒 Güvenlik
 
 - **Güncel bileşenler:** Uygulamanın kullandığı bileşenlerdeki güvenlik açıkları kapatıldı.
 - **Gizli anahtarlar:** Google bağlantı dosyanızı içeriği ekranda görünmeden kaydedebilirsiniz.
 - **Asistan kurulumu:** Kurulum yönergeleri erişim anahtarınızı ekrana veya sohbete yazdırmanızı istemez.
+- **Yerel erişim:** Uygulama yalnızca kendi adresine gelen istekleri yanıtlar; başka bir web sitesinin tarayıcınız üzerinden uygulamaya ulaşması engellenir.
 
 ## 0.4.3 Alpha — 2026-10-23
 

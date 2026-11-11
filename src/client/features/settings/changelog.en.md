@@ -2,9 +2,9 @@
 
 New features and fixes, newest release first.
 
-## [0.8.7] Alpha — 2026-10-29
+## [0.8.8] Alpha — 2026-11-12
 
-This entry brings together features and fixes from 0.5.0 to 0.8.7: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
+This entry brings together features and fixes from 0.5.0 to 0.8.8: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
 
 ### ✨ Highlights
 
@@ -79,12 +79,17 @@ This entry brings together features and fixes from 0.5.0 to 0.8.7: site audits, 
 - **Connection status:** Selecting a property is separate from verified access, and old results are not treated as current after an account change; unresponsive Google connections stop waiting, temporary errors suggest trying again, and disabled services explain what to enable.
 - **Saved data:** Adding or removing labels completes in full, labels in use cannot be deleted, historical data stays tied to the right property, and waiting tasks are handled in the right order.
 - **Windows startup:** Working files are saved in your user folder; repaired assistant connections survive a restart, and the startup check no longer hangs. An unusable Windows settings link is hidden. Notifications received while you were away now pop up when you return to the app.
+- **Sitemap and robots.txt:** On sites that redirect to the www address, robots.txt rules now apply; compressed sitemaps are read, and a sitemap read only in part is not counted as complete.
+- **Audit tables:** Empty values always sort last; the Google status tab shows the right number of pages not asked about yet, and exports follow the filter on screen.
+- **Long searches:** Long search text in Reports and Saved keywords no longer causes an error.
+- **Dashboard steps:** Steps you marked as done and a running audit also show on the dashboard; the Refresh button gets current data from Google.
 
 ### 🔒 Security
 
 - **Up-to-date components:** Security holes in the components the app uses were closed.
 - **Secret keys:** Save your Google connection file without showing its contents on screen.
 - **Assistant setup:** Setup instructions do not ask you to print your access key on screen or paste it into a chat.
+- **Local access:** The app answers only requests sent to its own address; another website cannot reach the app through your browser.
 
 ## [0.4.3] Alpha — 2026-10-23
 

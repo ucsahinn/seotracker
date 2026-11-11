@@ -20,7 +20,7 @@ Todos os dados aparecem em um só painel e ficam no seu computador, não na nuve
 | Idiomas da interface | Turco, inglês, alemão, francês, italiano, português                                        |
 | Usuários             | Um só usuário, acessível apenas do seu computador                                          |
 | Onde ficam os dados  | `%LOCALAPPDATA%\seowatcher` no Windows, o volume `seotracker_data` no Docker               |
-| Versão               | 0.8.7 Alpha, 29 de outubro de 2026                                                         |
+| Versão               | 0.8.8 Alpha, 12 de novembro de 2026                                                        |
 | Tamanho              | Instalador 86 MB, instalado 313 MB                                                         |
 | Baseado em           | open-seo (every-app)                                                                       |
 

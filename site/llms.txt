@@ -3,8 +3,8 @@
 > seowatcher (GitHub ve uygulama içi adı: seotracker), Google Search Console, Google Analytics 4, kendi site tarayıcısı ve PageSpeed Insights verisini tek panelde toplayan ücretsiz, açık kaynaklı (MIT) bir SEO uygulamasıdır. Windows 10/11 (64 bit) için tek kurulum dosyası vardır; Mac ve Linux'ta Docker ile çalışır. Tek kullanıcılıdır, yalnızca kullanıcının kendi bilgisayarından erişilir, veri o bilgisayarda saklanır. Google, denetlenen siteler ve GitHub ile bağlantı kurar; isteğe bağlı yapay zekâ bağlantısı seçilen sağlayıcıya veri gönderebilir. Abonelik ve hesap yoktur. Arayüz dilleri: Türkçe, English, Deutsch, Français, Italiano, Português.
 > English: seowatcher (also named seotracker) is a free, MIT-licensed, self-hosted SEO app that reads Google Search Console, Google Analytics 4, its own crawler and PageSpeed Insights. Windows 10/11 installer; Docker on macOS/Linux. Single user, localhost only, data is stored on your machine. It connects to Google, audited sites and GitHub; optional AI integrations may send data to the selected provider. Derived from open-seo. The app's interface is available in 6 languages (Türkçe, English, Deutsch, Français, Italiano, Português); the website and this guide exist in Türkçe, English, Deutsch, Français, Italiano, Português.
 
-Hızlı bilgiler: sürüm 0.8.7 Alpha, 202 denetim kuralı, yapay zekâ asistanları için 35 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 86 MB, kurulu hali 313 MB; Visual C++ çalışma zamanı pakete dahildir.
-Quick facts: version 0.8.7 Alpha, 202 audit rules, 35 MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 86 MB, installed 313 MB; the Visual C++ runtime is bundled.
+Hızlı bilgiler: sürüm 0.8.8 Alpha, 202 denetim kuralı, yapay zekâ asistanları için 35 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 86 MB, kurulu hali 313 MB; Visual C++ çalışma zamanı pakete dahildir.
+Quick facts: version 0.8.8 Alpha, 202 audit rules, 35 MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 86 MB, installed 313 MB; the Visual C++ runtime is bundled.
 
 ## Ana bağlantılar / Main links
 - [seowatcher (Türkçe)](https://seowatcher.io/): Search Console, Analytics 4 ve site denetimi tek uygulamada. Ücretsiz ve açık kaynak. Yerel veri saklama; yapay zekâ bağlantısı isteğe bağlı.
@@ -55,7 +55,7 @@ Quick facts: version 0.8.7 Alpha, 202 audit rules, 35 MCP tools and 6 ready-made
 - [Denetim kuralları](https://seowatcher.io/kilavuz/denetim-kurallari/): Site denetiminin baktığı 202 kuralın tam listesi. Her kuralın ne demek olduğunu ve nasıl düzelteceğinizi buradan okursunuz.
 - [Ajan kurulumu](https://seowatcher.io/kilavuz/ajan-kurulumu/): Ajanı güvenle bağlayın, yeni araç çağrısını doğrulayın ve SEO becerilerini kullanın.
 - [Sorun giderme](https://seowatcher.io/kilavuz/sorun-giderme/): Windows uyarıları, Google bağlantı hataları, kota ve takılan denetimler için belirti, neden ve çözümü bulun. Boş grafik ve erişim sorunlarını giderin.
-- [Sürüm notları](https://seowatcher.io/kilavuz/surum-notlari/): seowatcher 0.8.7 Alpha (29 Ekim 2026): 202 kurallı yeni site denetimi, altı dilli arayüz, bildirimler ve daha doğru Google verisi.
+- [Sürüm notları](https://seowatcher.io/kilavuz/surum-notlari/): seowatcher 0.8.8 Alpha (12 Kasım 2026): 202 kurallı yeni site denetimi, altı dilli arayüz, bildirimler ve daha doğru Google verisi.
 
 ## Guide: Getting started
 - [What is seowatcher?](https://seowatcher.io/en/docs/what-is-seowatcher/): A free, open-source SEO workspace that runs on your own computer and brings Search Console, GA4, a site audit and PageSpeed together.
@@ -83,7 +83,7 @@ Quick facts: version 0.8.7 Alpha, 202 audit rules, 35 MCP tools and 6 ready-made
 - [Audit rules](https://seowatcher.io/en/docs/audit-rules/): Every rule the site audit applies, with what each finding means, the first step to fix it and the rule ID used in exports.
 - [Agent setup](https://seowatcher.io/en/docs/agent-setup/): Connect Claude Code, Codex or another MCP client to seowatcher, confirm it with a fresh tool call and install the six SEO skills.
 - [Troubleshooting](https://seowatcher.io/en/docs/troubleshooting/): Symptom, cause and fix for the problems users hit most: port conflicts, Windows warnings, Google errors, quotas, audits and agent access.
-- [Release notes](https://seowatcher.io/en/docs/release-notes/): seowatcher 0.8.7 Alpha (October 29, 2026): a new site audit with 202 rules, six interface languages, notifications and more accurate Google data.
+- [Release notes](https://seowatcher.io/en/docs/release-notes/): seowatcher 0.8.8 Alpha (November 12, 2026): a new site audit with 202 rules, six interface languages, notifications and more accurate Google data.
 
 ## Anleitung: Erste Schritte
 - [Was ist seowatcher?](https://seowatcher.io/de/dokumentation/was-ist-seowatcher/): seowatcher ist eine kostenlose Open-Source-SEO-App, die Search Console, GA4, Website-Audit und PageSpeed auf Ihrem eigenen Computer bündelt.
@@ -111,7 +111,7 @@ Quick facts: version 0.8.7 Alpha, 202 audit rules, 35 MCP tools and 6 ready-made
 - [Audit-Regeln](https://seowatcher.io/de/dokumentation/audit-regeln/): Die vollständige Liste der 202 Regeln, die das Website-Audit prüft. Hier lesen Sie zu jeder Regel, was sie bedeutet und wie Sie sie beheben.
 - [Agent einrichten](https://seowatcher.io/de/dokumentation/assistent-einrichten/): KI-Agenten wie Claude Code oder Codex sicher über MCP verbinden, einen neuen Werkzeugaufruf bestätigen und die SEO-Skills nutzen.
 - [Fehlerbehebung](https://seowatcher.io/de/dokumentation/fehlerbehebung/): Häufige Probleme mit Symptom, Ursache und Lösung: Port, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme, Agent 401.
-- [Versionshinweise](https://seowatcher.io/de/dokumentation/versionshinweise/): seowatcher 0.8.7 Alpha (29. Oktober 2026): neues Website-Audit mit 202 Regeln, sechs Sprachen, Benachrichtigungen und genauere Google-Daten.
+- [Versionshinweise](https://seowatcher.io/de/dokumentation/versionshinweise/): seowatcher 0.8.8 Alpha (12. November 2026): neues Website-Audit mit 202 Regeln, sechs Sprachen, Benachrichtigungen und genauere Google-Daten.
 
 ## Guide: Pour démarrer
 - [Qu’est-ce que seowatcher ?](https://seowatcher.io/fr/guides/quest-ce-que-seowatcher/): seowatcher est une application SEO gratuite et open source qui réunit Search Console, GA4, audit de site et PageSpeed sur votre propre ordinateur.
@@ -139,7 +139,7 @@ Quick facts: version 0.8.7 Alpha, 202 audit rules, 35 MCP tools and 6 ready-made
 - [Règles d’audit](https://seowatcher.io/fr/guides/regles-d-audit/): La liste complète des 202 règles de l’audit du site. Pour chacune : ce qu’elle signifie et comment la corriger.
 - [Configuration de l’agent](https://seowatcher.io/fr/guides/installation-assistant/): Connecter votre assistant SEO sans exposer le jeton, vérifier un nouvel appel et utiliser les compétences pour auditer le site et rédiger un rapport.
 - [Dépannage](https://seowatcher.io/fr/guides/depannage/): Problèmes fréquents par symptôme, cause et solution : port occupé, alerte Windows, erreurs Google, quota, audit bloqué, graphiques vides, assistant 401.
-- [Notes de version](https://seowatcher.io/fr/guides/notes-de-version/): seowatcher 0.8.7 Alpha (29 octobre 2026) : nouvel audit de site à 202 règles, six langues, notifications et données Google plus exactes.
+- [Notes de version](https://seowatcher.io/fr/guides/notes-de-version/): seowatcher 0.8.8 Alpha (12 novembre 2026) : nouvel audit de site à 202 règles, six langues, notifications et données Google plus exactes.
 
 ## Guida: Per iniziare
 - [Che cos'è seowatcher?](https://seowatcher.io/it/guide/cos-e-seowatcher/): seowatcher è un'app SEO gratuita e open source che riunisce Search Console, GA4, controllo del sito e PageSpeed sul Suo computer.
@@ -167,7 +167,7 @@ Quick facts: version 0.8.7 Alpha, 202 audit rules, 35 MCP tools and 6 ready-made
 - [Regole del controllo](https://seowatcher.io/it/guide/regole-del-controllo/): L'elenco completo delle 202 regole che il controllo del sito verifica. Qui si legge che cosa significa ogni regola e come correggerla.
 - [Configurazione dell'agente](https://seowatcher.io/it/guide/configurazione-assistente/): Collegare un agente IA a seowatcher tramite MCP, verificare la connessione, proteggere il token e usare le skill per controlli e report.
 - [Risoluzione dei problemi](https://seowatcher.io/it/guide/risoluzione-problemi/): I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, agente 401.
-- [Note di versione](https://seowatcher.io/it/guide/note-di-rilascio/): seowatcher 0.8.7 Alpha (29 ottobre 2026): nuovo controllo del sito con 202 regole, sei lingue, notifiche e dati Google più precisi.
+- [Note di versione](https://seowatcher.io/it/guide/note-di-rilascio/): seowatcher 0.8.8 Alpha (12 novembre 2026): nuovo controllo del sito con 202 regole, sei lingue, notifiche e dati Google più precisi.
 
 ## Guia: Primeiros passos
 - [O que é o seowatcher?](https://seowatcher.io/pt/guias/o-que-e-seowatcher/): O seowatcher é um app de SEO gratuito e de código aberto que reúne Search Console, GA4, auditoria do site e PageSpeed no seu computador.
@@ -195,7 +195,7 @@ Quick facts: version 0.8.7 Alpha, 202 audit rules, 35 MCP tools and 6 ready-made
 - [Regras de auditoria](https://seowatcher.io/pt/guias/regras-de-auditoria/): A lista das 202 regras que a auditoria do site confere. Para cada regra, você encontra o que ela significa e como corrigir.
 - [Configuração do agente](https://seowatcher.io/pt/guias/configurar-agente/): Como conectar um agente de IA ao seowatcher por MCP, verificar a conexão, proteger o token e usar as skills em auditorias e relatórios.
 - [Solução de problemas](https://seowatcher.io/pt/guias/solucao-de-problemas/): Problemas mais comuns, com sintoma, causa e solução: porta em uso, aviso do Windows, erros do Google, cota, auditoria travada, gráficos vazios, erro 401.
-- [Notas da versão](https://seowatcher.io/pt/guias/notas-da-versao/): seowatcher 0.8.7 Alpha (29 de outubro de 2026): nova auditoria do site com 202 regras, seis idiomas, notificações e dados do Google mais precisos.
+- [Notas da versão](https://seowatcher.io/pt/guias/notas-da-versao/): seowatcher 0.8.8 Alpha (12 de novembro de 2026): nova auditoria do site com 202 regras, seis idiomas, notificações e dados do Google mais precisos.
 
 ## Kaynak ve notlar
 - [GitHub deposu ve README (Docker kurulumu)](https://github.com/ucsahinn/seotracker)

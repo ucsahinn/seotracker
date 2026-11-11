@@ -14,7 +14,7 @@
     <title>Versionshinweise | seowatcher-Anleitung</title>
     <meta
       name="description"
-      content="seowatcher 0.8.7 Alpha (29. Oktober 2026): neues Website-Audit mit 202 Regeln, sechs Sprachen, Benachrichtigungen und genauere Google-Daten."
+      content="seowatcher 0.8.8 Alpha (12. November 2026): neues Website-Audit mit 202 Regeln, sechs Sprachen, Benachrichtigungen und genauere Google-Daten."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -94,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="seowatcher 0.8.7 Alpha (29. Oktober 2026): neues Website-Audit mit 202 Regeln, sechs Sprachen, Benachrichtigungen und genauere Google-Daten."
+      content="seowatcher 0.8.8 Alpha (12. November 2026): neues Website-Audit mit 202 Regeln, sechs Sprachen, Benachrichtigungen und genauere Google-Daten."
     />
     <meta
       property="og:image"
@@ -107,7 +107,7 @@
       property="og:image:alt"
       content="seowatcher-Karte: das Dashboard der App mit Daten aus Search Console, Analytics 4 und dem Website-Audit, dazu eine Download-Schaltfläche für Windows"
     />
-    <meta property="article:modified_time" content="2026-10-29" />
+    <meta property="article:modified_time" content="2026-11-11" />
     <meta
       property="og:url"
       content="https://seowatcher.io/de/dokumentation/versionshinweise/"
@@ -125,7 +125,7 @@
     />
     <meta
       name="twitter:description"
-      content="seowatcher 0.8.7 Alpha (29. Oktober 2026): neues Website-Audit mit 202 Regeln, sechs Sprachen, Benachrichtigungen und genauere Google-Daten."
+      content="seowatcher 0.8.8 Alpha (12. November 2026): neues Website-Audit mit 202 Regeln, sechs Sprachen, Benachrichtigungen und genauere Google-Daten."
     />
     <meta
       name="twitter:image"
@@ -168,11 +168,11 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/de/dokumentation/versionshinweise/#article",
             "headline": "Versionshinweise",
-            "description": "seowatcher 0.8.7 Alpha (29. Oktober 2026): neues Website-Audit mit 202 Regeln, sechs Sprachen, Benachrichtigungen und genauere Google-Daten.",
+            "description": "seowatcher 0.8.8 Alpha (12. November 2026): neues Website-Audit mit 202 Regeln, sechs Sprachen, Benachrichtigungen und genauere Google-Daten.",
             "url": "https://seowatcher.io/de/dokumentation/versionshinweise/",
             "inLanguage": "de",
             "datePublished": "2026-10-23",
-            "dateModified": "2026-10-29",
+            "dateModified": "2026-11-11",
             "articleSection": "Hilfe und Nachschlagen",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.7" defer></script>
+    <script src="/assets/docs.js?v=0.8.8" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1553,11 +1553,12 @@
       <article id="icerik" data-page="surum-notlari">
         <h1>Versionshinweise</h1>
         <p class="lede">
-          seowatcher 0.8.7 Alpha (29. Oktober 2026): neues Website-Audit mit 202
-          Regeln, sechs Sprachen, Benachrichtigungen und genauere Google-Daten.
+          seowatcher 0.8.8 Alpha (12. November 2026): neues Website-Audit mit
+          202 Regeln, sechs Sprachen, Benachrichtigungen und genauere
+          Google-Daten.
         </p>
         <p>
-          Die neueste Version ist <strong>0.8.7 Alpha</strong> vom 29. Oktober
+          Die neueste Version ist <strong>0.8.8 Alpha</strong> vom 12. November
           2026. Ihre Daten bleiben beim Aktualisieren erhalten.
         </p>
         <p>
@@ -1565,9 +1566,9 @@
           Installationsprogramm von Hand: Der alte Updater erkennt die kleinere
           Versionsnummer nicht als neuere Version.
         </p>
-        <h2 id="0-8-7-alpha-2026-10-29">0.8.7 Alpha — 2026-10-29</h2>
+        <h2 id="0-8-8-alpha-2026-11-12">0.8.8 Alpha — 2026-11-12</h2>
         <p>
-          Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.7:
+          Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.8:
           Website-Audit, Übersicht, Benachrichtigungen und sechs Sprachen sowie
           genauere Daten und besser lesbare Bildschirme.
         </p>
@@ -1863,6 +1864,27 @@
             Während Ihrer Abwesenheit eingegangene Benachrichtigungen erscheinen
             jetzt, wenn Sie zur App zurückkehren.
           </li>
+          <li>
+            <strong>Sitemap und robots.txt:</strong> Bei Websites, die auf die
+            www-Adresse weiterleiten, gelten die robots.txt-Regeln jetzt;
+            komprimierte Sitemaps werden gelesen, und eine nur teilweise
+            gelesene Sitemap gilt nicht als vollständig.
+          </li>
+          <li>
+            <strong>Audit-Tabellen:</strong> Leere Werte stehen beim Sortieren
+            immer am Ende; der Tab zum Google-Status zeigt die richtige Zahl
+            noch nicht abgefragter Seiten, und Exporte folgen dem Filter auf dem
+            Bildschirm.
+          </li>
+          <li>
+            <strong>Lange Suchen:</strong> Lange Suchtexte in Berichten und
+            gespeicherten Keywords führen nicht mehr zu einem Fehler.
+          </li>
+          <li>
+            <strong>Schritte in der Übersicht:</strong> Als erledigt markierte
+            Schritte und ein laufendes Audit erscheinen auch in der Übersicht;
+            die Schaltfläche „Aktualisieren“ holt aktuelle Daten von Google.
+          </li>
         </ul>
         <h3 id="sicherheit">🔒 Sicherheit</h3>
         <ul>
@@ -1879,6 +1901,11 @@
             <strong>Agent einrichten:</strong> Die Anleitung verlangt nicht
             mehr, Ihr Token auf dem Bildschirm auszugeben oder in einen Chat
             einzufügen.
+          </li>
+          <li>
+            <strong>Lokaler Zugriff:</strong> Die App beantwortet nur Anfragen
+            an ihre eigene Adresse; eine andere Website kann die App nicht über
+            Ihren Browser erreichen.
           </li>
         </ul>
         <h2 id="0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</h2>
@@ -2123,7 +2150,7 @@
           ><span class="pager-next empty"></span>
         </nav>
         <p class="meta">
-          Zuletzt aktualisiert: 29 Oktober 2026. Fehler entdeckt?
+          Zuletzt aktualisiert: 11 November 2026. Fehler entdeckt?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -2136,7 +2163,7 @@
         <p class="toc-label">Auf dieser Seite</p>
         <ol>
           <li>
-            <a href="#0-8-7-alpha-2026-10-29">0.8.7 Alpha — 2026-10-29</a>
+            <a href="#0-8-8-alpha-2026-11-12">0.8.8 Alpha — 2026-11-12</a>
           </li>
           <li>
             <a href="#0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</a>

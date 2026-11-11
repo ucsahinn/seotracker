@@ -20,7 +20,7 @@ seowatcher steht unter der MIT-Lizenz und läuft auf Ihrem eigenen Computer, nic
 | Sprachen der Oberfläche | Türkisch, Englisch, Deutsch, Französisch, Italienisch, Portugiesisch                              |
 | Nutzer                  | Ein Nutzer, nur vom eigenen Computer aus erreichbar                                               |
 | Wo die Daten liegen     | Unter Windows in `%LOCALAPPDATA%\seowatcher`, in Docker im Volume `seotracker_data`               |
-| Version                 | 0.8.7 Alpha, 29. Oktober 2026                                                                     |
+| Version                 | 0.8.8 Alpha, 12. November 2026                                                                    |
 | Größe                   | Installationsdatei 86 MB, installiert 313 MB                                                      |
 | Basiert auf             | open-seo (every-app)                                                                              |
 

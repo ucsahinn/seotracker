@@ -1,16 +1,16 @@
 ---
 title: Notes de version
-description: seowatcher 0.8.7 Alpha (29 octobre 2026) : nouvel audit de site à 202 règles, six langues, notifications et données Google plus exactes.
-updated: 2026-10-29
+description: seowatcher 0.8.8 Alpha (12 novembre 2026) : nouvel audit de site à 202 règles, six langues, notifications et données Google plus exactes.
+updated: 2026-11-12
 ---
 
-La dernière version est la **0.8.7 Alpha**, du 29 octobre 2026. Vos données sont conservées lors de la mise à jour.
+La dernière version est la **0.8.8 Alpha**, du 12 novembre 2026. Vos données sont conservées lors de la mise à jour.
 
 Pour passer de 2.x à 0.x.x Alpha, lancez le nouvel installateur manuellement ; l’ancien outil ne reconnaît pas le numéro inférieur comme plus récent.
 
-## 0.8.7 Alpha — 2026-10-29
+## 0.8.8 Alpha — 2026-11-12
 
-Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.7 : audit du site, tableau de bord, notifications et six langues, avec des données plus justes et des écrans plus lisibles.
+Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.8 : audit du site, tableau de bord, notifications et six langues, avec des données plus justes et des écrans plus lisibles.
 
 ### ✨ Points forts
 
@@ -85,12 +85,17 @@ Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.7 :
 - **État de connexion :** Le choix d’une propriété est distinct de l’accès vérifié et les anciens résultats ne sont plus actuels après un changement de compte ; une connexion Google sans réponse cesse d’attendre, une erreur passagère invite à réessayer et un service désactivé indique quoi activer.
 - **Données conservées :** L’ajout et le retrait d’étiquettes se terminent entièrement, les étiquettes utilisées ne peuvent pas être supprimées, l’historique reste lié à la bonne propriété et les tâches en attente suivent le bon ordre.
 - **Démarrage Windows :** Les fichiers de travail sont enregistrés dans votre dossier utilisateur ; les connexions réparées de l’assistant sont conservées au redémarrage et le contrôle de démarrage ne reste plus bloqué. Un lien inutilisable vers les réglages Windows est masqué. Les notifications reçues pendant votre absence s’affichent désormais à votre retour dans l’application.
+- **Sitemap et robots.txt :** Sur les sites qui redirigent vers l'adresse en www, les règles du robots.txt s'appliquent désormais ; les sitemaps compressés sont lus et un sitemap lu en partie n'est pas compté comme complet.
+- **Tableaux d'audit :** Les valeurs vides restent toujours en fin de tri ; l'onglet du statut Google affiche le bon nombre de pages pas encore interrogées et les exports suivent le filtre à l'écran.
+- **Recherches longues :** Un long texte de recherche dans les rapports et les mots-clés enregistrés ne provoque plus d'erreur.
+- **Étapes du tableau de bord :** Les étapes marquées comme faites et un audit en cours apparaissent aussi sur le tableau de bord ; le bouton Actualiser récupère les données à jour de Google.
 
 ### 🔒 Sécurité
 
 - **Composants à jour :** Des failles de sécurité dans les composants utilisés par l’application ont été corrigées.
 - **Clés secrètes :** Enregistrez votre fichier de connexion Google sans afficher son contenu à l’écran.
 - **Configuration de l’agent :** Les instructions ne demandent pas d’afficher votre clé d’accès à l’écran ni de la coller dans une conversation.
+- **Accès local :** L'application ne répond qu'aux requêtes envoyées à sa propre adresse ; un autre site web ne peut pas atteindre l'application via votre navigateur.
 
 ## 0.4.3 Alpha — 2026-10-23
 

@@ -2,9 +2,9 @@
 
 Neuheiten und Korrekturen, neueste Version zuerst.
 
-## [0.8.7] Alpha — 2026-10-29
+## [0.8.8] Alpha — 2026-11-12
 
-Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.7: Website-Audit, Übersicht, Benachrichtigungen und sechs Sprachen sowie genauere Daten und besser lesbare Bildschirme.
+Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.8: Website-Audit, Übersicht, Benachrichtigungen und sechs Sprachen sowie genauere Daten und besser lesbare Bildschirme.
 
 ### ✨ Höhepunkte
 
@@ -79,12 +79,17 @@ Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.7: Website-
 - **Verbindungsstatus:** Property-Auswahl und bestätigter Zugriff sind getrennt, nach einem Kontowechsel gelten alte Ergebnisse nicht als aktuell; antwortet Google nicht, endet das Warten, vorübergehende Fehler empfehlen einen neuen Versuch und deaktivierte Dienste erklären, was Sie einschalten müssen.
 - **Gespeicherte Daten:** Etiketten werden vollständig zugewiesen oder entfernt, verwendete Etiketten lassen sich nicht löschen, ältere Daten bleiben der richtigen Property zugeordnet und wartende Aufgaben werden richtig sortiert.
 - **Windows-Start:** Arbeitsdateien liegen im Benutzerordner; reparierte Assistentenverbindungen bleiben nach einem Neustart erhalten, und die Startprüfung hängt nicht mehr fest. Ein nicht nutzbarer Link zu den Windows-Einstellungen wird ausgeblendet. Während Ihrer Abwesenheit eingegangene Benachrichtigungen erscheinen jetzt, wenn Sie zur App zurückkehren.
+- **Sitemap und robots.txt:** Bei Websites, die auf die www-Adresse weiterleiten, gelten die robots.txt-Regeln jetzt; komprimierte Sitemaps werden gelesen, und eine nur teilweise gelesene Sitemap gilt nicht als vollständig.
+- **Audit-Tabellen:** Leere Werte stehen beim Sortieren immer am Ende; der Tab zum Google-Status zeigt die richtige Zahl noch nicht abgefragter Seiten, und Exporte folgen dem Filter auf dem Bildschirm.
+- **Lange Suchen:** Lange Suchtexte in Berichten und gespeicherten Keywords führen nicht mehr zu einem Fehler.
+- **Schritte in der Übersicht:** Als erledigt markierte Schritte und ein laufendes Audit erscheinen auch in der Übersicht; die Schaltfläche „Aktualisieren“ holt aktuelle Daten von Google.
 
 ### 🔒 Sicherheit
 
 - **Aktuelle Komponenten:** Sicherheitslücken in den von der App verwendeten Komponenten wurden geschlossen.
 - **Geheime Schlüssel:** Speichern Sie Ihre Google-Verbindungsdatei, ohne ihren Inhalt auf dem Bildschirm anzuzeigen.
 - **Assistent einrichten:** Die Anleitung verlangt nicht, Ihren Zugriffsschlüssel auf dem Bildschirm auszugeben oder in einen Chat einzufügen.
+- **Lokaler Zugriff:** Die App beantwortet nur Anfragen an ihre eigene Adresse; eine andere Website kann die App nicht über Ihren Browser erreichen.
 
 ## [0.4.3] Alpha — 2026-10-23
 

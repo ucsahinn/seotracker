@@ -14,7 +14,7 @@
     <title>Note di versione | guida di seowatcher</title>
     <meta
       name="description"
-      content="seowatcher 0.8.7 Alpha (29 ottobre 2026): nuovo controllo del sito con 202 regole, sei lingue, notifiche e dati Google più precisi."
+      content="seowatcher 0.8.8 Alpha (12 novembre 2026): nuovo controllo del sito con 202 regole, sei lingue, notifiche e dati Google più precisi."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -94,7 +94,7 @@
     />
     <meta
       property="og:description"
-      content="seowatcher 0.8.7 Alpha (29 ottobre 2026): nuovo controllo del sito con 202 regole, sei lingue, notifiche e dati Google più precisi."
+      content="seowatcher 0.8.8 Alpha (12 novembre 2026): nuovo controllo del sito con 202 regole, sei lingue, notifiche e dati Google più precisi."
     />
     <meta
       property="og:image"
@@ -107,7 +107,7 @@
       property="og:image:alt"
       content="Scheda di seowatcher: la dashboard dell’app con i dati di Search Console, Analytics 4 e dell’audit del sito, e un pulsante per scaricarla su Windows"
     />
-    <meta property="article:modified_time" content="2026-10-29" />
+    <meta property="article:modified_time" content="2026-11-11" />
     <meta
       property="og:url"
       content="https://seowatcher.io/it/guide/note-di-rilascio/"
@@ -125,7 +125,7 @@
     />
     <meta
       name="twitter:description"
-      content="seowatcher 0.8.7 Alpha (29 ottobre 2026): nuovo controllo del sito con 202 regole, sei lingue, notifiche e dati Google più precisi."
+      content="seowatcher 0.8.8 Alpha (12 novembre 2026): nuovo controllo del sito con 202 regole, sei lingue, notifiche e dati Google più precisi."
     />
     <meta
       name="twitter:image"
@@ -168,11 +168,11 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/it/guide/note-di-rilascio/#article",
             "headline": "Note di versione",
-            "description": "seowatcher 0.8.7 Alpha (29 ottobre 2026): nuovo controllo del sito con 202 regole, sei lingue, notifiche e dati Google più precisi.",
+            "description": "seowatcher 0.8.8 Alpha (12 novembre 2026): nuovo controllo del sito con 202 regole, sei lingue, notifiche e dati Google più precisi.",
             "url": "https://seowatcher.io/it/guide/note-di-rilascio/",
             "inLanguage": "it",
             "datePublished": "2026-10-23",
-            "dateModified": "2026-10-29",
+            "dateModified": "2026-11-11",
             "articleSection": "Aiuto e riferimento",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -207,7 +207,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=0.8.7" defer></script>
+    <script src="/assets/docs.js?v=0.8.8" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1556,11 +1556,11 @@
       <article id="icerik" data-page="surum-notlari">
         <h1>Note di versione</h1>
         <p class="lede">
-          seowatcher 0.8.7 Alpha (29 ottobre 2026): nuovo controllo del sito con
-          202 regole, sei lingue, notifiche e dati Google più precisi.
+          seowatcher 0.8.8 Alpha (12 novembre 2026): nuovo controllo del sito
+          con 202 regole, sei lingue, notifiche e dati Google più precisi.
         </p>
         <p>
-          L'ultima versione è la <strong>0.8.7 Alpha</strong>, del 29 ottobre
+          L'ultima versione è la <strong>0.8.8 Alpha</strong>, del 12 novembre
           2026. I dati restano intatti durante l'aggiornamento.
         </p>
         <p>
@@ -1568,9 +1568,9 @@
           programma di installazione; il vecchio aggiornamento non riconosce il
           numero inferiore come più recente.
         </p>
-        <h2 id="0-8-7-alpha-2026-10-29">0.8.7 Alpha — 2026-10-29</h2>
+        <h2 id="0-8-8-alpha-2026-11-12">0.8.8 Alpha — 2026-11-12</h2>
         <p>
-          Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.7:
+          Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.8:
           verifica del sito, dashboard, notifiche e sei lingue, con dati più
           precisi e schermate più leggibili.
         </p>
@@ -1860,6 +1860,27 @@
             nascosto. Le notifiche arrivate durante l'assenza ora compaiono al
             ritorno nell'app.
           </li>
+          <li>
+            <strong>Sitemap e robots.txt:</strong> Nei siti che reindirizzano
+            all'indirizzo con www, le regole del robots.txt ora vengono
+            applicate; le sitemap compresse vengono lette e una sitemap letta
+            solo in parte non è considerata completa.
+          </li>
+          <li>
+            <strong>Tabelle della verifica:</strong> I valori vuoti restano
+            sempre in fondo all'ordinamento; la scheda dello stato su Google
+            mostra il numero corretto di pagine non ancora richieste e le
+            esportazioni seguono il filtro sullo schermo.
+          </li>
+          <li>
+            <strong>Ricerche lunghe:</strong> Un testo di ricerca lungo nei
+            report e nelle parole chiave salvate non causa più un errore.
+          </li>
+          <li>
+            <strong>Passaggi nella dashboard:</strong> I passaggi segnati come
+            fatti e una verifica in corso compaiono anche nella dashboard; il
+            pulsante Aggiorna recupera i dati aggiornati da Google.
+          </li>
         </ul>
         <h3 id="sicurezza">🔒 Sicurezza</h3>
         <ul>
@@ -1875,6 +1896,11 @@
             <strong>Configurazione dell'agente:</strong> Le istruzioni non
             chiedono di mostrare la chiave di accesso sullo schermo o di
             incollarla in una chat.
+          </li>
+          <li>
+            <strong>Accesso locale:</strong> L'app risponde solo alle richieste
+            inviate al proprio indirizzo; un altro sito web non può raggiungere
+            l'app tramite il browser.
           </li>
         </ul>
         <h2 id="0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</h2>
@@ -2115,7 +2141,7 @@
           ><span class="pager-next empty"></span>
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 29 ottobre 2026. Ha trovato un errore?
+          Ultimo aggiornamento: 11 novembre 2026. Ha trovato un errore?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -2128,7 +2154,7 @@
         <p class="toc-label">In questa pagina</p>
         <ol>
           <li>
-            <a href="#0-8-7-alpha-2026-10-29">0.8.7 Alpha — 2026-10-29</a>
+            <a href="#0-8-8-alpha-2026-11-12">0.8.8 Alpha — 2026-11-12</a>
           </li>
           <li>
             <a href="#0-4-3-alpha-2026-10-23">0.4.3 Alpha — 2026-10-23</a>

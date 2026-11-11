@@ -3,8 +3,8 @@
 > Kurulumdan ilk rapora kadar her adım ve her ekran anlatılır. Uygulamanın adı bu sitede seowatcher, GitHub'da seotracker'dır. İkisi aynı uygulamadır.
 > A short, plain walkthrough of every step and every screen, from installation to the first report. The app is called seowatcher here and seotracker on GitHub; they are the same thing.
 
-Hızlı bilgiler: sürüm 0.8.7 Alpha, 202 denetim kuralı, yapay zekâ asistanları için 35 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 86 MB, kurulu hali 313 MB; Visual C++ çalışma zamanı pakete dahildir.
-Quick facts: version 0.8.7 Alpha, 202 audit rules, 35 MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 86 MB, installed 313 MB; the Visual C++ runtime is bundled.
+Hızlı bilgiler: sürüm 0.8.8 Alpha, 202 denetim kuralı, yapay zekâ asistanları için 35 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 86 MB, kurulu hali 313 MB; Visual C++ çalışma zamanı pakete dahildir.
+Quick facts: version 0.8.8 Alpha, 202 audit rules, 35 MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 86 MB, installed 313 MB; the Visual C++ runtime is bundled.
 
 # seowatcher nedir?
 
@@ -27,7 +27,7 @@ Uygulama bulutta değil, kendi bilgisayarınızda çalışır. Windows 10 ve 11'
 | Arayüz dili           | Türkçe, İngilizce, Almanca, Fransızca, İtalyanca, Portekizce                                     |
 | Kullanıcı             | Tek kullanıcı, yalnızca kendi bilgisayarınızdan açılır                                           |
 | Veri nerede           | Windows'ta `%LOCALAPPDATA%\seowatcher`, Docker'da `seotracker_data` birimi                       |
-| Sürüm                 | 0.8.7 Alpha, 29 Ekim 2026                                                                        |
+| Sürüm                 | 0.8.8 Alpha, 12 Kasım 2026                                                                       |
 | Boyut                 | Kurulum dosyası 86 MB, kurulu hali 313 MB                                                        |
 | Temel aldığı proje    | open-seo (every-app)                                                                             |
 
@@ -2245,15 +2245,15 @@ Görev çubuğu simgesinde çıkan uyarılar ve ne yapacağınız:
 
 URL: https://seowatcher.io/kilavuz/surum-notlari/
 
-> seowatcher 0.8.7 Alpha (29 Ekim 2026): 202 kurallı yeni site denetimi, altı dilli arayüz, bildirimler ve daha doğru Google verisi.
+> seowatcher 0.8.8 Alpha (12 Kasım 2026): 202 kurallı yeni site denetimi, altı dilli arayüz, bildirimler ve daha doğru Google verisi.
 
-Son sürüm **0.8.7 Alpha**, 29 Ekim 2026. Güncellerken veriniz korunur.
+Son sürüm **0.8.8 Alpha**, 12 Kasım 2026. Güncellerken veriniz korunur.
 
 2.x serisinden 0.x.x Alpha serisine ilk geçiş için yeni kurulum dosyasını elle çalıştırın; eski otomatik güncelleyici küçük numarayı yeni sürüm olarak tanımaz.
 
-## 0.8.7 Alpha — 2026-10-29
+## 0.8.8 Alpha — 2026-11-12
 
-Bu giriş 0.5.0'dan 0.8.7'ye kadarki yenilikleri ve düzeltmeleri toplar: yeni site denetimi, Panel, bildirimler, altı dil, daha doğru veriler ve daha okunaklı ekranlar.
+Bu giriş 0.5.0'dan 0.8.8'e kadarki yenilikleri ve düzeltmeleri toplar: yeni site denetimi, Panel, bildirimler, altı dil, daha doğru veriler ve daha okunaklı ekranlar.
 
 ### ✨ Öne çıkanlar
 
@@ -2328,12 +2328,17 @@ Bu giriş 0.5.0'dan 0.8.7'ye kadarki yenilikleri ve düzeltmeleri toplar: yeni s
 - **Bağlantı durumu:** Mülk seçimi ile doğrulanmış erişim ayrı gösterilir; hesap değişince eski sonuçlar güncel sayılmaz. Yanıt vermeyen Google bağlantısı askıda kalmaz. Geçici hatada yeniden denemeniz, kapalı bir hizmette neyi açmanız gerektiği söylenir.
 - **Kayıtların korunması:** Etiket ekleme ve kaldırma yarım kalmaz, kullanılan etiket silinmez; geçmiş veriler doğru mülkle tamamlanır ve bekleyen işler doğru sırada ele alınır.
 - **Windows açılışı:** Çalışma dosyaları kullanıcı klasörüne yazılır; onarılan asistan bağlantısı yeniden açılışta korunur ve başlangıç kontrolü takılmaz. Kullanılamayan Windows ayarı bağlantısı gizlenir. Uygulamaya döndüğünüzde siz yokken gelen bildirimler de gösterilir.
+- **Site haritası ve robots.txt:** www'lu adrese yönlenen sitelerde robots.txt kuralları artık uygulanır; sıkıştırılmış site haritaları okunur ve yarım okunan site haritası tam sayılmaz.
+- **Denetim tabloları:** Boş değerler sıralamada hep sonda kalır; Google'daki durum sekmesinde henüz sorulmamış sayfa sayısı doğru görünür ve dışa aktarım ekrandaki süzgeci izler.
+- **Uzun aramalar:** Raporlarda ve kayıtlı kelimelerde uzun arama metinleri artık hata vermez.
+- **Pano adımları:** Yapıldı olarak işaretlediğiniz adımlar ve süren denetim panoda da görünür; Yenile düğmesi Google'dan güncel veriyi alır.
 
 ### 🔒 Güvenlik
 
 - **Güncel bileşenler:** Uygulamanın kullandığı bileşenlerdeki güvenlik açıkları kapatıldı.
 - **Gizli anahtarlar:** Google bağlantı dosyanızı içeriği ekranda görünmeden kaydedebilirsiniz.
 - **Asistan kurulumu:** Kurulum yönergeleri erişim anahtarınızı ekrana veya sohbete yazdırmanızı istemez.
+- **Yerel erişim:** Uygulama yalnızca kendi adresine gelen istekleri yanıtlar; başka bir web sitesinin tarayıcınız üzerinden uygulamaya ulaşması engellenir.
 
 ## 0.4.3 Alpha — 2026-10-23
 
@@ -2445,7 +2450,7 @@ The app runs on your own computer, not in the cloud. On Windows 10 and 11 it ins
 | Interface languages  | Turkish, English, German, French, Italian, Portuguese                                     |
 | Users                | Single user, opened only from your own computer                                           |
 | Where the data lives | `%LOCALAPPDATA%\seowatcher` on Windows, the `seotracker_data` volume in Docker            |
-| Version              | 0.8.7 Alpha, October 29, 2026                                                             |
+| Version              | 0.8.8 Alpha, November 12, 2026                                                            |
 | Size                 | Installer 86 MB, installed 313 MB                                                         |
 | Based on             | open-seo (every-app)                                                                      |
 
@@ -4453,15 +4458,15 @@ These messages appear on the Windows icon or in a dialog. The Windows launcher i
 
 URL: https://seowatcher.io/en/docs/release-notes/
 
-> seowatcher 0.8.7 Alpha (October 29, 2026): a new site audit with 202 rules, six interface languages, notifications and more accurate Google data.
+> seowatcher 0.8.8 Alpha (November 12, 2026): a new site audit with 202 rules, six interface languages, notifications and more accurate Google data.
 
-The latest release is **0.8.7 Alpha**, October 29, 2026. Your data is kept when you update.
+The latest release is **0.8.8 Alpha**, November 12, 2026. Your data is kept when you update.
 
 For the first move from 2.x to 0.x.x Alpha, run the new installer manually; the old updater does not recognize the lower number as newer.
 
-## 0.8.7 Alpha — 2026-10-29
+## 0.8.8 Alpha — 2026-11-12
 
-This entry brings together features and fixes from 0.5.0 to 0.8.7: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
+This entry brings together features and fixes from 0.5.0 to 0.8.8: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
 
 ### ✨ Highlights
 
@@ -4536,12 +4541,17 @@ This entry brings together features and fixes from 0.5.0 to 0.8.7: site audits, 
 - **Connection status:** A selected property is no longer shown as verified access, and old results are not treated as current after an account change. Unresponsive Google requests time out, temporary errors suggest trying again, and disabled APIs say what to enable.
 - **Saved data:** Adding or removing tags always completes in full, tags in use cannot be deleted, historical data stays tied to the right property, and queued tasks run in the right order.
 - **Windows startup:** Working files are stored in your user folder, repaired assistant connections survive a restart, and the startup check no longer hangs. A Windows settings link that could not work is hidden. Notifications that arrived while you were away appear when you return to the app.
+- **Sitemap and robots.txt:** On sites that redirect to the www address, robots.txt rules now apply; compressed sitemaps are read, and a sitemap read only in part is not counted as complete.
+- **Audit tables:** Empty values always sort last; the Google status tab shows the right number of pages not asked about yet, and exports follow the filter on screen.
+- **Long searches:** Long search text in Reports and Saved keywords no longer causes an error.
+- **Dashboard steps:** Steps you marked as done and a running audit also show on the dashboard; the Refresh button gets current data from Google.
 
 ### 🔒 Security
 
 - **Up-to-date components:** Known vulnerabilities in the app's dependencies were fixed.
 - **Secret keys:** The Google service account file can be saved without its contents appearing on screen.
 - **Assistant setup:** Setup instructions never ask you to print your token or paste it into a chat.
+- **Local access:** The app answers only requests sent to its own address; another website cannot reach the app through your browser.
 
 ## 0.4.3 Alpha — 2026-10-23
 

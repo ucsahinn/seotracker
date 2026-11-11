@@ -20,7 +20,7 @@ Uygulama bulutta değil, kendi bilgisayarınızda çalışır. Windows 10 ve 11'
 | Arayüz dili           | Türkçe, İngilizce, Almanca, Fransızca, İtalyanca, Portekizce                                     |
 | Kullanıcı             | Tek kullanıcı, yalnızca kendi bilgisayarınızdan açılır                                           |
 | Veri nerede           | Windows'ta `%LOCALAPPDATA%\seowatcher`, Docker'da `seotracker_data` birimi                       |
-| Sürüm                 | 0.8.7 Alpha, 29 Ekim 2026                                                                        |
+| Sürüm                 | 0.8.8 Alpha, 12 Kasım 2026                                                                       |
 | Boyut                 | Kurulum dosyası 86 MB, kurulu hali 313 MB                                                        |
 | Temel aldığı proje    | open-seo (every-app)                                                                             |
 

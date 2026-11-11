@@ -20,7 +20,7 @@ The app runs on your own computer, not in the cloud. On Windows 10 and 11 it ins
 | Interface languages  | Turkish, English, German, French, Italian, Portuguese                                     |
 | Users                | Single user, opened only from your own computer                                           |
 | Where the data lives | `%LOCALAPPDATA%\seowatcher` on Windows, the `seotracker_data` volume in Docker            |
-| Version              | 0.8.7 Alpha, October 29, 2026                                                             |
+| Version              | 0.8.8 Alpha, November 12, 2026                                                            |
 | Size                 | Installer 86 MB, installed 313 MB                                                         |
 | Based on             | open-seo (every-app)                                                                      |
 

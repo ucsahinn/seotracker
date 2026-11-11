@@ -20,7 +20,7 @@ seowatcher est une application SEO gratuite, open source et sous licence MIT, qu
 | Langues de l’interface  | Turc, anglais, allemand, français, italien, portugais                                                  |
 | Utilisateurs            | Un seul utilisateur, accessible uniquement depuis votre ordinateur                                     |
 | Emplacement des données | `%LOCALAPPDATA%\seowatcher` sous Windows, le volume `seotracker_data` dans Docker                      |
-| Version                 | 0.8.7 Alpha, 29 octobre 2026                                                                           |
+| Version                 | 0.8.8 Alpha, 12 novembre 2026                                                                          |
 | Taille                  | Fichier d’installation 86 Mo, 313 Mo une fois installé                                                 |
 | Basé sur                | open-seo (every-app)                                                                                   |
 

@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="tr">
   <id>https://seowatcher.io/feed.xml</id>
   <title>seowatcher: Sürüm notları</title>
-  <updated>2026-10-29T00:00:00Z</updated>
+  <updated>2026-11-11T00:00:00Z</updated>
   <link rel="self" type="application/atom+xml" href="https://seowatcher.io/feed.xml" />
   <link rel="alternate" type="text/html" href="https://seowatcher.io/" />
   <author>
@@ -11,10 +11,10 @@
   </author>
   <icon>https://seowatcher.io/assets/icon-256.png</icon>
   <entry>
-    <id>https://seowatcher.io/kilavuz/surum-notlari/#0.8.7</id>
-    <title>Sürüm notları: seowatcher 0.8.7</title>
-    <updated>2026-10-29T00:00:00Z</updated>
+    <id>https://seowatcher.io/kilavuz/surum-notlari/#0.8.8</id>
+    <title>Sürüm notları: seowatcher 0.8.8</title>
+    <updated>2026-11-11T00:00:00Z</updated>
     <link rel="alternate" type="text/html" href="https://seowatcher.io/kilavuz/surum-notlari/" />
-    <summary>seowatcher 0.8.7 Alpha (29 Ekim 2026): 202 kurallı yeni site denetimi, altı dilli arayüz, bildirimler ve daha doğru Google verisi.</summary>
+    <summary>seowatcher 0.8.8 Alpha (12 Kasım 2026): 202 kurallı yeni site denetimi, altı dilli arayüz, bildirimler ve daha doğru Google verisi.</summary>
   </entry>
 </feed>

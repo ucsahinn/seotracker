@@ -1,16 +1,16 @@
 ---
 title: Release notes
-description: seowatcher 0.8.7 Alpha (October 29, 2026): a new site audit with 202 rules, six interface languages, notifications and more accurate Google data.
-updated: 2026-10-29
+description: seowatcher 0.8.8 Alpha (November 12, 2026): a new site audit with 202 rules, six interface languages, notifications and more accurate Google data.
+updated: 2026-11-12
 ---
 
-The latest release is **0.8.7 Alpha**, October 29, 2026. Your data is kept when you update.
+The latest release is **0.8.8 Alpha**, November 12, 2026. Your data is kept when you update.
 
 For the first move from 2.x to 0.x.x Alpha, run the new installer manually; the old updater does not recognize the lower number as newer.
 
-## 0.8.7 Alpha — 2026-10-29
+## 0.8.8 Alpha — 2026-11-12
 
-This entry brings together features and fixes from 0.5.0 to 0.8.7: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
+This entry brings together features and fixes from 0.5.0 to 0.8.8: site audits, the dashboard, notifications and six languages, with more accurate data and clearer screens.
 
 ### ✨ Highlights
 
@@ -85,12 +85,17 @@ This entry brings together features and fixes from 0.5.0 to 0.8.7: site audits, 
 - **Connection status:** A selected property is no longer shown as verified access, and old results are not treated as current after an account change. Unresponsive Google requests time out, temporary errors suggest trying again, and disabled APIs say what to enable.
 - **Saved data:** Adding or removing tags always completes in full, tags in use cannot be deleted, historical data stays tied to the right property, and queued tasks run in the right order.
 - **Windows startup:** Working files are stored in your user folder, repaired assistant connections survive a restart, and the startup check no longer hangs. A Windows settings link that could not work is hidden. Notifications that arrived while you were away appear when you return to the app.
+- **Sitemap and robots.txt:** On sites that redirect to the www address, robots.txt rules now apply; compressed sitemaps are read, and a sitemap read only in part is not counted as complete.
+- **Audit tables:** Empty values always sort last; the Google status tab shows the right number of pages not asked about yet, and exports follow the filter on screen.
+- **Long searches:** Long search text in Reports and Saved keywords no longer causes an error.
+- **Dashboard steps:** Steps you marked as done and a running audit also show on the dashboard; the Refresh button gets current data from Google.
 
 ### 🔒 Security
 
 - **Up-to-date components:** Known vulnerabilities in the app's dependencies were fixed.
 - **Secret keys:** The Google service account file can be saved without its contents appearing on screen.
 - **Assistant setup:** Setup instructions never ask you to print your token or paste it into a chat.
+- **Local access:** The app answers only requests sent to its own address; another website cannot reach the app through your browser.
 
 ## 0.4.3 Alpha — 2026-10-23
 

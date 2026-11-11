@@ -1,16 +1,16 @@
 ---
 title: Notas da versão
-description: seowatcher 0.8.7 Alpha (29 de outubro de 2026): nova auditoria do site com 202 regras, seis idiomas, notificações e dados do Google mais precisos.
-updated: 2026-10-29
+description: seowatcher 0.8.8 Alpha (12 de novembro de 2026): nova auditoria do site com 202 regras, seis idiomas, notificações e dados do Google mais precisos.
+updated: 2026-11-12
 ---
 
-A versão mais recente é a **0.8.7 Alpha**, de 29 de outubro de 2026. Os dados são mantidos na atualização.
+A versão mais recente é a **0.8.8 Alpha**, de 12 de novembro de 2026. Os dados são mantidos na atualização.
 
 Para passar de 2.x para 0.x.x Alpha, execute o novo instalador manualmente; o atualizador antigo não reconhece o número menor como mais recente.
 
-## 0.8.7 Alpha — 2026-10-29
+## 0.8.8 Alpha — 2026-11-12
 
-Esta entrada reúne novidades e correções da 0.5.0 à 0.8.7: auditoria do site, painel, notificações e seis idiomas, com dados mais precisos e telas mais legíveis.
+Esta entrada reúne novidades e correções da 0.5.0 à 0.8.8: auditoria do site, painel, notificações e seis idiomas, com dados mais precisos e telas mais legíveis.
 
 ### ✨ Destaques
 
@@ -85,12 +85,17 @@ Esta entrada reúne novidades e correções da 0.5.0 à 0.8.7: auditoria do site
 - **Estado da conexão:** A escolha da propriedade é separada do acesso verificado e resultados antigos não são atuais após trocar de conta; conexões Google sem resposta param de esperar, erros temporários sugerem tentar novamente e serviços desativados explicam o que ativar.
 - **Dados salvos:** Adicionar ou remover etiquetas não deixa alterações pela metade, etiquetas em uso não podem ser excluídas, o histórico fica ligado à propriedade certa e as tarefas pendentes seguem a ordem correta.
 - **Abertura no Windows:** Os arquivos de trabalho ficam na pasta do usuário; conexões reparadas do agente são mantidas ao reabrir e a verificação inicial não fica mais travada. Um link inutilizável para as configurações do Windows fica oculto. As notificações recebidas na sua ausência agora aparecem quando você volta ao aplicativo.
+- **Sitemap e robots.txt:** Em sites que redirecionam para o endereço com www, as regras do robots.txt agora são aplicadas; sitemaps compactados são lidos e um sitemap lido só em parte não é contado como completo.
+- **Tabelas da auditoria:** Valores vazios ficam sempre no fim da ordenação; a aba de status no Google mostra o número certo de páginas ainda não consultadas e as exportações seguem o filtro da tela.
+- **Buscas longas:** Um texto de busca longo em Relatórios e Palavras-chave salvas não causa mais erro.
+- **Etapas do painel:** As etapas marcadas como concluídas e uma auditoria em andamento também aparecem no painel; o botão Atualizar busca os dados atuais do Google.
 
 ### 🔒 Segurança
 
 - **Componentes atualizados:** Falhas de segurança nos componentes usados pelo aplicativo foram corrigidas.
 - **Chaves secretas:** Salve seu arquivo de conexão Google sem mostrar o conteúdo na tela.
 - **Configuração do agente:** As instruções não pedem que você exiba a chave de acesso na tela ou a cole em uma conversa.
+- **Acesso local:** O app responde apenas a solicitações enviadas ao seu próprio endereço; outro site não consegue alcançar o app pelo seu navegador.
 
 ## 0.4.3 Alpha — 2026-10-23
 
