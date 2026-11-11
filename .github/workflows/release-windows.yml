@@ -186,10 +186,9 @@ jobs:
       # installer's data, health, token) run nowhere else: a local machine
       # needs Developer Mode and the Store needs a submission. The package is
       # signed here with a throwaway certificate that never leaves the runner.
-      # Not yet seen green, so it reports without blocking the release; make
-      # it blocking (drop continue-on-error) after its first passing run.
+      # First seen green on 2026-11-11 (run 43060281090); it blocks the release
+      # like the installer smoke test above.
       - name: Smoke test the Store package
-        continue-on-error: true
         shell: pwsh
         env:
           MSIX_PUBLISHER: ${{ vars.MSIX_PUBLISHER }}
