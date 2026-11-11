@@ -8,11 +8,13 @@ export function sanitizeAuditErrorDetail(detail: string | null): string | null {
     .replace(/https?:\/\/[^\s"'<>]+/gi, "[URL redacted]")
     .replace(/\bBearer\s+[^\s,;]+/gi, "Bearer [redacted]")
     .replace(
-      /\b(access[_-]?token|refresh[_-]?token|token|client[_-]?secret|api[_-]?key|authorization|password|secret)(\s*[:=]\s*)["']?[^"'&,\s}]+["']?/gi,
+      /\b(access[_-]?token|refresh[_-]?token|token|client[_-]?secret|api[_-]?key|authorization|password|secret)(["']?\s*[:=]\s*)["']?[^"'&,\s}]+["']?/gi,
       "$1$2[redacted]",
     )
     .replace(/\b[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}\b/g, "[email redacted]")
-    .replace(/\b[A-Z]:\\(?:[^\s"'<>:]|\\)+/g, "[path redacted]")
+    // To the end of the path, spaces included: "C:\Users\Ali Veli\x" used to
+    // keep " Veli\x". A path ends at a quote, a bracket or two spaces.
+    .replace(/\b[A-Za-z]:[\\/](?:[^\s"'<>:]| (?! ))+/g, "[path redacted]")
     .replace(/\\\\[^\\\s]+\\[^\\\s]+(?:\\[^\s"'<>]*)?/g, "[path redacted]")
     .replace(
       /\/(?:home|Users|tmp|var|opt|root|mnt|workspace|srv|private|Volumes)\/[^\s"'<>]*/g,

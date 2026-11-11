@@ -127,7 +127,8 @@ const DURATION_UNITS: Record<
  * the same screen.
  */
 export function formatDuration(ms: number): string {
-  if (ms < 1000) return `${formatNumber(Math.round(ms))} ms`;
+  // Rounded before the unit is chosen: 999.6 ms printed as "1.000 ms".
+  if (Math.round(ms) < 1000) return `${formatNumber(Math.round(ms))} ms`;
   return `${formatDecimal(ms / 1000)} ${DURATION_UNITS[getLocale()].second}`;
 }
 
@@ -184,7 +185,8 @@ export function formatMoney(value: number, currency: string | null): string {
  * save_report and the seo-report skill state in the same unit.
  */
 export function formatBytes(bytes: number): string {
-  if (bytes >= 1_000_000) return `${formatDecimal(bytes / 1_000_000)} MB`;
+  if (Math.round(bytes / 1000) >= 1000)
+    return `${formatDecimal(bytes / 1_000_000)} MB`;
   if (bytes >= 1000) return `${formatNumber(Math.round(bytes / 1000))} KB`;
   return `${formatNumber(Math.round(bytes))} B`;
 }

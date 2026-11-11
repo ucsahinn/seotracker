@@ -1,5 +1,5 @@
 import { ReportTemplateRepository } from "@/server/features/reports/repositories/ReportTemplateRepository";
-import { AppError } from "@/server/lib/errors";
+import { AppError, isUniqueConstraintError } from "@/server/lib/errors";
 import { formatEnglishCount } from "@/shared/format";
 import {
   REPORT_TEMPLATE_MAX_DESCRIPTION_CHARS,
@@ -132,14 +132,35 @@ export async function saveReportTemplate(params: SaveParams): Promise<{
     );
   }
 
+  // The name check above reads, then this writes: a second save a moment
+  // later (a double click) passes the check and meets the unique index
+  // instead. That is the same refusal, not a server fault.
+  const duplicateName = (error: unknown) =>
+    isUniqueConstraintError(error)
+      ? new AppError(
+          "VALIDATION_ERROR",
+          `A template named "${name}" exists in this project. Choose another name.`,
+        )
+      : error;
+
   if (existing) {
-    await ReportTemplateRepository.updateTemplate({
+    const updated = await ReportTemplateRepository.updateTemplate({
       templateId: existing.id,
       projectId: params.projectId,
       name,
       description,
       instructions,
+    }).catch((error: unknown) => {
+      throw duplicateName(error);
     });
+    // Deleted in another tab since the list was read: saying "saved" here
+    // reported a write that never happened.
+    if (!updated) {
+      throw new AppError(
+        "NOT_FOUND",
+        `No report template ${existing.id} in this project. Call list_report_templates, or omit templateId to create a new one.`,
+      );
+    }
     return { templateId: existing.id, name, created: false };
   }
 
@@ -161,6 +182,8 @@ export async function saveReportTemplate(params: SaveParams): Promise<{
     instructions,
     createdBy: params.createdBy,
     createdByUserId: params.createdByUserId,
+  }).catch((error: unknown) => {
+    throw duplicateName(error);
   });
   return { templateId: id, name, created: true };
 }

@@ -70,8 +70,8 @@ async function updateTemplate(params: {
   name: string;
   description: string;
   instructions: string;
-}): Promise<void> {
-  await db
+}): Promise<boolean> {
+  const updated = await db
     .update(reportTemplates)
     .set({
       name: params.name,
@@ -84,7 +84,10 @@ async function updateTemplate(params: {
         eq(reportTemplates.id, params.templateId),
         eq(reportTemplates.projectId, params.projectId),
       ),
-    );
+    )
+    .returning({ id: reportTemplates.id });
+  // False when the template was deleted between the read and this write.
+  return updated.length > 0;
 }
 
 /** True when a row was deleted; false when the id is not in this project. */

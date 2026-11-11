@@ -49,6 +49,8 @@ const save = (
 
 beforeEach(() => {
   mocks.listTemplates.mockResolvedValue([]);
+  mocks.insertTemplate.mockResolvedValue(undefined);
+  mocks.updateTemplate.mockResolvedValue(true);
 });
 
 describe("saveReportTemplate", () => {
@@ -121,5 +123,20 @@ describe("deleteReportTemplate", () => {
       "project_1",
       "template_x",
     );
+  });
+
+  it("refuses to report an edit of a template deleted meanwhile as saved", async () => {
+    mocks.listTemplates.mockResolvedValue([stored()]);
+    mocks.updateTemplate.mockResolvedValue(false);
+    await expect(save({ templateId: "template_1" })).rejects.toMatchObject({
+      code: "NOT_FOUND",
+    });
+  });
+
+  it("answers a double save with the duplicate-name refusal, not a fault", async () => {
+    mocks.insertTemplate.mockRejectedValue(
+      new Error("UNIQUE constraint failed: report_templates.name"),
+    );
+    await expect(save()).rejects.toMatchObject({ code: "VALIDATION_ERROR" });
   });
 });
