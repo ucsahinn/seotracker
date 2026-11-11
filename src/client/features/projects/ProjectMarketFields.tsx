@@ -43,7 +43,11 @@ export function ProjectMarketFields({
 
   return (
     <div className="grid gap-4 sm:grid-cols-2">
-      <label className="flex flex-col gap-1.5 text-sm">
+      {/* A div, not a label: a label forwards every click inside it to its
+          first control, the picker's own button, so choosing a country with
+          the mouse closed the list and the label opened it again. The button
+          carries its own accessible name. */}
+      <div className="flex flex-col gap-1.5 text-sm">
         <span className="font-medium">{t("Ülke")}</span>
         <LocationSelect
           value={value.locationCode}
@@ -54,7 +58,7 @@ export function ProjectMarketFields({
             })
           }
         />
-      </label>
+      </div>
       <label
         className={`${hideLanguageOnMobile ? "hidden sm:flex" : "flex"} flex-col gap-1.5 text-sm`}
       >

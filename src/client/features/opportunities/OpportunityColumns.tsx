@@ -134,13 +134,13 @@ export function buildOpportunityColumns(
       meta: right,
       // An unknown gain is not the smallest gain: last in both directions.
       sortingFn: (a, b, columnId) => {
-        const left = a.original.gainPerMonth;
-        const right = b.original.gainPerMonth;
-        if (left === null || right === null) {
-          if (left === right) return 0;
-          return (left === null ? 1 : -1) * emptyLast(a, columnId);
+        const gain = a.original.gainPerMonth;
+        const other = b.original.gainPerMonth;
+        if (gain === null || other === null) {
+          if (gain === other) return 0;
+          return (gain === null ? 1 : -1) * emptyLast(a, columnId);
         }
-        return left - right || a.original.impressions - b.original.impressions;
+        return gain - other || a.original.impressions - b.original.impressions;
       },
     }),
     opportunityHelper.accessor("page", {

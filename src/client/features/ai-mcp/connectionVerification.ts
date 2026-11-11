@@ -13,7 +13,10 @@ export function verificationState(
   baseline: number | null,
   now = Date.now(),
 ): "waiting" | "verified" | "timeout" {
-  const stamp = connectionEvidence(value, now);
+  // Against the real time, not the caller's clock: that clock stops ticking
+  // at the timeout, and a call that arrived after it was "from the future"
+  // and never counted, under a header that had already turned green.
+  const stamp = connectionEvidence(value, Math.max(now, Date.now()));
   if (stamp !== null && stamp > startedAt && stamp > (baseline ?? -Infinity))
     return "verified";
   return now - startedAt >= 60_000 ? "timeout" : "waiting";
