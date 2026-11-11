@@ -10,6 +10,23 @@ import {
 } from "./handler.test-support";
 
 describe("announcement service", () => {
+  it("rejects oversized admin JSON bodies before repository writes", async () => {
+    const createWithOptions = vi.fn(async () => undefined);
+    const handler = createAnnouncementHandler(repository({ createWithOptions }), {
+      adminToken: TOKEN,
+    });
+    const response = await handler(
+      request("/api/admin/announcements", {
+        method: "POST",
+        headers: { authorization: `Bearer ${TOKEN}` },
+        body: `{"padding":"${"x".repeat(256 * 1024)}"}`,
+      }),
+    );
+
+    expect(response.status).toBe(400);
+    expect(createWithOptions).not.toHaveBeenCalled();
+  });
+
   it("returns a JSON error when a status change cannot be saved", async () => {
     const item = makeAnnouncement();
     const handler = createAnnouncementHandler(
