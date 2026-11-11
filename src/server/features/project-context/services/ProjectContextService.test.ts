@@ -278,6 +278,26 @@ describe("project context service", () => {
       expect(mocks.upsertSection).not.toHaveBeenCalled();
       expect(mocks.upsertCompetitors).not.toHaveBeenCalled();
     });
+
+    it("rejects oversized optimistic content before writing", async () => {
+      await expect(
+        applyContextUpdates(
+          "project_1",
+          [
+            {
+              section: "current_goal",
+              expectedContent: "x".repeat(4001),
+              content: "new goal",
+            },
+          ],
+          "user",
+        ),
+      ).rejects.toMatchObject({ code: "VALIDATION_ERROR" });
+
+      expect(mocks.assertSectionContent).not.toHaveBeenCalled();
+      expect(mocks.upsertSection).not.toHaveBeenCalled();
+      expect(runBatch).not.toHaveBeenCalled();
+    });
   });
 
   describe("research log", () => {
