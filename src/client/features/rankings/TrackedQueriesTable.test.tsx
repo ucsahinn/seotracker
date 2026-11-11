@@ -13,7 +13,13 @@ vi.mock("./useSaveTrackedKeyword", () => ({
 
 afterEach(() => setLocale("tr"));
 
-function Table({ delta }: { delta: number | null }) {
+function Table({
+  delta,
+  anyComparable,
+}: {
+  delta: number | null;
+  anyComparable?: boolean;
+}) {
   const sorting = useLocalSort<SortKey>({ key: "position", desc: false });
   return (
     <TrackedQueriesTable
@@ -41,6 +47,7 @@ function Table({ delta }: { delta: number | null }) {
       onSelect={vi.fn()}
       emptyTitle=""
       emptyDescription=""
+      anyComparable={anyComparable}
     />
   );
 }
@@ -85,3 +92,8 @@ it.each([0, 2])(
     expect(screen.queryByText("Karşılaştırma yok")).toBeNull();
   },
 );
+
+it("keeps the change column on a page with no earlier reading when other pages have one", () => {
+  render(<Table delta={null} anyComparable />);
+  expect(screen.getByRole("columnheader", { name: /Değişim/ })).toBeDefined();
+});

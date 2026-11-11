@@ -29,6 +29,10 @@ sürümü yayımlamak) hesap ve onay gerektirir; bu dosya onları kendiliğinden
 - **Etiket:** `v` ve sürüm numarası (`v0.8.0`). `.github/workflows/release-windows.yml`
   her `v*` etiketinde çalışır ve etiketin `package.json` sürümüyle aynı olmasını
   ister.
+- **Store paketi sürümü.** Store, ilk hanesi 0 olan paket sürümünü kabul etmez.
+  `packaging/windows/build.ps1` paketi aynı numarayla, ilk hanesi bir
+  artırılmış olarak üretir (uygulama 0.8.8 ise paket 1.8.8.0). Uygulamanın
+  gösterdiği sürüm ve etiket değişmez.
 - **Yayınlanmamış değişiklikler** `## [Yayınlanmamış]` başlığında toplanır.
   Uygulama içi sürüm notları ayrıştırıcısı
   (`src/client/features/settings/changelog.ts`) bu başlığı bilerek atlar; yani

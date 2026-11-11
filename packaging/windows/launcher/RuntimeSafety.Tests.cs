@@ -177,6 +177,8 @@ namespace SeoWatcher
             Assert(kept.Contains("launcher.log") && kept.Contains("workerd.exe") && kept.Contains("ntdll.dll") && kept.Contains("wrangler.json"), "file names were masked: " + kept);
             string masked = Diag.Scrub("GET https://musteri-sitesi.com/sayfa ve musteri-sitesi.com, bitti");
             Assert(!masked.Contains("musteri-sitesi"), "a site name survived: " + masked);
+            string url = Diag.Scrub("GET https://musteri.txt/sayfa");
+            Assert(!url.Contains("musteri.txt"), "a host that looks like a file name survived in a URL: " + url);
         }
 
         private static void Run(string name, Action test, ref int failures)
