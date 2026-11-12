@@ -83,6 +83,8 @@ Esta entrada reúne novidades e correções da 0.5.0 à 0.8.8: auditoria do site
 - **Tabelas da auditoria:** Valores vazios ficam sempre no fim da ordenação; a aba de status no Google mostra o número certo de páginas ainda não consultadas e as exportações seguem o filtro da tela.
 - **Buscas longas:** Um texto de busca longo em Relatórios e Palavras-chave salvas não causa mais erro.
 - **Etapas do painel:** As etapas marcadas como concluídas e uma auditoria em andamento também aparecem no painel; o botão Atualizar busca os dados atuais do Google.
+- **Listas e seleções:** Em Oportunidades, as linhas com ganho desconhecido ficam sempre no fim da ordenação e a exportação segue a ordem da tela. Escolher um país com o mouse leva um clique. No Analytics, o bloco de páginas com baixa conversão lista todas as páginas que conta; no acompanhamento de posições, a coluna Variação não desaparece mais de uma página para outra.
+- **Atualização do Windows:** Depois de uma atualização silenciosa que não terminou, o aplicativo abre de novo; uma atualização que falha na verificação não é baixada repetidamente. Com as notificações desativadas os avisos não são consultados, e o relatório de diagnóstico não contém os nomes dos seus arquivos.
 
 ### 🔒 Segurança
 

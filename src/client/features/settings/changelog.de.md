@@ -83,6 +83,8 @@ Dieser Eintrag bündelt Neuerungen und Korrekturen von 0.5.0 bis 0.8.8: Website-
 - **Audit-Tabellen:** Leere Werte stehen beim Sortieren immer am Ende; der Tab zum Google-Status zeigt die richtige Zahl noch nicht abgefragter Seiten, und Exporte folgen dem Filter auf dem Bildschirm.
 - **Lange Suchen:** Lange Suchtexte in Berichten und gespeicherten Keywords führen nicht mehr zu einem Fehler.
 - **Schritte in der Übersicht:** Als erledigt markierte Schritte und ein laufendes Audit erscheinen auch in der Übersicht; die Schaltfläche „Aktualisieren“ holt aktuelle Daten von Google.
+- **Listen und Auswahl:** Unter Chancen stehen Zeilen mit unbekanntem Gewinn beim Sortieren immer am Ende, und der Export folgt der Reihenfolge auf dem Bildschirm. Ein Land lässt sich mit einem Mausklick auswählen. In Analytics listet die Kachel für Seiten mit niedriger Conversion alle gezählten Seiten auf; in der Ranking-Verfolgung verschwindet die Spalte „Änderung“ nicht mehr von Seite zu Seite.
+- **Windows-Update:** Nach einem nicht abgeschlossenen stillen Update öffnet sich die App wieder; ein Update, dessen Prüfung fehlschlägt, wird nicht immer wieder heruntergeladen. Bei ausgeschalteten Benachrichtigungen werden keine Ankündigungen abgerufen, und der Diagnosebericht enthält Ihre Dateinamen nicht.
 
 ### 🔒 Sicherheit
 

@@ -129,7 +129,7 @@ describe("changelog", () => {
       (entry) => entry.version === "0.8.8",
     );
     expect(release?.sections.map((section) => section.items.length)).toEqual([
-      5, 6, 7, 4, 3, 5, 7, 3, 11, 4,
+      5, 6, 7, 4, 3, 5, 7, 3, 13, 4,
     ]);
     expect(
       release?.sections
