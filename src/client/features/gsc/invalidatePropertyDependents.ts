@@ -26,6 +26,7 @@ export const PROPERTY_DEPENDENT_QUERY_KEYS = [
   "dashboardGa4Report",
   "dashboardOverview",
   "quotaStatus",
+  "projectSetup",
 ] as const;
 
 export function invalidatePropertyDependents(

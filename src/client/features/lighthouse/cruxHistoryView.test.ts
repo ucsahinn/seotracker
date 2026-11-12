@@ -27,6 +27,16 @@ describe("summarizeCruxSeries", () => {
     expect(summarizeCruxSeries(series([null]))).toBeNull();
   });
 
+  it("does not call a change too small to print a trend", () => {
+    // 0 -> 0.01 is "+100%" and prints as the same value at the same rating.
+    const cls = (values: number[]) => ({
+      ...series(values),
+      metric: "cls" as const,
+    });
+    expect(summarizeCruxSeries(cls([0, 0.01]))?.trend).toBe("steady");
+    expect(summarizeCruxSeries(cls([0.05, 0.2]))?.trend).toBe("worse");
+  });
+
   it("writes a plain Turkish sentence", () => {
     const summary = summarizeCruxSeries(series([4200, 2400]));
     expect(summary && describeCruxSeries(summary)).toBe(

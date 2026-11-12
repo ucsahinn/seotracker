@@ -28,6 +28,20 @@ export const DEMO_START_DATE = new Date(Date.now() - 488 * 86_400_000)
   .toISOString()
   .slice(0, 10);
 
+/*
+ * Workers evaluates modules outside a request with a frozen epoch clock. The
+ * exported dates above remain useful to the Node seeder, but request handlers
+ * must derive their window from the request-scoped clock instead of caching
+ * that module-evaluation value.
+ */
+function currentDemoEndDate(): string {
+  return new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
+}
+
+function currentDemoStartDate(): string {
+  return new Date(Date.now() - 488 * 86_400_000).toISOString().slice(0, 10);
+}
+
 type PageKind = "home" | "category" | "product" | "blog" | "info";
 type Season = "neutral" | "winter" | "summer";
 
@@ -973,11 +987,11 @@ export function addDays(iso: string, days: number): string {
 /** Day index since DEMO_START_DATE; negative before it. */
 export function dayIndex(iso: string): number {
   return Math.round(
-    (toDate(iso).getTime() - toDate(DEMO_START_DATE).getTime()) / DAY_MS,
+    (toDate(iso).getTime() - toDate(currentDemoStartDate()).getTime()) / DAY_MS,
   );
 }
 
-export const DEMO_TOTAL_DAYS = dayIndex(DEMO_END_DATE) + 1;
+export const DEMO_TOTAL_DAYS = 488;
 
 export function* eachDay(startIso: string, endIso: string): Generator<string> {
   for (let d = startIso; d <= endIso; d = addDays(d, 1)) yield d;
@@ -1162,16 +1176,17 @@ export type GscRequest = {
  * dataState=final stops the day before; dataState=all includes them, partly
  * counted, and says where they begin in `metadata.first_incomplete_date`.
  */
-export const DEMO_FIRST_INCOMPLETE_DATE = addDays(DEMO_END_DATE, -1);
+function currentFirstIncompleteDate(): string {
+  return addDays(currentDemoEndDate(), -1);
+}
 
 /** How much of a provisional day Google has counted so far. */
 /** A day the site half-vanished (a deploy that served errors), for the anomaly check. */
-const DEMO_OUTAGE_DATE = addDays(DEMO_END_DATE, -12);
-
 function provisionalShare(iso: string): number {
-  if (iso === DEMO_OUTAGE_DATE) return 0.48;
-  if (iso < DEMO_FIRST_INCOMPLETE_DATE) return 1;
-  return iso === DEMO_FIRST_INCOMPLETE_DATE ? 0.74 : 0.41;
+  const firstIncompleteDate = currentFirstIncompleteDate();
+  if (iso === addDays(currentDemoEndDate(), -12)) return 0.48;
+  if (iso < firstIncompleteDate) return 1;
+  return iso === firstIncompleteDate ? 0.74 : 0.41;
 }
 
 export type GscRow = {
@@ -1225,12 +1240,15 @@ export function gscSearchAnalytics(request: GscRequest): GscRow[] {
   const filters = (request.dimensionFilterGroups ?? []).flatMap(
     (group) => group.filters,
   );
+  const demoStartDate = currentDemoStartDate();
+  const demoEndDate = currentDemoEndDate();
+  const firstIncompleteDate = addDays(demoEndDate, -1);
   const start =
-    request.startDate < DEMO_START_DATE ? DEMO_START_DATE : request.startDate;
+    request.startDate < demoStartDate ? demoStartDate : request.startDate;
   const newest =
     (request.dataState ?? "final").toLowerCase() === "all"
-      ? DEMO_END_DATE
-      : addDays(DEMO_FIRST_INCOMPLETE_DATE, -1);
+      ? demoEndDate
+      : addDays(firstIncompleteDate, -1);
   const end = request.endDate > newest ? newest : request.endDate;
   if (start > end) return [];
   // Anonymized queries are in every table without a query in it.
@@ -1387,12 +1405,12 @@ export function gscSearchAnalyticsResponse(request: GscRequest): {
   const fresh =
     (request.dataState ?? "").toLowerCase() === "all" &&
     dims.includes("date") &&
-    request.endDate >= DEMO_FIRST_INCOMPLETE_DATE;
+    request.endDate >= currentFirstIncompleteDate();
   return {
     rows: gscSearchAnalytics(request),
     responseAggregationType: byPage ? "byPage" : "byProperty",
     ...(fresh
-      ? { metadata: { first_incomplete_date: DEMO_FIRST_INCOMPLETE_DATE } }
+      ? { metadata: { first_incomplete_date: currentFirstIncompleteDate() } }
       : {}),
   };
 }
@@ -1602,13 +1620,15 @@ export function ga4RunReport(request: Ga4Request): {
 } {
   const dims = request.dimensions.map((d) => d.name);
   const metrics = request.metrics.map((m) => m.name);
+  const demoStartDate = currentDemoStartDate();
+  const demoEndDate = currentDemoEndDate();
   const range = request.dateRanges[0] ?? {
-    startDate: DEMO_START_DATE,
-    endDate: DEMO_END_DATE,
+    startDate: demoStartDate,
+    endDate: demoEndDate,
   };
   const start =
-    range.startDate < DEMO_START_DATE ? DEMO_START_DATE : range.startDate;
-  const end = range.endDate > DEMO_END_DATE ? DEMO_END_DATE : range.endDate;
+    range.startDate < demoStartDate ? demoStartDate : range.startDate;
+  const end = range.endDate > demoEndDate ? demoEndDate : range.endDate;
   const organicOnly = hasOrganicFilter(request.dimensionFilter);
   const siteSearch = hasSiteSearchFilter(request.dimensionFilter);
 

@@ -81,7 +81,7 @@ export function AnnouncementsPage() {
             />
           ))}
         </div>
-      ) : query.isError ? (
+      ) : query.isError && !query.data ? (
         <section
           className="rounded-box border border-[var(--hairline)] bg-base-200 p-6"
           role="status"

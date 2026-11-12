@@ -101,11 +101,37 @@ export function cors(headers: HeadersInit = {}): Headers {
 
 export async function parseJson(request: Request): Promise<unknown> {
   try {
-    return await request.json();
+    const declaredLength = Number(request.headers.get("content-length"));
+    if (Number.isFinite(declaredLength) && declaredLength > MAX_JSON_BODY_BYTES)
+      return null;
+    if (!request.body) return null;
+
+    const reader = request.body.getReader();
+    const chunks: Uint8Array[] = [];
+    let size = 0;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > MAX_JSON_BODY_BYTES) {
+        await reader.cancel();
+        return null;
+      }
+      chunks.push(value);
+    }
+    const bytes = new Uint8Array(size);
+    let offset = 0;
+    for (const chunk of chunks) {
+      bytes.set(chunk, offset);
+      offset += chunk.byteLength;
+    }
+    return JSON.parse(new TextDecoder().decode(bytes)) as unknown;
   } catch {
     return null;
   }
 }
+
+const MAX_JSON_BODY_BYTES = 256 * 1024;
 
 function sameSecret(provided: string, expected: string): boolean {
   const left = encoder.encode(provided);

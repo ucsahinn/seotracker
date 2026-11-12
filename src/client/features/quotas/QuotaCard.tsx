@@ -84,7 +84,9 @@ function QuotaBody({ query }: { query: ReturnType<typeof useQuotaStatus> }) {
       </div>
     );
   }
-  if (query.isError) {
+  // Only when there is nothing to show: a failed refresh keeps the last
+  // reading, which is what the badge beside this card says it is showing.
+  if (!query.data) {
     return (
       <QueryErrorState
         error={query.error}

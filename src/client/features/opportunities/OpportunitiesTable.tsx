@@ -109,7 +109,9 @@ export function OpportunitiesTable({
     "brandOnly",
     "observedNonBrandQueries",
   ];
-  const csvRows = rows.map((row): CsvValue[] => [
+  // In the order on screen, not the order the server sent.
+  const shownRows = table.getRowModel().rows.map((entry) => entry.original);
+  const csvRows = shownRows.map((row): CsvValue[] => [
     row.gainPerMonth,
     row.page,
     t(rowAction(row)),

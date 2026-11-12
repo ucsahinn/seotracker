@@ -39,17 +39,18 @@ export function useAgentVerification() {
      * pauses it on a hidden tab either way.
      */
     retry: false,
-    refetchInterval: (query) =>
-      verification &&
-      query.state.status !== "error" &&
-      verificationState(
+    refetchInterval: (query) => {
+      if (!verification || query.state.status === "error") return false;
+      const state = verificationState(
         query.state.data?.lastCallAt,
         verification.startedAt,
         verification.baseline,
         clock,
-      ) === "waiting"
-        ? 5_000
-        : false,
+      );
+      // An agent that installs and restarts first takes longer than the
+      // minute: keep looking, slowly, so the late call is still seen.
+      return state === "waiting" ? 5_000 : state === "timeout" ? 30_000 : false;
+    },
   });
   const lastCallAt = connection.data?.lastCallAt ?? null;
   /*

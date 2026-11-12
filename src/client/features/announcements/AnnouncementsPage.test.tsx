@@ -158,6 +158,7 @@ it("submits a written answer and explains the saved browser key", async () => {
   expect(screen.queryByText("Yanıtınız alındı")).toBeNull();
 });
 
+
 it("shows a retry state instead of presenting a feed failure as empty", async () => {
   fetchAnnouncements.mockRejectedValue(new Error("Offline"));
   renderPage();

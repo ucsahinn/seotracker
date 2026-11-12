@@ -52,6 +52,15 @@ function assertProseFits(content: string) {
   }
 }
 
+function assertExpectedContentFits(content: string | null | undefined) {
+  if (content !== null && content !== undefined && content.length > PROSE_MAX_CHARS) {
+    throw new AppError(
+      "VALIDATION_ERROR",
+      `Expected section content is capped at ${PROSE_MAX_CHARS} characters.`,
+    );
+  }
+}
+
 // A batch upsert must not touch the same conflict target twice (Postgres
 // refuses it outright), so a repeated domain/url within one op collapses to its
 // last occurrence.
@@ -106,6 +115,7 @@ export function resolveContextUpdates(
 
   const resolveOne = (update: ProjectContextUpdate) => {
     if ("section" in update) {
+      assertExpectedContentFits(update.expectedContent);
       const content = update.content.trim();
       assertProseFits(content);
       // Empty clears the section: the row goes away, so it reads back as
@@ -124,6 +134,7 @@ export function resolveContextUpdates(
     }
 
     if ("customSection" in update) {
+      assertExpectedContentFits(update.expectedContent);
       const key = `${CUSTOM_SECTION_KEY_PREFIX}${update.customSection}`;
       const content = update.content.trim();
       assertProseFits(content);
@@ -149,6 +160,7 @@ export function resolveContextUpdates(
     }
 
     if ("deleteCustomSection" in update) {
+      assertExpectedContentFits(update.expectedContent);
       const key = `${CUSTOM_SECTION_KEY_PREFIX}${update.deleteCustomSection}`;
       resolved.push({ kind: "deleteSection", key });
       customKeys.delete(key);

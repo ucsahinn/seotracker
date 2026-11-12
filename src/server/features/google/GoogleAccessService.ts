@@ -40,7 +40,13 @@ export async function observeGoogleAccess<T>(
     }
     throw error;
   }
-  await GoogleAccessRepository.record(scope, null, startedAt);
+  try {
+    await GoogleAccessRepository.record(scope, null, startedAt);
+  } catch {
+    // Google answered. A busy database while writing the note of that must
+    // not turn the answer into an error screen.
+    console.error("google.access_evidence_write_failed");
+  }
   return result;
 }
 

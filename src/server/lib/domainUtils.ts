@@ -52,5 +52,8 @@ export function normalizeDomainInput(
     return host;
   }
 
-  return getDomain(host) ?? host;
+  // With private suffixes, as the validity check above reads them: without
+  // the option "site.github.io" was stored as "github.io", a host the
+  // operator does not own, and brand terms and the property match followed.
+  return getDomain(host, { allowPrivateDomains: true }) ?? host;
 }

@@ -120,6 +120,12 @@ da çalıştırılabilir), `packaging/windows/out/seowatcher-setup-<sürüm>.exe
 yer tutucu bir kimlikle üretilir; yalnızca incelemeye yarar, Store kabul etmez.
 Store paketi imzasızdır (Store imzalar), bu yüzden çift tıklayarak kurulamaz.
 
+Store, ilk hanesi 0 olan paket sürümünü kabul etmez ve dördüncü haneyi kendine
+ayırır. Uygulama 0.x olduğu için paket aynı numarayı ilk hanesi bir artırılmış
+olarak taşır: uygulama 0.8.8 ise paket 1.8.8.0'dır. Kural değişmez; böylece
+paket sürümü uygulamanınkiyle birlikte hep yükselir. Uygulamanın gösterdiği
+sürüm `package.json`'daki numaradır.
+
 `out\` altında eski derlemelerin `seowatcher.exe` kopyalarını biriktirmeyin:
 antivirüsler her birini ayrı, tanınmayan bir dosya olarak değerlendirir.
 

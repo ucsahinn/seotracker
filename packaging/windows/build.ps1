@@ -331,6 +331,12 @@ $makeappx = Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin\*\x64\ma
   Sort-Object { [version]$_.Directory.Parent.Name } -Descending | Select-Object -First 1
 if (-not $makeappx) { throw "makeappx.exe (Windows SDK) not found. Install the Windows SDK or rerun with -NoMsix." }
 if ($Version -notmatch '^\d+\.\d+\.\d+$') { throw "A Store package needs an x.y.z version, got $Version" }
+# The Store refuses a package whose first version number is 0, and reserves
+# the fourth for itself. The app is 0.x, so the package carries the same
+# numbers with the first one raised by one: 0.8.8 is package 1.8.8.0. The rule
+# never changes, so package versions keep rising with the app's.
+$versionParts = $Version.Split('.')
+$storeVersion = "$([int]$versionParts[0] + 1).$($versionParts[1]).$($versionParts[2]).0"
 $msixSource = Join-Path $here "msix"
 $msixWork = Join-Path $out "msix"
 New-Item -ItemType Directory -Force $msixWork | Out-Null
@@ -338,8 +344,7 @@ $manifest = Get-Content (Join-Path $msixSource "AppxManifest.xml") -Raw -Encodin
 foreach ($field in @{
     IdentityName = $MsixIdentityName; Publisher = $MsixPublisher
     PublisherDisplayName = $MsixPublisherDisplayName
-    # The Store reserves the fourth part of the version for itself.
-    Version = "$Version.0"
+    Version = $storeVersion
   }.GetEnumerator()) {
   $manifest = $manifest.Replace("{{$($field.Key)}}", [Security.SecurityElement]::Escape($field.Value))
 }

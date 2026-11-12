@@ -25,7 +25,7 @@ function issuesToRows(issues: LighthouseIssue[]): CsvValue[][] {
     issue.description ?? "",
     issue.impactMs ?? "",
     issue.impactBytes ?? "",
-    issue.items.length,
+    issue.itemCount ?? issue.items.length,
   ]);
 }
 

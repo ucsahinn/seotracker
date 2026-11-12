@@ -5,7 +5,10 @@ import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { ArrowDown, ArrowUp, Copy, ExternalLink } from "lucide-react";
 import { SortableHeader } from "@/client/components/table/SortableHeader";
 import { getSafeExternalUrl } from "@/client/components/table/url";
-import { nullableNumberSort } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
+import {
+  emptyLast,
+  nullableNumberSort,
+} from "@/client/features/audit/results/AuditResultsTableFilterLogic";
 import {
   pathOf,
   rowAction,
@@ -129,9 +132,16 @@ export function buildOpportunityColumns(
         );
       },
       meta: right,
-      sortingFn: (a, b) =>
-        (a.original.gainPerMonth ?? -1) - (b.original.gainPerMonth ?? -1) ||
-        a.original.impressions - b.original.impressions,
+      // An unknown gain is not the smallest gain: last in both directions.
+      sortingFn: (a, b, columnId) => {
+        const gain = a.original.gainPerMonth;
+        const other = b.original.gainPerMonth;
+        if (gain === null || other === null) {
+          if (gain === other) return 0;
+          return (gain === null ? 1 : -1) * emptyLast(a, columnId);
+        }
+        return gain - other || a.original.impressions - b.original.impressions;
+      },
     }),
     opportunityHelper.accessor("page", {
       header: ({ column }) => (

@@ -145,6 +145,10 @@ Type: filesandordirs; Name: "{app}\app"
 Type: filesandordirs; Name: "{app}\node"
 ; Downloaded update installers: not user data.
 Type: filesandordirs; Name: "{localappdata}\seowatcher\updates"
+; The launcher's working copy of the app, with the env files it writes beside
+; the worker configs at each start (they hold the keys). Rebuilt from the
+; package on every start, so it is not user data either.
+Type: filesandordirs; Name: "{localappdata}\seowatcher\runtime"
 
 [UninstallRun]
 ; Stops the running instance (and, through its job object, node and workerd)
@@ -152,6 +156,12 @@ Type: filesandordirs; Name: "{localappdata}\seowatcher\updates"
 Filename: "{app}\seowatcher.exe"; Parameters: "--quit"; Flags: runhidden waituntilterminated; RunOnceId: "quit"
 
 [Code]
+var
+  // Whether this run stopped a running app, and whether the files were
+  // replaced: DeinitializeSetup restarts the app when only the first happened.
+  QuitSent: Boolean;
+  InstallReached: Boolean;
+
 const
   RunKey = 'Software\Microsoft\Windows\CurrentVersion\Run';
   UninstallKey = 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{{#AppGuid}}_is1';
@@ -199,6 +209,7 @@ begin
   Exe := ExpandConstant('{app}\seowatcher.exe');
   if FileExists(Exe) then begin
     Exec(Exe, '--quit', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    QuitSent := True;
     Log('seowatcher --quit exit code ' + IntToStr(ResultCode));
   end;
   Result := '';
@@ -270,10 +281,27 @@ end;
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
   if CurStep = ssPostInstall then begin
+    InstallReached := True;
     ApplyAutostart();
     InstallVcRedist();
   end else if CurStep = ssDone then
     CopySetupLog();
+end;
+
+// A silent update stops the running app before it replaces any file. If the
+// copy then fails (a file held by antivirus, a full disk), the [Run] entry
+// that brings the app back never fires and nothing is left running: no tray
+// icon, no server. Start whatever launcher is on disk again; it reports what
+// is missing and offers the repair.
+procedure DeinitializeSetup();
+var
+  ResultCode: Integer;
+  Exe: String;
+begin
+  if not WizardSilent or InstallReached or not QuitSent then Exit;
+  Exe := ExpandConstant('{app}\seowatcher.exe');
+  if FileExists(Exe) then
+    ExecAsOriginalUser(Exe, '--silent', '', SW_SHOWNORMAL, ewNoWait, ResultCode);
 end;
 
 // Removes a Run value only if it starts this install's launcher, so another

@@ -260,7 +260,7 @@ async function translateDraft(
 ): Promise<Response> {
   if (!translator)
     return json({ error: "Automatic translation is not configured" }, 503);
-  const body: unknown = await request.json().catch(() => null);
+  const body = await parseJson(request);
   const fields =
     body && typeof body === "object" && "fields" in body
       ? (body as { fields: unknown }).fields

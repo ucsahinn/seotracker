@@ -280,6 +280,7 @@ export function RankingsPage({
                 "Filtreleri kaldırın, dönemi genişletin veya arşivi doldurmaya devam edin.",
               )}
               showDays
+              anyComparable={data ? data.comparableCount > 0 : undefined}
               expectedDays={data?.days}
             />
             <TablePagination

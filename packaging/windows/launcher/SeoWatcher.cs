@@ -356,10 +356,14 @@ namespace SeoWatcher
         public static string WorkerdProbe(Func<bool> cancelled, int timeoutMilliseconds)
         {
             if (!File.Exists(Paths.WorkerdExe)) return "hata: workerd.exe bulunamadı";
+            // One file per call: the report, a repair and the start preflight
+            // can probe at the same moment, and a shared file made one of
+            // them fail with a sharing violation that read as a broken engine.
+            string cfg = null;
             try
             {
                 Directory.CreateDirectory(Paths.DataRoot);
-                string cfg = Path.Combine(Paths.DataRoot, "probe.capnp");
+                cfg = Path.Combine(Paths.DataRoot, "probe-" + Guid.NewGuid().ToString("N") + ".capnp");
                 File.WriteAllText(cfg, ProbeConfig, new UTF8Encoding(false));
                 var psi = new ProcessStartInfo(Paths.WorkerdExe, "test \"" + cfg + "\"")
                 {
@@ -395,6 +399,10 @@ namespace SeoWatcher
             catch (Exception ex)
             {
                 return "hata: " + ex.Message;
+            }
+            finally
+            {
+                try { if (cfg != null) File.Delete(cfg); } catch { }
             }
         }
 
@@ -563,7 +571,13 @@ namespace SeoWatcher
             return System.Text.RegularExpressions.Regex.Replace(input, pattern, replacement);
         }
 
-        private static string Scrub(string text)
+        // None of these is a public top-level domain.
+        private static readonly string[] FileExtensions =
+        {
+            "log", "exe", "dll", "json", "js", "capnp", "dmp", "sql", "txt", "env", "sqlite", "ps1", "cmd", "msix", "map", "tmp", "part",
+        };
+
+        internal static string Scrub(string text)
         {
             string profile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             if (!string.IsNullOrEmpty(profile)) text = text.Replace(profile, "%USERPROFILE%");
@@ -576,6 +590,11 @@ namespace SeoWatcher
             text = System.Text.RegularExpressions.Regex.Replace(text, @"(?i)\b(?:https?://)?((?:[a-z0-9\-]+\.)+[a-z]{2,})(?=[/:\s""'),;]|$)", m =>
             {
                 string host = m.Groups[1].Value.ToLowerInvariant();
+                // A bare "name.ext" with a file extension is a file, not a
+                // site: masking it removed the faulting module and the log
+                // names from the report. A URL is always treated as a host.
+                if (!m.Value.StartsWith("http", StringComparison.OrdinalIgnoreCase)
+                    && Array.IndexOf(FileExtensions, host.Substring(host.LastIndexOf('.') + 1)) >= 0) return m.Value;
                 foreach (var ok in PublicHosts) if (host == ok || host.EndsWith("." + ok)) return m.Value;
                 return m.Value.Replace(m.Groups[1].Value, "<site>");
             });
@@ -852,6 +871,31 @@ namespace SeoWatcher
 
     /// <summary>A download whose content failed verification; never retried
     /// automatically, and the message says so.</summary>
+    /// <summary>What to tell the user to try. The Store build's menu has no
+    /// "Kurulumu onar" item: Windows repairs or reinstalls a Store app.</summary>
+    internal static class RepairAdvice
+    {
+        public static string Menu
+        {
+            get
+            {
+                return StorePackage.IsPackaged
+                    ? "Windows Ayarlar > Uygulamalar'dan seowatcher'ı onarın ya da Microsoft Store'dan yeniden kurun."
+                    : "Menüden Kurulumu onar deyin.";
+            }
+        }
+
+        public static string First
+        {
+            get
+            {
+                return StorePackage.IsPackaged
+                    ? "Önce Windows Ayarlar > Uygulamalar'dan seowatcher'ı onarın; düzelmezse Sorunu bildir."
+                    : "Önce Kurulumu onar deyin; düzelmezse Sorunu bildir.";
+            }
+        }
+    }
+
     internal sealed class UpdateVerifyException : Exception
     {
         public UpdateVerifyException(string message) : base(message) { }
@@ -1345,11 +1389,13 @@ namespace SeoWatcher
 
         private readonly object gate = new object();
         private readonly object probeGate = new object();
+        private readonly object prestartGate = new object();
         private int generation;
         private KillOnCloseJob job;
         private Process process;
         private StreamWriter log;
         private long logBytes;
+        private bool logNeedsReopen;
         // Set when wrangler's output shows workerd (the Workers runtime) dying
         // before it listens. On a clean Windows install this is almost always
         // a missing or outdated Visual C++ 2015-2022 runtime.
@@ -1428,9 +1474,9 @@ namespace SeoWatcher
                 Directory.CreateDirectory(Paths.PersistDir);
                 Directory.CreateDirectory(Paths.LogDir);
 
-                if (!File.Exists(Paths.NodeExe)) throw new FileNotFoundException("Kurulum eksik: Node çalışma zamanı bulunamadı. Menüden Kurulumu onar deyin.", Paths.NodeExe);
-                if (!File.Exists(Paths.WranglerJs)) throw new FileNotFoundException("Kurulum eksik: wrangler bulunamadı. Menüden Kurulumu onar deyin.", Paths.WranglerJs);
-                if (!File.Exists(Paths.MainConfig)) throw new FileNotFoundException("Kurulum eksik: uygulama paketi bulunamadı. Menüden Kurulumu onar deyin.", Paths.MainConfig);
+                if (!File.Exists(Paths.NodeExe)) throw new FileNotFoundException("Kurulum eksik: Node çalışma zamanı bulunamadı. " + RepairAdvice.Menu, Paths.NodeExe);
+                if (!File.Exists(Paths.WranglerJs)) throw new FileNotFoundException("Kurulum eksik: wrangler bulunamadı. " + RepairAdvice.Menu, Paths.WranglerJs);
+                if (!File.Exists(Paths.MainConfig)) throw new FileNotFoundException("Kurulum eksik: uygulama paketi bulunamadı. " + RepairAdvice.Menu, Paths.MainConfig);
 
                 // Preflight: the two things a clean machine most often lacks.
                 int build = Diag.OsBuild();
@@ -1456,14 +1502,24 @@ namespace SeoWatcher
                 string secret = Secrets.EnsureInstanceSecret();
                 string token = Secrets.EnsureMcpToken();
 
-                ConfiguredPort = cfg.Port;
-                Port = ChoosePort(cfg.Port, gen);
-                if (!IsCurrent(gen)) return;
-                // After the port is chosen: server.env says whether this run
-                // moved off the configured port, so the app can tell the
-                // operator why Google sign-in fails. Rewritten on every start,
-                // so a fallback line never outlives the run it describes.
-                WriteServerEnv(secret, token);
+                // A restart during these seconds leaves the earlier start's
+                // thread alive: both then copied the runtime files and wrote
+                // server.env at once ("the process cannot access the file"),
+                // and the stale one could overwrite the port the banner
+                // reports. One at a time, and a stale start writes nothing.
+                lock (prestartGate)
+                {
+                    if (!IsCurrent(gen)) return;
+                    int chosen = ChoosePort(cfg.Port, gen);
+                    if (!IsCurrent(gen)) return;
+                    ConfiguredPort = cfg.Port;
+                    Port = chosen;
+                    // After the port is chosen: server.env says whether this run
+                    // moved off the configured port, so the app can tell the
+                    // operator why Google sign-in fails. Rewritten on every start,
+                    // so a fallback line never outlives the run it describes.
+                    WriteServerEnv(secret, token);
+                }
 
                 KillOnCloseJob runJob;
                 lock (gate)
@@ -1514,7 +1570,11 @@ namespace SeoWatcher
                             SafeLog(line);
                             if (line.Contains("0xc0000005") || line.Contains("Workers runtime failed to start")) runtimeCrashed = true;
                         });
-                    job.Add(process);
+                    if (!job.Add(process))
+                    {
+                        try { process.Kill(); } catch { }
+                        throw new InvalidOperationException("Sunucu süreci izlenemedi. Yeniden başlat deyin.");
+                    }
                     started = process;
                 }
 
@@ -1538,7 +1598,7 @@ namespace SeoWatcher
                             string vc = Diag.VcRuntimeProblem();
                             if (vc != null) throw new InvalidOperationException(RuntimeCrashMessage + vc);
                             throw new InvalidOperationException(EngineCrashMessage + (after.StartsWith("ok")
-                                ? "motor tek başına çalışıyor, sorun veri klasöründe ya da yapılandırmada. Önce Kurulumu onar deyin; düzelmezse Sorunu bildir."
+                                ? "motor tek başına çalışıyor, sorun veri klasöründe ya da yapılandırmada. " + RepairAdvice.First
                                 : "motor bu bilgisayarda tek başına da başlayamıyor (" + after + "). Menüden Sorunu bildir deyin."));
                         }
                         throw new InvalidOperationException("Sunucu beklenmedik şekilde kapandı. Yeniden başlat deyin; olmazsa Günlükleri aç ile server.log dosyasına bakın.");
@@ -1577,6 +1637,11 @@ namespace SeoWatcher
                 if (!IsCurrent(gen)) return;
                 SafeLog("launcher error: " + ex.Message);
                 LauncherLog.Write("error: " + ex.Message);
+                // The tray now says "Hata". A server left running behind that
+                // kept the port, and could come up healthy under the error.
+                KillOnCloseJob failedJob;
+                lock (gate) { failedJob = gen == generation ? job : null; }
+                if (failedJob != null) { try { failedJob.KillAllAndWait(10000); } catch { } }
                 Emit(gen, Failed, ex.Message);
             }
         }
@@ -1624,8 +1689,34 @@ namespace SeoWatcher
             WriteAuditWorkerVars(env);
         }
 
+        /// <summary>Removes what the package no longer ships. The copy below
+        /// only ever added: migrations renamed by an update stayed next to
+        /// the new ones, and the database update then failed on every start.
+        /// wrangler's scratch folder and the env files written at start are
+        /// not part of the package and stay.</summary>
+        private static void PruneRuntimeTree(string source, string target)
+        {
+            if (!Directory.Exists(target)) return;
+            foreach (string file in Directory.GetFiles(target))
+            {
+                string name = Path.GetFileName(file);
+                if (name.StartsWith(".dev.vars", StringComparison.OrdinalIgnoreCase) || name.StartsWith(".env", StringComparison.OrdinalIgnoreCase)) continue;
+                if (File.Exists(Path.Combine(source, name))) continue;
+                try { File.Delete(file); } catch (Exception ex) { LauncherLog.Write("runtime: could not remove a stale file: " + ex.Message); }
+            }
+            foreach (string dir in Directory.GetDirectories(target))
+            {
+                string name = Path.GetFileName(dir);
+                if (name == ".wrangler") continue;
+                string from = Path.Combine(source, name);
+                if (Directory.Exists(from)) { PruneRuntimeTree(from, dir); continue; }
+                try { Directory.Delete(dir, true); } catch (Exception ex) { LauncherLog.Write("runtime: could not remove a stale folder: " + ex.Message); }
+            }
+        }
+
         private static void CopyRuntimeTree(string source, string target)
         {
+            PruneRuntimeTree(source, target);
             Directory.CreateDirectory(target);
             foreach (string file in Directory.GetFiles(source))
             {
@@ -1805,6 +1896,12 @@ namespace SeoWatcher
         {
             lock (gate)
             {
+                // Set only by a rotation whose reopen failed; a stopped
+                // server leaves it false and stays closed.
+                if (log == null && logNeedsReopen)
+                {
+                    try { log = OpenServerLog(); logNeedsReopen = false; } catch { }
+                }
                 if (log == null) return;
                 // wrangler colours some lines regardless of NO_COLOR; the log is a file.
                 try
@@ -1816,9 +1913,15 @@ namespace SeoWatcher
                     logBytes += clean.Length + 2;
                     if (logBytes > ServerLogMax)
                     {
-                        log.Dispose();
+                        // Null first: if the reopen fails, the next line tries
+                        // again instead of writing to a disposed file forever.
+                        var full = log;
+                        log = null;
+                        logNeedsReopen = true;
+                        full.Dispose();
                         LogFile.Rotate(Paths.ServerLog, ServerLogMax);
                         log = OpenServerLog();
+                        logNeedsReopen = false;
                     }
                 }
                 catch { }
@@ -1880,6 +1983,10 @@ namespace SeoWatcher
         private bool checking;
         private string updatePhase;      // null, or what the update item says while busy
         private DateTime lastCheck = DateTime.MinValue;
+        private volatile bool announcementsMuted;
+        /// <summary>The version whose installer failed verification: not
+        /// downloaded again on its own, only when the user asks.</summary>
+        private Version verifyFailedVersion;
         private Version notifiedVersion; // balloons for a found or failed update: once per version
         private bool cleanedUpdates;
 
@@ -2021,8 +2128,21 @@ namespace SeoWatcher
                         events.AddRange(state.AcceptAudits(EventNotificationState.Download(baseUrl.TrimEnd('/') + "/api/audit-notifications" + cursor)));
                     }
                     catch { LauncherLog.Write("Audit notification poll unavailable"); }
-                    try { events.AddRange(state.AcceptAnnouncements(EventNotificationState.Download("https://seowatcher-announcements.vitalikai07.workers.dev/api/announcements"))); }
-                    catch { LauncherLog.Write("Announcement notification poll unavailable"); }
+                    // With Windows notifications off nothing would be shown,
+                    // so the outside host is not asked at all. The first poll
+                    // after they are switched back on only takes note of what
+                    // is there, so the muted period is not replayed.
+                    if (!Config.Load().WindowsNotifications) announcementsMuted = true;
+                    else
+                    {
+                        try
+                        {
+                            var fresh = state.AcceptAnnouncements(EventNotificationState.Download("https://seowatcher-announcements.vitalikai07.workers.dev/api/announcements"));
+                            if (!announcementsMuted) events.AddRange(fresh);
+                            announcementsMuted = false;
+                        }
+                        catch { LauncherLog.Write("Announcement notification poll unavailable"); }
+                    }
                 }
                 catch { LauncherLog.Write("Notification state unavailable"); }
                 Invoke(() =>
@@ -2199,7 +2319,7 @@ namespace SeoWatcher
                 StartServer("Yeniden başlatılıyor");
                 return;
             }
-            OnFailed("Sunucu 10 dakikada üç kez kapandı. Kurulumu onar deyin; düzelmezse Sorunu bildir.");
+            OnFailed("Sunucu 10 dakikada üç kez kapandı. " + RepairAdvice.First);
         }
 
         // ---- Server actions ---------------------------------------------------
@@ -2358,7 +2478,7 @@ namespace SeoWatcher
             available = latest.Version;
             RefreshUpdateItem();
             if (manual) { StartUpdate(true); return; }
-            if (Autoinstall()) { StartUpdate(false); return; }
+            if (Autoinstall() && !Equals(verifyFailedVersion, available)) { StartUpdate(false); return; }
             if (!Equals(notifiedVersion, available))
             {
                 notifiedVersion = available;
@@ -2430,7 +2550,8 @@ namespace SeoWatcher
                             Balloon("Güncelleme yapılamadı", why, ToolTipIcon.Warning, 10000,
                                 ex is UpdateVerifyException ? (Action)(() => Browser.Open(Updater.ReleasePage(v))) : null);
                         }
-                        if (!manual) lastCheck = DateTime.UtcNow - TimeSpan.FromHours(23);
+                        if (ex is UpdateVerifyException) verifyFailedVersion = v;
+                        else if (!manual) lastCheck = DateTime.UtcNow - TimeSpan.FromHours(23);
                     });
                 }
             }) { IsBackground = true, Name = "seowatcher-update" };

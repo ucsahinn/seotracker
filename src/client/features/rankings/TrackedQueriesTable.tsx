@@ -42,7 +42,10 @@ export function TrackedQueriesTable({
   showDays = true,
   expectedDays,
   range,
+  anyComparable,
 }: {
+  /** Whether any row of the full result has an earlier period to compare. */
+  anyComparable?: boolean;
   projectId: string;
   rows: Row[];
   sorting: ReturnType<typeof useLocalSort<SortKey>>;
@@ -63,7 +66,9 @@ export function TrackedQueriesTable({
   const saveKeyword = useSaveTrackedKeyword(projectId);
   // A column of dashes on every row says one thing; the line above the table
   // says it once.
-  const comparable = rows.some((row) => row.delta !== null);
+  // Over the whole result, not this page: the column used to vanish on a
+  // page whose rows had no earlier reading and return on the next one.
+  const comparable = anyComparable ?? rows.some((row) => row.delta !== null);
   const columns = 5 + (comparable ? 1 : 0) + (showDays ? 1 : 0);
   const actionsFor = (query: string) => [
     {
