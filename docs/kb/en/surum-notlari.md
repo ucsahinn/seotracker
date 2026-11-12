@@ -89,6 +89,8 @@ This entry brings together features and fixes from 0.5.0 to 0.8.8: site audits, 
 - **Audit tables:** Empty values always sort last; the Google status tab shows the right number of pages not asked about yet, and exports follow the filter on screen.
 - **Long searches:** Long search text in Reports and Saved keywords no longer causes an error.
 - **Dashboard steps:** Steps you marked as done and a running audit also show on the dashboard; the Refresh button gets current data from Google.
+- **Lists and pickers:** In Opportunities, rows with an unknown gain always sort last and the export follows the order on screen. Picking a country with the mouse takes one click. In Analytics, the low-conversion pages tile lists every page it counts; in Rank tracking, the Change column no longer disappears from one page to the next.
+- **Windows update:** After a silent update that did not finish, the app opens again; an update that fails verification is not downloaded over and over. Announcements are not checked while notifications are off, and the diagnostics report does not contain your file names.
 
 ### 🔒 Security
 

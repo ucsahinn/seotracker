@@ -104,7 +104,7 @@ describe("Saved read-only snapshot", () => {
     });
     await expect(
       readSavedWatchlist({ ...input(), expectedSnapshot: result.snapshot }),
-    ).rejects.toThrow("SAVED_SNAPSHOT_CHANGED");
+    ).rejects.toMatchObject({ code: "CONFLICT" });
   });
 });
 
@@ -134,5 +134,5 @@ it("rejects daily detail when observations change after the pinned overview", as
       savedId: "saved",
       expectedSnapshot: overview.snapshot,
     }),
-  ).rejects.toThrow("SAVED_SNAPSHOT_CHANGED");
+  ).rejects.toMatchObject({ code: "CONFLICT" });
 });

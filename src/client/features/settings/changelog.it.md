@@ -83,6 +83,8 @@ Questa voce riunisce novità e correzioni dalla 0.5.0 alla 0.8.8: verifica del s
 - **Tabelle della verifica:** I valori vuoti restano sempre in fondo all'ordinamento; la scheda dello stato su Google mostra il numero corretto di pagine non ancora richieste e le esportazioni seguono il filtro sullo schermo.
 - **Ricerche lunghe:** Un testo di ricerca lungo nei report e nelle parole chiave salvate non causa più un errore.
 - **Passaggi nella dashboard:** I passaggi segnati come fatti e una verifica in corso compaiono anche nella dashboard; il pulsante Aggiorna recupera i dati aggiornati da Google.
+- **Elenchi e selezioni:** In Opportunità le righe con guadagno sconosciuto restano sempre in fondo all'ordinamento e l'esportazione segue l'ordine sullo schermo. Per scegliere un paese con il mouse basta un clic. In Analytics il riquadro delle pagine a bassa conversione elenca tutte le pagine che conta; nel monitoraggio delle posizioni la colonna Variazione non scompare più da una pagina all'altra.
+- **Aggiornamento Windows:** Dopo un aggiornamento silenzioso non completato l'app si riapre; un aggiornamento che non supera la verifica non viene scaricato più volte. Con le notifiche disattivate gli annunci non vengono controllati e il rapporto diagnostico non contiene i nomi dei vostri file.
 
 ### 🔒 Sicurezza
 

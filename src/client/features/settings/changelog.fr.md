@@ -83,6 +83,8 @@ Cette entrée réunit les nouveautés et corrections de la 0.5.0 à la 0.8.8 : a
 - **Tableaux d'audit :** Les valeurs vides restent toujours en fin de tri ; l'onglet du statut Google affiche le bon nombre de pages pas encore interrogées et les exports suivent le filtre à l'écran.
 - **Recherches longues :** Un long texte de recherche dans les rapports et les mots-clés enregistrés ne provoque plus d'erreur.
 - **Étapes du tableau de bord :** Les étapes marquées comme faites et un audit en cours apparaissent aussi sur le tableau de bord ; le bouton Actualiser récupère les données à jour de Google.
+- **Listes et sélections :** Dans Opportunités, les lignes dont le gain est inconnu restent toujours en fin de tri et l'export suit l'ordre affiché à l'écran. Un seul clic suffit pour choisir un pays à la souris. Dans Analytics, la tuile des pages à faible conversion liste toutes les pages qu'elle compte ; dans le suivi des positions, la colonne Évolution ne disparaît plus d'une page à l'autre.
+- **Mise à jour Windows :** Après une mise à jour silencieuse inachevée, l'application se rouvre ; une mise à jour dont la vérification échoue n'est pas téléchargée encore et encore. Les annonces ne sont pas consultées quand les notifications sont désactivées, et le rapport de diagnostic ne contient pas vos noms de fichiers.
 
 ### 🔒 Sécurité
 

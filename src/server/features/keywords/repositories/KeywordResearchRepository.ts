@@ -239,7 +239,9 @@ function buildSavedKeywordOrderBy(
   const direction = order === "asc" ? asc : desc;
   switch (sort) {
     case "keyword":
-      return direction(savedKeywords.keyword);
+      // By the folded key, not the display form: SQLite compares bytes, so
+      // "Zebra" sorted before "apple" and "çay" after everything.
+      return direction(matchableKey);
     case "searchVolume":
       return direction(keywordMetrics.searchVolume);
     case "cpc":

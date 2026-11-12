@@ -15,7 +15,7 @@ const savedKeywordSortFields = [
 const sortDirs = ["asc", "desc"] as const;
 
 export const savedKeywordMetricSchema = z.object({
-  keyword: z.string().min(1),
+  keyword: z.string().min(1).max(512),
   searchVolume: z.number().int().nonnegative().nullable().optional(),
   cpc: z.number().nonnegative().nullable().optional(),
   competition: z.number().min(0).max(1).nullable().optional(),
@@ -44,7 +44,9 @@ export const savedKeywordMetricSchema = z.object({
 export const saveKeywordsSchema = z
   .object({
     projectId: z.string().min(1),
-    keywords: z.array(z.string().min(1)).min(1).max(500),
+    // Capped: an uncapped string was stored verbatim, and a megabyte of it
+    // then rode along in every list and export.
+    keywords: z.array(z.string().min(1).max(512)).min(1).max(500),
     locationCode: z.number().int().positive().optional(),
     languageCode: z.string().min(2).max(8).optional(),
     tags: z.array(savedKeywordTagSchema).max(20).optional(),

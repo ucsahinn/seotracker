@@ -75,6 +75,7 @@ const projectContextUpdateSchema = z.union([
     section: projectContextSectionKeySchema,
     expectedContent: z
       .string()
+      .max(PROSE_MAX_CHARS)
       .nullable()
       .optional()
       .describe(
@@ -91,7 +92,7 @@ const projectContextUpdateSchema = z.union([
   }),
   z.strictObject({
     deleteCustomSection: customSectionSlugSchema,
-    expectedContent: z.string().nullable().optional(),
+    expectedContent: z.string().max(PROSE_MAX_CHARS).nullable().optional(),
   }),
   z.strictObject({
     addCompetitors: z.array(competitorInputSchema).min(1).max(100),
@@ -103,11 +104,11 @@ const projectContextUpdateSchema = z.union([
     addKeyPages: z.array(keyPageInputSchema).min(1).max(100),
   }),
   z.strictObject({
-    removeKeyPages: z.array(z.string().trim().min(1)).min(1).max(100),
+    removeKeyPages: z.array(z.string().trim().min(1).max(2048)).min(1).max(100),
   }),
   // Research log entries are addressed by id, since a summary is not unique.
   z.strictObject({
-    removeResearchLog: z.array(z.string().min(1)).min(1).max(100),
+    removeResearchLog: z.array(z.string().min(1).max(2048)).min(1).max(100),
   }),
   z.strictObject({
     // The entry date is server-stamped, never supplied by the caller.

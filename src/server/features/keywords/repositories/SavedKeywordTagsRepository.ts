@@ -1,6 +1,6 @@
 import { and, asc, count, eq, inArray, notExists } from "drizzle-orm";
 import { db } from "@/db";
-import { runBatch } from "@/db/runBatch";
+import { executeInBatches, runBatch } from "@/db/runBatch";
 import { replaceTagAssignments } from "./replaceTagAssignments";
 import {
   savedKeywordTagAssignments,
@@ -131,13 +131,16 @@ async function addTagsToSavedKeywords(params: {
   const assignments = savedKeywordRows.flatMap((row) =>
     tags.map((tag) => ({ savedKeywordId: row.id, tagId: tag.id })),
   );
+  // In batches, each applied whole: these used to be up to a thousand
+  // separate statements, and a failure part way left some keywords tagged
+  // and the rest not, one round trip at a time.
+  const chunks: (typeof assignments)[] = [];
   for (let i = 0; i < assignments.length; i += ASSIGNMENT_INSERT_CHUNK_SIZE) {
-    const chunk = assignments.slice(i, i + ASSIGNMENT_INSERT_CHUNK_SIZE);
-    await db
-      .insert(savedKeywordTagAssignments)
-      .values(chunk)
-      .onConflictDoNothing();
+    chunks.push(assignments.slice(i, i + ASSIGNMENT_INSERT_CHUNK_SIZE));
   }
+  await executeInBatches(chunks, (tx, chunk) =>
+    tx.insert(savedKeywordTagAssignments).values(chunk).onConflictDoNothing(),
+  );
 
   return { savedKeywordCount: savedKeywordRows.length, tags };
 }

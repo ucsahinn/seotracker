@@ -1,7 +1,10 @@
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { buildCsv, downloadCsv } from "@/client/lib/csv";
-import { getStandardErrorMessage } from "@/client/lib/error-messages";
+import {
+  getErrorCode,
+  getStandardErrorMessage,
+} from "@/client/lib/error-messages";
 import { exportTableToSheets } from "@/client/lib/exportToSheets";
 import { captureClientEvent } from "@/client/lib/observability";
 import { getSavedWatchlist } from "@/serverFunctions/savedKeywords";
@@ -62,10 +65,7 @@ export function useSavedKeywordsExport(params: {
           pageSize: 250,
         },
       }).catch((error: unknown) => {
-        if (
-          error instanceof Error &&
-          error.message.includes("SAVED_SNAPSHOT_CHANGED")
-        )
+        if (getErrorCode(error) === "CONFLICT")
           throw new Error(
             t(
               "Liste veya arşiv değişti. Listeyi yenileyip aktarımı yeniden başlatın.",

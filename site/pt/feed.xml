@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="pt">
   <id>https://seowatcher.io/pt/feed.xml</id>
   <title>seowatcher: Notas da versão</title>
-  <updated>2026-11-11T00:00:00Z</updated>
+  <updated>2026-11-12T00:00:00Z</updated>
   <link rel="self" type="application/atom+xml" href="https://seowatcher.io/pt/feed.xml" />
   <link rel="alternate" type="text/html" href="https://seowatcher.io/pt/" />
   <author>
@@ -13,7 +13,7 @@
   <entry>
     <id>https://seowatcher.io/pt/guias/notas-da-versao/#0.8.8</id>
     <title>Notas da versão: seowatcher 0.8.8</title>
-    <updated>2026-11-11T00:00:00Z</updated>
+    <updated>2026-11-12T00:00:00Z</updated>
     <link rel="alternate" type="text/html" href="https://seowatcher.io/pt/guias/notas-da-versao/" />
     <summary>seowatcher 0.8.8 Alpha (12 de novembro de 2026): nova auditoria do site com 202 regras, seis idiomas, notificações e dados do Google mais precisos.</summary>
   </entry>

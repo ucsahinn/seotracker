@@ -326,6 +326,43 @@ Yapılanlar:
 - **CI:** tüm eylemler commit özetine sabitlendi; Store paketi için kurulum
   denemesi adımı eklendi (ilk koşuda geçti; yayını engeller).
 
+İkinci tur (2026-11-12, takım koşusu `R20261111-3d0b` ve ek dal):
+
+- **Başlatıcı:** port seçimi ile ortam dosyasının yazımı tek kilit altında;
+  iş nesnesine eklenemeyen süreç sonlandırılır; çalışma kopyasında paketin
+  artık taşımadığı dosyalar temizlenir; günlük dosyası yeniden açılır;
+  bildirimler kapalıyken duyuru sorgusu yapılmaz; doğrulaması başarısız olan
+  güncelleme kendiliğinden yeniden indirilmez; tanılama raporu dosya adlarını
+  maskeler.
+- **Paketleme:** Store paketi sürümü uygulama sürümünün ilk hanesi bir
+  artırılarak üretilir (0.8.8 → 1.8.8.0); yarım kalan sessiz güncellemeden
+  sonra uygulama yeniden açılır; kaldırma çalışma kopyasını da siler.
+- **Sunucu:** özel alan adı son ekleri (`*.github.io` gibi) ayrı site sayılır;
+  duyuru servisi gövdeyi 256 KiB ile sınırlar; rapor şablonunda aynı ad ve
+  bulunamayan kayıt doğru hata kodunu verir; hata metni maskelemesi tırnaklı
+  anahtarları ve boşluklu yolları kapsar; demo veri ve denetim uzlaştırıcısı
+  saati istek anında okur (Workers'ta modül yüklenirken saat sıfırdır);
+  kayıtlı kelime aktarımı çakışmada `CONFLICT` kodu verir; toplu etiket
+  ekleme D1'in 100 parametre sınırına göre parçalanır; şema metin alanlarına
+  uzunluk sınırı geldi.
+- **Arayüz:** fırsatlarda bilinmeyen kazanç sonda, dışa aktarım ekrandaki
+  sırada; "Değişim" sütunu tüm sonuca göre gösterilir; Analytics kutusu
+  saydığı tüm sayfaları listeler; CrUX'te yazdırılamayacak kadar küçük değişim
+  eğilim sayılmaz; Lighthouse madde sayısı ilk on ile sınırlı değil; ülke
+  seçici etiketi tıklamayı yutmaz; başarısız arka plan yenilemesi duyuruları
+  ve kota kartını silmez; asistan doğrulaması zaman aşımından sonra da yavaşça
+  yoklar.
+- **Doğrulama:** bütünleştirme dalında `tsc`, oxlint, knip, i18n-check temiz;
+  tam test paketi 2433/2434 (kalan test tek başına geçti); ek dalda 2436/2436;
+  başlatıcı testleri geçti; istemci değişiklikleri geliştirme sunucusunda demo
+  veriyle tarayıcıda denendi. Inno Setup betiği ve Store sürüm eşlemesi yerelde
+  derlenmedi; yayın iş akışı ikisini de derler.
+- **Bilerek bırakılanlar:** bağlı olmayan arama raporu hata eşlemesi, rapor
+  başlığı sıralama harmanı, duyurularda "Yeni" vurgusu, proje ayarı etiketleri,
+  arşiv geçişindeki titreme, Google bağlantı hata kutusunun kalıcılığı,
+  "bu-site denetimi yok" yazımı (çeviri kataloğu değişikliği ister), kutu
+  animasyonu, laboratuvar/saha karışık iletisi, "+" terim ayırıcısı.
+
 Açık kalanlar:
 
 | İş                                                              | Durum                 | Not                                                                                                                                                                                                                                                                                             |

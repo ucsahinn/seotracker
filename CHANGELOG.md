@@ -121,6 +121,8 @@ Bu giriş 0.5.0'dan 0.8.8'e kadar gelen yenilikleri ve düzeltmeleri toplar: sit
 - **Denetim tabloları:** Boş değerler sıralamada hep sonda kalır; Google'daki durum sekmesinde henüz sorulmamış sayfa sayısı doğru görünür ve dışa aktarım ekrandaki süzgeci izler.
 - **Uzun aramalar:** Raporlarda ve kayıtlı kelimelerde uzun arama metinleri artık hata vermez.
 - **Pano adımları:** Yapıldı olarak işaretlediğiniz adımlar ve süren denetim panoda da görünür; Yenile düğmesi Google'dan güncel veriyi alır.
+- **Listeler ve seçimler:** Fırsatlar listesinde kazancı bilinmeyen satırlar sıralamada hep sonda kalır ve dışa aktarım ekrandaki sırayı izler. Ülke listesinde fareyle seçim tek tıklamayla çalışır. Analytics'te dönüşümü düşük sayfalar kutusu saydığı bütün sayfaları listeler; Sıralama takibinde Değişim sütunu sayfadan sayfaya kaybolmaz.
+- **Windows güncellemesi:** Yarım kalan sessiz güncellemeden sonra uygulama yeniden açılır; doğrulanamayan güncelleme tekrar tekrar indirilmez. Bildirimler kapalıyken duyurular sorgulanmaz ve tanılama raporu dosya adlarınızı içermez.
 
 ### 🔒 Güvenlik
 

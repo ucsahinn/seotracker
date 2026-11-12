@@ -1,3 +1,4 @@
+import { processBootMs } from "@/server/lib/processBoot";
 import {
   createStartHandler,
   defaultStreamHandler,
@@ -51,6 +52,8 @@ async function fetch(
   env: Env,
   ctx: ExecutionContext,
 ): Promise<Response> {
+  // The first request is when this process is known to be up.
+  processBootMs();
   // Developer-only: `.dev.vars` sets DEMO_GOOGLE=1 for the demo project.
   enableDemoGoogle(env.DEMO_GOOGLE === "1");
   const authMode = getAuthMode(env.AUTH_MODE);

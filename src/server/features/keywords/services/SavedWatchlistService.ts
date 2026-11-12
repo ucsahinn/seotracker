@@ -1,5 +1,7 @@
 import { groupSavedDailyObservations } from "@/shared/savedWatchlistDaily";
 import { sort } from "remeda";
+import { AppError } from "@/server/lib/errors";
+import { t } from "@/shared/i18n";
 import type { SavedObservation } from "@/shared/savedWatchlist";
 import { getSavedKeywords } from "./research/saved-keywords";
 import { GscHistoryRepository } from "@/server/features/gsc/repositories/GscHistoryRepository";
@@ -157,7 +159,7 @@ export async function readSavedWatchlist(input: SavedWatchlistInput) {
     b.toString(16).padStart(2, "0"),
   ).join("");
   if (input.expectedSnapshot && input.expectedSnapshot !== snapshot)
-    throw new Error("SAVED_SNAPSHOT_CHANGED");
+    throw snapshotChanged();
   return {
     ...view,
     tags,
@@ -167,6 +169,19 @@ export async function readSavedWatchlist(input: SavedWatchlistInput) {
     pageSize: input.pageSize,
   };
 }
+/**
+ * The list or the archive changed between two pages of one export. A coded
+ * error with its sentence: a plain Error reached the client as
+ * INTERNAL_ERROR, so the export could never tell this case apart, and each
+ * one was logged as a server fault.
+ */
+function snapshotChanged() {
+  return new AppError(
+    "CONFLICT",
+    t("Liste veya arşiv değişti. Listeyi yenileyip aktarımı yeniden başlatın."),
+  );
+}
+
 export type SavedWatchlist = Awaited<ReturnType<typeof readSavedWatchlist>>;
 
 export async function readSavedHistory(
@@ -174,8 +189,7 @@ export async function readSavedHistory(
 ) {
   const snapshot = await readSavedWatchlist(input);
   const saved = snapshot.rows.find((row) => row.id === input.savedId);
-  if (!saved || snapshot.archiveError)
-    throw new Error("SAVED_HISTORY_UNAVAILABLE");
+  if (!saved || snapshot.archiveError) throw new AppError("NOT_FOUND");
   const [daily, coverage] = await Promise.all([
     SavedArchiveRepository.dailyObservations(
       input.projectId,
@@ -202,7 +216,7 @@ export async function readSavedHistory(
       saved.position !== null &&
       Math.abs(position - saved.position) > 1e-8)
   )
-    throw new Error("SAVED_SNAPSHOT_CHANGED");
+    throw snapshotChanged();
   return {
     rows,
     range: snapshot.range,

@@ -14,17 +14,18 @@ export function GoogleCredentialMethods() {
   return (
     <section className="space-y-6">
       <h2 className="text-base font-semibold">{t("Google kimlikleri")}</h2>
-      {oauthFirst ? (
-        <>
-          <GoogleOAuthClientSection />
-          <GoogleServiceAccountSection />
-        </>
-      ) : (
-        <>
-          <GoogleServiceAccountSection />
-          <GoogleOAuthClientSection />
-        </>
-      )}
+      {/* Keyed, so swapping the order moves the sections instead of
+          remounting them: saving the OAuth client for the first time used to
+          clear a service-account key that was typed but not yet saved. */}
+      {oauthFirst
+        ? [
+            <GoogleOAuthClientSection key="oauth" />,
+            <GoogleServiceAccountSection key="service" />,
+          ]
+        : [
+            <GoogleServiceAccountSection key="service" />,
+            <GoogleOAuthClientSection key="oauth" />,
+          ]}
       <details className="text-xs text-muted">
         <summary className="cursor-pointer py-1">
           {t("Kimlik yöntemleri")}
