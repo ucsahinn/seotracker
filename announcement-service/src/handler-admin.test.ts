@@ -12,9 +12,12 @@ import {
 describe("announcement service", () => {
   it("rejects oversized admin JSON bodies before repository writes", async () => {
     const createWithOptions = vi.fn(async () => undefined);
-    const handler = createAnnouncementHandler(repository({ createWithOptions }), {
-      adminToken: TOKEN,
-    });
+    const handler = createAnnouncementHandler(
+      repository({ createWithOptions }),
+      {
+        adminToken: TOKEN,
+      },
+    );
     const response = await handler(
       request("/api/admin/announcements", {
         method: "POST",

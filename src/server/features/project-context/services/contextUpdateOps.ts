@@ -53,7 +53,11 @@ function assertProseFits(content: string) {
 }
 
 function assertExpectedContentFits(content: string | null | undefined) {
-  if (content !== null && content !== undefined && content.length > PROSE_MAX_CHARS) {
+  if (
+    content !== null &&
+    content !== undefined &&
+    content.length > PROSE_MAX_CHARS
+  ) {
     throw new AppError(
       "VALIDATION_ERROR",
       `Expected section content is capped at ${PROSE_MAX_CHARS} characters.`,
